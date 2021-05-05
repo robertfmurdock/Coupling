@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.player.retired
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigProps
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
+import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import react.RBuilder
@@ -12,16 +12,15 @@ import react.dom.div
 
 private val LoadedRetiredPlayer = couplingDataLoader(PlayerConfig)
 
-val RetiredPlayerPage =
-    reactFunction<PageProps> { props ->
-        val tribeId = props.tribeId
-        val playerId = props.playerId
+val RetiredPlayerPage = reactFunction<PageProps> { props ->
+    val tribeId = props.tribeId
+    val playerId = props.playerId
 
-        if (tribeId != null && playerId != null)
-            loadedRetiredPlayer(props, tribeId, playerId)
-        else
-            div { +"Hey, we're missing the tribe id or the player id. Things have gone terribly, terribly wrong." }
-    }
+    if (tribeId != null && playerId != null)
+        loadedRetiredPlayer(props, tribeId, playerId)
+    else
+        div { +"Hey, we're missing the tribe id or the player id. Things have gone terribly, terribly wrong." }
+}
 
 private fun RBuilder.loadedRetiredPlayer(props: PageProps, tribeId: TribeId, playerId: String) =
     child(LoadedRetiredPlayer, dataLoadProps(

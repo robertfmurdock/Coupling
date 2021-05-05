@@ -9,7 +9,6 @@ import com.zegreatrob.minreact.reactFunction
 import react.RProps
 import react.dom.div
 
-
 @JsModule("date-fns/formatDistance")
 external val formatDistanceModule: dynamic
 
@@ -17,10 +16,7 @@ val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> Stri
 
 private val styles = useStyles("stats/TribeStatistics")
 
-data class TribeStatisticsProps(
-    val queryResults: StatisticQueryResults,
-    val pathSetter: (String) -> Unit
-) : RProps
+data class TribeStatisticsProps(val queryResults: StatisticQueryResults) : RProps
 
 val TribeStatistics = reactFunction<TribeStatisticsProps> { props ->
     val (tribe, players, _, allStats, heatmapData) = props.queryResults

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
+import kotlinx.browser.window
 import org.w3c.dom.url.URLSearchParams
 import react.RBuilder
 import react.RClass
@@ -9,16 +10,14 @@ import react.RProps
 import react.createElement
 import react.router.dom.RouteResultProps
 import react.router.dom.route
-import kotlinx.browser.window
 import kotlin.js.Json
 
 data class CouplingRouteProps(val path: String, val component: RClass<PageProps>) : RProps
 
 val CouplingRoute = reactFunction<CouplingRouteProps> { props ->
     route<RProps>(props.path, exact = true) { routeProps ->
-        createElement(
-            props.component, pageProps(routeProps)
-        )
+        createElement(props.component, pageProps(routeProps))
+            .also { window.asDynamic().pathSetter = newPathSetter(routeProps) }
     }
 }
 
@@ -27,7 +26,6 @@ fun RBuilder.couplingRoute(path: String, rComponent: RClass<PageProps>) =
 
 private fun pageProps(routeProps: RouteResultProps<RProps>) = PageProps(
     pathParams = routeProps.pathParams(),
-    pathSetter = newPathSetter(routeProps).also { window.asDynamic().pathSetter = it },
     search = URLSearchParams(routeProps.location.search),
     commander = MasterCommander
 )

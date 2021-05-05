@@ -11,6 +11,6 @@ val StatisticsPage = tribePageFunction { props, tribeId ->
     child(LoadedPairAssignments, dataLoadProps(
         commander = props.commander,
         query = StatisticsQuery(tribeId),
-        toProps = { _, _, queryResult -> TribeStatisticsProps(queryResult, props.pathSetter) }
+        toProps = { _, _, queryResult -> TribeStatisticsProps(queryResult) }
     ), key = tribeId.value)
 }

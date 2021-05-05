@@ -31,7 +31,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 heatmapData = perform(CalculateHeatMapAction(emptyList(), emptyList(), 0)),
                 report = perform(ComposeStatisticsAction(tribe, emptyList(), emptyList()))
             )
-        ) {}
+        )
     }) exercise {
         shallow(TribeStatistics, props)
     } verify { wrapper ->
@@ -71,7 +71,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 report = perform(ComposeStatisticsAction(tribe, players, history))
             )
 
-        ) {}
+        )
     }) exercise {
         shallow(TribeStatistics, props)
     } verify { wrapper ->
@@ -134,14 +134,14 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         )
 
         val report = perform(ComposeStatisticsAction(tribe, players, history))
-        val props = TribeStatisticsProps(StatisticQueryResults(
-            tribe = tribe,
-            players = players,
-            history = history,
-            heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation)),
-            report = report
-        ),
-            pathSetter = {}
+        val props = TribeStatisticsProps(
+            StatisticQueryResults(
+                tribe = tribe,
+                players = players,
+                history = history,
+                heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation)),
+                report = report
+            )
         )
     }) exercise {
         shallow(TribeStatistics, props)
@@ -178,8 +178,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 history = emptyList(),
                 heatmapData = emptyList(),
                 report = perform(ComposeStatisticsAction(tribe, players, emptyList()))
-            ),
-            pathSetter = {}
+            )
         )
     }) exercise {
         shallow(TribeStatistics, props)
@@ -231,8 +230,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 history = history,
                 heatmapData = emptyList(),
                 report = perform(ComposeStatisticsAction(tribe, players, history))
-            ),
-            pathSetter = {}
+            )
         )
     }) exercise {
         shallow(TribeStatistics, props)

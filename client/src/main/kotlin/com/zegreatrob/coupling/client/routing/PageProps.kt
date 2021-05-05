@@ -8,14 +8,13 @@ import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.SdkSingleton
+import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URLSearchParams
 import react.RProps
-import kotlinx.browser.window
 
 data class PageProps(
     val pathParams: Map<String, String>,
-    val pathSetter: (String) -> Unit,
     val commander: Commander,
     val search: URLSearchParams
 ) : RProps {
@@ -29,7 +28,6 @@ interface Commander {
 
     fun tracingDispatcher() = getDispatcher(uuid4())
     suspend fun <T> runQuery(dispatch: suspend CommandDispatcher.() -> T): T = tracingDispatcher().dispatch()
-
 }
 
 object MasterCommander : Commander {
