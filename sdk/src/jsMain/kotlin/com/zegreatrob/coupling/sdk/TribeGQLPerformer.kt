@@ -4,9 +4,8 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.external.axios.Axios
 import kotlinx.coroutines.*
 import kotlin.js.Json
-import kotlin.js.json
 
-interface TribeGQLPerformer : AxiosSyntax {
+interface TribeGQLPerformer : GqlSyntax {
 
     suspend fun performTribeGQLQuery(
         tribeId: TribeId,
@@ -29,11 +28,12 @@ interface TribeGQLPerformer : AxiosSyntax {
         return node.unsafeCast<Json>()
     }
 
-    private suspend fun sendQuery(tribeId: TribeId, components: List<TribeGQLComponent>): dynamic = axios.post(
-        "/api/graphql", json(
-            "query" to "{ ${tribeId.tribeQueryArgs()} { ${components.tribeComponentString()} } }"
-        )
-    ).await()
+    private suspend fun sendQuery(tribeId: TribeId, components: List<TribeGQLComponent>): dynamic =
+        buildFinalQuery(tribeId, components)
+            .performQuery()
+
+    private fun buildFinalQuery(tribeId: TribeId, components: List<TribeGQLComponent>) =
+        "{ ${tribeId.tribeQueryArgs()} { ${components.tribeComponentString()} } }"
 
     private fun TribeId.tribeQueryArgs() = "tribeData(id: \"$value\")"
 
