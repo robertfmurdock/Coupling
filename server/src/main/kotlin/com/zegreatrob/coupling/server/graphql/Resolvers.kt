@@ -15,11 +15,11 @@ typealias GraphQLDispatcherProvider<D> = suspend (Request, Json) -> D?
 
 fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, R, J> dispatch(
     dispatcherFunc: GraphQLDispatcherProvider<D>,
-    queryFunc: (Json) -> Q,
+    queryFunc: (Json, Json) -> Q,
     toJson: (R) -> J
-) = { entity: Json, _: Json, request: Request ->
+) = { entity: Json, args: Json, request: Request ->
     request.scope.promise {
-        val command = queryFunc(entity)
+        val command = queryFunc(entity, args)
         dispatcherFunc(request, entity)
             ?.execute(command)
             ?.successOrNull(toJson)

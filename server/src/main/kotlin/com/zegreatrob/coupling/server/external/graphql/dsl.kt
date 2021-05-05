@@ -4,14 +4,20 @@ import com.zegreatrob.coupling.server.external.express.Request
 import kotlin.js.Json
 import kotlin.js.json
 
-fun objectType(name: String, description: String = "", fields: Array<Pair<String, Any?>>) =
-    GraphQLObjectType(
-        json(
-            "name" to name,
-            "description" to description,
-            "fields" to json(*fields)
-        )
+fun objectType(
+    name: String,
+    description: String = "",
+    fields: Array<Pair<String, Any?>>,
+    args: Array<Pair<String, Any?>> = emptyArray()
+) = GraphQLObjectType(
+    json(
+        "name" to name,
+        "description" to description,
+        "fields" to json(*fields),
+    ).add(
+        json("args" to json(*args))
     )
+)
 
 fun field(type: GraphQLType) = json("type" to type)
 

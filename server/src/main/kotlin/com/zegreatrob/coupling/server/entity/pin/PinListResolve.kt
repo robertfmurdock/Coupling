@@ -9,6 +9,6 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val pinListResolve = dispatch(
     tribeCommand,
-    { PinsQuery },
+    { _,_ -> PinsQuery },
     List<Record<TribeIdPin>>::toJsonArray
 )

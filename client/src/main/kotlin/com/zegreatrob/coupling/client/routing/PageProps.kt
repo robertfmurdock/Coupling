@@ -25,7 +25,6 @@ data class PageProps(
 
 interface Commander {
     fun getDispatcher(traceId: Uuid): CommandDispatcher
-
     fun tracingDispatcher() = getDispatcher(uuid4())
     suspend fun <T> runQuery(dispatch: suspend CommandDispatcher.() -> T): T = tracingDispatcher().dispatch()
 }

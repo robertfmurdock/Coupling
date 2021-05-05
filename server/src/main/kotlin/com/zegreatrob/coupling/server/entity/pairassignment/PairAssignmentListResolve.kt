@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val pairAssignmentListResolve = dispatch(
     tribeCommand,
-    { PairAssignmentDocumentListQuery },
+    { _,_ -> PairAssignmentDocumentListQuery },
     ::toJson
 )
 

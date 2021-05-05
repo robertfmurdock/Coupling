@@ -9,6 +9,6 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val playerListResolve = dispatch(
     tribeCommand,
-    { PlayersQuery },
+    { _, _ -> PlayersQuery },
     List<Record<TribeIdPlayer>>::toJsonArray
 )
