@@ -51,7 +51,7 @@ class PairAssignmentsTest {
                 players,
                 pairAssignments,
                 { pairAssignments = it },
-                controls = Controls(StubDispatchFunc(), {}, {}),
+                controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
             )
@@ -82,7 +82,7 @@ class PairAssignmentsTest {
                 players,
                 null,
                 {},
-                controls = Controls(StubDispatchFunc(), {}, {}),
+                controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
             )
@@ -103,7 +103,7 @@ class PairAssignmentsTest {
                 listOf(),
                 null,
                 {},
-                controls = Controls(StubDispatchFunc(), {}, {}),
+                controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptyList(), null),
                 allowSave = false
             )

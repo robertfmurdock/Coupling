@@ -37,7 +37,7 @@ class HistoryTest {
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             historyComponent(this),
-            HistoryProps(tribe, history, Controls(stubDispatchFunc, {}, reloadSpy::spyFunction))
+            HistoryProps(tribe, history, Controls(stubDispatchFunc, reloadSpy::spyFunction))
         )
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")
@@ -63,7 +63,7 @@ class HistoryTest {
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             historyComponent(this),
-            HistoryProps(tribe, history, Controls(stubDispatchFunc, {}, reloadSpy::spyFunction))
+            HistoryProps(tribe, history, Controls(stubDispatchFunc, reloadSpy::spyFunction))
         )
     }) exercise {
         wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")

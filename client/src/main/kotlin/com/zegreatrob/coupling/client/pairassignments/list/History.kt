@@ -35,7 +35,11 @@ data class HistoryProps(
 val History by lazy { historyComponent(WindowFunctions) }
 
 val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, controls), windowFuncs ->
-    val onDeleteFunc = onDeleteFuncFactory(controls, tribe, windowFuncs)
+    val (dispatchFunc, reload) = controls
+    val onDeleteFactory = { documentId: PairAssignmentDocumentId ->
+        val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
+        windowFuncs.onDeleteClick(deleteFunc)
+    }
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {
             tribeCard(TribeCardProps(tribe))
@@ -43,37 +47,25 @@ val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, controls
         span(classes = styles["historyView"]) {
             div(classes = styles["header"]) { +"History!" }
             history.forEach {
-                pairAssignmentRow(it, onDeleteFunc)
+                pairAssignmentRow(it, onDeleteFactory(it.id))
             }
         }
     }
 }
 
-private fun onDeleteFuncFactory(
-    controls: Controls<DeletePairAssignmentsCommandDispatcher>,
-    tribe: Tribe,
-    windowFunctions: WindowFunctions
-) = { documentId: PairAssignmentDocumentId ->
-    val (dispatchFunc, _, reload) = controls
-    val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
-    onDeleteClick(windowFunctions, deleteFunc)
-}
-
-private fun onDeleteClick(windowFuncs: WindowFunctions, deleteFunc: () -> Unit) = fun() {
-    if (windowFuncs.window.confirm("Are you sure you want to delete these pair assignments?")) {
+private fun WindowFunctions.onDeleteClick(deleteFunc: () -> Unit) = fun() {
+    if (window.confirm("Are you sure you want to delete these pair assignments?")) {
         deleteFunc.invoke()
     }
 }
 
-private fun RBuilder.pairAssignmentRow(
-    document: PairAssignmentDocument,
-    onDeleteFunc: (PairAssignmentDocumentId) -> () -> Unit
-) = div(classes = styles["pairAssignments"]) {
-    attrs { key = document.id.value }
-    span(classes = styles["pairAssignmentsHeader"]) { +document.dateText() }
-    deleteButton(onClickFunc = onDeleteFunc(document.id))
-    div { showPairs(document) }
-}
+private fun RBuilder.pairAssignmentRow(document: PairAssignmentDocument, onDeleteClick: () -> Unit) =
+    div(classes = styles["pairAssignments"]) {
+        attrs { key = document.id.value }
+        span(classes = styles["pairAssignmentsHeader"]) { +document.dateText() }
+        deleteButton(onClickFunc = onDeleteClick)
+        div { showPairs(document) }
+    }
 
 private fun RBuilder.deleteButton(onClickFunc: () -> Unit) =
     couplingButton(small, red, styles["deleteButton"], onClickFunc) {

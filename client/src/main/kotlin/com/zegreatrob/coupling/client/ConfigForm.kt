@@ -13,11 +13,16 @@ private val styles = useStyles("ConfigForm")
 
 val ConfigForm = reactFunction { props: ConfigFormProps ->
     val (name, onSubmit, onRemove) = props
+    val (isSaving, setIsSaving) = useState(false)
+    val onSubmitFunc = { event: Event ->
+        event.preventDefault()
+        setIsSaving(true)
+        onSubmit()
+    }
     form {
-        val (isSaving, setIsSaving) = useState(false)
         attrs {
             this.name = name
-            onSubmitFunction = onSubmitFunction(setIsSaving, onSubmit)
+            this.onSubmitFunction = onSubmitFunc
         }
         props.children()
         configSaveButton(isSaving, styles["saveButton"])
@@ -32,9 +37,3 @@ data class ConfigFormProps(
     val onSubmit: () -> Unit,
     val onRemove: (() -> Unit)?
 ) : RProps
-
-private fun onSubmitFunction(setIsSaving: (Boolean) -> Unit, onSubmit: () -> Unit) = { event: Event ->
-    event.preventDefault()
-    setIsSaving(true)
-    onSubmit()
-}

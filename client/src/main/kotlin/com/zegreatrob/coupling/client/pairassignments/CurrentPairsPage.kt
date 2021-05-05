@@ -18,7 +18,7 @@ private fun dataLoadProps(tribeId: TribeId, pathSetter: (String) -> Unit, comman
     commander = commander,
     query = TribeDataSetQuery(tribeId),
     toProps = { reload, dispatchFunc, (tribe, players, history) ->
-        val controls = Controls(dispatchFunc, pathSetter, reload)
+        val controls = Controls(dispatchFunc, reload)
         SocketedPairAssignmentsProps(tribe, players, history.firstOrNull(), controls, false)
     }
 )
