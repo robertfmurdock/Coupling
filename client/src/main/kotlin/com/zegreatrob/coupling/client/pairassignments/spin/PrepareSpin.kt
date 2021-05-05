@@ -241,7 +241,6 @@ private fun RBuilder.playerCard(
 ) = playerCard(PlayerCardProps(
     tribe.id,
     player,
-    null,
     className = styles["playerCard"],
     deselected = !isSelected,
     onClick = {

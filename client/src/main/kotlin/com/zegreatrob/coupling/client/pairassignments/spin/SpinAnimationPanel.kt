@@ -61,7 +61,7 @@ private fun RBuilder.assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCoupl
     classes = styles["pairAssignments"]
 ) {
     revealedPairs.mapIndexed { index, it ->
-        assignedPair(tribe, it, { _, _ -> }, { }, false, {}, key = "$index")
+        assignedPair(tribe, it, { _, _ -> }, { }, false, key = "$index")
     }
 }
 

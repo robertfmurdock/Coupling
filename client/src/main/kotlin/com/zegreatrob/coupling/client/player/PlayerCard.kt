@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.PathSetter
 import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -27,7 +26,7 @@ val RBuilder.playerCard get() = childCurry(PlayerCard)
 data class PlayerCardProps(
     val tribeId: TribeId,
     val player: Player,
-    val pathSetter: PathSetter? = null,
+    val linkToConfig: Boolean = false,
     val className: String? = null,
     val size: Int = 100,
     val onClick: ((Event) -> Unit) = {},
@@ -38,7 +37,7 @@ data class PlayerCardProps(
 private val styles = useStyles("player/PlayerCard")
 
 val PlayerCard = reactFunction<PlayerCardProps> { props ->
-    val (tribeId, player, pathSetter, className, size, onClick, deselected, tilt) = props
+    val (tribeId, player, linkToConfig, className, size, onClick, deselected, tilt) = props
     styledDiv {
         attrs {
             classes += additionalClasses(className, deselected)
@@ -53,7 +52,7 @@ val PlayerCard = reactFunction<PlayerCardProps> { props ->
         }
 
         playerGravatarImage(player, size)
-        playerCardHeader(tribeId, player, size, pathSetter)
+        playerCardHeader(tribeId, player, size, linkToConfig)
     }
 }
 

@@ -30,16 +30,14 @@ val PlayerConfig = reactFunction { (tribe, player, players, pathSetter, reload, 
             child(
                 PlayerRoster, PlayerRosterProps(
                     players = players,
-                    tribeId = tribe.id,
-                    pathSetter = pathSetter,
-                    cssOverrides = {
-                        display = Display.inlineBlock
-                        borderRadius = 20.px
-                        padding = "10px"
-                        border = "11px outset tan"
-                        backgroundColor = wheat
-                    }
-                )
+                    tribeId = tribe.id
+                ) {
+                    display = Display.inlineBlock
+                    borderRadius = 20.px
+                    padding = "10px"
+                    border = "11px outset tan"
+                    backgroundColor = wheat
+                }
             )
         }
     }

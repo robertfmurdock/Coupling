@@ -47,7 +47,7 @@ val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps
     val (tribe, pairAssignments, setPairAssignments, allowSave, controls) = props
     div(classes = styles.className) {
         dateHeader(pairAssignments)
-        pairAssignmentList(tribe, pairAssignments, setPairAssignments, allowSave, controls.pathSetter)
+        pairAssignmentList(tribe, pairAssignments, setPairAssignments, allowSave)
         if (allowSave) {
             controlSection(tribe, pairAssignments, controls.dispatchFunc)
         }
@@ -64,20 +64,18 @@ private fun RBuilder.pairAssignmentList(
     tribe: Tribe,
     pairAssignments: PairAssignmentDocument,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
-    allowSave: Boolean,
-    pathSetter: (String) -> Unit
+    allowSave: Boolean
 ) = div(classes = styles["pairAssignmentsContent"]) {
     pairAssignments.pairs.mapIndexed { index, pair ->
         assignedPair(
             tribe,
             pair,
-            key = "$index",
-            canDrag = allowSave,
             swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
                 setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
             },
             dropPinFunc = { pinId -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) },
-            pathSetter = pathSetter
+            canDrag = allowSave,
+            key = "$index"
         )
     }
 }

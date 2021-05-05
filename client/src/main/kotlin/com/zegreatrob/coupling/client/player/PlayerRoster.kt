@@ -21,14 +21,13 @@ data class PlayerRosterProps(
     val label: String? = null,
     val players: List<Player>,
     val tribeId: TribeId,
-    val pathSetter: (String) -> Unit,
     val className: String? = null,
     val cssOverrides: RuleSet = {}
 ) : RProps
 
 private val styles = useStyles("player/PlayerRoster")
 
-val PlayerRoster = reactFunction { (label, players, tribeId, pathSetter, className, overrides): PlayerRosterProps ->
+val PlayerRoster = reactFunction { (label, players, tribeId, className, overrides): PlayerRosterProps ->
     styledDiv {
         attrs {
             if (className != null) classes += className
@@ -39,7 +38,7 @@ val PlayerRoster = reactFunction { (label, players, tribeId, pathSetter, classNa
             div(classes = styles["header"]) {
                 +(label ?: "Players")
             }
-            renderPlayers(players, tribeId, pathSetter)
+            renderPlayers(players, tribeId)
         }
         addPlayerButton(tribeId)
     }
@@ -51,10 +50,9 @@ private fun RBuilder.addPlayerButton(tribeId: TribeId) = routeLink(to = "/${trib
     }
 }
 
-private fun RBuilder.renderPlayers(players: List<Player>, tribeId: TribeId, pathSetter: (String) -> Unit) =
-    players.forEach { player ->
-        playerCard(
-            PlayerCardProps(tribeId, player, pathSetter),
-            key = player.id
-        )
-    }
+private fun RBuilder.renderPlayers(players: List<Player>, tribeId: TribeId) = players.forEach { player ->
+    playerCard(
+        PlayerCardProps(tribeId, player, linkToConfig = true),
+        key = player.id
+    )
+}

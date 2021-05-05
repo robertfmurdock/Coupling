@@ -88,7 +88,7 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
                 }
             }
             controlPanel(tribe)
-            unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments), controls.pathSetter)
+            unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments))
 
             serverMessage(tribe, message)
         }
@@ -187,12 +187,11 @@ private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it
 
 external class ClipboardItem(params: Json)
 
-private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>, pathSetter: (String) -> Unit) = child(
+private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>) = child(
     PlayerRoster, PlayerRosterProps(
         label = "Unpaired players",
         players = players,
-        tribeId = tribe.id,
-        pathSetter = pathSetter
+        tribeId = tribe.id
     )
 )
 

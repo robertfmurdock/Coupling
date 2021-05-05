@@ -11,27 +11,24 @@ import com.zegreatrob.minreact.reactFunction
 import react.RProps
 import react.dom.div
 
-
 data class RetiredPlayersProps(
     val tribe: Tribe,
-    val retiredPlayers: List<Player>,
-    val pathSetter: (String) -> Unit
+    val retiredPlayers: List<Player>
 ) : RProps
 
 private val styles = useStyles("player/RetiredPlayers")
 
-val RetiredPlayers =
-    reactFunction<RetiredPlayersProps> { (tribe, players, pathSetter) ->
-        div(classes = styles.className) {
-            tribeBrowser(tribe)
-            div(classes = styles["header"]) { +"Retired Players" }
-            div {
-                players.forEach { player ->
-                    playerCard(
-                        PlayerCardProps(tribe.id, player, pathSetter, deselected = true),
-                        key = player.id
-                    )
-                }
+val RetiredPlayers = reactFunction<RetiredPlayersProps> { (tribe, players) ->
+    div(classes = styles.className) {
+        tribeBrowser(tribe)
+        div(classes = styles["header"]) { +"Retired Players" }
+        div {
+            players.forEach { player ->
+                playerCard(
+                    PlayerCardProps(tribe.id, player, linkToConfig = true, deselected = true),
+                    key = player.id
+                )
             }
         }
     }
+}

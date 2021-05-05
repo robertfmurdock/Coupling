@@ -39,8 +39,7 @@ data class AssignedPairProps(
     val pair: PinnedCouplingPair,
     val canDrag: Boolean,
     val swapPlayersFunc: (PinnedPlayer, String) -> Unit,
-    val pinDropFunc: PinMoveCallback,
-    val pathSetter: (String) -> Unit
+    val pinDropFunc: PinMoveCallback
 ) : RProps
 
 typealias PinMoveCallback = (String) -> Unit
@@ -53,23 +52,22 @@ fun RBuilder.assignedPair(
     swapPlayersFunc: (PinnedPlayer, String) -> Unit,
     dropPinFunc: PinMoveCallback,
     canDrag: Boolean,
-    pathSetter: (String) -> Unit,
     key: String
 ) = child(
     AssignedPair,
-    AssignedPairProps(tribe, pair, canDrag, swapPlayersFunc, dropPinFunc, pathSetter),
+    AssignedPairProps(tribe, pair, canDrag, swapPlayersFunc, dropPinFunc),
     key = key
 )
 
 val AssignedPair = reactFunction<AssignedPairProps> { props ->
-    val (tribe, pair, canDrag, swapCallback, pinMoveCallback, pathSetter) = props
+    val (tribe, pair, canDrag, swapCallback, pinMoveCallback) = props
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
     val pinDroppableRef = useRef<Node?>(null)
     drop(pinDroppableRef)
 
-    val playerCard = playerCardComponent(tribe, canDrag, pathSetter, swapCallback)
+    val playerCard = playerCardComponent(tribe, canDrag, swapCallback)
 
     span(classes = styles.className) {
         attrs {
@@ -104,7 +102,6 @@ private fun usePinDrop(pinMoveCallback: PinMoveCallback) = useDrop(
 private fun playerCardComponent(
     tribe: Tribe,
     canDrag: Boolean,
-    pathSetter: (String) -> Unit,
     swap: (PinnedPlayer, String) -> Unit
 ): RBuilder.(PinnedPlayer, Angle) -> ReactElement = if (canDrag) { player, tilt ->
     playerFlipped(player.player) {
@@ -114,7 +111,7 @@ private fun playerCardComponent(
     }
 } else { player, tilt ->
     playerFlipped(player.player) {
-        notSwappablePlayer(tribe, pathSetter, player.player, tilt)
+        notSwappablePlayer(tribe, player.player, tilt)
     }
 }
 
@@ -131,8 +128,8 @@ private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> React
     }
 }
 
-private fun RBuilder.notSwappablePlayer(tribe: Tribe, pathSetter: (String) -> Unit, player: Player, tilt: Angle) =
-    playerCard(PlayerCardProps(tribe.id, player, pathSetter, tilt = tilt))
+private fun RBuilder.notSwappablePlayer(tribe: Tribe, player: Player, tilt: Angle) =
+    playerCard(PlayerCardProps(tribe.id, player, true, tilt = tilt))
 
 private fun RBuilder.swappablePlayer(
     tribe: Tribe,
