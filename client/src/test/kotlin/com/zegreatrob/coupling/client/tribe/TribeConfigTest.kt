@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
@@ -12,7 +13,6 @@ import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import react.router.dom.RedirectProps
-import kotlin.js.json
 import kotlin.test.Test
 
 class TribeConfigTest {
@@ -21,10 +21,7 @@ class TribeConfigTest {
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
         val tribe = Tribe(TribeId("1"), name = "1")
     }) exercise {
-        shallow(
-            TribeConfig,
-            TribeConfigProps(tribe, StubDispatchFunc())
-        )
+        shallow(TribeConfig, TribeConfigProps(tribe, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
             .assertHasDefaultBadgeName()
@@ -64,8 +61,9 @@ class TribeConfigTest {
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
         val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
     }) exercise {
-        wrapper.find<Any>("form")
-            .simulate("submit", json("preventDefault" to {}))
+        wrapper.find(ConfigForm)
+            .props()
+            .onSubmit()
         stubDispatchFunc.simulateSuccess<SaveTribeCommand>()
     } verify {
         stubDispatchFunc.commandsDispatched<SaveTribeCommand>()
@@ -81,8 +79,9 @@ class TribeConfigTest {
         val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
         val automatedTribeId = wrapper.find<Any>("#tribe-id").prop("value")
     }) exercise {
-        wrapper.find<Any>("form")
-            .simulate("submit", json("preventDefault" to {}))
+        wrapper.find(ConfigForm)
+            .props()
+            .onSubmit()
     } verify {
         stubDispatchFunc.commandsDispatched<SaveTribeCommand>()
             .first()

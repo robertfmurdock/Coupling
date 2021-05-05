@@ -42,14 +42,16 @@ val TribeConfig = reactFunction { (tribe, commandFunc): TribeConfigProps ->
     val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }, { redirectToTribeList() })
     val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }, { redirectToTribeList() })
 
-    configFrame(styles.className) {
-        redirectUrl?.let { redirect(to = it) }
-        configHeader(tribe) { +"Tribe Configuration" }
-        div {
-            tribeConfigEditor(updatedTribe, isNew, onChange, onSave, onDelete)
-            tribeCard(TribeCardProps(updatedTribe))
+    if (redirectUrl != null)
+        redirect(to = redirectUrl)
+    else
+        configFrame(styles.className) {
+            configHeader(tribe) { +"Tribe Configuration" }
+            div {
+                tribeConfigEditor(updatedTribe, isNew, onChange, onSave, onDelete)
+                tribeCard(TribeCardProps(updatedTribe))
+            }
         }
-    }
 }
 
 private fun Tribe.withDefaultTribeId() = if (id.value.isNotBlank())
@@ -64,7 +66,7 @@ private fun RBuilder.tribeConfigEditor(
     onSave: () -> Unit,
     onDelete: (() -> Unit)?
 ) = span(styles["tribeConfigEditor"]) {
-    configForm(onSubmit = onSave, onRemove = onDelete) {
+    child(ConfigForm, ConfigFormProps(onSubmit = onSave, onRemove = onDelete)) {
         editorDiv(updatedTribe, onChange, isNew)
     }
 }

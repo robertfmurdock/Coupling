@@ -124,7 +124,7 @@ private fun RBuilder.currentPairSection(
                 pairAssignments = pairAssignments,
                 setPairAssignments = setPairAssignments,
                 allowSave = allowSave,
-                controls = controls
+                dispatchFunc = controls.dispatchFunc
             )
         }
     }

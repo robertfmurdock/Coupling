@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -42,7 +41,7 @@ class CurrentPairAssignmentsPanelTest {
                 pairAssignments,
                 setPairAssignments = { },
                 allowSave = true,
-                controls = Controls(dispatchFunc, {}) {}
+                dispatchFunc = dispatchFunc
             )
         )
     }) exercise {
@@ -67,7 +66,7 @@ class CurrentPairAssignmentsPanelTest {
                 pairAssignments,
                 setPairAssignments = { },
                 allowSave = true,
-                controls = Controls(dispatchFunc, {}) {}
+                dispatchFunc = dispatchFunc
             )
         )
     }) exercise {
@@ -102,7 +101,7 @@ class CurrentPairAssignmentsPanelTest {
                 tribe,
                 pairAssignments,
                 { lastSetPairAssignments = it },
-                controls = Controls(StubDispatchFunc(), {}, {}),
+                dispatchFunc = StubDispatchFunc(),
                 allowSave = false
             )
         )
@@ -135,7 +134,7 @@ class CurrentPairAssignmentsPanelTest {
                 tribe,
                 pairAssignments,
                 { lastSetPairAssignments = it },
-                controls = Controls(StubDispatchFunc(), {}, {}),
+                dispatchFunc = StubDispatchFunc(),
                 allowSave = false
             )
         )
@@ -175,7 +174,7 @@ class CurrentPairAssignmentsPanelTest {
                 tribe,
                 pairAssignments,
                 { lastSetPairAssignments = it },
-                controls = Controls(StubDispatchFunc(), {}, {}),
+                dispatchFunc = StubDispatchFunc(),
                 allowSave = false
             )
         )
@@ -212,7 +211,7 @@ class CurrentPairAssignmentsPanelTest {
                 tribe,
                 pairAssignments,
                 { lastSetPairAssignments = it },
-                controls = Controls(StubDispatchFunc(), {}, {}),
+                dispatchFunc = StubDispatchFunc(),
                 allowSave = false
             )
         )

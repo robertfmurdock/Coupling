@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.dom.*
@@ -27,10 +26,10 @@ fun RBuilder.currentPairAssignments(
     pairAssignments: PairAssignmentDocument,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean,
-    controls: Controls<DeletePairAssignmentsCommandDispatcher>
+    dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
 ) = child(
     CurrentPairAssignmentsPanel,
-    CurrentPairAssignmentsPanelProps(tribe, pairAssignments, setPairAssignments, allowSave, controls)
+    CurrentPairAssignmentsPanelProps(tribe, pairAssignments, setPairAssignments, allowSave, dispatchFunc)
 )
 
 data class CurrentPairAssignmentsPanelProps(
@@ -38,20 +37,32 @@ data class CurrentPairAssignmentsPanelProps(
     val pairAssignments: PairAssignmentDocument,
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
-    val controls: Controls<DeletePairAssignmentsCommandDispatcher>
+    val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
 ) : RProps
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
 val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps> { props ->
-    val (tribe, pairAssignments, setPairAssignments, allowSave, controls) = props
-    div(classes = styles.className) {
-        dateHeader(pairAssignments)
-        pairAssignmentList(tribe, pairAssignments, setPairAssignments, allowSave)
-        if (allowSave) {
-            controlSection(tribe, pairAssignments, controls.dispatchFunc)
+    val (tribe, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
+    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
+    val redirectToCurrentFunc = { setRedirectUrl(tribe.id.currentPairsPage()) }
+    val onCancel = dispatchFunc(
+        { DeletePairAssignmentsCommand(tribe.id, pairAssignments.id) }, { redirectToCurrentFunc() }
+    )
+    if (redirectUrl != null)
+        redirect(to = redirectUrl)
+    else
+        div(classes = styles.className) {
+            dateHeader(pairAssignments)
+            pairAssignmentList(tribe, pairAssignments, setPairAssignments, allowSave)
+            if (allowSave) {
+                div {
+                    prompt(`when` = true, message = "Press OK to save these pairs.")
+                    saveButton(redirectToCurrentFunc)
+                    cancelButton(onCancel)
+                }
+            }
         }
-    }
 }
 
 private fun RBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
@@ -138,30 +149,10 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 }
 
 
-private fun RBuilder.controlSection(
-    tribe: Tribe,
-    pairAssignments: PairAssignmentDocument,
-    dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
-) = div {
-    val (shouldPrompt, setShouldPrompt) = useState(true)
-    promptOnExit(shouldPrompt)
-    if(!shouldPrompt) {
-        redirect(to = tribe.id.currentPairsPage())
-    }
-    val redirectToCurrentFunc = { setShouldPrompt(false) }
-    saveButton(redirectToCurrentFunc)
-    cancelButton(dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, pairAssignments.id) }, { redirectToCurrentFunc() }))
-}
-
-private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
-    `when` = shouldShowPrompt,
-    message = "Press OK to save these pairs."
-)
-
 private fun RBuilder.saveButton(onSave: () -> Unit) = couplingButton(supersize, green, styles["saveButton"], onSave) {
     +"Save!"
 }
 
-private fun RBuilder.cancelButton(onDelete: () -> Unit) = couplingButton(small, red, styles["deleteButton"], onDelete) {
+private fun RBuilder.cancelButton(onCancel: () -> Unit) = couplingButton(small, red, styles["deleteButton"], onCancel) {
     +"Cancel"
 }

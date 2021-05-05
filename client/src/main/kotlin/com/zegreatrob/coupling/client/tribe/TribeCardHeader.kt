@@ -30,24 +30,23 @@ val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size) ->
     useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
 
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val onClick = { event: Event ->
-        event.stopPropagation()
-        setRedirectUrl(tribe.tribeConfigPath())
-    }
+    val onClick = { event: Event -> event.stopPropagation();setRedirectUrl(tribe.tribeConfigPath()) }
 
-    styledDiv {
-        attrs {
-            ref = tribeNameRef
-            classes = setOf(styles["header"])
-            css {
-                margin((size * 0.02).px, 0.px, 0.px, 0.px)
-                height = (size * 0.35).px
+    if (redirectUrl != null)
+        redirect(to = redirectUrl)
+    else
+        styledDiv {
+            attrs {
+                ref = tribeNameRef
+                classes = setOf(styles["header"])
+                css {
+                    margin((size * 0.02).px, 0.px, 0.px, 0.px)
+                    height = (size * 0.35).px
+                }
+                onClickFunction = onClick
             }
-            onClickFunction = onClick
+            +(tribe.name ?: "Unknown")
         }
-        +(tribe.name ?: "Unknown")
-        redirectUrl?.let { redirect(to = it) }
-    }
 }
 
 private fun Node.fitTribeName(size: Int) = fitty(

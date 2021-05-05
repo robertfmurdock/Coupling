@@ -51,34 +51,37 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections, setRedirectUrl)
 
-    div(classes = styles.className) {
-        redirectUrl?.let { redirect(to = it) }
-        div { tribeBrowser(tribe) }
-        div {
-            div { spinButton(onSpin) }
-            selectorAreaDiv {
-                playerSelectorDiv {
-                    h1 { +"Please select players to spin." }
-                    h2 { +"Tap a player to include or exclude them." }
-                    +"When you're done with your selections, hit the spin button above!"
-                    styledDiv {
-                        css { margin(10.px, null) }
-                        selectAllButton(playerSelections, setPlayerSelections)
-                        selectNoneButton(playerSelections, setPlayerSelections)
+    if (redirectUrl != null)
+        redirect(to = redirectUrl)
+    else
+        div(classes = styles.className) {
+
+            div { tribeBrowser(tribe) }
+            div {
+                div { spinButton(onSpin) }
+                selectorAreaDiv {
+                    playerSelectorDiv {
+                        h1 { +"Please select players to spin." }
+                        h2 { +"Tap a player to include or exclude them." }
+                        +"When you're done with your selections, hit the spin button above!"
+                        styledDiv {
+                            css { margin(10.px, null) }
+                            selectAllButton(playerSelections, setPlayerSelections)
+                            selectNoneButton(playerSelections, setPlayerSelections)
+                        }
+                        selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
                     }
-                    selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
-                }
-                if (pins.isNotEmpty()) {
-                    pinSelectorDiv {
-                        h1 { br {} }
-                        h2 { +"Also, Pins." }
-                        +"Tap any pin to skip."
-                        child(pinSelector(pinSelections, setPinSelections, pins))
+                    if (pins.isNotEmpty()) {
+                        pinSelectorDiv {
+                            h1 { br {} }
+                            h2 { +"Also, Pins." }
+                            +"Tap any pin to skip."
+                            child(pinSelector(pinSelections, setPinSelections, pins))
+                        }
                     }
                 }
             }
         }
-    }
 }
 
 private fun onSpin(

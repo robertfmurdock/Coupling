@@ -1,8 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.player.Badge
@@ -21,8 +20,6 @@ import kotlin.js.json
 import kotlin.test.Test
 
 class PlayerConfigEditorTest {
-
-    private val configFormStyles = useStyles("ConfigForm")
 
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
@@ -69,8 +66,8 @@ class PlayerConfigEditorTest {
         )
     }) exercise {
         wrapper.simulateInputChange("name", "nonsense")
-        wrapper.find<Any>("form")
-            .simulate("submit", json("preventDefault" to {}))
+        wrapper.find(ConfigForm).props()
+            .onSubmit()
         stubDispatchFunc.simulateSuccess<SavePlayerCommand>()
     } verify {
         stubDispatchFunc.commandsDispatched<SavePlayerCommand>()
@@ -95,8 +92,8 @@ class PlayerConfigEditorTest {
             PlayerConfigEditorProps(tribe, player, {}, stubDispatchFunc)
         )
     }) exercise {
-        wrapper.find<Any>(".${configFormStyles["deleteButton"]}")
-            .simulate("click")
+        wrapper.find(ConfigForm).props()
+            .onRemove?.invoke()
         stubDispatchFunc.simulateSuccess<DeletePlayerCommand>()
     } verify {
         stubDispatchFunc.commandsDispatched<DeletePlayerCommand>()
@@ -113,7 +110,6 @@ class PlayerConfigEditorTest {
         val windowFunctions = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         }
-        val pathSetterSpy = SpyData<String, Unit>()
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
@@ -123,8 +119,8 @@ class PlayerConfigEditorTest {
             PlayerConfigEditorProps(tribe, player, {}, stubDispatchFunc)
         )
     }) exercise {
-        wrapper.find<Any>(".${configFormStyles["deleteButton"]}")
-            .simulate("click")
+        wrapper.find(ConfigForm).props()
+            .onRemove?.invoke()
     } verify {
         stubDispatchFunc.dispatchList.isEmpty().assertIsEqualTo(true)
     }

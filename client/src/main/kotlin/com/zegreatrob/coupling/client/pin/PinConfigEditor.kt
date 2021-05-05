@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Paths.pinListPath
-import com.zegreatrob.coupling.client.configForm
-import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useForm
@@ -55,17 +52,19 @@ val PinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinCon
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
 
-    span(styles.className) {
-        redirectUrl?.let { redirect(to = it) }
-        configHeader(tribe) { +"Pin Configuration" }
-        span(styles["pin"]) {
-            pinConfigForm(updatedPin, onChange, onSubmit, onRemove)
-            promptOnExit(shouldShowPrompt = updatedPin != pin)
+    if (redirectUrl != null)
+        redirect(to = redirectUrl)
+    else
+        span(styles.className) {
+            configHeader(tribe) { +"Pin Configuration" }
+            span(styles["pin"]) {
+                pinConfigForm(updatedPin, onChange, onSubmit, onRemove)
+                promptOnExit(shouldShowPrompt = updatedPin != pin)
+            }
+            span(styles["icon"]) {
+                pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
+            }
         }
-        span(styles["icon"]) {
-            pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
-        }
-    }
 }
 
 private fun RBuilder.pinConfigForm(
@@ -73,7 +72,7 @@ private fun RBuilder.pinConfigForm(
     onChange: (Event) -> Unit,
     onSubmit: () -> Unit,
     onRemove: (() -> Unit)?
-) = configForm("pinForm", onSubmit, onRemove) {
+) = child(ConfigForm, ConfigFormProps("pinForm", onSubmit, onRemove)) {
     editorDiv(pin, onChange)
 }
 

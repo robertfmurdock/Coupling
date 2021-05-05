@@ -15,14 +15,13 @@ data class PinConfigProps(
     val tribe: Tribe,
     val pin: Pin,
     val pinList: List<Pin>,
-    val pathSetter: (String) -> Unit,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
 ) : RProps
 
 private val styles = useStyles("pin/PinConfig")
 
-val PinConfig = reactFunction { (tribe, pin, pinList, pathSetter, reload, commandFunc): PinConfigProps ->
+val PinConfig = reactFunction { (tribe, pin, pinList, reload, commandFunc): PinConfigProps ->
     configFrame(styles.className) {
         pinConfigEditor(tribe, pin, commandFunc, reload)
         pinBag(tribe, pinList, styles["pinBag"])

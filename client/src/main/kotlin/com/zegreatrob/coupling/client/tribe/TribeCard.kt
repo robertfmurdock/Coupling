@@ -30,18 +30,20 @@ private val styles = useStyles("tribe/TribeCard")
 val TribeCard = reactFunction<TribeCardProps> { props ->
     val (tribe, size) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    styledSpan {
-        attrs {
-            tribeCardCss(size)
-            classes += styles.className
-            onClickFunction = { setRedirectUrl(props.tribe.id.currentPairsPage()) }
-            tabIndex = "0"
-            setProp("data-tribe-id", tribe.id.value)
+    if (redirectUrl != null)
+        redirect(to = redirectUrl)
+    else
+        styledSpan {
+            attrs {
+                tribeCardCss(size)
+                classes += styles.className
+                onClickFunction = { setRedirectUrl(props.tribe.id.currentPairsPage()) }
+                tabIndex = "0"
+                setProp("data-tribe-id", tribe.id.value)
+            }
+            tribeCardHeader(tribe, size)
+            tribeGravatar(tribe, size)
         }
-        redirectUrl?.let { redirect(to = it) }
-        tribeCardHeader(tribe, size)
-        tribeGravatar(tribe, size)
-    }
 }
 
 private fun StyledDOMBuilder<SPAN>.tribeCardCss(size: Int) = css {

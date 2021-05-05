@@ -1,18 +1,17 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minenzyme.findByClass
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minenzyme.simulateInputChange
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
-import kotlin.js.json
 import kotlin.test.Test
 
 class PinConfigEditorTest {
@@ -24,14 +23,12 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(id = null)
     }) exercise {
-        shallow(
-            PinConfigEditor,
-            PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc())
-        )
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc()))
     } verify { wrapper ->
-        wrapper.findByClass(configFormStyles["deleteButton"])
-            .length
-            .assertIsEqualTo(0)
+        wrapper.find(ConfigForm)
+            .props()
+            .onRemove
+            .assertIsEqualTo(null)
     }
 
     @Test
@@ -39,14 +36,12 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(id = "excellent id")
     }) exercise {
-        shallow(
-            PinConfigEditor,
-            PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc())
-        )
+        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc()))
     } verify { wrapper ->
-        wrapper.findByClass(configFormStyles["deleteButton"])
-            .length
-            .assertIsEqualTo(1)
+        wrapper.find(ConfigForm)
+            .props()
+            .onRemove
+            .assertNotNull()
     }
 
     @Test
@@ -58,17 +53,15 @@ class PinConfigEditorTest {
 
         val dispatchFunc = StubDispatchFunc<PinCommandDispatcher>()
 
-        val wrapper = shallow(
-            PinConfigEditor,
-            PinConfigEditorProps(tribe, pin, {}, dispatchFunc)
-        ).apply {
+        val wrapper = shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, dispatchFunc)).apply {
             simulateInputChange("name", newName)
             simulateInputChange("icon", newIcon)
             update()
         }
     }) exercise {
-        wrapper.find<Any>("form")
-            .simulate("submit", json("preventDefault" to {}))
+        wrapper.find(ConfigForm)
+            .props()
+            .onSubmit()
     } verify {
         dispatchFunc.commandsDispatched<SavePinCommand>()
             .assertIsEqualTo(listOf(SavePinCommand(tribe.id, Pin(name = newName, icon = newIcon))))

@@ -45,18 +45,20 @@ private val playerCardHeader = reactFunction<PlayerCardHeaderProps> { props ->
         setRedirectUrl(tribeId.with(player).playerConfigPage())
     } else ({})
 
-    styledDiv {
-        attrs {
-            classes += styles["header"]
-            onClickFunction = nameClickHandler
+    if (redirectUrl != null)
+        redirect(to = redirectUrl)
+    else
+        styledDiv {
+            attrs {
+                classes += styles["header"]
+                onClickFunction = nameClickHandler
+            }
+            css { margin(top = (size * 0.02).px) }
+            div {
+                attrs { ref = playerNameRef }
+                +(if (player.name.isBlank()) "Unknown" else player.name)
+            }
         }
-        redirectUrl?.let { redirect(to = it) }
-        css { margin(top = (size * 0.02).px) }
-        div {
-            attrs { ref = playerNameRef }
-            +(if (player.name.isBlank()) "Unknown" else player.name)
-        }
-    }
 }
 
 private fun Node.fitPlayerName(size: Int) {

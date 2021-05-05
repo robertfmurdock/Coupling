@@ -45,17 +45,19 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
         { setRedirectUrl(tribe.id.currentPairsPage()) })
         .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
 
-    span(classes = styles.className) {
-        redirectUrl?.let { redirect(to = it) }
-        configHeader(tribe) { +"Player Configuration" }
-        div {
-            div(classes = styles["player"]) {
-                playerConfigForm(updatedPlayer, tribe, onChange, onSubmit, onRemove)
-                promptOnExit(shouldShowPrompt = updatedPlayer != player)
+    if (redirectUrl != null)
+        redirect(to = redirectUrl)
+    else
+        span(classes = styles.className) {
+            configHeader(tribe) { +"Player Configuration" }
+            div {
+                div(classes = styles["player"]) {
+                    playerConfigForm(updatedPlayer, tribe, onChange, onSubmit, onRemove)
+                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
+                }
+                playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250))
             }
-            playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250))
         }
-    }
 }
 
 private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
@@ -69,7 +71,7 @@ private fun RBuilder.playerConfigForm(
     onChange: (Event) -> Unit,
     onSubmit: () -> Unit,
     onRemoveFunc: (() -> Unit)?
-) = configForm("playerForm", onSubmit, onRemoveFunc) {
+) = child(ConfigForm, ConfigFormProps("playerForm", onSubmit, onRemoveFunc)) {
     editorDiv(tribe, player, onChange)
 }
 
