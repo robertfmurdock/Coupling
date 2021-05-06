@@ -38,7 +38,7 @@ val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, controls
     val (dispatchFunc, reload) = controls
     val onDeleteFactory = { documentId: PairAssignmentDocumentId ->
         val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
-        windowFuncs.onDeleteClick(deleteFunc)
+        onDeleteClick(windowFuncs, deleteFunc)
     }
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {
@@ -53,8 +53,8 @@ val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, controls
     }
 }
 
-private fun WindowFunctions.onDeleteClick(deleteFunc: () -> Unit) = fun() {
-    if (window.confirm("Are you sure you want to delete these pair assignments?")) {
+private fun onDeleteClick(windowFunctions: WindowFunctions, deleteFunc: () -> Unit) = fun() {
+    if (windowFunctions.window.confirm("Are you sure you want to delete these pair assignments?")) {
         deleteFunc.invoke()
     }
 }

@@ -8,7 +8,7 @@ import react.RBuilder
 import react.dom.img
 
 private fun gravatarUrl(email: String, options: GravatarOptions): String {
-    val codedEmail = md5(email.toLowerCase().trim())
+    val codedEmail = md5(email.lowercase().trim())
     return "https://www.gravatar.com/avatar/$codedEmail?default=${options.default}&s=${options.size}"
 }
 
@@ -32,7 +32,7 @@ fun RBuilder.gravatarImage(
         width = options.size.toString()
         height = options.size.toString()
         className?.let {
-            classes += className
+            classes = classes + className
         }
     }
 }
