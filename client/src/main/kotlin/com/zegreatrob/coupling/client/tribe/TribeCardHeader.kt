@@ -11,11 +11,12 @@ import kotlinx.css.height
 import kotlinx.css.margin
 import kotlinx.css.px
 import kotlinx.html.classes
-import kotlinx.html.js.onClickFunction
 import org.w3c.dom.Node
-import org.w3c.dom.events.Event
-import react.*
-import react.router.dom.redirect
+import react.RBuilder
+import react.RProps
+import react.router.dom.routeLink
+import react.useLayoutEffect
+import react.useRef
 import styled.css
 import styled.styledDiv
 
@@ -28,25 +29,19 @@ data class TribeCardHeaderProps(val tribe: Tribe, val size: Int) : RProps
 val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size) ->
     val tribeNameRef = useRef<Node?>(null)
     useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
-
-    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val onClick = { event: Event -> event.stopPropagation();setRedirectUrl(tribe.tribeConfigPath()) }
-
-    if (redirectUrl != null)
-        redirect(to = redirectUrl)
-    else
-        styledDiv {
-            attrs {
-                ref = tribeNameRef
-                classes = setOf(styles["header"])
-                css {
-                    margin((size * 0.02).px, 0.px, 0.px, 0.px)
-                    height = (size * 0.35).px
-                }
-                onClickFunction = onClick
+    styledDiv {
+        attrs {
+            ref = tribeNameRef
+            classes = setOf(styles["header"])
+            css {
+                margin((size * 0.02).px, 0.px, 0.px, 0.px)
+                height = (size * 0.35).px
             }
+        }
+        routeLink(tribe.tribeConfigPath()) {
             +(tribe.name ?: "Unknown")
         }
+    }
 }
 
 private fun Node.fitTribeName(size: Int) = fitty(

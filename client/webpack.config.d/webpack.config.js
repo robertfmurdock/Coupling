@@ -38,7 +38,7 @@ config.module.rules.push(
         }
     }
 );
-
+config.externals = {"cheerio": "window"}
 
 if (config.devServer) {
     config.devServer.port = 3001

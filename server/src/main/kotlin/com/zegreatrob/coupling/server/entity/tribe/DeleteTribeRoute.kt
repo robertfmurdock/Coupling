@@ -7,7 +7,5 @@ import com.zegreatrob.coupling.server.graphql.DispatcherProviders.command
 import com.zegreatrob.coupling.server.graphql.dispatch
 
 val deleteTribeResolver: Resolver = dispatch(command, { _, input ->
-    DeleteTribeCommand(
-        TribeId(input["tribeId"].toString())
-    )
+    DeleteTribeCommand(TribeId(input["tribeId"].toString()))
 }, { true })

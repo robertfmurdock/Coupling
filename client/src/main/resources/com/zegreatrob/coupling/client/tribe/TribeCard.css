@@ -11,6 +11,7 @@
     margin: 0 2px 4px 2px;
 }
 
+
 :local(.className) img {
     -webkit-filter: drop-shadow(4px 4px 5px rgba(0, 0, 0, 0.5));
     z-index: 0;
@@ -22,6 +23,11 @@
     font-weight: bold;
     z-index: 100;
     position: relative;
+}
+
+:local(.header) a {
+    color:inherit;
+    text-decoration:none;
 }
 
 :local(.header) {

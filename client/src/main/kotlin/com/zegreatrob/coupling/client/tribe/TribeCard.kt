@@ -11,12 +11,10 @@ import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes
-import kotlinx.html.js.onClickFunction
 import kotlinx.html.tabIndex
 import react.RBuilder
 import react.RProps
-import react.router.dom.redirect
-import react.useState
+import react.router.dom.routeLink
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledSpan
@@ -27,23 +25,19 @@ val RBuilder.tribeCard get() = childCurry(TribeCard)
 
 private val styles = useStyles("tribe/TribeCard")
 
-val TribeCard = reactFunction<TribeCardProps> { props ->
-    val (tribe, size) = props
-    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    if (redirectUrl != null)
-        redirect(to = redirectUrl)
-    else
+val TribeCard = reactFunction<TribeCardProps> { (tribe, size) ->
+    routeLink(to = tribe.id.currentPairsPage()) {
         styledSpan {
             attrs {
                 tribeCardCss(size)
                 classes += styles.className
-                onClickFunction = { setRedirectUrl(props.tribe.id.currentPairsPage()) }
                 tabIndex = "0"
                 setProp("data-tribe-id", tribe.id.value)
             }
             tribeCardHeader(tribe, size)
             tribeGravatar(tribe, size)
         }
+    }
 }
 
 private fun StyledDOMBuilder<SPAN>.tribeCardCss(size: Int) = css {
