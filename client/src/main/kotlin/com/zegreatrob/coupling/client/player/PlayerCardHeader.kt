@@ -12,12 +12,13 @@ import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.margin
 import kotlinx.css.px
 import kotlinx.html.classes
-import kotlinx.html.js.onClickFunction
 import org.w3c.dom.Node
-import org.w3c.dom.events.Event
-import react.*
+import react.RBuilder
+import react.RProps
 import react.dom.div
-import react.router.dom.redirect
+import react.router.dom.routeLink
+import react.useLayoutEffect
+import react.useRef
 import styled.css
 import styled.styledDiv
 
@@ -35,30 +36,29 @@ data class PlayerCardHeaderProps(
 
 private val playerCardHeader = reactFunction<PlayerCardHeaderProps> { props ->
     val (tribeId, player, linkToConfig, size) = props
-    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-
     val playerNameRef = useRef<Node?>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
-
-    val nameClickHandler = if (linkToConfig) { event: Event ->
-        event.stopPropagation()
-        setRedirectUrl(tribeId.with(player).playerConfigPage())
-    } else ({})
-
-    if (redirectUrl != null)
-        redirect(to = redirectUrl)
-    else
-        styledDiv {
-            attrs {
-                classes += styles["header"]
-                onClickFunction = nameClickHandler
-            }
-            css { margin(top = (size * 0.02).px) }
+    styledDiv {
+        attrs { classes = setOf(styles["header"]) }
+        css { margin(top = (size * 0.02).px) }
+        optionalLink(shouldLink = linkToConfig, url = tribeId.with(player).playerConfigPage()) {
             div {
                 attrs { ref = playerNameRef }
                 +(if (player.name.isBlank()) "Unknown" else player.name)
             }
         }
+    }
+}
+
+private fun RBuilder.optionalLink(
+    shouldLink: Boolean,
+    url: String,
+    handler: RBuilder.() -> Unit
+) {
+    if (shouldLink)
+        routeLink(url, handler = handler)
+    else
+        handler()
 }
 
 private fun Node.fitPlayerName(size: Int) {

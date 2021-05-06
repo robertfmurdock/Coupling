@@ -55,7 +55,6 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pi
         redirect(to = redirectUrl)
     else
         div(classes = styles.className) {
-
             div { tribeBrowser(tribe) }
             div {
                 div { spinButton(onSpin) }
