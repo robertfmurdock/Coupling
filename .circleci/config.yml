@@ -103,7 +103,7 @@ jobs:
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
       - run: "./gradlew assemble"
-      - run: "./gradlew build check"
+      - run: "./gradlew build check --no-parallel"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
           update_type: client dependency
@@ -122,7 +122,7 @@ jobs:
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
       - run: "./gradlew assemble"
-      - run: "./gradlew build check"
+      - run: "./gradlew build check --no-parallel"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
           update_type: server dependency
