@@ -96,7 +96,11 @@ input SpinInput {
     pins: [PinInput]!
 }
 
+type SpinOutput {
+    result: PairAssignmentDocument
+}
+
 type Mutation {
     deleteTribe(tribeId: String!): Boolean
-    spin(input: SpinInput!): PairAssignmentDocument
+    spin(input: SpinInput!): SpinOutput
 }

@@ -1,0 +1,29 @@
+mutation spin($input: SpinInput!) {
+    spin(input: $input) {
+        result {
+            _id
+            date
+            pairs {
+                players {
+                    _id
+                    name
+                    email
+                    badge
+                    callSignAdjective
+                    callSignNoun
+                    imageURL
+                    pins {
+                        _id
+                        icon
+                        name
+                    }
+                }
+                pins {
+                    _id
+                    icon
+                    name
+                }
+            }
+        }
+    }
+}

@@ -8,17 +8,26 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlin.js.Json
 import kotlin.js.json
 
-interface SdkSpin : AxiosSyntax {
+interface SdkSpin : GqlSyntax {
+
     suspend fun requestSpin(
         tribeId: TribeId,
         players: List<Player>,
         pins: List<Pin>
-    ) = axios.postAsync<Json>("/api/tribes/${tribeId.value}/spin", spinBody(players, pins))
-        .await()
+    ) = performQuery(
+        json(
+            "query" to "mutation spin(\$input: SpinInput!) { spin(input: \$input) {  result { _id, date, pairs { players { _id, name, email, badge, callSignAdjective, callSignNoun, imageURL, pins { _id,icon,name }  }, pins { _id,icon,name } } } } }",
+            "variables" to spinBody(players, pins, tribeId)
+        )
+    )
+        .data.data.spin.result.unsafeCast<Json>()
         .toPairAssignmentDocument()
 
-    private fun spinBody(players: List<Player>, pins: List<Pin>) = json(
-        "players" to players.map { it.toJson() }.toTypedArray(),
-        "pins" to pins.map { it.toJson() }.toTypedArray()
+    private fun spinBody(players: List<Player>, pins: List<Pin>, tribeId: TribeId) = json(
+        "input" to json(
+            "players" to players.map { it.toJson() }.toTypedArray(),
+            "pins" to pins.map { it.toJson() }.toTypedArray(),
+            "tribeId" to tribeId.value
+        )
     )
 }
