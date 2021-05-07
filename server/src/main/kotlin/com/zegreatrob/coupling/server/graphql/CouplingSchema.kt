@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListResolve
+import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.tribe.deleteTribeResolver
@@ -29,6 +30,7 @@ fun couplingResolvers() = json(
     ),
     "Mutation" to json(
         "deleteTribe" to deleteTribeResolver,
+        "spin" to spinResolver,
     ),
     "TribeData" to json(
         "tribe" to tribeResolve,

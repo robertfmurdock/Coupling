@@ -37,7 +37,7 @@ type Player {
 }
 
 type PinnedPlayer {
-    _id: String
+    _id: String!
     name: String
     email: String
     badge: String
@@ -74,6 +74,29 @@ type Query {
     tribeData(id: String!): TribeData
 }
 
+input PlayerInput {
+    _id: String!
+    name: String
+    email: String
+    badge: String
+    callSignAdjective: String
+    callSignNoun: String
+    imageURL: String
+}
+
+input PinInput {
+    _id: String!
+    icon: String
+    name: String
+}
+
+input SpinInput {
+    tribeId: String!
+    players: [PlayerInput]!
+    pins: [PinInput]!
+}
+
 type Mutation {
     deleteTribe(tribeId: String!): Boolean
+    spin(input: SpinInput!): PairAssignmentDocument
 }
