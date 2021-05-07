@@ -1,0 +1,79 @@
+type Tribe {
+    id: String!
+    name: String
+    email: String
+    pairingRule: String
+    badgesEnabled: Boolean
+    defaultBadgeName: String
+    alternateBadgeName: String
+    callSignsEnabled: Boolean
+    animationsEnabled: Boolean
+    animationSpeed: Float
+    modifyingUserEmail: String
+    timestamp: String
+    isDeleted: Boolean
+}
+
+type Pin {
+    _id: String!
+    icon: String
+    name: String
+    modifyingUserEmail: String
+    timestamp: String
+    isDeleted: Boolean
+}
+
+type Player {
+    _id: String!
+    name: String
+    email: String
+    badge: String
+    callSignAdjective: String
+    callSignNoun: String
+    imageURL: String
+    modifyingUserEmail: String
+    timestamp: String
+    isDeleted: Boolean
+}
+
+type PinnedPlayer {
+    _id: String
+    name: String
+    email: String
+    badge: String
+    callSignAdjective: String
+    callSignNoun: String
+    imageURL: String
+    pins: [Pin]
+}
+
+type PinnedPair {
+    players: [PinnedPlayer]
+    pins: [Pin]
+}
+
+type PairAssignmentDocument {
+    _id: String!
+    date: String!
+    pairs: [PinnedPair]
+    modifyingUserEmail: String
+    timestamp: String
+    isDeleted: Boolean
+}
+
+type TribeData {
+    id: String!
+    tribe: Tribe
+    pinList: [Pin]
+    playerList: [Player]
+    pairAssignmentDocumentList: [PairAssignmentDocument]
+}
+
+type Query {
+    tribeList: [Tribe]
+    tribeData(id: String!): TribeData
+}
+
+type Mutation {
+    deleteTribe(tribeId: String!): Boolean
+}

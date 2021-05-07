@@ -19,7 +19,14 @@ fun Express.routes(webSocketServer: WebSocketServer) {
     get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
     all("/api/*", apiGuard())
     use("/api/tribes", tribeListRouter)
-    use("/api/graphql", graphqlHTTP(json("schema" to couplingSchema(), "graphiql" to true)))
+    use(
+        "/api/graphql", graphqlHTTP(
+            json(
+                "schema" to couplingSchema(),
+                "graphiql" to true
+            )
+        )
+    )
     ws("/api/:tribeId/pairAssignments/current", websocketRoute(webSocketServer))
     ws("*") { ws, _ -> ws.close() }
     get("*", indexRoute())

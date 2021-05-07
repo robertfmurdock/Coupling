@@ -70,10 +70,13 @@ tasks {
         into("build/executable/public/app/build")
     }
 
+    val processResources by getting(ProcessResources::class) {}
+
     val serverCompile by creating(Exec::class) {
-        dependsOn(copyServerResources, compileKotlinJs)
+        dependsOn(copyServerResources, compileKotlinJs, processResources)
         mustRunAfter(clean)
         inputs.file(compileKotlinJs.outputFile)
+        inputs.dir(processResources.destinationDir.path)
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")

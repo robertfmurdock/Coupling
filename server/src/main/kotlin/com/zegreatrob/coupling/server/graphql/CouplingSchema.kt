@@ -1,29 +1,39 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.zegreatrob.coupling.server.entity.tribe.TribeType
+import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListResolve
+import com.zegreatrob.coupling.server.entity.pin.pinListResolve
+import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.tribe.deleteTribeResolver
 import com.zegreatrob.coupling.server.entity.tribe.tribeListResolve
-import com.zegreatrob.coupling.server.external.graphql.*
+import com.zegreatrob.coupling.server.entity.tribe.tribeResolve
+import com.zegreatrob.coupling.server.external.graphql.Resolver
+import com.zegreatrob.coupling.server.external.graphql_tools.makeExecutableSchema
 import kotlin.js.json
 
 private val entityWithId: Resolver = { _, args, _ ->
+    println("entity with id ${JSON.stringify(args)}")
     json("id" to args["id"])
 }
 
-fun couplingSchema() = GraphQLSchema(
+fun couplingSchema() = makeExecutableSchema(
     json(
-        "query" to objectType(
-            name = "Query",
-            fields = arrayOf(
-                field("tribeList", GraphQLList(TribeType), tribeListResolve),
-                field("tribeData", TribeDataType, entityWithId, json("id" to field(GraphQLString)))
-            )
-        ),
-        "mutation" to objectType(
-            name = "Mutation",
-            fields = arrayOf(
-                field("deleteTribe", GraphQLBoolean, deleteTribeResolver, json("tribeId" to field(GraphQLString)))
-            ),
-        )
+        "typeDefs" to "${js("require('schema.graphql')").default}",
+        "resolvers" to couplingResolvers()
+    )
+)
+
+fun couplingResolvers() = json(
+    "Query" to json(
+        "tribeList" to tribeListResolve,
+        "tribeData" to entityWithId,
+    ),
+    "Mutation" to json(
+        "deleteTribe" to deleteTribeResolver,
+    ),
+    "TribeData" to json(
+        "tribe" to tribeResolve,
+        "pinList" to pinListResolve,
+        "playerList" to playerListResolve,
+        "pairAssignmentDocumentList" to pairAssignmentListResolve
     )
 )

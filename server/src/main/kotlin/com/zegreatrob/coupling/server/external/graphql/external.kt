@@ -8,14 +8,8 @@ import kotlin.js.Json
 
 external class GraphQLSchema(config: Json)
 
-external class GraphQLList(type: GraphQLType) : GraphQLType
-external class GraphQLNonNull(type: GraphQLType) : GraphQLType
-external class GraphQLObjectType(config: Json) : GraphQLType
-
-external object GraphQLInt : GraphQLType
-external object GraphQLBoolean : GraphQLType
-external object GraphQLFloat : GraphQLType
-external object GraphQLString : GraphQLType
+external fun buildSchema(schema: String): GraphQLSchema
+external fun printSchema(schema: GraphQLSchema): String
 
 external interface GraphQLType
 
