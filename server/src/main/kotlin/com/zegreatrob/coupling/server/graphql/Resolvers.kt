@@ -9,7 +9,7 @@ import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.promise
 import kotlin.js.Json
 
-typealias GraphQLDispatcherProvider<D> = suspend (Request, Json) -> D?
+typealias GraphQLDispatcherProvider<D> = suspend (Request, Json?, Json?) -> D?
 
 fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, R, J> dispatch(
     dispatcherFunc: GraphQLDispatcherProvider<D>,
@@ -18,7 +18,7 @@ fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, R, J> dispat
 ) = { entity: Json, args: Json, request: Request ->
     request.scope.promise {
         val command = queryFunc(entity, args)
-        dispatcherFunc(request, entity)
+        dispatcherFunc(request, entity, args)
             ?.execute(command)
             ?.successOrNull(toJson)
     }

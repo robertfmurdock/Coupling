@@ -18,8 +18,9 @@ class DeletePlayerCommandTest {
     fun willUseRepositoryToRemove() = asyncSetup(object : DeletePlayerCommandDispatcher {
         val playerId = "ThatGuyGetHim"
         override val playerRepository = PlayerRepositorySpy().apply { whenever(playerId, true) }
+        override val currentTribeId = TribeId("")
     }) exercise {
-        perform(DeletePlayerCommand(TribeId(""), playerId))
+        perform(DeletePlayerCommand(playerId))
     } verifySuccess {
         playerRepository.spyReceivedValues.assertIsEqualTo(listOf(playerId))
     }
