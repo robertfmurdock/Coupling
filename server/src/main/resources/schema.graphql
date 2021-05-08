@@ -64,9 +64,10 @@ type PairAssignmentDocument {
 type TribeData {
     id: String!
     tribe: Tribe
-    pinList: [Pin]
-    playerList: [Player]
-    pairAssignmentDocumentList: [PairAssignmentDocument]
+    pinList: [Pin]!
+    playerList: [Player]!
+    retiredPlayers: [Player]!
+    pairAssignmentDocumentList: [PairAssignmentDocument]!
 }
 
 type Query {

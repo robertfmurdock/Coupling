@@ -2,16 +2,18 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.recordFor
 import com.zegreatrob.coupling.json.toPlayer
-import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
-import com.zegreatrob.coupling.sdk.external.axios.getList
-import kotlinx.coroutines.await
+import kotlin.js.Json
 
-interface SdkPlayerGetDeleted : PlayerListGetDeleted, AxiosSyntax {
-    override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> =
-        axios.getList("/api/tribes/${tribeId.value}/players/retired")
-            .then { it.map { json -> json.recordFor(TribeIdPlayer(tribeId, json.toPlayer())).copy(isDeleted = true) } }
-            .await()
+interface SdkPlayerGetDeleted : PlayerListGetDeleted, GqlQueryComponent {
+    override suspend fun getDeleted(tribeId: TribeId) =
+        performQueryGetComponent(tribeId, TribeGQLComponent.RetiredPlayerList) {
+            it.unsafeCast<Array<Json>?>()?.map { json ->
+                val player = json.toPlayer()
+                json.recordFor(tribeId.with(player)).copy(isDeleted = true)
+            }
+        } ?: emptyList()
+
 }

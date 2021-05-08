@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignme
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
+import com.zegreatrob.coupling.server.action.player.RetiredPlayersQueryDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
 import com.zegreatrob.coupling.server.entity.pin.PinDispatcher
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcher
@@ -65,6 +66,7 @@ class CurrentTribeIdDispatcher(
     ICommandDispatcher by commandDispatcher,
     PinsQueryDispatcher,
     PlayersQueryDispatcher,
+    RetiredPlayersQueryDispatcher,
     PairAssignmentDocumentListQueryDispatcher {
     override val userId: String get() = commandDispatcher.userId
 

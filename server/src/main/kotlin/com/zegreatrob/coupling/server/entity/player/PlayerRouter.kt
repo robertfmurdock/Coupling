@@ -9,7 +9,5 @@ val playerRouter by lazy {
             .post(savePlayerRoute)
         route("/:playerId")
             .delete(deletePlayerRoute)
-        route("/retired")
-            .get(retiredPlayerListResolve)
     }
 }

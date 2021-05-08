@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListRe
 import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.player.playerListResolve
+import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
 import com.zegreatrob.coupling.server.entity.tribe.deleteTribeResolver
 import com.zegreatrob.coupling.server.entity.tribe.tribeListResolve
 import com.zegreatrob.coupling.server.entity.tribe.tribeResolve
@@ -36,6 +37,7 @@ fun couplingResolvers() = json(
         "tribe" to tribeResolve,
         "pinList" to pinListResolve,
         "playerList" to playerListResolve,
+        "retiredPlayers" to retiredPlayerListResolve,
         "pairAssignmentDocumentList" to pairAssignmentListResolve
-    )
+    ),
 )

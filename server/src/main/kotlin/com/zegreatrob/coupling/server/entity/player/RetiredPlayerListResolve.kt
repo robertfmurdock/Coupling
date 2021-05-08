@@ -5,15 +5,11 @@ import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
-import com.zegreatrob.coupling.server.express.route.ExpressDispatchers.command
-import com.zegreatrob.coupling.server.express.route.dispatch
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.tribeId
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
+import com.zegreatrob.coupling.server.graphql.dispatch
 
-val retiredPlayerListResolve = dispatch(command, ::deletePlayerCommand, ::toJsonArray)
+val retiredPlayerListResolve = dispatch(tribeCommand, { _, _ -> RetiredPlayersQuery }, ::toJsonArray)
 
 private fun toJsonArray(list: List<TribeRecord<Player>>) = list.map {
     it.toJson().add(it.data.player.toJson())
 }.toTypedArray()
-
-private fun deletePlayerCommand(request: Request) = with(request) { RetiredPlayersQuery(tribeId()) }
