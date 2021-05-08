@@ -1,0 +1,3 @@
+mutation deleteTribe($tribeId: String!) {
+    deleteTribe(tribeId: $tribeId)
+}

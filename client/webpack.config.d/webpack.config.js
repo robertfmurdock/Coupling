@@ -1,7 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-var ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -15,7 +15,7 @@ config.resolve.modules.push(path.resolve(__dirname, '../../../../build/js/node_m
 
 config.module.rules.push(
     {
-        test: /\.md$/i, use: 'raw-loader'
+        test: /\.(md|graphql)$/i, use: 'raw-loader'
     },
     {
         test: /\.(sa|sc|c)ss$/,

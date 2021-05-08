@@ -14,12 +14,7 @@ interface SdkSpin : GqlSyntax {
         tribeId: TribeId,
         players: List<Player>,
         pins: List<Pin>
-    ) = performQuery(
-        json(
-            "query" to "mutation spin(\$input: SpinInput!) { spin(input: \$input) {  result { _id, date, pairs { players { _id, name, email, badge, callSignAdjective, callSignNoun, imageURL, pins { _id,icon,name }  }, pins { _id,icon,name } } } } }",
-            "variables" to spinBody(players, pins, tribeId)
-        )
-    )
+    ) = performQuery(json("query" to Mutations.spin, "variables" to spinBody(players, pins, tribeId)))
         .data.data.spin.result.unsafeCast<Json>()
         .toPairAssignmentDocument()
 

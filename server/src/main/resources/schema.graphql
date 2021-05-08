@@ -97,7 +97,7 @@ input SpinInput {
 }
 
 type SpinOutput {
-    result: PairAssignmentDocument
+    result: PairAssignmentDocument!
 }
 
 type Mutation {
