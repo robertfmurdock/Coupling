@@ -1,12 +1,17 @@
 package com.zegreatrob.coupling.server.entity.pin
 
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommand
-import com.zegreatrob.coupling.server.express.route.ExpressDispatchers.command
-import com.zegreatrob.coupling.server.express.route.dispatch
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.pinId
-import com.zegreatrob.coupling.server.external.express.tribeId
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.command
+import com.zegreatrob.coupling.server.graphql.dispatch
+import kotlin.js.Json
 
-val deletePinRoute = dispatch(command, ::deletePinCommand)
+val deletePinResolver = dispatch(
+    command,
+    { _, entity ->
+        val input = entity["input"].unsafeCast<Json>()
+        val tribeId = TribeId(input["tribeId"].toString())
+        val pinId = input["pinId"].toString()
+        DeletePinCommand(tribeId, pinId)
+    }, { true })
 
-private fun deletePinCommand(request: Request) = with(request) { DeletePinCommand(tribeId(), pinId()) }

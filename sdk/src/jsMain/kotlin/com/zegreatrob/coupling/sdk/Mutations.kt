@@ -38,4 +38,10 @@ object Mutations {
             deleteTribe(tribeId: ${"\$tribeId"})
         }
     """.trimIndent()
+
+    val deletePin = """
+        mutation deletePin(${"\$input"}: DeletePinInput!) {
+            deletePin(input: ${"\$input"})
+        }
+    """.trimIndent()
 }

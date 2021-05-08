@@ -9,8 +9,6 @@ import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.promise
 import kotlin.js.Json
 
-fun Json.tribeId() = this["id"].toString()
-
 typealias GraphQLDispatcherProvider<D> = suspend (Request, Json) -> D?
 
 fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, R, J> dispatch(
@@ -27,6 +25,6 @@ fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, R, J> dispat
 }
 
 private fun <J, R> Result<R>.successOrNull(toJson: (R) -> J) = when (this) {
-    is SuccessfulResult -> toJson(value)
-    else -> null
-}
+        is SuccessfulResult -> toJson(value)
+        else -> null
+    }

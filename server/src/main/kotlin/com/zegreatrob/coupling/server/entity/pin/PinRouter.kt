@@ -6,6 +6,5 @@ import com.zegreatrob.coupling.server.external.express.Router
 val pinRouter by lazy {
     Router(routerParams(mergeParams = true)).apply {
         route("/").post(savePinRoute)
-        route("/:pinId").delete(deletePinRoute)
     }
 }

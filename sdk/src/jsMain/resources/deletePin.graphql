@@ -1,0 +1,3 @@
+mutation deletePin($input: DeletePinInput!) {
+    deletePin(input: $input)
+}

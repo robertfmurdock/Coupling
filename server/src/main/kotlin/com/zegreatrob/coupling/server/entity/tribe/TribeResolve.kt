@@ -7,8 +7,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.tribe.TribeQuery
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.command
 import com.zegreatrob.coupling.server.graphql.dispatch
-import com.zegreatrob.coupling.server.graphql.tribeId
 
-val tribeResolve = dispatch(command, { entity, _ -> TribeQuery(TribeId(entity.tribeId())) }, ::toJson)
+val tribeResolve = dispatch(command, { entity, _ -> TribeQuery(TribeId(entity["id"].toString())) }, ::toJson)
 
 private fun toJson(record: Record<Tribe>?) = record?.run { toJson().add(data.toJson()) }
