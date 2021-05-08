@@ -101,6 +101,9 @@ type SpinOutput {
     result: PairAssignmentDocument!
 }
 
+input DeleteTribeInput {
+    tribeId: String!
+}
 input DeletePinInput {
     tribeId: String!
     pinId: String!
@@ -113,7 +116,7 @@ input DeletePlayerInput {
 
 type Mutation {
     spin(input: SpinInput!): SpinOutput!
-    deleteTribe(tribeId: String!): Boolean
+    deleteTribe(input: DeleteTribeInput!): Boolean
     deletePin(input: DeletePinInput!): Boolean
     deletePlayer(input: DeletePlayerInput!): Boolean
 }

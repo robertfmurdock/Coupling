@@ -34,8 +34,8 @@ object Mutations {
     """.trimIndent()
 
     val deleteTribe = """
-        mutation deleteTribe(${"\$tribeId"}: String!) { 
-            deleteTribe(tribeId: ${"\$tribeId"})
+        mutation deleteTribe(${"\$input"}: DeleteTribeInput!) { 
+            deleteTribe(input: ${"\$input"})
         }
     """.trimIndent()
 

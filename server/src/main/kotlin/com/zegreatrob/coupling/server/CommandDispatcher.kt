@@ -6,7 +6,10 @@ import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.DeleteTribeCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPairsCommandDispatcher
+import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
@@ -69,6 +72,9 @@ class CurrentTribeIdDispatcher(
     PlayersQueryDispatcher,
     DeletePlayerCommandDispatcher,
     RetiredPlayersQueryDispatcher,
+    DeleteTribeCommandDispatcher,
+    DeletePinCommandDispatcher,
+    ProposeNewPairsCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher {
     override val userId: String get() = commandDispatcher.userId
 

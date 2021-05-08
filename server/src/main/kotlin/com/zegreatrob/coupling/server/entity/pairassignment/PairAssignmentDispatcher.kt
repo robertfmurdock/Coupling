@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 import com.zegreatrob.testmints.action.ExecutableActionExecutor
 
-interface PairAssignmentDispatcher : ProposeNewPairsCommandDispatcher,
+interface PairAssignmentDispatcher :
     SavePairAssignmentDocumentCommandDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher,
     RunGameActionDispatcher,

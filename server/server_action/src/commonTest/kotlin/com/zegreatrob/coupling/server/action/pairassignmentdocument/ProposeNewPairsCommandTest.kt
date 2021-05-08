@@ -45,6 +45,7 @@ class ProposeNewPairsCommandTest {
         val pins = listOf(Pin(name = "Bobby"))
         val history = listOf(stubPairAssignmentDoc())
         val tribe = Tribe(TribeId("Tribe Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
+        override val currentTribeId = tribe.id
         val expectedPairAssignmentDocument = stubPairAssignmentDoc()
 
         val spy = SpyData<RunGameAction, PairAssignmentDocument>()
@@ -52,7 +53,7 @@ class ProposeNewPairsCommandTest {
 
         override fun perform(action: RunGameAction) = spy.spyFunction(action)
     }) exercise {
-        perform(ProposeNewPairsCommand(tribe.id, players, pins))
+        perform(ProposeNewPairsCommand(players, pins))
     } verifySuccess { result ->
         result.assertIsEqualTo(expectedPairAssignmentDocument)
         spy.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, tribe)))
