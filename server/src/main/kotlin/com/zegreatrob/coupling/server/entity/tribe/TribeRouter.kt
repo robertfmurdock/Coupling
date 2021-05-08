@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.entity.tribe
 import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedAction
 import com.zegreatrob.coupling.server.entity.pairassignment.historyRouter
-import com.zegreatrob.coupling.server.entity.pairassignment.spinRoute
 import com.zegreatrob.coupling.server.entity.pin.pinRouter
 import com.zegreatrob.coupling.server.entity.player.playerRouter
 import com.zegreatrob.coupling.server.express.route.routerParams
@@ -14,7 +13,6 @@ import kotlinx.coroutines.launch
 val tribeRouter by lazy {
     Router(routerParams(mergeParams = true)).apply {
         route("/*").all(::authCheck)
-        route("/spin").post(spinRoute)
         use("/history", historyRouter)
         use("/players", playerRouter)
         use("/pins", pinRouter)
