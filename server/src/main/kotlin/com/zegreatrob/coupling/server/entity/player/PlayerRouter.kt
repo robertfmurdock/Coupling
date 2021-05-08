@@ -7,7 +7,5 @@ val playerRouter by lazy {
     Router(routerParams(mergeParams = true)).apply {
         route("/")
             .post(savePlayerRoute)
-        route("/:playerId")
-            .delete(deletePlayerRoute)
     }
 }

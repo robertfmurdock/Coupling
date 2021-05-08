@@ -14,4 +14,3 @@ val deletePinResolver = dispatch(
         val pinId = input["pinId"].toString()
         DeletePinCommand(tribeId, pinId)
     }, { true })
-

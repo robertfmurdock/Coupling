@@ -44,4 +44,10 @@ object Mutations {
             deletePin(input: ${"\$input"})
         }
     """.trimIndent()
+
+    val deletePlayer = """
+        mutation deletePlayer(${"\$input"}: DeletePlayerInput!) {
+            deletePlayer(input: ${"\$input"})
+        }
+    """.trimIndent()
 }

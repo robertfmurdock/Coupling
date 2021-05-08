@@ -1,12 +1,15 @@
 package com.zegreatrob.coupling.server.entity.player
 
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
-import com.zegreatrob.coupling.server.express.route.ExpressDispatchers.command
-import com.zegreatrob.coupling.server.express.route.dispatch
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.playerId
-import com.zegreatrob.coupling.server.external.express.tribeId
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.command
+import com.zegreatrob.coupling.server.graphql.dispatch
+import kotlin.js.Json
 
-val deletePlayerRoute = dispatch(command, ::deletePlayerCommand)
+val deletePlayerResolver = dispatch(command, { _, args ->
+    val input = args["input"].unsafeCast<Json>()
+    val tribeId = TribeId(input["tribeId"].toString())
+    val playerId = input["playerId"].toString()
+    DeletePlayerCommand(tribeId, playerId)
+}, { true })
 
-private fun deletePlayerCommand(request: Request) = with(request) { DeletePlayerCommand(tribeId(), playerId()) }

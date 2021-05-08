@@ -106,8 +106,14 @@ input DeletePinInput {
     pinId: String!
 }
 
+input DeletePlayerInput {
+    tribeId: String!
+    playerId: String!
+}
+
 type Mutation {
-    deleteTribe(tribeId: String!): Boolean!
+    spin(input: SpinInput!): SpinOutput!
+    deleteTribe(tribeId: String!): Boolean
     deletePin(input: DeletePinInput!): Boolean
-    spin(input: SpinInput!): SpinOutput
+    deletePlayer(input: DeletePlayerInput!): Boolean
 }
