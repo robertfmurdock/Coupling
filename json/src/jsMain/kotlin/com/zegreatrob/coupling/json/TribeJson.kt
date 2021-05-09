@@ -21,13 +21,13 @@ fun Json.toTribe(): Tribe =
         animationSpeed = this["animationSpeed"]?.toDouble() ?: defaultTribe.animationSpeed
     )
 
-private fun Any.toBoolean() = when (this) {
+fun Any.toBoolean() = when (this) {
     is String -> isTruthyString()
     is Boolean -> this
     else -> false
 }
 
-private fun Any.toDouble() = when (this) {
+fun Any.toDouble() = when (this) {
     is String -> toDoubleOrNull()
     is Double -> this
     else -> null

@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.server.entity.player.deletePlayerResolver
 import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
 import com.zegreatrob.coupling.server.entity.tribe.deleteTribeResolver
+import com.zegreatrob.coupling.server.entity.tribe.saveTribeResolver
 import com.zegreatrob.coupling.server.entity.tribe.tribeListResolve
 import com.zegreatrob.coupling.server.entity.tribe.tribeResolve
 import com.zegreatrob.coupling.server.external.graphql.Resolver
@@ -33,6 +34,7 @@ fun couplingResolvers() = json(
         "tribeData" to entityWithId,
     ),
     "Mutation" to json(
+        "saveTribe" to saveTribeResolver,
         "deleteTribe" to deleteTribeResolver,
         "savePin" to savePinResolver,
         "deletePin" to deletePinResolver,

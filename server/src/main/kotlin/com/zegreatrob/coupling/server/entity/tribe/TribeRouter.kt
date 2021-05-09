@@ -33,8 +33,6 @@ private fun Request.userIsAuthorizedAction() = UserIsAuthorizedAction(tribeId())
 
 val tribeListRouter by lazy {
     Router(routerParams()).apply {
-        route("/").post(saveTribeRoute)
-        route("/:tribeId").post(saveTribeRoute)
         use("/:tribeId", tribeRouter)
     }
 }

@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.validation.*
-import com.zegreatrob.coupling.sdk.SdkPlayerRepositoryTest.Companion.catchAxiosError
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -69,12 +68,13 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
     }
 
     @Test
-    fun postWillFailWhenTribeAlreadyExistsForSomeoneElse() = setupWithPlayerMatchingUserTwoSdks {
+    fun saveWillNotSaveWhenTribeAlreadyExistsForSomeoneElse() = setupWithPlayerMatchingUserTwoSdks {
         sdkForOtherUser.save(tribe)
     } exercise {
-        catchAxiosError { sdk.save(tribe) }
+        sdk.save(tribe.copy(name = "changed name"))
+        sdkForOtherUser.getTribeRecord(tribe.id)
     } verify { result ->
-        result["status"].assertIsEqualTo(403)
+        result?.data.assertIsEqualTo(tribe)
     }
 
     override fun saveWillIncludeModificationInformation() = repositorySetup(object : SdkMint() {

@@ -1,0 +1,3 @@
+mutation saveTribe($input: SaveTribeInput!) {
+    saveTribe(input: $input)
+}

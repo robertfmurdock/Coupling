@@ -2,7 +2,7 @@ type Tribe {
     id: String!
     name: String
     email: String
-    pairingRule: String
+    pairingRule: Int
     badgesEnabled: Boolean
     defaultBadgeName: String
     alternateBadgeName: String
@@ -116,6 +116,19 @@ input SavePinInput {
     name: String
 }
 
+input SaveTribeInput {
+    tribeId: String!
+    name: String
+    email: String
+    pairingRule: Int
+    badgesEnabled: Boolean
+    defaultBadgeName: String
+    alternateBadgeName: String
+    callSignsEnabled: Boolean
+    animationsEnabled: Boolean
+    animationSpeed: Float
+}
+
 type Query {
     tribeList: [Tribe]
     tribeData(id: String!): TribeData
@@ -123,6 +136,7 @@ type Query {
 
 type Mutation {
     spin(input: SpinInput!): SpinOutput!
+    saveTribe(input: SaveTribeInput!): Boolean
     savePin(input: SavePinInput!): Boolean
     deleteTribe(input: DeleteTribeInput!): Boolean
     deletePin(input: DeletePinInput!): Boolean
