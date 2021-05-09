@@ -18,7 +18,7 @@ class SavePlayerCommandTest {
 
     @Test
     fun willSaveToRepository() = asyncSetup(object : SavePlayerCommandDispatcher {
-        val tribe = TribeId("woo")
+        override val currentTribeId = TribeId("woo")
         val player = Player(
             id = "1",
             badge = 1,
@@ -28,9 +28,9 @@ class SavePlayerCommandTest {
             email = "tim@tim.meat",
             imageURL = "italian.jpg"
         )
-        override val playerRepository = PlayerSaverSpy().apply { whenever(tribe.with(player), Unit) }
+        override val playerRepository = PlayerSaverSpy().apply { whenever(currentTribeId.with(player), Unit) }
     }) exercise {
-        perform(SavePlayerCommand(tribe.with(player)))
+        perform(SavePlayerCommand(player))
     } verifySuccess { result ->
         result.assertIsEqualTo(player)
     }

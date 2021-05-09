@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.graphql
 
+import com.zegreatrob.coupling.server.entity.pairassignment.deletePairsRoute
 import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListResolve
 import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
@@ -41,6 +42,7 @@ fun couplingResolvers() = json(
         "deletePin" to deletePinResolver,
         "savePlayer" to savePlayerRoute,
         "deletePlayer" to deletePlayerResolver,
+        "deletePairAssignments" to deletePairsRoute,
         "spin" to spinResolver,
     ),
     "TribeData" to json(

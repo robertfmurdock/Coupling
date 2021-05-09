@@ -1,15 +1,16 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommand
-import com.zegreatrob.coupling.server.express.route.ExpressDispatchers.command
-import com.zegreatrob.coupling.server.express.route.dispatch
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.pairAssignmentDocumentId
-import com.zegreatrob.coupling.server.external.express.tribeId
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
+import com.zegreatrob.coupling.server.graphql.dispatch
+import kotlin.js.Json
 
-val deletePairsRoute = dispatch(command, Request::command)
-
-private fun Request.command() = DeletePairAssignmentDocumentCommand(
-    tribeId(),
-    pairAssignmentDocumentId()
+val deletePairsRoute = dispatch(
+    tribeCommand,
+    { _, entity ->
+        val input = entity["input"].unsafeCast<Json>()
+        val pairAssignmentsId = input["pairAssignmentsId"].toString().let(::PairAssignmentDocumentId)
+        DeletePairAssignmentDocumentCommand(pairAssignmentsId)
+    }, { true }
 )

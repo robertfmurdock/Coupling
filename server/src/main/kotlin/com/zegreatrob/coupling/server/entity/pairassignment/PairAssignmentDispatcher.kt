@@ -6,7 +6,6 @@ import com.zegreatrob.testmints.action.ExecutableActionExecutor
 
 interface PairAssignmentDispatcher :
     SavePairAssignmentDocumentCommandDispatcher,
-    DeletePairAssignmentDocumentCommandDispatcher,
     RunGameActionDispatcher,
     FindNewPairsActionDispatcher,
     NextPlayerActionDispatcher,

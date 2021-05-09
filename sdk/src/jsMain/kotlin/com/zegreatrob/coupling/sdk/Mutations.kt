@@ -63,6 +63,12 @@ object Mutations {
         }
     """.trimIndent()
 
+    val deletePairAssignments = """
+        mutation deletePairAssignments(${"\$input"}: DeletePairAssignmentsInput!) {
+            deletePairAssignments(input: ${"\$input"})
+        }
+    """.trimIndent()
+
     val deletePlayer = """
         mutation deletePlayer(${"\$input"}: DeletePlayerInput!) {
             deletePlayer(input: ${"\$input"})

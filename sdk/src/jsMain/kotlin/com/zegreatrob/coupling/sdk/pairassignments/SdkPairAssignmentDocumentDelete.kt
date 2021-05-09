@@ -4,22 +4,27 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.AxiosSyntax
-import kotlinx.coroutines.asDeferred
-import kotlin.js.Promise
+import com.zegreatrob.coupling.sdk.GqlSyntax
+import com.zegreatrob.coupling.sdk.Mutations
+import kotlin.js.json
 
-interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, AxiosSyntax {
+interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, GqlSyntax {
     override suspend fun delete(
         tribeId: TribeId,
         pairAssignmentDocumentId: PairAssignmentDocumentId
     ): Boolean {
-        return try {
-            axios.delete("/api/tribes/${tribeId.value}/history/${pairAssignmentDocumentId.value}")
-                .unsafeCast<Promise<Unit>>()
-                .asDeferred()
-                .await()
-            true
-        } catch (_: Throwable) {
-            false
-        }
+        return performQuery(
+            json(
+                "query" to Mutations.deletePairAssignments,
+                "variables" to json("input" to deletePairAssignmentsInput(tribeId, pairAssignmentDocumentId))
+            )
+        )
+            .data.data.deletePairAssignments
+            .unsafeCast<Boolean?>() ?: false
     }
+
+    private fun deletePairAssignmentsInput(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) = json(
+        "tribeId" to tribeId.value,
+        "pairAssignmentsId" to pairAssignmentDocumentId.value
+    )
 }

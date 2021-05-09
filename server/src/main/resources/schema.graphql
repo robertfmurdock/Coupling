@@ -109,6 +109,11 @@ input DeletePlayerInput {
     playerId: String!
 }
 
+input DeletePairAssignmentsInput {
+    tribeId: String!
+    pairAssignmentsId: String!
+}
+
 input SavePinInput {
     tribeId: String!
     pinId: String
@@ -153,4 +158,5 @@ type Mutation {
     deletePin(input: DeletePinInput!): Boolean
     savePlayer(input: SavePlayerInput!): Boolean
     deletePlayer(input: DeletePlayerInput!): Boolean
+    deletePairAssignments(input: DeletePairAssignmentsInput!): Boolean
 }

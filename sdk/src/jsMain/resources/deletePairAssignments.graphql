@@ -1,0 +1,3 @@
+mutation deletePairAssignments($input: DeletePairAssignmentsInput!) {
+    deletePairAssignments(input: $input)
+}
