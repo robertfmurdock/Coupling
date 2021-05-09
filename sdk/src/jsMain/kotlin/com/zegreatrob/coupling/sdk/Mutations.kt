@@ -33,6 +33,12 @@ object Mutations {
             }
     """.trimIndent()
 
+    val savePin = """
+        mutation savePin(${"\$input"}: SavePinInput!) {
+            savePin(input: ${"\$input"})
+        }
+    """.trimIndent()
+
     val deleteTribe = """
         mutation deleteTribe(${"\$input"}: DeleteTribeInput!) { 
             deleteTribe(input: ${"\$input"})

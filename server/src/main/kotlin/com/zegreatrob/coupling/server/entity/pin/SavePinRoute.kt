@@ -1,16 +1,22 @@
 package com.zegreatrob.coupling.server.entity.pin
 
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toPin
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.pin.defaultPin
 import com.zegreatrob.coupling.server.action.pin.SavePinCommand
-import com.zegreatrob.coupling.server.express.route.commandDispatcher
-import com.zegreatrob.coupling.server.express.route.dispatch
-import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.jsonBody
-import com.zegreatrob.coupling.server.external.express.tribeId
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
+import com.zegreatrob.coupling.server.graphql.dispatch
+import kotlin.js.Json
 
-val savePinRoute = dispatch(::commandDispatcher, ::command, Pin::toJson)
+val savePinResolver = dispatch(
+    tribeCommand,
+    { _, args -> args.savePinInput().toPin().let(::SavePinCommand) },
+    { true }
+)
 
-private fun command(request: Request) = with(request) { jsonBody().toPin().let(tribeId()::with).let(::SavePinCommand) }
+private fun Json.savePinInput() = this["input"].unsafeCast<Json>()
+
+private fun Json.toPin() = Pin(
+    id = this["pinId"]?.toString(),
+    name = this["name"]?.toString() ?: defaultPin.name,
+    icon = this["icon"]?.toString() ?: defaultPin.icon
+)

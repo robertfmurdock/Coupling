@@ -11,12 +11,12 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignme
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPairsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
+import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQueryDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
-import com.zegreatrob.coupling.server.entity.pin.PinDispatcher
 import com.zegreatrob.coupling.server.entity.player.PlayerDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
@@ -36,7 +36,6 @@ interface ICommandDispatcher :
     UserDispatcher,
     HandleWebsocketConnectionActionDispatcher,
     DispatchingActionExecutor<CommandDispatcher>,
-    PinDispatcher,
     RepositoryCatalog
 
 class CommandDispatcher(
@@ -74,6 +73,7 @@ class CurrentTribeIdDispatcher(
     RetiredPlayersQueryDispatcher,
     DeleteTribeCommandDispatcher,
     DeletePinCommandDispatcher,
+    SavePinCommandDispatcher,
     ProposeNewPairsCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher {
     override val userId: String get() = commandDispatcher.userId

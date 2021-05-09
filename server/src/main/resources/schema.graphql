@@ -70,11 +70,6 @@ type TribeData {
     pairAssignmentDocumentList: [PairAssignmentDocument]!
 }
 
-type Query {
-    tribeList: [Tribe]
-    tribeData(id: String!): TribeData
-}
-
 input PlayerInput {
     _id: String!
     name: String
@@ -114,9 +109,22 @@ input DeletePlayerInput {
     playerId: String!
 }
 
+type Query {
+    tribeList: [Tribe]
+    tribeData(id: String!): TribeData
+}
+
 type Mutation {
     spin(input: SpinInput!): SpinOutput!
+    savePin(input: SavePinInput!): Boolean
     deleteTribe(input: DeleteTribeInput!): Boolean
     deletePin(input: DeletePinInput!): Boolean
     deletePlayer(input: DeletePlayerInput!): Boolean
+}
+
+input SavePinInput {
+    tribeId: String!
+    pinId: String
+    icon: String
+    name: String
 }
