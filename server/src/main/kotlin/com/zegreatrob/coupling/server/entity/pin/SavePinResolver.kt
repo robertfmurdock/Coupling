@@ -7,11 +7,7 @@ import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlin.js.Json
 
-val savePinResolver = dispatch(
-    tribeCommand,
-    { _, args -> args.savePinInput().toPin().let(::SavePinCommand) },
-    { true }
-)
+val savePinResolver = dispatch(tribeCommand, { _, args -> args.savePinInput().toPin().let(::SavePinCommand) }, { true })
 
 private fun Json.savePinInput() = this["input"].unsafeCast<Json>()
 

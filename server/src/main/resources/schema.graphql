@@ -109,6 +109,13 @@ input DeletePlayerInput {
     playerId: String!
 }
 
+input SavePinInput {
+    tribeId: String!
+    pinId: String
+    icon: String
+    name: String
+}
+
 type Query {
     tribeList: [Tribe]
     tribeData(id: String!): TribeData
@@ -120,11 +127,4 @@ type Mutation {
     deleteTribe(input: DeleteTribeInput!): Boolean
     deletePin(input: DeletePinInput!): Boolean
     deletePlayer(input: DeletePlayerInput!): Boolean
-}
-
-input SavePinInput {
-    tribeId: String!
-    pinId: String
-    icon: String
-    name: String
 }
