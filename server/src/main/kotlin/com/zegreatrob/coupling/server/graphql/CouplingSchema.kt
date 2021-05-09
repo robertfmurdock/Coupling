@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.server.entity.pin.savePinResolver
 import com.zegreatrob.coupling.server.entity.player.deletePlayerResolver
 import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
+import com.zegreatrob.coupling.server.entity.player.savePlayerRoute
 import com.zegreatrob.coupling.server.entity.tribe.deleteTribeResolver
 import com.zegreatrob.coupling.server.entity.tribe.saveTribeResolver
 import com.zegreatrob.coupling.server.entity.tribe.tribeListResolve
@@ -38,6 +39,7 @@ fun couplingResolvers() = json(
         "deleteTribe" to deleteTribeResolver,
         "savePin" to savePinResolver,
         "deletePin" to deletePinResolver,
+        "savePlayer" to savePlayerRoute,
         "deletePlayer" to deletePlayerResolver,
         "spin" to spinResolver,
     ),

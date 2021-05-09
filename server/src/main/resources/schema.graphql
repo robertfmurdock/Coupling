@@ -129,6 +129,17 @@ input SaveTribeInput {
     animationSpeed: Float
 }
 
+input SavePlayerInput {
+    tribeId: String!
+    playerId: String!
+    name: String
+    email: String
+    badge: String
+    callSignAdjective: String
+    callSignNoun: String
+    imageURL: String
+}
+
 type Query {
     tribeList: [Tribe]
     tribeData(id: String!): TribeData
@@ -137,8 +148,9 @@ type Query {
 type Mutation {
     spin(input: SpinInput!): SpinOutput!
     saveTribe(input: SaveTribeInput!): Boolean
-    savePin(input: SavePinInput!): Boolean
     deleteTribe(input: DeleteTribeInput!): Boolean
+    savePin(input: SavePinInput!): Boolean
     deletePin(input: DeletePinInput!): Boolean
+    savePlayer(input: SavePlayerInput!): Boolean
     deletePlayer(input: DeletePlayerInput!): Boolean
 }

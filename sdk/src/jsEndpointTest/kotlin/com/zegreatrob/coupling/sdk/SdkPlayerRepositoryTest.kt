@@ -12,8 +12,6 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.*
-import kotlin.js.Json
-import kotlin.js.json
 import kotlin.test.Test
 
 class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
@@ -33,15 +31,6 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
             override val user = user
         }
     })
-
-    companion object {
-        inline fun catchAxiosError(function: () -> Any?) = try {
-            function()
-            json()
-        } catch (error: dynamic) {
-            error.response.unsafeCast<Json>()
-        }
-    }
 
     override fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() =
         repositorySetup(object : TribeContextMint<Sdk>() {
@@ -112,6 +101,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
         @Test
         fun postIsNotAllowed() = testAsync {
             val sdk = authorizedSdk()
+            val otherSdk = authorizedSdk("alt-user-${uuid4()}")
             waitForTest {
                 asyncSetup(object {
                     val tribe = stubTribe()
@@ -121,12 +111,13 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
                         callSignAdjective = "Awesome",
                         callSignNoun = "Sauce"
                     )
-                }) exercise {
-                    catchAxiosError {
-                        sdk.save(tribe.id.with(player))
-                    }
+                }) {
+                    otherSdk.save(tribe)
+                } exercise {
+                    sdk.save(tribe.id.with(player))
+                    otherSdk.getPlayers(tribe.id)
                 } verify { result ->
-                    result["status"].assertIsEqualTo(404)
+                    result.assertIsEqualTo(emptyList())
                 }
             }
         }
