@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.server.external.express.express
 import com.zegreatrob.coupling.server.external.expressws.expressWs
 import kotlinx.coroutines.*
 
-
 val serverScope = MainScope() + CoroutineName("Server")
 
 @JsName("start")

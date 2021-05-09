@@ -6,11 +6,12 @@ import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlin.js.Json
 
-val deletePairsRoute = dispatch(
+val deletePairsResolver = dispatch(
     tribeCommand,
     { _, entity ->
         val input = entity["input"].unsafeCast<Json>()
         val pairAssignmentsId = input["pairAssignmentsId"].toString().let(::PairAssignmentDocumentId)
         DeletePairAssignmentDocumentCommand(pairAssignmentsId)
-    }, { true }
+    },
+    { true }
 )

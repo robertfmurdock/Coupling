@@ -22,7 +22,6 @@ class DynamoRepositoryCatalog private constructor(
     RepositoryCatalog,
     UserEmailSyntax,
     ClockSyntax {
-
     companion object {
         suspend operator fun invoke(userId: String, clock: TimeProvider): DynamoRepositoryCatalog {
             val tribeRepository = DynamoTribeRepository(userId, clock)
@@ -41,5 +40,4 @@ class DynamoRepositoryCatalog private constructor(
             )
         }
     }
-
 }
