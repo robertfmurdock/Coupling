@@ -31,7 +31,7 @@ fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
     pairs = this["pairs"].unsafeCast<Array<Any>?>()?.map(::pairFromJson) ?: emptyList()
 )
 
-private fun toDate(it: Any?) = if (it is String)
+fun toDate(it: Any?) = if (it is String)
     Date(it)
 else {
     it.unsafeCast<Date>()
@@ -60,7 +60,7 @@ fun PairAssignmentDocument.toJson() = json(
     "pairs" to toJsPairs()
 )
 
-private fun PairAssignmentDocument.toJsPairs() = pairs.map {
+fun PairAssignmentDocument.toJsPairs() = pairs.map {
     json(
         "players" to it.players
             .map { player -> player.toJson() }

@@ -51,6 +51,12 @@ object Mutations {
         }
     """.trimIndent()
 
+    val savePairAssignments = """
+        mutation savePairAssignments(${"\$input"}: SavePairAssignmentsInput!) {
+            savePairAssignments(input: ${"\$input"})
+        }
+    """.trimIndent()
+
     val deleteTribe = """
         mutation deleteTribe(${"\$input"}: DeleteTribeInput!) { 
             deleteTribe(input: ${"\$input"})

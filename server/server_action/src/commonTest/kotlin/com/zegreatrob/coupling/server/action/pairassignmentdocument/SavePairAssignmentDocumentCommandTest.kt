@@ -21,14 +21,15 @@ class SavePairAssignmentDocumentCommandTest {
 
     @Test
     fun willSendToRepository() = asyncSetup(object : SavePairAssignmentDocumentCommandDispatcher {
-        val pairAssignmentDocument = TribeId("tribe-239").with(
+        override val currentTribeId: TribeId get() = TribeId("tribe-239")
+        val pairAssignmentDocument = currentTribeId.with(
             PairAssignmentDocument(PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList())
         )
 
         override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
             .apply { whenever(pairAssignmentDocument, Unit) }
     }) exercise {
-        perform(SavePairAssignmentDocumentCommand(pairAssignmentDocument))
+        perform(SavePairAssignmentDocumentCommand(pairAssignmentDocument.element))
     } verifySuccess { result ->
         result.assertIsEqualTo(pairAssignmentDocument)
         pairAssignmentDocumentRepository.spyReceivedValues.assertIsEqualTo(listOf(pairAssignmentDocument))

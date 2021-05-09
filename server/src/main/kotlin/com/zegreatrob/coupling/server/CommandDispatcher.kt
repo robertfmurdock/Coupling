@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.server.action.DeleteTribeCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPairsCommandDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
@@ -68,6 +69,7 @@ class CurrentTribeIdDispatcher(
     SavePlayerCommandDispatcher,
     DeletePlayerCommandDispatcher,
     RetiredPlayersQueryDispatcher,
+    SavePairAssignmentDocumentCommandDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher,
     DeleteTribeCommandDispatcher,
     DeletePinCommandDispatcher,

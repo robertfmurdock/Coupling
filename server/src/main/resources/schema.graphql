@@ -145,6 +145,29 @@ input SavePlayerInput {
     imageURL: String
 }
 
+input SavePairAssignmentsInput {
+    tribeId: String
+    pairAssignmentsId: String!
+    date: String!
+    pairs: [PinnedPairInput]
+}
+
+input PinnedPairInput {
+    players: [PinnedPlayerInput]
+    pins: [PinInput]
+}
+
+input PinnedPlayerInput {
+    _id: String!
+    name: String
+    email: String
+    badge: String
+    callSignAdjective: String
+    callSignNoun: String
+    imageURL: String
+    pins: [PinInput]
+}
+
 type Query {
     tribeList: [Tribe]
     tribeData(id: String!): TribeData
@@ -158,5 +181,6 @@ type Mutation {
     deletePin(input: DeletePinInput!): Boolean
     savePlayer(input: SavePlayerInput!): Boolean
     deletePlayer(input: DeletePlayerInput!): Boolean
+    savePairAssignments(input: SavePairAssignmentsInput!): Boolean
     deletePairAssignments(input: DeletePairAssignmentsInput!): Boolean
 }
