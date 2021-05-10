@@ -101,7 +101,6 @@ jobs:
           key: coupling-cache-50-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
-      - run: "./gradlew assemble --no-parallel"
       - run: "./gradlew build check --no-parallel"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
@@ -119,7 +118,6 @@ jobs:
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
-      - run: "./gradlew assemble --no-parallel"
       - run: "./gradlew build check --no-parallel"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
@@ -136,7 +134,6 @@ jobs:
           key: coupling-cache-50-{{ .Branch }}
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
-      - run: "./gradlew assemble --no-parallel"
       - run: "./gradlew build check --no-parallel"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
