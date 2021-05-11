@@ -7,12 +7,13 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPa
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
+import com.zegreatrob.minjson.at
 import kotlin.js.Json
 import kotlin.js.json
 
 val spinResolver: Resolver = dispatch(tribeCommand, { _, args ->
-    val input = args["input"].unsafeCast<Json>()
-    val players = input["players"].unsafeCast<Array<Json>>().map(Json::toPlayer)
-    val pins = input["pins"].unsafeCast<Array<Json>>().map(Json::toPin)
-    ProposeNewPairsCommand(players, pins)
+    ProposeNewPairsCommand(
+        args.at<Array<Json>>("/input/players")?.map(Json::toPlayer) ?: emptyList(),
+        args.at<Array<Json>>("/input/pins")?.map(Json::toPin) ?: emptyList()
+    )
 }, { json("result" to it.toJson()) })
