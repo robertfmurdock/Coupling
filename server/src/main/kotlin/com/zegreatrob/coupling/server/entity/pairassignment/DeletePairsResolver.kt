@@ -4,14 +4,13 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
-import kotlin.js.Json
+import com.zegreatrob.minjson.at
 
 val deletePairsResolver = dispatch(
     tribeCommand,
     { _, entity ->
-        val input = entity["input"].unsafeCast<Json>()
-        val pairAssignmentsId = input["pairAssignmentsId"].toString().let(::PairAssignmentDocumentId)
-        DeletePairAssignmentDocumentCommand(pairAssignmentsId)
+        PairAssignmentDocumentId(entity.at<String>("/input/pairAssignmentsId") ?: "")
+            .let(::DeletePairAssignmentDocumentCommand)
     },
     { true }
 )

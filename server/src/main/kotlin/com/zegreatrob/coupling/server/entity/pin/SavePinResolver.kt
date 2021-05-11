@@ -5,14 +5,13 @@ import com.zegreatrob.coupling.model.pin.defaultPin
 import com.zegreatrob.coupling.server.action.pin.SavePinCommand
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
+import com.zegreatrob.minjson.at
 import kotlin.js.Json
 
-val savePinResolver = dispatch(tribeCommand, { _, args -> args.savePinInput().toPin().let(::SavePinCommand) }, { true })
-
-private fun Json.savePinInput() = this["input"].unsafeCast<Json>()
+val savePinResolver = dispatch(tribeCommand, { _, args -> args.toPin().let(::SavePinCommand) }, { true })
 
 private fun Json.toPin() = Pin(
-    id = this["pinId"]?.toString(),
-    name = this["name"]?.toString() ?: defaultPin.name,
-    icon = this["icon"]?.toString() ?: defaultPin.icon
+    id = at("/input/pinId"),
+    name = at("/input/name") ?: defaultPin.name,
+    icon = at("/input/icon") ?: defaultPin.icon
 )

@@ -11,25 +11,19 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
+import com.zegreatrob.minjson.at
 import kotlin.js.Json
 
 val savePairsResolver = dispatch(
     tribeCommand,
-    { _, args ->
-        args.savePairAssignmentsInput()
-            .toPairAssignmentDocument()
-            .let(::SavePairAssignmentDocumentCommand)
-    },
+    { _, args -> args.toPairAssignmentDocument().let(::SavePairAssignmentDocumentCommand) },
     ::toJson
 )
 
 private fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-    id = PairAssignmentDocumentId(this["pairAssignmentsId"].unsafeCast<String>()),
-    date = this["date"].let(::toDate).toDateTime(),
-    pairs = this["pairs"].unsafeCast<Array<Any>?>()?.map(::pairFromJson) ?: emptyList()
+    id = PairAssignmentDocumentId(at("/input/pairAssignmentsId")!!),
+    date = at<String>("/input/date").let(::toDate).toDateTime(),
+    pairs = at<Array<Json>>("/input/pairs")?.map(::pairFromJson) ?: emptyList()
 )
-
-private fun Json.savePairAssignmentsInput() = this["input"].unsafeCast<Json>()
-
 
 private fun toJson(result: TribeIdPairAssignmentDocument) = result.document.toJson()
