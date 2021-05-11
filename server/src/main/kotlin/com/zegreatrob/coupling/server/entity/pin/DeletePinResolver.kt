@@ -7,6 +7,6 @@ import com.zegreatrob.minjson.at
 
 val deletePinResolver = dispatch(
     tribeCommand,
-    { _, args -> (args.at("/input/pinId") ?: "").let(::DeletePinCommand) },
+    { _, args -> args.at<String>("/input/pinId")!!.let(::DeletePinCommand) },
     { true }
 )

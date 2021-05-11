@@ -13,7 +13,7 @@ import kotlin.js.json
 
 val spinResolver: Resolver = dispatch(tribeCommand, { _, args ->
     ProposeNewPairsCommand(
-        args.at<Array<Json>>("/input/players")?.map(Json::toPlayer) ?: emptyList(),
-        args.at<Array<Json>>("/input/pins")?.map(Json::toPin) ?: emptyList()
+        args.at<Array<Json>>("/input/players")?.map(Json::toPlayer)!!,
+        args.at<Array<Json>>("/input/pins")?.map(Json::toPin)!!
     )
 }, { json("result" to it.toJson()) })

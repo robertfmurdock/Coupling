@@ -7,6 +7,6 @@ import com.zegreatrob.minjson.at
 
 val deletePlayerResolver = dispatch(
     tribeCommand,
-    { _, args -> (args.at("/input/playerId") ?: "").let(::DeletePlayerCommand) },
+    { _, args -> DeletePlayerCommand(args.at<String>("/input/playerId")!!) },
     { true }
 )

@@ -44,7 +44,7 @@ type PinnedPlayer {
     callSignAdjective: String
     callSignNoun: String
     imageURL: String
-    pins: [Pin]
+    pins: [Pin]!
 }
 
 type PinnedPair {
@@ -55,7 +55,7 @@ type PinnedPair {
 type PairAssignmentDocument {
     _id: String!
     date: String!
-    pairs: [PinnedPair]
+    pairs: [PinnedPair]!
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
@@ -149,12 +149,12 @@ input SavePairAssignmentsInput {
     tribeId: String
     pairAssignmentsId: String!
     date: String!
-    pairs: [PinnedPairInput]
+    pairs: [PinnedPairInput]!
 }
 
 input PinnedPairInput {
-    players: [PinnedPlayerInput]
-    pins: [PinInput]
+    players: [PinnedPlayerInput]!
+    pins: [PinInput]!
 }
 
 input PinnedPlayerInput {
@@ -165,7 +165,7 @@ input PinnedPlayerInput {
     callSignAdjective: String
     callSignNoun: String
     imageURL: String
-    pins: [PinInput]
+    pins: [PinInput]!
 }
 
 type Query {

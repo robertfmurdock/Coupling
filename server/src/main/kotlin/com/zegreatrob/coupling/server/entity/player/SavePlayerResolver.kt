@@ -16,7 +16,7 @@ val savePlayerResolver = dispatch(
 )
 
 private fun Json.toPlayer() = Player(
-    id = at("/input/playerId") ?: "",
+    id = at("/input/playerId")!!,
     badge = at("/input/badge") ?: defaultPlayer.badge,
     name = at("/input/name") ?: defaultPlayer.name,
     email = at("/input/email") ?: defaultPlayer.email,

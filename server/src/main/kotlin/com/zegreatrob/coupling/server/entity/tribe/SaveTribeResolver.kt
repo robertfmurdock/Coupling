@@ -17,7 +17,7 @@ val saveTribeResolver = dispatch(
 )
 
 private fun Json.toTribe() = Tribe(
-    id = TribeId(at("/input/tribeId") ?: ""),
+    id = TribeId(at("/input/tribeId")!!),
     name = at("/input/name"),
     email = at("/input/email"),
     pairingRule = PairingRule.fromValue(at("/input/pairingRule")),

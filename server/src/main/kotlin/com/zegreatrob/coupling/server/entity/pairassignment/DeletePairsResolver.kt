@@ -9,7 +9,7 @@ import com.zegreatrob.minjson.at
 val deletePairsResolver = dispatch(
     tribeCommand,
     { _, entity ->
-        PairAssignmentDocumentId(entity.at<String>("/input/pairAssignmentsId") ?: "")
+        PairAssignmentDocumentId(entity.at("/input/pairAssignmentsId")!!)
             .let(::DeletePairAssignmentDocumentCommand)
     },
     { true }

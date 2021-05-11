@@ -23,7 +23,7 @@ val savePairsResolver = dispatch(
 private fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
     id = PairAssignmentDocumentId(at("/input/pairAssignmentsId")!!),
     date = at<String>("/input/date").let(::toDate).toDateTime(),
-    pairs = at<Array<Json>>("/input/pairs")?.map(::pairFromJson) ?: emptyList()
+    pairs = at<Array<Json>>("/input/pairs")?.map(::pairFromJson)!!
 )
 
 private fun toJson(result: TribeIdPairAssignmentDocument) = result.document.toJson()
