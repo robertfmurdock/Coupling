@@ -48,8 +48,6 @@ jobs:
   build:
     executor: coupling-orb/standard
     environment:
-      JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
-      GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: "true"
     steps:
       - checkout
@@ -92,8 +90,6 @@ jobs:
   update-client:
     executor: coupling-orb/standard
     environment:
-      JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
-      GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: "true"
     steps:
       - checkout
@@ -108,8 +104,6 @@ jobs:
   update-server:
     executor: coupling-orb/standard
     environment:
-      JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
-      GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: "true"
     steps:
       - checkout
@@ -125,8 +119,6 @@ jobs:
   update-gradle-deps:
     executor: coupling-orb/standard
     environment:
-      JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
-      GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
       COUPLING_IN_MEMORY: "true"
     steps:
       - checkout
