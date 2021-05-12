@@ -37,8 +37,10 @@
     "passport-custom": "^1.1.1",
     "passport-local": "^1.0.0",
     "raw-loader": "^4.0.2",
+    "webpack-cli": "^4.7.0",
     "webpack": "^5.37.0",
     "webpack-node-externals": "^3.0.0",
+    "source-map-loader": "^2.0.1",
     "ws": "^7.4.5"
   },
   "scripts": {},

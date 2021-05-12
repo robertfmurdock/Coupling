@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
@@ -40,7 +41,9 @@ class HistoryTest {
             HistoryProps(tribe, history, Controls(stubDispatchFunc, reloadSpy::spyFunction))
         )
     }) exercise {
-        wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")
+        wrapper.find(CouplingButton).map { it.props() }.find { it.className == styles["deleteButton"] }
+            ?.onClick?.invoke()
+
         stubDispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
         stubDispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
@@ -66,7 +69,8 @@ class HistoryTest {
             HistoryProps(tribe, history, Controls(stubDispatchFunc, reloadSpy::spyFunction))
         )
     }) exercise {
-        wrapper.find<Any>(".${styles["deleteButton"]}").simulate("click")
+        wrapper.find(CouplingButton).map { it.props() }.find { it.className == styles["deleteButton"] }
+            ?.onClick?.invoke()
     } verify {
         stubDispatchFunc.dispatchList.isEmpty()
             .assertIsEqualTo(true)

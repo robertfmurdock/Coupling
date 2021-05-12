@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.json.toPairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.minjson.at
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -15,7 +16,8 @@ interface SdkSpin : GqlSyntax {
         players: List<Player>,
         pins: List<Pin>
     ) = performQuery(json("query" to Mutations.spin, "variables" to spinBody(players, pins, tribeId)))
-        .data.data.spin.result.unsafeCast<Json>()
+        .unsafeCast<Json>()
+        .at<Json>("/data/data/spin/result")!!
         .toPairAssignmentDocument()
 
     private fun spinBody(players: List<Player>, pins: List<Pin>, tribeId: TribeId) = json(

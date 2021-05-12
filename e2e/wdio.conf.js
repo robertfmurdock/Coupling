@@ -56,6 +56,7 @@ let config = {
   beforeSession: async function () {
     // noinspection NpmUsedModulesInstalled
     const testLogging = require('Coupling-test-logging');
+
     // noinspection JSUnresolvedFunction
     const loggingReporter = new testLogging.com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter();
 

@@ -10,7 +10,9 @@ import com.zegreatrob.coupling.server.external.fs.fs
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.RewritingStream
 import com.zegreatrob.coupling.server.external.stream.Readable
 
-val indexHtml = fs.readFileSync("${resourcePath("public")}/app/build/index.html", "utf8")
+val indexHtml by lazy {
+    fs.readFileSync("${resourcePath("public")}/app/build/index.html", "utf8")
+}
 
 fun Express.indexRoute(): Handler = { request, response, _ ->
     val indexStream = Readable.from(arrayOf(indexHtml))

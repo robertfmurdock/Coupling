@@ -14,33 +14,34 @@ val packageJson = loadPackageJson()
 kotlin {
     js {
         nodejs {}
-        useCommonJs()
+        binaries.executable()
         compilations {
             val endpointTest by compilations.creating
+            binaries.executable(endpointTest)
         }
     }
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":model"))
-                api(project(":repository"))
-                api("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
-                api("com.soywiz.korlibs.klock:klock:2.1.0")
+                implementation(project(":model"))
+                implementation(project(":repository"))
+                implementation("com.zegreatrob.testmints:minjson:4.0.7")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
+                implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("io.github.microutils:kotlin-logging:2.0.6")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.0")
             }
         }
         val commonTest by getting {
             dependencies {
-                api(project(":repository:validation"))
+                implementation(project(":repository:validation"))
                 implementation(project(":json"))
                 implementation(project(":test-logging"))
                 implementation(project(":stub-model"))
-                implementation("org.jetbrains.kotlin:kotlin-test-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("com.zegreatrob.testmints:standard:4.0.6")
-                implementation("com.zegreatrob.testmints:minassert:4.0.6")
+                implementation("org.jetbrains.kotlin:kotlin-test")
+                implementation("com.zegreatrob.testmints:standard:4.0.7")
+                implementation("com.zegreatrob.testmints:minassert:4.0.7")
                 implementation("com.benasher44:uuid:0.2.4")
             }
         }
@@ -63,10 +64,9 @@ kotlin {
 
             dependencies {
                 implementation(project(":server"))
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:standard:4.0.6")
-                implementation("com.zegreatrob.testmints:minassert:4.0.6")
-                implementation("com.zegreatrob.testmints:async:4.0.6")
+                implementation("com.zegreatrob.testmints:standard:4.0.7")
+                implementation("com.zegreatrob.testmints:minassert:4.0.7")
+                implementation("com.zegreatrob.testmints:async:4.0.7")
 
                 packageJson.devDependencies().forEach {
                     implementation(npm(it.first, it.second.asText()))
@@ -77,10 +77,9 @@ kotlin {
 
         val jsTest by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
-                implementation("com.zegreatrob.testmints:standard:4.0.6")
-                implementation("com.zegreatrob.testmints:minassert:4.0.6")
-                implementation("com.zegreatrob.testmints:async:4.0.6")
+                implementation("com.zegreatrob.testmints:standard:4.0.7")
+                implementation("com.zegreatrob.testmints:minassert:4.0.7")
+                implementation("com.zegreatrob.testmints:async:4.0.7")
             }
         }
     }
@@ -92,21 +91,20 @@ tasks {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
-        kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
     val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
-        kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
 
     val compileEndpointTestKotlinJs by getting(Kotlin2JsCompile::class) {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
-        kotlinOptions.freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
     }
+
+    val compileEndpointTestProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
 
     val endpointTest by creating(Exec::class) {
         dependsOn(
@@ -114,6 +112,8 @@ tasks {
             compileKotlinJs,
             compileTestKotlinJs,
             compileEndpointTestKotlinJs,
+            ":test-logging:assemble",
+            compileEndpointTestProductionExecutableKotlinJs,
             ":server:build"
         )
         inputs.file(projectDir.path + "/endpoint-wrapper.js")
@@ -125,7 +125,7 @@ tasks {
 
         dependsOn(processResources)
 
-        inputs.files(compileEndpointTestKotlinJs.outputFile)
+        inputs.files(compileEndpointTestProductionExecutableKotlinJs.outputFile)
 
         val relevantPaths = listOf("$nodeModulesDir") + processResources.map { it.destinationDir.path }
         relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
@@ -136,8 +136,9 @@ tasks {
         )
         commandLine = listOf(
             nodeExecPath,
+            "--unhandled-rejections=strict",
             project.relativePath("endpoint-wrapper"),
-            "${compileEndpointTestKotlinJs.outputFile}"
+            "${compileEndpointTestProductionExecutableKotlinJs.outputFile}"
         )
     }
 

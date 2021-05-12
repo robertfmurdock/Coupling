@@ -20,8 +20,8 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:4.0.6")
-                implementation("com.zegreatrob.testmints:action-async:4.0.6")
+                implementation("com.zegreatrob.testmints:action:4.0.7")
+                implementation("com.zegreatrob.testmints:action-async:4.0.7")
                 implementation("com.benasher44:uuid:0.3.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -35,8 +35,8 @@ kotlin {
                 implementation(project(":json"))
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard:4.0.6")
-                implementation("com.zegreatrob.testmints:minassert:4.0.6")
+                implementation("com.zegreatrob.testmints:standard:4.0.7")
+                implementation("com.zegreatrob.testmints:minassert:4.0.7")
                 implementation(project(":test-logging"))
             }
         }

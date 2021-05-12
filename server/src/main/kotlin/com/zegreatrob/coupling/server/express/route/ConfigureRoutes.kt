@@ -75,7 +75,8 @@ private fun apiGuard(): Handler = { request, response, next ->
 }
 
 private fun setupDispatcher(request: Request, next: Next): suspend CoroutineScope.() -> Unit = {
-    request.asDynamic().commandDispatcher = request.commandDispatcher()
+    val commandDispatcher = request.commandDispatcher()
+    request.asDynamic().commandDispatcher = commandDispatcher
     next()
 }
 

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketProps
-import com.zegreatrob.coupling.client.external.reactwebsocket.websocket
+import com.zegreatrob.coupling.client.external.reactwebsocket.reactWebsocket
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -23,7 +23,7 @@ class CouplingWebsocketTest {
     }) exercise {
         shallow { couplingWebsocket(tribeId, useSsl) { _, _ -> div {} } }
     } verify { wrapper ->
-        wrapper.find(websocket).props()
+        wrapper.find(reactWebsocket).props()
             .url
             .assertIsEqualTo(
                 "ws://${window.location.host}/api/${tribeId.value}/pairAssignments/current"
@@ -37,7 +37,7 @@ class CouplingWebsocketTest {
     }) exercise {
         shallow { couplingWebsocket(tribeId, useSsl) { _, _ -> div {} } }
     } verify { wrapper ->
-        wrapper.find(websocket).props()
+        wrapper.find(reactWebsocket).props()
             .url
             .assertIsEqualTo(
                 "wss://${window.location.host}/api/LOL/pairAssignments/current"
@@ -49,7 +49,7 @@ class CouplingWebsocketTest {
         val tribeId = TribeId("Woo")
         var lastMessage: CouplingSocketMessage? = null
         val wrapper = shallow { couplingWebsocket(tribeId, false) { message, _ -> lastMessage = message; div {} } }
-        val websocketProps = wrapper.find(websocket).props()
+        val websocketProps = wrapper.find(reactWebsocket).props()
             .unsafeCast<WebsocketProps>()
         val expectedMessage = "Not connected"
     }) exercise {

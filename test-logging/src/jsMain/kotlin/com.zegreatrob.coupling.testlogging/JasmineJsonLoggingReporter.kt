@@ -6,6 +6,7 @@ import mu.KotlinLogging
 
 @Suppress("unused")
 @JsName("JasmineJsonLoggingReporter")
+@JsExport
 class JasmineJsonLoggingReporter {
 
     companion object {

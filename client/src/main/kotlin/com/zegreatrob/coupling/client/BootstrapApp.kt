@@ -11,13 +11,14 @@ import kotlinx.browser.window
 import org.w3c.dom.Document
 import org.w3c.dom.get
 import react.createElement
+import react.dom.render
 
 object App : Sdk by SdkSingleton {
 
     fun bootstrapApp() {
         initializeLogging(developmentMode = false)
         val isSignedIn = window["isAuthenticated"] == true
-        react.dom.render(couplingRouterElement(isSignedIn, animationsDisabled), document.viewContainerNode)
+        render(couplingRouterElement(isSignedIn, animationsDisabled), document.viewContainerNode)
     }
 
     private val Document.viewContainerNode get() = getElementsByClassName("view-container")[0]

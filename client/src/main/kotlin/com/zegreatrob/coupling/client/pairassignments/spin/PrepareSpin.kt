@@ -155,7 +155,7 @@ private fun RBuilder.batchSelectButton(
     selectionValue: Boolean
 ) = couplingButton(
     className = className,
-    onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
+    onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) },
 ) { +text }
 
 private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<String?>) -> Unit, pins: List<Pin>) =

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
@@ -15,7 +16,6 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
-import com.zegreatrob.minenzyme.findByClass
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
@@ -45,7 +45,8 @@ class CurrentPairAssignmentsPanelTest {
             )
         )
     }) exercise {
-        wrapper.findByClass(styles["saveButton"]).simulate("click")
+        wrapper.find(CouplingButton).map { it.props() }.find { it.className == styles["saveButton"] }
+            ?.onClick?.invoke()
         dispatchFunc.simulateSuccess<SavePairAssignmentsCommand>()
     } verify {
         dispatchFunc.commandsDispatched<SavePairAssignmentsCommand>().size
@@ -70,7 +71,9 @@ class CurrentPairAssignmentsPanelTest {
             )
         )
     }) exercise {
-        wrapper.findByClass(styles["deleteButton"]).simulate("click")
+        wrapper.find(CouplingButton).map { it.props() }.find { it.className == styles["deleteButton"] }
+            ?.onClick?.invoke()
+
         dispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
         dispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()

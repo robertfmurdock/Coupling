@@ -120,6 +120,7 @@ fun RBuilder.couplingButton(
 data class CouplingButtonProps(
     val sizeRuleSet: RuleSet = medium,
     val colorRuleSet: RuleSet = black,
+    @JsName("className")
     val className: String = "",
     val onClick: () -> Unit = {},
     val block: StyledDOMBuilder<BUTTON>.() -> Unit = {}

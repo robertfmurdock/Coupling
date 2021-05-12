@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCardProps
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.welcome.RandomProvider
 import com.zegreatrob.coupling.client.welcome.Welcome
 import com.zegreatrob.coupling.client.welcome.WelcomeProps
@@ -26,11 +26,11 @@ class WelcomeTest {
     }) exercise {
         shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
     } verify { wrapper ->
-        wrapper.leftCard().props().player
+        wrapper.leftCard()?.player
             .assertIsEqualTo(
                 Player(id = "Frodo", name = "Frodo", imageURL = pngPath("players/frodo"))
             )
-        wrapper.rightCard().props().player
+        wrapper.rightCard()?.player
             .assertIsEqualTo(
                 Player(id = "Sam", name = "Sam", imageURL = pngPath("players/samwise"))
             )
@@ -46,11 +46,11 @@ class WelcomeTest {
     }) exercise {
         shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
     } verify { wrapper ->
-        wrapper.leftCard().props().player
+        wrapper.leftCard()?.player
             .assertIsEqualTo(
                 Player(id = "Batman", name = "Batman", imageURL = pngPath("players/grayson"))
             )
-        wrapper.rightCard().props().player
+        wrapper.rightCard()?.player
             .assertIsEqualTo(
                 Player(id = "Robin", name = "Robin", imageURL = pngPath("players/wayne"))
             )
@@ -66,11 +66,11 @@ class WelcomeTest {
     }) exercise {
         shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
     } verify { wrapper ->
-        wrapper.leftCard().props().player
+        wrapper.leftCard()?.player
             .assertIsEqualTo(
                 Player(id = "Rosie", name = "Rosie", imageURL = pngPath("players/rosie"))
             )
-        wrapper.rightCard().props().player
+        wrapper.rightCard()?.player
             .assertIsEqualTo(
                 Player(id = "Wendy", name = "Wendy", imageURL = pngPath("players/wendy"))
             )
@@ -80,8 +80,11 @@ class WelcomeTest {
 
     private fun ShallowWrapper<dynamic>.welcomeProverb() = find<Any>(".${styles["welcomeProverb"]}")
 
-    private fun ShallowWrapper<dynamic>.leftCard() = find<PlayerCardProps>(".${styles["playerCard"]}.left")
+    private fun ShallowWrapper<dynamic>.leftCard() = find(PlayerCard).map { it.props() }
+        .find { it.className?.contains("left") ?: false }
 
-    private fun ShallowWrapper<dynamic>.rightCard() = find<PlayerCardProps>(".${styles["playerCard"]}.right")
+
+    private fun ShallowWrapper<dynamic>.rightCard() =  find(PlayerCard).map { it.props() }
+        .find { it.className?.contains("right") ?: false }
 
 }

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -98,7 +99,9 @@ class PrepareSpinTest {
             PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc())
         )
     }) exercise {
-        wrapper.findByClass(styles["selectAllButton"]).simulate("click")
+        wrapper.find(CouplingButton).map { it.props() }
+            .find { it.className == styles["selectAllButton"] }
+            ?.onClick?.invoke()
     } verify {
         wrapper.find(PlayerCard).map { it.props().deselected.assertIsEqualTo(false) }
     }
@@ -117,7 +120,9 @@ class PrepareSpinTest {
             PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc())
         )
     }) exercise {
-        wrapper.findByClass(styles["selectNoneButton"]).simulate("click")
+        wrapper.find(CouplingButton).map { it.props() }
+            .find { it.className == styles["selectNoneButton"] }
+            ?.onClick?.invoke()
     } verify {
         wrapper.find(PlayerCard).map { it.props().deselected.assertIsEqualTo(true) }
     }
