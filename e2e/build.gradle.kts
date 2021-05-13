@@ -16,7 +16,10 @@ kotlin {
 
 val packageJson = loadPackageJson()
 
+val appConfiguration: Configuration by configurations.creating
+
 dependencies {
+    appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
     implementation(project(":test-logging"))
     implementation(kotlin("stdlib-js"))
     implementation("com.benasher44:uuid:0.3.0")
@@ -45,7 +48,6 @@ tasks {
     val assemble by getting {}
 
     val wdioRun by creating(Exec::class) {
-        mustRunAfter(":client:check", assemble)
         configureWdioRun(
             compileKotlinJs = compileProductionExecutableKotlinJs,
             pathToNodeApp = "${project(":server").buildDir.absolutePath}/executable/app.js",
@@ -56,7 +58,7 @@ tasks {
         dependsOn(compileProductionExecutableKotlinJs, compileTestProductionExecutableKotlinJs)
         inputs.files(compileProductionExecutableKotlinJs.outputs.files)
         inputs.files(compileTestProductionExecutableKotlinJs.outputs.files)
-        dependsOn(":server:assemble")
+        dependsOn(appConfiguration)
         environment("PORT" to "3099")
     }
 

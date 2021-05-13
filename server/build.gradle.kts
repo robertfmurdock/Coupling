@@ -25,6 +25,9 @@ kotlin {
 
 val packageJson = loadPackageJson()
 
+
+val appConfiguration: Configuration by configurations.creating
+
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":json"))
@@ -119,4 +122,13 @@ tasks {
         environment("NODE_ENV", "production")
     }
 
+    artifacts {
+        add(appConfiguration.name, compileKotlinJs.outputFile) {
+            builtBy(compileKotlinJs)
+        }
+        add(appConfiguration.name, copyClient.destinationDir) {
+            builtBy(copyClient)
+        }
+    }
 }
+
