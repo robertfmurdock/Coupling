@@ -45,7 +45,6 @@ dependencies {
 tasks {
     val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
     val compileTestProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
-    val assemble by getting {}
 
     val wdioRun by creating(Exec::class) {
         configureWdioRun(
@@ -55,10 +54,13 @@ tasks {
             webpackConfig = project.projectDir.resolve("webpack.config.js"),
             webpackedWdioConfigOutput = "config"
         )
-        dependsOn(compileProductionExecutableKotlinJs, compileTestProductionExecutableKotlinJs)
+        dependsOn(
+            compileProductionExecutableKotlinJs,
+            compileTestProductionExecutableKotlinJs,
+            appConfiguration
+        )
         inputs.files(compileProductionExecutableKotlinJs.outputs.files)
         inputs.files(compileTestProductionExecutableKotlinJs.outputs.files)
-        dependsOn(appConfiguration)
         environment("PORT" to "3099")
     }
 

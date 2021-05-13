@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.build.loadPackageJson
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("js")
@@ -20,6 +21,8 @@ kotlin {
 }
 
 val packageJson = loadPackageJson()
+
+val clientConfiguration: Configuration by configurations.creating
 
 dependencies {
     implementation(kotlin("stdlib-js"))
@@ -65,4 +68,11 @@ dependencies {
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
+    val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class)
+
+    artifacts {
+        add(clientConfiguration.name, compileProductionExecutableKotlinJs.outputFile) {
+            builtBy(compileProductionExecutableKotlinJs)
+        }
+    }
 }

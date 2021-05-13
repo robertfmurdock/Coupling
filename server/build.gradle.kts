@@ -129,6 +129,9 @@ tasks {
         add(appConfiguration.name, copyClient.destinationDir) {
             builtBy(copyClient)
         }
+        add(appConfiguration.name, file("build/executable")) {
+            builtBy(serverCompile)
+        }
     }
 }
 
