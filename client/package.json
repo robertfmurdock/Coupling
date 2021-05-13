@@ -38,7 +38,7 @@
     "date-fns": "^2.21.3",
     "dom-to-image": "^2.6.0",
     "drag-drop-webkit-mobile": "^1.4.1",
-    "favicons": "~6.2.1",
+    "favicons": "~6.2.2",
     "favicons-webpack-plugin": "~5.0.2",
     "file-loader": "^6.2.0",
     "fitty": "^2.3.3",
