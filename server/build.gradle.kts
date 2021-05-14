@@ -1,3 +1,4 @@
+
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
 import com.zegreatrob.coupling.build.nodeExec
@@ -26,7 +27,11 @@ kotlin {
 val packageJson = loadPackageJson()
 
 
-val appConfiguration: Configuration by configurations.creating
+val appConfiguration: Configuration by configurations.creating {
+    extendsFrom(configurations["implementation"])
+}
+
+inline fun <reified T: Named> Project.namedAttribute(value: String) = objects.named(T::class.java, value)
 
 dependencies {
     implementation(kotlin("stdlib"))
@@ -134,4 +139,3 @@ tasks {
         }
     }
 }
-

@@ -82,12 +82,12 @@ tasks {
         into("build/test-output/engine")
     })
 
-    val copyEndToEndResults by creating(Copy::class, getByPath(":e2e:wdioRun").copyForTask {
+    val copyEndToEndResults by creating(Copy::class, getByPath(":e2e:nodeRun").copyForTask {
         from("e2e/build/logs")
         into("build/test-output/e2e/logs")
     })
 
-    val copyEndToEndScreenshotResults by creating(Copy::class, getByPath(":e2e:wdioRun").copyForTask {
+    val copyEndToEndScreenshotResults by creating(Copy::class, getByPath(":e2e:nodeRun").copyForTask {
         from("e2e/build/reports/e2e")
         into("build/test-output/e2e/reports")
     })

@@ -99,6 +99,7 @@ tasks {
     }
 
     val compileEndpointTestKotlinJs by getting(Kotlin2JsCompile::class) {
+        dependsOn("jsGenerateExternalsIntegrated")
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"

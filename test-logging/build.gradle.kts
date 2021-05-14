@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.build.BuildConstants
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -51,5 +52,14 @@ kotlin {
     }
 }
 
+val testLoggingLib: Configuration by configurations.creating {
+}
+
 tasks {
+    val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
+    artifacts {
+        add(testLoggingLib.name, compileProductionExecutableKotlinJs.outputFile) {
+            builtBy(compileProductionExecutableKotlinJs)
+        }
+    }
 }
