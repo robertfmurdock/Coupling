@@ -28,7 +28,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1")
             }
         }
 
@@ -49,7 +49,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1")
             }
         }
     }
