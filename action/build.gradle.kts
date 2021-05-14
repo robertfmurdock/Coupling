@@ -9,7 +9,13 @@ kotlin {
 
     targets {
         js {
-            nodejs()
+            nodejs {
+                testTask {
+                    useMocha {
+                        timeout = "10s"
+                    }
+                }
+            }
             useCommonJs()
         }
         jvm()
