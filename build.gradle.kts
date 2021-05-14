@@ -77,11 +77,6 @@ tasks {
         into("build/test-output/endpoint")
     })
 
-    val copyEngineTestResults by creating(Copy::class, getByPath(":server:server_action:jsTest").copyForTask {
-        from("engine/build/test-results/jsTest")
-        into("build/test-output/engine")
-    })
-
     val copyEndToEndResults by creating(Copy::class, getByPath(":e2e:nodeRun").copyForTask {
         from("e2e/build/logs")
         into("build/test-output/e2e/logs")
@@ -97,7 +92,6 @@ tasks {
             copyClientTestResults,
             copyEndpointTestResults,
             copyActionTestResults,
-            copyEngineTestResults,
             copyEndToEndResults,
             copyEndToEndScreenshotResults
         )

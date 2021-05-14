@@ -74,12 +74,7 @@ dependencies {
 }
 
 tasks {
-    val compileKotlinJs by getting(Kotlin2JsCompile::class)
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class)
-
     val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
-    val compileTestProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
-    val testTestProductionExecutableCompileSync by getting {}
     val compileE2eTestProductionExecutableKotlinJs by getting {}
     val productionExecutableCompileSync by getting {}
 
@@ -87,7 +82,6 @@ tasks {
     val wdioConfig = project.projectDir.resolve("wdio.conf.js")
     val webpackConfig = project.projectDir.resolve("webpack.config.js")
     val webpackedWdioConfigOutput = "config"
-
 
     val nodeRun by getting(NodeJsExec::class) {
         dependsOn(
@@ -102,7 +96,6 @@ tasks {
         inputs.files(project.file(pathToNodeApp).parent)
         inputs.files(wdioConfig)
         outputs.dir("${project.buildDir}/reports/e2e")
-
 
         environment("PORT" to "3099")
         environment(

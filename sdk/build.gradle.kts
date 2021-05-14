@@ -11,6 +11,17 @@ plugins {
 
 val packageJson = loadPackageJson()
 
+val appConfiguration: Configuration by configurations.creating {
+    attributes {
+        attribute(org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.jsCompilerAttribute, org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.ir)
+        attribute(org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.ATTRIBUTE, org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.PUBLIC_VALUE)
+        attribute(org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.attribute, org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.js)
+    }
+}
+
+val testLoggingLib: Configuration by configurations.creating {
+}
+
 kotlin {
     js {
         nodejs {}
@@ -85,6 +96,11 @@ kotlin {
     }
 }
 
+dependencies {
+    appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
+    testLoggingLib(project(mapOf("path" to ":test-logging", "configuration" to "testLoggingLib")))
+}
+
 tasks {
 
     val compileKotlinJs by getting(Kotlin2JsCompile::class) {
@@ -113,12 +129,12 @@ tasks {
             compileKotlinJs,
             compileTestKotlinJs,
             compileEndpointTestKotlinJs,
-            ":test-logging:assemble",
             compileEndpointTestProductionExecutableKotlinJs,
-            ":server:build"
+            testLoggingLib,
+            appConfiguration
         )
         inputs.file(projectDir.path + "/endpoint-wrapper.js")
-        inputs.files(findByPath(":server:serverCompile")!!.outputs)
+        inputs.files(appConfiguration)
 
         outputs.dir("build/test-results/jsTest")
 
