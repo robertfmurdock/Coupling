@@ -88,7 +88,10 @@ class JsonFormatter : Formatter {
         val result = msg()
         return if (result is Map<*, *>) {
             val map = result.unsafeCast<Map<String, Any>>()
-            map["message"].toString() to map.filterKeys { it != "message" }.mapValues { it.toString() }
+            val propertyGroupName = map["message"].toString()
+            val propertyMap = map.filterKeys { it != "message" }
+                .mapValues { entry -> entry.value.toString() }
+            propertyGroupName to propertyMap
         } else
             result.toString() to null
     }
