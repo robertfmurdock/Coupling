@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.build.loadPackageJson
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -69,10 +70,15 @@ val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
     val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class)
+    val browserDistribution by getting
+    val browserProductionWebpack by getting(KotlinWebpack::class)
 
     artifacts {
         add(clientConfiguration.name, compileProductionExecutableKotlinJs.outputFile) {
             builtBy(compileProductionExecutableKotlinJs)
+        }
+        add(clientConfiguration.name, browserProductionWebpack.destinationDirectory) {
+            builtBy(browserProductionWebpack)
         }
     }
 }

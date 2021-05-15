@@ -31,9 +31,12 @@ val appConfiguration: Configuration by configurations.creating {
     extendsFrom(configurations["implementation"])
 }
 
+val clientConfiguration: Configuration by configurations.creating
+
 inline fun <reified T: Named> Project.namedAttribute(value: String) = objects.named(T::class.java, value)
 
 dependencies {
+    clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
     implementation(kotlin("stdlib"))
     implementation(project(":json"))
     implementation(project(":repository:dynamo"))
@@ -75,7 +78,7 @@ tasks {
     }
 
     val copyClient by creating(Copy::class) {
-        dependsOn(":client:assemble", copyServerResources)
+        dependsOn(clientConfiguration, copyServerResources)
         mustRunAfter("serverCompile")
         from("../client/build/distributions")
         into("build/executable/public/app/build")

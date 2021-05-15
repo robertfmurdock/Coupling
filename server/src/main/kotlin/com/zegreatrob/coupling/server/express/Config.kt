@@ -17,4 +17,6 @@ object Config {
     const val AUTH0_DOMAIN = "zegreatrob.us.auth0.com"
     val AUTH0_CLIENT_SECRET get() = Process.getEnv("AUTH0_CLIENT_SECRET") ?: "shh"
     val AUTH0_CALLBACK_URL get() = "${Process.getEnv("PUBLIC_URL") ?: "http://localhost:3000"}/auth/signin-auth0"
+
+    val clientPath  = Process.getEnv("CLIENT_PATH") ?: "/no-client-path-found"
 }
