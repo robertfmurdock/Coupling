@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
 import com.zegreatrob.coupling.build.nodeExec
@@ -33,7 +32,7 @@ val appConfiguration: Configuration by configurations.creating {
 
 val clientConfiguration: Configuration by configurations.creating
 
-inline fun <reified T: Named> Project.namedAttribute(value: String) = objects.named(T::class.java, value)
+inline fun <reified T : Named> Project.namedAttribute(value: String) = objects.named(T::class.java, value)
 
 dependencies {
     clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
@@ -77,13 +76,6 @@ tasks {
         dependsOn(copyServerIcons, copyServerViews)
     }
 
-    val copyClient by creating(Copy::class) {
-        dependsOn(clientConfiguration, copyServerResources)
-        mustRunAfter("serverCompile")
-        from("../client/build/distributions")
-        into("build/executable/public/app/build")
-    }
-
     val processResources by getting(ProcessResources::class) {}
 
     val serverCompile by creating(Exec::class) {
@@ -112,7 +104,7 @@ tasks {
     }
 
     val assemble by getting {
-        dependsOn(serverCompile, copyClient)
+        dependsOn(serverCompile)
     }
 
     val packageJson: String? by rootProject
@@ -125,17 +117,15 @@ tasks {
     }
 
     create<Exec>("start") {
+        dependsOn(assemble, clientConfiguration)
         nodeExec(compileKotlinJs, listOf(project.relativePath("startup")))
-        dependsOn(assemble)
         environment("NODE_ENV", "production")
+        environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
     }
 
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFile) {
             builtBy(compileKotlinJs)
-        }
-        add(appConfiguration.name, copyClient.destinationDir) {
-            builtBy(copyClient)
         }
         add(appConfiguration.name, file("build/executable")) {
             builtBy(serverCompile)

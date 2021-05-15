@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.env
-import com.zegreatrob.coupling.server.express.middleware.resourcePath
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.express.Request
@@ -11,7 +10,7 @@ import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.Rewriti
 import com.zegreatrob.coupling.server.external.stream.Readable
 
 val indexHtml by lazy {
-    fs.readFileSync("${resourcePath("public")}/app/build/index.html", "utf8")
+    fs.readFileSync("${Config.clientPath}/index.html", "utf8")
 }
 
 fun Express.indexRoute(): Handler = { request, response, _ ->

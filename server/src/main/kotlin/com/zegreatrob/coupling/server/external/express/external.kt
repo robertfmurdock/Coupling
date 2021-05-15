@@ -14,6 +14,7 @@ external interface Express {
     fun get(path: String, function: Handler)
     fun all(path: String, function: Handler)
     fun use(path: String, router: Router)
+    fun use(path: String, function: Handler)
     fun post(path: String, vararg handlers: Handler)
     fun ws(path: String, handler: WSHandler)
 }

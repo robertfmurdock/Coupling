@@ -24,7 +24,8 @@ fun Express.middleware() {
     use(urlencoded(json("extended" to true)))
     use(bodyParserJson())
     use(methodOverride())
-    use(staticResources())
+    use("/app/build", staticResourcesClient())
+    use(staticResourcesPublic())
     use(cookieParser())
     use(session())
     if (isInDevMode) {

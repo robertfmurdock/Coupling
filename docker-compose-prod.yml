@@ -2,17 +2,22 @@ version: '2'
 services:
   web:
     hostname: web
+    networks:
+      - web-net
     build:
       context: .
-      dockerfile: server/Dockerfile.prod
+      dockerfile: Dockerfile.prod
     image: coupling-prod
     ports:
       - "3000:3000"
     links:
-      - "mongo:mongo"
-  mongo:
-    image: mongo
-    environment:
-      - AUTH=no
-    volumes:
-      - ./data/db:/data/db
+      - "dynamo:dynamo"
+  dynamo:
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
+    networks:
+      - web-net
+
+networks:
+  web-net:

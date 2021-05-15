@@ -35,6 +35,8 @@ val appConfiguration: Configuration by configurations.creating {
 val testLoggingLib: Configuration by configurations.creating {
 }
 
+val clientConfiguration: Configuration by configurations.creating
+
 kotlin {
     sourceSets {
         val e2eTest by getting {
@@ -58,7 +60,9 @@ kotlin {
 
 dependencies {
     appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
+    clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
     testLoggingLib(project(mapOf("path" to ":test-logging", "configuration" to "testLoggingLib")))
+
     implementation(project(":test-logging"))
     implementation(kotlin("stdlib-js"))
     implementation("com.benasher44:uuid:0.3.0")
@@ -89,6 +93,7 @@ tasks {
             productionExecutableCompileSync,
             compileE2eTestProductionExecutableKotlinJs,
             appConfiguration,
+            clientConfiguration,
             testLoggingLib
         )
         inputs.files(compileProductionExecutableKotlinJs.outputs.files)
@@ -98,6 +103,7 @@ tasks {
         outputs.dir("${project.buildDir}/reports/e2e")
 
         environment("PORT" to "3099")
+        environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
         environment(
             mapOf(
                 "APP_PATH" to pathToNodeApp,
