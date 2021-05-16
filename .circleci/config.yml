@@ -20,15 +20,9 @@ orbs:
       collect-results:
         steps:
           - run:
-              name: Copy test results
-              command: |
-                mkdir -p build/test-output/junit/
-                find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
-              when: always
-          - run:
               name: Copy test reports
               command: |
-                ./gradlew copyReportsToCircleCIDirectory
+                ./gradlew collectResults
               when: always
           - store_artifacts:
               path: build/test-output

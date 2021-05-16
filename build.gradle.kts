@@ -4,7 +4,6 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.zegreatrob.coupling.build.JsonLoggingTestListener
-import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -28,7 +27,15 @@ allprojects {
     tasks {
         val copyReportsToCircleCIDirectory by creating(Copy::class) {
             from("build/reports")
-            into("${rootProject.buildDir.path}/test-output/${project.path}")
+            into("${rootProject.buildDir.path}/test-output/${project.path}/reports")
+        }
+        val copyTestResultsToCircleCIDirectory by creating(Copy::class) {
+            from("build/test-results")
+            into("${rootProject.buildDir.path}/test-output/${project.path}/results")
+        }
+
+        val collectResults by creating {
+            dependsOn(copyReportsToCircleCIDirectory, copyTestResultsToCircleCIDirectory)
         }
 
         withType<DependencyUpdatesTask> {
@@ -62,41 +69,6 @@ docker {
 }
 
 tasks {
-    val copyClientTestResults by creating(Copy::class, getByPath(":client:test").copyForTask {
-        from("client/build/test-results")
-        into("build/test-output/client")
-    })
-
-    val copyActionTestResults by creating(Copy::class, getByPath(":action:check").copyForTask {
-        from("action/build/test-results/jsTest")
-        into("build/test-output/action")
-    })
-
-    val copyEndpointTestResults by creating(Copy::class, getByPath(":sdk:endpointTest").copyForTask {
-        from("sdk/build/test-results/jsTest")
-        into("build/test-output/endpoint")
-    })
-
-    val copyEndToEndResults by creating(Copy::class, getByPath(":e2e:nodeRun").copyForTask {
-        from("e2e/build/logs")
-        into("build/test-output/e2e/logs")
-    })
-
-    val copyEndToEndScreenshotResults by creating(Copy::class, getByPath(":e2e:nodeRun").copyForTask {
-        from("e2e/build/reports/e2e")
-        into("build/test-output/e2e/reports")
-    })
-
-    val copyTestResultsForCircle by creating {
-        dependsOn(
-            copyClientTestResults,
-            copyEndpointTestResults,
-            copyActionTestResults,
-            copyEndToEndResults,
-            copyEndToEndScreenshotResults
-        )
-    }
-
     val pullProductionImage by creating(DockerPullImage::class) {
         image.set("zegreatrob/coupling:latest")
     }
@@ -112,32 +84,6 @@ tasks {
     val pushProductionImage by creating(DockerPushImage::class) {
         mustRunAfter("buildProductionImage")
         images.add("zegreatrob/coupling:latest")
-    }
-
-    val test by creating {
-        dependsOn(":server:test", ":client:test")
-    }
-
-    val check by getting {
-        dependsOn(test, ":sdk:endpointTest")
-    }
-
-    val build by getting {
-        dependsOn(test, ":client:assemble", ":server:build")
-    }
-
-    val kotlinNpmInstall by getting(KotlinNpmInstallTask::class) {
-
-    }
-
-}
-
-fun Task.copyForTask(block: Copy.() -> Unit): Copy.() -> Unit {
-    return {
-        mustRunAfter(this@copyForTask)
-
-        block()
-        this@copyForTask.finalizedBy(this)
     }
 }
 

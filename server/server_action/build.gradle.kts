@@ -1,6 +1,5 @@
 import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestReport
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -65,19 +64,5 @@ tasks {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
-    }
-    val jsTest by getting(KotlinTestReport::class) {}
-    val copyTestResultsForCircle by creating(Copy::class, jsTest.copyForTask {
-        from(jsTest.destinationDir)
-        into(file("${rootProject.buildDir.absolutePath}/test-output/server_action"))
-    })
-}
-
-fun Task.copyForTask(block: Copy.() -> Unit): Copy.() -> Unit {
-    return {
-        mustRunAfter(this@copyForTask)
-
-        block()
-        this@copyForTask.finalizedBy(this)
     }
 }
