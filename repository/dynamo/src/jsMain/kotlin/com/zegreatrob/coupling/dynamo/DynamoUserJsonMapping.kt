@@ -19,8 +19,9 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
     fun Json.toUser() = User(
         this["id"].toString(),
         this["email"].toString(),
-        this["authorizedTribeIds"].unsafeCast<Array<String>>()
-            .map { TribeId(it) }
+        this["authorizedTribeIds"]
+            .unsafeCast<Array<String?>>()
+            .mapNotNull { it?.let(::TribeId) }
             .toSet()
     )
 

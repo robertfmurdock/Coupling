@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.dynamo.user
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.*
+import com.zegreatrob.coupling.dynamo.DynamoUserJsonMapping
 import com.zegreatrob.coupling.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.dynamo.RepositoryContext
 import com.zegreatrob.coupling.model.Record
@@ -16,6 +17,7 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlin.js.json
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -66,6 +68,31 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         with(repository.getUserRecords()) {
             records.forEach { assertContains(it) }
         }
+    }
+
+    @Test
+    fun canReadEvenWhenRecordIncludesNullInTheAuthorizedTribeIdList() = asyncSetup(buildRepository { context ->
+        object : Context by context, DynamoUserJsonMapping by context.repository {
+            override val clock: MagicClock = context.clock
+            override val userId = uuidString()
+            val record = Record(stubUser(), uuidString(), false, DateTime.now().minus(3.months))
+        }
+    }) {
+        DynamoUserRepository.performPutItem(
+            record.recordJson().add(
+                json(
+                    "id" to record.data.id,
+                    "email" to record.data.email,
+                    "authorizedTribeIds" to record.data.authorizedTribeIds.map { it.value }
+                        .plus(null)
+                        .toTypedArray()
+                )
+            )
+        )
+    } exercise {
+        repository.getUserRecords()
+    } verify { results ->
+        results.assertContains(record)
     }
 
 }
