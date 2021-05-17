@@ -9,7 +9,9 @@ orbs:
         docker:
           - image: cimg/node:15.0.1-browsers
           - image: amazon/dynamodb-local
-          - image: circleci/mongo:latest
+        environment:
+          COUPLING_IN_MEMORY: "true"
+          SKIP_MONGO_TESTS: "true"
     commands:
       setup:
         steps:
@@ -41,8 +43,6 @@ orbs:
 jobs:
   build:
     executor: coupling-orb/standard
-    environment:
-      COUPLING_IN_MEMORY: "true"
     steps:
       - checkout
       - restore_cache:
@@ -83,8 +83,6 @@ jobs:
       - run: "aws ecs update-service --service Coupling-service --force-new-deployment --no-paginate"
   update-client:
     executor: coupling-orb/standard
-    environment:
-      COUPLING_IN_MEMORY: "true"
     steps:
       - checkout
       - restore_cache:
@@ -97,8 +95,6 @@ jobs:
           update_type: client dependency
   update-server:
     executor: coupling-orb/standard
-    environment:
-      COUPLING_IN_MEMORY: "true"
     steps:
       - checkout
       - restore_cache:
@@ -112,8 +108,6 @@ jobs:
           update_type: server dependency
   update-gradle-deps:
     executor: coupling-orb/standard
-    environment:
-      COUPLING_IN_MEMORY: "true"
     steps:
       - checkout
       - restore_cache:

@@ -10,6 +10,9 @@ kotlin {
         js {
             nodejs {
                 testTask {
+                    if(System.getenv("SKIP_MONGO_TESTS") == "true") {
+                        enabled = false
+                    }
                     useMocha {
                         timeout = "10s"
                     }
