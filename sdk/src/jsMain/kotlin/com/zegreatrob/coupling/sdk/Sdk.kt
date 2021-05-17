@@ -28,6 +28,7 @@ interface SdkPinRepository : SdkPinGet, SdkPinSave, SdkPinDelete, PinRepository
 interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentSave,
     SdkPairAssignmentDocumentDelete,
+    SdkPairAssignmentDocumentGetCurrent,
     PairAssignmentDocumentRepository
 
 interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkPairAssignmentsRepository,

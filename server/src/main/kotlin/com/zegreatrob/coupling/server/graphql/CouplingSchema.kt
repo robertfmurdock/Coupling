@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.zegreatrob.coupling.server.entity.pairassignment.deletePairsResolver
-import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListResolve
-import com.zegreatrob.coupling.server.entity.pairassignment.savePairsResolver
-import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
+import com.zegreatrob.coupling.server.entity.pairassignment.*
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.pin.savePinResolver
@@ -49,6 +46,7 @@ fun couplingResolvers() = json(
         "pinList" to pinListResolve,
         "playerList" to playerListResolve,
         "retiredPlayers" to retiredPlayerListResolve,
-        "pairAssignmentDocumentList" to pairAssignmentListResolve
+        "pairAssignmentDocumentList" to pairAssignmentListResolve,
+        "currentPairAssignmentDocument" to currentPairAssignmentResolve,
     ),
 )

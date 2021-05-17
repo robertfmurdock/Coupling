@@ -70,7 +70,6 @@ val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
     val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class)
-    val browserDistribution by getting
     val browserProductionWebpack by getting(KotlinWebpack::class)
 
     artifacts {

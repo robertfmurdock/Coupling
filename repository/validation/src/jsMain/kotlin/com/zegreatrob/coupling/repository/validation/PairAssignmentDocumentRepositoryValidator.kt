@@ -4,7 +4,10 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.hours
+import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.data
+import com.zegreatrob.coupling.model.element
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.tribe.with
@@ -32,6 +35,20 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             result.data().map { it.document }
                 .assertIsEqualTo(listOf(newest, middle, oldest))
         }
+
+    @Test
+    fun getCurrentPairAssignmentsOnlyReturnsTheNewest() = repositorySetup(object : TribeContextMint<R>() {
+        val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
+        val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
+        val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
+    }.bind()) {
+        tribeId.with(listOf(middle, oldest, newest))
+            .forEach { repository.save(it) }
+    } exercise {
+        repository.getCurrentPairAssignments(tribeId)
+    } verify { result: TribeRecord<PairAssignmentDocument>? ->
+        result?.element.assertIsEqualTo(newest)
+    }
 
     @Test
     fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {

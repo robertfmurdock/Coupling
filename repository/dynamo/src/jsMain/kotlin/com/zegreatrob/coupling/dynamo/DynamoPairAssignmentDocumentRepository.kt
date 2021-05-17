@@ -42,6 +42,10 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         .map { toRecord(it) }
         .sortedByDescending { it.data.document.date }
 
+    override suspend fun getCurrentPairAssignments(tribeId: TribeId) = tribeId.queryForItemList()
+        .map { toRecord(it) }
+        .maxByOrNull { it.data.document.date }
+
     override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
         performDelete(
             pairAssignmentDocumentId.value, tribeId, now(), ::toRecord

@@ -28,6 +28,10 @@ class MemoryPairAssignmentDocumentRepository(
             .filterNot { it.isDeleted }
             .sortedByDescending { it.data.document.date }
 
+    override suspend fun getCurrentPairAssignments(tribeId: TribeId) = tribeId.records()
+        .filterNot { it.isDeleted }
+        .maxByOrNull { it.data.document.date }
+
     private fun TribeId.records() = records.asSequence()
         .filter { (data) -> data.tribeId == this }
         .groupBy { (data) -> data.document.id }

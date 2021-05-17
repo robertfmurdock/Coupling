@@ -57,6 +57,11 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
             .map { json -> json.toDbRecord(json.toPairAssignmentDocument()) }
             .sortedByDescending { it.data.document.date }
 
+    override suspend fun getCurrentPairAssignments(tribeId: TribeId)=
+        rawFindBy(json("tribe" to tribeId.value), jsRepository.historyCollection)
+            .await()
+            .map { json -> json.toDbRecord(json.toPairAssignmentDocument()) }
+            .maxByOrNull { it.data.document.date }
 
     private fun PairAssignmentDocument.toDbJsPairs() = pairs.map {
         json(
@@ -105,4 +110,5 @@ interface MongoPairAssignmentDocumentRepository : PairAssignmentDocumentReposito
 
     private fun List<PinnedPlayer>.toPairs() =
         PinnedCouplingPair(this)
+
 }

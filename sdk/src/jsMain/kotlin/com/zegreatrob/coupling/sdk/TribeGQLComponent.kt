@@ -17,6 +17,17 @@ enum class TribeGQLComponent(val value: String, val jsonPath: String) {
                 "pins {${pinJsonKeys.joinToString(",")}}" +
                 "}" +
                 "}", "/tribeData/pairAssignmentDocumentList"
+    ),
+    CurrentPairAssignmentDocument(
+        "currentPairAssignmentDocument {_id,date,modifyingUserEmail,timestamp," +
+                "pairs { " +
+                "players {" +
+                "${playerJsonKeys.joinToString(",")}, " +
+                "pins {${pinJsonKeys.joinToString(",")}}" +
+                "}" +
+                "pins {${pinJsonKeys.joinToString(",")}}" +
+                "}" +
+                "}", "/tribeData/currentPairAssignmentDocument"
     );
 }
 

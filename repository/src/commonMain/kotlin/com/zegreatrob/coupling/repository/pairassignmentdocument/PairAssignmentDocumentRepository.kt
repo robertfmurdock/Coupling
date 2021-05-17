@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface PairAssignmentDocumentRepository : PairAssignmentDocumentSave,
     PairAssignmentDocumentGet,
+    PairAssignmentDocumentGetCurrent,
     PairAssignmentDocumentDelete
 
 interface PairAssignmentDocumentDelete {
@@ -16,6 +17,10 @@ interface PairAssignmentDocumentDelete {
 
 interface PairAssignmentDocumentGet {
     suspend fun getPairAssignments(tribeId: TribeId): List<TribeRecord<PairAssignmentDocument>>
+}
+
+interface PairAssignmentDocumentGetCurrent {
+    suspend fun getCurrentPairAssignments(tribeId: TribeId): TribeRecord<PairAssignmentDocument>?
 }
 
 interface PairAssignmentDocumentSave {
