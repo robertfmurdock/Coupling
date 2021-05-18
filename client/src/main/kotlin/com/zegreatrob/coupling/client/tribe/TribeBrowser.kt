@@ -4,20 +4,20 @@ import com.zegreatrob.coupling.client.configHeader
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.red
+import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
+import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
 import react.RBuilder
 import react.RProps
-import react.dom.div
-import react.dom.i
-import react.dom.span
+import react.dom.*
 import react.router.dom.routeLink
 import styled.css
 import styled.styledDiv
@@ -93,6 +93,7 @@ private fun RBuilder.notificationButton(open: Boolean) = styledDiv {
 private fun RBuilder.tribeControlButtons() = span(classes = styles["controlButtons"]) {
     tribeSelectButton()
     logoutButton()
+    gqlButton()
     notificationSection()
 }
 
@@ -100,6 +101,17 @@ private fun RBuilder.logoutButton() = routeLink(to = "/logout") {
     couplingButton(large, red, styles["logoutButton"]) {
         i(classes = "fa fa-sign-out-alt") {}
         span { +"Sign Out" }
+    }
+}
+
+private fun RBuilder.gqlButton() = a(href = "/api/graphql") {
+    couplingButton(large, white, styles["gqlButton"]) {
+        img(src = svgPath("graphql")) {
+            attrs {
+                height = "18"
+                width = "18"
+            }
+        }
     }
 }
 
