@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdHistorySyntax
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
@@ -13,12 +13,14 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-interface TribeIdLoadAllSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeIdHistorySyntax, TribeIdPinsSyntax {
-    suspend fun TribeId.loadAll() = coroutineScope {
+interface TribeIdLoadMostSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeIdPinsSyntax {
+    val pairAssignmentDocumentRepository: PairAssignmentDocumentGetCurrent
+
+    suspend fun TribeId.loadMost() = coroutineScope {
         await(
             async { get() },
             async { getPlayerList() },
-            async { loadHistory() },
+            async { pairAssignmentDocumentRepository.getCurrentPairAssignments(this@loadMost)?.data?.element },
             async { getPins() }
         )
     }
@@ -26,23 +28,18 @@ interface TribeIdLoadAllSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeId
     private suspend fun await(
         tribeDeferred: Deferred<Tribe?>,
         playerListDeferred: Deferred<List<Player>>,
-        historyDeferred: Deferred<List<PairAssignmentDocument>>,
+        currentPairsDeferred: Deferred<PairAssignmentDocument?>,
         pinListDeferred: Deferred<List<Pin>>
-    ): TribeData? {
-        return awaitTribeData(
-            (tribeDeferred.await() ?: return null),
-            playerListDeferred,
-            historyDeferred,
-            pinListDeferred
-        )
+    ) = tribeDeferred.await()?.let { tribe ->
+        awaitTribeData(tribe, playerListDeferred, currentPairsDeferred, pinListDeferred)
     }
 
     suspend fun awaitTribeData(
         tribe: Tribe,
         playerListDeferred: Deferred<List<Player>>,
-        historyDeferred: Deferred<List<PairAssignmentDocument>>,
+        historyDeferred: Deferred<PairAssignmentDocument?>,
         pinListDeferred: Deferred<List<Pin>>
-    ) = TribeData(
+    ) = TribeDataMost(
         tribe,
         playerListDeferred.await(),
         historyDeferred.await(),
@@ -50,10 +47,9 @@ interface TribeIdLoadAllSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeId
     )
 }
 
-data class TribeData(
+data class TribeDataMost(
     val tribe: Tribe,
     val playerList: List<Player>,
-    val history: List<PairAssignmentDocument>,
+    val currentPairDocument: PairAssignmentDocument?,
     val pinList: List<Pin>
 )
-

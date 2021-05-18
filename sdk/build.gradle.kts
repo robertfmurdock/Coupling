@@ -134,7 +134,7 @@ tasks {
             appConfiguration
         )
         inputs.file(projectDir.path + "/endpoint-wrapper.js")
-        inputs.files(appConfiguration)
+        inputs.files(appConfiguration, testLoggingLib)
 
         outputs.dir("build/test-results/jsTest")
 

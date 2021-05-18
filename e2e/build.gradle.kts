@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
@@ -96,9 +95,13 @@ tasks {
             clientConfiguration,
             testLoggingLib
         )
+        inputs.files(
+            appConfiguration,
+            clientConfiguration,
+            testLoggingLib
+        )
         inputs.files(compileProductionExecutableKotlinJs.outputs.files)
         inputs.files(compileE2eTestProductionExecutableKotlinJs.outputs.files)
-        inputs.files(project.file(pathToNodeApp).parent)
         inputs.files(wdioConfig)
         outputs.dir("${project.buildDir}/reports/e2e")
 
