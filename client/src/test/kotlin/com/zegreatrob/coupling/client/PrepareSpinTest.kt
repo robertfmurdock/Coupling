@@ -38,11 +38,10 @@ class PrepareSpinTest {
     fun whenSelectedPinIsClickedWillDeselectPin() = setup(object {
         val tribe = stubTribe()
         val players = emptyList<Player>()
-        val history = emptyList<PairAssignmentDocument>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins, StubDispatchFunc()))
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, null, pins, StubDispatchFunc()))
     }) exercise {
         wrapper.findByClass(styles["selectedPins"])
             .findPinButtonPropsFor(firstPin)
@@ -57,11 +56,10 @@ class PrepareSpinTest {
     fun whenDeselectedPinIsClickedWillSelectPin() = setup(object {
         val tribe = stubTribe()
         val players = emptyList<Player>()
-        val history = emptyList<PairAssignmentDocument>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, pins, StubDispatchFunc()))
+        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, null, pins, StubDispatchFunc()))
 
         init {
             wrapper.findByClass(styles["selectedPins"])
@@ -83,9 +81,9 @@ class PrepareSpinTest {
     fun whenThereIsNoHistoryAllPlayersWillDefaultToDeselected() = setup(object {
         val tribe = stubTribe()
         val players = stubPlayers(3)
-        val history = emptyList<PairAssignmentDocument>()
+        val currentPairs = null
     }) exercise {
-        shallow(PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc()))
+        shallow(PrepareSpin, PrepareSpinProps(tribe, players, currentPairs, emptyList(), StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find(PlayerCard).map { it.props().deselected.assertIsEqualTo(true) }
     }
@@ -94,9 +92,9 @@ class PrepareSpinTest {
     fun whenTheAllButtonIsClickedAllPlayersBecomeSelected() = setup(object {
         val tribe = stubTribe()
         val players = stubPlayers(3)
-        val history = emptyList<PairAssignmentDocument>()
+        val currentPairs = null
         val wrapper = shallow(
-            PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc())
+            PrepareSpin, PrepareSpinProps(tribe, players, currentPairs, emptyList(), StubDispatchFunc())
         )
     }) exercise {
         wrapper.find(CouplingButton).map { it.props() }
@@ -110,14 +108,13 @@ class PrepareSpinTest {
     fun whenTheNoneButtonIsClickedAllPlayersBecomeDeselected() = setup(object {
         val tribe = stubTribe()
         val players = stubPlayers(3)
-        val history = listOf(
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime.now(),
-                pairs = players.map { pairOf(it).withPins(emptyList()) })
+        val currentPairs = PairAssignmentDocument(
+            id = PairAssignmentDocumentId("${uuid4()}"),
+            date = DateTime.now(),
+            pairs = players.map { pairOf(it).withPins(emptyList()) }
         )
         val wrapper = shallow(
-            PrepareSpin, PrepareSpinProps(tribe, players, history, emptyList(), StubDispatchFunc())
+            PrepareSpin, PrepareSpinProps(tribe, players, currentPairs, emptyList(), StubDispatchFunc())
         )
     }) exercise {
         wrapper.find(CouplingButton).map { it.props() }

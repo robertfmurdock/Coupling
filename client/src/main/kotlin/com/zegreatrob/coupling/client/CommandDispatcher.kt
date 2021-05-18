@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.TribeCurrentDataQueryDispatcher
-import com.zegreatrob.coupling.client.pairassignments.TribeDataSetQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryQueryDispatcher
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.TribePinListQueryDispatcher
@@ -31,7 +30,6 @@ class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: Repositor
     PlayerConfigDispatcher,
     TribeConfigDispatcher,
     RepositoryCatalog by repositoryCatalog,
-    TribeDataSetQueryDispatcher,
     TribeCurrentDataQueryDispatcher,
     HistoryQueryDispatcher,
     RetiredPlayerQueryDispatcher,

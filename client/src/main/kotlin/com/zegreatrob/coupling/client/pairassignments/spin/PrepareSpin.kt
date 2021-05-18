@@ -38,15 +38,15 @@ import styled.styledDiv
 data class PrepareSpinProps(
     val tribe: Tribe,
     val players: List<Player>,
-    val history: List<PairAssignmentDocument>,
+    val currentPairsDoc: PairAssignmentDocument?,
     val pins: List<Pin>,
     val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>
 ) : RProps
 
 private val styles = useStyles("PrepareSpin")
 
-val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, history, pins, dispatchFunc) ->
-    val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, history))
+val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
+    val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, currentPairsDoc))
     val (pinSelections, setPinSelections) = useState(pins.map { it.id })
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections, setRedirectUrl)
@@ -133,8 +133,8 @@ private fun RBuilder.pinSelectorDiv(children: RBuilder.() -> Unit) = styledDiv {
     children()
 }
 
-private fun defaultSelections(players: List<Player>, history: List<PairAssignmentDocument>) = players.map { player ->
-    player to isInLastSetOfPairs(player, history)
+private fun defaultSelections(players: List<Player>, currentPairsDoc: PairAssignmentDocument?) = players.map { player ->
+    player to isInLastSetOfPairs(player, currentPairsDoc)
 }
 
 fun RBuilder.selectAllButton(
@@ -267,10 +267,10 @@ private fun flipSelectionForPlayer(
 }
 
 
-private fun isInLastSetOfPairs(player: Player, history: List<PairAssignmentDocument>) = if (history.isEmpty())
-    false
-else history.first()
-    .pairs.map { it.players }
-    .flatten()
-    .map { it.player.id }
-    .contains(player.id)
+private fun isInLastSetOfPairs(player: Player, currentPairsDoc: PairAssignmentDocument?) = currentPairsDoc
+    ?.pairs
+    ?.map { it.players }
+    ?.flatten()
+    ?.map { it.player.id }
+    ?.contains(player.id)
+    ?: false

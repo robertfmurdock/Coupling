@@ -16,9 +16,8 @@ val NewPairAssignmentsPage = tribePageFunction { props, tribeId ->
 
 private fun dataLoadProps(tribeId: TribeId, commander: Commander) = dataLoadProps(
     commander = commander,
-    query = TribeDataSetQuery(tribeId),
-    toProps = { reload, commandFunc, (tribe, players, pairAssignments) ->
-        val controls = Controls(commandFunc, reload)
-        SocketedPairAssignmentsProps(tribe, players, pairAssignments.firstOrNull(), controls, true)
+    query = TribeCurrentDataQuery(tribeId),
+    toProps = { reload, commandFunc, (tribe, players, currentPairsDoc) ->
+        SocketedPairAssignmentsProps(tribe, players, currentPairsDoc, Controls(commandFunc, reload), true)
     }
 )
