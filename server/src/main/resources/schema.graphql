@@ -169,11 +169,17 @@ input PinnedPlayerInput {
     pins: [PinInput]!
 }
 
+"""
+All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
+"""
 type Query {
     tribeList: [Tribe]
     tribeData(id: String!): TribeData
 }
 
+"""
+All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
+"""
 type Mutation {
     spin(input: SpinInput!): SpinOutput!
     saveTribe(input: SaveTribeInput!): Boolean
