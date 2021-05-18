@@ -83,7 +83,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
 
     override suspend fun save(user: User) = performPutItem(user.toRecord().asDynamoJson())
 
-    override suspend fun getUser() = logAsync("getUser $userId") {
+    override suspend fun getUser() = logAsync("getUser") {
         performQuery(queryParams(userId))
             .itemsNode()
             .sortByRecordTimestamp()

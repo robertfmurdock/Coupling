@@ -46,4 +46,3 @@ class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: Repositor
     LoggingActionExecuteSyntax {
     override val sdk = SdkSingleton
 }
-
