@@ -90,6 +90,8 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
       AWS_PAGER: ""
     steps:
+      - attach_workspace:
+          at: ./
       - run: "./gradlew uploadToS3"
   notify-aws:
     docker:
