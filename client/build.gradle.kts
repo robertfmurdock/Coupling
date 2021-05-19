@@ -71,13 +71,14 @@ val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 tasks {
     val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class)
     val browserProductionWebpack by getting(KotlinWebpack::class)
+    val browserDistribution by getting {}
 
     artifacts {
         add(clientConfiguration.name, compileProductionExecutableKotlinJs.outputFile) {
             builtBy(compileProductionExecutableKotlinJs)
         }
         add(clientConfiguration.name, browserProductionWebpack.destinationDirectory) {
-            builtBy(browserProductionWebpack)
+            builtBy(browserProductionWebpack, browserDistribution)
         }
     }
 }

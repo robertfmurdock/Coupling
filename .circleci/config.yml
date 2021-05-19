@@ -68,7 +68,7 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - run: "./gradlew build"
-      - run: "./gradlew check"
+      - run: "./gradlew check release"
       - coupling-orb/collect-results
       - persist_to_workspace:
           root: ./

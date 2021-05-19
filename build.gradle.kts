@@ -4,6 +4,9 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.zegreatrob.coupling.build.JsonLoggingTestListener
+import de.gliderpilot.gradle.semanticrelease.SemanticReleaseChangeLogService
+import org.ajoberstar.gradle.git.release.semver.ChangeScope
+import org.ajoberstar.grgit.Commit
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -12,6 +15,13 @@ plugins {
     id("se.patrikerdes.use-latest-versions") version "0.2.16"
     id("com.github.ben-manes.versions") version "0.38.0"
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
+    id("de.gliderpilot.semantic-release") version "1.4.1"
+}
+
+semanticRelease {
+    changeLog(closureOf<SemanticReleaseChangeLogService> {
+        changeScope = KotlinClosure1<Commit, ChangeScope>({ ChangeScope.PATCH })
+    })
 }
 
 allprojects {
