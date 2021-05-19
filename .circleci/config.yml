@@ -83,6 +83,14 @@ jobs:
           key: coupling-cache-51-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
+  deploy-s3:
+    docker:
+      - image: mikesir87/aws-cli
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_PAGER: ""
+    steps:
+      - run: "./gradlew uploadToS3"
   notify-aws:
     docker:
       - image: mikesir87/aws-cli
@@ -139,9 +147,16 @@ workflows:
           filters:
             branches:
               only: master
+      - deploy-s3:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
       - notify-aws:
           requires:
             - deploy-prod
+            - deploy-s3
   update-client:
     triggers:
       - schedule:

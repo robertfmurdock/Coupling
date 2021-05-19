@@ -89,12 +89,14 @@ tasks {
         dockerFile.set(file("Dockerfile.prod"))
         remove.set(false)
         images.add("zegreatrob/coupling:latest")
+        images.add("zegreatrob/coupling:${version}")
     }
 
     val pushProductionImage by creating(DockerPushImage::class) {
         mustRunAfter("buildProductionImage")
         images.add("zegreatrob/coupling:latest")
     }
+
 }
 
 buildtimetracker {

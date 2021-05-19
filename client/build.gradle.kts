@@ -81,4 +81,8 @@ tasks {
             builtBy(browserProductionWebpack, browserDistribution)
         }
     }
+    create<Exec>("uploadToS3") {
+        commandLine = "aws s3 sync ${browserProductionWebpack.destinationDirectory.absolutePath} s3://coupling-client/${version}"
+                .split(" ")
+    }
 }
