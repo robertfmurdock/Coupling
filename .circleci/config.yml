@@ -67,9 +67,10 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew :server:check"
-      - run: "./gradlew :client:check"
-      - run: "./gradlew build release"
+      - run: "./gradlew clean"
+      - run: "./gradlew :repository:dynamo:check :server:check"
+      - run: "./gradlew :repository:memory:check :client:check"
+      - run: "./gradlew build check release"
       - coupling-orb/collect-results
       - persist_to_workspace:
           root: ./
