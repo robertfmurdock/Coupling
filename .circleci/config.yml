@@ -26,8 +26,6 @@ orbs:
               echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
           - browser-tools/install-chrome
           - browser-tools/install-chromedriver
-          - run: "./gradlew kotlinNodeJsSetup"
-          - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall --no-daemon"
           - run: docker-compose up -d dynamo
       collect-results:
         steps:
@@ -56,10 +54,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-51-{{ .Branch }}
+          key: coupling-cache-52-{{ .Branch }}
       - coupling-orb/setup
       - save_cache:
-          key: coupling-cache-51-{{ .Branch }}
+          key: coupling-cache-52-{{ .Branch }}
           paths:
             - "~/.gradle"
             - "~/.cache"
@@ -80,7 +78,7 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-51-{{ .Branch }}
+          key: coupling-cache-52-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   deploy-s3:
@@ -106,7 +104,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-51-{{ .Branch }}
+          key: coupling-cache-52-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
       - run: "./gradlew build"
@@ -118,7 +116,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-51-{{ .Branch }}
+          key: coupling-cache-52-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
@@ -131,7 +129,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-51-{{ .Branch }}
+          key: coupling-cache-52-{{ .Branch }}
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
       - run: "./gradlew build"
