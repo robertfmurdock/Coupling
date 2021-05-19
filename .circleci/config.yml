@@ -67,8 +67,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew build"
-      - run: "./gradlew check release"
+      - run: "./gradlew build release"
       - coupling-orb/collect-results
       - persist_to_workspace:
           root: ./
@@ -101,7 +100,6 @@ jobs:
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
       - run: "./gradlew build"
-      - run: "./gradlew check"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
           update_type: client dependency
@@ -115,7 +113,6 @@ jobs:
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
       - run: "./gradlew build"
-      - run: "./gradlew check"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
           update_type: server dependency
@@ -128,7 +125,6 @@ jobs:
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
       - run: "./gradlew build"
-      - run: "./gradlew check"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
           update_type: gradle dependency
