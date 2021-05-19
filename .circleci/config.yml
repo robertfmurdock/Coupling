@@ -11,6 +11,8 @@ orbs:
         environment:
           COUPLING_IN_MEMORY: "true"
           SKIP_MONGO_TESTS: "true"
+          JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
+          GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
     commands:
       setup:
         steps:
