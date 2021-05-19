@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@graphql-tools/schema": "^7.1.5",
-    "aws-sdk": "2.907.0",
+    "aws-sdk": "2.909.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
@@ -38,7 +38,7 @@
     "passport-local": "^1.0.0",
     "raw-loader": "^4.0.2",
     "webpack-cli": "^4.7.0",
-    "webpack": "^5.37.0",
+    "webpack": "^5.37.1",
     "webpack-node-externals": "^3.0.0",
     "source-map-loader": "^2.0.2",
     "ws": "^7.4.5"
