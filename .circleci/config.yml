@@ -86,22 +86,18 @@ jobs:
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
   deploy-s3:
-    docker:
-      - image: mikesir87/aws-cli
-    environment:
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_PAGER: ""
+    executor: coupling-orb/standard
     steps:
+      - aws-cli/setup:
+          aws-region: us-east-1
       - attach_workspace:
           at: ./
       - run: "./gradlew uploadToS3"
   notify-aws:
-    docker:
-      - image: mikesir87/aws-cli
-    environment:
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_PAGER: ""
+    executor: coupling-orb/standard
     steps:
+      - aws-cli/setup:
+          aws-region: us-east-1
       - run: "aws ecs update-service --service Coupling-service --force-new-deployment --no-paginate"
   update-client:
     executor: coupling-orb/standard
