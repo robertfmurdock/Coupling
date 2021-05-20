@@ -28,6 +28,8 @@ orbs:
               echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
           - browser-tools/install-chrome
           - browser-tools/install-chromedriver
+          - run: "./gradlew kotlinNodeJsSetup"
+          - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson kotlinNpmInstall --no-daemon"
           - run: docker-compose up -d dynamo
       collect-results:
         steps:
@@ -56,10 +58,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-52-{{ .Branch }}
+          key: coupling-cache-53-{{ .Branch }}
       - coupling-orb/setup
       - save_cache:
-          key: coupling-cache-52-{{ .Branch }}
+          key: coupling-cache-53-{{ .Branch }}
           paths:
             - "~/.gradle"
             - "~/.cache"
@@ -67,11 +69,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew clean"
-      - run: "./gradlew :repository:memory:check :client:check"
-      - run: "./gradlew :repository:dynamo:check :server:check :sdk:check"
-      - run: "./gradlew :repository:dynamo:check :client:check :e2e:check"
-      - run: "./gradlew build check release"
+      - run: "./gradlew build release"
       - coupling-orb/collect-results
       - persist_to_workspace:
           root: ./
@@ -84,19 +82,9 @@ jobs:
       - attach_workspace:
           at: ./
       - restore_cache:
-          key: coupling-cache-52-{{ .Branch }}
+          key: coupling-cache-53-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
-  deploy-s3:
-    docker:
-      - image: mikesir87/aws-cli
-    environment:
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_PAGER: ""
-    steps:
-      - attach_workspace:
-          at: ./
-      - run: "./gradlew uploadToS3"
   notify-aws:
     docker:
       - image: mikesir87/aws-cli
@@ -110,7 +98,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-52-{{ .Branch }}
+          key: coupling-cache-53-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
       - run: "./gradlew build"
@@ -122,7 +110,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-52-{{ .Branch }}
+          key: coupling-cache-53-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
@@ -135,7 +123,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: coupling-cache-52-{{ .Branch }}
+          key: coupling-cache-53-{{ .Branch }}
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
       - run: "./gradlew build"
@@ -153,16 +141,9 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy-s3:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
       - notify-aws:
           requires:
             - deploy-prod
-            - deploy-s3
   update-client:
     triggers:
       - schedule:

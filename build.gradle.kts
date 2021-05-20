@@ -96,7 +96,6 @@ tasks {
         mustRunAfter("buildProductionImage")
         images.add("zegreatrob/coupling:latest")
     }
-
 }
 
 buildtimetracker {
