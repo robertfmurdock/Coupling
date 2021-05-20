@@ -14,6 +14,7 @@ orbs:
           SKIP_MONGO_TESTS: "true"
           JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
           GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
+          AWS_DEFAULT_REGION: us-east-1
     commands:
       setup:
         steps:
@@ -70,7 +71,8 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew build release"
+      - aws-cli/setup
+      - run: "./gradlew build release uploadToS3"
       - coupling-orb/collect-results
       - persist_to_workspace:
           root: ./
@@ -86,15 +88,6 @@ jobs:
           key: coupling-cache-53-{{ .Branch }}
       - setup_remote_docker
       - run: "./gradlew buildProductionImage pushProductionImage"
-  deploy-s3:
-    executor: coupling-orb/standard
-    environment:
-      AWS_DEFAULT_REGION: us-east-1
-    steps:
-      - aws-cli/setup
-      - attach_workspace:
-          at: ./
-      - run: "./gradlew uploadToS3"
   notify-aws:
     executor: coupling-orb/standard
     environment:
@@ -150,16 +143,9 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy-s3:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
       - notify-aws:
           requires:
             - deploy-prod
-            - deploy-s3
   update-client:
     triggers:
       - schedule:
