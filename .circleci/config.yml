@@ -88,17 +88,19 @@ jobs:
       - run: "./gradlew buildProductionImage pushProductionImage"
   deploy-s3:
     executor: coupling-orb/standard
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
     steps:
-      - aws-cli/setup:
-          aws-region: us-east-1
+      - aws-cli/setup
       - attach_workspace:
           at: ./
       - run: "./gradlew uploadToS3"
   notify-aws:
     executor: coupling-orb/standard
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
     steps:
-      - aws-cli/setup:
-          aws-region: us-east-1
+      - aws-cli/setup
       - run: "aws ecs update-service --service Coupling-service --force-new-deployment --no-paginate"
   update-client:
     executor: coupling-orb/standard
