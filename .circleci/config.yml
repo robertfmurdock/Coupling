@@ -70,7 +70,7 @@ jobs:
       - run: "./gradlew clean"
       - run: "./gradlew :repository:memory:check :client:check"
       - run: "./gradlew :repository:dynamo:check :server:check :sdk:check"
-      - run: "./gradlew :e2e:check"
+      - run: "./gradlew :repository:dynamo:check :e2e:check"
       - run: "./gradlew build check release"
       - coupling-orb/collect-results
       - persist_to_workspace:
