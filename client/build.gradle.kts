@@ -82,7 +82,7 @@ tasks {
         }
     }
     create<Exec>("uploadToS3") {
-        commandLine = "aws s3 sync ${browserProductionWebpack.destinationDirectory.absolutePath} s3://coupling-client/${version}"
+        commandLine = "aws s3 sync ${browserProductionWebpack.destinationDirectory.absolutePath} s3://assets.zegreatrob.com/coupling/${version}"
                 .split(" ")
     }
 }
