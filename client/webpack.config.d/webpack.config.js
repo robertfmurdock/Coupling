@@ -5,7 +5,13 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+
 let resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
+
+if (config.entry && config.entry.main) {
+    config.entry.main = [path.resolve(resourcesPath, "com/zegreatrob/coupling/client/app.js")].concat(config.entry.main);
+}
+
 
 if (config.output)
     config.output.publicPath = '/app/build/'
@@ -42,7 +48,7 @@ config.externals = {"cheerio": "window"}
 
 if (config.devServer) {
     config.devServer.port = 3001
-    // config.devServer.publicPath = '/app/build'
+    config.devServer.publicPath = '/app/build'
     config.devServer.hot = true
     config.devServer.historyApiFallback = {index: 'index.html'}
     let distributionPath = path.resolve(__dirname, '../../../../client/build/distributions');
