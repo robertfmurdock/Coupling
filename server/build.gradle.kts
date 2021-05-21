@@ -123,7 +123,12 @@ tasks {
         dependsOn(assemble, clientConfiguration)
         nodeExec(compileKotlinJs, listOf(project.relativePath("startup")))
         environment("NODE_ENV", "production")
-        environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
+        environment(
+            "CLIENT_PATH",
+            System.getenv("CLIENT_PATH")
+                ?.let { if (it.isEmpty()) null else it }
+                ?: "${file("${rootProject.rootDir.absolutePath}/client/build/distributions")}"
+        )
     }
 
     artifacts {

@@ -18,5 +18,5 @@ object Config {
     val AUTH0_CLIENT_SECRET = Process.getEnv("AUTH0_CLIENT_SECRET") ?: "sigh"
     val AUTH0_CALLBACK_URL get() = "${Process.getEnv("PUBLIC_URL") ?: "http://localhost:3000"}/auth/signin-auth0"
 
-    val clientPath = Process.getEnv("CLIENT_PATH") ?: "/no-client-path-found"
+    val clientPath = Process.getEnv("CLIENT_PATH")?.ifEmpty { null } ?: "/no-client-path-found"
 }

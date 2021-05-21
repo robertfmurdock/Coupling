@@ -42,7 +42,7 @@ config.externals = {"cheerio": "window"}
 
 if (config.devServer) {
     config.devServer.port = 3001
-    config.devServer.publicPath = '/app/build'
+    // config.devServer.publicPath = '/app/build'
     config.devServer.hot = true
     config.devServer.historyApiFallback = {index: 'index.html'}
     let distributionPath = path.resolve(__dirname, '../../../../client/build/distributions');

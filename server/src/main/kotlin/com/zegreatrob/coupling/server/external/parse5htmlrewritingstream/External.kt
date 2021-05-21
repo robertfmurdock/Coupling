@@ -14,5 +14,13 @@ external class RewritingStream : Stream {
 }
 
 external interface Tag {
+    var attrs: Array<Attribute>
     val tagName: String
+}
+
+external interface Attribute {
+    val name: String
+    val namespace: String
+    var value: String
+    val prefix: String
 }
