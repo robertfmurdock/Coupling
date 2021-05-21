@@ -19,7 +19,15 @@ object DynamoDbProvider : DynamoDBSyntax {
         return if (!localDynamo && secret != null) {
             json
         } else
-            json.add(json("endpoint" to "http://localhost:8000"))
+            json.add(
+                json(
+                    "endpoint" to "http://localhost:8000",
+                    "credentials" to json(
+                        "accessKeyId" to "lol",
+                        "secretAccessKey" to "lol"
+                    )
+                )
+            )
     }
 
     override val documentClient: DocumentClient by lazy {
