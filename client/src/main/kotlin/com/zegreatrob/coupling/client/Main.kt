@@ -7,6 +7,8 @@ fun main() {
     if (isTestRun())
         return
 
+    js("__webpack_public_path__ = window.webpackPublicPath;")
+
     js("require('prefixfree')")
     js("require('com/zegreatrob/coupling/client/animations.css')")
     js("require('@fortawesome/fontawesome-free/css/all.css')")
