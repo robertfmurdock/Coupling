@@ -5,8 +5,7 @@ WORKDIR /usr/src/app/server
 ENV \
   PUBLIC_HOST=web \
   NODE_ENV=production \
-  NODE_PATH=/usr/src/app/server/build/node_modules:/usr/src/app/server/build/packages:/usr/src/app/server/build/packages_imported \
-  CLIENT_PATH=/usr/src/app/client
+  NODE_PATH=/usr/src/app/server/build/node_modules:/usr/src/app/server/build/packages:/usr/src/app/server/build/packages_imported
 
 COPY build/js/node_modules /usr/src/app/server/build/node_modules
 COPY build/js/packages /usr/src/app/server/build/packages
@@ -18,6 +17,9 @@ RUN yarn install --production
 COPY server/startup.js /usr/src/app/server
 COPY server/build/executable /usr/src/app/server/build/executable
 COPY client/build/distributions /usr/src/app/client
+
+ARG ASSETS_PATH /usr/src/app/client
+ENV CLIENT_PATH $ASSETS_PATH
 
 CMD ["node", "./startup.js"]
 EXPOSE 3000 8125

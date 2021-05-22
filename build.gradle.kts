@@ -1,4 +1,3 @@
-
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
@@ -26,7 +25,7 @@ semanticRelease {
 
 allprojects {
     apply(plugin = "se.patrikerdes.use-latest-versions")
-    apply(plugin = "com.github.ben-manes.versions")    
+    apply(plugin = "com.github.ben-manes.versions")
     repositories {
         mavenCentral()
         maven { url = uri("https://kotlin.bintray.com/kotlinx") }
@@ -90,6 +89,10 @@ tasks {
         remove.set(false)
         images.add("zegreatrob/coupling:latest")
         images.add("zegreatrob/coupling:${version}")
+
+        if(!version.toString().contains("SNAPSHOT")) {
+            buildArgs.put("ASSETS_PATH", "https://assets.zegreatrob.com/coupling/${version}")
+        }
     }
 
     val pushProductionImage by creating(DockerPushImage::class) {
