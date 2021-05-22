@@ -72,7 +72,6 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - aws-cli/setup
-      - setup_remote_docker
       - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage"
       - coupling-orb/collect-results
       - persist_to_workspace:
