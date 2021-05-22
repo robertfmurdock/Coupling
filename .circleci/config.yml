@@ -57,6 +57,8 @@ orbs:
 jobs:
   build:
     executor: coupling-orb/standard
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
     steps:
       - checkout
       - restore_cache:
@@ -73,14 +75,8 @@ jobs:
             - "/root/.konan"
       - aws-cli/setup
       - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage --no-parallel"
-      - coupling-orb/collect-results
-  notify-aws:
-    executor: coupling-orb/standard
-    environment:
-      AWS_DEFAULT_REGION: us-east-1
-    steps:
-      - aws-cli/setup
       - run: "aws ecs update-service --service Coupling-service --force-new-deployment --no-paginate"
+      - coupling-orb/collect-results
   update-client:
     executor: coupling-orb/standard
     steps:
