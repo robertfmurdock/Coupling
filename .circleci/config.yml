@@ -72,7 +72,7 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - aws-cli/setup
-      - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage"
+      - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage --no-parallel"
       - coupling-orb/collect-results
       - persist_to_workspace:
           root: ./
