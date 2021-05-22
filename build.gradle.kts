@@ -77,6 +77,14 @@ docker {
     }
 }
 
+val appConfiguration: Configuration by configurations.creating {
+    attributes {
+        attribute(org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.jsCompilerAttribute, org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.ir)
+        attribute(org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.ATTRIBUTE, org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.PUBLIC_VALUE)
+        attribute(org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.attribute, org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.js)
+    }
+}
+
 tasks {
     val pullProductionImage by creating(DockerPullImage::class) {
         image.set("zegreatrob/coupling:latest")
@@ -84,6 +92,7 @@ tasks {
 
     val buildProductionImage by creating(DockerBuildImage::class) {
         mustRunAfter("pullProductionImage")
+        dependsOn(appConfiguration)
         inputDir.set(file("./"))
         dockerFile.set(file("Dockerfile.prod"))
         remove.set(false)
@@ -92,6 +101,8 @@ tasks {
 
         if(!version.toString().contains("SNAPSHOT")) {
             buildArgs.put("ASSETS_PATH", "https://assets.zegreatrob.com/coupling/${version}")
+        } else {
+            buildArgs.put("ASSETS_PATH", System.getenv("CLIENT_PATH"))
         }
     }
 

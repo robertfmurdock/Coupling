@@ -74,10 +74,6 @@ jobs:
       - aws-cli/setup
       - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage --no-parallel"
       - coupling-orb/collect-results
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - "*"
   notify-aws:
     executor: coupling-orb/standard
     environment:
