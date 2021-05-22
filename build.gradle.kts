@@ -95,6 +95,7 @@ tasks {
     val pushProductionImage by creating(DockerPushImage::class) {
         mustRunAfter("buildProductionImage")
         images.add("zegreatrob/coupling:latest")
+        images.add("zegreatrob/coupling:${version}")
     }
 }
 

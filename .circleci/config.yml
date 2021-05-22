@@ -72,22 +72,13 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - aws-cli/setup
-      - run: "./gradlew build release uploadToS3"
+      - setup_remote_docker
+      - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage"
       - coupling-orb/collect-results
       - persist_to_workspace:
           root: ./
           paths:
             - "*"
-  deploy-prod:
-    docker:
-      - image: openjdk:13-jdk
-    steps:
-      - attach_workspace:
-          at: ./
-      - restore_cache:
-          key: coupling-cache-53-{{ .Branch }}
-      - setup_remote_docker
-      - run: "./gradlew buildProductionImage pushProductionImage"
   notify-aws:
     executor: coupling-orb/standard
     environment:
@@ -137,15 +128,9 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - deploy-prod:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
       - notify-aws:
           requires:
-            - deploy-prod
+            - build
   update-client:
     triggers:
       - schedule:
