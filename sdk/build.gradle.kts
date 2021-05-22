@@ -36,7 +36,7 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":repository"))
-                implementation("com.zegreatrob.testmints:minjson:4.0.7")
+                implementation("com.zegreatrob.testmints:minjson:4.0.12")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
