@@ -119,9 +119,6 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - notify-aws:
-          requires:
-            - build
   update-client:
     triggers:
       - schedule:

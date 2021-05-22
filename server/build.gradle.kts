@@ -127,7 +127,7 @@ tasks {
         environment(
             "CLIENT_PATH",
             System.getenv("CLIENT_PATH")
-                ?.let { if (it.isEmpty()) null else it }
+                ?.let { it.ifEmpty { null } }
                 ?: "${file("${rootProject.rootDir.absolutePath}/client/build/distributions")}"
         )
     }
