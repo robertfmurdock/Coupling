@@ -102,7 +102,7 @@ tasks {
         if(!version.toString().contains("SNAPSHOT")) {
             buildArgs.put("ASSETS_PATH", "https://assets.zegreatrob.com/coupling/${version}")
         } else {
-            buildArgs.put("ASSETS_PATH", System.getenv("CLIENT_PATH"))
+            buildArgs.put("ASSETS_PATH", System.getenv("CLIENT_PATH") ?: "")
         }
     }
 
