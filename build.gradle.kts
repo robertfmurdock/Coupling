@@ -79,9 +79,18 @@ docker {
 
 val appConfiguration: Configuration by configurations.creating {
     attributes {
-        attribute(org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.jsCompilerAttribute, org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.ir)
-        attribute(org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.ATTRIBUTE, org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.PUBLIC_VALUE)
-        attribute(org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.attribute, org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.js)
+        attribute(
+            org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.jsCompilerAttribute,
+            org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.ir
+        )
+        attribute(
+            org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.ATTRIBUTE,
+            org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.PUBLIC_VALUE
+        )
+        attribute(
+            org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.attribute,
+            org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.js
+        )
     }
 }
 
@@ -99,7 +108,7 @@ tasks {
         images.add("zegreatrob/coupling:latest")
         images.add("zegreatrob/coupling:${version}")
 
-        if(!version.toString().contains("SNAPSHOT")) {
+        if (!version.toString().contains("SNAPSHOT")) {
             buildArgs.put("ASSETS_PATH", "https://assets.zegreatrob.com/coupling/${version}")
         } else {
             buildArgs.put("ASSETS_PATH", System.getenv("CLIENT_PATH") ?: "")
@@ -110,6 +119,18 @@ tasks {
         mustRunAfter("buildProductionImage")
         images.add("zegreatrob/coupling:latest")
         images.add("zegreatrob/coupling:${version}")
+        if (version.toString().contains("SNAPSHOT")) {
+            enabled = false
+        }
+    }
+
+    create<Exec>("forceEcsDeployment") {
+        mustRunAfter("pushProductionImage")
+        if (version.toString().contains("SNAPSHOT")) {
+            enabled = false
+        }
+        commandLine = "aws ecs update-service --service Coupling-service --force-new-deployment --no-paginate"
+            .split(" ")
     }
 }
 

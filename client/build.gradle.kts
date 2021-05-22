@@ -82,6 +82,9 @@ tasks {
         }
     }
     create<Exec>("uploadToS3") {
+        if (version.toString().contains("SNAPSHOT")) {
+            enabled = false
+        }
         commandLine = "aws s3 sync ${browserProductionWebpack.destinationDirectory.absolutePath} s3://assets.zegreatrob.com/coupling/${version}"
                 .split(" ")
     }
