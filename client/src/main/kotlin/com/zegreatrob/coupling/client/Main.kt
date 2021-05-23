@@ -1,13 +1,14 @@
 package com.zegreatrob.coupling.client
 
+import kotlinext.js.require
 import kotlin.js.Json
 import kotlin.js.json
 
 fun main() {
     if (isTestRun())
         return
-    js("require('com/zegreatrob/coupling/client/animations.css')")
-    js("require('@fortawesome/fontawesome-free/css/all.css')")
+    require("com/zegreatrob/coupling/client/animations.css")
+    require("@fortawesome/fontawesome-free/css/all.css")
 
     configureDragDropWebkitMobile()
 
@@ -15,6 +16,6 @@ fun main() {
 }
 
 private fun configureDragDropWebkitMobile() {
-    val ddwm = kotlinext.js.require("drag-drop-webkit-mobile").unsafeCast<(Json) -> Unit>()
+    val ddwm = require("drag-drop-webkit-mobile").unsafeCast<(Json) -> Unit>()
     ddwm(json("enableEnterLeave" to true))
 }

@@ -1,3 +1,4 @@
+
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
@@ -6,6 +7,9 @@ import com.zegreatrob.coupling.build.JsonLoggingTestListener
 import de.gliderpilot.gradle.semanticrelease.SemanticReleaseChangeLogService
 import org.ajoberstar.gradle.git.release.semver.ChangeScope
 import org.ajoberstar.grgit.Commit
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
+import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
+import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -80,16 +84,16 @@ docker {
 val appConfiguration: Configuration by configurations.creating {
     attributes {
         attribute(
-            org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.jsCompilerAttribute,
-            org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.ir
+            KotlinJsCompilerAttribute.jsCompilerAttribute,
+            KotlinJsCompilerAttribute.ir
         )
         attribute(
-            org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.ATTRIBUTE,
-            org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.PUBLIC_VALUE
+            ProjectLocalConfigurations.ATTRIBUTE,
+            ProjectLocalConfigurations.PUBLIC_VALUE
         )
         attribute(
-            org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.attribute,
-            org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.js
+            KotlinPlatformType.attribute,
+            KotlinPlatformType.js
         )
     }
 }
