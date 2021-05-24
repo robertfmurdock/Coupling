@@ -15,7 +15,7 @@ type Tribe {
 }
 
 type Pin {
-    _id: String!
+    id: String!
     icon: String
     name: String
     modifyingUserEmail: String
@@ -82,7 +82,7 @@ input PlayerInput {
 }
 
 input PinInput {
-    _id: String!
+    id: String!
     icon: String
     name: String
 }

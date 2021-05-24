@@ -17,13 +17,13 @@ object Mutations {
                                 callSignNoun
                                 imageURL
                                 pins {
-                                    _id
+                                    id
                                     icon
                                     name
                                 }
                             }
                             pins {
-                                _id
+                                id
                                 icon
                                 name
                             }

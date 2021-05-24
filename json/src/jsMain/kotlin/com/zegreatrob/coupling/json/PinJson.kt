@@ -12,7 +12,7 @@ fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
     .toTypedArray()
 
 fun Pin.toJson() =
-    json("_id" to id, "name" to name, "icon" to icon)
+    json("id" to id, "name" to name, "icon" to icon)
 
 fun List<Record<TribeIdPin>>.toJsonArray() = map { it.toJson().add(it.data.pin.toJson()) }
     .toTypedArray()
@@ -20,7 +20,7 @@ fun List<Record<TribeIdPin>>.toJsonArray() = map { it.toJson().add(it.data.pin.t
 fun Array<Json>.toPins() = map { it.toPin() }
 
 fun Json.toPin() = Pin(
-    id = this["_id"]?.toString(),
+    id = this["id"]?.toString() ?: this["_id"]?.toString(),
     name = this["name"]?.toString() ?: defaultPin.name,
     icon = this["icon"]?.toString() ?: defaultPin.icon
 )
