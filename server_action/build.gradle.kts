@@ -18,7 +18,7 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":action"))
-                api(project(":repository"))
+                api(project(":repository-core"))
                 api("com.zegreatrob.testmints:action:4.0.12")
                 api("com.zegreatrob.testmints:action-async:4.0.12")
                 implementation("com.benasher44:uuid:0.3.0")

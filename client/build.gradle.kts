@@ -32,7 +32,7 @@ dependencies {
     implementation(project(":sdk"))
     implementation(project(":action"))
     implementation(project(":logging"))
-    implementation(project(":repository:memory"))
+    implementation(project(":repository-memory"))
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
     }
@@ -85,7 +85,47 @@ tasks {
         if (version.toString().contains("SNAPSHOT")) {
             enabled = false
         }
-        commandLine = "aws s3 sync ${browserProductionWebpack.destinationDirectory.absolutePath} s3://assets.zegreatrob.com/coupling/${version}"
+        commandLine =
+            "aws s3 sync ${browserProductionWebpack.destinationDirectory.absolutePath} s3://assets.zegreatrob.com/coupling/${version}"
                 .split(" ")
+    }
+
+    val dependencyResources by creating(Copy::class) {
+        dependsOn(configurations["jsDefault"])
+        duplicatesStrategy = DuplicatesStrategy.WARN
+        into("$buildDir/processedResources/js/main")
+        from({
+            configurations["jsDefault"].files.map {
+                if (!it.isFile || !it.name.endsWith(".klib")) {
+                    null
+                } else {
+                    zipTree(it).matching {
+                        exclude(
+                            "default",
+                            "default/**/*",
+                            "kotlin",
+                            "kotlin/**/*",
+                            "kotlin-test",
+                            "kotlin-test/**/*",
+                            "META-INF",
+                            "META-INF/**/*",
+                            "org",
+                            "org/**/*",
+                            "kotlin.js",
+                            "kotlin.js.map",
+                            "kotlin.meta.js",
+                            "kotlin-test.js",
+                            "kotlin-test.js.map",
+                            "kotlin-test.meta.js",
+                            "package.json",
+                        )
+                    }
+                }
+            }
+        })
+    }
+
+    val processResources by getting {
+        dependsOn(dependencyResources)
     }
 }

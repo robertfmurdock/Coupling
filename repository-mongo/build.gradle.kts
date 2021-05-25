@@ -26,7 +26,7 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 api(project(":model"))
-                api(project(":repository"))
+                api(project(":repository-core"))
                 implementation("com.benasher44:uuid:0.3.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
@@ -35,7 +35,7 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                api(project(":repository:validation"))
+                api(project(":repository-validation"))
                 api(project(":stub-model"))
                 implementation("com.zegreatrob.testmints:standard:4.0.12")
                 implementation("com.zegreatrob.testmints:minassert:4.0.12")

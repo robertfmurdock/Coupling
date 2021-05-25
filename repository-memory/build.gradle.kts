@@ -17,13 +17,16 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":model"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+                implementation(project(":model"))
+                implementation(project(":repository-core"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+                implementation("com.benasher44:uuid:0.3.0")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
+                implementation(project(":repository-validation"))
                 implementation("com.zegreatrob.testmints:standard:4.0.12")
                 implementation("com.zegreatrob.testmints:minassert:4.0.12")
                 implementation("org.jetbrains.kotlin:kotlin-test")
@@ -33,7 +36,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
             }
         }
 
@@ -48,6 +50,11 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation("com.zegreatrob.testmints:async:4.0.12")
             }
         }
     }

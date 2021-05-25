@@ -17,7 +17,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":repository"))
+                api(project(":repository-core"))
                 api(project(":test-logging"))
                 api(project(":stub-model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")

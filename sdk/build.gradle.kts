@@ -35,7 +35,7 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":model"))
-                implementation(project(":repository"))
+                implementation(project(":repository-core"))
                 implementation("com.zegreatrob.testmints:minjson:4.0.12")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
@@ -46,7 +46,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(project(":repository:validation"))
+                implementation(project(":repository-validation"))
                 implementation(project(":json"))
                 implementation(project(":test-logging"))
                 implementation(project(":stub-model"))

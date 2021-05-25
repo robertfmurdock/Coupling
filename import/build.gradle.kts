@@ -28,8 +28,8 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(project(":json"))
-                api(project(":repository:mongo"))
-                api(project(":repository:dynamo"))
+                api(project(":repository-mongo"))
+                api(project(":repository-dynamo"))
 
                 api(kotlin("stdlib-js", com.zegreatrob.coupling.build.BuildConstants.kotlinVersion))
 
