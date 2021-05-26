@@ -26,12 +26,12 @@ object LoadGqlFile {
                 .asSequence()
                 .mapNotNull { nodePath ->
                     try {
-                        readFileSync("$nodePath/$path.graphql", "utf8").unsafeCast<String?>()
+                        readFileSync("$nodePath/com/zegreatrob/coupling/sdk/$path.graphql", "utf8").unsafeCast<String?>()
                     } catch (any: Throwable) {
                         null
                     }
                 }
                 .first()
         }
-        ?: kotlinext.js.require("/$path.graphql").default.unsafeCast<String>()
+        ?: kotlinext.js.require("com/zegreatrob/coupling/sdk/$path.graphql").default.unsafeCast<String>()
 }

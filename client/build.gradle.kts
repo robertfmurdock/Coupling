@@ -85,9 +85,8 @@ tasks {
         if (version.toString().contains("SNAPSHOT")) {
             enabled = false
         }
-        commandLine =
-            "aws s3 sync ${browserProductionWebpack.destinationDirectory.absolutePath} s3://assets.zegreatrob.com/coupling/${version}"
-                .split(" ")
+        val absolutePath = browserProductionWebpack.destinationDirectory.absolutePath
+        commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${version}".split(" ")
     }
 
     val dependencyResources by creating(Copy::class) {
