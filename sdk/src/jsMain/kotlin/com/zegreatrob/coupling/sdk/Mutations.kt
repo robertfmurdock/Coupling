@@ -1,49 +1,22 @@
 package com.zegreatrob.coupling.sdk
 
 import kotlin.js.Json
+import kotlin.reflect.KProperty
 
 object Mutations {
-    val spin = loadTextFile("spin")
+    val spin by LoadGqlFile
+    val savePin by LoadGqlFile
+    val saveTribe by LoadGqlFile
+    val savePlayer by LoadGqlFile
+    val savePairAssignments by LoadGqlFile
+    val deleteTribe by LoadGqlFile
+    val deletePin by LoadGqlFile
+    val deletePairAssignments by LoadGqlFile
+    val deletePlayer by LoadGqlFile
+}
 
-    val savePin = loadTextFile("savePin")
-
-    val saveTribe = loadTextFile("saveTribe")
-
-    val savePlayer = """
-        mutation savePlayer(${"\$input"}: SavePlayerInput!) {
-            savePlayer(input: ${"\$input"})
-        }
-    """.trimIndent()
-
-    val savePairAssignments = """
-        mutation savePairAssignments(${"\$input"}: SavePairAssignmentsInput!) {
-            savePairAssignments(input: ${"\$input"})
-        }
-    """.trimIndent()
-
-    val deleteTribe = """
-        mutation deleteTribe(${"\$input"}: DeleteTribeInput!) { 
-            deleteTribe(input: ${"\$input"})
-        }
-    """.trimIndent()
-
-    val deletePin = """
-        mutation deletePin(${"\$input"}: DeletePinInput!) {
-            deletePin(input: ${"\$input"})
-        }
-    """.trimIndent()
-
-    val deletePairAssignments = """
-        mutation deletePairAssignments(${"\$input"}: DeletePairAssignmentsInput!) {
-            deletePairAssignments(input: ${"\$input"})
-        }
-    """.trimIndent()
-
-    val deletePlayer = """
-        mutation deletePlayer(${"\$input"}: DeletePlayerInput!) {
-            deletePlayer(input: ${"\$input"})
-        }
-    """.trimIndent()
+object LoadGqlFile {
+    operator fun getValue(mutations: Mutations, property: KProperty<*>) = loadTextFile(property.name)
 
     private fun loadTextFile(path: String) = kotlinext.js.require("fs")
         ?.readFileSync.unsafeCast<((String, String) -> dynamic)?>()
@@ -61,5 +34,4 @@ object Mutations {
                 .first()
         }
         ?: kotlinext.js.require("/$path.graphql").default.unsafeCast<String>()
-
 }

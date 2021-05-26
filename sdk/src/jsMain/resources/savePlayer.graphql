@@ -1,0 +1,3 @@
+mutation savePlayer($input: SavePlayerInput!) {
+    savePlayer(input: $input)
+}

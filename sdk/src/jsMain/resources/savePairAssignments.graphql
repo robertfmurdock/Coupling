@@ -1,0 +1,3 @@
+mutation savePairAssignments($input: SavePairAssignmentsInput!) {
+    savePairAssignments(input: $input)
+}
