@@ -5,34 +5,9 @@ import kotlin.js.Json
 object Mutations {
     val spin = loadTextFile("spin")
 
-    private fun loadTextFile(path: String) = kotlinext.js.require("fs")
-        ?.readFileSync.unsafeCast<((String, String) -> dynamic)?>()
-        ?.let { readFileSync ->
-            js("process.env").unsafeCast<Json>()["NODE_PATH"].unsafeCast<String>()
-                .split(":")
-                .asSequence()
-                .mapNotNull { nodePath ->
-                    try {
-                        readFileSync("$nodePath/$path.graphql", "utf8").unsafeCast<String?>()
-                    } catch (any: Throwable) {
-                        null
-                    }
-                }
-                .first()
-        }
-        ?: kotlinext.js.require("/$path.graphql").default.unsafeCast<String>()
+    val savePin = loadTextFile("savePin")
 
-    val savePin = """
-        mutation savePin(${"\$input"}: SavePinInput!) {
-            savePin(input: ${"\$input"})
-        }
-    """.trimIndent()
-
-    val saveTribe = """
-        mutation saveTribe(${"\$input"}: SaveTribeInput!) {
-            saveTribe(input: ${"\$input"})
-        }
-    """.trimIndent()
+    val saveTribe = loadTextFile("saveTribe")
 
     val savePlayer = """
         mutation savePlayer(${"\$input"}: SavePlayerInput!) {
@@ -69,4 +44,22 @@ object Mutations {
             deletePlayer(input: ${"\$input"})
         }
     """.trimIndent()
+
+    private fun loadTextFile(path: String) = kotlinext.js.require("fs")
+        ?.readFileSync.unsafeCast<((String, String) -> dynamic)?>()
+        ?.let { readFileSync ->
+            js("process.env").unsafeCast<Json>()["NODE_PATH"].unsafeCast<String>()
+                .split(":")
+                .asSequence()
+                .mapNotNull { nodePath ->
+                    try {
+                        readFileSync("$nodePath/$path.graphql", "utf8").unsafeCast<String?>()
+                    } catch (any: Throwable) {
+                        null
+                    }
+                }
+                .first()
+        }
+        ?: kotlinext.js.require("/$path.graphql").default.unsafeCast<String>()
+
 }
