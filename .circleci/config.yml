@@ -74,7 +74,7 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - aws-cli/setup
-      - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage forceEcsDeployment --no-parallel"
+      - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage forceEcsDeployment --no-parallel --debug"
       - coupling-orb/collect-results
   update-client:
     executor: coupling-orb/standard
