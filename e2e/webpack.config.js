@@ -16,6 +16,9 @@ const config = {
   module: {
     rules: [
       {
+        test: /\.(md|graphql)$/i, use: 'raw-loader'
+      },
+      {
         test: /\.(css)$/,
         loader: 'css-loader',
         options: {

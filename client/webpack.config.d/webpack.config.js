@@ -2,26 +2,25 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-
-let resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
+const resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
 
 if (config.entry && config.entry.main) {
     config.entry.main = [path.resolve(resourcesPath, "com/zegreatrob/coupling/client/app.js")].concat(config.entry.main);
 }
 
-
-if (config.output)
+if (config.output) {
     config.output.publicPath = '/app/build/'
+}
 
 config.resolve.modules.push(resourcesPath);
 config.resolve.modules.push(path.resolve(__dirname, '../../../../build/js/node_modules'));
 
 config.module.rules.push(
     {
-        test: /\.(md|graphql)$/i, use: 'raw-loader'
+        test: /\.(md|graphql)$/, use: 'raw-loader'
     },
     {
         test: /\.(sa|sc|c)ss$/,
@@ -44,7 +43,7 @@ config.module.rules.push(
         }
     }
 );
-config.externals = {"cheerio": "window"}
+config.externals = {"cheerio": "window", "fs": "empty"}
 
 if (config.devServer) {
     config.devServer.port = 3001

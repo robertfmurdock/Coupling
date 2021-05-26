@@ -42,6 +42,7 @@ kotlin {
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("io.github.microutils:kotlin-logging:2.0.6")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1")
+                implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.148-kotlin-1.4.21")
             }
         }
         val commonTest by getting {

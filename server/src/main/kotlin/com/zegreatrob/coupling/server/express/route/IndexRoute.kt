@@ -76,6 +76,10 @@ private fun Express.injectVariablesForClient(request: Request) = """<script>
     window.auth0Domain = "${Config.AUTH0_DOMAIN}";
     window.expressEnv = "$env";
     window.isAuthenticated = ${request.isAuthenticated()};
-    window.webpackPublicPath = "${Config.clientPath}/";
     </script>
-""".trimIndent()
+""".trimIndent() + if (!Config.clientPath.startsWith("http"))
+    ""
+else
+    """<script>
+        window.webpackPublicPath = "${Config.clientPath}/";
+    </script>""".trimMargin()

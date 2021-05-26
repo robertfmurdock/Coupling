@@ -31,8 +31,7 @@ val appConfiguration: Configuration by configurations.creating {
     }
 }
 
-val testLoggingLib: Configuration by configurations.creating {
-}
+val testLoggingLib: Configuration by configurations.creating { }
 
 val clientConfiguration: Configuration by configurations.creating
 
@@ -81,6 +80,17 @@ tasks {
     val compileE2eTestProductionExecutableKotlinJs by getting {}
     val productionExecutableCompileSync by getting {}
 
+    val e2eTestProcessResources by getting(ProcessResources::class)
+
+    val dependencyResources by creating(Copy::class) {
+        dependsOn(":client:processResources")
+        duplicatesStrategy = DuplicatesStrategy.WARN
+        into(e2eTestProcessResources.destinationDir)
+        from("$rootDir/client/build/processedResources/js/main")
+    }
+
+    e2eTestProcessResources.dependsOn(dependencyResources)
+
     val pathToNodeApp = "${project(":server").buildDir.absolutePath}/executable/app.js"
     val wdioConfig = project.projectDir.resolve("wdio.conf.js")
     val webpackConfig = project.projectDir.resolve("webpack.config.js")
@@ -110,7 +120,7 @@ tasks {
         environment(
             mapOf(
                 "APP_PATH" to pathToNodeApp,
-                "NODE_PATH" to "${project.rootProject.buildDir.path}/js/node_modules",
+                "NODE_PATH" to listOf("${project.rootProject.buildDir.path}/js/node_modules", e2eTestProcessResources.destinationDir).joinToString(":")  ,
                 "BUILD_DIR" to project.buildDir.absolutePath,
                 "WEBPACK_CONFIG" to webpackConfig,
                 "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput

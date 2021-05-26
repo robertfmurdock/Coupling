@@ -1,37 +1,26 @@
 package com.zegreatrob.coupling.sdk
 
+import kotlin.js.Json
+
 object Mutations {
-    val spin = """
-            mutation spin(${"\$input"}: SpinInput!) {
-                spin(input: ${"\$input"}) {
-                    result {
-                        _id
-                        date
-                        pairs {
-                            players {
-                                _id
-                                name
-                                email
-                                badge
-                                callSignAdjective
-                                callSignNoun
-                                imageURL
-                                pins {
-                                    id
-                                    icon
-                                    name
-                                }
-                            }
-                            pins {
-                                id
-                                icon
-                                name
-                            }
-                        }
+    val spin = loadTextFile("spin")
+
+    private fun loadTextFile(path: String) = kotlinext.js.require("fs")
+        ?.readFileSync.unsafeCast<((String, String) -> dynamic)?>()
+        ?.let { readFileSync ->
+            js("process.env").unsafeCast<Json>()["NODE_PATH"].unsafeCast<String>()
+                .split(":")
+                .asSequence()
+                .mapNotNull { nodePath ->
+                    try {
+                        readFileSync("$nodePath/$path.graphql", "utf8").unsafeCast<String?>()
+                    } catch (any: Throwable) {
+                        null
                     }
                 }
-            }
-    """.trimIndent()
+                .first()
+        }
+        ?: kotlinext.js.require("/$path.graphql").default.unsafeCast<String>()
 
     val savePin = """
         mutation savePin(${"\$input"}: SavePinInput!) {
