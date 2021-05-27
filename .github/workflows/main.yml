@@ -19,7 +19,7 @@ jobs:
       with:
         fetch-depth: '25'
     - name: Verify
-      run: ./gradlew build check
+      run: ./gradlew build check --no-parallel
     - uses: actions/upload-artifact@v2
       with:
         name: test-output
