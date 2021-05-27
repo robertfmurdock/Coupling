@@ -16,6 +16,7 @@ jobs:
           - 8000:8000
     steps:
     - uses: actions/checkout@v2
+      - fetch-depth: 25
     - name: Verify
       run: ./gradlew build check
     - uses: actions/upload-artifact@v2
