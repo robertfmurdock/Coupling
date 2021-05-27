@@ -24,6 +24,9 @@ jobs:
         fetch-depth: '25'
     - name: Verify
       run: ./gradlew build check buildProductionImage --no-parallel
+    - name: Collect Results
+      if: ${{ always() }}
+      run: ./gradlew collectResults
     - uses: actions/upload-artifact@v2
       if: ${{ always() }}
       with:
