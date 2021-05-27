@@ -50,7 +50,7 @@ let config = {
         }
         ],
     ],
-    jasmineNodeOpts: {
+    jasmineOpts: {
         helpers: [],
         failFast: true,
         defaultTimeoutInterval: 60000,
