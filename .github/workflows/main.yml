@@ -1,7 +1,11 @@
 name: Build-Workflow
 on:
-  push:
   pull_request:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
 jobs:
   vm-job:
     runs-on: ubuntu-latest
