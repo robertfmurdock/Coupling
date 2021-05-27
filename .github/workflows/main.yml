@@ -21,6 +21,7 @@ jobs:
     - name: Verify
       run: ./gradlew build check --no-parallel
     - uses: actions/upload-artifact@v2
+      if: ${{ always() }}
       with:
         name: test-output
         path: |
