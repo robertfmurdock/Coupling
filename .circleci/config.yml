@@ -12,7 +12,7 @@ orbs:
         environment:
           COUPLING_IN_MEMORY: "true"
           SKIP_MONGO_TESTS: "true"
-          JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
+          JAVA_TOOL_OPTIONS: -XX:MaxRAM=4g
           GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
           AWS_DEFAULT_REGION: us-east-1
     commands:
@@ -74,7 +74,7 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - aws-cli/setup
-      - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage forceEcsDeployment --no-parallel --debug"
+      - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage forceEcsDeployment --no-parallel"
       - coupling-orb/collect-results
   update-client:
     executor: coupling-orb/standard
