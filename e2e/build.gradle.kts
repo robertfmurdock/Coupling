@@ -126,7 +126,7 @@ tasks {
                 "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput
             )
         )
-        val logFile = project.file("build/logs/run.log")
+        val logFile = project.file("build/reports/logs/run.log")
         logFile.parentFile.mkdirs()
         standardOutput = logFile.outputStream()
     }
