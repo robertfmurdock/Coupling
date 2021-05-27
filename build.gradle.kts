@@ -37,13 +37,15 @@ allprojects {
     }
 
     tasks {
+        val projectResultPath = "${rootProject.buildDir.path}/test-output/${project.path}/results".replace(":", "/")
+
         val copyReportsToCircleCIDirectory by creating(Copy::class) {
             from("build/reports")
-            into("${rootProject.buildDir.path}/test-output/${project.path}/reports")
+            into(projectResultPath)
         }
         val copyTestResultsToCircleCIDirectory by creating(Copy::class) {
             from("build/test-results")
-            into("${rootProject.buildDir.path}/test-output/${project.path}/results")
+            into(projectResultPath)
         }
 
         val collectResults by creating {
