@@ -1,0 +1,25 @@
+name: Build-Workflow
+on:
+  push:
+  pull_request:
+jobs:
+  vm-job:
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+      dynamo:
+        image: amazon/dynamodb-local
+        ports:
+          - 8000:8000
+    steps:
+    - uses: actions/checkout@v2
+    - name: Verify
+      run: ./gradlew build check
+    - uses: actions/upload-artifact@v2
+      with:
+        name: test-output
+        path: |
+          build/test-output/
