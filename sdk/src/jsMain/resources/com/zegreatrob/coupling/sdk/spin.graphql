@@ -5,7 +5,7 @@ mutation spin($input: SpinInput!) {
             date
             pairs {
                 players {
-                    _id
+                    id
                     name
                     email
                     badge

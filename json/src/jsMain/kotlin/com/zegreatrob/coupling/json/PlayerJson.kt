@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.player.player
 import kotlin.js.Json
 
 fun Player.toJson(): Json = emptyArray<Pair<String, Any?>>()
-    .plus("_id", id)
+    .plus("id", id)
     .plus("name", name)
     .plus("email", email)
     .plus("badge", "$badge")
@@ -24,7 +24,7 @@ fun List<Record<TribeIdPlayer>>.toJsonArray() = map { it.toJson().add(it.data.pl
 
 @Suppress("UNCHECKED_CAST")
 fun Json.toPlayer(): Player = Player(
-    id = stringValue("_id") ?: "",
+    id = stringValue("id") ?: stringValue("_id") ?: "",
     badge = this["badge"]?.toIntFromStringOrInt() ?: defaultPlayer.badge,
     name = stringValue("name") ?: defaultPlayer.name,
     email = stringValue("email") ?: defaultPlayer.email,

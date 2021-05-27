@@ -14,7 +14,7 @@ class JsMappingsTest {
         @Test
         fun typicalPlayerRoundTrip() = setup(object {
             val original = json(
-                "_id" to "599ae087ce362e001a8c1620",
+                "id" to "599ae087ce362e001a8c1620",
                 "badge" to "1",
                 "name" to "Neal",
                 "email" to "nfebbrar@gmail.com",
@@ -28,7 +28,7 @@ class JsMappingsTest {
         @Test
         fun secretPropertiesRoundTrip() = setup(object {
             val original = json(
-                "_id" to "TheGuy",
+                "id" to "TheGuy",
                 "badge" to "2",
                 "name" to "Teal",
                 "email" to "tealguy@gmail.com",
