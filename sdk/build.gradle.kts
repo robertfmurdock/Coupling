@@ -48,7 +48,6 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(project(":repository-validation"))
-                implementation(project(":json"))
                 implementation(project(":test-logging"))
                 implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test")

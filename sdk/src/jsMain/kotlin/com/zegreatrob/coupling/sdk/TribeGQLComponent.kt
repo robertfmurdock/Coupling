@@ -8,7 +8,7 @@ enum class TribeGQLComponent(val value: String, val jsonPath: String) {
     RetiredPlayerList(queryAllFields("retiredPlayers", playerRecordJsonKeys), "/tribeData/retiredPlayers"),
     PinList(queryAllFields("pinList", pinRecordJsonKeys), "/tribeData/pinList"),
     PairAssignmentDocumentList(
-        "pairAssignmentDocumentList {_id,date,modifyingUserEmail,timestamp," +
+        "pairAssignmentDocumentList {id,date,modifyingUserEmail,timestamp," +
                 "pairs { " +
                 "players {" +
                 "${playerJsonKeys.joinToString(",")}, " +
@@ -19,7 +19,7 @@ enum class TribeGQLComponent(val value: String, val jsonPath: String) {
                 "}", "/tribeData/pairAssignmentDocumentList"
     ),
     CurrentPairAssignmentDocument(
-        "currentPairAssignmentDocument {_id,date,modifyingUserEmail,timestamp," +
+        "currentPairAssignmentDocument {id,date,modifyingUserEmail,timestamp," +
                 "pairs { " +
                 "players {" +
                 "${playerJsonKeys.joinToString(",")}, " +

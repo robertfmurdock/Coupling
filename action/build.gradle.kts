@@ -69,7 +69,6 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation(project(":json"))
             }
         }
     }

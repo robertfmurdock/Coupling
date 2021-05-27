@@ -1,7 +1,7 @@
 mutation spin($input: SpinInput!) {
     spin(input: $input) {
         result {
-            _id
+            id
             date
             pairs {
                 players {

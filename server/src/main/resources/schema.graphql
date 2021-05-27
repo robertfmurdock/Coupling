@@ -53,7 +53,7 @@ type PinnedPair {
 }
 
 type PairAssignmentDocument {
-    _id: String!
+    id: String!
     date: String!
     pairs: [PinnedPair]!
     modifyingUserEmail: String
