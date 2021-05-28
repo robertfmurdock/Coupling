@@ -21,7 +21,7 @@ private val startDeferred = serverScope.async(start = CoroutineStart.LAZY) {
     Process.send("ready")
 }
 
-private fun buildApp(): Express {
+fun buildApp(): Express {
     val expressWs = expressWs(express())
     val app = expressWs.app
 
@@ -39,14 +39,7 @@ private suspend fun Express.startListening() = CompletableDeferred<Unit>()
     }.await()
 
 fun main() {
-    if (Process.getEnv("COUPLING_SERVERLESS") != "true") {
+    if (Process.getEnv("IS_OFFLINE") != "true") {
         serverScope.launch { startDeferred.await() }
     }
-}
-
-@Suppress("unused")
-@JsExport
-fun handler(): dynamic {
-    val app = buildApp()
-    return js("serverless-http").unsafeCast<(Express) -> dynamic>(app)
 }

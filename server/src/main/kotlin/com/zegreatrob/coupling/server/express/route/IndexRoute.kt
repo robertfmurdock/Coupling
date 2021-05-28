@@ -27,6 +27,7 @@ private fun fetchRemotely(): Promise<String> = fetch("${Config.clientPath}/index
     .unsafeCast<Promise<String>>()
 
 fun Express.indexRoute(): Handler = { request, response, _ ->
+    println("in index route")
     indexHtmlPromise.then { indexHtml ->
         val indexStream = Readable.from(arrayOf(indexHtml))
 

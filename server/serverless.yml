@@ -16,3 +16,5 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
+plugins:
+  - serverless-offline
