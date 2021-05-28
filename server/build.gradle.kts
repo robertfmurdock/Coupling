@@ -52,6 +52,10 @@ dependencies {
         implementation(npm(it.first, it.second.asText()))
     }
 
+    packageJson.devDependencies().forEach {
+        testImplementation(npm(it.first, it.second.asText()))
+    }
+
 }
 
 tasks {
@@ -114,6 +118,7 @@ tasks {
     val packageJson: String? by rootProject
 
     create<Exec>("updateDependencies") {
+        dependsOn("test")
         nodeExec(
             compileKotlinJs,
             listOf("$nodeModulesDir/.bin/ncu", "-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")

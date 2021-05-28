@@ -16,14 +16,18 @@ val serverScope = MainScope() + CoroutineName("Server")
 fun start() = startDeferred.asPromise()
 
 private val startDeferred = serverScope.async(start = CoroutineStart.LAZY) {
+    buildApp()
+        .startListening()
+    Process.send("ready")
+}
+
+private fun buildApp(): Express {
     val expressWs = expressWs(express())
     val app = expressWs.app
 
     app.middleware()
     expressWs.routes()
-
-    app.startListening()
-    Process.send("ready")
+    return app
 }
 
 private suspend fun Express.startListening() = CompletableDeferred<Unit>()
@@ -35,5 +39,14 @@ private suspend fun Express.startListening() = CompletableDeferred<Unit>()
     }.await()
 
 fun main() {
-    serverScope.launch { startDeferred.await() }
+    if (Process.getEnv("COUPLING_SERVERLESS") != "true") {
+        serverScope.launch { startDeferred.await() }
+    }
+}
+
+@Suppress("unused")
+@JsExport
+fun handler(): dynamic {
+    val app = buildApp()
+    return js("serverless-http").unsafeCast<(Express) -> dynamic>(app)
 }
