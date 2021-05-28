@@ -1,19 +1,21 @@
-FROM node:14.8-alpine
+FROM node:14.8-alpine AS build
 
 WORKDIR /usr/src/app/server
-
-ENV \
-  PUBLIC_HOST=web \
-  NODE_ENV=production
-
 COPY server/package.json /usr/src/app/server/
-RUN yarn install --production
-
+RUN npm install --only=production
 COPY server/startup.js /usr/src/app/server
 COPY server/build/executable /usr/src/app/server/build/executable
 
+FROM node:14.8-alpine
+
+WORKDIR /usr/src/app/server
+ENV \
+  PUBLIC_HOST=web \
+  NODE_ENV=production
+COPY --chown=node:node --from=build /usr/src/app/server /usr/src/app/server
+
 ARG ASSETS_PATH /unset
 ENV CLIENT_PATH $ASSETS_PATH
-
+USER node
 CMD ["node", "./startup.js"]
 EXPOSE 3000 8125
