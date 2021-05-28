@@ -10,14 +10,13 @@ jobs:
   vm-job:
     runs-on: ubuntu-latest
     services:
-      mongodb:
-        image: mongo
-        ports:
-          - 27017:27017
       dynamo:
         image: amazon/dynamodb-local
         ports:
           - 8000:8000
+    env:
+      COUPLING_IN_MEMORY: "true"
+      SKIP_MONGO_TESTS: "true"
     steps:
     - uses: actions/checkout@v2
       with:
