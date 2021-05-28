@@ -47,11 +47,9 @@ allprojects {
             from("build/test-results")
             into(projectResultPath)
         }
-
         val collectResults by creating {
             dependsOn(copyReportsToCircleCIDirectory, copyTestResultsToCircleCIDirectory)
         }
-
         withType<DependencyUpdatesTask> {
             checkForGradleUpdate = true
             outputFormatter = "json"
@@ -97,6 +95,10 @@ val appConfiguration: Configuration by configurations.creating {
             KotlinPlatformType.js
         )
     }
+}
+
+dependencies {
+    appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
 }
 
 tasks {

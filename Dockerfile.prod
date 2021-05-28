@@ -4,11 +4,7 @@ WORKDIR /usr/src/app/server
 
 ENV \
   PUBLIC_HOST=web \
-  NODE_ENV=production \
-  NODE_PATH=/usr/src/app/server/build/node_modules:/usr/src/app/server/build/packages:/usr/src/app/server/build/packages_imported
-
-COPY build/js/packages /usr/src/app/server/build/packages
-COPY build/js/packages_imported /usr/src/app/server/build/packages_imported
+  NODE_ENV=production
 
 COPY server/package.json /usr/src/app/server/
 RUN yarn install --production

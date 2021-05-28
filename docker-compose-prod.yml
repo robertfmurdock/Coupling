@@ -1,23 +1,13 @@
 version: '2'
 services:
   web:
-    hostname: web
-    networks:
-      - web-net
+    environment:
+      - COUPLING_IN_MEMORY=true
+      - AUTH0_CLIENT_SECRET
+      - CLIENT_PATH
     build:
       context: .
       dockerfile: Dockerfile.prod
     image: coupling-prod
     ports:
       - "3000:3000"
-    links:
-      - "dynamo:dynamo"
-  dynamo:
-    image: amazon/dynamodb-local
-    ports:
-      - "8000:8000"
-    networks:
-      - web-net
-
-networks:
-  web-net:

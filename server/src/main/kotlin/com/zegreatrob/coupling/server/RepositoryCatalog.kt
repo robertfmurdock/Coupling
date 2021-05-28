@@ -36,4 +36,4 @@ suspend fun userRepository(userId: String): UserRepository = if (useInMemory())
 else
     DynamoUserRepository(userId, TimeProvider)
 
-private fun useInMemory() = Process.getEnv("COUPLING_IN_MEMORY") == "true"
+fun useInMemory() = Process.getEnv("COUPLING_IN_MEMORY") == "true"
