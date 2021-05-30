@@ -28,7 +28,7 @@
     "method-override": "^3.0.0",
     "minimist": "^1.2.5",
     "node-fetch": "^2.6.1",
-    "npm-check-updates": "^11.5.13",
+    "npm-check-updates": "^11.6.0",
     "on-finished": "^2.3.0",
     "parse5": "^6.0.1",
     "parse5-html-rewriting-stream": "^6.0.1",
