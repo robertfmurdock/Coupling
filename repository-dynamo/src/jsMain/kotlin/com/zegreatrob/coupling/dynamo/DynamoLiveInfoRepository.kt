@@ -2,8 +2,6 @@ package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.CouplingConnection
-import com.zegreatrob.coupling.model.LiveInfo
-import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import kotlin.js.Json
@@ -14,13 +12,23 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
 
     override suspend fun get(tribeId: TribeId) = performQuery(queryParams(tribeId))
         .itemsNode()
-        .firstOrNull()
-        ?.toLiveInfo()
-        ?: LiveInfo(emptyList())
+        .mapNotNull {
+            it["userPlayer"].unsafeCast<Json>().toPlayer()
+                ?.let { player -> CouplingConnection(it["id"].toString(), tribeId, player) }
+        }.sortedBy { it.connectionId }
 
-    override suspend fun save(tribeId: TribeId, info: LiveInfo) = performPutItem(
-        TribeElement(tribeId, info).toDynamoJson()
+    override suspend fun save(connection: CouplingConnection) = performPutItem(
+        connection.toDynamoJson()
     )
+
+    override suspend fun delete(tribeId: TribeId, connectionId: String) {
+        performDeleteItem(
+            json(
+                "id" to connectionId,
+                "tribeId" to tribeId.value
+            )
+        )
+    }
 
     private fun queryParams(tribeId: TribeId) = json(
         "TableName" to tableName,
@@ -33,6 +41,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         DynamoItemPutSyntax,
         DynamoQuerySyntax,
         DynamoItemSyntax,
+        DynamoItemDeleteSyntax,
         DynamoScanSyntax {
         override val tableName = "LIVE_INFO"
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoLiveInfoRepository(userId, clock)
@@ -45,11 +54,19 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
                     json(
                         "AttributeName" to "tribeId",
                         "KeyType" to "HASH"
+                    ),
+                    json(
+                        "AttributeName" to "id",
+                        "KeyType" to "RANGE"
                     )
                 ),
                 "AttributeDefinitions" to arrayOf(
                     json(
                         "AttributeName" to "tribeId",
+                        "AttributeType" to "S"
+                    ),
+                    json(
+                        "AttributeName" to "id",
                         "AttributeType" to "S"
                     )
                 ),
@@ -57,22 +74,10 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
             )
     }
 
-    private fun Json.toLiveInfo() = LiveInfo(
-        connections = this["connections"].unsafeCast<Array<Json>>()
-            .mapNotNull {
-                it["userPlayer"].unsafeCast<Json>().toPlayer()
-                    ?.let { player -> CouplingConnection(it["connectionId"].toString(), player) }
-            }
-    )
-
-    private fun TribeElement<LiveInfo>.toDynamoJson() = json(
-        "tribeId" to id.value,
-        "connections" to element.connections.map {
-            json(
-                "connectionId" to it.connectionId,
-                "userPlayer" to it.userPlayer.toDynamoJson()
-            )
-        }.toTypedArray()
+    private fun CouplingConnection.toDynamoJson() = json(
+        "tribeId" to tribeId.value,
+        "id" to connectionId,
+        "userPlayer" to userPlayer.toDynamoJson()
     )
 
 }

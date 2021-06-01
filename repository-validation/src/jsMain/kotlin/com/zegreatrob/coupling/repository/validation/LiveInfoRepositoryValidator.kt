@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.CouplingConnection
-import com.zegreatrob.coupling.model.LiveInfo
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
@@ -14,18 +13,34 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
     @Test
     fun getWillReturnLastSaved() = repositorySetup(object : ContextMint<R>() {
         val tribeId = stubTribeId()
-        val liveInfo = LiveInfo(
-            listOf(
-                CouplingConnection(uuid4().toString(), stubPlayer()),
-                CouplingConnection(uuid4().toString(), stubPlayer())
-            )
-        )
+        val connections = listOf(
+            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
+            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
+            CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
+        ).sortedBy { it.connectionId }
     }.bind()) {
-        repository.save(tribeId, liveInfo)
+        connections.forEach { repository.save(it) }
     } exercise {
         repository.get(tribeId)
     } verify { result ->
-        result.assertIsEqualTo(liveInfo)
+        result.assertIsEqualTo(connections)
+    }
+
+    @Test
+    fun deleteWillMakeGetNoLongerReturnValue() = repositorySetup(object : ContextMint<R>() {
+        val tribeId = stubTribeId()
+        val connections = listOf(
+            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
+            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
+            CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
+        )
+    }.bind()) {
+        connections.forEach { repository.save(it) }
+    } exercise {
+        repository.delete(tribeId, connections[1].connectionId)
+        repository.get(tribeId)
+    } verify { result ->
+        result.assertIsEqualTo(listOf(connections[0], connections[2]).sortedBy { it.connectionId })
     }
 
 }

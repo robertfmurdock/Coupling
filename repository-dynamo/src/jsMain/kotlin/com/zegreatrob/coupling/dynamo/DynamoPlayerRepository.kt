@@ -24,7 +24,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         DynamoItemPutSyntax,
         TribeIdDynamoItemListGetSyntax,
         DynamoQuerySyntax,
-        DynamoItemDeleteSyntax,
+        DynamoItemPutDeleteRecordSyntax,
         DynamoLoggingSyntax {
         override val construct = ::DynamoPlayerRepository
         override val tableName: String = "PLAYER"

@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.coupling.model.LiveInfo
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -72,40 +71,33 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
         tribeId: TribeId,
         connectionId: String,
         user: User
-    ) = tribeId.getAuthorizationData()
-        ?.let { (_, players) ->
-            liveInfoRepository.get(tribeId)
-                .addConnection(connectionId, players, user)
-                .also { it.saveInfo(tribeId) }
-                .let { couplingSocketMessage(it, null) }
-        }
-
-    private suspend fun LiveInfo.saveInfo(tribeId: TribeId) {
-        liveInfoRepository.save(tribeId, this)
+    ) = tribeId.getAuthorizationData()?.let { (_, players) ->
+        CouplingConnection(connectionId, tribeId, userPlayer(players, user.email))
+            .also { it.save() }
+            .let { liveInfoRepository.get(tribeId) }
+            .let { couplingSocketMessage(it, null) }
     }
 
-    private fun LiveInfo.addConnection(connectionId: String, players: List<Player>, user: User) =
-        copy(connections + CouplingConnection(connectionId, userPlayer(players, user.email)))
+    private suspend fun CouplingConnection.save() {
+        liveInfoRepository.save(this)
+    }
+
 
     private fun Json.fromMessageToPairAssignmentDocument() = this["currentPairAssignments"]
         ?.unsafeCast<Json>()
         ?.toPairAssignmentDocument()
 
-    private suspend fun addUserToInfo(tribeId: TribeId, connection: CouplingConnection) =
-        liveInfoRepository.get(tribeId)
-            .let { it.copy(connections = it.connections + connection) }
-            .also { liveInfoRepository.save(tribeId, it) }
-
     private suspend fun removeUserFromInfo(tribeId: TribeId, connectionId: String) =
         liveInfoRepository.get(tribeId)
-            .let { it.copy(connections = it.connections.filterNot { c -> c.connectionId == connectionId }) }
-            .also { liveInfoRepository.save(tribeId, it) }
+            .let { it.filterNot { c -> c.connectionId == connectionId } }
+            .also { liveInfoRepository.delete(tribeId, connectionId) }
 
-    private fun couplingSocketMessage(info: LiveInfo, doc: PairAssignmentDocument?) = CouplingSocketMessage(
-        "Users viewing this page: ${info.connections.size}",
-        info.connections.map { it.userPlayer }.toSet(),
-        doc
-    )
+    private fun couplingSocketMessage(connections: List<CouplingConnection>, doc: PairAssignmentDocument?) =
+        CouplingSocketMessage(
+            "Users viewing this page: ${connections.size}",
+            connections.map { it.userPlayer }.toSet(),
+            doc
+        )
 
     private suspend fun TribeId.getAuthorizationData() = execute(UserIsAuthorizedWithDataAction(this)).valueOrNull()
 

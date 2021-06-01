@@ -1,36 +1,22 @@
 package com.zegreatrob.coupling.dynamo
 
-import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.TribeId
+import kotlinx.coroutines.await
 import kotlin.js.Json
+import kotlin.js.json
 
-interface DynamoItemDeleteSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemGetSyntax,
-    DynamoLoggingSyntax, DynamoItemPutSyntax {
-    suspend fun <T> performDelete(
-        id: String,
-        tribeId: TribeId? = null,
-        now: DateTime,
-        toRecord: Json.() -> Record<T>?,
-        recordToJson: Record<T>.() -> Json
-    ) = logAsync("deleteItem") {
+interface DynamoItemDeleteSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoLoggingSyntax {
+
+    suspend fun performDeleteItem(keyJson: Json) = logAsync("deleteItem") {
         try {
-            val current = performGetSingleItemQuery(id, tribeId)
-            if (current == null) {
-                false
-            } else {
-                logAsync("delete record add") {
-                    toRecord(current)
-                        ?.copy(isDeleted = true, timestamp = now)
-                        ?.recordToJson()
-                        ?.let { performPutItem(it) }
-                }
-                true
-            }
-        } catch (uhOh: Throwable) {
-            println("message: ${uhOh.message} uh oh ${JSON.stringify(uhOh)}")
-            false
+            documentClient.delete(deleteItemParams(keyJson)).promise().await()
+        } catch (bad: Exception) {
+            logger.warn(bad) { "Failed to delete ${JSON.stringify(keyJson)}" }
         }
     }
+
+    private fun deleteItemParams(keyJson: Json) = json(
+        "TableName" to tableName,
+        "Key" to keyJson
+    )
 
 }

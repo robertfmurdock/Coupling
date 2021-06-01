@@ -23,7 +23,7 @@ class DynamoPinRepository private constructor(override val userId: String, overr
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
         TribeIdDynamoItemListGetSyntax,
-        DynamoItemDeleteSyntax,
+        DynamoItemPutDeleteRecordSyntax,
         DynamoDBSyntax by DynamoDbProvider {
         override val construct = ::DynamoPinRepository
         override val tableName = "PIN"
