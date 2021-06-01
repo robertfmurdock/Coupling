@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.external.express.OPEN
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.tribeId
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -28,14 +29,16 @@ data class HandleWebsocketConnectionAction(
     val request: Request,
     val wss: WebSocketServer,
     val connectionId: String = uuid4().toString()
-)
+) : SimpleSuspendAction<HandleWebsocketConnectionActionDispatcher, Unit> {
+    override val performFunc = link(HandleWebsocketConnectionActionDispatcher::performItPlease)
+}
 
 interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataActionDispatcher, LoggingSyntax,
     SuspendActionExecuteSyntax {
 
     val liveInfoRepository: LiveInfoRepository
 
-    fun HandleWebsocketConnectionAction.perform() = request.scope.launch {
+    suspend fun performItPlease(action: HandleWebsocketConnectionAction): Result<Unit> = with(action) {
         val tribeId = request.tribeId()
         websocket.tribeId = tribeId.value
         websocket.user = request.user
@@ -62,6 +65,7 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
         performConnectTribeUserCommand(tribeId, connectionId, request.user)
             ?.let { message -> wss.broadcastConnectionCountForTribe(tribeId, message) }
             ?: websocket.close()
+        return Result.success(Unit)
     }
 
     suspend fun performConnectTribeUserCommand(

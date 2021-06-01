@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.external.express.Request
+import kotlinx.coroutines.launch
 
-val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) = with(request.commandDispatcher) {
-    HandleWebsocketConnectionAction(websocket, request, wss)
-        .perform()
+val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) = request.scope.launch {
+    request.commandDispatcher.execute(HandleWebsocketConnectionAction(websocket, request, wss))
 }
 
 external interface WebSocketServer {
