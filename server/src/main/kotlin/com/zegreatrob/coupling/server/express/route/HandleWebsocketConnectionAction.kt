@@ -1,15 +1,16 @@
 package com.zegreatrob.coupling.server.express.route
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.LoggingSyntax
 import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
+import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.LiveInfo
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataActionDispatcher
@@ -44,6 +45,10 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
     ) {
         websocket.tribeId = tribeId.value
         websocket.user = request.user
+        val connectionId = uuid4().toString()
+        websocket.connectionId = connectionId
+
+        val connection = CouplingConnection(connectionId, userPlayer(result.second, request.user.email))
 
         websocket.on("message") { message ->
             MainScope().launch {
@@ -52,43 +57,40 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
                 val doc = JSON.parse<Json>(message)
                     .fromMessageToPairAssignmentDocument()
 
-                val info = updatePairAssignments(tribeId)
-
-                wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, result, doc))
+                val info = liveInfoRepository.get(tribeId)
+                wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, doc))
             }
         }
         websocket.on("close") {
             MainScope().launch {
-                val info = removeUserFromInfo(tribeId, userPlayer(result.second, request.user.email))
-                wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, result, null))
+                val info = removeUserFromInfo(tribeId, connection)
+                wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, null))
             }
         }
         websocket.on("error") { logger.error { it } }
-        val info = addUserToInfo(tribeId, userPlayer(result.second, request.user.email))
-        wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, result, null))
+        val info = addUserToInfo(tribeId, connection)
+        wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, null))
     }
-
-    private suspend fun updatePairAssignments(tribeId: TribeId) = liveInfoRepository.get(tribeId)
-        .also { liveInfoRepository.save(tribeId, it) }
 
     private fun Json.fromMessageToPairAssignmentDocument() = this["currentPairAssignments"]
         ?.unsafeCast<Json>()
         ?.toPairAssignmentDocument()
 
-    private suspend fun addUserToInfo(tribeId: TribeId, userPlayer: Player) = liveInfoRepository.get(tribeId)
-        .let { it.copy(onlinePlayers = it.onlinePlayers + userPlayer) }
-        .also { liveInfoRepository.save(tribeId, it) }
+    private suspend fun addUserToInfo(tribeId: TribeId, connection: CouplingConnection) =
+        liveInfoRepository.get(tribeId)
+            .let { it.copy(connections = it.connections + connection) }
+            .also { liveInfoRepository.save(tribeId, it) }
 
-    private suspend fun removeUserFromInfo(tribeId: TribeId, userPlayer: Player) = liveInfoRepository.get(tribeId)
-        .let { it.copy(onlinePlayers = it.onlinePlayers - userPlayer) }
-        .also { liveInfoRepository.save(tribeId, it) }
+    private suspend fun removeUserFromInfo(tribeId: TribeId, connection: CouplingConnection) =
+        liveInfoRepository.get(tribeId)
+            .let { it.copy(connections = it.connections - connection) }
+            .also { liveInfoRepository.save(tribeId, it) }
 
-    fun couplingSocketMessage(info: LiveInfo, result: Pair<Any, List<Player>>, doc: PairAssignmentDocument?) =
-        CouplingSocketMessage(
-            "Users viewing this page: ${info.onlinePlayers.size}",
-            info.onlinePlayers.toSet(),
-            doc
-        )
+    private fun couplingSocketMessage(info: LiveInfo, doc: PairAssignmentDocument?) = CouplingSocketMessage(
+        "Users viewing this page: ${info.connections.size}",
+        info.connections.map { it.userPlayer }.toSet(),
+        doc
+    )
 
     private suspend fun TribeId.getAuthorizationData() = execute(UserIsAuthorizedWithDataAction(this)).valueOrNull()
 
@@ -121,4 +123,3 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
         client.readyState == OPEN && client.tribeId == tribeId.value
 
 }
-

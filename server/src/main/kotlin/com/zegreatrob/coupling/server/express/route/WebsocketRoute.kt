@@ -22,5 +22,6 @@ external interface WS {
 
     var tribeId: String?
     var user: dynamic
+    var connectionId: String?
     val readyState: Int
 }

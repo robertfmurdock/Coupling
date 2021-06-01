@@ -1,10 +1,11 @@
 package com.zegreatrob.coupling.repository.validation
 
+import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.LiveInfo
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
-import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 
@@ -15,8 +16,8 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
         val tribeId = stubTribeId()
         val liveInfo = LiveInfo(
             listOf(
-                stubPlayer(),
-                stubPlayer()
+                CouplingConnection(uuid4().toString(), stubPlayer()),
+                CouplingConnection(uuid4().toString(), stubPlayer())
             )
         )
     }.bind()) {

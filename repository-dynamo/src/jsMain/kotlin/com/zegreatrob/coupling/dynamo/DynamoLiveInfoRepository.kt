@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.dynamo
 
 import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.LiveInfo
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -57,15 +58,21 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
     }
 
     private fun Json.toLiveInfo() = LiveInfo(
-        onlinePlayers = this["players"].unsafeCast<Array<Json>>()
-            .mapNotNull { it.toPlayer() }
+        connections = this["connections"].unsafeCast<Array<Json>>()
+            .mapNotNull {
+                it["userPlayer"].unsafeCast<Json>().toPlayer()
+                    ?.let { player -> CouplingConnection(it["connectionId"].toString(), player) }
+            }
     )
 
     private fun TribeElement<LiveInfo>.toDynamoJson() = json(
         "tribeId" to id.value,
-        "players" to element.onlinePlayers.map { it.toDynamoJson() }.toTypedArray()
+        "connections" to element.connections.map {
+            json(
+                "connectionId" to it.connectionId,
+                "userPlayer" to it.userPlayer.toDynamoJson()
+            )
+        }.toTypedArray()
     )
 
 }
-
-

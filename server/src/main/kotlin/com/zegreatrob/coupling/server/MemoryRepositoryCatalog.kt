@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.memory.*
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
@@ -22,7 +23,8 @@ class MemoryRepositoryCatalog private constructor(
     override val playerRepository: PlayerEmailRepository,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
     override val pinRepository: PinRepository,
-    override val userRepository: UserRepository
+    override val userRepository: UserRepository,
+    override val liveInfoRepository: LiveInfoRepository
 ) :
     RepositoryCatalog,
     UserEmailSyntax,
@@ -37,7 +39,8 @@ class MemoryRepositoryCatalog private constructor(
                 MemoryPlayerRepository(userEmail, clock, backend.player),
                 MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
                 MemoryPinRepository(userEmail, clock, backend.pin),
-                MemoryUserRepository(userEmail, clock, backend.user)
+                MemoryUserRepository(userEmail, clock, backend.user),
+                MemoryLiveInfoRepository()
             )
     }
 }
