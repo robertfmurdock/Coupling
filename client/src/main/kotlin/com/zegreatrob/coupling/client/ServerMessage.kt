@@ -14,7 +14,7 @@ import react.dom.div
 
 val disconnectedMessage = CouplingSocketMessage(
     text = "Not connected",
-    players = emptyList(),
+    players = emptySet(),
     currentPairAssignments = null
 )
 

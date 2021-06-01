@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.repository.LiveInfoRepository
 val infoMap = mutableMapOf<TribeId, LiveInfo>()
 
 class MemoryLiveInfoRepository : LiveInfoRepository {
-    override fun get(tribeId: TribeId) = infoMap[tribeId] ?: LiveInfo(emptyList())
-    override fun save(tribeId: TribeId, info: LiveInfo) {
+    override suspend fun get(tribeId: TribeId) = infoMap[tribeId] ?: LiveInfo(emptyList())
+    override suspend fun save(tribeId: TribeId, info: LiveInfo) {
         infoMap[tribeId] = info
     }
 }

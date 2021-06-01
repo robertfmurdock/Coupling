@@ -7,7 +7,7 @@ sealed class Message
 
 data class CouplingSocketMessage(
     var text: String,
-    var players: List<Player>,
+    var players: Set<Player>,
     val currentPairAssignments: PairAssignmentDocument?
 ) : Message()
 

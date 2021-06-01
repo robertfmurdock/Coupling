@@ -7,7 +7,7 @@ interface SdkContext : SdkSyntax {
     val username: String
 }
 
-fun <T> sdkContext(block: (SdkContext) -> T): suspend (Unit) -> T = {
+fun <T> sdkContext(block: suspend (SdkContext) -> T): suspend (Unit) -> T = {
     val username = "eT-user-${uuid4()}"
     val sdk = authorizedSdk(username = username)
     block(object : SdkContext {

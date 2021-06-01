@@ -118,7 +118,7 @@ class SpinTest {
             }
 
         @Test
-        fun whenAPinExistsWillAssignOnePinToPair() = asyncSetup(sdkContext(pinExistsSetup)) {
+        fun whenAPinExistsWillAssignOnePinToPair() = asyncSetup(sdkContext { pinExistsSetup(it) }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, listOf(pin))
@@ -129,7 +129,7 @@ class SpinTest {
         }
 
         @Test
-        fun whenAPinExistsButIsDeselectedWillNotAssign() = asyncSetup(sdkContext(pinExistsSetup)) {
+        fun whenAPinExistsButIsDeselectedWillNotAssign() = asyncSetup(sdkContext { pinExistsSetup(it) }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, emptyList())
