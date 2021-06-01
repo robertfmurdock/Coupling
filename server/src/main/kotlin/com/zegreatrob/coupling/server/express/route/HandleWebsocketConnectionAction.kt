@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.LiveInfo
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataActionDispatcher
@@ -22,7 +23,12 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlin.js.Json
 
-data class HandleWebsocketConnectionAction(val websocket: WS, val request: Request, val wss: WebSocketServer)
+data class HandleWebsocketConnectionAction(
+    val websocket: WS,
+    val request: Request,
+    val wss: WebSocketServer,
+    val connectionId: String = uuid4().toString()
+)
 
 interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataActionDispatcher, LoggingSyntax,
     SuspendActionExecuteSyntax {
@@ -31,24 +37,8 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
 
     fun HandleWebsocketConnectionAction.perform() = request.scope.launch {
         val tribeId = request.tribeId()
-        val result = tribeId.getAuthorizationData()
-        if (result != null) {
-            registerConnection(tribeId, result)
-        } else {
-            websocket.close()
-        }
-    }
-
-    private suspend fun HandleWebsocketConnectionAction.registerConnection(
-        tribeId: TribeId,
-        result: Pair<Any, List<Player>>
-    ) {
         websocket.tribeId = tribeId.value
         websocket.user = request.user
-        val connectionId = uuid4().toString()
-        websocket.connectionId = connectionId
-
-        val connection = CouplingConnection(connectionId, userPlayer(result.second, request.user.email))
 
         websocket.on("message") { message ->
             MainScope().launch {
@@ -63,14 +53,35 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
         }
         websocket.on("close") {
             MainScope().launch {
-                val info = removeUserFromInfo(tribeId, connection)
+                val info = removeUserFromInfo(tribeId, connectionId)
                 wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, null))
             }
         }
         websocket.on("error") { logger.error { it } }
-        val info = addUserToInfo(tribeId, connection)
-        wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, null))
+
+        performConnectTribeUserCommand(tribeId, connectionId, request.user)
+            ?.let { message -> wss.broadcastConnectionCountForTribe(tribeId, message) }
+            ?: websocket.close()
     }
+
+    suspend fun performConnectTribeUserCommand(
+        tribeId: TribeId,
+        connectionId: String,
+        user: User
+    ) = tribeId.getAuthorizationData()
+        ?.let { (_, players) ->
+            liveInfoRepository.get(tribeId)
+                .addConnection(connectionId, players, user)
+                .also { it.saveInfo(tribeId) }
+                .let { couplingSocketMessage(it, null) }
+        }
+
+    private suspend fun LiveInfo.saveInfo(tribeId: TribeId) {
+        liveInfoRepository.save(tribeId, this)
+    }
+
+    private fun LiveInfo.addConnection(connectionId: String, players: List<Player>, user: User) =
+        copy(connections + CouplingConnection(connectionId, userPlayer(players, user.email)))
 
     private fun Json.fromMessageToPairAssignmentDocument() = this["currentPairAssignments"]
         ?.unsafeCast<Json>()
@@ -81,9 +92,9 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
             .let { it.copy(connections = it.connections + connection) }
             .also { liveInfoRepository.save(tribeId, it) }
 
-    private suspend fun removeUserFromInfo(tribeId: TribeId, connection: CouplingConnection) =
+    private suspend fun removeUserFromInfo(tribeId: TribeId, connectionId: String) =
         liveInfoRepository.get(tribeId)
-            .let { it.copy(connections = it.connections - connection) }
+            .let { it.copy(connections = it.connections.filterNot { c -> c.connectionId == connectionId }) }
             .also { liveInfoRepository.save(tribeId, it) }
 
     private fun couplingSocketMessage(info: LiveInfo, doc: PairAssignmentDocument?) = CouplingSocketMessage(
