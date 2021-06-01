@@ -1,12 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.json.toCouplingServerMessage
 import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -47,12 +46,14 @@ class WebsocketTest {
         }
         messageDeferred.await()
     } verify { result ->
-        result.assertIsEqualTo(
-            expectedConnectionMessage(1, expectedOnlinePlayerList(username))
-        )
+        toCouplingServerMessage(JSON.parse(result))
+            .assertIsEqualTo(
+                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
+            )
     }
 
-    private fun expectedOnlinePlayerList(username: String) = listOf(Player(email = "$username._temp", name = "", id = "-1"))
+    private fun expectedOnlinePlayerList(username: String) =
+        listOf(Player(email = "$username._temp", name = "", id = "-1"))
 
     @Test
     fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(sdkContext {
@@ -73,9 +74,17 @@ class WebsocketTest {
         val thirdSocket = openSocket(sdk, tribe).await()
         (firstTwoSockets + thirdSocket)
     } verifyAnd { result ->
-        result[2].first.assertIsEqualTo(
-            mutableListOf(expectedConnectionMessage(3, expectedOnlinePlayerList(username)))
-        )
+        result[2].first
+            .map { toCouplingServerMessage(JSON.parse(it)) }
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage(
+                        "Users viewing this page: 3",
+                        expectedOnlinePlayerList(username).toSet(),
+                        null
+                    )
+                )
+            )
     } teardown { result ->
         result.forEach { it.second.close() }
     }
@@ -92,12 +101,13 @@ class WebsocketTest {
         val socket2 = openSocket(sdk, tribe).await()
         listOf(socket1, socket2)
     } verifyAnd { sockets ->
-        sockets[0].first.assertIsEqualTo(
-            mutableListOf(
-                expectedConnectionMessage(1, expectedOnlinePlayerList(username)),
-                expectedConnectionMessage(2, expectedOnlinePlayerList(username))
+        sockets[0].first.map { toCouplingServerMessage(JSON.parse(it)) }
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
+                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet())
+                )
             )
-        )
     } teardown { sockets ->
         sockets.forEach { it.second.close() }
     }
@@ -121,12 +131,13 @@ class WebsocketTest {
                 deferred.await()
             }
     } verifyAnd { openSocket ->
-        openSocket.first.assertIsEqualTo(
-            mutableListOf(
-                expectedConnectionMessage(2, expectedOnlinePlayerList(username)),
-                expectedConnectionMessage(1, expectedOnlinePlayerList(username))
+        openSocket.first.map { toCouplingServerMessage(JSON.parse(it)) }
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet()),
+                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet())
+                )
             )
-        )
     } teardown { openSocket ->
         openSocket.second.close()
     }

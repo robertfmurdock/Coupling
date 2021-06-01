@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.repository.memory.MemoryLiveInfoRepository
 import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
 import com.zegreatrob.coupling.server.action.DeleteTribeCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
@@ -41,7 +40,6 @@ class CommandDispatcher(
 ) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
     override val execute = this
     override val actionDispatcher = this
-    override val liveInfoRepository get() = MemoryLiveInfoRepository()
 
     private var authorizedTribeIdDispatcherJob: Deferred<CurrentTribeIdDispatcher>? = null
 

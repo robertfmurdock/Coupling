@@ -8,7 +8,7 @@ sealed class Message
 data class CouplingSocketMessage(
     var text: String,
     var players: Set<Player>,
-    val currentPairAssignments: PairAssignmentDocument?
+    val currentPairAssignments: PairAssignmentDocument? = null
 ) : Message()
 
 data class PairAssignmentAdjustmentMessage(val currentPairAssignments: PairAssignmentDocument) : Message()
