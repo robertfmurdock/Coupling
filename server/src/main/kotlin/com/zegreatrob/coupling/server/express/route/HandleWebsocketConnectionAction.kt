@@ -50,7 +50,7 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
             val doc = JSON.parse<Json>(message)
                 .fromMessageToPairAssignmentDocument()
 
-            val info = updatePairAssignments(tribeId, doc)
+            val info = updatePairAssignments(tribeId)
 
             wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, result, doc))
         }
@@ -65,9 +65,7 @@ interface HandleWebsocketConnectionActionDispatcher : UserIsAuthorizedWithDataAc
         wss.broadcastConnectionCountForTribe(tribeId, couplingSocketMessage(info, result, null))
     }
 
-    private fun updatePairAssignments(tribeId: TribeId, doc: PairAssignmentDocument?) = liveInfoRepository.get(tribeId)
-// Knocking this out for now - This is hanging around, and I need better tests to illustrate the problem.
-//        .copy(currentPairAssignmentDocument = doc)
+    private fun updatePairAssignments(tribeId: TribeId) = liveInfoRepository.get(tribeId)
         .also { liveInfoRepository.save(tribeId, it) }
 
     private fun Json.fromMessageToPairAssignmentDocument() = this["currentPairAssignments"]
