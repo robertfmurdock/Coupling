@@ -1,8 +1,8 @@
-package com.zegreatrob.coupling.server
+package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.server.express.route.LiveInfo
-import com.zegreatrob.coupling.server.express.route.LiveInfoRepository
+import com.zegreatrob.coupling.model.LiveInfo
+import com.zegreatrob.coupling.repository.LiveInfoRepository
 
 
 val infoMap = mutableMapOf<TribeId, LiveInfo>()
