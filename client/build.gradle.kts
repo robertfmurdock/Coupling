@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("js")
-    kotlin("plugin.serialization") version "1.5.0"
+    kotlin("plugin.serialization") version "1.5.10"
 }
 
 kotlin {
