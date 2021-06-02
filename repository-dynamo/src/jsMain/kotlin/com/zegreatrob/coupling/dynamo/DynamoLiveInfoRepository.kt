@@ -10,12 +10,25 @@ import kotlin.js.json
 class DynamoLiveInfoRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     LiveInfoRepository, DynamoPlayerJsonMapping {
 
-    override suspend fun get(tribeId: TribeId) = performQuery(queryParams(tribeId))
+    override suspend fun connectionList(tribeId: TribeId) = performQuery(queryParams(tribeId))
         .itemsNode()
         .mapNotNull {
             it["userPlayer"].unsafeCast<Json>().toPlayer()
                 ?.let { player -> CouplingConnection(it["id"].toString(), tribeId, player) }
         }.sortedBy { it.connectionId }
+
+    override suspend fun get(connectionId: String) = performQuery(queryParams(connectionId))
+        .itemsNode()
+        .mapNotNull {
+            it["userPlayer"].unsafeCast<Json>().toPlayer()
+                ?.let { player ->
+                    CouplingConnection(
+                        it["id"].toString(),
+                        it["tribeId"].toString().let(::TribeId),
+                        player
+                    )
+                }
+        }.firstOrNull()
 
     override suspend fun save(connection: CouplingConnection) = performPutItem(
         connection.toDynamoJson()
@@ -24,16 +37,32 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
     override suspend fun delete(tribeId: TribeId, connectionId: String) {
         performDeleteItem(
             json(
-                "id" to connectionId,
-                "tribeId" to tribeId.value
+                "entityType" to ENTITY_TYPE,
+                "tribeId+id" to "${tribeId.value}+$connectionId"
             )
         )
     }
 
     private fun queryParams(tribeId: TribeId) = json(
         "TableName" to tableName,
-        "ExpressionAttributeValues" to json(":tribeId" to tribeId.value),
-        "KeyConditionExpression" to "tribeId = :tribeId"
+        "ExpressionAttributeValues" to json(
+            ":entityType" to ENTITY_TYPE,
+            ":tribeId" to tribeId.value
+        ),
+        "ExpressionAttributeNames" to json(
+            "#sortKey" to "tribeId+id",
+        ),
+        "KeyConditionExpression" to "entityType = :entityType and begins_with(#sortKey, :tribeId)"
+    )
+
+    private fun queryParams(connectionId: String) = json(
+        "TableName" to tableName,
+        "ExpressionAttributeValues" to json(
+            ":entityType" to "USER_CONNECTION",
+            ":id" to connectionId
+        ),
+        "KeyConditionExpression" to "entityType = :entityType",
+        "FilterExpression" to "id = :id"
     )
 
     companion object : DynamoDBSyntax by DynamoDbProvider,
@@ -43,7 +72,8 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         DynamoItemSyntax,
         DynamoItemDeleteSyntax,
         DynamoScanSyntax {
-        override val tableName = "LIVE_INFO"
+        override val tableName = "LIVE_CONNECTION"
+        const val ENTITY_TYPE = "USER_CONNECTION"
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoLiveInfoRepository(userId, clock)
             .also { ensureTableExists() }
 
@@ -52,21 +82,21 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
                 "TableName" to tableName,
                 "KeySchema" to arrayOf(
                     json(
-                        "AttributeName" to "tribeId",
+                        "AttributeName" to "entityType",
                         "KeyType" to "HASH"
                     ),
                     json(
-                        "AttributeName" to "id",
+                        "AttributeName" to "tribeId+id",
                         "KeyType" to "RANGE"
                     )
                 ),
                 "AttributeDefinitions" to arrayOf(
                     json(
-                        "AttributeName" to "tribeId",
+                        "AttributeName" to "entityType",
                         "AttributeType" to "S"
                     ),
                     json(
-                        "AttributeName" to "id",
+                        "AttributeName" to "tribeId+id",
                         "AttributeType" to "S"
                     )
                 ),
@@ -75,8 +105,10 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
     }
 
     private fun CouplingConnection.toDynamoJson() = json(
+        "entityType" to ENTITY_TYPE,
         "tribeId" to tribeId.value,
         "id" to connectionId,
+        "tribeId+id" to "${tribeId.value}+$connectionId",
         "userPlayer" to userPlayer.toDynamoJson()
     )
 

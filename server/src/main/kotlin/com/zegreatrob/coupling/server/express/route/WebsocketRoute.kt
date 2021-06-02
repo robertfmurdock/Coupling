@@ -16,20 +16,10 @@ val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) 
     websocket.user = request.user
     websocket.connectionId = connectionId
 
-    val messageHandler = request.dispatch(
-        { request.commandDispatcher },
-        { incomingMessage -> ReportDocCommand(tribeId, incomingMessage.parseDocumentMessage()) },
-        { message -> wss.broadcastConnectionCountForTribe(tribeId, message) })
-
-    websocket.on("message", messageHandler)
+    websocket.on("message", messageHandler(request, tribeId, wss))
     websocket.on("error") { request.commandDispatcher.logger.error { it } }
 
-    val closeHandler = request.dispatch(
-        { request.commandDispatcher },
-        { DisconnectTribeUserCommand(tribeId, connectionId) },
-        { message -> wss.broadcastConnectionCountForTribe(tribeId, message) })
-
-    websocket.on("close", closeHandler)
+    websocket.on("close", closeHandler(request, tribeId, connectionId, wss))
 
     val connectHandler = request.dispatch(
         { request.commandDispatcher },
@@ -44,6 +34,19 @@ val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) 
 
     connectHandler(null)
 }
+
+private fun messageHandler(request: Request, tribeId: TribeId, wss: WebSocketServer) = request.dispatch(
+    { request.commandDispatcher },
+    { incomingMessage -> ReportDocCommand(tribeId, incomingMessage.parseDocumentMessage()) },
+    { message -> wss.broadcastConnectionCountForTribe(tribeId, message) }
+)
+
+private fun closeHandler(request: Request, tribeId: TribeId, connectionId: String, wss: WebSocketServer) =
+    request.dispatch(
+        { request.commandDispatcher },
+        { DisconnectTribeUserCommand(tribeId, connectionId) },
+        { message -> wss.broadcastConnectionCountForTribe(tribeId, message) }
+    )
 
 private fun String?.parseDocumentMessage() = JSON.parse<Json>(this ?: "")
     .fromMessageToPairAssignmentDocument()

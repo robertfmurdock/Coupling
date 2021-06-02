@@ -11,7 +11,7 @@ import kotlin.test.Test
 interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
-    fun getWillReturnLastSaved() = repositorySetup(object : ContextMint<R>() {
+    fun connectionListWillReturnLastSaved() = repositorySetup(object : ContextMint<R>() {
         val tribeId = stubTribeId()
         val connections = listOf(
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
@@ -21,9 +21,26 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
     }.bind()) {
         connections.forEach { repository.save(it) }
     } exercise {
-        repository.get(tribeId)
+        repository.connectionList(tribeId)
     } verify { result ->
         result.assertIsEqualTo(connections)
+    }
+
+    @Test
+    fun getWillReturnConnection() = repositorySetup(object : ContextMint<R>() {
+        val tribeId = stubTribeId()
+        val expectedConnection = CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
+        val connections = listOf(
+            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
+            expectedConnection,
+            CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
+        )
+    }.bind()) {
+        connections.forEach { repository.save(it) }
+    } exercise {
+        repository.get(expectedConnection.connectionId)
+    } verify { result ->
+        result.assertIsEqualTo(expectedConnection)
     }
 
     @Test
@@ -38,7 +55,7 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
         connections.forEach { repository.save(it) }
     } exercise {
         repository.delete(tribeId, connections[1].connectionId)
-        repository.get(tribeId)
+        repository.connectionList(tribeId)
     } verify { result ->
         result.assertIsEqualTo(listOf(connections[0], connections[2]).sortedBy { it.connectionId })
     }

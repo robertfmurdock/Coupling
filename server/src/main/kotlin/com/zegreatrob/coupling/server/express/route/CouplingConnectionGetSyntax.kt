@@ -5,5 +5,5 @@ import com.zegreatrob.coupling.repository.LiveInfoRepository
 
 interface CouplingConnectionGetSyntax {
     val liveInfoRepository: LiveInfoRepository
-    suspend fun TribeId.loadConnections() = liveInfoRepository.get(this)
+    suspend fun TribeId.loadConnections() = liveInfoRepository.connectionList(this)
 }
