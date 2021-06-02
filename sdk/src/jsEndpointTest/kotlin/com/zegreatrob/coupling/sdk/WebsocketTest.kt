@@ -172,7 +172,6 @@ class WebsocketTest {
         }
     }
 
-
     @Test
     fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(sdkContext { it }
     ) exercise {

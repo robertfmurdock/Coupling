@@ -53,26 +53,11 @@ interface HandleWebsocketConnectionActionDispatcher : ConnectTribeUserCommandDis
         }
         websocket.on("error") { logger.error { it } }
 
-        perform(ConnectTribeUserCommand(tribeId, connectionId, request.user))
+        perform(ConnectTribeUserCommand(tribeId, connectionId))
             ?.let { message -> wss.broadcastConnectionCountForTribe(tribeId, message) }
             ?: websocket.close()
         return Result.success(Unit)
     }
-
-    private fun Json.fromMessageToPairAssignmentDocument() = this["currentPairAssignments"]
-        ?.unsafeCast<Json>()
-        ?.toPairAssignmentDocument()
-
-    private fun WebSocketServer.broadcastConnectionCountForTribe(tribeId: TribeId, message: CouplingSocketMessage) =
-        websocketClients()
-            .filter { it.tribeId == tribeId.value }
-            .broadcast(JSON.stringify(message.toJson()))
-
-    fun WebSocketServer.websocketClients(): List<WS> = mutableListOf<WS>()
-        .apply { clients.forEach { add(it) } }
-        .filter { it.readyState == OPEN }
-
-    fun List<WS>.broadcast(content: String) = forEach { it.send(content) }
 
 }
 
@@ -82,3 +67,18 @@ fun couplingSocketMessage(connections: List<CouplingConnection>, doc: PairAssign
         connections.map { it.userPlayer }.toSet(),
         doc
     )
+
+fun Json.fromMessageToPairAssignmentDocument() = this["currentPairAssignments"]
+    ?.unsafeCast<Json>()
+    ?.toPairAssignmentDocument()
+
+fun WebSocketServer.broadcastConnectionCountForTribe(tribeId: TribeId, message: CouplingSocketMessage) =
+    websocketClients()
+        .filter { it.tribeId == tribeId.value }
+        .broadcast(JSON.stringify(message.toJson()))
+
+fun WebSocketServer.websocketClients(): List<WS> = mutableListOf<WS>()
+    .apply { clients.forEach { add(it) } }
+    .filter { it.readyState == OPEN }
+
+fun List<WS>.broadcast(content: String) = forEach { it.send(content) }
