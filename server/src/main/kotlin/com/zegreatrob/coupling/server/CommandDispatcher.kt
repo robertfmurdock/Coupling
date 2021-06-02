@@ -16,7 +16,9 @@ import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispat
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
-import com.zegreatrob.coupling.server.express.route.HandleWebsocketConnectionActionDispatcher
+import com.zegreatrob.coupling.server.express.route.ConnectTribeUserCommandDispatcher
+import com.zegreatrob.coupling.server.express.route.DisconnectTribeUserCommandDispatcher
+import com.zegreatrob.coupling.server.express.route.ReportDocCommandDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
@@ -28,7 +30,9 @@ interface ICommandDispatcher :
     TribeDispatcher,
     PairAssignmentDispatcher,
     UserDispatcher,
-    HandleWebsocketConnectionActionDispatcher,
+    ConnectTribeUserCommandDispatcher,
+    DisconnectTribeUserCommandDispatcher,
+    ReportDocCommandDispatcher,
     DispatchingActionExecutor<CommandDispatcher>,
     RepositoryCatalog
 

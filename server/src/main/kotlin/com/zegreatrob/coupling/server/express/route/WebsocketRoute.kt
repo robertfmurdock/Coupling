@@ -1,7 +1,13 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toPairAssignmentDocument
+import com.zegreatrob.coupling.model.CouplingConnection
+import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.server.external.express.OPEN
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
@@ -12,41 +18,53 @@ import kotlin.js.Json
 val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) {
     val connectionId = "${uuid4()}"
     val tribeId = request.query["tribeId"].toString().let(::TribeId)
-    websocket.tribeId = tribeId.value
-    websocket.user = request.user
     websocket.connectionId = connectionId
 
-    websocket.on("message", messageHandler(request, tribeId, wss))
+    val broadcastFunc = broadcastFunc(wss)
+
+    websocket.on("message", messageHandler(request, connectionId, broadcastFunc))
     websocket.on("error") { request.commandDispatcher.logger.error { it } }
+    websocket.on("close", closeHandler(request, connectionId, broadcastFunc))
 
-    websocket.on("close", closeHandler(request, tribeId, connectionId, wss))
-
+    val broadcastOrClose = broadcastOrClose(websocket, wss)
     val connectHandler = request.dispatch(
         { request.commandDispatcher },
         { ConnectTribeUserCommand(tribeId, connectionId) },
-        { message ->
-            when (message) {
-                null -> websocket.close()
-                else -> wss.broadcastConnectionCountForTribe(tribeId, message)
-            }
-        }
+        broadcastOrClose
     )
 
     connectHandler(null)
 }
 
-private fun messageHandler(request: Request, tribeId: TribeId, wss: WebSocketServer) = request.dispatch(
+private fun broadcastOrClose(websocket: WS, wss: WebSocketServer):
+            (Pair<List<CouplingConnection>, CouplingSocketMessage>?) -> Unit = { result ->
+    when (result) {
+        null -> websocket.close()
+        else -> wss.broadcastConnectionCountForTribe(result.first, result.second)
+    }
+}
+
+private fun broadcastFunc(
+    wss: WebSocketServer
+): (Pair<List<CouplingConnection>, CouplingSocketMessage>?) -> Unit = { result ->
+    result?.let { (connections, message) -> wss.broadcastConnectionCountForTribe(connections, message) }
+}
+
+private fun messageHandler(
+    request: Request, connectionId: String, broadcast: (Pair<List<CouplingConnection>, CouplingSocketMessage>?) -> Unit
+) = request.dispatch(
     { request.commandDispatcher },
-    { incomingMessage -> ReportDocCommand(tribeId, incomingMessage.parseDocumentMessage()) },
-    { message -> wss.broadcastConnectionCountForTribe(tribeId, message) }
+    { incomingMessage -> ReportDocCommand(connectionId, incomingMessage.parseDocumentMessage()) },
+    broadcast
 )
 
-private fun closeHandler(request: Request, tribeId: TribeId, connectionId: String, wss: WebSocketServer) =
-    request.dispatch(
-        { request.commandDispatcher },
-        { DisconnectTribeUserCommand(tribeId, connectionId) },
-        { message -> wss.broadcastConnectionCountForTribe(tribeId, message) }
-    )
+private fun closeHandler(
+    request: Request, connectionId: String, broadcast: (Pair<List<CouplingConnection>, CouplingSocketMessage>?) -> Unit
+) = request.dispatch(
+    { request.commandDispatcher },
+    { DisconnectTribeUserCommand(connectionId) },
+    broadcast
+)
 
 private fun String?.parseDocumentMessage() = JSON.parse<Json>(this ?: "")
     .fromMessageToPairAssignmentDocument()
@@ -77,8 +95,31 @@ external interface WS {
     fun close()
     fun send(content: String)
 
-    var tribeId: String?
-    var user: dynamic
     var connectionId: String?
     val readyState: Int
 }
+
+
+fun couplingSocketMessage(connections: List<CouplingConnection>, doc: PairAssignmentDocument?) =
+    CouplingSocketMessage(
+        "Users viewing this page: ${connections.size}",
+        connections.map { it.userPlayer }.toSet(),
+        doc
+    )
+
+fun Json.fromMessageToPairAssignmentDocument() = this["currentPairAssignments"]
+    ?.unsafeCast<Json>()
+    ?.toPairAssignmentDocument()
+
+fun WebSocketServer.broadcastConnectionCountForTribe(
+    connections: List<CouplingConnection>,
+    message: CouplingSocketMessage
+) = websocketClients()
+    .filter { connections.map(CouplingConnection::connectionId).contains(it.connectionId) }
+    .broadcast(JSON.stringify(message.toJson()))
+
+fun WebSocketServer.websocketClients(): List<WS> = mutableListOf<WS>()
+    .apply { clients.forEach { add(it) } }
+    .filter { it.readyState == OPEN }
+
+fun List<WS>.broadcast(content: String) = forEach { it.send(content) }

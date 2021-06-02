@@ -12,7 +12,7 @@ import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 data class ConnectTribeUserCommand(val tribeId: TribeId, val connectionId: String) :
-    SimpleSuspendAction<ConnectTribeUserCommandDispatcher, CouplingSocketMessage?> {
+    SimpleSuspendAction<ConnectTribeUserCommandDispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
     override val performFunc = link(ConnectTribeUserCommandDispatcher::perform)
 }
 
@@ -24,7 +24,7 @@ interface ConnectTribeUserCommandDispatcher : UserIsAuthorizedWithDataActionDisp
             CouplingConnection(connectionId, tribeId, userPlayer(players, user.email))
                 .also { it.save() }
                 .let { tribeId.loadConnections() }
-                .let { couplingSocketMessage(it, null) }
+                .let { it to couplingSocketMessage(it, null) }
         }
     }
 
