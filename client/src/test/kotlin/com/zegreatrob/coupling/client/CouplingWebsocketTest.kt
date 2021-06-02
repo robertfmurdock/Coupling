@@ -26,7 +26,7 @@ class CouplingWebsocketTest {
         wrapper.find(reactWebsocket).props()
             .url
             .assertIsEqualTo(
-                "ws://${window.location.host}/api/${tribeId.value}/pairAssignments/current"
+                "ws://${window.location.host}/api/websocket?tribeId=${tribeId.value}"
             )
     }
 
@@ -40,7 +40,7 @@ class CouplingWebsocketTest {
         wrapper.find(reactWebsocket).props()
             .url
             .assertIsEqualTo(
-                "wss://${window.location.host}/api/LOL/pairAssignments/current"
+                "wss://${window.location.host}/api/websocket?tribeId=LOL"
             )
     }
 

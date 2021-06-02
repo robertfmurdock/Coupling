@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlin.js.Json
 
 external interface Request {
+    val query: Json
     val params: Json
     val body: dynamic
     val method: String

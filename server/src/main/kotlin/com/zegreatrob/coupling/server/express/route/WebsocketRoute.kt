@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.tribeId
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.execute
@@ -11,7 +11,7 @@ import kotlin.js.Json
 
 val websocketRoute = fun(websocket: WS, request: Request, wss: WebSocketServer) {
     val connectionId = "${uuid4()}"
-    val tribeId = request.tribeId()
+    val tribeId = request.query["tribeId"].toString().let(::TribeId)
     websocket.tribeId = tribeId.value
     websocket.user = request.user
     websocket.connectionId = connectionId

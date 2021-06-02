@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.toCouplingServerMessage
-import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -229,17 +228,10 @@ class WebsocketTest {
         return messageDeferred
     }
 
-    private fun expectedConnectionMessage(count: Int, players: List<Player>) = json(
-        "type" to "LivePlayers",
-        "text" to "Users viewing this page: $count",
-        "players" to players.map { it.toJson() },
-        "currentPairAssignments" to null
-    ).let { JSON.stringify(it) }
-
     private fun connectToSocket(sdk: Sdk, tribeId: TribeId): WS {
         val baseUrl = URL(sdk.axios.defaults.baseURL.unsafeCast<String>())
         val host = baseUrl.host
-        val url = "ws://$host/api/${tribeId.value}/pairAssignments/current"
+        val url = "ws://$host/api/websocket?tribeId=${tribeId.value}"
         val cookieStringSync =
             sdk.axios.defaults.jar.getCookieStringSync(baseUrl.href).unsafeCast<String>()
         return newWebsocket(url, json("headers" to json("cookie" to cookieStringSync)))
