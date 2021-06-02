@@ -5,8 +5,10 @@ import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.server.action.connection.ConnectTribeUserCommand
+import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserCommand
+import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.external.express.OPEN
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.testmints.action.async.SuspendAction
@@ -99,27 +101,21 @@ external interface WS {
     val readyState: Int
 }
 
-
-fun couplingSocketMessage(connections: List<CouplingConnection>, doc: PairAssignmentDocument?) =
-    CouplingSocketMessage(
-        "Users viewing this page: ${connections.size}",
-        connections.map { it.userPlayer }.toSet(),
-        doc
-    )
-
 fun Json.fromMessageToPairAssignmentDocument() = this["currentPairAssignments"]
     ?.unsafeCast<Json>()
     ?.toPairAssignmentDocument()
 
-fun WebSocketServer.broadcastConnectionCountForTribe(
+private fun WebSocketServer.broadcastConnectionCountForTribe(
     connections: List<CouplingConnection>,
     message: CouplingSocketMessage
-) = websocketClients()
-    .filter { connections.map(CouplingConnection::connectionId).contains(it.connectionId) }
+) = clientsFor(connections)
     .broadcast(JSON.stringify(message.toJson()))
 
-fun WebSocketServer.websocketClients(): List<WS> = mutableListOf<WS>()
+private fun WebSocketServer.clientsFor(connections: List<CouplingConnection>) = websocketClients()
+    .filter { connections.map(CouplingConnection::connectionId).contains(it.connectionId) }
+
+private fun WebSocketServer.websocketClients(): List<WS> = mutableListOf<WS>()
     .apply { clients.forEach { add(it) } }
     .filter { it.readyState == OPEN }
 
-fun List<WS>.broadcast(content: String) = forEach { it.send(content) }
+private fun List<WS>.broadcast(content: String) = forEach { it.send(content) }

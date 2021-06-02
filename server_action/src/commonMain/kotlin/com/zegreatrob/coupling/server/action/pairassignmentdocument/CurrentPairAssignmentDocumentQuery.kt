@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
-import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 
 object CurrentPairAssignmentDocumentQuery :
     SimpleSuspendResultAction<CurrentPairAssignmentDocumentQueryDispatcher, TribeRecord<PairAssignmentDocument>?> {

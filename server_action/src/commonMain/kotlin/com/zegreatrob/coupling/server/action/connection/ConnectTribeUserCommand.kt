@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.express.route
+package com.zegreatrob.coupling.server.action.connection
 
 import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.CouplingConnection

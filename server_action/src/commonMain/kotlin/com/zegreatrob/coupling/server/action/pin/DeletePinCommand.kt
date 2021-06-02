@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.pin
 
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.deletionResult
-import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 
 data class DeletePinCommand(val pinId: String) : SimpleSuspendResultAction<DeletePinCommandDispatcher, Unit> {
     override val performFunc = link(DeletePinCommandDispatcher::perform)

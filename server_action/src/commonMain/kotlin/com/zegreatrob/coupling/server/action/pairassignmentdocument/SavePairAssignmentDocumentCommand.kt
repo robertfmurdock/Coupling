@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentDocumentSaveSyntax
-import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 
 data class SavePairAssignmentDocumentCommand(val pairAssignmentDocument: PairAssignmentDocument) :
     SimpleSuspendResultAction<SavePairAssignmentDocumentCommandDispatcher, TribeIdPairAssignmentDocument> {
