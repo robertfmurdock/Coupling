@@ -6,7 +6,7 @@ import kotlin.js.json
 
 interface DynamoItemDeleteSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoLoggingSyntax {
 
-    suspend fun performDeleteItem(keyJson: Json) = logAsync("deleteItem") {
+    suspend fun performDeleteItem(keyJson: Json): Unit = logAsync("deleteItem") {
         try {
             documentClient.delete(deleteItemParams(keyJson)).promise().await()
         } catch (bad: Exception) {

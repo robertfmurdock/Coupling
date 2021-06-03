@@ -10,31 +10,37 @@ import kotlin.js.json
 class DynamoLiveInfoRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     LiveInfoRepository, DynamoPlayerJsonMapping {
 
-    override suspend fun connectionList(tribeId: TribeId) = performQuery(queryParams(tribeId))
-        .itemsNode()
-        .mapNotNull {
-            it["userPlayer"].unsafeCast<Json>().toPlayer()
-                ?.let { player -> CouplingConnection(it["id"].toString(), tribeId, player) }
-        }.sortedBy { it.connectionId }
+    override suspend fun connectionList(tribeId: TribeId) = tribeId.logAsync("connectionList") {
+        performQuery(queryParams(tribeId))
+            .itemsNode()
+            .mapNotNull {
+                it["userPlayer"].unsafeCast<Json>().toPlayer()
+                    ?.let { player -> CouplingConnection(it["id"].toString(), tribeId, player) }
+            }.sortedBy { it.connectionId }
+    }
 
-    override suspend fun get(connectionId: String) = performQuery(queryParams(connectionId))
-        .itemsNode()
-        .mapNotNull {
-            it["userPlayer"].unsafeCast<Json>().toPlayer()
-                ?.let { player ->
-                    CouplingConnection(
-                        it["id"].toString(),
-                        it["tribeId"].toString().let(::TribeId),
-                        player
-                    )
-                }
-        }.firstOrNull()
+    override suspend fun get(connectionId: String) = connectionId.logAsync("getConnection") {
+        performQuery(queryParams(connectionId))
+            .itemsNode()
+            .mapNotNull {
+                it["userPlayer"].unsafeCast<Json>().toPlayer()
+                    ?.let { player ->
+                        CouplingConnection(
+                            it["id"].toString(),
+                            it["tribeId"].toString().let(::TribeId),
+                            player
+                        )
+                    }
+            }.firstOrNull()
+    }
 
-    override suspend fun save(connection: CouplingConnection) = performPutItem(
-        connection.toDynamoJson()
-    )
+    override suspend fun save(connection: CouplingConnection) = connection.connectionId.logAsync("saveConnection") {
+        performPutItem(
+            connection.toDynamoJson()
+        )
+    }
 
-    override suspend fun delete(tribeId: TribeId, connectionId: String) {
+    override suspend fun delete(tribeId: TribeId, connectionId: String) = connectionId.logAsync("deleteConnection") {
         performDeleteItem(
             json(
                 "entityType" to ENTITY_TYPE,
