@@ -19,6 +19,7 @@ external interface Response {
     fun render(view: String, json: Json)
     fun pipe(stream: Stream): Pipe
     fun setEncoding(encoding: String)
+    fun type(type: String)
 }
 
 external interface Pipe {
