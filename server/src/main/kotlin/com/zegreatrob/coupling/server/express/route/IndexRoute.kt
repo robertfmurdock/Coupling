@@ -28,6 +28,7 @@ private fun fetchRemotely(): Promise<String> = fetch("${Config.clientPath}/index
 
 fun Express.indexRoute(): Handler = { request, response, _ ->
     indexHtmlPromise.then { indexHtml ->
+        response.type("html")
         val indexStream = Readable.from(arrayOf(indexHtml))
 
         val rewritingStream = RewritingStream()
