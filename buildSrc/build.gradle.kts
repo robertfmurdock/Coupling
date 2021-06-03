@@ -1,5 +1,4 @@
 repositories {
-    jcenter()
     maven { url = uri("https://plugins.gradle.org/m2/") }
 }
 
@@ -7,12 +6,12 @@ plugins {
     id("java")
     id("java-gradle-plugin")
     id("maven-publish")
-    id("org.jetbrains.kotlin.jvm").version("1.5.0")
+    id("org.jetbrains.kotlin.jvm").version("1.5.10")
     id("com.jfrog.bintray") version "1.7.3"
     id("net.researchgate.release") version "2.6.0"
 }
 
-val kotlinVersion = "1.5.0"
+val kotlinVersion = "1.5.10"
 
 dependencies {
     implementation(kotlin("stdlib", kotlinVersion))
@@ -28,4 +27,3 @@ dependencies {
     implementation("org.slf4j:slf4j-api:1.7.30")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
 }
-

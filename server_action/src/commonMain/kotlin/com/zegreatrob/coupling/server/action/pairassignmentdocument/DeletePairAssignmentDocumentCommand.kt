@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocumentId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentIdDeleteSyntax
-import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 
 data class DeletePairAssignmentDocumentCommand(val pairAssignmentDocumentId: PairAssignmentDocumentId) :
     SimpleSuspendResultAction<DeletePairAssignmentDocumentCommandDispatcher, Unit> {

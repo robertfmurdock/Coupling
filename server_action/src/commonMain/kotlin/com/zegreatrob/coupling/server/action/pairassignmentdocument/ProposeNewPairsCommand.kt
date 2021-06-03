@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdHistorySyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
-import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

@@ -2,7 +2,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization") version "1.5.0"
+    id("kotlinx-serialization") version "1.5.10"
 }
 
 kotlin {
@@ -26,8 +26,8 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:4.0.13")
-                implementation("com.zegreatrob.testmints:action-async:4.0.13")
+                implementation("com.zegreatrob.testmints:action:4.0.15")
+                implementation("com.zegreatrob.testmints:action-async:4.0.15")
                 implementation("com.benasher44:uuid:0.3.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")

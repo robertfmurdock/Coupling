@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerRecordsListSyntax
-import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 
 object PlayersQuery :
     SimpleSuspendResultAction<PlayersQueryDispatcher, List<Record<TribeIdPlayer>>> {

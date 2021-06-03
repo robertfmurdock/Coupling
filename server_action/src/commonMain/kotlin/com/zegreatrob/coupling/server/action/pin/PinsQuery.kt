@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinRecordsSyntax
-import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 
 object PinsQuery :
     SimpleSuspendResultAction<PinsQueryDispatcher, List<TribeRecord<Pin>>> {

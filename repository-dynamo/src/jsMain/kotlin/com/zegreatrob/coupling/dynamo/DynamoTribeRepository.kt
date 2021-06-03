@@ -22,7 +22,7 @@ class DynamoTribeRepository private constructor(override val userId: String, ove
         DynamoItemGetSyntax,
         DynamoItemPutSyntax,
         DynamoQueryItemListGetSyntax,
-        DynamoItemDeleteSyntax,
+        DynamoItemPutDeleteRecordSyntax,
         ListLatestRecordSyntax,
         DynamoRepositoryCreatorSyntax<DynamoTribeRepository>,
         DynamoDBSyntax by DynamoDbProvider {

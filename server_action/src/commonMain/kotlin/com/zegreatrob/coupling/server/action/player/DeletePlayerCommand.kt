@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.model.player.TribeIdPlayerId
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerIdDeleteSyntax
-import com.zegreatrob.coupling.server.action.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 
 data class DeletePlayerCommand(val playerId: String) :
     SimpleSuspendResultAction<DeletePlayerCommandDispatcher, Unit> {

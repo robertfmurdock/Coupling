@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toCouplingServerMessage
+import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -44,12 +45,14 @@ class WebsocketTest {
         }
         messageDeferred.await()
     } verify { result ->
-        result.assertIsEqualTo(
-            expectedConnectionMessage(1, expectedUserList(username))
-        )
+        toCouplingServerMessage(JSON.parse(result))
+            .assertIsEqualTo(
+                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
+            )
     }
 
-    private fun expectedUserList(username: String) = listOf(Player(email = "$username._temp", name = "", id = "-1"))
+    private fun expectedOnlinePlayerList(username: String) =
+        listOf(Player(email = "$username._temp", name = "", id = "-1"))
 
     @Test
     fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(sdkContext {
@@ -69,15 +72,24 @@ class WebsocketTest {
 
         val thirdSocket = openSocket(sdk, tribe).await()
         (firstTwoSockets + thirdSocket)
-    } verify { result ->
-        result[2].first.assertIsEqualTo(
-            mutableListOf(expectedConnectionMessage(3, expectedUserList(username)))
-        )
+    } verifyAnd { result ->
+        result[2].first
+            .map { toCouplingServerMessage(JSON.parse(it)) }
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage(
+                        "Users viewing this page: 3",
+                        expectedOnlinePlayerList(username).toSet(),
+                        null
+                    )
+                )
+            )
+    } teardown { result ->
         result.forEach { it.second.close() }
     }
 
     @Test
-    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessageWithNewCount() = asyncSetup(sdkContext {
+    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = asyncSetup(sdkContext {
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -87,13 +99,15 @@ class WebsocketTest {
         val socket1 = openSocket(sdk, tribe).await()
         val socket2 = openSocket(sdk, tribe).await()
         listOf(socket1, socket2)
-    } verify { sockets ->
-        sockets[0].first.assertIsEqualTo(
-            mutableListOf(
-                expectedConnectionMessage(1, expectedUserList(username)),
-                expectedConnectionMessage(2, expectedUserList(username))
+    } verifyAnd { sockets ->
+        sockets[0].first.map { toCouplingServerMessage(JSON.parse(it)) }
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
+                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet())
+                )
             )
-        )
+    } teardown { sockets ->
         sockets.forEach { it.second.close() }
     }
 
@@ -115,13 +129,15 @@ class WebsocketTest {
                 socketToClose.second.close()
                 deferred.await()
             }
-    } verify { openSocket ->
-        openSocket.first.assertIsEqualTo(
-            mutableListOf(
-                expectedConnectionMessage(2, expectedUserList(username)),
-                expectedConnectionMessage(1, expectedUserList(username))
+    } verifyAnd { openSocket ->
+        openSocket.first.map { toCouplingServerMessage(JSON.parse(it)) }
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet()),
+                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet())
+                )
             )
-        )
+    } teardown { openSocket ->
         openSocket.second.close()
     }
 
@@ -154,7 +170,6 @@ class WebsocketTest {
             deferred.await()
         }
     }
-
 
     @Test
     fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(sdkContext { it }
@@ -213,17 +228,10 @@ class WebsocketTest {
         return messageDeferred
     }
 
-    private fun expectedConnectionMessage(count: Int, players: List<Player>) = json(
-        "type" to "LivePlayers",
-        "text" to "Users viewing this page: $count",
-        "players" to players.map { it.toJson() },
-        "currentPairAssignments" to null
-    ).let { JSON.stringify(it) }
-
     private fun connectToSocket(sdk: Sdk, tribeId: TribeId): WS {
         val baseUrl = URL(sdk.axios.defaults.baseURL.unsafeCast<String>())
         val host = baseUrl.host
-        val url = "ws://$host/api/${tribeId.value}/pairAssignments/current"
+        val url = "ws://$host/api/websocket?tribeId=${tribeId.value}"
         val cookieStringSync =
             sdk.axios.defaults.jar.getCookieStringSync(baseUrl.href).unsafeCast<String>()
         return newWebsocket(url, json("headers" to json("cookie" to cookieStringSync)))

@@ -21,7 +21,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
     companion object : DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>,
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
-        DynamoItemDeleteSyntax,
+        DynamoItemPutDeleteRecordSyntax,
         TribeIdDynamoItemListGetSyntax,
         DynamoDBSyntax by DynamoDbProvider {
         override val construct = ::DynamoPairAssignmentDocumentRepository

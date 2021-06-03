@@ -4,6 +4,7 @@ import com.benasher44.uuid.Uuid
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
@@ -17,6 +18,7 @@ interface RepositoryCatalog {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
     val pinRepository: PinRepository
     val userRepository: UserRepository
+    val liveInfoRepository: LiveInfoRepository
 }
 
 suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid) =

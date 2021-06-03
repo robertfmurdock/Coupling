@@ -3,10 +3,11 @@ import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeExecPath
 import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("kotlinx-serialization") version "1.5.0"
+    id("kotlinx-serialization") version "1.5.10"
 }
 
 val packageJson = loadPackageJson()
@@ -24,6 +25,7 @@ val testLoggingLib: Configuration by configurations.creating {
 
 kotlin {
     js {
+        useCommonJs()
         nodejs {}
         binaries.executable()
         compilations {
@@ -51,8 +53,8 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard:4.0.13")
-                implementation("com.zegreatrob.testmints:minassert:4.0.13")
+                implementation("com.zegreatrob.testmints:standard:4.0.15")
+                implementation("com.zegreatrob.testmints:minassert:4.0.15")
                 implementation("com.benasher44:uuid:0.2.4")
             }
         }
@@ -75,9 +77,9 @@ kotlin {
 
             dependencies {
                 implementation(project(":server"))
-                implementation("com.zegreatrob.testmints:standard:4.0.13")
-                implementation("com.zegreatrob.testmints:minassert:4.0.13")
-                implementation("com.zegreatrob.testmints:async:4.0.13")
+                implementation("com.zegreatrob.testmints:standard:4.0.15")
+                implementation("com.zegreatrob.testmints:minassert:4.0.15")
+                implementation("com.zegreatrob.testmints:async:4.0.15")
 
                 packageJson.devDependencies().forEach {
                     implementation(npm(it.first, it.second.asText()))
@@ -88,9 +90,9 @@ kotlin {
 
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:standard:4.0.13")
-                implementation("com.zegreatrob.testmints:minassert:4.0.13")
-                implementation("com.zegreatrob.testmints:async:4.0.13")
+                implementation("com.zegreatrob.testmints:standard:4.0.15")
+                implementation("com.zegreatrob.testmints:minassert:4.0.15")
+                implementation("com.zegreatrob.testmints:async:4.0.15")
             }
         }
     }
@@ -103,22 +105,10 @@ dependencies {
 
 tasks {
 
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-
+    val compileKotlinJs by getting(Kotlin2JsCompile::class) {}
+    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {}
     val compileEndpointTestKotlinJs by getting(Kotlin2JsCompile::class) {
         dependsOn("jsGenerateExternalsIntegrated")
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
     }
 
     val compileEndpointTestProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}

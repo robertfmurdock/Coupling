@@ -15,7 +15,7 @@ fun Message.toJson(): Json {
 
 fun toCouplingServerMessage(json: Json) = CouplingSocketMessage(
     json["text"].toString(),
-    json["players"].unsafeCast<Array<Json>>().map { it.toPlayer() },
+    json["players"].unsafeCast<Array<Json>>().map { it.toPlayer() }.toSet(),
     json["currentPairAssignments"].unsafeCast<Json?>()?.toPairAssignmentDocument()
 )
 
