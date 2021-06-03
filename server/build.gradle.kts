@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
 import com.zegreatrob.coupling.build.nodeExec
@@ -128,6 +127,21 @@ tasks {
     create<Exec>("start") {
         dependsOn(assemble, clientConfiguration)
         nodeExec(compileKotlinJs, listOf(project.relativePath("startup")))
+        environment("NODE_ENV", "production")
+        environment(
+            "CLIENT_PATH",
+            System.getenv("CLIENT_PATH")
+                ?.let { it.ifEmpty { null } }
+                ?: "${file("${rootProject.rootDir.absolutePath}/client/build/distributions")}"
+        )
+    }
+
+    create<Exec>("serverlessStart") {
+        dependsOn(assemble, clientConfiguration, "test")
+        nodeExec(
+            compileKotlinJs,
+            listOf("$nodeModulesDir/.bin/serverless", "offline", "--config", project.relativePath("serverless.yml"))
+        )
         environment("NODE_ENV", "production")
         environment(
             "CLIENT_PATH",

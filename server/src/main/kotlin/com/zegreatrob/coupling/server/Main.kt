@@ -24,7 +24,6 @@ private val startDeferred = serverScope.async(start = CoroutineStart.LAZY) {
 fun buildApp(): Express {
     val expressWs = expressWs(express())
     val app = expressWs.app
-
     app.middleware()
     expressWs.routes()
     return app

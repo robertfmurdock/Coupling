@@ -8,7 +8,7 @@ provider:
 
 functions:
   api:
-    handler: build/executable/app.handler
+    handler: build/executable/app.serverless
     events:
       - http:
           path: /
