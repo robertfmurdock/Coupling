@@ -26,13 +26,13 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:4.0.15")
-                implementation("com.zegreatrob.testmints:action-async:4.0.15")
+                implementation("com.zegreatrob.testmints:action:4.0.16")
+                implementation("com.zegreatrob.testmints:action-async:4.0.16")
                 implementation("com.benasher44:uuid:0.3.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
-                implementation("io.github.microutils:kotlin-logging:2.0.6")
+                implementation("io.github.microutils:kotlin-logging:2.0.8")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.1")
             }
         }
@@ -49,7 +49,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("io.github.microutils:kotlin-logging:2.0.6")
+                implementation("io.github.microutils:kotlin-logging:2.0.8")
                 implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
             }
         }

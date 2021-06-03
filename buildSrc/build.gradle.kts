@@ -21,7 +21,7 @@ dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
     implementation("com.github.node-gradle:gradle-node-plugin:1.3.0")
-    implementation("io.github.microutils:kotlin-logging:2.0.6")
+    implementation("io.github.microutils:kotlin-logging:2.0.8")
     implementation("com.soywiz.korlibs.klock:klock:2.1.0")
     implementation("org.apache.logging.log4j:log4j-core:2.13.1")
     implementation("org.slf4j:slf4j-api:1.7.30")
