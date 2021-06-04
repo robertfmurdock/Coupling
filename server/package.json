@@ -37,6 +37,7 @@
     "passport-custom": "^1.1.1",
     "passport-local": "^1.0.0",
     "raw-loader": "^4.0.2",
+    "serverless-http": "^2.7.0",
     "source-map-loader": "^3.0.0",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0",
@@ -46,7 +47,6 @@
   "devDependencies": {
     "npm-check-updates": "^11.5.13",
     "serverless": "^2.43.1",
-    "serverless-http": "^2.7.0",
     "serverless-offline": "^7.0.0"
   },
   "scripts": {},

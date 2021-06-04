@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
+import org.w3c.dom.get
 import react.RBuilder
 import react.RProps
 import react.dom.div
@@ -20,8 +21,8 @@ data class LoginChooserProps(val dispatchFunc: DispatchFunc<out GoogleSignInComm
 private val styles = useStyles("LoginChooser")
 
 val LoginChooser = reactFunction { (_): LoginChooserProps ->
-    val googleSignInFunc = { window.location.pathname = "/auth0-login" }
-    val msSignInFunc = { window.location.pathname = "/microsoft-login" }
+    val googleSignInFunc = { window.location.pathname = "${window["basename"] ?:""}/auth0-login" }
+    val msSignInFunc = { window.location.pathname = "${window["basename"] ?:""}/microsoft-login" }
     div(classes = styles.className) {
         div {
             couplingButton(supersize, white, styles["googleLoginButton"], googleSignInFunc) { +"Google" }

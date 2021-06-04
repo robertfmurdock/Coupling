@@ -14,10 +14,9 @@ interface TribeGQLPerformer : GqlSyntax {
         val result = sendQuery(tribeId, components)
         val data = result.data.data
 
-        return components.map { component ->
-            val node = getNodeAtPath(data, component)
-            component to node
-        }.toMap()
+        return components.associateWith { component ->
+            getNodeAtPath(data, component)
+        }
     }
 
     private fun getNodeAtPath(data: dynamic, component: TribeGQLComponent): Any {
@@ -53,7 +52,7 @@ class BatchingTribeGQLPerformer(override val axios: Axios) : TribeGQLPerformer {
         tribeId: TribeId,
         components: List<TribeGQLComponent>
     ): Map<TribeGQLComponent, dynamic> {
-        pendingComponents += components
+        pendingComponents = pendingComponents + components
 
         return with(batchScope) {
             if (pending == null) {

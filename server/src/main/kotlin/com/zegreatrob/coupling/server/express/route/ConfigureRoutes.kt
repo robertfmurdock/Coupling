@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.express.route
 
+import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.isInDevMode
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.express_graphql.graphqlHTTP
@@ -46,7 +47,7 @@ private fun auth0Callback(): Handler = { request, response, next ->
 
 private fun authenticateLocal() = passport.authenticate(
     "local",
-    json("successRedirect" to "/", "failureRedirect" to "/login")
+    json("successRedirect" to "${Config.clientBasename}/", "failureRedirect" to "${Config.clientBasename}/login")
 )
 
 private fun send200(): Handler = { _, response, _ -> response.sendStatus(200) }
@@ -59,7 +60,7 @@ private fun authenticateAzure() = passport.authenticate("azuread-openidconnect")
 
 private fun authenticateAzureWithFailure() = passport.authenticate(
     "azuread-openidconnect",
-    json("failureRedirect" to "/")
+    json("failureRedirect" to "${Config.clientBasename}/")
 )
 
 private fun redirectToRoot(): Handler = { _, response, _ -> response.redirect("/") }

@@ -5,7 +5,9 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: nodejs14.x
-
+  environment:
+    CLIENT_BASENAME: /${opt:stage, 'dev'}
+    COUPLING_IN_MEMORY: false
 functions:
   api:
     handler: build/executable/app.serverless

@@ -34,8 +34,8 @@ fun Express.indexRoute(): Handler = { request, response, _ ->
         val rewritingStream = RewritingStream()
         var replaceNextText: String? = null
         rewritingStream.on("startTag") { tag ->
-            if (Config.clientPath.startsWith("http"))
-                rewriteLinksToStaticResources(tag)
+
+            rewriteLinksToStaticResources(tag)
 
             rewritingStream.emitStartTag(tag)
 
@@ -66,7 +66,7 @@ fun Express.indexRoute(): Handler = { request, response, _ ->
 private fun rewriteLinksToStaticResources(tag: Tag) {
     tag.attrs = tag.attrs.map { attribute ->
         attribute.apply {
-            this.value = this.value.replace("/app/build", Config.clientPath)
+            this.value = this.value.replace("/app/build", rewritePath())
         }
     }.toTypedArray()
 }
@@ -75,12 +75,11 @@ private fun Express.injectVariablesForClient(request: Request) = """<script>
     window.googleClientId = "${Config.googleClientID}";
     window.auth0ClientId = "${Config.AUTH0_CLIENT_ID}";
     window.auth0Domain = "${Config.AUTH0_DOMAIN}";
+    window.basename = "${Config.clientBasename}";
     window.expressEnv = "$env";
     window.isAuthenticated = ${request.isAuthenticated()};
+    window.webpackPublicPath = "${rewritePath()}/";
     </script>
-""".trimIndent() + if (!Config.clientPath.startsWith("http"))
-    ""
-else
-    """<script>
-        window.webpackPublicPath = "${Config.clientPath}/";
-    </script>""".trimMargin()
+""".trimIndent()
+
+private fun rewritePath() = if (Config.clientPath.startsWith("http")) Config.clientPath else "${Config.clientBasename}/app/build"

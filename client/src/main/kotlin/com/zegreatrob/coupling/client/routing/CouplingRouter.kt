@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
+import org.w3c.dom.get
 import react.RBuilder
 import react.RProps
 import react.buildElement
@@ -27,7 +28,10 @@ import react.router.dom.*
 data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
 
 val CouplingRouter = reactFunction<CouplingRouterProps> { (isSignedIn, animationsDisabled) ->
-    browserRouter(getUserConfirmation = { message, callback -> window.confirm(message).let(callback) }) {
+    browserRouter(
+        basename = (window["basename"]?.toString() ?: ""),
+        getUserConfirmation = { message, callback -> window.confirm(message).let(callback) }
+    ) {
         animationsDisabledContext.Provider(animationsDisabled) { switch { routes(isSignedIn) } }
     }
 }

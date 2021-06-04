@@ -12,7 +12,7 @@ import kotlin.js.json
 
 interface SdkTribeListGet : TribeListGet, AxiosSyntax {
     override suspend fun getTribes() = axios.post(
-        "/api/graphql", json(
+        gqlEndpoint, json(
             "query" to "{ tribeList {${tribeRecordJsonKeys.joinToString(",")}} }"
         )
     ).then<dynamic> {
