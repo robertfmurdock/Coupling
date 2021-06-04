@@ -10,7 +10,7 @@ provider:
     COUPLING_IN_MEMORY: false
 functions:
   api:
-    handler: build/executable/app.serverless
+    handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverless
     events:
       - http:
           path: /

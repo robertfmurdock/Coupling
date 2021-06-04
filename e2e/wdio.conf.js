@@ -4,7 +4,7 @@ const log4js = require('@log4js-node/log4js-api');
 const logger = log4js.getLogger('default');
 const path = require('path');
 
-const reportDirectory = path.relative('./', process.env.REPORT_DIR)
+const reportDirectory = path.relative('./', process.env.REPORT_DIR) + "/"
 
 const config = {
     runner: 'local',
@@ -30,7 +30,7 @@ const config = {
     }],
     logLevel: 'warn',
     bail: 0,
-    baseUrl: `http://localhost:${process.env.PORT}`,
+    baseUrl: `${process.env.BASEURL}`,
     waitforTimeout: 6000,
     waitforInterval: 15, //THIS IS INCREDIBLY IMPORTANT FOR PERFORMANCE
     connectionRetryTimeout: 120000,

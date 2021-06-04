@@ -14,7 +14,7 @@ val e2eSetup: TestTemplate<AuthorizedSdk> by lazy {
     asyncTestTemplate(beforeAll = {
         CouplingLogin.sdkProvider.await()
             .also {
-                WebdriverBrowser.setUrl("/")
+                WebdriverBrowser.setUrl("")
                 js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); done()}, undefined)")
                     .unsafeCast<Promise<Unit>>()
                     .await()

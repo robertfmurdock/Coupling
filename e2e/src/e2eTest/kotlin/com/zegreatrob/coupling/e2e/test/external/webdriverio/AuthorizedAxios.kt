@@ -17,8 +17,7 @@ external val axiosCookiejarSupport: dynamic
 @JsModule("tough-cookie")
 external val toughCookie: dynamic
 
-private val configPort = process.env.PORT
-private val host = "http://localhost:$configPort"
+private val host = process.env.BASEURL
 private const val userEmail = "test@test.tes"
 
 suspend fun authorizedAxios(username: String = userEmail): Axios {

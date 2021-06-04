@@ -13,7 +13,7 @@ object TestLogin : BrowserSyntax {
             } catch (throwable: Throwable) {
                 println("Failed login attempt $attempt")
                 if (attempt == 3) throw throwable
-                WebdriverBrowser.setUrl("/")
+                WebdriverBrowser.setUrl("")
             }
         }
         clearLogs()
@@ -24,7 +24,7 @@ object TestLogin : BrowserSyntax {
     }
 
     private suspend fun tryLogin(userEmail: String) {
-        WebdriverBrowser.setUrl("/test-login?username=${userEmail}&password=pw")
+        WebdriverBrowser.setUrl("test-login?username=${userEmail}&password=pw")
         TribeListPage.waitForPage()
     }
 }
