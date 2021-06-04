@@ -19,7 +19,9 @@
     "webpack-node-externals": "3.0.0",
     "wdio-chromedriver-service": "7.1.0",
     "css-loader": "5.2.6",
-    "url-loader": "4.1.1"
+    "url-loader": "4.1.1",
+    "serverless": "^2.43.1",
+    "serverless-offline": "^7.0.0"
   },
   "devDependencies": {
     "axios-cookiejar-support": "^1.0.1",

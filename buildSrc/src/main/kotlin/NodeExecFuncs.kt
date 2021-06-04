@@ -66,29 +66,3 @@ fun Exec.nodeExec(compileKotlinJs: Kotlin2JsCompile, arguments: List<String>) {
     environment("NODE_PATH", project.nodeModulesDir)
     commandLine = listOf(nodeExecPath) + arguments
 }
-
-fun Exec.configureWdioRun(
-    compileKotlinJs: Kotlin2JsCompile,
-    pathToNodeApp: String,
-    wdioConfig: File,
-    webpackConfig: File,
-    webpackedWdioConfigOutput: String
-) {
-    nodeExec(compileKotlinJs, listOf(compileKotlinJs.outputFile.absolutePath))
-
-    inputs.files(project.file(pathToNodeApp).parent)
-    inputs.files(wdioConfig)
-    outputs.dir("${project.buildDir}/reports/e2e")
-    environment(
-        mapOf(
-            "APP_PATH" to pathToNodeApp,
-            "NODE_PATH" to "${project.rootProject.buildDir.path}/js/node_modules",
-            "BUILD_DIR" to project.buildDir.absolutePath,
-            "WEBPACK_CONFIG" to webpackConfig,
-            "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput
-        )
-    )
-    val logFile = project.file("build/reports/logs/run.log")
-    logFile.parentFile.mkdirs()
-    standardOutput = logFile.outputStream()
-}

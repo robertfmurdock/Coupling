@@ -19,4 +19,5 @@ external interface ChildProcess {
 
 external interface Writable {
     fun pipe(stdin: Writable)
+    fun on(s: String, any: (dynamic) -> Unit): Any
 }

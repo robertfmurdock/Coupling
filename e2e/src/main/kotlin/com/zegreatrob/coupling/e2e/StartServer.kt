@@ -7,20 +7,21 @@ import kotlinx.coroutines.await
 import kotlin.js.Promise
 import kotlin.js.json
 
-suspend fun startServer() = fork(
-    process.env["APP_PATH"]?.toString() ?: throw Exception("No APP_PATH"),
-    emptyArray(),
-    json("stdio" to "pipe")
-)
-    .also {
+suspend fun startServer(): ChildProcess {
+    val command = process.env["APP_PATH"]?.toString() ?: throw Exception("No APP_PATH")
+    val split = command.split(" ")
+    val module = split[0]
+    val arguments = split.subList(1, split.size)
+    return fork(
+        module,
+        arguments.toTypedArray(),
+        json("stdio" to "pipe")
+    ).also {
         Promise<Unit> { resolve, reject ->
-            connectToServerProcess(
-                it,
-                resolve,
-                reject
-            )
+            connectToServerProcess(it, resolve, reject)
         }.await()
     }
+}
 
 private fun connectToServerProcess(
     serverProcess: ChildProcess,
@@ -38,12 +39,20 @@ private fun connectToServerProcess(
         reject(Exception(message))
     }
 
+    serverProcess.stdout.on("data") { buffer ->
+        val message = buffer.toString("utf8")
+        if (message.toString().contains("ready")) {
+            console.log("server ready")
+            resolve(Unit)
+        }
+    }
+
     process.stdin.pipe(serverProcess.stdin)
 
-    val buildDirPath = process.env["BUILD_DIR"]
-    fs.mkdirSync("$buildDirPath/reports/logs", json("recursive" to true))
-    val serverOut = fs.createWriteStream("$buildDirPath/reports/logs/server.out.log")
-    val serverErr = fs.createWriteStream("$buildDirPath/reports/logs/server.err.log")
+    val logsDir = process.env["LOGS_DIR"]
+    fs.mkdirSync("$logsDir", json("recursive" to true))
+    val serverOut = fs.createWriteStream("$logsDir/server.out.log")
+    val serverErr = fs.createWriteStream("$logsDir/server.err.log")
     serverProcess.stdout.pipe(serverOut)
     serverProcess.stderr.pipe(serverErr)
 }
