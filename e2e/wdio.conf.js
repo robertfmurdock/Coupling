@@ -4,9 +4,9 @@ const log4js = require('@log4js-node/log4js-api');
 const logger = log4js.getLogger('default');
 const path = require('path');
 
-const e2eBuildDirectory = '../../../../e2e/build'
+const reportDirectory = path.relative('./', process.env.REPORT_DIR)
 
-let config = {
+const config = {
     runner: 'local',
     specs: [
         __dirname + '/test.js'
@@ -41,7 +41,7 @@ let config = {
         'dot',
         [HtmlReporter, {
             debug: true,
-            outputDir: path.join(e2eBuildDirectory, './reports/e2e/'),
+            outputDir: reportDirectory,
             filename: 'report.html',
             reportTitle: 'Coupling E2E Report',
             showInBrowser: false,
@@ -70,13 +70,13 @@ let config = {
             return;
         }
         const timestamp = new Date().toISOString();
-        const filepath = path.join(e2eBuildDirectory, './reports/e2e/screenshots/', timestamp + '.png');
+        const filepath = path.join(reportDirectory, 'screenshots/', timestamp + '.png');
         browser.saveScreenshot(filepath);
         process.emit('test:screenshot', filepath);
     },
     onPrepare: function (config, capabilities) {
         let reportAggregator = new ReportAggregator({
-            outputDir: path.join(e2eBuildDirectory, './reports/e2e/'),
+            outputDir: reportDirectory,
             filename: 'master-report.html',
             reportTitle: 'Master Report',
             browserName: capabilities.browserName,

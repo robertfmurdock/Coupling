@@ -20,3 +20,6 @@ functions:
           method: ANY
 plugins:
   - serverless-offline
+custom:
+  serverless-offline:
+    allowCache: true

@@ -113,7 +113,8 @@ tasks {
         inputs.files(compileProductionExecutableKotlinJs.outputs.files)
         inputs.files(compileE2eTestProductionExecutableKotlinJs.outputs.files)
         inputs.files(wdioConfig)
-        outputs.dir("${project.buildDir}/reports/e2e")
+        val reportDir = "${project.buildDir}/reports/e2e"
+        outputs.dir(reportDir)
 
         environment("PORT" to "3099")
         environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
@@ -123,10 +124,50 @@ tasks {
                 "NODE_PATH" to listOf("${project.rootProject.buildDir.path}/js/node_modules", e2eTestProcessResources.destinationDir).joinToString(":")  ,
                 "BUILD_DIR" to project.buildDir.absolutePath,
                 "WEBPACK_CONFIG" to webpackConfig,
-                "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput
+                "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
+                "REPORT_DIR" to reportDir
             )
         )
         val logFile = project.file("build/reports/logs/run.log")
+        logFile.parentFile.mkdirs()
+        standardOutput = logFile.outputStream()
+    }
+
+    val nodeRunServerless  = NodeJsExec.create(nodeRun.compilation, "nodeRunServerless") {
+        dependsOn(
+            compileProductionExecutableKotlinJs,
+            productionExecutableCompileSync,
+            compileE2eTestProductionExecutableKotlinJs,
+            appConfiguration,
+            clientConfiguration,
+            testLoggingLib
+        )
+        inputFileProperty.set(nodeRun.inputFileProperty.get())
+
+        inputs.files(
+            appConfiguration,
+            clientConfiguration,
+            testLoggingLib
+        )
+        inputs.files(compileProductionExecutableKotlinJs.outputs.files)
+        inputs.files(compileE2eTestProductionExecutableKotlinJs.outputs.files)
+        inputs.files(wdioConfig)
+        val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
+        outputs.dir(reportDir)
+
+        environment("PORT" to "3099")
+        environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
+        environment(
+            mapOf(
+                "APP_PATH" to pathToNodeApp,
+                "NODE_PATH" to listOf("${project.rootProject.buildDir.path}/js/node_modules", e2eTestProcessResources.destinationDir).joinToString(":")  ,
+                "BUILD_DIR" to project.buildDir.absolutePath,
+                "WEBPACK_CONFIG" to webpackConfig,
+                "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
+                "REPORT_DIR" to reportDir
+            )
+        )
+        val logFile = project.file("build/reports/logs/serverless/run.log")
         logFile.parentFile.mkdirs()
         standardOutput = logFile.outputStream()
     }
