@@ -217,6 +217,7 @@ class PairAssignmentsPageE2ETest {
         fun whenTheTribeHasCallSignsTurnedOnTheyDisplay() = currentPairAssignmentPageSetup {
             val sdk = sdkProvider.await()
             sdk.save(tribe.copy(callSignsEnabled = true))
+            WelcomePage.goTo()
         } exercise {
             goTo(tribe.id)
         } verify {
@@ -241,4 +242,4 @@ fun resolve(base: String, path: String) = if (base == "")
 else
     "$base/$path"
 
-private val clientBasename get() = "${process.env.CLIENT_BASENAME}".let { if (it.isNotEmpty()) "/$it" else "" }
+val clientBasename get() = "${process.env.CLIENT_BASENAME}".let { if (it.isNotEmpty()) "/$it" else "" }

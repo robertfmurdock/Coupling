@@ -79,7 +79,7 @@ class PrepareToSpinPageE2ETest {
         spinButton.click()
         PairAssignmentsPage.waitForPage()
     } exercise {
-        WebdriverBrowser.setLocation("/welcome")
+        WebdriverBrowser.setLocation("welcome")
         WebdriverBrowser.waitForAlert()
         WebdriverBrowser.alertText().also {
             WebdriverBrowser.dismissAlert()

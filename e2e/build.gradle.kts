@@ -166,7 +166,7 @@ tasks {
         outputs.dir(logsDir)
 
         val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"
-        environment("BASEURL" to "http://localhost:3099/dev")
+        environment("BASEURL" to "http://localhost:3099/dev/")
         environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
         environment(
             mapOf(

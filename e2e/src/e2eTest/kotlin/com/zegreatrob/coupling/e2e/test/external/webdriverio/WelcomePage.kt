@@ -11,7 +11,7 @@ object WelcomePage : StyleSyntax {
     val microsoftLoginButton by loginChooserStyles.getting()
 
     suspend fun goTo() {
-        WebdriverBrowser.setLocation("/welcome")
+        WebdriverBrowser.setLocation("welcome")
         element().waitToExist()
     }
 

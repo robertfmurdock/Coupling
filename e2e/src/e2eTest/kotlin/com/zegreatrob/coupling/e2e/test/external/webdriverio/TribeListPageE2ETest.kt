@@ -45,7 +45,7 @@ class TribeListPageE2ETest {
         TribeConfigPage.waitForPage()
     } verify {
         WebdriverBrowser.currentUrl().pathname
-            .assertIsEqualTo("/${tribes[0].id.value}/edit/")
+            .assertIsEqualTo(resolve(clientBasename, "${tribes[0].id.value}/edit/"))
     }
 
     @Test
@@ -54,7 +54,7 @@ class TribeListPageE2ETest {
         TribeConfigPage.waitForPage()
     } verify {
         WebdriverBrowser.currentUrl().pathname
-            .assertIsEqualTo("/new-tribe/")
+            .assertIsEqualTo(resolve(clientBasename, "new-tribe/"))
     }
 
 }

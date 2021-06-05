@@ -22,7 +22,14 @@ private fun pageProps(routeProps: RouteResultProps<RProps>) = PageProps(
     commander = MasterCommander
 )
 
-private fun newPathSetter(routeProps: RouteResultProps<RProps>) = { path: String -> routeProps.history.push(path) }
+private fun newPathSetter(routeProps: RouteResultProps<RProps>) = { path: String ->
+    routeProps.history.push(
+        if (path.startsWith("/"))
+            path
+        else
+            "/$path"
+    )
+}
 
 private fun RouteResultProps<RProps>.pathParams(): Map<String, String> {
     val paramsJson = match.params.unsafeCast<Json>()
