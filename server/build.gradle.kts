@@ -151,6 +151,37 @@ tasks {
         )
     }
 
+    val serverlessBuildDir = "${buildDir.absolutePath}/lambda-dist"
+    val serverlessBuild by creating(Exec::class) {
+        dependsOn(assemble, "test")
+        val serverlessConfigFile = "${projectDir.absolutePath}/serverless.yml"
+        outputs.dir(serverlessBuildDir)
+
+        nodeExec(
+            compileKotlinJs,
+            listOf(
+                "$nodeModulesDir/.bin/serverless", "package", "--config", serverlessConfigFile, "--package",
+                serverlessBuildDir
+            )
+        )
+    }
+
+    create<Exec>("serverlessDeploy") {
+        dependsOn(serverlessBuild)
+        nodeExec(
+            compileKotlinJs,
+            listOf(
+                "$nodeModulesDir/.bin/serverless",
+                "deploy",
+                "--config",
+                project.relativePath("serverless.yml"),
+                "--package",
+                serverlessBuildDir
+            )
+        )
+    }
+
+
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFile) {
             builtBy(compileKotlinJs)
