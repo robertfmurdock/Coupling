@@ -30,7 +30,6 @@ class HistoryPageE2ETest {
                 val pairAssignments = setupTwoPairAssignments(tribe, sdk)
 
                 HistoryPage.goTo(tribe.id)
-
                 Context(pairAssignments)
             })
 

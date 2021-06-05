@@ -78,7 +78,7 @@ class PairAssignmentsPageE2ETest {
             PlayerRoster.getAddPlayerButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo("/${tribe.id.value}/player/new/")
+                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/player/new/"))
         }
 
         @Test
@@ -89,7 +89,7 @@ class PairAssignmentsPageE2ETest {
                 .click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo("/${tribe.id.value}/player/${players[0].id}/")
+                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/player/${players[0].id}/"))
         }
 
         @Test
@@ -99,7 +99,7 @@ class PairAssignmentsPageE2ETest {
             viewHistoryButton.click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo("/${tribe.id.value}/history/")
+                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/history/"))
         }
 
         @Test
@@ -109,7 +109,7 @@ class PairAssignmentsPageE2ETest {
             newPairsButton.click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo("/${tribe.id.value}/prepare/")
+                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/prepare/"))
         }
 
         @Test
@@ -119,7 +119,7 @@ class PairAssignmentsPageE2ETest {
             statisticsButton.click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo("/${tribe.id.value}/statistics")
+                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/statistics"))
         }
 
         @Test
@@ -129,9 +129,8 @@ class PairAssignmentsPageE2ETest {
             retiredPlayersButton.click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo("/${tribe.id.value}/players/retired")
+                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/players/retired"))
         }
-
     }
 
     class GivenCurrentSetOfPairsExists {
@@ -235,3 +234,11 @@ class PairAssignmentsPageE2ETest {
     }
 
 }
+
+
+fun resolve(base: String, path: String) = if (base == "")
+    "/$path"
+else
+    "$base/$path"
+
+private val clientBasename get() = "${process.env.CLIENT_BASENAME}".let { if (it.isNotEmpty()) "/$it" else "" }
