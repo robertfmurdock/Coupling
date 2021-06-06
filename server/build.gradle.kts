@@ -171,7 +171,7 @@ tasks {
         hostConfig.binds.set(mutableMapOf(buildDir.absolutePath to "/usr/src/app/server/build"))
     }
     val serverlessBuildRunContainer by creating(DockerStartContainer::class) {
-        dependsOn(serverlessBuildContainer)
+        dependsOn(serverlessBuildContainer, assemble)
         targetContainerId(serverlessBuildContainer.containerId)
     }
     val serverlessBuildWaitContainer by creating(DockerWaitContainer::class) {
