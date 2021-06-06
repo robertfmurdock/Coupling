@@ -75,6 +75,27 @@ jobs:
       - aws-cli/setup
       - run: "./gradlew build release uploadToS3 buildProductionImage pushProductionImage forceEcsDeployment --no-parallel"
       - coupling-orb/collect-results
+  lambda-deploy:
+    executor: coupling-orb/standard
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
+    steps:
+      - checkout
+      - restore_cache:
+          key: coupling-cache-53-{{ .Branch }}
+      - coupling-orb/setup
+      - save_cache:
+          key: coupling-cache-53-{{ .Branch }}
+          paths:
+            - "~/.gradle"
+            - "~/.cache"
+            - ".gradle"
+            - "client/.gradle"
+            - "node_modules"
+            - "/root/.konan"
+      - aws-cli/setup
+      - run: "./gradlew serverlessDeploy"
+      - coupling-orb/collect-results
   update-client:
     executor: coupling-orb/standard
     steps:
@@ -117,6 +138,9 @@ workflows:
   build-deploy:
     jobs:
       - build
+  aws-lambda-deploy:
+    jobs:
+      - lambda-deploy
   update-client:
     triggers:
       - schedule:
