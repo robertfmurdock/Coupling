@@ -18,6 +18,10 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
+  connectHandler:
+    handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverlessSocketConnect
+    events:
+      - websocket: $connect
 plugins:
   - serverless-offline
 custom:
