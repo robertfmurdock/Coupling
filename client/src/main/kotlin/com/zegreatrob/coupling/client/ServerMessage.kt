@@ -9,6 +9,8 @@ import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
+import org.w3c.dom.get
+import org.w3c.dom.url.URL
 import react.*
 import react.dom.div
 
@@ -40,7 +42,7 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
     div {
         websocket {
             attrs {
-                url = buildSocketUrl(tribeId, useSsl)
+                url = buildSocketUrl(tribeId, useSsl).href
                 onMessage = { setMessage(toCouplingServerMessage(JSON.parse(it))) }
                 onOpen = { setConnected(true) }
                 onClose = { setMessage(disconnectedMessage) }
@@ -62,8 +64,10 @@ private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent?>) = {
 
 data class CouplingWebsocketProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
-private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean) =
-    "${useSsl.protocol}://$host/api/websocket?tribeId=${tribeId.value}"
+private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean) = URL(
+    "api/websocket?tribeId=${tribeId.value}",
+    "${useSsl.protocol}://$host"
+)
 
-private val host get() = window.location.host
+private val host get() = window["websocketHost"].unsafeCast<String?>() ?: window.location.host
 private val Boolean.protocol get() = if (this) "wss" else "ws"

@@ -79,6 +79,7 @@ private fun Express.injectVariablesForClient(request: Request) = """<script>
     window.expressEnv = "$env";
     window.isAuthenticated = ${request.isAuthenticated()};
     window.webpackPublicPath = "${rewritePath()}/";
+    window.websocketHost = "${Config.websocketHost}/";
     </script>
 """.trimIndent()
 
