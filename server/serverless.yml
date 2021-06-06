@@ -22,6 +22,14 @@ functions:
     handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverlessSocketConnect
     events:
       - websocket: $connect
+  disconnectHandler:
+    handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverlessSocketDisconnect
+    events:
+      - websocket: $disconnect
+  messageHandler:
+    handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverlessSocketMessage
+    events:
+      - websocket: $default
 plugins:
   - serverless-offline
 custom:
