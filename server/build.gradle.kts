@@ -1,3 +1,4 @@
+
 import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerWaitContainer
@@ -6,7 +7,6 @@ import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
 import com.zegreatrob.coupling.build.nodeExec
 import com.zegreatrob.coupling.build.nodeModulesDir
-import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -157,11 +157,6 @@ tasks {
         )
     }
 
-    val serverlessYarnInstall by creating(Exec::class) {
-        dependsOn(compileKotlinJs)
-        commandLine = listOf("${yarn.requireConfigured().home}/bin/yarn", "install", "-D")
-    }
-
     val serverlessBuildDir = "${buildDir.absolutePath}/lambda-dist"
 
     val buildServerlessBuildImage by creating(DockerBuildImage::class) {
@@ -172,7 +167,7 @@ tasks {
         dependsOn(buildServerlessBuildImage)
         targetImageId(buildServerlessBuildImage.imageId)
         attachStdout.set(true)
-//        hostConfig.autoRemove.set(true)
+        hostConfig.autoRemove.set(true)
         hostConfig.binds.set(mutableMapOf(buildDir.absolutePath to "/usr/src/app/server/build"))
     }
     val serverlessBuildRunContainer by creating(DockerStartContainer::class) {
@@ -184,22 +179,8 @@ tasks {
         targetContainerId(serverlessBuildContainer.containerId)
     }
     val serverlessBuild by creating {
-        dependsOn(serverlessBuildWaitContainer)
+        dependsOn(serverlessBuildWaitContainer, "test")
     }
-
-//    val serverlessBuild by creating(Exec::class) {
-//        dependsOn(assemble, "test", serverlessYarnInstall)
-//        val serverlessConfigFile = "${projectDir.absolutePath}/serverless.yml"
-//        outputs.dir(serverlessBuildDir)
-//
-//        nodeExec(
-//            compileKotlinJs,
-//            listOf(
-//                "$nodeModulesDir/.bin/serverless", "package", "--config", serverlessConfigFile, "--package",
-//                serverlessBuildDir
-//            )
-//        )
-//    }
 
     create<Exec>("serverlessDeploy") {
         dependsOn(serverlessBuild)
