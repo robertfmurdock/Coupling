@@ -33,7 +33,7 @@
     "core-js": "^3.14.0",
     "css-loader": "^5.2.6",
     "d3": "^6.7.0",
-    "d3-color": "^3.0.0",
+    "d3-color": "^3.0.1",
     "d3-selection": "^2.0.0",
     "date-fns": "^2.22.1",
     "dom-to-image": "^2.6.0",
