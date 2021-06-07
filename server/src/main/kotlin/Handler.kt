@@ -44,7 +44,7 @@ private val app by lazy {
 fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
     val connectionId = "${event.requestContext.connectionId}"
     println("connect $connectionId")
-
+    console.log("event headers", event.headers)
     val managementApi = apiGatewayManagementApi(event)
 
     val app = express()

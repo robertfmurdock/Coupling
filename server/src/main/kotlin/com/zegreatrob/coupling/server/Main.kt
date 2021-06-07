@@ -39,7 +39,7 @@ private suspend fun Express.startListening() = CompletableDeferred<Unit>()
 
 fun main() {
     if (Process.getEnv("IS_OFFLINE") != "true"
-        || Process.getEnv("AWS_LAMBDA_FUNCTION_NAME").unsafeCast<String?>() != null
+        && Process.getEnv("AWS_LAMBDA_FUNCTION_NAME").unsafeCast<String?>() == null
     ) {
         serverScope.launch { startDeferred.await() }
     }
