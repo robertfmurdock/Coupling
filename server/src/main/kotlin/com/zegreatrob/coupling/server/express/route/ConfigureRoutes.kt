@@ -19,8 +19,7 @@ fun Express.routes(webSocketServer: WebSocketServer) {
     get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
     all("/api/*", apiGuard())
     use("/api/graphql", graphqlHTTP(json("schema" to couplingSchema(), "graphiql" to true)))
-    ws("/api/websocket", websocketRoute(webSocketServer))
-    ws("*") { ws, _ -> ws.close() }
+    ws("*", websocketRoute(webSocketServer))
     get("*", indexRoute())
 }
 
