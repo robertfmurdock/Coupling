@@ -65,7 +65,7 @@ private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent?>) = {
 data class CouplingWebsocketProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
 private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean) = URL(
-    "?tribeId=${tribeId.value}",
+    "api/websocket?tribeId=${tribeId.value}",
     "${useSsl.protocol}://$host"
 )
 
