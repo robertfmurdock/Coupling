@@ -50,7 +50,10 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
     val app = express()
     app.middleware()
     app.all("*") { request, _, _ ->
+        println("EXPRESS REQUEST'D")
+
         if (!request.isAuthenticated()) {
+            println("SOCKET NOT AUTH'D")
             delete(connectionId, managementApi)
         } else {
             request.scope.launch(block = {
