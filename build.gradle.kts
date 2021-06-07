@@ -145,7 +145,7 @@ buildtimetracker {
     reporters {
         register("csv") {
             options.run {
-                put("output", "build/times.csv")
+                put("output", "${buildDir.absolutePath}/times.csv")
                 put("append", "true")
                 put("header", "false")
             }
@@ -161,7 +161,7 @@ buildtimetracker {
 
         register("csvSummary") {
             options.run {
-                put("csv", "build/times.csv")
+                put("csv", "${buildDir.absolutePath}/times.csv")
             }
         }
     }
