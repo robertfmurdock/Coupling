@@ -8,6 +8,7 @@ provider:
   environment:
     CLIENT_BASENAME: /${opt:stage, 'dev'}
     COUPLING_IN_MEMORY: false
+    WEBSOCKET_HOST: localhost:3001
 functions:
   api:
     handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverless

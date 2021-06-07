@@ -1,4 +1,7 @@
+@file:Suppress("HttpUrlsUsage")
+
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.dynamo.external.ApiGatewayManagementApi
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toPairAssignmentDocument
 import com.zegreatrob.coupling.model.CouplingConnection
@@ -10,14 +13,15 @@ import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserComma
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.buildApp
 import com.zegreatrob.coupling.server.commandDispatcher
+import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.middleware.middleware
 import com.zegreatrob.coupling.server.external.express.express
-import com.zegreatrob.coupling.server.external.node_fetch.fetch
 import com.zegreatrob.minjson.at
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
+import org.w3c.dom.url.URL
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
@@ -41,22 +45,24 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
     val connectionId = "${event.requestContext.connectionId}"
     println("connect $connectionId")
 
+    val managementApi = apiGatewayManagementApi(event)
+
     val app = express()
     app.middleware()
     app.all("*") { request, _, _ ->
         if (!request.isAuthenticated()) {
-            delete(connectionId)
+            delete(connectionId, managementApi)
         } else {
             request.scope.launch(block = {
                 val commandDispatcher = with(request) { commandDispatcher(this.user, this.scope, this.traceId) }
                 val tribeId = request.query["tribeId"].toString().let(::TribeId)
 
                 val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
-                result.broadcast()
+                result.broadcast(managementApi)
             }).invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
                     println("error $cause")
-                    delete(connectionId)
+                    delete(connectionId, managementApi)
                 }
             }
         }
@@ -71,6 +77,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
 fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("message $connectionId")
+    val managementApi = apiGatewayManagementApi(event)
 
     val pairAssignmentDocument = event.at<Json>("body/data/currentPairAssignments")
         ?.toPairAssignmentDocument()
@@ -78,7 +85,7 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
     MainScope().launch {
         socketDispatcher().execute(
             ReportDocCommand(connectionId, pairAssignmentDocument)
-        )
+        ).broadcast(managementApi)
     }
 
     return null
@@ -90,31 +97,50 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
 fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
     val connectionId = "${event.requestContext.connectionId}"
     println("disconnect $connectionId")
+
+    val managementApi = apiGatewayManagementApi(event)
+
     MainScope().launch {
         socketDispatcher()
             .execute(DisconnectTribeUserCommand(connectionId))
-            .broadcast()
+            .broadcast(managementApi)
     }
     return null
+}
+
+private fun apiGatewayManagementApi(event: dynamic): ApiGatewayManagementApi {
+    val domainName = Config.websocketHost
+    val stage = "${event.requestContext.stage}".let { if (it == "local") "" else it }
+    return ApiGatewayManagementApi(
+        json(
+            "apiVersion" to "2018-11-29",
+            "endpoint" to "${URL(Config.publicUrl).protocol}//$domainName/$stage"
+        )
+    )
 }
 
 private suspend fun CoroutineScope.socketDispatcher() =
     commandDispatcher(User("websocket", "websocket", emptySet()), this, uuid4())
 
-private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>?.broadcast() {
-    Promise.all(this?.first?.map { connection ->
-        connection.sendMessage(second)
-    }?.toTypedArray() ?: emptyArray()).await()
+private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>?.broadcast(managementApi: ApiGatewayManagementApi) {
+    try {
+        Promise.all(this?.first?.map { connection ->
+            connection.sendMessage(second, managementApi)
+        }?.toTypedArray() ?: emptyArray()).await()
+    } catch (oops: Throwable) {
+        println(oops)
+    }
 }
 
-private fun CouplingConnection.sendMessage(couplingSocketMessage: CouplingSocketMessage) = fetch(
-    "http://localhost:3001/@connections/$connectionId", json(
-        "method" to "POST",
-        "headers" to json("Content-Type" to "application/json"),
-        "body" to JSON.stringify(couplingSocketMessage.toJson()),
-    )
-)
+private fun CouplingConnection.sendMessage(
+    couplingSocketMessage: CouplingSocketMessage,
+    managementApi: ApiGatewayManagementApi
+): Promise<Json> {
+    return managementApi.postToConnection(
+        json("ConnectionId" to connectionId, "Data" to JSON.stringify(couplingSocketMessage.toJson()))
+    ).promise()
+}
 
-private fun delete(connectionId: String): Promise<Any> = fetch(
-    "http://localhost:3001/@connections/${connectionId}", json("method" to "DELETE")
+private fun delete(connectionId: String, managementApi: ApiGatewayManagementApi) = managementApi.deleteConnection(
+    json("ConnectionId" to connectionId)
 )

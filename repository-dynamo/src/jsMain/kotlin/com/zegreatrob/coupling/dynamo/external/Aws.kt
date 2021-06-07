@@ -32,3 +32,8 @@ external class DynamoDB {
 external interface AwsPromisable<T> {
     fun promise(): Promise<T>
 }
+
+external class ApiGatewayManagementApi(option: Json) {
+    fun postToConnection(json: Json): AwsPromisable<Json>
+    fun deleteConnection(json: Json): AwsPromisable<Json>
+}
