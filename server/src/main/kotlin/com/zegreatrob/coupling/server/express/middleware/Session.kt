@@ -7,6 +7,7 @@ import kotlin.js.json
 
 fun session() = session(
     json(
+        "cookie" to cookieConfig(),
         "secret" to Config.secret,
         "resave" to true,
         "saveUninitialized" to true,
@@ -18,3 +19,5 @@ fun session() = session(
         }
     }
 )
+
+private fun cookieConfig() = if (Config.cookieDomain != null) json("domain" to Config.cookieDomain) else json()

@@ -17,6 +17,7 @@ object Config {
     val clientBasename: String = Process.getEnv("CLIENT_BASENAME") ?: ""
     val clientPath = Process.getEnv("CLIENT_PATH")?.ifEmpty { null } ?: "/no-client-path-found"
     val publicUrl = Process.getEnv("PUBLIC_URL") ?: "http://localhost:3000"
+    val cookieDomain = Process.getEnv("COOKIE_DOMAIN")
     val websocketHost = Process.getEnv("WEBSOCKET_HOST") ?: "${URL(publicUrl).host}/api/websocket"
     val AUTH0_CLIENT_ID get() = Process.getEnv("AUTH0_CLIENT_ID") ?: "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg"
     const val AUTH0_DOMAIN = "zegreatrob.us.auth0.com"
