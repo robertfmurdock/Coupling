@@ -126,13 +126,11 @@ private suspend fun CoroutineScope.socketDispatcher() =
     commandDispatcher(User("websocket", "websocket", emptySet()), this, uuid4())
 
 private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>?.broadcast(managementApi: ApiGatewayManagementApi) {
-    try {
-        Promise.all(this?.first?.map { connection ->
-            connection.sendMessage(second, managementApi)
-        }?.toTypedArray() ?: emptyArray()).await()
-    } catch (oops: Throwable) {
-        println(oops)
-    }
+    Promise.all(this?.first?.map { connection ->
+        connection.sendMessage(second, managementApi)
+    }?.toTypedArray() ?: emptyArray())
+        .catch { oops -> println(oops) }
+        .await()
 }
 
 private fun CouplingConnection.sendMessage(
