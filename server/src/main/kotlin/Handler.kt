@@ -21,7 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
-import org.w3c.dom.url.URL
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
@@ -112,12 +111,13 @@ fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
 }
 
 private fun apiGatewayManagementApi(event: dynamic): ApiGatewayManagementApi {
-    val domainName = Config.websocketHost
+    val domainName = "${event.requestContext.domainName}"
+        .let { if (it == "localhost") "http://${Config.websocketHost}" else it }
     val stage = "${event.requestContext.stage}".let { if (it == "local") "" else it }
     return ApiGatewayManagementApi(
         json(
             "apiVersion" to "2018-11-29",
-            "endpoint" to "${URL(Config.publicUrl).protocol}//$domainName/$stage"
+            "endpoint" to "$domainName/$stage"
         )
     )
 }

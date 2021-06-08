@@ -65,9 +65,11 @@ private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent?>) = {
 data class CouplingWebsocketProps(val tribeId: TribeId, val useSsl: Boolean) : RProps
 
 private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean) = URL(
-    "?tribeId=${tribeId.value}",
+    "?tribeId=${encodeURIComponent(tribeId.value)}",
     "${useSsl.protocol}://$host"
 )
+
+external fun encodeURIComponent(value: String): String
 
 private val host get() = window["websocketHost"].unsafeCast<String?>() ?: window.location.host
 private val Boolean.protocol get() = if (this) "wss" else "ws"
