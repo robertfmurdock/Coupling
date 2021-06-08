@@ -48,7 +48,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
 
     val app = express()
     app.middleware()
-    app.all("*") { request, _, _ ->
+    app.all("*") { request, response, _ ->
         println("EXPRESS REQUEST'D")
 
         if (!request.isAuthenticated()) {
@@ -61,6 +61,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
 
                 val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
                 result.broadcast(managementApi)
+                response.sendStatus(200)
             }).invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
                     println("error $cause")
