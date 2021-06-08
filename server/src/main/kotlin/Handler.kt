@@ -61,7 +61,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
 
                 val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
                 result.broadcast(managementApi)
-                response.sendStatus(200)
+                result?.second?.toJson()?.let { response.send(JSON.stringify(it)) }
             }).invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
                     println("error $cause")
