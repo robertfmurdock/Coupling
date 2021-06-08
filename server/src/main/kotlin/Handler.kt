@@ -127,9 +127,10 @@ private suspend fun CoroutineScope.socketDispatcher() =
 
 private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>?.broadcast(managementApi: ApiGatewayManagementApi) {
     Promise.all(this?.first?.map { connection ->
+        console.log("Sending message to ", connection.connectionId)
         connection.sendMessage(second, managementApi)
+            .catch { oops -> println("oops $oops") }
     }?.toTypedArray() ?: emptyArray())
-        .catch { oops -> println(oops) }
         .await()
 }
 
