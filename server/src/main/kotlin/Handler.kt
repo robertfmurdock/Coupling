@@ -61,7 +61,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
                 val tribeId = request.query["tribeId"].toString().let(::TribeId)
 
                 commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
-                    ?.run { first.filter { it.connectionId == connectionId } to second }
+                    ?.run { first.filterNot { it.connectionId == connectionId } to second }
                     ?.broadcast(managementApi, commandDispatcher)
                 response.sendStatus(200)
             }).invokeOnCompletion { cause: Throwable? ->
