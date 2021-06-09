@@ -5,8 +5,7 @@ import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
-import com.zegreatrob.coupling.server.action.connection.DeleteTribeCommandDispatcher
+import com.zegreatrob.coupling.server.action.connection.*
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
@@ -16,9 +15,6 @@ import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispat
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
-import com.zegreatrob.coupling.server.action.connection.ConnectTribeUserCommandDispatcher
-import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserCommandDispatcher
-import com.zegreatrob.coupling.server.action.connection.ReportDocCommandDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
@@ -31,6 +27,7 @@ interface ICommandDispatcher :
     PairAssignmentDispatcher,
     UserDispatcher,
     ConnectTribeUserCommandDispatcher,
+    ConnectionsQueryDispatcher,
     DisconnectTribeUserCommandDispatcher,
     ReportDocCommandDispatcher,
     DispatchingActionExecutor<CommandDispatcher>,

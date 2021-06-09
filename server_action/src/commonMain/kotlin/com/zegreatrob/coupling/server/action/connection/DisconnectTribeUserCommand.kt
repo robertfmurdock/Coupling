@@ -21,3 +21,4 @@ interface DisconnectTribeUserCommandDispatcher : CouplingConnectionGetSyntax, Co
 
     private suspend fun CouplingConnection.delete() = deleteConnection(tribeId, connectionId)
 }
+

@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.json.toCouplingServerMessage
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
+import com.zegreatrob.coupling.model.Ping
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
@@ -13,6 +14,7 @@ import org.w3c.dom.get
 import org.w3c.dom.url.URL
 import react.*
 import react.dom.div
+import kotlin.js.Json
 
 val disconnectedMessage = CouplingSocketMessage(
     text = "Not connected",
@@ -43,8 +45,11 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
         websocket {
             attrs {
                 url = buildSocketUrl(tribeId, useSsl).href
-                onMessage = { setMessage(toCouplingServerMessage(JSON.parse(it))) }
-                onOpen = { setConnected(true) }
+                onMessage = { setMessage(JSON.parse<Json>(it).toCouplingServerMessage()) }
+                onOpen = {
+                    setConnected(true)
+                    sendMessageFunc(Ping)
+                }
                 onClose = { setMessage(disconnectedMessage) }
                 this.ref = { ref.current = it }
             }

@@ -3,12 +3,15 @@
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.dynamo.external.ApiGatewayManagementApi
 import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toPairAssignmentDocument
+import com.zegreatrob.coupling.json.toMessage
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
+import com.zegreatrob.coupling.model.Ping
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.connection.ConnectTribeUserCommand
+import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.buildApp
@@ -59,9 +62,9 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
                 val commandDispatcher = with(request) { commandDispatcher(this.user, this.scope, this.traceId) }
                 val tribeId = request.query["tribeId"].toString().let(::TribeId)
 
-                val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
-                result.broadcast(managementApi)
-                result?.second?.toJson()?.let { response.send(JSON.stringify(it)) }
+                commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
+                    ?.run { first.filter { it.connectionId == connectionId } to second }
+                    .broadcast(managementApi)
             }).invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
                     println("error $cause")
@@ -82,13 +85,22 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
     println("message $connectionId")
     val managementApi = apiGatewayManagementApi(event)
 
-    val pairAssignmentDocument = event.at<Json>("body/data/currentPairAssignments")
-        ?.toPairAssignmentDocument()
-
+    val message = event.at<String>("body")?.let { JSON.parse<Json>(it) }?.toMessage()
     MainScope().launch {
-        socketDispatcher().execute(
-            ReportDocCommand(connectionId, pairAssignmentDocument)
-        ).broadcast(managementApi)
+        when (message) {
+            is Ping -> {
+                socketDispatcher().execute(
+                    ConnectionsQuery(connectionId)
+                ).broadcast(managementApi)
+            }
+            is PairAssignmentAdjustmentMessage -> {
+                socketDispatcher().execute(
+                    ReportDocCommand(connectionId, message.currentPairAssignments)
+                ).broadcast(managementApi)
+            }
+            else -> {
+            }
+        }
     }
 
     return null

@@ -10,6 +10,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.*
 import org.w3c.dom.url.URL
+import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -45,7 +46,7 @@ class WebsocketTest {
         }
         messageDeferred.await()
     } verify { result ->
-        toCouplingServerMessage(JSON.parse(result))
+        JSON.parse<Json>(result).toCouplingServerMessage()
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
             )
@@ -74,7 +75,7 @@ class WebsocketTest {
         (firstTwoSockets + thirdSocket)
     } verifyAnd { result ->
         result[2].first
-            .map { toCouplingServerMessage(JSON.parse(it)) }
+            .map { JSON.parse<Json>(it).toCouplingServerMessage() }
             .assertIsEqualTo(
                 listOf(
                     CouplingSocketMessage(
@@ -100,7 +101,7 @@ class WebsocketTest {
         val socket2 = openSocket(sdk, tribe).await()
         listOf(socket1, socket2)
     } verifyAnd { sockets ->
-        sockets[0].first.map { toCouplingServerMessage(JSON.parse(it)) }
+        sockets[0].first.map { JSON.parse<Json>(it).toCouplingServerMessage() }
             .assertIsEqualTo(
                 listOf(
                     CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
@@ -130,7 +131,7 @@ class WebsocketTest {
                 deferred.await()
             }
     } verifyAnd { openSocket ->
-        openSocket.first.map { toCouplingServerMessage(JSON.parse(it)) }
+        openSocket.first.map { JSON.parse<Json>(it).toCouplingServerMessage() }
             .assertIsEqualTo(
                 listOf(
                     CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet()),

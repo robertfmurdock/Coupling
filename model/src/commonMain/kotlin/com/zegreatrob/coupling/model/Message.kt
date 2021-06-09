@@ -12,3 +12,5 @@ data class CouplingSocketMessage(
 ) : Message()
 
 data class PairAssignmentAdjustmentMessage(val currentPairAssignments: PairAssignmentDocument) : Message()
+
+object Ping : Message()

@@ -21,7 +21,7 @@ interface ConnectTribeUserCommandDispatcher : UserIsAuthorizedWithDataActionDisp
 
     suspend fun perform(command: ConnectTribeUserCommand) = with(command) {
         tribeId.getAuthorizationData()?.let { (_, players) ->
-            CouplingConnection(connectionId, tribeId, userPlayer(players, user.email))
+        CouplingConnection(connectionId, tribeId, userPlayer(players, user.email))
                 .also { it.save() }
                 .let { tribeId.loadConnections() }
                 .let { it to couplingSocketMessage(it, null) }
