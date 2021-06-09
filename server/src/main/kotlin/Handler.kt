@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.Ping
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.action.connection.ConnectTribeUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserCommand
@@ -64,7 +65,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
 
                 commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
                     ?.run { first.filter { it.connectionId == connectionId } to second }
-                    .broadcast(managementApi)
+                    .broadcast(managementApi, commandDispatcher)
                 response.sendStatus(200)
             }).invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
@@ -88,16 +89,17 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
 
     val message = event.at<String>("body")?.let { JSON.parse<Json>(it) }?.toMessage()
     MainScope().launch {
+        val socketDispatcher = socketDispatcher()
         when (message) {
             is Ping -> {
-                socketDispatcher().execute(
+                socketDispatcher.execute(
                     ConnectionsQuery(connectionId)
-                ).broadcast(managementApi)
+                ).broadcast(managementApi, socketDispatcher)
             }
             is PairAssignmentAdjustmentMessage -> {
-                socketDispatcher().execute(
+                socketDispatcher.execute(
                     ReportDocCommand(connectionId, message.currentPairAssignments)
-                ).broadcast(managementApi)
+                ).broadcast(managementApi, socketDispatcher)
             }
             else -> {
             }
@@ -117,9 +119,10 @@ fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
     val managementApi = apiGatewayManagementApi(event)
 
     MainScope().launch {
-        socketDispatcher()
+        val socketDispatcher = socketDispatcher()
+        socketDispatcher
             .execute(DisconnectTribeUserCommand(connectionId))
-            .broadcast(managementApi)
+            .broadcast(managementApi, socketDispatcher)
     }
     return null
 }
@@ -136,25 +139,26 @@ private fun apiGatewayManagementApi(event: dynamic): ApiGatewayManagementApi {
     )
 }
 
-private suspend fun CoroutineScope.socketDispatcher() =
-    commandDispatcher(User("websocket", "websocket", emptySet()), this, uuid4())
+private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
+    User("websocket", "websocket", emptySet()), this, uuid4()
+)
 
-private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>?.broadcast(managementApi: ApiGatewayManagementApi) {
-    Promise.all(this?.first?.map { connection ->
-        console.log("Sending message to ", connection.connectionId)
-        connection.sendMessage(second, managementApi)
-            .catch { oops -> println("oops $oops") }
+private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>?.broadcast(
+    managementApi: ApiGatewayManagementApi,
+    socketDispatcher: CommandDispatcher
+) {
+    val deadConnections = Promise.all(this?.first?.map { connection ->
+        managementApi.postToConnection(
+            json("ConnectionId" to connection.connectionId, "Data" to JSON.stringify(second.toJson()))
+                .also { console.log("Sending message to ", connection.connectionId, JSON.stringify(it)) }
+        ).promise()
+            .then( { null }, { oops -> println("oops $oops"); connection.connectionId })
     }?.toTypedArray() ?: emptyArray())
         .await()
-}
 
-private fun CouplingConnection.sendMessage(
-    couplingSocketMessage: CouplingSocketMessage,
-    managementApi: ApiGatewayManagementApi
-): Promise<Json> {
-    return managementApi.postToConnection(
-        json("ConnectionId" to connectionId, "Data" to JSON.stringify(couplingSocketMessage.toJson()))
-    ).promise()
+    deadConnections.filterNotNull().forEach {
+        socketDispatcher.execute(DisconnectTribeUserCommand(it))
+    }
 }
 
 private fun delete(connectionId: String, managementApi: ApiGatewayManagementApi) = managementApi.deleteConnection(
