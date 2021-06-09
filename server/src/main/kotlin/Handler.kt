@@ -21,10 +21,7 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.middleware.middleware
 import com.zegreatrob.coupling.server.external.express.express
 import com.zegreatrob.minjson.at
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.await
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
@@ -88,7 +85,7 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
     val managementApi = apiGatewayManagementApi(event)
 
     val message = event.at<String>("body")?.let { JSON.parse<Json>(it) }?.toMessage()
-    MainScope().launch {
+    return MainScope().promise {
         val socketDispatcher = socketDispatcher()
         when (message) {
             is Ping -> {
@@ -104,9 +101,8 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
             else -> {
             }
         }
+        json("statusCode" to 200)
     }
-
-    return null
 }
 
 @Suppress("unused")
@@ -118,13 +114,13 @@ fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
 
     val managementApi = apiGatewayManagementApi(event)
 
-    MainScope().launch {
+    return MainScope().promise {
         val socketDispatcher = socketDispatcher()
         socketDispatcher
             .execute(DisconnectTribeUserCommand(connectionId))
             .broadcast(managementApi, socketDispatcher)
+        json("statusCode" to 200)
     }
-    return null
 }
 
 private fun apiGatewayManagementApi(event: dynamic): ApiGatewayManagementApi {
@@ -152,7 +148,7 @@ private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>?.broad
             json("ConnectionId" to connection.connectionId, "Data" to JSON.stringify(second.toJson()))
                 .also { console.log("Sending message to ", connection.connectionId, JSON.stringify(it)) }
         ).promise()
-            .then( { null }, { oops -> println("oops $oops"); connection.connectionId })
+            .then({ null }, { oops -> println("oops $oops"); connection.connectionId })
     }?.toTypedArray() ?: emptyArray())
         .await()
 
