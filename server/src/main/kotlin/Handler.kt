@@ -62,7 +62,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
 
                 commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
                     ?.run { first.filter { it.connectionId == connectionId } to second }
-                    .broadcast(managementApi, commandDispatcher)
+                    ?.broadcast(managementApi, commandDispatcher)
                 response.sendStatus(200)
             }).invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
@@ -81,7 +81,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
 @JsName("serverlessSocketMessage")
 fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
-    println("message $connectionId")
+    println("message $connectionId ${JSON.stringify(event)}")
     val managementApi = apiGatewayManagementApi(event)
 
     val message = event.at<String>("body")?.let { JSON.parse<Json>(it) }?.toMessage()
@@ -89,14 +89,15 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
         val socketDispatcher = socketDispatcher()
         when (message) {
             is Ping -> {
+                println("PING PING PING")
                 socketDispatcher.execute(
                     ConnectionsQuery(connectionId)
-                ).broadcast(managementApi, socketDispatcher)
+                )?.broadcast(managementApi, socketDispatcher)
             }
             is PairAssignmentAdjustmentMessage -> {
                 socketDispatcher.execute(
                     ReportDocCommand(connectionId, message.currentPairAssignments)
-                ).broadcast(managementApi, socketDispatcher)
+                )?.broadcast(managementApi, socketDispatcher)
             }
             else -> {
             }
@@ -118,7 +119,7 @@ fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
         val socketDispatcher = socketDispatcher()
         socketDispatcher
             .execute(DisconnectTribeUserCommand(connectionId))
-            .broadcast(managementApi, socketDispatcher)
+            ?.broadcast(managementApi, socketDispatcher)
         json("statusCode" to 200)
     }
 }
@@ -139,17 +140,19 @@ private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     User("websocket", "websocket", emptySet()), this, uuid4()
 )
 
-private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>?.broadcast(
+private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(
     managementApi: ApiGatewayManagementApi,
     socketDispatcher: CommandDispatcher
 ) {
-    val deadConnections = Promise.all(this?.first?.map { connection ->
+    println("Broadcasting to ${first.size} connections")
+
+    val deadConnections = Promise.all(this.first.map { connection ->
         managementApi.postToConnection(
             json("ConnectionId" to connection.connectionId, "Data" to JSON.stringify(second.toJson()))
                 .also { console.log("Sending message to ", connection.connectionId, JSON.stringify(it)) }
         ).promise()
             .then({ null }, { oops -> println("oops $oops"); connection.connectionId })
-    }?.toTypedArray() ?: emptyArray())
+    }.toTypedArray())
         .await()
 
     deadConnections.filterNotNull().forEach {
