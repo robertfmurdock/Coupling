@@ -65,6 +65,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
                 commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
                     ?.run { first.filter { it.connectionId == connectionId } to second }
                     .broadcast(managementApi)
+                response.sendStatus(200)
             }).invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
                     println("error $cause")
