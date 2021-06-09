@@ -125,13 +125,13 @@ fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
 }
 
 private fun apiGatewayManagementApi(event: dynamic): ApiGatewayManagementApi {
-    val domainName = "${event.requestContext.domainName}"
-        .let { if (it == "localhost") "http://${Config.websocketHost}" else it }
     val stage = "${event.requestContext.stage}".let { if (it == "local") "" else it }
+    val domainName = "${event.requestContext.domainName}"
+        .let { if (it == "localhost/$stage") "http://${Config.websocketHost}" else it }
     return ApiGatewayManagementApi(
         json(
             "apiVersion" to "2018-11-29",
-            "endpoint" to "$domainName/$stage"
+            "endpoint" to domainName
         )
     )
 }
