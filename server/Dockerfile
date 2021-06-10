@@ -6,4 +6,8 @@ COPY deploy /usr/src/app/server/deploy
 RUN npm install
 ENV \
   PUBLIC_HOST=web
-CMD ["npx", "serverless", "package", "--package", "build/lambda-dist", "--stage", "dev"]
+
+ARG STAGE="dev"
+ENV STAGE $STAGE
+
+CMD ["npx", "serverless", "package", "--package", "build/lambda-dist", "--stage", "$STAGE"]

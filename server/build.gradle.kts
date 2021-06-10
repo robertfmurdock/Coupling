@@ -1,4 +1,3 @@
-
 import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerLogsContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
@@ -162,15 +161,25 @@ tasks {
     val buildServerlessBuildImage by creating(DockerBuildImage::class) {
         inputDir.set(file("./"))
         remove.set(false)
+        buildArgs.put(
+            "STAGE", if ("$version".contains("SNAPSHOT")) {
+                "dev"
+            } else {
+                "prod"
+            }
+        )
     }
+
     val serverlessBuildContainer by creating(DockerCreateContainer::class) {
         dependsOn(buildServerlessBuildImage)
         targetImageId(buildServerlessBuildImage.imageId)
-        envVars.set(mutableMapOf(
-            "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
-            "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-            "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/1.0.85",
-        ))
+        envVars.set(
+            mutableMapOf(
+                "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
+                "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
+                "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/1.0.85",
+            )
+        )
         attachStdout.set(true)
         hostConfig.autoRemove.set(true)
         hostConfig.binds.set(mutableMapOf(buildDir.absolutePath to "/usr/src/app/server/build"))

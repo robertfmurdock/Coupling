@@ -1,0 +1,6 @@
+{
+  "WEBSOCKET_HOST": "socket.coupling.zegreatrob.com",
+  "PUBLIC_URL": "https://coupling.zegreatrob.com",
+  "COOKIE_DOMAIN": "coupling.zegreatrob.com",
+  "CLIENT_BASENAME": ""
+}
