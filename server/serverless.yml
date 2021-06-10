@@ -16,7 +16,7 @@ provider:
     WEBSOCKET_HOST: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):WEBSOCKET_HOST}
     PUBLIC_URL:	${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):PUBLIC_URL}
     COOKIE_DOMAIN: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):COOKIE_DOMAIN}
-    CLIENT_PATH: ${env:CLIENT_PATH, ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):CLIENT_PATH}}
+    CLIENT_PATH: ${env:CLIENT_PATH}
     AUTH0_CLIENT_ID: ${ssm:/AUTH0_CLIENT_ID}
     AUTH0_CLIENT_SECRET: ${ssm:/AUTH0_CLIENT_SECRET}
     AZURE_AD_CLIENT_ID: ${ssm:/AZURE_AD_CLIENT_ID}

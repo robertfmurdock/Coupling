@@ -1,7 +1,7 @@
 
 import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerLogsContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerWaitContainer
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
@@ -169,6 +169,7 @@ tasks {
         envVars.set(mutableMapOf(
             "AWS_ACCESS_KEY_ID" to System.getenv("AWS_ACCESS_KEY_ID"),
             "AWS_SECRET_ACCESS_KEY" to System.getenv("AWS_SECRET_ACCESS_KEY"),
+            "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/1.0.85"
         ))
         attachStdout.set(true)
         hostConfig.autoRemove.set(true)
@@ -178,8 +179,9 @@ tasks {
         dependsOn(serverlessBuildContainer, assemble)
         targetContainerId(serverlessBuildContainer.containerId)
     }
-    val serverlessBuildWaitContainer by creating(DockerWaitContainer::class) {
+    val serverlessBuildWaitContainer by creating(DockerLogsContainer::class) {
         dependsOn(serverlessBuildRunContainer)
+        follow.set(true)
         targetContainerId(serverlessBuildContainer.containerId)
     }
     val serverlessBuild by creating {
