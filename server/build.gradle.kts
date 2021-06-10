@@ -162,11 +162,7 @@ tasks {
         inputDir.set(file("./"))
         remove.set(false)
         buildArgs.put(
-            "STAGE", if ("$version".contains("SNAPSHOT")) {
-                "dev"
-            } else {
-                "prod"
-            }
+            "STAGE", serverlessStage
         )
     }
 
@@ -209,7 +205,7 @@ tasks {
                 "--package",
                 serverlessBuildDir,
                 "--stage",
-                "dev"
+                serverlessStage
             )
         )
     }
@@ -225,3 +221,9 @@ tasks {
     }
 }
 
+val serverlessStage
+    get() = if ("$version".contains("SNAPSHOT")) {
+        "dev"
+    } else {
+        "prod"
+    }
