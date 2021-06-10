@@ -166,6 +166,10 @@ tasks {
     val serverlessBuildContainer by creating(DockerCreateContainer::class) {
         dependsOn(buildServerlessBuildImage)
         targetImageId(buildServerlessBuildImage.imageId)
+        envVars.set(mutableMapOf(
+            "AWS_ACCESS_KEY_ID" to System.getenv("AWS_ACCESS_KEY_ID"),
+            "AWS_SECRET_ACCESS_KEY" to System.getenv("AWS_SECRET_ACCESS_KEY"),
+        ))
         attachStdout.set(true)
         hostConfig.autoRemove.set(true)
         hostConfig.binds.set(mutableMapOf(buildDir.absolutePath to "/usr/src/app/server/build"))

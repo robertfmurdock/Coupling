@@ -47,7 +47,8 @@
   "devDependencies": {
     "npm-check-updates": "^11.5.13",
     "serverless": "^2.43.1",
-    "serverless-offline": "^7.0.0"
+    "serverless-offline": "^7.0.0",
+    "serverless-offline-ssm": "^5.2.0"
   },
   "scripts": {},
   "repository": {
