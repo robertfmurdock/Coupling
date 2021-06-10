@@ -8,9 +8,8 @@ provider:
   stage: ${opt:stage, 'local'}
   iam:
     role:
-  role:
-    managedPolicies:
-      - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
+      managedPolicies:
+        - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
   environment:
     COUPLING_IN_MEMORY: false
     CLIENT_BASENAME: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):CLIENT_BASENAME}
