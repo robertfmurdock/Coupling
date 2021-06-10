@@ -159,6 +159,11 @@ tasks {
     val serverlessBuildDir = "${buildDir.absolutePath}/lambda-dist"
 
     val buildServerlessBuildImage by creating(DockerBuildImage::class) {
+        mustRunAfter(
+            ":release",
+            ":updateGithubRelease",
+            ":client:uploadToS3",
+        )
         inputDir.set(file("./"))
         remove.set(false)
         buildArgs.put(

@@ -123,7 +123,12 @@ tasks {
     }
 
     val pushProductionImage by creating(DockerPushImage::class) {
-        mustRunAfter("buildProductionImage")
+        mustRunAfter(
+            "buildProductionImage",
+            ":release",
+            ":updateGithubRelease",
+            ":client:uploadToS3",
+        )
         images.add("zegreatrob/coupling:latest")
         images.add("zegreatrob/coupling:${version}")
         if (version.toString().contains("SNAPSHOT")) {
