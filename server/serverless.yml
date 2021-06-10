@@ -6,6 +6,11 @@ provider:
   name: aws
   runtime: nodejs14.x
   stage: ${opt:stage, 'local'}
+  iam:
+    role:
+  role:
+    managedPolicies:
+      - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
   environment:
     CLIENT_BASENAME: /${opt:stage, 'local'}
     COUPLING_IN_MEMORY: false
