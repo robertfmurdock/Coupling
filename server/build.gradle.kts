@@ -169,7 +169,7 @@ tasks {
         envVars.set(mutableMapOf(
             "AWS_ACCESS_KEY_ID" to System.getenv("AWS_ACCESS_KEY_ID"),
             "AWS_SECRET_ACCESS_KEY" to System.getenv("AWS_SECRET_ACCESS_KEY"),
-            "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/1.0.85"
+            "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/1.0.85",
         ))
         attachStdout.set(true)
         hostConfig.autoRemove.set(true)
