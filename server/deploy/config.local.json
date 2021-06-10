@@ -3,5 +3,6 @@
   "AZURE_AD_CLIENT_ID": null,
   "AZURE_AD_CLIENT_SECRET": null,
   "AUTH0_CLIENT_ID": null,
-  "AUTH0_CLIENT_SECRET": null
+  "AUTH0_CLIENT_SECRET": null,
+  "CLIENT_BASENAME": "/local"
 }

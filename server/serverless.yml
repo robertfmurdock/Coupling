@@ -12,8 +12,8 @@ provider:
     managedPolicies:
       - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
   environment:
-    CLIENT_BASENAME: /${opt:stage, 'local'}
     COUPLING_IN_MEMORY: false
+    CLIENT_BASENAME: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):CLIENT_BASENAME}
     WEBSOCKET_HOST: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):WEBSOCKET_HOST}
     PUBLIC_URL:	${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):PUBLIC_URL}
     COOKIE_DOMAIN: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):COOKIE_DOMAIN}
