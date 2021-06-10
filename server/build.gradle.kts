@@ -192,7 +192,9 @@ tasks {
                 "--config",
                 project.relativePath("serverless.yml"),
                 "--package",
-                serverlessBuildDir
+                serverlessBuildDir,
+                "--stage",
+                "dev"
             )
         )
     }
