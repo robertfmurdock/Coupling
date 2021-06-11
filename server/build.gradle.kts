@@ -178,7 +178,7 @@ tasks {
             mutableMapOf(
                 "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
                 "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-                "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/1.0.85",
+                "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/${version}",
             )
         )
         attachStdout.set(true)
