@@ -159,11 +159,7 @@ tasks {
     val serverlessBuildDir = "${buildDir.absolutePath}/lambda-dist"
 
     val buildServerlessBuildImage by creating(DockerBuildImage::class) {
-        mustRunAfter(
-            ":release",
-            ":updateGithubRelease",
-            ":client:uploadToS3",
-        )
+        dependsOn(assemble, clientConfiguration)
         inputDir.set(file("./"))
         remove.set(false)
         buildArgs.put(
@@ -200,6 +196,11 @@ tasks {
 
     create<Exec>("serverlessDeploy") {
         dependsOn(serverlessBuild)
+        mustRunAfter(
+            ":release",
+            ":updateGithubRelease",
+            ":client:uploadToS3",
+        )
         nodeExec(
             compileKotlinJs,
             listOf(
