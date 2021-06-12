@@ -1,6 +1,3 @@
-import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerLogsContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
@@ -167,7 +164,7 @@ tasks {
         )
     }
 
-    val serverlessBuildContainer by creating(DockerCreateContainer::class) {
+    val serverlessBuildContainer by creating(com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer::class) {
         dependsOn(buildServerlessBuildImage)
         targetImageId(buildServerlessBuildImage.imageId)
         envVars.set(
@@ -181,11 +178,11 @@ tasks {
         hostConfig.autoRemove.set(true)
         hostConfig.binds.set(mutableMapOf(buildDir.absolutePath to "/usr/src/app/server/build"))
     }
-    val serverlessBuildRunContainer by creating(DockerStartContainer::class) {
+    val serverlessBuildRunContainer by creating(com.bmuschko.gradle.docker.tasks.container.DockerStartContainer::class) {
         dependsOn(serverlessBuildContainer, assemble)
         targetContainerId(serverlessBuildContainer.containerId)
     }
-    val serverlessBuildWaitContainer by creating(DockerLogsContainer::class) {
+    val serverlessBuildWaitContainer by creating(com.bmuschko.gradle.docker.tasks.container.DockerLogsContainer::class) {
         dependsOn(serverlessBuildRunContainer)
         follow.set(true)
         targetContainerId(serverlessBuildContainer.containerId)
@@ -193,6 +190,28 @@ tasks {
     val serverlessBuild by creating {
         dependsOn(serverlessBuildWaitContainer, "test")
     }
+
+//    val serverlessBuild by creating(Exec::class) {
+//        dependsOn(assemble, "test")
+//        environment(
+//            "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
+//            "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
+//            "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/${version}",
+//        )
+//        nodeExec(
+//            compileKotlinJs,
+//            listOf(
+//                "$nodeModulesDir/.bin/serverless",
+//                "package",
+//                "--config",
+//                project.relativePath("serverless.yml"),
+//                "--package",
+//                serverlessBuildDir,
+//                "--stage",
+//                serverlessStage
+//            )
+//        )
+//    }
 
     create<Exec>("serverlessDeploy") {
         dependsOn(serverlessBuild)
@@ -215,7 +234,6 @@ tasks {
             )
         )
     }
-
 
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFile) {
