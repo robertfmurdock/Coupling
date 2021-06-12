@@ -1,7 +1,7 @@
 service: coupling-server
 
 frameworkVersion: '2'
-variablesResolutionMode: 20210326
+
 provider:
   name: aws
   runtime: nodejs14.x
@@ -46,13 +46,6 @@ functions:
 plugins:
   - serverless-offline-ssm
   - serverless-offline
-  - serverless-plugin-include-dependencies
-package:
-  excludeDevDependencies: false
-  exclude:
-    - node_modules/**/uuid/**
-    - node_modules/**/exports/**
-
 custom:
   serverless-offline-ssm:
     stages:

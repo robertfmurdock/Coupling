@@ -1,3 +1,6 @@
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerLogsContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
@@ -164,7 +167,7 @@ tasks {
         )
     }
 
-    val serverlessBuildContainer by creating(com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer::class) {
+    val serverlessBuildContainer by creating(DockerCreateContainer::class) {
         dependsOn(buildServerlessBuildImage)
         targetImageId(buildServerlessBuildImage.imageId)
         envVars.set(
@@ -178,11 +181,11 @@ tasks {
         hostConfig.autoRemove.set(true)
         hostConfig.binds.set(mutableMapOf(buildDir.absolutePath to "/usr/src/app/server/build"))
     }
-    val serverlessBuildRunContainer by creating(com.bmuschko.gradle.docker.tasks.container.DockerStartContainer::class) {
+    val serverlessBuildRunContainer by creating(DockerStartContainer::class) {
         dependsOn(serverlessBuildContainer, assemble)
         targetContainerId(serverlessBuildContainer.containerId)
     }
-    val serverlessBuildWaitContainer by creating(com.bmuschko.gradle.docker.tasks.container.DockerLogsContainer::class) {
+    val serverlessBuildWaitContainer by creating(DockerLogsContainer::class) {
         dependsOn(serverlessBuildRunContainer)
         follow.set(true)
         targetContainerId(serverlessBuildContainer.containerId)
@@ -234,6 +237,7 @@ tasks {
             )
         )
     }
+
 
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFile) {
