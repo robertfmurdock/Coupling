@@ -43,9 +43,9 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(kotlin("test-js"))
                 implementation("io.github.microutils:kotlin-logging:2.0.6")
-                implementation("com.zegreatrob.testmints:standard:4.0.12")
-                implementation("com.zegreatrob.testmints:minassert:4.0.12")
-                implementation("com.zegreatrob.testmints:async:4.0.12")
+                implementation("com.zegreatrob.testmints:standard:4.0.18")
+                implementation("com.zegreatrob.testmints:minassert:4.0.18")
+                implementation("com.zegreatrob.testmints:async:4.0.18")
                 implementation("com.zegreatrob.testmints:wdio:4.0.18")
                 implementation(appConfiguration)
                 packageJson.devDependencies().forEach {

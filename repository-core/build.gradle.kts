@@ -23,8 +23,8 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:standard:4.0.12")
-                implementation("com.zegreatrob.testmints:minassert:4.0.12")
+                implementation("com.zegreatrob.testmints:standard:4.0.18")
+                implementation("com.zegreatrob.testmints:minassert:4.0.18")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
