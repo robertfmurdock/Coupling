@@ -19,13 +19,4 @@ class WelcomeE2ETest {
 
     private suspend fun purgeBrowserLogsBecauseGoogleIsCreatingWarning() = WebdriverBrowser.getLogs()
 
-    @Test
-    fun whenTheEnterButtonIsPressedWillRedirectToMicrosoftLogin() = e2eSetup(WelcomePage) {
-        goTo()
-        enterButton.click()
-    } exercise {
-        microsoftLoginButton.click()
-    } verify {
-        waitToArriveAtUrl("https://login.microsoftonline.com")
-    }
 }

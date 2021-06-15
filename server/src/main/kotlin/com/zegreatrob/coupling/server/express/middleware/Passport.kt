@@ -14,7 +14,6 @@ fun Express.passport() {
     passport.deserializeUser(UserDataService::deserializeUser)
 
     passport.use(googleAuthTransferStrategy())
-    passport.use(azureODICStrategy())
     passport.use(auth0Strategy())
 
     if (isInDevMode) {

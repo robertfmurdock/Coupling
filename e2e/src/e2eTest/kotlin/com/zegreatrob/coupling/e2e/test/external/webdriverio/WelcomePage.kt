@@ -8,7 +8,6 @@ object WelcomePage : StyleSyntax {
 
     private val loginChooserStyles = loadStyles("LoginChooser")
     val googleLoginButton by loginChooserStyles.getting()
-    val microsoftLoginButton by loginChooserStyles.getting()
 
     suspend fun goTo() {
         WebdriverBrowser.setLocation("welcome")

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.dom.blue
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.dom.white
@@ -22,13 +21,9 @@ private val styles = useStyles("LoginChooser")
 
 val LoginChooser = reactFunction { (_): LoginChooserProps ->
     val googleSignInFunc = { window.location.pathname = "${window["basename"] ?:""}/auth0-login" }
-    val msSignInFunc = { window.location.pathname = "${window["basename"] ?:""}/microsoft-login" }
     div(classes = styles.className) {
         div {
-            couplingButton(supersize, white, styles["googleLoginButton"], googleSignInFunc) { +"Google" }
-        }
-        div {
-            couplingButton(supersize, blue, styles["microsoftLoginButton"], msSignInFunc) { +"Microsoft" }
+            couplingButton(supersize, white, styles["googleLoginButton"], googleSignInFunc) { +"Auth 0" }
         }
     }
 }

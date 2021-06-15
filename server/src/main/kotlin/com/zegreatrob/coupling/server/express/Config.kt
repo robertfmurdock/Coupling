@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.server.Process
 import org.w3c.dom.url.URL
 
 object Config {
-    val microsoft = MicrosoftConfig()
     val port get() = Process.getEnv("PORT")?.toIntOrNull() ?: 3000
     val disableLogging get() = Process.getEnv("DISABLE_LOGGING")?.toBoolean() ?: false
     const val secret = "maythefourthbewithyou"
