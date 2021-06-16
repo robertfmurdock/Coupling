@@ -115,6 +115,27 @@ tasks {
         )
     }
 
+    val serverStats by creating(Exec::class) {
+        dependsOn(copyServerResources, compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
+        mustRunAfter(clean)
+
+        environment(
+            "NODE_ENV" to "production",
+            "NODE_PATH" to nodeModulesDir,
+            "PATH" to "$nodeBinDir"
+        )
+
+        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+
+        commandLine = listOf(
+            "$nodeModulesDir/.bin/webpack",
+            "--config",
+            project.projectDir.resolve("webpack.config.js").absolutePath,
+            "--profile",
+            "--json=${rootDir.absolutePath}/compilation-stats.json"
+        )
+    }
+
     val assemble by getting {
         dependsOn(serverCompile)
     }
