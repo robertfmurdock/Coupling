@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.zegreatrob.coupling.dynamo.external.scan
 import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
 interface DynamoScanSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemSyntax {
 
-    suspend fun performScan(scanParams: Json) = documentClient.scan(scanParams).promise().await()
+    suspend fun performScan(scanParams: Json) = dynamoDBClient.scan(scanParams).await()
 
     suspend fun scanAllRecords(): Array<Json> = performScan(json("TableName" to tableName))
         .continueScan()

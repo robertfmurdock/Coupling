@@ -7,8 +7,10 @@
     "../test": "test"
   },
   "dependencies": {
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.18.0",
+    "@aws-sdk/client-dynamodb": "^3.18.0",
+    "@aws-sdk/lib-dynamodb": "^3.18.0",
     "@graphql-tools/schema": "^7.1.5",
-    "aws-sdk": "2.918.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",

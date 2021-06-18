@@ -1,7 +1,7 @@
 @file:Suppress("HttpUrlsUsage")
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.dynamo.external.ApiGatewayManagementApi
+import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApi
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toMessage
 import com.zegreatrob.coupling.model.CouplingConnection

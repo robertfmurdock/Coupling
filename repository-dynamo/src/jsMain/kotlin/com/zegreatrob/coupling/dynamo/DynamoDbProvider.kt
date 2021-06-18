@@ -1,15 +1,14 @@
 package com.zegreatrob.coupling.dynamo
 
-import com.zegreatrob.coupling.dynamo.external.DocumentClient
-import com.zegreatrob.coupling.dynamo.external.DynamoDB
-import com.zegreatrob.coupling.dynamo.external.config
+import com.zegreatrob.coupling.dynamo.external.DynamoDBClient
+import com.zegreatrob.coupling.dynamo.external.awsdynamoclient.DynamoDB
+import com.zegreatrob.coupling.dynamo.external.awslibdynamodb.DynamoDBDocumentClient
 import kotlin.js.Json
 import kotlin.js.json
 
 object DynamoDbProvider : DynamoDBSyntax {
     override val dynamoDB: DynamoDB by lazy {
-        config.update(dynamoConfig())
-        DynamoDB()
+        DynamoDB(dynamoConfig())
     }
 
     private fun dynamoConfig(): Json {
@@ -30,7 +29,12 @@ object DynamoDbProvider : DynamoDBSyntax {
             )
     }
 
-    override val documentClient: DocumentClient by lazy {
-        DocumentClient(json("convertEmptyValues" to true)).also { dynamoDB }
+    override val dynamoDBClient: DynamoDBDocumentClient by lazy {
+        DynamoDBDocumentClient.from(
+            DynamoDBClient(
+                json("convertEmptyValues" to true)
+                    .add(dynamoConfig())
+            )
+        )
     }
 }

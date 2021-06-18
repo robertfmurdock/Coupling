@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.dynamo
 
+import com.zegreatrob.coupling.dynamo.external.delete
 import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
@@ -8,7 +9,7 @@ interface DynamoItemDeleteSyntax : DynamoDBSyntax, DynamoTableNameSyntax, Dynamo
 
     suspend fun performDeleteItem(keyJson: Json): Unit = logAsync("deleteItem") {
         try {
-            documentClient.delete(deleteItemParams(keyJson)).promise().await()
+            dynamoDBClient.delete(deleteItemParams(keyJson)).await()
         } catch (bad: Exception) {
             logger.warn(bad) { "Failed to delete ${JSON.stringify(keyJson)}" }
         }

@@ -33,14 +33,13 @@ interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax {
         false
     }
 
-    suspend fun createTable() = dynamoDB.createTable(createTableParams).promise().await()
+    suspend fun createTable() = dynamoDB.createTable(createTableParams).await()
 
     suspend fun tableStatus() = describeTribeTable()
         .let { it["Table"].unsafeCast<Json>()["TableStatus"] }
 
     private suspend fun describeTribeTable(): Json =
         dynamoDB.describeTable(json("TableName" to tableName))
-            .promise()
             .await()
 
 }
