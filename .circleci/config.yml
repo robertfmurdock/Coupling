@@ -60,7 +60,7 @@ jobs:
       - checkout
       - coupling-orb/setup
       - aws-cli/setup
-      - run: "./gradlew :client:build :server:build release uploadToS3 serverlessDeploy build --no-parallel"
+      - run: "./gradlew :client:assemble :server:assemble release uploadToS3 serverlessDeploy build --no-parallel"
       - coupling-orb/collect-results
   lambda-deploy:
     executor: coupling-orb/standard
