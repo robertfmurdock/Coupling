@@ -60,20 +60,9 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
     steps:
       - checkout
-      - restore_cache:
-          key: coupling-cache-55-{{ .Branch }}
       - coupling-orb/setup
-      - save_cache:
-          key: coupling-cache-55-{{ .Branch }}
-          paths:
-            - "~/.gradle"
-            - "~/.cache"
-            - ".gradle"
-            - "client/.gradle"
-            - "node_modules"
-            - "/root/.konan"
       - aws-cli/setup
-      - run: "./gradlew release uploadToS3 serverlessDeploy build --no-parallel"
+      - run: "./gradlew :client:build :server:build release uploadToS3 serverlessDeploy build --no-parallel"
       - coupling-orb/collect-results
   lambda-deploy:
     executor: coupling-orb/standard
@@ -81,18 +70,7 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
     steps:
       - checkout
-      - restore_cache:
-          key: coupling-cache-55-{{ .Branch }}
       - coupling-orb/setup
-      - save_cache:
-          key: coupling-cache-55-{{ .Branch }}
-          paths:
-            - "~/.gradle"
-            - "~/.cache"
-            - ".gradle"
-            - "client/.gradle"
-            - "node_modules"
-            - "/root/.konan"
       - aws-cli/setup
       - run: "./gradlew serverlessDeploy"
       - coupling-orb/collect-results
@@ -100,8 +78,6 @@ jobs:
     executor: coupling-orb/standard
     steps:
       - checkout
-      - restore_cache:
-          key: coupling-cache-55-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
       - run: "./gradlew build --no-parallel"
@@ -112,8 +88,6 @@ jobs:
     executor: coupling-orb/standard
     steps:
       - checkout
-      - restore_cache:
-          key: coupling-cache-55-{{ .Branch }}
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
@@ -125,8 +99,6 @@ jobs:
     executor: coupling-orb/standard
     steps:
       - checkout
-      - restore_cache:
-          key: coupling-cache-55-{{ .Branch }}
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
       - run: "./gradlew build --no-parallel"
