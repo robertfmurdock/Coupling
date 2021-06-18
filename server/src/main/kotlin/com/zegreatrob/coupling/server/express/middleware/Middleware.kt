@@ -2,12 +2,10 @@ package com.zegreatrob.coupling.server.express.middleware
 
 import com.zegreatrob.coupling.logging.initializeLogging
 import com.zegreatrob.coupling.server.express.Config
-import com.zegreatrob.coupling.server.express.isInDevMode
 import com.zegreatrob.coupling.server.external.bodyparser.bodyParserJson
 import com.zegreatrob.coupling.server.external.bodyparser.urlencoded
 import com.zegreatrob.coupling.server.external.compression.compression
 import com.zegreatrob.coupling.server.external.cookie_parser.cookieParser
-import com.zegreatrob.coupling.server.external.errorhandler.errorHandler
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.method_override.methodOverride
 import kotlin.js.json
@@ -28,9 +26,6 @@ fun Express.middleware() {
     use(staticResourcesPublic())
     use(cookieParser())
     use(session())
-    if (isInDevMode) {
-        use(errorHandler())
-    }
-    initializeLogging(isInDevMode)
+    initializeLogging(Config.TEST_LOGIN_ENABLED)
     passport()
 }

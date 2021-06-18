@@ -83,4 +83,5 @@ private fun Express.injectVariablesForClient(request: Request) = """<script>
     </script>
 """.trimIndent()
 
-private fun rewritePath() = if (Config.clientPath.startsWith("http")) Config.clientPath else "${Config.clientBasename}/app/build"
+private fun rewritePath() =
+    if (Config.clientPath.startsWith("http")) Config.clientPath else "${Config.clientBasename}/app/build"

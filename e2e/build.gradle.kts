@@ -127,6 +127,7 @@ tasks {
                     "${project.rootProject.buildDir.path}/js/node_modules",
                     e2eTestProcessResources.destinationDir
                 ).joinToString(":"),
+                "TEST_LOGIN_ENABLED" to "true",
                 "BUILD_DIR" to project.buildDir.absolutePath,
                 "WEBPACK_CONFIG" to webpackConfig,
                 "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,

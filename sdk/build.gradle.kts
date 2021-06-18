@@ -1,9 +1,9 @@
+
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeExecPath
 import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -139,6 +139,7 @@ tasks {
 
         environment(
             "NODE_PATH" to relevantPaths.joinToString(":"),
+            "TEST_LOGIN_ENABLED" to "true",
             "PORT" to "4001"
         )
         commandLine = listOf(

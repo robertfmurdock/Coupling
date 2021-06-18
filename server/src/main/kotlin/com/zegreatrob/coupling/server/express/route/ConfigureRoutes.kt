@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.express.Config
-import com.zegreatrob.coupling.server.express.isInDevMode
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.express_graphql.graphqlHTTP
 import com.zegreatrob.coupling.server.external.expressws.ExpressWs
@@ -35,7 +34,7 @@ private fun Express.authRoutes() {
     get("/auth0-login", authenticateAuth0())
     get("/auth/signin-auth0", auth0Callback())
 
-    if (isInDevMode)
+    if (Config.TEST_LOGIN_ENABLED)
         get("/test-login", authenticateLocal())
 }
 

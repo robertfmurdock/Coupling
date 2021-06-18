@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.server.Process
 import org.w3c.dom.url.URL
 
 object Config {
+    val TEST_LOGIN_ENABLED = Process.getEnv("TEST_LOGIN_ENABLED").equals("true", ignoreCase = true)
     val port get() = Process.getEnv("PORT")?.toIntOrNull() ?: 3000
     val disableLogging get() = Process.getEnv("DISABLE_LOGGING")?.toBoolean() ?: false
     const val secret = "maythefourthbewithyou"

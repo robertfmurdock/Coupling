@@ -18,10 +18,10 @@ const config = {
     devtool: 'source-map',
     target: 'node',
     externals: [
-        nodeExternals({
-            modulesDir: path.resolve(__dirname, '../build/js/node_modules'),
-            allowlist: ['Coupling-server', 'uuid']
-        })
+        // nodeExternals({
+        //     modulesDir: path.resolve(__dirname, '../build/js/node_modules'),
+        //     allowlist: ['Coupling-server', 'uuid']
+        // })
     ],
     resolve: {
         extensions: ['.js'],
@@ -29,7 +29,11 @@ const config = {
             process.env.NODE_PATH,
             path.resolve(__dirname, 'build/processedResources/js/main'),
             path.resolve(__dirname, 'node_modules')
-        ]
+        ],
+        alias: {
+            // "uuid/v4": path.resolve(process.env.NODE_PATH, '../packages/Coupling-server/node_modules/uuid/dist/v4')
+            "uuid/v4": path.resolve(__dirname, 'uuidShim')
+        }
     },
     module: {
         rules: [

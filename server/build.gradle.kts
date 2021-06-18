@@ -211,31 +211,31 @@ tasks {
         follow.set(true)
         targetContainerId(serverlessBuildContainer.containerId)
     }
-    val serverlessBuild by creating {
-        dependsOn(serverlessBuildWaitContainer, "test")
-    }
-
-//    val serverlessBuild by creating(Exec::class) {
-//        dependsOn(assemble, "test")
-//        environment(
-//            "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
-//            "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-//            "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/${version}",
-//        )
-//        nodeExec(
-//            compileKotlinJs,
-//            listOf(
-//                "$nodeModulesDir/.bin/serverless",
-//                "package",
-//                "--config",
-//                project.relativePath("serverless.yml"),
-//                "--package",
-//                serverlessBuildDir,
-//                "--stage",
-//                serverlessStage
-//            )
-//        )
+//    val serverlessBuild by creating {
+//        dependsOn(serverlessBuildWaitContainer, "test")
 //    }
+
+    val serverlessBuild by creating(Exec::class) {
+        dependsOn(assemble, "test")
+        environment(
+            "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
+            "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
+            "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/${version}",
+        )
+        nodeExec(
+            compileKotlinJs,
+            listOf(
+                "$nodeModulesDir/.bin/serverless",
+                "package",
+                "--config",
+                project.relativePath("serverless.yml"),
+                "--package",
+                serverlessBuildDir,
+                "--stage",
+                serverlessStage
+            )
+        )
+    }
 
     create<Exec>("serverlessDeploy") {
         dependsOn(serverlessBuild)

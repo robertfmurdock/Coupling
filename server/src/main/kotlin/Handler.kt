@@ -67,6 +67,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
             }).invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
                     println("error $cause")
+
                     delete(connectionId, managementApi)
                 }
             }
