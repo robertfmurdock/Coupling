@@ -31,7 +31,6 @@ const config = {
             path.resolve(__dirname, 'node_modules')
         ],
         alias: {
-            // "uuid/v4": path.resolve(process.env.NODE_PATH, '../packages/Coupling-server/node_modules/uuid/dist/v4')
             "uuid/v4": path.resolve(__dirname, 'uuidShim')
         }
     },

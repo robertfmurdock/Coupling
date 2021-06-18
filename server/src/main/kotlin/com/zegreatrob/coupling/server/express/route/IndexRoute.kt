@@ -24,7 +24,7 @@ private fun fetchLocally(filePath: String): Promise<String> = Promise.resolve(
 )
 
 private fun fetchRemotely(): Promise<String> = fetch("${Config.clientPath}/index.html").then { it.text() }
-    .unsafeCast<Promise<String>>()
+        .unsafeCast<Promise<String>>()
 
 fun Express.indexRoute(): Handler = { request, response, _ ->
     indexHtmlPromise.then { indexHtml ->
