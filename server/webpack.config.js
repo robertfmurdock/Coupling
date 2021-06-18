@@ -18,10 +18,7 @@ const config = {
     devtool: 'source-map',
     target: 'node',
     externals: [
-        // nodeExternals({
-        //     modulesDir: path.resolve(__dirname, '../build/js/node_modules'),
-        //     allowlist: ['Coupling-server', 'uuid']
-        // })
+        "aws-sdk"
     ],
     resolve: {
         extensions: ['.js'],

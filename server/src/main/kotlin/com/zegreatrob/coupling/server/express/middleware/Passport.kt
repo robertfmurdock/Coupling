@@ -13,7 +13,6 @@ fun Express.passport() {
     passport.serializeUser(UserDataService::serializeUser)
     passport.deserializeUser(UserDataService::deserializeUser)
 
-    passport.use(googleAuthTransferStrategy())
     passport.use(auth0Strategy())
 
     if (Config.TEST_LOGIN_ENABLED) {

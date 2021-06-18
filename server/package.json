@@ -21,7 +21,6 @@
     "express-statsd": "^0.3.0",
     "express-ws": "^4.0.0",
     "fs-extra": "^10.0.0",
-    "google-auth-library": "^7.1.0",
     "graphql": "^15.5.0",
     "jasmine": "^3.7.0",
     "jasmine-core": "^3.7.1",
