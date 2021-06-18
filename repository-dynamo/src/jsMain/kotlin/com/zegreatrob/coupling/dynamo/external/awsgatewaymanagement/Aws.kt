@@ -1,4 +1,4 @@
-@file:JsModule("@aws-sdk/client-apigatewaymanagementapi")
+@file:JsModule("aws-sdk")
 @file:Suppress("unused")
 
 package com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement
