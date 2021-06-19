@@ -19,6 +19,7 @@ fun newWebsocket(url: String, options: dynamic): WS = js("new (require('ws'))(ur
 
 external interface WS {
     fun on(event: String, callback: (String) -> Unit)
+    fun send(message: String)
     fun close()
 }
 
@@ -35,7 +36,6 @@ class WebsocketTest {
         sdk.save(tribe)
     } exercise {
         val socket = connectToSocket(sdk, tribe.id)
-
         val messageDeferred = CompletableDeferred<String>()
         socket.on("message") {
             messageDeferred.complete(it)
@@ -230,7 +230,7 @@ class WebsocketTest {
     }
 
     private fun connectToSocket(sdk: Sdk, tribeId: TribeId): WS {
-        val baseUrl = URL(sdk.axios.defaults.baseURL.unsafeCast<String>())
+        val baseUrl = URL(process.env.WEBSOCKET_HOST.unsafeCast<String>())
         val host = baseUrl.host
         val url = "ws://$host/api/websocket?tribeId=${tribeId.value}"
         val cookieStringSync =

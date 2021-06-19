@@ -21,6 +21,7 @@ provider:
     AUTH0_CLIENT_SECRET: ${ssm:/AUTH0_CLIENT_SECRET~true}
     AZURE_AD_CLIENT_ID: ${ssm:/AZURE_AD_CLIENT_ID~true}
     AZURE_AD_CLIENT_SECRET: ${ssm:/AZURE_AD_CLIENT_SECRET~true}
+    STAGE: ${opt:stage, 'local'}
 functions:
   api:
     handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverless
@@ -35,6 +36,8 @@ functions:
     handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverlessSocketConnect
     events:
       - websocket: $connect
+  notifyConnect:
+    handler: ${env:SERVER_DIR, '.'}/build/executable/app.notifyConnect
   disconnectHandler:
     handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverlessSocketDisconnect
     events:

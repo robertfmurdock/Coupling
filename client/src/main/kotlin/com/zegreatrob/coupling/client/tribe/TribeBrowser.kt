@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
 import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.sdk.gqlEndpoint
+import com.zegreatrob.coupling.sdk.EndpointFinder.gqlEndpoint
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*

@@ -8,10 +8,17 @@ import kotlin.js.Json
 import kotlin.js.json
 
 interface GqlSyntax : AxiosSyntax {
+
+    val gqlEndpoint get() = "${basename()}/api/graphql"
+
+    fun basename(): dynamic = if(js("global.window").unsafeCast<Window?>() != null) window["basename"] else ""
+
     suspend fun String.performQuery() = axios.post(gqlEndpoint, json("query" to this)).await()
     suspend fun performQuery(body: Json) = axios.post(gqlEndpoint, body).await()
 }
 
-val gqlEndpoint get() = "${basename()}/api/graphql"
+object EndpointFinder {
+    val gqlEndpoint get() = "${basename()}/api/graphql"
 
-private fun basename(): dynamic = if(js("global.window").unsafeCast<Window?>() != null) window["basename"] else ""
+    fun basename(): dynamic = if(js("global.window").unsafeCast<Window?>() != null) window["basename"] else ""
+}

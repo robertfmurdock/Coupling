@@ -10,7 +10,7 @@ import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
-interface SdkTribeListGet : TribeListGet, AxiosSyntax {
+interface SdkTribeListGet : TribeListGet, AxiosSyntax, GqlSyntax {
     override suspend fun getTribes() = axios.post(
         gqlEndpoint, json(
             "query" to "{ tribeList {${tribeRecordJsonKeys.joinToString(",")}} }"

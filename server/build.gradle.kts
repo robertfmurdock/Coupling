@@ -170,6 +170,10 @@ tasks {
         )
         environment("NODE_ENV", "production")
         environment(
+            "LAMBDA_ENDPOINT" to "http://localhost:3002",
+            "WEBSOCKET_HOST" to "localhost:3001"
+        )
+        environment(
             "CLIENT_PATH",
             System.getenv("CLIENT_PATH")
                 ?.let { it.ifEmpty { null } }

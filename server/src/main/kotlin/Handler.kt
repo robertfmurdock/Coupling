@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.Ping
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.CommandDispatcher
+import com.zegreatrob.coupling.server.Process
 import com.zegreatrob.coupling.server.action.connection.ConnectTribeUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserCommand
@@ -19,6 +20,8 @@ import com.zegreatrob.coupling.server.buildApp
 import com.zegreatrob.coupling.server.commandDispatcher
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.middleware.middleware
+import com.zegreatrob.coupling.server.external.awssdk.clientlambda.InvokeCommand
+import com.zegreatrob.coupling.server.external.awssdk.clientlambda.LambdaClient
 import com.zegreatrob.coupling.server.external.express.express
 import com.zegreatrob.minjson.at
 import kotlinx.coroutines.*
@@ -44,14 +47,11 @@ private val app by lazy {
 fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
     val connectionId = "${event.requestContext.connectionId}"
     println("connect $connectionId")
-    console.log("event headers", event.headers)
     val managementApi = apiGatewayManagementApi(event)
 
     val app = express()
     app.middleware()
     app.all("*") { request, response, _ ->
-        println("EXPRESS REQUEST'D")
-
         if (!request.isAuthenticated()) {
             println("SOCKET NOT AUTH'D")
             delete(connectionId, managementApi)
@@ -63,6 +63,9 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
                 commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
                     ?.run { first.filterNot { it.connectionId == connectionId } to second }
                     ?.broadcast(managementApi, commandDispatcher)
+
+                notifyConnectLambda(event).await()
+
                 response.sendStatus(200)
             }).invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
@@ -77,12 +80,41 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
     return js("require('serverless-http')")(app)(event, context)
 }
 
+private fun notifyConnectLambda(event: dynamic): Promise<Unit> {
+    val options = notifyLambdaOptions()
+    val client = LambdaClient(options)
+    return client.send<Unit>(
+        InvokeCommand(
+            json(
+                "FunctionName" to "coupling-server-${Process.getEnv("STAGE")}-notifyConnect",
+                "InvocationType" to "Event",
+                "Payload" to JSON.stringify(event)
+            )
+        )
+    ).catch {
+        console.log("lambda invoke fail", it)
+    }
+}
+
+private fun notifyLambdaOptions() = if (Process.getEnv("IS_OFFLINE") == "true")
+    json(
+        "endpoint" to Process.getEnv("LAMBDA_ENDPOINT"),
+        "region" to "us-east-1",
+        "credentials" to json(
+            "accessKeyId" to "lol",
+            "secretAccessKey" to "lol"
+        )
+    )
+else
+    json()
+
+
 @Suppress("unused")
 @JsExport
 @JsName("serverlessSocketMessage")
 fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
-    println("message $connectionId ${JSON.stringify(event)}")
+    println("message $connectionId")
     val managementApi = apiGatewayManagementApi(event)
 
     val message = event.at<String>("body")?.let { JSON.parse<Json>(it) }?.toMessage()
@@ -90,10 +122,10 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
         val socketDispatcher = socketDispatcher()
         when (message) {
             is Ping -> {
-                println("PING PING PING")
-                socketDispatcher.execute(
-                    ConnectionsQuery(connectionId)
-                )?.broadcast(managementApi, socketDispatcher)
+//                println("PING PING PING")
+//                socketDispatcher.execute(
+//                    ConnectionsQuery(connectionId)
+//                )?.broadcast(managementApi, socketDispatcher)
             }
             is PairAssignmentAdjustmentMessage -> {
                 socketDispatcher.execute(
@@ -104,6 +136,33 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
             }
         }
         json("statusCode" to 200)
+    }
+}
+
+@Suppress("unused")
+@JsExport
+@JsName("notifyConnect")
+fun notifyConnect(event: Json, context: dynamic): dynamic {
+    val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
+    println("notifyConnect $connectionId")
+    val managementApi = apiGatewayManagementApi(event)
+    return MainScope().promise {
+        val socketDispatcher = socketDispatcher()
+        println("PING PING PING")
+        val results = socketDispatcher.execute(
+            ConnectionsQuery(connectionId)
+        )
+        results?.let { results ->
+            managementApi.postToConnection(
+                json("ConnectionId" to connectionId, "Data" to JSON.stringify(results.second.toJson()))
+                    .also { console.log("Sending message to ", connectionId, JSON.stringify(it)) }
+            ).promise()
+        }
+    }.then {
+        json("statusCode" to 200)
+    }.catch {
+        console.log("Notify error", it)
+        json("statusCode" to 500)
     }
 }
 
@@ -126,13 +185,23 @@ fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
 }
 
 private fun apiGatewayManagementApi(event: dynamic): ApiGatewayManagementApi {
-    val stage = "${event.requestContext.stage}".let { if (it == "local") "" else it }
     val domainName = "${event.requestContext.domainName}"
-        .let { if (it == "localhost/$stage") "http://${Config.websocketHost}" else it }
+        .let { if (it.startsWith("localhost")) "http://${Config.websocketHost}" else it }
     return ApiGatewayManagementApi(
         json(
             "apiVersion" to "2018-11-29",
             "endpoint" to domainName
+        ).add(
+            if (Process.getEnv("IS_OFFLINE") == "true")
+                json(
+                    "region" to "us-east-1",
+                    "credentials" to json(
+                        "accessKeyId" to "lol",
+                        "secretAccessKey" to "lol"
+                    )
+                )
+            else
+                json()
         )
     )
 }

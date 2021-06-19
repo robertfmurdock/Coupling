@@ -13,6 +13,9 @@
     "jasmine": "^3.7.0",
     "jasmine-reporters": "^2.4.0",
     "monk": "^7.3.4",
-    "tough-cookie": "^4.0.0"
+    "tough-cookie": "^4.0.0",
+    "serverless": "^2.43.1",
+    "serverless-offline": "^7.0.0",
+    "serverless-offline-ssm": "^5.2.0"
   }
 }
