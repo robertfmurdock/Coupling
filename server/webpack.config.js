@@ -1,7 +1,4 @@
-const webpack = require('webpack');
 const path = require('path');
-const jsPath = path.resolve(__dirname, './');
-const nodeExternals = require('webpack-node-externals');
 
 const config = {
     mode: "production",
@@ -15,11 +12,8 @@ const config = {
         __filename: false,
         __dirname: false
     },
-    devtool: 'source-map',
     target: 'node',
-    externals: [
-        "aws-sdk"
-    ],
+    externals: ["aws-sdk"],
     resolve: {
         extensions: ['.js'],
         modules: [
@@ -33,11 +27,6 @@ const config = {
     },
     module: {
         rules: [
-            {
-                test: /\.js$/,
-                use: ["source-map-loader"],
-                enforce: "pre"
-            },
             {
                 test: /\.graphql$/i, use: 'raw-loader'
             },
