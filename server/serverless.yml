@@ -13,7 +13,7 @@ provider:
   environment:
     COUPLING_IN_MEMORY: false
     CLIENT_BASENAME: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):CLIENT_BASENAME}
-    WEBSOCKET_HOST: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):WEBSOCKET_HOST}
+    WEBSOCKET_HOST: ${env:WEBSOCKET_HOST, file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):WEBSOCKET_HOST}
     PUBLIC_URL:	${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):PUBLIC_URL}
     COOKIE_DOMAIN: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):COOKIE_DOMAIN}
     CLIENT_PATH: ${env:CLIENT_PATH}

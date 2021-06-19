@@ -55,23 +55,34 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
         if (!request.isAuthenticated()) {
             println("SOCKET NOT AUTH'D")
             delete(connectionId, managementApi)
+                .promise().then {
+                    response.sendStatus(403)
+                }.catch {
+                    console.log("problem disconnecting during connect", it)
+                }
         } else {
-            request.scope.launch(block = {
+            request.scope.launch {
                 val commandDispatcher = with(request) { commandDispatcher(this.user, this.scope, this.traceId) }
                 val tribeId = request.query["tribeId"].toString().let(::TribeId)
-
-                commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
-                    ?.run { first.filterNot { it.connectionId == connectionId } to second }
-                    ?.broadcast(managementApi, commandDispatcher)
-
-                notifyConnectLambda(event).await()
-
-                response.sendStatus(200)
-            }).invokeOnCompletion { cause: Throwable? ->
+                val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
+                if (result == null) {
+                    delete(connectionId, managementApi).promise().await()
+                    response.sendStatus(403)
+                } else {
+                    with(result) { first.filterNot { it.connectionId == connectionId } to second }
+                        .broadcast(managementApi, commandDispatcher)
+                    notifyConnectLambda(event).await()
+                    response.sendStatus(200)
+                }
+            }.invokeOnCompletion { cause: Throwable? ->
                 cause?.let {
                     println("error $cause")
 
-                    delete(connectionId, managementApi)
+                    delete(connectionId, managementApi).promise().then {
+                        response.sendStatus(403)
+                    }.catch {
+                        console.log("problem disconnecting during connect", it)
+                    }
                 }
             }
         }
@@ -186,7 +197,7 @@ fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
 
 private fun apiGatewayManagementApi(event: dynamic): ApiGatewayManagementApi {
     val domainName = "${event.requestContext.domainName}"
-        .let { if (it.startsWith("localhost")) "http://${Config.websocketHost}" else it }
+        .let { if (it.contains("localhost")) "http://${Config.websocketHost}" else it }
     return ApiGatewayManagementApi(
         json(
             "apiVersion" to "2018-11-29",

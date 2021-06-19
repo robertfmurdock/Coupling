@@ -19,13 +19,10 @@ fun newWebsocket(url: String, options: dynamic): WS = js("new (require('ws'))(ur
 
 external interface WS {
     fun on(event: String, callback: (String) -> Unit)
-    fun send(message: String)
     fun close()
 }
 
 class WebsocketTest {
-
-    private fun AuthorizedSdk.baseUrl() = URL(axios.defaults.baseURL.unsafeCast<String>())
 
     @Test
     fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
@@ -146,8 +143,7 @@ class WebsocketTest {
     @Test
     fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(sdkContext { it }
     ) exercise {
-        val baseUrl = sdk.baseUrl()
-        val host = baseUrl.host
+        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "ws://$host/api/${TribeId("whoops").value}/pairAssignments/current"
         val socket = newWebsocket(url, json())
         CompletableDeferred<Unit>().also { deferred ->
@@ -175,8 +171,7 @@ class WebsocketTest {
     @Test
     fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(sdkContext { it }
     ) exercise {
-        val baseUrl = sdk.baseUrl()
-        val host = baseUrl.host
+        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "ws://$host/api/404WTF"
         val socket = newWebsocket(url, json())
         CompletableDeferred<Unit>().also { deferred ->
@@ -230,8 +225,8 @@ class WebsocketTest {
     }
 
     private fun connectToSocket(sdk: Sdk, tribeId: TribeId): WS {
-        val baseUrl = URL(process.env.WEBSOCKET_HOST.unsafeCast<String>())
-        val host = baseUrl.host
+        val baseUrl = URL(sdk.axios.defaults.baseURL.unsafeCast<String>())
+        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "ws://$host/api/websocket?tribeId=${tribeId.value}"
         val cookieStringSync =
             sdk.axios.defaults.jar.getCookieStringSync(baseUrl.href).unsafeCast<String>()
