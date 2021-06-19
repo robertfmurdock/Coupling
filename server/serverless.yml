@@ -10,6 +10,11 @@ provider:
     role:
       managedPolicies:
         - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource: coupling-server-${opt:stage, 'local'}-notifyConnect
   environment:
     COUPLING_IN_MEMORY: false
     CLIENT_BASENAME: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):CLIENT_BASENAME}
