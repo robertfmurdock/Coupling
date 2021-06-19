@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.json.toMessage
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
-import com.zegreatrob.coupling.model.Ping
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.CommandDispatcher
@@ -132,12 +131,6 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
     return MainScope().promise {
         val socketDispatcher = socketDispatcher()
         when (message) {
-            is Ping -> {
-//                println("PING PING PING")
-//                socketDispatcher.execute(
-//                    ConnectionsQuery(connectionId)
-//                )?.broadcast(managementApi, socketDispatcher)
-            }
             is PairAssignmentAdjustmentMessage -> {
                 socketDispatcher.execute(
                     ReportDocCommand(connectionId, message.currentPairAssignments)
@@ -159,11 +152,9 @@ fun notifyConnect(event: Json, context: dynamic): dynamic {
     val managementApi = apiGatewayManagementApi(event)
     return MainScope().promise {
         val socketDispatcher = socketDispatcher()
-        println("PING PING PING")
-        val results = socketDispatcher.execute(
+        socketDispatcher.execute(
             ConnectionsQuery(connectionId)
-        )
-        results?.let { results ->
+        )?.let { results ->
             managementApi.postToConnection(
                 json("ConnectionId" to connectionId, "Data" to JSON.stringify(results.second.toJson()))
                     .also { console.log("Sending message to ", connectionId, JSON.stringify(it)) }

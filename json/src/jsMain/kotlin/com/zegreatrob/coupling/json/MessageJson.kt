@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
-import com.zegreatrob.coupling.model.Ping
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -13,12 +12,10 @@ fun Message.toJson(): Json = when (this) {
         "type" to "PairAssignmentUpdate",
         "currentPairAssignments" to currentPairAssignments.toJson()
     )
-    Ping -> json("type" to "ping")
 }
 
 fun Json.toMessage(): Message? {
     return when (this["type"]) {
-        "ping" -> Ping
         "LivePlayers" -> this.toCouplingServerMessage()
         "PairAssignmentUpdate" -> toPairAssignmentMessage()
         else -> null

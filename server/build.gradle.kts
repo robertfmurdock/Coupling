@@ -1,7 +1,4 @@
-import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerLogsContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
 import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
 import com.zegreatrob.coupling.build.nodeExec
@@ -182,42 +179,6 @@ tasks {
     }
 
     val serverlessBuildDir = "${buildDir.absolutePath}/lambda-dist"
-
-    val buildServerlessBuildImage by creating(DockerBuildImage::class) {
-        dependsOn(assemble, clientConfiguration)
-        inputDir.set(file("./"))
-        remove.set(false)
-        buildArgs.put(
-            "STAGE", serverlessStage
-        )
-    }
-
-    val serverlessBuildContainer by creating(DockerCreateContainer::class) {
-        dependsOn(buildServerlessBuildImage)
-        targetImageId(buildServerlessBuildImage.imageId)
-        envVars.set(
-            mutableMapOf(
-                "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
-                "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-                "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/${version}",
-            )
-        )
-        attachStdout.set(true)
-        hostConfig.autoRemove.set(true)
-        hostConfig.binds.set(mutableMapOf(buildDir.absolutePath to "/usr/src/app/server/build"))
-    }
-    val serverlessBuildRunContainer by creating(DockerStartContainer::class) {
-        dependsOn(serverlessBuildContainer, assemble)
-        targetContainerId(serverlessBuildContainer.containerId)
-    }
-    val serverlessBuildWaitContainer by creating(DockerLogsContainer::class) {
-        dependsOn(serverlessBuildRunContainer)
-        follow.set(true)
-        targetContainerId(serverlessBuildContainer.containerId)
-    }
-//    val serverlessBuild by creating {
-//        dependsOn(serverlessBuildWaitContainer, "test")
-//    }
 
     val serverlessBuild by creating(Exec::class) {
         dependsOn(assemble, "test")
