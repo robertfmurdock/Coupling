@@ -57,14 +57,16 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
     steps:
       - checkout
-      - run: "./gradlew :server:check"
-      - run: "./gradlew :sdk:check"
       - coupling-orb/setup
+      - run: "./gradlew :server:assemble"
+      - run: "./gradlew :client:assemble"
+      - run: "./gradlew :server:check"
       - run: "./gradlew :client:check"
-      - run: "./gradlew :e2e:check"
       - run: docker-compose up -d dynamo
+      - run: "./gradlew :sdk:check"
+      - run: "./gradlew :e2e:check"
       - aws-cli/setup
-      - run: "./gradlew :client:assemble :server:assemble release uploadToS3 serverlessDeploy build --no-parallel"
+      - run: "./gradlew release uploadToS3 serverlessDeploy build --no-parallel"
       - coupling-orb/collect-results
   lambda-deploy:
     executor: coupling-orb/standard
