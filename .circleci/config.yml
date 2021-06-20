@@ -59,13 +59,9 @@ jobs:
     steps:
       - checkout
       - coupling-orb/setup
-      - run: "./gradlew :server:assemble"
-      - run: "./gradlew :client:assemble"
       - run: "./gradlew :server:check"
       - run: "./gradlew :client:check"
       - run: docker-compose up -d dynamo
-      - run: "./gradlew :sdk:check"
-      - run: "./gradlew :e2e:check"
       - aws-cli/setup
       - run: "./gradlew release uploadToS3 serverlessDeploy build --no-parallel"
       - coupling-orb/collect-results
