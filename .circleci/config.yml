@@ -12,7 +12,8 @@ orbs:
         environment:
           COUPLING_IN_MEMORY: "true"
           SKIP_MONGO_TESTS: "true"
-          GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
+          GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2
+          _JAVA_OPTIONS: "-Xmx3g"
           AWS_DEFAULT_REGION: us-east-1
     commands:
       setup:
