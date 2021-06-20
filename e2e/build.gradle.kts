@@ -123,6 +123,7 @@ tasks {
         environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
         environment(
             mapOf(
+                "TEST_LOGIN_ENABLED" to "true",
                 "CLIENT_BASENAME" to "local",
                 "SERVER_DIR" to project(":server").projectDir.absolutePath,
                 "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile --httpPort 3099",
