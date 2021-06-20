@@ -29,7 +29,6 @@ orbs:
               echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
           - browser-tools/install-chrome
           - browser-tools/install-chromedriver
-          - run: docker-compose up -d dynamo
       collect-results:
         steps:
           - run:
@@ -62,6 +61,7 @@ jobs:
       - aws-cli/setup
       - run: "./gradlew :client:check"
       - run: "./gradlew :server:check"
+      - run: docker-compose up -d dynamo
       - run: "./gradlew :client:assemble :server:assemble release uploadToS3 serverlessDeploy build --no-parallel"
       - coupling-orb/collect-results
   lambda-deploy:
@@ -80,6 +80,7 @@ jobs:
       - checkout
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo
       - run: "./gradlew build --no-parallel"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
@@ -91,6 +92,7 @@ jobs:
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo
       - run: "./gradlew build --no-parallel"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
@@ -101,6 +103,7 @@ jobs:
       - checkout
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo
       - run: "./gradlew build --no-parallel"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
