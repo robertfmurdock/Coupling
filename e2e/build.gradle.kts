@@ -91,7 +91,6 @@ tasks {
 
     e2eTestProcessResources.dependsOn(dependencyResources)
 
-    val pathToNodeApp = "${project(":server").buildDir.absolutePath}/executable/app.js"
     val wdioConfig = project.projectDir.resolve("wdio.conf.js")
     val webpackConfig = project.projectDir.resolve("webpack.config.js")
     val webpackedWdioConfigOutput = "config"
@@ -113,54 +112,7 @@ tasks {
         inputs.files(compileProductionExecutableKotlinJs.outputs.files)
         inputs.files(compileE2eTestProductionExecutableKotlinJs.outputs.files)
         inputs.files(wdioConfig)
-        val reportDir = "${project.buildDir}/reports/e2e"
-        outputs.dir(reportDir)
-        val logsDir = "${project.buildDir.absolutePath}/logs/e2e/"
-        outputs.dir(logsDir)
 
-        environment("PORT" to "3099")
-        environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
-        environment(
-            mapOf(
-                "APP_PATH" to pathToNodeApp,
-                "NODE_PATH" to listOf(
-                    "${project.rootProject.buildDir.path}/js/node_modules",
-                    e2eTestProcessResources.destinationDir
-                ).joinToString(":"),
-                "TEST_LOGIN_ENABLED" to "true",
-                "BUILD_DIR" to project.buildDir.absolutePath,
-                "WEBPACK_CONFIG" to webpackConfig,
-                "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
-                "REPORT_DIR" to reportDir,
-                "LOGS_DIR" to logsDir,
-                "CLIENT_BASENAME" to "",
-                "BASEURL" to "http://localhost:3099/"
-            )
-        )
-        val logFile = file("${logsDir}/run.log")
-        logFile.parentFile.mkdirs()
-        standardOutput = logFile.outputStream()
-    }
-
-    val nodeRunServerless = NodeJsExec.create(nodeRun.compilation, "nodeRunServerless") {
-        inputFileProperty.set(nodeRun.inputFileProperty.get())
-        dependsOn(
-            compileProductionExecutableKotlinJs,
-            productionExecutableCompileSync,
-            compileE2eTestProductionExecutableKotlinJs,
-            appConfiguration,
-            clientConfiguration,
-            testLoggingLib
-        )
-
-        inputs.files(
-            appConfiguration,
-            clientConfiguration,
-            testLoggingLib
-        )
-        inputs.files(compileProductionExecutableKotlinJs.outputs.files)
-        inputs.files(compileE2eTestProductionExecutableKotlinJs.outputs.files)
-        inputs.files(wdioConfig)
         val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
         outputs.dir(reportDir)
         val logsDir = "${project.buildDir.absolutePath}/logs/e2e-serverless/"
