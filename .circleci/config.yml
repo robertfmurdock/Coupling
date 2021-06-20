@@ -113,9 +113,6 @@ workflows:
   build-deploy:
     jobs:
       - build
-  aws-lambda-deploy:
-    jobs:
-      - lambda-deploy
   update-client:
     triggers:
       - schedule:
