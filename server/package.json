@@ -20,9 +20,9 @@
     "express-graphql": "^0.12.0",
     "express-session": "^1.17.2",
     "express-statsd": "^0.3.0",
-    "express-ws": "^4.0.0",
+    "express-ws": "^5.0.2",
     "fs-extra": "^10.0.0",
-    "graphql": "^15.5.0",
+    "graphql": "^15.5.1",
     "jasmine": "^3.7.0",
     "jasmine-core": "^3.7.1",
     "jasmine-reporters": "^2.4.0",
@@ -40,14 +40,14 @@
     "serverless-http": "^2.7.0",
     "source-map-loader": "^3.0.0",
     "uuid": "^8.3.2",
-    "webpack": "^5.38.1",
-    "webpack-cli": "^4.7.0",
+    "webpack": "^5.39.1",
+    "webpack-cli": "^4.7.2",
     "webpack-node-externals": "^3.0.0",
-    "ws": "^7.4.6"
+    "ws": "^7.5.0"
   },
   "devDependencies": {
-    "npm-check-updates": "^11.5.13",
-    "serverless": "^2.43.1",
+    "npm-check-updates": "^11.7.1",
+    "serverless": "^2.47.0",
     "serverless-offline": "^7.0.0",
     "serverless-offline-ssm": "^5.2.0"
   },
