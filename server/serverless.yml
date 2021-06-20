@@ -2,6 +2,10 @@ service: coupling-server
 
 frameworkVersion: '2'
 
+package:
+  patterns:
+    - '!**'
+    - 'build/executable/**'
 provider:
   name: aws
   runtime: nodejs14.x
