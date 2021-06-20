@@ -58,10 +58,10 @@ jobs:
       AWS_DEFAULT_REGION: us-east-1
     steps:
       - checkout
-      - coupling-orb/setup
       - aws-cli/setup
       - run: "./gradlew :client:check"
       - run: "./gradlew :server:check"
+      - coupling-orb/setup
       - run: "./gradlew :client:assemble :server:assemble release uploadToS3 serverlessDeploy build --no-parallel"
       - coupling-orb/collect-results
   lambda-deploy:
