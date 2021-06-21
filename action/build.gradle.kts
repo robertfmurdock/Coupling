@@ -41,8 +41,8 @@ kotlin {
                 implementation(project(":json"))
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard:4.0.18")
-                implementation("com.zegreatrob.testmints:minassert:4.0.18")
+                implementation("com.zegreatrob.testmints:standard:4.0.21")
+                implementation("com.zegreatrob.testmints:minassert:4.0.21")
                 implementation(project(":test-logging"))
             }
         }

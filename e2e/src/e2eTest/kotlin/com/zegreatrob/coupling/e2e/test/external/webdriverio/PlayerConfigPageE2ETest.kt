@@ -216,8 +216,8 @@ class PlayerConfigPageE2ETest {
         }.attachPlayer()) exercise {
             PlayerConfigPage.goTo(tribe.id, player.id)
         } verify {
-            PlayerConfigPage.defaultBadgeOption().attribute("checked")
-                .assertIsEqualTo("true")
+            PlayerConfigPage.defaultBadgeOption().isSelected()
+                .assertIsEqualTo(true)
         }
 
         @Test
@@ -231,8 +231,8 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.waitForSaveToComplete(player.name)
         } verify {
             PlayerConfigPage.goTo(tribe.id, player.id)
-            PlayerConfigPage.altBadgeOption().attribute("checked")
-                .assertIsEqualTo("true")
+            PlayerConfigPage.altBadgeOption().isSelected()
+                .assertIsEqualTo(true)
         }
 
     }
