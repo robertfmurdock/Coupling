@@ -1,23 +1,5 @@
 version: '2'
 services:
-  web:
-    hostname: web
-    build: .
-    ports:
-      - "3000:3000"
-    links:
-      - "mongo:mongo"
-      - "seleniumhub:hub"
-      - "statsd:statsd"
-    volumes:
-      - ./public:/usr/src/app/public
-      - ./server:/usr/src/app/server
-      - ./client:/usr/src/app/client
-      - ./views:/usr/src/app/views
-      - ./test:/usr/src/app/test
-      - ./package.json:/usr/src/app/package.json
-      - ./config.js:/usr/src/app/config.js
-      - ./test-output:/usr/src/app/test-output
   mongo:
     image: mongo
     environment:

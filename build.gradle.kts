@@ -1,6 +1,4 @@
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
-import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.zegreatrob.coupling.build.JsonLoggingTestListener
 import de.gliderpilot.gradle.semanticrelease.SemanticReleaseChangeLogService
@@ -102,48 +100,7 @@ dependencies {
 }
 
 tasks {
-    val pullProductionImage by creating(DockerPullImage::class) {
-        image.set("zegreatrob/coupling:latest")
-    }
 
-    val buildProductionImage by creating(DockerBuildImage::class) {
-        mustRunAfter("pullProductionImage")
-        dependsOn(appConfiguration)
-        inputDir.set(file("./"))
-        dockerFile.set(file("Dockerfile.prod"))
-        remove.set(false)
-        images.add("zegreatrob/coupling:latest")
-        images.add("zegreatrob/coupling:${version}")
-
-        if (!version.toString().contains("SNAPSHOT")) {
-            buildArgs.put("ASSETS_PATH", "https://assets.zegreatrob.com/coupling/${version}")
-        } else {
-            buildArgs.put("ASSETS_PATH", System.getenv("CLIENT_PATH") ?: "")
-        }
-    }
-
-    val pushProductionImage by creating(DockerPushImage::class) {
-        mustRunAfter(
-            "buildProductionImage",
-            ":release",
-            ":updateGithubRelease",
-            ":client:uploadToS3",
-        )
-        images.add("zegreatrob/coupling:latest")
-        images.add("zegreatrob/coupling:${version}")
-        if (version.toString().contains("SNAPSHOT")) {
-            enabled = false
-        }
-    }
-
-    create<Exec>("forceEcsDeployment") {
-        mustRunAfter("pushProductionImage")
-        if (version.toString().contains("SNAPSHOT")) {
-            enabled = false
-        }
-        commandLine = "aws ecs update-service --service Coupling-service --force-new-deployment --no-paginate"
-            .split(" ")
-    }
 }
 
 buildtimetracker {
