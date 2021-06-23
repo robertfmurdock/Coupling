@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.server.external.express
 
-import com.zegreatrob.coupling.server.express.route.WS
-
 @JsModule("express")
 @JsNonModule
 external fun express(): Express
@@ -16,10 +14,8 @@ external interface Express {
     fun use(path: String, router: Router)
     fun use(path: String, function: Handler)
     fun post(path: String, vararg handlers: Handler)
-    fun ws(path: String, handler: WSHandler)
 }
 
 typealias Handler = (Request, Response, Next) -> Unit
-typealias WSHandler = (WS, Request) -> Unit
 typealias Next = () -> Unit
 typealias ExpressHandler = (Request, Response) -> Unit

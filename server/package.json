@@ -20,7 +20,6 @@
     "express-graphql": "^0.12.0",
     "express-session": "^1.17.2",
     "express-statsd": "^0.3.0",
-    "express-ws": "^5.0.2",
     "fs-extra": "^10.0.0",
     "graphql": "^15.5.1",
     "method-override": "^3.0.0",
@@ -35,8 +34,7 @@
     "raw-loader": "^4.0.2",
     "serverless-http": "^2.7.0",
     "source-map-loader": "^3.0.0",
-    "uuid": "^8.3.2",
-    "ws": "^7.5.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "jasmine": "^3.7.0",

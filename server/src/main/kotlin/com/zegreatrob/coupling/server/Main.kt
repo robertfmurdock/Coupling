@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.server.express.port
 import com.zegreatrob.coupling.server.express.route.routes
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.express
-import com.zegreatrob.coupling.server.external.expressws.expressWs
 import kotlinx.coroutines.*
 
 val serverScope = MainScope() + CoroutineName("Server")
@@ -22,10 +21,9 @@ private val startDeferred = serverScope.async(start = CoroutineStart.LAZY) {
 }
 
 fun buildApp(): Express {
-    val expressWs = expressWs(express())
-    val app = expressWs.app
+    val app = express()
     app.middleware()
-    expressWs.routes()
+    app.routes()
     return app
 }
 

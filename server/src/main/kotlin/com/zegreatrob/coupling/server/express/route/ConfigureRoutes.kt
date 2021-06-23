@@ -3,28 +3,19 @@ package com.zegreatrob.coupling.server.express.route
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.express.*
 import com.zegreatrob.coupling.server.external.express_graphql.graphqlHTTP
-import com.zegreatrob.coupling.server.external.expressws.ExpressWs
 import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.graphql.couplingSchema
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.js.json
 
-fun ExpressWs.routes() = with(app) { routes(getWss()) }
-
-fun Express.routes(webSocketServer: WebSocketServer) {
+fun Express.routes() {
     authRoutes()
     get("/", indexRoute())
     get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
     all("/api/*", apiGuard())
     use("/api/graphql", graphqlHTTP(json("schema" to couplingSchema(), "graphiql" to true)))
-    ws("/api/websocket", websocketRoute(webSocketServer))
-    ws("*") { ws, _ -> ws.close() }
     get("*", indexRoute())
-}
-
-private fun websocketRoute(webSocketServer: WebSocketServer): (WS, Request) -> Unit = { connection, request ->
-    websocketRoute(connection, request, webSocketServer)
 }
 
 private fun Express.authRoutes() {
