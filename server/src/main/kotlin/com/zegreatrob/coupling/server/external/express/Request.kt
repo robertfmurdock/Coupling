@@ -16,6 +16,9 @@ external interface Request {
     val path: String
     val originalUrl: String?
     val url: String
+    val connectionId: String
+    val domainName: String
+    val event: Json?
     fun logout()
     fun isAuthenticated(): Boolean
     fun close()

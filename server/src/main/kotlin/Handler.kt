@@ -21,12 +21,17 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.middleware.middleware
 import com.zegreatrob.coupling.server.external.awssdk.clientlambda.InvokeCommand
 import com.zegreatrob.coupling.server.external.awssdk.clientlambda.LambdaClient
+import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.express
 import com.zegreatrob.minjson.at
 import kotlinx.coroutines.*
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
+
+private val app by lazy {
+    buildApp()
+}
 
 @Suppress("unused")
 @JsExport
@@ -36,58 +41,66 @@ fun serverless(event: dynamic, context: dynamic): dynamic {
     return js("require('serverless-http')")(app)(event, context)
 }
 
-private val app by lazy {
-    buildApp()
-}
 
-@Suppress("unused")
-@JsExport
-@JsName("serverlessSocketConnect")
-fun serverlessSocketConnect(event: dynamic, context: dynamic): dynamic {
-    val connectionId = "${event.requestContext.connectionId}"
-    println("connect $connectionId")
-    val managementApi = apiGatewayManagementApi(event)
-
-    val app = express()
-    app.middleware()
-    app.all("*") { request, response, _ ->
-        if (!request.isAuthenticated()) {
-            println("SOCKET NOT AUTH'D")
-            delete(connectionId, managementApi)
-                .promise().then {
-                    response.sendStatus(403)
-                }.catch {
-                    console.log("problem disconnecting during connect", it)
-                }
-        } else {
-            request.scope.launch {
-                val commandDispatcher = with(request) { commandDispatcher(this.user, this.scope, this.traceId) }
-                val tribeId = request.query["tribeId"].toString().let(::TribeId)
-                val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
-                if (result == null) {
+@ExperimentalCoroutinesApi
+private val websocketApp by lazy {
+    express().apply {
+        middleware()
+        all("*") { request, response, _ ->
+            val connectionId = request.connectionId
+            val managementApi = apiGatewayManagementApi(request.domainName)
+            with(request.scope.async {
+                if (!request.isAuthenticated()) {
                     delete(connectionId, managementApi).promise().await()
-                    response.sendStatus(403)
+                    401
                 } else {
-                    with(result) { first.filterNot { it.connectionId == connectionId } to second }
-                        .broadcast(managementApi, commandDispatcher)
-                    notifyConnectLambda(event).await()
-                    response.sendStatus(200)
+                    println("connect $connectionId")
+                    handleConnect(request, connectionId, managementApi, request.event)
                 }
-            }.invokeOnCompletion { cause: Throwable? ->
-                cause?.let {
-                    println("error $cause")
-
-                    delete(connectionId, managementApi).promise().then {
-                        response.sendStatus(403)
-                    }.catch {
-                        console.log("problem disconnecting during connect", it)
+            }) {
+                invokeOnCompletion { cause ->
+                    if (cause != null) {
+                        response.sendStatus(403).also { println("exception $cause") }
+                    } else {
+                        response.sendStatus(getCompleted())
                     }
                 }
             }
         }
     }
+}
 
-    return js("require('serverless-http')")(app)(event, context)
+@ExperimentalJsExport
+@ExperimentalCoroutinesApi
+@Suppress("unused")
+@JsExport
+@JsName("serverlessSocketConnect")
+fun serverlessSocketConnect(event: dynamic, context: dynamic) = js("require('serverless-http')")(websocketApp, json(
+    "request" to { request: dynamic, e: dynamic ->
+        request.connectionId = e.requestContext.connectionId
+        request.domainName = e.requestContext.domainName
+        request.event = e
+    }
+))(event, context)
+
+private suspend fun handleConnect(
+    request: Request,
+    connectionId: String,
+    managementApi: ApiGatewayManagementApi,
+    event: Any?
+): Int {
+    val commandDispatcher = with(request) { commandDispatcher(user, scope, traceId) }
+    val tribeId = request.query["tribeId"].toString().let(::TribeId)
+    val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
+    return if (result == null) {
+        delete(connectionId, managementApi).promise().await()
+        403
+    } else {
+        with(result) { first.filterNot { it.connectionId == connectionId } to second }
+            .broadcast(managementApi, commandDispatcher)
+        notifyConnectLambda(event).await()
+        200
+    }
 }
 
 private fun notifyConnectLambda(event: dynamic): Promise<Unit> {
@@ -125,7 +138,7 @@ else
 fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("message $connectionId")
-    val managementApi = apiGatewayManagementApi(event)
+    val managementApi = apiGatewayManagementApi(event.at("/requestContext/domainName") ?: "")
 
     val message = event.at<String>("body")?.let { JSON.parse<Json>(it) }?.toMessage()
     return MainScope().promise {
@@ -149,7 +162,7 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
 fun notifyConnect(event: Json, context: dynamic): dynamic {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("notifyConnect $connectionId")
-    val managementApi = apiGatewayManagementApi(event)
+    val managementApi = apiGatewayManagementApi(event.at("/requestContext/domainName") ?: "")
     return MainScope().promise {
         val socketDispatcher = socketDispatcher()
         socketDispatcher.execute(
@@ -175,7 +188,7 @@ fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
     val connectionId = "${event.requestContext.connectionId}"
     println("disconnect $connectionId")
 
-    val managementApi = apiGatewayManagementApi(event)
+    val managementApi = apiGatewayManagementApi(event.requestContext.domainName)
 
     return MainScope().promise {
         val socketDispatcher = socketDispatcher()
@@ -186,8 +199,8 @@ fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
     }
 }
 
-private fun apiGatewayManagementApi(event: dynamic): ApiGatewayManagementApi {
-    val domainName = "${event.requestContext.domainName}"
+private fun apiGatewayManagementApi(domainName: String): ApiGatewayManagementApi {
+    val domainName = domainName
         .let { if (it.contains("localhost")) "http://${Config.websocketHost}" else it }
     return ApiGatewayManagementApi(
         json(

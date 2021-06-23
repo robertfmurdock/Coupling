@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.express.Config
-import com.zegreatrob.coupling.server.external.express.*
+import com.zegreatrob.coupling.server.external.express.Express
+import com.zegreatrob.coupling.server.external.express.Handler
+import com.zegreatrob.coupling.server.external.express.Next
+import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express_graphql.graphqlHTTP
 import com.zegreatrob.coupling.server.external.passport.passport
 import com.zegreatrob.coupling.server.graphql.couplingSchema
@@ -41,11 +44,11 @@ private fun authenticateAuth0() = passport.authenticate("auth0", json("scope" to
 
 private fun redirectToRoot(): Handler = { _, response, _ -> response.redirect("/") }
 
-private fun apiGuard(): Handler = { request, response, next ->
+fun apiGuard(): Handler = { request, response, next ->
     request.statsdkey = listOf("http", request.method.lowercase(), request.path).joinToString(".")
 
     if (!request.isAuthenticated()) {
-        handleNotAuthenticated(request, response)
+        response.sendStatus(401)
     } else {
         request.scope.launch(block = setupDispatcher(request, next))
     }
@@ -59,11 +62,3 @@ private fun setupDispatcher(request: Request, next: Next): suspend CoroutineScop
 
 private suspend fun Request.commandDispatcher() =
     com.zegreatrob.coupling.server.commandDispatcher(user, scope, traceId)
-
-private fun handleNotAuthenticated(request: Request, response: Response) = if (request.isWebsocketConnection()) {
-    request.close()
-} else {
-    response.sendStatus(401)
-}
-
-private fun Request.isWebsocketConnection() = originalUrl?.contains(".websocket") == true
