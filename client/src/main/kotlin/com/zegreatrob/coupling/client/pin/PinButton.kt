@@ -11,6 +11,7 @@ import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.dom.i
 import react.dom.span
 import styled.css
@@ -45,7 +46,7 @@ private val styles = useStyles("pin/PinButton")
 val PinButton = reactFunction<PinButtonProps> { (pin, scale, className, showTooltip, onClick) ->
     styledDiv {
         attrs {
-            classes += listOf(className, styles.className)
+            classes = classes + listOf(className, styles.className)
             css { scaledStyles(scale) }
             onClickFunction = { onClick() }
         }
@@ -53,7 +54,7 @@ val PinButton = reactFunction<PinButtonProps> { (pin, scale, className, showTool
         if (showTooltip) {
             span(classes = styles["tooltip"]) { +pin.name }
         }
-        i(scale.faTag) { attrs { classes += targetIcon(pin) } }
+        i(scale.faTag) { attrs { classes = classes + targetIcon(pin) } }
     }
 }
 
@@ -67,7 +68,7 @@ private fun CSSBuilder.scaledStyles(scale: PinButtonScale) {
 }
 
 private fun targetIcon(pin: Pin): String {
-    var targetIcon = if (pin.icon.isEmpty()) "fa-skull" else pin.icon
+    var targetIcon = pin.icon.ifEmpty { "fa-skull" }
     if (!targetIcon.startsWith("fa")) {
         targetIcon = "fa-$targetIcon"
     }

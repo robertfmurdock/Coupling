@@ -14,6 +14,7 @@ import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.router.dom.routeLink
 import react.useLayoutEffect
 import react.useRef
@@ -27,7 +28,7 @@ fun RBuilder.tribeCardHeader(tribe: Tribe, size: Int) = child(tribeCardHeader, T
 data class TribeCardHeaderProps(val tribe: Tribe, val size: Int) : RProps
 
 val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size) ->
-    val tribeNameRef = useRef<Node?>(null)
+    val tribeNameRef = useRef<Node>(null)
     useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
     styledDiv {
         attrs {

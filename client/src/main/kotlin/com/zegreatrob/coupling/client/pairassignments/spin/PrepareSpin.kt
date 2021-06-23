@@ -49,7 +49,7 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, currentPair
     val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, currentPairsDoc))
     val (pinSelections, setPinSelections) = useState(pins.map { it.id })
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections, setRedirectUrl)
+    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections) { setRedirectUrl(it) }
 
     if (redirectUrl != null)
         redirect(to = redirectUrl)
@@ -65,17 +65,17 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, currentPair
                         +"When you're done with your selections, hit the spin button above!"
                         styledDiv {
                             css { margin(10.px, null) }
-                            selectAllButton(playerSelections, setPlayerSelections)
-                            selectNoneButton(playerSelections, setPlayerSelections)
+                            selectAllButton(playerSelections) { setPlayerSelections(it) }
+                            selectNoneButton(playerSelections) { setPlayerSelections(it) }
                         }
-                        selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
+                        selectablePlayerCardList(playerSelections, { setPlayerSelections(it) }, tribe)
                     }
                     if (pins.isNotEmpty()) {
                         pinSelectorDiv {
                             h1 { br {} }
                             h2 { +"Also, Pins." }
                             +"Tap any pin to skip."
-                            child(pinSelector(pinSelections, setPinSelections, pins))
+                            child(pinSelector(pinSelections, { setPinSelections(it) }, pins))
                         }
                     }
                 }
@@ -177,7 +177,7 @@ private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<St
     }
 
 private fun RBuilder.selectedPinsDiv(children: RBuilder.() -> Unit) = styledDiv {
-    attrs { classes += styles["selectedPins"] }
+    attrs { classes = classes + styles["selectedPins"] }
     css {
         margin(5.px)
         flex(1.0)
@@ -186,7 +186,7 @@ private fun RBuilder.selectedPinsDiv(children: RBuilder.() -> Unit) = styledDiv 
 }
 
 private fun RBuilder.deselectedPinsDiv(children: RBuilder.() -> Unit) = styledDiv {
-    attrs { classes += styles["deselectedPins"] }
+    attrs { classes = classes + styles["deselectedPins"] }
     css {
         flex(1.0)
         margin(5.px)

@@ -36,9 +36,9 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
     val (tribeId, useSsl) = props
     val (message, setMessage) = useState(disconnectedMessage)
     val (connected, setConnected) = useState(false)
-    val ref = useRef<WebsocketComponent?>(null)
+    val ref = useRef<WebsocketComponent>(null)
 
-    val sendMessageFunc = useMemo({ sendMessageWithSocketFunc(ref) }, emptyArray())
+    val sendMessageFunc = useMemo { sendMessageWithSocketFunc(ref) }
 
     div {
         websocket {
@@ -55,7 +55,7 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
     }
 }.unsafeCast<FunctionalComponent<CouplingWebsocketProps>>()
 
-private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent?>) = { message: Message ->
+private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent>) = { message: Message ->
     val websocket = ref.current
     if (websocket != null)
         websocket.sendMessage(JSON.stringify(message.toJson()))

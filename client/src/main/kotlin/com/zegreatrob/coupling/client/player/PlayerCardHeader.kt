@@ -15,6 +15,7 @@ import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.dom.div
 import react.router.dom.routeLink
 import react.useLayoutEffect
@@ -36,7 +37,7 @@ data class PlayerCardHeaderProps(
 
 private val playerCardHeader = reactFunction<PlayerCardHeaderProps> { props ->
     val (tribeId, player, linkToConfig, size) = props
-    val playerNameRef = useRef<Node?>(null)
+    val playerNameRef = useRef<Node>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
     styledDiv {
         attrs { classes = setOf(styles["header"]) }
@@ -44,7 +45,7 @@ private val playerCardHeader = reactFunction<PlayerCardHeaderProps> { props ->
         optionalLink(shouldLink = linkToConfig, url = tribeId.with(player).playerConfigPage()) {
             div {
                 attrs { ref = playerNameRef }
-                +(if (player.name.isBlank()) "Unknown" else player.name)
+                +(player.name.ifBlank { "Unknown" })
             }
         }
     }

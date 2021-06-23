@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.dom.div
 import react.dom.span
 

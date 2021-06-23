@@ -6,6 +6,7 @@ import kotlinx.html.classes
 import react.RBuilder
 import react.RHandler
 import react.RProps
+import react.dom.attrs
 import react.dom.div
 
 private val styles = useStyles("ConfigFrame")
@@ -21,7 +22,7 @@ data class ConfigFrameProps(val className: String?) : RProps
 val ConfigFrame =
     reactFunction<ConfigFrameProps> { props ->
         div(classes = styles.className) {
-            attrs { props.className?.let { classes += it } }
+            attrs { props.className?.let { classes = classes + it } }
             div { props.children() }
         }
     }

@@ -18,7 +18,7 @@ val Logout = reactFunction<PageProps> { props ->
     val (logoutPromise, setLogout) = useState<Any?>(null)
     if (logoutPromise == null) {
         setLogout(
-            scope.launch { props.commander.runQuery { waitForLogout(setIsLoggedOut) } }
+            scope.launch { props.commander.runQuery { waitForLogout(setIsLoggedOut::invoke) } }
         )
     }
     if (isLoggedOut) {

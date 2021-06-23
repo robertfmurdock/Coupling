@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import react.RProps
-import react.RSetState
+import react.StateSetter
 import react.useMemo
 import react.useState
 
@@ -48,17 +48,16 @@ val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { prop
 }
 
 private fun useUpdatePairAssignmentsMemo(
-    setPairAssignments: RSetState<PairAssignmentDocument?>,
+    setPairAssignments: StateSetter<PairAssignmentDocument?>,
     sendMessage: ((Message) -> Unit)?,
     dispatchFunc: DispatchFunc<out PairAssignmentsCommandDispatcher>,
     tribeId: TribeId
-) = useMemo(
-    { updatePairAssignmentsFunc(setPairAssignments, sendMessage, dispatchFunc, tribeId) },
-    arrayOf(sendMessage, dispatchFunc)
-)
+) = useMemo(sendMessage, dispatchFunc) {
+    updatePairAssignmentsFunc(setPairAssignments, sendMessage, dispatchFunc, tribeId)
+}
 
 private fun updatePairAssignmentsFunc(
-    setPairAssignments: RSetState<PairAssignmentDocument?>,
+    setPairAssignments: StateSetter<PairAssignmentDocument?>,
     sendMessage: ((Message) -> Unit)?,
     dispatchFunc: DispatchFunc<out PairAssignmentsCommandDispatcher>,
     tribeId: TribeId

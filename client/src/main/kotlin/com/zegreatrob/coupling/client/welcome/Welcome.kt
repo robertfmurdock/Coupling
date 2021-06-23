@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import org.w3c.dom.Node
 import react.*
+import react.dom.attrs
 import react.dom.div
 import react.dom.span
 
@@ -30,7 +31,7 @@ data class WelcomeProps(
 
 val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
     val (showLoginChooser, setShowLoginChooser) = useState(false)
-    val welcomeTitleRef = useRef<Node?>(null)
+    val welcomeTitleRef = useRef<Node>(null)
     useLayoutEffect {
         welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
     }
@@ -75,7 +76,7 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 private data class Card(val name: String, val imagePath: String)
 
 private fun RBuilder.welcomeSplash(
-    welcomeTitleRef: RMutableRef<Node?>,
+    welcomeTitleRef: RMutableRef<Node>,
     pair: CouplingPair.Double,
     proverb: String
 ) = span(classes = styles["welcome"]) {
@@ -97,7 +98,7 @@ private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
 private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath)
 
-private fun RBuilder.welcomeTitle(welcomeTitleRef: RMutableRef<Node?>) {
+private fun RBuilder.welcomeTitle(welcomeTitleRef: RMutableRef<Node>) {
     div(classes = styles["welcomeTitle"]) {
         attrs { ref = welcomeTitleRef }
         +"Coupling!"
@@ -126,7 +127,7 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
 private fun RBuilder.comeOnIn(
     dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>,
     showLoginChooser: Boolean,
-    setShowLoginChooser: RSetState<Boolean>
+    setShowLoginChooser: StateSetter<Boolean>
 ) {
     div(classes = styles["enterButtonContainer"]) {
         if (showLoginChooser) {

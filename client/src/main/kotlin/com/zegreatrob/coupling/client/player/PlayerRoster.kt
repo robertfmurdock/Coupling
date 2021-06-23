@@ -12,6 +12,7 @@ import kotlinx.css.RuleSet
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.dom.div
 import react.router.dom.routeLink
 import styled.css
@@ -30,8 +31,8 @@ private val styles = useStyles("player/PlayerRoster")
 val PlayerRoster = reactFunction { (label, players, tribeId, className, overrides): PlayerRosterProps ->
     styledDiv {
         attrs {
-            if (className != null) classes += className
-            classes += styles.className
+            if (className != null) classes = classes + className
+            classes = classes + styles.className
         }
         css { overrides() }
         div {

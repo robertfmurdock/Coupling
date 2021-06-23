@@ -14,6 +14,7 @@ import kotlinx.html.classes
 import kotlinx.html.tabIndex
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.router.dom.routeLink
 import styled.StyledDOMBuilder
 import styled.css
@@ -30,7 +31,7 @@ val TribeCard = reactFunction<TribeCardProps> { (tribe, size) ->
         styledSpan {
             attrs {
                 tribeCardCss(size)
-                classes += styles.className
+                classes = classes + styles.className
                 tabIndex = "0"
                 setProp("data-tribe-id", tribe.id.value)
             }

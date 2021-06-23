@@ -27,6 +27,7 @@ import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
 import react.ReactElement
+import react.dom.attrs
 import react.dom.div
 import react.dom.key
 import react.dom.span
@@ -64,7 +65,7 @@ val AssignedPair = reactFunction<AssignedPairProps> { props ->
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
-    val pinDroppableRef = useRef<Node?>(null)
+    val pinDroppableRef = useRef<Node>(null)
     drop(pinDroppableRef)
 
     val playerCard = playerCardComponent(tribe, canDrag, swapCallback)
@@ -72,7 +73,7 @@ val AssignedPair = reactFunction<AssignedPairProps> { props ->
     span(classes = styles.className) {
         attrs {
             ref = pinDroppableRef
-            if (isOver) classes += styles["pairPinOver"]
+            if (isOver) classes = classes + styles["pairPinOver"]
         }
         callSign(tribe, callSign, styles["callSign"])
         pair.players.mapIndexed { index, player -> playerCard(player, if (index % 2 == 0) (-8).deg else 8.deg) }

@@ -27,8 +27,8 @@ kotlin {
             dependencies {
                 implementation(project(":test-logging"))
                 implementation(project(":repository-validation"))
-                implementation("com.zegreatrob.testmints:standard:4.0.21")
-                implementation("com.zegreatrob.testmints:minassert:4.0.21")
+                implementation("com.zegreatrob.testmints:standard:4.1.2")
+                implementation("com.zegreatrob.testmints:minassert:4.1.2")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
@@ -54,7 +54,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:async:4.0.21")
+                implementation("com.zegreatrob.testmints:async:4.1.2")
             }
         }
     }

@@ -9,6 +9,7 @@ import kotlinx.css.width
 import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.RProps
+import react.dom.attrs
 import react.useLayoutEffect
 import react.useRef
 import styled.css
@@ -23,11 +24,11 @@ private val styles = useStyles("stats/heatmap/Heatmap")
 
 val Heatmap = reactFunction<HeatmapProps> { (data, className) ->
     val rowSize = data.size * 90
-    val rootRef = useRef<Node?>(null)
+    val rootRef = useRef<Node>(null)
     useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }
 
     styledDiv {
-        attrs { ref = rootRef; classes += styles.className; classes += className }
+        attrs { ref = rootRef; classes = classes + styles.className + className }
         css {
             width = rowSize.px
             height = rowSize.px

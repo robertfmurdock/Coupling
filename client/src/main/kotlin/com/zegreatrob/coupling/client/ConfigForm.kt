@@ -6,6 +6,7 @@ import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.js.onSubmitFunction
 import org.w3c.dom.events.Event
 import react.RProps
+import react.dom.attrs
 import react.dom.form
 import react.useState
 

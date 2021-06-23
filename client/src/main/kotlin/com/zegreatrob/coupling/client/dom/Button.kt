@@ -12,6 +12,7 @@ import kotlinx.html.js.onClickFunction
 import react.RBuilder
 import react.RHandler
 import react.RProps
+import react.dom.attrs
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledButton
@@ -133,8 +134,7 @@ val CouplingButton = reactFunction<CouplingButtonProps> { props ->
         css(sizeRuleSet)
         css(colorRuleSet)
         attrs {
-            classes += "button"
-            classes += className
+            classes = classes + "button" + className
             type = ButtonType.button
             onClickFunction = { onClick() }
         }

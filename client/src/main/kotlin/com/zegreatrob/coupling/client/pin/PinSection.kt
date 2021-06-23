@@ -8,6 +8,7 @@ import kotlinx.css.px
 import kotlinx.html.classes
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import styled.css
 import styled.styledDiv
 
@@ -31,8 +32,7 @@ val PinSection =
     reactFunction<PinSectionProps> { (pinList, scale, canDrag, className) ->
         styledDiv {
             attrs {
-                classes += styles.className
-                classes += className
+                classes = classes + styles.className + className
                 css { marginLeft = -(pinList.size * 12 * scale.factor).px }
             }
             pinList.map { pin ->

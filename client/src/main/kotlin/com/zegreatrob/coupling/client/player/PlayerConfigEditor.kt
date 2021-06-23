@@ -130,7 +130,7 @@ private fun RBuilder.callSignConfig(player: Player, onChange: (Event) -> Unit) {
             onChange = onChange,
             list = "callSignAdjectiveOptions"
         )
-        dataList { attrs { id = "callSignAdjectiveOptions" } }
+        datalist { attrs { id = "callSignAdjectiveOptions" } }
         span { +"I feel the need..." }
     }
     li {
@@ -143,7 +143,7 @@ private fun RBuilder.callSignConfig(player: Player, onChange: (Event) -> Unit) {
             onChange = onChange,
             list = "callSignNounOptions"
         )
-        dataList { attrs { id = "callSignNounOptions" } }
+        datalist { attrs { id = "callSignNounOptions" } }
         span { +"... the need for speed!" }
     }
 

@@ -5,6 +5,7 @@ import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
+import react.dom.attrs
 import react.dom.input
 import react.dom.label
 import kotlin.js.Json

@@ -19,6 +19,7 @@ import kotlinx.css.display
 import kotlinx.css.visibility
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.dom.div
 import react.dom.key
 import styled.css

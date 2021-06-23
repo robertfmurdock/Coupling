@@ -5,6 +5,7 @@ import kotlinx.html.Draggable
 import kotlinx.html.classes
 import kotlinx.html.draggable
 import react.RBuilder
+import react.dom.attrs
 import react.dom.img
 
 private fun gravatarUrl(email: String, options: GravatarOptions): String {

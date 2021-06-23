@@ -10,6 +10,7 @@ import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.dom.span
 import react.useRef
 
@@ -25,14 +26,14 @@ private val styles = useStyles("pin/DraggablePin")
 
 val DraggablePinButton = reactFunction<DraggablePinButtonProps> { (pin, scale) ->
     val (_, drag) = useDrag<Unit>(itemType = pinDragItemType, itemId = pin.id!!)
-    val draggableRef = useRef<Node?>(null)
+    val draggableRef = useRef<Node>(null)
 
     drag(draggableRef)
 
     span {
         attrs {
             ref = draggableRef
-            classes += listOf(styles.className, styles["hoverZoom"])
+            classes = classes + listOf(styles.className, styles["hoverZoom"])
         }
         pinButton(pin, scale, key = null, showTooltip = true)
     }

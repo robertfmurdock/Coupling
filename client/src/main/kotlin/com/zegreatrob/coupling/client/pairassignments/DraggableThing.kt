@@ -9,6 +9,7 @@ import com.zegreatrob.minreact.reactFunction
 import org.w3c.dom.Node
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.dom.div
 import react.useRef
 
@@ -22,7 +23,7 @@ data class DraggableThingProps(
 private val styles = useStyles<SimpleStyle>("DraggableThing")
 
 val DraggableThing = reactFunction<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
-    val draggableRef = useRef<Node?>(null)
+    val draggableRef = useRef<Node>(null)
 
     val (_, drag) = useDrag<Unit>(itemType = itemType, itemId = itemId)
     val (isOver, drop) = useDrop(

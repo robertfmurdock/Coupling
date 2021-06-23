@@ -51,13 +51,12 @@ private fun RBuilder.routes(isSignedIn: Boolean) {
 private fun RBuilder.redirectUnauthenticated() = redirect(from = "", to = "/welcome")
     .also { console.warn("not signed in!!!!", window.location.pathname) }
 
-private fun RBuilder.lostRoute() = route<RProps>(
-    path = "",
+private fun RBuilder.lostRoute() = route<RProps>("",
     render = { props -> div { +"Hmm, you seem to be lost. At ${props.location.pathname}" } }
 )
 
 private fun RBuilder.authenticatedRoutes() = switch {
-    route(path = "/", exact = true, render = ::redirectToTribes)
+    route("/", exact = true, render = ::redirectToTribes)
     couplingRoute("/tribes/", TribeListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/new-tribe/", TribeConfigPage)

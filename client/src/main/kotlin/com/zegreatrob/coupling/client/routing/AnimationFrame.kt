@@ -8,6 +8,7 @@ import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.EmptyState
 import kotlinx.html.classes
 import react.RProps
+import react.dom.attrs
 import react.dom.div
 import react.useState
 
@@ -26,9 +27,9 @@ val animationFrame = reactFunction<AnimationFrameProps<*>> { props ->
     animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
         div {
             attrs {
-                classes += styles["viewFrame"]
+                classes = classes + styles["viewFrame"]
                 if (shouldStartAnimation && !animationsDisabled) {
-                    classes += "ng-enter"
+                    classes = classes + "ng-enter"
                 }
                 this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
             }

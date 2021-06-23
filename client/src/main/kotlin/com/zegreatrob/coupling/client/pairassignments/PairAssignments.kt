@@ -29,6 +29,7 @@ import org.w3c.dom.Node
 import react.RBuilder
 import react.RMutableRef
 import react.RProps
+import react.dom.attrs
 import react.dom.div
 import react.dom.i
 import react.router.dom.routeLink
@@ -71,7 +72,7 @@ private val styles = useStyles("pairassignments/PairAssignments")
 val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
     val (tribe, players, pairAssignments, setPairs, controls, message, allowSave) = props
 
-    val pairSectionNode = useRef<Node?>(null)
+    val pairSectionNode = useRef<Node>(null)
 
     DndProvider {
         attrs { backend = HTML5Backend }
@@ -102,7 +103,7 @@ private fun RBuilder.currentPairSection(
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>,
-    pairSectionNode: RMutableRef<Node?>
+    pairSectionNode: RMutableRef<Node>
 ) = styledDiv {
     attrs {
         ref = pairSectionNode
@@ -156,7 +157,7 @@ private fun RBuilder.controlPanel(tribe: Tribe) = div {
     }
 }
 
-private fun RBuilder.copyToClipboardButton(ref: RMutableRef<Node?>) = ref.current?.let { node ->
+private fun RBuilder.copyToClipboardButton(ref: RMutableRef<Node>) = ref.current?.let { node ->
     if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
         couplingButton(
             large,

@@ -46,7 +46,7 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":repository-core"))
-                implementation("com.zegreatrob.testmints:minjson:4.0.21")
+                implementation("com.zegreatrob.testmints:minjson:4.1.2")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
@@ -61,8 +61,8 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard:4.0.21")
-                implementation("com.zegreatrob.testmints:minassert:4.0.21")
+                implementation("com.zegreatrob.testmints:standard:4.1.2")
+                implementation("com.zegreatrob.testmints:minassert:4.1.2")
                 implementation("com.benasher44:uuid:0.2.4")
             }
         }
@@ -85,9 +85,9 @@ kotlin {
 
             dependencies {
                 implementation(project(":server"))
-                implementation("com.zegreatrob.testmints:standard:4.0.21")
-                implementation("com.zegreatrob.testmints:minassert:4.0.21")
-                implementation("com.zegreatrob.testmints:async:4.0.21")
+                implementation("com.zegreatrob.testmints:standard:4.1.2")
+                implementation("com.zegreatrob.testmints:minassert:4.1.2")
+                implementation("com.zegreatrob.testmints:async:4.1.2")
 
                 packageJson.devDependencies().forEach {
                     implementation(npm(it.first, it.second.asText()))
@@ -98,9 +98,9 @@ kotlin {
 
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:standard:4.0.21")
-                implementation("com.zegreatrob.testmints:minassert:4.0.21")
-                implementation("com.zegreatrob.testmints:async:4.0.21")
+                implementation("com.zegreatrob.testmints:standard:4.1.2")
+                implementation("com.zegreatrob.testmints:minassert:4.1.2")
+                implementation("com.zegreatrob.testmints:async:4.1.2")
             }
         }
     }

@@ -6,6 +6,7 @@ import kotlinx.css.em
 import kotlinx.css.marginLeft
 import kotlinx.css.marginRight
 import kotlinx.html.tabIndex
+import react.dom.attrs
 import styled.css
 import styled.styledA
 

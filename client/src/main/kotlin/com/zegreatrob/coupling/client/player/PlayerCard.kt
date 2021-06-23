@@ -16,6 +16,7 @@ import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RProps
+import react.dom.attrs
 import react.dom.img
 import styled.StyledDOMBuilder
 import styled.css
@@ -40,7 +41,7 @@ val PlayerCard = reactFunction<PlayerCardProps> { props ->
     val (tribeId, player, linkToConfig, className, size, onClick, deselected, tilt) = props
     styledDiv {
         attrs {
-            classes += additionalClasses(className, deselected)
+            classes = classes + additionalClasses(className, deselected)
             playerCardStyle(size)
             onClickFunction = onClick
         }

@@ -15,6 +15,7 @@ import kotlinx.html.DIV
 import react.RBuilder
 import react.RProps
 import react.dom.RDOMBuilder
+import react.dom.attrs
 import react.dom.div
 
 val RBuilder.playerHeatmap get() = childCurry(PlayerHeatmap)
