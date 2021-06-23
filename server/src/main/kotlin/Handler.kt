@@ -33,14 +33,13 @@ private val app by lazy {
     buildApp()
 }
 
-@Suppress("unused")
+@ExperimentalJsExport
 @JsExport
 @JsName("serverless")
 fun serverless(event: dynamic, context: dynamic): dynamic {
     event.path = if (event.path.unsafeCast<String?>() == "") "/" else event.path
     return js("require('serverless-http')")(app)(event, context)
 }
-
 
 @ExperimentalCoroutinesApi
 private val websocketApp by lazy {
@@ -131,8 +130,7 @@ private fun notifyLambdaOptions() = if (Process.getEnv("IS_OFFLINE") == "true")
 else
     json()
 
-
-@Suppress("unused")
+@ExperimentalJsExport
 @JsExport
 @JsName("serverlessSocketMessage")
 fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
@@ -156,70 +154,61 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
     }
 }
 
-@Suppress("unused")
+@ExperimentalJsExport
 @JsExport
 @JsName("notifyConnect")
-fun notifyConnect(event: Json, context: dynamic): dynamic {
+fun notifyConnect(event: Json, context: dynamic) = MainScope().promise {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("notifyConnect $connectionId")
     val managementApi = apiGatewayManagementApi(event.at("/requestContext/domainName") ?: "")
-    return MainScope().promise {
-        val socketDispatcher = socketDispatcher()
-        socketDispatcher.execute(
-            ConnectionsQuery(connectionId)
-        )?.let { results ->
+    val socketDispatcher = socketDispatcher()
+    socketDispatcher.execute(ConnectionsQuery(connectionId))
+        ?.let { results ->
             managementApi.postToConnection(
                 json("ConnectionId" to connectionId, "Data" to JSON.stringify(results.second.toJson()))
                     .also { console.log("Sending message to ", connectionId, JSON.stringify(it)) }
             ).promise()
         }
-    }.then {
-        json("statusCode" to 200)
-    }.catch {
-        console.log("Notify error", it)
-        json("statusCode" to 500)
-    }
+}.then {
+    json("statusCode" to 200)
+}.catch {
+    console.log("Notify error", it)
+    json("statusCode" to 500)
 }
 
-@Suppress("unused")
+@ExperimentalJsExport
 @JsExport
 @JsName("serverlessSocketDisconnect")
-fun serverlessSocketDisconnect(event: dynamic, context: dynamic): dynamic {
+fun serverlessSocketDisconnect(event: dynamic, context: dynamic) = MainScope().promise {
     val connectionId = "${event.requestContext.connectionId}"
     println("disconnect $connectionId")
+    val managementApi = apiGatewayManagementApi("${event.requestContext.domainName}")
+    val socketDispatcher = socketDispatcher()
 
-    val managementApi = apiGatewayManagementApi(event.requestContext.domainName)
-
-    return MainScope().promise {
-        val socketDispatcher = socketDispatcher()
-        socketDispatcher
-            .execute(DisconnectTribeUserCommand(connectionId))
-            ?.broadcast(managementApi, socketDispatcher)
-        json("statusCode" to 200)
-    }
+    socketDispatcher
+        .execute(DisconnectTribeUserCommand(connectionId))
+        ?.broadcast(managementApi, socketDispatcher)
+        .let { json("statusCode" to 200) }
 }
 
-private fun apiGatewayManagementApi(domainName: String): ApiGatewayManagementApi {
-    val domainName = domainName
-        .let { if (it.contains("localhost")) "http://${Config.websocketHost}" else it }
-    return ApiGatewayManagementApi(
-        json(
-            "apiVersion" to "2018-11-29",
-            "endpoint" to domainName
-        ).add(
-            if (Process.getEnv("IS_OFFLINE") == "true")
-                json(
-                    "region" to "us-east-1",
-                    "credentials" to json(
-                        "accessKeyId" to "lol",
-                        "secretAccessKey" to "lol"
-                    )
+private fun apiGatewayManagementApi(domainName: String) = ApiGatewayManagementApi(
+    json(
+        "apiVersion" to "2018-11-29",
+        "endpoint" to domainName
+            .let { if (it.contains("localhost")) "http://${Config.websocketHost}" else it }
+    ).add(
+        if (Process.getEnv("IS_OFFLINE") == "true")
+            json(
+                "region" to "us-east-1",
+                "credentials" to json(
+                    "accessKeyId" to "lol",
+                    "secretAccessKey" to "lol"
                 )
-            else
-                json()
-        )
+            )
+        else
+            json()
     )
-}
+)
 
 private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     User("websocket", "websocket", emptySet()), this, uuid4()
