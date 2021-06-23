@@ -60,7 +60,6 @@ services:
       - /dev/shm:/dev/shm
     links:
       - "seleniumhub:hub"
-      - "web:web"
 volumes:
   mongo_data:
     driver: local
