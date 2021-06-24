@@ -19,8 +19,8 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:standard:4.1.2")
-                implementation("com.zegreatrob.testmints:report:4.1.2")
+                implementation("com.zegreatrob.testmints:standard:4.1.3")
+                implementation("com.zegreatrob.testmints:report:4.1.3")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("io.github.microutils:kotlin-logging:2.0.8")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
