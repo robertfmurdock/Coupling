@@ -64,7 +64,7 @@ dependencies {
     implementation(project(":test-logging"))
     implementation(kotlin("stdlib-js"))
     implementation("com.benasher44:uuid:0.3.0")
-    implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.148-kotlin-1.4.30")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.213-kotlin-1.5.10")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
     implementation("com.zegreatrob.testmints:wdio:4.1.2")
     packageJson.dependencies().forEach {
