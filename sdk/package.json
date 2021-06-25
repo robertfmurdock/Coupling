@@ -5,16 +5,16 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
-    "ws": "^7.4.5"
+    "ws": "^7.5.0"
   },
   "devDependencies": {
     "axios-cookiejar-support": "^1.0.1",
-    "fs-extra": "^9.1.0",
+    "fs-extra": "^10.0.0",
     "jasmine": "^3.7.0",
     "jasmine-reporters": "^2.4.0",
     "monk": "^7.3.4",
     "tough-cookie": "^4.0.0",
-    "serverless": "^2.43.1",
+    "serverless": "^2.48.0",
     "serverless-offline": "^7.0.0",
     "serverless-offline-ssm": "^5.2.0"
   }

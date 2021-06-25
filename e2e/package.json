@@ -17,7 +17,7 @@
     "fs-extra": "10.0.0",
     "webpack": "5.40.0",
     "webpack-node-externals": "3.0.0",
-    "wdio-chromedriver-service": "7.1.0",
+    "wdio-chromedriver-service": "7.1.1",
     "css-loader": "5.2.6",
     "url-loader": "4.1.1",
     "serverless": "^2.48.0",
