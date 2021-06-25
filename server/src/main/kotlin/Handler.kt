@@ -133,7 +133,7 @@ else
 @ExperimentalJsExport
 @JsExport
 @JsName("serverlessSocketMessage")
-fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
+fun serverlessSocketMessage(event: Json): dynamic {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("message $connectionId")
     val managementApi = apiGatewayManagementApi(event.at("/requestContext/domainName") ?: "")
@@ -157,7 +157,7 @@ fun serverlessSocketMessage(event: Json, context: dynamic): dynamic {
 @ExperimentalJsExport
 @JsExport
 @JsName("notifyConnect")
-fun notifyConnect(event: Json, context: dynamic) = MainScope().promise {
+fun notifyConnect(event: Json) = MainScope().promise {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("notifyConnect $connectionId")
     val managementApi = apiGatewayManagementApi(event.at("/requestContext/domainName") ?: "")
@@ -179,7 +179,7 @@ fun notifyConnect(event: Json, context: dynamic) = MainScope().promise {
 @ExperimentalJsExport
 @JsExport
 @JsName("serverlessSocketDisconnect")
-fun serverlessSocketDisconnect(event: dynamic, context: dynamic) = MainScope().promise {
+fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
     val connectionId = "${event.requestContext.connectionId}"
     println("disconnect $connectionId")
     val managementApi = apiGatewayManagementApi("${event.requestContext.domainName}")

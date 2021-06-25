@@ -61,7 +61,7 @@ jobs:
       - coupling-orb/setup
       - run: docker-compose up -d dynamo
       - aws-cli/setup
-      - run: "./gradlew release uploadToS3 serverlessDeploy build check"
+      - run: "./gradlew release uploadToS3 serverlessDeploy build checkHandler.kt"
       - coupling-orb/collect-results
   lambda-deploy:
     executor: coupling-orb/standard

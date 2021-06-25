@@ -81,6 +81,7 @@ tasks {
         }
     }
     create<Exec>("uploadToS3") {
+        dependsOn(browserProductionWebpack)
         if (version.toString().contains("SNAPSHOT")) {
             enabled = false
         }
