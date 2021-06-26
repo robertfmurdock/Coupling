@@ -7,9 +7,8 @@ orbs:
       browser-tools: circleci/browser-tools@1.1.0
     executors:
       standard:
-        docker:
-          - image: cimg/node:15.0.1-browsers
-          - image: amazon/dynamodb-local
+        machine:
+          image: ubuntu-2004:202104-01
         environment:
           COUPLING_IN_MEMORY: "true"
           SKIP_MONGO_TESTS: "true"
@@ -19,6 +18,16 @@ orbs:
     commands:
       setup:
         steps:
+          - run: |
+              set +e
+              curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+              export NVM_DIR="/opt/circleci/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+              nvm install node
+              nvm alias default node
+
+              echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+              echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
           - browser-tools/install-chrome
           - browser-tools/install-chromedriver
       collect-results:
@@ -50,6 +59,7 @@ jobs:
     steps:
       - checkout
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo
       - aws-cli/setup
       - run: "./gradlew release uploadToS3 serverlessDeploy build check"
       - coupling-orb/collect-results
@@ -69,6 +79,7 @@ jobs:
       - checkout
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo
       - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
@@ -80,6 +91,7 @@ jobs:
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo
       - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
@@ -90,6 +102,7 @@ jobs:
       - checkout
       - run: "./gradlew useLatestVersions"
       - coupling-orb/setup
+      - run: docker-compose up -d dynamo
       - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
