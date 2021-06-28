@@ -46,7 +46,7 @@
     "jasmine-core": "^3.7.1",
     "jasmine-reporters": "^2.4.0",
     "npm-check-updates": "^11.7.1",
-    "serverless": "^2.48.0",
+    "serverless": "^2.48.1",
     "serverless-offline": "^7.0.0",
     "serverless-offline-ssm": "^5.2.0"
   },
