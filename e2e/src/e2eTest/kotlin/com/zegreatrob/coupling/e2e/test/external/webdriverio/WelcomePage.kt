@@ -7,7 +7,7 @@ object WelcomePage : StyleSyntax {
     val enterButton by getting()
 
     private val loginChooserStyles = loadStyles("LoginChooser")
-    val googleLoginButton by loginChooserStyles.getting()
+    val loginButton by loginChooserStyles.getting()
 
     suspend fun goTo() {
         WebdriverBrowser.setLocation("welcome")

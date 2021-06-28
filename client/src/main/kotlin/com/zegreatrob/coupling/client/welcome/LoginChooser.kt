@@ -20,10 +20,10 @@ data class LoginChooserProps(val dispatchFunc: DispatchFunc<out GoogleSignInComm
 private val styles = useStyles("LoginChooser")
 
 val LoginChooser = reactFunction { (_): LoginChooserProps ->
-    val googleSignInFunc = { window.location.pathname = "${window["basename"] ?:""}/auth0-login" }
+    val signInFunc = { window.location.pathname = "${window["basename"] ?:""}/auth0-login" }
     div(classes = styles.className) {
         div {
-            couplingButton(supersize, white, styles["googleLoginButton"], googleSignInFunc) { +"Auth 0" }
+            couplingButton(supersize, white, styles["loginButton"], signInFunc) { +"Login" }
         }
     }
 }

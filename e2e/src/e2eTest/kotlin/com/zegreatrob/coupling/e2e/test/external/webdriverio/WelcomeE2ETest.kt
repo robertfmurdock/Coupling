@@ -10,7 +10,7 @@ class WelcomeE2ETest {
         goTo()
         enterButton.click()
     } exercise {
-        googleLoginButton.click()
+        loginButton.click()
     } verifyAnd {
         waitToArriveAtUrl("https://zegreatrob.us.auth0.com")
     } teardown {
