@@ -24,7 +24,7 @@ val FrameRunner = reactFunction<FrameRunnerProps> { props ->
     val (state, setState) = useState(sequence.first().first)
     val scheduleStateFunc = scheduleStateFunc(setState, speed)
 
-    useEffect { sequence.forEach(scheduleStateFunc) }
+    useEffectOnce { sequence.forEach(scheduleStateFunc) }
     children(state, props)
 }
 
