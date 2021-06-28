@@ -34,11 +34,11 @@ val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { prop
             controls.dispatchFunc,
             tribe.id
         )
-
+        message.currentPairAssignments?.let { setPairAssignments(it) }
         pairAssignments(
             tribe,
             players,
-            message.currentPairAssignments ?: pairAssignments,
+            pairAssignments,
             updatePairAssignments,
             controls,
             message,
