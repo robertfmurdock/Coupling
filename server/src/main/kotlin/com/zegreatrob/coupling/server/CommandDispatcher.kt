@@ -1,10 +1,15 @@
 package com.zegreatrob.coupling.server
 
+import AwsManagementApiSyntax
+import AwsSocketCommunicator
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
+import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApi
+import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
 import com.zegreatrob.coupling.server.action.connection.*
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
@@ -15,10 +20,13 @@ import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispat
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
+import com.zegreatrob.coupling.server.express.Config
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import org.w3c.dom.url.URL
+import kotlin.js.json
 
 interface ICommandDispatcher :
     LoggingActionExecuteSyntax,
@@ -31,13 +39,17 @@ interface ICommandDispatcher :
     DisconnectTribeUserCommandDispatcher,
     ReportDocCommandDispatcher,
     DispatchingActionExecutor<CommandDispatcher>,
-    RepositoryCatalog
+    RepositoryCatalog,
+    AwsManagementApiSyntax,
+    BroadcastActionDispatcher,
+    AwsSocketCommunicator
 
 class CommandDispatcher(
     override val user: User,
     private val repositoryCatalog: RepositoryCatalog,
     override val scope: CoroutineScope,
-    override val traceId: Uuid
+    override val traceId: Uuid,
+    override val managementApi: ApiGatewayManagementApi = apiGatewayManagementApi()
 ) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
     override val execute = this
     override val actionDispatcher = this
@@ -101,5 +113,27 @@ class CurrentTribeIdDispatcher(
         .contains(user.email)
 
     private suspend fun players() = playerDeferred.await().value.map { it.data.element }
+    override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? {
+        return commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
+    }
 
 }
+
+fun apiGatewayManagementApi() = ApiGatewayManagementApi(
+    json(
+        "apiVersion" to "2018-11-29",
+        "endpoint" to "${URL(Config.publicUrl).protocol}//${Config.websocketHost}"
+    ).add(
+        if (Process.getEnv("IS_OFFLINE") == "true")
+            json(
+                "region" to "us-east-1",
+                "credentials" to json(
+                    "accessKeyId" to "lol",
+                    "secretAccessKey" to "lol"
+                )
+            )
+        else
+            json()
+    )
+)
+

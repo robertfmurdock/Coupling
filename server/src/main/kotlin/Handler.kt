@@ -9,15 +9,12 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.server.CommandDispatcher
-import com.zegreatrob.coupling.server.Process
+import com.zegreatrob.coupling.server.*
+import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.connection.ConnectTribeUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
-import com.zegreatrob.coupling.server.buildApp
-import com.zegreatrob.coupling.server.commandDispatcher
-import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.middleware.middleware
 import com.zegreatrob.coupling.server.external.awssdk.clientlambda.InvokeCommand
 import com.zegreatrob.coupling.server.external.awssdk.clientlambda.LambdaClient
@@ -47,14 +44,13 @@ private val websocketApp by lazy {
         middleware()
         all("*") { request, response, _ ->
             val connectionId = request.connectionId
-            val managementApi = apiGatewayManagementApi(request.domainName)
             with(request.scope.async {
                 if (!request.isAuthenticated()) {
-                    delete(connectionId, managementApi).promise().await()
+                    delete(connectionId, apiGatewayManagementApi()).promise().await()
                     401
                 } else {
                     println("connect $connectionId")
-                    handleConnect(request, connectionId, managementApi, request.event)
+                    handleConnect(request, connectionId, request.event)
                 }
             }) {
                 invokeOnCompletion { cause ->
@@ -82,21 +78,16 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic) = js("require('ser
     }
 ))(event, context)
 
-private suspend fun handleConnect(
-    request: Request,
-    connectionId: String,
-    managementApi: ApiGatewayManagementApi,
-    event: Any?
-): Int {
+private suspend fun handleConnect(request: Request, connectionId: String, event: Any?): Int {
     val commandDispatcher = with(request) { commandDispatcher(user, scope, traceId) }
     val tribeId = request.query["tribeId"].toString().let(::TribeId)
     val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
     return if (result == null) {
-        delete(connectionId, managementApi).promise().await()
+        delete(connectionId, commandDispatcher.managementApi).promise().await()
         403
     } else {
         with(result) { first.filterNot { it.connectionId == connectionId } to second }
-            .broadcast(managementApi, commandDispatcher)
+            .broadcast(commandDispatcher)
         notifyConnectLambda(event).await()
         200
     }
@@ -136,8 +127,6 @@ else
 fun serverlessSocketMessage(event: Json): dynamic {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("message $connectionId")
-    val managementApi = apiGatewayManagementApi(event.at("/requestContext/domainName") ?: "")
-
     val message = event.at<String>("body")?.let { JSON.parse<Json>(it) }?.toMessage()
     return MainScope().promise {
         val socketDispatcher = socketDispatcher()
@@ -145,7 +134,7 @@ fun serverlessSocketMessage(event: Json): dynamic {
             is PairAssignmentAdjustmentMessage -> {
                 socketDispatcher.execute(
                     ReportDocCommand(connectionId, message.currentPairAssignments)
-                )?.broadcast(managementApi, socketDispatcher)
+                )?.broadcast(socketDispatcher)
             }
             else -> {
             }
@@ -160,11 +149,10 @@ fun serverlessSocketMessage(event: Json): dynamic {
 fun notifyConnect(event: Json) = MainScope().promise {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("notifyConnect $connectionId")
-    val managementApi = apiGatewayManagementApi(event.at("/requestContext/domainName") ?: "")
     val socketDispatcher = socketDispatcher()
     socketDispatcher.execute(ConnectionsQuery(connectionId))
         ?.let { results ->
-            managementApi.postToConnection(
+            socketDispatcher.managementApi.postToConnection(
                 json("ConnectionId" to connectionId, "Data" to JSON.stringify(results.second.toJson()))
                     .also { console.log("Sending message to ", connectionId, JSON.stringify(it)) }
             ).promise()
@@ -182,56 +170,22 @@ fun notifyConnect(event: Json) = MainScope().promise {
 fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
     val connectionId = "${event.requestContext.connectionId}"
     println("disconnect $connectionId")
-    val managementApi = apiGatewayManagementApi("${event.requestContext.domainName}")
     val socketDispatcher = socketDispatcher()
 
     socketDispatcher
         .execute(DisconnectTribeUserCommand(connectionId))
-        ?.broadcast(managementApi, socketDispatcher)
+        ?.broadcast(socketDispatcher)
         .let { json("statusCode" to 200) }
 }
-
-private fun apiGatewayManagementApi(domainName: String) = ApiGatewayManagementApi(
-    json(
-        "apiVersion" to "2018-11-29",
-        "endpoint" to domainName
-            .let { if (it.contains("localhost")) "http://${Config.websocketHost}" else it }
-    ).add(
-        if (Process.getEnv("IS_OFFLINE") == "true")
-            json(
-                "region" to "us-east-1",
-                "credentials" to json(
-                    "accessKeyId" to "lol",
-                    "secretAccessKey" to "lol"
-                )
-            )
-        else
-            json()
-    )
-)
 
 private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     User("websocket", "websocket", emptySet()), this, uuid4()
 )
 
 private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(
-    managementApi: ApiGatewayManagementApi,
     socketDispatcher: CommandDispatcher
 ) {
-    println("Broadcasting to ${first.size} connections")
-
-    val deadConnections = Promise.all(this.first.map { connection ->
-        managementApi.postToConnection(
-            json("ConnectionId" to connection.connectionId, "Data" to JSON.stringify(second.toJson()))
-                .also { console.log("Sending message to ", connection.connectionId, JSON.stringify(it)) }
-        ).promise()
-            .then({ null }, { oops -> println("oops $oops"); connection.connectionId })
-    }.toTypedArray())
-        .await()
-
-    deadConnections.filterNotNull().forEach {
-        socketDispatcher.execute(DisconnectTribeUserCommand(it))
-    }
+    socketDispatcher.execute(BroadcastAction(first, second))
 }
 
 private fun delete(connectionId: String, managementApi: ApiGatewayManagementApi) = managementApi.deleteConnection(

@@ -1,10 +1,14 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.toCouplingServerMessage
+import com.zegreatrob.coupling.json.toMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -106,6 +110,30 @@ class WebsocketTest {
                 )
             )
     } teardown { sockets ->
+        sockets.forEach { it.second.close() }
+    }
+
+    @Test
+    fun whenPairsAreSavedWillSendMessageToClients() = asyncSetup(sdkContext {
+        object : SdkContext by it {
+            val tribe = stubTribe()
+            val sockets = mutableListOf<Pair<MutableList<String>, WS>>()
+            val expectedPairDoc = stubPairAssignmentDoc()
+        }
+    }) {
+        sdk.save(tribe)
+        sockets.add(openSocket(sdk, tribe).await())
+    } exercise {
+        sdk.save(tribe.id.with(expectedPairDoc))
+    } verifyAnd {
+        sockets[0].first.map { JSON.parse<Json>(it).toMessage() }
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
+                    PairAssignmentAdjustmentMessage(expectedPairDoc)
+                )
+            )
+    } teardown {
         sockets.forEach { it.second.close() }
     }
 
