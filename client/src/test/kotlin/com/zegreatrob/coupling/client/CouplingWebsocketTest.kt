@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketProps
 import com.zegreatrob.coupling.client.external.reactwebsocket.reactWebsocket
 import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
@@ -21,7 +22,7 @@ class CouplingWebsocketTest {
         val tribeId = TribeId("bwahahahaha")
         val useSsl = false
     }) exercise {
-        shallow { couplingWebsocket(tribeId, useSsl) { _, _ -> div {} } }
+        shallow { couplingWebsocket(tribeId, useSsl, {}) { _ -> div {} } }
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
@@ -35,7 +36,7 @@ class CouplingWebsocketTest {
         val tribeId = TribeId("LOL")
         val useSsl = true
     }) exercise {
-        shallow { couplingWebsocket(tribeId, useSsl) { _, _ -> div {} } }
+        shallow { couplingWebsocket(tribeId, useSsl, {}) { _ -> div {} } }
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
@@ -47,8 +48,8 @@ class CouplingWebsocketTest {
     @Test
     fun whenSocketIsClosedUsesNotConnectedMessage(): Unit = setup(object {
         val tribeId = TribeId("Woo")
-        var lastMessage: CouplingSocketMessage? = null
-        val wrapper = shallow { couplingWebsocket(tribeId, false) { message, _ -> lastMessage = message; div {} } }
+        var lastMessage: Message? = null
+        val wrapper = shallow { couplingWebsocket(tribeId, false, {lastMessage = it}) {  _ ->  div {} } }
         val websocketProps = wrapper.find(reactWebsocket).props()
             .unsafeCast<WebsocketProps>()
         val expectedMessage = "Not connected"
@@ -58,7 +59,7 @@ class CouplingWebsocketTest {
         websocketProps.onClose()
         wrapper.update()
     } verify {
-        lastMessage?.text.assertIsEqualTo(expectedMessage)
+        lastMessage?.assertIsEqualTo(CouplingSocketMessage(expectedMessage, emptySet()))
     }
 
     private fun socketMessage(expectedMessage: String) =

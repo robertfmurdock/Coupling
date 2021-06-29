@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.couplingWebsocket
+import com.zegreatrob.coupling.client.disconnectedMessage
+import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -27,14 +29,13 @@ val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { prop
     val (tribe, players, originalPairs, controls, allowSave) = props
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
-    couplingWebsocket(props.tribe.id) { message, sendMessage ->
-        val updatePairAssignments = useUpdatePairAssignmentsMemo(
-            setPairAssignments,
-            sendMessage,
-            controls.dispatchFunc,
-            tribe.id
-        )
-        message.currentPairAssignments?.let { setPairAssignments(it) }
+    val (message, setMessage) = useState(disconnectedMessage)
+    val onMessageFunc: (Message) -> Unit = { handleMessage(it, setMessage, setPairAssignments) }
+
+    couplingWebsocket(props.tribe.id, onMessage = onMessageFunc) {
+        val updatePairAssignments = useMemo(controls.dispatchFunc) {
+            updatePairAssignmentsFunc(setPairAssignments, controls.dispatchFunc, tribe.id)
+        }
         pairAssignments(
             tribe,
             players,
@@ -47,26 +48,23 @@ val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { prop
     }
 }
 
-private fun useUpdatePairAssignmentsMemo(
-    setPairAssignments: StateSetter<PairAssignmentDocument?>,
-    sendMessage: ((Message) -> Unit)?,
-    dispatchFunc: DispatchFunc<out PairAssignmentsCommandDispatcher>,
-    tribeId: TribeId
-) = useMemo(sendMessage, dispatchFunc) {
-    updatePairAssignmentsFunc(setPairAssignments, sendMessage, dispatchFunc, tribeId)
+private fun handleMessage(
+    newMessage: Message,
+    setMessage: StateSetter<CouplingSocketMessage>,
+    setPairAssignments: StateSetter<PairAssignmentDocument?>
+) = when (newMessage) {
+    is CouplingSocketMessage -> {
+        setMessage(newMessage)
+        newMessage.currentPairAssignments?.let { setPairAssignments(it) }
+    }
+    is PairAssignmentAdjustmentMessage -> setPairAssignments(newMessage.currentPairAssignments)
 }
 
 private fun updatePairAssignmentsFunc(
     setPairAssignments: StateSetter<PairAssignmentDocument?>,
-    sendMessage: ((Message) -> Unit)?,
     dispatchFunc: DispatchFunc<out PairAssignmentsCommandDispatcher>,
     tribeId: TribeId
 ) = { new: PairAssignmentDocument ->
     setPairAssignments(new)
-    dispatchFunc(
-        commandFunc = { SavePairAssignmentsCommand(tribeId, new) },
-        response = {}
-    ).invoke()
-    if (sendMessage != null)
-        sendMessage(PairAssignmentAdjustmentMessage(new))
+    dispatchFunc({ SavePairAssignmentsCommand(tribeId, new) }, {}).invoke()
 }
