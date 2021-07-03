@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     kotlin("js")
     id("com.bmuschko.docker-remote-api")
-    id("kotlinx-serialization") version "1.5.10"
+    id("kotlinx-serialization") version "1.5.20"
 }
 
 kotlin {

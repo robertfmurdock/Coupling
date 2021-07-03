@@ -2,12 +2,12 @@ import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization") version "1.5.10"
+    id("kotlinx-serialization") version "1.5.20"
 }
 
 kotlin {
 
-    targets {
+    targets {   
         js {
             nodejs {
                 testTask {
