@@ -16,7 +16,7 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":repository-core"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
             }
         }
         val commonTest by getting {
@@ -51,7 +51,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:async:4.1.6")
+                implementation("com.zegreatrob.testmints:async:4.1.7")
             }
         }
     }

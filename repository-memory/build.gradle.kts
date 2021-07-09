@@ -19,7 +19,7 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":repository-core"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
                 implementation("com.benasher44:uuid:0.3.0")
             }
         }
@@ -54,7 +54,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:async:4.1.6")
+                implementation("com.zegreatrob.testmints:async:4.1.7")
             }
         }
     }
