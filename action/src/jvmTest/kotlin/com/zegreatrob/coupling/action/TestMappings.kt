@@ -38,7 +38,7 @@ actual fun loadJsonTribeSetup(fileResource: String): TribeSetup {
         players = fileJson["players"].map { it.toPlayer() },
         history = fileJson["history"].map {
             PairAssignmentDocument(
-                id = it["_id"].textValue().let(::PairAssignmentDocumentId),
+                id = it["id"].textValue().let(::PairAssignmentDocumentId),
                 date = it["date"].textValue().let { text -> dateFormat.parse(text).local },
                 pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() }
             )
@@ -61,12 +61,12 @@ private fun JsonNode.toPinnedCouplingPair(): PinnedCouplingPair {
 }
 
 private fun JsonNode.toPin() = Pin(
-    id = this["_id"].textValue(),
+    id = this["id"].textValue(),
     name = this["name"].textValue()
 )
 
 private fun JsonNode.toPlayer() = Player(
-    id = this["_id"].textValue(),
+    id = this["id"].textValue(),
     badge = this["badge"].intValue(),
     name = this["name"].textValue()
 )

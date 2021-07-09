@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("js")
-    kotlin("plugin.serialization") version "1.5.10"
+    kotlin("plugin.serialization") version "1.5.20"
 }
 
 kotlin {
@@ -41,7 +41,7 @@ dependencies {
     implementation("com.zegreatrob.testmints:action-async:4.1.2")
     implementation("com.soywiz.korlibs.klock:klock:2.1.0")
     implementation("com.benasher44:uuid:0.2.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.213-kotlin-1.5.10")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.213-kotlin-1.5.10")

@@ -3,6 +3,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
+    kotlin("plugin.serialization") version "1.5.20"
 }
 
 kotlin {
@@ -17,10 +18,11 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":model"))
-                api(kotlin("stdlib", BuildConstants.kotlinVersion))
-                api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:2.1.0")
+                implementation(project(":model"))
+                implementation(kotlin("stdlib", BuildConstants.kotlinVersion))
+                implementation(kotlin("stdlib-common", BuildConstants.kotlinVersion))
+                implementation("com.soywiz.korlibs.klock:klock:2.1.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
             }
         }
         val commonTest by getting {
