@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.json
 
+import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -54,6 +56,12 @@ fun PairAssignmentDocument.toJson() = format.encodeToDynamic(toSerializable()).u
 
 @ExperimentalSerializationApi
 fun pairFromJson(json: Json) = format.decodeFromDynamic<JsonPinnedCouplingPair>(json.asDynamic()).toModel()
+
+fun Message.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
+
+fun Json.toMessage(): Message = format.decodeFromDynamic<JsonMessage>(asDynamic()).toModel()
+
+fun Json.toCouplingServerMessage(): CouplingSocketMessage = format.decodeFromDynamic<JsonCouplingSocketMessage>(asDynamic()).toModel()
 
 fun Array<Pair<String, Any?>>.plus(key: String, value: Any?) = plus(Pair(key, value))
 

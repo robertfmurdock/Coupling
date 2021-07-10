@@ -3,39 +3,42 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
-import kotlin.js.Json
-import kotlin.js.json
+import com.zegreatrob.coupling.model.player.Player
+import kotlinx.serialization.Serializable
 
-fun Message.toJson(): Json = when (this) {
-    is CouplingSocketMessage -> toJson()
-    is PairAssignmentAdjustmentMessage -> json(
-        "type" to "PairAssignmentUpdate",
-        "currentPairAssignments" to currentPairAssignments.toJson()
+@Serializable
+sealed class JsonMessage
+
+@Serializable
+data class JsonCouplingSocketMessage(
+    var text: String,
+    var players: Set<JsonPlayer>,
+    val currentPairAssignments: JsonPairAssignmentDocument? = null
+) : JsonMessage()
+
+@Serializable
+data class JsonPairAssignmentAdjustmentMessage(val currentPairAssignments: JsonPairAssignmentDocument) : JsonMessage()
+
+fun Message.toSerializable() = when (this) {
+    is CouplingSocketMessage -> JsonCouplingSocketMessage(
+        text = text,
+        players = players.map(Player::toSerializable).toSet(),
+        currentPairAssignments = currentPairAssignments?.toSerializable()
     )
+    is PairAssignmentAdjustmentMessage -> JsonPairAssignmentAdjustmentMessage(currentPairAssignments.toSerializable())
 }
 
-fun Json.toMessage(): Message? {
-    return when (this["type"]) {
-        "LivePlayers" -> this.toCouplingServerMessage()
-        "PairAssignmentUpdate" -> toPairAssignmentMessage()
-        else -> null
-    }
+fun JsonMessage.toModel() = when (this) {
+    is JsonCouplingSocketMessage -> toModel()
+    is JsonPairAssignmentAdjustmentMessage -> toModel()
 }
 
-private fun Json.toPairAssignmentMessage() = PairAssignmentAdjustmentMessage(
-    this["currentPairAssignments"].unsafeCast<Json>()
-        .toPairAssignmentDocument()
+private fun JsonPairAssignmentAdjustmentMessage.toModel() = PairAssignmentAdjustmentMessage(
+    currentPairAssignments.toModel()
 )
 
-fun Json.toCouplingServerMessage() = CouplingSocketMessage(
-    this["text"].toString(),
-    this["players"].unsafeCast<Array<Json>>().map { it.toPlayer() }.toSet(),
-    this["currentPairAssignments"].unsafeCast<Json?>()?.toPairAssignmentDocument()
-)
-
-fun CouplingSocketMessage.toJson() = json(
-    "type" to "LivePlayers",
-    "text" to text,
-    "players" to players.map { it.toJson() },
-    "currentPairAssignments" to currentPairAssignments?.toJson()
+fun JsonCouplingSocketMessage.toModel() = CouplingSocketMessage(
+    text = text,
+    players = players.map { it.toModel() }.toSet(),
+    currentPairAssignments = currentPairAssignments?.toModel()
 )
