@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.user.User
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
@@ -37,6 +38,10 @@ fun Json.toTribe() = format.decodeFromDynamic<JsonTribe>(asDynamic()).toModel()
 
 @ExperimentalSerializationApi
 fun Tribe.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
+
+fun User.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
+
+fun Json.toUser() = format.decodeFromDynamic<JsonUser>(asDynamic()).toModel()
 
 fun Array<Pair<String, Any?>>.plus(key: String, value: Any?) = plus(Pair(key, value))
 

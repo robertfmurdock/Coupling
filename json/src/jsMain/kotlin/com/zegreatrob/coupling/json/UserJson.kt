@@ -2,19 +2,23 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
-import kotlin.js.Json
-import kotlin.js.json
+import kotlinx.serialization.Serializable
 
-fun User.toJson() = json(
-    "id" to id,
-    "email" to email,
-    "authorizedTribeIds" to authorizedTribeIds.map { it.value }.toTypedArray()
+@Serializable
+data class JsonUser(
+    val id: String,
+    val email: String,
+    val authorizedTribeIds: Set<String>
 )
 
-fun Json.toUser() = User(
-    id = this["id"].toString(),
-    email = this["email"].toString(),
-    authorizedTribeIds = this["authorizedTribeIds"].unsafeCast<Array<String>>()
-        .map { tribeIdValue -> TribeId(tribeIdValue) }
-        .toSet()
+fun User.toSerializable() = JsonUser(
+    id = id,
+    email = email,
+    authorizedTribeIds = authorizedTribeIds.map { it.value }.toSet()
+)
+
+fun JsonUser.toModel() = User(
+    id = id,
+    email = email,
+    authorizedTribeIds = authorizedTribeIds.map(::TribeId).toSet(),
 )

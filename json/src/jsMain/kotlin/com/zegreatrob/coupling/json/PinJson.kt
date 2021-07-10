@@ -9,4 +9,3 @@ val pinJsonKeys
 
 val pinRecordJsonKeys
     get() = pinJsonKeys + recordJsonKeys
-
