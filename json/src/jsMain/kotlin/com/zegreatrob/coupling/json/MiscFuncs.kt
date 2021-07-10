@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.pin.pin
@@ -39,9 +40,17 @@ fun Json.toTribe() = format.decodeFromDynamic<JsonTribe>(asDynamic()).toModel()
 @ExperimentalSerializationApi
 fun Tribe.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
+@ExperimentalSerializationApi
 fun User.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
+@ExperimentalSerializationApi
 fun Json.toUser() = format.decodeFromDynamic<JsonUser>(asDynamic()).toModel()
+
+@ExperimentalSerializationApi
+fun Json.toPairAssignmentDocument() = format.decodeFromDynamic<JsonPairAssignmentDocument>(asDynamic()).toModel()
+
+@ExperimentalSerializationApi
+fun PairAssignmentDocument.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
 fun Array<Pair<String, Any?>>.plus(key: String, value: Any?) = plus(Pair(key, value))
 
