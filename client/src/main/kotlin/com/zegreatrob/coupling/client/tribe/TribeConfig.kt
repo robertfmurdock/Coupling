@@ -24,6 +24,7 @@ import react.RProps
 import react.dom.*
 import react.router.dom.redirect
 import react.useState
+import kotlin.js.Json
 
 data class TribeConfigProps(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) : RProps
 
@@ -36,7 +37,7 @@ private val styles = useStyles("tribe/TribeConfig")
 val TribeConfig = reactFunction { (tribe, commandFunc): TribeConfigProps ->
     val isNew = tribe.id.value == ""
     val (values, onChange) = useForm(tribe.withDefaultTribeId().toJson())
-    val updatedTribe = values.toTribe()
+    val updatedTribe = values.correctTypes().toTribe()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToTribeList = { setRedirectUrl(Paths.tribeList()) }
     val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }, { redirectToTribeList() })
@@ -52,6 +53,11 @@ val TribeConfig = reactFunction { (tribe, commandFunc): TribeConfigProps ->
                 tribeCard(TribeCardProps(updatedTribe))
             }
         }
+}
+
+private fun Json.correctTypes() = also {
+    set("animationSpeed", this["animationSpeed"].toString().toDouble())
+    set("pairingRule", this["pairingRule"].toString().toInt())
 }
 
 private fun Tribe.withDefaultTribeId() = if (id.value.isNotBlank())
