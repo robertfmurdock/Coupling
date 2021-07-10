@@ -70,9 +70,6 @@ fun List<Record<TribeIdPin>>.toJsonArray() = map { it.toJson().add(it.data.pin.t
     .toTypedArray()
 
 @ExperimentalSerializationApi
-fun Array<Json>.toPins() = map { it.toPin() }
-
-@ExperimentalSerializationApi
 val playerJsonKeys = Player(
     id = "1",
     badge = 1,
