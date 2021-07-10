@@ -61,7 +61,7 @@ fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
 
-private fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
+fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
     players = players.map(JsonPinnedPlayer::toModel),
     pins = pins.map(JsonPin::toModel)
 )

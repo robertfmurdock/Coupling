@@ -52,6 +52,9 @@ fun Json.toPairAssignmentDocument() = format.decodeFromDynamic<JsonPairAssignmen
 @ExperimentalSerializationApi
 fun PairAssignmentDocument.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
+@ExperimentalSerializationApi
+fun pairFromJson(json: Json) = format.decodeFromDynamic<JsonPinnedCouplingPair>(json.asDynamic()).toModel()
+
 fun Array<Pair<String, Any?>>.plus(key: String, value: Any?) = plus(Pair(key, value))
 
 @ExperimentalSerializationApi
