@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.recordFor
-import com.zegreatrob.coupling.json.toTribe
+import com.zegreatrob.coupling.json.toTribeRecord
 import com.zegreatrob.coupling.json.tribeRecordJsonKeys
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -22,5 +21,5 @@ interface SdkTribeListGet : TribeListGet, AxiosSyntax, GqlSyntax {
 
     private fun Json.toTribeRecordList(): List<Record<Tribe>> = this["tribeList"]
         .unsafeCast<Array<Json>>()
-        .map { it.recordFor(it.toTribe()) }
+        .map { it.toTribeRecord() }
 }

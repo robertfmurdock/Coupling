@@ -9,5 +9,5 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val tribeListResolve = dispatch(command, { _, _ -> TribeListQuery }, ::toJson)
 
-private fun toJson(records: List<Record<Tribe>>) = records.map { it.toJson().add(it.data.toJson()) }
+private fun toJson(records: List<Record<Tribe>>) = records.map { it.toJson() }
     .toTypedArray()

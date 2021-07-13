@@ -40,7 +40,13 @@ fun Json.toPin() = format.decodeFromDynamic<JsonPin>(asDynamic()).toModel()
 fun Json.toTribe() = format.decodeFromDynamic<JsonTribe>(asDynamic()).toModel()
 
 @ExperimentalSerializationApi
+fun Json.toTribeRecord() = format.decodeFromDynamic<JsonTribe>(asDynamic()).toModelRecord()
+
+@ExperimentalSerializationApi
 fun Tribe.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
+
+@ExperimentalSerializationApi
+fun Record<Tribe>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
 @ExperimentalSerializationApi
 fun User.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
@@ -61,7 +67,9 @@ fun Message.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast
 
 fun Json.toMessage(): Message = format.decodeFromDynamic<JsonMessage>(asDynamic()).toModel()
 
-fun Json.toCouplingServerMessage(): CouplingSocketMessage = format.decodeFromDynamic<JsonCouplingSocketMessage>(asDynamic()).toModel()
+fun Json.toCouplingServerMessage(): CouplingSocketMessage = format.decodeFromDynamic<JsonCouplingSocketMessage>(
+    asDynamic()
+).toModel()
 
 fun Array<Pair<String, Any?>>.plus(key: String, value: Any?) = plus(Pair(key, value))
 

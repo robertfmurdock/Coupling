@@ -11,4 +11,4 @@ import com.zegreatrob.minjson.at
 
 val tribeResolve = dispatch(command, { entity, _ -> TribeQuery(TribeId(entity.at("id")!!)) }, ::toJson)
 
-private fun toJson(record: Record<Tribe>?) = record?.run { toJson().add(data.toJson()) }
+private fun toJson(record: Record<Tribe>?) = record?.toJson()
