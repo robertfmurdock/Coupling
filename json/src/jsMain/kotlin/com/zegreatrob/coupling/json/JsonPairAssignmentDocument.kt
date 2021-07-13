@@ -19,7 +19,7 @@ data class JsonPairAssignmentDocument(
 )
 
 @Serializable
-data class JsonPinnedCouplingPair(val players: List<JsonPinnedPlayer>, val pins: List<JsonPin> = emptyList())
+data class JsonPinnedCouplingPair(val players: List<JsonPinnedPlayer>, val pins: List<JsonPinData> = emptyList())
 
 @Serializable
 data class JsonPinnedPlayer(
@@ -30,7 +30,7 @@ data class JsonPinnedPlayer(
     val callSignAdjective: String = defaultPlayer.callSignAdjective,
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
-    val pins: List<JsonPin>,
+    val pins: List<JsonPinData>,
 )
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
@@ -63,7 +63,7 @@ fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
     players = players.map(JsonPinnedPlayer::toModel),
-    pins = pins.map(JsonPin::toModel)
+    pins = pins.map(JsonPinData::toModel)
 )
 
 private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
@@ -76,5 +76,5 @@ private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
         callSignNoun = callSignNoun,
         imageURL = imageURL
     ),
-    pins = pins.map(JsonPin::toModel)
+    pins = pins.map(JsonPinData::toModel)
 )

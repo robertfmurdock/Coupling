@@ -1,11 +1,15 @@
 package com.zegreatrob.coupling.sdk.pairassignments
 
 import com.soywiz.klock.js.toDate
+import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toPinInput
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
 import com.zegreatrob.coupling.sdk.GqlSyntax
 import com.zegreatrob.coupling.sdk.Mutations
+import kotlinx.serialization.json.encodeToDynamic
+import kotlin.js.Json
 import kotlin.js.json
 
 interface SdkPairAssignmentDocumentSave : PairAssignmentDocumentSave, GqlSyntax {
@@ -27,7 +31,8 @@ interface SdkPairAssignmentDocumentSave : PairAssignmentDocumentSave, GqlSyntax 
                     "players" to it.players
                         .map { player -> player.toJson() }
                         .toTypedArray(),
-                    "pins" to it.pins.toJson()
+                    "pins" to it.pins.map { couplingJsonFormat.encodeToDynamic(it.toPinInput()).unsafeCast<Json>() }
+                        .toTypedArray()
                 )
             }
                 .toTypedArray()

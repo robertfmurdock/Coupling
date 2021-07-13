@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.player
@@ -24,6 +23,8 @@ private val format = kotlinx.serialization.json.Json {
     coerceInputValues = true
 }
 
+val couplingJsonFormat = format
+
 @ExperimentalSerializationApi
 fun Player.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
@@ -34,7 +35,10 @@ fun Pin.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 fun Json.toPlayer(): Player = format.decodeFromDynamic<JsonPlayer>(asDynamic()).toModel()
 
 @ExperimentalSerializationApi
-fun Json.toPin() = format.decodeFromDynamic<JsonPin>(asDynamic()).toModel()
+fun Json.toPin() = format.decodeFromDynamic<JsonPinData>(asDynamic()).toModel()
+
+@ExperimentalSerializationApi
+fun Json.toPinRecord() = format.decodeFromDynamic<JsonPinRecord>(asDynamic()).toModelRecord()
 
 @ExperimentalSerializationApi
 fun Json.toTribe() = format.decodeFromDynamic<JsonTribe>(asDynamic()).toModel()
@@ -47,6 +51,9 @@ fun Tribe.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
 @ExperimentalSerializationApi
 fun Record<Tribe>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
+
+@ExperimentalSerializationApi
+fun Record<TribeIdPin>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
 @ExperimentalSerializationApi
 fun User.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
@@ -82,7 +89,7 @@ fun List<Pin>.toJson(): Array<Json> = map { it.toJson() }
     .toTypedArray()
 
 @ExperimentalSerializationApi
-fun List<Record<TribeIdPin>>.toJsonArray() = map { it.toJson().add(it.data.pin.toJson()) }
+fun List<Record<TribeIdPin>>.toJsonArray() = map { it.toJson() }
     .toTypedArray()
 
 @ExperimentalSerializationApi

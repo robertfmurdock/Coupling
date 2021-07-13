@@ -18,6 +18,7 @@ type Pin {
     id: String!
     icon: String
     name: String
+    tribeId: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean

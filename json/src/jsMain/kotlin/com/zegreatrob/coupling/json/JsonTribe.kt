@@ -61,15 +61,9 @@ fun JsonTribe.toModel(): Tribe = Tribe(
 )
 
 
-fun JsonTribe.toModelRecord(): Record<Tribe> = Tribe(
-    id = TribeId(id),
-    pairingRule = PairingRule.fromValue(pairingRule),
-    badgesEnabled = badgesEnabled,
-    defaultBadgeName = defaultBadgeName,
-    alternateBadgeName = alternateBadgeName,
-    email = email,
-    name = name,
-    callSignsEnabled = callSignsEnabled,
-    animationEnabled = animationsEnabled,
-    animationSpeed = animationSpeed,
-).let { Record(it, modifyingUserEmail!!, isDeleted!!, DateTime.fromString(timestamp!!).local) }
+fun JsonTribe.toModelRecord(): Record<Tribe> = Record(
+    data = toModel(),
+    modifyingUserId = modifyingUserEmail!!,
+    isDeleted = isDeleted!!,
+    timestamp = DateTime.fromString(timestamp!!).local
+)
