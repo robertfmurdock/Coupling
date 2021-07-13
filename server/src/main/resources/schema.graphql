@@ -18,6 +18,12 @@ type Pin {
     id: String!
     icon: String
     name: String
+}
+
+type PinRecord {
+    id: String!
+    icon: String
+    name: String
     tribeId: String
     modifyingUserEmail: String
     timestamp: String
@@ -65,7 +71,7 @@ type PairAssignmentDocument {
 type TribeData {
     id: String!
     tribe: Tribe
-    pinList: [Pin]!
+    pinList: [PinRecord]!
     playerList: [Player]!
     retiredPlayers: [Player]!
     pairAssignmentDocumentList: [PairAssignmentDocument]!

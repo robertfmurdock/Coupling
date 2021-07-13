@@ -6,8 +6,11 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 
 val pinJsonKeys
-    get() = TribeRecord(TribeId("").with(Pin()), "")
+    get() = Pin()
         .toJson()
         .getKeys()
 
-val pinRecordJsonKeys get() = pinJsonKeys
+val pinRecordJsonKeys
+    get() = TribeRecord(TribeId("").with(Pin()), "")
+        .toJson()
+        .getKeys()
