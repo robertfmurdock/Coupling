@@ -13,7 +13,7 @@
     "@aws-sdk/client-lambda": "^3.21.0",
     "@aws-sdk/property-provider": "^3.20.0",
     "@graphql-tools/schema": "^7.1.5",
-    "aws-sdk": "2.944.0",
+    "aws-sdk": "2.945.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
@@ -45,7 +45,7 @@
     "jasmine": "^3.8.0",
     "jasmine-core": "^3.8.0",
     "jasmine-reporters": "^2.4.0",
-    "npm-check-updates": "^11.8.2",
+    "npm-check-updates": "^11.8.3",
     "serverless": "^2.51.2",
     "serverless-offline": "^7.0.0",
     "serverless-offline-ssm": "^5.2.0"
