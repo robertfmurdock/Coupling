@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.import.external.readline.onNewLine
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import kotlinx.coroutines.CompletableDeferred
@@ -48,35 +47,26 @@ private fun ReadLine.inputStreamEnd() = CompletableDeferred<Unit>().also { endDe
 suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     val tribeId = jsonLine["tribeId"].unsafeCast<String>().let(::TribeId)
     jsonLine.getArray("tribeRecords").forEach { recordJson ->
-        val tribe = recordJson.toTribe()
         tryToImport({ "Failed to save tribe $tribeId" }) {
-            catalog.tribeRepository.saveRawRecord(
-                recordJson.recordFor(tribe)
-            )
+            catalog.tribeRepository.saveRawRecord(recordJson.toTribeRecord())
         }
     }
     jsonLine.getArray("playerRecords").forEach { recordJson ->
-        val player = recordJson.toPlayer()
-        tryToImport({ "Failed to save player ${player.id} in tribe $tribeId" }) {
-            catalog.playerRepository.saveRawRecord(
-                recordJson.recordFor(tribeId.with(player))
-            )
+        val record = recordJson.toPlayerRecord()
+        tryToImport({ "Failed to save player ${record.data.id} in tribe $tribeId" }) {
+            catalog.playerRepository.saveRawRecord(record)
         }
     }
     jsonLine.getArray("pinRecords").forEach { recordJson ->
-        val pin = recordJson.toPin()
-        tryToImport({ "Failed to save pin ${pin.id} in tribe $tribeId" }) {
-            catalog.pinRepository.saveRawRecord(
-                recordJson.recordFor(tribeId.with(pin))
-            )
+        val record = recordJson.toPinRecord()
+        tryToImport({ "Failed to save pin ${record.data.id} in tribe $tribeId" }) {
+            catalog.pinRepository.saveRawRecord(record)
         }
     }
     jsonLine.getArray("pairAssignmentRecords").forEach { recordJson ->
-        val document = recordJson.toPairAssignmentDocument()
-        tryToImport({ "Failed to save player ${document.id} in tribe $tribeId" }) {
-            catalog.pairAssignmentDocumentRepository.saveRawRecord(
-                recordJson.recordFor(tribeId.with(document))
-            )
+        val record = recordJson.toPairAssignmentDocumentRecord()
+        tryToImport({ "Failed to save player ${record.data.id} in tribe $tribeId" }) {
+            catalog.pairAssignmentDocumentRepository.saveRawRecord(record)
         }
     }
 }
@@ -95,9 +85,7 @@ private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepositor
     logger.info { "LOADING USER ${userJson["userEmail"]}" }
 
     userJson["userRecords"].unsafeCast<Array<Json>>().forEach { recordJson ->
-        userRepository.saveRawRecord(
-            recordJson.recordFor(recordJson.toUser())
-        )
+        userRepository.saveRawRecord(recordJson.toUserRecord())
     }
 
 }
