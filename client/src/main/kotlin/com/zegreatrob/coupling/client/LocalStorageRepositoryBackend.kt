@@ -1,33 +1,22 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.json.*
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeElement
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import kotlin.js.Json
-import kotlin.js.json
 
 class LocalStorageRepositoryBackend {
-    val tribe by localBackend(Tribe::toJson, Json::toTribe)
-    val player by localBackend(
-        { it.element.toJson().add(it.tribeIdJson()) },
-        { TribeIdPlayer(it.tribeId(), it.toPlayer()) }
-    )
+    val tribe by localBackend(Record<Tribe>::toJson, Json::toTribeRecord)
+    val player by localBackend(TribeRecord<Player>::toJson, Json::toPlayerRecord)
     val pairAssignments by localBackend(
-        { it.element.toJson().add(it.tribeIdJson()) },
-        { TribeIdPairAssignmentDocument(it.tribeId(), it.toPairAssignmentDocument()) })
-
-    val pin by localBackend(
-        { it.element.toJson().add(it.tribeIdJson()) },
-        { TribeIdPin(it.tribeId(), it.toPin()) }
+        TribeRecord<PairAssignmentDocument>::toJson,
+        Json::toPairAssignmentDocumentRecord
     )
-
-    val user by localBackend(User::toJson, Json::toUser)
-
-    private fun <T> TribeElement<T>.tribeIdJson(): Json = json("tribeId" to id.value)
-    private fun Json.tribeId() = this["tribeId"].toString().let(::TribeId)
+    val pin by localBackend(TribeRecord<Pin>::toJson, Json::toPinRecord)
+    val user by localBackend(Record<User>::toJson, Json::toUserRecord)
 }

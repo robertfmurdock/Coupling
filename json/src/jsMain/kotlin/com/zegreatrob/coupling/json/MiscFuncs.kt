@@ -68,7 +68,13 @@ fun Record<TribeIdPin>.toJson() = format.encodeToDynamic(toSerializable()).unsaf
 fun User.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
 @ExperimentalSerializationApi
+fun Record<User>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
+
+@ExperimentalSerializationApi
 fun Json.toUser() = format.decodeFromDynamic<JsonUser>(asDynamic()).toModel()
+
+@ExperimentalSerializationApi
+fun Json.toUserRecord() = format.decodeFromDynamic<JsonUserRecord>(asDynamic()).toModel()
 
 @ExperimentalSerializationApi
 fun Json.toPairAssignmentDocument() = format.decodeFromDynamic<JsonPairAssignmentDocument>(asDynamic()).toModel()
