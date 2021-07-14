@@ -1,5 +1,5 @@
 package com.zegreatrob.coupling.build
 
 object BuildConstants {
-    const val kotlinVersion = "1.5.20"
+    const val kotlinVersion = "1.5.21"
 }
