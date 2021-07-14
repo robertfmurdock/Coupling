@@ -31,6 +31,18 @@ data class JsonPlayerData(
 ) : JsonPlayer
 
 @Serializable
+data class SavePlayerInput(
+    val playerId: String,
+    val tribeId: String,
+    val name: String = defaultPlayer.name,
+    val email: String = defaultPlayer.email,
+    val badge: String = "${defaultPlayer.badge}",
+    val callSignAdjective: String = defaultPlayer.callSignAdjective,
+    val callSignNoun: String = defaultPlayer.callSignNoun,
+    val imageURL: String? = defaultPlayer.imageURL,
+)
+
+@Serializable
 data class JsonPlayerRecord(
     override val id: String,
     override val name: String = defaultPlayer.name,
@@ -69,6 +81,17 @@ fun TribeRecord<Player>.toSerializable() = JsonPlayerRecord(
     isDeleted = isDeleted,
     timestamp = timestamp.toDate().toISOString(),
 )
+
+fun SavePlayerInput.toModel(): Player = Player(
+    id = playerId,
+    badge = badge.toIntOrNull() ?: defaultPlayer.badge,
+    name = name,
+    email = email,
+    callSignAdjective = callSignAdjective,
+    callSignNoun = callSignNoun,
+    imageURL = imageURL
+)
+
 
 fun JsonPlayerData.toModel(): Player = Player(
     id = id,
