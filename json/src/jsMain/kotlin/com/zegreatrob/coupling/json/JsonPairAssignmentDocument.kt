@@ -33,6 +33,14 @@ data class JsonPairAssignmentDocumentRecord(
 ) : JsonTribeRecord
 
 @Serializable
+data class SavePairAssignmentsInput(
+    val tribeId: String,
+    val pairAssignmentsId: String,
+    val date: String,
+    val pairs: List<JsonPinnedCouplingPair>,
+)
+
+@Serializable
 data class JsonPinnedCouplingPair(val players: List<JsonPinnedPlayer>, val pins: List<JsonPinData> = emptyList())
 
 @Serializable
@@ -85,12 +93,19 @@ fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
 
+fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
+    id = PairAssignmentDocumentId(pairAssignmentsId),
+    date = DateTime.fromString(date).local,
+    pairs = pairs.map(JsonPinnedCouplingPair::toModel)
+)
+
 fun JsonPairAssignmentDocumentRecord.toModel() = TribeRecord(
-    TribeId(tribeId!!).with(PairAssignmentDocument(
-        id = PairAssignmentDocumentId(id),
-        date = DateTime.fromString(date).local,
-        pairs = pairs.map(JsonPinnedCouplingPair::toModel)
-    )
+    TribeId(tribeId!!).with(
+        PairAssignmentDocument(
+            id = PairAssignmentDocumentId(id),
+            date = DateTime.fromString(date).local,
+            pairs = pairs.map(JsonPinnedCouplingPair::toModel)
+        )
     ),
     modifyingUserId = modifyingUserEmail!!,
     isDeleted = isDeleted!!,
