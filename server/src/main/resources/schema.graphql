@@ -64,6 +64,7 @@ type PairAssignmentDocumentRecord {
     id: String!
     date: String!
     pairs: [PinnedPair]!
+    tribeId: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
