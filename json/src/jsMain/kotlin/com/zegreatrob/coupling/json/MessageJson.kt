@@ -12,7 +12,7 @@ sealed class JsonMessage
 @Serializable
 data class JsonCouplingSocketMessage(
     var text: String,
-    var players: Set<JsonPlayer>,
+    var players: Set<JsonPlayerData>,
     val currentPairAssignments: JsonPairAssignmentDocument? = null
 ) : JsonMessage()
 

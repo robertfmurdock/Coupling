@@ -38,6 +38,7 @@ type Player {
     callSignAdjective: String
     callSignNoun: String
     imageURL: String
+    tribeId: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
@@ -10,6 +11,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.decodeFromDynamic
@@ -29,10 +32,16 @@ val couplingJsonFormat = format
 fun Player.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
 @ExperimentalSerializationApi
+fun TribeRecord<Player>.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
+
+@ExperimentalSerializationApi
 fun Pin.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
 @ExperimentalSerializationApi
-fun Json.toPlayer(): Player = format.decodeFromDynamic<JsonPlayer>(asDynamic()).toModel()
+fun Json.toPlayer(): Player = format.decodeFromDynamic<JsonPlayerData>(asDynamic()).toModel()
+
+@ExperimentalSerializationApi
+fun Json.toPlayerRecord(): TribeRecord<Player> = format.decodeFromDynamic<JsonPlayerRecord>(asDynamic()).toModel()
 
 @ExperimentalSerializationApi
 fun Json.toPin() = format.decodeFromDynamic<JsonPinData>(asDynamic()).toModel()
@@ -106,4 +115,19 @@ val playerJsonKeys = Player(
     .getKeys()
 
 @ExperimentalSerializationApi
-val playerRecordJsonKeys = playerJsonKeys + recordJsonKeys
+val playerRecordJsonKeys = TribeRecord(
+    TribeId("").with(
+        Player(
+            id = "1",
+            badge = 1,
+            name = "stub",
+            email = "stub",
+            callSignAdjective = "stub",
+            callSignNoun = "stub",
+            imageURL = "stub",
+        )
+    ),
+    ""
+)
+    .toJson()
+    .getKeys()
