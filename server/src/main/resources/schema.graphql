@@ -1,4 +1,4 @@
-type Tribe {
+type TribeRecord {
     id: String!
     name: String
     email: String
@@ -30,7 +30,7 @@ type PinRecord {
     isDeleted: Boolean
 }
 
-type Player {
+type PlayerRecord {
     id: String!
     name: String
     email: String
@@ -60,7 +60,7 @@ type PinnedPair {
     pins: [Pin]
 }
 
-type PairAssignmentDocument {
+type PairAssignmentDocumentRecord {
     id: String!
     date: String!
     pairs: [PinnedPair]!
@@ -71,12 +71,12 @@ type PairAssignmentDocument {
 
 type TribeData {
     id: String!
-    tribe: Tribe
+    tribe: TribeRecord
     pinList: [PinRecord]!
-    playerList: [Player]!
-    retiredPlayers: [Player]!
-    pairAssignmentDocumentList: [PairAssignmentDocument]!
-    currentPairAssignmentDocument: PairAssignmentDocument
+    playerList: [PlayerRecord]!
+    retiredPlayers: [PlayerRecord]!
+    pairAssignmentDocumentList: [PairAssignmentDocumentRecord]!
+    currentPairAssignmentDocument: PairAssignmentDocumentRecord
 }
 
 input PlayerInput {
@@ -102,7 +102,7 @@ input SpinInput {
 }
 
 type SpinOutput {
-    result: PairAssignmentDocument!
+    result: PairAssignmentDocumentRecord!
 }
 
 input DeleteTribeInput {
@@ -181,7 +181,7 @@ input PinnedPlayerInput {
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
 type Query {
-    tribeList: [Tribe]
+    tribeList: [TribeRecord]
     tribeData(id: String!): TribeData
 }
 
