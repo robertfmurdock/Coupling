@@ -55,6 +55,13 @@ data class JsonPinnedPlayer(
     val pins: List<JsonPinData>,
 )
 
+@Serializable
+data class SpinInput(
+   val tribeId: String,
+   val players: List<JsonPlayerData>,
+   val pins: List<JsonPinData>,
+)
+
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     id = id.value,
     date = date.toDate().toISOString(),

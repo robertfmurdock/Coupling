@@ -1,19 +1,18 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toPin
-import com.zegreatrob.coupling.json.toPlayer
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPairsCommand
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
 import com.zegreatrob.minjson.at
-import kotlin.js.Json
+import kotlinx.serialization.json.decodeFromDynamic
 import kotlin.js.json
 
 val spinResolver: Resolver = dispatch(tribeCommand, { _, args ->
+    val (_, players, pins) = couplingJsonFormat.decodeFromDynamic<SpinInput>(args.at("input"))
     ProposeNewPairsCommand(
-        args.at<Array<Json>>("/input/players")?.map(Json::toPlayer)!!,
-        args.at<Array<Json>>("/input/pins")?.map(Json::toPin)!!
+        players.map(JsonPlayerData::toModel),
+        pins.map(JsonPinData::toModel),
     )
 }, { json("result" to it.toJson()) })

@@ -5,8 +5,14 @@ import com.zegreatrob.coupling.dynamo.*
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -35,16 +41,12 @@ private suspend fun collectTribeData(
     tribeRecords: List<Record<Tribe>>
 ) = json(
     "tribeId" to tribeId.value,
-    "tribeRecords" to tribeRecords.map { record -> record.toJson().add(record.data.toJson()) },
-    "playerRecords" to repositoryCatalog.playerRepository.getPlayerRecords(tribeId).map { record ->
-        record.toJson().add(record.data.element.toJson())
-    },
-    "pairAssignmentRecords" to repositoryCatalog.pairAssignmentDocumentRepository.getRecords(tribeId).map { record ->
-        record.toJson().add(record.data.element.toJson())
-    },
-    "pinRecords" to repositoryCatalog.pinRepository.getPinRecords(tribeId).map { record ->
-        record.toJson().add(record.data.element.toJson())
-    }
+    "tribeRecords" to tribeRecords.map(Record<Tribe>::toJson),
+    "playerRecords" to repositoryCatalog.playerRepository.getPlayerRecords(tribeId)
+        .map(Record<TribeElement<Player>>::toJson),
+    "pairAssignmentRecords" to repositoryCatalog.pairAssignmentDocumentRepository.getRecords(tribeId)
+        .map(TribeRecord<PairAssignmentDocument>::toJson),
+    "pinRecords" to repositoryCatalog.pinRepository.getPinRecords(tribeId).map(Record<TribeElement<Pin>>::toJson)
 )
 
 private fun Json.print() = println(JSON.stringify(this))
@@ -53,10 +55,7 @@ private suspend fun outputUsers(repositoryCatalog: DynamoRepositoryCatalog) {
         .groupBy { it.data.email }
         .entries.sortedBy { it.key }
         .forEach {
-            json("userEmail" to it.key,
-                "userRecords" to it.value.map { record ->
-                    record.toJson().add(record.data.toJson())
-                })
+            json("userEmail" to it.key, "userRecords" to it.value.map(Record<User>::toJson))
                 .print()
         }
 }

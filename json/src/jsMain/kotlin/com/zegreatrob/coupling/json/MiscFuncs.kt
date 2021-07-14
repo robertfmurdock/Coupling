@@ -85,12 +85,8 @@ fun Json.toPairAssignmentDocumentRecord() =
 @ExperimentalSerializationApi
 fun PairAssignmentDocument.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
-
 @ExperimentalSerializationApi
 fun TribeRecord<PairAssignmentDocument>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-@ExperimentalSerializationApi
-fun pairFromJson(json: Json) = format.decodeFromDynamic<JsonPinnedCouplingPair>(json.asDynamic()).toModel()
 
 fun Message.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 

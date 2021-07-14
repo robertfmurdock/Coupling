@@ -3,7 +3,11 @@ package com.zegreatrob.coupling.export
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserEmailSyntax
 import com.zegreatrob.coupling.model.user.User
@@ -51,16 +55,11 @@ private suspend fun collectTribeData(
     tribeRecords: List<Record<Tribe>>
 ) = json(
     "tribeId" to tribeId.value,
-    "tribeRecords" to tribeRecords.map { record -> record.toJson().add(record.data.toJson()) },
-    "playerRecords" to repositoryCatalog.getPlayerRecords(tribeId).map { record ->
-        record.toJson().add(record.data.element.toJson())
-    },
-    "pairAssignmentRecords" to repositoryCatalog.getPairAssignmentRecords(tribeId).map { record ->
-        record.toJson().add(record.data.element.toJson())
-    },
-    "pinRecords" to repositoryCatalog.getPinRecords(tribeId).map { record ->
-        record.toJson().add(record.data.element.toJson())
-    }
+    "tribeRecords" to tribeRecords.map(Record<Tribe>::toJson),
+    "playerRecords" to repositoryCatalog.getPlayerRecords(tribeId).map(Record<TribeIdPlayer>::toJson),
+    "pairAssignmentRecords" to repositoryCatalog.getPairAssignmentRecords(tribeId)
+        .map(Record<TribeElement<PairAssignmentDocument>>::toJson),
+    "pinRecords" to repositoryCatalog.getPinRecords(tribeId).map(Record<TribeElement<Pin>>::toJson)
 )
 
 private fun Json.print() = println(JSON.stringify(this))
@@ -71,7 +70,6 @@ private suspend fun outputUsers(repositoryCatalog: MongoRepositoryCatalog) {
             json("userEmail" to it.key,
                 "userRecords" to it.value.map { record ->
                     record.toJson()
-                        .add(record.data.toJson())
                         .add(overrideUserIdWithEmailToAvoidBadRecordProblems(record))
                 })
                 .print()
