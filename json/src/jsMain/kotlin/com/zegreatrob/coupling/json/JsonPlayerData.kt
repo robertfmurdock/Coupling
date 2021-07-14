@@ -92,8 +92,7 @@ fun SavePlayerInput.toModel(): Player = Player(
     imageURL = imageURL
 )
 
-
-fun JsonPlayerData.toModel(): Player = Player(
+fun JsonPlayer.toModel(): Player = Player(
     id = id,
     badge = badge.toIntOrNull() ?: defaultPlayer.badge,
     name = name,
