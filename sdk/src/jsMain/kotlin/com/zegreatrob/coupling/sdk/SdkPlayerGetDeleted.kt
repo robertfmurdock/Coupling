@@ -11,6 +11,5 @@ interface SdkPlayerGetDeleted : PlayerListGetDeleted, GqlQueryComponent {
     override suspend fun getDeleted(tribeId: TribeId) =
         performQueryGetComponent(tribeId, TribeGQLComponent.RetiredPlayerList) {
             couplingJsonFormat.decodeFromDynamic<List<JsonPlayerRecord>>(it)
-                .map(JsonPlayerRecord::toModel)
-        } ?: emptyList()
+        }?.map(JsonPlayerRecord::toModel) ?: emptyList()
 }

@@ -10,9 +10,6 @@ import kotlinx.serialization.json.decodeFromDynamic
 
 interface SdkPlayerListGet : PlayerListGet, GqlQueryComponent {
     override suspend fun getPlayers(tribeId: TribeId) = performQueryGetComponent(tribeId, PlayerList) {
-        if (it == null)
-            emptyList()
-        else
-            couplingJsonFormat.decodeFromDynamic<List<JsonPlayerRecord>>(it)
+        couplingJsonFormat.decodeFromDynamic<List<JsonPlayerRecord>>(it)
     }?.map(JsonPlayerRecord::toModel) ?: emptyList()
 }

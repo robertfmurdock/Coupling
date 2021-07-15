@@ -12,9 +12,6 @@ import kotlinx.serialization.json.decodeFromDynamic
 interface SdkPairAssignmentDocumentGetCurrent : PairAssignmentDocumentGetCurrent, GqlQueryComponent {
     override suspend fun getCurrentPairAssignments(tribeId: TribeId): TribeRecord<PairAssignmentDocument>? =
         performQueryGetComponent(tribeId, TribeGQLComponent.CurrentPairAssignmentDocument) {
-            if (it == null)
-                null
-            else
-                couplingJsonFormat.decodeFromDynamic<JsonPairAssignmentDocumentRecord>(it)
+            couplingJsonFormat.decodeFromDynamic<JsonPairAssignmentDocumentRecord>(it)
         }?.toModel()
 }

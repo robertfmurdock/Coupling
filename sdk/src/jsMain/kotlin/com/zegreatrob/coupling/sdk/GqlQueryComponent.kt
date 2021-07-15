@@ -10,6 +10,9 @@ interface GqlQueryComponent : TribeGQLPerformer {
     ): T? = performTribeGQLQuery(tribeId, listOf(gqlComponent))
         .let {
             val content = it[gqlComponent]
-            transform(content)
+            if (content != null)
+                transform(content)
+            else
+                null
         }
 }
