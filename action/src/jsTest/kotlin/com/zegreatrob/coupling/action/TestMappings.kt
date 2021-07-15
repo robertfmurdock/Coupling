@@ -5,15 +5,10 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlin.js.Json
 
-actual fun loadJsonTribeSetup(fileResource: String): TribeSetup = loadResource<Any>(fileResource)
-    .unsafeCast<Json>()
-    .let { couplingJsonFormat.decodeFromDynamic<JsonTribeSetup>(it) }
-    .let {
-        TribeSetup(
-            tribe = it.tribe.toModel(),
-            players = it.players.map(JsonPlayer::toModel),
-            history = it.history.map(JsonPairAssignmentDocument::toModel)
-        )
+actual fun loadJsonTribeSetup(fileResource: String): TribeSetup = loadResource<Any>(fileResource).unsafeCast<Json>()
+    .let<Json, JsonTribeSetup>(couplingJsonFormat::decodeFromDynamic)
+    .run {
+        TribeSetup(tribe.toModel(), players.map(JsonPlayer::toModel), history.map(JsonPairAssignmentDocument::toModel))
     }
 
 @Serializable
