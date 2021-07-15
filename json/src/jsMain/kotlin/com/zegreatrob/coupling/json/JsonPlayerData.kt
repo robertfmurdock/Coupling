@@ -52,10 +52,10 @@ data class JsonPlayerRecord(
     override val callSignNoun: String = defaultPlayer.callSignNoun,
     override val imageURL: String? = defaultPlayer.imageURL,
 
-    override val tribeId: String? = null,
-    override val modifyingUserEmail: String? = null,
-    override val isDeleted: Boolean? = false,
-    override val timestamp: String? = DateTime.now().toDate().toISOString(),
+    override val tribeId: String,
+    override val modifyingUserEmail: String,
+    override val isDeleted: Boolean,
+    override val timestamp: String,
 ) : JsonTribeRecord, JsonPlayer
 
 fun Player.toSerializable() = JsonPlayerData(
@@ -103,7 +103,7 @@ fun JsonPlayer.toModel(): Player = Player(
 )
 
 fun JsonPlayerRecord.toModel(): TribeRecord<Player> = TribeRecord(
-    TribeId(tribeId!!).with(
+    TribeId(tribeId).with(
         Player(
             id = id,
             badge = badge.toIntOrNull() ?: defaultPlayer.badge,
@@ -114,7 +114,7 @@ fun JsonPlayerRecord.toModel(): TribeRecord<Player> = TribeRecord(
             imageURL = imageURL
         )
     ),
-    modifyingUserId = modifyingUserEmail!!,
-    isDeleted = isDeleted!!,
-    timestamp = DateTime.fromString(timestamp!!).local
+    modifyingUserId = modifyingUserEmail,
+    isDeleted = isDeleted,
+    timestamp = DateTime.fromString(timestamp).local
 )

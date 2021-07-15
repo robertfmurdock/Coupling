@@ -23,10 +23,10 @@ data class JsonPairAssignmentDocumentRecord(
     val id: String,
     val date: String,
     val pairs: List<JsonPinnedCouplingPair>,
-    override val tribeId: String?,
-    override val modifyingUserEmail: String?,
-    override val isDeleted: Boolean?,
-    override val timestamp: String?
+    override val tribeId: String,
+    override val modifyingUserEmail: String,
+    override val isDeleted: Boolean,
+    override val timestamp: String
 ) : JsonTribeRecord
 
 @Serializable
@@ -111,16 +111,16 @@ fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
 )
 
 fun JsonPairAssignmentDocumentRecord.toModel() = TribeRecord(
-    TribeId(tribeId!!).with(
+    TribeId(tribeId).with(
         PairAssignmentDocument(
             id = PairAssignmentDocumentId(id),
             date = DateTime.fromString(date).local,
             pairs = pairs.map(JsonPinnedCouplingPair::toModel)
         )
     ),
-    modifyingUserId = modifyingUserEmail!!,
-    isDeleted = isDeleted!!,
-    timestamp = DateTime.fromString(timestamp!!).local
+    modifyingUserId = modifyingUserEmail,
+    isDeleted = isDeleted,
+    timestamp = DateTime.fromString(timestamp).local
 )
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
