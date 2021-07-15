@@ -3,10 +3,7 @@ package com.zegreatrob.coupling.json
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.js.toDate
 import com.zegreatrob.coupling.model.TribeRecord
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
@@ -57,9 +54,9 @@ data class JsonPinnedPlayer(
 
 @Serializable
 data class SpinInput(
-   val tribeId: String,
-   val players: List<JsonPlayerData>,
-   val pins: List<JsonPinData>,
+    val tribeId: String,
+    val players: List<JsonPlayerData>,
+    val pins: List<JsonPinData>,
 )
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
@@ -78,7 +75,7 @@ fun TribeRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDoc
     timestamp = timestamp.toDate().toISOString(),
 )
 
-private fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
+fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
     players = players.map(PinnedPlayer::toSerializable),
     pins = pins.map(Pin::toSerializable)
 )
@@ -92,6 +89,13 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
     callSignNoun = player.callSignNoun,
     imageURL = player.imageURL,
     pins = pins.map(Pin::toSerializable)
+)
+
+fun TribeIdPairAssignmentDocument.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
+    tribeId = tribeId.value,
+    pairAssignmentsId = element.id.value,
+    date = element.date.toDate().toISOString(),
+    pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
 )
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
