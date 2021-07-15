@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.export
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.dynamo.*
-import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
@@ -16,6 +16,8 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -39,14 +41,33 @@ private suspend fun collectTribeData(
     repositoryCatalog: DynamoRepositoryCatalog,
     tribeId: TribeId,
     tribeRecords: List<Record<Tribe>>
-) = json(
-    "tribeId" to tribeId.value,
-    "tribeRecords" to tribeRecords.map(Record<Tribe>::toJson),
-    "playerRecords" to repositoryCatalog.playerRepository.getPlayerRecords(tribeId)
-        .map(Record<TribeElement<Player>>::toJson),
-    "pairAssignmentRecords" to repositoryCatalog.pairAssignmentDocumentRepository.getRecords(tribeId)
-        .map(TribeRecord<PairAssignmentDocument>::toJson),
-    "pinRecords" to repositoryCatalog.pinRepository.getPinRecords(tribeId).map(Record<TribeElement<Pin>>::toJson)
+) : Json = couplingJsonFormat.encodeToDynamic(
+    tribeDataSerializable(tribeId, tribeRecords, repositoryCatalog)
+).unsafeCast<Json>()
+
+private suspend fun tribeDataSerializable(
+    tribeId: TribeId,
+    tribeRecords: List<Record<Tribe>>,
+    repositoryCatalog: DynamoRepositoryCatalog
+) = TribeData(
+    tribeId = tribeId.value,
+    tribeRecords = tribeRecords.map(Record<Tribe>::toSerializable),
+    playerRecords = repositoryCatalog.playerRepository.getPlayerRecords(tribeId)
+        .map(Record<TribeElement<Player>>::toSerializable),
+    pairAssignmentRecords = repositoryCatalog.pairAssignmentDocumentRepository.getRecords(tribeId)
+        .map(TribeRecord<PairAssignmentDocument>::toSerializable),
+    pinRecords = repositoryCatalog.pinRepository.getPinRecords(tribeId)
+        .map(Record<TribeElement<Pin>>::toSerializable),
+)
+
+
+@Serializable
+data class TribeData(
+    val tribeId: String,
+    val tribeRecords: List<JsonTribe>,
+    val playerRecords: List<JsonPlayerRecord>,
+    val pairAssignmentRecords: List<JsonPairAssignmentDocumentRecord>,
+    val pinRecords: List<JsonPinRecord>,
 )
 
 private fun Json.print() = println(JSON.stringify(this))
