@@ -13,7 +13,7 @@ import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 
-typealias GraphQLDispatcherProvider<D> = suspend (Request, Json?, Json?) -> D?
+typealias GraphQLDispatcherProvider<D> = suspend (Request, Json?, Any?) -> D?
 
 inline fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, reified R, reified J, reified I> dispatch(
     crossinline dispatcherFunc: GraphQLDispatcherProvider<D>,
@@ -21,8 +21,9 @@ inline fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, reifi
     crossinline toSerializable: (R) -> J
 ) = { entity: Json, args: Json, request: Request ->
     request.scope.promise {
-        val command = queryFunc(entity, couplingJsonFormat.decodeFromDynamic(args.at("/input")))
-        dispatcherFunc(request, entity, args)
+        val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
+        val command = queryFunc(entity, input)
+        dispatcherFunc(request, entity, input)
             ?.execute(command)
             ?.successOrNull { couplingJsonFormat.encodeToDynamic(toSerializable(it)) }
     }

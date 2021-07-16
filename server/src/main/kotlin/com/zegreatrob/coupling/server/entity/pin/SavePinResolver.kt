@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.entity.pin
 
+import com.zegreatrob.coupling.json.TribeInput
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.server.action.pin.SavePinCommand
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
@@ -17,7 +18,7 @@ private fun SavePinInput.toPin() = Pin(
 @Serializable
 data class SavePinInput(
     val pinId: String?,
-    val tribeId: String,
+    override val tribeId: String,
     val name: String,
     val icon: String
-)
+): TribeInput

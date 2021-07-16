@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
+import com.zegreatrob.coupling.json.TribeInput
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
@@ -15,4 +16,4 @@ val deletePairsResolver = dispatch(
 )
 
 @Serializable
-data class DeletePairAssignmentsInput(val pairAssignmentsId: String)
+data class DeletePairAssignmentsInput(val pairAssignmentsId: String, override val tribeId: String) : TribeInput

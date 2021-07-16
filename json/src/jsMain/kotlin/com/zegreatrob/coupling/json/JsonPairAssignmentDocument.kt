@@ -31,11 +31,11 @@ data class JsonPairAssignmentDocumentRecord(
 
 @Serializable
 data class SavePairAssignmentsInput(
-    val tribeId: String,
+    override val tribeId: String,
     val pairAssignmentsId: String,
     val date: String,
     val pairs: List<JsonPinnedCouplingPair>,
-)
+): TribeInput
 
 @Serializable
 data class JsonPinnedCouplingPair(val players: List<JsonPinnedPlayer>, val pins: List<JsonPinData> = emptyList())
@@ -54,10 +54,10 @@ data class JsonPinnedPlayer(
 
 @Serializable
 data class SpinInput(
-    val tribeId: String,
+    override val tribeId: String,
     val players: List<JsonPlayerData>,
     val pins: List<JsonPinData>,
-)
+) : TribeInput
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     id = id.value,
