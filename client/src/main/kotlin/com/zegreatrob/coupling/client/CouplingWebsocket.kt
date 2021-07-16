@@ -2,8 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketComponent
 import com.zegreatrob.coupling.client.external.reactwebsocket.websocket
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toMessage
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -13,7 +12,6 @@ import org.w3c.dom.get
 import org.w3c.dom.url.URL
 import react.*
 import react.dom.div
-import kotlin.js.Json
 
 val disconnectedMessage = CouplingSocketMessage(
     text = "Not connected",
@@ -45,7 +43,7 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
         websocket {
             attrs {
                 url = buildSocketUrl(tribeId, useSsl).href
-                onMessage = { JSON.parse<Json>(it).toMessage().let(onMessageFunc) }
+                onMessage = { onMessageFunc(it.fromJsonString<JsonMessage>().toModel()) }
                 onOpen = { setConnected(true) }
                 onClose = { onMessageFunc(disconnectedMessage) }
                 this.ref = { ref.current = it }
@@ -59,7 +57,7 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
 private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent>) = { message: Message ->
     val websocket = ref.current
     if (websocket != null)
-        websocket.sendMessage(JSON.stringify(message.toJson()))
+        message.toSerializable().toJsonString().let(websocket::sendMessage)
     else
         console.error("Message not sent, websocket not initialized", message)
 }

@@ -12,18 +12,23 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.User
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 
-private val format = kotlinx.serialization.json.Json {
+val couplingJsonFormat = kotlinx.serialization.json.Json {
     isLenient = true
     ignoreUnknownKeys = true
     encodeDefaults = true
     coerceInputValues = true
 }
 
-val couplingJsonFormat = format
+private val format = couplingJsonFormat
+
+inline fun <reified T> T.toJsonString() = couplingJsonFormat.encodeToString(this)
+inline fun <reified T> String.fromJsonString() = couplingJsonFormat.decodeFromString<T>(this)
 
 fun Player.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 

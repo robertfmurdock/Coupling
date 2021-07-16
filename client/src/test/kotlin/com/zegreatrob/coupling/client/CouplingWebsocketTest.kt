@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketProps
 import com.zegreatrob.coupling.client.external.reactwebsocket.reactWebsocket
+import com.zegreatrob.coupling.json.toJsonString
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
@@ -11,7 +12,6 @@ import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlinx.browser.window
-import kotlinx.serialization.encodeToString
 import react.dom.div
 import kotlin.test.Test
 
@@ -62,8 +62,8 @@ class CouplingWebsocketTest {
         lastMessage?.assertIsEqualTo(CouplingSocketMessage(expectedMessage, emptySet()))
     }
 
-    private fun socketMessage(expectedMessage: String) = kotlinx.serialization.json.Json.encodeToString(
-        CouplingSocketMessage(expectedMessage, emptySet(), null).toSerializable()
-    )
+    private fun socketMessage(expectedMessage: String) = CouplingSocketMessage(expectedMessage, emptySet(), null)
+        .toSerializable()
+        .toJsonString()
 
 }
