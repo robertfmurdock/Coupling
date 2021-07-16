@@ -4,8 +4,7 @@ import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.serialization.json.decodeFromDynamic
 
-interface GqlQueryComponent : TribeGQLPerformer {
-}
+interface GqlQueryComponent : TribeGQLPerformer
 
 suspend inline fun <reified T, reified S> GqlQueryComponent.performQueryGetComponent(
     tribeId: TribeId,
@@ -15,7 +14,7 @@ suspend inline fun <reified T, reified S> GqlQueryComponent.performQueryGetCompo
     .let {
         val content = it[gqlComponent]
         if (content != null)
-            transform(couplingJsonFormat.decodeFromDynamic<S>(content))
+            transform(couplingJsonFormat.decodeFromDynamic(content))
         else
             null
     }

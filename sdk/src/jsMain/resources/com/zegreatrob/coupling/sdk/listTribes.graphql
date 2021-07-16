@@ -1,0 +1,17 @@
+query listTribes {
+    tribeList {
+        id
+        name
+        email
+        alternateBadgeName
+        animationSpeed
+        animationsEnabled
+        badgesEnabled
+        callSignsEnabled
+        defaultBadgeName
+        pairingRule
+        isDeleted
+        modifyingUserEmail
+        timestamp
+    }
+}
