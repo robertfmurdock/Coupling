@@ -8,7 +8,8 @@ import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
+import kotlinx.serialization.json.JsonElement
 
-val pinListResolve = dispatch(tribeCommand, { _, _ -> PinsQuery }, ::toSerializable)
+val pinListResolve = dispatch(tribeCommand, { _, _: JsonElement -> PinsQuery }, ::toSerializable)
 
 private fun toSerializable(it: List<TribeRecord<Pin>>) = it.map(Record<TribeIdPin>::toSerializable)

@@ -6,8 +6,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
+import kotlinx.serialization.json.JsonElement
 
-val pairAssignmentListResolve = dispatch(tribeCommand, { _, _ -> PairAssignmentDocumentListQuery }, ::toSerializable)
+val pairAssignmentListResolve = dispatch(tribeCommand, { _, _: JsonElement -> PairAssignmentDocumentListQuery }, ::toSerializable)
 
 private fun toSerializable(result: List<TribeRecord<PairAssignmentDocument>>) =
     result.map(TribeRecord<PairAssignmentDocument>::toSerializable)

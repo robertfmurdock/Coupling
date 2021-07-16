@@ -5,14 +5,12 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.ProposeNewPa
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
-import com.zegreatrob.minjson.at
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.decodeFromDynamic
 
 val spinResolver: Resolver = dispatch(
     tribeCommand,
-    { _, args ->
-        val (_, players, pins) = couplingJsonFormat.decodeFromDynamic<SpinInput>(args.at("input"))
+    { _, args: SpinInput ->
+        val (_, players, pins) = args
         ProposeNewPairsCommand(
             players.map(JsonPlayerData::toModel),
             pins.map(JsonPinData::toModel),

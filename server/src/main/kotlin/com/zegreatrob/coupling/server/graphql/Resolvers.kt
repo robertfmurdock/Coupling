@@ -5,21 +5,23 @@ import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.SuspendResultAction
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.minjson.at
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.promise
+import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 
 typealias GraphQLDispatcherProvider<D> = suspend (Request, Json?, Json?) -> D?
 
-inline fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, reified R, reified J> dispatch(
+inline fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, reified R, reified J, reified I> dispatch(
     crossinline dispatcherFunc: GraphQLDispatcherProvider<D>,
-    crossinline queryFunc: (Json, Json) -> Q,
+    crossinline queryFunc: (Json, I) -> Q,
     crossinline toSerializable: (R) -> J
 ) = { entity: Json, args: Json, request: Request ->
     request.scope.promise {
-        val command = queryFunc(entity, args)
+        val command = queryFunc(entity, couplingJsonFormat.decodeFromDynamic(args.at("/input")))
         dispatcherFunc(request, entity, args)
             ?.execute(command)
             ?.successOrNull { couplingJsonFormat.encodeToDynamic(toSerializable(it)) }
