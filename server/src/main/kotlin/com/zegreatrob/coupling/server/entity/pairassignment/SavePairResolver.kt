@@ -16,10 +16,10 @@ import kotlin.js.Json
 val savePairsResolver = dispatch(
     tribeCommand,
     { _, args -> args.at<Json>("input").toModel().let(::SavePairAssignmentDocumentCommand) },
-    ::toJson
+    ::toSerializable
 )
 
 private fun Json?.toModel() = couplingJsonFormat.decodeFromDynamic<SavePairAssignmentsInput>(this).toModel()
 
-private fun toJson(result: TribeIdPairAssignmentDocument) = result.document.toSerializable()
+private fun toSerializable(result: TribeIdPairAssignmentDocument) = result.document.toSerializable()
 
