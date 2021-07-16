@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.server.graphql.DispatcherProviders.tribeCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
 import com.zegreatrob.minjson.at
 import kotlinx.serialization.json.decodeFromDynamic
-import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 
 val savePairsResolver = dispatch(
@@ -22,6 +21,5 @@ val savePairsResolver = dispatch(
 
 private fun Json?.toModel() = couplingJsonFormat.decodeFromDynamic<SavePairAssignmentsInput>(this).toModel()
 
-private fun toJson(result: TribeIdPairAssignmentDocument) = couplingJsonFormat.encodeToDynamic(
-    result.document.toSerializable()
-).unsafeCast<Json>()
+private fun toJson(result: TribeIdPairAssignmentDocument) = result.document.toSerializable()
+
