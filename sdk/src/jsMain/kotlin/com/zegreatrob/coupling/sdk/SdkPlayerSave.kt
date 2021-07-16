@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.pairsToJson
-import com.zegreatrob.coupling.json.plus
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.repository.player.PlayerSave
 import kotlin.js.json
@@ -18,13 +17,13 @@ interface SdkPlayerSave : PlayerSave, GqlSyntax {
 
     private fun TribeIdPlayer.savePlayerInput() = json("tribeId" to id.value).add(
         emptyArray<Pair<String, Any?>>()
-            .plus("playerId", element.id)
-            .plus("name", element.name)
-            .plus("email", element.email)
-            .plus("badge", "${element.badge}")
-            .plus("callSignAdjective", element.callSignAdjective)
-            .plus("callSignNoun", element.callSignNoun)
-            .plus("imageURL", element.imageURL)
+            .plus(Pair<String, Any?>("playerId", element.id))
+            .plus(Pair<String, Any?>("name", element.name))
+            .plus(Pair<String, Any?>("email", element.email))
+            .plus(Pair<String, Any?>("badge", "${element.badge}"))
+            .plus(Pair<String, Any?>("callSignAdjective", element.callSignAdjective))
+            .plus(Pair<String, Any?>("callSignNoun", element.callSignNoun))
+            .plus(Pair<String, Any?>("imageURL", element.imageURL))
             .pairsToJson()
     )
 }

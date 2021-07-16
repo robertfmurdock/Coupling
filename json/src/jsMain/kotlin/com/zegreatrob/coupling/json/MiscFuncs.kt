@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
@@ -70,9 +69,6 @@ fun User.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 fun Record<User>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
 @ExperimentalSerializationApi
-fun Json.toUser() = format.decodeFromDynamic<JsonUser>(asDynamic()).toModel()
-
-@ExperimentalSerializationApi
 fun Json.toUserRecord() = format.decodeFromDynamic<JsonUserRecord>(asDynamic()).toModel()
 
 @ExperimentalSerializationApi
@@ -95,19 +91,6 @@ fun Json.toMessage(): Message = format.decodeFromDynamic<JsonMessage>(asDynamic(
 fun Json.toCouplingServerMessage(): CouplingSocketMessage = format.decodeFromDynamic<JsonCouplingSocketMessage>(
     asDynamic()
 ).toModel()
-
-fun Array<Pair<String, Any?>>.plus(key: String, value: Any?) = plus(Pair(key, value))
-
-@ExperimentalSerializationApi
-fun List<Record<TribeIdPlayer>>.toJsonArray() = format.encodeToDynamic(map(Record<TribeIdPlayer>::toSerializable))
-    .unsafeCast<Array<Json>>()
-
-@ExperimentalSerializationApi
-fun List<Pin>.toJson(): Array<Json> = format.encodeToDynamic(map(Pin::toSerializable)).unsafeCast<Array<Json>>()
-
-@ExperimentalSerializationApi
-fun List<Record<TribeIdPin>>.toJsonArray() = format.encodeToDynamic(map(Record<TribeIdPin>::toSerializable))
-    .unsafeCast<Array<Json>>()
 
 @ExperimentalSerializationApi
 val playerJsonKeys = Player(
