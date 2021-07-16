@@ -1,8 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.pairsToJson
+import com.zegreatrob.coupling.json.SavePlayerInput
+import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.player.tribeId
 import com.zegreatrob.coupling.repository.player.PlayerSave
+import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.json
 
 interface SdkPlayerSave : PlayerSave, GqlSyntax {
@@ -15,15 +18,16 @@ interface SdkPlayerSave : PlayerSave, GqlSyntax {
         )
     }
 
-    private fun TribeIdPlayer.savePlayerInput() = json("tribeId" to id.value).add(
-        emptyArray<Pair<String, Any?>>()
-            .plus(Pair<String, Any?>("playerId", element.id))
-            .plus(Pair<String, Any?>("name", element.name))
-            .plus(Pair<String, Any?>("email", element.email))
-            .plus(Pair<String, Any?>("badge", "${element.badge}"))
-            .plus(Pair<String, Any?>("callSignAdjective", element.callSignAdjective))
-            .plus(Pair<String, Any?>("callSignNoun", element.callSignNoun))
-            .plus(Pair<String, Any?>("imageURL", element.imageURL))
-            .pairsToJson()
+    private fun TribeIdPlayer.savePlayerInput() = couplingJsonFormat.encodeToDynamic(
+        SavePlayerInput(
+            tribeId = tribeId.value,
+            playerId = element.id,
+            name = element.name,
+            email = element.email,
+            badge = "${element.badge}",
+            callSignAdjective = element.callSignAdjective,
+            callSignNoun = element.callSignNoun,
+            imageURL = element.imageURL,
+        )
     )
 }

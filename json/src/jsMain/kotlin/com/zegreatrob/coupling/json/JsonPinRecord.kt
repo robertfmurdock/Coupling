@@ -38,11 +38,11 @@ data class JsonPinData(override val id: String?, override val name: String, over
 
 @Serializable
 data class SavePinInput(
-    val tribeId: String,
+    override val tribeId: String,
     val pinId: String?,
     val name: String,
     val icon: String,
-)
+): TribeInput
 
 @Serializable
 data class PinInput(

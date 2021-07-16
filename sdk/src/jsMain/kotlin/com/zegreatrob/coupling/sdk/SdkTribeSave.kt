@@ -1,8 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.json.SaveTribeInput
+import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.tribe.TribeSave
+import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.json
 
 interface SdkTribeSave : TribeSave, GqlSyntax {
@@ -17,16 +20,18 @@ interface SdkTribeSave : TribeSave, GqlSyntax {
         )
     }
 
-    private fun Tribe.saveTribeInput() = json(
-        "tribeId" to id.value,
-        "pairingRule" to PairingRule.toValue(pairingRule),
-        "name" to name,
-        "email" to email,
-        "defaultBadgeName" to defaultBadgeName,
-        "alternateBadgeName" to alternateBadgeName,
-        "badgesEnabled" to badgesEnabled,
-        "callSignsEnabled" to callSignsEnabled,
-        "animationsEnabled" to animationEnabled,
-        "animationSpeed" to animationSpeed
+    private fun Tribe.saveTribeInput() = couplingJsonFormat.encodeToDynamic(
+        SaveTribeInput(
+            tribeId = id.value,
+            pairingRule = PairingRule.toValue(pairingRule),
+            name = name,
+            email = email,
+            defaultBadgeName = defaultBadgeName,
+            alternateBadgeName = alternateBadgeName,
+            badgesEnabled = badgesEnabled,
+            callSignsEnabled = callSignsEnabled,
+            animationsEnabled = animationEnabled,
+            animationSpeed = animationSpeed
+        )
     )
 }
