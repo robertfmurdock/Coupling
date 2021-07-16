@@ -13,7 +13,7 @@
     "@aws-sdk/client-lambda": "^3.21.0",
     "@aws-sdk/property-provider": "^3.20.0",
     "@graphql-tools/schema": "^7.1.5",
-    "aws-sdk": "2.946.0",
+    "aws-sdk": "2.947.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
