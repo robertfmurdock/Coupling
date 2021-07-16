@@ -14,10 +14,10 @@ data class JsonPinRecord(
     val id: String? = null,
     val name: String = "",
     val icon: String = "",
-    override val tribeId: String? = null,
-    override val modifyingUserEmail: String? = null,
-    override val isDeleted: Boolean? = false,
-    override val timestamp: String? = DateTime.now().toDate().toISOString(),
+    override val tribeId: String,
+    override val modifyingUserEmail: String,
+    override val isDeleted: Boolean,
+    override val timestamp: String,
 ) : JsonTribeRecord
 
 interface JsonTribeRecord {
@@ -80,8 +80,8 @@ fun JsonPinData.toModel(): Pin = Pin(
 )
 
 fun JsonPinRecord.toModel(): Record<TribeIdPin> = Record(
-    data = TribeId(tribeId!!).with(Pin(id = id, name = name, icon = icon)),
-    modifyingUserId = modifyingUserEmail!!,
-    isDeleted = isDeleted!!,
-    timestamp = DateTime.fromString(timestamp!!).local
+    data = TribeId(tribeId).with(Pin(id = id, name = name, icon = icon)),
+    modifyingUserId = modifyingUserEmail,
+    isDeleted = isDeleted,
+    timestamp = DateTime.fromString(timestamp).local
 )

@@ -19,9 +19,9 @@ data class JsonUserRecord(
     val id: String,
     val email: String,
     val authorizedTribeIds: Set<String>,
-    val modifyingUserEmail: String? = null,
-    val isDeleted: Boolean? = false,
-    val timestamp: String? = DateTime.now().toDate().toISOString(),
+    val modifyingUserEmail: String,
+    val isDeleted: Boolean,
+    val timestamp: String,
 )
 
 fun User.toSerializable() = JsonUser(
@@ -51,7 +51,7 @@ fun JsonUserRecord.toModel() = Record(
         email = email,
         authorizedTribeIds = authorizedTribeIds.map(::TribeId).toSet(),
     ),
-    modifyingUserId = modifyingUserEmail!!,
-    isDeleted = isDeleted!!,
-    timestamp = DateTime.fromString(timestamp!!).local,
+    modifyingUserId = modifyingUserEmail,
+    isDeleted = isDeleted,
+    timestamp = DateTime.fromString(timestamp).local,
 )

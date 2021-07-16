@@ -90,7 +90,7 @@ private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepositor
     logger.info { "LOADING USER ${userJson["userEmail"]}" }
 
     userJson["userRecords"].unsafeCast<Array<Json>>().forEach { recordJson ->
-        userRepository.saveRawRecord(recordJson.toUserRecord())
+        userRepository.saveRawRecord(format.decodeFromDynamic<JsonUserRecord>(recordJson.asDynamic()).toModel())
     }
 
 }
