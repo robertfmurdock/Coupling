@@ -64,7 +64,7 @@ private suspend fun tribeDataSerializable(
 @Serializable
 data class TribeData(
     val tribeId: String,
-    val tribeRecords: List<JsonTribe>,
+    val tribeRecords: List<JsonTribeRecord>,
     val playerRecords: List<JsonPlayerRecord>,
     val pairAssignmentRecords: List<JsonPairAssignmentDocumentRecord>,
     val pinRecords: List<JsonPinRecord>,

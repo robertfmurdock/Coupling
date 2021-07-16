@@ -27,7 +27,7 @@ data class JsonPairAssignmentDocumentRecord(
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: String
-) : JsonTribeRecord
+) : JsonTribeRecordInfo
 
 @Serializable
 data class SavePairAssignmentsInput(

@@ -14,8 +14,12 @@ kotlin {
             nodejs()
         }
     }
-
     sourceSets {
+        all {
+            languageSettings {
+                useExperimentalAnnotation("kotlinx.serialization.ExperimentalSerializationApi")
+            }
+        }
         val commonMain by getting {
             dependencies {
                 implementation(project(":model"))

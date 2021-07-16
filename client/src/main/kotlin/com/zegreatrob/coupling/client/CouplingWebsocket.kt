@@ -45,7 +45,7 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
         websocket {
             attrs {
                 url = buildSocketUrl(tribeId, useSsl).href
-                onMessage = { JSON.parse<Json>(it).toMessage()?.let(onMessageFunc) }
+                onMessage = { JSON.parse<Json>(it).toMessage().let(onMessageFunc) }
                 onOpen = { setConnected(true) }
                 onClose = { onMessageFunc(disconnectedMessage) }
                 this.ref = { ref.current = it }

@@ -18,9 +18,9 @@ data class JsonPinRecord(
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: String,
-) : JsonTribeRecord
+) : JsonTribeRecordInfo
 
-interface JsonTribeRecord {
+interface JsonTribeRecordInfo {
     val tribeId: String?
     val modifyingUserEmail: String?
     val isDeleted: Boolean?

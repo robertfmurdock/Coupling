@@ -20,9 +20,23 @@ data class JsonTribe(
     val callSignsEnabled: Boolean = false,
     val animationsEnabled: Boolean = true,
     val animationSpeed: Double = 1.0,
-    val modifyingUserEmail: String? = null,
-    val isDeleted: Boolean? = false,
-    val timestamp: String? = DateTime.now().toDate().toISOString(),
+)
+
+@Serializable
+data class JsonTribeRecord(
+    val id: String,
+    val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
+    val badgesEnabled: Boolean = false,
+    val defaultBadgeName: String = "Default",
+    val alternateBadgeName: String = "Alternate",
+    val email: String? = null,
+    val name: String? = null,
+    val callSignsEnabled: Boolean = false,
+    val animationsEnabled: Boolean = true,
+    val animationSpeed: Double = 1.0,
+    val modifyingUserEmail: String,
+    val isDeleted: Boolean,
+    val timestamp: String,
 )
 
 fun Tribe.toSerializable() = JsonTribe(
@@ -36,12 +50,19 @@ fun Tribe.toSerializable() = JsonTribe(
     callSignsEnabled = callSignsEnabled,
     animationsEnabled = animationEnabled,
     animationSpeed = animationSpeed,
-    modifyingUserEmail = null,
-    isDeleted = null,
-    timestamp = null,
 )
 
-fun Record<Tribe>.toSerializable() = data.toSerializable().copy(
+fun Record<Tribe>.toSerializable() = JsonTribeRecord(
+    id = data.id.value,
+    pairingRule = PairingRule.toValue(data.pairingRule),
+    badgesEnabled = data.badgesEnabled,
+    defaultBadgeName = data.defaultBadgeName,
+    alternateBadgeName = data.alternateBadgeName,
+    email = data.email,
+    name = data.name,
+    callSignsEnabled = data.callSignsEnabled,
+    animationsEnabled = data.animationEnabled,
+    animationSpeed = data.animationSpeed,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp.toDate().toISOString(),
@@ -60,10 +81,20 @@ fun JsonTribe.toModel(): Tribe = Tribe(
     animationSpeed = animationSpeed,
 )
 
-
-fun JsonTribe.toModelRecord(): Record<Tribe> = Record(
-    data = toModel(),
-    modifyingUserId = modifyingUserEmail!!,
-    isDeleted = isDeleted!!,
-    timestamp = DateTime.fromString(timestamp!!).local
+fun JsonTribeRecord.toModelRecord(): Record<Tribe> = Record(
+    data = Tribe(
+        id = TribeId(id),
+        pairingRule = PairingRule.fromValue(pairingRule),
+        badgesEnabled = badgesEnabled,
+        defaultBadgeName = defaultBadgeName,
+        alternateBadgeName = alternateBadgeName,
+        email = email,
+        name = name,
+        callSignsEnabled = callSignsEnabled,
+        animationEnabled = animationsEnabled,
+        animationSpeed = animationSpeed,
+    ),
+    modifyingUserId = modifyingUserEmail,
+    isDeleted = isDeleted,
+    timestamp = DateTime.fromString(timestamp).local
 )

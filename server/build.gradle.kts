@@ -19,6 +19,11 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            languageSettings {
+                useExperimentalAnnotation("kotlinx.serialization.ExperimentalSerializationApi")
+            }
+        }
         val main by getting {
             resources.srcDir("src/main/javascript")
         }

@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.user.User
 
 class LocalStorageRepositoryBackend {
-    val tribe by localBackend(Record<Tribe>::toSerializable, JsonTribe::toModelRecord)
+    val tribe by localBackend(Record<Tribe>::toSerializable, JsonTribeRecord::toModelRecord)
     val player by localBackend(TribeRecord<Player>::toSerializable, JsonPlayerRecord::toModel)
     val pairAssignments by localBackend(
         TribeRecord<PairAssignmentDocument>::toSerializable,

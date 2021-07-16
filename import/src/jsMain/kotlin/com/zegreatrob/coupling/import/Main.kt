@@ -52,7 +52,7 @@ suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     jsonLine.getArray("tribeRecords").forEach { recordJson ->
         tryToImport({ "Failed to save tribe $tribeId" }) {
             catalog.tribeRepository.saveRawRecord(
-                format.decodeFromDynamic<JsonTribe>(recordJson).toModelRecord()
+                format.decodeFromDynamic<JsonTribeRecord>(recordJson).toModelRecord()
             )
         }
     }

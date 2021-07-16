@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.JsonTribe
+import com.zegreatrob.coupling.json.JsonTribeRecord
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.Record
@@ -19,6 +19,6 @@ interface SdkTribeListGet : TribeListGet, AxiosSyntax, GqlSyntax {
     private fun tribeListQuery() = json("query" to Queries.listTribes)
 
     private fun Json?.toTribeRecordList(): List<Record<Tribe>> =
-        couplingJsonFormat.decodeFromDynamic<List<JsonTribe>>(this)
-            .map(JsonTribe::toModelRecord)
+        couplingJsonFormat.decodeFromDynamic<List<JsonTribeRecord>>(this)
+            .map(JsonTribeRecord::toModelRecord)
 }
