@@ -79,7 +79,7 @@ fun JsonPinData.toModel(): Pin = Pin(
     icon = icon,
 )
 
-fun JsonPinRecord.toModelRecord(): Record<TribeIdPin> = Record(
+fun JsonPinRecord.toModel(): Record<TribeIdPin> = Record(
     data = TribeId(tribeId!!).with(Pin(id = id, name = name, icon = icon)),
     modifyingUserId = modifyingUserEmail!!,
     isDeleted = isDeleted!!,

@@ -39,13 +39,7 @@ fun Pin.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 fun Json.toPlayer(): Player = format.decodeFromDynamic<JsonPlayerData>(asDynamic()).toModel()
 
 @ExperimentalSerializationApi
-fun Json.toPlayerRecord(): TribeRecord<Player> = format.decodeFromDynamic<JsonPlayerRecord>(asDynamic()).toModel()
-
-@ExperimentalSerializationApi
 fun Json.toPin() = format.decodeFromDynamic<JsonPinData>(asDynamic()).toModel()
-
-@ExperimentalSerializationApi
-fun Json.toPinRecord() = format.decodeFromDynamic<JsonPinRecord>(asDynamic()).toModelRecord()
 
 @ExperimentalSerializationApi
 fun Json.toTribe() = format.decodeFromDynamic<JsonTribe>(asDynamic()).toModel()
@@ -73,10 +67,6 @@ fun Json.toUserRecord() = format.decodeFromDynamic<JsonUserRecord>(asDynamic()).
 
 @ExperimentalSerializationApi
 fun Json.toPairAssignmentDocument() = format.decodeFromDynamic<JsonPairAssignmentDocument>(asDynamic()).toModel()
-
-@ExperimentalSerializationApi
-fun Json.toPairAssignmentDocumentRecord() =
-    format.decodeFromDynamic<JsonPairAssignmentDocumentRecord>(asDynamic()).toModel()
 
 @ExperimentalSerializationApi
 fun PairAssignmentDocument.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
