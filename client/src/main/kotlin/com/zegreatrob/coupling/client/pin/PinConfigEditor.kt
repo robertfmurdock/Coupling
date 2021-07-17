@@ -8,8 +8,7 @@ import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toPin
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -42,9 +41,9 @@ fun RBuilder.pinConfigEditor(
 ) = child(PinConfigEditor, PinConfigEditorProps(tribe, pin, reload, dispatchFunc))
 
 val PinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinConfigEditorProps ->
-    val (values, onChange) = useForm(pin.toJson())
+    val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic())
 
-    val updatedPin = values.toPin()
+    val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val onSubmit = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
     val onRemove = pin.id?.let { pinId ->

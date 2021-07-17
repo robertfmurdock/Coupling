@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.export
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.json.couplingJsonFormat
-import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
@@ -84,7 +84,7 @@ private suspend fun outputUsers(repositoryCatalog: MongoRepositoryCatalog) {
         .entries.sortedBy { it.key }.forEach {
             json("userEmail" to it.key,
                 "userRecords" to it.value.map { record ->
-                    record.toJson()
+                    record.toSerializable().toJsonDynamic().unsafeCast<Json>()
                         .add(overrideUserIdWithEmailToAvoidBadRecordProblems(record))
                 })
                 .print()

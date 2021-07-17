@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.client.external.react.*
 import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toPlayer
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -21,6 +20,7 @@ import react.RProps
 import react.dom.*
 import react.router.dom.redirect
 import react.useState
+import kotlin.js.Json
 
 data class PlayerConfigEditorProps(
     val tribe: Tribe,
@@ -35,11 +35,11 @@ private val styles = useStyles("player/PlayerConfigEditor")
 
 val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windowFuncs ->
     val (tribe, player, reload, dispatchFunc) = props
-    val (values, onChange) = useForm(player.toJson())
+    val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
 
-    val updatedPlayer = values.toPlayer()
+    val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
     val onSubmit = dispatchFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() })
     val onRemove = dispatchFunc({ DeletePlayerCommand(tribe.id, player.id) },
         { setRedirectUrl(tribe.id.currentPairsPage()) })

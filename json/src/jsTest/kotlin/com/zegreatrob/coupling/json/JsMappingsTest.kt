@@ -22,7 +22,7 @@ class JsMappingsTest {
                 "callSignNoun" to ""
             )
         }) exercise {
-            original.toPlayer().toJson()
+            original.fromJsonDynamic<JsonPlayerData>().toModel().toSerializable().toJsonDynamic().unsafeCast<Json>()
         } verify { result -> result.assertIsEquivalentTo(original) }
 
         @Test
@@ -37,7 +37,7 @@ class JsMappingsTest {
                 "imageURL" to "batman.png"
             )
         }) exercise {
-            original.toPlayer().toJson()
+            original.fromJsonDynamic<JsonPlayerData>().toModel().toSerializable().toJsonDynamic().unsafeCast<Json>()
         } verify { result -> result.assertIsEquivalentTo(original) }
     }
 

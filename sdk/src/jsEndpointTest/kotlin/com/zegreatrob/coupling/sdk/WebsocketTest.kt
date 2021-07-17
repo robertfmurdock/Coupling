@@ -1,8 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.toCouplingServerMessage
-import com.zegreatrob.coupling.json.toMessage
+import com.zegreatrob.coupling.json.JsonCouplingSocketMessage
+import com.zegreatrob.coupling.json.JsonMessage
+import com.zegreatrob.coupling.json.fromJsonString
+import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -14,7 +17,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.*
 import org.w3c.dom.url.URL
-import kotlin.js.Json
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -47,7 +49,7 @@ class WebsocketTest {
         }
         messageDeferred.await()
     } verify { result ->
-        JSON.parse<Json>(result).toCouplingServerMessage()
+        result.toCouplingServerMessage()
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
             )
@@ -76,7 +78,7 @@ class WebsocketTest {
         (firstTwoSockets + thirdSocket)
     } verifyAnd { result ->
         result[2].first
-            .map { JSON.parse<Json>(it).toCouplingServerMessage() }
+            .map(String::toCouplingServerMessage)
             .assertIsEqualTo(
                 listOf(
                     CouplingSocketMessage(
@@ -102,7 +104,7 @@ class WebsocketTest {
         val socket2 = openSocket(sdk, tribe).await()
         listOf(socket1, socket2)
     } verifyAnd { sockets ->
-        sockets[0].first.map { JSON.parse<Json>(it).toCouplingServerMessage() }
+        sockets[0].first.map(String::toCouplingServerMessage)
             .assertIsEqualTo(
                 listOf(
                     CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
@@ -126,7 +128,7 @@ class WebsocketTest {
     } exercise {
         sdk.save(tribe.id.with(expectedPairDoc))
     } verifyAnd {
-        sockets[0].first.map { JSON.parse<Json>(it).toMessage() }
+        sockets[0].first.map(String::toMessage)
             .assertIsEqualTo(
                 listOf(
                     CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
@@ -156,7 +158,7 @@ class WebsocketTest {
                 deferred.await()
             }
     } verifyAnd { openSocket ->
-        openSocket.first.map { JSON.parse<Json>(it).toCouplingServerMessage() }
+        openSocket.first.map(String::toCouplingServerMessage)
             .assertIsEqualTo(
                 listOf(
                     CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet()),
@@ -262,3 +264,7 @@ class WebsocketTest {
     }
 
 }
+
+private fun String.toCouplingServerMessage(): CouplingSocketMessage = fromJsonString<JsonCouplingSocketMessage>().toModel()
+
+fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()

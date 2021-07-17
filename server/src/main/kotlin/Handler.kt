@@ -2,8 +2,7 @@
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApi
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toMessage
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
@@ -127,7 +126,7 @@ else
 fun serverlessSocketMessage(event: Json): dynamic {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("message $connectionId")
-    val message = event.at<String>("body")?.let { JSON.parse<Json>(it) }?.toMessage()
+    val message = event.at<String>("body")?.fromJsonString<JsonMessage>()?.toModel()
     return MainScope().promise {
         val socketDispatcher = socketDispatcher()
         when (message) {
@@ -153,7 +152,7 @@ fun notifyConnect(event: Json) = MainScope().promise {
     socketDispatcher.execute(ConnectionsQuery(connectionId))
         ?.let { results ->
             socketDispatcher.managementApi.postToConnection(
-                json("ConnectionId" to connectionId, "Data" to JSON.stringify(results.second.toJson()))
+                json("ConnectionId" to connectionId, "Data" to results.second.toSerializable().toJsonString())
                     .also { console.log("Sending message to ", connectionId, JSON.stringify(it)) }
             ).promise()
         }

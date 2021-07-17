@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -60,7 +59,6 @@ private suspend fun tribeDataSerializable(
         .map(Record<TribeElement<Pin>>::toSerializable),
 )
 
-
 @Serializable
 data class TribeData(
     val tribeId: String,
@@ -76,7 +74,7 @@ private suspend fun outputUsers(repositoryCatalog: DynamoRepositoryCatalog) {
         .groupBy { it.data.email }
         .entries.sortedBy { it.key }
         .forEach {
-            json("userEmail" to it.key, "userRecords" to it.value.map(Record<User>::toJson))
+            json("userEmail" to it.key, "userRecords" to it.value.map { it.toSerializable().toJsonDynamic() })
                 .print()
         }
 }

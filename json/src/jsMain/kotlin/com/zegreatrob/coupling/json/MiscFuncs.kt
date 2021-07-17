@@ -1,17 +1,9 @@
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.coupling.model.Message
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.User
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.decodeFromDynamic
@@ -25,46 +17,12 @@ val couplingJsonFormat = kotlinx.serialization.json.Json {
     coerceInputValues = true
 }
 
-private val format = couplingJsonFormat
-
 inline fun <reified T> T.toJsonString() = couplingJsonFormat.encodeToString(this)
 inline fun <reified T> String.fromJsonString() = couplingJsonFormat.decodeFromString<T>(this)
 
-fun Player.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
 
-fun TribeRecord<Player>.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun Pin.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun Json.toPlayer(): Player = format.decodeFromDynamic<JsonPlayerData>(asDynamic()).toModel()
-
-fun Json.toPin() = format.decodeFromDynamic<JsonPinData>(asDynamic()).toModel()
-
-fun Json.toTribe() = format.decodeFromDynamic<JsonTribe>(asDynamic()).toModel()
-
-fun Tribe.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun Record<Tribe>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun Record<TribeIdPin>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun User.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun Record<User>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun Json.toPairAssignmentDocument() = format.decodeFromDynamic<JsonPairAssignmentDocument>(asDynamic()).toModel()
-
-fun PairAssignmentDocument.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun TribeRecord<PairAssignmentDocument>.toJson() = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun Message.toJson(): Json = format.encodeToDynamic(toSerializable()).unsafeCast<Json>()
-
-fun Json.toMessage(): Message = format.decodeFromDynamic<JsonMessage>(asDynamic()).toModel()
-
-fun Json.toCouplingServerMessage(): CouplingSocketMessage = format.decodeFromDynamic<JsonCouplingSocketMessage>(
-    asDynamic()
-).toModel()
+inline fun <reified T> T.toJsonDynamic() = couplingJsonFormat.encodeToDynamic(this)
+inline fun <reified T> Json.fromJsonDynamic() = couplingJsonFormat.decodeFromDynamic<T>(this)
 
 val playerJsonKeys = Player(
     id = "1",
@@ -75,7 +33,9 @@ val playerJsonKeys = Player(
     callSignNoun = "stub",
     imageURL = "stub",
 )
-    .toJson()
+    .toSerializable()
+    .toJsonDynamic()
+    .unsafeCast<Json>()
     .getKeys()
 
 val playerRecordJsonKeys = TribeRecord(
@@ -92,5 +52,7 @@ val playerRecordJsonKeys = TribeRecord(
     ),
     ""
 )
-    .toJson()
+    .toSerializable()
+    .toJsonDynamic()
+    .unsafeCast<Json>()
     .getKeys()

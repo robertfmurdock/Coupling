@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.json.toJson
-import com.zegreatrob.coupling.json.toTribe
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -36,8 +35,8 @@ private val styles = useStyles("tribe/TribeConfig")
 
 val TribeConfig = reactFunction { (tribe, commandFunc): TribeConfigProps ->
     val isNew = tribe.id.value == ""
-    val (values, onChange) = useForm(tribe.withDefaultTribeId().toJson())
-    val updatedTribe = values.correctTypes().toTribe()
+    val (values, onChange) = useForm(tribe.withDefaultTribeId().toSerializable().toJsonDynamic().unsafeCast<Json>())
+    val updatedTribe = values.correctTypes().fromJsonDynamic<JsonTribe>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToTribeList = { setRedirectUrl(Paths.tribeList()) }
     val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }, { redirectToTribeList() })
