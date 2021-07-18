@@ -20,7 +20,6 @@ val couplingJsonFormat = kotlinx.serialization.json.Json {
 inline fun <reified T> T.toJsonString() = couplingJsonFormat.encodeToString(this)
 inline fun <reified T> String.fromJsonString() = couplingJsonFormat.decodeFromString<T>(this)
 
-
 inline fun <reified T> T.toJsonDynamic() = couplingJsonFormat.encodeToDynamic(this)
 inline fun <reified T> Json.fromJsonDynamic() = couplingJsonFormat.decodeFromDynamic<T>(this)
 

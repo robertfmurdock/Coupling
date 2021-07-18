@@ -19,7 +19,7 @@ interface SdkSpin : GqlSyntax {
         ),
         "spin",
         ::toOutput
-    )
+    )!!
 
     private fun toOutput(at: SpinOutput) = at.result.toModel()
 

@@ -37,11 +37,11 @@ suspend inline fun <reified I, reified O, M> GqlSyntax.performQuery(
     input: I,
     resultName: String,
     toOutput: (O) -> M
-): M = performQuery(mutation, input).unsafeCast<Json>()
+): M? = performQuery(mutation, input).unsafeCast<Json>()
     .at<Json>("/data/data")!!
-    .at<Json>("/$resultName")!!
-    .fromJsonDynamic<O>()
-    .let(toOutput)
+    .at<Json>("/$resultName")
+    ?.fromJsonDynamic<O>()
+    ?.let(toOutput)
 
 object EndpointFinder {
     val gqlEndpoint get() = "${basename()}/api/graphql"

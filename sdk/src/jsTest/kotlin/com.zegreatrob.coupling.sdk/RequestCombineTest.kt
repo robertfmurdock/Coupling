@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.external.axios.Axios
 import com.zegreatrob.minassert.assertIsEqualTo
