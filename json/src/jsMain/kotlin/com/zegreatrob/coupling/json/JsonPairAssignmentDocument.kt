@@ -19,6 +19,9 @@ data class JsonPairAssignmentDocument(
 )
 
 @Serializable
+data class SpinOutput(val result: JsonPairAssignmentDocument)
+
+@Serializable
 data class JsonPairAssignmentDocumentRecord(
     val id: String,
     val date: String,

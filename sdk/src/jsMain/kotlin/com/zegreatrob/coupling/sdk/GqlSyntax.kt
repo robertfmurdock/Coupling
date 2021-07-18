@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.minjson.at
 import kotlinx.browser.window
@@ -30,6 +31,17 @@ interface GqlSyntax : AxiosSyntax {
 suspend inline fun <reified T> GqlSyntax.performQuery(query: String, input: T): dynamic = performQuery(
     json("query" to query, "variables" to json("input" to input.toJsonDynamic()))
 )
+
+suspend inline fun <reified I, reified O, M> GqlSyntax.performQuery(
+    mutation: String,
+    input: I,
+    resultName: String,
+    toOutput: (O) -> M
+): M = performQuery(mutation, input).unsafeCast<Json>()
+    .at<Json>("/data/data")!!
+    .at<Json>("/$resultName")!!
+    .fromJsonDynamic<O>()
+    .let(toOutput)
 
 object EndpointFinder {
     val gqlEndpoint get() = "${basename()}/api/graphql"
