@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.minjson.at
 import kotlinx.browser.window
 import kotlinx.coroutines.await
@@ -17,7 +18,7 @@ interface GqlSyntax : AxiosSyntax {
 
     suspend fun String.performQuery() = axios.post(gqlEndpoint, json("query" to this)).handleException().await()
 
-    suspend fun performQuery(body: Json) = axios.post(gqlEndpoint, body).handleException().await()
+    suspend fun performQuery(body: Json): dynamic = axios.post(gqlEndpoint, body).handleException().await()
 
     private inline fun Promise<dynamic>.handleException(): Promise<dynamic> = this.catch {
         val responseBody = JSON.stringify(it.unsafeCast<Json>().at("response/data"))
@@ -25,6 +26,10 @@ interface GqlSyntax : AxiosSyntax {
     }
 
 }
+
+suspend inline fun <reified T> GqlSyntax.performQuery(query: String, input: T): dynamic = performQuery(
+    json("query" to query, "variables" to json("input" to input.toJsonDynamic()))
+)
 
 object EndpointFinder {
     val gqlEndpoint get() = "${basename()}/api/graphql"
