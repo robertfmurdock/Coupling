@@ -27,6 +27,9 @@ config.module.rules.push(
         use: [
             {
                 loader: MiniCssExtractPlugin.loader,
+                options: {
+                    publicPath: ''
+                }
             },
             {
                 loader: 'css-loader',
@@ -37,10 +40,7 @@ config.module.rules.push(
         ],
     }, {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader',
-        options: {
-            limit: "100000"
-        }
+        type: 'asset'
     }
 );
 config.externals = {"cheerio": "window", "fs": "empty"}
@@ -78,6 +78,6 @@ config.plugins.push(
         cache: true
     }),
     new MiniCssExtractPlugin({
-        filename: 'styles.css'
+        filename: 'styles.css',
     }),
 );
