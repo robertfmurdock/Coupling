@@ -52,7 +52,7 @@ There are multiple options! If you already have the images you want hosted somew
 I Don't Have a Real Team, But I Still Want To Try Coupling!
 -----------------------------------------------------------
 
-For people who just want to play with the program and understand its features, I've included a demo dataset in the file Coupling Demo Data.zip. Unzip the file, then use mongorestore to add it to your local mongo database. A tribe with a set of players and history will be available to you the next time you connect to Coupling.
+For people who just want to play with the program and understand its features, try making a tribe, adding a few players, and just giving it a shot. :-). https://coupling.zegreatrob.com if you need the link again.
 
 Is This Really Just For Work?
 -----------------------------
