@@ -7,13 +7,13 @@
     "../test": "test"
   },
   "dependencies": {
-    "@aws-sdk/client-apigatewaymanagementapi": "^3.23.0",
-    "@aws-sdk/client-dynamodb": "^3.23.0",
-    "@aws-sdk/lib-dynamodb": "^3.23.0",
-    "@aws-sdk/client-lambda": "^3.23.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.24.0",
+    "@aws-sdk/client-dynamodb": "^3.24.0",
+    "@aws-sdk/lib-dynamodb": "^3.24.0",
+    "@aws-sdk/client-lambda": "^3.24.0",
     "@aws-sdk/property-provider": "^3.23.0",
     "@graphql-tools/schema": "^8.0.1",
-    "aws-sdk": "2.956.0",
+    "aws-sdk": "2.957.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-dynamodb": "^2.0.4",
@@ -37,7 +37,7 @@
     "serverless-http": "^2.7.0",
     "source-map-loader": "^3.0.0",
     "uuid": "^8.3.2",
-    "webpack": "~5.47.0",
+    "webpack": "~5.47.1",
     "webpack-cli": "^4.7.2",
     "webpack-node-externals": "^3.0.0"
   },
