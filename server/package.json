@@ -9,8 +9,8 @@
   "dependencies": {
     "@aws-sdk/client-apigatewaymanagementapi": "^3.24.0",
     "@aws-sdk/client-dynamodb": "^3.24.0",
-    "@aws-sdk/lib-dynamodb": "^3.24.0",
     "@aws-sdk/client-lambda": "^3.24.0",
+    "@aws-sdk/lib-dynamodb": "^3.24.0",
     "@aws-sdk/property-provider": "^3.23.0",
     "@graphql-tools/schema": "^8.0.2",
     "aws-sdk": "2.960.0",
@@ -20,6 +20,7 @@
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
+    "express-openid-connect": "^2.5.0",
     "express-session": "^1.17.2",
     "express-statsd": "^0.3.0",
     "fs-extra": "^10.0.0",
