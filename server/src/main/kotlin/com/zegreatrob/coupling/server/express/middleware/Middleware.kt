@@ -27,5 +27,5 @@ fun Express.middleware() {
     use(cookieParser())
     use(session())
     initializeLogging(Config.TEST_LOGIN_ENABLED)
-    passport()
+//    passport()
 }

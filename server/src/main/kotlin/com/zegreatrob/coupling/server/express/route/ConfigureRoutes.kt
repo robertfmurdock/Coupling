@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.express.route
 
 import com.zegreatrob.coupling.server.express.Config
+import com.zegreatrob.coupling.server.external.eoic.expressOpenIdConnect
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.express.Next
@@ -13,7 +14,19 @@ import kotlinx.coroutines.launch
 import kotlin.js.json
 
 fun Express.routes() {
-    authRoutes()
+//    authRoutes()
+    use(
+        expressOpenIdConnect(
+            json(
+                "authRequired" to true,
+                "auth0Logout" to true,
+                "baseURL" to Config.publicUrl,
+                "clientID" to Config.AUTH0_CLIENT_ID,
+                "issuerBaseURL" to "https://${Config.AUTH0_DOMAIN}",
+                "secret" to Config.AUTH0_CLIENT_SECRET
+            ),
+        )
+    )
     get("/", indexRoute())
     get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
     all("/api/*", apiGuard())
