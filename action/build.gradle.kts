@@ -32,8 +32,8 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:4.1.10")
-                implementation("com.zegreatrob.testmints:action-async:4.1.10")
+                implementation("com.zegreatrob.testmints:action:4.1.11")
+                implementation("com.zegreatrob.testmints:action-async:4.1.11")
                 implementation("com.benasher44:uuid:0.3.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -62,7 +62,7 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.slf4j:slf4j-simple:2.0.0-alpha3")
+                implementation("org.slf4j:slf4j-simple:2.0.0-alpha4")
                 implementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
             }
