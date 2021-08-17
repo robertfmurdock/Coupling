@@ -6,14 +6,14 @@ import kotlin.test.Test
 
 class AboutE2ETest {
     @Test
-    fun whenTheEnterButtonIsPressedWillRedirectToAuth0() = e2eSetup(AboutPage) {
-    } exercise {
-        goTo()
+    fun whenTheEnterButtonIsPressedWillRedirectToAuth0() = e2eSetup(object {
+        val page = AboutPage
+    }).exercise {
+        page.goTo()
     } verify {
-        this.element().text().apply {
+        page.element().text().apply {
             contains("About This App")
                 .assertIsEqualTo(true, "About page did not contain title. See $it")
         }
     }
-
 }
