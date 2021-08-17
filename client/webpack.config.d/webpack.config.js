@@ -17,7 +17,7 @@ if (config.output) {
 
 config.resolve.modules.push(resourcesPath);
 config.resolve.modules.push(path.resolve(__dirname, '../../../../build/js/node_modules'));
-
+config.resolve.fallback = { "assert": false };
 config.module.rules.push(
     {
         test: /\.(md|graphql)$/, use: 'raw-loader'
