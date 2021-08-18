@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 

@@ -13,7 +13,6 @@ import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minenzyme.simulateInputChange
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import org.w3c.dom.Window
 import kotlin.js.json

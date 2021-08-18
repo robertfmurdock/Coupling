@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlinx.browser.window
 import react.dom.div

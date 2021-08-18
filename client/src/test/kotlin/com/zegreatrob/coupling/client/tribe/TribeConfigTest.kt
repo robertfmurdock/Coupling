@@ -10,7 +10,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import react.router.dom.RedirectProps
 import kotlin.test.Test

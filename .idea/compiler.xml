@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="14" />
+    <bytecodeTargetLevel target="14">
+      <module name="Coupling.export.commonMain" target="1.8" />
+      <module name="Coupling.export.commonTest" target="1.8" />
+      <module name="Coupling.export.jvmMain" target="1.8" />
+      <module name="Coupling.export.jvmTest" target="1.8" />
+      <module name="Coupling.import.commonMain" target="1.8" />
+      <module name="Coupling.import.commonTest" target="1.8" />
+      <module name="Coupling.import.jvmMain" target="1.8" />
+      <module name="Coupling.import.jvmTest" target="1.8" />
+      <module name="testmints.action-async.commonMain" target="1.8" />
+      <module name="testmints.action-async.commonTest" target="1.8" />
+      <module name="testmints.action-async.jvmMain" target="1.8" />
+      <module name="testmints.action-async.jvmTest" target="1.8" />
+      <module name="testmints.action.commonMain" target="1.8" />
+      <module name="testmints.action.commonTest" target="1.8" />
+      <module name="testmints.action.jvmMain" target="1.8" />
+      <module name="testmints.action.jvmTest" target="1.8" />
+      <module name="testmints.async.commonMain" target="1.8" />
+      <module name="testmints.async.commonTest" target="1.8" />
+      <module name="testmints.async.jvmMain" target="1.8" />
+      <module name="testmints.async.jvmTest" target="1.8" />
+      <module name="testmints.minassert.commonMain" target="1.8" />
+      <module name="testmints.minassert.commonTest" target="1.8" />
+      <module name="testmints.minassert.jvmMain" target="1.8" />
+      <module name="testmints.minassert.jvmTest" target="1.8" />
+      <module name="testmints.mindiff.commonMain" target="1.8" />
+      <module name="testmints.mindiff.commonTest" target="1.8" />
+      <module name="testmints.mindiff.jvmMain" target="1.8" />
+      <module name="testmints.mindiff.jvmTest" target="1.8" />
+      <module name="testmints.minspy.commonMain" target="1.8" />
+      <module name="testmints.minspy.commonTest" target="1.8" />
+      <module name="testmints.minspy.jvmMain" target="1.8" />
+      <module name="testmints.minspy.jvmTest" target="1.8" />
+      <module name="testmints.report.commonMain" target="1.8" />
+      <module name="testmints.report.commonTest" target="1.8" />
+      <module name="testmints.report.jvmMain" target="1.8" />
+      <module name="testmints.report.jvmTest" target="1.8" />
+      <module name="testmints.standard.commonMain" target="1.8" />
+      <module name="testmints.standard.commonTest" target="1.8" />
+      <module name="testmints.standard.jvmMain" target="1.8" />
+      <module name="testmints.standard.jvmTest" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

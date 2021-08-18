@@ -43,10 +43,10 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(kotlin("test-js"))
                 implementation("io.github.microutils:kotlin-logging:2.0.6")
-                implementation("com.zegreatrob.testmints:standard:4.1.2")
-                implementation("com.zegreatrob.testmints:minassert:4.1.2")
-                implementation("com.zegreatrob.testmints:async:4.1.2")
-                implementation("com.zegreatrob.testmints:wdio:4.1.2")
+                implementation("com.zegreatrob.testmints:standard:5.0.1")
+                implementation("com.zegreatrob.testmints:minassert:5.0.1")
+                implementation("com.zegreatrob.testmints:async:5.0.1")
+                implementation("com.zegreatrob.testmints:wdio:5.0.1")
                 implementation(appConfiguration)
                 packageJson.devDependencies().forEach {
                     implementation(npm(it.first, it.second.asText()))
@@ -66,7 +66,7 @@ dependencies {
     implementation("com.benasher44:uuid:0.3.0")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.213-kotlin-1.5.10")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
-    implementation("com.zegreatrob.testmints:wdio:4.1.2")
+    implementation("com.zegreatrob.testmints:wdio:5.0.1")
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
     }

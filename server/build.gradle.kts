@@ -48,7 +48,7 @@ dependencies {
     implementation(project(":repository-dynamo"))
     implementation(project(":repository-memory"))
     implementation(project(":server_action"))
-    implementation("com.zegreatrob.testmints:minjson:4.1.2")
+    implementation("com.zegreatrob.testmints:minjson:5.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
     implementation("com.soywiz.korlibs.klock:klock:2.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")

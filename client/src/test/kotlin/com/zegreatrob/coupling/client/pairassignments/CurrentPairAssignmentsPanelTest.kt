@@ -17,7 +17,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import react.RClass
 import react.router.dom.RedirectProps
