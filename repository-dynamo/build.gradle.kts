@@ -30,7 +30,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("com.benasher44:uuid:0.3.0")
-                implementation("io.github.microutils:kotlin-logging:2.0.10")
+                implementation("io.github.microutils:kotlin-logging:2.0.11")
             }
         }
         getByName("commonTest") {
