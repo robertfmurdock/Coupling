@@ -1,5 +1,29 @@
 import {HtmlReporter, ReportAggregator} from '@rpii/wdio-html-reporter';
 
+import WDIOReporter from '@wdio/reporter'
+
+
+// noinspection NpmUsedModulesInstalled
+const testLogging = require('Coupling-test-logging');
+
+// noinspection JSUnresolvedFunction
+const loggingReporter = new testLogging.com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter();
+
+
+class CustomReporter extends WDIOReporter {
+    constructor(options) {
+        super(options)
+    }
+
+    onTestStart(test) {
+        loggingReporter.startTest(test.fullTitle)
+    }
+
+    onTestEnd(test) {
+        loggingReporter.endTest(test.fullTitle, test.state, test.errors)
+    }
+}
+
 const log4js = require('@log4js-node/log4js-api');
 const logger = log4js.getLogger('default');
 const path = require('path');
@@ -39,6 +63,7 @@ const config = {
     framework: 'jasmine',
     reporters: [
         'dot',
+        CustomReporter,
         [HtmlReporter, {
             debug: true,
             outputDir: reportDirectory,
@@ -52,17 +77,9 @@ const config = {
     ],
     jasmineOpts: {
         helpers: [],
-        failFast: true,
         defaultTimeoutInterval: 60000,
     },
     beforeSession: async function () {
-        // noinspection NpmUsedModulesInstalled
-        const testLogging = require('Coupling-test-logging');
-
-        // noinspection JSUnresolvedFunction
-        const loggingReporter = new testLogging.com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter();
-
-        jasmine.getEnv().addReporter(loggingReporter);
     },
 
     afterTest: function (test, context, result) {

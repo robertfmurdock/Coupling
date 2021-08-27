@@ -37,10 +37,12 @@ class JasmineJsonLoggingReporter {
         result.failedExpectations.unsafeCast<Array<dynamic>>()
     )
 
-    private fun startTest(testName: String) = logger.info { mapOf("type" to "TestStart", "test" to testName) }
+    @JsName("startTest")
+    fun startTest(testName: String) = logger.info { mapOf("type" to "TestStart", "test" to testName) }
         .also { lastStart = DateTime.now() }
 
-    private fun endTest(testName: String, status: String, failed: Array<dynamic>) {
+    @JsName("endTest")
+    fun endTest(testName: String, status: String, failed: Array<dynamic>?) {
         val duration = lastStart?.let { DateTime.now() - it }
         logger.info {
             mapOf(
@@ -48,7 +50,7 @@ class JasmineJsonLoggingReporter {
                 "test" to testName,
                 "status" to status,
                 "duration" to "$duration",
-                "failures" to failed.joinToString("\n", "\n") { "message: ${it.message} \nstack: ${it.stack}" }
+                "failures" to failed?.joinToString("\n", "\n") { "message: ${it.message} \nstack: ${it.stack}" }
             )
         }
             .also { lastStart = null }
