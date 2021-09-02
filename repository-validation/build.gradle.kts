@@ -20,7 +20,7 @@ kotlin {
                 api(project(":repository-core"))
                 api(project(":test-logging"))
                 api(project(":stub-model"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 implementation("com.zegreatrob.testmints:standard:5.0.5")
                 implementation("com.zegreatrob.testmints:minassert:5.0.5")
                 implementation("org.jetbrains.kotlin:kotlin-test")

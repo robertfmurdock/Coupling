@@ -27,7 +27,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:minassert:5.0.5")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2")
             }
         }

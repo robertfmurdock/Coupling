@@ -19,7 +19,7 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":repository-core"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 implementation("com.benasher44:uuid:0.3.0")
             }
         }

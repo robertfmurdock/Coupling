@@ -54,7 +54,7 @@ kotlin {
                 implementation(project(":repository-core"))
                 implementation("com.zegreatrob.testmints:minjson:5.0.1")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("io.github.microutils:kotlin-logging:2.0.11")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
