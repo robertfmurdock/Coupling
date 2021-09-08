@@ -52,7 +52,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("com.soywiz.korlibs.klock:klock:2.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-    implementation("com.benasher44:uuid:0.3.0")
+    implementation("com.benasher44:uuid:0.3.1")
 
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))

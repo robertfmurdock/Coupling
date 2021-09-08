@@ -34,7 +34,7 @@ kotlin {
                 implementation(project(":logging"))
                 implementation("com.zegreatrob.testmints:action:5.0.5")
                 implementation("com.zegreatrob.testmints:action-async:5.0.5")
-                implementation("com.benasher44:uuid:0.3.0")
+                implementation("com.benasher44:uuid:0.3.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
