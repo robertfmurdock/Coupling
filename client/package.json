@@ -30,7 +30,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
     "blueimp-md5": "^2.18.0",
-    "core-js": "^3.17.2",
+    "core-js": "^3.17.3",
     "css-loader": "^6.2.0",
     "d3": "^7.0.1",
     "d3-color": "^3.0.1",
