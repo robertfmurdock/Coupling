@@ -8,14 +8,14 @@
     "ws": "^8.2.2"
   },
   "devDependencies": {
-    "axios-cookiejar-support": "^1.0.1",
+    "axios-cookiejar-support": "^2.0.0",
     "fs-extra": "^10.0.0",
     "jasmine": "^3.9.0",
     "jasmine-reporters": "^2.5.0",
     "monk": "^7.3.4",
     "tough-cookie": "^4.0.0",
-    "serverless": "^2.57.0",
-    "serverless-offline": "^8.1.0",
+    "serverless": "^2.59.0",
+    "serverless-offline": "^8.2.0",
     "serverless-offline-ssm": "^5.2.0"
   }
 }
