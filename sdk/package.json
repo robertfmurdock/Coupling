@@ -8,7 +8,7 @@
     "ws": "^8.2.2"
   },
   "devDependencies": {
-    "axios-cookiejar-support": "^2.0.0",
+    "axios-cookiejar-support": "~1.0.1",
     "fs-extra": "^10.0.0",
     "jasmine": "^3.9.0",
     "jasmine-reporters": "^2.5.0",
