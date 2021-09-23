@@ -42,8 +42,8 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.0")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
             }
         }
 
@@ -54,7 +54,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:async:5.0.7")
+                implementation("com.zegreatrob.testmints:async:5.0.8")
             }
         }
     }

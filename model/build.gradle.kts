@@ -26,15 +26,15 @@ kotlin {
             dependencies {
                 implementation(project(":test-logging"))
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:5.0.7")
-                implementation("com.zegreatrob.testmints:minassert:5.0.7")
+                implementation("com.zegreatrob.testmints:standard:5.0.8")
+                implementation("com.zegreatrob.testmints:minassert:5.0.8")
             }
         }
 
         val jvmTest by getting {
             dependencies {
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.0")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
             }
         }
 

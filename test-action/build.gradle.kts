@@ -20,11 +20,11 @@ kotlin {
             dependencies {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action:5.0.7")
-                implementation("com.zegreatrob.testmints:action-async:5.0.7")
-                implementation("com.zegreatrob.testmints:async:5.0.7")
-                implementation("com.zegreatrob.testmints:standard:5.0.7")
-                implementation("com.zegreatrob.testmints:minassert:5.0.7")
+                implementation("com.zegreatrob.testmints:action:5.0.8")
+                implementation("com.zegreatrob.testmints:action-async:5.0.8")
+                implementation("com.zegreatrob.testmints:async:5.0.8")
+                implementation("com.zegreatrob.testmints:standard:5.0.8")
+                implementation("com.zegreatrob.testmints:minassert:5.0.8")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
@@ -37,8 +37,8 @@ kotlin {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.slf4j:slf4j-simple:2.0.0-alpha5")
 
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.0")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("io.github.microutils:kotlin-logging:2.0.11")
