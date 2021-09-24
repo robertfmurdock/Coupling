@@ -20,15 +20,15 @@ kotlin {
             dependencies {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action:5.0.8")
-                implementation("com.zegreatrob.testmints:action-async:5.0.8")
-                implementation("com.zegreatrob.testmints:async:5.0.8")
-                implementation("com.zegreatrob.testmints:standard:5.0.8")
-                implementation("com.zegreatrob.testmints:minassert:5.0.8")
+                implementation("com.zegreatrob.testmints:action:5.0.9")
+                implementation("com.zegreatrob.testmints:action-async:5.0.9")
+                implementation("com.zegreatrob.testmints:async:5.0.9")
+                implementation("com.zegreatrob.testmints:standard:5.0.9")
+                implementation("com.zegreatrob.testmints:minassert:5.0.9")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.0")
             }
         }
 
@@ -49,7 +49,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.0")
             }
         }
     }
