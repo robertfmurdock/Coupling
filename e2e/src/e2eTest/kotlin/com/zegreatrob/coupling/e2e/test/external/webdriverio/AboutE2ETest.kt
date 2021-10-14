@@ -6,7 +6,7 @@ import kotlin.test.Test
 
 class AboutE2ETest {
     @Test
-    fun whenTheEnterButtonIsPressedWillRedirectToAuth0() = e2eSetup(object {
+    fun aboutPageWillRenderSuccessfully() = e2eSetup(object {
         val page = AboutPage
     }).exercise {
         page.goTo()
