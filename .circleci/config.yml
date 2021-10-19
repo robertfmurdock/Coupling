@@ -30,8 +30,14 @@ orbs:
               echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
           - browser-tools/install-chrome
           - browser-tools/install-chromedriver
+          - restore_cache:
+                key: coupling-cache-1-{{ .Branch }}
       collect-results:
         steps:
+          - save_cache:
+                key: coupling-cache-1-{{ .Branch }}
+                paths:
+                  - "~/.gradle"
           - run:
               name: Copy test reports
               command: |
