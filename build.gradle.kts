@@ -97,7 +97,6 @@ dependencies {
 }
 
 tasks {
-
 }
 
 buildtimetracker {
