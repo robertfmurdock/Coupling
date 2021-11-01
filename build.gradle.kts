@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 plugins {
     id("com.github.node-gradle.node") apply false
     id("com.bmuschko.docker-remote-api") version "7.1.0"
-    id("se.patrikerdes.use-latest-versions") version "0.2.17"
+    id("se.patrikerdes.use-latest-versions") version "0.2.18"
     id("com.github.ben-manes.versions") version "0.39.0"
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
     id("de.gliderpilot.semantic-release") version "1.4.2"
