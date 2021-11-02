@@ -67,8 +67,8 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard:5.1.1")
-                implementation("com.zegreatrob.testmints:minassert:5.1.1")
+                implementation("com.zegreatrob.testmints:standard:5.1.3")
+                implementation("com.zegreatrob.testmints:minassert:5.1.3")
                 implementation("com.benasher44:uuid:0.2.4")
             }
         }
@@ -91,9 +91,9 @@ kotlin {
 
             dependencies {
                 implementation(project(":server"))
-                implementation("com.zegreatrob.testmints:standard:5.1.1")
-                implementation("com.zegreatrob.testmints:minassert:5.1.1")
-                implementation("com.zegreatrob.testmints:async:5.1.1")
+                implementation("com.zegreatrob.testmints:standard:5.1.3")
+                implementation("com.zegreatrob.testmints:minassert:5.1.3")
+                implementation("com.zegreatrob.testmints:async:5.1.3")
 
                 packageJson.devDependencies().forEach {
                     implementation(npm(it.first, it.second.asText()))
@@ -104,9 +104,9 @@ kotlin {
 
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:standard:5.1.1")
-                implementation("com.zegreatrob.testmints:minassert:5.1.1")
-                implementation("com.zegreatrob.testmints:async:5.1.1")
+                implementation("com.zegreatrob.testmints:standard:5.1.3")
+                implementation("com.zegreatrob.testmints:minassert:5.1.3")
+                implementation("com.zegreatrob.testmints:async:5.1.3")
             }
         }
     }

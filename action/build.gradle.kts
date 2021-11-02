@@ -32,8 +32,8 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:5.1.1")
-                implementation("com.zegreatrob.testmints:action-async:5.1.1")
+                implementation("com.zegreatrob.testmints:action:5.1.3")
+                implementation("com.zegreatrob.testmints:action-async:5.1.3")
                 implementation("com.benasher44:uuid:0.3.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
