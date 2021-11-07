@@ -1,4 +1,3 @@
-
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.zegreatrob.coupling.build.JsonLoggingTestListener
 import de.gliderpilot.gradle.semanticrelease.SemanticReleaseChangeLogService
@@ -52,7 +51,7 @@ allprojects {
             reportfileName = "report"
             revision = "release"
             rejectVersionIf {
-                "^[0-9.]+[0-9](-RC|-M[0-9]+)\$"
+                "^[0-9.]+[0-9](-RC|-M[0-9]+|-RC[0-9]+)\$"
                     .toRegex()
                     .matches(candidate.version)
             }

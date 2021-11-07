@@ -10,7 +10,7 @@ plugins {
     id("net.researchgate.release") version "2.6.0"
 }
 
-val kotlinVersion = "1.5.30"
+val kotlinVersion = "1.5.31"
 
 dependencies {
     implementation(kotlin("stdlib", kotlinVersion))
