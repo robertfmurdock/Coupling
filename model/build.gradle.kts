@@ -26,8 +26,8 @@ kotlin {
             dependencies {
                 implementation(project(":test-logging"))
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:5.1.3")
-                implementation("com.zegreatrob.testmints:minassert:5.1.3")
+                implementation("com.zegreatrob.testmints:standard:5.1.4")
+                implementation("com.zegreatrob.testmints:minassert:5.1.4")
             }
         }
 
