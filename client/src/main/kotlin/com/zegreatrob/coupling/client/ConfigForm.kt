@@ -14,10 +14,10 @@ private val styles = useStyles("ConfigForm")
 
 val ConfigForm = reactFunction { props: ConfigFormProps ->
     val (name, onSubmit, onRemove) = props
-    val (isSaving, setIsSaving) = useState(false)
+    var isSaving by useState(false)
     val onSubmitFunc = { event: Event ->
         event.preventDefault()
-        setIsSaving(true)
+        isSaving = true
         onSubmit()
     }
     form {

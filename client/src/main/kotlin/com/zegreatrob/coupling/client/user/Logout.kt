@@ -14,11 +14,11 @@ import react.useState
 
 val Logout = reactFunction<PageProps> { props ->
     val scope = useScope("Logout")
-    val (isLoggedOut, setIsLoggedOut) = useState(false)
+    var isLoggedOut by useState(false)
     val (logoutPromise, setLogout) = useState<Any?>(null)
     if (logoutPromise == null) {
         setLogout(
-            scope.launch { props.commander.runQuery { waitForLogout(setIsLoggedOut::invoke) } }
+            scope.launch { props.commander.runQuery { waitForLogout { isLoggedOut = it } } }
         )
     }
     if (isLoggedOut) {

@@ -34,7 +34,7 @@ fun RBuilder.couplingWebsocket(
 val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
     val (tribeId, useSsl, onMessageFunc) = props
 
-    val (connected, setConnected) = useState(false)
+    var connected by useState(false)
     val ref = useRef<WebsocketComponent>(null)
 
     val sendMessageFunc = useMemo { sendMessageWithSocketFunc(ref) }
@@ -44,7 +44,7 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
             attrs {
                 url = buildSocketUrl(tribeId, useSsl).href
                 onMessage = { onMessageFunc(it.fromJsonString<JsonMessage>().toModel()) }
-                onOpen = { setConnected(true) }
+                onOpen = { connected = true }
                 onClose = { onMessageFunc(disconnectedMessage) }
                 this.ref = { ref.current = it }
             }

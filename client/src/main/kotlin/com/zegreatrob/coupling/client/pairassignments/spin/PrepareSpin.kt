@@ -46,13 +46,13 @@ data class PrepareSpinProps(
 private val styles = useStyles("PrepareSpin")
 
 val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
-    val (playerSelections, setPlayerSelections) = useState(defaultSelections(players, currentPairsDoc))
-    val (pinSelections, setPinSelections) = useState(pins.map { it.id })
-    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections) { setRedirectUrl(it) }
+    var playerSelections by useState(defaultSelections(players, currentPairsDoc))
+    var pinSelections by useState(pins.map { it.id })
+    var redirectUrl by useState<String?>(null)
+    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections) { redirectUrl = it }
 
     if (redirectUrl != null)
-        redirect(to = redirectUrl)
+        redirect(to = redirectUrl ?: "")
     else
         div(classes = styles.className) {
             div { tribeBrowser(tribe) }
@@ -65,17 +65,17 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, currentPair
                         +"When you're done with your selections, hit the spin button above!"
                         styledDiv {
                             css { margin(10.px, null) }
-                            selectAllButton(playerSelections) { setPlayerSelections(it) }
-                            selectNoneButton(playerSelections) { setPlayerSelections(it) }
+                            selectAllButton(playerSelections) { playerSelections = it }
+                            selectNoneButton(playerSelections) { playerSelections = it }
                         }
-                        selectablePlayerCardList(playerSelections, { setPlayerSelections(it) }, tribe)
+                        selectablePlayerCardList(playerSelections, { playerSelections = it }, tribe)
                     }
                     if (pins.isNotEmpty()) {
                         pinSelectorDiv {
                             h1 { br {} }
                             h2 { +"Also, Pins." }
                             +"Tap any pin to skip."
-                            child(pinSelector(pinSelections, { setPinSelections(it) }, pins))
+                            child(pinSelector(pinSelections, { pinSelections = it }, pins))
                         }
                     }
                 }

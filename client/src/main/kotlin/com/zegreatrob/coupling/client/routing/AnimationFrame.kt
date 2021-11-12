@@ -21,7 +21,7 @@ enum class AnimationState {
 }
 
 val animationFrame = reactFunction<AnimationFrameProps<*>> { props ->
-    val (animationState, setAnimationState) = useState(AnimationState.Start)
+    var animationState by useState(AnimationState.Start)
     val shouldStartAnimation = props.state !is EmptyState && animationState === AnimationState.Start
 
     animationsDisabledContext.Consumer { animationsDisabled: Boolean ->
@@ -31,7 +31,7 @@ val animationFrame = reactFunction<AnimationFrameProps<*>> { props ->
                 if (shouldStartAnimation && !animationsDisabled) {
                     classes = classes + "ng-enter"
                 }
-                this["onAnimationEnd"] = { setAnimationState(AnimationState.Stop) }
+                this["onAnimationEnd"] = { animationState = AnimationState.Stop }
             }
             props.children()
         }

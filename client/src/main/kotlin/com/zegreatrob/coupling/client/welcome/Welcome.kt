@@ -30,7 +30,7 @@ data class WelcomeProps(
 ) : RProps
 
 val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
-    val (showLoginChooser, setShowLoginChooser) = useState(false)
+    var showLoginChooser by useState(false)
     val welcomeTitleRef = useRef<Node>(null)
     useLayoutEffect {
         welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
@@ -40,7 +40,7 @@ val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
 
     div(classes = styles.className) {
         div { welcomeSplash(welcomeTitleRef, pair, proverb) }
-        div { comeOnIn(commandFunc, showLoginChooser, setShowLoginChooser) }
+        div { comeOnIn(commandFunc, showLoginChooser) { showLoginChooser = true } }
     }
 }
 
@@ -127,15 +127,13 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
 private fun RBuilder.comeOnIn(
     dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>,
     showLoginChooser: Boolean,
-    setShowLoginChooser: StateSetter<Boolean>
-) {
-    div(classes = styles["enterButtonContainer"]) {
-        if (showLoginChooser) {
-            loginChooser(dispatchFunc)
-        } else {
-            couplingButton(supersize, pink, styles["enterButton"], { setShowLoginChooser(true) }) {
-                +"Come on in!"
-            }
+    onEnterClick: () -> Unit
+) = div(classes = styles["enterButtonContainer"]) {
+    if (showLoginChooser) {
+        loginChooser(dispatchFunc)
+    } else {
+        couplingButton(supersize, pink, styles["enterButton"], onEnterClick) {
+            +"Come on in!"
         }
     }
 }

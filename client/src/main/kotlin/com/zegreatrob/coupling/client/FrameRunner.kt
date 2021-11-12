@@ -11,7 +11,7 @@ private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(fir
 private fun <A, B, B2> Pair<A, B>.letSecond(transform: (B) -> B2) = first to transform(second)
 private fun <A, B, C> Pair<A, B>.let(transform: (A, B) -> C) = transform(first, second)
 private fun <I, O, O2> ((I) -> O).join(transform: (O) -> O2) = { pair: I -> transform(this(pair)) }
-private fun <I> StateSetter<I?>.curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { it: I -> { this(it) } }
+private fun <I> ((I?) -> Unit).curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { it: I -> { this(it) } }
 
 fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, speed: Double, children: RBuilder.(T) -> Unit) = child(
     createElement(FrameRunner, FrameRunnerProps(sequence, speed), { value: T ->
@@ -21,20 +21,20 @@ fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, speed: Double, ch
 
 val FrameRunner = reactFunction<FrameRunnerProps> { props ->
     val (sequence, speed) = props
-    val (state, setState) = useState(sequence.first().first)
-    val scheduleStateFunc = scheduleStateFunc(setState, speed)
+    var state by useState(sequence.first().first)
+    val scheduleStateFunc = scheduleStateFunc({state = it}, speed)
 
     useEffectOnce { sequence.forEach(scheduleStateFunc) }
     children(state, props)
 }
 
-private fun scheduleStateFunc(setState: StateSetter<Any?>, speed: Double) = setState.statePairToTimeoutArgsFunc()
+private fun scheduleStateFunc(setState: (Any?) -> Unit, speed: Double) = setState.statePairToTimeoutArgsFunc()
     .join(pairTransformSecondFunc { it.applySpeed(speed) })
     .join { args -> args.let(::setTimeout); Unit }
 
 private fun Int.applySpeed(speed: Double): Int = round(this / speed).toInt()
 
-private fun StateSetter<Any?>.statePairToTimeoutArgsFunc(): (Pair<Any?, Int>) -> Pair<() -> Unit, Int> =
+private fun ((Any?) -> Unit).statePairToTimeoutArgsFunc(): (Pair<Any?, Int>) -> Pair<() -> Unit, Int> =
     pairTransformFirstFunc(curryOneArgToNoArgsFunc())
 
 
