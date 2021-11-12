@@ -54,7 +54,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:async:5.1.4")
+                implementation("com.zegreatrob.testmints:async:5.1.5")
             }
         }
     }
