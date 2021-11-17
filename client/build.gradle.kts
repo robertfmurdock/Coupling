@@ -90,7 +90,6 @@ tasks {
     }
 
     val dependencyResources by creating(Copy::class) {
-        configurations.filter {it.isCanBeResolved}.forEach { println(it.name) }
         val javascriptConfig = configurations["runtimeClasspath"]
         dependsOn(javascriptConfig)
         duplicatesStrategy = DuplicatesStrategy.WARN
@@ -120,7 +119,7 @@ tasks {
                             "kotlin-test.meta.js",
                             "package.json",
                         )
-                    }.onEach { thang -> println("zzz ${thang.name}") }
+                    }
                 }
             }
         })
