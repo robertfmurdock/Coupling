@@ -23,7 +23,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:report:5.1.5")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("io.github.microutils:kotlin-logging:2.0.11")
-                implementation("com.soywiz.korlibs.klock:klock:2.1.0")
+                implementation("com.soywiz.korlibs.klock:klock:2.4.8")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
