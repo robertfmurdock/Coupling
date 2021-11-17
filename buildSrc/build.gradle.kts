@@ -6,11 +6,11 @@ plugins {
     id("java")
     id("java-gradle-plugin")
     id("maven-publish")
-    id("org.jetbrains.kotlin.jvm").version("1.5.10")
+    id("org.jetbrains.kotlin.jvm").version("1.6.0")
     id("net.researchgate.release") version "2.6.0"
 }
 
-val kotlinVersion = "1.5.31"
+val kotlinVersion = "1.6.0"
 
 dependencies {
     implementation(kotlin("stdlib", kotlinVersion))

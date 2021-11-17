@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     kotlin("js")
-    kotlin("plugin.serialization") version "1.5.31"
+    kotlin("plugin.serialization") version "1.6.0"
 }
 
 kotlin {
@@ -90,11 +90,13 @@ tasks {
     }
 
     val dependencyResources by creating(Copy::class) {
-        dependsOn(configurations["jsDefault"])
+        configurations.filter {it.isCanBeResolved}.forEach { println(it.name) }
+        val javascriptConfig = configurations["runtimeClasspath"]
+        dependsOn(javascriptConfig)
         duplicatesStrategy = DuplicatesStrategy.WARN
         into("$buildDir/processedResources/js/main")
         from({
-            configurations["jsDefault"].files.map {
+            javascriptConfig.files.map {
                 if (!it.isFile || !it.name.endsWith(".klib")) {
                     null
                 } else {
@@ -118,7 +120,7 @@ tasks {
                             "kotlin-test.meta.js",
                             "package.json",
                         )
-                    }
+                    }.onEach { thang -> println("zzz ${thang.name}") }
                 }
             }
         })

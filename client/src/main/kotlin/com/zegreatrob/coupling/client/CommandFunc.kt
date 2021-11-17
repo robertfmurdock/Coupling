@@ -19,7 +19,6 @@ class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
 
     private val dispatcher get() = dispatcherFunc()
 
-    @ExperimentalCoroutinesApi
     override fun <C : SuspendAction<D, R>, R> invoke(commandFunc: () -> C, response: (R) -> Unit) = fun() {
         val command = commandFunc()
         dispatcher.asyncExecute(command, response)
