@@ -19,10 +19,10 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:standard:5.1.5")
-                implementation("com.zegreatrob.testmints:report:5.1.5")
+                implementation("com.zegreatrob.testmints:standard:5.2.1")
+                implementation("com.zegreatrob.testmints:report:5.2.1")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("io.github.microutils:kotlin-logging:2.0.11")
+                implementation("io.github.microutils:kotlin-logging:2.1.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.8")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
@@ -36,7 +36,7 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation("io.github.microutils:kotlin-logging:2.0.11")
+                implementation("io.github.microutils:kotlin-logging:2.1.0")
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
