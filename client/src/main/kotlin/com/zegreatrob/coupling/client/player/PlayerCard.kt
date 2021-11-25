@@ -15,7 +15,7 @@ import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
-import react.RProps
+import react.Props
 import react.dom.attrs
 import react.dom.img
 import styled.StyledDOMBuilder
@@ -33,7 +33,7 @@ data class PlayerCardProps(
     val onClick: ((Event) -> Unit) = {},
     val deselected: Boolean = false,
     val tilt: Angle = 0.deg
-) : RProps
+) : Props
 
 private val styles = useStyles("player/PlayerCard")
 

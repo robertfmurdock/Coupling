@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
-import react.RProps
+import react.Props
 import react.StateSetter
 import react.useMemo
 import react.useState
@@ -23,7 +23,7 @@ data class SocketedPairAssignmentsProps(
     val pairAssignments: PairAssignmentDocument?,
     val controls: Controls<PairAssignmentsCommandDispatcher>,
     val allowSave: Boolean
-) : RProps
+) : Props
 
 val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { props ->
     val (tribe, players, originalPairs, controls, allowSave) = props

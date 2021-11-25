@@ -8,7 +8,7 @@ import kotlinx.css.px
 import kotlinx.css.width
 import kotlinx.html.classes
 import org.w3c.dom.Node
-import react.RProps
+import react.Props
 import react.dom.attrs
 import react.useLayoutEffect
 import react.useRef
@@ -18,7 +18,7 @@ import styled.styledDiv
 @JsModule("com/zegreatrob/coupling/client/components/heatmap/D3Heatmap")
 external val d3Heatmap: dynamic
 
-data class HeatmapProps(val data: List<List<Double?>>, val className: String) : RProps
+data class HeatmapProps(val data: List<List<Double?>>, val className: String) : Props
 
 private val styles = useStyles("stats/heatmap/Heatmap")
 

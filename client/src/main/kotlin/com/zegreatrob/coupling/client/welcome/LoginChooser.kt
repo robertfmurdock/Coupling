@@ -12,14 +12,14 @@ import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.RBuilder
-import react.RProps
+import react.Props
 import react.dom.div
 
-data class LoginChooserProps(val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) : RProps
+data class LoginChooseProps(val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) : Props
 
 private val styles = useStyles("LoginChooser")
 
-val LoginChooser = reactFunction { (_): LoginChooserProps ->
+val LoginChooser = reactFunction { (_): LoginChooseProps ->
     val signInFunc = { window.location.pathname = "${window["basename"] ?:""}/auth0-login" }
     div(classes = styles.className) {
         div {
@@ -29,4 +29,4 @@ val LoginChooser = reactFunction { (_): LoginChooserProps ->
 }
 
 fun RBuilder.loginChooser(dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) =
-    child(LoginChooser, LoginChooserProps(dispatchFunc))
+    child(LoginChooser, LoginChooseProps(dispatchFunc))

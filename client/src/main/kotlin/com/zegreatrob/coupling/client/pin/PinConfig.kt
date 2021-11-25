@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.div
 
 data class PinConfigProps(
@@ -17,7 +17,7 @@ data class PinConfigProps(
     val pinList: List<Pin>,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
-) : RProps
+) : Props
 
 private val styles = useStyles("pin/PinConfig")
 

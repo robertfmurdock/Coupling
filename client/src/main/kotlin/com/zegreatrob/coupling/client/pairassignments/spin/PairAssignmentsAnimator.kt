@@ -8,16 +8,16 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
+import react.Props
 import react.RBuilder
-import react.RHandler
-import react.RProps
 
 data class PairAssignmentsAnimatorProps(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument,
-    val enabled: Boolean
-) : RProps
+    val enabled: Boolean,
+    val children: RBuilder.() -> Unit
+) : Props
 
 private val animationContextConsumer = animationsDisabledContext.Consumer
 
@@ -30,7 +30,7 @@ val PairAssignmentsAnimator = reactFunction<PairAssignmentsAnimatorProps> { prop
                 flipperSpinAnimation(state, props, tribe, rosteredPairAssignments)
             }
         } else {
-            props.children()
+            props.children(this)
         }
     }
 }
@@ -40,10 +40,10 @@ fun RBuilder.animator(
     players: List<Player>,
     pairAssignments: PairAssignmentDocument,
     enabled: Boolean,
-    handler: RHandler<PairAssignmentsAnimatorProps>
+    handler: RBuilder.() -> Unit
 ) = child(
     PairAssignmentsAnimator,
-    PairAssignmentsAnimatorProps(tribe, players, pairAssignments, enabled), handler = handler
+    PairAssignmentsAnimatorProps(tribe, players, pairAssignments, enabled, handler)
 )
 
 private fun RBuilder.flipperSpinAnimation(
@@ -53,7 +53,7 @@ private fun RBuilder.flipperSpinAnimation(
     rosteredPairAssignments: RosteredPairAssignments
 ) = flipper(flipKey = state.toString()) {
     if (state == End)
-        props.children()
+        props.children(this)
     else
         spinAnimation(tribe, rosteredPairAssignments, state)
 }

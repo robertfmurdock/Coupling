@@ -26,11 +26,11 @@ import kotlinx.css.properties.animation
 import kotlinx.css.properties.boxShadow
 import kotlinx.css.properties.s
 import kotlinx.html.classes
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.buildElement
 import react.dom.*
-import react.router.dom.redirect
+import react.router.Navigate
 import react.useState
 import styled.css
 import styled.styledDiv
@@ -41,7 +41,7 @@ data class PrepareSpinProps(
     val currentPairsDoc: PairAssignmentDocument?,
     val pins: List<Pin>,
     val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>
-) : RProps
+) : Props
 
 private val styles = useStyles("PrepareSpin")
 
@@ -52,7 +52,7 @@ val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, currentPair
     val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections) { redirectUrl = it }
 
     if (redirectUrl != null)
-        redirect(to = redirectUrl ?: "")
+        Navigate { attrs.to = redirectUrl ?: "" }
     else
         div(classes = styles.className) {
             div { tribeBrowser(tribe) }

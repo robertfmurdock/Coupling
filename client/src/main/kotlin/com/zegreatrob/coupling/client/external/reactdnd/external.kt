@@ -4,8 +4,8 @@
 package com.zegreatrob.coupling.client.external.reactdnd
 
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.DnDBackend
-import react.RClass
-import react.RProps
+import react.ElementType
+import react.Props
 import kotlin.js.Json
 
 @JsName("useDrag")
@@ -16,9 +16,9 @@ external fun useDropFunc(options: Json): dynamic
 
 
 @JsName("DndProvider")
-external val DndProvider: RClass<DnDProviderProps>
+external val DndProvider: ElementType<DnDProvideProps>
 
-external interface DnDProviderProps : RProps {
+external interface DnDProvideProps : Props {
     var backend: DnDBackend
 }
 

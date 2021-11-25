@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import org.w3c.dom.Node
 import react.RBuilder
-import react.RProps
+import react.Props
 import react.dom.attrs
 import react.dom.div
 import react.useRef
@@ -18,7 +18,7 @@ data class DraggableThingProps(
     val itemId: String,
     val dropCallback: (String) -> Unit,
     val handler: RBuilder.(isOver: Boolean) -> Unit
-) : RProps
+) : Props
 
 private val styles = useStyles<SimpleStyle>("DraggableThing")
 

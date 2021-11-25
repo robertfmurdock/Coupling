@@ -11,7 +11,7 @@ import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
-import react.router.dom.RedirectProps
+import react.router.Navigate
 import kotlin.test.Test
 
 class TribeConfigTest {
@@ -67,7 +67,7 @@ class TribeConfigTest {
     } verify {
         stubDispatchFunc.commandsDispatched<SaveTribeCommand>()
             .assertIsEqualTo(listOf(SaveTribeCommand(tribe)))
-        wrapper.find<RedirectProps>("Redirect").props().to
+        wrapper.find(Navigate).props().to
             .assertIsEqualTo("/tribes/")
     }
 

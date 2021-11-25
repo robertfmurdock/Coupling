@@ -27,7 +27,7 @@ private val styles = useStyles("Welcome")
 data class WelcomeProps(
     val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>,
     val randomProvider: RandomProvider = RandomProvider
-) : RProps
+) : Props
 
 val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
     var showLoginChooser by useState(false)
@@ -76,7 +76,7 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 private data class Card(val name: String, val imagePath: String)
 
 private fun RBuilder.welcomeSplash(
-    welcomeTitleRef: RMutableRef<Node>,
+    welcomeTitleRef: MutableRefObject<Node>,
     pair: CouplingPair.Double,
     proverb: String
 ) = span(classes = styles["welcome"]) {
@@ -98,7 +98,7 @@ private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
 private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath)
 
-private fun RBuilder.welcomeTitle(welcomeTitleRef: RMutableRef<Node>) {
+private fun RBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>) {
     div(classes = styles["welcomeTitle"]) {
         attrs { ref = welcomeTitleRef }
         +"Coupling!"

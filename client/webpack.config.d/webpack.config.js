@@ -14,7 +14,9 @@ if (config.entry && config.entry.main) {
 if (config.output) {
     config.output.publicPath = '/app/build/'
 }
-
+if(!config.resolve.modules) {
+    config.resolve.modules = []
+}
 config.resolve.modules.push(resourcesPath);
 config.resolve.modules.push(path.resolve(__dirname, '../../../../build/js/node_modules'));
 config.resolve.fallback = { "assert": false };

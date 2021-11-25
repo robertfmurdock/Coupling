@@ -9,8 +9,8 @@ import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.attrs
 import react.dom.i
 import react.dom.span
@@ -30,7 +30,7 @@ data class PinButtonProps(
     val className: String = "",
     val showTooltip: Boolean = true,
     val onClick: () -> Unit = {}
-) : RProps
+) : Props
 
 fun RBuilder.pinButton(
     pin: Pin,
@@ -58,7 +58,7 @@ val PinButton = reactFunction<PinButtonProps> { (pin, scale, className, showTool
     }
 }
 
-private fun CSSBuilder.scaledStyles(scale: PinButtonScale) {
+private fun CssBuilder.scaledStyles(scale: PinButtonScale) {
     padding((3.2 * scale.factor).px)
     borderWidth = (2 * scale.factor).px
     borderRadius = (12 * scale.factor).px

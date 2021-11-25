@@ -7,7 +7,7 @@ import kotlinx.css.marginLeft
 import kotlinx.css.px
 import kotlinx.html.classes
 import react.RBuilder
-import react.RProps
+import react.Props
 import react.dom.attrs
 import styled.css
 import styled.styledDiv
@@ -17,7 +17,7 @@ data class PinSectionProps(
     val scale: PinButtonScale = PinButtonScale.Small,
     val canDrag: Boolean,
     val className: String
-) : RProps
+) : Props
 
 fun RBuilder.pinSection(
     pinList: List<Pin>,

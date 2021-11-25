@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.properties.Angle
+import react.Props
 import react.RBuilder
-import react.RProps
 
 val RBuilder.draggablePlayer get() = { props: DraggablePlayerProps -> child(DraggablePlayer, props) {} }
 
@@ -19,7 +19,7 @@ data class DraggablePlayerProps(
     val zoomOnHover: Boolean,
     val tilt: Angle,
     val onPlayerDrop: (String) -> Unit
-) : RProps
+) : Props
 
 const val playerDragItemType = "PLAYER"
 

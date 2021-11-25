@@ -24,12 +24,12 @@ fun RBuilder.couplingWebsocket(
     useSsl: Boolean = "https:" == window.location.protocol,
     onMessage: (Message) -> Unit,
     children: RBuilder.(((Message) -> Unit)?) -> Unit
-) = childFunction(
+) = child(
     CouplingWebsocket,
-    CouplingWebsocketProps(tribeId, useSsl, onMessage),
-    {}) { sendMessage: ((Message) -> Unit)? ->
-    children(sendMessage)
-}
+    CouplingWebsocketProps(tribeId, useSsl, onMessage) { sendMessage: ((Message) -> Unit)? ->
+        children(sendMessage)
+    }
+)
 
 val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
     val (tribeId, useSsl, onMessageFunc) = props
@@ -50,11 +50,11 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
             }
         }
 
-        props.children(if (connected) sendMessageFunc else null)
+        props.children(this, if (connected) sendMessageFunc else null)
     }
-}.unsafeCast<FunctionalComponent<CouplingWebsocketProps>>()
+}
 
-private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent>) = { message: Message ->
+private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->
     val websocket = ref.current
     if (websocket != null)
         message.toSerializable().toJsonString().let(websocket::sendMessage)
@@ -62,7 +62,12 @@ private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent>) = { 
         console.error("Message not sent, websocket not initialized", message)
 }
 
-data class CouplingWebsocketProps(val tribeId: TribeId, val useSsl: Boolean, val onMessage: (Message) -> Unit) : RProps
+data class CouplingWebsocketProps(
+    val tribeId: TribeId,
+    val useSsl: Boolean,
+    val onMessage: (Message) -> Unit,
+    val children: RBuilder.(value: ((Message) -> Unit)?) -> Unit
+) : Props
 
 private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean) = URL(
     "?tribeId=${encodeURIComponent(tribeId.value)}",

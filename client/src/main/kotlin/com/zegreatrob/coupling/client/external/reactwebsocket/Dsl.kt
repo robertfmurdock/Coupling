@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.external.reactwebsocket
 
-import react.RClass
-import react.RProps
+import react.ElementType
+import react.Props
 
 @JsModule("react-websocket")
-external val websocket: RClass<WebsocketProps>
+external val websocket: ElementType<WebsocketProps>
 
-external interface WebsocketProps : RProps {
+external interface WebsocketProps : Props {
     var url: String
     var onMessage: (String) -> Unit
     var onOpen: () -> Unit

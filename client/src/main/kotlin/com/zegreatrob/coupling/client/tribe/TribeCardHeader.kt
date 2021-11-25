@@ -5,17 +5,16 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.height
 import kotlinx.css.margin
 import kotlinx.css.px
 import kotlinx.html.classes
 import org.w3c.dom.Node
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.attrs
-import react.router.dom.routeLink
+import react.router.dom.Link
 import react.useLayoutEffect
 import react.useRef
 import styled.css
@@ -25,7 +24,7 @@ private val styles = useStyles("tribe/TribeCard")
 
 fun RBuilder.tribeCardHeader(tribe: Tribe, size: Int) = child(tribeCardHeader, TribeCardHeaderProps(tribe, size))
 
-data class TribeCardHeaderProps(val tribe: Tribe, val size: Int) : RProps
+data class TribeCardHeaderProps(val tribe: Tribe, val size: Int) : Props
 
 val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size) ->
     val tribeNameRef = useRef<Node>(null)
@@ -39,7 +38,8 @@ val tribeCardHeader = reactFunction<TribeCardHeaderProps> { (tribe, size) ->
                 height = (size * 0.35).px
             }
         }
-        routeLink(tribe.tribeConfigPath()) {
+        Link {
+            attrs.to = tribe.tribeConfigPath()
             +(tribe.name ?: "Unknown")
         }
     }

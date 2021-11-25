@@ -5,7 +5,11 @@ import kotlinx.browser.window
 import react.*
 import kotlin.math.round
 
-data class FrameRunnerProps(val sequence: Sequence<Pair<*, Int>>, val speed: Double) : RProps
+data class FrameRunnerProps(
+    val sequence: Sequence<Pair<*, Int>>,
+    val speed: Double,
+    val children: RBuilder.(value: Any?) -> Unit
+) : Props
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second
 private fun <A, B, B2> Pair<A, B>.letSecond(transform: (B) -> B2) = first to transform(second)
@@ -14,8 +18,8 @@ private fun <I, O, O2> ((I) -> O).join(transform: (O) -> O2) = { pair: I -> tran
 private fun <I> ((I?) -> Unit).curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { it: I -> { this(it) } }
 
 fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, speed: Double, children: RBuilder.(T) -> Unit) = child(
-    createElement(FrameRunner, FrameRunnerProps(sequence, speed), { value: T ->
-        buildElements { children(value) }
+    createElement(FrameRunner, FrameRunnerProps(sequence, speed) { value ->
+        children(value.unsafeCast<T>())
     })
 )
 
@@ -25,7 +29,7 @@ val FrameRunner = reactFunction<FrameRunnerProps> { props ->
     val scheduleStateFunc = scheduleStateFunc({state = it}, speed)
 
     useEffectOnce { sequence.forEach(scheduleStateFunc) }
-    children(state, props)
+    props.children(this, state)
 }
 
 private fun scheduleStateFunc(setState: (Any?) -> Unit, speed: Double) = setState.statePairToTimeoutArgsFunc()
@@ -48,8 +52,3 @@ private fun <I, O, K> pairTransformSecondFunc(transform: (I) -> O): (Pair<K, I>)
 
 private fun setTimeout(timedFunc: () -> Unit, time: Int) = window.setTimeout(timedFunc, time)
 
-private fun RBuilder.children(state: Any?, props: FrameRunnerProps): Any {
-    val unsafeCast = props.children.unsafeCast<(Any?) -> Any>()
-    val children = unsafeCast(state)
-    return childList.add(children)
-}

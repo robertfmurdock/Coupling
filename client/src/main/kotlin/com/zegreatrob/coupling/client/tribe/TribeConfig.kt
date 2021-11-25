@@ -12,20 +12,19 @@ import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.events.Event
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.*
-import react.router.dom.redirect
+import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class TribeConfigProps(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) : RProps
+data class TribeConfigProps(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) : Props
 
 interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
     override val tribeRepository: TribeRepository
@@ -43,7 +42,7 @@ val TribeConfig = reactFunction { (tribe, commandFunc): TribeConfigProps ->
     val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }, { redirectToTribeList() })
 
     if (redirectUrl != null)
-        redirect(to = redirectUrl)
+        Navigate { attrs.to = redirectUrl }
     else
         configFrame(styles.className) {
             configHeader(tribe) { +"Tribe Configuration" }
@@ -71,7 +70,11 @@ private fun RBuilder.tribeConfigEditor(
     onSave: () -> Unit,
     onDelete: (() -> Unit)?
 ) = span(styles["tribeConfigEditor"]) {
-    child(ConfigForm, ConfigFormProps(onSubmit = onSave, onRemove = onDelete)) {
+    ConfigForm {
+        attrs {
+            this.onSubmit = onSave
+            this.onRemove = onDelete
+        }
         editorDiv(updatedTribe, onChange, isNew)
     }
 }

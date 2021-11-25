@@ -5,16 +5,16 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.div
-import react.router.dom.routeLink
+import react.router.dom.Link
 
 data class PinCardProps(
     val tribeId: TribeId,
     val pin: Pin,
     val shouldLink: Boolean = true
-) : RProps
+) : Props
 
 private val styles = useStyles("pin/PinCard")
 
@@ -35,7 +35,10 @@ val PinCard = reactFunction<PinCardProps> { (tribeId, pin, shouldLink) ->
 
 private fun RBuilder.optionalLink(shouldLink: Boolean, tribeId: TribeId, pin: Pin, handler: RBuilder.() -> Unit) {
     if (shouldLink) {
-        routeLink(to = "/${tribeId.value}/pin/${pin.id}", handler = handler)
+        Link {
+            attrs.to = "/${tribeId.value}/pin/${pin.id}"
+            handler()
+        }
     } else {
         handler()
     }

@@ -10,30 +10,29 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.child
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.events.Event
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.*
-import react.router.dom.redirect
+import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class PlayerConfigEditorProps(
+data class PlayerConfigEditoProps(
     val tribe: Tribe,
     val player: Player,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
-) : RProps
+) : Props
 
 val PlayerConfigEditor by lazy { playerConfigEditor(WindowFunctions) }
 
 private val styles = useStyles("player/PlayerConfigEditor")
 
-val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windowFuncs ->
+val playerConfigEditor = windowReactFunc<PlayerConfigEditoProps> { props, windowFuncs ->
     val (tribe, player, reload, dispatchFunc) = props
     val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
@@ -46,14 +45,14 @@ val playerConfigEditor = windowReactFunc<PlayerConfigEditorProps> { props, windo
         .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
 
     if (redirectUrl != null)
-        redirect(to = redirectUrl)
+        Navigate { attrs.to = redirectUrl }
     else
         span(classes = styles.className) {
             configHeader(tribe) { +"Player Configuration" }
             div {
                 div(classes = styles["player"]) {
                     playerConfigForm(updatedPlayer, tribe, onChange, onSubmit, onRemove)
-                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
+//                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
                 }
                 playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250))
             }
@@ -71,7 +70,11 @@ private fun RBuilder.playerConfigForm(
     onChange: (Event) -> Unit,
     onSubmit: () -> Unit,
     onRemoveFunc: (() -> Unit)?
-) = child(ConfigForm, ConfigFormProps("playerForm", onSubmit, onRemoveFunc)) {
+) = child(ConfigForm) {
+    attrs {
+        this.onSubmit = onSubmit
+        this.onRemove = onRemoveFunc
+    }
     editorDiv(tribe, player, onChange)
 }
 

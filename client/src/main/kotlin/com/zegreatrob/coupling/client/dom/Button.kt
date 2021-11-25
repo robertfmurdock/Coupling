@@ -9,9 +9,8 @@ import kotlinx.html.BUTTON
 import kotlinx.html.ButtonType
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
+import react.Props
 import react.RBuilder
-import react.RHandler
-import react.RProps
 import react.dom.attrs
 import styled.StyledDOMBuilder
 import styled.css
@@ -115,8 +114,8 @@ fun RBuilder.couplingButton(
     className: String = "",
     onClick: () -> Unit = {},
     block: StyledDOMBuilder<BUTTON>.() -> Unit = {},
-    handler: RHandler<CouplingButtonProps> = {}
-) = child(CouplingButton, CouplingButtonProps(sizeRuleSet, colorRuleSet, className, onClick, block), handler)
+    handler: RBuilder.() -> Unit = {}
+) = child(CouplingButton, CouplingButtonProps(sizeRuleSet, colorRuleSet, className, onClick, block, handler))
 
 data class CouplingButtonProps(
     val sizeRuleSet: RuleSet = medium,
@@ -124,8 +123,9 @@ data class CouplingButtonProps(
     @JsName("className")
     val className: String = "",
     val onClick: () -> Unit = {},
-    val block: StyledDOMBuilder<BUTTON>.() -> Unit = {}
-) : RProps
+    val block: StyledDOMBuilder<BUTTON>.() -> Unit = {},
+    val children: RBuilder.()-> Unit
+) : Props
 
 val CouplingButton = reactFunction<CouplingButtonProps> { props ->
     val (sizeRuleSet, colorRuleSet, className, onClick, block) = props
@@ -139,7 +139,7 @@ val CouplingButton = reactFunction<CouplingButtonProps> { props ->
             onClickFunction = { onClick() }
         }
         block()
-        props.children()
+        props.children(this)
     }
 
 }

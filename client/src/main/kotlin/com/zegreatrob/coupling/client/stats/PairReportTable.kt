@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.invoke
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
@@ -12,15 +11,15 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.attrs
 import react.dom.div
 import react.dom.span
 
 private val styles = useStyles("stats/PairReportTable")
 
-data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : RProps
+data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : Props
 
 val PairReportTable =
     reactFunction<PairReportTableProps> { (tribe, pairReports) ->
@@ -36,8 +35,8 @@ private fun RBuilder.pairReport(index: Int, pairReport: PairReport, tribe: Tribe
     pairReport.pair.asArray().map { player -> reportPlayerCard(player, tribe) }
 
     div(classes = styles["pairStatistics"]) {
-        statsHeader { +"Stats" }
-        statLabel { +"Spins since last paired:" }
+        StatsHeader { +"Stats" }
+        StatLabel { +"Spins since last paired:" }
         span(classes = "time-since-last-pairing") {
             +pairReport.timeSinceLastPair.presentationString()
         }

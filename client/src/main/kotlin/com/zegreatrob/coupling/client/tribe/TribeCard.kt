@@ -12,22 +12,24 @@ import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes
 import kotlinx.html.tabIndex
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.attrs
-import react.router.dom.routeLink
+import react.dom.setProp
+import react.router.dom.Link
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledSpan
 
-data class TribeCardProps(val tribe: Tribe, val size: Int = 150) : RProps
+data class TribeCardProps(val tribe: Tribe, val size: Int = 150) : Props
 
 val RBuilder.tribeCard get() = childCurry(TribeCard)
 
 private val styles = useStyles("tribe/TribeCard")
 
 val TribeCard = reactFunction<TribeCardProps> { (tribe, size) ->
-    routeLink(to = tribe.id.currentPairsPage()) {
+    Link {
+        attrs.to = tribe.id.currentPairsPage()
         styledSpan {
             attrs {
                 tribeCardCss(size)

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.tribe.TribeCardProps
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
-import react.RProps
+import react.Props
 import react.dom.div
 
 @JsModule("date-fns/formatDistance")
@@ -16,7 +16,7 @@ val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> Stri
 
 private val styles = useStyles("stats/TribeStatistics")
 
-data class TribeStatisticsProps(val queryResults: StatisticQueryResults) : RProps
+data class TribeStatisticsProps(val queryResults: StatisticQueryResults) : Props
 
 val TribeStatistics = reactFunction<TribeStatisticsProps> { props ->
     val (tribe, players, _, allStats, heatmapData) = props.queryResults

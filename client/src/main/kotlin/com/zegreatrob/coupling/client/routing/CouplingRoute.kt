@@ -2,39 +2,38 @@ package com.zegreatrob.coupling.client.routing
 
 import kotlinx.browser.window
 import org.w3c.dom.url.URLSearchParams
-import react.RBuilder
-import react.RClass
-import react.RProps
-import react.createElement
-import react.router.dom.RouteResultProps
-import react.router.dom.route
-import kotlin.js.Json
+import react.*
+import react.router.*
+import react.router.dom.useSearchParams
 
-fun RBuilder.couplingRoute(path: String, rComponent: RClass<PageProps>) =
-    route<RProps>(path, exact = true) { routeProps ->
-        createElement(rComponent, pageProps(routeProps))
-            .also { window.asDynamic().pathSetter = newPathSetter(routeProps) }
-    }
+fun RBuilder.couplingRoute(path: String, rComponent: ElementType<PageProps>) = Route {
+    attrs.path = path
+    attrs.element = createElement { CouplingRoute { attrs.rComponent = rComponent } }
+}
 
-private fun pageProps(routeProps: RouteResultProps<RProps>) = PageProps(
-    pathParams = routeProps.pathParams(),
-    search = URLSearchParams(routeProps.location.search),
+external interface CouplingRouteProps : Props {
+    var rComponent: ElementType<PageProps>
+}
+
+val CouplingRoute = functionComponent<CouplingRouteProps> {
+    val (searchParams) = useSearchParams()
+    val params = useParams()
+    val navigate = useNavigate()
+    child(createElement(it.rComponent, pageProps(params, searchParams)))
+        .also { window.asDynamic().pathSetter = newPathSetter(navigate) }
+}
+
+private fun pageProps(routeProps: Params, search: URLSearchParams) = PageProps(
+    pathParams = routeProps,
+    search = search,
     commander = MasterCommander
 )
 
-private fun newPathSetter(routeProps: RouteResultProps<RProps>) = { path: String ->
-    routeProps.history.push(
+private fun newPathSetter(navigate: NavigateFunction) = { path: String ->
+    navigate.invoke(
         if (path.startsWith("/"))
             path
         else
             "/$path"
     )
-}
-
-private fun RouteResultProps<RProps>.pathParams(): Map<String, String> {
-    val paramsJson = match.params.unsafeCast<Json>()
-
-    return js("Object").keys(paramsJson).unsafeCast<Array<String>>()
-        .map { key -> key to paramsJson[key].unsafeCast<String>() }
-        .toMap()
 }

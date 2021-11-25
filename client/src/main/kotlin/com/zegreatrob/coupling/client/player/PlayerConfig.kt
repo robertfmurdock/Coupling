@@ -9,7 +9,7 @@ import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
 import kotlinx.css.Color.Companion.wheat
-import react.RProps
+import react.Props
 import react.dom.div
 
 data class PlayerConfigProps(
@@ -18,16 +18,16 @@ data class PlayerConfigProps(
     val players: List<Player>,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
-) : RProps
+) : Props
 
 private val styles = useStyles("player/PlayerConfig")
 
 val PlayerConfig = reactFunction { (tribe, player, players, reload, commandFunc): PlayerConfigProps ->
     configFrame(styles.className) {
-        child(PlayerConfigEditor, PlayerConfigEditorProps(tribe, player, reload, commandFunc))
+        child(PlayerConfigEditor, PlayerConfigEditoProps(tribe, player, reload, commandFunc))
         div {
             child(
-                PlayerRoster, PlayerRosterProps(
+                PlayerRoster, PlayerRosteProps(
                     players = players,
                     tribeId = tribe.id
                 ) {

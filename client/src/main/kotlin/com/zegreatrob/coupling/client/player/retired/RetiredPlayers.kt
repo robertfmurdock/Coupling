@@ -8,13 +8,13 @@ import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
-import react.RProps
+import react.Props
 import react.dom.div
 
 data class RetiredPlayersProps(
     val tribe: Tribe,
     val retiredPlayers: List<Player>
-) : RProps
+) : Props
 
 private val styles = useStyles("player/RetiredPlayers")
 

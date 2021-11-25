@@ -13,23 +13,22 @@ import com.zegreatrob.coupling.client.external.reactpopup.popup
 import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.EndpointFinder.gqlEndpoint
-import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.*
-import react.router.dom.routeLink
+import react.router.dom.Link
 import styled.css
 import styled.styledDiv
 import styled.styledSpan
 import kotlin.js.json
 
-data class TribeBrowserProps(val tribe: Tribe) : RProps
+data class TribeBrowseProps(val tribe: Tribe) : Props
 
 private val styles = useStyles("tribe/TribeBrowser")
 
-val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe) ->
+val TribeBrowser = reactFunction<TribeBrowseProps> { (tribe) ->
     div(styles.className) {
         configHeader(tribe) {
             span(styles["headerContents"]) {
@@ -40,7 +39,7 @@ val TribeBrowser = reactFunction<TribeBrowserProps> { (tribe) ->
     }
 }
 
-fun RBuilder.tribeBrowser(tribe: Tribe) = child(TribeBrowser, TribeBrowserProps(tribe))
+fun RBuilder.tribeBrowser(tribe: Tribe) = child(TribeBrowser, TribeBrowseProps(tribe))
 
 private fun RBuilder.notificationSection() = styledSpan {
     css { position = Position.relative }
@@ -98,7 +97,8 @@ private fun RBuilder.tribeControlButtons() = span(classes = styles["controlButto
     notificationSection()
 }
 
-private fun RBuilder.logoutButton() = routeLink(to = "/logout") {
+private fun RBuilder.logoutButton() = Link {
+    attrs.to = "/logout"
     couplingButton(large, red, styles["logoutButton"]) {
         i(classes = "fa fa-sign-out-alt") {}
         span { +"Sign Out" }
@@ -116,7 +116,8 @@ private fun RBuilder.gqlButton() = a(href = gqlEndpoint) {
     }
 }
 
-private fun RBuilder.tribeSelectButton() = routeLink(to = "/tribes/") {
+private fun RBuilder.tribeSelectButton() = Link {
+    attrs.to = "/tribes/"
     couplingButton(large, className = styles["tribeSelectButton"]) {
         i(classes = "fa fa-arrow-circle-up") {}
         span { +"Tribe select" }

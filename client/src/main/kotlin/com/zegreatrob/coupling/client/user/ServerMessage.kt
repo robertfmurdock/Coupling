@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import react.RBuilder
-import react.RProps
+import react.Props
 import react.dom.div
 import react.dom.span
 
@@ -16,7 +16,7 @@ fun RBuilder.serverMessage(tribe: Tribe, message: CouplingSocketMessage) {
     child(ServerMessage, ServerMessageProps(tribe.id, message), key = "${message.text} ${message.players.size}")
 }
 
-data class ServerMessageProps(val tribeId: TribeId, val message: CouplingSocketMessage) : RProps
+data class ServerMessageProps(val tribeId: TribeId, val message: CouplingSocketMessage) : Props
 
 val ServerMessage = reactFunction<ServerMessageProps> { (tribeId, message) ->
     div {

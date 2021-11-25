@@ -2,7 +2,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     kotlin("multiplatform")
-    id("kotlinx-serialization") version "1.5.21"
+    id("kotlinx-serialization") version "1.6.0"
 }
 
 kotlin {
@@ -20,11 +20,11 @@ kotlin {
             dependencies {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action:5.2.1")
-                implementation("com.zegreatrob.testmints:action-async:5.2.1")
-                implementation("com.zegreatrob.testmints:async:5.2.1")
-                implementation("com.zegreatrob.testmints:standard:5.2.1")
-                implementation("com.zegreatrob.testmints:minassert:5.2.1")
+                implementation("com.zegreatrob.testmints:action:5.2.2")
+                implementation("com.zegreatrob.testmints:action-async:5.2.2")
+                implementation("com.zegreatrob.testmints:async:5.2.2")
+                implementation("com.zegreatrob.testmints:standard:5.2.2")
+                implementation("com.zegreatrob.testmints:minassert:5.2.2")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")

@@ -19,20 +19,19 @@ import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
 import org.w3c.dom.get
-import react.RBuilder
-import react.RProps
-import react.buildElement
+import react.*
 import react.dom.div
-import react.router.dom.*
+import react.router.*
+import react.router.dom.BrowserRouter
 
-data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : RProps
+data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : Props
 
 val CouplingRouter = reactFunction<CouplingRouterProps> { (isSignedIn, animationsDisabled) ->
-    browserRouter(
-        basename = (window["basename"]?.toString() ?: ""),
-        getUserConfirmation = { message, callback -> window.confirm(message).let(callback) }
-    ) {
-        animationsDisabledContext.Provider(animationsDisabled) { switch { routes(isSignedIn) } }
+    BrowserRouter {
+        attrs.basename = (window["basename"]?.toString() ?: "")
+        animationsDisabledContext.Provider(animationsDisabled) {
+            Routes { routes(isSignedIn) }
+        }
     }
 }
 
@@ -45,22 +44,27 @@ private fun RBuilder.routes(isSignedIn: Boolean) {
     else
         redirectUnauthenticated()
 
-    lostRoute()
+    Route { attrs.element = createElement { lostRoute() } }
 }
 
-private fun RBuilder.redirectUnauthenticated() = redirect(from = "", to = "/welcome")
-    .also { console.warn("not signed in!!!!", window.location.pathname) }
+private fun RBuilder.redirectUnauthenticated() = Route {
+    attrs.path = "*"
+    attrs.element = createElement {
+        Navigate { attrs { to = "/welcome" } }
+    }
+}.also { console.warn("not signed in!!!!", window.location.pathname) }
 
-private fun RBuilder.lostRoute() = route<RProps>("",
-    render = { props -> div { +"Hmm, you seem to be lost. At ${props.location.pathname}" } }
-)
+val lostRoute = functionComponent<Props> {
+    val location = useLocation()
+    div { +"Hmm, you seem to be lost. At ${location.pathname}" }
+}
 
-private fun RBuilder.authenticatedRoutes() = switch {
-    route("/", exact = true, render = ::redirectToTribes)
+private fun RBuilder.authenticatedRoutes() {
+    Route { attrs { path = "/"; element = redirectToTribes() } }
     couplingRoute("/tribes/", TribeListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/new-tribe/", TribeConfigPage)
-    route("/:tribeId", exact = true, render = ::redirectToCurrentPairs)
+    Route { attrs { path = "/:tribeId"; element = redirectToCurrentPairs() } }
     couplingRoute("/:tribeId/prepare/", PrepareSpinPage)
     couplingRoute("/:tribeId/edit/", TribeConfigPage)
     couplingRoute("/:tribeId/history", HistoryPage)
@@ -76,12 +80,9 @@ private fun RBuilder.authenticatedRoutes() = switch {
     couplingRoute("/:tribeId/statistics", StatisticsPage)
 }
 
-private fun redirectToTribes() = buildElement { redirect(from = "", to = "/tribes/") }
+private fun redirectToTribes() = buildElement { Navigate { attrs.to = "/tribes/" } }
 
-private fun redirectToCurrentPairs(props: RouteResultProps<TribeRouteProps>) = buildElement {
-    redirect(from = "", to = "/${props.match.params.tribeId}/pairAssignments/current/")
-}
-
-external interface TribeRouteProps : RProps {
-    val tribeId: String
+private fun redirectToCurrentPairs() = buildElement {
+    val params = useParams()
+    Navigate { attrs.to = "/${params["tribeId"]}/pairAssignments/current/" }
 }

@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("kotlinx-serialization") version "1.5.21"
+    id("kotlinx-serialization") version "1.6.0"
 }
 
 val packageJson = loadPackageJson()
@@ -52,7 +52,7 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":repository-core"))
-                implementation("com.zegreatrob.testmints:minjson:5.0.1")
+                implementation("com.zegreatrob.testmints:minjson:5.2.2")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.8")
@@ -67,8 +67,8 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard:5.2.1")
-                implementation("com.zegreatrob.testmints:minassert:5.2.1")
+                implementation("com.zegreatrob.testmints:standard:5.2.2")
+                implementation("com.zegreatrob.testmints:minassert:5.2.2")
                 implementation("com.benasher44:uuid:0.2.4")
             }
         }
@@ -91,9 +91,9 @@ kotlin {
 
             dependencies {
                 implementation(project(":server"))
-                implementation("com.zegreatrob.testmints:standard:5.2.1")
-                implementation("com.zegreatrob.testmints:minassert:5.2.1")
-                implementation("com.zegreatrob.testmints:async:5.2.1")
+                implementation("com.zegreatrob.testmints:standard:5.2.2")
+                implementation("com.zegreatrob.testmints:minassert:5.2.2")
+                implementation("com.zegreatrob.testmints:async:5.2.2")
 
                 packageJson.devDependencies().forEach {
                     implementation(npm(it.first, it.second.asText()))
@@ -104,9 +104,9 @@ kotlin {
 
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:standard:5.2.1")
-                implementation("com.zegreatrob.testmints:minassert:5.2.1")
-                implementation("com.zegreatrob.testmints:async:5.2.1")
+                implementation("com.zegreatrob.testmints:standard:5.2.2")
+                implementation("com.zegreatrob.testmints:minassert:5.2.2")
+                implementation("com.zegreatrob.testmints:async:5.2.2")
             }
         }
     }

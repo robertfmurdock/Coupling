@@ -2,14 +2,14 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.EmptyProps
-import com.zegreatrob.minreact.reactFunction
+import react.PropsWithChildren
 import react.RBuilder
 import react.dom.span
+import react.functionComponent
 
 private val styles = useStyles("stats/StatLabel")
 
-val StatLabel = reactFunction<EmptyProps> { props ->
+val StatLabel = functionComponent<PropsWithChildren> { props ->
     span(classes = styles.className) { props.children() }
 }
 

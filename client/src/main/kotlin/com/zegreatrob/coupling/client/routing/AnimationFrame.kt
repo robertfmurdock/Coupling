@@ -3,24 +3,26 @@ package com.zegreatrob.coupling.client.routing
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.EmptyState
 import kotlinx.html.classes
-import react.RProps
+import react.PropsWithChildren
 import react.dom.attrs
 import react.dom.div
+import react.functionComponent
 import react.useState
 
 private val styles = useStyles("routing/DataLoadWrapper")
 
-data class AnimationFrameProps<D>(val state: DataLoadState<D>) : RProps
+external interface AnimationFrameProps : PropsWithChildren {
+    var state: DataLoadState<*>
+}
 
 enum class AnimationState {
     Start, Stop
 }
 
-val animationFrame = reactFunction<AnimationFrameProps<*>> { props ->
+val animationFrame = functionComponent<AnimationFrameProps> { props ->
     var animationState by useState(AnimationState.Start)
     val shouldStartAnimation = props.state !is EmptyState && animationState === AnimationState.Start
 

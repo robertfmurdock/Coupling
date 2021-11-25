@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.ConfigForm
+import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths.pinListPath
+import com.zegreatrob.coupling.client.configHeader
+import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useForm
@@ -12,24 +15,23 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.events.Event
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.*
-import react.router.dom.redirect
+import react.router.Navigate
 import react.useState
 
-data class PinConfigEditorProps(
+data class PinConfigEditoProps(
     val tribe: Tribe,
     val pin: Pin,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
-) : RProps
+) : Props
 
 private val styles = useStyles("pin/PinConfigEditor")
 
@@ -38,9 +40,9 @@ fun RBuilder.pinConfigEditor(
     pin: Pin,
     dispatchFunc: DispatchFunc<out PinCommandDispatcher>,
     reload: () -> Unit
-) = child(PinConfigEditor, PinConfigEditorProps(tribe, pin, reload, dispatchFunc))
+) = child(PinConfigEditor, PinConfigEditoProps(tribe, pin, reload, dispatchFunc))
 
-val PinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinConfigEditorProps ->
+val PinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinConfigEditoProps ->
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic())
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
@@ -52,13 +54,13 @@ val PinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinCon
     }
 
     if (redirectUrl != null)
-        redirect(to = redirectUrl)
+        Navigate { attrs.to = redirectUrl }
     else
         span(styles.className) {
             configHeader(tribe) { +"Pin Configuration" }
             span(styles["pin"]) {
                 pinConfigForm(updatedPin, onChange, onSubmit, onRemove)
-                promptOnExit(shouldShowPrompt = updatedPin != pin)
+//                promptOnExit(shouldShowPrompt = updatedPin != pin)
             }
             span(styles["icon"]) {
                 pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
@@ -71,7 +73,11 @@ private fun RBuilder.pinConfigForm(
     onChange: (Event) -> Unit,
     onSubmit: () -> Unit,
     onRemove: (() -> Unit)?
-) = child(ConfigForm, ConfigFormProps("pinForm", onSubmit, onRemove)) {
+) = child(ConfigForm) {
+    attrs {
+        this.onSubmit = onSubmit
+        this.onRemove = onRemove
+    }
     editorDiv(pin, onChange)
 }
 

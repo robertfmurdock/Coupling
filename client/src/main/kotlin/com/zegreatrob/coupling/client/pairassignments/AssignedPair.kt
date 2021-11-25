@@ -24,9 +24,8 @@ import kotlinx.css.properties.deg
 import kotlinx.css.visibility
 import kotlinx.html.classes
 import org.w3c.dom.Node
+import react.Props
 import react.RBuilder
-import react.RProps
-import react.ReactElement
 import react.dom.attrs
 import react.dom.div
 import react.dom.key
@@ -41,7 +40,7 @@ data class AssignedPairProps(
     val canDrag: Boolean,
     val swapPlayersFunc: (PinnedPlayer, String) -> Unit,
     val pinDropFunc: PinMoveCallback
-) : RProps
+) : Props
 
 typealias PinMoveCallback = (String) -> Unit
 
@@ -104,7 +103,7 @@ private fun playerCardComponent(
     tribe: Tribe,
     canDrag: Boolean,
     swap: (PinnedPlayer, String) -> Unit
-): RBuilder.(PinnedPlayer, Angle) -> ReactElement = if (canDrag) { player, tilt ->
+): RBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) { player, tilt ->
     playerFlipped(player.player) {
         swappablePlayer(tribe, player, canDrag, tilt) { droppedPlayerId: String ->
             swap(player, droppedPlayerId)
@@ -116,7 +115,7 @@ private fun playerCardComponent(
     }
 }
 
-private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> ReactElement) = flipped(flipId = player.id) {
+private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> Unit) = flipped(flipId = player.id) {
     styledDiv {
         attrs { this.key = player.id }
         css {

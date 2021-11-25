@@ -4,22 +4,21 @@ import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths
-import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.react.dataloader.*
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.execute
+import react.ElementType
+import react.Props
 import react.RBuilder
-import react.RClass
-import react.RProps
-import react.router.dom.redirect
+import react.router.Navigate
 
-data class CouplingLoaderProps<P : RProps>(val getDataAsync: DataLoadFunc<P?>) : RProps
+data class CouplingLoaderProps<P : Props>(val getDataAsync: DataLoadFunc<P?>) : Props
 
-fun <P : RProps> dataLoadProps(getDataSync: (DataLoaderTools) -> P) =
+fun <P : Props> dataLoadProps(getDataSync: (DataLoaderTools) -> P) =
     CouplingLoaderProps { tools -> getDataSync(tools) }
 
-fun <R, P : RProps> dataLoadProps(
+fun <R, P : Props> dataLoadProps(
     query: SuspendAction<CommandDispatcher, R?>,
     toProps: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P,
     commander: Commander
@@ -31,26 +30,28 @@ fun <R, P : RProps> dataLoadProps(
     }
 }
 
-fun <P : RProps> couplingDataLoader(component: RClass<P>) = reactFunction { (getDataAsync): CouplingLoaderProps<P> ->
-    dataLoader(getDataAsync, { null }) { state: DataLoadState<P?> ->
-        animationFrame(state, component)
+fun <P : Props> couplingDataLoader(component: ElementType<P>) =
+    reactFunction { (getDataAsync): CouplingLoaderProps<P> ->
+        dataLoader(getDataAsync, { null }) { state: DataLoadState<P?> ->
+            animationFrame(state, component)
+        }
     }
-}
 
-private fun <P : RProps> RBuilder.animationFrame(state: DataLoadState<P?>, component: RClass<P>) =
-    child(animationFrame, AnimationFrameProps(state)) {
+private fun <P : Props> RBuilder.animationFrame(state: DataLoadState<P?>, component: ElementType<P>) =
+    child(animationFrame) {
+        attrs.state = state
         if (state is ResolvedState) {
             resolvedComponent(state, component)
         }
     }
 
-private fun <P : RProps> RBuilder.resolvedComponent(state: ResolvedState<P?>, component: RClass<P>) {
+private fun <P : Props> RBuilder.resolvedComponent(state: ResolvedState<P?>, component: ElementType<P>) {
     when (val result = state.result) {
         null -> notFoundContent()
         else -> child(component, result)
     }
 }
 
-private fun RBuilder.notFoundContent() = redirect(to = Paths.tribeList()).also {
+private fun RBuilder.notFoundContent() = Navigate { attrs.to = Paths.tribeList() }.also {
     console.error("Data was not found.")
 }

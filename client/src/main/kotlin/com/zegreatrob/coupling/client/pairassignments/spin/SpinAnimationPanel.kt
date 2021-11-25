@@ -18,7 +18,7 @@ import kotlinx.css.Visibility
 import kotlinx.css.display
 import kotlinx.css.visibility
 import react.RBuilder
-import react.RProps
+import react.Props
 import react.dom.attrs
 import react.dom.div
 import react.dom.key
@@ -29,7 +29,7 @@ data class SpinAnimationPanelProps(
     val tribe: Tribe,
     val rosteredPairAssignments: RosteredPairAssignments,
     val state: SpinAnimationState
-) : RProps
+) : Props
 
 val placeholderPlayer = Player("?", name = "Next...", callSignAdjective = "--------", callSignNoun = "--------")
 

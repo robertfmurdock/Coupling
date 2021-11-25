@@ -10,13 +10,13 @@ import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.reactFunction
-import react.RProps
+import react.Props
 import react.dom.div
 import react.dom.h2
 import react.dom.h3
-import react.router.dom.routeLink
+import react.router.dom.Link
 
-data class PinListProps(val tribe: Tribe, val pins: List<Pin>) : RProps
+data class PinListProps(val tribe: Tribe, val pins: List<Pin>) : Props
 
 private val styles = useStyles("pin/PinList")
 
@@ -31,7 +31,8 @@ val PinList = reactFunction<PinListProps> { (tribe, pins) ->
                 pins.map { pinCard(tribeId = tribe.id, pin = it, shouldLink = true, key = it.id) }
             }
             div {
-                routeLink(to = "/${tribe.id.value}/pin/new") {
+                Link {
+                    attrs.to = "/${tribe.id.value}/pin/new"
                     couplingButton(large, orange) { +"Add a new pin." }
                 }
             }

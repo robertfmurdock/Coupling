@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     kotlin("js")
     id("com.bmuschko.docker-remote-api")
-    id("kotlinx-serialization") version "1.5.21"
+    id("kotlinx-serialization") version "1.6.0"
 }
 
 kotlin {
@@ -48,9 +48,9 @@ dependencies {
     implementation(project(":repository-dynamo"))
     implementation(project(":repository-memory"))
     implementation(project(":server_action"))
-    implementation("com.zegreatrob.testmints:minjson:5.0.1")
+    implementation("com.zegreatrob.testmints:minjson:5.2.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("com.soywiz.korlibs.klock:klock:2.1.0")
+    implementation("com.soywiz.korlibs.klock:klock:2.4.8")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
     implementation("com.benasher44:uuid:0.3.1")
 

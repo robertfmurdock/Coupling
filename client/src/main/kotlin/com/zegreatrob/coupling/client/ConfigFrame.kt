@@ -1,28 +1,23 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.classes
-import react.RBuilder
-import react.RHandler
-import react.RProps
+import react.*
 import react.dom.attrs
 import react.dom.div
 
 private val styles = useStyles("ConfigFrame")
 
-fun RBuilder.configFrame(className: String? = null, handler: RHandler<ConfigFrameProps>) = child(
-    ConfigFrame,
-    ConfigFrameProps(className),
-    handler
-)
+fun RBuilder.configFrame(className: String? = null, handler: RHandler<ConfigFrameProps>) = child(ConfigFrame) {
+    attrs.className = className
+    handler()
+}
 
-data class ConfigFrameProps(val className: String?) : RProps
+external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren
 
-val ConfigFrame =
-    reactFunction<ConfigFrameProps> { props ->
-        div(classes = styles.className) {
-            attrs { props.className?.let { classes = classes + it } }
-            div { props.children() }
-        }
+val ConfigFrame = functionComponent<ConfigFrameProps> { props ->
+    div(classes = styles.className) {
+        attrs { props.className?.let { classes = classes + it } }
+        div { props.children() }
     }
+}

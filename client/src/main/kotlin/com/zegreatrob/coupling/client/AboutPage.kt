@@ -18,7 +18,7 @@ import react.RBuilder
 import react.dom.div
 import react.dom.i
 import react.dom.span
-import react.router.dom.routeLink
+import react.router.dom.Link
 import styled.css
 import styled.styledDiv
 import styled.styledSpan
@@ -43,7 +43,8 @@ private fun RBuilder.backButtonSection() = styledDiv {
     }
 }
 
-private fun RBuilder.backButton() = routeLink(to = "/tribes") {
+private fun RBuilder.backButton() = Link {
+    attrs.to = "/tribes"
     couplingButton(large, blue) {
         i(classes = "fa fa-step-backward") {}
         span { +"Back to Coupling!" }

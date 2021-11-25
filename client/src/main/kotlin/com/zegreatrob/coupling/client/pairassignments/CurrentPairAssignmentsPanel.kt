@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.external.reactrouter.prompt
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -13,12 +12,11 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.div
-import react.router.dom.redirect
+import react.router.Navigate
 import react.useState
 
 fun RBuilder.currentPairAssignments(
@@ -38,7 +36,7 @@ data class CurrentPairAssignmentsPanelProps(
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
     val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
-) : RProps
+) : Props
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
@@ -50,14 +48,14 @@ val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps
         { DeletePairAssignmentsCommand(tribe.id, pairAssignments.id) }, { redirectToCurrentFunc() }
     )
     if (redirectUrl != null)
-        redirect(to = redirectUrl)
+        Navigate { attrs.to = redirectUrl }
     else
         div(classes = styles.className) {
             dateHeader(pairAssignments)
             pairAssignmentList(tribe, pairAssignments, setPairAssignments, allowSave)
             if (allowSave) {
                 div {
-                    prompt(`when` = true, message = "Press OK to save these pairs.")
+//                    prompt(`when` = true, message = "Press OK to save these pairs.")
                     saveButton(redirectToCurrentFunc)
                     cancelButton(onCancel)
                 }

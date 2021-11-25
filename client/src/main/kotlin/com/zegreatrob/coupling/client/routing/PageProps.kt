@@ -8,16 +8,17 @@ import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.SdkSingleton
+import kotlinext.js.Record
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URLSearchParams
-import react.RProps
+import react.Props
 
 data class PageProps(
-    val pathParams: Map<String, String>,
+    val pathParams: Record<String, String>,
     val commander: Commander,
     val search: URLSearchParams
-) : RProps {
+) : Props {
     val tribeId: TribeId? get() = pathParams["tribeId"]?.let(::TribeId)
     val playerId: String? get() = pathParams["playerId"]
     val pinId: String? get() = pathParams["pinId"]

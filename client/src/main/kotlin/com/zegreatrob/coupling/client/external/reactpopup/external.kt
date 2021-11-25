@@ -2,14 +2,14 @@
 
 package com.zegreatrob.coupling.client.external.reactpopup
 
-import react.RClass
+import react.ElementType
+import react.PropsWithClassName
 import react.ReactElement
-import react.dom.WithClassName
 import kotlin.js.Json
 
-external val default: RClass<PopupProps>
+external val default: ElementType<PopupProps>
 
-external interface PopupProps : WithClassName {
+external interface PopupProps : PropsWithClassName {
     var modal: Boolean
     var trigger: (Boolean) -> ReactElement
     var open: Boolean?

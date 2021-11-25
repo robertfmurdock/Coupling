@@ -2,21 +2,21 @@
 
 package com.zegreatrob.coupling.client.external.reactfliptoolkit
 
-import react.RClass
-import react.RProps
+import react.ElementType
+import react.Props
 
 @JsName("Flipper")
-external val Flipper: RClass<FlipperProps>
+external val Flipper: ElementType<FlippeProps>
 
-external interface FlipperProps : RProps {
+external interface FlippeProps : Props {
     var flipKey: String
     var className: String?
 }
 
 @JsName("Flipped")
-external val Flipped: RClass<FlippedProps>
+external val Flipped: ElementType<FlippedProps>
 
-external interface FlippedProps : RProps {
+external interface FlippedProps : Props {
     var flipId: String?
     var inverseFlipId: String?
 }

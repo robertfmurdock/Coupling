@@ -22,7 +22,7 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(id = null)
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc()))
+        shallow(PinConfigEditor, PinConfigEditoProps(tribe, pin, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find(ConfigForm)
             .props()
@@ -35,7 +35,7 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(id = "excellent id")
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc()))
+        shallow(PinConfigEditor, PinConfigEditoProps(tribe, pin, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find(ConfigForm)
             .props()
@@ -52,7 +52,7 @@ class PinConfigEditorTest {
 
         val dispatchFunc = StubDispatchFunc<PinCommandDispatcher>()
 
-        val wrapper = shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, dispatchFunc)).apply {
+        val wrapper = shallow(PinConfigEditor, PinConfigEditoProps(tribe, pin, {}, dispatchFunc)).apply {
             simulateInputChange("name", newName)
             simulateInputChange("icon", newIcon)
             update()

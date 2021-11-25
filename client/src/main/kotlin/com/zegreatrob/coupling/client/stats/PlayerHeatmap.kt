@@ -13,7 +13,7 @@ import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.html.DIV
 import react.RBuilder
-import react.RProps
+import react.Props
 import react.dom.RDOMBuilder
 import react.dom.attrs
 import react.dom.div
@@ -24,7 +24,7 @@ data class PlayerHeatmapProps(
     val tribe: Tribe,
     val players: List<Player>,
     val heatmapData: List<List<Double?>>
-) : RProps
+) : Props
 
 private val styles = useStyles("stats/PlayerHeatmap")
 

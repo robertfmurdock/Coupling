@@ -19,7 +19,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import react.RBuilder
-import react.RProps
+import react.Props
 import react.dom.attrs
 import react.dom.div
 import react.dom.key
@@ -31,7 +31,7 @@ data class HistoryProps(
     val tribe: Tribe,
     val history: List<PairAssignmentDocument>,
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>
-) : RProps
+) : Props
 
 val History by lazy { historyComponent(WindowFunctions) }
 

@@ -10,25 +10,25 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.RuleSet
 import kotlinx.html.classes
+import react.Props
 import react.RBuilder
-import react.RProps
 import react.dom.attrs
 import react.dom.div
-import react.router.dom.routeLink
+import react.router.dom.Link
 import styled.css
 import styled.styledDiv
 
-data class PlayerRosterProps(
+data class PlayerRosteProps(
     val label: String? = null,
     val players: List<Player>,
     val tribeId: TribeId,
     val className: String? = null,
     val cssOverrides: RuleSet = {}
-) : RProps
+) : Props
 
 private val styles = useStyles("player/PlayerRoster")
 
-val PlayerRoster = reactFunction { (label, players, tribeId, className, overrides): PlayerRosterProps ->
+val PlayerRoster = reactFunction { (label, players, tribeId, className, overrides): PlayerRosteProps ->
     styledDiv {
         attrs {
             if (className != null) classes = classes + className
@@ -45,7 +45,8 @@ val PlayerRoster = reactFunction { (label, players, tribeId, className, override
     }
 }
 
-private fun RBuilder.addPlayerButton(tribeId: TribeId) = routeLink(to = "/${tribeId.value}/player/new/") {
+private fun RBuilder.addPlayerButton(tribeId: TribeId) = Link {
+    attrs.to = "/${tribeId.value}/player/new/"
     couplingButton(large, orange, styles["addPlayerButton"]) {
         +"Add a new player!"
     }

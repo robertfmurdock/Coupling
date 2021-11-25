@@ -1,8 +1,8 @@
 @file:JsModule("react-markdown")
 package com.zegreatrob.coupling.client.external.reactmarkdown
 
-import react.RClass
-import react.RProps
+import react.ElementType
+import react.Props
 
 @JsName("default")
-external val reactMarkdown: RClass<RProps>
+external val reactMarkdown: ElementType<Props>
