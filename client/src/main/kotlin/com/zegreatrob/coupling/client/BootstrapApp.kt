@@ -21,7 +21,7 @@ object App : Sdk by SdkSingleton {
         render(couplingRouterElement(isSignedIn, animationsDisabled), document.viewContainerNode)
     }
 
-    private val Document.viewContainerNode get() = getElementsByClassName("view-container")[0]
+    private val Document.viewContainerNode get() = getElementsByClassName("view-container")[0]!!
 
     private fun couplingRouterElement(isSignedIn: Boolean, animationsDisabled: Boolean) =
         createElement(CouplingRouter, CouplingRouterProps(isSignedIn, animationsDisabled))
