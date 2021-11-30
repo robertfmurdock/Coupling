@@ -6,7 +6,7 @@ import react.*
 import kotlin.math.round
 
 data class FrameRunnerProps(
-    val sequence: Sequence<Pair<*, Int>>,
+    val sequence: Sequence<Frame<*>>,
     val speed: Double,
     val children: RBuilder.(value: Any?) -> Unit
 ) : Props
@@ -17,7 +17,9 @@ private fun <A, B, C> Pair<A, B>.let(transform: (A, B) -> C) = transform(first, 
 private fun <I, O, O2> ((I) -> O).join(transform: (O) -> O2) = { pair: I -> transform(this(pair)) }
 private fun <I> ((I?) -> Unit).curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { it: I -> { this(it) } }
 
-fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, speed: Double, children: RBuilder.(T) -> Unit) = child(
+data class Frame<T>(val data: T, val delay: Int)
+
+fun <T> RBuilder.frameRunner(sequence: Sequence<Frame<T>>, speed: Double, children: RBuilder.(T) -> Unit) = child(
     createElement(FrameRunner, FrameRunnerProps(sequence, speed) { value ->
         children(value.unsafeCast<T>())
     })
@@ -25,8 +27,8 @@ fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, speed: Double, ch
 
 val FrameRunner = reactFunction<FrameRunnerProps> { props ->
     val (sequence, speed) = props
-    var state by useState(sequence.first().first)
-    val scheduleStateFunc = scheduleStateFunc({state = it}, speed)
+    var state by useState(sequence.first().data)
+    val scheduleStateFunc: (Frame<*>) -> Unit = scheduleStateFunc({ state = it }, speed)
 
     useEffectOnce { sequence.forEach(scheduleStateFunc) }
     props.children(this, state)
@@ -38,9 +40,12 @@ private fun scheduleStateFunc(setState: (Any?) -> Unit, speed: Double) = setStat
 
 private fun Int.applySpeed(speed: Double): Int = round(this / speed).toInt()
 
-private fun ((Any?) -> Unit).statePairToTimeoutArgsFunc(): (Pair<Any?, Int>) -> Pair<() -> Unit, Int> =
-    pairTransformFirstFunc(curryOneArgToNoArgsFunc())
+private fun ((Any?) -> Unit).statePairToTimeoutArgsFunc(): (Frame<*>) -> Pair<() -> Unit, Int> =
+    toFrameFunc(pairTransformFirstFunc(curryOneArgToNoArgsFunc()))
 
+fun toFrameFunc(target: (Pair<Any?, Int>) -> Pair<() -> Unit, Int>) = fun(it: Frame<*>): Pair<() -> Unit, Int> {
+    return target(Pair(it.data, it.delay))
+}
 
 private fun <I, O, V> pairTransformFirstFunc(transform: (I) -> O): (Pair<I, V>) -> Pair<O, V> = { pair ->
     pair.letFirst(transform)

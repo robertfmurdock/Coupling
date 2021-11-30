@@ -9,7 +9,7 @@ import kotlinx.html.classes
 import react.PropsWithChildren
 import react.dom.attrs
 import react.dom.div
-import react.functionComponent
+import react.fc
 import react.useState
 
 private val styles = useStyles("routing/DataLoadWrapper")
@@ -22,7 +22,7 @@ enum class AnimationState {
     Start, Stop
 }
 
-val animationFrame = functionComponent<AnimationFrameProps> { props ->
+val animationFrame = fc<AnimationFrameProps> { props ->
     var animationState by useState(AnimationState.Start)
     val shouldStartAnimation = props.state !is EmptyState && animationState === AnimationState.Start
 

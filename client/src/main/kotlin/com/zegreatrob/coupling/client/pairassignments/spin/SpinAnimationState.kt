@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
+import com.zegreatrob.coupling.client.Frame
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.orderedPairedPlayers
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -13,11 +14,9 @@ sealed class SpinAnimationState {
 
     companion object {
         fun sequence(pairAssignments: PairAssignmentDocument) =
-            generateSequence<Pair<SpinAnimationState, Int>>(Start to 0) { (state, time) ->
+            generateSequence<Frame<SpinAnimationState>>(Frame(Start, 0)) { (state, time) ->
                 state.next(pairAssignments)
-                    ?.let {
-                        it to time + state.duration(pairAssignments)
-                    }
+                    ?.let { Frame(it, time + state.duration(pairAssignments)) }
             }
     }
 }

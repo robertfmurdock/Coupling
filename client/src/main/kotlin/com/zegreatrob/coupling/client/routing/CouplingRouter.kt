@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.animationsDisabledContext
+import com.zegreatrob.coupling.client.demo.DemoPage
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
@@ -54,7 +55,7 @@ private fun RBuilder.redirectUnauthenticated() = Route {
     }
 }.also { console.warn("not signed in!!!!", window.location.pathname) }
 
-val lostRoute = functionComponent<Props> {
+val lostRoute = fc<Props> {
     val location = useLocation()
     div { +"Hmm, you seem to be lost. At ${location.pathname}" }
 }
@@ -78,6 +79,7 @@ private fun RBuilder.authenticatedRoutes() {
     couplingRoute("/:tribeId/retired-player/:playerId/", RetiredPlayerPage)
     couplingRoute("/:tribeId/players/retired", RetiredPlayersPage)
     couplingRoute("/:tribeId/statistics", StatisticsPage)
+    couplingRoute("/demo", DemoPage)
 }
 
 private fun redirectToTribes() = buildElement { Navigate { attrs.to = "/tribes/" } }
