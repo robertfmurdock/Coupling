@@ -24,8 +24,8 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(project(":repository-memory"))
                 implementation(project(":repository-validation"))
-                implementation("com.zegreatrob.testmints:standard:5.2.2")
-                implementation("com.zegreatrob.testmints:minassert:5.2.2")
+                implementation("com.zegreatrob.testmints:standard:5.2.4")
+                implementation("com.zegreatrob.testmints:minassert:5.2.4")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
@@ -39,8 +39,8 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
             }
         }
 
@@ -51,7 +51,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:async:5.2.2")
+                implementation("com.zegreatrob.testmints:async:5.2.4")
             }
         }
     }

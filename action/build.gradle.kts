@@ -32,8 +32,8 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:5.2.2")
-                implementation("com.zegreatrob.testmints:action-async:5.2.2")
+                implementation("com.zegreatrob.testmints:action:5.2.4")
+                implementation("com.zegreatrob.testmints:action-async:5.2.4")
                 implementation("com.benasher44:uuid:0.3.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.8")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -47,8 +47,8 @@ kotlin {
                 implementation(project(":json"))
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard:5.2.2")
-                implementation("com.zegreatrob.testmints:minassert:5.2.2")
+                implementation("com.zegreatrob.testmints:standard:5.2.4")
+                implementation("com.zegreatrob.testmints:minassert:5.2.4")
                 implementation(project(":test-logging"))
             }
         }
@@ -63,8 +63,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.slf4j:slf4j-simple:2.0.0-alpha5")
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
             }
         }
         val jsMain by getting {
