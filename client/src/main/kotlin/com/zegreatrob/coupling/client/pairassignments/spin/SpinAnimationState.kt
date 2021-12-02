@@ -13,8 +13,8 @@ sealed class SpinAnimationState {
     open fun duration(pairAssignments: PairAssignmentDocument): Int = 200
 
     companion object {
-        fun sequence(pairAssignments: PairAssignmentDocument) =
-            generateSequence<Frame<SpinAnimationState>>(Frame(Start, 0)) { (state, time) ->
+        fun sequence(pairAssignments: PairAssignmentDocument): Sequence<Frame<SpinAnimationState>> =
+            generateSequence(Frame(Start, 0)) { (state, time) ->
                 state.next(pairAssignments)
                     ?.let { Frame(it, time + state.duration(pairAssignments)) }
             }
