@@ -17,14 +17,8 @@ kotlin {
         useCommonJs()
         binaries.executable()
     }
-
     sourceSets {
-        all {
-            languageSettings {
-                useExperimentalAnnotation("kotlinx.serialization.ExperimentalSerializationApi")
-            }
-        }
-        val main by getting {
+        getByName("main") {
             resources.srcDir("src/main/javascript")
         }
     }
@@ -94,9 +88,9 @@ tasks {
     val serverCompile by creating(Exec::class) {
         dependsOn(copyServerResources, compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
         mustRunAfter(clean)
-        inputs.dir(compileKotlinJs.outputFile)
+        inputs.dir(compileKotlinJs.outputFileProperty)
         inputs.dir(processResources.destinationDir.path)
-        inputs.file(compileProductionExecutableKotlinJs.outputFile)
+        inputs.file(compileProductionExecutableKotlinJs.outputFileProperty)
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")
@@ -117,7 +111,7 @@ tasks {
         )
     }
 
-    val serverStats by creating(Exec::class) {
+    create<Exec>("serverStats") {
         dependsOn(copyServerResources, compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
         mustRunAfter(clean)
 
@@ -144,8 +138,10 @@ tasks {
 
     val packageJson: String? by rootProject
 
+    val test by getting
+
     create<Exec>("updateDependencies") {
-        dependsOn("test")
+        dependsOn(test)
         nodeExec(
             compileKotlinJs,
             listOf("$nodeModulesDir/.bin/ncu", "-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
@@ -165,10 +161,11 @@ tasks {
     }
 
     create<Exec>("serverlessStart") {
-        dependsOn(assemble, clientConfiguration, "test")
+        dependsOn(assemble, clientConfiguration, test)
+        val serverlessConfigFile = project.relativePath("serverless.yml")
         nodeExec(
             compileKotlinJs,
-            listOf("$nodeModulesDir/.bin/serverless", "offline", "--config", project.relativePath("serverless.yml"))
+            listOf("$nodeModulesDir/.bin/serverless", "offline", "--config", serverlessConfigFile, "start")
         )
         environment("NODE_ENV", "production")
         environment(
@@ -186,7 +183,7 @@ tasks {
     val serverlessBuildDir = "${buildDir.absolutePath}/lambda-dist"
 
     val serverlessBuild by creating(Exec::class) {
-        dependsOn(assemble, "test")
+        dependsOn(assemble, test)
         environment(
             "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
             "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
@@ -231,7 +228,7 @@ tasks {
 
 
     artifacts {
-        add(appConfiguration.name, compileKotlinJs.outputFile) {
+        add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
             builtBy(compileKotlinJs)
         }
         add(appConfiguration.name, file("build/executable")) {

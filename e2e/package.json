@@ -22,7 +22,8 @@
     "url-loader": "4.1.1",
     "serverless": "^2.66.2",
     "serverless-offline": "^8.2.0",
-    "serverless-offline-ssm": "^5.2.0"
+    "serverless-offline-ssm": "^5.2.0",
+    "serverless-plugin-static": "^0.0.7"
   },
   "devDependencies": {
     "axios-cookiejar-support": "~1.0.1",
