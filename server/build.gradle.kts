@@ -187,7 +187,7 @@ tasks {
         environment(
             "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
             "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-            "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/${version}",
+            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${version}",
         )
         nodeExec(
             compileKotlinJs,

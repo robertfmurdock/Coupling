@@ -15,7 +15,7 @@ object Config {
         ?: "24452716216-9lqe1p511qcf53kuihamdhggb05gbt4p.apps.googleusercontent.com"
 
     val clientBasename: String = Process.getEnv("CLIENT_BASENAME") ?: ""
-    val clientPath: String = Process.getEnv("CLIENT_PATH")?.ifEmpty { null } ?: "/no-client-path-found"
+    val clientUrl: String = Process.getEnv("CLIENT_URL")?.ifEmpty { null } ?: "/no-client-url-found"
     val publicUrl = Process.getEnv("PUBLIC_URL") ?: "http://localhost:3000"
     val cookieDomain = Process.getEnv("COOKIE_DOMAIN")
     val websocketHost = Process.getEnv("WEBSOCKET_HOST") ?: "${URL(publicUrl).host}/api/websocket"

@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.server.external.stream.Readable
 import kotlin.js.Promise
 
 val indexHtmlPromise by lazy {
-    fetch("${Config.clientPath}/index.html")
+    fetch("${Config.clientUrl}/index.html")
         .then(FetchResult::text)
         .unsafeCast<Promise<String>>()
 }
@@ -58,7 +58,7 @@ fun Express.indexRoute(): Handler = { request, response, _ ->
 private fun rewriteLinksToStaticResources(tag: Tag) {
     tag.attrs = tag.attrs.map { attribute ->
         attribute.apply {
-            this.value = this.value.replace("/app/build", Config.clientPath)
+            this.value = this.value.replace("/app/build", Config.clientUrl)
         }
     }.toTypedArray()
 }
@@ -70,7 +70,7 @@ private fun Express.injectVariablesForClient(request: Request) = """<script>
     window.basename = "${Config.clientBasename}";
     window.expressEnv = "$env";
     window.isAuthenticated = ${request.isAuthenticated()};
-    window.webpackPublicPath = "${Config.clientPath}/";
+    window.webpackPublicPath = "${Config.clientUrl}/";
     window.websocketHost = "${Config.websocketHost}/";
     </script>
 """.trimIndent()
