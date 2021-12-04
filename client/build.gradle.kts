@@ -35,10 +35,10 @@ dependencies {
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
     }
-    implementation("com.zegreatrob.testmints:minreact:5.2.4")
-    implementation("com.zegreatrob.testmints:react-data-loader:5.2.4")
-    implementation("com.zegreatrob.testmints:action:5.2.4")
-    implementation("com.zegreatrob.testmints:action-async:5.2.4")
+    implementation("com.zegreatrob.testmints:minreact:5.3.0")
+    implementation("com.zegreatrob.testmints:react-data-loader:5.3.0")
+    implementation("com.zegreatrob.testmints:action:5.3.0")
+    implementation("com.zegreatrob.testmints:action-async:5.3.0")
     implementation("com.soywiz.korlibs.klock:klock:2.4.8")
     implementation("com.benasher44:uuid:0.3.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.1")
@@ -55,14 +55,14 @@ dependencies {
     packageJson.devDependencies().forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
-    testImplementation("com.zegreatrob.testmints:minenzyme:5.2.4")
+    testImplementation("com.zegreatrob.testmints:minenzyme:5.3.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    testImplementation("com.zegreatrob.testmints:standard:5.2.4")
-    testImplementation("com.zegreatrob.testmints:async:5.2.4")
-    testImplementation("com.zegreatrob.testmints:minassert:5.2.4")
-    testImplementation("com.zegreatrob.testmints:minspy:5.2.4")
+    testImplementation("com.zegreatrob.testmints:standard:5.3.0")
+    testImplementation("com.zegreatrob.testmints:async:5.3.0")
+    testImplementation("com.zegreatrob.testmints:minassert:5.3.0")
+    testImplementation("com.zegreatrob.testmints:minspy:5.3.0")
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"

@@ -15,12 +15,17 @@ plugins {
     id("com.github.ben-manes.versions") version "0.39.0"
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
     id("de.gliderpilot.semantic-release") version "1.4.2"
+    id("com.avast.gradle.docker-compose") version "0.14.11"
 }
 
 semanticRelease {
     changeLog(closureOf<SemanticReleaseChangeLogService> {
         changeScope = KotlinClosure1<Commit, ChangeScope>({ ChangeScope.PATCH })
     })
+}
+
+dockerCompose {
+    tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
 }
 
 allprojects {

@@ -12,12 +12,6 @@ services:
     image: amazon/dynamodb-local
     ports:
       - "8000:8000"
-  statsd:
-    image: hopsoft/graphite-statsd
-    ports:
-      - "3002:80"
-      - "2003:2003"
-      - "8125:8125/udp"
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.5
     environment:
@@ -26,40 +20,17 @@ services:
     volumes:
       - es_data:/usr/share/elasticsearch/data
   graylog:
-    image: graylog/graylog:3.2
+    image: graylog/graylog:4.2.2
     links:
       - mongo
       - elasticsearch
     ports:
       - "9000:9000"
-      - "12201:12201"
-      - "1514:1514"
       - "5555:5555"
     environment:
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
-  grafana:
-    image: grafana/grafana
-    links:
-      - statsd
-    ports:
-      - "4001:3000"
-  chrome:
-    image: selenium/standalone-chrome
-    network_mode: host
-    volumes:
-      - /dev/shm:/dev/shm
-    ports:
-      - "4444:4444"
-  seleniumhub:
-    image: selenium/hub
-  chromenode:
-    image: selenium/node-chrome
-    volumes:
-      - /dev/shm:/dev/shm
-    links:
-      - "seleniumhub:hub"
 volumes:
   mongo_data:
     driver: local
