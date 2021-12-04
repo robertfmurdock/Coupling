@@ -12,6 +12,8 @@ pluginManagement {
 }
 
 rootProject.name = "Coupling"
+
+includeBuild("plugins")
 include("action")
 include("client")
 include("e2e")

@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.versioning")
 }
 
 kotlin {

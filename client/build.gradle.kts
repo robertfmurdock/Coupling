@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     kotlin("js")
     kotlin("plugin.serialization") version "1.6.0"
+    id("com.zegreatrob.coupling.plugins.versioning")
 }
 
 kotlin {

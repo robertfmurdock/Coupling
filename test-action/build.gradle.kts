@@ -2,6 +2,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     kotlin("multiplatform")
+    id("com.zegreatrob.coupling.plugins.versioning")
     id("kotlinx-serialization") version "1.6.0"
 }
 

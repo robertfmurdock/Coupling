@@ -3,9 +3,8 @@ import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.versioning")
 }
-
-
 
 kotlin {
     targets {

@@ -1,4 +1,4 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+
 import com.zegreatrob.coupling.build.JsonLoggingTestListener
 import de.gliderpilot.gradle.semanticrelease.SemanticReleaseChangeLogService
 import org.ajoberstar.gradle.git.release.semver.ChangeScope
@@ -16,6 +16,7 @@ plugins {
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
     id("de.gliderpilot.semantic-release") version "1.4.2"
     id("com.avast.gradle.docker-compose") version "0.14.11"
+    id("com.zegreatrob.coupling.plugins.versioning")
 }
 
 semanticRelease {
@@ -29,8 +30,6 @@ dockerCompose {
 }
 
 allprojects {
-    apply(plugin = "se.patrikerdes.use-latest-versions")
-    apply(plugin = "com.github.ben-manes.versions")
     repositories {
         mavenCentral()
     }
@@ -49,18 +48,6 @@ allprojects {
         }
         val collectResults by creating {
             dependsOn(copyReportsToCircleCIDirectory, copyTestResultsToCircleCIDirectory)
-        }
-        withType<DependencyUpdatesTask> {
-            checkForGradleUpdate = true
-            outputFormatter = "json"
-            outputDir = "build/dependencyUpdates"
-            reportfileName = "report"
-            revision = "release"
-            rejectVersionIf {
-                "^[0-9.]+[0-9](-RC|-M[0-9]+|-RC[0-9]+)\$"
-                    .toRegex()
-                    .matches(candidate.version)
-            }
         }
     }
 
