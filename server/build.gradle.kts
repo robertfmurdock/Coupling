@@ -1,3 +1,4 @@
+import com.zegreatrob.coupling.plugins.NodeExec
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -136,21 +137,14 @@ tasks {
 
     val test by getting
 
-    create<Exec>("updateDependencies") {
-        dependsOn(test)
-        nodetools.apply {
-        nodeExec(
-            compileKotlinJs,
-            listOf("$nodeModulesDir/.bin/ncu", "-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
-        )
-    }
+    create<NodeExec>("updateDependencies") {
+        dependsOn(test, compileKotlinJs)
+        arguments = listOf("$nodeModulesDir/.bin/ncu", "-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
     }
 
-    create<Exec>("start") {
-        dependsOn(assemble, clientConfiguration)
-        nodetools.apply {
-            nodeExec(compileKotlinJs, listOf(project.relativePath("startup")))
-        }
+    create<NodeExec>("start") {
+        dependsOn(assemble, clientConfiguration, compileKotlinJs)
+        arguments = listOf(project.relativePath("startup"))
         environment("NODE_ENV", "production")
         environment(
             "CLIENT_PATH",
@@ -160,15 +154,10 @@ tasks {
         )
     }
 
-    create<Exec>("serverlessStart") {
-        dependsOn(assemble, clientConfiguration, test)
+    create<NodeExec>("serverlessStart") {
+        dependsOn(assemble, clientConfiguration, test, compileKotlinJs)
         val serverlessConfigFile = project.relativePath("serverless.yml")
-        nodetools.apply {
-            nodeExec(
-                compileKotlinJs,
-                listOf("$nodeModulesDir/.bin/serverless", "offline", "--config", serverlessConfigFile, "start")
-            )
-        }
+        arguments = listOf("$nodeModulesDir/.bin/serverless", "offline", "--config", serverlessConfigFile, "start")
         environment("NODE_ENV", "production")
         environment(
             "LAMBDA_ENDPOINT" to "http://localhost:3002",
@@ -192,20 +181,20 @@ tasks {
             "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${version}",
         )
         nodetools.apply {
-        nodeExec(
-            compileKotlinJs,
-            listOf(
-                "$nodeModulesDir/.bin/serverless",
-                "package",
-                "--config",
-                project.relativePath("serverless.yml"),
-                "--package",
-                serverlessBuildDir,
-                "--stage",
-                serverlessStage
+            nodeExec(
+                compileKotlinJs,
+                listOf(
+                    "$nodeModulesDir/.bin/serverless",
+                    "package",
+                    "--config",
+                    project.relativePath("serverless.yml"),
+                    "--package",
+                    serverlessBuildDir,
+                    "--stage",
+                    serverlessStage
+                )
             )
-        )
-    }
+        }
     }
 
     create<Exec>("serverlessDeploy") {
@@ -216,20 +205,20 @@ tasks {
             ":client:uploadToS3",
         )
         nodetools.apply {
-        nodeExec(
-            compileKotlinJs,
-            listOf(
-                "$nodeModulesDir/.bin/serverless",
-                "deploy",
-                "--config",
-                project.relativePath("serverless.yml"),
-                "--package",
-                serverlessBuildDir,
-                "--stage",
-                serverlessStage
+            nodeExec(
+                compileKotlinJs,
+                listOf(
+                    "$nodeModulesDir/.bin/serverless",
+                    "deploy",
+                    "--config",
+                    project.relativePath("serverless.yml"),
+                    "--package",
+                    serverlessBuildDir,
+                    "--stage",
+                    serverlessStage
+                )
             )
-        )
-    }
+        }
     }
 
 

@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
-import org.gradle.kotlin.dsl.create
+plugins {
+    kotlin("js")
+}
 
 val toolsExtension = project.extensions.create("nodetools", NodeExtension::class)
