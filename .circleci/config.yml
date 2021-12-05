@@ -31,11 +31,11 @@ orbs:
           - browser-tools/install-chrome
           - browser-tools/install-chromedriver
           - restore_cache:
-                key: coupling-cache-1-{{ .Branch }}
+                key: coupling-cache-2-{{ .Branch }}
       collect-results:
         steps:
           - save_cache:
-                key: coupling-cache-1-{{ .Branch }}
+                key: coupling-cache-2-{{ .Branch }}
                 paths:
                   - "~/.gradle"
           - run:

@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.plugins.NodeExec
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
@@ -90,7 +91,7 @@ tasks {
 
     val compileEndpointTestProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
 
-    val endpointTest by creating(com.zegreatrob.coupling.plugins.NodeExec::class) {
+    val endpointTest by creating(NodeExec::class) {
         dependsOn(
             "assemble",
             compileKotlinJs,
@@ -118,6 +119,7 @@ tasks {
         ) + processResources.map { it.destinationDir.path }
         relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
         val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"
+
         environment(
             "NODE_PATH" to relevantPaths.joinToString(":"),
             "TEST_LOGIN_ENABLED" to "true",
