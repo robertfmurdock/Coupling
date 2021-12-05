@@ -1,18 +1,16 @@
+
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeExecPath
 import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    id("org.jetbrains.kotlin.js")
+    id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
     id("kotlinx-serialization") version "1.6.0"
 }
-
-val packageJson = loadPackageJson()
 
 val appConfiguration: Configuration by configurations.creating {
     attributes {
@@ -73,10 +71,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
 
-    packageJson.dependencies().forEach {
-        implementation(npm(it.first, it.second.asText()))
-    }
-
     testImplementation(project(":repository-validation"))
     testImplementation(project(":test-logging"))
     testImplementation(project(":stub-model"))
@@ -93,9 +87,6 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:async:5.3.3")
     testImplementation("com.zegreatrob.testmints:minassert:5.3.3")
 
-    packageJson.devDependencies().forEach {
-        testImplementation(npm(it.first, it.second.asText()))
-    }
 }
 
 tasks {

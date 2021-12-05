@@ -1,12 +1,11 @@
 
-import com.zegreatrob.coupling.build.loadPackageJson
 import com.zegreatrob.coupling.build.nodeBinDir
 import com.zegreatrob.coupling.build.nodeExec
 import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    kotlin("js")
+    id("com.zegreatrob.coupling.plugins.jstools")
     id("com.bmuschko.docker-remote-api")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
@@ -26,9 +25,6 @@ kotlin {
         }
     }
 }
-
-val packageJson = loadPackageJson()
-
 
 val appConfiguration: Configuration by configurations.creating {
     extendsFrom(configurations["implementation"])
@@ -50,15 +46,6 @@ dependencies {
     implementation("com.soywiz.korlibs.klock:klock:2.4.8")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
     implementation("com.benasher44:uuid:0.3.1")
-
-    packageJson.dependencies().forEach {
-        implementation(npm(it.first, it.second.asText()))
-    }
-
-    packageJson.devDependencies().forEach {
-        testImplementation(npm(it.first, it.second.asText()))
-    }
-
 }
 
 tasks {

@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    kotlin("js")
+    id("com.zegreatrob.coupling.plugins.jstools")
     kotlin("plugin.serialization") version "1.6.0"
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
@@ -35,9 +35,6 @@ dependencies {
     implementation(project(":action"))
     implementation(project(":logging"))
     implementation(project(":repository-memory"))
-    packageJson.dependencies().forEach {
-        implementation(npm(it.first, it.second.asText()))
-    }
     implementation("com.zegreatrob.testmints:minreact:5.3.3")
     implementation("com.zegreatrob.testmints:react-data-loader:5.3.3")
     implementation("com.zegreatrob.testmints:action:5.3.3")
@@ -55,9 +52,6 @@ dependencies {
 
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))
-    packageJson.devDependencies().forEach {
-        testImplementation(npm(it.first, it.second.asText()))
-    }
     testImplementation("com.zegreatrob.testmints:minenzyme:5.3.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")

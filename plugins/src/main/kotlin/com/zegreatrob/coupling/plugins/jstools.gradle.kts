@@ -1,8 +1,17 @@
 package com.zegreatrob.coupling.plugins
 
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.gradle.kotlin.dsl.withType
+plugins {
+    kotlin("js")
+}
 
+val packageJson = loadPackageJson()
 
-tasks {
+dependencies {
+    packageJson.dependencies().forEach {
+        implementation(npm(it.first, it.second.asText()))
+    }
+
+    packageJson.devDependencies().forEach {
+        testImplementation(npm(it.first, it.second.asText()))
+    }
 }
