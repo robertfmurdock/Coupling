@@ -1,4 +1,3 @@
-
 import com.zegreatrob.coupling.build.nodeBinDir
 import com.zegreatrob.coupling.build.nodeExec
 import com.zegreatrob.coupling.build.nodeModulesDir
@@ -13,18 +12,14 @@ plugins {
     id("kotlinx-serialization") version "1.6.0"
 }
 
-kotlin {
-    js {
-        nodejs()
-        useCommonJs()
-        binaries.executable()
-    }
-    sourceSets {
-        getByName("main") {
-            resources.srcDir("src/main/javascript")
-        }
+kotlin.js().nodejs()
+kotlin.sourceSets {
+
+    getByName("main") {
+        resources.srcDir("src/main/javascript")
     }
 }
+
 
 val appConfiguration: Configuration by configurations.creating {
     extendsFrom(configurations["implementation"])

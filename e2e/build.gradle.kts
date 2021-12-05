@@ -1,4 +1,4 @@
-import com.zegreatrob.coupling.build.loadPackageJson
+
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
@@ -15,8 +15,6 @@ plugins {
 kotlin {
     js {
         nodejs { testTask { enabled = false } }
-        useCommonJs()
-        binaries.executable()
         compilations {
             val e2eTest by creating
             binaries.executable(e2eTest)

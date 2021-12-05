@@ -11,12 +11,7 @@ plugins {
 }
 
 kotlin {
-    js {
-        useCommonJs()
-        browser()
-        binaries.executable()
-    }
-
+    js { browser() }
     sourceSets {
         val main by getting {
             resources.srcDir("src/main/javascript")

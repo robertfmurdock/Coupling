@@ -2,6 +2,9 @@
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.nodeExecPath
 import com.zegreatrob.coupling.build.nodeModulesDir
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
+import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
+import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -14,29 +17,17 @@ plugins {
 
 val appConfiguration: Configuration by configurations.creating {
     attributes {
-        attribute(
-            org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.jsCompilerAttribute,
-            org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute.ir
-        )
-        attribute(
-            org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.ATTRIBUTE,
-            org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations.PUBLIC_VALUE
-        )
-        attribute(
-            org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.attribute,
-            org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.js
-        )
+        attribute(KotlinJsCompilerAttribute.jsCompilerAttribute, KotlinJsCompilerAttribute.ir)
+        attribute(ProjectLocalConfigurations.ATTRIBUTE, ProjectLocalConfigurations.PUBLIC_VALUE)
+        attribute(KotlinPlatformType.attribute, KotlinPlatformType.js)
     }
 }
 
-val testLoggingLib: Configuration by configurations.creating {
-}
+val testLoggingLib: Configuration by configurations.creating
 
 kotlin {
     js {
-        useCommonJs()
         nodejs {}
-        binaries.executable()
         compilations {
             val endpointTest by compilations.creating
             binaries.executable(endpointTest)
