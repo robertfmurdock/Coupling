@@ -74,11 +74,16 @@ abstract class NodeExtension {
 open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
 
     @Input
+    var nodeCommand: String? = null
+
+    @Input
     var arguments: List<String> = emptyList()
 
     override fun exec() {
         environment("NODE_PATH", project.nodeModulesDir)
-        commandLine = listOf(nodeExecPath) + arguments
+        environment("PATH", "$nodeBinDir")
+        val commandFromBin = nodeCommand?.let { listOf("${project.nodeModulesDir}/.bin/$nodeCommand") } ?: emptyList()
+        commandLine = listOf(nodeExecPath) + commandFromBin + arguments
         super.exec()
     }
 
@@ -131,7 +136,7 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
         return if (isWindows) nodeDir else nodeDir.resolve("bin")
     }
 
-    val Project.nodeModulesDir get() = rootProject.buildDir.resolve("js/node_modules")
+    private val Project.nodeModulesDir get() = rootProject.buildDir.resolve("js/node_modules")
 
     private val nodeExecPath get() = "${nodeBinDir}/node"
 
