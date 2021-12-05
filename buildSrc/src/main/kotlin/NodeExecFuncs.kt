@@ -6,7 +6,6 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import java.io.File
 
-
 fun Project.getNodeBinDir(): File {
     val props = System.getProperties()
     fun property(name: String) = props.getProperty(name) ?: System.getProperty(name)

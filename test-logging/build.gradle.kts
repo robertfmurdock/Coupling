@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
+    id("com.zegreatrob.coupling.plugins.testLogging")
 }
 
 kotlin {
@@ -60,7 +61,7 @@ val testLoggingLib: Configuration by configurations.creating {
 tasks {
     val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
     artifacts {
-        add(testLoggingLib.name, compileProductionExecutableKotlinJs.outputFile) {
+        add(testLoggingLib.name, compileProductionExecutableKotlinJs.outputFileProperty) {
             builtBy(compileProductionExecutableKotlinJs)
         }
     }

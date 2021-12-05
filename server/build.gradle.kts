@@ -10,6 +10,7 @@ plugins {
     id("com.bmuschko.docker-remote-api")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
+    id("com.zegreatrob.coupling.plugins.testLogging")
     id("kotlinx-serialization") version "1.6.0"
 }
 

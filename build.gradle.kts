@@ -1,12 +1,10 @@
 
-import com.zegreatrob.coupling.build.JsonLoggingTestListener
 import de.gliderpilot.gradle.semanticrelease.SemanticReleaseChangeLogService
 import org.ajoberstar.gradle.git.release.semver.ChangeScope
 import org.ajoberstar.grgit.Commit
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
-import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
     id("com.github.node-gradle.node") apply false
@@ -27,18 +25,6 @@ semanticRelease {
 
 dockerCompose {
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
-}
-
-allprojects {
-    repositories {
-        mavenCentral()
-    }
-
-    afterEvaluate {
-        tasks.withType(KotlinJsTest::class) {
-            addTestListener(JsonLoggingTestListener(path))
-        }
-    }
 }
 
 docker {

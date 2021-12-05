@@ -4,20 +4,15 @@ plugins {
     kotlin("multiplatform")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
+    id("com.zegreatrob.coupling.plugins.testLogging")
     id("kotlinx-serialization") version "1.6.0"
 }
 
 kotlin {
 
-    targets {   
+    targets {
         js {
-            nodejs {
-                testTask {
-                    useMocha {
-                        timeout = "10s"
-                    }
-                }
-            }
+            nodejs { testTask { useMocha { timeout = "10s" } } }
             useCommonJs()
         }
         jvm()
@@ -26,7 +21,7 @@ kotlin {
     sourceSets {
         all {
             languageSettings {
-                useExperimentalAnnotation("kotlinx.serialization.ExperimentalSerializationApi")
+                optIn("kotlinx.serialization.ExperimentalSerializationApi")
             }
         }
 

@@ -7,6 +7,7 @@ plugins {
     kotlin("plugin.serialization") version "1.6.0"
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
+    id("com.zegreatrob.coupling.plugins.testLogging")
 }
 
 kotlin {
