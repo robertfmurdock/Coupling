@@ -1,7 +1,4 @@
-
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.build.nodeExecPath
-import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
@@ -9,6 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
+    id("com.zegreatrob.coupling.plugins.node")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
@@ -113,32 +111,33 @@ tasks {
 
         dependsOn(processResources)
 
-        inputs.files(compileEndpointTestProductionExecutableKotlinJs.outputFile)
-
-        val relevantPaths = listOf(
-            "$nodeModulesDir",
-            "$nodeModulesDir/../packages/Coupling-sdk-endpointTest/node_modules"
-        ) + processResources.map { it.destinationDir.path }
-        relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
-        val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"
-        environment(
-            "NODE_PATH" to relevantPaths.joinToString(":"),
-            "TEST_LOGIN_ENABLED" to "true",
-            "PORT" to "4001",
-            "WEBSOCKET_HOST" to "localhost:4002",
-            "LAMBDA_ENDPOINT" to "http://localhost:4003",
-            "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile --httpPort 4001 --websocketPort 4002 --lambdaPort 4003",
-            "BASEURL" to "http://localhost:4001/local/",
-            "SERVER_DIR" to project(":server").projectDir.absolutePath,
-            "CLIENT_BASENAME" to "local",
-            "BASENAME" to "local",
-        )
-        commandLine = listOf(
-            nodeExecPath,
-            "--unhandled-rejections=strict",
-            project.relativePath("endpoint-wrapper"),
-            "${compileEndpointTestProductionExecutableKotlinJs.outputFile}"
-        )
+        inputs.files(compileEndpointTestProductionExecutableKotlinJs.outputFileProperty)
+        nodetools.apply {
+            val relevantPaths = listOf(
+                "$nodeModulesDir",
+                "$nodeModulesDir/../packages/Coupling-sdk-endpointTest/node_modules"
+            ) + processResources.map { it.destinationDir.path }
+            relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
+            val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"
+            environment(
+                "NODE_PATH" to relevantPaths.joinToString(":"),
+                "TEST_LOGIN_ENABLED" to "true",
+                "PORT" to "4001",
+                "WEBSOCKET_HOST" to "localhost:4002",
+                "LAMBDA_ENDPOINT" to "http://localhost:4003",
+                "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile --httpPort 4001 --websocketPort 4002 --lambdaPort 4003",
+                "BASEURL" to "http://localhost:4001/local/",
+                "SERVER_DIR" to project(":server").projectDir.absolutePath,
+                "CLIENT_BASENAME" to "local",
+                "BASENAME" to "local",
+            )
+            commandLine = listOf(
+                nodeExecPath,
+                "--unhandled-rejections=strict",
+                project.relativePath("endpoint-wrapper"),
+                "${compileEndpointTestProductionExecutableKotlinJs.outputFile}"
+            )
+        }
 
         val logsDir = "${project.buildDir.absolutePath}/reports/tests/"
         outputs.dir(logsDir)

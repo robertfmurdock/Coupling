@@ -1,10 +1,8 @@
-import com.zegreatrob.coupling.build.nodeBinDir
-import com.zegreatrob.coupling.build.nodeExec
-import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
+    id("com.zegreatrob.coupling.plugins.node")
     id("com.bmuschko.docker-remote-api")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
@@ -14,7 +12,6 @@ plugins {
 
 kotlin.js().nodejs()
 kotlin.sourceSets {
-
     getByName("main") {
         resources.srcDir("src/main/javascript")
     }
@@ -67,40 +64,44 @@ tasks {
         inputs.dir("public")
         outputs.dir(file("build/webpack-output"))
 
-        environment(
-            "NODE_ENV" to "production",
-            "NODE_PATH" to nodeModulesDir,
-            "PATH" to "$nodeBinDir"
-        )
+        nodetools.apply {
+            environment(
+                "NODE_ENV" to "production",
+                "NODE_PATH" to nodeModulesDir,
+                "PATH" to "$nodeBinDir"
+            )
 
-        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+            workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
 
-        commandLine = listOf(
-            "$nodeModulesDir/.bin/webpack",
-            "--config",
-            project.projectDir.resolve("webpack.config.js").absolutePath
-        )
+            commandLine = listOf(
+                "$nodeModulesDir/.bin/webpack",
+                "--config",
+                project.projectDir.resolve("webpack.config.js").absolutePath
+            )
+        }
     }
 
     create<Exec>("serverStats") {
         dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
         mustRunAfter(clean)
 
-        environment(
-            "NODE_ENV" to "production",
-            "NODE_PATH" to nodeModulesDir,
-            "PATH" to "$nodeBinDir"
-        )
+        nodetools.apply {
+            environment(
+                "NODE_ENV" to "production",
+                "NODE_PATH" to nodeModulesDir,
+                "PATH" to "$nodeBinDir"
+            )
 
-        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+            workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
 
-        commandLine = listOf(
-            "$nodeModulesDir/.bin/webpack",
-            "--config",
-            project.projectDir.resolve("webpack.config.js").absolutePath,
-            "--profile",
-            "--json=${rootDir.absolutePath}/compilation-stats.json"
-        )
+            commandLine = listOf(
+                "$nodeModulesDir/.bin/webpack",
+                "--config",
+                project.projectDir.resolve("webpack.config.js").absolutePath,
+                "--profile",
+                "--json=${rootDir.absolutePath}/compilation-stats.json"
+            )
+        }
     }
 
     val copyServerIcons by creating(Copy::class) {
@@ -137,15 +138,19 @@ tasks {
 
     create<Exec>("updateDependencies") {
         dependsOn(test)
+        nodetools.apply {
         nodeExec(
             compileKotlinJs,
             listOf("$nodeModulesDir/.bin/ncu", "-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
         )
     }
+    }
 
     create<Exec>("start") {
         dependsOn(assemble, clientConfiguration)
-        nodeExec(compileKotlinJs, listOf(project.relativePath("startup")))
+        nodetools.apply {
+            nodeExec(compileKotlinJs, listOf(project.relativePath("startup")))
+        }
         environment("NODE_ENV", "production")
         environment(
             "CLIENT_PATH",
@@ -158,10 +163,12 @@ tasks {
     create<Exec>("serverlessStart") {
         dependsOn(assemble, clientConfiguration, test)
         val serverlessConfigFile = project.relativePath("serverless.yml")
-        nodeExec(
-            compileKotlinJs,
-            listOf("$nodeModulesDir/.bin/serverless", "offline", "--config", serverlessConfigFile, "start")
-        )
+        nodetools.apply {
+            nodeExec(
+                compileKotlinJs,
+                listOf("$nodeModulesDir/.bin/serverless", "offline", "--config", serverlessConfigFile, "start")
+            )
+        }
         environment("NODE_ENV", "production")
         environment(
             "LAMBDA_ENDPOINT" to "http://localhost:3002",
@@ -184,6 +191,7 @@ tasks {
             "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
             "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${version}",
         )
+        nodetools.apply {
         nodeExec(
             compileKotlinJs,
             listOf(
@@ -198,6 +206,7 @@ tasks {
             )
         )
     }
+    }
 
     create<Exec>("serverlessDeploy") {
         dependsOn(serverlessBuild)
@@ -206,6 +215,7 @@ tasks {
             ":updateGithubRelease",
             ":client:uploadToS3",
         )
+        nodetools.apply {
         nodeExec(
             compileKotlinJs,
             listOf(
@@ -219,6 +229,7 @@ tasks {
                 serverlessStage
             )
         )
+    }
     }
 
 

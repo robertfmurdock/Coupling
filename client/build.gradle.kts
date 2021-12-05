@@ -1,4 +1,4 @@
-import com.zegreatrob.coupling.build.loadPackageJson
+
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -18,8 +18,6 @@ kotlin {
         }
     }
 }
-
-val packageJson = loadPackageJson()
 
 val clientConfiguration: Configuration by configurations.creating
 
