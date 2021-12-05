@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.build.nodeModulesDir
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("org.jetbrains.kotlin.js")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
@@ -45,72 +45,11 @@ kotlin {
         }
     }
     sourceSets {
-        all {
-            languageSettings {
-                useExperimentalAnnotation("kotlinx.serialization.ExperimentalSerializationApi")
-            }
-        }
-
-        getByName("commonMain") {
-            dependencies {
-                implementation(project(":model"))
-                implementation(project(":repository-core"))
-                implementation("com.zegreatrob.testmints:minjson:5.3.0")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-                implementation("com.soywiz.korlibs.klock:klock:2.4.8")
-                implementation("io.github.microutils:kotlin-logging:2.1.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.213-kotlin-1.5.10")
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(project(":repository-validation"))
-                implementation(project(":test-logging"))
-                implementation(project(":stub-model"))
-                implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard:5.3.3")
-                implementation("com.zegreatrob.testmints:minassert:5.3.3")
-                implementation("com.benasher44:uuid:0.2.4")
-            }
-        }
-
-        val jsMain by getting {
-            dependencies {
-                implementation(project(":json"))
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-
-                packageJson.dependencies().forEach {
-                    implementation(npm(it.first, it.second.asText()))
-                }
-            }
-        }
-
-        val jsEndpointTest by getting {
-            dependsOn(jsMain)
-            dependsOn(commonTest)
-
-            dependencies {
-                implementation(project(":server"))
-                implementation("com.zegreatrob.testmints:standard:5.3.3")
-                implementation("com.zegreatrob.testmints:minassert:5.3.3")
-                implementation("com.zegreatrob.testmints:async:5.3.3")
-
-                packageJson.devDependencies().forEach {
-                    implementation(npm(it.first, it.second.asText()))
-                }
-
-            }
-        }
-
-        val jsTest by getting {
-            dependencies {
-                implementation("com.zegreatrob.testmints:standard:5.3.3")
-                implementation("com.zegreatrob.testmints:minassert:5.3.3")
-                implementation("com.zegreatrob.testmints:async:5.3.3")
-            }
+        val main by getting
+        val test by getting
+        val endpointTest by getting {
+            dependsOn(main)
+            dependsOn(test)
         }
     }
 }
@@ -120,15 +59,54 @@ dependencies {
     testLoggingLib(project(mapOf("path" to ":test-logging", "configuration" to "testLoggingLib")))
 }
 
+dependencies {
+    implementation(project(":model"))
+    implementation(project(":repository-core"))
+    implementation("com.zegreatrob.testmints:minjson:5.3.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("com.soywiz.korlibs.klock:klock:2.4.8")
+    implementation("io.github.microutils:kotlin-logging:2.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.213-kotlin-1.5.10")
+    implementation(project(":json"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
+
+    packageJson.dependencies().forEach {
+        implementation(npm(it.first, it.second.asText()))
+    }
+
+    testImplementation(project(":repository-validation"))
+    testImplementation(project(":test-logging"))
+    testImplementation(project(":stub-model"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("com.zegreatrob.testmints:standard:5.3.3")
+    testImplementation("com.zegreatrob.testmints:minassert:5.3.3")
+    testImplementation("com.benasher44:uuid:0.2.4")
+    testImplementation("com.zegreatrob.testmints:standard:5.3.3")
+    testImplementation("com.zegreatrob.testmints:minassert:5.3.3")
+    testImplementation("com.zegreatrob.testmints:async:5.3.3")
+
+    testImplementation(project(":server"))
+    testImplementation("com.zegreatrob.testmints:standard:5.3.3")
+    testImplementation("com.zegreatrob.testmints:async:5.3.3")
+    testImplementation("com.zegreatrob.testmints:minassert:5.3.3")
+
+    packageJson.devDependencies().forEach {
+        testImplementation(npm(it.first, it.second.asText()))
+    }
+}
+
 tasks {
 
     val compileKotlinJs by getting(Kotlin2JsCompile::class) {}
     val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {}
     val compileEndpointTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        dependsOn("jsGenerateExternalsIntegrated")
+        dependsOn("generateExternalsIntegrated")
     }
-    val jsEndpointTestEndpointTestProductionExecutableCompileSync by getting {}
-    val jsEndpointTestEndpointTestDevelopmentExecutableCompileSync by getting {}
+    val endpointTestEndpointTestProductionExecutableCompileSync by getting {}
+    val endpointTestEndpointTestDevelopmentExecutableCompileSync by getting {}
 
     val compileEndpointTestProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
 
@@ -139,15 +117,15 @@ tasks {
             compileTestKotlinJs,
             compileEndpointTestKotlinJs,
             compileEndpointTestProductionExecutableKotlinJs,
-            jsEndpointTestEndpointTestProductionExecutableCompileSync,
-            jsEndpointTestEndpointTestDevelopmentExecutableCompileSync,
+            endpointTestEndpointTestProductionExecutableCompileSync,
+            endpointTestEndpointTestDevelopmentExecutableCompileSync,
             testLoggingLib,
             appConfiguration
         )
         inputs.file(projectDir.path + "/endpoint-wrapper.js")
         inputs.files(appConfiguration, testLoggingLib)
 
-        outputs.dir("build/test-results/jsTest")
+        outputs.dir("build/test-results/test")
 
         val processResources = withType(ProcessResources::class.java)
 
