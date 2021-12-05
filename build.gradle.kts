@@ -34,25 +34,7 @@ allprojects {
         mavenCentral()
     }
 
-    tasks {
-
-        val projectResultPath = "${rootProject.buildDir.path}/test-output/${project.path}/results".replace(":", "/")
-
-        val copyReportsToCircleCIDirectory by creating(Copy::class) {
-            from("build/reports")
-            into(projectResultPath)
-        }
-        val copyTestResultsToCircleCIDirectory by creating(Copy::class) {
-            from("build/test-results")
-            into(projectResultPath)
-        }
-        val collectResults by creating {
-            dependsOn(copyReportsToCircleCIDirectory, copyTestResultsToCircleCIDirectory)
-        }
-    }
-
     afterEvaluate {
-        mkdir(file(rootProject.buildDir.toPath().resolve("test-output")))
         tasks.withType(KotlinJsTest::class) {
             addTestListener(JsonLoggingTestListener(path))
         }
@@ -86,9 +68,6 @@ val appConfiguration: Configuration by configurations.creating {
 
 dependencies {
     appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
-}
-
-tasks {
 }
 
 buildtimetracker {

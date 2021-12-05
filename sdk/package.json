@@ -16,6 +16,7 @@
     "tough-cookie": "^4.0.0",
     "serverless": "^2.59.0",
     "serverless-offline": "^8.2.0",
-    "serverless-offline-ssm": "^5.2.0"
+    "serverless-offline-ssm": "^5.2.0",
+    "serverless-plugin-static": "^0.0.7"
   }
 }

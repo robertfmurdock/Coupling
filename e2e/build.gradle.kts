@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     kotlin("js")
     id("com.zegreatrob.coupling.plugins.versioning")
+    id("com.zegreatrob.coupling.plugins.reports")
 }
 
 kotlin {
@@ -116,7 +117,7 @@ tasks {
 
         val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
         outputs.dir(reportDir)
-        val logsDir = "${project.buildDir.absolutePath}/logs/e2e-serverless/"
+        val logsDir = "${project.buildDir.absolutePath}/reports/logs/e2e-serverless/"
         outputs.dir(logsDir)
 
         val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"

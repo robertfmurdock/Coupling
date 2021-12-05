@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.zegreatrob.coupling.plugins.versioning")
+    id("com.zegreatrob.coupling.plugins.reports")
     id("kotlinx-serialization") version "1.6.0"
 }
 

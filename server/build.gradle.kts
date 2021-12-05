@@ -9,6 +9,7 @@ plugins {
     kotlin("js")
     id("com.bmuschko.docker-remote-api")
     id("com.zegreatrob.coupling.plugins.versioning")
+    id("com.zegreatrob.coupling.plugins.reports")
     id("kotlinx-serialization") version "1.6.0"
 }
 
@@ -68,26 +69,12 @@ tasks {
 
     val compileKotlinJs by getting(Kotlin2JsCompile::class)
 
-    val copyServerIcons by creating(Copy::class) {
-        from("public")
-        into("build/executable/public")
-    }
-
-    val copyServerViews by creating(Copy::class) {
-        from("views")
-        into("build/executable/views")
-    }
-
-    val copyServerResources by creating {
-        dependsOn(copyServerIcons, copyServerViews)
-    }
-
     val processResources by getting(ProcessResources::class) {}
 
     val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
 
     val serverCompile by creating(Exec::class) {
-        dependsOn(copyServerResources, compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
+        dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
         mustRunAfter(clean)
         inputs.dir(compileKotlinJs.outputFileProperty)
         inputs.dir(processResources.destinationDir.path)
@@ -95,7 +82,7 @@ tasks {
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")
-        outputs.dir(file("build/executable"))
+        outputs.dir(file("build/webpack-output"))
 
         environment(
             "NODE_ENV" to "production",
@@ -113,7 +100,7 @@ tasks {
     }
 
     create<Exec>("serverStats") {
-        dependsOn(copyServerResources, compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
+        dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
         mustRunAfter(clean)
 
         environment(
@@ -133,8 +120,32 @@ tasks {
         )
     }
 
-    val assemble by getting {
+    val copyServerIcons by creating(Copy::class) {
+        from("public")
+        into("build/executable/public")
+    }
+
+    val copyServerViews by creating(Copy::class) {
+        from("views")
+        into("build/executable/views")
+    }
+
+    val copyServerExecutable by creating(Copy::class) {
         dependsOn(serverCompile)
+        from("build/webpack-output")
+        into("build/executable")
+    }
+
+    val copyServerResources by creating {
+        dependsOn(copyServerIcons, copyServerViews)
+    }
+
+    val serverAssemble by creating {
+        dependsOn(copyServerResources, copyServerExecutable)
+    }
+
+    val assemble by getting {
+        dependsOn(serverAssemble)
     }
 
     val packageJson: String? by rootProject
@@ -233,7 +244,7 @@ tasks {
             builtBy(compileKotlinJs)
         }
         add(appConfiguration.name, file("build/executable")) {
-            builtBy(serverCompile)
+            builtBy(serverAssemble)
         }
     }
 }
