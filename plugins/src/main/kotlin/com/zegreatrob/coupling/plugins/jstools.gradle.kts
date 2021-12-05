@@ -4,14 +4,14 @@ plugins {
     kotlin("js")
 }
 
-val packageJson = loadPackageJson()
+val toolsExtension = project.extensions.create("jstools", JsToolsExtension::class, loadPackageJson())
 
 dependencies {
-    packageJson.dependencies().forEach {
+    toolsExtension.packageJson.dependencies()?.forEach {
         implementation(npm(it.first, it.second.asText()))
     }
 
-    packageJson.devDependencies().forEach {
+    toolsExtension.packageJson.devDependencies()?.forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
 }

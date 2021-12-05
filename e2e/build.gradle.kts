@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    kotlin("js")
+    id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
@@ -23,8 +23,6 @@ kotlin {
         }
     }
 }
-
-val packageJson = loadPackageJson()
 
 val appConfiguration: Configuration by configurations.creating {
     attributes {
@@ -51,7 +49,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:async:5.3.0")
                 implementation("com.zegreatrob.testmints:wdio:5.3.3")
                 implementation(appConfiguration)
-                packageJson.devDependencies().forEach {
+                jstools.packageJson.devDependencies()?.forEach {
                     implementation(npm(it.first, it.second.asText()))
                 }
             }
@@ -70,10 +68,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.276-kotlin-1.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("com.zegreatrob.testmints:wdio:5.3.3")
-    packageJson.dependencies().forEach {
-        implementation(npm(it.first, it.second.asText()))
-    }
-    packageJson.devDependencies().forEach {
+    jstools.packageJson.devDependencies()?.forEach {
         implementation(npm(it.first, it.second.asText()))
     }
 }
