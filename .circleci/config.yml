@@ -106,7 +106,7 @@ jobs:
     executor: coupling-orb/standard
     steps:
       - checkout
-      - run: "./gradlew useLatestVersions"
+      - run: "./gradlew useLatestVersions :plugins:useLatestVersions"
       - coupling-orb/setup
       - run: docker-compose up -d dynamo
       - run: "./gradlew build"
