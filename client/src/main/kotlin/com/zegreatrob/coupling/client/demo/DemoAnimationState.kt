@@ -30,12 +30,12 @@ object ShowIntro : DemoAnimationState() {
                 defaultBadgeName = "Default",
                 alternateBadgeName = "Alternate"
             )
-        ), 200
+        ), 4000
     )
 }
 
 data class MakeTribe(val tribe: Tribe) : DemoAnimationState() {
-    override fun next() = Pair(AddPlayer1(tribe, Player()), 200)
+    override fun next() = Pair(AddPlayer1(tribe, Player()), 4000)
 }
 
 data class AddPlayer1(val tribe: Tribe, val player: Player) : DemoAnimationState() {
