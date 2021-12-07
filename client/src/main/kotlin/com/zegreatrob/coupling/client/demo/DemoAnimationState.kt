@@ -5,39 +5,31 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
+val demoTribe = Tribe(id = TribeId(""), name = "Your team name here")
+
 sealed class DemoAnimationState {
-    abstract fun next(): Pair<DemoAnimationState, Int>?
 
     companion object {
-        fun generateSequence(): Sequence<Frame<DemoAnimationState>> =
-            generateSequence(Frame(Start, 0)) { (state, time) ->
-                state.next()
-                    ?.let { (next, duration) -> Frame(next, time + duration) }
-            }
+        fun generateSequence(): Sequence<Frame<DemoAnimationState>> = listOfPairs()
+            .runningFold(Frame<DemoAnimationState>(Start, 0)) { frame, (state, time) ->
+                Frame(state, frame.delay + time)
+            }.asSequence()
+
+        private fun listOfPairs() = listOf(Pair(ShowIntro, 3000)) +
+                makeTribeSequence().map { it to 2000 } +
+                Pair(AddPlayer1(demoTribe, Player()), 4000)
     }
 }
 
-object Start : DemoAnimationState() {
-    override fun next() = Pair(ShowIntro, 3000)
-}
+object Start : DemoAnimationState()
 
-object ShowIntro : DemoAnimationState() {
-    override fun next() = Pair(
-        MakeTribe(
-            Tribe(
-                id = TribeId(""),
-                name = "New Tribe",
-                defaultBadgeName = "Default",
-                alternateBadgeName = "Alternate"
-            )
-        ), 4000
-    )
-}
+object ShowIntro : DemoAnimationState()
 
-data class MakeTribe(val tribe: Tribe) : DemoAnimationState() {
-    override fun next() = Pair(AddPlayer1(tribe, Player()), 4000)
-}
+fun makeTribeSequence() = listOf(
+    MakeTribe(Tribe(id = demoTribe.id)),
+    MakeTribe(Tribe(id = demoTribe.id, name = demoTribe.name)),
+)
 
-data class AddPlayer1(val tribe: Tribe, val player: Player) : DemoAnimationState() {
-    override fun next() = null
-}
+data class MakeTribe(val tribe: Tribe) : DemoAnimationState()
+
+data class AddPlayer1(val tribe: Tribe, val player: Player) : DemoAnimationState()

@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.client.tribe.TribeConfigProps
 import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.testmints.action.async.SuspendAction
 import react.dom.div
+import react.key
 
 interface NoOpDispatcher : TribeConfigDispatcher, PlayerConfigDispatcher
 
@@ -27,7 +28,9 @@ val DemoPage = reactFunction<PageProps> {
             Start -> div { +"Starting..." }
             ShowIntro -> div { +"Alright, here's an example of how you might use the app." }
             is MakeTribe -> div {
-                child(TribeConfig, TribeConfigProps(thing.tribe, noOpDispatchFunc))
+                child(TribeConfig, TribeConfigProps(thing.tribe, noOpDispatchFunc)) {
+                    attrs.key = thing.tribe.toString()
+                }
             }
             is AddPlayer1 -> div {
                 child(
