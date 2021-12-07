@@ -36,7 +36,9 @@ val DemoPage = reactFunction<PageProps> {
                 child(
                     PlayerConfig,
                     PlayerConfigProps(thing.tribe, thing.player, emptyList(), {}, noOpDispatchFunc)
-                )
+                ) {
+                    attrs.key = thing.player.toString()
+                }
             }
         }
     }
