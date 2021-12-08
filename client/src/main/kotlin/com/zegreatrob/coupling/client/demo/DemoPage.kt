@@ -32,12 +32,12 @@ val DemoPage = reactFunction<PageProps> {
                     attrs.key = thing.tribe.toString()
                 }
             }
-            is AddPlayer1 -> div {
+            is AddPlayer -> div {
                 child(
                     PlayerConfig,
-                    PlayerConfigProps(thing.tribe, thing.player, emptyList(), {}, noOpDispatchFunc)
+                    PlayerConfigProps(thing.tribe, thing.newPlayer, thing.players, {}, noOpDispatchFunc)
                 ) {
-                    attrs.key = thing.player.toString()
+                    attrs.key = thing.newPlayer.toString()
                 }
             }
         }

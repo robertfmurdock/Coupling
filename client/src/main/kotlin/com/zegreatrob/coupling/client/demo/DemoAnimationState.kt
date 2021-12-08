@@ -6,9 +6,23 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-val demoTribe = Tribe(id = TribeId("${uuid4()}"), name = "Your team name here")
+private val demoTribe = Tribe(id = TribeId("${uuid4()}"), name = "Your team name here")
 
 private val player1 = Player(name = "Homer")
+private val player2 = Player(name = "Marge")
+private val player3 = Player(name = "Bart")
+private val player4 = Player(name = "Lisa")
+private val player5 = Player(name = "Maggie")
+private val player6 = Player(name = "Santa's Lil Helper")
+
+private val players = listOf(
+    player1,
+    player2,
+    player3,
+    player4,
+    player5,
+    player6,
+)
 
 sealed class DemoAnimationState {
 
@@ -32,12 +46,14 @@ fun makeTribeSequence() = demoTribe.name.rangeOfStringLength().map { index ->
     MakeTribe(Tribe(id = demoTribe.id, name = demoTribe.name?.substring(0, index)))
 }
 
-fun makePlayerSequence() = player1.name.rangeOfStringLength().map { index ->
-    AddPlayer1(demoTribe, player1.copy(name = player1.name.substring(0, index)))
+fun makePlayerSequence() = players.flatMapIndexed { playerIndex, player ->
+    player.name.rangeOfStringLength().map { index ->
+        AddPlayer(demoTribe, player.copy(name = player.name.substring(0, index)), players.subList(0, playerIndex))
+    }
 }
 
 private fun String?.rangeOfStringLength() = (0..(this ?: "").length)
 
 data class MakeTribe(val tribe: Tribe) : DemoAnimationState()
 
-data class AddPlayer1(val tribe: Tribe, val player: Player) : DemoAnimationState()
+data class AddPlayer(val tribe: Tribe, val newPlayer: Player, val players: List<Player>) : DemoAnimationState()
