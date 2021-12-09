@@ -1,7 +1,12 @@
 package com.zegreatrob.coupling.client.demo
 
 import com.benasher44.uuid.uuid4
+import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -26,7 +31,17 @@ private val players = listOf(
 )
 
 private val pins = listOf(
-    Pin(name = "watchman", icon = "eye")
+    Pin(id = "", name = "watchman", icon = "eye")
+)
+
+private val pairAssignments = PairAssignmentDocument(
+    PairAssignmentDocumentId(""),
+    DateTime.now(),
+    listOf(
+        pairOf(player1, player4).withPins(pins),
+        pairOf(player2, player5).withPins(emptyList()),
+        pairOf(player6).withPins(emptyList()),
+    )
 )
 
 sealed class DemoAnimationState {
@@ -37,11 +52,16 @@ sealed class DemoAnimationState {
                 Frame(state, frame.delay + time)
             }.asSequence()
 
-        private fun listOfPairs() = listOf(Pair(ShowIntro, 3000)) +
+        private fun listOfPairs(): List<Pair<DemoAnimationState, Int>> = listOf(Pair(ShowIntro, 3000)) +
                 makeTribeSequence().map { it to 100 } +
                 makePlayerSequence().map { it to 100 } +
                 makePinSequence().map { it to 100 } +
-                (CurrentPairs(demoTribe, players, pins) to 100)
+                (CurrentPairs(demoTribe, players, pins, null, false) to 100) +
+                (PrepareToSpin(demoTribe, players.map { it to false }, pins) to 100) +
+                (PrepareToSpin(demoTribe, players.map { it to true }, pins) to 100) +
+                (PrepareToSpin(demoTribe, players.map { it to (it != player3) }, pins) to 100) +
+                (CurrentPairs(demoTribe, players, pins, pairAssignments, true) to 100) +
+                (CurrentPairs(demoTribe, players, pins, pairAssignments, false) to 10000)
     }
 }
 
@@ -74,4 +94,13 @@ data class AddPlayer(val tribe: Tribe, val newPlayer: Player, val players: List<
 
 data class AddPin(val tribe: Tribe, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState()
 
-data class CurrentPairs(val tribe: Tribe, val players: List<Player>, val pins: List<Pin>) : DemoAnimationState()
+data class CurrentPairs(
+    val tribe: Tribe,
+    val players: List<Player>,
+    val pins: List<Pin>,
+    val pairAssignments: PairAssignmentDocument?,
+    val allowSave: Boolean
+) : DemoAnimationState()
+
+data class PrepareToSpin(val tribe: Tribe, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
+    DemoAnimationState()
