@@ -38,8 +38,8 @@ private val pairAssignments = PairAssignmentDocument(
     PairAssignmentDocumentId(""),
     DateTime.now(),
     listOf(
-        pairOf(player1, player4).withPins(pins),
-        pairOf(player2, player5).withPins(emptyList()),
+        pairOf(player1, player4).withPins(emptyList()),
+        pairOf(player2, player5).withPins(pins),
         pairOf(player6).withPins(emptyList()),
     )
 )
@@ -53,16 +53,22 @@ sealed class DemoAnimationState {
             }.asSequence()
 
         private fun listOfPairs(): List<Pair<DemoAnimationState, Int>> = listOf(Pair(ShowIntro, 3000)) +
-                makeTribeSequence().map { it to 100 } +
-                makePlayerSequence().map { it to 100 } +
-                makePinSequence().map { it to 100 } +
+                makeTribeSequence().pairWithDurations(800, 100) +
+                makePlayerSequence() +
+                makePinSequence().pairWithDurations(800, 100) +
                 (CurrentPairs(demoTribe, players, pins, null, false) to 100) +
                 (PrepareToSpin(demoTribe, players.map { it to false }, pins) to 100) +
                 (PrepareToSpin(demoTribe, players.map { it to true }, pins) to 100) +
                 (PrepareToSpin(demoTribe, players.map { it to (it != player3) }, pins) to 100) +
                 (CurrentPairs(demoTribe, players, pins, pairAssignments, true) to 100) +
                 (CurrentPairs(demoTribe, players, pins, pairAssignments, false) to 10000)
+
     }
+
+}
+
+private fun <T> List<T>.pairWithDurations(firstDuration: Int, duration: Int) = mapIndexed { index, it ->
+    it to if (index == 0) firstDuration else duration
 }
 
 object Start : DemoAnimationState()
@@ -74,11 +80,16 @@ fun makeTribeSequence() = demoTribe.name.rangeOfStringLength().map { index ->
 }
 
 fun makePlayerSequence() = players.flatMapIndexed { playerIndex, player ->
-    player.name.rangeOfStringLength().map { index ->
-        AddPlayer(demoTribe, player.copy(name = player.name.substring(0, index)), players.subList(0, playerIndex))
-    }
-} + AddPlayer(demoTribe, players.last(), players)
+    playerNameSequence(player, players.subList(0, playerIndex))
+        .pairWithDurations(750, 100)
+} + (AddPlayer(demoTribe, players.last(), players) to 100)
 
+private fun playerNameSequence(
+    player: Player,
+    playersSoFar: List<Player>
+) = player.name.rangeOfStringLength().map { index ->
+    AddPlayer(demoTribe, player.copy(name = player.name.substring(0, index)), playersSoFar)
+}
 
 fun makePinSequence() = pins.flatMapIndexed { pinIndex, pin ->
     pin.name.rangeOfStringLength().map { index ->
