@@ -26,16 +26,13 @@ import kotlinx.css.properties.animation
 import kotlinx.css.properties.boxShadow
 import kotlinx.css.properties.s
 import kotlinx.html.classes
-import react.Props
-import react.RBuilder
-import react.buildElement
+import react.*
 import react.dom.*
 import react.router.Navigate
-import react.useState
 import styled.css
 import styled.styledDiv
 
-data class PrepareSpinProps(
+data class StatefulPrepareSpinProps(
     val tribe: Tribe,
     val players: List<Player>,
     val currentPairsDoc: PairAssignmentDocument?,
@@ -45,42 +42,87 @@ data class PrepareSpinProps(
 
 private val styles = useStyles("PrepareSpin")
 
-val PrepareSpin = reactFunction<PrepareSpinProps> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
-    var playerSelections by useState(defaultSelections(players, currentPairsDoc))
-    var pinSelections by useState(pins.map { it.id })
-    var redirectUrl by useState<String?>(null)
-    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections) { redirectUrl = it }
+val StatefulPrepareSpin =
+    reactFunction<StatefulPrepareSpinProps> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
+        var playerSelections by useState(defaultSelections(players, currentPairsDoc))
+        var pinSelections by useState(pins.map { it.id })
+        var redirectUrl by useState<String?>(null)
+        val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections) { redirectUrl = it }
 
-    if (redirectUrl != null)
-        Navigate { attrs.to = redirectUrl ?: "" }
-    else
-        div(classes = styles.className) {
-            div { tribeBrowser(tribe) }
-            div {
-                div { spinButton(onSpin) }
-                selectorAreaDiv {
-                    playerSelectorDiv {
-                        h1 { +"Please select players to spin." }
-                        h2 { +"Tap a player to include or exclude them." }
-                        +"When you're done with your selections, hit the spin button above!"
-                        styledDiv {
-                            css { margin(10.px, null) }
-                            selectAllButton(playerSelections) { playerSelections = it }
-                            selectNoneButton(playerSelections) { playerSelections = it }
-                        }
-                        selectablePlayerCardList(playerSelections, { playerSelections = it }, tribe)
+        if (redirectUrl != null)
+            Navigate { attrs.to = redirectUrl ?: "" }
+        else
+            prepareSpin(
+                tribe,
+                playerSelections,
+                pins,
+                pinSelections,
+                { playerSelections = it },
+                { pinSelections = it },
+                onSpin
+            )
+    }
+
+external interface PrepareSpinProps : Props {
+    var tribe: Tribe
+    var playerSelections: List<Pair<Player, Boolean>>
+    var pins: List<Pin>
+    var pinSelections: List<String?>
+    var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
+    var setPinSelections: (List<String?>) -> Unit
+    var onSpin: () -> Unit
+}
+
+val PrepareSpin = fc<PrepareSpinProps> { props ->
+    div(classes = styles.className) {
+        div { tribeBrowser(props.tribe) }
+        div {
+            div { spinButton(props.onSpin) }
+            selectorAreaDiv {
+                playerSelectorDiv {
+                    h1 { +"Please select players to spin." }
+                    h2 { +"Tap a player to include or exclude them." }
+                    +"When you're done with your selections, hit the spin button above!"
+                    styledDiv {
+                        css { margin(10.px, null) }
+                        selectAllButton(props.playerSelections, props.setPlayerSelections)
+                        selectNoneButton(props.playerSelections, props.setPlayerSelections)
                     }
-                    if (pins.isNotEmpty()) {
-                        pinSelectorDiv {
-                            h1 { br {} }
-                            h2 { +"Also, Pins." }
-                            +"Tap any pin to skip."
-                            child(pinSelector(pinSelections, { pinSelections = it }, pins))
-                        }
+                    selectablePlayerCardList(props.playerSelections, props.setPlayerSelections, props.tribe)
+                }
+                if (props.pins.isNotEmpty()) {
+                    pinSelectorDiv {
+                        h1 { br {} }
+                        h2 { +"Also, Pins." }
+                        +"Tap any pin to skip."
+                        child(pinSelector(props.pinSelections, props.setPinSelections, props.pins))
                     }
                 }
             }
         }
+    }
+}
+
+fun RBuilder.prepareSpin(
+    tribe: Tribe,
+    playerSelections: List<Pair<Player, Boolean>>,
+    pins: List<Pin>,
+    pinSelections: List<String?>,
+    setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
+    setPinSelections: (List<String?>) -> Unit,
+    onSpin: () -> Unit
+) {
+    PrepareSpin {
+        attrs {
+            this.tribe = tribe
+            this.playerSelections = playerSelections
+            this.pins = pins
+            this.pinSelections = pinSelections
+            this.setPlayerSelections = setPlayerSelections
+            this.setPinSelections = setPinSelections
+            this.onSpin = onSpin
+        }
+    }
 }
 
 private fun onSpin(

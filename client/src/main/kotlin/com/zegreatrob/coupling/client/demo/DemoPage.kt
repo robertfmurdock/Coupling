@@ -1,14 +1,12 @@
 package com.zegreatrob.coupling.client.demo
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.frameRunner
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.pairAssignments
-import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
-import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinProps
+import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpin
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PinConfig
 import com.zegreatrob.coupling.client.pin.PinConfigProps
@@ -20,10 +18,6 @@ import com.zegreatrob.coupling.client.tribe.TribeConfig
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeConfigProps
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.testmints.action.async.SuspendAction
@@ -59,19 +53,15 @@ val DemoPage = reactFunction<PageProps> {
     }
 }
 
-private fun RDOMBuilder<DIV>.prepareSpinFrame(state: PrepareToSpin) =
-    child(
-        PrepareSpin,
-        PrepareSpinProps(state.tribe,
-            state.players.map { it.first },
-            PairAssignmentDocument(
-                PairAssignmentDocumentId(""),
-                DateTime.now(),
-                state.players.filter { it.second }.map { pairOf(it.first).withPins(emptyList()) }),
-            state.pins,
-            noOpDispatchFunc
-        )
-    ) { attrs.key = "$state" }
+private fun RDOMBuilder<DIV>.prepareSpinFrame(state: PrepareToSpin) = prepareSpin(
+    state.tribe,
+    state.players,
+    state.pins,
+    state.pins.map { it.id },
+    {},
+    {},
+    {}
+)
 
 private fun RDOMBuilder<DIV>.tribeConfigFrame(state: MakeTribe) = child(
     TribeConfig, TribeConfigProps(state.tribe, noOpDispatchFunc)

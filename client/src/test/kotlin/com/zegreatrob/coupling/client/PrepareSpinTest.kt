@@ -3,11 +3,13 @@ package com.zegreatrob.coupling.client
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.dom.CouplingButton
+import com.zegreatrob.coupling.client.dom.CouplingButtonProps
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
-import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinProps
+import com.zegreatrob.coupling.client.pairassignments.spin.StatefulPrepareSpin
+import com.zegreatrob.coupling.client.pairassignments.spin.StatefulPrepareSpinProps
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonProps
 import com.zegreatrob.coupling.client.player.PlayerCard
@@ -39,14 +41,20 @@ class PrepareSpinTest {
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
-
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, null, pins, StubDispatchFunc()))
+        val wrapper = shallow(
+            StatefulPrepareSpin,
+            StatefulPrepareSpinProps(tribe, players, null, pins, StubDispatchFunc())
+        )
     }) exercise {
-        wrapper.findByClass(styles["selectedPins"])
+        wrapper.find(PrepareSpin)
+            .shallow()
+            .findByClass(styles["selectedPins"])
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } verify {
-        wrapper.findByClass(styles["deselectedPins"]).find(PinButton)
+        wrapper.find(PrepareSpin)
+            .shallow()
+            .findByClass(styles["deselectedPins"]).find(PinButton)
             .props().pin
             .assertIsEqualTo(firstPin)
     }
@@ -58,19 +66,24 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin, PrepareSpinProps(tribe, players, null, pins, StubDispatchFunc()))
-
-        init {
-            wrapper.findByClass(styles["selectedPins"])
-                .findPinButtonPropsFor(firstPin)
-                .onClick()
-        }
-    }) exercise {
-        wrapper.findByClass(styles["deselectedPins"])
+        val wrapper =
+            shallow(StatefulPrepareSpin, StatefulPrepareSpinProps(tribe, players, null, pins, StubDispatchFunc()))
+    }) {
+        wrapper.find(PrepareSpin)
+            .shallow()
+            .findByClass(styles["selectedPins"])
+            .findPinButtonPropsFor(firstPin)
+            .onClick()
+    } exercise {
+        wrapper.find(PrepareSpin)
+            .shallow()
+            .findByClass(styles["deselectedPins"])
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } verify {
-        wrapper.findByClass(styles["selectedPins"]).find(PinButton)
+        wrapper.find(PrepareSpin)
+            .shallow()
+            .findByClass(styles["selectedPins"]).find(PinButton)
             .at(0)
             .props().pin
             .assertIsEqualTo(firstPin)
@@ -82,9 +95,14 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val currentPairs = null
     }) exercise {
-        shallow(PrepareSpin, PrepareSpinProps(tribe, players, currentPairs, emptyList(), StubDispatchFunc()))
+        shallow(
+            StatefulPrepareSpin,
+            StatefulPrepareSpinProps(tribe, players, currentPairs, emptyList(), StubDispatchFunc())
+        )
     } verify { wrapper ->
-        wrapper.find(PlayerCard).map { it.props().deselected.assertIsEqualTo(true) }
+        wrapper.find(PrepareSpin)
+            .shallow()
+            .find(PlayerCard).map { it.props().deselected.assertIsEqualTo(true) }
     }
 
     @Test
@@ -93,10 +111,13 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val currentPairs = null
         val wrapper = shallow(
-            PrepareSpin, PrepareSpinProps(tribe, players, currentPairs, emptyList(), StubDispatchFunc())
+            StatefulPrepareSpin, StatefulPrepareSpinProps(tribe, players, currentPairs, emptyList(), StubDispatchFunc())
         )
     }) exercise {
-        wrapper.find(CouplingButton).map { it.props() }
+        wrapper.find(PrepareSpin)
+            .shallow()
+            .find(CouplingButton)
+            .map(ShallowWrapper<CouplingButtonProps>::props)
             .find { it.className == styles["selectAllButton"] }
             ?.onClick?.invoke()
     } verify {
@@ -113,17 +134,21 @@ class PrepareSpinTest {
             pairs = players.map { pairOf(it).withPins(emptyList()) }
         )
         val wrapper = shallow(
-            PrepareSpin, PrepareSpinProps(tribe, players, currentPairs, emptyList(), StubDispatchFunc())
+            StatefulPrepareSpin, StatefulPrepareSpinProps(tribe, players, currentPairs, emptyList(), StubDispatchFunc())
         )
     }) exercise {
-        wrapper.find(CouplingButton).map { it.props() }
+        wrapper.find(PrepareSpin)
+            .shallow()
+            .find(CouplingButton).map { it.props() }
             .find { it.className == styles["selectNoneButton"] }
             ?.onClick?.invoke()
     } verify {
-        wrapper.find(PlayerCard).map { it.props().deselected.assertIsEqualTo(true) }
+        wrapper.find(PrepareSpin)
+            .shallow()
+            .find(PlayerCard).map { it.props().deselected.assertIsEqualTo(true) }
     }
 
-    private fun ShallowWrapper<Any>.findPinButtonPropsFor(targetPin: Pin) = find(PinButton)
+    private fun ShallowWrapper<*>.findPinButtonPropsFor(targetPin: Pin) = find(PinButton)
         .map(ShallowWrapper<PinButtonProps>::props)
         .first { it.pin == targetPin }
 

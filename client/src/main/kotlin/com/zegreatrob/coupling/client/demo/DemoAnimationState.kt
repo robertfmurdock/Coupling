@@ -57,12 +57,11 @@ sealed class DemoAnimationState {
                 makePlayerSequence() +
                 makePinSequence().pairWithDurations(800, 100) +
                 (CurrentPairs(demoTribe, players, pins, null, false) to 100) +
-                (PrepareToSpin(demoTribe, players.map { it to false }, pins) to 100) +
-                (PrepareToSpin(demoTribe, players.map { it to true }, pins) to 100) +
-                (PrepareToSpin(demoTribe, players.map { it to (it != player3) }, pins) to 100) +
-                (CurrentPairs(demoTribe, players, pins, pairAssignments, true) to 100) +
+                (PrepareToSpin(demoTribe, players.map { it to false }, pins) to 1500) +
+                (PrepareToSpin(demoTribe, players.map { it to true }, pins) to 1500) +
+                (PrepareToSpin(demoTribe, players.map { it to (it != player3) }, pins) to 1500) +
+                (CurrentPairs(demoTribe, players, pins, pairAssignments, true) to 1500) +
                 (CurrentPairs(demoTribe, players, pins, pairAssignments, false) to 10000)
-
     }
 
 }
