@@ -21,6 +21,8 @@ class TribeConfigTest {
         val tribe = Tribe(TribeId("1"), name = "1")
     }) exercise {
         shallow(TribeConfig, TribeConfigProps(tribe, StubDispatchFunc()))
+            .find(TribeConfigLayout)
+            .shallow()
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
             .assertHasDefaultBadgeName()
@@ -60,14 +62,17 @@ class TribeConfigTest {
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
         val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
     }) exercise {
-        wrapper.find(ConfigForm)
+        wrapper.find(TribeConfigLayout)
+            .shallow()
+            .find(ConfigForm)
             .props()
             .onSubmit()
         stubDispatchFunc.simulateSuccess<SaveTribeCommand>()
     } verify {
         stubDispatchFunc.commandsDispatched<SaveTribeCommand>()
             .assertIsEqualTo(listOf(SaveTribeCommand(tribe)))
-        wrapper.find(Navigate).props().to
+        wrapper
+            .find(Navigate).props().to
             .assertIsEqualTo("/tribes/")
     }
 
@@ -76,9 +81,14 @@ class TribeConfigTest {
         val tribe = Tribe(TribeId(""))
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
         val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
-        val automatedTribeId = wrapper.find<Any>("#tribe-id").prop("value")
+        val automatedTribeId = wrapper.find(TribeConfigLayout)
+            .shallow()
+            .find<Any>("#tribe-id")
+            .prop("value")
     }) exercise {
-        wrapper.find(ConfigForm)
+        wrapper.find(TribeConfigLayout)
+            .shallow()
+            .find(ConfigForm)
             .props()
             .onSubmit()
     } verify {
@@ -88,7 +98,9 @@ class TribeConfigTest {
                 assertIsNotEqualTo("")
                 assertIsEqualTo(automatedTribeId)
             }
-        wrapper.find<Any>("#tribe-id")
+        wrapper.find(TribeConfigLayout)
+            .shallow()
+            .find<Any>("#tribe-id")
             .prop("value")
             .assertIsEqualTo(automatedTribeId)
     }

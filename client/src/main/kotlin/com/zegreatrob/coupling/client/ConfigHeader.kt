@@ -9,7 +9,7 @@ import react.RBuilder
 import react.RHandler
 import react.dom.div
 import react.dom.h1
-import react.functionComponent
+import react.fc
 
 external interface ConfigHeaderProps : PropsWithChildren {
     var tribe: Tribe
@@ -23,7 +23,7 @@ fun RBuilder.configHeader(tribe: Tribe, handler: RHandler<ConfigHeaderProps> = {
 
 private val styles = useStyles("ConfigHeader")
 
-val ConfigHeader = functionComponent<ConfigHeaderProps> { props ->
+val ConfigHeader = fc<ConfigHeaderProps> { props ->
     div(classes = styles.className) {
         div { tribeCard(TribeCardProps(props.tribe, 50)) }
         h1 { props.children() }

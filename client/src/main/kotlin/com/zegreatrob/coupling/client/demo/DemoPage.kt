@@ -14,9 +14,8 @@ import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
 import com.zegreatrob.coupling.client.player.PlayerConfigProps
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.client.tribe.TribeConfig
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
-import com.zegreatrob.coupling.client.tribe.TribeConfigProps
+import com.zegreatrob.coupling.client.tribe.tribeConfigLayout
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.reactFunction
@@ -63,9 +62,7 @@ private fun RDOMBuilder<DIV>.prepareSpinFrame(state: PrepareToSpin) = prepareSpi
     {}
 )
 
-private fun RDOMBuilder<DIV>.tribeConfigFrame(state: MakeTribe) = child(
-    TribeConfig, TribeConfigProps(state.tribe, noOpDispatchFunc)
-) { attrs.key = "$state" }
+private fun RDOMBuilder<DIV>.tribeConfigFrame(state: MakeTribe) = tribeConfigLayout(state.tribe, true, {}, {}, {})
 
 private fun RDOMBuilder<DIV>.playerConfigFrame(state: AddPlayer) = child(
     PlayerConfig,

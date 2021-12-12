@@ -20,6 +20,7 @@ import org.w3c.dom.events.Event
 import react.Props
 import react.RBuilder
 import react.dom.*
+import react.fc
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
@@ -44,13 +45,42 @@ val TribeConfig = reactFunction { (tribe, commandFunc): TribeConfigProps ->
     if (redirectUrl != null)
         Navigate { attrs.to = redirectUrl }
     else
-        configFrame(styles.className) {
-            configHeader(tribe) { +"Tribe Configuration" }
-            div {
-                tribeConfigEditor(updatedTribe, isNew, onChange, onSave, onDelete)
-                tribeCard(TribeCardProps(updatedTribe))
-            }
+        tribeConfigLayout(updatedTribe, isNew, onChange, onSave, onDelete)
+}
+
+fun RBuilder.tribeConfigLayout(
+    tribe: Tribe,
+    isNew: Boolean,
+    onChange: (Event) -> Unit,
+    onSave: () -> Unit,
+    onDelete: (() -> Unit)?
+) {
+    TribeConfigLayout {
+        attrs.tribe = tribe
+        attrs.isNew = isNew
+        attrs.onChange = onChange
+        attrs.onSave = onSave
+        attrs.onDelete = onDelete
+    }
+}
+
+val TribeConfigLayout = fc<TribeConfigLayoutProps> { props ->
+    val tribe = props.tribe
+    configFrame(styles.className) {
+        configHeader(tribe) { +"Tribe Configuration" }
+        div {
+            tribeConfigEditor(tribe, props.isNew ?: false, props.onChange, props.onSave, props.onDelete)
+            tribeCard(TribeCardProps(tribe))
         }
+    }
+}
+
+external interface TribeConfigLayoutProps : Props {
+   var tribe: Tribe
+   var isNew: Boolean?
+   var onChange: (Event) -> Unit
+   var onSave: () -> Unit
+   var onDelete: (() -> Unit)?
 }
 
 private fun Json.correctTypes() = also {
