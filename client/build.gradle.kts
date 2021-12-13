@@ -38,7 +38,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.3")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.279-kotlin-1.6.0")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.279-kotlin-1.6.0")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.3-pre.279-kotlin-1.6.0")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next:1.0-pre.279-kotlin-1.6.0")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.279-kotlin-1.6.0")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.279-kotlin-1.6.0")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom:6.0.2-pre.279-kotlin-1.6.0")
