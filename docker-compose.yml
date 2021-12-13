@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
   mongo:
     image: mongo
@@ -29,6 +29,8 @@ services:
       - "5555:5555"
     environment:
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+      - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_PASSWORD_SECRET:-notSecurepasswordSecret}
+      - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_ROOT_PASSWORD_SHA2:-5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8}
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
 volumes:
