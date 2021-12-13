@@ -20,10 +20,14 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.testmints.action.async.SuspendAction
+import kotlinx.css.*
+import kotlinx.css.properties.border
 import kotlinx.html.DIV
 import react.dom.RDOMBuilder
 import react.dom.div
 import react.key
+import styled.css
+import styled.styledDiv
 
 interface NoOpDispatcher : TribeConfigDispatcher, PlayerConfigDispatcher, PinCommandDispatcher,
     DeletePairAssignmentsCommandDispatcher, NewPairAssignmentsCommandDispatcher {
@@ -39,14 +43,26 @@ private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
 val DemoPage = reactFunction<PageProps> {
     frameRunner(DemoAnimationState.generateSequence(), 1.0) { state: DemoAnimationState ->
         div {
-            when (state) {
-                Start -> +"Starting..."
-                ShowIntro -> +"Alright, here's an example of how you might use the app."
-                is MakeTribe -> tribeConfigFrame(state)
-                is AddPlayer -> playerConfigFrame(state)
-                is AddPin -> pinConfigFrame(state)
-                is CurrentPairs -> pairAssignmentsFrame(state)
-                is PrepareToSpin -> prepareSpinFrame(state)
+            styledDiv {
+                css {
+                    display = Display.inlineBlock
+                    border(8.px, BorderStyle.solid, rgb(94,84,102), 50.px)
+                    backgroundColor = Color.floralWhite
+                    padding(left = 42.px, right = 42.px)
+                    width = 40.em
+                }
+                +"DEMO"
+            }
+            div {
+                when (state) {
+                    Start -> +"Starting..."
+                    ShowIntro -> +"Alright, here's an example of how you might use the app."
+                    is MakeTribe -> tribeConfigFrame(state)
+                    is AddPlayer -> playerConfigFrame(state)
+                    is AddPin -> pinConfigFrame(state)
+                    is CurrentPairs -> pairAssignmentsFrame(state)
+                    is PrepareToSpin -> prepareSpinFrame(state)
+                }
             }
         }
     }
