@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "client/package.json"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "sdk/package.json"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "e2e/package.json"
+    schedule:
+      interval: "daily"
