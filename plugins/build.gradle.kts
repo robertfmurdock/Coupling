@@ -13,7 +13,7 @@ plugins {
     id("se.patrikerdes.use-latest-versions") version ("0.2.18")
 }
 
-val kotlinVersion = "1.6.0"
+val kotlinVersion = "1.6.10"
 
 dependencies {
     implementation(kotlin("stdlib", kotlinVersion))
