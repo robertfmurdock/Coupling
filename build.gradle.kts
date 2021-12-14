@@ -5,6 +5,7 @@ import org.ajoberstar.grgit.Commit
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
+import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 
 plugins {
     id("com.bmuschko.docker-remote-api") version "7.1.0"
@@ -23,6 +24,8 @@ semanticRelease {
 dockerCompose {
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
 }
+
+yarn.ignoreScripts = false
 
 docker {
     registryCredentials {

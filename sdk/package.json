@@ -12,7 +12,6 @@
     "fs-extra": "^10.0.0",
     "jasmine": "^3.9.0",
     "jasmine-reporters": "^2.5.0",
-    "monk": "^7.3.4",
     "tough-cookie": "^4.0.0",
     "serverless": "^2.59.0",
     "serverless-offline": "^8.2.0",
