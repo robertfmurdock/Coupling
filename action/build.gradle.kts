@@ -45,7 +45,7 @@ kotlin {
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("com.zegreatrob.testmints:standard:5.3.13")
-                implementation("com.zegreatrob.testmints:minassert:5.3.0")
+                implementation("com.zegreatrob.testmints:minassert:5.3.14")
                 implementation(project(":test-logging"))
             }
         }
