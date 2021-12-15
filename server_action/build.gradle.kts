@@ -22,7 +22,7 @@ kotlin {
                 api(project(":model"))
                 api(project(":action"))
                 api(project(":repository-core"))
-                api("com.zegreatrob.testmints:action:5.3.11")
+                api("com.zegreatrob.testmints:action:5.3.13")
                 api("com.zegreatrob.testmints:action-async:5.3.11")
                 implementation("com.benasher44:uuid:0.3.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.8")
