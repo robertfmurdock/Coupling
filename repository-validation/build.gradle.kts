@@ -42,7 +42,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("com.zegreatrob.testmints:async:5.3.11")
+                implementation("com.zegreatrob.testmints:async:5.3.13")
             }
         }
     }
