@@ -24,7 +24,7 @@ kotlin {
                 implementation(project(":action"))
                 implementation(project(":test-logging"))
                 implementation("com.zegreatrob.testmints:action:5.3.11")
-                implementation("com.zegreatrob.testmints:action-async:5.3.11")
+                implementation("com.zegreatrob.testmints:action-async:5.3.14")
                 implementation("com.zegreatrob.testmints:async:5.3.11")
                 implementation("com.zegreatrob.testmints:standard:5.3.13")
                 implementation("com.zegreatrob.testmints:minassert:5.3.11")
