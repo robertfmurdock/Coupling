@@ -66,16 +66,16 @@ dependencies {
     testImplementation(project(":stub-model"))
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("com.zegreatrob.testmints:standard:5.3.13")
-    testImplementation("com.zegreatrob.testmints:minassert:5.3.3")
+    testImplementation("com.zegreatrob.testmints:minassert:5.3.14")
     testImplementation("com.benasher44:uuid:0.3.1")
     testImplementation("com.zegreatrob.testmints:standard:5.3.13")
-    testImplementation("com.zegreatrob.testmints:minassert:5.3.3")
+    testImplementation("com.zegreatrob.testmints:minassert:5.3.14")
     testImplementation("com.zegreatrob.testmints:async:5.3.13")
 
     testImplementation(project(":server"))
     testImplementation("com.zegreatrob.testmints:standard:5.3.13")
     testImplementation("com.zegreatrob.testmints:async:5.3.13")
-    testImplementation("com.zegreatrob.testmints:minassert:5.3.3")
+    testImplementation("com.zegreatrob.testmints:minassert:5.3.14")
 
 }
 

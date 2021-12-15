@@ -28,7 +28,7 @@ kotlin {
                 implementation(project(":repository-memory"))
                 implementation(project(":repository-validation"))
                 implementation("com.zegreatrob.testmints:standard:5.3.13")
-                implementation("com.zegreatrob.testmints:minassert:5.3.0")
+                implementation("com.zegreatrob.testmints:minassert:5.3.14")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
