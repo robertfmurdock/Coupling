@@ -1,7 +1,7 @@
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
-    kotlin("multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
@@ -29,8 +29,8 @@ kotlin {
             dependencies {
                 implementation(project(":model"))
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:action:5.3.15")
-                implementation("com.zegreatrob.testmints:action-async:5.3.15")
+                implementation("com.zegreatrob.testmints:action")
+                implementation("com.zegreatrob.testmints:action-async")
                 implementation("com.benasher44:uuid:0.3.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.8")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -44,8 +44,8 @@ kotlin {
                 implementation(project(":json"))
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard:5.3.13")
-                implementation("com.zegreatrob.testmints:minassert:5.3.14")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:minassert")
                 implementation(project(":test-logging"))
             }
         }

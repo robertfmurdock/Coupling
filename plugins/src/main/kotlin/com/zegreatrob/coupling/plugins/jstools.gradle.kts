@@ -21,4 +21,6 @@ dependencies {
     toolsExtension.packageJson.devDependencies()?.forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
+
+    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:5.3.15"))
 }

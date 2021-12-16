@@ -50,7 +50,7 @@ dependencies {
 dependencies {
     implementation(project(":model"))
     implementation(project(":repository-core"))
-    implementation("com.zegreatrob.testmints:minjson:5.3.0")
+    implementation("com.zegreatrob.testmints:minjson")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("com.soywiz.korlibs.klock:klock:2.4.8")
@@ -65,17 +65,17 @@ dependencies {
     testImplementation(project(":test-logging"))
     testImplementation(project(":stub-model"))
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("com.zegreatrob.testmints:standard:5.3.13")
-    testImplementation("com.zegreatrob.testmints:minassert:5.3.14")
+    testImplementation("com.zegreatrob.testmints:standard")
+    testImplementation("com.zegreatrob.testmints:minassert")
     testImplementation("com.benasher44:uuid:0.3.1")
-    testImplementation("com.zegreatrob.testmints:standard:5.3.13")
-    testImplementation("com.zegreatrob.testmints:minassert:5.3.14")
-    testImplementation("com.zegreatrob.testmints:async:5.3.13")
+    testImplementation("com.zegreatrob.testmints:standard")
+    testImplementation("com.zegreatrob.testmints:minassert")
+    testImplementation("com.zegreatrob.testmints:async")
 
     testImplementation(project(":server"))
-    testImplementation("com.zegreatrob.testmints:standard:5.3.13")
-    testImplementation("com.zegreatrob.testmints:async:5.3.13")
-    testImplementation("com.zegreatrob.testmints:minassert:5.3.14")
+    testImplementation("com.zegreatrob.testmints:standard")
+    testImplementation("com.zegreatrob.testmints:async")
+    testImplementation("com.zegreatrob.testmints:minassert")
 
 }
 
