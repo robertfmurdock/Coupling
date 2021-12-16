@@ -50,7 +50,7 @@ dependencies {
 dependencies {
     implementation(project(":model"))
     implementation(project(":repository-core"))
-    implementation("com.zegreatrob.testmints:minjson:5.3.0")
+    implementation("com.zegreatrob.testmints:minjson:5.3.14")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("com.soywiz.korlibs.klock:klock:2.4.8")
