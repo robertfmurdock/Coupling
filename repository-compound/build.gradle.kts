@@ -2,7 +2,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
@@ -27,8 +27,8 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(project(":repository-memory"))
                 implementation(project(":repository-validation"))
-                implementation("com.zegreatrob.testmints:standard:5.3.13")
-                implementation("com.zegreatrob.testmints:minassert:5.3.14")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
@@ -54,7 +54,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:async:5.3.15")
+                implementation("com.zegreatrob.testmints:async")
             }
         }
     }

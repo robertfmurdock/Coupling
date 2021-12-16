@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
@@ -21,7 +21,7 @@ kotlin {
     sourceSets {
         all {
             languageSettings {
-                useExperimentalAnnotation("kotlinx.serialization.ExperimentalSerializationApi")
+                optIn("kotlinx.serialization.ExperimentalSerializationApi")
             }
         }
 

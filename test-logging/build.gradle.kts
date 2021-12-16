@@ -2,7 +2,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
@@ -22,8 +22,8 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:standard:5.3.15")
-                implementation("com.zegreatrob.testmints:report:5.3.15")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:report")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("io.github.microutils:kotlin-logging:2.1.20")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.8")

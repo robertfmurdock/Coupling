@@ -65,7 +65,7 @@ dependencies {
     implementation("com.benasher44:uuid:0.3.1")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.281-kotlin-1.6.10")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("com.zegreatrob.testmints:wdio:5.3.15")
+    implementation("com.zegreatrob.testmints:wdio")
     jstools.packageJson.devDependencies()?.forEach {
         implementation(npm(it.first, it.second.asText()))
     }

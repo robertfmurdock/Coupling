@@ -1,7 +1,7 @@
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
@@ -29,8 +29,8 @@ kotlin {
             dependencies {
                 implementation(project(":test-logging"))
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:5.3.15")
-                implementation("com.zegreatrob.testmints:minassert:5.3.15")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:minassert")
             }
         }
 
