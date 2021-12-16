@@ -37,7 +37,7 @@ dependencies {
     implementation("com.benasher44:uuid:0.3.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.1")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.3")
-    implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.280-kotlin-1.6.0"))
+    implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.281-kotlin-1.6.10"))
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next")
