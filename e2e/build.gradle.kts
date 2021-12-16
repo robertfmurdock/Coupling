@@ -44,7 +44,7 @@ kotlin {
                 implementation("io.github.microutils:kotlin-logging:2.0.6")
                 implementation("com.zegreatrob.testmints:standard:5.3.13")
                 implementation("com.zegreatrob.testmints:minassert:5.3.14")
-                implementation("com.zegreatrob.testmints:async:5.3.13")
+                implementation("com.zegreatrob.testmints:async:5.3.15")
                 implementation("com.zegreatrob.testmints:wdio:5.3.15")
                 implementation(appConfiguration)
                 jstools.packageJson.devDependencies()?.forEach {

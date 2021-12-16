@@ -70,11 +70,11 @@ dependencies {
     testImplementation("com.benasher44:uuid:0.3.1")
     testImplementation("com.zegreatrob.testmints:standard:5.3.13")
     testImplementation("com.zegreatrob.testmints:minassert:5.3.14")
-    testImplementation("com.zegreatrob.testmints:async:5.3.13")
+    testImplementation("com.zegreatrob.testmints:async:5.3.15")
 
     testImplementation(project(":server"))
     testImplementation("com.zegreatrob.testmints:standard:5.3.13")
-    testImplementation("com.zegreatrob.testmints:async:5.3.13")
+    testImplementation("com.zegreatrob.testmints:async:5.3.15")
     testImplementation("com.zegreatrob.testmints:minassert:5.3.14")
 
 }
