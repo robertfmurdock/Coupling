@@ -20,7 +20,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":model"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
         val commonTest by getting {
@@ -35,7 +35,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
 

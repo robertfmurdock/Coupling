@@ -31,12 +31,12 @@ kotlin {
                 implementation(project(":logging"))
                 implementation("com.zegreatrob.testmints:action")
                 implementation("com.zegreatrob.testmints:action-async")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
                 implementation("com.benasher44:uuid:0.3.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.8")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 implementation("io.github.microutils:kotlin-logging:2.1.20")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
             }
         }
         getByName("commonTest") {

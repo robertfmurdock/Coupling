@@ -52,11 +52,11 @@ dependencies {
     implementation(project(":repository-core"))
     implementation("com.zegreatrob.testmints:minjson")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("com.soywiz.korlibs.klock:klock:2.4.8")
     implementation("io.github.microutils:kotlin-logging:2.1.20")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.213-kotlin-1.5.10")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation(project(":json"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
 

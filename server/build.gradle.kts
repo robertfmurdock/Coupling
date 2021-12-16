@@ -35,9 +35,9 @@ dependencies {
     implementation(project(":repository-memory"))
     implementation(project(":server_action"))
     implementation("com.zegreatrob.testmints:minjson")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("com.soywiz.korlibs.klock:klock:2.4.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    implementation("com.soywiz.korlibs.klock:klock:2.4.8")
     implementation("com.benasher44:uuid:0.3.1")
 }
 
