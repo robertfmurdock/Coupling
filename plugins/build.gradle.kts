@@ -7,7 +7,7 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.kotlin.jvm").version("1.6.0")
+    id("org.jetbrains.kotlin.jvm").version("1.6.10")
     `kotlin-dsl`
     id("com.github.ben-manes.versions") version ("0.39.0")
     id("se.patrikerdes.use-latest-versions") version ("0.2.18")
@@ -18,6 +18,7 @@ val kotlinVersion = "1.6.10"
 dependencies {
     implementation(kotlin("stdlib", kotlinVersion))
     implementation(kotlin("gradle-plugin", kotlinVersion))
+    implementation("org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.6.10")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.39.0")
     implementation("se.patrikerdes:gradle-use-latest-versions-plugin:0.2.18")
     implementation("com.soywiz.korlibs.klock:klock:2.4.8")
