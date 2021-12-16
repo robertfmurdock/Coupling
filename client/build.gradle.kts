@@ -28,7 +28,7 @@ dependencies {
     implementation(project(":action"))
     implementation(project(":logging"))
     implementation(project(":repository-memory"))
-    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:5.3.14"))
+    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:5.3.15"))
     implementation("com.zegreatrob.testmints:minreact")
     implementation("com.zegreatrob.testmints:react-data-loader")
     implementation("com.zegreatrob.testmints:action")
