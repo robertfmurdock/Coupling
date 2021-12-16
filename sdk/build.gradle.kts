@@ -56,7 +56,7 @@ dependencies {
     implementation("com.soywiz.korlibs.klock:klock:2.4.8")
     implementation("io.github.microutils:kotlin-logging:2.1.16")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.213-kotlin-1.5.10")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.281-kotlin-1.6.10")
     implementation(project(":json"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
