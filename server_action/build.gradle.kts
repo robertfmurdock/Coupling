@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
@@ -51,18 +50,5 @@ kotlin {
                 api(project(":logging"))
             }
         }
-    }
-}
-
-tasks {
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "umd"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
     }
 }

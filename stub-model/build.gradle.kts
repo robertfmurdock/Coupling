@@ -1,6 +1,5 @@
 
 import com.zegreatrob.coupling.build.BuildConstants
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
@@ -30,11 +29,5 @@ kotlin {
                 api(kotlin("stdlib-js", BuildConstants.kotlinVersion))
             }
         }
-    }
-}
-
-tasks {
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
     }
 }

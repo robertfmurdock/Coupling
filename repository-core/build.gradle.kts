@@ -51,6 +51,3 @@ kotlin {
         }
     }
 }
-
-tasks {
-}

@@ -61,28 +61,13 @@ kotlin {
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
             }
         }
-        val jsMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
-            }
-        }
-        val jsTest by getting {
-            dependencies {
-            }
-        }
     }
 }
 
 tasks {
-
     val jvmTest by getting(Test::class) {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
 
         useJUnitPlatform()
-    }
-
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
     }
 }

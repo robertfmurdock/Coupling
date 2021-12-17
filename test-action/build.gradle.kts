@@ -56,14 +56,9 @@ kotlin {
 }
 
 tasks {
-
     val jvmTest by getting(Test::class) {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
 
         useJUnitPlatform()
-    }
-
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
     }
 }
