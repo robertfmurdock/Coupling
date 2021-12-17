@@ -2,6 +2,9 @@ package com.zegreatrob.coupling.plugins
 
 plugins {
     kotlin("multiplatform")
+    id("com.zegreatrob.coupling.plugins.versioning")
+    id("com.zegreatrob.coupling.plugins.reports")
+    id("com.zegreatrob.coupling.plugins.testLogging")
 }
 
 dependencies {

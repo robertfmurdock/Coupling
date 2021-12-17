@@ -3,9 +3,6 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
-    id("com.zegreatrob.coupling.plugins.versioning")
-    id("com.zegreatrob.coupling.plugins.reports")
-    id("com.zegreatrob.coupling.plugins.testLogging")
 }
 
 kotlin {
