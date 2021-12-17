@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.player.PlayerDelete
 
 interface SdkPlayerDeleter : PlayerDelete, GqlSyntax {
-    override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = performQuery(
+    override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = doQuery(
         Mutations.deletePlayer,
         mapOf("tribeId" to tribeId.value, "playerId" to playerId),
         "deletePlayer"

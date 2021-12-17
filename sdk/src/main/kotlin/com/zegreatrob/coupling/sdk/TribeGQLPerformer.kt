@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.external.axios.Axios
 import kotlinx.coroutines.*
 import kotlin.js.Json
 
@@ -40,7 +39,7 @@ interface TribeGQLPerformer : GqlSyntax {
 
 }
 
-class BatchingTribeGQLPerformer(override val axios: Axios) : TribeGQLPerformer {
+class BatchingTribeGQLPerformer(override val performer: QueryPerformer) : TribeGQLPerformer {
 
     private val batchScope = MainScope() + CoroutineName("batch")
 
@@ -67,4 +66,5 @@ class BatchingTribeGQLPerformer(override val axios: Axios) : TribeGQLPerformer {
             }
         }.await()
     }
+
 }

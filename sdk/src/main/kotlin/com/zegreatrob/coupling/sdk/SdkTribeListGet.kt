@@ -11,8 +11,8 @@ import kotlinx.serialization.json.decodeFromDynamic
 import kotlin.js.Json
 import kotlin.js.json
 
-interface SdkTribeListGet : TribeListGet, AxiosSyntax, GqlSyntax {
-    override suspend fun getTribes() = axios.postAsync<Json>(gqlEndpoint, tribeListQuery()).await()
+interface SdkTribeListGet : TribeListGet, GqlSyntax {
+    override suspend fun getTribes() = performer.postAsync<Json>(tribeListQuery()).await()
         .at<Json>("/data/tribeList")
         .toTribeRecordList()
 

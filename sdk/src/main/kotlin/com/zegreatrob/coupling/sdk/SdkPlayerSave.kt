@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.player.tribeId
 import com.zegreatrob.coupling.repository.player.PlayerSave
 
 interface SdkPlayerSave : PlayerSave, GqlSyntax {
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) = performQuery(Mutations.savePlayer, tribeIdPlayer.input())
+    override suspend fun save(tribeIdPlayer: TribeIdPlayer) = doQuery(Mutations.savePlayer, tribeIdPlayer.input())
         .unsafeCast<Unit>()
 
     private fun TribeIdPlayer.input() = SavePlayerInput(

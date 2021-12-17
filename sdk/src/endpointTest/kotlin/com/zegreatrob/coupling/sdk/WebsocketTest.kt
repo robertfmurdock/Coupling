@@ -237,7 +237,7 @@ class WebsocketTest {
     }
 
     private fun openSocket(
-        sdk: Sdk,
+        sdk: AuthorizedSdk,
         tribe: Tribe,
         parent: Job? = null
     ): CompletableDeferred<Pair<MutableList<String>, WS>> {
@@ -254,7 +254,7 @@ class WebsocketTest {
         return messageDeferred
     }
 
-    private fun connectToSocket(sdk: Sdk, tribeId: TribeId): WS {
+    private fun connectToSocket(sdk: AuthorizedSdk, tribeId: TribeId): WS {
         val baseUrl = URL(sdk.axios.defaults.baseURL.unsafeCast<String>())
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "ws://$host/api/websocket?tribeId=${tribeId.value}"

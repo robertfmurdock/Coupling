@@ -20,7 +20,9 @@ class RequestCombineTest {
     @Test
     fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = asyncSetup(object {
         val allPostCalls = mutableListOf<Pair<String, dynamic>>()
-        val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(mockAxios(allPostCalls)) {}
+        val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(object: AxiosQueryPerformer {
+            override val axios = mockAxios(allPostCalls)
+        }) {}
         val tribeId = TribeId("Random")
     }) exercise {
         coroutineScope {

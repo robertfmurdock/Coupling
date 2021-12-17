@@ -15,9 +15,6 @@ external val axiosCookiejarSupport: dynamic
 @JsModule("tough-cookie")
 external val toughCookie: dynamic
 
-@JsModule("monk")
-external val monk: dynamic
-
 private val host = process.env.BASEURL
 private const val userEmail = "test@test.tes"
 
@@ -51,7 +48,8 @@ inline fun <T> withSdk(crossinline objectSetup: (AuthorizedSdk) -> T): suspend (
     objectSetup(sdk)
 }
 
-
-class AuthorizedSdk(override val axios: Axios) : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(axios) {
-    override fun basename() = process.env.BASENAME.unsafeCast<String?>() ?: ""
-}
+class AuthorizedSdk(val axios: Axios) : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(
+    object : AxiosQueryPerformer {
+        override val axios: Axios get() = axios
+    }
+)

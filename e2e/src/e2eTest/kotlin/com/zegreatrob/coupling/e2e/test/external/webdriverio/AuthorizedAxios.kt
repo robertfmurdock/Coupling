@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test.external.webdriverio
 
+import com.zegreatrob.coupling.sdk.AxiosQueryPerformer
 import com.zegreatrob.coupling.sdk.BatchingTribeGQLPerformer
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.sdk.TribeGQLPerformer
@@ -45,5 +46,7 @@ suspend fun authorizedAxios(username: String = userEmail): Axios {
 
 suspend fun authorizedSdk(username: String = userEmail) = AuthorizedSdk(authorizedAxios(username), username)
 
-class AuthorizedSdk(override val axios: Axios, val userEmail: String) : Sdk,
-    TribeGQLPerformer by BatchingTribeGQLPerformer(axios)
+class AuthorizedSdk(val axios: Axios, val userEmail: String) : Sdk,
+    TribeGQLPerformer by BatchingTribeGQLPerformer(object : AxiosQueryPerformer {
+        override val axios = axios
+    })

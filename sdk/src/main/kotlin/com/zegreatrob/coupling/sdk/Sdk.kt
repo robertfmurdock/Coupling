@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.sdk.external.axios.axios
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
@@ -40,7 +39,11 @@ interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkP
     override val tribeRepository get() = this
 }
 
-object SdkSingleton : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(axios)
+object SdkSingleton : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(
+    object : AxiosQueryPerformer {
+
+    }
+)
 
 interface SdkSyntax {
     val sdk: Sdk

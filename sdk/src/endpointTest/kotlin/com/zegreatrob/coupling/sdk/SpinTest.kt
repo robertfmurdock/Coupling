@@ -141,10 +141,10 @@ class SpinTest {
     }
 
     private fun fourPlayersTwoDefaultTwoAlternate() = listOf(
-        Player(id = monk.id().toString(), name = "One", badge = Badge.Default.value),
-        Player(id = monk.id().toString(), name = "Two", badge = Badge.Default.value),
-        Player(id = monk.id().toString(), name = "Three", badge = Badge.Alternate.value),
-        Player(id = monk.id().toString(), name = "Four", badge = Badge.Alternate.value)
+        Player(id = uuid4().toString(), name = "One", badge = Badge.Default.value),
+        Player(id = uuid4().toString(), name = "Two", badge = Badge.Default.value),
+        Player(id = uuid4().toString(), name = "Three", badge = Badge.Alternate.value),
+        Player(id = uuid4().toString(), name = "Four", badge = Badge.Alternate.value)
     )
 
     companion object {

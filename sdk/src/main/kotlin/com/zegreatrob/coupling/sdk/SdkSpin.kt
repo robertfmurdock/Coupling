@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface SdkSpin : GqlSyntax {
 
-    suspend fun requestSpin(tribeId: TribeId, players: List<Player>, pins: List<Pin>) = performQuery(
+    suspend fun requestSpin(tribeId: TribeId, players: List<Player>, pins: List<Pin>) = doQuery(
         Mutations.spin,
         SpinInput(
             players = players.map(Player::toSerializable),
