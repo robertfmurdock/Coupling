@@ -32,7 +32,7 @@ interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
     PairAssignmentDocumentRepository
 
 interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkPairAssignmentsRepository,
-    SdkPinRepository, SdkSpin, SdkSyntax, SdkCreateGoogleSession, SdkLogout {
+    SdkPinRepository, SdkSpin, SdkSyntax, SdkLogout {
     override val sdk: Sdk get() = this
     override val pinRepository get() = this
     override val pairAssignmentDocumentRepository get() = this

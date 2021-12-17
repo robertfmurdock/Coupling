@@ -38,5 +38,4 @@ private val authLogoutUrl: URL
 
 private suspend fun CommandDispatcher.waitForLogout(setIsLoggedOut: (Boolean) -> Unit): Unit = coroutineScope {
     launch { LogoutCommand.perform() }
-    launch { googleSignOut() }
 }.run { setIsLoggedOut(true) }

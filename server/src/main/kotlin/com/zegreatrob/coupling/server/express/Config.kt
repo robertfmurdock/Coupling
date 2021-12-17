@@ -11,8 +11,6 @@ object Config {
 
     const val buildDate: String = "None"
     const val gitRev: String = "None"
-    val googleClientID: String = Process.getEnv("GOOGLE_CLIENT_ID")
-        ?: "24452716216-9lqe1p511qcf53kuihamdhggb05gbt4p.apps.googleusercontent.com"
 
     val clientBasename: String = Process.getEnv("CLIENT_BASENAME") ?: ""
     val clientUrl: String = Process.getEnv("CLIENT_URL")?.ifEmpty { null } ?: "/no-client-url-found"

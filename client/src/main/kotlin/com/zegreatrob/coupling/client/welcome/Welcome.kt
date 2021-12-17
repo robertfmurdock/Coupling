@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
@@ -10,7 +9,6 @@ import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.playerImage
-import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
@@ -24,12 +22,9 @@ import react.dom.span
 
 private val styles = useStyles("Welcome")
 
-data class WelcomeProps(
-    val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>,
-    val randomProvider: RandomProvider = RandomProvider
-) : Props
+data class WelcomeProps(val randomProvider: RandomProvider = RandomProvider) : Props
 
-val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
+val Welcome = reactFunction { (randomProvider): WelcomeProps ->
     var showLoginChooser by useState(false)
     val welcomeTitleRef = useRef<Node>(null)
     useLayoutEffect {
@@ -40,7 +35,7 @@ val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
 
     div(classes = styles.className) {
         div { welcomeSplash(welcomeTitleRef, pair, proverb) }
-        div { comeOnIn(commandFunc, showLoginChooser) { showLoginChooser = true } }
+        div { comeOnIn(showLoginChooser) { showLoginChooser = true } }
     }
 }
 
@@ -124,16 +119,13 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
     )
 }
 
-private fun RBuilder.comeOnIn(
-    dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>,
-    showLoginChooser: Boolean,
-    onEnterClick: () -> Unit
-) = div(classes = styles["enterButtonContainer"]) {
-    if (showLoginChooser) {
-        loginChooser(dispatchFunc)
-    } else {
-        couplingButton(supersize, pink, styles["enterButton"], onEnterClick) {
-            +"Come on in!"
+private fun RBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) =
+    div(classes = styles["enterButtonContainer"]) {
+        if (showLoginChooser) {
+            loginChooser()
+        } else {
+            couplingButton(supersize, pink, styles["enterButton"], onEnterClick) {
+                +"Come on in!"
+            }
         }
     }
-}
