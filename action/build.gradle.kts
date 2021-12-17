@@ -30,7 +30,6 @@ kotlin {
                 implementation("com.zegreatrob.testmints:action-async")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
                 implementation("com.benasher44:uuid:0.3.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.8")
                 implementation("io.github.microutils:kotlin-logging:2.1.20")
@@ -40,6 +39,7 @@ kotlin {
             dependencies {
                 implementation(project(":json"))
                 implementation(project(":test-action"))
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
