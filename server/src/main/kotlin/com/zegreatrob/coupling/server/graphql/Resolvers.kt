@@ -9,12 +9,14 @@ import com.zegreatrob.minjson.at
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.promise
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 
 typealias GraphQLDispatcherProvider<D> = suspend (Request, Json?, Any?) -> D?
 
+@OptIn(ExperimentalSerializationApi::class)
 inline fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, reified R, reified J, reified I> dispatch(
     crossinline dispatcherFunc: GraphQLDispatcherProvider<D>,
     crossinline queryFunc: (Json, I) -> Q,

@@ -15,7 +15,7 @@ external interface CouplingRouteProps : Props {
     var rComponent: ElementType<PageProps>
 }
 
-val CouplingRoute = functionComponent<CouplingRouteProps> {
+val CouplingRoute = fc<CouplingRouteProps> {
     val (searchParams) = useSearchParams()
     val params = useParams()
     val navigate = useNavigate()

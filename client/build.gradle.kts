@@ -16,6 +16,9 @@ kotlin {
         val main by getting {
             resources.srcDir("src/main/javascript")
         }
+        all {
+            languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+        }
     }
 }
 

@@ -5,11 +5,11 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import react.PropsWithChildren
 import react.RBuilder
 import react.dom.span
-import react.functionComponent
+import react.fc
 
 private val styles = useStyles("stats/StatLabel")
 
-val StatLabel = functionComponent<PropsWithChildren> { props ->
+val StatLabel = fc<PropsWithChildren> { props ->
     span(classes = styles.className) { props.children() }
 }
 

@@ -5,13 +5,13 @@ import com.zegreatrob.coupling.client.external.GoogleAuth2
 import com.zegreatrob.coupling.client.external.GoogleUser
 import com.zegreatrob.coupling.client.external.gapi
 import com.zegreatrob.coupling.sdk.SdkSyntax
-import kotlinext.js.jsObject
+import kotlinext.js.jso
+import kotlinx.browser.window
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.yield
 import org.w3c.dom.get
-import kotlinx.browser.window
 
 interface GoogleSignIn : SdkSyntax {
 
@@ -52,7 +52,7 @@ interface GoogleSignIn : SdkSyntax {
         .await()
 
     private suspend fun getGoogleAuth() = loadGoogleAuth2()
-        .init(jsObject { client_id = window["googleClientId"] })
+        .init(jso { client_id = window["googleClientId"] })
         .await()
 
     private suspend fun loadGoogleAuth2() = CompletableDeferred<GoogleAuth2>()
@@ -68,7 +68,7 @@ interface GoogleSignIn : SdkSyntax {
     }
 
     private fun GoogleAuth.signIn() = signIn(
-        jsObject {
+        jso {
             scope = "profile email"
             prompt = "consent"
             ux_mode = "redirect"

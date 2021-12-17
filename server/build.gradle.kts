@@ -16,8 +16,8 @@ kotlin.sourceSets {
     getByName("main") {
         resources.srcDir("src/main/javascript")
     }
+    all { languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi") }
 }
-
 
 val appConfiguration: Configuration by configurations.creating {
     extendsFrom(configurations["implementation"])
@@ -66,7 +66,7 @@ tasks {
         outputs.dir(file("build/webpack-output"))
 
         nodeCommand = "webpack"
-        arguments =listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
+        arguments = listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
         environment("NODE_ENV" to "production")
         workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
     }

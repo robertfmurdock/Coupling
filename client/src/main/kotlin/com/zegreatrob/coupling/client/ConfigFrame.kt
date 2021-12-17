@@ -15,7 +15,7 @@ fun RBuilder.configFrame(className: String? = null, handler: RHandler<ConfigFram
 
 external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren
 
-val ConfigFrame = functionComponent<ConfigFrameProps> { props ->
+val ConfigFrame = fc<ConfigFrameProps> { props ->
     div(classes = styles.className) {
         attrs { props.className?.let { classes = classes + it } }
         div { props.children() }

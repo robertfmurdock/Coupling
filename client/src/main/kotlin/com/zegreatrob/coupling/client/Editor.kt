@@ -6,13 +6,13 @@ import react.PropsWithChildren
 import react.RBuilder
 import react.RHandler
 import react.dom.ul
-import react.functionComponent
+import react.fc
 
 fun RBuilder.editor(handler: RHandler<EmptyProps>) = child(Editor, handler = handler)
 
 private val styles = useStyles("Editor")
 
-val Editor = functionComponent<PropsWithChildren> { props ->
+val Editor = fc<PropsWithChildren> { props ->
     ul(classes = styles.className) {
         props.children()
     }

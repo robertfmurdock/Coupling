@@ -39,6 +39,7 @@ kotlin {
             dependsOn(main)
             dependsOn(test)
         }
+        all { languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi") }
     }
 }
 
