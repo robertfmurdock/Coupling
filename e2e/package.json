@@ -26,8 +26,6 @@
     "serverless-plugin-static": "^0.0.7"
   },
   "devDependencies": {
-    "axios-cookiejar-support": "~1.0.1",
-    "tough-cookie": "^4.0.0",
     "uuid": "^8.3.2"
   },
   "scripts": {},

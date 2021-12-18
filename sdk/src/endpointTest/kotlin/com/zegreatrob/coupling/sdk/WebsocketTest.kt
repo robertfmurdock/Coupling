@@ -11,10 +11,14 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.sdk.ktor.AuthorizedKtorSdk
+import com.zegreatrob.coupling.sdk.ktor.process
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import io.ktor.client.features.cookies.*
+import io.ktor.http.*
 import kotlinx.coroutines.*
 import org.w3c.dom.url.URL
 import kotlin.js.json
@@ -38,7 +42,7 @@ class WebsocketTest {
     }) {
         sdk.save(tribe)
     } exercise {
-        val socket = connectToSocket(sdk, tribe.id)
+        val socket = connectToSocket(tribe.id, getCookieString(sdk))
         val messageDeferred = CompletableDeferred<String>()
         socket.on("message") {
             messageDeferred.complete(it)
@@ -66,15 +70,16 @@ class WebsocketTest {
     }) {
         sdk.save(tribe)
     } exercise {
+        val cookieString = getCookieString(sdk)
         val firstTwoSockets = withContext(Dispatchers.Default) {
             val job = launch { }
             listOf(
-                openSocket(sdk, tribe, job),
-                openSocket(sdk, tribe, job)
+                openSocket(tribe, cookieString, job),
+                openSocket(tribe, cookieString, job)
             ).map { it.await() }
         }
 
-        val thirdSocket = openSocket(sdk, tribe).await()
+        val thirdSocket = openSocket(tribe, cookieString).await()
         (firstTwoSockets + thirdSocket)
     } verifyAnd { result ->
         result[2].first
@@ -100,8 +105,9 @@ class WebsocketTest {
     }) {
         sdk.save(tribe)
     } exercise {
-        val socket1 = openSocket(sdk, tribe).await()
-        val socket2 = openSocket(sdk, tribe).await()
+        val cookieString = getCookieString(sdk)
+        val socket1 = openSocket(tribe, cookieString).await()
+        val socket2 = openSocket(tribe, cookieString).await()
         listOf(socket1, socket2)
     } verifyAnd { sockets ->
         sockets[0].first.map(String::toCouplingServerMessage)
@@ -124,7 +130,7 @@ class WebsocketTest {
         }
     }) {
         sdk.save(tribe)
-        sockets.add(openSocket(sdk, tribe).await())
+        sockets.add(openSocket(tribe, getCookieString(sdk)).await())
     } exercise {
         sdk.save(tribe.id.with(expectedPairDoc))
     } verifyAnd {
@@ -147,8 +153,9 @@ class WebsocketTest {
     }) {
         sdk.save(tribe)
     } exercise {
-        val socketToClose = openSocket(sdk, tribe).await()
-        openSocket(sdk, tribe).await()
+        val cookieString = getCookieString(sdk)
+        val socketToClose = openSocket(tribe, cookieString).await()
+        openSocket(tribe, cookieString).await()
             .also {
                 val deferred = CompletableDeferred<Unit>()
                 it.second.on("message") {
@@ -188,7 +195,7 @@ class WebsocketTest {
     @Test
     fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = asyncSetup(sdkContext { it }
     ) exercise {
-        val socket = connectToSocket(sdk, stubTribe().id)
+        val socket = connectToSocket(stubTribe().id, getCookieString(sdk))
         CompletableDeferred<Unit>().also { deferred ->
             socket.on("close") { deferred.complete(Unit) }
         }
@@ -221,7 +228,7 @@ class WebsocketTest {
     }) {
         sdk.save(tribe)
     } exercise {
-        val socket = connectToSocket(sdk, tribe.id)
+        val socket = connectToSocket(tribe.id, getCookieString(sdk))
         val messageDeferred = CompletableDeferred<Unit>()
         socket.on("open") {
             socket.close()
@@ -237,11 +244,11 @@ class WebsocketTest {
     }
 
     private fun openSocket(
-        sdk: AuthorizedSdk,
         tribe: Tribe,
+        cookieString: String,
         parent: Job? = null
-    ): CompletableDeferred<Pair<MutableList<String>, WS>> {
-        val socket = connectToSocket(sdk, tribe.id)
+    ): Deferred<Pair<MutableList<String>, WS>>  {
+        val socket = connectToSocket(tribe.id, cookieString)
         val messageDeferred = CompletableDeferred<Pair<MutableList<String>, WS>>(parent)
         val messages = mutableListOf<String>()
         socket.on("message") {
@@ -254,17 +261,21 @@ class WebsocketTest {
         return messageDeferred
     }
 
-    private fun connectToSocket(sdk: AuthorizedSdk, tribeId: TribeId): WS {
-        val baseUrl = URL(sdk.axios.defaults.baseURL.unsafeCast<String>())
+    private fun connectToSocket(tribeId: TribeId, cookieStringSync: String): WS {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "ws://$host/api/websocket?tribeId=${tribeId.value}"
-        val cookieStringSync =
-            sdk.axios.defaults.jar.getCookieStringSync(baseUrl.href).unsafeCast<String>()
         return newWebsocket(url, json("headers" to json("cookie" to cookieStringSync)))
+    }
+
+    private suspend fun getCookieString(sdk: AuthorizedKtorSdk): String {
+        val baseUrl = URL("${process.env.BASEURL}")
+        val cookiesUrl = Url(baseUrl.toString())
+        return sdk.client.cookies(cookiesUrl).joinToString(";", transform = ::renderCookieHeader)
     }
 
 }
 
-private fun String.toCouplingServerMessage(): CouplingSocketMessage = fromJsonString<JsonCouplingSocketMessage>().toModel()
+private fun String.toCouplingServerMessage(): CouplingSocketMessage =
+    fromJsonString<JsonCouplingSocketMessage>().toModel()
 
 fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()

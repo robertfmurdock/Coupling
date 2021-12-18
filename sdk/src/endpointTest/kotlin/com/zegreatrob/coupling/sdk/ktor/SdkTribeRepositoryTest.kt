@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.sdk.isWithinOneSecondOfNow
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
