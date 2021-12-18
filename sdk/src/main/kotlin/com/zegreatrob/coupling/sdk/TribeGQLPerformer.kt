@@ -11,7 +11,7 @@ interface TribeGQLPerformer : GqlSyntax {
         components: List<TribeGQLComponent>
     ): Map<TribeGQLComponent, dynamic> {
         val result = sendQuery(tribeId, components)
-        val data = result.data.data
+        val data = result.data
 
         return components.associateWith { component ->
             getNodeAtPath(data, component)

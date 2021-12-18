@@ -17,7 +17,6 @@ import kotlin.test.Test
 
 typealias SdkMint = ContextMint<Sdk>
 
-@kotlin.test.Ignore
 class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<Sdk>>(sharedSetup = {

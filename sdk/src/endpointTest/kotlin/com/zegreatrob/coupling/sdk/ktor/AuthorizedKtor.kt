@@ -23,16 +23,11 @@ private suspend fun authorizedKtorClient(username: String): HttpClient {
         install(HttpCookies) {
             storage = AcceptAllCookiesStorage()
         }
+        followRedirects = false
         val baseUrl = Url("${process.env.BASEURL}")
 
         defaultRequest {
             expectSuccess = false
-            headers {
-                @Suppress("EXPERIMENTAL_API_USAGE_FUTURE_ERROR")
-                append(HttpHeaders.Accept, "text/plain")
-                @Suppress("EXPERIMENTAL_API_USAGE_FUTURE_ERROR")
-                append(HttpHeaders.Accept, "*/*")
-            }
             url {
                 host = baseUrl.host
                 port = baseUrl.port

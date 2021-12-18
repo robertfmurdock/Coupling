@@ -12,7 +12,7 @@ import kotlin.js.Json
 import kotlin.js.json
 
 interface SdkTribeListGet : TribeListGet, GqlSyntax {
-    override suspend fun getTribes() = performer.postAsync<Json>(tribeListQuery()).await()
+    override suspend fun getTribes() = performer.postAsync(tribeListQuery()).await()
         .at<Json>("/data/tribeList")
         .toTribeRecordList()
 

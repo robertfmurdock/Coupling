@@ -19,7 +19,7 @@ interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, GqlSyn
             "variables" to json("input" to deletePairAssignmentsInput(tribeId, pairAssignmentDocumentId))
         )
     ).unsafeCast<Json>()
-        .at("/data/data/deletePairAssignments") ?: false
+        .at("/data/deletePairAssignments") ?: false
 
     private fun deletePairAssignmentsInput(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) = json(
         "tribeId" to tribeId.value,

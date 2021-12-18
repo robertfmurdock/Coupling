@@ -27,7 +27,7 @@ interface QueryPerformer {
 
     suspend fun doQuery(body: String): dynamic
     suspend fun doQuery(body: Json): dynamic
-    fun <T> postAsync(body: dynamic): Deferred<T>
+    fun postAsync(body: dynamic): Deferred<Json>
 
 }
 
@@ -41,7 +41,7 @@ suspend inline fun <reified I, reified O, M> GqlSyntax.doQuery(
     resultName: String,
     toOutput: (O) -> M
 ): M? = doQuery(mutation, input).unsafeCast<Json>()
-    .at<Json>("/data/data")!!
+    .at<Json>("/data")!!
     .at<Json>("/$resultName")
     ?.fromJsonDynamic<O>()
     ?.let(toOutput)

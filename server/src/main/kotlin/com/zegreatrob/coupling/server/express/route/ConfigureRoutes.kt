@@ -35,10 +35,15 @@ private fun auth0Callback(): Handler = { request, response, next ->
     }
 }
 
-private fun authenticateLocal() = passport.authenticate(
-    "local",
-    json("successRedirect" to "${Config.clientBasename}/", "failureRedirect" to "${Config.clientBasename}/login")
-)
+private fun authenticateLocal(): Handler = { request, response, _ ->
+    passport.authenticate(
+        "local",
+        json("failureRedirect" to "${Config.clientBasename}/login")
+    )(request, response) {
+        response.send("<html><body>OK</body></html>")
+        response.sendStatus(200)
+    }
+}
 
 private fun authenticateAuth0() = passport.authenticate("auth0", json("scope" to "openid email profile"))
 

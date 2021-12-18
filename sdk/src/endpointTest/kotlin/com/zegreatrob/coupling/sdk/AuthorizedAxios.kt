@@ -36,7 +36,7 @@ suspend fun authorizedAxios(username: String = userEmail): Axios {
     )
         .await()
         .status
-        .assertIsEqualTo(302)
+        .assertIsEqualTo(200)
 
     return hostAxios
 }
