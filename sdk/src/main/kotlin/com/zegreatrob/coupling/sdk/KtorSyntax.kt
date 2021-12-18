@@ -27,8 +27,9 @@ fun defaultClient() = HttpClient {
             .unsafeCast<Window?>()
             ?.let { window ->
                 url {
-                    protocol = URLProtocol.createOrDefault(window.location.protocol)
-                    host = window.location.host
+                    protocol = if(window.location.protocol == "http:") URLProtocol.HTTP else URLProtocol.HTTPS
+                    host = window.location.hostname
+                    port = window.location.port.toInt()
                     encodedPath = "${window["basename"]}/$encodedPath"
                 }
             }
