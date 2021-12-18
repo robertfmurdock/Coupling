@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.sdk.*
 import com.zegreatrob.coupling.stubmodel.uuidString
 import io.ktor.client.*
 import io.ktor.client.features.*
-import io.ktor.client.features.cookies.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -20,9 +19,6 @@ suspend fun authorizedKtorSdk(username: String = "${uuidString()}-$userEmail") =
 
 private suspend fun authorizedKtorClient(username: String): HttpClient {
     val client = defaultClient().config {
-        install(HttpCookies) {
-            storage = AcceptAllCookiesStorage()
-        }
         followRedirects = false
         val baseUrl = Url("${process.env.BASEURL}")
 

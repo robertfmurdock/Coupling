@@ -39,11 +39,7 @@ interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkP
     override val tribeRepository get() = this
 }
 
-object SdkSingleton : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(
-    object : AxiosQueryPerformer {
-
-    }
-)
+object SdkSingleton : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {})
 
 interface SdkSyntax {
     val sdk: Sdk
