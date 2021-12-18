@@ -29,7 +29,9 @@ fun defaultClient() = HttpClient {
                 url {
                     protocol = if(window.location.protocol == "http:") URLProtocol.HTTP else URLProtocol.HTTPS
                     host = window.location.hostname
-                    port = window.location.port.toInt()
+                    window.location.port.toIntOrNull()?.let {
+                        port = it
+                    }
                     encodedPath = "${window["basename"]}/$encodedPath"
                 }
             }

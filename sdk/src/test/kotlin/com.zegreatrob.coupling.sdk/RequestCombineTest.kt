@@ -2,10 +2,11 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.sdk.external.axios.Axios
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.invoke
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -19,9 +20,22 @@ class RequestCombineTest {
 
     @Test
     fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = asyncSetup(object {
-        val allPostCalls = mutableListOf<Pair<String, dynamic>>()
-        val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(object: AxiosQueryPerformer {
-            override val axios = mockAxios(allPostCalls)
+        val allPostCalls = mutableListOf<dynamic>()
+        val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(object: QueryPerformer {
+
+          override  suspend fun doQuery(body: String): dynamic {
+              return stubResponseData().apply { allPostCalls.add(body) }
+          }
+          override  suspend fun doQuery(body: Json): dynamic {
+              return stubResponseData().apply { allPostCalls.add(body) }
+          }
+          override  fun postAsync(body: dynamic): Deferred<Json> {
+              return CompletableDeferred(stubResponseData().apply { allPostCalls.add(body) })
+          }
+
+            override suspend fun get(path: String): dynamic {
+                return null
+            }
         }) {}
         val tribeId = TribeId("Random")
     }) exercise {
@@ -33,12 +47,6 @@ class RequestCombineTest {
         allPostCalls.size.assertIsEqualTo(1)
     }
 
-    private fun mockAxios(allPostCalls: MutableList<Pair<String, dynamic>>) = json("post" to
-            fun(url: String, body: dynamic): Promise<dynamic> {
-                allPostCalls.add(url to body)
-                return MainScope().promise<dynamic> { stubResponseData() }
-            }
-    ).unsafeCast<Axios>()
 }
 
 private fun stubResponseData() = json(
