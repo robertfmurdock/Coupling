@@ -4,14 +4,14 @@
   "main": "",
   "license": "MIT",
   "dependencies": {
-    "ws": "^8.2.2"
+    "ws": "^8.3.0"
   },
   "devDependencies": {
     "fs-extra": "^10.0.0",
-    "jasmine": "^3.9.0",
+    "jasmine": "^3.10.0",
     "jasmine-reporters": "^2.5.0",
-    "serverless": "^2.59.0",
-    "serverless-offline": "^8.2.0",
+    "serverless": "^2.69.1",
+    "serverless-offline": "^8.3.1",
     "serverless-offline-ssm": "^5.2.0",
     "serverless-plugin-static": "^0.0.7"
   }

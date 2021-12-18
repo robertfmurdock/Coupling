@@ -63,7 +63,7 @@ tasks {
     val browserDistribution by getting {}
 
     artifacts {
-        add(clientConfiguration.name, compileProductionExecutableKotlinJs.outputFile) {
+        add(clientConfiguration.name, compileProductionExecutableKotlinJs.outputFileProperty) {
             builtBy(compileProductionExecutableKotlinJs)
         }
         add(clientConfiguration.name, browserProductionWebpack.destinationDirectory) {
