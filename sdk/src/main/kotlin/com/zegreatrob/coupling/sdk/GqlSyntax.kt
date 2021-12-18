@@ -29,6 +29,7 @@ interface QueryPerformer {
     suspend fun doQuery(body: Json): dynamic
     fun postAsync(body: dynamic): Deferred<Json>
 
+    suspend fun get(path: String): dynamic
 }
 
 suspend inline fun <reified T> GqlSyntax.doQuery(query: String, input: T): dynamic = performQuery(

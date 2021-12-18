@@ -25,4 +25,8 @@ interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
     private suspend fun postStringToJsonObject(body: dynamic) = JSON.parse<Json>(client.post("/api/graphql") {
         this.body = TextContent(JSON.stringify(body), ContentType.Application.Json)
     })
+
+    override suspend fun get(path: String): dynamic {
+        return client.get<String?>(path)
+    }
 }

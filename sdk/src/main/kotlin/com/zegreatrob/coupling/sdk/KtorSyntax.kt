@@ -6,6 +6,7 @@ import io.ktor.client.features.*
 import io.ktor.client.features.cookies.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
+import io.ktor.http.*
 import org.w3c.dom.Window
 import org.w3c.dom.get
 
@@ -26,6 +27,7 @@ fun defaultClient() = HttpClient {
             .unsafeCast<Window?>()
             ?.let { window ->
                 url {
+                    protocol = URLProtocol.byName[window.location.protocol] ?: URLProtocol.HTTP
                     host = window.location.host
                     encodedPath = "${window["basename"]}/$encodedPath"
                 }

@@ -32,4 +32,8 @@ interface AxiosQueryPerformer : QueryPerformer, AxiosSyntax {
         .asDeferred()
         .unsafeCast<Deferred<Json>>()
 
+    override suspend fun get(path: String): dynamic {
+        return axios.get("/api/logout").await()
+    }
+
 }
