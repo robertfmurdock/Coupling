@@ -21,10 +21,10 @@ kotlin {
                 api("com.zegreatrob.testmints:action")
                 api("com.zegreatrob.testmints:action-async")
                 implementation("com.benasher44:uuid:0.3.1")
-                implementation("com.soywiz.korlibs.klock:klock:2.4.8")
+                implementation("com.soywiz.korlibs.klock:klock:2.4.9")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("io.github.microutils:kotlin-logging:2.1.20")
+                implementation("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
         getByName("commonTest") {

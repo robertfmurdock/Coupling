@@ -31,8 +31,8 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("com.benasher44:uuid:0.3.1")
-                implementation("com.soywiz.korlibs.klock:klock:2.4.8")
-                implementation("io.github.microutils:kotlin-logging:2.1.20")
+                implementation("com.soywiz.korlibs.klock:klock:2.4.9")
+                implementation("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
         getByName("commonTest") {
@@ -49,8 +49,8 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("io.github.microutils:kotlin-logging:2.1.20")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
+                implementation("io.github.microutils:kotlin-logging:2.1.21")
+                implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
             }
         }
         val jvmTest by getting {

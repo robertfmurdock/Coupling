@@ -22,8 +22,8 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:report")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                implementation("io.github.microutils:kotlin-logging:2.1.20")
-                implementation("com.soywiz.korlibs.klock:klock:2.4.8")
+                implementation("io.github.microutils:kotlin-logging:2.1.21")
+                implementation("com.soywiz.korlibs.klock:klock:2.4.9")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
@@ -36,7 +36,7 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation("io.github.microutils:kotlin-logging:2.1.20")
+                implementation("io.github.microutils:kotlin-logging:2.1.21")
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
