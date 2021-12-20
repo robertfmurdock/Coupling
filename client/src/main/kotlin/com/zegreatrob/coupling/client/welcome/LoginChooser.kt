@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.EmptyProps
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.RBuilder

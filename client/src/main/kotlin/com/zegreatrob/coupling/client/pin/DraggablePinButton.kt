@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.Props

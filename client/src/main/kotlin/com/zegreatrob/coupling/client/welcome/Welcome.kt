@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import org.w3c.dom.Node
 import react.*
 import react.dom.attrs

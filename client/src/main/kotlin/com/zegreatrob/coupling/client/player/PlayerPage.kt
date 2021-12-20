@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.child
+import com.zegreatrob.coupling.client.child
 
 private val LoadedPlayer = couplingDataLoader(PlayerConfig)
 

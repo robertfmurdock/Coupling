@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.child
-import com.zegreatrob.minreact.reactFunction
-import react.RBuilder
+import com.zegreatrob.coupling.client.child
 import react.Props
+import react.RBuilder
 import react.dom.div
 import react.dom.span
 

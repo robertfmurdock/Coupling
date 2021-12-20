@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.stats.heatmap
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import kotlinx.css.height
 import kotlinx.css.px
 import kotlinx.css.width

@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import kotlinx.css.margin
 import kotlinx.css.px
 import kotlinx.html.classes

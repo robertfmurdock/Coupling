@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.minreact.EmptyProps
-import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.em
 import kotlinx.css.marginLeft
 import kotlinx.css.marginRight

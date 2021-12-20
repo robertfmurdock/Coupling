@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.external.react
 
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import react.RBuilder
 import react.Props
 

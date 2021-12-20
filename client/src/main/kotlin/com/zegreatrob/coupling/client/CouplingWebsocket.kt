@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL

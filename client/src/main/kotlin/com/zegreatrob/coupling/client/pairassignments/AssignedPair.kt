@@ -9,13 +9,13 @@ import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.pin.pinSection
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.child
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.child
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display

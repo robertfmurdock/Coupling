@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.tribeConfigLayout
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.testmints.action.async.SuspendAction
 import kotlinx.css.*
 import kotlinx.css.properties.border

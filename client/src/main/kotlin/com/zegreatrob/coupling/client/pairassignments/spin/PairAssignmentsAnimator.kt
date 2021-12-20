@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignmen
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import react.Props
 import react.RBuilder
 

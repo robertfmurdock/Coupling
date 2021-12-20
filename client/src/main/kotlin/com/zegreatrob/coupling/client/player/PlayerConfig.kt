@@ -5,8 +5,7 @@ import com.zegreatrob.coupling.client.configFrame
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.child
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import kotlinx.css.*
 import kotlinx.css.Color.Companion.wheat
 import react.Props

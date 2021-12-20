@@ -4,13 +4,13 @@ import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.react.dataloader.*
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.execute
+import react.ChildrenBuilder
 import react.ElementType
 import react.Props
-import react.RBuilder
 import react.router.Navigate
 
 data class CouplingLoaderProps<P : Props>(val getDataAsync: DataLoadFunc<P?>) : Props
@@ -30,28 +30,29 @@ fun <R, P : Props> dataLoadProps(
     }
 }
 
-fun <P : Props> couplingDataLoader(component: ElementType<P>) =
-    reactFunction { (getDataAsync): CouplingLoaderProps<P> ->
-        dataLoader(getDataAsync, { null }) { state: DataLoadState<P?> ->
+fun <P : Props> couplingDataLoader(component: ElementType<P>) = tmFC { (getDataAsync): CouplingLoaderProps<P> ->
+    dataLoader<P>()() {
+        +DataLoaderProps(getDataAsync, { null }) { state: DataLoadState<P?> ->
             animationFrame(state, component)
         }
     }
+}
 
-private fun <P : Props> RBuilder.animationFrame(state: DataLoadState<P?>, component: ElementType<P>) =
-    child(animationFrame) {
-        attrs.state = state
+private fun <P : Props> ChildrenBuilder.animationFrame(state: DataLoadState<P?>, component: ElementType<P>) =
+    animationFrame {
+        this.state = state
         if (state is ResolvedState) {
             resolvedComponent(state, component)
         }
     }
 
-private fun <P : Props> RBuilder.resolvedComponent(state: ResolvedState<P?>, component: ElementType<P>) {
+private fun <P : Props> ChildrenBuilder.resolvedComponent(state: ResolvedState<P?>, component: ElementType<P>) {
     when (val result = state.result) {
         null -> notFoundContent()
         else -> child(component, result)
     }
 }
 
-private fun RBuilder.notFoundContent() = Navigate { attrs.to = Paths.tribeList() }.also {
+private fun ChildrenBuilder.notFoundContent() = Navigate { this.to = Paths.tribeList() }.also {
     console.error("Data was not found.")
 }

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
 import react.*
 import kotlin.math.round

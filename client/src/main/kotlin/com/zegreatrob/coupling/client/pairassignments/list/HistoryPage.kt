@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
-import com.zegreatrob.minreact.child
+import com.zegreatrob.coupling.client.child
 
 private val LoadedPairAssignments by lazy { couplingDataLoader(History) }
 

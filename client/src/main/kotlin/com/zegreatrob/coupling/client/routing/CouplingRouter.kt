@@ -17,7 +17,7 @@ import com.zegreatrob.coupling.client.tribe.TribeConfigPage
 import com.zegreatrob.coupling.client.tribe.TribeListPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.welcome.WelcomePage
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.reactFunction
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.*

@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.reactFunction
 import kotlinx.css.*
 import react.RBuilder
 import react.dom.div
