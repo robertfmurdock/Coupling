@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.pinId
 import com.zegreatrob.coupling.client.tribePageFunction
+import com.zegreatrob.minreact.child
 
 private val LoadedPin by lazy { couplingDataLoader<PinConfig>() }
 

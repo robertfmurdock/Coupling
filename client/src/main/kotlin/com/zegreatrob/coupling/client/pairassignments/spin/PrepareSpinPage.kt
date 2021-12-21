@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.pairassignments.TribeCurrentDataQuery
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
+import com.zegreatrob.minreact.child
 
 private val LoadedPairAssignments by lazy { couplingDataLoader<StatefulPrepareSpin>() }
 

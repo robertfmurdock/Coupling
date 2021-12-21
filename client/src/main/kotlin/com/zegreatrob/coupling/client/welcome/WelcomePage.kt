@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
-import react.fc
+import com.zegreatrob.minreact.child
+import react.FC
 
 private val LoadedWelcome = couplingDataLoader<Welcome>()
 
-val WelcomePage = fc<PageProps> {
+val WelcomePage = FC<PageProps> {
     child(dataLoadProps(LoadedWelcome) { Welcome() })
 }

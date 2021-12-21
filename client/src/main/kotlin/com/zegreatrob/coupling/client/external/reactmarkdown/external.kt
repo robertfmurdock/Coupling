@@ -5,4 +5,4 @@ import react.ElementType
 import react.Props
 
 @JsName("default")
-external val reactMarkdown: ElementType<Props>
+external val Markdown: ElementType<Props>

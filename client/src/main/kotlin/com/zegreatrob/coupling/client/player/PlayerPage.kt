@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.playerId
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.minreact.child
 
 private val LoadedPlayer = couplingDataLoader<PlayerConfig>()
 
