@@ -25,6 +25,8 @@ class PlayerConfigEditorTest {
         val player = Player(id = "blarg")
     }) exercise {
         shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
+            .find(playerConfigContent)
+            .shallow()
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
             .length
@@ -37,6 +39,8 @@ class PlayerConfigEditorTest {
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
         shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
+            .find(playerConfigContent)
+            .shallow()
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
@@ -52,8 +56,12 @@ class PlayerConfigEditorTest {
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(PlayerConfigEditor(tribe, player, reloaderSpy::spyFunction, stubDispatchFunc))
     }) exercise {
-        wrapper.simulateInputChange("name", "nonsense")
-        wrapper.find(ConfigForm).props()
+        wrapper.find(playerConfigContent)
+            .shallow()
+            .simulateInputChange("name", "nonsense")
+        wrapper.find(playerConfigContent)
+            .shallow()
+            .find(ConfigForm).props()
             .onSubmit()
         stubDispatchFunc.simulateSuccess<SavePlayerCommand>()
     } verify {
@@ -77,7 +85,8 @@ class PlayerConfigEditorTest {
         val wrapper = shallow(
             PlayerConfigEditor(tribe, player, {}, stubDispatchFunc),
             playerConfigEditorFunc(windowFuncs)
-        )
+        ).find(playerConfigContent)
+            .shallow()
     }) exercise {
         wrapper.find(ConfigForm).props()
             .onRemove?.invoke()
@@ -104,7 +113,8 @@ class PlayerConfigEditorTest {
         val wrapper = shallow(
             PlayerConfigEditor(tribe, player, {}, stubDispatchFunc),
             playerConfigEditorFunc(windowFunctions)
-        )
+        ).find(playerConfigContent)
+            .shallow()
     }) exercise {
         wrapper.find(ConfigForm).props()
             .onRemove?.invoke()
@@ -117,6 +127,8 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
         val wrapper = shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
+            .find(playerConfigContent)
+            .shallow()
     }) exercise {
         wrapper.simulateInputChange("name", "differentName")
         wrapper.update()
@@ -131,6 +143,8 @@ class PlayerConfigEditorTest {
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
         shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
+            .find(playerConfigContent)
+            .shallow()
     } verify { wrapper ->
 //        wrapper.find(PromptComponent).props().`when`
 //            .assertIsEqualTo(false)
