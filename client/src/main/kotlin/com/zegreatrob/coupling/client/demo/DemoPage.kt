@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PinConfig
-import com.zegreatrob.coupling.client.player.PlayerConfig
+import com.zegreatrob.coupling.client.player.PlayerConfigContent
 import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.tribe.TribeConfigContent
@@ -78,9 +78,8 @@ private fun ChildrenBuilder.tribeConfigFrame(state: MakeTribe) {
     child(TribeConfigContent(state.tribe, true, {}, {}, {}))
 }
 
-private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = child(
-    PlayerConfig(state.tribe, state.newPlayer, state.players, {}, noOpDispatchFunc), key = "$state"
-)
+private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) =
+    child(PlayerConfigContent(state.tribe, state.newPlayer, state.players, {}, {}, {}))
 
 private fun ChildrenBuilder.pinConfigFrame(state: AddPin) = child(
     PinConfig(state.tribe, state.newPin, state.pins, {}, noOpDispatchFunc), key = "$state"

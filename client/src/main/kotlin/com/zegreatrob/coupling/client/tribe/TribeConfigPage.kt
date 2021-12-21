@@ -21,7 +21,6 @@ private fun TribeId.tribeQueryProps(pageProps: PageProps) = dataLoadProps(
     toProps = { _, commandFunc, data -> TribeConfig(data, commandFunc) }
 )
 
-
 private fun newTribeProps(pageProps: PageProps) = dataLoadProps(
     component = LoadedTribeConfig,
     commander = pageProps.commander,
