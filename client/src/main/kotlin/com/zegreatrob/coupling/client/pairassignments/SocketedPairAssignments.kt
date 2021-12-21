@@ -9,19 +9,22 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import react.StateSetter
 import react.useMemo
 import react.useState
 
-data class SocketedPairAssignmentsProps(
+data class SocketedPairAssignments(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val controls: Controls<PairAssignmentsCommandDispatcher>,
     val allowSave: Boolean
-) : DataProps
+) : DataProps<SocketedPairAssignments> {
+    override val component: TMFC<SocketedPairAssignments> get() = socketedPairAssignments
+}
 
-val SocketedPairAssignments = reactFunction<SocketedPairAssignmentsProps> { props ->
+val socketedPairAssignments = reactFunction<SocketedPairAssignments> { props ->
     val (tribe, players, originalPairs, controls, allowSave) = props
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
 

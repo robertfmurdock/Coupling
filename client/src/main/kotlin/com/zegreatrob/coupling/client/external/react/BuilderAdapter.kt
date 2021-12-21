@@ -9,7 +9,7 @@ import react.RBuilder
 import react.key
 import react.ref
 
-class BuilderAdapter<P : DataProps>(val builder: RBuilder, val component: TMFC<P>) {
+class BuilderAdapter<P : DataProps<P>>(val builder: RBuilder, val component: TMFC<P>) {
     operator fun invoke(
         props: P,
         key: String? = null,
@@ -28,4 +28,4 @@ class BuilderAdapter<P : DataProps>(val builder: RBuilder, val component: TMFC<P
     )
 }
 
-fun <P : DataProps> RBuilder.childCurry(component: TMFC<P>) = BuilderAdapter(this, component)
+fun <P : DataProps<P>> RBuilder.childCurry(component: TMFC<P>) = BuilderAdapter(this, component)

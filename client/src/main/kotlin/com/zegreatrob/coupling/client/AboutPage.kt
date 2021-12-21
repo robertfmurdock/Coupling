@@ -17,6 +17,7 @@ import react.RBuilder
 import react.dom.div
 import react.dom.i
 import react.dom.span
+import react.fc
 import react.router.dom.Link
 import styled.css
 import styled.styledDiv
@@ -24,7 +25,7 @@ import styled.styledSpan
 
 private val styles = useStyles("About")
 
-val AboutPage = reactFunction<PageProps> {
+val AboutPage = fc<PageProps> {
     div(classes = styles.className) {
         div(classes = styles["content"]) {
             backButtonSection()

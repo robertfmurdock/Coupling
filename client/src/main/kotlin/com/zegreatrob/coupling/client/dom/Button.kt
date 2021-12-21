@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.dom
 import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.css.properties.TextDecoration
@@ -116,9 +117,9 @@ fun RBuilder.couplingButton(
     onClick: () -> Unit = {},
     block: StyledDOMBuilder<BUTTON>.() -> Unit = {},
     handler: RBuilder.() -> Unit = {}
-) = child(CouplingButton, CouplingButtonProps(sizeRuleSet, colorRuleSet, className, onClick, block, handler))
+) = child(CouplingButton(sizeRuleSet, colorRuleSet, className, onClick, block, handler))
 
-data class CouplingButtonProps(
+data class CouplingButton(
     val sizeRuleSet: RuleSet = medium,
     val colorRuleSet: RuleSet = black,
     @JsName("className")
@@ -126,9 +127,11 @@ data class CouplingButtonProps(
     val onClick: () -> Unit = {},
     val block: StyledDOMBuilder<BUTTON>.() -> Unit = {},
     val children: RBuilder.()-> Unit
-) : DataProps
+) : DataProps<CouplingButton> {
+    override val component: TMFC<CouplingButton> get() = couplingButton
+}
 
-val CouplingButton = reactFunction<CouplingButtonProps> { props ->
+val couplingButton = reactFunction<CouplingButton> { props ->
     val (sizeRuleSet, colorRuleSet, className, onClick, block) = props
     styledButton {
         css(buttonRuleset)

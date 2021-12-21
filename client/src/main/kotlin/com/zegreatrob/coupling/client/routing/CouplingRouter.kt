@@ -26,9 +26,11 @@ import react.dom.div
 import react.router.*
 import react.router.dom.BrowserRouter
 
-data class CouplingRouterProps(val isSignedIn: Boolean, val animationsDisabled: Boolean) : DataProps
+data class CouplingRouter(val isSignedIn: Boolean, val animationsDisabled: Boolean) : DataProps<CouplingRouter> {
+    override val component get() = couplingRouter
+}
 
-val CouplingRouter = reactFunction<CouplingRouterProps> { (isSignedIn, animationsDisabled) ->
+val couplingRouter = reactFunction<CouplingRouter> { (isSignedIn, animationsDisabled) ->
     BrowserRouter {
         attrs.basename = (window["basename"]?.toString() ?: "")
         animationsDisabledContext.Provider(animationsDisabled) {
@@ -41,10 +43,7 @@ private fun RBuilder.routes(isSignedIn: Boolean) {
     couplingRoute("/welcome/", WelcomePage)
     couplingRoute("/about", AboutPage)
 
-    if (isSignedIn)
-        authenticatedRoutes()
-    else
-        redirectUnauthenticated()
+    if (isSignedIn) authenticatedRoutes() else redirectUnauthenticated()
 
     Route { attrs.element = createElement { lostRoute() } }
 }

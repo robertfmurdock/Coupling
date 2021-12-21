@@ -6,26 +6,21 @@ import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import react.RBuilder
 import react.dom.div
 import react.router.dom.Link
 
-data class PinCardProps(
-    val tribeId: TribeId,
-    val pin: Pin,
-    val shouldLink: Boolean = true
-) : DataProps
+data class PinCard(val tribeId: TribeId, val pin: Pin, val shouldLink: Boolean = true) : DataProps<PinCard> {
+    override val component: TMFC<PinCard> get() = pinCard
+}
 
 private val styles = useStyles("pin/PinCard")
 
-fun RBuilder.pinCard(tribeId: TribeId, pin: Pin, shouldLink: Boolean = true, key: String? = null) = child(
-    PinCard, PinCardProps(tribeId, pin, shouldLink), key = key
-)
-
-val PinCard = reactFunction<PinCardProps> { (tribeId, pin, shouldLink) ->
+val pinCard = reactFunction<PinCard> { (tribeId, pin, shouldLink) ->
     optionalLink(shouldLink, tribeId, pin) {
         div(styles.className) {
-            pinButton(pin, key = null, showTooltip = false)
+            child(PinButton(pin, PinButtonScale.Small, showTooltip = false))
             div(classes = "pin-name") {
                 +pin.name
             }

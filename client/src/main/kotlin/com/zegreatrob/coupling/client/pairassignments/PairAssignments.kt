@@ -10,10 +10,9 @@ import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.spin.animator
-import com.zegreatrob.coupling.client.player.PlayerRosteProps
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.reactFunction
-import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -21,6 +20,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.css.properties.boxShadow
@@ -52,12 +52,9 @@ fun RBuilder.pairAssignments(
     controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     message: CouplingSocketMessage,
     allowSave: Boolean,
-) = child(
-    PairAssignments,
-    PairAssignmentsProps(tribe, players, pairAssignments, setPairAssignments, controls, message, allowSave)
-)
+) = child(PairAssignments(tribe, players, pairAssignments, setPairAssignments, controls, message, allowSave))
 
-data class PairAssignmentsProps(
+data class PairAssignments(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
@@ -65,11 +62,13 @@ data class PairAssignmentsProps(
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     val message: CouplingSocketMessage,
     val allowSave: Boolean
-) : DataProps
+) : DataProps<PairAssignments> {
+    override val component: TMFC<PairAssignments> get() = com.zegreatrob.coupling.client.pairassignments.pairAssignments
+}
 
 private val styles = useStyles("pairassignments/PairAssignments")
 
-val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
+val pairAssignments = reactFunction<PairAssignments> { props ->
     val (tribe, players, pairAssignments, setPairs, controls, message, allowSave) = props
 
     val pairSectionNode = useRef<Node>(null)
@@ -78,7 +77,7 @@ val PairAssignments = reactFunction<PairAssignmentsProps> { props ->
         attrs { backend = HTML5Backend }
         div(classes = styles.className) {
             div {
-                tribeBrowser(tribe)
+                child(TribeBrowser(tribe))
                 styledDiv {
                     css { verticalAlign = VerticalAlign.top }
                     currentPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
@@ -189,11 +188,7 @@ private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it
 external class ClipboardItem(params: Json)
 
 private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>) = child(
-    PlayerRoster, PlayerRosteProps(
-        label = "Unpaired players",
-        players = players,
-        tribeId = tribe.id
-    )
+    PlayerRoster(label = "Unpaired players", players = players, tribeId = tribe.id)
 )
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =

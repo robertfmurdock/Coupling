@@ -1,17 +1,20 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.browser.window
 import react.RBuilder
 import react.useEffectOnce
 import react.useState
 import kotlin.math.round
 
-data class FrameRunnerProps(
+data class FrameRunner(
     val sequence: Sequence<Frame<*>>,
     val speed: Double,
     val children: RBuilder.(value: Any?) -> Unit
-) : DataProps
+) : DataProps<FrameRunner> {
+    override val component: TMFC<FrameRunner> get() = frameRunner
+}
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second
 private fun <A, B, B2> Pair<A, B>.letSecond(transform: (B) -> B2) = first to transform(second)
@@ -22,11 +25,11 @@ private fun <I> ((I?) -> Unit).curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { 
 data class Frame<T>(val data: T, val delay: Int)
 
 fun <T> RBuilder.frameRunner(sequence: Sequence<Frame<T>>, speed: Double, children: RBuilder.(T) -> Unit) = child(
-    FrameRunner, FrameRunnerProps(sequence, speed) { value ->
+    FrameRunner(sequence, speed) { value ->
         children(value.unsafeCast<T>())
     })
 
-val FrameRunner = reactFunction<FrameRunnerProps> { props ->
+val frameRunner = reactFunction<FrameRunner> { props ->
     val (sequence, speed) = props
     var state by useState(sequence.first().data)
     val scheduleStateFunc: (Frame<*>) -> Unit = scheduleStateFunc({ state = it }, speed)

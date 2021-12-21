@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths.newPairAssignmentsPath
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
@@ -11,16 +12,18 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pin.pinButton
+import com.zegreatrob.coupling.client.pin.PinButton
+import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
-import com.zegreatrob.coupling.client.tribe.tribeBrowser
+import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.*
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
@@ -33,18 +36,20 @@ import react.router.Navigate
 import styled.css
 import styled.styledDiv
 
-data class StatefulPrepareSpinProps(
+data class StatefulPrepareSpin(
     val tribe: Tribe,
     val players: List<Player>,
     val currentPairsDoc: PairAssignmentDocument?,
     val pins: List<Pin>,
     val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>
-) : DataProps
+) : DataProps<StatefulPrepareSpin> {
+    override val component: TMFC<StatefulPrepareSpin> get() = statefulPrepareSpin
+}
 
 private val styles = useStyles("PrepareSpin")
 
-val StatefulPrepareSpin =
-    reactFunction<StatefulPrepareSpinProps> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
+val statefulPrepareSpin =
+    reactFunction<StatefulPrepareSpin> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
         var playerSelections by useState(defaultSelections(players, currentPairsDoc))
         var pinSelections by useState(pins.map { it.id })
         var redirectUrl by useState<String?>(null)
@@ -76,7 +81,7 @@ external interface PrepareSpinProps : Props {
 
 val PrepareSpin = fc<PrepareSpinProps> { props ->
     div(classes = styles.className) {
-        div { tribeBrowser(props.tribe) }
+        div { child(TribeBrowser(props.tribe)) }
         div {
             div { spinButton(props.onSpin) }
             selectorAreaDiv {
@@ -247,7 +252,7 @@ private fun RBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = flip
     styledDiv {
         attrs { key = pin.id ?: "" }
         css { display = Display.inlineBlock }
-        pinButton(pin, onClick = onClick, showTooltip = true)
+        child(PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick))
     }
 }
 

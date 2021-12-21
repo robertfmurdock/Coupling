@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
@@ -21,18 +22,20 @@ import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class PlayerConfigEditoProps(
+data class PlayerConfigEditor(
     val tribe: Tribe,
     val player: Player,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
-) : DataProps
+) : DataProps<PlayerConfigEditor> {
+    override val component: TMFC<PlayerConfigEditor> get() = playerConfigEditor
+}
 
-val PlayerConfigEditor by lazy { playerConfigEditor(WindowFunctions) }
+val playerConfigEditor by lazy { playerConfigEditorFunc(WindowFunctions) }
 
 private val styles = useStyles("player/PlayerConfigEditor")
 
-val playerConfigEditor = windowReactFunc<PlayerConfigEditoProps> { props, windowFuncs ->
+val playerConfigEditorFunc = windowReactFunc<PlayerConfigEditor> { props, windowFuncs ->
     val (tribe, player, reload, dispatchFunc) = props
     val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
 

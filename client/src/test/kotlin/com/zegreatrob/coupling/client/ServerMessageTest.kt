@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.user.ServerMessage
-import com.zegreatrob.coupling.client.user.ServerMessageProps
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -14,8 +13,9 @@ class ServerMessageTest {
     @Test
     fun displaysServerMessage(): Unit = setup(object {
         val expectedMessage = "Hi it me"
-        val props = ServerMessageProps(TribeId("bwahahahaha"), CouplingSocketMessage(expectedMessage, emptySet(), null))
-        val wrapper = shallow(ServerMessage, props)
+        val wrapper = shallow(
+            ServerMessage(TribeId("bwahahahaha"), CouplingSocketMessage(expectedMessage, emptySet(), null))
+        )
     }) exercise {
         wrapper.update()
     } verify {

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.tribe.TribeCardProps
+import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.tribe.Tribe
 import react.PropsWithChildren
@@ -25,7 +25,7 @@ private val styles = useStyles("ConfigHeader")
 
 val ConfigHeader = fc<ConfigHeaderProps> { props ->
     div(classes = styles.className) {
-        div { tribeCard(TribeCardProps(props.tribe, 50)) }
+        div { tribeCard(TribeCard(props.tribe, 50)) }
         h1 { props.children() }
     }
 }

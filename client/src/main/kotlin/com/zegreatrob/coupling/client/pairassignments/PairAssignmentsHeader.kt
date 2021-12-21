@@ -6,20 +6,22 @@ import com.zegreatrob.coupling.client.pairassignments.list.dateText
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import react.RBuilder
 import react.dom.div
 
-data class PairAssignmentsHeaderProps(val pairAssignments: PairAssignmentDocument) : DataProps
+data class PairAssignmentsHeader(val pairAssignments: PairAssignmentDocument) : DataProps<PairAssignmentsHeader> {
+    override val component: TMFC<PairAssignmentsHeader> get() = pairAssignmentsHeader
+}
 
 private val styles = useStyles("pairassignments/PairAssignmentsHeader")
 
-val PairAssignmentsHeader = reactFunction<PairAssignmentsHeaderProps> { (pairAssignments) ->
+val pairAssignmentsHeader = reactFunction<PairAssignmentsHeader> { (pairAssignments) ->
     div(classes = styles.className) {
         +"Couples for ${pairAssignments.dateText()}"
     }
 }
 
 fun RBuilder.pairAssignmentsHeader(pairAssignments: PairAssignmentDocument) = child(
-    PairAssignmentsHeader,
-    PairAssignmentsHeaderProps(pairAssignments)
+    PairAssignmentsHeader(pairAssignments)
 )

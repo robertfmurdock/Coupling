@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
-import com.zegreatrob.coupling.client.tribe.TribeCard
+import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -23,19 +23,20 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     @Test
     fun willShowTribeCard() = setup(object {
         val tribe = Tribe(TribeId("1"))
-        val props = TribeStatisticsProps(
-            StatisticQueryResults(
-                tribe = tribe,
-                players = emptyList(),
-                history = emptyList(),
-                heatmapData = perform(CalculateHeatMapAction(emptyList(), emptyList(), 0)),
-                report = perform(ComposeStatisticsAction(tribe, emptyList(), emptyList()))
+    }) exercise {
+        shallow(
+            TribeStatistics(
+                StatisticQueryResults(
+                    tribe = tribe,
+                    players = emptyList(),
+                    history = emptyList(),
+                    heatmapData = perform(CalculateHeatMapAction(emptyList(), emptyList(), 0)),
+                    report = perform(ComposeStatisticsAction(tribe, emptyList(), emptyList()))
+                )
             )
         )
-    }) exercise {
-        shallow(TribeStatistics, props)
     } verify { wrapper ->
-        wrapper.find(TribeCard)
+        wrapper.find(tribeCard)
             .dataprops()
             .tribe.assertIsEqualTo(tribe)
     }
@@ -48,10 +49,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = Tribe(
-            TribeId("1"),
-            name = "Mathematica"
-        )
+        val tribe = Tribe(TribeId("1"), name = "Mathematica")
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
@@ -62,20 +60,11 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             )
         )
-        val props = TribeStatisticsProps(
-            queryResults = StatisticQueryResults(
-                tribe = tribe,
-                players = players,
-                history = history,
-                heatmapData = emptyList(),
-                report = perform(ComposeStatisticsAction(tribe, players, history))
-            )
-
-        )
+        val report = perform(ComposeStatisticsAction(tribe, players, history))
     }) exercise {
-        shallow(TribeStatistics, props)
+        shallow(TribeStatistics(StatisticQueryResults(tribe, players, history, report, emptyList())))
     } verify { wrapper ->
-        wrapper.find(PairReportTable)
+        wrapper.find(pairReportTable)
             .dataprops()
             .pairReports
             .assertIsOrderedByLongestTimeSinceLastPairing()
@@ -128,25 +117,13 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             )
         )
-        val tribe = Tribe(
-            TribeId("2"),
-            name = "Mathematica"
-        )
-
+        val tribe = Tribe(TribeId("2"), name = "Mathematica")
         val report = perform(ComposeStatisticsAction(tribe, players, history))
-        val props = TribeStatisticsProps(
-            StatisticQueryResults(
-                tribe = tribe,
-                players = players,
-                history = history,
-                heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation)),
-                report = report
-            )
-        )
+        val heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation))
     }) exercise {
-        shallow(TribeStatistics, props)
+        shallow(TribeStatistics(StatisticQueryResults(tribe, players, history, report, heatmapData)))
     } verify { wrapper ->
-        wrapper.find(PlayerHeatmap)
+        wrapper.find(playerHeatmap)
             .dataprops()
             .heatmapData
             .assertIsEqualTo(
@@ -171,19 +148,11 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             TribeId("2"),
             name = "Mathematica"
         )
-        val props = TribeStatisticsProps(
-            StatisticQueryResults(
-                tribe = tribe,
-                players = players,
-                history = emptyList(),
-                heatmapData = emptyList(),
-                report = perform(ComposeStatisticsAction(tribe, players, emptyList()))
-            )
-        )
+        val report = perform(ComposeStatisticsAction(tribe, players, emptyList()))
     }) exercise {
-        shallow(TribeStatistics, props)
+        shallow(TribeStatistics(StatisticQueryResults(tribe, players, emptyList(), report, emptyList())))
     } verify { wrapper ->
-        wrapper.find(TeamStatistics)
+        wrapper.find(teamStatistics)
             .dataprops()
             .apply {
                 activePlayerCount
@@ -223,19 +192,11 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             )
         )
-        val props = TribeStatisticsProps(
-            StatisticQueryResults(
-                tribe = tribe,
-                players = players,
-                history = history,
-                heatmapData = emptyList(),
-                report = perform(ComposeStatisticsAction(tribe, players, history))
-            )
-        )
+        val report = perform(ComposeStatisticsAction(tribe, players, history))
     }) exercise {
-        shallow(TribeStatistics, props)
+        shallow(TribeStatistics(StatisticQueryResults(tribe, players, history, report, emptyList())))
     } verify { wrapper ->
-        wrapper.find(TeamStatistics)
+        wrapper.find(teamStatistics)
             .dataprops()
             .medianSpinDuration
             .assertIsEqualTo("2 days")

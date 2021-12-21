@@ -8,17 +8,20 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import react.RBuilder
 import react.dom.div
 import react.dom.span
 
 fun RBuilder.serverMessage(tribe: Tribe, message: CouplingSocketMessage) {
-    child(ServerMessage, ServerMessageProps(tribe.id, message), key = "${message.text} ${message.players.size}")
+    child(ServerMessage(tribe.id, message), key = "${message.text} ${message.players.size}")
 }
 
-data class ServerMessageProps(val tribeId: TribeId, val message: CouplingSocketMessage) : DataProps
+data class ServerMessage(val tribeId: TribeId, val message: CouplingSocketMessage) : DataProps<ServerMessage> {
+    override val component: TMFC<ServerMessage> get() = serverMessage
+}
 
-val ServerMessage = reactFunction<ServerMessageProps> { (tribeId, message) ->
+val serverMessage = reactFunction<ServerMessage> { (tribeId, message) ->
     div {
         span { +message.text }
         div {

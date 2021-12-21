@@ -12,32 +12,29 @@ import kotlinx.css.*
 import kotlinx.css.Color.Companion.wheat
 import react.dom.div
 
-data class PlayerConfigProps(
+data class PlayerConfig(
     val tribe: Tribe,
     val player: Player,
     val players: List<Player>,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
-) : DataProps
+) : DataProps<PlayerConfig> {
+    override val component get() = playerConfig
+}
 
 private val styles = useStyles("player/PlayerConfig")
 
-val PlayerConfig = reactFunction { (tribe, player, players, reload, commandFunc): PlayerConfigProps ->
+val playerConfig = reactFunction { (tribe, player, players, reload, commandFunc): PlayerConfig ->
     configFrame(styles.className) {
-        child(PlayerConfigEditor, PlayerConfigEditoProps(tribe, player, reload, commandFunc))
+        child(PlayerConfigEditor(tribe, player, reload, commandFunc))
         div {
-            child(
-                PlayerRoster, PlayerRosteProps(
-                    players = players,
-                    tribeId = tribe.id
-                ) {
-                    display = Display.inlineBlock
-                    borderRadius = 20.px
-                    padding = "10px"
-                    border = "11px outset tan"
-                    backgroundColor = wheat
-                }
-            )
+            child(PlayerRoster(players = players, tribeId = tribe.id) {
+                display = Display.inlineBlock
+                borderRadius = 20.px
+                padding = "10px"
+                border = "11px outset tan"
+                backgroundColor = wheat
+            })
         }
     }
 }

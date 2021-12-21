@@ -9,20 +9,23 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import react.RBuilder
 import react.dom.div
 import react.router.dom.Link
 
-data class TribeListProps(val tribes: List<Tribe>) : DataProps
+data class TribeList(val tribes: List<Tribe>) : DataProps<TribeList> {
+    override val component: TMFC<TribeList> get() = tribeList
+}
 
 private val styles = useStyles("tribe/TribeList")
 
-val TribeList = reactFunction<TribeListProps> { (tribes) ->
+val tribeList = reactFunction<TribeList> { (tribes) ->
     div(classes = styles.className) {
         div { aboutButton() }
         div {
             tribes.forEach { tribe ->
-                tribeCard(TribeCardProps(tribe), key = tribe.id.value)
+                tribeCard(TribeCard(tribe), key = tribe.id.value)
             }
         }
         div { newTribeButton(styles["newTribeButton"]) }

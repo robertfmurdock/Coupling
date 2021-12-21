@@ -14,16 +14,18 @@ import com.zegreatrob.testmints.action.async.execute
 import react.ChildrenBuilder
 import react.router.Navigate
 
-data class CouplingLoaderProps<P : DataProps>(val getDataAsync: DataLoadFunc<P?>) : DataProps
+data class CouplingLoaderProps<P : DataProps<P>>(override val component: TMFC<CouplingLoaderProps<P>>, val getDataAsync: DataLoadFunc<P?>) :
+    DataProps<CouplingLoaderProps<P>>
 
-fun <P : DataProps> dataLoadProps(getDataSync: (DataLoaderTools) -> P) =
-    CouplingLoaderProps { tools -> getDataSync(tools) }
+fun <P : DataProps<P>> dataLoadProps(component: TMFC<CouplingLoaderProps<P>>, getDataSync: (DataLoaderTools) -> P) =
+    CouplingLoaderProps(component) { tools -> getDataSync(tools) }
 
-fun <R, P : DataProps> dataLoadProps(
+fun <R, P : DataProps<P>> dataLoadProps(
+    component: TMFC<CouplingLoaderProps<P>>,
     query: SuspendAction<CommandDispatcher, R?>,
     toProps: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P,
     commander: Commander
-) = CouplingLoaderProps { tools ->
+) = CouplingLoaderProps(component) { tools ->
     val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, tools)
 
     commander.tracingDispatcher().execute(query)?.let { value ->
@@ -31,24 +33,24 @@ fun <R, P : DataProps> dataLoadProps(
     }
 }
 
-fun <P : DataProps> couplingDataLoader(component: TMFC<P>) = tmFC { (getDataAsync): CouplingLoaderProps<P> ->
-    child(dataLoader(), DataLoaderProps(getDataAsync, { null }) { state: DataLoadState<P?> ->
-        animationFrame(state, component)
+fun <P : DataProps<P>> couplingDataLoader() = tmFC { (_, getDataAsync): CouplingLoaderProps<P> ->
+    child(DataLoader(getDataAsync, { null }) { state: DataLoadState<P?> ->
+        animationFrame(state)
     })
 }
 
-private fun <P : DataProps> ChildrenBuilder.animationFrame(state: DataLoadState<P?>, component: TMFC<P>) =
+private fun <P : DataProps<P>> ChildrenBuilder.animationFrame(state: DataLoadState<P?>) =
     animationFrame {
         this.state = state
         if (state is ResolvedState) {
-            resolvedComponent(state, component)
+            resolvedComponent(state)
         }
     }
 
-private fun <P : DataProps> ChildrenBuilder.resolvedComponent(state: ResolvedState<P?>, component: TMFC<P>) {
+private fun <P : DataProps<P>> ChildrenBuilder.resolvedComponent(state: ResolvedState<P?>) {
     when (val result = state.result) {
         null -> notFoundContent()
-        else -> child(component, result)
+        else -> child(result)
     }
 }
 

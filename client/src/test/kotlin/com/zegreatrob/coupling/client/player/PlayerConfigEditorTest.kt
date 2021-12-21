@@ -21,14 +21,10 @@ class PlayerConfigEditorTest {
 
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
-        val tribe = Tribe(
-            id = TribeId("party"),
-            name = "Party tribe",
-            badgesEnabled = true
-        )
+        val tribe = Tribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditoProps(tribe, player, {}, StubDispatchFunc()))
+        shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Default.value}']")
             .length
@@ -37,14 +33,10 @@ class PlayerConfigEditorTest {
 
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
-        val tribe = Tribe(
-            id = TribeId("party"),
-            name = "Party tribe",
-            badgesEnabled = true
-        )
+        val tribe = Tribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditoProps(tribe, player, {}, StubDispatchFunc()))
+        shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find<Any>("select[name='badge'][value='${Badge.Alternate.value}']")
             .length
@@ -58,10 +50,7 @@ class PlayerConfigEditorTest {
         val reloaderSpy = SpyData<Unit, Unit>()
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
-        val wrapper = shallow(
-            PlayerConfigEditor,
-            PlayerConfigEditoProps(tribe, player, reloaderSpy::spyFunction, stubDispatchFunc)
-        )
+        val wrapper = shallow(PlayerConfigEditor(tribe, player, reloaderSpy::spyFunction, stubDispatchFunc))
     }) exercise {
         wrapper.simulateInputChange("name", "nonsense")
         wrapper.find(ConfigForm).props()
@@ -86,8 +75,8 @@ class PlayerConfigEditorTest {
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
-            playerConfigEditor(windowFuncs),
-            PlayerConfigEditoProps(tribe, player, {}, stubDispatchFunc)
+            PlayerConfigEditor(tribe, player, {}, stubDispatchFunc),
+            playerConfigEditorFunc(windowFuncs)
         )
     }) exercise {
         wrapper.find(ConfigForm).props()
@@ -113,8 +102,8 @@ class PlayerConfigEditorTest {
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
-            playerConfigEditor(windowFunctions),
-            PlayerConfigEditoProps(tribe, player, {}, stubDispatchFunc)
+            PlayerConfigEditor(tribe, player, {}, stubDispatchFunc),
+            playerConfigEditorFunc(windowFunctions)
         )
     }) exercise {
         wrapper.find(ConfigForm).props()
@@ -127,7 +116,7 @@ class PlayerConfigEditorTest {
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
-        val wrapper = shallow(PlayerConfigEditor, PlayerConfigEditoProps(tribe, player, {}, StubDispatchFunc()))
+        val wrapper = shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
     }) exercise {
         wrapper.simulateInputChange("name", "differentName")
         wrapper.update()
@@ -141,7 +130,7 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor, PlayerConfigEditoProps(tribe, player, {}, StubDispatchFunc()))
+        shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
     } verify { wrapper ->
 //        wrapper.find(PromptComponent).props().`when`
 //            .assertIsEqualTo(false)

@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import react.RBuilder
 import react.dom.attrs
 import react.dom.div
@@ -19,9 +20,11 @@ import react.dom.span
 
 private val styles = useStyles("stats/PairReportTable")
 
-data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : DataProps
+data class PairReportTable(val tribe: Tribe, val pairReports: List<PairReport>) : DataProps<PairReportTable> {
+    override val component: TMFC<PairReportTable> = pairReportTable
+}
 
-val PairReportTable = reactFunction<PairReportTableProps> { (tribe, pairReports) ->
+val pairReportTable = reactFunction<PairReportTable> { (tribe, pairReports) ->
     div(classes = styles.className) {
         pairReports.mapIndexed { index, pairReport ->
             pairReport(index, pairReport, tribe)

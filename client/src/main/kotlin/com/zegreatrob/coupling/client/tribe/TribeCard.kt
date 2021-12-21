@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -9,6 +10,7 @@ import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes
@@ -21,13 +23,15 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledSpan
 
-data class TribeCardProps(val tribe: Tribe, val size: Int = 150) : DataProps
+data class TribeCard(val tribe: Tribe, val size: Int = 150) : DataProps<TribeCard> {
+    override val component: TMFC<TribeCard> = tribeCard
+}
 
-val RBuilder.tribeCard get() = childCurry(TribeCard)
+val RBuilder.tribeCard get() = childCurry(com.zegreatrob.coupling.client.tribe.tribeCard)
 
 private val styles = useStyles("tribe/TribeCard")
 
-val TribeCard = reactFunction<TribeCardProps> { (tribe, size) ->
+val tribeCard = reactFunction<TribeCard> { (tribe, size) ->
     Link {
         attrs.to = tribe.id.currentPairsPage()
         styledSpan {
@@ -37,7 +41,7 @@ val TribeCard = reactFunction<TribeCardProps> { (tribe, size) ->
                 tabIndex = "0"
                 setProp("data-tribe-id", tribe.id.value)
             }
-            tribeCardHeader(tribe, size)
+            child(TribeCardHeader(tribe, size))
             tribeGravatar(tribe, size)
         }
     }

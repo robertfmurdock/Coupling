@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display
@@ -34,13 +35,15 @@ import react.useRef
 import styled.css
 import styled.styledDiv
 
-data class AssignedPairProps(
+data class AssignedPair(
     val tribe: Tribe,
     val pair: PinnedCouplingPair,
     val canDrag: Boolean,
     val swapPlayersFunc: (PinnedPlayer, String) -> Unit,
     val pinDropFunc: PinMoveCallback
-) : DataProps
+) : DataProps<AssignedPair>{
+    override val component: TMFC<AssignedPair> get() = assignedPair
+}
 
 typealias PinMoveCallback = (String) -> Unit
 
@@ -53,13 +56,9 @@ fun RBuilder.assignedPair(
     dropPinFunc: PinMoveCallback,
     canDrag: Boolean,
     key: String
-) = child(
-    AssignedPair,
-    AssignedPairProps(tribe, pair, canDrag, swapPlayersFunc, dropPinFunc),
-    key = key
-)
+) = child(AssignedPair(tribe, pair, canDrag, swapPlayersFunc, dropPinFunc), key = key)
 
-val AssignedPair = reactFunction<AssignedPairProps> { (tribe, pair, canDrag, swapCallback, pinMoveCallback) ->
+val assignedPair = reactFunction<AssignedPair> { (tribe, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
@@ -136,7 +135,7 @@ private fun RBuilder.swappablePlayer(
     zoomOnHover: Boolean,
     tilt: Angle,
     onDropSwap: (String) -> Unit
-) = draggablePlayer(DraggablePlayerProps(pinnedPlayer, tribe, zoomOnHover, tilt, onDropSwap))
+) = draggablePlayer(DraggablePlayer(pinnedPlayer, tribe, zoomOnHover, tilt, onDropSwap))
 
 private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
     if (tribe.callSignsEnabled && callSign != null) {

@@ -2,11 +2,9 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.SessionConfig.animationsDisabled
 import com.zegreatrob.coupling.client.routing.CouplingRouter
-import com.zegreatrob.coupling.client.routing.CouplingRouterProps
 import com.zegreatrob.coupling.logging.initializeLogging
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.sdk.SdkSingleton
-import com.zegreatrob.minreact.DataPropsBridge
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.w3c.dom.Document
@@ -25,6 +23,5 @@ object App : Sdk by SdkSingleton {
     private val Document.viewContainerNode get() = getElementsByClassName("view-container")[0]!!
 
     private fun couplingRouterElement(isSignedIn: Boolean, animationsDisabled: Boolean) =
-        createElement(CouplingRouter, CouplingRouterProps(isSignedIn, animationsDisabled)
-            .unsafeCast<DataPropsBridge<CouplingRouterProps>>())
+        createElement { child(CouplingRouter(isSignedIn, animationsDisabled)) }
 }

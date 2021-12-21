@@ -8,27 +8,26 @@ import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.stats.heatmap.Heatmap
-import com.zegreatrob.coupling.client.stats.heatmap.HeatmapProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.html.DIV
 import react.RBuilder
 import react.dom.RDOMBuilder
 import react.dom.attrs
 import react.dom.div
 
-val RBuilder.playerHeatmap get() = childCurry(PlayerHeatmap)
+val RBuilder.playerHeatmap get() = childCurry(com.zegreatrob.coupling.client.stats.playerHeatmap)
 
-data class PlayerHeatmapProps(
-    val tribe: Tribe,
-    val players: List<Player>,
-    val heatmapData: List<List<Double?>>
-) : DataProps
+data class PlayerHeatmap(val tribe: Tribe, val players: List<Player>, val heatmapData: List<List<Double?>>) :
+    DataProps<PlayerHeatmap> {
+    override val component: TMFC<PlayerHeatmap> = playerHeatmap
+}
 
 private val styles = useStyles("stats/PlayerHeatmap")
 
-val PlayerHeatmap = reactFunction<PlayerHeatmapProps> { (tribe, players, heatmapData) ->
+val playerHeatmap = reactFunction<PlayerHeatmap> { (tribe, players, heatmapData) ->
     div(classes = styles["rightSection"]) {
         div(classes = styles["heatmapPlayersTopRow"]) {
             div(classes = styles["spacer"]) {}
@@ -41,7 +40,7 @@ val PlayerHeatmap = reactFunction<PlayerHeatmapProps> { (tribe, players, heatmap
                 keyedPlayerCard(player, tribe)
             }
         }
-        child(Heatmap, HeatmapProps(heatmapData, styles["heatmap"]))
+        child(Heatmap(heatmapData, styles["heatmap"]))
     }
 }
 

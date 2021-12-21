@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.*
 import kotlinx.css.properties.*
 import kotlinx.html.DIV
@@ -22,7 +23,7 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
-val RBuilder.playerCard get() = childCurry(PlayerCard)
+val RBuilder.playerCard get() = childCurry(com.zegreatrob.coupling.client.player.playerCard)
 
 data class PlayerCardProps(
     val tribeId: TribeId,
@@ -33,11 +34,13 @@ data class PlayerCardProps(
     val onClick: ((Event) -> Unit) = {},
     val deselected: Boolean = false,
     val tilt: Angle = 0.deg
-) : DataProps
+) : DataProps<PlayerCardProps> {
+    override val component: TMFC<PlayerCardProps> get() = playerCard
+}
 
 private val styles = useStyles("player/PlayerCard")
 
-val PlayerCard = reactFunction<PlayerCardProps> { props ->
+val playerCard = reactFunction<PlayerCardProps> { props ->
     val (tribeId, player, linkToConfig, className, size, onClick, deselected, tilt) = props
     styledDiv {
         attrs {

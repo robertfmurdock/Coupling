@@ -20,7 +20,7 @@ class TribeConfigTest {
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
         val tribe = Tribe(TribeId("1"), name = "1")
     }) exercise {
-        shallow(TribeConfig, TribeConfigProps(tribe, StubDispatchFunc()))
+        shallow(TribeConfig(tribe, StubDispatchFunc()))
             .find(TribeConfigLayout)
             .shallow()
     } verify { wrapper ->
@@ -60,7 +60,7 @@ class TribeConfigTest {
             pairingRule = PairingRule.PreferDifferentBadge
         )
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
-        val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
+        val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
     }) exercise {
         wrapper.find(TribeConfigLayout)
             .shallow()
@@ -80,7 +80,7 @@ class TribeConfigTest {
     fun whenTribeIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
         val tribe = Tribe(TribeId(""))
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
-        val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
+        val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
         val automatedTribeId = wrapper.find(TribeConfigLayout)
             .shallow()
             .find<Any>("#tribe-id")

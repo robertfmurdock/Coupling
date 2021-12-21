@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -15,14 +14,12 @@ import kotlin.test.Test
 
 class PinConfigEditorTest {
 
-    private val configFormStyles = useStyles("ConfigForm")
-
     @Test
     fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(id = null)
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditoProps(tribe, pin, {}, StubDispatchFunc()))
+        shallow(PinConfigEditor(tribe, pin, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find(ConfigForm)
             .props()
@@ -35,7 +32,7 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(id = "excellent id")
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditoProps(tribe, pin, {}, StubDispatchFunc()))
+        shallow(PinConfigEditor(tribe, pin, {}, StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find(ConfigForm)
             .props()
@@ -52,7 +49,7 @@ class PinConfigEditorTest {
 
         val dispatchFunc = StubDispatchFunc<PinCommandDispatcher>()
 
-        val wrapper = shallow(PinConfigEditor, PinConfigEditoProps(tribe, pin, {}, dispatchFunc)).apply {
+        val wrapper = shallow(PinConfigEditor(tribe, pin, {}, dispatchFunc)).apply {
             simulateInputChange("name", newName)
             simulateInputChange("icon", newIcon)
             update()

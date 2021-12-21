@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import react.RBuilder
 import react.dom.div
 import react.router.Navigate
@@ -27,21 +28,22 @@ fun RBuilder.currentPairAssignments(
     allowSave: Boolean,
     dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
 ) = child(
-    CurrentPairAssignmentsPanel,
-    CurrentPairAssignmentsPanelProps(tribe, pairAssignments, setPairAssignments, allowSave, dispatchFunc)
+    CurrentPairAssignmentsPanel(tribe, pairAssignments, setPairAssignments, allowSave, dispatchFunc)
 )
 
-data class CurrentPairAssignmentsPanelProps(
+data class CurrentPairAssignmentsPanel(
     val tribe: Tribe,
     val pairAssignments: PairAssignmentDocument,
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
     val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
-) : DataProps
+) : DataProps<CurrentPairAssignmentsPanel> {
+    override val component: TMFC<CurrentPairAssignmentsPanel> get() = currentPairAssignmentsPanel
+}
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
-val CurrentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanelProps> { props ->
+val currentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanel> { props ->
     val (tribe, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToCurrentFunc = { setRedirectUrl(tribe.id.currentPairsPage()) }

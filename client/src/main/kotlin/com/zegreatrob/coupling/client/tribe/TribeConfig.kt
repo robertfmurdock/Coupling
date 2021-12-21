@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
@@ -25,7 +26,10 @@ import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class TribeConfigProps(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) : DataProps
+data class TribeConfig(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) :
+    DataProps<TribeConfig> {
+    override val component: TMFC<TribeConfig> get() = tribeConfig
+}
 
 interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
     override val tribeRepository: TribeRepository
@@ -33,7 +37,7 @@ interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommand
 
 private val styles = useStyles("tribe/TribeConfig")
 
-val TribeConfig = reactFunction { (tribe, commandFunc): TribeConfigProps ->
+val tribeConfig = reactFunction { (tribe, commandFunc): TribeConfig ->
     val isNew = tribe.id.value == ""
     val (values, onChange) = useForm(tribe.withDefaultTribeId().toSerializable().toJsonDynamic().unsafeCast<Json>())
     val updatedTribe = values.correctTypes().fromJsonDynamic<JsonTribe>().toModel()
@@ -70,17 +74,17 @@ val TribeConfigLayout = fc<TribeConfigLayoutProps> { props ->
         configHeader(tribe) { +"Tribe Configuration" }
         div {
             tribeConfigEditor(tribe, props.isNew ?: false, props.onChange, props.onSave, props.onDelete)
-            tribeCard(TribeCardProps(tribe))
+            tribeCard(TribeCard(tribe))
         }
     }
 }
 
 external interface TribeConfigLayoutProps : Props {
-   var tribe: Tribe
-   var isNew: Boolean?
-   var onChange: (Event) -> Unit
-   var onSave: () -> Unit
-   var onDelete: (() -> Unit)?
+    var tribe: Tribe
+    var isNew: Boolean?
+    var onChange: (Event) -> Unit
+    var onSave: () -> Unit
+    var onDelete: (() -> Unit)?
 }
 
 private fun Json.correctTypes() = also {

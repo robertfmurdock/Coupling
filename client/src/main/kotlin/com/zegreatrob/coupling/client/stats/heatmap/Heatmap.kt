@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.height
 import kotlinx.css.px
 import kotlinx.css.width
@@ -18,11 +19,13 @@ import styled.styledDiv
 @JsModule("com/zegreatrob/coupling/client/components/heatmap/D3Heatmap")
 external val d3Heatmap: dynamic
 
-data class HeatmapProps(val data: List<List<Double?>>, val className: String) : DataProps
+data class Heatmap(val data: List<List<Double?>>, val className: String) : DataProps<Heatmap> {
+    override val component: TMFC<Heatmap> get() = heatmap
+}
 
 private val styles = useStyles("stats/heatmap/Heatmap")
 
-val Heatmap = reactFunction<HeatmapProps> { (data, className) ->
+val heatmap = reactFunction<Heatmap> { (data, className) ->
     val rowSize = data.size * 90
     val rootRef = useRef<Node>(null)
     useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }

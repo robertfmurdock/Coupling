@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
@@ -24,14 +25,11 @@ fun RBuilder.couplingWebsocket(
     useSsl: Boolean = "https:" == window.location.protocol,
     onMessage: (Message) -> Unit,
     children: RBuilder.(((Message) -> Unit)?) -> Unit
-) = child(
-    CouplingWebsocket,
-    CouplingWebsocketProps(tribeId, useSsl, onMessage) { sendMessage: ((Message) -> Unit)? ->
-        children(sendMessage)
-    }
-)
+) = child(CouplingWebsocket(tribeId, useSsl, onMessage) { sendMessage: ((Message) -> Unit)? ->
+    children(sendMessage)
+})
 
-val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
+val couplingWebsocket = reactFunction<CouplingWebsocket> { props ->
     val (tribeId, useSsl, onMessageFunc) = props
 
     var connected by useState(false)
@@ -54,6 +52,16 @@ val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
     }
 }
 
+data class CouplingWebsocket(
+    val tribeId: TribeId,
+    val useSsl: Boolean,
+    val onMessage: (Message) -> Unit,
+    val children: RBuilder.(value: ((Message) -> Unit)?) -> Unit
+) : DataProps<CouplingWebsocket> {
+    override val component: TMFC<CouplingWebsocket> get() = couplingWebsocket
+}
+
+
 private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->
     val websocket = ref.current
     if (websocket != null)
@@ -62,12 +70,6 @@ private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { me
         console.error("Message not sent, websocket not initialized", message)
 }
 
-data class CouplingWebsocketProps(
-    val tribeId: TribeId,
-    val useSsl: Boolean,
-    val onMessage: (Message) -> Unit,
-    val children: RBuilder.(value: ((Message) -> Unit)?) -> Unit
-) : DataProps
 
 private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean) = URL(
     "?tribeId=${encodeURIComponent(tribeId.value)}",

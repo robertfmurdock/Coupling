@@ -1,16 +1,17 @@
 package com.zegreatrob.coupling.client.demo
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.Controls
+import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.frameRunner
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.pairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpin
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PinConfig
-import com.zegreatrob.coupling.client.pin.PinConfigProps
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
-import com.zegreatrob.coupling.client.player.PlayerConfigProps
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.tribeConfigLayout
@@ -22,6 +23,7 @@ import kotlinx.css.properties.border
 import kotlinx.html.DIV
 import react.dom.RDOMBuilder
 import react.dom.div
+import react.fc
 import styled.css
 import styled.styledDiv
 
@@ -36,7 +38,7 @@ private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
     ): () -> Unit = {}
 }
 
-val DemoPage = reactFunction<PageProps> {
+val DemoPage = fc<PageProps> {
     frameRunner(DemoAnimationState.generateSequence(), 1.0) { state: DemoAnimationState ->
         div {
             styledDiv {
@@ -77,13 +79,12 @@ private fun RDOMBuilder<DIV>.prepareSpinFrame(state: PrepareToSpin) = prepareSpi
 private fun RDOMBuilder<DIV>.tribeConfigFrame(state: MakeTribe) = tribeConfigLayout(state.tribe, true, {}, {}, {})
 
 private fun RDOMBuilder<DIV>.playerConfigFrame(state: AddPlayer) = child(
-    PlayerConfig,
-    PlayerConfigProps(state.tribe, state.newPlayer, state.players, {}, noOpDispatchFunc),
+    PlayerConfig(state.tribe, state.newPlayer, state.players, {}, noOpDispatchFunc),
     key = "$state"
 )
 
 private fun RDOMBuilder<DIV>.pinConfigFrame(state: AddPin) = child(
-    PinConfig, PinConfigProps(state.tribe, state.newPin, state.pins, {}, noOpDispatchFunc), key = "$state"
+    PinConfig(state.tribe, state.newPin, state.pins, {}, noOpDispatchFunc), key = "$state"
 )
 
 private fun RDOMBuilder<DIV>.pairAssignmentsFrame(state: CurrentPairs) = pairAssignments(

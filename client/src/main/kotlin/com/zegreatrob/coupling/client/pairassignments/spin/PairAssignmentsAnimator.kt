@@ -10,19 +10,22 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import react.RBuilder
 
-data class PairAssignmentsAnimatorProps(
+data class PairAssignmentsAnimator(
     val tribe: Tribe,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument,
     val enabled: Boolean,
     val children: RBuilder.() -> Unit
-) : DataProps
+) : DataProps<PairAssignmentsAnimator> {
+    override val component: TMFC<PairAssignmentsAnimator> get() = pairAssignmentsAnimator
+}
 
 private val animationContextConsumer = animationsDisabledContext.Consumer
 
-val PairAssignmentsAnimator = reactFunction<PairAssignmentsAnimatorProps> { props ->
+val pairAssignmentsAnimator = reactFunction<PairAssignmentsAnimator> { props ->
     val (tribe, players, pairAssignments, enabled) = props
     animationContextConsumer { animationsDisabled: Boolean ->
         if (!animationsDisabled && enabled) {
@@ -42,14 +45,11 @@ fun RBuilder.animator(
     pairAssignments: PairAssignmentDocument,
     enabled: Boolean,
     handler: RBuilder.() -> Unit
-) = child(
-    PairAssignmentsAnimator,
-    PairAssignmentsAnimatorProps(tribe, players, pairAssignments, enabled, handler)
-)
+) = child(PairAssignmentsAnimator(tribe, players, pairAssignments, enabled, handler))
 
 private fun RBuilder.flipperSpinAnimation(
     state: SpinAnimationState,
-    props: PairAssignmentsAnimatorProps,
+    props: PairAssignmentsAnimator,
     tribe: Tribe,
     rosteredPairAssignments: RosteredPairAssignments
 ) = flipper(flipKey = state.toString()) {

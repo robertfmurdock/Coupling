@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.dom.CouplingButton
+import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
@@ -35,8 +35,7 @@ class CurrentPairAssignmentsPanelTest {
         )
         val dispatchFunc = StubDispatchFunc<PairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
-            CurrentPairAssignmentsPanel,
-            CurrentPairAssignmentsPanelProps(
+            CurrentPairAssignmentsPanel(
                 tribe,
                 pairAssignments,
                 setPairAssignments = { },
@@ -45,7 +44,7 @@ class CurrentPairAssignmentsPanelTest {
             )
         )
     }) exercise {
-        wrapper.find(CouplingButton).map { it.dataprops() }.find { it.className == styles["saveButton"] }
+        wrapper.find(couplingButton).map { it.dataprops() }.find { it.className == styles["saveButton"] }
             ?.onClick?.invoke()
         dispatchFunc.simulateSuccess<SavePairAssignmentsCommand>()
     } verify {
@@ -61,8 +60,7 @@ class CurrentPairAssignmentsPanelTest {
         val pairAssignments = stubPairAssignmentDoc()
         val dispatchFunc = StubDispatchFunc<PairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
-            CurrentPairAssignmentsPanel,
-            CurrentPairAssignmentsPanelProps(
+            CurrentPairAssignmentsPanel(
                 tribe,
                 pairAssignments,
                 setPairAssignments = { },
@@ -71,7 +69,7 @@ class CurrentPairAssignmentsPanelTest {
             )
         )
     }) exercise {
-        wrapper.find(CouplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
+        wrapper.find(couplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
             ?.onClick?.invoke()
 
         dispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
@@ -99,8 +97,7 @@ class CurrentPairAssignmentsPanelTest {
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
-            CurrentPairAssignmentsPanel,
-            CurrentPairAssignmentsPanelProps(
+            CurrentPairAssignmentsPanel(
                 tribe,
                 pairAssignments,
                 { lastSetPairAssignments = it },
@@ -132,8 +129,7 @@ class CurrentPairAssignmentsPanelTest {
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
-            CurrentPairAssignmentsPanel,
-            CurrentPairAssignmentsPanelProps(
+            CurrentPairAssignmentsPanel(
                 tribe,
                 pairAssignments,
                 { lastSetPairAssignments = it },
@@ -172,8 +168,7 @@ class CurrentPairAssignmentsPanelTest {
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
-            CurrentPairAssignmentsPanel,
-            CurrentPairAssignmentsPanelProps(
+            CurrentPairAssignmentsPanel(
                 tribe,
                 pairAssignments,
                 { lastSetPairAssignments = it },
@@ -209,8 +204,7 @@ class CurrentPairAssignmentsPanelTest {
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
-            CurrentPairAssignmentsPanel,
-            CurrentPairAssignmentsPanelProps(
+            CurrentPairAssignmentsPanel(
                 tribe,
                 pairAssignments,
                 { lastSetPairAssignments = it },
@@ -227,16 +221,16 @@ class CurrentPairAssignmentsPanelTest {
         }
     }
 
-    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<TMFC<PairAssignmentsProps>>) {
-        val targetPairProps = wrapper.find(AssignedPair).map { it.dataprops() }
+    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<TMFC<PairAssignments>>) {
+        val targetPairProps = wrapper.find(assignedPair).map { it.dataprops() }
             .first { props -> props.pair.players.map { it.player }.contains(target) }
         val pair = targetPairProps.pair
         val swapCallback = targetPairProps.swapPlayersFunc
         swapCallback.invoke(pair.players.first { it.player == target }, id)
     }
 
-    private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<TMFC<PairAssignmentsProps>>) {
-        val targetPaiProps = wrapper.find(AssignedPair).map { it.dataprops() }.first { it.pair == targetPair }
+    private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<TMFC<PairAssignments>>) {
+        val targetPaiProps = wrapper.find(assignedPair).map { it.dataprops() }.first { it.pair == targetPair }
         targetPaiProps.pinDropFunc.invoke(this.id!!)
     }
 

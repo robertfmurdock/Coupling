@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCard
+import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -24,16 +24,11 @@ class PlayerHeatmapBuilderTest {
             Player("curly"),
             Player("moe")
         )
-        val props = PlayerHeatmapProps(
-            tribe = Tribe(TribeId("2")),
-            players = players,
-            heatmapData = emptyList()
-        )
     }) exercise {
-        shallow(PlayerHeatmap, props)
+        shallow(PlayerHeatmap(tribe = Tribe(TribeId("2")), players = players, heatmapData = emptyList()))
     } verify { wrapper ->
         wrapper.find<Any>(".${styles["heatmapPlayersSideRow"]}")
-            .find(PlayerCard)
+            .find(playerCard)
             .map { it.dataprops().player }
             .toList()
             .assertIsEqualTo(players)
@@ -47,16 +42,11 @@ class PlayerHeatmapBuilderTest {
             Player("curly"),
             Player("moe")
         )
-        val props = PlayerHeatmapProps(
-            tribe = Tribe(TribeId("2")),
-            players = players,
-            heatmapData = emptyList()
-        )
     }) exercise {
-        shallow(PlayerHeatmap, props)
+        shallow(PlayerHeatmap(tribe = Tribe(TribeId("2")), players = players, heatmapData = emptyList()))
     } verify { wrapper ->
         wrapper.find<Any>(".${styles["heatmapPlayersTopRow"]}")
-            .find(PlayerCard)
+            .find(playerCard)
             .map { it.dataprops().player }
             .toList()
             .assertIsEqualTo(players)

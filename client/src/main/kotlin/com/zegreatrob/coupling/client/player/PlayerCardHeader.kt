@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.margin
 import kotlinx.css.px
 import kotlinx.html.classes
@@ -26,16 +27,18 @@ import styled.styledDiv
 private val styles = useStyles("player/PlayerCard")
 
 fun RBuilder.playerCardHeader(tribeId: TribeId, player: Player, size: Int, linkToConfig: Boolean) =
-    child(playerCardHeader, PlayerCardHeadeProps(tribeId, player, linkToConfig, size))
+    child(PlayerCardHeader(tribeId, player, linkToConfig, size))
 
-data class PlayerCardHeadeProps(
+data class PlayerCardHeader(
     val tribeId: TribeId,
     val player: Player,
     val linkToConfig: Boolean,
     val size: Int
-) : DataProps
+) : DataProps<PlayerCardHeader> {
+    override val component: TMFC<PlayerCardHeader> get() = playerCardHeader
+}
 
-private val playerCardHeader = reactFunction<PlayerCardHeadeProps> { props ->
+private val playerCardHeader = reactFunction<PlayerCardHeader> { props ->
     val (tribeId, player, linkToConfig, size) = props
     val playerNameRef = useRef<Node>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }

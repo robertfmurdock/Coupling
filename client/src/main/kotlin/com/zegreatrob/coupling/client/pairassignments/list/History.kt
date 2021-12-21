@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.pinSection
-import com.zegreatrob.coupling.client.tribe.TribeCardProps
+import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -27,15 +27,17 @@ import react.dom.span
 
 private val styles = useStyles("pairassignments/History")
 
-data class HistoryProps(
+data class History(
     val tribe: Tribe,
     val history: List<PairAssignmentDocument>,
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>
-) : DataProps
+) : DataProps<History> {
+    override val component = com.zegreatrob.coupling.client.pairassignments.list.history
+}
 
-val History by lazy { historyComponent(WindowFunctions) }
+val history by lazy { historyFunc(WindowFunctions) }
 
-val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, controls), windowFuncs ->
+val historyFunc = windowReactFunc<History> { (tribe, history, controls), windowFuncs ->
     val (dispatchFunc, reload) = controls
     val onDeleteFactory = { documentId: PairAssignmentDocumentId ->
         val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
@@ -43,7 +45,7 @@ val historyComponent = windowReactFunc<HistoryProps> { (tribe, history, controls
     }
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {
-            tribeCard(TribeCardProps(tribe))
+            tribeCard(TribeCard(tribe))
         }
         span(classes = styles["historyView"]) {
             div(classes = styles["header"]) { +"History!" }

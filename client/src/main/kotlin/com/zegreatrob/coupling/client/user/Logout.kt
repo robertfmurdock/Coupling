@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.react.dataloader.useScope
 import kotlinx.browser.window
 import kotlinx.coroutines.coroutineScope
@@ -10,9 +9,10 @@ import kotlinx.coroutines.launch
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
 import react.dom.div
+import react.fc
 import react.useState
 
-val Logout = reactFunction<PageProps> { props ->
+val Logout = fc<PageProps> { props ->
     val scope = useScope("Logout")
     var isLoggedOut by useState(false)
     val (logoutPromise, setLogout) = useState<Any?>(null)

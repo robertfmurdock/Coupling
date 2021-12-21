@@ -1,19 +1,21 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
+import com.zegreatrob.coupling.client.routing.pinId
 import com.zegreatrob.coupling.client.tribePageFunction
-import com.zegreatrob.coupling.client.child
 
-private val LoadedPin by lazy { couplingDataLoader(PinConfig) }
+private val LoadedPin by lazy { couplingDataLoader<PinConfig>() }
 
 val PinPage = tribePageFunction { props, tribeId ->
     val pinId = props.pinId
-    child(LoadedPin, dataLoadProps(
+    child(dataLoadProps(
+        LoadedPin,
         commander = props.commander,
         query = TribePinQuery(tribeId, pinId),
         toProps = { reload, commandFunc, (tribe, pins, pin) ->
-            PinConfigProps(tribe, pin, pins, reload, commandFunc)
+            PinConfig(tribe, pin, pins, reload, commandFunc)
         }
     ), key = pinId)
 }

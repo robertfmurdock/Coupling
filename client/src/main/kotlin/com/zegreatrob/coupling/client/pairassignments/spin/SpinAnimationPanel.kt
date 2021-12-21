@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display
@@ -25,11 +26,13 @@ import react.dom.key
 import styled.css
 import styled.styledDiv
 
-data class SpinAnimationPanelProps(
+data class SpinAnimationPanel(
     val tribe: Tribe,
     val rosteredPairAssignments: RosteredPairAssignments,
     val state: SpinAnimationState
-) : DataProps
+) : DataProps<SpinAnimationPanel> {
+    override val component: TMFC<SpinAnimationPanel> get() = spinAnimationPanel
+}
 
 val placeholderPlayer = Player("?", name = "Next...", callSignAdjective = "--------", callSignNoun = "--------")
 
@@ -42,11 +45,9 @@ data class SpinStateData(
 private val styles = useStyles("pairassignments/SpinAnimation")
 
 fun RBuilder.spinAnimation(tribe: Tribe, rosteredPairAssignments: RosteredPairAssignments, state: SpinAnimationState) =
-    child(
-        SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
-    )
+    child(SpinAnimationPanel(tribe, rosteredPairAssignments, state))
 
-val SpinAnimationPanel = reactFunction<SpinAnimationPanelProps> { (tribe, rosteredPairAssignments, state) ->
+val spinAnimationPanel = reactFunction<SpinAnimationPanel> { (tribe, rosteredPairAssignments, state) ->
     val pairAssignments = rosteredPairAssignments.pairAssignments
     val players = rosteredPairAssignments.selectedPlayers
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.configHeader
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.large
@@ -16,6 +15,7 @@ import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.EndpointFinder.gqlEndpoint
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.*
 import react.RBuilder
 import react.dom.*
@@ -25,11 +25,13 @@ import styled.styledDiv
 import styled.styledSpan
 import kotlin.js.json
 
-data class TribeBrowseProps(val tribe: Tribe) : DataProps
+data class TribeBrowser(val tribe: Tribe) : DataProps<TribeBrowser> {
+    override val component: TMFC<TribeBrowser> get() = tribeBrowser
+}
 
 private val styles = useStyles("tribe/TribeBrowser")
 
-val TribeBrowser = reactFunction<TribeBrowseProps> { (tribe) ->
+val tribeBrowser = reactFunction<TribeBrowser> { (tribe) ->
     div(styles.className) {
         configHeader(tribe) {
             span(styles["headerContents"]) {
@@ -39,8 +41,6 @@ val TribeBrowser = reactFunction<TribeBrowseProps> { (tribe) ->
         }
     }
 }
-
-fun RBuilder.tribeBrowser(tribe: Tribe) = child(TribeBrowser, TribeBrowseProps(tribe))
 
 private fun RBuilder.notificationSection() = styledSpan {
     css { position = Position.relative }

@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.pairassignments.AssignedPair
+import com.zegreatrob.coupling.client.pairassignments.assignedPair
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
-import com.zegreatrob.coupling.client.player.PlayerCard
+import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -62,9 +62,7 @@ class SpinAnimationTest {
         fun whenInStartStateWillShowAllPlayersExceptExcluded() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            shallow(
-                SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
-            )
+            shallow(SpinAnimationPanel(tribe, rosteredPairAssignments, state))
         } verify { result ->
             result.apply {
                 playersInRoster().assertIsEqualTo(players - excludedPlayer)
@@ -95,7 +93,7 @@ class SpinAnimationTest {
         fun whenInStartStateWillShowAllPlayersAndNoPairs() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            shallow(SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state))
+            shallow(SpinAnimationPanel(tribe, rosteredPairAssignments, state))
         } verify { result ->
             result.apply {
                 playersInRoster().assertIsEqualTo(players)
@@ -142,7 +140,7 @@ class SpinAnimationTest {
             val firstAssignedPlayer = players[1]
             val state = ShowPlayer(firstAssignedPlayer)
         }) exercise {
-            shallow(SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state))
+            shallow(SpinAnimationPanel(tribe, rosteredPairAssignments, state))
         } verify { result ->
             result.playerInSpotlight().assertIsEqualTo(firstAssignedPlayer)
             result.playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
@@ -159,9 +157,7 @@ class SpinAnimationTest {
             val midwayShownPlayer = pairAssignments.pairs[1].players[0].player
             val state = ShowPlayer(midwayShownPlayer)
         }) exercise {
-            shallow(
-                SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
-            )
+            shallow(SpinAnimationPanel(tribe, rosteredPairAssignments, state))
         } verify {
             it.playerInSpotlight().assertIsEqualTo(midwayShownPlayer)
             it.playersInRoster().assertIsEqualTo(
@@ -189,9 +185,7 @@ class SpinAnimationTest {
             val firstAssignedPlayer = pairAssignments.pairs[0].players[0].player
             val state = AssignedPlayer(firstAssignedPlayer)
         }) exercise {
-            shallow(
-                SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
-            )
+            shallow(SpinAnimationPanel(tribe, rosteredPairAssignments, state))
         } verify { result ->
             result.playerInSpotlight().assertIsEqualTo(placeholderPlayer)
             result.playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
@@ -208,9 +202,7 @@ class SpinAnimationTest {
             val midwayAssignedPlayer = pairAssignments.pairs[1].players[0].player
             val state = AssignedPlayer(midwayAssignedPlayer)
         }) exercise {
-            shallow(
-                SpinAnimationPanel, SpinAnimationPanelProps(tribe, rosteredPairAssignments, state)
-            )
+            shallow(SpinAnimationPanel(tribe, rosteredPairAssignments, state))
         } verify { result ->
             result.playerInSpotlight().assertIsEqualTo(placeholderPlayer)
             result.playersInRoster().assertIsEqualTo(
@@ -248,17 +240,17 @@ class SpinAnimationTest {
         private val styles = useStyles("pairassignments/SpinAnimation")
 
         private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass(styles["playerRoster"])
-            .find(PlayerCard)
+            .find(playerCard)
             .map { it.dataprops().player }
             .toList()
 
         private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass(styles["playerSpotlight"])
-            .find(PlayerCard).run {
+            .find(playerCard).run {
                 if (length == 1) dataprops().player else null
             }
 
         private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass(styles["pairAssignments"])
-            .find(AssignedPair)
+            .find(assignedPair)
             .map { it.dataprops().pair }
             .toList()
     }

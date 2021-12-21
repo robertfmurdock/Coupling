@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.RuleSet
 import kotlinx.html.classes
 import react.RBuilder
@@ -18,17 +19,19 @@ import react.router.dom.Link
 import styled.css
 import styled.styledDiv
 
-data class PlayerRosteProps(
+data class PlayerRoster(
     val label: String? = null,
     val players: List<Player>,
     val tribeId: TribeId,
     val className: String? = null,
     val cssOverrides: RuleSet = {}
-) : DataProps
+) : DataProps<PlayerRoster> {
+    override val component: TMFC<PlayerRoster> get() = playerRoster
+}
 
 private val styles = useStyles("player/PlayerRoster")
 
-val PlayerRoster = reactFunction { (label, players, tribeId, className, overrides): PlayerRosteProps ->
+val playerRoster = reactFunction { (label, players, tribeId, className, overrides): PlayerRoster ->
     styledDiv {
         attrs {
             if (className != null) classes = classes + className

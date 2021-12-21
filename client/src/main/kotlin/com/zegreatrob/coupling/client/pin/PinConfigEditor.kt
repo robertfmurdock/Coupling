@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
@@ -22,12 +23,14 @@ import react.dom.*
 import react.router.Navigate
 import react.useState
 
-data class PinConfigEditoProps(
+data class PinConfigEditor(
     val tribe: Tribe,
     val pin: Pin,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
-) : DataProps
+) : DataProps<PinConfigEditor> {
+    override val component: TMFC<PinConfigEditor> = pinConfigEditor
+}
 
 private val styles = useStyles("pin/PinConfigEditor")
 
@@ -36,9 +39,9 @@ fun RBuilder.pinConfigEditor(
     pin: Pin,
     dispatchFunc: DispatchFunc<out PinCommandDispatcher>,
     reload: () -> Unit
-) = child(PinConfigEditor, PinConfigEditoProps(tribe, pin, reload, dispatchFunc))
+) = child(PinConfigEditor(tribe, pin, reload, dispatchFunc))
 
-val PinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinConfigEditoProps ->
+val pinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinConfigEditor ->
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic())
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
@@ -59,7 +62,7 @@ val PinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinCon
 //                promptOnExit(shouldShowPrompt = updatedPin != pin)
             }
             span(styles["icon"]) {
-                pinButton(updatedPin, PinButtonScale.Large, showTooltip = false)
+                child(PinButton(updatedPin, PinButtonScale.Large, showTooltip = false))
             }
         }
 }

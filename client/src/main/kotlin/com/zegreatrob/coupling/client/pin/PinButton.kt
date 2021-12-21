@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
@@ -24,26 +25,19 @@ enum class PinButtonScale(val faTag: String, val factor: Double) {
 
 }
 
-data class PinButtonProps(
+data class PinButton(
     val pin: Pin,
     val scale: PinButtonScale = PinButtonScale.Normal,
     val className: String = "",
     val showTooltip: Boolean = true,
     val onClick: () -> Unit = {}
-) : DataProps
-
-fun RBuilder.pinButton(
-    pin: Pin,
-    scale: PinButtonScale = PinButtonScale.Small,
-    className: String = "",
-    onClick: () -> Unit = {},
-    key: String? = null,
-    showTooltip: Boolean = true
-) = child(PinButton, PinButtonProps(pin, scale, className, showTooltip, onClick), key = key)
+) : DataProps<PinButton> {
+    override val component: TMFC<PinButton> get() = pinButton
+}
 
 private val styles = useStyles("pin/PinButton")
 
-val PinButton = reactFunction<PinButtonProps> { (pin, scale, className, showTooltip, onClick) ->
+val pinButton = reactFunction<PinButton> { (pin, scale, className, showTooltip, onClick) ->
     styledDiv {
         attrs {
             classes = classes + listOf(className, styles.className)

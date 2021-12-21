@@ -7,7 +7,7 @@ import com.zegreatrob.minreact.tmFC
 import org.w3c.dom.Node
 import react.*
 
-inline fun <reified P : DataProps> reactFunction(crossinline function: RBuilder.(P) -> Unit): TMFC<P> = tmFC { props ->
+inline fun <reified P : DataProps<P>> reactFunction(crossinline function: RBuilder.(P) -> Unit): TMFC<P> = tmFC { props ->
     RBuilder()
         .apply { function(props) }
         .childList
@@ -30,8 +30,7 @@ fun <P : Props> RBuilder.child(
     )
 }
 
-fun <P : DataProps> RBuilder.child(
-    clazz: ElementType<DataPropsBridge<P>>,
+fun <P : DataProps<P>> RBuilder.child(
     props: P,
     key: String? = null,
     ref: Ref<Node>? = null,
@@ -41,7 +40,7 @@ fun <P : DataProps> RBuilder.child(
     key?.let { updatedProps.key = it }
     ref?.let { updatedProps.ref = ref }
     return child(
-        type = clazz,
+        type = props.component,
         props = updatedProps,
         handler = handler
     )
