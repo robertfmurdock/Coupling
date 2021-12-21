@@ -16,7 +16,6 @@ import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeConfigLayout
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.child
 import com.zegreatrob.testmints.action.async.SuspendAction
@@ -72,15 +71,8 @@ val DemoPage = FC<PageProps> {
 }
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
-    PrepareSpin {
-        tribe = state.tribe
-        playerSelections = state.players
-        pins = state.pins
-        pinSelections = state.pins.map { it.id }
-        setPlayerSelections = { it: List<Pair<Player, Boolean>> -> }
-        setPinSelections = { it: List<String?> -> }
-        onSpin = {}
-    }
+    val (tribe, players, pins) = state
+    child(PrepareSpin(tribe, players, pins, pins.map { it.id }, { }, { }, {}))
 }
 
 private fun ChildrenBuilder.tribeConfigFrame(state: MakeTribe) {

@@ -10,7 +10,6 @@ import kotlinx.browser.window
 import org.w3c.dom.get
 import react.FC
 import react.Props
-import react.RBuilder
 import react.dom.html.ReactHTML.div
 
 
@@ -25,5 +24,3 @@ val LoginChooser = FC<Props> {
         }
     }
 }
-
-fun RBuilder.loginChooser() = child(LoginChooser)

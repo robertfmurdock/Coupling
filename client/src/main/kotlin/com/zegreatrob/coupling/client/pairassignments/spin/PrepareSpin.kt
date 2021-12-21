@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandD
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.player.PlayerCard
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -22,6 +23,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.properties.IterationCount
@@ -30,9 +32,11 @@ import kotlinx.css.properties.boxShadow
 import kotlinx.css.properties.s
 import kotlinx.html.BUTTON
 import kotlinx.html.classes
-import react.*
+import react.RBuilder
+import react.buildElement
 import react.dom.*
 import react.router.Navigate
+import react.useState
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
@@ -58,29 +62,31 @@ val statefulPrepareSpin = tmFC<StatefulPrepareSpin> { (tribe, players, currentPa
     if (redirectUrl != null)
         Navigate { to = redirectUrl ?: "" }
     else {
-        PrepareSpin {
-            this.tribe = tribe
-            this.playerSelections = playerSelections
-            this.pins = pins
-            this.pinSelections = pinSelections
-            this.setPlayerSelections = { it: List<Pair<Player, Boolean>> -> playerSelections = it }
-            this.setPinSelections = { it: List<String?> -> pinSelections = it }
-            this.onSpin = onSpin
-        }
+        child(PrepareSpin(
+            tribe,
+            playerSelections,
+            pins,
+            pinSelections,
+            { playerSelections = it },
+            { pinSelections = it },
+            onSpin
+        ))
     }
 }
 
-external interface PrepareSpinProps : Props {
-    var tribe: Tribe
-    var playerSelections: List<Pair<Player, Boolean>>
-    var pins: List<Pin>
-    var pinSelections: List<String?>
-    var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
-    var setPinSelections: (List<String?>) -> Unit
+data class PrepareSpin(
+    var tribe: Tribe,
+    var playerSelections: List<Pair<Player, Boolean>>,
+    var pins: List<Pin>,
+    var pinSelections: List<String?>,
+    var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
+    var setPinSelections: (List<String?>) -> Unit,
     var onSpin: () -> Unit
+) : DataProps<PrepareSpin> {
+    override val component: TMFC<PrepareSpin> get() = prepareSpin
 }
 
-val PrepareSpin = fc<PrepareSpinProps> { props ->
+val prepareSpin = reactFunction<PrepareSpin> { props ->
     div(classes = styles.className) {
         div { child(TribeBrowser(props.tribe)) }
         div {
