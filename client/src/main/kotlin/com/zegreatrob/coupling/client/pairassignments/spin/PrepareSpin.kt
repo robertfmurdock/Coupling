@@ -14,12 +14,13 @@ import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandD
 import com.zegreatrob.coupling.client.pin.pinButton
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.*
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
@@ -38,7 +39,7 @@ data class StatefulPrepareSpinProps(
     val currentPairsDoc: PairAssignmentDocument?,
     val pins: List<Pin>,
     val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>
-) : Props
+) : DataProps
 
 private val styles = useStyles("PrepareSpin")
 

@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.pngPath
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes
 import kotlinx.html.tabIndex
-import react.Props
 import react.RBuilder
 import react.dom.attrs
 import react.dom.setProp
@@ -21,7 +21,7 @@ import styled.StyledDOMBuilder
 import styled.css
 import styled.styledSpan
 
-data class TribeCardProps(val tribe: Tribe, val size: Int = 150) : Props
+data class TribeCardProps(val tribe: Tribe, val size: Int = 150) : DataProps
 
 val RBuilder.tribeCard get() = childCurry(TribeCard)
 

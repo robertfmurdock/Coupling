@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.ConfigForm
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Paths.pinListPath
-import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.editor
 import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useForm
@@ -15,12 +12,11 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.events.Event
-import react.Props
 import react.RBuilder
 import react.dom.*
 import react.router.Navigate
@@ -31,7 +27,7 @@ data class PinConfigEditoProps(
     val pin: Pin,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
-) : Props
+) : DataProps
 
 private val styles = useStyles("pin/PinConfigEditor")
 

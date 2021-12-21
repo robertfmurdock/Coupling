@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.client.child
-import react.Props
+import com.zegreatrob.minreact.DataProps
 import react.RBuilder
 import react.dom.div
 import react.router.dom.Link
@@ -14,7 +14,7 @@ data class PinCardProps(
     val tribeId: TribeId,
     val pin: Pin,
     val shouldLink: Boolean = true
-) : Props
+) : DataProps
 
 private val styles = useStyles("pin/PinCard")
 

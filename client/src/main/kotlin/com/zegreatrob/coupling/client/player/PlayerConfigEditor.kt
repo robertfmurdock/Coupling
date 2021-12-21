@@ -10,11 +10,11 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.DataProps
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.events.Event
-import react.Props
 import react.RBuilder
 import react.dom.*
 import react.router.Navigate
@@ -26,7 +26,7 @@ data class PlayerConfigEditoProps(
     val player: Player,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
-) : Props
+) : DataProps
 
 val PlayerConfigEditor by lazy { playerConfigEditor(WindowFunctions) }
 

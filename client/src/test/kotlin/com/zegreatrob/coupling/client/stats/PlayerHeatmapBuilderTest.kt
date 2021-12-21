@@ -2,12 +2,13 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.dataprops
+import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
@@ -33,7 +34,7 @@ class PlayerHeatmapBuilderTest {
     } verify { wrapper ->
         wrapper.find<Any>(".${styles["heatmapPlayersSideRow"]}")
             .find(PlayerCard)
-            .map { it.props().player }
+            .map { it.dataprops().player }
             .toList()
             .assertIsEqualTo(players)
     }
@@ -56,7 +57,7 @@ class PlayerHeatmapBuilderTest {
     } verify { wrapper ->
         wrapper.find<Any>(".${styles["heatmapPlayersTopRow"]}")
             .find(PlayerCard)
-            .map { it.props().player }
+            .map { it.dataprops().player }
             .toList()
             .assertIsEqualTo(players)
     }

@@ -5,9 +5,10 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.*
 import kotlinx.css.properties.*
 import kotlinx.html.DIV
@@ -15,7 +16,6 @@ import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.RBuilder
-import react.Props
 import react.dom.attrs
 import react.dom.img
 import styled.StyledDOMBuilder
@@ -33,7 +33,7 @@ data class PlayerCardProps(
     val onClick: ((Event) -> Unit) = {},
     val deselected: Boolean = false,
     val tilt: Angle = 0.deg
-) : Props
+) : DataProps
 
 private val styles = useStyles("player/PlayerCard")
 

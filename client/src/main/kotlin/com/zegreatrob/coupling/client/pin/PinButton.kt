@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.client.child
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import react.Props
 import react.RBuilder
 import react.dom.attrs
 import react.dom.i
@@ -30,7 +30,7 @@ data class PinButtonProps(
     val className: String = "",
     val showTooltip: Boolean = true,
     val onClick: () -> Unit = {}
-) : Props
+) : DataProps
 
 fun RBuilder.pinButton(
     pin: Pin,

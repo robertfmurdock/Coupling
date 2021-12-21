@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
@@ -15,7 +16,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.client.child
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display
@@ -24,7 +25,6 @@ import kotlinx.css.properties.deg
 import kotlinx.css.visibility
 import kotlinx.html.classes
 import org.w3c.dom.Node
-import react.Props
 import react.RBuilder
 import react.dom.attrs
 import react.dom.div
@@ -40,7 +40,7 @@ data class AssignedPairProps(
     val canDrag: Boolean,
     val swapPlayersFunc: (PinnedPlayer, String) -> Unit,
     val pinDropFunc: PinMoveCallback
-) : Props
+) : DataProps
 
 typealias PinMoveCallback = (String) -> Unit
 
@@ -59,8 +59,7 @@ fun RBuilder.assignedPair(
     key = key
 )
 
-val AssignedPair = reactFunction<AssignedPairProps> { props ->
-    val (tribe, pair, canDrag, swapCallback, pinMoveCallback) = props
+val AssignedPair = reactFunction<AssignedPairProps> { (tribe, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)

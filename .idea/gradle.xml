@@ -12,30 +12,6 @@
                   <project path="$PROJECT_DIR$/plugins" />
                 </projects>
               </build>
-              <build path="$PROJECT_DIR$/../testmints" name="testmints">
-                <projects>
-                  <project path="$PROJECT_DIR$/../testmints" />
-                  <project path="$PROJECT_DIR$/../testmints/action" />
-                  <project path="$PROJECT_DIR$/../testmints/action-async" />
-                  <project path="$PROJECT_DIR$/../testmints/async" />
-                  <project path="$PROJECT_DIR$/../testmints/minassert" />
-                  <project path="$PROJECT_DIR$/../testmints/mindiff" />
-                  <project path="$PROJECT_DIR$/../testmints/minenzyme" />
-                  <project path="$PROJECT_DIR$/../testmints/minjson" />
-                  <project path="$PROJECT_DIR$/../testmints/minreact" />
-                  <project path="$PROJECT_DIR$/../testmints/minspy" />
-                  <project path="$PROJECT_DIR$/../testmints/react-data-loader" />
-                  <project path="$PROJECT_DIR$/../testmints/report" />
-                  <project path="$PROJECT_DIR$/../testmints/standard" />
-                  <project path="$PROJECT_DIR$/../testmints/testmints-bom" />
-                  <project path="$PROJECT_DIR$/../testmints/wdio" />
-                </projects>
-              </build>
-              <build path="$PROJECT_DIR$/../testmints/testmints-plugins" name="testmints-plugins">
-                <projects>
-                  <project path="$PROJECT_DIR$/../testmints/testmints-plugins" />
-                </projects>
-              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
@@ -70,22 +46,6 @@
             <option value="$PROJECT_DIR$/stub-model" />
             <option value="$PROJECT_DIR$/test-action" />
             <option value="$PROJECT_DIR$/test-logging" />
-            <option value="$PROJECT_DIR$/../testmints" />
-            <option value="$PROJECT_DIR$/../testmints/action" />
-            <option value="$PROJECT_DIR$/../testmints/action-async" />
-            <option value="$PROJECT_DIR$/../testmints/async" />
-            <option value="$PROJECT_DIR$/../testmints/minassert" />
-            <option value="$PROJECT_DIR$/../testmints/mindiff" />
-            <option value="$PROJECT_DIR$/../testmints/minenzyme" />
-            <option value="$PROJECT_DIR$/../testmints/minjson" />
-            <option value="$PROJECT_DIR$/../testmints/minreact" />
-            <option value="$PROJECT_DIR$/../testmints/minspy" />
-            <option value="$PROJECT_DIR$/../testmints/react-data-loader" />
-            <option value="$PROJECT_DIR$/../testmints/report" />
-            <option value="$PROJECT_DIR$/../testmints/standard" />
-            <option value="$PROJECT_DIR$/../testmints/testmints-bom" />
-            <option value="$PROJECT_DIR$/../testmints/testmints-plugins" />
-            <option value="$PROJECT_DIR$/../testmints/wdio" />
           </set>
         </option>
       </GradleProjectSettings>

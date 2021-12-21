@@ -1,18 +1,19 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.Paths.playerConfigPage
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.margin
 import kotlinx.css.px
 import kotlinx.html.classes
 import org.w3c.dom.Node
-import react.Props
 import react.RBuilder
 import react.dom.attrs
 import react.dom.div
@@ -32,7 +33,7 @@ data class PlayerCardHeadeProps(
     val player: Player,
     val linkToConfig: Boolean,
     val size: Int
-) : Props
+) : DataProps
 
 private val playerCardHeader = reactFunction<PlayerCardHeadeProps> { props ->
     val (tribeId, player, linkToConfig, size) = props

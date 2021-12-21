@@ -4,17 +4,14 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.client.reactFunction
-import react.Props
+import com.zegreatrob.minreact.DataProps
 import react.dom.div
 
-data class RetiredPlayersProps(
-    val tribe: Tribe,
-    val retiredPlayers: List<Player>
-) : Props
+data class RetiredPlayersProps(val tribe: Tribe, val retiredPlayers: List<Player>) : DataProps
 
 private val styles = useStyles("player/RetiredPlayers")
 

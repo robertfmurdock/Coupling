@@ -1,34 +1,31 @@
 package com.zegreatrob.coupling.client.external.react
 
-import com.zegreatrob.minreact.EmptyProps
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.DataPropsBridge
+import com.zegreatrob.minreact.TMFC
 import org.w3c.dom.Node
-import react.*
+import react.MutableRefObject
+import react.RBuilder
+import react.key
+import react.ref
 
-class BuilderAdapter<P : Props>(val builder: RBuilder, val component: ElementType<P>) {
-    operator fun invoke(props: P, key: String? = null, ref: MutableRefObject<Node>? = null, handler: RHandler<P> = {}) {
-        key?.let { props.key = it }
-        ref?.let { props.ref = ref }
-        return builder.child(
-            type = component,
-            props = props,
-            handler = handler
-        )
-    }
-}
-
-operator fun BuilderAdapter<EmptyProps>.invoke(
-    key: String? = null,
-    ref: MutableRefObject<Node>? = null,
-    handler: RHandler<EmptyProps> = {}
-) {
-    val props = EmptyProps()
-    key?.let { props.key = it }
-    ref?.let { props.ref = ref }
-    return builder.child(
+class BuilderAdapter<P : DataProps>(val builder: RBuilder, val component: TMFC<P>) {
+    operator fun invoke(
+        props: P,
+        key: String? = null,
+        ref: MutableRefObject<Node>? = null,
+        handler: RBuilder.(P) -> Unit = {}
+    ) = builder.child(
         type = component,
-        props = props,
-        handler = handler
+        props = props.unsafeCast<DataPropsBridge<P>>(),
+        handler = {
+            attrs {
+                key?.let { this.key = it }
+                ref?.let { this.ref = ref }
+            }
+            handler(props)
+        }
     )
 }
 
-fun <P : Props> RBuilder.childCurry(component: ElementType<P>) = BuilderAdapter(this, component)
+fun <P : DataProps> RBuilder.childCurry(component: TMFC<P>) = BuilderAdapter(this, component)

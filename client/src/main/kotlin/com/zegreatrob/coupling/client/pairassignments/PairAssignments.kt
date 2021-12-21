@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.domtoimage.domToImage
 import com.zegreatrob.coupling.client.external.react.get
@@ -11,6 +12,7 @@ import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.animator
 import com.zegreatrob.coupling.client.player.PlayerRosteProps
 import com.zegreatrob.coupling.client.player.PlayerRoster
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.tribeBrowser
 import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
@@ -18,7 +20,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.css.properties.boxShadow
@@ -26,7 +28,6 @@ import kotlinx.html.tabIndex
 import org.w3c.dom.DataTransfer
 import org.w3c.dom.Node
 import react.MutableRefObject
-import react.Props
 import react.RBuilder
 import react.dom.attrs
 import react.dom.div
@@ -64,7 +65,7 @@ data class PairAssignmentsProps(
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     val message: CouplingSocketMessage,
     val allowSave: Boolean
-) : Props
+) : DataProps
 
 private val styles = useStyles("pairassignments/PairAssignments")
 

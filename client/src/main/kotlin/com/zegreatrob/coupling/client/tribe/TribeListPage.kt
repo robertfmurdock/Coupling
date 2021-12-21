@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
-import com.zegreatrob.coupling.client.reactFunction
 
 private val LoadedTribeList = couplingDataLoader(TribeList)
 

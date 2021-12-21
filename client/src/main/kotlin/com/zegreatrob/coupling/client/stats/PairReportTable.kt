@@ -5,13 +5,13 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.client.reactFunction
-import react.Props
+import com.zegreatrob.minreact.DataProps
 import react.RBuilder
 import react.dom.attrs
 import react.dom.div
@@ -19,16 +19,15 @@ import react.dom.span
 
 private val styles = useStyles("stats/PairReportTable")
 
-data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : Props
+data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : DataProps
 
-val PairReportTable =
-    reactFunction<PairReportTableProps> { (tribe, pairReports) ->
-        div(classes = styles.className) {
-            pairReports.mapIndexed { index, pairReport ->
-                pairReport(index, pairReport, tribe)
-            }
+val PairReportTable = reactFunction<PairReportTableProps> { (tribe, pairReports) ->
+    div(classes = styles.className) {
+        pairReports.mapIndexed { index, pairReport ->
+            pairReport(index, pairReport, tribe)
         }
     }
+}
 
 private fun RBuilder.pairReport(index: Int, pairReport: PairReport, tribe: Tribe) = div(styles["pairReport"]) {
     attrs { key = "$index" }

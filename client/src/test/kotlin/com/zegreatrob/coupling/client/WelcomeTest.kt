@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.welcome.WelcomeProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
+import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -79,11 +80,11 @@ class WelcomeTest {
 
     private fun ShallowWrapper<dynamic>.welcomeProverb() = find<Any>(".${styles["welcomeProverb"]}")
 
-    private fun ShallowWrapper<dynamic>.leftCard() = find(PlayerCard).map { it.props() }
+    private fun ShallowWrapper<dynamic>.leftCard() = find(PlayerCard).map { it.dataprops() }
         .find { it.className?.contains("left") ?: false }
 
 
-    private fun ShallowWrapper<dynamic>.rightCard() =  find(PlayerCard).map { it.props() }
+    private fun ShallowWrapper<dynamic>.rightCard() =  find(PlayerCard).map { it.dataprops() }
         .find { it.className?.contains("right") ?: false }
 
 }

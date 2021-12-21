@@ -1,13 +1,14 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.minreact.DataProps
 import kotlinx.html.classes
 import org.w3c.dom.Node
-import react.Props
 import react.RBuilder
 import react.dom.attrs
 import react.dom.span
@@ -19,7 +20,7 @@ fun RBuilder.draggablePinButton(pin: Pin, scale: PinButtonScale) = child(
     DraggablePinButton, DraggablePinButtonProps(pin, scale)
 )
 
-data class DraggablePinButtonProps(val pin: Pin, val scale: PinButtonScale) : Props
+data class DraggablePinButtonProps(val pin: Pin, val scale: PinButtonScale) : DataProps
 
 private val styles = useStyles("pin/DraggablePin")
 

@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
@@ -40,7 +41,7 @@ class HistoryTest {
             HistoryProps(tribe, history, Controls(stubDispatchFunc, reloadSpy::spyFunction))
         )
     }) exercise {
-        wrapper.find(CouplingButton).map { it.props() }.find { it.className == styles["deleteButton"] }
+        wrapper.find(CouplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
             ?.onClick?.invoke()
 
         stubDispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
@@ -68,7 +69,7 @@ class HistoryTest {
             HistoryProps(tribe, history, Controls(stubDispatchFunc, reloadSpy::spyFunction))
         )
     }) exercise {
-        wrapper.find(CouplingButton).map { it.props() }.find { it.className == styles["deleteButton"] }
+        wrapper.find(CouplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
             ?.onClick?.invoke()
     } verify {
         stubDispatchFunc.dispatchList.isEmpty()

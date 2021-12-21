@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.client.player.retired
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigProps
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.client.reactFunction
 import react.RBuilder
 import react.dom.div
 
@@ -23,10 +24,10 @@ val RetiredPlayerPage = reactFunction<PageProps> { props ->
 }
 
 private fun RBuilder.loadedRetiredPlayer(props: PageProps, tribeId: TribeId, playerId: String) =
-    child(LoadedRetiredPlayer, dataLoadProps(
+    child(clazz = LoadedRetiredPlayer, props = dataLoadProps(
         commander = props.commander,
         query = RetiredPlayerQuery(tribeId, playerId),
         toProps = { reload, commandFunc, (tribe, players, player) ->
             PlayerConfigProps(tribe, player, players, reload, commandFunc)
         }
-    )) { attrs { key = playerId } }
+    ), key = playerId)

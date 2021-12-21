@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.client.child
 
 private val LoadedPlayer = couplingDataLoader(PlayerConfig)
 
@@ -17,5 +17,4 @@ val PlayerPage = tribePageFunction { props: PageProps, tribeId: TribeId ->
             PlayerConfigProps(tribe, player, players, reload, commandFunc)
         }
     ), key = "${tribeId.value}-${props.playerId}")
-
 }

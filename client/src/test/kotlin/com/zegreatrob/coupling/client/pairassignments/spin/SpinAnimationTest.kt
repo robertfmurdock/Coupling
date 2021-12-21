@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
+import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.findByClass
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
@@ -248,17 +249,17 @@ class SpinAnimationTest {
 
         private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass(styles["playerRoster"])
             .find(PlayerCard)
-            .map { it.props().player }
+            .map { it.dataprops().player }
             .toList()
 
         private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass(styles["playerSpotlight"])
             .find(PlayerCard).run {
-                if (length == 1) props().player else null
+                if (length == 1) dataprops().player else null
             }
 
         private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass(styles["pairAssignments"])
             .find(AssignedPair)
-            .map { it.props().pair }
+            .map { it.dataprops().pair }
             .toList()
     }
 

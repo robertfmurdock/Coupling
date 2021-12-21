@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -35,7 +36,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.find(TribeCard)
-            .props()
+            .dataprops()
             .tribe.assertIsEqualTo(tribe)
     }
 
@@ -75,7 +76,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.find(PairReportTable)
-            .props()
+            .dataprops()
             .pairReports
             .assertIsOrderedByLongestTimeSinceLastPairing()
             .assertHasTheTimeSincePairLastOccurred()
@@ -146,7 +147,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.find(PlayerHeatmap)
-            .props()
+            .dataprops()
             .heatmapData
             .assertIsEqualTo(
                 listOf(
@@ -183,7 +184,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.find(TeamStatistics)
-            .props()
+            .dataprops()
             .apply {
                 activePlayerCount
                     .assertIsEqualTo(4)
@@ -235,7 +236,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         shallow(TribeStatistics, props)
     } verify { wrapper ->
         wrapper.find(TeamStatistics)
-            .props()
+            .dataprops()
             .medianSpinDuration
             .assertIsEqualTo("2 days")
     }

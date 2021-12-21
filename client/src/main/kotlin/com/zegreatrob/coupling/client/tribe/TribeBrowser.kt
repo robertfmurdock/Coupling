@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.configHeader
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.large
@@ -10,12 +11,12 @@ import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.EndpointFinder.gqlEndpoint
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.*
-import react.Props
 import react.RBuilder
 import react.dom.*
 import react.router.dom.Link
@@ -24,7 +25,7 @@ import styled.styledDiv
 import styled.styledSpan
 import kotlin.js.json
 
-data class TribeBrowseProps(val tribe: Tribe) : Props
+data class TribeBrowseProps(val tribe: Tribe) : DataProps
 
 private val styles = useStyles("tribe/TribeBrowser")
 

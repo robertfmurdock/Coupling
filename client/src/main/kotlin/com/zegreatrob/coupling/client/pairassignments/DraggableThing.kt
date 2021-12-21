@@ -1,13 +1,14 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import org.w3c.dom.Node
 import react.RBuilder
-import react.Props
 import react.dom.attrs
 import react.dom.div
 import react.useRef
@@ -17,7 +18,7 @@ data class DraggableThingProps(
     val itemId: String,
     val dropCallback: (String) -> Unit,
     val handler: RBuilder.(isOver: Boolean) -> Unit
-) : Props
+) : DataProps
 
 private val styles = useStyles<SimpleStyle>("DraggableThing")
 

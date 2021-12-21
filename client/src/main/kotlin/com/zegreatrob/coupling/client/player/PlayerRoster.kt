@@ -5,12 +5,12 @@ import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.RuleSet
 import kotlinx.html.classes
-import react.Props
 import react.RBuilder
 import react.dom.attrs
 import react.dom.div
@@ -24,7 +24,7 @@ data class PlayerRosteProps(
     val tribeId: TribeId,
     val className: String? = null,
     val cssOverrides: RuleSet = {}
-) : Props
+) : DataProps
 
 private val styles = useStyles("player/PlayerRoster")
 

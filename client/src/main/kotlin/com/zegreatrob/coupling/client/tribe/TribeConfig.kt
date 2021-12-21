@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.html.InputType
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
@@ -25,7 +25,7 @@ import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class TribeConfigProps(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) : Props
+data class TribeConfigProps(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) : DataProps
 
 interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
     override val tribeRepository: TribeRepository

@@ -1,14 +1,15 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.configFrame
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.*
 import kotlinx.css.Color.Companion.wheat
-import react.Props
 import react.dom.div
 
 data class PlayerConfigProps(
@@ -17,7 +18,7 @@ data class PlayerConfigProps(
     val players: List<Player>,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
-) : Props
+) : DataProps
 
 private val styles = useStyles("player/PlayerConfig")
 

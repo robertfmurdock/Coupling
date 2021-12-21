@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.minreact.DataProps
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
@@ -66,7 +67,7 @@ data class CouplingWebsocketProps(
     val useSsl: Boolean,
     val onMessage: (Message) -> Unit,
     val children: RBuilder.(value: ((Message) -> Unit)?) -> Unit
-) : Props
+) : DataProps
 
 private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean) = URL(
     "?tribeId=${encodeURIComponent(tribeId.value)}",

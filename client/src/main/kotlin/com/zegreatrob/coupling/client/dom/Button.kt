@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.dom
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.css.properties.TextDecoration
@@ -9,7 +11,6 @@ import kotlinx.html.BUTTON
 import kotlinx.html.ButtonType
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import react.Props
 import react.RBuilder
 import react.dom.attrs
 import styled.StyledDOMBuilder
@@ -125,7 +126,7 @@ data class CouplingButtonProps(
     val onClick: () -> Unit = {},
     val block: StyledDOMBuilder<BUTTON>.() -> Unit = {},
     val children: RBuilder.()-> Unit
-) : Props
+) : DataProps
 
 val CouplingButton = reactFunction<CouplingButtonProps> { props ->
     val (sizeRuleSet, colorRuleSet, className, onClick, block) = props

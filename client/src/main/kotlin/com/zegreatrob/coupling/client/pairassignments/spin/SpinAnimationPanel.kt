@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
@@ -7,17 +8,17 @@ import com.zegreatrob.coupling.client.pairassignments.assignedPair
 import com.zegreatrob.coupling.client.pairassignments.pairAssignmentsHeader
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display
 import kotlinx.css.visibility
 import react.RBuilder
-import react.Props
 import react.dom.attrs
 import react.dom.div
 import react.dom.key
@@ -28,7 +29,7 @@ data class SpinAnimationPanelProps(
     val tribe: Tribe,
     val rosteredPairAssignments: RosteredPairAssignments,
     val state: SpinAnimationState
-) : Props
+) : DataProps
 
 val placeholderPlayer = Player("?", name = "Next...", callSignAdjective = "--------", callSignNoun = "--------")
 

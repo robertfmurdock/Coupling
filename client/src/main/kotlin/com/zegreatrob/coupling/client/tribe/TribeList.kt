@@ -6,14 +6,14 @@ import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.client.reactFunction
-import react.Props
+import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.DataProps
 import react.RBuilder
 import react.dom.div
 import react.router.dom.Link
 
-data class TribeListProps(val tribes: List<Tribe>) : Props
+data class TribeListProps(val tribes: List<Tribe>) : DataProps
 
 private val styles = useStyles("tribe/TribeList")
 

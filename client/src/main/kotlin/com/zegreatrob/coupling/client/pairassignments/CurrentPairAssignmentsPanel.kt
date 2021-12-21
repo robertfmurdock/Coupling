@@ -2,18 +2,19 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.client.reactFunction
-import react.Props
+import com.zegreatrob.minreact.DataProps
 import react.RBuilder
 import react.dom.div
 import react.router.Navigate
@@ -36,7 +37,7 @@ data class CurrentPairAssignmentsPanelProps(
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
     val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
-) : Props
+) : DataProps
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 

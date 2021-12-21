@@ -1,18 +1,19 @@
 package com.zegreatrob.coupling.client.stats
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.client.stats.heatmap.HeatmapProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import kotlinx.html.DIV
 import react.RBuilder
-import react.Props
 import react.dom.RDOMBuilder
 import react.dom.attrs
 import react.dom.div
@@ -23,7 +24,7 @@ data class PlayerHeatmapProps(
     val tribe: Tribe,
     val players: List<Player>,
     val heatmapData: List<List<Double?>>
-) : Props
+) : DataProps
 
 private val styles = useStyles("stats/PlayerHeatmap")
 

@@ -1,14 +1,15 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.animationsDisabledContext
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.frameRunner
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.client.reactFunction
-import react.Props
+import com.zegreatrob.minreact.DataProps
 import react.RBuilder
 
 data class PairAssignmentsAnimatorProps(
@@ -17,7 +18,7 @@ data class PairAssignmentsAnimatorProps(
     val pairAssignments: PairAssignmentDocument,
     val enabled: Boolean,
     val children: RBuilder.() -> Unit
-) : Props
+) : DataProps
 
 private val animationContextConsumer = animationsDisabledContext.Consumer
 

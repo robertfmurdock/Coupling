@@ -9,11 +9,12 @@ import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.playerImage
+import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.minreact.DataProps
 import org.w3c.dom.Node
 import react.*
 import react.dom.attrs
@@ -22,7 +23,7 @@ import react.dom.span
 
 private val styles = useStyles("Welcome")
 
-data class WelcomeProps(val randomProvider: RandomProvider = RandomProvider) : Props
+data class WelcomeProps(val randomProvider: RandomProvider = RandomProvider) : DataProps
 
 val Welcome = reactFunction { (randomProvider): WelcomeProps ->
     var showLoginChooser by useState(false)

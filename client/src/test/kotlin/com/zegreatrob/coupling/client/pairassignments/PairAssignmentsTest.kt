@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -57,7 +58,7 @@ class PairAssignmentsTest {
         )
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
-            .props()
+            .dataprops()
             .players
             .assertIsEqualTo(
                 listOf(rigby, nerd, pantsmaster)
@@ -88,7 +89,7 @@ class PairAssignmentsTest {
         )
     } verify { wrapper ->
         wrapper.find(PlayerRoster)
-            .props()
+            .dataprops()
             .players
             .assertIsEqualTo(players)
     }
@@ -109,7 +110,7 @@ class PairAssignmentsTest {
         }
     } verify { wrapper ->
         wrapper.find(ServerMessage)
-            .props()
+            .dataprops()
             .tribeId
             .assertIsEqualTo(tribe.id)
     }

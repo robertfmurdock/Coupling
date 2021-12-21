@@ -16,9 +16,10 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
+import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.testmints.setup
-import react.ElementType
 import react.router.Navigate
 import kotlin.test.Test
 
@@ -44,7 +45,7 @@ class CurrentPairAssignmentsPanelTest {
             )
         )
     }) exercise {
-        wrapper.find(CouplingButton).map { it.props() }.find { it.className == styles["saveButton"] }
+        wrapper.find(CouplingButton).map { it.dataprops() }.find { it.className == styles["saveButton"] }
             ?.onClick?.invoke()
         dispatchFunc.simulateSuccess<SavePairAssignmentsCommand>()
     } verify {
@@ -70,7 +71,7 @@ class CurrentPairAssignmentsPanelTest {
             )
         )
     }) exercise {
-        wrapper.find(CouplingButton).map { it.props() }.find { it.className == styles["deleteButton"] }
+        wrapper.find(CouplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
             ?.onClick?.invoke()
 
         dispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
@@ -226,16 +227,16 @@ class CurrentPairAssignmentsPanelTest {
         }
     }
 
-    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<ElementType<PairAssignmentsProps>>) {
-        val targetPairProps = wrapper.find(AssignedPair).map { it.props() }
+    private fun Player.dragTo(target: Player, wrapper: ShallowWrapper<TMFC<PairAssignmentsProps>>) {
+        val targetPairProps = wrapper.find(AssignedPair).map { it.dataprops() }
             .first { props -> props.pair.players.map { it.player }.contains(target) }
         val pair = targetPairProps.pair
         val swapCallback = targetPairProps.swapPlayersFunc
         swapCallback.invoke(pair.players.first { it.player == target }, id)
     }
 
-    private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<ElementType<PairAssignmentsProps>>) {
-        val targetPaiProps = wrapper.find(AssignedPair).map { it.props() }.first { it.pair == targetPair }
+    private fun Pin.dragTo(targetPair: PinnedCouplingPair, wrapper: ShallowWrapper<TMFC<PairAssignmentsProps>>) {
+        val targetPaiProps = wrapper.find(AssignedPair).map { it.dataprops() }.first { it.pair == targetPair }
         targetPaiProps.pinDropFunc.invoke(this.id!!)
     }
 

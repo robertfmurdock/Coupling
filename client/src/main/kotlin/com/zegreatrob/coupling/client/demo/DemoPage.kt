@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.demo
 
-import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.frameRunner
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.pairAssignments
@@ -18,14 +16,12 @@ import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.tribeConfigLayout
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.testmints.action.async.SuspendAction
 import kotlinx.css.*
 import kotlinx.css.properties.border
 import kotlinx.html.DIV
 import react.dom.RDOMBuilder
 import react.dom.div
-import react.key
 import styled.css
 import styled.styledDiv
 
@@ -82,14 +78,13 @@ private fun RDOMBuilder<DIV>.tribeConfigFrame(state: MakeTribe) = tribeConfigLay
 
 private fun RDOMBuilder<DIV>.playerConfigFrame(state: AddPlayer) = child(
     PlayerConfig,
-    PlayerConfigProps(state.tribe, state.newPlayer, state.players, {}, noOpDispatchFunc)
-) { attrs.key = "$state" }
+    PlayerConfigProps(state.tribe, state.newPlayer, state.players, {}, noOpDispatchFunc),
+    key = "$state"
+)
 
 private fun RDOMBuilder<DIV>.pinConfigFrame(state: AddPin) = child(
-    PinConfig, PinConfigProps(state.tribe, state.newPin, state.pins, {}, noOpDispatchFunc)
-) {
-    attrs.key = "$state"
-}
+    PinConfig, PinConfigProps(state.tribe, state.newPin, state.pins, {}, noOpDispatchFunc), key = "$state"
+)
 
 private fun RDOMBuilder<DIV>.pairAssignmentsFrame(state: CurrentPairs) = pairAssignments(
     state.tribe,
