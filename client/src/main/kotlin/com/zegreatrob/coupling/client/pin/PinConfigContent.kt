@@ -1,17 +1,13 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.ConfigForm
+import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.ConfigHeader
-import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Editor
-import com.zegreatrob.coupling.client.Paths.pinListPath
 import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
-import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
-import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -29,34 +25,25 @@ import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
 import react.key
-import react.router.Navigate
-import react.useState
-
-data class PinConfigEditor(
-    val tribe: Tribe,
-    val pin: Pin,
-    val reload: () -> Unit,
-    val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
-) : DataProps<PinConfigEditor> {
-    override val component: TMFC<PinConfigEditor> = pinConfigEditor
-}
 
 private val styles = useStyles("pin/PinConfigEditor")
 
-val pinConfigEditor = tmFC { (tribe, pin, reload, dispatchFunc): PinConfigEditor ->
-    val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic())
+data class PinConfigContent(
+    val tribe: Tribe,
+    val pin: Pin,
+    val pinList: List<Pin>,
+    val onChange: (ChangeEvent<*>) -> Unit,
+    val onSubmit: () -> Unit,
+    val onRemove: (() -> Unit)?
+) : DataProps<PinConfigContent> {
+    override val component: TMFC<PinConfigContent> = pinConfigContent
+}
 
-    val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
-    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val onSubmit = dispatchFunc({ SavePinCommand(tribe.id, updatedPin) }) { reload() }
-    val onRemove = pin.id?.let { pinId ->
-        dispatchFunc({ DeletePinCommand(tribe.id, pinId) }) { setRedirectUrl(tribe.id.pinListPath()) }
-            .requireConfirmation("Are you sure you want to delete this pin?")
-    }
+private val pinConfigStyles = useStyles("pin/PinConfig")
 
-    if (redirectUrl != null)
-        Navigate { to = redirectUrl }
-    else
+val pinConfigContent = tmFC<PinConfigContent> { (tribe, pin, pinList, onChange, onSubmit, onRemove) ->
+    ConfigFrame {
+        className = pinConfigStyles.className
         span {
             className = styles.className
             ConfigHeader {
@@ -65,14 +52,21 @@ val pinConfigEditor = tmFC { (tribe, pin, reload, dispatchFunc): PinConfigEditor
             }
             span {
                 className = styles["pin"]
-                pinConfigForm(updatedPin, onChange, onSubmit, onRemove)
+                pinConfigForm(pin, onChange, onSubmit, onRemove)
 //                promptOnExit(shouldShowPrompt = updatedPin != pin)
             }
             span {
                 className = styles["icon"]
-                child(PinButton(updatedPin, PinButtonScale.Large, showTooltip = false))
+                child(PinButton(pin, PinButtonScale.Large, showTooltip = false))
             }
         }
+        pinBag(tribe, pinList, pinConfigStyles["pinBag"])
+    }
+}
+
+private fun ChildrenBuilder.pinBag(tribe: Tribe, pinList: List<Pin>, className: String) = div {
+    this.className = className
+    pinList.map { pin -> child(PinCard(tribe.id, pin), key = pin.id) }
 }
 
 private fun ChildrenBuilder.pinConfigForm(
@@ -112,7 +106,7 @@ private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
     span {
         +"This is the icon for the pin. This will be its primary identifier, so "
         a {
-            this.href = "https://fontawesome.com/icons?d=gallery&m=free"
+            href = "https://fontawesome.com/icons?d=gallery&m=free"
             +"choose wisely."
         }
     }
