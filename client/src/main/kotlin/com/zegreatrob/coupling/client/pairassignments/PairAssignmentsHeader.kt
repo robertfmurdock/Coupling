@@ -21,7 +21,3 @@ val pairAssignmentsHeader = reactFunction<PairAssignmentsHeader> { (pairAssignme
         +"Couples for ${pairAssignments.dateText()}"
     }
 }
-
-fun RBuilder.pairAssignmentsHeader(pairAssignments: PairAssignmentDocument) = child(
-    PairAssignmentsHeader(pairAssignments)
-)

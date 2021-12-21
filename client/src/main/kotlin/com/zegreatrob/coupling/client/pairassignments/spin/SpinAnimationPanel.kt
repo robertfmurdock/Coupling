@@ -4,12 +4,13 @@ import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
-import com.zegreatrob.coupling.client.pairassignments.assignedPair
-import com.zegreatrob.coupling.client.pairassignments.pairAssignmentsHeader
+import com.zegreatrob.coupling.client.pairassignments.AssignedPair
+import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -52,7 +53,9 @@ val spinAnimationPanel = reactFunction<SpinAnimationPanel> { (tribe, rosteredPai
     val players = rosteredPairAssignments.selectedPlayers
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
     div {
-        pairAssignmentsHeader(pairAssignments)
+        child(
+            PairAssignmentsHeader(pairAssignments)
+        )
         assignedPairs(tribe, revealedPairs)
         playerSpotlight(shownPlayer)
         playerRoster(rosterPlayers)
@@ -63,7 +66,7 @@ private fun RBuilder.assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCoupl
     classes = styles["pairAssignments"]
 ) {
     revealedPairs.mapIndexed { index, it ->
-        assignedPair(tribe, it, { _, _ -> }, { }, false, key = "$index")
+        child(AssignedPair(tribe, it, false, { _: PinnedPlayer, _: String -> }, { it: String -> }), key = "$index")
     }
 }
 

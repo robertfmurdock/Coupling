@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
+import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
-import com.zegreatrob.coupling.client.pin.pinSection
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
@@ -49,15 +49,6 @@ typealias PinMoveCallback = (String) -> Unit
 
 private val styles = useStyles("pairassignments/AssignedPair")
 
-fun RBuilder.assignedPair(
-    tribe: Tribe,
-    pair: PinnedCouplingPair,
-    swapPlayersFunc: (PinnedPlayer, String) -> Unit,
-    dropPinFunc: PinMoveCallback,
-    canDrag: Boolean,
-    key: String
-) = child(AssignedPair(tribe, pair, canDrag, swapPlayersFunc, dropPinFunc), key = key)
-
 val assignedPair = reactFunction<AssignedPair> { (tribe, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.findCallSign()
 
@@ -74,7 +65,7 @@ val assignedPair = reactFunction<AssignedPair> { (tribe, pair, canDrag, swapCall
         }
         callSign(tribe, callSign, styles["callSign"])
         pair.players.mapIndexed { index, player -> playerCard(player, if (index % 2 == 0) (-8).deg else 8.deg) }
-        pinSection(pinList = pair.pins, canDrag = canDrag)
+        child(PinSection(pinList = pair.pins, canDrag = canDrag))
     }
 }
 

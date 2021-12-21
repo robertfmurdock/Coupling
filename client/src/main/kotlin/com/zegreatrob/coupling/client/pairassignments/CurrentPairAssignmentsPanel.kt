@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -16,8 +15,11 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
+import react.ChildrenBuilder
 import react.RBuilder
-import react.dom.div
+import react.dom.html.ReactHTML.div
 import react.router.Navigate
 import react.useState
 
@@ -43,7 +45,7 @@ data class CurrentPairAssignmentsPanel(
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
-val currentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanel> { props ->
+val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
     val (tribe, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToCurrentFunc = { setRedirectUrl(tribe.id.currentPairsPage()) }
@@ -51,43 +53,47 @@ val currentPairAssignmentsPanel = reactFunction<CurrentPairAssignmentsPanel> { p
         { DeletePairAssignmentsCommand(tribe.id, pairAssignments.id) }, { redirectToCurrentFunc() }
     )
     if (redirectUrl != null)
-        Navigate { attrs.to = redirectUrl }
+        Navigate { to = redirectUrl }
     else
-        div(classes = styles.className) {
+        div {
+            className = styles.className
             dateHeader(pairAssignments)
             pairAssignmentList(tribe, pairAssignments, setPairAssignments, allowSave)
             if (allowSave) {
                 div {
 //                    prompt(`when` = true, message = "Press OK to save these pairs.")
-                    saveButton(redirectToCurrentFunc)
-                    cancelButton(onCancel)
+                    child(saveButton(redirectToCurrentFunc))
+                    child(cancelButton(onCancel))
                 }
             }
         }
 }
 
-private fun RBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
+private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
     div {
-        pairAssignmentsHeader(pairAssignments)
+        child(PairAssignmentsHeader(pairAssignments))
     }
 }
 
-private fun RBuilder.pairAssignmentList(
+private fun ChildrenBuilder.pairAssignmentList(
     tribe: Tribe,
     pairAssignments: PairAssignmentDocument,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean
-) = div(classes = styles["pairAssignmentsContent"]) {
+) = div {
+    className = styles["pairAssignmentsContent"]
     pairAssignments.pairs.mapIndexed { index, pair ->
-        assignedPair(
-            tribe,
-            pair,
-            swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
-                setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
-            },
-            dropPinFunc = { pinId -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) },
-            canDrag = allowSave,
-            key = "$index"
+        child(
+            key = "$index",
+            dataProps = AssignedPair(
+                tribe,
+                pair,
+                canDrag = allowSave,
+                swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
+                    setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
+                },
+                pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) }
+            )
         )
     }
 }
@@ -150,10 +156,8 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 }
 
 
-private fun RBuilder.saveButton(onSave: () -> Unit) = child(CouplingButton(supersize, green, styles["saveButton"], onSave, {}, fun RBuilder.() {
- +"Save!"
-}))
+private fun saveButton(onSave: () -> Unit): CouplingButton =
+    CouplingButton(supersize, green, styles["saveButton"], onSave, {}) { +"Save!" }
 
-private fun RBuilder.cancelButton(onCancel: () -> Unit) = child(CouplingButton(small, red, styles["deleteButton"], onCancel, {}, fun RBuilder.() {
- +"Cancel"
-}))
+private fun cancelButton(onCancel: () -> Unit) =
+    CouplingButton(small, red, styles["deleteButton"], onCancel, {}, { +"Cancel" })

@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButtonScale
-import com.zegreatrob.coupling.client.pin.pinSection
+import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -82,7 +82,7 @@ private fun RBuilder.showPairs(document: PairAssignmentDocument) = document.pair
         pair.players.map { pinnedPlayer: PinnedPlayer ->
             showPlayer(pinnedPlayer)
         }
-        pinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"])
+        child(PinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"]))
     }
 }
 
