@@ -43,9 +43,6 @@ data class SpinStateData(
 
 private val styles = useStyles("pairassignments/SpinAnimation")
 
-fun RBuilder.spinAnimation(tribe: Tribe, rosteredPairAssignments: RosteredPairAssignments, state: SpinAnimationState) =
-    child(SpinAnimationPanel(tribe, rosteredPairAssignments, state))
-
 val spinAnimationPanel = reactFunction<SpinAnimationPanel> { (tribe, rosteredPairAssignments, state) ->
     val pairAssignments = rosteredPairAssignments.pairAssignments
     val players = rosteredPairAssignments.selectedPlayers

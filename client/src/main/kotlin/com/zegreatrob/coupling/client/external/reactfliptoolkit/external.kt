@@ -6,9 +6,9 @@ import react.ElementType
 import react.Props
 
 @JsName("Flipper")
-external val Flipper: ElementType<FlippeProps>
+external val Flipper: ElementType<FlipperProps>
 
-external interface FlippeProps : Props {
+external interface FlipperProps : Props {
     var flipKey: String
     var className: String?
 }

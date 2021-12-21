@@ -1,12 +1,15 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.useStyles
+import react.FC
 import react.PropsWithChildren
-import react.dom.div
-import react.fc
+import react.dom.html.ReactHTML.div
 
 private val styles = useStyles("stats/StatsHeader")
 
-val StatsHeader = fc<PropsWithChildren> { props ->
-    div(classes = styles.className) { props.children() }
+val StatsHeader = FC<PropsWithChildren> { props ->
+    div {
+        className = styles.className
+        props.children()
+    }
 }

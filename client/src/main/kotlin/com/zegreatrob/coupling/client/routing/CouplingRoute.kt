@@ -1,19 +1,19 @@
 package com.zegreatrob.coupling.client.routing
 
 import kotlinx.browser.window
+import react.ChildrenBuilder
 import react.FC
 import react.Props
-import react.RBuilder
-import react.createElement
+import react.create
 import react.router.NavigateFunction
 import react.router.Route
 import react.router.dom.useSearchParams
 import react.router.useNavigate
 import react.router.useParams
 
-fun RBuilder.couplingRoute(path: String, rComponent: FC<PageProps>) = Route {
-    attrs.path = path
-    attrs.element = createElement { CouplingRoute { attrs.rComponent = rComponent } }
+fun ChildrenBuilder.couplingRoute(path: String, rComponent: FC<PageProps>) = Route {
+    this.path = path
+    this.element = CouplingRoute.create { this.rComponent = rComponent }
 }
 
 external interface CouplingRouteProps : Props {

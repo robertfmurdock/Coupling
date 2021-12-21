@@ -1,22 +1,20 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.TribeCard
-import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
-import react.RBuilder
-import react.dom.div
-import react.dom.h2
-import react.dom.h3
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h2
+import react.dom.html.ReactHTML.h3
 import react.router.dom.Link
 
 data class PinList(val tribe: Tribe, val pins: List<Pin>) : DataProps<PinList> {
@@ -25,10 +23,12 @@ data class PinList(val tribe: Tribe, val pins: List<Pin>) : DataProps<PinList> {
 
 private val styles = useStyles("pin/PinList")
 
-val pinList = reactFunction<PinList> { (tribe, pins) ->
-    div(classes = styles.className) {
-        div(classes = styles["tribeBrowser"]) {
-            tribeCard(TribeCard(tribe))
+val pinList = tmFC<PinList> { (tribe, pins) ->
+    div {
+        className = styles.className
+        div {
+            className = styles["tribeBrowser"]
+            child(TribeCard(tribe))
         }
         h2 { +"These are your pins." }
         h3 { +"There are many like them, but these are yours." }
@@ -37,10 +37,8 @@ val pinList = reactFunction<PinList> { (tribe, pins) ->
         }
         div {
             Link {
-                attrs.to = "/${tribe.id.value}/pin/new"
-                child(CouplingButton(large, orange, "", {}, {}, fun RBuilder.() {
- +"Add a new pin."
-}))
+                to = "/${tribe.id.value}/pin/new"
+                child(CouplingButton(large, orange, "", {}, {}) { +"Add a new pin." })
             }
         }
     }

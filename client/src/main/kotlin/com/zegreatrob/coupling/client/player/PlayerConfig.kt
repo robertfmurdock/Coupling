@@ -2,15 +2,15 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.Color.Companion.wheat
-import react.dom.div
+import react.dom.html.ReactHTML.div
 
 data class PlayerConfig(
     val tribe: Tribe,
@@ -24,9 +24,9 @@ data class PlayerConfig(
 
 private val styles = useStyles("player/PlayerConfig")
 
-val playerConfig = reactFunction { (tribe, player, players, reload, commandFunc): PlayerConfig ->
-    child(ConfigFrame) {
-        attrs.className = styles.className
+val playerConfig = tmFC { (tribe, player, players, reload, commandFunc): PlayerConfig ->
+    ConfigFrame {
+        className = styles.className
         child(PlayerConfigEditor(tribe, player, reload, commandFunc))
         div {
             child(PlayerRoster(players = players, tribeId = tribe.id) {

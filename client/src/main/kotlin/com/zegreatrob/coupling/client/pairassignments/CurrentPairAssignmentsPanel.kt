@@ -23,16 +23,6 @@ import react.dom.html.ReactHTML.div
 import react.router.Navigate
 import react.useState
 
-fun RBuilder.currentPairAssignments(
-    tribe: Tribe,
-    pairAssignments: PairAssignmentDocument,
-    setPairAssignments: (PairAssignmentDocument) -> Unit,
-    allowSave: Boolean,
-    dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
-) = child(
-    CurrentPairAssignmentsPanel(tribe, pairAssignments, setPairAssignments, allowSave, dispatchFunc)
-)
-
 data class CurrentPairAssignmentsPanel(
     val tribe: Tribe,
     val pairAssignments: PairAssignmentDocument,

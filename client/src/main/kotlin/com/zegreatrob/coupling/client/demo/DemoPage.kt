@@ -2,8 +2,7 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.child
-import com.zegreatrob.coupling.client.frameRunner
+import com.zegreatrob.coupling.client.FrameRunner
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
@@ -19,13 +18,14 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.minreact.child
 import com.zegreatrob.testmints.action.async.SuspendAction
 import kotlinx.css.*
 import kotlinx.css.properties.border
-import kotlinx.html.DIV
-import react.dom.RDOMBuilder
-import react.dom.div
-import react.fc
+import react.ChildrenBuilder
+import react.FC
+import react.buildElement
+import react.dom.html.ReactHTML.div
 import styled.css
 import styled.styledDiv
 
@@ -40,19 +40,22 @@ private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
     ): () -> Unit = {}
 }
 
-val DemoPage = fc<PageProps> {
-    frameRunner(DemoAnimationState.generateSequence(), 1.0) { state: DemoAnimationState ->
+val DemoPage = FC<PageProps> {
+    child(FrameRunner(DemoAnimationState.generateSequence(), 1.0) { state: DemoAnimationState ->
         div {
-            styledDiv {
-                css {
-                    display = Display.inlineBlock
-                    border(8.px, BorderStyle.solid, rgb(94,84,102), 50.px)
-                    backgroundColor = Color.floralWhite
-                    padding(left = 42.px, right = 42.px)
-                    width = 40.em
+            child(buildElement {
+                styledDiv {
+                    css {
+                        display = Display.inlineBlock
+                        border(8.px, BorderStyle.solid, rgb(94, 84, 102), 50.px)
+                        backgroundColor = Color.floralWhite
+                        padding(left = 42.px, right = 42.px)
+                        width = 40.em
+                    }
+                    +"DEMO"
                 }
-                +"DEMO"
-            }
+            })
+
             div {
                 when (state) {
                     Start -> +"Starting..."
@@ -65,48 +68,48 @@ val DemoPage = fc<PageProps> {
                 }
             }
         }
-    }
+    })
 }
 
-private fun RDOMBuilder<DIV>.prepareSpinFrame(state: PrepareToSpin) {
+private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     PrepareSpin {
-        attrs {
-            tribe = state.tribe
-            playerSelections = state.players
-            pins = state.pins
-            pinSelections = state.pins.map { it.id }
-            setPlayerSelections = { it: List<Pair<Player, Boolean>> -> }
-            setPinSelections = { it: List<String?> -> }
-            onSpin = {}
-        }
+        tribe = state.tribe
+        playerSelections = state.players
+        pins = state.pins
+        pinSelections = state.pins.map { it.id }
+        setPlayerSelections = { it: List<Pair<Player, Boolean>> -> }
+        setPinSelections = { it: List<String?> -> }
+        onSpin = {}
     }
 }
 
-private fun RDOMBuilder<DIV>.tribeConfigFrame(state: MakeTribe) {
+private fun ChildrenBuilder.tribeConfigFrame(state: MakeTribe) {
     TribeConfigLayout {
-        attrs.tribe = state.tribe
-        attrs.isNew = true
-        attrs.onChange = { }
-        attrs.onSave = {}
-        attrs.onDelete = {}
+        tribe = state.tribe
+        isNew = true
+        onChange = { }
+        onSave = {}
+        onDelete = {}
     }
 }
 
-private fun RDOMBuilder<DIV>.playerConfigFrame(state: AddPlayer) = child(
+private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = child(
     PlayerConfig(state.tribe, state.newPlayer, state.players, {}, noOpDispatchFunc),
     key = "$state"
 )
 
-private fun RDOMBuilder<DIV>.pinConfigFrame(state: AddPin) = child(
+private fun ChildrenBuilder.pinConfigFrame(state: AddPin) = child(
     PinConfig(state.tribe, state.newPin, state.pins, {}, noOpDispatchFunc), key = "$state"
 )
 
-private fun RDOMBuilder<DIV>.pairAssignmentsFrame(state: CurrentPairs) = child(PairAssignments(
-    state.tribe,
-    state.players,
-    state.pairAssignments,
-    { it: PairAssignmentDocument -> },
-    Controls(noOpDispatchFunc) {},
-    CouplingSocketMessage("", emptySet()),
-    state.allowSave
-))
+private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = child(
+    PairAssignments(
+        state.tribe,
+        state.players,
+        state.pairAssignments,
+        { it: PairAssignmentDocument -> },
+        Controls(noOpDispatchFunc) {},
+        CouplingSocketMessage("", emptySet()),
+        state.allowSave
+    )
+)
