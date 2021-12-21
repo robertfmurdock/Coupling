@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -22,8 +21,6 @@ import react.dom.img
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
-
-val RBuilder.playerCard get() = childCurry(com.zegreatrob.coupling.client.player.playerCard)
 
 data class PlayerCard(
     val tribeId: TribeId,

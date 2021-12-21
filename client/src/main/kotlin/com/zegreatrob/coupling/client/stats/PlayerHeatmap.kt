@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.model.player.Player
@@ -46,5 +45,5 @@ val playerHeatmap = reactFunction<PlayerHeatmap> { (tribe, players, heatmapData)
 
 private fun RDOMBuilder<DIV>.keyedPlayerCard(player: Player, tribe: Tribe) = div(classes = styles["playerCard"]) {
     attrs { key = player.id }
-    playerCard(PlayerCard(tribe.id, player, size = 50))
+    child(PlayerCard(tribe.id, player, size = 50))
 }

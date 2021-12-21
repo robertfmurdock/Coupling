@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -25,7 +24,7 @@ val serverMessage = reactFunction<ServerMessage> { (tribeId, message) ->
     div {
         span { +message.text }
         div {
-            message.players.map { playerCard(PlayerCard(tribeId, it, size = 50)) }
+            message.players.map { child(PlayerCard(tribeId, it, size = 50)) }
         }
     }
 }

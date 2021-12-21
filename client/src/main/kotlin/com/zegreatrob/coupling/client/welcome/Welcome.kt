@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.playerImage
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -106,7 +105,7 @@ private fun RBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>) {
 }
 
 private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styles["welcomePair"]) {
-    playerCard(
+    child(
         PlayerCard(
             tribeId = welcomeTribeId,
             player = pair.player1,
@@ -114,7 +113,7 @@ private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styl
             size = 100
         )
     )
-    playerCard(
+    child(
         PlayerCard(
             tribeId = welcomeTribeId,
             player = pair.player2,

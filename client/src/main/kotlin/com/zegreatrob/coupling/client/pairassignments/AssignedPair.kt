@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -94,13 +93,13 @@ private fun playerCardComponent(
     swap: (PinnedPlayer, String) -> Unit
 ): RBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) { player, tilt ->
     playerFlipped(player.player) {
-        swappablePlayer(tribe, player, canDrag, tilt) { droppedPlayerId: String ->
+        child(swappablePlayer(player, tribe, canDrag, tilt) { droppedPlayerId: String ->
             swap(player, droppedPlayerId)
-        }
+        })
     }
 } else { player, tilt ->
     playerFlipped(player.player) {
-        notSwappablePlayer(tribe, player.player, tilt)
+        child(notSwappablePlayer(tribe, player.player, tilt))
     }
 }
 
@@ -117,16 +116,12 @@ private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> Unit)
     }
 }
 
-private fun RBuilder.notSwappablePlayer(tribe: Tribe, player: Player, tilt: Angle) =
-    playerCard(PlayerCard(tribe.id, player, true, tilt = tilt))
+private fun notSwappablePlayer(tribe: Tribe, player: Player, tilt: Angle) =
+    PlayerCard(tribe.id, player, true, tilt = tilt)
 
-private fun RBuilder.swappablePlayer(
-    tribe: Tribe,
-    pinnedPlayer: PinnedPlayer,
-    zoomOnHover: Boolean,
-    tilt: Angle,
-    onDropSwap: (String) -> Unit
-) = draggablePlayer(DraggablePlayer(pinnedPlayer, tribe, zoomOnHover, tilt, onDropSwap))
+private fun swappablePlayer(
+    pinnedPlayer: PinnedPlayer, tribe: Tribe, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
+) = DraggablePlayer(pinnedPlayer, tribe, zoomOnHover, tilt, onDropSwap)
 
 private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
     if (tribe.callSignsEnabled && callSign != null) {

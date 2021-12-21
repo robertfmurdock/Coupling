@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.player.Player
@@ -83,7 +82,7 @@ private fun RBuilder.flippedPlayer(player: Player, key: String? = null) = flippe
     styledDiv {
         attrs { this.key = key ?: "" }
         css { display = Display.inlineBlock }
-        playerCard(PlayerCard(TribeId(""), player))
+        child(PlayerCard(TribeId(""), player))
     }
 }
 

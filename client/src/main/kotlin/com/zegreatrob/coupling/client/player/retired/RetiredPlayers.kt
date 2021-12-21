@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.model.player.Player
@@ -25,7 +24,7 @@ val retiredPlayers = reactFunction<RetiredPlayers> { (tribe, players) ->
         div(classes = styles["header"]) { +"Retired Players" }
         div {
             players.forEach { player ->
-                playerCard(
+                child(
                     PlayerCard(tribe.id, player, linkToConfig = true, deselected = true),
                     key = player.id
                 )

@@ -13,8 +13,6 @@ import com.zegreatrob.minreact.tmFC
 import kotlinx.css.properties.Angle
 import react.RBuilder
 
-val RBuilder.draggablePlayer get() = { props: DraggablePlayer -> child(props) }
-
 data class DraggablePlayer(
     val pinnedPlayer: PinnedPlayer,
     val tribe: Tribe,

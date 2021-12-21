@@ -57,7 +57,7 @@ private fun RBuilder.addPlayerButton(tribeId: TribeId) = Link {
 }
 
 private fun RBuilder.renderPlayers(players: List<Player>, tribeId: TribeId) = players.forEach { player ->
-    playerCard(
+    child(
         PlayerCard(tribeId, player, linkToConfig = true),
         key = player.id
     )

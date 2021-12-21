@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandD
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -262,17 +261,17 @@ private fun RBuilder.selectablePlayerCardList(
 ) = playerSelections.map { (player, isSelected) ->
     styledDiv {
         css { paddingBottom = 30.px; display = Display.inlineBlock }
-        playerCard(tribe, player, isSelected, setPlayerSelections, playerSelections)
+        child(playerCard(tribe, player, isSelected, setPlayerSelections, playerSelections))
     }
 }
 
-private fun RBuilder.playerCard(
+private fun playerCard(
     tribe: Tribe,
     player: Player,
     isSelected: Boolean,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
     playerSelections: List<Pair<Player, Boolean>>
-) = playerCard(PlayerCard(
+) = PlayerCard(
     tribe.id,
     player,
     className = styles["playerCard"],
@@ -282,7 +281,7 @@ private fun RBuilder.playerCard(
             flipSelectionForPlayer(player, isSelected, playerSelections)
         )
     }
-))
+)
 
 private fun flipSelectionForPlayer(
     targetPlayer: Player,
