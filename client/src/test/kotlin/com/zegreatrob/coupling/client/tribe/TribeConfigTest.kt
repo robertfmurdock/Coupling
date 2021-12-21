@@ -21,7 +21,7 @@ class TribeConfigTest {
         val tribe = Tribe(TribeId("1"), name = "1")
     }) exercise {
         shallow(TribeConfig(tribe, StubDispatchFunc()))
-            .find(TribeConfigLayout)
+            .find(tribeConfigContent)
             .shallow()
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
@@ -62,7 +62,7 @@ class TribeConfigTest {
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
         val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
     }) exercise {
-        wrapper.find(TribeConfigLayout)
+        wrapper.find(tribeConfigContent)
             .shallow()
             .find(ConfigForm)
             .props()
@@ -81,12 +81,12 @@ class TribeConfigTest {
         val tribe = Tribe(TribeId(""))
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
         val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
-        val automatedTribeId = wrapper.find(TribeConfigLayout)
+        val automatedTribeId = wrapper.find(tribeConfigContent)
             .shallow()
             .find<Any>("#tribe-id")
             .prop("value")
     }) exercise {
-        wrapper.find(TribeConfigLayout)
+        wrapper.find(tribeConfigContent)
             .shallow()
             .find(ConfigForm)
             .props()
@@ -98,7 +98,7 @@ class TribeConfigTest {
                 assertIsNotEqualTo("")
                 assertIsEqualTo(automatedTribeId)
             }
-        wrapper.find(TribeConfigLayout)
+        wrapper.find(tribeConfigContent)
             .shallow()
             .find<Any>("#tribe-id")
             .prop("value")

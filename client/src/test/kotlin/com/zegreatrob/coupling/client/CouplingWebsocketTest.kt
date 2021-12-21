@@ -10,7 +10,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
 import kotlinx.browser.window
-import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import kotlin.test.Test
 
@@ -21,9 +20,7 @@ class CouplingWebsocketTest {
         val tribeId = TribeId("bwahahahaha")
         val useSsl = false
     }) exercise {
-        shallow { child(CouplingWebsocket(tribeId, useSsl, { it: Message -> }, fun ChildrenBuilder.(it: ((Message) -> Unit)?) {
- div {}
-})) }
+        shallow { child(CouplingWebsocket(tribeId, useSsl, { }) { div {} }) }
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
@@ -37,9 +34,7 @@ class CouplingWebsocketTest {
         val tribeId = TribeId("LOL")
         val useSsl = true
     }) exercise {
-        shallow { child(CouplingWebsocket(tribeId, useSsl, { it: Message -> }, fun ChildrenBuilder.(it: ((Message) -> Unit)?) {
- div {}
-})) }
+        shallow { child(CouplingWebsocket(tribeId, useSsl, { }) { div {} }) }
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
@@ -52,9 +47,7 @@ class CouplingWebsocketTest {
     fun whenSocketIsClosedUsesNotConnectedMessage(): Unit = setup(object {
         val tribeId = TribeId("Woo")
         var lastMessage: Message? = null
-        val wrapper = shallow { child(CouplingWebsocket(tribeId, false, { it: Message -> lastMessage = it }, fun ChildrenBuilder.(_: ((Message) -> Unit)?) {
- div {}
-})) }
+        val wrapper = shallow { child(CouplingWebsocket(tribeId, false, { lastMessage = it }) { div {} }) }
         val websocketProps = wrapper.find(reactWebsocket).props()
         val expectedMessage = "Not connected"
     }) exercise {

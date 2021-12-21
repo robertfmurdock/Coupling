@@ -12,10 +12,9 @@ import com.zegreatrob.coupling.client.pin.PinConfig
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.coupling.client.tribe.TribeConfigContent
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
-import com.zegreatrob.coupling.client.tribe.TribeConfigLayout
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.child
 import com.zegreatrob.testmints.action.async.SuspendAction
@@ -72,22 +71,15 @@ val DemoPage = FC<PageProps> {
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     val (tribe, players, pins) = state
-    child(PrepareSpin(tribe, players, pins, pins.map { it.id }, { }, { }, {}))
+    child(PrepareSpin(tribe, players, pins, pins.map { it.id }, {}, {}, {}))
 }
 
 private fun ChildrenBuilder.tribeConfigFrame(state: MakeTribe) {
-    TribeConfigLayout {
-        tribe = state.tribe
-        isNew = true
-        onChange = { }
-        onSave = {}
-        onDelete = {}
-    }
+    child(TribeConfigContent(state.tribe, true, {}, {}, {}))
 }
 
 private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = child(
-    PlayerConfig(state.tribe, state.newPlayer, state.players, {}, noOpDispatchFunc),
-    key = "$state"
+    PlayerConfig(state.tribe, state.newPlayer, state.players, {}, noOpDispatchFunc), key = "$state"
 )
 
 private fun ChildrenBuilder.pinConfigFrame(state: AddPin) = child(
@@ -99,7 +91,7 @@ private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = child(
         state.tribe,
         state.players,
         state.pairAssignments,
-        { it: PairAssignmentDocument -> },
+        { },
         Controls(noOpDispatchFunc) {},
         CouplingSocketMessage("", emptySet()),
         state.allowSave
