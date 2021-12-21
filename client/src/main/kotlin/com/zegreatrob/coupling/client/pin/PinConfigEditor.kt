@@ -1,12 +1,15 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.ConfigForm
+import com.zegreatrob.coupling.client.ConfigHeader
+import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.Editor
 import com.zegreatrob.coupling.client.Paths.pinListPath
 import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.external.reactrouter.prompt
+import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.pin.Pin
@@ -14,12 +17,18 @@ import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
-import kotlinx.html.InputType
-import kotlinx.html.id
-import kotlinx.html.js.onChangeFunction
-import org.w3c.dom.events.Event
-import react.RBuilder
-import react.dom.*
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
+import react.ChildrenBuilder
+import react.dom.events.ChangeEvent
+import react.dom.html.ReactHTML.a
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.label
+import react.dom.html.ReactHTML.li
+import react.dom.html.ReactHTML.option
+import react.dom.html.ReactHTML.select
+import react.dom.html.ReactHTML.span
+import react.key
 import react.router.Navigate
 import react.useState
 
@@ -34,14 +43,7 @@ data class PinConfigEditor(
 
 private val styles = useStyles("pin/PinConfigEditor")
 
-fun RBuilder.pinConfigEditor(
-    tribe: Tribe,
-    pin: Pin,
-    dispatchFunc: DispatchFunc<out PinCommandDispatcher>,
-    reload: () -> Unit
-) = child(PinConfigEditor(tribe, pin, reload, dispatchFunc))
-
-val pinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinConfigEditor ->
+val pinConfigEditor = tmFC { (tribe, pin, reload, dispatchFunc): PinConfigEditor ->
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic())
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
@@ -53,95 +55,96 @@ val pinConfigEditor = reactFunction { (tribe, pin, reload, dispatchFunc): PinCon
     }
 
     if (redirectUrl != null)
-        Navigate { attrs.to = redirectUrl }
+        Navigate { to = redirectUrl }
     else
-        span(styles.className) {
-            configHeader(tribe) { +"Pin Configuration" }
-            span(styles["pin"]) {
+        span {
+            className = styles.className
+            ConfigHeader {
+                this.tribe = tribe
+                +"Pin Configuration"
+            }
+            span {
+                className = styles["pin"]
                 pinConfigForm(updatedPin, onChange, onSubmit, onRemove)
 //                promptOnExit(shouldShowPrompt = updatedPin != pin)
             }
-            span(styles["icon"]) {
+            span {
+                className = styles["icon"]
                 child(PinButton(updatedPin, PinButtonScale.Large, showTooltip = false))
             }
         }
 }
 
-private fun RBuilder.pinConfigForm(
+private fun ChildrenBuilder.pinConfigForm(
     pin: Pin,
-    onChange: (Event) -> Unit,
+    onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
     onRemove: (() -> Unit)?
-) = child(ConfigForm) {
-    attrs {
-        this.onSubmit = onSubmit
-        this.onRemove = onRemove
-    }
+) = ConfigForm {
+    this.onSubmit = onSubmit
+    this.onRemove = onRemove
     editorDiv(pin, onChange)
 }
 
-private fun RBuilder.editorDiv(pin: Pin, onChange: (Event) -> Unit) = div {
-    editor {
+private fun ChildrenBuilder.editorDiv(pin: Pin, onChange: (ChangeEvent<*>) -> Unit) = div {
+    Editor {
         li { nameInput(pin, onChange) }
         li { iconInput(pin, onChange) }
         li { targetInput(onChange) }
     }
 }
 
-private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
-    `when` = shouldShowPrompt,
+private fun ChildrenBuilder.promptOnExit(shouldShowPrompt: Boolean) = PromptComponent {
+    `when` = shouldShowPrompt
     message = "You have unsaved data. Press OK to leave without saving."
-)
+}
 
-private fun RBuilder.iconInput(pin: Pin, onChange: (Event) -> Unit) {
+private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*>) -> Unit) {
     configInput(
         labelText = "Icon",
         id = "pin-icon",
         name = "icon",
         value = pin.icon,
-        type = InputType.text,
+        type = react.dom.html.InputType.text,
         placeholder = "Font-awesome icon codes, without the size class",
         onChange = onChange
     )
     span {
         +"This is the icon for the pin. This will be its primary identifier, so "
-        a("https://fontawesome.com/icons?d=gallery&m=free") {
+        a {
+            this.href = "https://fontawesome.com/icons?d=gallery&m=free"
             +"choose wisely."
         }
     }
 }
 
-private fun RBuilder.nameInput(pin: Pin, onChange: (Event) -> Unit) {
+private fun ChildrenBuilder.nameInput(pin: Pin, onChange: (ChangeEvent<*>) -> Unit) {
     configInput(
         labelText = "Name",
         id = "pin-name",
         name = "name",
         value = pin.name,
-        type = InputType.text,
+        type = react.dom.html.InputType.text,
         onChange = onChange,
         placeholder = "The name of the pin."
     )
     span { +"This is what you call the pin. You won't see this much." }
 }
 
-private fun RBuilder.targetInput(onChange: (Event) -> Unit) {
-    label { attrs { htmlFor = "pinTarget" }; +"Target" }
+private fun ChildrenBuilder.targetInput(onChange: (ChangeEvent<*>) -> Unit) {
+    label { htmlFor = "pinTarget"; +"Target" }
     select {
-        attrs {
-            id = "pinTarget"
-            name = "target"
-            this["value"] = ""
-            onChangeFunction = onChange
-        }
+        id = "pinTarget"
+        name = "target"
+        this.value = ""
+        this.onChange = onChange
         mapOf(
             PinTarget.Pair to "Pair"
         ).map { (rule, description) ->
             option {
-                attrs {
-                    key = "0"
-                    value = rule.toValue()
-                    label = description
-                }
+                key = "0"
+                value = rule.toValue()
+                label = description
             }
         }
     }

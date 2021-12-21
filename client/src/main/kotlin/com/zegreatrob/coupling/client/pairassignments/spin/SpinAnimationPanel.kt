@@ -6,11 +6,10 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader
-import com.zegreatrob.coupling.client.player.PlayerCardProps
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -65,9 +64,7 @@ val spinAnimationPanel = reactFunction<SpinAnimationPanel> { (tribe, rosteredPai
 private fun RBuilder.assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCouplingPair>) = div(
     classes = styles["pairAssignments"]
 ) {
-    revealedPairs.mapIndexed { index, it ->
-        child(AssignedPair(tribe, it, false, { _: PinnedPlayer, _: String -> }, { it: String -> }), key = "$index")
-    }
+    revealedPairs.mapIndexed { index, it -> child(AssignedPair(tribe, it, false), key = "$index") }
 }
 
 private fun RBuilder.playerSpotlight(shownPlayer: Player?) = div(classes = styles["playerSpotlight"]) {
@@ -86,7 +83,7 @@ private fun RBuilder.flippedPlayer(player: Player, key: String? = null) = flippe
     styledDiv {
         attrs { this.key = key ?: "" }
         css { display = Display.inlineBlock }
-        playerCard(PlayerCardProps(TribeId(""), player))
+        playerCard(PlayerCard(TribeId(""), player))
     }
 }
 

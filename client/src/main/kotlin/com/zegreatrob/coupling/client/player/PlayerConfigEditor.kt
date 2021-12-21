@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.external.react.*
-import com.zegreatrob.coupling.client.external.reactrouter.prompt
+import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.*
@@ -12,12 +12,18 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
-import kotlinx.html.InputType
-import kotlinx.html.id
-import kotlinx.html.js.onChangeFunction
-import org.w3c.dom.events.Event
-import react.RBuilder
-import react.dom.*
+import com.zegreatrob.minreact.child
+import react.ChildrenBuilder
+import react.dom.events.ChangeEvent
+import react.dom.html.InputType.text
+import react.dom.html.ReactHTML.datalist
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.label
+import react.dom.html.ReactHTML.li
+import react.dom.html.ReactHTML.option
+import react.dom.html.ReactHTML.select
+import react.dom.html.ReactHTML.span
+import react.key
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
@@ -35,7 +41,7 @@ val playerConfigEditor by lazy { playerConfigEditorFunc(WindowFunctions) }
 
 private val styles = useStyles("player/PlayerConfigEditor")
 
-val playerConfigEditorFunc = windowReactFunc<PlayerConfigEditor> { props, windowFuncs ->
+val playerConfigEditorFunc = windowTmFC<PlayerConfigEditor> { props, windowFuncs ->
     val (tribe, player, reload, dispatchFunc) = props
     val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
@@ -48,41 +54,44 @@ val playerConfigEditorFunc = windowReactFunc<PlayerConfigEditor> { props, window
         .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
 
     if (redirectUrl != null)
-        Navigate { attrs.to = redirectUrl }
+        Navigate { to = redirectUrl }
     else
-        span(classes = styles.className) {
-            configHeader(tribe) { +"Player Configuration" }
+        span {
+            className = styles.className
+            ConfigHeader {
+                this.tribe = tribe
+                +"Player Configuration"
+            }
             div {
-                div(classes = styles["player"]) {
+                div {
+                    className = styles["player"]
                     playerConfigForm(updatedPlayer, tribe, onChange, onSubmit, onRemove)
 //                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
                 }
-                playerCard(PlayerCardProps(tribe.id, updatedPlayer, size = 250))
+                child(PlayerCard(tribe.id, updatedPlayer, size = 250))
             }
         }
 }
 
-private fun RBuilder.promptOnExit(shouldShowPrompt: Boolean) = prompt(
-    `when` = shouldShowPrompt,
+private fun ChildrenBuilder.promptOnExit(shouldShowPrompt: Boolean) = PromptComponent {
+    `when` = shouldShowPrompt
     message = "You have unsaved data. Press OK to leave without saving."
-)
+}
 
-private fun RBuilder.playerConfigForm(
+private fun ChildrenBuilder.playerConfigForm(
     player: Player,
     tribe: Tribe,
-    onChange: (Event) -> Unit,
+    onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
     onRemoveFunc: (() -> Unit)?
-) = child(ConfigForm) {
-    attrs {
-        this.onSubmit = onSubmit
-        this.onRemove = onRemoveFunc
-    }
+) = ConfigForm {
+    this.onSubmit = onSubmit
+    this.onRemove = onRemoveFunc
     editorDiv(tribe, player, onChange)
 }
 
-private fun RBuilder.editorDiv(tribe: Tribe, player: Player, onChange: (Event) -> Unit) = div {
-    editor {
+private fun ChildrenBuilder.editorDiv(tribe: Tribe, player: Player, onChange: (ChangeEvent<*>) -> Unit) = div {
+    Editor {
         li { nameInput(player, onChange) }
         li { emailInput(player, onChange) }
         if (tribe.callSignsEnabled) {
@@ -94,49 +103,49 @@ private fun RBuilder.editorDiv(tribe: Tribe, player: Player, onChange: (Event) -
     }
 }
 
-private fun RBuilder.nameInput(player: Player, onChange: (Event) -> Unit) {
+private fun ChildrenBuilder.nameInput(player: Player, onChange: (ChangeEvent<*>) -> Unit) {
     configInput(
         labelText = "Name",
         id = "player-name",
         name = "name",
         value = player.name,
-        type = InputType.text,
+        type = text,
         onChange = onChange,
         placeholder = "My name is..."
     )
     span { +"What's your moniker?" }
 }
 
-private fun RBuilder.emailInput(player: Player, onChange: (Event) -> Unit) {
+private fun ChildrenBuilder.emailInput(player: Player, onChange: (ChangeEvent<*>) -> Unit) {
     configInput(
         labelText = "Email",
         id = "player-email",
         name = "email",
         value = player.email,
-        type = InputType.text,
+        type = text,
         onChange = onChange,
         placeholder = "email"
     )
     span {
         +"Email provides access privileges, so you can see all Tribes you're in!"
         +"To change your player picture, assign a"
-        child(gravatarLink)
+        gravatarLink()
         +"to this email."
     }
 }
 
-private fun RBuilder.callSignConfig(player: Player, onChange: (Event) -> Unit) {
+private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEvent<*>) -> Unit) {
     li {
         configInput(
             labelText = "Call-Sign Adjective",
             id = "adjective-input",
             name = "callSignAdjective",
             value = player.callSignAdjective,
-            type = InputType.text,
+            type = text,
             onChange = onChange,
             list = "callSignAdjectiveOptions"
         )
-        datalist { attrs { id = "callSignAdjectiveOptions" } }
+        datalist { id = "callSignAdjectiveOptions" }
         span { +"I feel the need..." }
     }
     li {
@@ -145,50 +154,45 @@ private fun RBuilder.callSignConfig(player: Player, onChange: (Event) -> Unit) {
             id = "noun-input",
             name = "callSignNoun",
             value = player.callSignNoun,
-            type = InputType.text,
+            type = text,
             onChange = onChange,
             list = "callSignNounOptions"
         )
-        datalist { attrs { id = "callSignNounOptions" } }
+        datalist { id = "callSignNounOptions" }
         span { +"... the need for speed!" }
     }
 
 }
 
-private fun RBuilder.badgeConfig(
+private fun ChildrenBuilder.badgeConfig(
     tribe: Tribe,
     player: Player,
-    onChange: (Event) -> Unit,
+    onChange: (ChangeEvent<*>) -> Unit,
     className: String
-) = li(classes = className) {
-    label { attrs { htmlFor = "badge" }; +"Badge" }
+) = li {
+    this.className = className
+    label { htmlFor = "badge"; +"Badge" }
     select {
-        attrs {
-            id = "badge"
-            name = "badge"
-            this["value"] = "${player.badge}"
-            onChangeFunction = onChange
-        }
+        id = "badge"
+        name = "badge"
+        this.value = "${player.badge}"
+        this.onChange = onChange
         defaultBadgeOption(tribe)
         altBadgeOption(tribe)
     }
     span { +"Your badge makes you feel... different than the others." }
 }
 
-private fun RBuilder.altBadgeOption(tribe: Tribe) = option {
-    attrs {
-        id = "alt-badge-option"
-        key = "${Badge.Alternate.value}"
-        value = "${Badge.Alternate.value}"
-        label = tribe.alternateBadgeName
-    }
+private fun ChildrenBuilder.altBadgeOption(tribe: Tribe) = option {
+    id = "alt-badge-option"
+    key = "${Badge.Alternate.value}"
+    value = "${Badge.Alternate.value}"
+    label = tribe.alternateBadgeName
 }
 
-private fun RBuilder.defaultBadgeOption(tribe: Tribe) = option {
-    attrs {
-        id = "default-badge-option"
-        key = "${Badge.Default.value}"
-        value = "${Badge.Default.value}"
-        label = tribe.defaultBadgeName
-    }
+private fun ChildrenBuilder.defaultBadgeOption(tribe: Tribe) = option {
+    id = "default-badge-option"
+    key = "${Badge.Default.value}"
+    value = "${Badge.Default.value}"
+    label = tribe.defaultBadgeName
 }

@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
-import react.RBuilder
-import react.dom.div
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
+import react.ChildrenBuilder
+import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 
 data class PinCard(val tribeId: TribeId, val pin: Pin, val shouldLink: Boolean = true) : DataProps<PinCard> {
@@ -17,21 +17,28 @@ data class PinCard(val tribeId: TribeId, val pin: Pin, val shouldLink: Boolean =
 
 private val styles = useStyles("pin/PinCard")
 
-val pinCard = reactFunction<PinCard> { (tribeId, pin, shouldLink) ->
+val pinCard = tmFC<PinCard> { (tribeId, pin, shouldLink) ->
     optionalLink(shouldLink, tribeId, pin) {
-        div(styles.className) {
+        div {
+            className = styles.className
             child(PinButton(pin, PinButtonScale.Small, showTooltip = false))
-            div(classes = "pin-name") {
+            div {
+                className = "pin-name"
                 +pin.name
             }
         }
     }
 }
 
-private fun RBuilder.optionalLink(shouldLink: Boolean, tribeId: TribeId, pin: Pin, handler: RBuilder.() -> Unit) {
+private fun ChildrenBuilder.optionalLink(
+    shouldLink: Boolean,
+    tribeId: TribeId,
+    pin: Pin,
+    handler: ChildrenBuilder.() -> Unit
+) {
     if (shouldLink) {
         Link {
-            attrs.to = "/${tribeId.value}/pin/${pin.id}"
+            to = "/${tribeId.value}/pin/${pin.id}"
             handler()
         }
     } else {

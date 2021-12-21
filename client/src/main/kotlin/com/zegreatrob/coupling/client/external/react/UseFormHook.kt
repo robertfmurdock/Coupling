@@ -1,13 +1,9 @@
 package com.zegreatrob.coupling.client.external.react
 
-import kotlinx.html.InputType
-import kotlinx.html.id
-import kotlinx.html.js.onChangeFunction
-import org.w3c.dom.events.Event
-import react.RBuilder
-import react.dom.attrs
-import react.dom.input
-import react.dom.label
+import react.ChildrenBuilder
+import react.dom.events.ChangeEvent
+import react.dom.html.ReactHTML.input
+import react.dom.html.ReactHTML.label
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -16,20 +12,16 @@ fun useForm(initialValues: Json) = useStateWithSetterFunction(initialValues)
         Pair(values, eventHandler(setValues))
     }
 
-private fun eventHandler(setValues: ((Json) -> Json) -> Unit) = { event: Event ->
+private fun eventHandler(setValues: ((Json) -> Json) -> Unit) = { event: ChangeEvent<*> ->
     event.persist()
     setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
 }
 
-private fun Event.persist() {
-    unsafeCast<dynamic>().persist()
-}
-
-private inline fun Json.copyWithChangeFrom(event: Event) = json()
+private inline fun Json.copyWithChangeFrom(event: ChangeEvent<*>) = json()
     .add(this)
     .add(event.toChangeJson())
 
-private fun Event.toChangeJson(): Json {
+private fun ChangeEvent<*>.toChangeJson(): Json {
     val target = target.unsafeCast<Json>()
     val name = target["name"].unsafeCast<String>()
 
@@ -40,28 +32,26 @@ private fun Event.toChangeJson(): Json {
     }
 }
 
-fun RBuilder.configInput(
+fun ChildrenBuilder.configInput(
     labelText: String,
     id: String,
     name: String,
     value: String,
-    type: InputType,
-    onChange: (Event) -> Unit,
+    type: react.dom.html.InputType,
+    onChange: (ChangeEvent<*>) -> Unit,
     placeholder: String = "",
     list: String = "",
     checked: Boolean = false
 ) {
-    label { attrs { htmlFor = id }; +labelText }
+    label { htmlFor = id; +labelText }
     input {
-        attrs {
-            this.name = name
-            this.id = id
-            this.type = type
-            this.value = value
-            this.placeholder = placeholder
-            this.list = list
-            this.checked = checked
-            onChangeFunction = onChange
-        }
+        this.name = name
+        this.id = id
+        this.type = type
+        this.value = value
+        this.placeholder = placeholder
+        this.list = list
+        this.checked = checked
+        this.onChange = onChange
     }
 }

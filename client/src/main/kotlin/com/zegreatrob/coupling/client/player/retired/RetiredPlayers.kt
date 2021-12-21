@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.player.retired
 import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCardProps
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
@@ -26,7 +26,7 @@ val retiredPlayers = reactFunction<RetiredPlayers> { (tribe, players) ->
         div {
             players.forEach { player ->
                 playerCard(
-                    PlayerCardProps(tribe.id, player, linkToConfig = true, deselected = true),
+                    PlayerCard(tribe.id, player, linkToConfig = true, deselected = true),
                     key = player.id
                 )
             }

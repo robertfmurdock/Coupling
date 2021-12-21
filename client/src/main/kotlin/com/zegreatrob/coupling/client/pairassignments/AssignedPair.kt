@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
-import com.zegreatrob.coupling.client.player.PlayerCardProps
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -39,9 +39,9 @@ data class AssignedPair(
     val tribe: Tribe,
     val pair: PinnedCouplingPair,
     val canDrag: Boolean,
-    val swapPlayersFunc: (PinnedPlayer, String) -> Unit,
-    val pinDropFunc: PinMoveCallback
-) : DataProps<AssignedPair>{
+    val swapPlayersFunc: (PinnedPlayer, String) -> Unit = { _, _ -> },
+    val pinDropFunc: PinMoveCallback = {}
+) : DataProps<AssignedPair> {
     override val component: TMFC<AssignedPair> get() = assignedPair
 }
 
@@ -118,7 +118,7 @@ private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> Unit)
 }
 
 private fun RBuilder.notSwappablePlayer(tribe: Tribe, player: Player, tilt: Angle) =
-    playerCard(PlayerCardProps(tribe.id, player, true, tilt = tilt))
+    playerCard(PlayerCard(tribe.id, player, true, tilt = tilt))
 
 private fun RBuilder.swappablePlayer(
     tribe: Tribe,

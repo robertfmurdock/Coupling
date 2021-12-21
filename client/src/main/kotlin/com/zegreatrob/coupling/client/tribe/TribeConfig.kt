@@ -14,16 +14,22 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
-import kotlinx.html.InputType
-import kotlinx.html.id
-import kotlinx.html.js.onChangeFunction
-import org.w3c.dom.events.Event
-import react.Props
-import react.RBuilder
-import react.dom.*
-import react.fc
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
+import org.w3c.dom.HTMLSelectElement
+import react.*
+import react.dom.events.ChangeEvent
+import react.dom.events.ChangeEventHandler
+import react.dom.html.InputType.checkbox
+import react.dom.html.InputType.text
+import react.dom.html.ReactHTML
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.label
+import react.dom.html.ReactHTML.li
+import react.dom.html.ReactHTML.option
+import react.dom.html.ReactHTML.select
+import react.dom.html.ReactHTML.span
 import react.router.Navigate
-import react.useState
 import kotlin.js.Json
 
 data class TribeConfig(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) :
@@ -37,7 +43,7 @@ interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommand
 
 private val styles = useStyles("tribe/TribeConfig")
 
-val tribeConfig = reactFunction { (tribe, commandFunc): TribeConfig ->
+val tribeConfig = tmFC { (tribe, commandFunc): TribeConfig ->
     val isNew = tribe.id.value == ""
     val (values, onChange) = useForm(tribe.withDefaultTribeId().toSerializable().toJsonDynamic().unsafeCast<Json>())
     val updatedTribe = values.correctTypes().fromJsonDynamic<JsonTribe>().toModel()
@@ -47,34 +53,29 @@ val tribeConfig = reactFunction { (tribe, commandFunc): TribeConfig ->
     val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }, { redirectToTribeList() })
 
     if (redirectUrl != null)
-        Navigate { attrs.to = redirectUrl }
-    else
-        tribeConfigLayout(updatedTribe, isNew, onChange, onSave, onDelete)
-}
-
-fun RBuilder.tribeConfigLayout(
-    tribe: Tribe,
-    isNew: Boolean,
-    onChange: (Event) -> Unit,
-    onSave: () -> Unit,
-    onDelete: (() -> Unit)?
-) {
-    TribeConfigLayout {
-        attrs.tribe = tribe
-        attrs.isNew = isNew
-        attrs.onChange = onChange
-        attrs.onSave = onSave
-        attrs.onDelete = onDelete
+        Navigate { to = redirectUrl }
+    else {
+        TribeConfigLayout {
+            this.tribe = updatedTribe
+            this.isNew = isNew
+            this.onChange = onChange
+            this.onSave = onSave
+            this.onDelete = onDelete
+        }
     }
 }
 
-val TribeConfigLayout = fc<TribeConfigLayoutProps> { props ->
+val TribeConfigLayout = FC<TribeConfigLayoutProps> { props ->
     val tribe = props.tribe
-    configFrame(styles.className) {
-        configHeader(tribe) { +"Tribe Configuration" }
+    ConfigFrame {
+        className = styles.className
+        ConfigHeader {
+            this.tribe = tribe
+            +"Tribe Configuration"
+        }
         div {
             tribeConfigEditor(tribe, props.isNew ?: false, props.onChange, props.onSave, props.onDelete)
-            tribeCard(TribeCard(tribe))
+            child(TribeCard(tribe))
         }
     }
 }
@@ -82,7 +83,7 @@ val TribeConfigLayout = fc<TribeConfigLayoutProps> { props ->
 external interface TribeConfigLayoutProps : Props {
     var tribe: Tribe
     var isNew: Boolean?
-    var onChange: (Event) -> Unit
+    var onChange: (ChangeEvent<*>) -> Unit
     var onSave: () -> Unit
     var onDelete: (() -> Unit)?
 }
@@ -97,24 +98,23 @@ private fun Tribe.withDefaultTribeId() = if (id.value.isNotBlank())
 else
     copy(id = TribeId("${uuid4()}"))
 
-private fun RBuilder.tribeConfigEditor(
+private fun ChildrenBuilder.tribeConfigEditor(
     updatedTribe: Tribe,
     isNew: Boolean,
-    onChange: (Event) -> Unit,
+    onChange: (ChangeEvent<*>) -> Unit,
     onSave: () -> Unit,
     onDelete: (() -> Unit)?
-) = span(styles["tribeConfigEditor"]) {
+) = span {
+    className = styles["tribeConfigEditor"]
     ConfigForm {
-        attrs {
-            this.onSubmit = onSave
-            this.onRemove = onDelete
-        }
+        this.onSubmit = onSave
+        this.onRemove = onDelete
         editorDiv(updatedTribe, onChange, isNew)
     }
 }
 
-private fun RBuilder.editorDiv(tribe: Tribe, onChange: (Event) -> Unit, isNew: Boolean) = div {
-    editor {
+private fun ChildrenBuilder.editorDiv(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit, isNew: Boolean) = div {
+    Editor {
         li {
             nameInput(tribe, onChange)
             span { +"The full tribe name!" }
@@ -123,7 +123,7 @@ private fun RBuilder.editorDiv(tribe: Tribe, onChange: (Event) -> Unit, isNew: B
             emailInput(tribe, onChange)
             span {
                 +"The tribe email address - Attach a"
-                child(gravatarLink)
+                gravatarLink {}
                 +"to this to cheese your tribe icon."
             }
         }
@@ -165,129 +165,121 @@ private fun RBuilder.editorDiv(tribe: Tribe, onChange: (Event) -> Unit, isNew: B
     }
 }
 
-private fun RBuilder.animationSpeedSelect(tribe: Tribe, onChange: (Event) -> Unit) {
-    label {
-        attrs { htmlFor = "animation-speed" }
+private fun ChildrenBuilder.animationSpeedSelect(tribe: Tribe, onChange: ChangeEventHandler<HTMLSelectElement>) {
+    ReactHTML.label {
+        htmlFor = "animation-speed"
         +"Animation Speed"
     }
     select {
-        attrs {
-            id = "animation-speed"
-            name = "animationSpeed"
-            this["value"] = "${tribe.animationSpeed}"
-            onChangeFunction = onChange
-        }
+        id = "animation-speed"
+        name = "animationSpeed"
+        this.value = "${tribe.animationSpeed}"
+        this.onChange = onChange
         listOf(0.25, 0.5, 1.0, 1.25, 1.5, 2, 3, 4)
             .map { speed ->
                 option {
-                    attrs {
-                        key = "$speed"
-                        value = "$speed"
-                        label = "${speed}x"
-                    }
+                    key = "$speed"
+                    value = "$speed"
+                    label = "${speed}x"
                 }
             }
     }
 }
 
-private fun RBuilder.pairingRuleSelect(tribe: Tribe, onChange: (Event) -> Unit) {
+private fun ChildrenBuilder.pairingRuleSelect(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) {
     label {
-        attrs { htmlFor = "pairing-rule" }
+        htmlFor = "pairing-rule"
         +"Pairing Rule"
     }
     select {
-        attrs {
-            id = "pairing-rule"
-            name = "pairingRule"
-            this["value"] = "${toValue(tribe.pairingRule)}"
-            onChangeFunction = onChange
-        }
+        id = "pairing-rule"
+        name = "pairingRule"
+        this.value = "${toValue(tribe.pairingRule)}"
+        this.onChange = { event -> onChange(event) }
         pairingRuleDescriptions
             .map { (rule, description) ->
                 option {
-                    attrs {
-                        key = "${toValue(rule)}"
-                        value = "${toValue(rule)}"
-                        label = description
-                    }
+                    key = "${toValue(rule)}"
+                    value = "${toValue(rule)}"
+                    label = description
                 }
             }
     }
 }
 
-private fun RBuilder.altBadgeInput(tribe: Tribe, onChange: (Event) -> Unit) = configInput(
+private fun ChildrenBuilder.altBadgeInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Alt Badge Name",
     id = "alt-badge-name",
     name = "alternateBadgeName",
     value = tribe.alternateBadgeName,
-    type = InputType.text,
+    type = text,
     onChange = onChange
 )
 
-private fun RBuilder.defaultBadgeInput(tribe: Tribe, onChange: (Event) -> Unit) = configInput(
+private fun ChildrenBuilder.defaultBadgeInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Default Badge Name",
     id = "default-badge-name",
     name = "defaultBadgeName",
     value = tribe.defaultBadgeName,
-    type = InputType.text,
+    type = text,
     onChange = onChange
 )
 
-private fun RBuilder.enableBadgesInput(tribe: Tribe, onChange: (Event) -> Unit) = configInput(
+private fun ChildrenBuilder.enableBadgesInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Badges",
     id = "badge-checkbox",
     name = "badgesEnabled",
     value = tribe.id.value,
-    type = InputType.checkBox,
+    type = checkbox,
     onChange = onChange,
     checked = tribe.badgesEnabled
 )
 
-private fun RBuilder.enableAnimationsInput(tribe: Tribe, onChange: (Event) -> Unit) = configInput(
+private fun ChildrenBuilder.enableAnimationsInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Animations",
     id = "animations-checkbox",
     name = "animationsEnabled",
     value = tribe.id.value,
-    type = InputType.checkBox,
+    type = checkbox,
     onChange = onChange,
     checked = tribe.animationEnabled
 )
 
-private fun RBuilder.enableCallSignsInput(tribe: Tribe, onChange: (Event) -> Unit) = configInput(
+private fun ChildrenBuilder.enableCallSignsInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Call Signs",
     id = "call-sign-checkbox",
     name = "callSignsEnabled",
     value = tribe.id.value,
-    type = InputType.checkBox,
+    type = checkbox,
     onChange = onChange,
     checked = tribe.callSignsEnabled
 )
 
-private fun RBuilder.uniqueIdInput(tribe: Tribe, onChange: (Event) -> Unit) = configInput(
+private fun ChildrenBuilder.uniqueIdInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Unique Id",
     id = "tribe-id",
     name = "id",
     value = tribe.id.value,
-    type = InputType.text,
+    type = text,
     onChange = onChange
 )
 
-private fun RBuilder.emailInput(tribe: Tribe, onChange: (Event) -> Unit) = configInput(
+private fun ChildrenBuilder.emailInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Email",
     id = "tribe-email",
     name = "email",
     value = tribe.email ?: "",
-    type = InputType.text,
+    type = text,
     onChange = onChange,
     placeholder = "Enter the tribe email here"
 )
 
-private fun RBuilder.nameInput(tribe: Tribe, onChange: (Event) -> Unit) = configInput(
+private fun ChildrenBuilder.nameInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Name",
     id = "tribe-name",
     name = "name",
     value = tribe.name ?: "",
-    type = InputType.text,
+    type = text,
     onChange = onChange,
     placeholder = "Enter the tribe name here"
 )

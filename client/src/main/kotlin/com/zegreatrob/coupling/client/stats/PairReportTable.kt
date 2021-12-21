@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCardProps
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
@@ -52,7 +52,7 @@ private fun TimeResult.presentationString() = when (this) {
 
 private fun RBuilder.reportPlayerCard(player: Player, tribe: Tribe) = div(styles["playerCard"]) {
     attrs { key = player.id }
-    playerCard(PlayerCardProps(tribe.id, player, size = 50))
+    playerCard(PlayerCard(tribe.id, player, size = 50))
 }
 
 

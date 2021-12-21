@@ -21,15 +21,6 @@ val disconnectedMessage = CouplingSocketMessage(
     currentPairAssignments = null
 )
 
-fun RBuilder.couplingWebsocket(
-    tribeId: TribeId,
-    useSsl: Boolean = "https:" == window.location.protocol,
-    onMessage: (Message) -> Unit,
-    children: ChildrenBuilder.(((Message) -> Unit)?) -> Unit
-) = child(CouplingWebsocket(tribeId, useSsl, onMessage) { sendMessage: ((Message) -> Unit)? ->
-    children(sendMessage)
-})
-
 val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
     val (tribeId, useSsl, onMessageFunc) = props
 
@@ -53,13 +44,12 @@ val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
 
 data class CouplingWebsocket(
     val tribeId: TribeId,
-    val useSsl: Boolean,
+    val useSsl: Boolean = "https:" == window.location.protocol,
     val onMessage: (Message) -> Unit,
     val children: ChildrenBuilder.(value: ((Message) -> Unit)?) -> Unit
 ) : DataProps<CouplingWebsocket> {
     override val component: TMFC<CouplingWebsocket> get() = couplingWebsocket
 }
-
 
 private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->
     val websocket = ref.current

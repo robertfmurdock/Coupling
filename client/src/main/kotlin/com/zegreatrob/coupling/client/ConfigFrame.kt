@@ -8,11 +8,6 @@ import react.dom.div
 
 private val styles = useStyles("ConfigFrame")
 
-fun RBuilder.configFrame(className: String? = null, handler: RHandler<ConfigFrameProps>) = child(ConfigFrame) {
-    attrs.className = className
-    handler()
-}
-
 external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren
 
 val ConfigFrame = fc<ConfigFrameProps> { props ->

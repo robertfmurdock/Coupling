@@ -3,13 +3,13 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.client.reactFunction
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.properties.Angle
 import react.RBuilder
 
@@ -29,18 +29,18 @@ const val playerDragItemType = "PLAYER"
 
 private val styles = useStyles("pairassignments/DraggablePlayer")
 
-val draggablePlayer = reactFunction<DraggablePlayer> { (pinnedPlayer, tribe, zoomOnHover, tilt, onPlayerDrop) ->
-    draggableThing(playerDragItemType, pinnedPlayer.player.id, onPlayerDrop) { isOver: Boolean ->
-        playerCard(
-            PlayerCardProps(
-                tribeId = tribe.id,
-                player = pinnedPlayer.player,
+val draggablePlayer = tmFC<DraggablePlayer> { (pinnedPlayer, tribe, zoomOnHover, tilt, onPlayerDrop) ->
+    child(DraggableThing(playerDragItemType, pinnedPlayer.player.id, onPlayerDrop) { isOver ->
+        child(
+            PlayerCard(
+                tribe.id,
+                pinnedPlayer.player,
                 className = playerCardClassName(isOver, zoomOnHover),
                 tilt = tilt
             ),
             key = pinnedPlayer.player.id
         )
-    }
+    })
 }
 
 private fun playerCardClassName(isOver: Boolean, zoomOnHover: Boolean) = mapOf(

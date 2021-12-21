@@ -1,15 +1,12 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.child
-import com.zegreatrob.coupling.client.configHeader
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
-import com.zegreatrob.coupling.client.reactFunction
-import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.EndpointFinder.gqlEndpoint
 import com.zegreatrob.minreact.DataProps
@@ -31,11 +28,12 @@ private val styles = useStyles("tribe/TribeBrowser")
 
 val tribeBrowser = reactFunction<TribeBrowser> { (tribe) ->
     div(styles.className) {
-        configHeader(tribe) {
-            span(styles["headerContents"]) {
-                span(styles["headerText"]) { +(tribe.name ?: "") }
-                tribeControlButtons()
-            }
+        child(ConfigHeader) {
+        attrs.tribe = tribe
+        span(styles["headerContents"]) {
+        span(styles["headerText"]) { +(tribe.name ?: "") }
+        tribeControlButtons()
+    }
         }
     }
 }

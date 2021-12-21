@@ -7,16 +7,17 @@ import com.zegreatrob.coupling.client.frameRunner
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpin
+import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PinConfig
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
-import com.zegreatrob.coupling.client.tribe.tribeConfigLayout
+import com.zegreatrob.coupling.client.tribe.TribeConfigLayout
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.testmints.action.async.SuspendAction
 import kotlinx.css.*
@@ -67,17 +68,29 @@ val DemoPage = fc<PageProps> {
     }
 }
 
-private fun RDOMBuilder<DIV>.prepareSpinFrame(state: PrepareToSpin) = prepareSpin(
-    state.tribe,
-    state.players,
-    state.pins,
-    state.pins.map { it.id },
-    {},
-    {},
-    {}
-)
+private fun RDOMBuilder<DIV>.prepareSpinFrame(state: PrepareToSpin) {
+    PrepareSpin {
+        attrs {
+            tribe = state.tribe
+            playerSelections = state.players
+            pins = state.pins
+            pinSelections = state.pins.map { it.id }
+            setPlayerSelections = { it: List<Pair<Player, Boolean>> -> }
+            setPinSelections = { it: List<String?> -> }
+            onSpin = {}
+        }
+    }
+}
 
-private fun RDOMBuilder<DIV>.tribeConfigFrame(state: MakeTribe) = tribeConfigLayout(state.tribe, true, {}, {}, {})
+private fun RDOMBuilder<DIV>.tribeConfigFrame(state: MakeTribe) {
+    TribeConfigLayout {
+        attrs.tribe = state.tribe
+        attrs.isNew = true
+        attrs.onChange = { }
+        attrs.onSave = {}
+        attrs.onDelete = {}
+    }
+}
 
 private fun RDOMBuilder<DIV>.playerConfigFrame(state: AddPlayer) = child(
     PlayerConfig(state.tribe, state.newPlayer, state.players, {}, noOpDispatchFunc),

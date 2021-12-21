@@ -25,7 +25,7 @@ import styled.styledDiv
 
 val RBuilder.playerCard get() = childCurry(com.zegreatrob.coupling.client.player.playerCard)
 
-data class PlayerCardProps(
+data class PlayerCard(
     val tribeId: TribeId,
     val player: Player,
     val linkToConfig: Boolean = false,
@@ -34,13 +34,13 @@ data class PlayerCardProps(
     val onClick: ((Event) -> Unit) = {},
     val deselected: Boolean = false,
     val tilt: Angle = 0.deg
-) : DataProps<PlayerCardProps> {
-    override val component: TMFC<PlayerCardProps> get() = playerCard
+) : DataProps<PlayerCard> {
+    override val component: TMFC<PlayerCard> get() = playerCard
 }
 
 private val styles = useStyles("player/PlayerCard")
 
-val playerCard = reactFunction<PlayerCardProps> { props ->
+val playerCard = reactFunction<PlayerCard> { props ->
     val (tribeId, player, linkToConfig, className, size, onClick, deselected, tilt) = props
     styledDiv {
         attrs {

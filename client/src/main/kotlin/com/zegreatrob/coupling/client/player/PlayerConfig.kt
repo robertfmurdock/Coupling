@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.child
-import com.zegreatrob.coupling.client.configFrame
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
@@ -25,7 +25,8 @@ data class PlayerConfig(
 private val styles = useStyles("player/PlayerConfig")
 
 val playerConfig = reactFunction { (tribe, player, players, reload, commandFunc): PlayerConfig ->
-    configFrame(styles.className) {
+    child(ConfigFrame) {
+        attrs.className = styles.className
         child(PlayerConfigEditor(tribe, player, reload, commandFunc))
         div {
             child(PlayerRoster(players = players, tribeId = tribe.id) {

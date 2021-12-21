@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
-import com.zegreatrob.coupling.client.player.PlayerCardProps
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
@@ -60,7 +60,7 @@ private fun RBuilder.playerHeader() = div {
         "left" to Player("1", name = "RoB", imageURL = rob),
         "right" to Player("2", name = "Autumn", imageURL = autumn)
     ).forEach { (side, player) ->
-        playerCard(PlayerCardProps(tribeId, player, className = playerCardStyles(side)))
+        playerCard(PlayerCard(tribeId, player, className = playerCardStyles(side)))
     }
 }
 

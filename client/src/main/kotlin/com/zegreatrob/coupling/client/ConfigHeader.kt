@@ -5,8 +5,6 @@ import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.tribe.Tribe
 import react.PropsWithChildren
-import react.RBuilder
-import react.RHandler
 import react.dom.div
 import react.dom.h1
 import react.fc
@@ -14,12 +12,6 @@ import react.fc
 external interface ConfigHeaderProps : PropsWithChildren {
     var tribe: Tribe
 }
-
-fun RBuilder.configHeader(tribe: Tribe, handler: RHandler<ConfigHeaderProps> = {}) =
-    child(ConfigHeader) {
-        attrs.tribe = tribe
-        handler()
-    }
 
 private val styles = useStyles("ConfigHeader")
 

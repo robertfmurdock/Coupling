@@ -14,9 +14,8 @@ import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonScale
-import com.zegreatrob.coupling.client.player.PlayerCardProps
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.player.playerCard
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
@@ -24,6 +23,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
@@ -50,26 +50,26 @@ data class StatefulPrepareSpin(
 
 private val styles = useStyles("PrepareSpin")
 
-val statefulPrepareSpin =
-    reactFunction<StatefulPrepareSpin> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
-        var playerSelections by useState(defaultSelections(players, currentPairsDoc))
-        var pinSelections by useState(pins.map { it.id })
-        var redirectUrl by useState<String?>(null)
-        val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections) { redirectUrl = it }
+val statefulPrepareSpin = tmFC<StatefulPrepareSpin> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
+    var playerSelections by useState(defaultSelections(players, currentPairsDoc))
+    var pinSelections by useState(pins.map { it.id })
+    var redirectUrl by useState<String?>(null)
+    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections) { redirectUrl = it }
 
-        if (redirectUrl != null)
-            Navigate { attrs.to = redirectUrl ?: "" }
-        else
-            prepareSpin(
-                tribe,
-                playerSelections,
-                pins,
-                pinSelections,
-                { playerSelections = it },
-                { pinSelections = it },
-                onSpin
-            )
+    if (redirectUrl != null)
+        Navigate { to = redirectUrl ?: "" }
+    else {
+        PrepareSpin {
+            this.tribe = tribe
+            this.playerSelections = playerSelections
+            this.pins = pins
+            this.pinSelections = pinSelections
+            this.setPlayerSelections = { it: List<Pair<Player, Boolean>> -> playerSelections = it }
+            this.setPinSelections = { it: List<String?> -> pinSelections = it }
+            this.onSpin = onSpin
+        }
     }
+}
 
 external interface PrepareSpinProps : Props {
     var tribe: Tribe
@@ -107,28 +107,6 @@ val PrepareSpin = fc<PrepareSpinProps> { props ->
                     }
                 }
             }
-        }
-    }
-}
-
-fun RBuilder.prepareSpin(
-    tribe: Tribe,
-    playerSelections: List<Pair<Player, Boolean>>,
-    pins: List<Pin>,
-    pinSelections: List<String?>,
-    setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
-    setPinSelections: (List<String?>) -> Unit,
-    onSpin: () -> Unit
-) {
-    PrepareSpin {
-        attrs {
-            this.tribe = tribe
-            this.playerSelections = playerSelections
-            this.pins = pins
-            this.pinSelections = pinSelections
-            this.setPlayerSelections = setPlayerSelections
-            this.setPinSelections = setPinSelections
-            this.onSpin = onSpin
         }
     }
 }
@@ -203,11 +181,13 @@ private fun RBuilder.batchSelectButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
-) = child(CouplingButton(  className = className,
-    onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) },
-    children = fun RBuilder.() {
-        +text
-    }))
+) = child(
+    CouplingButton(className = className,
+        onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) },
+        children = fun RBuilder.() {
+            +text
+        })
+)
 
 private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<String?>) -> Unit, pins: List<Pin>) =
     buildElement {
@@ -272,7 +252,8 @@ private fun RBuilder.spinButton(generateNewPairsFunc: () -> Unit) = child(Coupli
         }
     }, children = fun RBuilder.() {
         +"Spin!"
-    }))
+    })
+)
 
 private fun RBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,
@@ -291,7 +272,7 @@ private fun RBuilder.playerCard(
     isSelected: Boolean,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
     playerSelections: List<Pair<Player, Boolean>>
-) = playerCard(PlayerCardProps(
+) = playerCard(PlayerCard(
     tribe.id,
     player,
     className = styles["playerCard"],
