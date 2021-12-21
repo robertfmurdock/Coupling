@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.animator
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
-import com.zegreatrob.coupling.client.user.serverMessage
+import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
@@ -82,7 +82,7 @@ val pairAssignments = reactFunction<PairAssignments> { props ->
             controlPanel(tribe)
             unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments))
 
-            serverMessage(tribe, message)
+            child(ServerMessage(tribe.id, message), key = "${message.text} ${message.players.size}")
         }
     }
 }

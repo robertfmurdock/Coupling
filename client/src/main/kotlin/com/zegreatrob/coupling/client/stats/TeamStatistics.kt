@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
-import react.dom.div
-import react.dom.span
+import com.zegreatrob.minreact.tmFC
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 
 data class TeamStatistics(
     val spinsUntilFullRotation: Int,
@@ -18,21 +18,21 @@ data class TeamStatistics(
 
 private val styles = useStyles("stats/TeamStatistics")
 
-val teamStatistics = reactFunction<TeamStatistics> { props ->
-    val (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) = props
-    div(classes = styles.className) {
+val teamStatistics = tmFC<TeamStatistics> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
+    div {
+        className = styles.className
         StatsHeader { +"Team Stats" }
         div {
             StatLabel { +"Spins Until Full Rotation:" }
-            span(classes = styles["rotationNumber"]) { +"$spinsUntilFullRotation" }
+            span { className = styles["rotationNumber"]; +"$spinsUntilFullRotation" }
         }
         div {
             StatLabel { +"Number of Active Players:" }
-            span(classes = styles["activePlayerCount"]) { +"$activePlayerCount" }
+            span { className = styles["activePlayerCount"]; +"$activePlayerCount" }
         }
         div {
             StatLabel { +"Median Spin Duration:" }
-            span(classes = styles["medianSpinDuration"]) { +medianSpinDuration }
+            span { className = styles["medianSpinDuration"]; +medianSpinDuration }
         }
     }
 }
