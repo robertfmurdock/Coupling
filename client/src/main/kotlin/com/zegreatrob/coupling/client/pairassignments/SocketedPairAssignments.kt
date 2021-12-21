@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
 import react.StateSetter
 import react.useMemo
 import react.useState
@@ -35,15 +36,7 @@ val socketedPairAssignments = reactFunction<SocketedPairAssignments> { props ->
         val updatePairAssignments = useMemo(controls.dispatchFunc) {
             updatePairAssignmentsFunc(setPairAssignments, controls.dispatchFunc, tribe.id)
         }
-        pairAssignments(
-            tribe,
-            players,
-            pairAssignments,
-            updatePairAssignments,
-            controls,
-            message,
-            allowSave
-        )
+        child(PairAssignments(tribe, players, pairAssignments, updatePairAssignments, controls, message, allowSave))
     }
 }
 

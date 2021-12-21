@@ -3,7 +3,8 @@ package com.zegreatrob.coupling.client.pairassignments.list
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.red
 import com.zegreatrob.coupling.client.dom.small
 import com.zegreatrob.coupling.client.external.react.get
@@ -71,9 +72,9 @@ private fun RBuilder.pairAssignmentRow(document: PairAssignmentDocument, onDelet
     }
 
 private fun RBuilder.deleteButton(onClickFunc: () -> Unit) =
-    couplingButton(small, red, styles["deleteButton"], onClickFunc) {
-        +"DELETE"
-    }
+    child(CouplingButton(small, red, styles["deleteButton"], onClickFunc, {}, fun RBuilder.() {
+ +"DELETE"
+}))
 
 private fun RBuilder.showPairs(document: PairAssignmentDocument) = document.pairs.mapIndexed { index, pair ->
     span(classes = styles["pair"]) {

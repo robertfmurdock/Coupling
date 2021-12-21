@@ -4,6 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.player.playerRoster
 import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
@@ -96,15 +97,15 @@ class PairAssignmentsTest {
     fun passesDownTribeIdToServerMessage() = setup(object {
     }) exercise {
         shallow {
-            pairAssignments(
+            child(PairAssignments(
                 tribe,
                 listOf(),
                 null,
-                {},
+                { it: PairAssignmentDocument -> },
                 controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false
-            )
+            ))
         }
     } verify { wrapper ->
         wrapper.find(serverMessage)

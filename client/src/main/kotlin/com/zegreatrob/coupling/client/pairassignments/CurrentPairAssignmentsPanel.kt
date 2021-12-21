@@ -150,10 +150,10 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 }
 
 
-private fun RBuilder.saveButton(onSave: () -> Unit) = couplingButton(supersize, green, styles["saveButton"], onSave) {
-    +"Save!"
-}
+private fun RBuilder.saveButton(onSave: () -> Unit) = child(CouplingButton(supersize, green, styles["saveButton"], onSave, {}, fun RBuilder.() {
+ +"Save!"
+}))
 
-private fun RBuilder.cancelButton(onCancel: () -> Unit) = couplingButton(small, red, styles["deleteButton"], onCancel) {
-    +"Cancel"
-}
+private fun RBuilder.cancelButton(onCancel: () -> Unit) = child(CouplingButton(small, red, styles["deleteButton"], onCancel, {}, fun RBuilder.() {
+ +"Cancel"
+}))

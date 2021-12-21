@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.frameRunner
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.client.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pairassignments.pairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpin
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PinConfig
@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.tribeConfigLayout
 import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.testmints.action.async.SuspendAction
 import kotlinx.css.*
@@ -87,12 +88,12 @@ private fun RDOMBuilder<DIV>.pinConfigFrame(state: AddPin) = child(
     PinConfig(state.tribe, state.newPin, state.pins, {}, noOpDispatchFunc), key = "$state"
 )
 
-private fun RDOMBuilder<DIV>.pairAssignmentsFrame(state: CurrentPairs) = pairAssignments(
+private fun RDOMBuilder<DIV>.pairAssignmentsFrame(state: CurrentPairs) = child(PairAssignments(
     state.tribe,
     state.players,
     state.pairAssignments,
-    {},
+    { it: PairAssignmentDocument -> },
     Controls(noOpDispatchFunc) {},
     CouplingSocketMessage("", emptySet()),
     state.allowSave
-)
+))

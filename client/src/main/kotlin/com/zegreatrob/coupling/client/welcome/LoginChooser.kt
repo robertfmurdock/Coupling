@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.react.get
@@ -19,7 +20,9 @@ val LoginChooser = fc<Props> {
     val signInFunc = { window.location.pathname = "${window["basename"] ?: ""}/auth0-login" }
     div(classes = styles.className) {
         div {
-            couplingButton(supersize, white, styles["loginButton"], signInFunc) { +"Login" }
+            child(CouplingButton(supersize, white, styles["loginButton"], signInFunc, {}, fun RBuilder.() {
+ +"Login"
+}))
         }
     }
 }

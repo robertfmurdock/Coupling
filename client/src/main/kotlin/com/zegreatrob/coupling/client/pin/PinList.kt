@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.child
-import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.external.react.get
@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import react.RBuilder
 import react.dom.div
 import react.dom.h2
 import react.dom.h3
@@ -37,7 +38,9 @@ val pinList = reactFunction<PinList> { (tribe, pins) ->
         div {
             Link {
                 attrs.to = "/${tribe.id.value}/pin/new"
-                couplingButton(large, orange) { +"Add a new pin." }
+                child(CouplingButton(large, orange, "", {}, {}, fun RBuilder.() {
+ +"Add a new pin."
+}))
             }
         }
     }

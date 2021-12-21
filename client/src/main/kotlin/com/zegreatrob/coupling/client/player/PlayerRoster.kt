@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.external.react.get
@@ -50,9 +51,9 @@ val playerRoster = reactFunction { (label, players, tribeId, className, override
 
 private fun RBuilder.addPlayerButton(tribeId: TribeId) = Link {
     attrs.to = "/${tribeId.value}/player/new/"
-    couplingButton(large, orange, styles["addPlayerButton"]) {
-        +"Add a new player!"
-    }
+    child(CouplingButton(large, orange, styles["addPlayerButton"], {}, {}, fun RBuilder.() {
+ +"Add a new player!"
+}))
 }
 
 private fun RBuilder.renderPlayers(players: List<Player>, tribeId: TribeId) = players.forEach { player ->

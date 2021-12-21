@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.dom
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
@@ -109,15 +108,6 @@ val black: RuleSet = {
         backgroundColor = Color("#333")
     }
 }
-
-fun RBuilder.couplingButton(
-    sizeRuleSet: RuleSet = medium,
-    colorRuleSet: RuleSet = black,
-    className: String = "",
-    onClick: () -> Unit = {},
-    block: StyledDOMBuilder<BUTTON>.() -> Unit = {},
-    handler: RBuilder.() -> Unit = {}
-) = child(CouplingButton(sizeRuleSet, colorRuleSet, className, onClick, block, handler))
 
 data class CouplingButton(
     val sizeRuleSet: RuleSet = medium,

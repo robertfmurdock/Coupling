@@ -8,11 +8,12 @@ import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
 import react.*
-import react.dom.div
+import react.dom.html.ReactHTML.div
 
 val disconnectedMessage = CouplingSocketMessage(
     text = "Not connected",
@@ -24,12 +25,12 @@ fun RBuilder.couplingWebsocket(
     tribeId: TribeId,
     useSsl: Boolean = "https:" == window.location.protocol,
     onMessage: (Message) -> Unit,
-    children: RBuilder.(((Message) -> Unit)?) -> Unit
+    children: ChildrenBuilder.(((Message) -> Unit)?) -> Unit
 ) = child(CouplingWebsocket(tribeId, useSsl, onMessage) { sendMessage: ((Message) -> Unit)? ->
     children(sendMessage)
 })
 
-val couplingWebsocket = reactFunction<CouplingWebsocket> { props ->
+val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
     val (tribeId, useSsl, onMessageFunc) = props
 
     var connected by useState(false)
@@ -39,13 +40,11 @@ val couplingWebsocket = reactFunction<CouplingWebsocket> { props ->
 
     div {
         websocket {
-            attrs {
-                url = buildSocketUrl(tribeId, useSsl).href
-                onMessage = { onMessageFunc(it.fromJsonString<JsonMessage>().toModel()) }
-                onOpen = { connected = true }
-                onClose = { onMessageFunc(disconnectedMessage) }
-                this.ref = { ref.current = it }
-            }
+            url = buildSocketUrl(tribeId, useSsl).href
+            onMessage = { onMessageFunc(it.fromJsonString<JsonMessage>().toModel()) }
+            onOpen = { connected = true }
+            onClose = { onMessageFunc(disconnectedMessage) }
+            this.ref = { ref.current = it }
         }
 
         props.children(this, if (connected) sendMessageFunc else null)
@@ -56,7 +55,7 @@ data class CouplingWebsocket(
     val tribeId: TribeId,
     val useSsl: Boolean,
     val onMessage: (Message) -> Unit,
-    val children: RBuilder.(value: ((Message) -> Unit)?) -> Unit
+    val children: ChildrenBuilder.(value: ((Message) -> Unit)?) -> Unit
 ) : DataProps<CouplingWebsocket> {
     override val component: TMFC<CouplingWebsocket> get() = couplingWebsocket
 }

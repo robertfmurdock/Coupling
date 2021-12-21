@@ -24,6 +24,7 @@ import com.zegreatrob.minreact.TMFC
 import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.css.properties.boxShadow
+import kotlinx.html.BUTTON
 import kotlinx.html.tabIndex
 import org.w3c.dom.DataTransfer
 import org.w3c.dom.Node
@@ -34,6 +35,7 @@ import react.dom.div
 import react.dom.i
 import react.router.dom.Link
 import react.useRef
+import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 import kotlin.js.Json
@@ -43,16 +45,6 @@ interface PairAssignmentsCommandDispatcher : SavePairAssignmentsCommandDispatche
     DeletePairAssignmentsCommandDispatcher {
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
-
-fun RBuilder.pairAssignments(
-    tribe: Tribe,
-    players: List<Player>,
-    pairAssignments: PairAssignmentDocument?,
-    setPairAssignments: (PairAssignmentDocument) -> Unit,
-    controls: Controls<DeletePairAssignmentsCommandDispatcher>,
-    message: CouplingSocketMessage,
-    allowSave: Boolean,
-) = child(PairAssignments(tribe, players, pairAssignments, setPairAssignments, controls, message, allowSave))
 
 data class PairAssignments(
     val tribe: Tribe,
@@ -158,12 +150,15 @@ private fun RBuilder.controlPanel(tribe: Tribe) = div {
 
 private fun RBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) = ref.current?.let { node ->
     if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
-        couplingButton(
-            large,
+        child(CouplingButton(large,
             black,
             styles["copyToClipboardButton"],
             onClick = node.copyToClipboardOnClick(),
-            block = { attrs { tabIndex = "-1" } }) { i(classes = "fa fa-clipboard") {} }
+            block = fun StyledDOMBuilder<BUTTON>.() {
+    attrs { tabIndex = "-1" }
+}, children = fun RBuilder.() {
+    i(classes = "fa fa-clipboard") {}
+}))
     }
 }
 
@@ -203,37 +198,39 @@ private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { 
 
 private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) = Link {
     attrs.to = "/${tribe.id.value}/prepare/"
-    couplingButton(supersize, pink, className) { +"Prepare to spin!" }
+    child(CouplingButton(supersize, pink, className, {}, {}, fun RBuilder.() {
+ +"Prepare to spin!"
+}))
 }
 
 private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) = Link {
     attrs.to = "/${tribe.id.value}/history/"
-    couplingButton(large, green, className) {
-        i(classes = "fa fa-history") {}
+    child(CouplingButton(large, green, className, {}, {}, fun RBuilder.() {
+ i(classes = "fa fa-history") {}
         +" History!"
-    }
+}))
 }
 
 private fun RBuilder.pinListButton(tribe: Tribe, className: String) = Link {
     attrs.to = "/${tribe.id.value}/pins/"
-    couplingButton(large, white, className) {
-        i(classes = "fa fa-peace") {}
+    child(CouplingButton(large, white, className, {}, {}, fun RBuilder.() {
+ i(classes = "fa fa-peace") {}
         +" Pin Bag!"
-    }
+}))
 }
 
 private fun RBuilder.statisticsButton(tribe: Tribe, className: String) = Link {
     attrs.to = "/${tribe.id.value}/statistics"
-    couplingButton(large, className = className) {
-        i(classes = "fa fa-database") {}
-        +" Statistics!"
-    }
+    child(CouplingButton(large,  className = className,   children = fun RBuilder.() {
+    i(classes = "fa fa-database") {}
+    +" Statistics!"
+}))
 }
 
 private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) = Link {
     attrs.to = "/${tribe.id.value}/players/retired"
-    couplingButton(large, yellow, className) {
-        i(classes = "fa fa-user-slash") {}
+    child(CouplingButton(large, yellow, className, {}, {}, fun RBuilder.() {
+ i(classes = "fa fa-user-slash") {}
         +" Retirees!"
-    }
+}))
 }

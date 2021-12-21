@@ -1,10 +1,8 @@
 package com.zegreatrob.coupling.client.tribe
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.configHeader
-import com.zegreatrob.coupling.client.dom.couplingButton
-import com.zegreatrob.coupling.client.dom.large
-import com.zegreatrob.coupling.client.dom.red
-import com.zegreatrob.coupling.client.dom.white
+import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -100,27 +98,27 @@ private fun RBuilder.tribeControlButtons() = span(classes = styles["controlButto
 
 private fun RBuilder.logoutButton() = Link {
     attrs.to = "/logout"
-    couplingButton(large, red, styles["logoutButton"]) {
-        i(classes = "fa fa-sign-out-alt") {}
+    child(CouplingButton(large, red, styles["logoutButton"], {}, {}, fun RBuilder.() {
+ i(classes = "fa fa-sign-out-alt") {}
         span { +"Sign Out" }
-    }
+}))
 }
 
 private fun RBuilder.gqlButton() = a(href = gqlEndpoint) {
-    couplingButton(large, white, styles["gqlButton"]) {
-        img(src = svgPath("graphql")) {
+    child(CouplingButton(large, white, styles["gqlButton"], {}, {}, fun RBuilder.() {
+ img(src = svgPath("graphql")) {
             attrs {
                 height = "18"
                 width = "18"
             }
         }
-    }
+}))
 }
 
 private fun RBuilder.tribeSelectButton() = Link {
     attrs.to = "/tribes/"
-    couplingButton(large, className = styles["tribeSelectButton"]) {
-        i(classes = "fa fa-arrow-circle-up") {}
-        span { +"Tribe select" }
-    }
+    child(CouplingButton(large,  className = styles["tribeSelectButton"],   children = fun RBuilder.() {
+    i(classes = "fa fa-arrow-circle-up") {}
+    span { +"Tribe select" }
+}))
 }

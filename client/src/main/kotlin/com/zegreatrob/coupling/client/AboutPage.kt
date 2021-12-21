@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.blue
-import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
@@ -45,10 +45,10 @@ private fun RBuilder.backButtonSection() = styledDiv {
 
 private fun RBuilder.backButton() = Link {
     attrs.to = "/tribes"
-    couplingButton(large, blue) {
-        i(classes = "fa fa-step-backward") {}
+    child(CouplingButton(large, blue, "", {}, {}, fun RBuilder.() {
+ i(classes = "fa fa-step-backward") {}
         span { +"Back to Coupling!" }
-    }
+}))
 }
 
 private fun RBuilder.playerHeader() = div {

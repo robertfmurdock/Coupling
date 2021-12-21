@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths.newPairAssignmentsPath
 import com.zegreatrob.coupling.client.child
-import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
@@ -29,10 +29,12 @@ import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
 import kotlinx.css.properties.boxShadow
 import kotlinx.css.properties.s
+import kotlinx.html.BUTTON
 import kotlinx.html.classes
 import react.*
 import react.dom.*
 import react.router.Navigate
+import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
@@ -201,10 +203,11 @@ private fun RBuilder.batchSelectButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
-) = couplingButton(
-    className = className,
+) = child(CouplingButton(  className = className,
     onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) },
-) { +text }
+    children = fun RBuilder.() {
+        +text
+    }))
 
 private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<String?>) -> Unit, pins: List<Pin>) =
     buildElement {
@@ -258,20 +261,18 @@ private fun RBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = flip
 
 private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 
-private fun RBuilder.spinButton(generateNewPairsFunc: () -> Unit) = couplingButton(
-    supersize,
+private fun RBuilder.spinButton(generateNewPairsFunc: () -> Unit) = child(CouplingButton(supersize,
     pink,
     styles["spinButton"],
     onClick = generateNewPairsFunc,
-    block = {
+    block = fun StyledDOMBuilder<BUTTON>.() {
         css {
             marginBottom = 10.px
             animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
         }
-    }
-) {
-    +"Spin!"
-}
+    }, children = fun RBuilder.() {
+        +"Spin!"
+    }))
 
 private fun RBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,

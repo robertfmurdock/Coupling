@@ -2,25 +2,26 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import kotlinx.html.js.onSubmitFunction
-import org.w3c.dom.events.Event
+import org.w3c.dom.HTMLFormElement
+import react.FC
 import react.PropsWithChildren
-import react.dom.form
-import react.fc
+import react.dom.events.FormEvent
+import react.dom.events.FormEventHandler
+import react.dom.html.ReactHTML.form
 import react.useState
 
 private val styles = useStyles("ConfigForm")
 
-val ConfigForm = fc { props: ConfigFormProps ->
+val ConfigForm = FC { props: ConfigFormProps ->
     val onRemove = props.onRemove
     var isSaving by useState(false)
-    val onSubmitFunc = { event: Event ->
+    val onSubmitFunc: FormEventHandler<HTMLFormElement> = { event: FormEvent<HTMLFormElement> ->
         event.preventDefault()
         isSaving = true
         props.onSubmit()
     }
     form {
-        attrs.onSubmitFunction = onSubmitFunc
+        onSubmit = onSubmitFunc
         props.children()
         configSaveButton(isSaving, styles["saveButton"])
         if (onRemove != null) {

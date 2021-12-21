@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
@@ -128,8 +129,8 @@ private fun RBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Uni
         if (showLoginChooser) {
             loginChooser()
         } else {
-            couplingButton(supersize, pink, styles["enterButton"], onEnterClick) {
-                +"Come on in!"
-            }
+            child(CouplingButton(supersize, pink, styles["enterButton"], onEnterClick, {}, fun RBuilder.() {
+ +"Come on in!"
+}))
         }
     }

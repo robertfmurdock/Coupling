@@ -1,9 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.dom.couplingButton
-import com.zegreatrob.coupling.client.dom.green
-import com.zegreatrob.coupling.client.dom.orange
-import com.zegreatrob.coupling.client.dom.supersize
+import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.reactFunction
@@ -34,12 +32,14 @@ val tribeList = reactFunction<TribeList> { (tribes) ->
 
 private fun RBuilder.aboutButton() = Link {
     attrs.to = "/about"
-    couplingButton(supersize, orange) { +"About Coupling" }
+    child(CouplingButton(supersize, orange, "", {}, {}, fun RBuilder.() {
+ +"About Coupling"
+}))
 }
 
 private fun RBuilder.newTribeButton(className: String) = Link {
     attrs.to = "/new-tribe/"
-    couplingButton(supersize, green, className) {
-        +"Add a new tribe!"
-    }
+    child(CouplingButton(supersize, green, className, {}, {}, fun RBuilder.() {
+ +"Add a new tribe!"
+}))
 }
