@@ -1,13 +1,10 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.ConfigForm
-import com.zegreatrob.coupling.client.ConfigHeader
-import com.zegreatrob.coupling.client.Editor
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
-import com.zegreatrob.coupling.client.gravatarLink
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -15,6 +12,7 @@ import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import kotlinx.css.*
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
 import react.dom.html.InputType
@@ -30,6 +28,7 @@ import react.key
 data class PlayerConfigContent(
     val tribe: Tribe,
     val player: Player,
+    val players: List<Player>,
     val onChange: (ChangeEvent<*>) -> Unit,
     val onSubmit: () -> Unit,
     val onRemove: () -> Unit
@@ -38,23 +37,37 @@ data class PlayerConfigContent(
 }
 
 private val styles = useStyles("player/PlayerConfigEditor")
+private val playerConfigStyles = useStyles("player/PlayerConfig")
 
-val playerConfigContent = tmFC<PlayerConfigContent> { (tribe, player, onChange, onSubmit, onRemove) ->
-    span {
-        className = styles.className
-        ConfigHeader {
-            this.tribe = tribe
-            +"Player Configuration"
+val playerConfigContent = tmFC<PlayerConfigContent> { (tribe, player, players, onChange, onSubmit, onRemove) ->
+    ConfigFrame {
+        className = playerConfigStyles.className
+        span {
+            className = styles.className
+            ConfigHeader {
+                this.tribe = tribe
+                +"Player Configuration"
+            }
+            div {
+                div {
+                    className = styles["player"]
+                    playerConfigForm(player, tribe, onChange, onSubmit, onRemove)
+//                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
+                }
+                child(PlayerCard(tribe.id, player, size = 250))
+            }
         }
         div {
-            div {
-                className = styles["player"]
-                playerConfigForm(player, tribe, onChange, onSubmit, onRemove)
-//                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
-            }
-            child(PlayerCard(tribe.id, player, size = 250))
+            child(PlayerRoster(players = players, tribeId = tribe.id) {
+                display = Display.inlineBlock
+                borderRadius = 20.px
+                padding = "10px"
+                border = "11px outset tan"
+                backgroundColor = Color.wheat
+            })
         }
     }
+
 }
 
 private fun ChildrenBuilder.promptOnExit(shouldShowPrompt: Boolean) = PromptComponent {

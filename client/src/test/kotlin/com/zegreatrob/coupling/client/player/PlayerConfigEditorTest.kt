@@ -24,7 +24,7 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
+        shallow(PlayerConfigEditor(tribe, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
             .shallow()
     } verify { wrapper ->
@@ -38,7 +38,7 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
+        shallow(PlayerConfigEditor(tribe, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
             .shallow()
     } verify { wrapper ->
@@ -54,7 +54,8 @@ class PlayerConfigEditorTest {
         val reloaderSpy = SpyData<Unit, Unit>()
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
-        val wrapper = shallow(PlayerConfigEditor(tribe, player, reloaderSpy::spyFunction, stubDispatchFunc))
+        val wrapper =
+            shallow(PlayerConfigEditor(tribe, player, emptyList(), reloaderSpy::spyFunction, stubDispatchFunc))
     }) exercise {
         wrapper.find(playerConfigContent)
             .shallow()
@@ -83,7 +84,7 @@ class PlayerConfigEditorTest {
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
-            PlayerConfigEditor(tribe, player, {}, stubDispatchFunc),
+            PlayerConfigEditor(tribe, player, emptyList(), {}, stubDispatchFunc),
             playerConfigEditorFunc(windowFuncs)
         ).find(playerConfigContent)
             .shallow()
@@ -111,7 +112,7 @@ class PlayerConfigEditorTest {
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
-            PlayerConfigEditor(tribe, player, {}, stubDispatchFunc),
+            PlayerConfigEditor(tribe, player, emptyList(), {}, stubDispatchFunc),
             playerConfigEditorFunc(windowFunctions)
         ).find(playerConfigContent)
             .shallow()
@@ -126,7 +127,7 @@ class PlayerConfigEditorTest {
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
-        val wrapper = shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
+        val wrapper = shallow(PlayerConfigEditor(tribe, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
             .shallow()
     }) exercise {
@@ -142,7 +143,7 @@ class PlayerConfigEditorTest {
         val tribe = Tribe(TribeId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfigEditor(tribe, player, {}, StubDispatchFunc()))
+        shallow(PlayerConfigEditor(tribe, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
             .shallow()
     } verify { wrapper ->

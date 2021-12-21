@@ -19,6 +19,7 @@ import kotlin.js.Json
 data class PlayerConfigEditor(
     val tribe: Tribe,
     val player: Player,
+    val players: List<Player>,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
 ) : DataProps<PlayerConfigEditor> {
@@ -28,7 +29,7 @@ data class PlayerConfigEditor(
 val playerConfigEditor by lazy { playerConfigEditorFunc(WindowFunctions) }
 
 val playerConfigEditorFunc = windowTmFC<PlayerConfigEditor> { props, windowFuncs ->
-    val (tribe, player, reload, dispatchFunc) = props
+    val (tribe, player, players, reload, dispatchFunc) = props
     val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
@@ -42,5 +43,5 @@ val playerConfigEditorFunc = windowTmFC<PlayerConfigEditor> { props, windowFuncs
     if (redirectUrl != null)
         Navigate { to = redirectUrl }
     else
-        child(PlayerConfigContent(tribe, updatedPlayer, onChange, onSubmit, onRemove))
+        child(PlayerConfigContent(tribe, updatedPlayer, players, onChange, onSubmit, onRemove))
 }
