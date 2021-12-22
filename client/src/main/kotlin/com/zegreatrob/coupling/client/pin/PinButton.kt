@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.reactFunction
@@ -11,7 +10,6 @@ import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import react.RBuilder
 import react.dom.attrs
 import react.dom.i
 import react.dom.span

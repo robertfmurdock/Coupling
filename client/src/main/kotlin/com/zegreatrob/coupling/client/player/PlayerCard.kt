@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
+import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -53,7 +54,7 @@ val playerCard = reactFunction<PlayerCard> { props ->
         }
 
         child(playerGravatarImage(player, size))
-        playerCardHeader(tribeId, player, size, linkToConfig)
+        child(PlayerCardHeader(tribeId, player, linkToConfig, size))
     }
 }
 

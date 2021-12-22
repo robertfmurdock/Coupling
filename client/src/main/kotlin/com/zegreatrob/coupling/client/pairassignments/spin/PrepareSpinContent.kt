@@ -24,12 +24,10 @@ import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
 import kotlinx.css.properties.boxShadow
 import kotlinx.css.properties.s
-import kotlinx.html.BUTTON
 import kotlinx.html.classes
 import react.RBuilder
 import react.buildElement
 import react.dom.*
-import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 
@@ -206,15 +204,13 @@ private fun spinButton(generateNewPairsFunc: () -> Unit) = CouplingButton(
     pink,
     styles["spinButton"],
     onClick = generateNewPairsFunc,
-    block = fun StyledDOMBuilder<BUTTON>.() {
+    block = {
         css {
             marginBottom = 10.px
             animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
         }
-    }, children = fun RBuilder.() {
-        +"Spin!"
     }
-).create()
+) { +"Spin!" }.create()
 
 
 private fun selectablePlayerCardList(

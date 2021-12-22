@@ -47,8 +47,9 @@ fun <P : DataProps<P>> RBuilder.child(
     )
 }
 
-fun <P : DataProps<P>> create(dataProps: DataProps<P>) = dataProps.component.create {
+fun <P : DataProps<P>> create(dataProps: DataProps<P>, key: String? = null) = dataProps.component.create {
     +dataProps.unsafeCast<Props>()
+    this.key = key
 }
 
 fun <P : DataProps<P>> DataProps<P>.create() = create(this)

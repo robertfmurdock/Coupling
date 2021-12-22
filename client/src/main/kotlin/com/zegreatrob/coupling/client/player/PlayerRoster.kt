@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
@@ -11,9 +11,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
 import kotlinx.css.RuleSet
 import kotlinx.html.classes
-import react.RBuilder
+import react.create
 import react.dom.attrs
 import react.dom.div
 import react.router.dom.Link
@@ -44,20 +45,19 @@ val playerRoster = reactFunction { (label, players, tribeId, className, override
                 +(label ?: "Players")
             }
             renderPlayers(players, tribeId)
+                .forEach(::child)
         }
-        addPlayerButton(tribeId)
+        +addPlayerButton(tribeId)
     }
 }
 
-private fun RBuilder.addPlayerButton(tribeId: TribeId) = Link {
-    attrs.to = "/${tribeId.value}/player/new/"
-    child(CouplingButton(large, orange, styles["addPlayerButton"], {}, {}, fun RBuilder.() {
- +"Add a new player!"
-}))
+private fun addPlayerButton(tribeId: TribeId) = Link.create {
+    to = "/${tribeId.value}/player/new/"
+    child(CouplingButton(large, orange, styles["addPlayerButton"], {}, {}) { +"Add a new player!" })
 }
 
-private fun RBuilder.renderPlayers(players: List<Player>, tribeId: TribeId) = players.forEach { player ->
-    child(
+private fun renderPlayers(players: List<Player>, tribeId: TribeId) = players.map { player ->
+    create(
         PlayerCard(tribeId, player, linkToConfig = true),
         key = player.id
     )
