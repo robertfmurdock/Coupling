@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.domtoimage.domToImage
 import com.zegreatrob.coupling.client.external.react.get
@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator
 import com.zegreatrob.coupling.client.player.PlayerRoster
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
@@ -22,21 +21,18 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.css.properties.boxShadow
-import kotlinx.html.BUTTON
 import kotlinx.html.tabIndex
 import org.w3c.dom.DataTransfer
 import org.w3c.dom.Node
-import react.MutableRefObject
-import react.RBuilder
+import react.*
 import react.dom.attrs
-import react.dom.div
+import react.dom.html.ReactHTML.div
 import react.dom.i
 import react.router.dom.Link
-import react.useRef
-import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
 import kotlin.js.Json
@@ -61,34 +57,55 @@ data class PairAssignments(
 
 private val styles = useStyles("pairassignments/PairAssignments")
 
-val pairAssignments = reactFunction<PairAssignments> { props ->
+val pairAssignments = tmFC<PairAssignments> { props ->
     val (tribe, players, pairAssignments, setPairs, controls, message, allowSave) = props
 
     val pairSectionNode = useRef<Node>(null)
 
     DndProvider {
-        attrs { backend = HTML5Backend }
-        div(classes = styles.className) {
+        backend = HTML5Backend
+        div {
+            className = styles.className
             div {
                 child(TribeBrowser(tribe))
-                styledDiv {
-                    css { verticalAlign = VerticalAlign.top }
-                    currentPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
-                    styledDiv {
-                        css { float = Float.right; width = 0.px }
-                        copyToClipboardButton(pairSectionNode)
-                    }
-                }
+                +topPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
             }
-            controlPanel(tribe)
-            unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments))
+            +controlPanel(tribe)
+            +unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments))
 
             child(ServerMessage(tribe.id, message), key = "${message.text} ${message.players.size}")
         }
     }
 }
 
-private fun RBuilder.currentPairSection(
+private fun topPairSection(
+    tribe: Tribe,
+    players: List<Player>,
+    pairAssignments: PairAssignmentDocument?,
+    setPairs: (PairAssignmentDocument) -> Unit,
+    allowSave: Boolean,
+    controls: Controls<DeletePairAssignmentsCommandDispatcher>,
+    pairSectionNode: MutableRefObject<Node>
+) = buildElement {
+    styledDiv {
+        css { verticalAlign = VerticalAlign.top }
+        +currentPairSection(
+            tribe,
+            players,
+            pairAssignments,
+            setPairs,
+            allowSave,
+            controls,
+            pairSectionNode
+        )
+        styledDiv {
+            css { float = Float.right; width = 0.px }
+            copyToClipboardButton(pairSectionNode)?.let(::child)
+        }
+    }
+}
+
+private fun currentPairSection(
     tribe: Tribe,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
@@ -96,86 +113,77 @@ private fun RBuilder.currentPairSection(
     allowSave: Boolean,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     pairSectionNode: MutableRefObject<Node>
-) = styledDiv {
-    attrs {
-        ref = pairSectionNode
-    }
-    css {
-        display = Display.inlineBlock
-        borderRadius = 20.px
-        padding(5.px)
-        margin(5.px, 0.px)
-        backgroundColor = hsla(146, 17, 80, 1.0)
-        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
-    }
-    if (pairAssignments == null) {
-        noPairsHeader()
-    } else {
-        pairAssignmentsAnimator(tribe, players, pairAssignments, allowSave, setPairAssignments, controls)
+) = buildElement {
+    styledDiv {
+        attrs {
+            ref = pairSectionNode
+        }
+        css {
+            display = Display.inlineBlock
+            borderRadius = 20.px
+            padding(5.px)
+            margin(5.px, 0.px)
+            backgroundColor = hsla(146, 17, 80, 1.0)
+            boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
+        }
+        if (pairAssignments == null) {
+            +noPairsHeader()
+        } else {
+            +pairAssignmentsAnimator(tribe, players, pairAssignments, allowSave, setPairAssignments, controls)
+        }
     }
 }
 
-private fun RBuilder.pairAssignmentsAnimator(
+private fun pairAssignmentsAnimator(
     tribe: Tribe,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument,
     allowSave: Boolean,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>
-) {
-    child(
-        PairAssignmentsAnimator(tribe, players, pairAssignments, enabled = tribe.animationEnabled && allowSave) {
-            child(
-                CurrentPairAssignmentsPanel(
-                    tribe,
-                    pairAssignments,
-                    setPairAssignments,
-                    allowSave,
-                    controls.dispatchFunc
-                )
-            )
+) = PairAssignmentsAnimator(tribe, players, pairAssignments, enabled = tribe.animationEnabled && allowSave) {
+    child(CurrentPairAssignmentsPanel(tribe, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
+}.create()
+
+private fun noPairsHeader() = buildElement {
+    styledDiv {
+        css {
+            border = "8px outset dimgray"
+            backgroundColor = Color.aliceBlue
+            display = Display.inlineBlock
+            borderRadius = 40.px
+            fontSize = LinearDimension("xx-large")
+            fontWeight = FontWeight.bold
+            width = 500.px
+            height = 150.px
+            padding(100.px, 5.px, 5.px)
+            margin(0.px, 2.px, 5.px)
         }
-    )
-}
-
-private fun RBuilder.noPairsHeader() = styledDiv {
-    css {
-        border = "8px outset dimgray"
-        backgroundColor = Color.aliceBlue
-        display = Display.inlineBlock
-        borderRadius = 40.px
-        fontSize = LinearDimension("xx-large")
-        fontWeight = FontWeight.bold
-        width = 500.px
-        height = 150.px
-        padding(100.px, 5.px, 5.px)
-        margin(0.px, 2.px, 5.px)
-    }
-    +"No pair assignments yet!"
-}
-
-private fun RBuilder.controlPanel(tribe: Tribe) = div {
-    div(classes = styles["controlPanel"]) {
-        div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
-        viewHistoryButton(tribe, styles["viewHistoryButton"])
-        pinListButton(tribe, styles["pinListButton"])
-        statisticsButton(tribe, styles["statisticsButton"])
-        viewRetireesButton(tribe, styles["retiredPlayersButton"])
+        +"No pair assignments yet!"
     }
 }
 
-private fun RBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) = ref.current?.let { node ->
-    if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
-        child(CouplingButton(large,
+private fun controlPanel(tribe: Tribe) = div.create {
+    div {
+        className = styles["controlPanel"]
+        div { +prepareToSpinButton(tribe, styles["newPairsButton"]) }
+        +viewHistoryButton(tribe, styles["viewHistoryButton"])
+        +pinListButton(tribe, styles["pinListButton"])
+        +statisticsButton(tribe, styles["statisticsButton"])
+        +viewRetireesButton(tribe, styles["retiredPlayersButton"])
+    }
+}
+
+private fun copyToClipboardButton(ref: MutableRefObject<Node>): ReactElement? = ref.current?.let { node ->
+    if (!js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
+        null
+    } else {
+        CouplingButton(large,
             black,
             styles["copyToClipboardButton"],
             onClick = node.copyToClipboardOnClick(),
-            block = fun StyledDOMBuilder<BUTTON>.() {
-                attrs { tabIndex = "-1" }
-            }, children = fun RBuilder.() {
-                i(classes = "fa fa-clipboard") {}
-            })
-        )
+            block = { attrs { tabIndex = "-1" } }) { i(classes = "fa fa-clipboard") {} }
+            .create()
     }
 }
 
@@ -199,9 +207,9 @@ private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it
 
 external class ClipboardItem(params: Json)
 
-private fun RBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>) = child(
+private fun unpairedPlayerSection(tribe: Tribe, players: List<Player>) =
     PlayerRoster(label = "Unpaired players", players = players, tribeId = tribe.id)
-)
+        .create()
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
     if (pairAssignments == null) {
@@ -213,41 +221,39 @@ private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignm
 
 private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-private fun RBuilder.prepareToSpinButton(tribe: Tribe, className: String) = Link {
-    attrs.to = "/${tribe.id.value}/prepare/"
-    child(CouplingButton(supersize, pink, className, {}, {}, fun RBuilder.() {
-        +"Prepare to spin!"
-    }))
+private fun prepareToSpinButton(tribe: Tribe, className: String) = Link.create {
+    to = "/${tribe.id.value}/prepare/"
+    child(CouplingButton(supersize, pink, className, {}, {}) { +"Prepare to spin!" })
 }
 
-private fun RBuilder.viewHistoryButton(tribe: Tribe, className: String) = Link {
-    attrs.to = "/${tribe.id.value}/history/"
-    child(CouplingButton(large, green, className, {}, {}, fun RBuilder.() {
+private fun viewHistoryButton(tribe: Tribe, className: String) = Link.create {
+    to = "/${tribe.id.value}/history/"
+    child(CouplingButton(large, green, className, {}, {}) {
         i(classes = "fa fa-history") {}
         +" History!"
-    }))
+    })
 }
 
-private fun RBuilder.pinListButton(tribe: Tribe, className: String) = Link {
-    attrs.to = "/${tribe.id.value}/pins/"
-    child(CouplingButton(large, white, className, {}, {}, fun RBuilder.() {
+private fun pinListButton(tribe: Tribe, className: String) = Link.create {
+    to = "/${tribe.id.value}/pins/"
+    child(CouplingButton(large, white, className, {}, {}) {
         i(classes = "fa fa-peace") {}
         +" Pin Bag!"
-    }))
+    })
 }
 
-private fun RBuilder.statisticsButton(tribe: Tribe, className: String) = Link {
-    attrs.to = "/${tribe.id.value}/statistics"
-    child(CouplingButton(large, className = className, children = fun RBuilder.() {
+private fun statisticsButton(tribe: Tribe, className: String) = Link.create {
+    to = "/${tribe.id.value}/statistics"
+    child(CouplingButton(large, className = className) {
         i(classes = "fa fa-database") {}
         +" Statistics!"
-    }))
+    })
 }
 
-private fun RBuilder.viewRetireesButton(tribe: Tribe, className: String) = Link {
-    attrs.to = "/${tribe.id.value}/players/retired"
-    child(CouplingButton(large, yellow, className, {}, {}, fun RBuilder.() {
+private fun viewRetireesButton(tribe: Tribe, className: String) = Link.create {
+    to = "/${tribe.id.value}/players/retired"
+    child(CouplingButton(large, yellow, className, {}, {}) {
         i(classes = "fa fa-user-slash") {}
         +" Retirees!"
-    }))
+    })
 }

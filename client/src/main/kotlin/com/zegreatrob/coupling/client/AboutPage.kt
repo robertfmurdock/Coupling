@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 import kotlinx.css.*
 import react.FC
-import react.RBuilder
 import react.buildElement
 import react.create
 import react.dom.html.ReactHTML.div
@@ -51,10 +50,10 @@ private fun backButtonSection() = buildElement {
 
 private fun backButton() = Link.create {
     to = "/tribes"
-    child(CouplingButton(large, blue, "", {}, {}, fun RBuilder.() {
+    child(CouplingButton(large, blue, "", {}, {}) {
         i(classes = "fa fa-step-backward") {}
         span { +"Back to Coupling!" }
-    }))
+    })
 }
 
 private fun playerHeader() = div.create {

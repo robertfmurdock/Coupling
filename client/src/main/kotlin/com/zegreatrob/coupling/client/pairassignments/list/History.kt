@@ -71,9 +71,7 @@ private fun RBuilder.pairAssignmentRow(document: PairAssignmentDocument, onDelet
     }
 
 private fun RBuilder.deleteButton(onClickFunc: () -> Unit) =
-    child(CouplingButton(small, red, styles["deleteButton"], onClickFunc, {}, fun RBuilder.() {
- +"DELETE"
-}))
+    child(CouplingButton(small, red, styles["deleteButton"], onClickFunc, {}) { +"DELETE" })
 
 private fun RBuilder.showPairs(document: PairAssignmentDocument) = document.pairs.mapIndexed { index, pair ->
     span(classes = styles["pair"]) {
