@@ -25,7 +25,7 @@ kotlin {
                 implementation(project(":model"))
                 implementation(kotlin("stdlib", BuildConstants.kotlinVersion))
                 implementation(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                implementation("com.soywiz.korlibs.klock:klock:2.4.9")
+                implementation("com.soywiz.korlibs.klock:klock:2.4.10")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
         }
