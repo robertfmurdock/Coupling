@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.FrameRunner
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
+import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinContent
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PinConfigContent
 import com.zegreatrob.coupling.client.player.PlayerConfigContent
@@ -71,7 +71,7 @@ val DemoPage = FC<PageProps> {
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     val (tribe, players, pins) = state
-    child(PrepareSpin(tribe, players, pins, pins.map { it.id }, {}, {}, {}))
+    child(PrepareSpinContent(tribe, players, pins, pins.map { it.id }, {}, {}, {}))
 }
 
 private fun ChildrenBuilder.tribeConfigFrame(state: MakeTribe) {
