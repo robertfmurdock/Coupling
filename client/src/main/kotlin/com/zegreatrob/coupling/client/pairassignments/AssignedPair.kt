@@ -25,12 +25,12 @@ import kotlinx.css.properties.deg
 import kotlinx.css.visibility
 import kotlinx.html.classes
 import org.w3c.dom.Node
-import react.RBuilder
+import react.*
 import react.dom.attrs
-import react.dom.div
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 import react.dom.key
 import react.dom.span
-import react.useRef
 import styled.css
 import styled.styledDiv
 
@@ -48,6 +48,9 @@ typealias PinMoveCallback = (String) -> Unit
 
 private val styles = useStyles("pairassignments/AssignedPair")
 
+val tiltLeft = (-8).deg
+val tiltRight = 8.deg
+
 val assignedPair = reactFunction<AssignedPair> { (tribe, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.findCallSign()
 
@@ -62,8 +65,10 @@ val assignedPair = reactFunction<AssignedPair> { (tribe, pair, canDrag, swapCall
             ref = pinDroppableRef
             if (isOver) classes = classes + styles["pairPinOver"]
         }
-        callSign(tribe, callSign, styles["callSign"])
-        pair.players.mapIndexed { index, player -> playerCard(player, if (index % 2 == 0) (-8).deg else 8.deg) }
+        child(callSign(tribe, callSign, styles["callSign"]))
+        pair.players.mapIndexed { index, player ->
+            child(playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight))
+        }
         child(PinSection(pinList = pair.pins, canDrag = canDrag))
     }
 }
@@ -91,7 +96,7 @@ private fun playerCardComponent(
     tribe: Tribe,
     canDrag: Boolean,
     swap: (PinnedPlayer, String) -> Unit
-): RBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) { player, tilt ->
+): (PinnedPlayer, Angle) -> ReactElement = if (canDrag) { player, tilt ->
     playerFlipped(player.player) {
         child(swappablePlayer(player, tribe, canDrag, tilt) { droppedPlayerId: String ->
             swap(player, droppedPlayerId)
@@ -103,16 +108,18 @@ private fun playerCardComponent(
     }
 }
 
-private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> Unit) = flipped(flipId = player.id) {
-    styledDiv {
-        attrs { this.key = player.id }
-        css {
-            display = Display.inlineBlock
-            if (player == placeholderPlayer) {
-                visibility = Visibility.hidden
+private fun playerFlipped(player: Player, handler: RBuilder.() -> Unit) = buildElement {
+    flipped(flipId = player.id) {
+        styledDiv {
+            attrs { this.key = player.id }
+            css {
+                display = Display.inlineBlock
+                if (player == placeholderPlayer) {
+                    visibility = Visibility.hidden
+                }
             }
+            handler()
         }
-        handler()
     }
 }
 
@@ -123,9 +130,10 @@ private fun swappablePlayer(
     pinnedPlayer: PinnedPlayer, tribe: Tribe, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
 ) = DraggablePlayer(pinnedPlayer, tribe, zoomOnHover, tilt, onDropSwap)
 
-private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
+private fun callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div.create {
     if (tribe.callSignsEnabled && callSign != null) {
-        span(classes = classes) {
+        span {
+            className = classes
             +"${callSign.adjective} ${callSign.noun}"
         }
     }
