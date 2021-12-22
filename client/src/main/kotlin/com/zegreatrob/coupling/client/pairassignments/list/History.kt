@@ -4,6 +4,7 @@ import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.red
 import com.zegreatrob.coupling.client.dom.small
@@ -19,11 +20,13 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
-import react.RBuilder
-import react.dom.attrs
+import com.zegreatrob.minreact.child
+import react.create
 import react.dom.div
-import react.dom.key
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 import react.dom.span
+import react.key
 
 private val styles = useStyles("pairassignments/History")
 
@@ -50,7 +53,7 @@ val historyFunc = windowReactFunc<History> { (tribe, history, controls), windowF
         span(classes = styles["historyView"]) {
             div(classes = styles["header"]) { +"History!" }
             history.forEach {
-                pairAssignmentRow(it, onDeleteFactory(it.id))
+                +pairAssignmentRow(it, onDeleteFactory(it.id))
             }
         }
     }
@@ -62,30 +65,39 @@ private fun onDeleteClick(windowFunctions: WindowFunctions, deleteFunc: () -> Un
     }
 }
 
-private fun RBuilder.pairAssignmentRow(document: PairAssignmentDocument, onDeleteClick: () -> Unit) =
-    div(classes = styles["pairAssignments"]) {
-        attrs { key = document.id.value }
-        span(classes = styles["pairAssignmentsHeader"]) { +document.dateText() }
-        deleteButton(onClickFunc = onDeleteClick)
-        div { showPairs(document) }
+private fun pairAssignmentRow(document: PairAssignmentDocument, onDeleteClick: () -> Unit) = div.create {
+    className = styles["pairAssignments"]
+    key = document.id.value
+    span {
+        className = styles["pairAssignmentsHeader"]
+        +document.dateText()
     }
+    +deleteButton(onClickFunc = onDeleteClick)
+    +showPairs(document)
+}
 
-private fun RBuilder.deleteButton(onClickFunc: () -> Unit) =
-    child(CouplingButton(small, red, styles["deleteButton"], onClickFunc, {}) { +"DELETE" })
+private fun deleteButton(onClickFunc: () -> Unit) =
+    CouplingButton(small, red, styles["deleteButton"], onClickFunc, {}) { +"DELETE" }
+        .create()
 
-private fun RBuilder.showPairs(document: PairAssignmentDocument) = document.pairs.mapIndexed { index, pair ->
-    span(classes = styles["pair"]) {
-        attrs { key = "$index" }
-        pair.players.map { pinnedPlayer: PinnedPlayer ->
-            showPlayer(pinnedPlayer)
+private fun showPairs(document: PairAssignmentDocument) = div.create {
+    document.pairs.mapIndexed { index, pair ->
+        span {
+            className = styles["pair"]
+            key = "$index"
+            pair.players.map { pinnedPlayer: PinnedPlayer ->
+                +showPlayer(pinnedPlayer)
+            }
+            child(PinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"]))
         }
-        child(PinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"]))
     }
 }
 
-private fun RBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span(classes = styles["player"]) {
-    attrs { key = pinnedPlayer.player.id }
-    div(classes = styles["playerHeader"]) {
+private fun showPlayer(pinnedPlayer: PinnedPlayer) = span.create {
+    className = styles["player"]
+    key = pinnedPlayer.player.id
+    div {
+        className = styles["playerHeader"]
         +pinnedPlayer.player.name
     }
 }
