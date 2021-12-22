@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
@@ -17,20 +16,23 @@ import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display
 import kotlinx.css.properties.Angle
 import kotlinx.css.properties.deg
 import kotlinx.css.visibility
-import kotlinx.html.classes
 import org.w3c.dom.Node
-import react.*
+import react.ReactElement
+import react.buildElement
+import react.create
 import react.dom.attrs
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.dom.key
-import react.dom.span
+import react.useRef
 import styled.css
 import styled.styledDiv
 
@@ -51,7 +53,7 @@ private val styles = useStyles("pairassignments/AssignedPair")
 val tiltLeft = (-8).deg
 val tiltRight = 8.deg
 
-val assignedPair = reactFunction<AssignedPair> { (tribe, pair, canDrag, swapCallback, pinMoveCallback) ->
+val assignedPair = tmFC<AssignedPair> { (tribe, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
@@ -60,15 +62,15 @@ val assignedPair = reactFunction<AssignedPair> { (tribe, pair, canDrag, swapCall
 
     val playerCard = playerCardComponent(tribe, canDrag, swapCallback)
 
-    span(classes = styles.className) {
-        attrs {
-            ref = pinDroppableRef
-            if (isOver) classes = classes + styles["pairPinOver"]
-        }
-        child(callSign(tribe, callSign, styles["callSign"]))
+    span {
+        className = styles.className
+        ref = pinDroppableRef
+        if (isOver) className = "$className ${styles["pairPinOver"]}"
+        +callSign(tribe, callSign, styles["callSign"])
         pair.players.mapIndexed { index, player ->
-            child(playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight))
+            +playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
         }
+
         child(PinSection(pinList = pair.pins, canDrag = canDrag))
     }
 }
@@ -98,17 +100,17 @@ private fun playerCardComponent(
     swap: (PinnedPlayer, String) -> Unit
 ): (PinnedPlayer, Angle) -> ReactElement = if (canDrag) { player, tilt ->
     playerFlipped(player.player) {
-        child(swappablePlayer(player, tribe, canDrag, tilt) { droppedPlayerId: String ->
-            swap(player, droppedPlayerId)
-        })
+        swappablePlayer(player, tribe, canDrag, tilt) { droppedPlayerId: String -> swap(player, droppedPlayerId) }
+            .create()
     }
 } else { player, tilt ->
     playerFlipped(player.player) {
-        child(notSwappablePlayer(tribe, player.player, tilt))
+        notSwappablePlayer(tribe, player.player, tilt)
+            .create()
     }
 }
 
-private fun playerFlipped(player: Player, handler: RBuilder.() -> Unit) = buildElement {
+private fun playerFlipped(player: Player, handler: () -> ReactElement) = buildElement {
     flipped(flipId = player.id) {
         styledDiv {
             attrs { this.key = player.id }
@@ -118,7 +120,7 @@ private fun playerFlipped(player: Player, handler: RBuilder.() -> Unit) = buildE
                     visibility = Visibility.hidden
                 }
             }
-            handler()
+            child(handler())
         }
     }
 }

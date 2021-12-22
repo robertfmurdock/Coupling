@@ -7,12 +7,13 @@ import com.zegreatrob.minreact.tmFC
 import org.w3c.dom.Node
 import react.*
 
-inline fun <reified P : DataProps<P>> reactFunction(crossinline function: RBuilder.(P) -> Unit): TMFC<P> = tmFC { props ->
-    RBuilder()
-        .apply { function(props) }
-        .childList
-        .forEach { child(it) }
-}
+inline fun <reified P : DataProps<P>> reactFunction(crossinline function: RBuilder.(P) -> Unit): TMFC<P> =
+    tmFC { props ->
+        RBuilder()
+            .apply { function(props) }
+            .childList
+            .forEach { child(it) }
+    }
 
 fun <P : Props> RBuilder.child(
     clazz: ElementType<P>,
@@ -45,3 +46,9 @@ fun <P : DataProps<P>> RBuilder.child(
         handler = handler
     )
 }
+
+fun <P : DataProps<P>> create(dataProps: DataProps<P>) = dataProps.component.create {
+    +dataProps.unsafeCast<Props>()
+}
+
+fun <P : DataProps<P>> DataProps<P>.create() = create(this)
