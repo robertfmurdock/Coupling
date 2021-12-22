@@ -12,7 +12,11 @@ import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.*
+import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
+import com.zegreatrob.testmints.async.invoke
+import com.zegreatrob.testmints.async.waitForTest
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
@@ -82,7 +86,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
     class GivenUsersWithoutAccess {
 
         @Test
-        fun getIsNotAllowed() = testAsync {
+        fun getIsNotAllowed() = runTest {
             val sdk = authorizedKtorSdk()
             val otherSdk = authorizedKtorSdk("alt-user-${uuid4()}")
             waitForTest {
@@ -100,7 +104,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
         }
 
         @Test
-        fun postIsNotAllowed() = testAsync {
+        fun postIsNotAllowed() = runTest {
             val sdk = authorizedKtorSdk()
             val otherSdk = authorizedKtorSdk("alt-user-${uuid4()}")
             waitForTest {
@@ -124,7 +128,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
         }
 
         @Test
-        fun deleteIsNotAllowed() = testAsync {
+        fun deleteIsNotAllowed() = runTest {
             val sdk = authorizedKtorSdk()
             waitForTest {
                 asyncSetup(object {
