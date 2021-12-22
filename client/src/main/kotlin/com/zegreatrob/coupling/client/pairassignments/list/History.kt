@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.tribe.TribeCard
-import com.zegreatrob.coupling.client.tribe.tribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -46,7 +45,7 @@ val historyFunc = windowReactFunc<History> { (tribe, history, controls), windowF
     }
     div(classes = styles.className) {
         div(classes = styles["tribeBrowser"]) {
-            tribeCard(TribeCard(tribe))
+            child(TribeCard(tribe))
         }
         span(classes = styles["historyView"]) {
             div(classes = styles["header"]) { +"History!" }

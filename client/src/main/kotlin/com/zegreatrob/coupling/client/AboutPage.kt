@@ -13,10 +13,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 import kotlinx.css.*
-import react.ChildrenBuilder
 import react.FC
 import react.RBuilder
 import react.buildElement
+import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.i
 import react.dom.span
@@ -34,7 +34,7 @@ val AboutPage = FC<PageProps> {
             className = styles["content"]
             child(backButtonSection())
             Markdown { +loadMarkdownString("About") }
-            playerHeader()
+            child(playerHeader())
         }
     }
 }
@@ -44,20 +44,20 @@ private fun backButtonSection() = buildElement {
         css { position = Position.relative }
         styledSpan {
             css { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }
-            backButton()
+            child(backButton())
         }
     }
 }
 
-private fun RBuilder.backButton() = Link {
-    attrs.to = "/tribes"
+private fun backButton() = Link.create {
+    to = "/tribes"
     child(CouplingButton(large, blue, "", {}, {}, fun RBuilder.() {
         i(classes = "fa fa-step-backward") {}
         span { +"Back to Coupling!" }
     }))
 }
 
-private fun ChildrenBuilder.playerHeader() = div {
+private fun playerHeader() = div.create {
     val tribeId = TribeId("developers")
     val rob by playerImage()
     val autumn by playerImage()

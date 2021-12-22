@@ -15,9 +15,9 @@ import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
-import react.RBuilder
+import react.create
 import react.dom.attrs
-import react.dom.img
+import react.dom.html.ReactHTML.img
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledDiv
@@ -52,7 +52,7 @@ val playerCard = reactFunction<PlayerCard> { props ->
             }
         }
 
-        playerGravatarImage(player, size)
+        child(playerGravatarImage(player, size))
         playerCardHeader(tribeId, player, size, linkToConfig)
     }
 }
@@ -75,13 +75,13 @@ private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) = css {
     boxShadow(Color("rgba(0, 0, 0, 0.6)"), (size * 0.02).px, (size * 0.04).px, (size * 0.04).px)
 }
 
-
-private fun RBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
-    img(src = player.imageURL, classes = styles["playerIcon"], alt = "icon") {
-        attrs {
-            width = size.toString()
-            height = size.toString()
-        }
+private fun playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
+    img.create {
+        this.src = player.imageURL
+        className = styles["playerIcon"]
+        alt = "icon"
+        this.width = size.toDouble()
+        this.height = size.toDouble()
     }
 } else {
     gravatarImage(

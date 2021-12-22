@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.child
-import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
@@ -15,7 +14,6 @@ import kotlinx.css.*
 import kotlinx.html.SPAN
 import kotlinx.html.classes
 import kotlinx.html.tabIndex
-import react.RBuilder
 import react.dom.attrs
 import react.dom.setProp
 import react.router.dom.Link
@@ -26,8 +24,6 @@ import styled.styledSpan
 data class TribeCard(val tribe: Tribe, val size: Int = 150) : DataProps<TribeCard> {
     override val component: TMFC<TribeCard> = tribeCard
 }
-
-val RBuilder.tribeCard get() = childCurry(com.zegreatrob.coupling.client.tribe.tribeCard)
 
 private val styles = useStyles("tribe/TribeCard")
 
@@ -42,7 +38,7 @@ val tribeCard = reactFunction<TribeCard> { (tribe, size) ->
                 setProp("data-tribe-id", tribe.id.value)
             }
             child(TribeCardHeader(tribe, size))
-            tribeGravatar(tribe, size)
+            child(tribeGravatar(tribe, size))
         }
     }
 }
@@ -57,7 +53,7 @@ private fun StyledDOMBuilder<SPAN>.tribeCardCss(size: Int) = css {
 
 val noTribeImagePath = pngPath("tribes/no-tribe")
 
-private fun RBuilder.tribeGravatar(tribe: Tribe, size: Int) = gravatarImage(
+private fun tribeGravatar(tribe: Tribe, size: Int) = gravatarImage(
     email = tribe.email,
     alt = "tribe-img",
     fallback = noTribeImagePath,
