@@ -14,15 +14,11 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 import kotlinx.css.*
 import react.FC
-import react.buildElement
 import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.i
 import react.dom.span
 import react.router.dom.Link
-import styled.css
-import styled.styledDiv
-import styled.styledSpan
 
 private val styles = useStyles("About")
 
@@ -31,20 +27,16 @@ val AboutPage = FC<PageProps> {
         className = styles.className
         div {
             className = styles["content"]
-            child(backButtonSection())
+            +backButtonSection()
             Markdown { +loadMarkdownString("About") }
-            child(playerHeader())
+            +playerHeader()
         }
     }
 }
 
-private fun backButtonSection() = buildElement {
-    styledDiv {
-        css { position = Position.relative }
-        styledSpan {
-            css { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }
-            child(backButton())
-        }
+private fun backButtonSection() = cssDiv(css = { position = Position.relative }) {
+    +cssSpan(css = { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }) {
+        +backButton()
     }
 }
 

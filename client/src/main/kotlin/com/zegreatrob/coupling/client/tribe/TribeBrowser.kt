@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.ConfigHeader
+import com.zegreatrob.coupling.client.cssDiv
+import com.zegreatrob.coupling.client.cssSpan
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.red
@@ -18,11 +20,11 @@ import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
-import react.buildElement
 import react.create
 import react.dom.attrs
 import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
 import react.dom.i
 import react.dom.img
@@ -30,7 +32,6 @@ import react.dom.span
 import react.router.dom.Link
 import styled.css
 import styled.styledDiv
-import styled.styledSpan
 import kotlin.js.json
 
 data class TribeBrowser(val tribe: Tribe) : DataProps<TribeBrowser> {
@@ -50,19 +51,20 @@ val tribeBrowser = tmFC<TribeBrowser> { (tribe) ->
                     className = styles["headerText"]
                     +(tribe.name ?: "")
                 }
-                child(tribeControlButtons())
+                +tribeControlButtons()
             }
         }
     }
 }
 
-private fun notificationSection() = buildElement {
-    styledSpan {
-        css { position = Position.relative }
-        styledSpan {
-            css { float = Float.left; position = Position.absolute; top = (-5).px; right = (-80).px }
-            child(popupRecentInfo())
-        }
+private fun notificationSection() = cssSpan(css = { position = Position.relative }) {
+    +cssSpan(css = {
+        float = Float.left
+        position = Position.absolute
+        top = (-5).px
+        right = (-80).px
+    }) {
+        +popupRecentInfo()
     }
 }
 
@@ -94,28 +96,26 @@ private fun popupRecentInfo() = popup(
     )
 )
 
-private fun notificationButton(open: Boolean) = buildElement {
-    styledDiv {
-        css {
-            backgroundColor = Color.darkCyan
-            borderColor = Color.black
-            color = if (open) Color.darkGray else Color.white
-            borderRadius = 40.px
-            height = 50.px
-            width = 50.px
-            textAlign = TextAlign.center
-            verticalAlign = VerticalAlign.middle
-        }
-        i(classes = "fa fa-exclamation-circle") {}
-    }
+private fun notificationButton(open: Boolean) = cssDiv(css = {
+    backgroundColor = Color.darkCyan
+    borderColor = Color.black
+    color = if (open) Color.darkGray else Color.white
+    borderRadius = 40.px
+    height = 50.px
+    width = 50.px
+    textAlign = TextAlign.center
+    verticalAlign = VerticalAlign.middle
+}) {
+    i { className = "fa fa-exclamation-circle" }
 }
+
 
 private fun tribeControlButtons() = span.create {
     className = styles["controlButtons"]
-    tribeSelectButton()
-    logoutButton()
-    gqlButton()
-    notificationSection()
+    +tribeSelectButton()
+    +logoutButton()
+    +gqlButton()
+    +notificationSection()
 }
 
 private fun logoutButton() = Link.create {
