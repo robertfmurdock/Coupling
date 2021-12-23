@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.external.reactpopup
 
-import react.ReactElement
-import react.buildElement
-import styled.StyledHandler
+import react.*
 import styled.styled
 import kotlin.js.Json
 
@@ -13,7 +11,7 @@ fun popup(
     modal: Boolean,
     on: Array<String>,
     open: Boolean? = false,
-    handler: StyledHandler<PopupProps>,
+    handler: ChildrenBuilder.()->Unit,
     contentStyle: Json? = null
 ) = buildElement {
     styledPopup {
@@ -24,7 +22,7 @@ fun popup(
             this.trigger = { isOpen -> trigger(isOpen) }
             this.contentStyle = contentStyle
         }
-        handler()
+        Fragment.create(handler)
     }.also {
         loadDefaultCss()
     }

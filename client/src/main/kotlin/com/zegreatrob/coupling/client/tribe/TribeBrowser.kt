@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.external.reactmarkdown.markdown
+import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
 import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -30,8 +30,6 @@ import react.dom.i
 import react.dom.img
 import react.dom.span
 import react.router.dom.Link
-import styled.css
-import styled.styledDiv
 import kotlin.js.json
 
 data class TribeBrowser(val tribe: Tribe) : DataProps<TribeBrowser> {
@@ -73,20 +71,19 @@ private fun popupRecentInfo() = popup(
     modal = true,
     on = arrayOf("click"),
     handler = {
-        styledDiv {
-            css {
-                fontSize = 14.px
-                fontWeight = FontWeight.normal
+        cssDiv(css = {
+            fontSize = 14.px
+            fontWeight = FontWeight.normal
+            verticalAlign = VerticalAlign.baseline
+            borderRadius = 20.px
+            "*" {
                 verticalAlign = VerticalAlign.baseline
-                borderRadius = 20.px
-                "*" {
-                    verticalAlign = VerticalAlign.baseline
-                }
-                marginLeft = 15.px
-                marginRight = 15.px
-                marginBottom = 15.px
             }
-            markdown(loadMarkdownString("recent-info"))
+            marginLeft = 15.px
+            marginRight = 15.px
+            marginBottom = 15.px
+        }) {
+            Markdown { +loadMarkdownString("recent-info") }
         }
     },
     contentStyle = json(

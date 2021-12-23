@@ -113,7 +113,9 @@ private fun playerCardComponent(
 private fun playerFlipped(player: Player, handler: () -> ReactElement) = buildElement {
     flipped(flipId = player.id) {
         styledDiv {
-            attrs { this.key = player.id }
+            attrs {
+                this.key = player.id
+            }
             css {
                 display = Display.inlineBlock
                 if (player == placeholderPlayer) {
