@@ -116,27 +116,27 @@ private fun ChildrenBuilder.tribeControlButtons() = span {
 
 private fun ChildrenBuilder.logoutButton() = Link {
     to = "/logout"
-    child(CouplingButton(large, red, styles["logoutButton"]) {
+    child(CouplingButton(large, red, styles["logoutButton"])) {
         i { className = "fa fa-sign-out-alt" }
         span { +"Sign Out" }
-    })
+    }
 }
 
 private fun ChildrenBuilder.gqlButton() = a {
     href = gqlEndpoint
-    child(CouplingButton(large, white, styles["gqlButton"]) {
+    child(CouplingButton(large, white, styles["gqlButton"])) {
         img {
             src = svgPath("graphql")
             height = 18.0
             width = 18.0
         }
-    })
+    }
 }
 
 private fun ChildrenBuilder.tribeSelectButton() = Link {
     to = "/tribes/"
-    child(CouplingButton(large, className = styles["tribeSelectButton"]) {
+    child(CouplingButton(large, className = styles["tribeSelectButton"])) {
         i { className = "fa fa-arrow-circle-up" }
         span { +"Tribe select" }
-    })
+    }
 }

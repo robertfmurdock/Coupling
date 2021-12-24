@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.dom
 import com.zegreatrob.coupling.client.cssButton
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
@@ -12,7 +13,6 @@ import kotlinx.html.BUTTON
 import kotlinx.html.ButtonType
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import react.ChildrenBuilder
 
 val overlay = kotlinext.js.require("overlay.png").default.unsafeCast<String>()
 
@@ -113,8 +113,7 @@ data class CouplingButton(
     val className: String = "",
     val onClick: () -> Unit = {},
     val attrs: BUTTON.() -> Unit = {},
-    val css: CssBuilder.() -> Unit = {},
-    val children: ChildrenBuilder.()-> Unit
+    val css: CssBuilder.() -> Unit = {}
 ) : DataProps<CouplingButton> {
     override val component: TMFC<CouplingButton> get() = couplingButton
 }
@@ -135,7 +134,6 @@ val couplingButton = tmFC<CouplingButton> { props ->
             css()
         }
     ) {
-        props.children(this)
+        children(props)
     }
-
 }

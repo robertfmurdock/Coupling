@@ -167,13 +167,16 @@ private fun ChildrenBuilder.controlPanel(tribe: Tribe) = div {
 private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
     ref.current?.let { node ->
         if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
-            child(CouplingButton(large,
-                black,
-                styles["copyToClipboardButton"],
-                onClick = node.copyToClipboardOnClick(),
-                attrs = { tabIndex = "-1" }) {
+            child(
+                CouplingButton(
+                    large,
+                    black,
+                    styles["copyToClipboardButton"],
+                    onClick = node.copyToClipboardOnClick(),
+                    attrs = { tabIndex = "-1" })
+            ) {
                 i { className = "fa fa-clipboard" }
-            })
+            }
         }
     }
 }
@@ -213,37 +216,39 @@ private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { 
 
 private fun ChildrenBuilder.prepareToSpinButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/prepare/"
-    child(CouplingButton(supersize, pink, className) { +"Prepare to spin!" })
+    child(CouplingButton(supersize, pink, className)) {
+        +"Prepare to spin!"
+    }
 }
 
 private fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/history/"
-    child(CouplingButton(large, green, className) {
+    child(CouplingButton(large, green, className)) {
         i { this.className = "fa fa-history" }
         +" History!"
-    })
+    }
 }
 
 private fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/pins/"
-    child(CouplingButton(large, white, className) {
+    child(CouplingButton(large, white, className)) {
         i { this.className = "fa fa-peace" }
         +" Pin Bag!"
-    })
+    }
 }
 
 private fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/statistics"
-    child(CouplingButton(large, className = className) {
+    child(CouplingButton(large, className = className)) {
         i { this.className = "fa fa-database" }
         +" Statistics!"
-    })
+    }
 }
 
 private fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/players/retired"
-    child(CouplingButton(large, yellow, className) {
+    child(CouplingButton(large, yellow, className)) {
         i { this.className = "fa fa-user-slash" }
         +" Retirees!"
-    })
+    }
 }

@@ -79,7 +79,9 @@ private fun ChildrenBuilder.pairAssignmentRow(document: PairAssignmentDocument, 
 }
 
 private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) =
-    child(CouplingButton(small, red, styles["deleteButton"], onClickFunc) { +"DELETE" })
+    child(CouplingButton(small, red, styles["deleteButton"], onClickFunc)) {
+        +"DELETE"
+    }
 
 private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
     document.pairs.mapIndexed { index, pair ->

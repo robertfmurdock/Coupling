@@ -36,10 +36,10 @@ val tribeList = tmFC<TribeList> { (tribes) ->
 
 private fun ChildrenBuilder.aboutButton() = Link {
     to = "/about"
-    child(CouplingButton(supersize, orange, "") { +"About Coupling" })
+    child(CouplingButton(supersize, orange, "")) { +"About Coupling" }
 }
 
 private fun ChildrenBuilder.newTribeButton(className: String) = Link {
     to = "/new-tribe/"
-    child(CouplingButton(supersize, green, className) { +"Add a new tribe!" })
+    child(CouplingButton(supersize, green, className)) { +"Add a new tribe!" }
 }

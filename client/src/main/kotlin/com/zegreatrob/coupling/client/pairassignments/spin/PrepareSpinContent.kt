@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
@@ -53,15 +52,15 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
         className = styles.className
         div { child(TribeBrowser(tribe)) }
         div {
-            div { +spinButton(onSpin) }
+            div { spinButton(onSpin) }
             selectorAreaDiv {
                 playerSelectorDiv {
                     h1 { +"Please select players to spin." }
                     h2 { +"Tap a player to include or exclude them." }
                     +"When you're done with your selections, hit the spin button above!"
                     cssDiv(css = { margin(10.px, null) }) {
-                        +selectAllButton(playerSelections, setPlayerSelections)
-                        +selectNoneButton(playerSelections, setPlayerSelections)
+                        selectAllButton(playerSelections, setPlayerSelections)
+                        selectNoneButton(playerSelections, setPlayerSelections)
                     }
                     selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
                 }
@@ -115,26 +114,25 @@ private fun ChildrenBuilder.pinSelectorDiv(children: ChildrenBuilder.() -> Unit)
     children()
 }
 
-private fun selectAllButton(
+private fun ChildrenBuilder.selectAllButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
 ) = batchSelectButton(styles["selectAllButton"], "All in!", playerSelections, setPlayerSelections, true)
 
-private fun selectNoneButton(
+private fun ChildrenBuilder.selectNoneButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
 ) = batchSelectButton(styles["selectNoneButton"], "All out!", playerSelections, setPlayerSelections, false)
 
-private fun batchSelectButton(
+private fun ChildrenBuilder.batchSelectButton(
     className: String,
     text: String,
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
-) = CouplingButton(className = className,
+) = child(CouplingButton(className = className,
     onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
-) { +text }
-    .create()
+)) { +text }
 
 private fun ChildrenBuilder.pinSelector(
     pinSelections: List<String?>,
@@ -193,16 +191,19 @@ private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {})
 
 private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 
-private fun spinButton(generateNewPairsFunc: () -> Unit) = CouplingButton(
-    supersize,
-    pink,
-    styles["spinButton"],
-    onClick = generateNewPairsFunc,
-    css = {
-        marginBottom = 10.px
-        animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
-    }
-) { +"Spin!" }.create()
+private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit) = child(
+    CouplingButton(
+        supersize,
+        pink,
+        styles["spinButton"],
+        onClick = generateNewPairsFunc,
+        css = {
+            marginBottom = 10.px
+            animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
+        }
+    )) {
+    +"Spin!"
+}
 
 
 private fun ChildrenBuilder.selectablePlayerCardList(

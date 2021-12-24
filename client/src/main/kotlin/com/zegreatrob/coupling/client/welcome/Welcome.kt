@@ -116,6 +116,6 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
     if (showLoginChooser) {
         LoginChooser()
     } else {
-        child(CouplingButton(supersize, pink, styles["enterButton"], onEnterClick) { +"Come on in!" })
+        child(CouplingButton(supersize, pink, styles["enterButton"], onEnterClick)) { +"Come on in!" }
     }
 }

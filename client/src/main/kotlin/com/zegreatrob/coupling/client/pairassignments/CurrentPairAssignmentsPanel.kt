@@ -50,8 +50,8 @@ val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
             if (allowSave) {
                 div {
 //                    prompt(`when` = true, message = "Press OK to save these pairs.")
-                    child(saveButton(redirectToCurrentFunc))
-                    child(cancelButton(onCancel))
+                    saveButton(redirectToCurrentFunc)
+                    cancelButton(onCancel)
                 }
             }
         }
@@ -144,8 +144,12 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 }
 
 
-private fun saveButton(onSave: () -> Unit): CouplingButton =
-    CouplingButton(supersize, green, styles["saveButton"], onSave) { +"Save!" }
+private fun ChildrenBuilder.saveButton(onSave: () -> Unit) =
+    child(CouplingButton(supersize, green, styles["saveButton"], onSave)) {
+        +"Save!"
+    }
 
-private fun cancelButton(onCancel: () -> Unit) =
-    CouplingButton(small, red, styles["deleteButton"], onCancel) { +"Cancel" }
+private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) =
+    child(CouplingButton(small, red, styles["deleteButton"], onCancel)) {
+        +"Cancel"
+    }
