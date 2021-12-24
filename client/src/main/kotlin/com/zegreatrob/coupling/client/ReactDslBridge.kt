@@ -80,16 +80,16 @@ fun <T : Tag> bridge(
     }
 }
 
-fun cssSpan(
+fun ChildrenBuilder.cssSpan(
     attrs: SPAN.() -> Unit = {},
     props: DOMProps.() -> Unit = {},
     css: CssBuilder.() -> Unit,
     builder: (ChildrenBuilder).() -> Unit = {}
-) = bridge(RBuilder::styledSpan, attrs, props, css = css, builder = builder)
+) = +bridge(RBuilder::styledSpan, attrs, props, css = css, builder = builder)
 
-fun cssDiv(
+fun ChildrenBuilder.cssDiv(
     attrs: DIV.() -> Unit = {},
     props: DOMProps.() -> Unit = {},
     css: CssBuilder.() -> Unit,
     builder: ChildrenBuilder.() -> Unit = {}
-) = bridge(RBuilder::styledDiv, attrs, props, css = css, builder = builder)
+) = +bridge(RBuilder::styledDiv, attrs, props, css = css, builder = builder)

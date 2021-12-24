@@ -34,7 +34,7 @@ data class PinButton(
 private val styles = useStyles("pin/PinButton")
 
 val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClick) ->
-    +cssDiv(
+    cssDiv(
         attrs = {
             classes = classes + listOf(className, styles.className)
             onClickFunction = { onClick() }

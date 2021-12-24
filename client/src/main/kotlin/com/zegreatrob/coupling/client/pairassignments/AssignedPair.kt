@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
-import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
@@ -62,7 +62,7 @@ val assignedPair = tmFC<AssignedPair> { (tribe, pair, canDrag, swapCallback, pin
         if (isOver) className = "$className ${styles["pairPinOver"]}"
         +callSign(tribe, callSign, styles["callSign"])
         pair.players.mapIndexed { index, player ->
-            +playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
+            playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
         }
 
         child(PinSection(pinList = pair.pins, canDrag = canDrag))
@@ -92,7 +92,7 @@ private fun playerCardComponent(
     tribe: Tribe,
     canDrag: Boolean,
     swap: (PinnedPlayer, String) -> Unit
-): (PinnedPlayer, Angle) -> ReactElement = if (canDrag) { player, tilt ->
+): ChildrenBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) { player, tilt ->
     playerFlipped(player.player) {
         swappablePlayer(player, tribe, canDrag, tilt) { droppedPlayerId: String -> swap(player, droppedPlayerId) }
             .create()
@@ -104,18 +104,17 @@ private fun playerCardComponent(
     }
 }
 
-private fun playerFlipped(player: Player, handler: () -> ReactElement) = buildElement {
-    flipped(flipId = player.id) {
-        +cssDiv(
-            props = { this.key = player.id },
-            css = {
-                display = Display.inlineBlock
-                if (player == placeholderPlayer) {
-                    visibility = Visibility.hidden
-                }
-            }) {
-            +handler()
-        }
+private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactElement) = Flipped {
+    flipId = player.id
+    cssDiv(
+        props = { this.key = player.id },
+        css = {
+            display = Display.inlineBlock
+            if (player == placeholderPlayer) {
+                visibility = Visibility.hidden
+            }
+        }) {
+        +handler()
     }
 }
 

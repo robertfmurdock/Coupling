@@ -22,7 +22,7 @@ fun popup(
             this.trigger = { isOpen -> trigger(isOpen) }
             this.contentStyle = contentStyle
         }
-        Fragment.create(handler)
+        +Fragment.create(handler)
     }.also {
         loadDefaultCss()
     }

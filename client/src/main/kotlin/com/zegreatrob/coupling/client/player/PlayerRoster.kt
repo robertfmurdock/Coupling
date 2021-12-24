@@ -32,7 +32,7 @@ data class PlayerRoster(
 private val styles = useStyles("player/PlayerRoster")
 
 val playerRoster = tmFC { (label, players, tribeId, className, overrides): PlayerRoster ->
-    +cssDiv(
+    cssDiv(
         attrs = {
             if (className != null) classes = classes + className
             classes = classes + styles.className

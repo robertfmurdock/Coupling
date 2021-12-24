@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
-import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.player.PlayerCard
@@ -27,11 +27,11 @@ import kotlinx.css.properties.boxShadow
 import kotlinx.css.properties.s
 import kotlinx.html.classes
 import react.ChildrenBuilder
-import react.buildElement
 import react.dom.html.ReactHTML.br
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.h2
+import react.key
 import styled.css
 
 private val styles = useStyles("PrepareSpin")
@@ -55,24 +55,23 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
         div { child(TribeBrowser(tribe)) }
         div {
             div { +spinButton(onSpin) }
-            +selectorAreaDiv {
-                +playerSelectorDiv {
+            selectorAreaDiv {
+                playerSelectorDiv {
                     h1 { +"Please select players to spin." }
                     h2 { +"Tap a player to include or exclude them." }
                     +"When you're done with your selections, hit the spin button above!"
-                    +cssDiv(css = { margin(10.px, null) }) {
+                    cssDiv(css = { margin(10.px, null) }) {
                         +selectAllButton(playerSelections, setPlayerSelections)
                         +selectNoneButton(playerSelections, setPlayerSelections)
                     }
                     selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
-                        .forEach(::child)
                 }
                 if (pins.isNotEmpty()) {
-                    +pinSelectorDiv {
+                    pinSelectorDiv {
                         h1 { br {} }
                         h2 { +"Also, Pins." }
                         +"Tap any pin to skip."
-                        child(pinSelector(pinSelections, setPinSelections, pins))
+                        pinSelector(pinSelections, setPinSelections, pins)
                     }
                 }
             }
@@ -80,7 +79,7 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
     }
 }
 
-private fun selectorAreaDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+private fun ChildrenBuilder.selectorAreaDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     css = {
         display = Display.flex
         borderSpacing = 5.px
@@ -90,20 +89,19 @@ private fun selectorAreaDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     children()
 }
 
-private fun playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+private fun ChildrenBuilder.playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     css = {
         display = Display.inlineBlock
         flex(1.0)
         margin(5.px)
         borderRadius = 20.px
         padding(5.px)
-
         backgroundColor = Color("#fffbed")
         boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
     }
 ) { children() }
 
-private fun pinSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+private fun ChildrenBuilder.pinSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     css = {
         display = Display.inlineFlex
         flexDirection = FlexDirection.column
@@ -139,25 +137,29 @@ private fun batchSelectButton(
 ) { +text }
     .create()
 
-private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<String?>) -> Unit, pins: List<Pin>) =
-    buildElement {
-        flipper(flipKey = pinSelections.generateFlipKey(), classes = styles["pinSelector"]) {
-            +selectedPinsDiv {
-                pins.selectByIds(pinSelections)
-                    .map { pin ->
-                        +flippedPinButton(pin) { setPinSelections(pinSelections - pin.id) }
-                    }
+private fun ChildrenBuilder.pinSelector(
+    pinSelections: List<String?>,
+    setPinSelections: (List<String?>) -> Unit,
+    pins: List<Pin>
+) = Flipper {
+    flipKey = pinSelections.generateFlipKey()
+    className = styles["pinSelector"]
+    selectedPinsDiv {
+        pins.selectByIds(pinSelections)
+            .map { pin ->
+                flippedPinButton(pin) { setPinSelections(pinSelections - pin.id) }
             }
-            +deselectedPinsDiv {
-                pins.removeByIds(pinSelections)
-                    .map { pin ->
-                        +flippedPinButton(pin) { setPinSelections(pinSelections + pin.id) }
-                    }
-            }
-        }
     }
+    deselectedPinsDiv {
+        pins.removeByIds(pinSelections)
+            .map { pin ->
+                flippedPinButton(pin) { setPinSelections(pinSelections + pin.id) }
+            }
+    }
+}
 
-private fun selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+
+private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     attrs = { classes = classes + styles["selectedPins"] },
     css = {
         margin(5.px)
@@ -167,7 +169,7 @@ private fun selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     children()
 }
 
-private fun deselectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+private fun ChildrenBuilder.deselectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     attrs = { classes = classes + styles["deselectedPins"] },
     css = {
         flex(1.0)
@@ -183,14 +185,10 @@ private fun List<Pin>.selectByIds(pinSelections: List<String?>) = filter { pinSe
 
 private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pinSelections.contains(it.id) }
 
-private fun flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = buildElement {
-    flipped(pin.id) {
-        +cssDiv(
-            attrs = { key = pin.id ?: "" },
-            css = { display = Display.inlineBlock }
-        ) {
-            child(PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick))
-        }
+private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = Flipped {
+    flipId = pin.id
+    cssDiv(attrs = { key = pin.id ?: "" }, css = { display = Display.inlineBlock }) {
+        child(PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick))
     }
 }
 
@@ -210,7 +208,7 @@ private fun spinButton(generateNewPairsFunc: () -> Unit) = CouplingButton(
 ) { +"Spin!" }.create()
 
 
-private fun selectablePlayerCardList(
+private fun ChildrenBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
     tribe: Tribe

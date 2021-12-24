@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 import kotlinx.css.*
+import react.ChildrenBuilder
 import react.FC
 import react.create
 import react.dom.html.ReactHTML.div
@@ -27,15 +28,15 @@ val AboutPage = FC<PageProps> {
         className = styles.className
         div {
             className = styles["content"]
-            +backButtonSection()
+            backButtonSection()
             Markdown { +loadMarkdownString("About") }
             +playerHeader()
         }
     }
 }
 
-private fun backButtonSection() = cssDiv(css = { position = Position.relative }) {
-    +cssSpan(css = { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }) {
+private fun ChildrenBuilder.backButtonSection() = cssDiv(css = { position = Position.relative }) {
+    cssSpan(css = { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }) {
         +backButton()
     }
 }

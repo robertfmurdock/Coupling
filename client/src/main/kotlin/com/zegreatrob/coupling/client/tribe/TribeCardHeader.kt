@@ -5,10 +5,10 @@ import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.height
 import kotlinx.css.margin
 import kotlinx.css.px
@@ -25,10 +25,10 @@ data class TribeCardHeader(val tribe: Tribe, val size: Int) : DataProps<TribeCar
     override val component: TMFC<TribeCardHeader> get() = tribeCardHeader
 }
 
-val tribeCardHeader = reactFunction<TribeCardHeader> { (tribe, size) ->
+val tribeCardHeader = tmFC<TribeCardHeader> { (tribe, size) ->
     val tribeNameRef = useRef<Node>(null)
     useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
-    +cssDiv(
+    cssDiv(
         attrs = { classes = setOf(styles["header"]) },
         props = { ref = tribeNameRef },
         css = {

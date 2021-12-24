@@ -20,6 +20,8 @@ import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
+import react.ChildrenBuilder
+import react.Fragment
 import react.create
 import react.dom.attrs
 import react.dom.html.ReactHTML.a
@@ -49,14 +51,14 @@ val tribeBrowser = tmFC<TribeBrowser> { (tribe) ->
                     className = styles["headerText"]
                     +(tribe.name ?: "")
                 }
-                +tribeControlButtons()
+                tribeControlButtons()
             }
         }
     }
 }
 
-private fun notificationSection() = cssSpan(css = { position = Position.relative }) {
-    +cssSpan(css = {
+private fun ChildrenBuilder.notificationSection() = cssSpan(css = { position = Position.relative }) {
+    cssSpan(css = {
         float = Float.left
         position = Position.absolute
         top = (-5).px
@@ -67,7 +69,7 @@ private fun notificationSection() = cssSpan(css = { position = Position.relative
 }
 
 private fun popupRecentInfo() = popup(
-    trigger = { open -> notificationButton(open) },
+    trigger = { open -> Fragment.create { notificationButton(open) } },
     modal = true,
     on = arrayOf("click"),
     handler = {
@@ -93,7 +95,7 @@ private fun popupRecentInfo() = popup(
     )
 )
 
-private fun notificationButton(open: Boolean) = cssDiv(css = {
+private fun ChildrenBuilder.notificationButton(open: Boolean) = cssDiv(css = {
     backgroundColor = Color.darkCyan
     borderColor = Color.black
     color = if (open) Color.darkGray else Color.white
@@ -107,15 +109,15 @@ private fun notificationButton(open: Boolean) = cssDiv(css = {
 }
 
 
-private fun tribeControlButtons() = span.create {
+private fun ChildrenBuilder.tribeControlButtons() = span {
     className = styles["controlButtons"]
-    +tribeSelectButton()
-    +logoutButton()
-    +gqlButton()
-    +notificationSection()
+    tribeSelectButton()
+    logoutButton()
+    gqlButton()
+    notificationSection()
 }
 
-private fun logoutButton() = Link.create {
+private fun ChildrenBuilder.logoutButton() = Link {
     to = "/logout"
     child(CouplingButton(large, red, styles["logoutButton"]) {
         i(classes = "fa fa-sign-out-alt") {}
@@ -123,7 +125,7 @@ private fun logoutButton() = Link.create {
     })
 }
 
-private fun gqlButton() = a.create {
+private fun ChildrenBuilder.gqlButton() = a {
     href = gqlEndpoint
     child(CouplingButton(large, white, styles["gqlButton"]) {
         img(src = svgPath("graphql")) {
@@ -135,7 +137,7 @@ private fun gqlButton() = a.create {
     })
 }
 
-private fun tribeSelectButton() = Link.create {
+private fun ChildrenBuilder.tribeSelectButton() = Link {
     to = "/tribes/"
     child(CouplingButton(large, className = styles["tribeSelectButton"]) {
         i(classes = "fa fa-arrow-circle-up") {}

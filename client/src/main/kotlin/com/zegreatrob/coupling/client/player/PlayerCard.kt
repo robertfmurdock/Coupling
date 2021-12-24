@@ -36,7 +36,7 @@ private val styles = useStyles("player/PlayerCard")
 
 val playerCard = tmFC<PlayerCard> { props ->
     val (tribeId, player, linkToConfig, className, size, onClick, deselected, tilt) = props
-    +cssDiv(
+    cssDiv(
         attrs = {
             classes = classes + additionalClasses(className, deselected)
             onClickFunction = onClick

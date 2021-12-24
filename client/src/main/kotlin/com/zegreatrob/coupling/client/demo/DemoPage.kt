@@ -39,7 +39,7 @@ private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
 val DemoPage = FC<PageProps> {
     child(FrameRunner(DemoAnimationState.generateSequence(), 1.0) { state: DemoAnimationState ->
         div {
-            +cssDiv(css = {
+            cssDiv(css = {
                 display = Display.inlineBlock
                 border(8.px, BorderStyle.solid, rgb(94, 84, 102), 50.px)
                 backgroundColor = Color.floralWhite

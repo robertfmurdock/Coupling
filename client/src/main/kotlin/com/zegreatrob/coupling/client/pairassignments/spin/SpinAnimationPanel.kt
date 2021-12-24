@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader
 import com.zegreatrob.coupling.client.player.PlayerCard
@@ -19,8 +19,7 @@ import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display
 import kotlinx.css.visibility
-import react.buildElement
-import react.create
+import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.key
 
@@ -48,46 +47,45 @@ val spinAnimationPanel = tmFC<SpinAnimationPanel> { (tribe, rosteredPairAssignme
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
     div {
         child(PairAssignmentsHeader(pairAssignments))
-        +assignedPairs(tribe, revealedPairs)
-        +playerSpotlight(shownPlayer)
-        +playerRoster(rosterPlayers)
+        assignedPairs(tribe, revealedPairs)
+        playerSpotlight(shownPlayer)
+        playerRoster(rosterPlayers)
     }
 }
 
-private fun assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCouplingPair>) = div.create {
+private fun ChildrenBuilder.assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCouplingPair>) = div {
     className = styles["pairAssignments"]
     revealedPairs.forEachIndexed { index, it -> child(AssignedPair(tribe, it, false), key = "$index") }
 }
 
-private fun playerSpotlight(shownPlayer: Player?) = div.create {
+private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
     className = styles["playerSpotlight"]
     if (shownPlayer != null)
-        +flippedPlayer(shownPlayer)
+        flippedPlayer(shownPlayer)
     else
-        +placeholderPlayerCard()
+        placeholderPlayerCard()
 }
 
-private fun placeholderPlayerCard() = buildElement {
-    +cssDiv(css = { visibility = Visibility.hidden; display = Display.inlineBlock }) {
-        +flippedPlayer(placeholderPlayer)
+private fun ChildrenBuilder.placeholderPlayerCard() =
+    cssDiv(css = { visibility = Visibility.hidden; display = Display.inlineBlock }) {
+        flippedPlayer(placeholderPlayer)
+    }
+
+
+private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) = Flipped {
+    flipId = player.id
+    cssDiv(props = { this.key = key ?: "" }, css = { display = Display.inlineBlock }) {
+        child(PlayerCard(TribeId(""), player))
     }
 }
 
-private fun flippedPlayer(player: Player, key: String? = null) = buildElement {
-    flipped(player.id) {
-        +cssDiv(props = { this.key = key ?: "" }, css = { display = Display.inlineBlock }) {
-            child(PlayerCard(TribeId(""), player))
-        }
-    }
-}
-
-private fun playerRoster(players: List<Player>) = div.create {
+private fun ChildrenBuilder.playerRoster(players: List<Player>) = div {
     className = styles["playerRoster"]
     players.forEach { player ->
         if (player == placeholderPlayer) {
-            +placeholderPlayerCard()
+            placeholderPlayerCard()
         } else {
-            +flippedPlayer(player, key = player.id)
+            flippedPlayer(player, key = player.id)
         }
     }
 }

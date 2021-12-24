@@ -67,7 +67,7 @@ val pairAssignments = tmFC<PairAssignments> { props ->
             className = styles.className
             div {
                 child(TribeBrowser(tribe))
-                +topPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
+                topPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
             }
             +controlPanel(tribe)
             +unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments))
@@ -77,7 +77,7 @@ val pairAssignments = tmFC<PairAssignments> { props ->
     }
 }
 
-private fun topPairSection(
+private fun ChildrenBuilder.topPairSection(
     tribe: Tribe,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
@@ -86,7 +86,7 @@ private fun topPairSection(
     controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     pairSectionNode: MutableRefObject<Node>
 ) = cssDiv(css = { verticalAlign = VerticalAlign.top }) {
-    +currentPairSection(
+    currentPairSection(
         tribe,
         players,
         pairAssignments,
@@ -95,13 +95,13 @@ private fun topPairSection(
         controls,
         pairSectionNode
     )
-    +cssDiv(css = { float = Float.right; width = 0.px }) {
+    cssDiv(css = { float = Float.right; width = 0.px }) {
         copyToClipboardButton(pairSectionNode)?.let(::child)
     }
 }
 
 
-private fun currentPairSection(
+private fun ChildrenBuilder.currentPairSection(
     tribe: Tribe,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
@@ -120,7 +120,7 @@ private fun currentPairSection(
         boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
     }) {
     if (pairAssignments == null) {
-        +noPairsHeader()
+        noPairsHeader()
     } else {
         +pairAssignmentsAnimator(tribe, players, pairAssignments, allowSave, setPairAssignments, controls)
     }
@@ -137,7 +137,7 @@ private fun pairAssignmentsAnimator(
     child(CurrentPairAssignmentsPanel(tribe, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
 }.create()
 
-private fun noPairsHeader() = cssDiv(css = {
+private fun ChildrenBuilder.noPairsHeader() = cssDiv(css = {
     border = "8px outset dimgray"
     backgroundColor = Color.aliceBlue
     display = Display.inlineBlock

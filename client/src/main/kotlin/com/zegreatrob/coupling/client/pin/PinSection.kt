@@ -23,7 +23,7 @@ data class PinSection(
 private val styles = useStyles("pin/PinSection")
 
 val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
-    +cssDiv(
+    cssDiv(
         attrs = { classes = classes + styles.className + className },
         css = { marginLeft = -(pinList.size * 12 * scale.factor).px }
     ) {

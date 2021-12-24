@@ -25,7 +25,7 @@ private val styles = useStyles("tribe/TribeCard")
 val tribeCard = tmFC<TribeCard> { (tribe, size) ->
     Link {
         to = tribe.id.currentPairsPage()
-        +cssSpan(
+        cssSpan(
             attrs = {
                 classes = classes + styles.className
                 tabIndex = "0"

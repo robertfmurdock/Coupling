@@ -4,13 +4,13 @@ package com.zegreatrob.coupling.client.external.reactfliptoolkit
 
 import react.ElementType
 import react.Props
+import react.PropsWithClassName
 
 @JsName("Flipper")
 external val Flipper: ElementType<FlipperProps>
 
-external interface FlipperProps : Props {
+external interface FlipperProps : PropsWithClassName {
     var flipKey: String
-    var className: String?
 }
 
 @JsName("Flipped")

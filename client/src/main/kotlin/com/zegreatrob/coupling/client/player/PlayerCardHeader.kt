@@ -5,12 +5,12 @@ import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.margin
 import kotlinx.css.px
 import kotlinx.html.classes
@@ -33,11 +33,11 @@ data class PlayerCardHeader(
     override val component: TMFC<PlayerCardHeader> get() = playerCardHeader
 }
 
-private val playerCardHeader = reactFunction<PlayerCardHeader> { props ->
+private val playerCardHeader = tmFC<PlayerCardHeader> { props ->
     val (tribeId, player, linkToConfig, size) = props
     val playerNameRef = useRef<Node>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
-    +cssDiv(attrs = { classes = setOf(styles["header"]) }, css = { margin(top = (size * 0.02).px) }) {
+    cssDiv(attrs = { classes = setOf(styles["header"]) }, css = { margin(top = (size * 0.02).px) }) {
         +optionalLink(shouldLink = linkToConfig, url = tribeId.with(player).playerConfigPage()) {
             div.create {
                 ref = playerNameRef
