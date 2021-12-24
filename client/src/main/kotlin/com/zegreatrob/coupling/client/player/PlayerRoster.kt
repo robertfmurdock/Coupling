@@ -15,7 +15,7 @@ import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.RuleSet
 import kotlinx.html.classes
-import react.create
+import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 
@@ -47,13 +47,13 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
             renderPlayers(players, tribeId)
                 .forEach(::child)
         }
-        +addPlayerButton(tribeId)
+        addPlayerButton(tribeId)
     }
 }
 
-private fun addPlayerButton(tribeId: TribeId) = Link.create {
+private fun ChildrenBuilder.addPlayerButton(tribeId: TribeId) = Link  {
     to = "/${tribeId.value}/player/new/"
-    child(CouplingButton(large, orange, styles["addPlayerButton"], {}, {}) { +"Add a new player!" })
+    child(CouplingButton(large, orange, styles["addPlayerButton"]) { +"Add a new player!" })
 }
 
 private fun renderPlayers(players: List<Player>, tribeId: TribeId) = players.map { player ->

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.gravatar
 
 import com.zegreatrob.coupling.client.external.blueimpMd5.md5
-import react.create
+import react.ChildrenBuilder
 import react.dom.html.ReactHTML.img
 
 private fun gravatarUrl(email: String, options: GravatarOptions): String {
@@ -14,13 +14,13 @@ interface GravatarOptions {
     val size: Int
 }
 
-fun gravatarImage(
+fun ChildrenBuilder.gravatarImage(
     email: String?,
     fallback: String? = null,
     className: String? = null,
     alt: String?,
     options: GravatarOptions
-) = img.create {
+) = img {
     src = myGravatarUrl(options, email, fallback)
     this.alt = alt
     draggable = false

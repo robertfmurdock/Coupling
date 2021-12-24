@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -146,7 +145,7 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 
 
 private fun saveButton(onSave: () -> Unit): CouplingButton =
-    CouplingButton(supersize, green, styles["saveButton"], onSave, {}) { +"Save!" }
+    CouplingButton(supersize, green, styles["saveButton"], onSave) { +"Save!" }
 
 private fun cancelButton(onCancel: () -> Unit) =
-    CouplingButton(small, red, styles["deleteButton"], onCancel, {}, { +"Cancel" })
+    CouplingButton(small, red, styles["deleteButton"], onCancel) { +"Cancel" }

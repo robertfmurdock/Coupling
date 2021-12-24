@@ -7,5 +7,5 @@ import com.zegreatrob.minreact.child
 import react.ChildrenBuilder
 
 fun ChildrenBuilder.retireButton(className: String, onRetire: () -> Unit) = child(
-    CouplingButton(small, red, className, onRetire, {}) { +"Retire" }
+    CouplingButton(small, red, className, onRetire) { +"Retire" }
 )

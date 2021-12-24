@@ -26,9 +26,12 @@ import kotlinx.css.properties.Angle
 import kotlinx.css.properties.deg
 import kotlinx.css.visibility
 import org.w3c.dom.Node
-import react.*
+import react.ChildrenBuilder
+import react.ReactElement
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
+import react.key
+import react.useRef
 
 data class AssignedPair(
     val tribe: Tribe,
@@ -60,7 +63,7 @@ val assignedPair = tmFC<AssignedPair> { (tribe, pair, canDrag, swapCallback, pin
         className = styles.className
         ref = pinDroppableRef
         if (isOver) className = "$className ${styles["pairPinOver"]}"
-        +callSign(tribe, callSign, styles["callSign"])
+        callSign(tribe, callSign, styles["callSign"])
         pair.players.mapIndexed { index, player ->
             playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
         }
@@ -125,7 +128,7 @@ private fun swappablePlayer(
     pinnedPlayer: PinnedPlayer, tribe: Tribe, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
 ) = DraggablePlayer(pinnedPlayer, tribe, zoomOnHover, tilt, onDropSwap)
 
-private fun callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div.create {
+private fun ChildrenBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
     if (tribe.callSignsEnabled && callSign != null) {
         span {
             className = classes

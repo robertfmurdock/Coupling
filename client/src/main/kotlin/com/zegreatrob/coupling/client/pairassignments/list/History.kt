@@ -3,8 +3,6 @@ package com.zegreatrob.coupling.client.pairassignments.list
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.child
-import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.red
 import com.zegreatrob.coupling.client.dom.small
@@ -21,11 +19,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.child
-import react.create
-import react.dom.div
+import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
-import react.dom.span
 import react.key
 
 private val styles = useStyles("pairassignments/History")
@@ -46,14 +42,20 @@ val historyFunc = windowReactFunc<History> { (tribe, history, controls), windowF
         val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
         onDeleteClick(windowFuncs, deleteFunc)
     }
-    div(classes = styles.className) {
-        div(classes = styles["tribeBrowser"]) {
+    div {
+        className = styles.className
+        div {
+            className = styles["tribeBrowser"]
             child(TribeCard(tribe))
         }
-        span(classes = styles["historyView"]) {
-            div(classes = styles["header"]) { +"History!" }
+        span {
+            className = styles["historyView"]
+            div {
+                className = styles["header"]
+                +"History!"
+            }
             history.forEach {
-                +pairAssignmentRow(it, onDeleteFactory(it.id))
+                pairAssignmentRow(it, onDeleteFactory(it.id))
             }
         }
     }
@@ -65,35 +67,34 @@ private fun onDeleteClick(windowFunctions: WindowFunctions, deleteFunc: () -> Un
     }
 }
 
-private fun pairAssignmentRow(document: PairAssignmentDocument, onDeleteClick: () -> Unit) = div.create {
+private fun ChildrenBuilder.pairAssignmentRow(document: PairAssignmentDocument, onDeleteClick: () -> Unit) = div {
     className = styles["pairAssignments"]
     key = document.id.value
     span {
         className = styles["pairAssignmentsHeader"]
         +document.dateText()
     }
-    +deleteButton(onClickFunc = onDeleteClick)
-    +showPairs(document)
+    deleteButton(onClickFunc = onDeleteClick)
+    showPairs(document)
 }
 
-private fun deleteButton(onClickFunc: () -> Unit) =
-    CouplingButton(small, red, styles["deleteButton"], onClickFunc, {}) { +"DELETE" }
-        .create()
+private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) =
+    child(CouplingButton(small, red, styles["deleteButton"], onClickFunc) { +"DELETE" })
 
-private fun showPairs(document: PairAssignmentDocument) = div.create {
+private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
     document.pairs.mapIndexed { index, pair ->
         span {
             className = styles["pair"]
             key = "$index"
             pair.players.map { pinnedPlayer: PinnedPlayer ->
-                +showPlayer(pinnedPlayer)
+                showPlayer(pinnedPlayer)
             }
             child(PinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"]))
         }
     }
 }
 
-private fun showPlayer(pinnedPlayer: PinnedPlayer) = span.create {
+private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
     className = styles["player"]
     key = pinnedPlayer.player.id
     div {

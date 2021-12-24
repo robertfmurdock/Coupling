@@ -16,7 +16,7 @@ import kotlinx.css.properties.*
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
-import react.create
+import react.ChildrenBuilder
 import react.dom.html.ReactHTML.img
 
 data class PlayerCard(
@@ -48,7 +48,7 @@ val playerCard = tmFC<PlayerCard> { props ->
             }
             playerCardRuleSet(size)()
         }) {
-        child(playerGravatarImage(player, size))
+        playerGravatarImage(player, size)
         child(PlayerCardHeader(tribeId, player, linkToConfig, size))
     }
 }
@@ -71,8 +71,8 @@ private fun playerCardRuleSet(size: Int): RuleSet = {
     boxShadow(Color("rgba(0, 0, 0, 0.6)"), (size * 0.02).px, (size * 0.04).px, (size * 0.04).px)
 }
 
-private fun playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
-    img.create {
+private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
+    img {
         this.src = player.imageURL
         className = styles["playerIcon"]
         alt = "icon"

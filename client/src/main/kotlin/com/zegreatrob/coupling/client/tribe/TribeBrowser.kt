@@ -23,14 +23,11 @@ import kotlinx.css.*
 import react.ChildrenBuilder
 import react.Fragment
 import react.create
-import react.dom.attrs
 import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML.img
 import react.dom.html.ReactHTML.span
-import react.dom.i
-import react.dom.img
-import react.dom.span
 import react.router.dom.Link
 import kotlin.js.json
 
@@ -120,7 +117,7 @@ private fun ChildrenBuilder.tribeControlButtons() = span {
 private fun ChildrenBuilder.logoutButton() = Link {
     to = "/logout"
     child(CouplingButton(large, red, styles["logoutButton"]) {
-        i(classes = "fa fa-sign-out-alt") {}
+        i { className = "fa fa-sign-out-alt" }
         span { +"Sign Out" }
     })
 }
@@ -128,11 +125,10 @@ private fun ChildrenBuilder.logoutButton() = Link {
 private fun ChildrenBuilder.gqlButton() = a {
     href = gqlEndpoint
     child(CouplingButton(large, white, styles["gqlButton"]) {
-        img(src = svgPath("graphql")) {
-            attrs {
-                height = "18"
-                width = "18"
-            }
+        img {
+            src = svgPath("graphql")
+            height = 18.0
+            width = 18.0
         }
     })
 }
@@ -140,7 +136,7 @@ private fun ChildrenBuilder.gqlButton() = a {
 private fun ChildrenBuilder.tribeSelectButton() = Link {
     to = "/tribes/"
     child(CouplingButton(large, className = styles["tribeSelectButton"]) {
-        i(classes = "fa fa-arrow-circle-up") {}
+        i { className = "fa fa-arrow-circle-up" }
         span { +"Tribe select" }
     })
 }

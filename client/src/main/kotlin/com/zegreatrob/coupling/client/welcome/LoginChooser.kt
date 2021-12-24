@@ -20,7 +20,7 @@ val LoginChooser = FC<Props> {
     div {
         className = styles.className
         div {
-            child(CouplingButton(supersize, white, styles["loginButton"], signInFunc, {}) { +"Login" })
+            child(CouplingButton(supersize, white, styles["loginButton"], signInFunc) { +"Login" })
         }
     }
 }

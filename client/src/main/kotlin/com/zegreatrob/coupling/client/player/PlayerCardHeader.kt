@@ -15,8 +15,7 @@ import kotlinx.css.margin
 import kotlinx.css.px
 import kotlinx.html.classes
 import org.w3c.dom.Node
-import react.ReactElement
-import react.create
+import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 import react.useLayoutEffect
@@ -38,8 +37,8 @@ private val playerCardHeader = tmFC<PlayerCardHeader> { props ->
     val playerNameRef = useRef<Node>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
     cssDiv(attrs = { classes = setOf(styles["header"]) }, css = { margin(top = (size * 0.02).px) }) {
-        +optionalLink(shouldLink = linkToConfig, url = tribeId.with(player).playerConfigPage()) {
-            div.create {
+        optionalLink(shouldLink = linkToConfig, url = tribeId.with(player).playerConfigPage()) {
+            div {
                 ref = playerNameRef
                 +(player.name.ifBlank { "Unknown" })
             }
@@ -47,15 +46,12 @@ private val playerCardHeader = tmFC<PlayerCardHeader> { props ->
     }
 }
 
-private fun optionalLink(
+private fun ChildrenBuilder.optionalLink(
     shouldLink: Boolean,
     url: String,
-    handler: () -> ReactElement
-): ReactElement = if (shouldLink)
-    Link.create {
-        to = url
-        child(handler())
-    }
+    handler: ChildrenBuilder.() -> Unit
+) = if (shouldLink)
+    Link { to = url; handler() }
 else
     handler()
 

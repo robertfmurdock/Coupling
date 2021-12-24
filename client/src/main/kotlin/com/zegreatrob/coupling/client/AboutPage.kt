@@ -15,10 +15,9 @@ import com.zegreatrob.minreact.child
 import kotlinx.css.*
 import react.ChildrenBuilder
 import react.FC
-import react.create
 import react.dom.html.ReactHTML.div
-import react.dom.i
-import react.dom.span
+import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML.span
 import react.router.dom.Link
 
 private val styles = useStyles("About")
@@ -30,26 +29,26 @@ val AboutPage = FC<PageProps> {
             className = styles["content"]
             backButtonSection()
             Markdown { +loadMarkdownString("About") }
-            +playerHeader()
+            playerHeader()
         }
     }
 }
 
 private fun ChildrenBuilder.backButtonSection() = cssDiv(css = { position = Position.relative }) {
     cssSpan(css = { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }) {
-        +backButton()
+        backButton()
     }
 }
 
-private fun backButton() = Link.create {
+private fun ChildrenBuilder.backButton() = Link {
     to = "/tribes"
-    child(CouplingButton(large, blue, "", {}, {}) {
-        i(classes = "fa fa-step-backward") {}
+    child(CouplingButton(large, blue, "", {}) {
+        i {className = "fa fa-step-backward"}
         span { +"Back to Coupling!" }
     })
 }
 
-private fun playerHeader() = div.create {
+private fun ChildrenBuilder.playerHeader() = div {
     val tribeId = TribeId("developers")
     val rob by playerImage()
     val autumn by playerImage()

@@ -18,8 +18,8 @@ import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import org.w3c.dom.Node
 import react.*
-import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 
 private val styles = useStyles("Welcome")
 
@@ -78,7 +78,7 @@ private fun ChildrenBuilder.welcomeSplash(
     welcomeTitleRef: MutableRefObject<Node>,
     pair: CouplingPair.Double,
     proverb: String
-) = ReactHTML.span {
+) = span {
     className = styles["welcome"]
     welcomeTitle(welcomeTitleRef)
     div { welcomePair(pair) }
@@ -99,12 +99,10 @@ private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
 private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath)
 
-private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>) {
-    div {
-        className = styles["welcomeTitle"]
-        ref = welcomeTitleRef
-        +"Coupling!"
-    }
+private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>) = div {
+    className = styles["welcomeTitle"]
+    ref = welcomeTitleRef
+    +"Coupling!"
 }
 
 private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
@@ -113,12 +111,11 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
     child(PlayerCard(welcomeTribeId, pair.player2, className = "right ${styles["playerCard"]}", size = 100))
 }
 
-private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) =
-    div {
-        className = styles["enterButtonContainer"]
-        if (showLoginChooser) {
-            LoginChooser()
-        } else {
-            child(CouplingButton(supersize, pink, styles["enterButton"], onEnterClick, {}) { +"Come on in!" })
-        }
+private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) = div {
+    className = styles["enterButtonContainer"]
+    if (showLoginChooser) {
+        LoginChooser()
+    } else {
+        child(CouplingButton(supersize, pink, styles["enterButton"], onEnterClick) { +"Come on in!" })
     }
+}

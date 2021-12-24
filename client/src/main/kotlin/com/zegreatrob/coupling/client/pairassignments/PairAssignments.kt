@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.domtoimage.domToImage
@@ -29,11 +28,13 @@ import kotlinx.css.properties.boxShadow
 import kotlinx.html.tabIndex
 import org.w3c.dom.DataTransfer
 import org.w3c.dom.Node
-import react.*
-import react.dom.attrs
+import react.ChildrenBuilder
+import react.MutableRefObject
 import react.dom.html.ReactHTML.div
-import react.dom.i
+import react.dom.html.ReactHTML.i
+import react.ref
 import react.router.dom.Link
+import react.useRef
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -69,8 +70,8 @@ val pairAssignments = tmFC<PairAssignments> { props ->
                 child(TribeBrowser(tribe))
                 topPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
             }
-            +controlPanel(tribe)
-            +unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments))
+            controlPanel(tribe)
+            unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments))
 
             child(ServerMessage(tribe.id, message), key = "${message.text} ${message.players.size}")
         }
@@ -96,7 +97,7 @@ private fun ChildrenBuilder.topPairSection(
         pairSectionNode
     )
     cssDiv(css = { float = Float.right; width = 0.px }) {
-        copyToClipboardButton(pairSectionNode)?.let(::child)
+        copyToClipboardButton(pairSectionNode)
     }
 }
 
@@ -122,7 +123,7 @@ private fun ChildrenBuilder.currentPairSection(
     if (pairAssignments == null) {
         noPairsHeader()
     } else {
-        +pairAssignmentsAnimator(tribe, players, pairAssignments, allowSave, setPairAssignments, controls)
+        child(pairAssignmentsAnimator(tribe, players, pairAssignments, allowSave, setPairAssignments, controls))
     }
 }
 
@@ -135,7 +136,7 @@ private fun pairAssignmentsAnimator(
     controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) = PairAssignmentsAnimator(tribe, players, pairAssignments, enabled = tribe.animationEnabled && allowSave) {
     child(CurrentPairAssignmentsPanel(tribe, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
-}.create()
+}
 
 private fun ChildrenBuilder.noPairsHeader() = cssDiv(css = {
     border = "8px outset dimgray"
@@ -152,27 +153,28 @@ private fun ChildrenBuilder.noPairsHeader() = cssDiv(css = {
     +"No pair assignments yet!"
 }
 
-private fun controlPanel(tribe: Tribe) = div.create {
+private fun ChildrenBuilder.controlPanel(tribe: Tribe) = div {
     div {
         className = styles["controlPanel"]
-        div { +prepareToSpinButton(tribe, styles["newPairsButton"]) }
-        +viewHistoryButton(tribe, styles["viewHistoryButton"])
-        +pinListButton(tribe, styles["pinListButton"])
-        +statisticsButton(tribe, styles["statisticsButton"])
-        +viewRetireesButton(tribe, styles["retiredPlayersButton"])
+        div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
+        viewHistoryButton(tribe, styles["viewHistoryButton"])
+        pinListButton(tribe, styles["pinListButton"])
+        statisticsButton(tribe, styles["statisticsButton"])
+        viewRetireesButton(tribe, styles["retiredPlayersButton"])
     }
 }
 
-private fun copyToClipboardButton(ref: MutableRefObject<Node>): ReactElement? = ref.current?.let { node ->
-    if (!js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
-        null
-    } else {
-        CouplingButton(large,
-            black,
-            styles["copyToClipboardButton"],
-            onClick = node.copyToClipboardOnClick(),
-            block = { attrs { tabIndex = "-1" } }) { i(classes = "fa fa-clipboard") {} }
-            .create()
+private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
+    ref.current?.let { node ->
+        if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
+            child(CouplingButton(large,
+                black,
+                styles["copyToClipboardButton"],
+                onClick = node.copyToClipboardOnClick(),
+                attrs = { tabIndex = "-1" }) {
+                i { className = "fa fa-clipboard" }
+            })
+        }
     }
 }
 
@@ -196,9 +198,8 @@ private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it
 
 external class ClipboardItem(params: Json)
 
-private fun unpairedPlayerSection(tribe: Tribe, players: List<Player>) =
-    PlayerRoster(label = "Unpaired players", players = players, tribeId = tribe.id)
-        .create()
+private fun ChildrenBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>) =
+    child(PlayerRoster(label = "Unpaired players", players = players, tribeId = tribe.id))
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
     if (pairAssignments == null) {
@@ -210,39 +211,39 @@ private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignm
 
 private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-private fun prepareToSpinButton(tribe: Tribe, className: String) = Link.create {
+private fun ChildrenBuilder.prepareToSpinButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/prepare/"
-    child(CouplingButton(supersize, pink, className, {}, {}) { +"Prepare to spin!" })
+    child(CouplingButton(supersize, pink, className) { +"Prepare to spin!" })
 }
 
-private fun viewHistoryButton(tribe: Tribe, className: String) = Link.create {
+private fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/history/"
-    child(CouplingButton(large, green, className, {}, {}) {
-        i(classes = "fa fa-history") {}
+    child(CouplingButton(large, green, className) {
+        i { this.className = "fa fa-history" }
         +" History!"
     })
 }
 
-private fun pinListButton(tribe: Tribe, className: String) = Link.create {
+private fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/pins/"
-    child(CouplingButton(large, white, className, {}, {}) {
-        i(classes = "fa fa-peace") {}
+    child(CouplingButton(large, white, className) {
+        i { this.className = "fa fa-peace" }
         +" Pin Bag!"
     })
 }
 
-private fun statisticsButton(tribe: Tribe, className: String) = Link.create {
+private fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/statistics"
     child(CouplingButton(large, className = className) {
-        i(classes = "fa fa-database") {}
+        i { this.className = "fa fa-database" }
         +" Statistics!"
     })
 }
 
-private fun viewRetireesButton(tribe: Tribe, className: String) = Link.create {
+private fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/players/retired"
-    child(CouplingButton(large, yellow, className, {}, {}) {
-        i(classes = "fa fa-user-slash") {}
+    child(CouplingButton(large, yellow, className) {
+        i { this.className = "fa fa-user-slash" }
         +" Retirees!"
     })
 }

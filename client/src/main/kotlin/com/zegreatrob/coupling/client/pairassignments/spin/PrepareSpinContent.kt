@@ -32,7 +32,6 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.h2
 import react.key
-import styled.css
 
 private val styles = useStyles("PrepareSpin")
 
@@ -199,11 +198,9 @@ private fun spinButton(generateNewPairsFunc: () -> Unit) = CouplingButton(
     pink,
     styles["spinButton"],
     onClick = generateNewPairsFunc,
-    block = {
-        css {
-            marginBottom = 10.px
-            animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
-        }
+    css = {
+        marginBottom = 10.px
+        animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
     }
 ) { +"Spin!" }.create()
 
