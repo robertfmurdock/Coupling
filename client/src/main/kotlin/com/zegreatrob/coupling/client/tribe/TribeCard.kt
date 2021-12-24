@@ -26,7 +26,7 @@ val tribeCard = tmFC<TribeCard> { (tribe, size) ->
     Link {
         to = tribe.id.currentPairsPage()
         +cssSpan(
-            props = {
+            attrs = {
                 classes = classes + styles.className
                 tabIndex = "0"
                 attributes["data-tribe-id"] = tribe.id.value

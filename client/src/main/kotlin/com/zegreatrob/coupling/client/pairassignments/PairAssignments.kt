@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.domtoimage.domToImage
 import com.zegreatrob.coupling.client.external.react.get
@@ -33,8 +34,6 @@ import react.dom.attrs
 import react.dom.html.ReactHTML.div
 import react.dom.i
 import react.router.dom.Link
-import styled.css
-import styled.styledDiv
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -86,24 +85,21 @@ private fun topPairSection(
     allowSave: Boolean,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     pairSectionNode: MutableRefObject<Node>
-) = buildElement {
-    styledDiv {
-        css { verticalAlign = VerticalAlign.top }
-        +currentPairSection(
-            tribe,
-            players,
-            pairAssignments,
-            setPairs,
-            allowSave,
-            controls,
-            pairSectionNode
-        )
-        styledDiv {
-            css { float = Float.right; width = 0.px }
-            copyToClipboardButton(pairSectionNode)?.let(::child)
-        }
+) = cssDiv(css = { verticalAlign = VerticalAlign.top }) {
+    +currentPairSection(
+        tribe,
+        players,
+        pairAssignments,
+        setPairs,
+        allowSave,
+        controls,
+        pairSectionNode
+    )
+    +cssDiv(css = { float = Float.right; width = 0.px }) {
+        copyToClipboardButton(pairSectionNode)?.let(::child)
     }
 }
+
 
 private fun currentPairSection(
     tribe: Tribe,
@@ -113,24 +109,20 @@ private fun currentPairSection(
     allowSave: Boolean,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     pairSectionNode: MutableRefObject<Node>
-) = buildElement {
-    styledDiv {
-        attrs {
-            ref = pairSectionNode
-        }
-        css {
-            display = Display.inlineBlock
-            borderRadius = 20.px
-            padding(5.px)
-            margin(5.px, 0.px)
-            backgroundColor = hsla(146, 17, 80, 1.0)
-            boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
-        }
-        if (pairAssignments == null) {
-            +noPairsHeader()
-        } else {
-            +pairAssignmentsAnimator(tribe, players, pairAssignments, allowSave, setPairAssignments, controls)
-        }
+) = cssDiv(
+    props = { ref = pairSectionNode },
+    css = {
+        display = Display.inlineBlock
+        borderRadius = 20.px
+        padding(5.px)
+        margin(5.px, 0.px)
+        backgroundColor = hsla(146, 17, 80, 1.0)
+        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
+    }) {
+    if (pairAssignments == null) {
+        +noPairsHeader()
+    } else {
+        +pairAssignmentsAnimator(tribe, players, pairAssignments, allowSave, setPairAssignments, controls)
     }
 }
 
@@ -145,22 +137,19 @@ private fun pairAssignmentsAnimator(
     child(CurrentPairAssignmentsPanel(tribe, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
 }.create()
 
-private fun noPairsHeader() = buildElement {
-    styledDiv {
-        css {
-            border = "8px outset dimgray"
-            backgroundColor = Color.aliceBlue
-            display = Display.inlineBlock
-            borderRadius = 40.px
-            fontSize = LinearDimension("xx-large")
-            fontWeight = FontWeight.bold
-            width = 500.px
-            height = 150.px
-            padding(100.px, 5.px, 5.px)
-            margin(0.px, 2.px, 5.px)
-        }
-        +"No pair assignments yet!"
-    }
+private fun noPairsHeader() = cssDiv(css = {
+    border = "8px outset dimgray"
+    backgroundColor = Color.aliceBlue
+    display = Display.inlineBlock
+    borderRadius = 40.px
+    fontSize = LinearDimension("xx-large")
+    fontWeight = FontWeight.bold
+    width = 500.px
+    height = 150.px
+    padding(100.px, 5.px, 5.px)
+    margin(0.px, 2.px, 5.px)
+}) {
+    +"No pair assignments yet!"
 }
 
 private fun controlPanel(tribe: Tribe) = div.create {

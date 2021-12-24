@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
@@ -12,24 +12,27 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipper
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
 import kotlinx.css.properties.boxShadow
 import kotlinx.css.properties.s
 import kotlinx.html.classes
-import react.RBuilder
+import react.ChildrenBuilder
 import react.buildElement
-import react.dom.*
+import react.dom.html.ReactHTML.br
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h1
+import react.dom.html.ReactHTML.h2
 import styled.css
-import styled.styledDiv
 
 private val styles = useStyles("PrepareSpin")
 
@@ -45,9 +48,10 @@ data class PrepareSpinContent(
     override val component: TMFC<PrepareSpinContent> get() = prepareSpinContent
 }
 
-val prepareSpinContent = reactFunction<PrepareSpinContent> { props ->
+val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
     val (tribe, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props
-    div(classes = styles.className) {
+    div {
+        className = styles.className
         div { child(TribeBrowser(tribe)) }
         div {
             div { +spinButton(onSpin) }
@@ -56,8 +60,7 @@ val prepareSpinContent = reactFunction<PrepareSpinContent> { props ->
                     h1 { +"Please select players to spin." }
                     h2 { +"Tap a player to include or exclude them." }
                     +"When you're done with your selections, hit the spin button above!"
-                    styledDiv {
-                        css { margin(10.px, null) }
+                    +cssDiv(css = { margin(10.px, null) }) {
                         +selectAllButton(playerSelections, setPlayerSelections)
                         +selectNoneButton(playerSelections, setPlayerSelections)
                     }
@@ -77,47 +80,42 @@ val prepareSpinContent = reactFunction<PrepareSpinContent> { props ->
     }
 }
 
-private fun selectorAreaDiv(children: RBuilder.() -> Unit) = buildElement {
-    styledDiv {
-        css {
-            display = Display.flex
-            borderSpacing = 5.px
-            borderCollapse = BorderCollapse.separate
-        }
-        children()
+private fun selectorAreaDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+    css = {
+        display = Display.flex
+        borderSpacing = 5.px
+        borderCollapse = BorderCollapse.separate
     }
+) {
+    children()
 }
 
-private fun playerSelectorDiv(children: RBuilder.() -> Unit) = buildElement {
-    styledDiv {
-        css {
-            display = Display.inlineBlock
-            flex(1.0)
-            margin(5.px)
-            borderRadius = 20.px
-            padding(5.px)
+private fun playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+    css = {
+        display = Display.inlineBlock
+        flex(1.0)
+        margin(5.px)
+        borderRadius = 20.px
+        padding(5.px)
 
-            backgroundColor = Color("#fffbed")
-            boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
-        }
-        children()
+        backgroundColor = Color("#fffbed")
+        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
     }
-}
+) { children() }
 
-private fun pinSelectorDiv(children: RBuilder.() -> Unit) = buildElement {
-    styledDiv {
-        css {
-            display = Display.inlineFlex
-            flexDirection = FlexDirection.column
-            margin(5.px)
-            borderRadius = 20.px
-            padding(5.px)
-            backgroundColor = Color("#fffbed")
-            boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
-            width = 125.px
-        }
-        children()
+private fun pinSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+    css = {
+        display = Display.inlineFlex
+        flexDirection = FlexDirection.column
+        margin(5.px)
+        borderRadius = 20.px
+        padding(5.px)
+        backgroundColor = Color("#fffbed")
+        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
+        width = 125.px
     }
+) {
+    children()
 }
 
 private fun selectAllButton(
@@ -137,8 +135,8 @@ private fun batchSelectButton(
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
 ) = CouplingButton(className = className,
-        onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
-    ) { +text }
+    onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
+) { +text }
     .create()
 
 private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<String?>) -> Unit, pins: List<Pin>) =
@@ -159,28 +157,26 @@ private fun pinSelector(pinSelections: List<String?>, setPinSelections: (List<St
         }
     }
 
-private fun selectedPinsDiv(children: RBuilder.() -> Unit) = buildElement {
-    styledDiv {
-        attrs { classes = classes + styles["selectedPins"] }
-        css {
-            margin(5.px)
-            flex(1.0)
-        }
-        children()
+private fun selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+    attrs = { classes = classes + styles["selectedPins"] },
+    css = {
+        margin(5.px)
+        flex(1.0)
     }
+) {
+    children()
 }
 
-private fun deselectedPinsDiv(children: RBuilder.() -> Unit) = buildElement {
-    styledDiv {
-        attrs { classes = classes + styles["deselectedPins"] }
-        css {
-            flex(1.0)
-            margin(5.px)
-            backgroundColor = Color("#de8286")
-            borderRadius = 15.px
-        }
-        children()
+private fun deselectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
+    attrs = { classes = classes + styles["deselectedPins"] },
+    css = {
+        flex(1.0)
+        margin(5.px)
+        backgroundColor = Color("#de8286")
+        borderRadius = 15.px
     }
+) {
+    children()
 }
 
 private fun List<Pin>.selectByIds(pinSelections: List<String?>) = filter { pinSelections.contains(it.id) }
@@ -189,9 +185,10 @@ private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pi
 
 private fun flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = buildElement {
     flipped(pin.id) {
-        styledDiv {
-            attrs { key = pin.id ?: "" }
-            css { display = Display.inlineBlock }
+        +cssDiv(
+            attrs = { key = pin.id ?: "" },
+            css = { display = Display.inlineBlock }
+        ) {
             child(PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick))
         }
     }
@@ -218,11 +215,8 @@ private fun selectablePlayerCardList(
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
     tribe: Tribe
 ) = playerSelections.map { (player, isSelected) ->
-    buildElement {
-        styledDiv {
-            css { paddingBottom = 30.px; display = Display.inlineBlock }
-            child(playerCard(tribe, player, isSelected, setPlayerSelections, playerSelections))
-        }
+    cssDiv(css = { paddingBottom = 30.px; display = Display.inlineBlock }) {
+        child(playerCard(tribe, player, isSelected, setPlayerSelections, playerSelections))
     }
 }
 

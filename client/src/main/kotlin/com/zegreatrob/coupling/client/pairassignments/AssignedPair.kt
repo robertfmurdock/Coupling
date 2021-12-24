@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
@@ -25,16 +26,9 @@ import kotlinx.css.properties.Angle
 import kotlinx.css.properties.deg
 import kotlinx.css.visibility
 import org.w3c.dom.Node
-import react.ReactElement
-import react.buildElement
-import react.create
-import react.dom.attrs
+import react.*
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
-import react.dom.key
-import react.useRef
-import styled.css
-import styled.styledDiv
 
 data class AssignedPair(
     val tribe: Tribe,
@@ -112,17 +106,15 @@ private fun playerCardComponent(
 
 private fun playerFlipped(player: Player, handler: () -> ReactElement) = buildElement {
     flipped(flipId = player.id) {
-        styledDiv {
-            attrs {
-                this.key = player.id
-            }
-            css {
+        +cssDiv(
+            props = { this.key = player.id },
+            css = {
                 display = Display.inlineBlock
                 if (player == placeholderPlayer) {
                     visibility = Visibility.hidden
                 }
-            }
-            child(handler())
+            }) {
+            +handler()
         }
     }
 }

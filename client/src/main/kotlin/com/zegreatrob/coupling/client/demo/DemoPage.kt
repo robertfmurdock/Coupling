@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.demo
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.FrameRunner
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
@@ -22,10 +23,7 @@ import kotlinx.css.*
 import kotlinx.css.properties.border
 import react.ChildrenBuilder
 import react.FC
-import react.buildElement
 import react.dom.html.ReactHTML.div
-import styled.css
-import styled.styledDiv
 
 interface NoOpDispatcher : TribeConfigDispatcher, PlayerConfigDispatcher, PinCommandDispatcher,
     DeletePairAssignmentsCommandDispatcher, NewPairAssignmentsCommandDispatcher {
@@ -41,18 +39,15 @@ private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
 val DemoPage = FC<PageProps> {
     child(FrameRunner(DemoAnimationState.generateSequence(), 1.0) { state: DemoAnimationState ->
         div {
-            child(buildElement {
-                styledDiv {
-                    css {
-                        display = Display.inlineBlock
-                        border(8.px, BorderStyle.solid, rgb(94, 84, 102), 50.px)
-                        backgroundColor = Color.floralWhite
-                        padding(left = 42.px, right = 42.px)
-                        width = 40.em
-                    }
-                    +"DEMO"
-                }
-            })
+            +cssDiv(css = {
+                display = Display.inlineBlock
+                border(8.px, BorderStyle.solid, rgb(94, 84, 102), 50.px)
+                backgroundColor = Color.floralWhite
+                padding(left = 42.px, right = 42.px)
+                width = 40.em
+            }) {
+                +"DEMO"
+            }
 
             div {
                 when (state) {

@@ -6,6 +6,7 @@ import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.CssBuilder
 import kotlinx.css.RuleSet
+import kotlinx.html.DIV
 import kotlinx.html.SPAN
 import kotlinx.html.Tag
 import org.w3c.dom.Node
@@ -66,19 +67,31 @@ fun <P : DataProps<P>> DataProps<P>.create() = create(this)
 
 fun <T : Tag> bridge(
     componentBuilder: RBuilder.(StyledDOMBuilder<T>.() -> Unit) -> Unit,
-    props: T.()->Unit = {},
+    attrs: T.() -> Unit = {},
+    props: DOMProps.() -> Unit = {},
     css: RuleSet,
     builder: ChildrenBuilder.() -> Unit
 ) = buildElement {
     componentBuilder {
-        attrs(props)
+        this.attrs(attrs)
+        this.domProps.apply(props)
         this.css(css)
         +Fragment.create(builder)
     }
 }
 
-fun cssSpan(props: SPAN.()->Unit = {}, css: CssBuilder.() -> Unit, builder: (ChildrenBuilder).() -> Unit) =
-    bridge(RBuilder::styledSpan, props, css = css, builder = builder)
+fun cssSpan(
+    attrs: SPAN.() -> Unit = {},
+    props: DOMProps.() -> Unit = {},
+    css: CssBuilder.() -> Unit,
+    builder: (ChildrenBuilder).() -> Unit
+) =
+    bridge(RBuilder::styledSpan, attrs, props, css = css, builder = builder)
 
-fun cssDiv(props: DOMProps.()->Unit = {}, css: CssBuilder.() -> Unit, builder: ChildrenBuilder.() -> Unit) =
-    bridge(RBuilder::styledDiv, css = css, builder = builder)
+fun cssDiv(
+    attrs: DIV.() -> Unit = {},
+    props: DOMProps.() -> Unit = {},
+    css: CssBuilder.() -> Unit,
+    builder: ChildrenBuilder.() -> Unit
+) =
+    bridge(RBuilder::styledDiv, attrs, props, css = css, builder = builder)
