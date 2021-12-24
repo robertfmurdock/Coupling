@@ -1,25 +1,23 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.RuleSet
 import kotlinx.html.classes
 import react.create
-import react.dom.attrs
-import react.dom.div
+import react.dom.html.ReactHTML.div
 import react.router.dom.Link
-import styled.css
-import styled.styledDiv
 
 data class PlayerRoster(
     val label: String? = null,
@@ -33,15 +31,17 @@ data class PlayerRoster(
 
 private val styles = useStyles("player/PlayerRoster")
 
-val playerRoster = reactFunction { (label, players, tribeId, className, overrides): PlayerRoster ->
-    styledDiv {
-        attrs {
+val playerRoster = tmFC { (label, players, tribeId, className, overrides): PlayerRoster ->
+    +cssDiv(
+        attrs = {
             if (className != null) classes = classes + className
             classes = classes + styles.className
-        }
-        css { overrides() }
+        },
+        css = { overrides() }
+    ) {
         div {
-            div(classes = styles["header"]) {
+            div {
+                this.className = styles["header"]
                 +(label ?: "Players")
             }
             renderPlayers(players, tribeId)

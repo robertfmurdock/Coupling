@@ -84,14 +84,12 @@ fun cssSpan(
     attrs: SPAN.() -> Unit = {},
     props: DOMProps.() -> Unit = {},
     css: CssBuilder.() -> Unit,
-    builder: (ChildrenBuilder).() -> Unit
-) =
-    bridge(RBuilder::styledSpan, attrs, props, css = css, builder = builder)
+    builder: (ChildrenBuilder).() -> Unit = {}
+) = bridge(RBuilder::styledSpan, attrs, props, css = css, builder = builder)
 
 fun cssDiv(
     attrs: DIV.() -> Unit = {},
     props: DOMProps.() -> Unit = {},
     css: CssBuilder.() -> Unit,
-    builder: ChildrenBuilder.() -> Unit
-) =
-    bridge(RBuilder::styledDiv, attrs, props, css = css, builder = builder)
+    builder: ChildrenBuilder.() -> Unit = {}
+) = bridge(RBuilder::styledDiv, attrs, props, css = css, builder = builder)

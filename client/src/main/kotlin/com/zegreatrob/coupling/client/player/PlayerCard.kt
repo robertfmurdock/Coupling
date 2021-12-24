@@ -1,27 +1,23 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.properties.*
-import kotlinx.html.DIV
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
 import react.create
-import react.dom.attrs
 import react.dom.html.ReactHTML.img
-import styled.StyledDOMBuilder
-import styled.css
-import styled.styledDiv
 
 data class PlayerCard(
     val tribeId: TribeId,
@@ -38,21 +34,20 @@ data class PlayerCard(
 
 private val styles = useStyles("player/PlayerCard")
 
-val playerCard = reactFunction<PlayerCard> { props ->
+val playerCard = tmFC<PlayerCard> { props ->
     val (tribeId, player, linkToConfig, className, size, onClick, deselected, tilt) = props
-    styledDiv {
-        attrs {
+    +cssDiv(
+        attrs = {
             classes = classes + additionalClasses(className, deselected)
-            playerCardStyle(size)
             onClickFunction = onClick
-        }
-        css {
+        },
+        css = {
             transition(duration = 0.25.s)
             transform {
                 rotate(tilt)
             }
-        }
-
+            playerCardRuleSet(size)()
+        }) {
         child(playerGravatarImage(player, size))
         child(PlayerCardHeader(tribeId, player, linkToConfig, size))
     }
@@ -67,7 +62,7 @@ private fun additionalClasses(className: String?, deselected: Boolean) = setOf(c
         }
     }
 
-private fun StyledDOMBuilder<DIV>.playerCardStyle(size: Int) = css {
+private fun playerCardRuleSet(size: Int): RuleSet = {
     width = size.px
     height = (size * 1.4).px
     padding(all = (size * 0.06).px)

@@ -1,20 +1,18 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.reactFunction
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import react.dom.attrs
-import react.dom.i
-import react.dom.span
-import styled.css
-import styled.styledDiv
+import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML.span
 
 enum class PinButtonScale(val faTag: String, val factor: Double) {
     Normal("fa-3x", 3.0), Large("fa-10x", 10.0), Small("fa-1x", 1.0), ExtraSmall("fa-xs", 0.75);
@@ -35,18 +33,21 @@ data class PinButton(
 
 private val styles = useStyles("pin/PinButton")
 
-val pinButton = reactFunction<PinButton> { (pin, scale, className, showTooltip, onClick) ->
-    styledDiv {
-        attrs {
+val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClick) ->
+    +cssDiv(
+        attrs = {
             classes = classes + listOf(className, styles.className)
-            css { scaledStyles(scale) }
             onClickFunction = { onClick() }
-        }
-
+        },
+        css = { scaledStyles(scale) }
+    ) {
         if (showTooltip) {
-            span(classes = styles["tooltip"]) { +pin.name }
+            span {
+                this.className = styles["tooltip"]
+                +pin.name
+            }
         }
-        i(scale.faTag) { attrs { classes = classes + targetIcon(pin) } }
+        i { this.className = "${scale.faTag} ${targetIcon(pin)}" }
     }
 }
 

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
@@ -21,11 +21,8 @@ import kotlinx.css.display
 import kotlinx.css.visibility
 import react.buildElement
 import react.create
-import react.dom.attrs
 import react.dom.html.ReactHTML.div
-import react.dom.key
-import styled.css
-import styled.styledDiv
+import react.key
 
 data class SpinAnimationPanel(
     val tribe: Tribe,
@@ -71,17 +68,14 @@ private fun playerSpotlight(shownPlayer: Player?) = div.create {
 }
 
 private fun placeholderPlayerCard() = buildElement {
-    styledDiv {
-        css { visibility = Visibility.hidden; display = Display.inlineBlock }
+    +cssDiv(css = { visibility = Visibility.hidden; display = Display.inlineBlock }) {
         +flippedPlayer(placeholderPlayer)
     }
 }
 
 private fun flippedPlayer(player: Player, key: String? = null) = buildElement {
     flipped(player.id) {
-        styledDiv {
-            attrs { this.key = key ?: "" }
-            css { display = Display.inlineBlock }
+        +cssDiv(props = { this.key = key ?: "" }, css = { display = Display.inlineBlock }) {
             child(PlayerCard(TribeId(""), player))
         }
     }
