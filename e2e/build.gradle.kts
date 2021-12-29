@@ -95,7 +95,8 @@ tasks {
             compileE2eTestProductionExecutableKotlinJs,
             appConfiguration,
             clientConfiguration,
-            testLoggingLib
+            testLoggingLib,
+            ":composeUp"
         )
         inputs.files(
             appConfiguration,

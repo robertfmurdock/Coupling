@@ -53,3 +53,8 @@ kotlin {
         }
     }
 }
+
+tasks {
+    val jsTest by getting
+    jsTest.dependsOn(":composeUp")
+}

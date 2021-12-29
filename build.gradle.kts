@@ -23,6 +23,9 @@ semanticRelease {
 
 dockerCompose {
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
+    if(System.getenv("CI") != null) {
+        startedServices.set(listOf("dynamo"))
+    }
 }
 
 yarn.ignoreScripts = false

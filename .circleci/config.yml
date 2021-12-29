@@ -65,7 +65,6 @@ jobs:
     steps:
       - checkout
       - coupling-orb/setup
-      - run: docker-compose up -d dynamo
       - aws-cli/setup
       - run: "./gradlew release uploadToS3 serverlessDeploy build check"
       - coupling-orb/collect-results
@@ -85,7 +84,6 @@ jobs:
       - checkout
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
-      - run: docker-compose up -d dynamo
       - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
@@ -97,7 +95,6 @@ jobs:
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
-      - run: docker-compose up -d dynamo
       - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
@@ -108,7 +105,6 @@ jobs:
       - checkout
       - run: "./gradlew useLatestVersions :plugins:useLatestVersions"
       - coupling-orb/setup
-      - run: docker-compose up -d dynamo
       - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:

@@ -101,7 +101,8 @@ tasks {
             endpointTestEndpointTestProductionExecutableCompileSync,
             endpointTestEndpointTestDevelopmentExecutableCompileSync,
             testLoggingLib,
-            appConfiguration
+            appConfiguration,
+            ":composeUp"
         )
         inputs.file(projectDir.path + "/endpoint-wrapper.js")
         inputs.files(appConfiguration, testLoggingLib)
