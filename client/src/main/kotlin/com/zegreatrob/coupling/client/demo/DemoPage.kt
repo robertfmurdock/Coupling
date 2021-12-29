@@ -3,7 +3,8 @@ package com.zegreatrob.coupling.client.demo
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.FrameRunner
-import com.zegreatrob.coupling.client.cssDiv
+import com.zegreatrob.coupling.client.external.react.get
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
@@ -19,11 +20,17 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.child
 import com.zegreatrob.testmints.action.async.SuspendAction
-import kotlinx.css.*
-import kotlinx.css.properties.border
-import react.ChildrenBuilder
-import react.FC
+import kotlinext.js.jso
+import kotlinx.browser.document
+import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
+import popper.core.Padding
+import popper.core.Popper
+import popper.core.modifier
+import popper.core.modifiers.Arrow
+import react.*
 import react.dom.html.ReactHTML.div
+import react.popper.usePopper
 
 interface NoOpDispatcher : TribeConfigDispatcher, PlayerConfigDispatcher, PinCommandDispatcher,
     DeletePairAssignmentsCommandDispatcher, NewPairAssignmentsCommandDispatcher {
@@ -36,19 +43,41 @@ private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
     ): () -> Unit = {}
 }
 
+val styles = useStyles("DemoPage")
+
 val DemoPage = FC<PageProps> {
     child(FrameRunner(DemoAnimationState.generateSequence(), 1.0) { state: DemoAnimationState ->
         div {
-            cssDiv(css = {
-                display = Display.inlineBlock
-                border(8.px, BorderStyle.solid, rgb(94, 84, 102), 50.px)
-                backgroundColor = Color.floralWhite
-                padding(left = 42.px, right = 42.px)
-                width = 40.em
-            }) {
-                +"DEMO"
+            val popperRef = useRef<HTMLElement>()
+            val arrowRef = useRef<HTMLElement>()
+
+            val (referenceElement, setReferenceElement) = useState<Element?>(null)
+
+            useLayoutEffect(state) {
+                val className = chooseSelectorForTag(state)
+                val element: Element? = if (className.isNotBlank()) document.querySelector(className) else null
+                setReferenceElement(element)
             }
 
+            val popperInstance = usePopper(referenceElement, popperRef.current, jso {
+                this.modifiers = arrayOf(
+                    Arrow.modifier { this.options = jso { this.element = arrowRef.current; padding = padding(5.0) } }
+                )
+            })
+
+            div {
+                className = styles["popper"]
+                ref = popperRef
+                style = popperInstance.styles[Popper]
+                +popperInstance.attributes[Popper]
+                +"LOLOLOLOLOL"
+                div {
+                    className = styles["arrow"]
+                    ref = arrowRef
+                    style = popperInstance.styles[Arrow]
+                    +popperInstance.attributes[Arrow]
+                }
+            }
             div {
                 when (state) {
                     Start -> +"Starting..."
@@ -62,6 +91,23 @@ val DemoPage = FC<PageProps> {
             }
         }
     })
+}
+
+private fun padding(value: Double): Padding = jso {
+    left = value
+    top = value
+    right = value
+    bottom = value
+}
+
+fun chooseSelectorForTag(state: DemoAnimationState): String = when(state) {
+    Start -> ""
+    ShowIntro -> ""
+    is MakeTribe -> ".${useStyles("tribe/TribeConfig").className} h1"
+    is AddPlayer -> ""
+    is AddPin -> ""
+    is CurrentPairs -> ""
+    is PrepareToSpin -> ""
 }
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
