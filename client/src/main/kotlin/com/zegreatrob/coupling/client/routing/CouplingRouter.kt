@@ -42,6 +42,7 @@ val couplingRouter = tmFC<CouplingRouter> { (isSignedIn, animationsDisabled) ->
 private fun ChildrenBuilder.routes(isSignedIn: Boolean) {
     couplingRoute("/welcome/", WelcomePage)
     couplingRoute("/about", AboutPage)
+    couplingRoute("/demo", DemoPage)
 
     if (isSignedIn) authenticatedRoutes() else redirectUnauthenticated()
 
@@ -77,7 +78,6 @@ private fun ChildrenBuilder.authenticatedRoutes() {
     couplingRoute("/:tribeId/retired-player/:playerId/", RetiredPlayerPage)
     couplingRoute("/:tribeId/players/retired", RetiredPlayersPage)
     couplingRoute("/:tribeId/statistics", StatisticsPage)
-    couplingRoute("/demo", DemoPage)
 }
 
 private fun redirectToTribes() = Navigate.create { to = "/tribes/" }
