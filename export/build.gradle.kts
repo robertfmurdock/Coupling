@@ -1,3 +1,4 @@
+import com.zegreatrob.coupling.build.BuildConstants.kotlinVersion
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 
 plugins {
@@ -25,8 +26,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":model"))
-                api(kotlin("stdlib", com.zegreatrob.coupling.build.BuildConstants.kotlinVersion))
-                api(kotlin("stdlib-common", com.zegreatrob.coupling.build.BuildConstants.kotlinVersion))
+                api(kotlin("stdlib", kotlinVersion))
+                api(kotlin("stdlib-common", kotlinVersion))
                 api("com.soywiz.korlibs.klock:klock:2.4.10")
                 api("com.benasher44:uuid:0.3.1")
             }
@@ -34,13 +35,9 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(project(":json"))
-                api(project(":repository-mongo"))
                 api(project(":repository-dynamo"))
 
-                api(kotlin("stdlib-js", com.zegreatrob.coupling.build.BuildConstants.kotlinVersion))
-
-                implementation(npm("monk", "7.1.1"))
-                implementation(npm("mongodb", "3.5.0"))
+                api(kotlin("stdlib-js", kotlinVersion))
             }
         }
     }
