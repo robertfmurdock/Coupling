@@ -3,8 +3,13 @@
     color: white;
     font-weight: bold;
     padding: 4px 8px;
-    font-size: 13px;
+    font-size: 24px;
     border-radius: 4px;
+    width: 400px;
+}
+
+:local(.popper) h2 {
+    font-size: 30px;
 }
 
 :local(.arrow),
@@ -23,6 +28,8 @@
     visibility: visible;
     content: '';
     transform: rotate(45deg);
+    top: 0;
+    left: 0;
 }
 
 :local(.popper)[data-popper-placement^='top'] > :local(.arrow) {

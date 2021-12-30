@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.demo
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
+import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -45,6 +46,9 @@ private val pairAssignments = PairAssignmentDocument(
 )
 
 sealed class DemoAnimationState {
+
+    open val descriptionSelector: String get() = ""
+    open val description: String get() = ""
 
     companion object {
         fun generateSequence(): Sequence<Frame<DemoAnimationState>> = listOfPairs()
@@ -98,9 +102,33 @@ fun makePinSequence() = pins.flatMapIndexed { pinIndex, pin ->
 
 private fun String?.rangeOfStringLength() = (0..(this ?: "").length)
 
-data class MakeTribe(val tribe: Tribe) : DemoAnimationState()
+data class MakeTribe(val tribe: Tribe) : DemoAnimationState() {
+    override val descriptionSelector = ".${useStyles("tribe/TribeConfig").className} h1"
+    override val description =
+        """
 
-data class AddPlayer(val tribe: Tribe, val newPlayer: Player, val players: List<Player>) : DemoAnimationState()
+## First, we configure a new tribe.
+
+We'll enter the name and then save.
+
+ """
+}
+
+data class AddPlayer(val tribe: Tribe, val newPlayer: Player, val players: List<Player>) : DemoAnimationState() {
+    override val descriptionSelector = ".${useStyles("player/PlayerConfig").className} h1"
+    override val description =
+        """
+
+## Now we'll add a few players. 
+
+Just enough players to make it interesting.
+
+Pro tip: if you enter a player's email, they can log in using that email and see the tribe! 
+
+In this way, your entire team can operate Coupling, with no additional work.
+
+ """
+}
 
 data class AddPin(val tribe: Tribe, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState()
 
