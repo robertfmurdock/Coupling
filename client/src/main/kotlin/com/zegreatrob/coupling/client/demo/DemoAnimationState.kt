@@ -167,7 +167,9 @@ data class CurrentPairs(
 """
 ## Alright. Now we're prepared. 
 
-Its time to spin! We'll hit the spin button.
+Its time to spin!
+
+We'll hit the spin button.
 """
     } else {
         "## And now for something completely different."
