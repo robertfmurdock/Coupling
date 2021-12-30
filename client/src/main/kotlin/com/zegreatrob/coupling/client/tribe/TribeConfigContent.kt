@@ -15,11 +15,11 @@ import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
 import react.dom.events.ChangeEventHandler
 import react.dom.html.InputType
+import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
+import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
-import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.span
 import react.key
 
@@ -39,7 +39,7 @@ val tribeConfigContent = tmFC<TribeConfigContent> { (tribe, isNew, onChange, onS
         className = styles.className
         ConfigHeader {
             this.tribe = tribe
-            +"Tribe Configuration"
+            span { +"Tribe Configuration" }
         }
         div {
             tribeConfigEditor(tribe, isNew ?: false, onChange, onSave, onDelete)

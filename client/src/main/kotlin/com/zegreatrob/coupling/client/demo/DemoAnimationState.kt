@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.demo
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
+import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -12,6 +13,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import popper.core.Placement
 
 private val demoTribe = Tribe(id = TribeId("${uuid4()}"), name = "The Simpsons")
 
@@ -49,6 +51,7 @@ sealed class DemoAnimationState {
 
     open val descriptionSelector: String get() = ""
     open val description: String get() = ""
+    open val placement: Placement get() = Placement.right
 
     companion object {
         fun generateSequence(): Sequence<Frame<DemoAnimationState>> = listOfPairs()
@@ -60,8 +63,8 @@ sealed class DemoAnimationState {
                 makeTribeSequence().pairWithDurations(800, 100) +
                 makePlayerSequence() +
                 makePinSequence().pairWithDurations(800, 100) +
-                (CurrentPairs(demoTribe, players, pins, null, false) to 100) +
-                (PrepareToSpin(demoTribe, players.map { it to false }, pins) to 1500) +
+                (CurrentPairs(demoTribe, players, pins, null, false) to 3000) +
+                (PrepareToSpin(demoTribe, players.map { it to false }, pins) to 4000) +
                 (PrepareToSpin(demoTribe, players.map { it to true }, pins) to 1500) +
                 (PrepareToSpin(demoTribe, players.map { it to (it != player3) }, pins) to 1500) +
                 (CurrentPairs(demoTribe, players, pins, pairAssignments, true) to 1500) +
@@ -103,34 +106,42 @@ fun makePinSequence() = pins.flatMapIndexed { pinIndex, pin ->
 private fun String?.rangeOfStringLength() = (0..(this ?: "").length)
 
 data class MakeTribe(val tribe: Tribe) : DemoAnimationState() {
-    override val descriptionSelector = ".${useStyles("tribe/TribeConfig").className} h1"
-    override val description =
-        """
+    override val descriptionSelector = ".${useStyles("tribe/TribeConfig").className} input[name=name]"
+    override val placement= Placement.bottomStart
+    override val description = """
 
 ## First, we configure a new tribe.
 
 We'll enter the name and then save.
 
- """
+"""
 }
 
 data class AddPlayer(val tribe: Tribe, val newPlayer: Player, val players: List<Player>) : DemoAnimationState() {
     override val descriptionSelector = ".${useStyles("player/PlayerConfig").className} h1"
-    override val description =
-        """
-
+    override val description = """
 ## Now we'll add a few players. 
 
 Just enough players to make it interesting.
 
 Pro tip: if you enter a player's email, they can log in using that email and see the tribe! 
 
-In this way, your entire team can operate Coupling, with no additional work.
+In this way, your entire team can operate Coupling.
 
- """
+"""
 }
 
-data class AddPin(val tribe: Tribe, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState()
+data class AddPin(val tribe: Tribe, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState() {
+    override val descriptionSelector = ".${useStyles("pin/PinConfig").className} h1"
+    override val description = """
+## And now... a pin! 
+
+A pin is a way to highlight a special job, role, or hat that a pair can wear.
+
+It'll prefer to be with pairs that haven't done it recently, but it's not too particular about these things.
+
+"""
+}
 
 data class CurrentPairs(
     val tribe: Tribe,
@@ -138,7 +149,30 @@ data class CurrentPairs(
     val pins: List<Pin>,
     val pairAssignments: PairAssignmentDocument?,
     val allowSave: Boolean
-) : DemoAnimationState()
+) : DemoAnimationState() {
+
+    private val pairAssignmentStyles = useStyles("pairassignments/PairAssignments")
+
+    override val descriptionSelector = classSelector(
+        if (pairAssignments == null) {
+            pairAssignmentStyles["newPairsButton"]
+        } else {
+            pairAssignmentStyles.className
+        }
+    )
+
+    private fun classSelector(className: String) = ".$className"
+
+    override val description = if (pairAssignments == null) {
+"""
+## Alright. Now we're prepared. 
+
+Its time to spin! We'll hit the spin button.
+"""
+    } else {
+        "## And now for something completely different."
+    }
+}
 
 data class PrepareToSpin(val tribe: Tribe, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
     DemoAnimationState()

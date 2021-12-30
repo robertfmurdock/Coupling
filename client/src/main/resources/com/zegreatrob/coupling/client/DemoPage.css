@@ -4,8 +4,9 @@
     font-weight: bold;
     padding: 4px 8px;
     font-size: 24px;
-    border-radius: 4px;
+    border-radius: 20px;
     width: 400px;
+    z-index: 200;
 }
 
 :local(.popper) h2 {

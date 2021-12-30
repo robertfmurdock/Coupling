@@ -25,7 +25,6 @@ import kotlinext.js.jso
 import kotlinx.browser.document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
-import popper.core.Placement
 import popper.core.Popper
 import popper.core.modifier
 import popper.core.modifiers.Arrow
@@ -76,7 +75,7 @@ private fun ChildrenBuilder.demoPageFrame(state: DemoAnimationState) {
             setReferenceElement(element)
         }
 
-        val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef))
+        val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef, state))
 
         popperDiv(popperRef, arrowRef, state, popperInstance)
 
@@ -94,10 +93,10 @@ private fun ChildrenBuilder.demoPageFrame(state: DemoAnimationState) {
     }
 }
 
-private fun popperOptions(arrowRef: MutableRefObject<HTMLElement>, ): UsePopperOptions = jso {
+private fun popperOptions(arrowRef: MutableRefObject<HTMLElement>, state: DemoAnimationState): UsePopperOptions = jso {
+    this.placement = state.placement
     this.modifiers = arrayOf(
         Arrow.modifier {
-            placement = Placement.right
             this.options = jso {
                 this.element = arrowRef.current
             }
