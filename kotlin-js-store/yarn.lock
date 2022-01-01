@@ -2321,6 +2321,33 @@
     uuid "^8.3.2"
     yamljs "^0.3.0"
 
+"@serverless/dashboard-plugin@^5.5.2":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@serverless/dashboard-plugin/-/dashboard-plugin-5.5.2.tgz#bd21cef73c98f17f9fd64876aa08135591e0c2ba"
+  integrity sha512-w//z0A5IJ52kwbHken4QEx+vo/T2WHbmHFR5CblVbe2LpswgSJ2IEUHrbm/Tp9V/1QtGrVVXRVxgOPxoAChFwg==
+  dependencies:
+    "@serverless/event-mocks" "^1.1.1"
+    "@serverless/platform-client" "^4.3.0"
+    "@serverless/utils" "^5.20.2"
+    chalk "^4.1.2"
+    child-process-ext "^2.1.1"
+    chokidar "^3.5.2"
+    cli-color "^2.0.1"
+    flat "^5.0.2"
+    fs-extra "^9.1.0"
+    js-yaml "^4.1.0"
+    jszip "^3.7.1"
+    lodash "^4.17.21"
+    memoizee "^0.4.15"
+    ncjsm "^4.2.0"
+    node-dir "^0.1.17"
+    node-fetch "^2.6.6"
+    open "^7.4.2"
+    semver "^7.3.5"
+    simple-git "^2.48.0"
+    uuid "^8.3.2"
+    yamljs "^0.3.0"
+
 "@serverless/event-mocks@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@serverless/event-mocks/-/event-mocks-1.1.1.tgz#7064b99ccc29d9a8e9b799f413dbcfd64ea3b7ee"
@@ -2428,7 +2455,7 @@
     uuid "^8.3.2"
     write-file-atomic "^3.0.3"
 
-"@serverless/utils@^5.20.0", "@serverless/utils@^5.20.1":
+"@serverless/utils@^5.20.0", "@serverless/utils@^5.20.1", "@serverless/utils@^5.20.2":
   version "5.20.2"
   resolved "https://registry.yarnpkg.com/@serverless/utils/-/utils-5.20.2.tgz#f02ef61304771ad4f2a553e8d91b7ae7b1197724"
   integrity sha512-u7+oVwbq1BunmLI0T9egRL93Xg3TGxNsqogXqzxSLtjMWiImsadv3/gUJfXz/wTI9VXfbtQZvsVYMaRpS0JiqA==
@@ -3704,10 +3731,25 @@ author-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/author-regex/-/author-regex-1.0.0.tgz#d08885be6b9bbf9439fe087c76287245f0a81450"
   integrity sha1-0IiFvmubv5Q5/gh8dihyRfCoFFA=
 
-aws-sdk@*, aws-sdk@2.1046.0, aws-sdk@^2.1036.0, aws-sdk@^2.1046.0:
+aws-sdk@*, aws-sdk@^2.1036.0, aws-sdk@^2.1046.0:
   version "2.1046.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1046.0.tgz#9147b0fa1c86acbebd1a061e951ab5012f4499d7"
   integrity sha512-ocwHclMXdIA+NWocUyvp9Ild3/zy2vr5mHp3mTyodf0WU5lzBE8PocCVLSWhMAXLxyia83xv2y5f5AzAcetbqA==
+  dependencies:
+    buffer "4.9.2"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
+    xml2js "0.4.19"
+
+aws-sdk@2.1048.0, aws-sdk@^2.1048.0:
+  version "2.1048.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1048.0.tgz#02f2f35e0f51dd4510462e05c7a48fd4649d33f8"
+  integrity sha512-mVwWo+Udiuc/yEZ/DgJQGqOEtfiQjgUdtshx/t6ISe3+jW3TF9hUACwADwx2Sr/fuJyyJ3QD5JYLt5Cw35wQpA==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -6176,7 +6218,7 @@ esrecurse@^4.3.0:
   dependencies:
     estraverse "^5.2.0"
 
-essentials@^1.1.1:
+essentials@^1.1.1, essentials@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/essentials/-/essentials-1.2.0.tgz#c6361fb648f5c8c0c51279707f6139e521a05807"
   integrity sha512-kP/j7Iw7KeNE8b/o7+tr9uX2s1wegElGOoGZ2Xm35qBr4BbbEcH3/bxR2nfH9l9JANCq9AUrvKw+gRuHtZp0HQ==
@@ -11985,6 +12027,68 @@ serverless@^2.69.1:
     uuid "^8.3.2"
     yaml-ast-parser "0.0.43"
 
+serverless@^2.70.0:
+  version "2.70.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-2.70.0.tgz#26fdbcfd5ef467148ba8348712e4a27c3ace4d13"
+  integrity sha512-NoaaylJFgDhbEWLashrerle8jx35b6iGdF3s+gYOzj8wvLhMOF3rfWzeKNyCBVXC0syx1Q5aYgaYVHUMzXzmSw==
+  dependencies:
+    "@serverless/cli" "^1.5.3"
+    "@serverless/components" "^3.18.1"
+    "@serverless/dashboard-plugin" "^5.5.2"
+    "@serverless/platform-client" "^4.3.0"
+    "@serverless/utils" "^5.20.2"
+    ajv "^6.12.6"
+    ajv-keywords "^3.5.2"
+    archiver "^5.3.0"
+    aws-sdk "^2.1048.0"
+    bluebird "^3.7.2"
+    boxen "^5.1.2"
+    cachedir "^2.3.0"
+    chalk "^4.1.2"
+    child-process-ext "^2.1.1"
+    ci-info "^3.3.0"
+    cli-progress-footer "^2.3.0"
+    d "^1.0.1"
+    dayjs "^1.10.7"
+    decompress "^4.2.1"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+    essentials "^1.2.0"
+    ext "^1.6.0"
+    fastest-levenshtein "^1.0.12"
+    filesize "^8.0.6"
+    fs-extra "^9.1.0"
+    get-stdin "^8.0.0"
+    globby "^11.0.4"
+    got "^11.8.3"
+    graceful-fs "^4.2.8"
+    https-proxy-agent "^5.0.0"
+    is-docker "^2.2.1"
+    is-wsl "^2.2.0"
+    js-yaml "^4.1.0"
+    json-cycle "^1.3.0"
+    json-refs "^3.0.15"
+    lodash "^4.17.21"
+    memoizee "^0.4.15"
+    micromatch "^4.0.4"
+    ncjsm "^4.2.0"
+    node-fetch "^2.6.6"
+    object-hash "^2.2.0"
+    path2 "^0.1.0"
+    process-utils "^4.0.0"
+    promise-queue "^2.2.5"
+    replaceall "^0.1.6"
+    semver "^7.3.5"
+    signal-exit "^3.0.6"
+    strip-ansi "^6.0.1"
+    tabtab "^3.0.2"
+    tar "^6.1.11"
+    timers-ext "^0.1.7"
+    type "^2.5.0"
+    untildify "^4.0.0"
+    uuid "^8.3.2"
+    yaml-ast-parser "0.0.43"
+
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
@@ -12099,7 +12203,7 @@ simple-get@^3.0.3, simple-get@^3.1.0:
     once "^1.3.1"
     simple-concat "^1.0.0"
 
-simple-git@^2.47.0:
+simple-git@^2.47.0, simple-git@^2.48.0:
   version "2.48.0"
   resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-2.48.0.tgz#87c262dba8f84d7b96bb3a713e9e34701c1f6e3b"
   integrity sha512-z4qtrRuaAFJS4PUd0g+xy7aN4y+RvEt/QTJpR184lhJguBA1S/LsVlvE/CM95RsYMOFJG3NGGDjqFCzKU19S/A==
