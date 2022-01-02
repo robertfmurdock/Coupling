@@ -32,7 +32,9 @@ orbs:
           - browser-tools/install-chromedriver
           - run:
               name: Add hostnames
-              command: sudo tee -a /etc/hosts \<<<'127.0.0.1 static.localhost socket.localhost'
+              command: |
+                sudo tee -a /etc/hosts \<<<'127.0.0.1 static.localhost socket.localhost'
+                cat /etc/hosts
           - restore_cache:
                 key: coupling-cache-4-{{ .Branch }}
       collect-results:
@@ -69,7 +71,7 @@ jobs:
       - checkout
       - coupling-orb/setup
       - aws-cli/setup
-      - run: "./gradlew release uploadToS3 serverlessDeploy build check"
+      - run: "./gradlew release uploadToS3 serverlessDeploy build check --info"
       - coupling-orb/collect-results
   lambda-deploy:
     executor: coupling-orb/standard
