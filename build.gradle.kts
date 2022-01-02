@@ -1,4 +1,3 @@
-
 import de.gliderpilot.gradle.semanticrelease.SemanticReleaseChangeLogService
 import org.ajoberstar.gradle.git.release.semver.ChangeScope
 import org.ajoberstar.grgit.Commit
@@ -23,8 +22,8 @@ semanticRelease {
 
 dockerCompose {
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
-    if(System.getenv("CI") != null) {
-        startedServices.set(listOf("dynamo"))
+    if (System.getenv("CI") != null) {
+        startedServices.set(listOf("dynamo", "caddy"))
     }
 }
 

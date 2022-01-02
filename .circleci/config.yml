@@ -30,6 +30,9 @@ orbs:
               echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
           - browser-tools/install-chrome
           - browser-tools/install-chromedriver
+          - run:
+              name: Add hostnames
+              command: sudo tee -a /etc/hosts \<<<'127.0.0.1 static.localhost socket.localhost'
           - restore_cache:
                 key: coupling-cache-4-{{ .Branch }}
       collect-results:

@@ -1,5 +1,15 @@
 version: '2.1'
 services:
+  caddy:
+    image: caddy:2.4.6-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
   mongo:
     image: mongo
     environment:
@@ -40,3 +50,5 @@ volumes:
     driver: local
   graylog_journal:
     driver: local
+  caddy_data:
+  caddy_config:

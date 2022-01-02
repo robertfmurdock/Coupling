@@ -25,8 +25,11 @@ private suspend fun authorizedKtorClient(username: String): HttpClient {
         defaultRequest {
             expectSuccess = false
             url {
+                protocol = baseUrl.protocol
                 host = baseUrl.host
-                port = baseUrl.port
+                if(protocol != URLProtocol.HTTPS) {
+                    port = baseUrl.port
+                }
                 encodedPath = "${baseUrl.encodedPath}$encodedPath"
             }
         }

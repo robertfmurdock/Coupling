@@ -113,14 +113,14 @@ tasks {
         outputs.dir(logsDir)
 
         val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"
-        environment("BASEURL" to "http://localhost:3099/local/")
+        environment("BASEURL" to "https://localhost/local/")
         environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
         environment(
             mapOf(
                 "TEST_LOGIN_ENABLED" to "true",
                 "CLIENT_BASENAME" to "local",
                 "SERVER_DIR" to project(":server").projectDir.absolutePath,
-                "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile --httpPort 3099 start",
+                "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile start",
                 "NODE_PATH" to listOf(
                     "${project.rootProject.buildDir.path}/js/node_modules",
                     e2eTestProcessResources.destinationDir
@@ -130,6 +130,8 @@ tasks {
                 "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
                 "REPORT_DIR" to reportDir,
                 "LOGS_DIR" to logsDir,
+                "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
+                "STRICT_SSL" to "false",
             )
         )
         val logFile = file("${logsDir}/run.log")
