@@ -136,4 +136,3 @@ fun apiGatewayManagementApi() = ApiGatewayManagementApi(
             json()
     )
 )
-

@@ -1,6 +1,5 @@
 @file:JsModule("passport-local")
 
-
 package com.zegreatrob.coupling.server.external.passportlocal
 
 import com.zegreatrob.coupling.server.external.express.Request

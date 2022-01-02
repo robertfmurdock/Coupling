@@ -1,7 +1,6 @@
 @file:JsModule("@graphql-tools/schema")
 @file:Suppress("unused")
 
-
 package com.zegreatrob.coupling.server.external.graphql_tools
 
 import com.zegreatrob.coupling.server.external.graphql.GraphQLSchema
