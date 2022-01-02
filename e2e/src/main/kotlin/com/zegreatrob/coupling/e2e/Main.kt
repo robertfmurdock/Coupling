@@ -11,8 +11,10 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 fun main() {
+    println("Starting E2E Test Run.")
     val config = webpackConfig()
 
+    println("Launching work.")
     MainScope().launch {
         runWebpackAndStartServer(config)
             .whileRunning { runWebdriverIO(config.wdioConfig()) }
@@ -30,7 +32,7 @@ private fun Process.envString(key: String) = env[key].unsafeCast<String>()
 private fun WebpackConfig.wdioConfig() = "${output.path}/${process.envString("WEBPACKED_WDIO_CONFIG_OUTPUT")}.js"
 
 private suspend fun runWebpackAndStartServer(config: WebpackConfig) = coroutineScope {
-    launch { runWebpack(config) }
+    launch { runWebpack(config) }.invokeOnCompletion { if(it != null) println("Error, $it")}
     startServer()
 }.let { ServerWithWebpackDisposable(it, config) }
 
