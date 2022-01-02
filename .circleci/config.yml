@@ -46,7 +46,7 @@ orbs:
           - run:
               name: Copy test reports
               command: |
-                ./gradlew collectResults
+                ./gradlew composeLogs collectResults
               when: always
           - store_artifacts:
               path: build/test-output

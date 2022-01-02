@@ -25,6 +25,7 @@ dockerCompose {
     if (System.getenv("CI") != null) {
         startedServices.set(listOf("dynamo", "caddy"))
     }
+    containerLogToDir.set(project.file("build/test-output/containers-logs"))
 }
 
 yarn.ignoreScripts = false
