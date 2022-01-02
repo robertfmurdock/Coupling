@@ -15,6 +15,7 @@ orbs:
           GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
           _JAVA_OPTIONS: "-Xmx3g"
           AWS_DEFAULT_REGION: us-east-1
+          DOCKER_GATEWAY_HOST: 172.17.0.1
     commands:
       setup:
         steps:

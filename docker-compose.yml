@@ -10,8 +10,8 @@ services:
       - $PWD/Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    environment:
+      - HOST_IP=${DOCKER_GATEWAY_HOST:-host.docker.internal}
   mongo:
     image: mongo
     environment:
@@ -45,6 +45,8 @@ services:
       - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_ROOT_PASSWORD_SHA2:-5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8}
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
+
+
 volumes:
   mongo_data:
     driver: local
