@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import java.io.FileOutputStream
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -135,7 +136,7 @@ tasks {
         )
         val logFile = file("${logsDir}/run.log")
         logFile.parentFile.mkdirs()
-        standardOutput = logFile.outputStream()
+        standardOutput = FileOutputStream(logFile, true)
     }
 
     val check by getting {
