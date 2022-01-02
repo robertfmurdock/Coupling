@@ -1,6 +1,5 @@
 {
-  "WEBSOCKET_HOST": "socket.local",
-  "COOKIE_DOMAIN":  "localhost",
+  "WEBSOCKET_HOST": "localhost:3001",
   "AUTH0_CLIENT_ID": null,
   "AUTH0_CLIENT_SECRET": null,
   "CLIENT_BASENAME": "/local"

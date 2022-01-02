@@ -15,12 +15,7 @@ import kotlin.js.Promise
 val indexHtmlPromise by lazy {
     fetch("${Config.clientUrl}/index.html")
         .then(FetchResult::text)
-        .catch {
-            println("There was an error")
-            println(it.message)
-            println(it.cause)
-            ""
-        }
+            .catch { "" }
         .unsafeCast<Promise<String>>()
 }
 
