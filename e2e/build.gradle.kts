@@ -110,7 +110,6 @@ tasks {
         val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
         outputs.dir(reportDir)
         val logsDir = "${project.buildDir.absolutePath}/reports/logs/e2e-serverless/"
-        outputs.dir(logsDir)
 
         val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"
         environment("BASEURL" to "https://localhost/local/")
