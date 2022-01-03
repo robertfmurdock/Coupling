@@ -15,7 +15,6 @@ orbs:
           GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
           _JAVA_OPTIONS: "-Xmx3g"
           AWS_DEFAULT_REGION: us-east-1
-          DOCKER_GATEWAY_HOST: 172.18.0.1
     commands:
       setup:
         steps:
@@ -36,7 +35,9 @@ orbs:
               command: |
                 sudo tee -a /etc/hosts \<<<'127.0.0.1 static.localhost socket.localhost'
                 cat /etc/hosts
-                hostname -I |awk '{print $1}'
+                DOCKER_GATEWAY_HOST=`hostname -I |awk '{print $1}'`
+
+          - run: echo $DOCKER_GATEWAY_HOST
           - restore_cache:
                 key: coupling-cache-4-{{ .Branch }}
       collect-results:
