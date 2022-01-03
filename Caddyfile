@@ -1,11 +1,11 @@
 localhost {
-    reverse_proxy {$HOST_IP}:3000
+    reverse_proxy host.docker.internal:3000
 }
 
 static.localhost {
-    reverse_proxy {$HOST_IP}:8080
+    reverse_proxy host.docker.internal:8080
 }
 
 socket.localhost {
-    reverse_proxy {$HOST_IP}:3001
+    reverse_proxy host.docker.internal:3001
 }
