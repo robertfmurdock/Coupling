@@ -20,7 +20,7 @@ object DynamoDbProvider : DynamoDBSyntax {
         } else
             json.add(
                 json(
-                    "endpoint" to "http://localhost:8000",
+                    "endpoint" to nonAwsHost(),
                     "credentials" to json(
                         "accessKeyId" to "lol",
                         "secretAccessKey" to "lol"
@@ -28,6 +28,9 @@ object DynamoDbProvider : DynamoDBSyntax {
                 )
             )
     }
+
+    private fun nonAwsHost() = js("process.env.LOCAL_DYNAMO_URL").unsafeCast<String?>()
+        ?: "http://localhost:8000"
 
     override val dynamoDBClient: DynamoDBDocumentClient by lazy {
         DynamoDBDocumentClient.from(

@@ -28,6 +28,12 @@ dockerCompose {
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
 }
 
+tasks {
+    val composeUp by getting {
+        dependsOn(":server:buildImage")
+    }
+}
+
 yarn.ignoreScripts = false
 
 docker {

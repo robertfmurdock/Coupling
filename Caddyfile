@@ -1,5 +1,5 @@
 localhost {
-    reverse_proxy host.docker.internal:3000
+    reverse_proxy serverless:3000
 }
 
 static.localhost {

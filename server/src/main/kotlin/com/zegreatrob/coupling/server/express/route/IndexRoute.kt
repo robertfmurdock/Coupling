@@ -15,7 +15,6 @@ import kotlin.js.Promise
 val indexHtmlPromise by lazy {
     fetch("${Config.clientUrl}/index.html")
         .then(FetchResult::text)
-            .catch { "" }
         .unsafeCast<Promise<String>>()
 }
 

@@ -5,6 +5,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.coupling.plugins.node")
     id("com.zegreatrob.coupling.plugins.serialization")
+    id("com.bmuschko.docker-remote-api")
 }
 
 kotlin.js().nodejs()
@@ -132,6 +133,12 @@ tasks {
         )
     }
 
+    val buildImage by creating(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
+        dependsOn(assemble, compileKotlinJs)
+        inputDir.set(project.projectDir)
+        images.add("zegreatrob/coupling-serverless:latest")
+    }
+
     create<NodeExec>("serverlessStart") {
         dependsOn(assemble, clientConfiguration, test, compileKotlinJs)
         val serverlessConfigFile = project.relativePath("serverless.yml")
@@ -170,7 +177,6 @@ tasks {
             "--stage",
             serverlessStage
         )
-
     }
 
     create<NodeExec>("serverlessDeploy") {
@@ -191,7 +197,6 @@ tasks {
             serverlessStage
         )
     }
-
 
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
