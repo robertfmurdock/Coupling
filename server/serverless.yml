@@ -70,6 +70,7 @@ custom:
       AZURE_AD_CLIENT_SECRET: null
   serverless-offline:
     allowCache: true
+    host: 0.0.0.0
   static:
     folder: ${env:CLIENT_PATH}
     port: 8080
