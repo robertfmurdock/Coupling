@@ -2,11 +2,24 @@ localhost {
     reverse_proxy serverless:3000
 }
 
+coupling.local {
+    reverse_proxy serverless:3000
+}
+
 static.localhost {
     root * /static
     file_server browse
 }
 
+static.coupling.local {
+    root * /static
+    file_server browse
+}
+
 socket.localhost {
-    reverse_proxy host.docker.internal:3001
+    reverse_proxy serverless:3001
+}
+
+socket.coupling.local {
+    reverse_proxy serverless:3001
 }
