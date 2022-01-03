@@ -71,8 +71,6 @@ jobs:
       - checkout
       - coupling-orb/setup
       - aws-cli/setup
-      - run: "./gradlew composeUp"
-      - run: "./gradlew :e2e:check"
       - run: "./gradlew release uploadToS3 serverlessDeploy build check"
       - coupling-orb/collect-results
   lambda-deploy:
