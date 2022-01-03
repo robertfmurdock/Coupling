@@ -32,10 +32,9 @@ tasks {
     val composeUp by getting {
         dependsOn(":server:buildImage")
     }
-
-    release.configure {
-        finalizedBy(":client:uploadToS3", ":server:serverlessDeploy")
-    }
+//    release.configure {
+//        finalizedBy(findByPath(":client:uploadToS3"), findByPath(":server:serverlessDeploy"))
+//    }
 }
 
 yarn.ignoreScripts = false
