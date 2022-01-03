@@ -35,8 +35,7 @@ orbs:
               command: |
                 sudo tee -a /etc/hosts \<<<'127.0.0.1 static.localhost socket.localhost'
                 cat /etc/hosts
-                DOCKER_GATEWAY_HOST=`hostname -I |awk '{print $1}'`
-
+                export DOCKER_GATEWAY_HOST=`hostname -I |awk '{print $1}'`
           - run: echo $DOCKER_GATEWAY_HOST
           - restore_cache:
                 key: coupling-cache-4-{{ .Branch }}
