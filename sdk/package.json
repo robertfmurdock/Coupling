@@ -12,7 +12,6 @@
     "jasmine-reporters": "^2.5.0",
     "serverless": "^2.69.1",
     "serverless-offline": "^8.3.1",
-    "serverless-offline-ssm": "^5.2.0",
-    "serverless-plugin-static": "^0.0.7"
+    "serverless-offline-ssm": "^5.2.0"
   }
 }

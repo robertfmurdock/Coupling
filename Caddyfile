@@ -3,7 +3,8 @@ localhost {
 }
 
 static.localhost {
-    reverse_proxy host.docker.internal:8080
+    root * /static
+    file_server browse
 }
 
 socket.localhost {

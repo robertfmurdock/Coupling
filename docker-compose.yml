@@ -8,6 +8,7 @@ services:
       - "443:443"
     volumes:
       - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - $PWD/client/build/distributions:/static
       - caddy_data:/data
       - caddy_config:/config
     extra_hosts:

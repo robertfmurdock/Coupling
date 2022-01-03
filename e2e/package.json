@@ -22,8 +22,7 @@
     "url-loader": "4.1.1",
     "serverless": "^2.70.0",
     "serverless-offline": "^8.3.1",
-    "serverless-offline-ssm": "^5.2.0",
-    "serverless-plugin-static": "^0.0.7"
+    "serverless-offline-ssm": "^5.2.0"
   },
   "devDependencies": {
     "uuid": "^8.3.2"

@@ -56,7 +56,6 @@ functions:
     events:
       - websocket: $default
 plugins:
-  - serverless-plugin-static
   - serverless-offline-ssm
   - serverless-offline
 custom:
@@ -71,6 +70,3 @@ custom:
   serverless-offline:
     allowCache: true
     host: 0.0.0.0
-  static:
-    folder: ${env:CLIENT_PATH}
-    port: 8080
