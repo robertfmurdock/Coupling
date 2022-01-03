@@ -32,7 +32,10 @@ tasks {
     val composeUp by getting {
         dependsOn(":server:buildImage")
     }
-    val releaseTask = release.get()
+}
+
+afterEvaluate {
+    val releaseTask = tasks.release.get()
     releaseTask.finalizedBy(":client:uploadToS3")
     releaseTask.finalizedBy(":server:serverlessDeploy")
 }
