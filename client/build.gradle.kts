@@ -71,7 +71,7 @@ tasks {
             builtBy(browserProductionWebpack, browserDistribution)
         }
     }
-    create<Exec>("uploadToS3") {
+    val uploadToS3 by creating(Exec::class) {
         dependsOn(browserProductionWebpack)
         if (version.toString().contains("SNAPSHOT")) {
             enabled = false
@@ -79,6 +79,7 @@ tasks {
         val absolutePath = browserProductionWebpack.destinationDirectory.absolutePath
         commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${version}".split(" ")
     }
+    findByPath("release")!!.finalizedBy(uploadToS3)
 
     val dependencyResources by creating(Copy::class) {
         val javascriptConfig = configurations["runtimeClasspath"]

@@ -179,7 +179,7 @@ tasks {
         )
     }
 
-    create<NodeExec>("serverlessDeploy") {
+    val serverlessDeploy = creating(NodeExec::class) {
         dependsOn(serverlessBuild, compileKotlinJs)
         mustRunAfter(
             ":release",
@@ -197,6 +197,7 @@ tasks {
             serverlessStage
         )
     }
+    findByPath(":release")!!.finalizedBy(serverlessDeploy)
 
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
