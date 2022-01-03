@@ -1,20 +1,5 @@
 version: '2.4'
 services:
-  serverless:
-    image: zegreatrob/coupling-serverless:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - LOCAL_DYNAMO_URL=http://dynamo:8000
-      - CLIENT_URL=https://static.localhost
-      - NODE_TLS_REJECT_UNAUTHORIZED=0
-      - LAMBDA_ENDPOINT=https://localhost
-      - WEBSOCKET_HOST=socket.localhost
-      - NODE_ENV=production
-      - TEST_LOGIN_ENABLED=true
-      - AUTH0_CLIENT_SECRET
-    extra_hosts:
-      - "static.localhost:host-gateway"
   caddy:
     image: caddy:2.4.6-alpine
     restart: unless-stopped

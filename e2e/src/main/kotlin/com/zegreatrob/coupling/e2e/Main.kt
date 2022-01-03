@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e
 
+import com.zegreatrob.coupling.e2e.external.childprocess.ChildProcess
 import com.zegreatrob.coupling.e2e.external.fsextras.removeDirectory
 import com.zegreatrob.coupling.e2e.external.webpack.WebpackConfig
 import com.zegreatrob.coupling.e2e.external.webpack.runWebpack
@@ -30,13 +31,15 @@ private fun WebpackConfig.wdioConfig() = "${output.path}/${process.envString("WE
 
 private suspend fun runWebpackAndStartServer(config: WebpackConfig) = coroutineScope {
     launch { runWebpack(config) }
-}.let { ServerWithWebpackDisposable(config) }
+    startServer()
+}.let { ServerWithWebpackDisposable(it, config) }
 
-class ServerWithWebpackDisposable(private val config: WebpackConfig) {
+class ServerWithWebpackDisposable(private val process: ChildProcess, private val config: WebpackConfig) {
     suspend fun <T> whileRunning(callback: suspend () -> T) = try {
         callback()
     } finally {
         removeDirectory(config.output.path)
+        process.kill()
     }
 }
 
