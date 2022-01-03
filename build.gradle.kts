@@ -32,6 +32,9 @@ tasks {
     val composeUp by getting {
         dependsOn(":server:buildImage")
     }
+    val releaseTask = release.get()
+    releaseTask.finalizedBy(":client:uploadToS3")
+    releaseTask.finalizedBy(":server:serverlessDeploy")
 }
 
 yarn.ignoreScripts = false

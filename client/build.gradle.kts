@@ -79,7 +79,6 @@ tasks {
         val absolutePath = browserProductionWebpack.destinationDirectory.absolutePath
         commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${version}".split(" ")
     }
-    findByPath("release")!!.finalizedBy(uploadToS3)
 
     val dependencyResources by creating(Copy::class) {
         val javascriptConfig = configurations["runtimeClasspath"]

@@ -197,7 +197,6 @@ tasks {
             serverlessStage
         )
     }
-    findByPath(":release")!!.finalizedBy(serverlessDeploy)
 
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
