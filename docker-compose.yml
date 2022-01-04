@@ -4,7 +4,6 @@ services:
     image: zegreatrob/coupling-serverless:latest
     ports:
       - "3000:3000"
-      - "3001:3001"
     environment:
       - LOCAL_DYNAMO_URL=http://dynamo:8000
       - PUBLIC_URL=https://localhost

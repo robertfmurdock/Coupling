@@ -123,9 +123,9 @@ tasks {
 
         environment(
             "NODE_PATH" to relevantPaths.joinToString(":"),
-            "WEBSOCKET_HOST" to "localhost:3001",
+            "WEBSOCKET_HOST" to "socket.localhost",
             "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile",
-            "BASEURL" to "http://localhost:3000/local/",
+            "BASEURL" to "https://localhost/local/",
             "CLIENT_BASENAME" to "local",
             "BASENAME" to "local",
             "NODE_TLS_REJECT_UNAUTHORIZED" to "0",
