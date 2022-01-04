@@ -8,8 +8,8 @@ plugins {
 }
 
 dependencies {
-    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:5.5.10"))
+    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:5.5.12"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.2"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.0"))
-    "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.285-kotlin-1.6.10"))
+    "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.286-kotlin-1.6.10"))
 }
