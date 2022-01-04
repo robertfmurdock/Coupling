@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.sdk.ktor
+package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.sdk.*
 import com.zegreatrob.coupling.stubmodel.uuidString
 import io.ktor.client.*
 import io.ktor.client.features.*

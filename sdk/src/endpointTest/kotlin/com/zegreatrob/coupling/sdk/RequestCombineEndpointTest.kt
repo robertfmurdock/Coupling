@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.sdk.ktor
+package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.pin.Pin

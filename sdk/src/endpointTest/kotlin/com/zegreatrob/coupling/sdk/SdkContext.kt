@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.sdk.ktor.AuthorizedKtorSdk
-import com.zegreatrob.coupling.sdk.ktor.authorizedKtorSdk
 
 interface SdkContext : SdkSyntax {
     override val sdk: AuthorizedKtorSdk
