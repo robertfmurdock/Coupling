@@ -38,7 +38,6 @@
             <option value="$PROJECT_DIR$/repository-core" />
             <option value="$PROJECT_DIR$/repository-dynamo" />
             <option value="$PROJECT_DIR$/repository-memory" />
-            <option value="$PROJECT_DIR$/repository-mongo" />
             <option value="$PROJECT_DIR$/repository-validation" />
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />

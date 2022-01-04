@@ -1,5 +1,22 @@
 version: '2.4'
 services:
+  serverless:
+    image: zegreatrob/coupling-serverless:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - LOCAL_DYNAMO_URL=http://dynamo:8000
+      - PUBLIC_URL=https://localhost
+      - CLIENT_URL=https://static.localhost
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+      - LAMBDA_ENDPOINT=http://localhost:3002
+      - WEBSOCKET_HOST=socket.localhost
+      - API_GATEWAY_MANAGEMENT_API_HOST=http://localhost:3001
+      - NODE_ENV=production
+      - TEST_LOGIN_ENABLED=true
+      - AUTH0_CLIENT_SECRET
+    extra_hosts:
+      - "static.localhost:host-gateway"
   caddy:
     image: caddy:2.4.6-alpine
     restart: unless-stopped
@@ -9,7 +26,7 @@ services:
     volumes:
       - $PWD/Caddyfile:/etc/caddy/Caddyfile
       - $PWD/client:/client
-      - caddy_data:/data
+      - ~/caddy_data:/data
       - caddy_config:/config
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -55,5 +72,4 @@ volumes:
     driver: local
   graylog_journal:
     driver: local
-  caddy_data:
   caddy_config:

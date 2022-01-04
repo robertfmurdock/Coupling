@@ -23,9 +23,15 @@ semanticRelease {
 dockerCompose {
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
     if (System.getenv("CI") != null) {
-        startedServices.set(listOf("dynamo", "caddy"))
+        startedServices.set(listOf("serverless", "dynamo", "caddy"))
     }
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
+}
+
+tasks {
+    val composeUp by getting {
+        dependsOn(":server:buildImage")
+    }
 }
 
 yarn.ignoreScripts = false
