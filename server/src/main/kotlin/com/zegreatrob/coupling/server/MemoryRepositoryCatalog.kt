@@ -30,6 +30,10 @@ class MemoryRepositoryCatalog private constructor(
     UserEmailSyntax,
     ClockSyntax {
 
+    init {
+        println("initializing MemoryRepositoryCatalog")
+    }
+
     companion object {
         operator fun invoke(userEmail: String, backend: MemoryRepositoryBackend, clock: TimeProvider) =
             MemoryRepositoryCatalog(

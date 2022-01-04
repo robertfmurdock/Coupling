@@ -3,7 +3,7 @@ localhost {
 }
 
 static.localhost {
-    root * /static
+    root * /client/build/distributions
     file_server browse
 }
 

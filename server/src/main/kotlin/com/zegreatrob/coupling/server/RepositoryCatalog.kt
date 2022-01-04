@@ -34,7 +34,7 @@ val memoryBackend by lazy { MemoryRepositoryBackend() }
 private fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(userId, memoryBackend, TimeProvider)
 
 suspend fun userRepository(userId: String): UserRepository = if (useInMemory())
-    memoryRepositoryCatalog(userId).userRepository.also { println("using in memory coupling repository") }
+    memoryRepositoryCatalog(userId).userRepository
 else
     DynamoUserRepository(userId, TimeProvider)
 
