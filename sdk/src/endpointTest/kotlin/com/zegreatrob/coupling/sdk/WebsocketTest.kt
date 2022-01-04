@@ -51,12 +51,14 @@ class WebsocketTest {
         socket.on("close") {
             messageDeferred.completeExceptionally(Exception("socket closed"))
         }
-        messageDeferred.await()
-    } verify { result ->
-        result.toCouplingServerMessage()
+        socket to messageDeferred.await()
+    } verifyAnd { (_, message) ->
+        message.toCouplingServerMessage()
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
             )
+    } teardown { (socket) ->
+        socket.close()
     }
 
     private fun expectedOnlinePlayerList(username: String) =
@@ -247,7 +249,7 @@ class WebsocketTest {
         tribe: Tribe,
         cookieString: String,
         parent: Job? = null
-    ): Deferred<Pair<MutableList<String>, WS>>  {
+    ): Deferred<Pair<MutableList<String>, WS>> {
         val socket = connectToSocket(tribe.id, cookieString)
         val messageDeferred = CompletableDeferred<Pair<MutableList<String>, WS>>(parent)
         val messages = mutableListOf<String>()
