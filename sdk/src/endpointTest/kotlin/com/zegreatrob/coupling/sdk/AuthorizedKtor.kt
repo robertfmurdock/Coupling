@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.logging.JsonFormatter
 import com.zegreatrob.coupling.stubmodel.uuidString
 import io.ktor.client.*
 import io.ktor.client.features.*
@@ -7,6 +8,8 @@ import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import mu.KotlinLogging
+import mu.KotlinLoggingConfiguration
 
 external val process: dynamic
 
@@ -26,14 +29,20 @@ private suspend fun authorizedKtorClient(username: String): HttpClient {
             url {
                 protocol = baseUrl.protocol
                 host = baseUrl.host
-                if(protocol != URLProtocol.HTTPS) {
+                if (protocol != URLProtocol.HTTPS) {
                     port = baseUrl.port
                 }
                 encodedPath = "${baseUrl.encodedPath}$encodedPath"
             }
         }
         install(Logging) {
-            logger = Logger.DEFAULT
+            KotlinLoggingConfiguration.FORMATTER = JsonFormatter()
+            val ktorLogger = KotlinLogging.logger("ktor")
+            logger = object : Logger {
+                override fun log(message: String) {
+                    ktorLogger.info { message }
+                }
+            }
             level = LogLevel.ALL
         }
     }
