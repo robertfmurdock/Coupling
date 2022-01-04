@@ -123,15 +123,12 @@ tasks {
 
         environment(
             "NODE_PATH" to relevantPaths.joinToString(":"),
-            "TEST_LOGIN_ENABLED" to "true",
-            "PORT" to "4001",
-            "WEBSOCKET_HOST" to "localhost:4002",
-            "LAMBDA_ENDPOINT" to "http://localhost:4003",
-            "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile --httpPort 4001 --websocketPort 4002 --lambdaPort 4003",
-            "BASEURL" to "http://localhost:4001/local/",
-            "SERVER_DIR" to project(":server").projectDir.absolutePath,
+            "WEBSOCKET_HOST" to "socket.localhost",
+            "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile",
+            "BASEURL" to "https://localhost/local/",
             "CLIENT_BASENAME" to "local",
             "BASENAME" to "local",
+            "NODE_TLS_REJECT_UNAUTHORIZED" to "0",
         )
 
         arguments = listOf(
