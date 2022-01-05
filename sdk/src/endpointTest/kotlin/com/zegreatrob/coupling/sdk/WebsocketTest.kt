@@ -93,30 +93,30 @@ class WebsocketTest {
 //    } teardown { result ->
 //        result.forEach { it.second.close() }
 //    }
-//
-//    @Test
-//    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = asyncSetup(sdkContext {
-//        object : SdkContext by it {
-//            val tribe = stubTribe()
-//        }
-//    }) {
-//        sdk.save(tribe)
-//    } exercise {
-//        val cookieString = getCookieString(sdk)
-//        val socket1 = openSocket(tribe, cookieString).await()
-//        val socket2 = openSocket(tribe, cookieString).await()
-//        listOf(socket1, socket2)
-//    } verifyAnd { sockets ->
-//        sockets[0].first.map(String::toCouplingServerMessage)
-//            .assertIsEqualTo(
-//                listOf(
-//                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
-//                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet())
-//                )
-//            )
-//    } teardown { sockets ->
-//        sockets.forEach { it.second.close() }
-//    }
+
+    @Test
+    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = asyncSetup(sdkContext {
+        object : SdkContext by it {
+            val tribe = stubTribe()
+        }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        val cookieString = getCookieString(sdk)
+        val socket1 = openSocket(tribe, cookieString).await()
+        val socket2 = openSocket(tribe, cookieString).await()
+        listOf(socket1, socket2)
+    } verifyAnd { sockets ->
+        sockets[0].first.map(String::toCouplingServerMessage)
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
+                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet())
+                )
+            )
+    } teardown { sockets ->
+        sockets.forEach { it.second.close() }
+    }
 
     @Test
     fun whenPairsAreSavedWillSendMessageToClients() = asyncSetup(sdkContext {
