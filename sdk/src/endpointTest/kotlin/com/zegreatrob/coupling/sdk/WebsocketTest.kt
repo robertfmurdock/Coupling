@@ -20,6 +20,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withTimeout
 import org.w3c.dom.url.URL
 import kotlin.js.json
 import kotlin.test.Test
@@ -34,65 +35,65 @@ external interface WS {
 
 class WebsocketTest {
 
-//    @Test
-//    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
-//        object : SdkContext by it {
-//            val tribe = stubTribe()
-//        }
-//    }) {
-//        sdk.save(tribe)
-//    } exercise {
-//        println("exercise")
-//        val socket = connectToSocket(tribe.id, getCookieString(sdk))
-//        println("socket connected")
-//        val messageDeferred = CompletableDeferred<String>()
-//        socket.on("message") { messageDeferred.complete(it) }
-//        socket.on("close") { messageDeferred.completeExceptionally(Exception("socket closed")) }
-//
-//        println("socket configured")
-//        socket to messageDeferred.await()
-//    } verifyAnd { (_, message) ->
-//        println("verify started")
-//        message.toCouplingServerMessage()
-//            .assertIsEqualTo(
-//                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
-//            )
-//    } teardown { (socket) ->
-//        println("teardown, yo")
-//        socket.close()
-//    }
-//
-//    @Test
-//    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(sdkContext {
-//        object : SdkContext by it {
-//            val tribe = stubTribe()
-//        }
-//    }) {
-//        sdk.save(tribe)
-//    } exercise {
-//        val cookieString = getCookieString(sdk)
-//        val firstTwoSockets = listOf(
-//            openSocket(tribe, cookieString),
-//            openSocket(tribe, cookieString)
-//        ).map { it.await() }
-//
-//        val thirdSocket = openSocket(tribe, cookieString).await()
-//        (firstTwoSockets + thirdSocket)
-//    } verifyAnd { result ->
-//        result[2].first
-//            .map(String::toCouplingServerMessage)
-//            .assertIsEqualTo(
-//                listOf(
-//                    CouplingSocketMessage(
-//                        "Users viewing this page: 3",
-//                        expectedOnlinePlayerList(username).toSet(),
-//                        null
-//                    )
-//                )
-//            )
-//    } teardown { result ->
-//        result.forEach { it.second.close() }
-//    }
+    @Test
+    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
+        object : SdkContext by it {
+            val tribe = stubTribe()
+        }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        println("exercise")
+        val socket = connectToSocket(tribe.id, getCookieString(sdk))
+        println("socket connected")
+        val messageDeferred = CompletableDeferred<String>()
+        socket.on("message") { messageDeferred.complete(it) }
+        socket.on("close") { messageDeferred.completeExceptionally(Exception("socket closed")) }
+
+        println("socket configured")
+        socket to messageDeferred.await()
+    } verifyAnd { (_, message) ->
+        println("verify started")
+        message.toCouplingServerMessage()
+            .assertIsEqualTo(
+                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
+            )
+    } teardown { (socket) ->
+        println("teardown, yo")
+        socket.close()
+    }
+
+    @Test
+    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(sdkContext {
+        object : SdkContext by it {
+            val tribe = stubTribe()
+        }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        val cookieString = getCookieString(sdk)
+        val firstTwoSockets = listOf(
+            openSocket(tribe, cookieString),
+            openSocket(tribe, cookieString)
+        ).map { it.await() }
+
+        val thirdSocket = openSocket(tribe, cookieString).await()
+        (firstTwoSockets + thirdSocket)
+    } verifyAnd { result ->
+        result[2].first
+            .map(String::toCouplingServerMessage)
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage(
+                        "Users viewing this page: 3",
+                        expectedOnlinePlayerList(username).toSet(),
+                        null
+                    )
+                )
+            )
+    } teardown { result ->
+        result.forEach { it.second.close() }
+    }
 
     @Test
     fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = asyncSetup(sdkContext {
@@ -106,16 +107,14 @@ class WebsocketTest {
         val socket1 = openSocket(tribe, cookieString).await()
         val socket2 = openSocket(tribe, cookieString).await()
         listOf(socket1, socket2)
-    } verifyAnd { sockets ->
-//        sockets[0].first.map(String::toCouplingServerMessage)
-//            .assertIsEqualTo(
-//                listOf(
-//                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
-//                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet())
-//                )
-//            )
-    } teardown { sockets ->
-//        sockets.forEach { it.second.close() }
+    } verify { sockets ->
+        sockets[0].first.map(String::toCouplingServerMessage)
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
+                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet())
+                )
+            )
     }
 
     @Test
@@ -142,103 +141,103 @@ class WebsocketTest {
         sockets.forEach { it.second.close() }
     }
 
-//    @Test
-//    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = asyncSetup(sdkContext {
-//        object : SdkContext by it {
-//            val tribe = stubTribe()
-//        }
-//    }) {
-//        sdk.save(tribe)
-//    } exercise {
-//        val cookieString = getCookieString(sdk)
-//        val socketToClose = openSocket(tribe, cookieString).await()
-//        openSocket(tribe, cookieString).await()
-//            .also {
-//                val deferred = CompletableDeferred<Unit>()
-//                it.second.on("message") {
-//                    deferred.complete(Unit)
-//                }
-//                socketToClose.second.close()
-//                deferred.await()
-//            }
-//    } verifyAnd { openSocket ->
-//        openSocket.first.map(String::toCouplingServerMessage)
-//            .assertIsEqualTo(
-//                listOf(
-//                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet()),
-//                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet())
-//                )
-//            )
-//    } teardown { openSocket ->
-//        openSocket.second.close()
-//    }
-//
-//
-//    @Test
-//    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(sdkContext { it }
-//    ) exercise {
-//        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
-//        val url = "wss://$host/api/${TribeId("whoops").value}/pairAssignments/current"
-//        val socket = newWebsocket(url, json())
-//        CompletableDeferred<Unit>().also { deferred ->
-//            socket.on("close") { deferred.complete(Unit) }
-//        }
-//    } verify { deferred ->
-//        withTimeout(100) {
-//            deferred.await()
-//        }
-//    }
-//
-//    @Test
-//    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = asyncSetup(sdkContext { it }
-//    ) exercise {
-//        val socket = connectToSocket(stubTribe().id, getCookieString(sdk))
-//        CompletableDeferred<Unit>().also { deferred ->
-//            socket.on("close") { deferred.complete(Unit) }
-//        }
-//    } verify { deferred ->
-//        withTimeout(200) {
-//            deferred.await()
-//        }
-//    }
-//
-//    @Test
-//    fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(sdkContext { it }
-//    ) exercise {
-//        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
-//        val url = "wss://$host/api/404WTF"
-//        val socket = newWebsocket(url, json())
-//        CompletableDeferred<Unit>().also { deferred ->
-//            socket.on("close") { deferred.complete(Unit) }
-//        }
-//    } verify { deferred ->
-//        withTimeout(100) {
-//            deferred.await()
-//        }
-//    }
-//
-//    @Test
-//    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = asyncSetup(sdkContext {
-//        object : SdkContext by it {
-//            val tribe = stubTribe()
-//        }
-//    }) {
-//        sdk.save(tribe)
-//    } exercise {
-//        val socket = connectToSocket(tribe.id, getCookieString(sdk))
-//        val messageDeferred = CompletableDeferred<Unit>()
-//        socket.on("open") {
-//            socket.close()
-//        }
-//        socket.on("close") {
-//            messageDeferred.complete(Unit)
-//        }
-//        messageDeferred
-//    } verify { deferred ->
-//        withTimeout(100) {
-//            deferred.await()
-//        }
-//    }
+    @Test
+    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = asyncSetup(sdkContext {
+        object : SdkContext by it {
+            val tribe = stubTribe()
+        }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        val cookieString = getCookieString(sdk)
+        val socketToClose = openSocket(tribe, cookieString).await()
+        openSocket(tribe, cookieString).await()
+            .also {
+                val deferred = CompletableDeferred<Unit>()
+                it.second.on("message") {
+                    deferred.complete(Unit)
+                }
+                socketToClose.second.close()
+                deferred.await()
+            }
+    } verifyAnd { openSocket ->
+        openSocket.first.map(String::toCouplingServerMessage)
+            .assertIsEqualTo(
+                listOf(
+                    CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet()),
+                    CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet())
+                )
+            )
+    } teardown { openSocket ->
+        openSocket.second.close()
+    }
+
+
+    @Test
+    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(sdkContext { it }
+    ) exercise {
+        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
+        val url = "wss://$host/api/${TribeId("whoops").value}/pairAssignments/current"
+        val socket = newWebsocket(url, json())
+        CompletableDeferred<Unit>().also { deferred ->
+            socket.on("close") { deferred.complete(Unit) }
+        }
+    } verify { deferred ->
+        withTimeout(100) {
+            deferred.await()
+        }
+    }
+
+    @Test
+    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = asyncSetup(sdkContext { it }
+    ) exercise {
+        val socket = connectToSocket(stubTribe().id, getCookieString(sdk))
+        CompletableDeferred<Unit>().also { deferred ->
+            socket.on("close") { deferred.complete(Unit) }
+        }
+    } verify { deferred ->
+        withTimeout(200) {
+            deferred.await()
+        }
+    }
+
+    @Test
+    fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(sdkContext { it }
+    ) exercise {
+        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
+        val url = "wss://$host/api/404WTF"
+        val socket = newWebsocket(url, json())
+        CompletableDeferred<Unit>().also { deferred ->
+            socket.on("close") { deferred.complete(Unit) }
+        }
+    } verify { deferred ->
+        withTimeout(100) {
+            deferred.await()
+        }
+    }
+
+    @Test
+    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = asyncSetup(sdkContext {
+        object : SdkContext by it {
+            val tribe = stubTribe()
+        }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        val socket = connectToSocket(tribe.id, getCookieString(sdk))
+        val messageDeferred = CompletableDeferred<Unit>()
+        socket.on("open") {
+            socket.close()
+        }
+        socket.on("close") {
+            messageDeferred.complete(Unit)
+        }
+        messageDeferred
+    } verify { deferred ->
+        withTimeout(100) {
+            deferred.await()
+        }
+    }
 
     private fun openSocket(
         tribe: Tribe,
