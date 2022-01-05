@@ -78,9 +78,7 @@ class WebsocketTest {
             .assertIsEqualTo(
                 listOf(
                     CouplingSocketMessage(
-                        "Users viewing this page: 3",
-                        expectedOnlinePlayerList(username).toSet(),
-                        null
+                        "Users viewing this page: 3", expectedOnlinePlayerList(username).toSet(), null
                     )
                 )
             )
@@ -242,7 +240,6 @@ class WebsocketTest {
         SocketWrapper(socket)
     }
 
-
     private fun connectToSocket(tribeId: TribeId, cookieStringSync: String): WS {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "wss://$host/api/websocket?tribeId=${tribeId.value}"
@@ -312,18 +309,22 @@ data class SocketWrapper(
     }
 
     suspend fun closeAndWait() {
-        if (this.socket.readyState == 3)
-            return
-
-        val closeDeferred = CompletableDeferred<Unit>()
-
-        val closeHandler: () -> Unit = {
-            if (!closeDeferred.isCompleted)
-                closeDeferred.complete(Unit)
+        logger.info { "close and wait started" }
+        if (this.socket.readyState != 3) {
+            val closeDeferred = CompletableDeferred<Unit>()
+            val closeHandler: () -> Unit = {
+                logger.info { "close deferred handled" }
+                if (!closeDeferred.isCompleted)
+                    closeDeferred.complete(Unit)
+            }
+            closeHandlers = closeHandlers + closeHandler
+            logger.info { "close deferred attached" }
+            this.socket.close()
+            logger.info { "close explicitly triggered" }
+            closeDeferred.await()
+        } else {
+            logger.info { "already closed" }
         }
-        closeHandlers = closeHandlers + closeHandler
-        this.socket.close()
-
-        closeDeferred.await()
+        logger.info { "close and wait complete" }
     }
 }
