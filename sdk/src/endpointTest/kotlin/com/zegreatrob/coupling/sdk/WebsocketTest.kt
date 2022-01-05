@@ -17,7 +17,10 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import io.ktor.client.features.cookies.*
 import io.ktor.http.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.withTimeout
 import org.w3c.dom.url.URL
 import kotlin.js.json
 import kotlin.test.Test
@@ -72,13 +75,10 @@ class WebsocketTest {
         sdk.save(tribe)
     } exercise {
         val cookieString = getCookieString(sdk)
-        val firstTwoSockets = withContext(Dispatchers.Default) {
-            val job = launch { }
-            listOf(
-                openSocket(tribe, cookieString, job),
-                openSocket(tribe, cookieString, job)
-            ).map { it.await() }
-        }
+        val firstTwoSockets = listOf(
+            openSocket(tribe, cookieString),
+            openSocket(tribe, cookieString)
+        ).map { it.await() }
 
         val thirdSocket = openSocket(tribe, cookieString).await()
         (firstTwoSockets + thirdSocket)
