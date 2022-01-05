@@ -107,7 +107,7 @@ tasks {
         inputs.file(projectDir.path + "/endpoint-wrapper.js")
         inputs.files(appConfiguration, testLoggingLib)
 
-        outputs.dir("build/test-results/test")
+        outputs.dir("build/test-results")
 
         val processResources = withType(ProcessResources::class.java)
 

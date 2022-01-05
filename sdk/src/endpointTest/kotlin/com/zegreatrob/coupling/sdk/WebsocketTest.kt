@@ -40,22 +40,23 @@ class WebsocketTest {
     }) {
         sdk.save(tribe)
     } exercise {
+        println("exercise")
         val socket = connectToSocket(tribe.id, getCookieString(sdk))
+        println("socket connected")
         val messageDeferred = CompletableDeferred<String>()
-        socket.on("message") {
-            messageDeferred.complete(it)
-            socket.close()
-        }
-        socket.on("close") {
-            messageDeferred.completeExceptionally(Exception("socket closed"))
-        }
+        socket.on("message") { messageDeferred.complete(it) }
+        socket.on("close") { messageDeferred.completeExceptionally(Exception("socket closed")) }
+
+        println("socket configured")
         socket to messageDeferred.await()
     } verifyAnd { (_, message) ->
+        println("verify started")
         message.toCouplingServerMessage()
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
             )
     } teardown { (socket) ->
+        println("teardown, yo")
         socket.close()
     }
 
