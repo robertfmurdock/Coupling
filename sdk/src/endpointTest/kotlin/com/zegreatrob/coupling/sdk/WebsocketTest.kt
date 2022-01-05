@@ -15,8 +15,6 @@ import com.zegreatrob.testmints.async.asyncSetup
 import io.ktor.client.features.cookies.*
 import io.ktor.http.*
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Job
 import org.w3c.dom.url.URL
 import kotlin.js.json
 import kotlin.test.Test
@@ -31,29 +29,24 @@ external interface WS {
 
 class WebsocketTest {
 
-//    @Test
-//    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
-//        object : SdkContext by it {
-//            val tribe = stubTribe()
-//        }
-//    }) {
-//        sdk.save(tribe)
-//    } exercise {
-//        val socket = connectToSocket(tribe.id, getCookieString(sdk))
-//        val messageDeferred = CompletableDeferred<String>()
-//        socket.on("message") { if(!messageDeferred.isCompleted) messageDeferred.complete(it) }
-//        socket.on("close") {
-//            if(!messageDeferred.isCompleted) messageDeferred.completeExceptionally(Exception("socket closed"))
-//        }
-//        socket to messageDeferred.await()
-//    } verifyAnd { (_, message) ->
-//        message.toCouplingServerMessage()
-//            .assertIsEqualTo(
-//                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
-//            )
-//    } teardown { (socket) ->
-//        socket.close()
-//    }
+    @Test
+    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
+        object : SdkContext by it {
+            val tribe = stubTribe()
+        }
+    }) {
+        sdk.save(tribe)
+    } exercise {
+        openSocket(tribe, getCookieString(sdk))
+            .apply { waitForFirstMessage() }
+    } verifyAnd { (_, messages) ->
+        messages.first().toCouplingServerMessage()
+            .assertIsEqualTo(
+                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
+            )
+    } teardown { (socket) ->
+        socket.close()
+    }
 
     @Test
     fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(sdkContext {
@@ -67,12 +60,12 @@ class WebsocketTest {
         val firstTwoSockets = listOf(
             openSocket(tribe, cookieString),
             openSocket(tribe, cookieString)
-        ).map { it.await() }
+        ).onEach { it.waitForFirstMessage() }
 
-        val thirdSocket = openSocket(tribe, cookieString).await()
+        val thirdSocket = openSocket(tribe, cookieString).also { it.waitForFirstMessage() }
         (firstTwoSockets + thirdSocket)
     } verifyAnd { result ->
-        result[2].first
+        result[2].messages
             .map(String::toCouplingServerMessage)
             .assertIsEqualTo(
                 listOf(
@@ -84,7 +77,7 @@ class WebsocketTest {
                 )
             )
     } teardown { result ->
-        result.forEach { it.second.close() }
+        result.forEach { it.socket.close() }
     }
 //
 //    @Test
@@ -234,19 +227,12 @@ class WebsocketTest {
 
     private fun openSocket(
         tribe: Tribe,
-        cookieString: String,
-        parent: Job? = null
-    ): Deferred<Pair<MutableList<String>, WS>> {
+        cookieString: String
+    ) = let {
         val socket = connectToSocket(tribe.id, cookieString)
-        val messageDeferred = CompletableDeferred<Pair<MutableList<String>, WS>>(parent)
-        val messages = mutableListOf<String>()
-        socket.on("message") {
-            messages.add(it)
-            if(!messageDeferred.isCompleted)
-                messageDeferred.complete(Pair(messages, socket))
-        }
-        return messageDeferred
+        SocketWrapper(socket)
     }
+
 
     private fun connectToSocket(tribeId: TribeId, cookieStringSync: String): WS {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
@@ -269,3 +255,38 @@ fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()
 
 private fun expectedOnlinePlayerList(username: String) =
     listOf(Player(email = "$username._temp", name = "", id = "-1"))
+
+data class SocketWrapper(
+    val socket: WS,
+    val messages: MutableList<String> = mutableListOf<String>(),
+    var messageHandlers: List<() -> Unit> = emptyList(),
+    var closeHandlers: List<() -> Unit> = emptyList()
+) {
+    init {
+        socket.on("message") {
+            println("message received")
+            messages.add(it)
+            println("handlers: ${messageHandlers.size}")
+            messageHandlers.forEach { handler -> handler() }
+        }
+    }
+
+    suspend fun waitForFirstMessage() {
+        if (this.messages.size == 0) {
+            val messageDeferred = CompletableDeferred<Unit>()
+            val mHandler: () -> Unit = {
+                if (!messageDeferred.isCompleted)
+                    messageDeferred.complete(Unit)
+            }
+            val closeHandler: () -> Unit = {
+                @Suppress("ThrowableNotThrown")
+                if (!messageDeferred.isCompleted)
+                    messageDeferred.completeExceptionally(Exception("socket was closed unexpectedly"))
+            }
+            messageHandlers = messageHandlers + mHandler
+            closeHandlers = closeHandlers + closeHandler
+
+            messageDeferred.await()
+        }
+    }
+}
