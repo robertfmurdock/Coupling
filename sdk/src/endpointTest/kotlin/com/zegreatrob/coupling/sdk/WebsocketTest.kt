@@ -31,29 +31,29 @@ external interface WS {
 
 class WebsocketTest {
 
-    @Test
-    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
-        object : SdkContext by it {
-            val tribe = stubTribe()
-        }
-    }) {
-        sdk.save(tribe)
-    } exercise {
-        val socket = connectToSocket(tribe.id, getCookieString(sdk))
-        val messageDeferred = CompletableDeferred<String>()
-        socket.on("message") { if(!messageDeferred.isCompleted) messageDeferred.complete(it) }
-        socket.on("close") {
-            if(!messageDeferred.isCompleted) messageDeferred.completeExceptionally(Exception("socket closed"))
-        }
-        socket to messageDeferred.await()
-    } verifyAnd { (_, message) ->
-        message.toCouplingServerMessage()
-            .assertIsEqualTo(
-                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
-            )
-    } teardown { (socket) ->
+//    @Test
+//    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
+//        object : SdkContext by it {
+//            val tribe = stubTribe()
+//        }
+//    }) {
+//        sdk.save(tribe)
+//    } exercise {
+//        val socket = connectToSocket(tribe.id, getCookieString(sdk))
+//        val messageDeferred = CompletableDeferred<String>()
+//        socket.on("message") { if(!messageDeferred.isCompleted) messageDeferred.complete(it) }
+//        socket.on("close") {
+//            if(!messageDeferred.isCompleted) messageDeferred.completeExceptionally(Exception("socket closed"))
+//        }
+//        socket to messageDeferred.await()
+//    } verifyAnd { (_, message) ->
+//        message.toCouplingServerMessage()
+//            .assertIsEqualTo(
+//                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
+//            )
+//    } teardown { (socket) ->
 //        socket.close()
-    }
+//    }
 
     @Test
     fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(sdkContext {
