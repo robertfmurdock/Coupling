@@ -72,6 +72,9 @@ jobs:
       - coupling-orb/setup
       - aws-cli/setup
       - run: "./gradlew :sdk:check"
+      - run: "./gradlew :sdk:check"
+      - run: "./gradlew :sdk:check"
+      - run: "./gradlew :sdk:check"
       - run: "./gradlew release build check"
       - coupling-orb/collect-results
   lambda-deploy:
