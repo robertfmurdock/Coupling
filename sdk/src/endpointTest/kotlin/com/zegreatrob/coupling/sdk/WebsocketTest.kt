@@ -115,12 +115,7 @@ class WebsocketTest {
                 )
             )
     } teardown { sockets ->
-        sockets.forEach {
-            val deferred = CompletableDeferred<Unit>()
-            it.second.on("close") { deferred.complete(Unit) }
-            it.second.close()
-            deferred.await()
-        }
+        sockets.forEach { it.second.close() }
     }
 
     @Test
@@ -255,10 +250,8 @@ class WebsocketTest {
         val messages = mutableListOf<String>()
         socket.on("message") {
             messages.add(it)
-            messageDeferred.complete(Pair(messages, socket))
-        }
-        socket.on("close") {
-            messageDeferred.completeExceptionally(Exception("socket closed"))
+            if(!messageDeferred.isCompleted)
+                messageDeferred.complete(Pair(messages, socket))
         }
         return messageDeferred
     }
