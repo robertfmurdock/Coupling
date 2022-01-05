@@ -66,11 +66,18 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }.bind()) {
         coroutineScope {
             tribeId.with(pins).forEach {
-                launch { repository.save(it) }
+                launch {
+                    println("save pin ${it.id}")
+                    repository.save(it)
+                    println("save pin ${it.id} complete")
+                }
             }
+            println("all saves launched")
         }
     } exercise {
+        println("exercise begins")
         repository.deletePin(tribeId, pins[1].id!!)
+        println("after delete line")
         repository.getPins(tribeId)
     } verify { result ->
         result.map { it.data.pin }

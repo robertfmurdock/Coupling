@@ -3,7 +3,6 @@ const startJasmine = function () {
 };
 
 new Promise(function (resolve) {
-    console.log("server ready");
     resolve()
 })
     .then(startJasmine, err => {
