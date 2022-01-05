@@ -115,7 +115,12 @@ class WebsocketTest {
                 )
             )
     } teardown { sockets ->
-        sockets.forEach { it.second.close() }
+        sockets.forEach {
+            val deferred = CompletableDeferred<Unit>()
+            it.second.on("close") { deferred.complete(Unit) }
+            it.second.close()
+            deferred.await()
+        }
     }
 
     @Test
