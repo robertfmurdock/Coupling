@@ -9,9 +9,9 @@ services:
       - PUBLIC_URL=https://localhost
       - CLIENT_URL=https://static.localhost
       - NODE_TLS_REJECT_UNAUTHORIZED=0
-      - LAMBDA_ENDPOINT=http://localhost:3002
+      - LAMBDA_ENDPOINT=http://127.0.0.1:3002
       - WEBSOCKET_HOST=socket.localhost
-      - API_GATEWAY_MANAGEMENT_API_HOST=http://localhost:3001
+      - API_GATEWAY_MANAGEMENT_API_HOST=http://127.0.0.1:3001
       - NODE_ENV=production
       - TEST_LOGIN_ENABLED=true
       - AUTH0_CLIENT_SECRET

@@ -96,15 +96,14 @@ private fun notifyConnectLambda(event: dynamic): Promise<Unit> {
     val options = notifyLambdaOptions()
     val client = LambdaClient(options)
     console.log("lambda options ${JSON.stringify(options)}")
-    return client.send<Unit>(
-        InvokeCommand(
-            json(
-                "FunctionName" to "coupling-server-${Process.getEnv("STAGE")}-notifyConnect",
-                "InvocationType" to "Event",
-                "Payload" to JSON.stringify(event)
-            )
-        )
-    ).catch {
+    val commandOptions = json(
+        "FunctionName" to "coupling-server-${Process.getEnv("STAGE")}-notifyConnect",
+        "InvocationType" to "Event",
+        "Payload" to JSON.stringify(event)
+    )
+
+    console.log("command options ${JSON.stringify(commandOptions)}")
+    return client.send<Unit>(InvokeCommand(commandOptions)).catch {
         console.log("lambda invoke fail", it)
     }
 }
