@@ -15,6 +15,7 @@ import com.zegreatrob.testmints.async.asyncSetup
 import io.ktor.client.features.cookies.*
 import io.ktor.http.*
 import kotlinx.coroutines.CompletableDeferred
+import mu.KotlinLogging
 import org.w3c.dom.url.URL
 import kotlin.js.json
 import kotlin.test.Test
@@ -256,25 +257,34 @@ fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()
 private fun expectedOnlinePlayerList(username: String) =
     listOf(Player(email = "$username._temp", name = "", id = "-1"))
 
+
+val logger = KotlinLogging.logger("socket wrapper")
+
 data class SocketWrapper(
     val socket: WS,
-    val messages: MutableList<String> = mutableListOf<String>(),
+    val messages: MutableList<String> = mutableListOf(),
     var messageHandlers: List<() -> Unit> = emptyList(),
     var closeHandlers: List<() -> Unit> = emptyList()
 ) {
     init {
         socket.on("message") {
-            println("message received")
+            logger.info { "message received" }
             messages.add(it)
-            println("handlers: ${messageHandlers.size}")
+            logger.info { "handlers: ${messageHandlers.size}" }
             messageHandlers.forEach { handler -> handler() }
+        }
+        socket.on("close") {
+            logger.info { "close" }
+            closeHandlers.forEach { handler -> handler() }
         }
     }
 
     suspend fun waitForFirstMessage() {
         if (this.messages.size == 0) {
+            logger.info { "creating deferred" }
             val messageDeferred = CompletableDeferred<Unit>()
             val mHandler: () -> Unit = {
+                logger.info { "mHandler" }
                 if (!messageDeferred.isCompleted)
                     messageDeferred.complete(Unit)
             }
@@ -285,8 +295,11 @@ data class SocketWrapper(
             }
             messageHandlers = messageHandlers + mHandler
             closeHandlers = closeHandlers + closeHandler
-
+            logger.info { "starting await" }
             messageDeferred.await()
+            logger.info { "after await" }
+            messageHandlers = messageHandlers - mHandler
+            closeHandlers = closeHandlers - closeHandler
         }
     }
 }
