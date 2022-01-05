@@ -95,6 +95,7 @@ private suspend fun handleConnect(request: Request, connectionId: String, event:
 private fun notifyConnectLambda(event: dynamic): Promise<Unit> {
     val options = notifyLambdaOptions()
     val client = LambdaClient(options)
+    console.log("lambda options ${JSON.stringify(options)}")
     return client.send<Unit>(
         InvokeCommand(
             json(
@@ -181,11 +182,8 @@ private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     User("websocket", "websocket", emptySet()), this, uuid4()
 )
 
-private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(
-    socketDispatcher: CommandDispatcher
-) {
+private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(socketDispatcher: CommandDispatcher) =
     socketDispatcher.execute(BroadcastAction(first, second))
-}
 
 private fun delete(connectionId: String, managementApi: ApiGatewayManagementApi) = managementApi.deleteConnection(
     json("ConnectionId" to connectionId)
