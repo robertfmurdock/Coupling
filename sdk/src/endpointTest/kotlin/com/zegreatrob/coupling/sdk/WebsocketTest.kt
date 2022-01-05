@@ -19,6 +19,7 @@ import com.zegreatrob.testmints.async.asyncSetup
 import io.ktor.client.features.cookies.*
 import io.ktor.http.*
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
 import mu.KotlinLogging
 import org.w3c.dom.url.URL
@@ -107,7 +108,9 @@ class WebsocketTest {
                 )
             )
     } teardown { result ->
-        result.forEach { it.closeAndWait() }
+        result.forEach {
+            it.closeAndWait()
+        }
     }
 
     @Test
@@ -323,6 +326,7 @@ data class SocketWrapper(
             logger.info { "close explicitly triggered" }
             closeDeferred.await()
             closeHandlers = closeHandlers - closeHandler
+            delay(50)
         } else {
             logger.info { "already closed" }
         }
