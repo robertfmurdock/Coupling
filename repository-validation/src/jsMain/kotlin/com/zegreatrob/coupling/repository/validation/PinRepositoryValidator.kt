@@ -12,8 +12,6 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.invoke
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlin.test.Test
 
 interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, TribeContext<R>> {
@@ -64,16 +62,12 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
             stubPin()
         )
     }.bind()) {
-        coroutineScope {
-            tribeId.with(pins).forEach {
-                launch {
-                    println("save pin ${it.id}")
-                    repository.save(it)
-                    println("save pin ${it.id} complete")
-                }
-            }
-            println("all saves launched")
+        tribeId.with(pins).forEach {
+            println("save pin ${it.id}")
+            repository.save(it)
+            println("save pin ${it.id} complete")
         }
+        println("all saves launched")
     } exercise {
         println("exercise begins")
         repository.deletePin(tribeId, pins[1].id!!)
