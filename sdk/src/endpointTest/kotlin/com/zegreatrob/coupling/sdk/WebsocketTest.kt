@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.json.JsonCouplingSocketMessage
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString
@@ -24,6 +25,8 @@ import kotlin.test.Test
 fun newWebsocket(url: String, options: dynamic): WS = js("new (require('ws'))(url, options)").unsafeCast<WS>()
 
 external interface WS {
+    val readyState: Int
+
     fun on(event: String, callback: (String) -> Unit)
     fun close()
 }
@@ -45,8 +48,8 @@ class WebsocketTest {
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
             )
-    } teardown { (socket) ->
-        socket.close()
+    } teardown { socket ->
+        socket.closeAndWait()
     }
 
     @Test
@@ -78,7 +81,7 @@ class WebsocketTest {
                 )
             )
     } teardown { result ->
-        result.forEach { it.socket.close() }
+        result.forEach { it.closeAndWait() }
     }
 //
 //    @Test
@@ -258,7 +261,7 @@ private fun expectedOnlinePlayerList(username: String) =
     listOf(Player(email = "$username._temp", name = "", id = "-1"))
 
 
-val logger = KotlinLogging.logger("socket wrapper")
+
 
 data class SocketWrapper(
     val socket: WS,
@@ -266,6 +269,9 @@ data class SocketWrapper(
     var messageHandlers: List<() -> Unit> = emptyList(),
     var closeHandlers: List<() -> Unit> = emptyList()
 ) {
+
+    private val logger = KotlinLogging.logger("socket wrapper ${uuid4()}")
+
     init {
         socket.on("message") {
             logger.info { "message received" }
@@ -301,5 +307,21 @@ data class SocketWrapper(
             messageHandlers = messageHandlers - mHandler
             closeHandlers = closeHandlers - closeHandler
         }
+    }
+
+    suspend fun closeAndWait() {
+        if(this.socket.readyState == 3)
+            return
+
+        val closeDeferred = CompletableDeferred<Unit>()
+
+        val closeHandler: () -> Unit = {
+            if (!closeDeferred.isCompleted)
+                closeDeferred.complete(Unit)
+        }
+        closeHandlers = closeHandlers + closeHandler
+        this.socket.close()
+
+        closeDeferred.await()
     }
 }
