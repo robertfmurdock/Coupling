@@ -322,6 +322,7 @@ data class SocketWrapper(
             this.socket.close()
             logger.info { "close explicitly triggered" }
             closeDeferred.await()
+            closeHandlers = closeHandlers - closeHandler
         } else {
             logger.info { "already closed" }
         }
