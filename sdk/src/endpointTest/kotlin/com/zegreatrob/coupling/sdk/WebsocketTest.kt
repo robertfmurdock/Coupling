@@ -52,7 +52,7 @@ class WebsocketTest {
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
             )
     } teardown { (socket) ->
-        socket.close()
+//        socket.close()
     }
 
     @Test
