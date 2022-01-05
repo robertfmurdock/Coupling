@@ -43,23 +43,17 @@ class WebsocketTest {
     }) {
         sdk.save(tribe)
     } exercise {
-        println("exercise")
         val socket = connectToSocket(tribe.id, getCookieString(sdk))
-        println("socket connected")
         val messageDeferred = CompletableDeferred<String>()
         socket.on("message") { messageDeferred.complete(it) }
         socket.on("close") { messageDeferred.completeExceptionally(Exception("socket closed")) }
-
-        println("socket configured")
         socket to messageDeferred.await()
     } verifyAnd { (_, message) ->
-        println("verify started")
         message.toCouplingServerMessage()
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
             )
     } teardown { (socket) ->
-        println("teardown, yo")
         socket.close()
     }
 
@@ -107,7 +101,7 @@ class WebsocketTest {
         val socket1 = openSocket(tribe, cookieString).await()
         val socket2 = openSocket(tribe, cookieString).await()
         listOf(socket1, socket2)
-    } verify { sockets ->
+    } verifyAnd { sockets ->
         sockets[0].first.map(String::toCouplingServerMessage)
             .assertIsEqualTo(
                 listOf(
@@ -115,6 +109,8 @@ class WebsocketTest {
                     CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet())
                 )
             )
+    } teardown { result ->
+        result.forEach { it.second.close() }
     }
 
     @Test
@@ -171,7 +167,6 @@ class WebsocketTest {
     } teardown { openSocket ->
         openSocket.second.close()
     }
-
 
     @Test
     fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(sdkContext { it }
