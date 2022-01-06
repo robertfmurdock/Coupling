@@ -181,6 +181,9 @@ tasks {
             ":updateGithubRelease",
             ":client:uploadToS3",
         )
+        if (version.toString().contains("SNAPSHOT")) {
+            enabled = false
+        }
         nodeCommand = "serverless"
         arguments = listOf(
             "deploy",
