@@ -36,7 +36,6 @@ fun Express.routes() {
 //    )
 
 
-
     get("/", indexRoute())
 //    get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
 
@@ -73,8 +72,9 @@ private fun jwtMiddleware(): Handler {
                     "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json"
                 )
             ),
-            "issuer" to "https://${Config.AUTH0_DOMAIN}",
+            "issuer" to "https://${Config.AUTH0_DOMAIN}/",
             "algorithms" to arrayOf("RS256"),
+            "audience" to "https://localhost/api",
             "requestProperty" to "auth",
         )
     )
@@ -110,12 +110,7 @@ private fun redirectToRoot(): Handler = { _, response, _ -> response.redirect("/
 
 fun apiGuard(): Handler = { request, response, next ->
     request.statsdkey = listOf("http", request.method.lowercase(), request.path).joinToString(".")
-
-    if (!request.oidc.isAuthenticated()) {
-        response.sendStatus(401)
-    } else {
-        request.scope.launch(block = setupDispatcher(request, next))
-    }
+    request.scope.launch(block = setupDispatcher(request, next))
 }
 
 private fun setupDispatcher(request: Request, next: Next): suspend CoroutineScope.() -> Unit = {

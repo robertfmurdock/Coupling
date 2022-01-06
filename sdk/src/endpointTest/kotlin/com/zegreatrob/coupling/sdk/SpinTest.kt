@@ -25,7 +25,7 @@ import kotlin.test.Test
 class SpinTest {
 
     @Test
-    fun willTakeThePlayersGivenAndUseThoseForPairing() = asyncSetup(sdkContext { context ->
+    fun willTakeThePlayersGivenAndUseThoseForPairing() = sdkSetup({ context ->
         object : SdkContext by context {
             val tribe = Tribe(id = TribeId(uuid4().toString()), name = "test", pairingRule = PairingRule.LongestTime)
             val players = listOf(
@@ -44,7 +44,7 @@ class SpinTest {
     }
 
     @Test
-    fun givenTheTribeRuleIsPreferDifferentBadgeThenPairsWillComply() = asyncSetup(sdkContext {
+    fun givenTheTribeRuleIsPreferDifferentBadgeThenPairsWillComply() = sdkSetup({
         object : SdkContext by it {
             val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
             val players = fourPlayersTwoDefaultTwoAlternate()
@@ -118,7 +118,7 @@ class SpinTest {
             }
 
         @Test
-        fun whenAPinExistsWillAssignOnePinToPair() = asyncSetup(sdkContext { pinExistsSetup(it) }) {
+        fun whenAPinExistsWillAssignOnePinToPair() = sdkSetup { pinExistsSetup(it) }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, listOf(pin))
@@ -129,7 +129,7 @@ class SpinTest {
         }
 
         @Test
-        fun whenAPinExistsButIsDeselectedWillNotAssign() = asyncSetup(sdkContext { pinExistsSetup(it) }) {
+        fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup { pinExistsSetup(it) }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, emptyList())

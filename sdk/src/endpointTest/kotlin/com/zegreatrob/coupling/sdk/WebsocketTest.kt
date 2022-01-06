@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
 import io.ktor.client.features.cookies.*
 import io.ktor.http.*
 import kotlinx.coroutines.CompletableDeferred
@@ -39,7 +38,7 @@ external interface WS {
 class WebsocketTest {
 
     @Test
-    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
+    fun whenOnlyOneConnectionWillReturnCountOfOne() = sdkSetup({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -58,7 +57,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(sdkContext {
+    fun whenMultipleConnectionsWillReturnTheTotalCount() = sdkSetup({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -88,7 +87,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = asyncSetup(sdkContext {
+    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = sdkSetup( {
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -114,7 +113,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenPairsAreSavedWillSendMessageToClients() = asyncSetup(sdkContext {
+    fun whenPairsAreSavedWillSendMessageToClients() = sdkSetup( {
         object : SdkContext by it {
             val tribe = stubTribe()
             val sockets = mutableListOf<SocketWrapper>()
@@ -138,7 +137,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = asyncSetup(sdkContext {
+    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = sdkSetup( {
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -170,7 +169,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(sdkContext { it }
+    fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup( { it }
     ) exercise {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "wss://$host/api/${TribeId("whoops").value}/pairAssignments/current"
@@ -185,7 +184,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = asyncSetup(sdkContext { it }
+    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = sdkSetup( { it }
     ) exercise {
         val socket = connectToSocket(stubTribe().id, getCookieString(sdk))
         CompletableDeferred<Unit>().also { deferred ->
@@ -198,7 +197,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(sdkContext { it }
+    fun willNotCrashWhenGoingToNonExistingSocketLocation() = sdkSetup( { it }
     ) exercise {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "wss://$host/api/404WTF"
@@ -213,7 +212,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = asyncSetup(sdkContext {
+    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = sdkSetup( {
         object : SdkContext by it {
             val tribe = stubTribe()
         }
