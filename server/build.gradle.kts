@@ -146,8 +146,9 @@ tasks {
         arguments = listOf("offline", "--config", serverlessConfigFile, "start")
         environment("NODE_ENV", "production")
         environment(
-            "LAMBDA_ENDPOINT" to "https://localhost",
-            "WEBSOCKET_HOST" to "socket.localhost",
+            "LAMBDA_ENDPOINT" to "http://localhost:3002",
+            "WEBSOCKET_HOST" to "localhost:3001",
+            "TEST_LOGIN_ENABLED" to "true",
             "NODE_TLS_REJECT_UNAUTHORIZED" to 0
         )
         environment(
