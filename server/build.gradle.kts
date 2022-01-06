@@ -151,12 +151,6 @@ tasks {
             "TEST_LOGIN_ENABLED" to "true",
             "NODE_TLS_REJECT_UNAUTHORIZED" to 0
         )
-        environment(
-            "CLIENT_PATH",
-            System.getenv("CLIENT_PATH")
-                ?.let { it.ifEmpty { null } }
-                ?: "${file("${rootProject.rootDir.absolutePath}/client/build/distributions")}"
-        )
     }
 
     val serverlessBuildDir = "${buildDir.absolutePath}/lambda-dist"
