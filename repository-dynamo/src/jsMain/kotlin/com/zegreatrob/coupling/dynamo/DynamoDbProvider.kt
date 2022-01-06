@@ -21,7 +21,6 @@ object DynamoDbProvider : DynamoDBSyntax {
         return if (!localDynamo && secret != null) {
             json
         } else {
-
             json.add(
                 json(
                     "logger" to json(

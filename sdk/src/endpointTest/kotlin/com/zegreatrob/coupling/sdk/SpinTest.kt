@@ -18,6 +18,8 @@ import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.test.Test
 
 class SpinTest {
@@ -152,13 +154,12 @@ class SpinTest {
             players: List<Player> = emptyList(),
             history: List<PairAssignmentDocument> = emptyList(),
             pins: List<Pin> = emptyList()
-        ) {
+        ) = coroutineScope {
             sdk.save(tribe)
-            tribe.id.with(players).forEach { sdk.save(it) }
-            tribe.id.with(history).forEach { sdk.save(it) }
-            tribe.id.with(pins).forEach { sdk.save(it) }
+            tribe.id.with(players).forEach { launch { sdk.save(it) } }
+            tribe.id.with(history).forEach { launch { sdk.save(it) } }
+            tribe.id.with(pins).forEach { launch { sdk.save(it) } }
         }
-
     }
 
 }

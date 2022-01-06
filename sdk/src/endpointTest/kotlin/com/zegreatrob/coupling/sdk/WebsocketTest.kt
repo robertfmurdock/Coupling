@@ -67,9 +67,9 @@ class WebsocketTest {
     } exercise {
         val cookieString = getCookieString(sdk)
         val firstTwoSockets = listOf(
-            openSocket(tribe, cookieString).also { it.waitForFirstMessage() },
-            openSocket(tribe, cookieString).also { it.waitForFirstMessage() }
-        )
+            openSocket(tribe, cookieString),
+            openSocket(tribe, cookieString)
+        ).onEach { it.waitForFirstMessage() }
 
         val thirdSocket = openSocket(tribe, cookieString).also { it.waitForFirstMessage() }
         (firstTwoSockets + thirdSocket)

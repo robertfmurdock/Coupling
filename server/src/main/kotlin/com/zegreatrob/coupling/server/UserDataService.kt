@@ -8,22 +8,16 @@ import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
 import com.zegreatrob.coupling.server.express.async
 import com.zegreatrob.coupling.server.external.Done
 import com.zegreatrob.coupling.server.external.express.Request
-import mu.KotlinLogging
 
 object UserDataService {
 
-    private val logger = KotlinLogging.logger("user-data-service")
-
     fun serializeUser(user: User, done: Done) {
-        logger.info { "serializing user ${user.id}" }
         done(null, user.id)
     }
 
     fun deserializeUser(request: Request, userId: String, done: Done) = request.scope.async(done) {
-        logger.info { "deserializing user $userId" }
         authActionDispatcher(userId, uuid4())(FindOrCreateUserAction)
             .valueOrNull()
-            .also { logger.info { "deserializing user ${userId} complete" } }
     }
 
     private suspend fun authActionDispatcher(userId: String, traceId: Uuid) = AuthActionDispatcher(
