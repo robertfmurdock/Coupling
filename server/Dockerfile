@@ -1,8 +1,8 @@
-FROM node:17-alpine
+FROM node:17
 
 WORKDIR /serverless
 
-RUN npm install serverless serverless-offline serverless-offline-ssm aws-sdk
+RUN npm install serverless serverless-offline serverless-offline-ssm
 
 COPY build/executable /serverless/build/executable
 COPY serverless.yml /serverless/
