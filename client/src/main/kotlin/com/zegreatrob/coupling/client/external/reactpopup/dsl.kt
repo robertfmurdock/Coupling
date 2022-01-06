@@ -1,31 +1,31 @@
 package com.zegreatrob.coupling.client.external.reactpopup
 
-import react.RBuilder
-import react.buildElement
-import styled.StyledHandler
+import react.*
 import styled.styled
 import kotlin.js.Json
 
 private val styledPopup = styled(default)
 
-fun RBuilder.popup(
-    trigger: RBuilder.(Boolean) -> Unit,
+fun popup(
+    trigger: (Boolean) -> ReactElement,
     modal: Boolean,
     on: Array<String>,
     open: Boolean? = false,
-    handler: StyledHandler<PopupProps>,
+    handler: ChildrenBuilder.()->Unit,
     contentStyle: Json? = null
-) = styledPopup {
-    attrs {
-        this.modal = modal
-        this.on = on
-        this.open = open
-        this.trigger = { isOpen -> buildElement { trigger(isOpen) } }
-        this.contentStyle = contentStyle
+) = buildElement {
+    styledPopup {
+        attrs {
+            this.modal = modal
+            this.on = on
+            this.open = open
+            this.trigger = { isOpen -> trigger(isOpen) }
+            this.contentStyle = contentStyle
+        }
+        +Fragment.create(handler)
+    }.also {
+        loadDefaultCss()
     }
-    handler()
-}.also {
-    loadDefaultCss()
 }
 
 private fun loadDefaultCss() {

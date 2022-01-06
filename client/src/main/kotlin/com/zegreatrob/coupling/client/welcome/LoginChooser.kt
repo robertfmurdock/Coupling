@@ -1,32 +1,28 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.minreact.child
-import com.zegreatrob.minreact.reactFunction
 import kotlinx.browser.window
 import org.w3c.dom.get
-import react.RBuilder
-import react.RProps
-import react.dom.div
+import react.FC
+import react.Props
+import react.dom.html.ReactHTML.div
 
-data class LoginChooserProps(val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) : RProps
 
 private val styles = useStyles("LoginChooser")
 
-val LoginChooser = reactFunction { (_): LoginChooserProps ->
-    val signInFunc = { window.location.pathname = "${window["basename"] ?:""}/auth0-login" }
-    div(classes = styles.className) {
+val LoginChooser = FC<Props> {
+    val signInFunc = { window.location.pathname = "${window["basename"] ?: ""}/auth0-login" }
+    div {
+        className = styles.className
         div {
-            couplingButton(supersize, white, styles["loginButton"], signInFunc) { +"Login" }
+            child(CouplingButton(supersize, white, styles["loginButton"], signInFunc)) {
+                +"Login"
+            }
         }
     }
 }
-
-fun RBuilder.loginChooser(dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>) =
-    child(LoginChooser, LoginChooserProps(dispatchFunc))

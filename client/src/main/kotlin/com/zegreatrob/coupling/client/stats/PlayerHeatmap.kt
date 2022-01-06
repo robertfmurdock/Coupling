@@ -1,51 +1,48 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.stats.heatmap.Heatmap
-import com.zegreatrob.coupling.client.stats.heatmap.HeatmapProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
-import com.zegreatrob.minreact.reactFunction
-import kotlinx.html.DIV
-import react.RBuilder
-import react.RProps
-import react.dom.RDOMBuilder
-import react.dom.attrs
-import react.dom.div
+import com.zegreatrob.minreact.tmFC
+import react.ChildrenBuilder
+import react.dom.html.ReactHTML.div
+import react.key
 
-val RBuilder.playerHeatmap get() = childCurry(PlayerHeatmap)
-
-data class PlayerHeatmapProps(
-    val tribe: Tribe,
-    val players: List<Player>,
-    val heatmapData: List<List<Double?>>
-) : RProps
+data class PlayerHeatmap(val tribe: Tribe, val players: List<Player>, val heatmapData: List<List<Double?>>) :
+    DataProps<PlayerHeatmap> {
+    override val component: TMFC<PlayerHeatmap> = playerHeatmap
+}
 
 private val styles = useStyles("stats/PlayerHeatmap")
 
-val PlayerHeatmap = reactFunction<PlayerHeatmapProps> { (tribe, players, heatmapData) ->
-    div(classes = styles["rightSection"]) {
-        div(classes = styles["heatmapPlayersTopRow"]) {
-            div(classes = styles["spacer"]) {}
+val playerHeatmap = tmFC<PlayerHeatmap> { (tribe, players, heatmapData) ->
+    div {
+        className = styles["rightSection"]
+        div {
+            className = styles["heatmapPlayersTopRow"]
+            div { className = styles["spacer"] }
             players.map { player ->
                 keyedPlayerCard(player, tribe)
             }
         }
-        div(classes = styles["heatmapPlayersSideRow"]) {
+        div {
+            className = styles["heatmapPlayersSideRow"]
             players.map { player ->
                 keyedPlayerCard(player, tribe)
             }
         }
-        child(Heatmap, HeatmapProps(heatmapData, styles["heatmap"]))
+        child(Heatmap(heatmapData, styles["heatmap"]))
     }
 }
 
-private fun RDOMBuilder<DIV>.keyedPlayerCard(player: Player, tribe: Tribe) = div(classes = styles["playerCard"]) {
-    attrs { key = player.id }
-    playerCard(PlayerCardProps(tribe.id, player, size = 50))
+private fun ChildrenBuilder.keyedPlayerCard(player: Player, tribe: Tribe) = div {
+    className = styles["playerCard"]
+    key = player.id
+    child(PlayerCard(tribe.id, player, size = 50))
 }

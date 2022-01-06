@@ -2,15 +2,14 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCard
+import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.welcome.RandomProvider
 import com.zegreatrob.coupling.client.welcome.Welcome
-import com.zegreatrob.coupling.client.welcome.WelcomeProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
+import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
@@ -24,7 +23,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 0
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
+        shallow(Welcome(randomProvider))
     } verify { wrapper ->
         wrapper.leftCard()?.player
             .assertIsEqualTo(
@@ -44,7 +43,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 1
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
+        shallow(Welcome(randomProvider))
     } verify { wrapper ->
         wrapper.leftCard()?.player
             .assertIsEqualTo(
@@ -64,7 +63,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 2
         }
     }) exercise {
-        shallow(Welcome, WelcomeProps(StubDispatchFunc(), randomProvider))
+        shallow(Welcome(randomProvider))
     } verify { wrapper ->
         wrapper.leftCard()?.player
             .assertIsEqualTo(
@@ -80,11 +79,11 @@ class WelcomeTest {
 
     private fun ShallowWrapper<dynamic>.welcomeProverb() = find<Any>(".${styles["welcomeProverb"]}")
 
-    private fun ShallowWrapper<dynamic>.leftCard() = find(PlayerCard).map { it.props() }
+    private fun ShallowWrapper<dynamic>.leftCard() = find(playerCard).map { it.dataprops() }
         .find { it.className?.contains("left") ?: false }
 
 
-    private fun ShallowWrapper<dynamic>.rightCard() =  find(PlayerCard).map { it.props() }
+    private fun ShallowWrapper<dynamic>.rightCard() =  find(playerCard).map { it.dataprops() }
         .find { it.className?.contains("right") ?: false }
 
 }

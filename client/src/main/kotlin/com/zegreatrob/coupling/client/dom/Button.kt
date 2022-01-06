@@ -1,6 +1,10 @@
 package com.zegreatrob.coupling.client.dom
 
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.coupling.client.cssButton
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.children
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.css.properties.TextDecoration
@@ -9,13 +13,6 @@ import kotlinx.html.BUTTON
 import kotlinx.html.ButtonType
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
-import react.RBuilder
-import react.RHandler
-import react.RProps
-import react.dom.attrs
-import styled.StyledDOMBuilder
-import styled.css
-import styled.styledButton
 
 val overlay = kotlinext.js.require("overlay.png").default.unsafeCast<String>()
 
@@ -109,37 +106,34 @@ val black: RuleSet = {
     }
 }
 
-fun RBuilder.couplingButton(
-    sizeRuleSet: RuleSet = medium,
-    colorRuleSet: RuleSet = black,
-    className: String = "",
-    onClick: () -> Unit = {},
-    block: StyledDOMBuilder<BUTTON>.() -> Unit = {},
-    handler: RHandler<CouplingButtonProps> = {}
-) = child(CouplingButton, CouplingButtonProps(sizeRuleSet, colorRuleSet, className, onClick, block), handler)
-
-data class CouplingButtonProps(
+data class CouplingButton(
     val sizeRuleSet: RuleSet = medium,
     val colorRuleSet: RuleSet = black,
     @JsName("className")
     val className: String = "",
     val onClick: () -> Unit = {},
-    val block: StyledDOMBuilder<BUTTON>.() -> Unit = {}
-) : RProps
+    val attrs: BUTTON.() -> Unit = {},
+    val css: CssBuilder.() -> Unit = {}
+) : DataProps<CouplingButton> {
+    override val component: TMFC<CouplingButton> get() = couplingButton
+}
 
-val CouplingButton = reactFunction<CouplingButtonProps> { props ->
-    val (sizeRuleSet, colorRuleSet, className, onClick, block) = props
-    styledButton {
-        css(buttonRuleset)
-        css(sizeRuleSet)
-        css(colorRuleSet)
-        attrs {
+val couplingButton = tmFC<CouplingButton> { props ->
+    val (sizeRuleSet, colorRuleSet, className, onClick, block, css) = props
+    cssButton(
+        attrs = {
             classes = classes + "button" + className
             type = ButtonType.button
             onClickFunction = { onClick() }
+            block()
+        },
+        css = {
+            buttonRuleset()
+            sizeRuleSet()
+            colorRuleSet()
+            css()
         }
-        block()
-        props.children()
+    ) {
+        children(props)
     }
-
 }

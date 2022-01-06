@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -10,20 +9,19 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minenzyme.simulateInputChange
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 class PinConfigEditorTest {
-
-    private val configFormStyles = useStyles("ConfigForm")
 
     @Test
     fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(id = null)
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc()))
+        shallow(PinConfig(tribe, pin, emptyList(), {}, StubDispatchFunc()))
+            .find(pinConfigContent)
+            .shallow()
     } verify { wrapper ->
         wrapper.find(ConfigForm)
             .props()
@@ -36,7 +34,9 @@ class PinConfigEditorTest {
         val tribe = Tribe(TribeId(""))
         val pin = Pin(id = "excellent id")
     }) exercise {
-        shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, StubDispatchFunc()))
+        shallow(PinConfig(tribe, pin, emptyList(), {}, StubDispatchFunc()))
+            .find(pinConfigContent)
+            .shallow()
     } verify { wrapper ->
         wrapper.find(ConfigForm)
             .props()
@@ -53,13 +53,17 @@ class PinConfigEditorTest {
 
         val dispatchFunc = StubDispatchFunc<PinCommandDispatcher>()
 
-        val wrapper = shallow(PinConfigEditor, PinConfigEditorProps(tribe, pin, {}, dispatchFunc)).apply {
+        val wrapper = shallow(PinConfig(tribe, pin, emptyList(), {}, dispatchFunc))
+    }) {
+        wrapper.find(pinConfigContent).shallow().apply {
             simulateInputChange("name", newName)
             simulateInputChange("icon", newIcon)
             update()
         }
-    }) exercise {
-        wrapper.find(ConfigForm)
+    } exercise {
+        wrapper.find(pinConfigContent)
+            .shallow()
+            .find(ConfigForm)
             .props()
             .onSubmit()
     } verify {

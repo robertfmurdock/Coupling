@@ -2,8 +2,8 @@
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-    kotlin("plugin.serialization") version "1.5.21"
+    id("com.zegreatrob.coupling.plugins.mp")
+    id("com.zegreatrob.coupling.plugins.serialization")
 }
 
 kotlin {
@@ -17,7 +17,7 @@ kotlin {
     sourceSets {
         all {
             languageSettings {
-                useExperimentalAnnotation("kotlinx.serialization.ExperimentalSerializationApi")
+                optIn("kotlinx.serialization.ExperimentalSerializationApi")
             }
         }
         val commonMain by getting {
@@ -25,15 +25,15 @@ kotlin {
                 implementation(project(":model"))
                 implementation(kotlin("stdlib", BuildConstants.kotlinVersion))
                 implementation(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                implementation("com.soywiz.korlibs.klock:klock:2.1.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+                implementation("com.soywiz.korlibs.klock:klock:2.4.10")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:standard:4.1.2")
-                implementation("com.zegreatrob.testmints:minassert:4.1.6")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
@@ -47,8 +47,8 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
             }
         }
 

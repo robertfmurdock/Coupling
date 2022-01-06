@@ -8,9 +8,5 @@ import org.w3c.dom.Document
 external val parse5: Parse5
 
 external interface Parse5 {
-
     fun parse(content: String): Document
-
 }
-
-

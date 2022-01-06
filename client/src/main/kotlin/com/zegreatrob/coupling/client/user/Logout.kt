@@ -2,23 +2,23 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.minreact.reactFunction
 import com.zegreatrob.react.dataloader.useScope
 import kotlinx.browser.window
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
-import react.dom.div
+import react.FC
+import react.dom.html.ReactHTML.div
 import react.useState
 
-val Logout = reactFunction<PageProps> { props ->
+val Logout = FC<PageProps> { props ->
     val scope = useScope("Logout")
-    val (isLoggedOut, setIsLoggedOut) = useState(false)
+    var isLoggedOut by useState(false)
     val (logoutPromise, setLogout) = useState<Any?>(null)
     if (logoutPromise == null) {
         setLogout(
-            scope.launch { props.commander.runQuery { waitForLogout(setIsLoggedOut::invoke) } }
+            scope.launch { props.commander.runQuery { waitForLogout { isLoggedOut = it } } }
         )
     }
     if (isLoggedOut) {
@@ -38,5 +38,4 @@ private val authLogoutUrl: URL
 
 private suspend fun CommandDispatcher.waitForLogout(setIsLoggedOut: (Boolean) -> Unit): Unit = coroutineScope {
     launch { LogoutCommand.perform() }
-    launch { googleSignOut() }
 }.run { setIsLoggedOut(true) }

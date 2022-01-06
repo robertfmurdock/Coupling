@@ -2,10 +2,8 @@
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
 }
-
-
 
 kotlin {
     targets {
@@ -27,19 +25,19 @@ kotlin {
                 api(project(":model"))
                 api(project(":repository-core"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
-                implementation("com.soywiz.korlibs.klock:klock:2.1.0")
-                implementation("com.benasher44:uuid:0.3.0")
-                implementation("io.github.microutils:kotlin-logging:2.0.10")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+                implementation("com.soywiz.korlibs.klock:klock:2.4.10")
+                implementation("com.benasher44:uuid:0.3.1")
+                implementation("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
         getByName("commonTest") {
             dependencies {
                 api(project(":repository-validation"))
                 api(project(":stub-model"))
-                implementation("com.zegreatrob.testmints:standard:4.1.9")
-                implementation("com.zegreatrob.testmints:minassert:4.1.9")
-                implementation("com.zegreatrob.testmints:async:4.1.9")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:minassert")
+                implementation("com.zegreatrob.testmints:async")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
@@ -57,5 +55,6 @@ kotlin {
 }
 
 tasks {
-
+    val jsNodeTest by getting
+    jsNodeTest.dependsOn(":composeUp")
 }

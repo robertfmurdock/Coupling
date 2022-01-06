@@ -18,4 +18,3 @@ external interface Express {
 
 typealias Handler = (Request, Response, Next) -> Unit
 typealias Next = () -> Unit
-typealias ExpressHandler = (Request, Response) -> Unit

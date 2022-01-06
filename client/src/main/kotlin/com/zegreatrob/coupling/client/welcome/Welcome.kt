@@ -1,36 +1,34 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.dom.couplingButton
+import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
-import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.playerImage
-import com.zegreatrob.coupling.client.user.GoogleSignInCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import org.w3c.dom.Node
 import react.*
-import react.dom.attrs
-import react.dom.div
-import react.dom.span
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 
 private val styles = useStyles("Welcome")
 
-data class WelcomeProps(
-    val dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>,
-    val randomProvider: RandomProvider = RandomProvider
-) : RProps
+data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataProps<Welcome> {
+    override val component: TMFC<Welcome> get() = welcome
+}
 
-val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
-    val (showLoginChooser, setShowLoginChooser) = useState(false)
+val welcome = tmFC { (randomProvider): Welcome ->
+    var showLoginChooser by useState(false)
     val welcomeTitleRef = useRef<Node>(null)
     useLayoutEffect {
         welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
@@ -38,9 +36,10 @@ val Welcome = reactFunction { (commandFunc, randomProvider): WelcomeProps ->
     val (pairAndProverb) = useState { randomProvider.choosePairAndProverb() }
     val (pair, proverb) = pairAndProverb
 
-    div(classes = styles.className) {
+    div {
+        className = styles.className
         div { welcomeSplash(welcomeTitleRef, pair, proverb) }
-        div { comeOnIn(commandFunc, showLoginChooser, setShowLoginChooser) }
+        div { comeOnIn(showLoginChooser) { showLoginChooser = true } }
     }
 }
 
@@ -75,14 +74,16 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 
 private data class Card(val name: String, val imagePath: String)
 
-private fun RBuilder.welcomeSplash(
-    welcomeTitleRef: RMutableRef<Node>,
+private fun ChildrenBuilder.welcomeSplash(
+    welcomeTitleRef: MutableRefObject<Node>,
     pair: CouplingPair.Double,
     proverb: String
-) = span(classes = styles["welcome"]) {
+) = span {
+    className = styles["welcome"]
     welcomeTitle(welcomeTitleRef)
     div { welcomePair(pair) }
-    div(classes = styles["welcomeProverb"]) {
+    div {
+        className = styles["welcomeProverb"]
         +proverb
     }
 }
@@ -98,44 +99,23 @@ private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
 private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath)
 
-private fun RBuilder.welcomeTitle(welcomeTitleRef: RMutableRef<Node>) {
-    div(classes = styles["welcomeTitle"]) {
-        attrs { ref = welcomeTitleRef }
-        +"Coupling!"
-    }
+private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>) = div {
+    className = styles["welcomeTitle"]
+    ref = welcomeTitleRef
+    +"Coupling!"
 }
 
-private fun RBuilder.welcomePair(pair: CouplingPair.Double) = div(classes = styles["welcomePair"]) {
-    playerCard(
-        PlayerCardProps(
-            tribeId = welcomeTribeId,
-            player = pair.player1,
-            className = "left ${styles["playerCard"]}",
-            size = 100
-        )
-    )
-    playerCard(
-        PlayerCardProps(
-            tribeId = welcomeTribeId,
-            player = pair.player2,
-            className = "right ${styles["playerCard"]}",
-            size = 100
-        )
-    )
+private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
+    className = styles["welcomePair"]
+    child(PlayerCard(welcomeTribeId, pair.player1, className = "left ${styles["playerCard"]}", size = 100))
+    child(PlayerCard(welcomeTribeId, pair.player2, className = "right ${styles["playerCard"]}", size = 100))
 }
 
-private fun RBuilder.comeOnIn(
-    dispatchFunc: DispatchFunc<out GoogleSignInCommandDispatcher>,
-    showLoginChooser: Boolean,
-    setShowLoginChooser: StateSetter<Boolean>
-) {
-    div(classes = styles["enterButtonContainer"]) {
-        if (showLoginChooser) {
-            loginChooser(dispatchFunc)
-        } else {
-            couplingButton(supersize, pink, styles["enterButton"], { setShowLoginChooser(true) }) {
-                +"Come on in!"
-            }
-        }
+private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) = div {
+    className = styles["enterButtonContainer"]
+    if (showLoginChooser) {
+        LoginChooser()
+    } else {
+        child(CouplingButton(supersize, pink, styles["enterButton"], onEnterClick)) { +"Come on in!" }
     }
 }

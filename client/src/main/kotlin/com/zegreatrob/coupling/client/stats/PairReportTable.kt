@@ -2,43 +2,48 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.invoke
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.reactFunction
-import react.RBuilder
-import react.RProps
-import react.dom.attrs
-import react.dom.div
-import react.dom.span
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
+import react.ChildrenBuilder
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
+import react.key
 
 private val styles = useStyles("stats/PairReportTable")
 
-data class PairReportTableProps(val tribe: Tribe, val pairReports: List<PairReport>) : RProps
+data class PairReportTable(val tribe: Tribe, val pairReports: List<PairReport>) : DataProps<PairReportTable> {
+    override val component: TMFC<PairReportTable> = pairReportTable
+}
 
-val PairReportTable =
-    reactFunction<PairReportTableProps> { (tribe, pairReports) ->
-        div(classes = styles.className) {
-            pairReports.mapIndexed { index, pairReport ->
-                pairReport(index, pairReport, tribe)
-            }
+val pairReportTable = tmFC<PairReportTable> { (tribe, pairReports) ->
+    div {
+        className = styles.className
+        pairReports.mapIndexed { index, pairReport ->
+            pairReport(index, pairReport, tribe)
         }
     }
+}
 
-private fun RBuilder.pairReport(index: Int, pairReport: PairReport, tribe: Tribe) = div(styles["pairReport"]) {
-    attrs { key = "$index" }
+private fun ChildrenBuilder.pairReport(index: Int, pairReport: PairReport, tribe: Tribe) = div {
+    className = styles["pairReport"]
+     key = "$index"
     pairReport.pair.asArray().map { player -> reportPlayerCard(player, tribe) }
 
-    div(classes = styles["pairStatistics"]) {
-        statsHeader { +"Stats" }
-        statLabel { +"Spins since last paired:" }
-        span(classes = "time-since-last-pairing") {
+    div {
+        className = styles["pairStatistics"]
+        StatsHeader { +"Stats" }
+        StatLabel { +"Spins since last paired:" }
+        span {
+            className = "time-since-last-pairing"
             +pairReport.timeSinceLastPair.presentationString()
         }
     }
@@ -49,9 +54,10 @@ private fun TimeResult.presentationString() = when (this) {
     NeverPaired -> "Never Paired"
 }
 
-private fun RBuilder.reportPlayerCard(player: Player, tribe: Tribe) = div(styles["playerCard"]) {
-    attrs { key = player.id }
-    playerCard(PlayerCardProps(tribe.id, player, size = 50))
+private fun ChildrenBuilder.reportPlayerCard(player: Player, tribe: Tribe) = div {
+    className = styles["playerCard"]
+    key = player.id
+    child(PlayerCard(tribe.id, player, size = 50))
 }
 
 

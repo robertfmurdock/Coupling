@@ -8,16 +8,17 @@ import com.zegreatrob.coupling.client.tribePageFunction
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 
-private val LoadedPairAssignments by lazy { couplingDataLoader(SocketedPairAssignments) }
+private val LoadedPairAssignments by lazy { couplingDataLoader<SocketedPairAssignments>() }
 
 val CurrentPairsPage = tribePageFunction { props, tribeId ->
-    child(LoadedPairAssignments, dataLoadProps(tribeId, props.commander), key = tribeId.value)
+    child(dataLoadProps(tribeId, props.commander), key = tribeId.value)
 }
 
 private fun dataLoadProps(tribeId: TribeId, commander: Commander) = dataLoadProps(
+    LoadedPairAssignments,
     commander = commander,
     query = TribeCurrentDataQuery(tribeId),
     toProps = { reload, dispatchFunc, (tribe, players, history) ->
-        SocketedPairAssignmentsProps(tribe, players, history, Controls(dispatchFunc, reload), false)
+        SocketedPairAssignments(tribe, players, history, Controls(dispatchFunc, reload), false)
     }
 )

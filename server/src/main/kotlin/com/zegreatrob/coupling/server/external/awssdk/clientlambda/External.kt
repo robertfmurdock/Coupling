@@ -9,9 +9,4 @@ external class LambdaClient(options: Json) {
     fun <T> send(command: dynamic): Promise<T>
 }
 
-external class InvokeAsyncCommand(input: Json )
 external class InvokeCommand(input: Json )
-
-external class Lambda(options: Json) {
-    fun invoke(args: Json) : Promise<Json>
-}

@@ -14,10 +14,12 @@ if (config.entry && config.entry.main) {
 if (config.output) {
     config.output.publicPath = '/app/build/'
 }
-
+if(!config.resolve.modules) {
+    config.resolve.modules = []
+}
 config.resolve.modules.push(resourcesPath);
 config.resolve.modules.push(path.resolve(__dirname, '../../../../build/js/node_modules'));
-
+config.resolve.fallback = { "assert": false };
 config.module.rules.push(
     {
         test: /\.(md|graphql)$/, use: 'raw-loader'
@@ -47,11 +49,17 @@ config.externals = {"cheerio": "window", "fs": "empty"}
 
 if (config.devServer) {
     config.devServer.port = 3001
-    config.devServer.publicPath = '/app/build'
     config.devServer.hot = true
     config.devServer.historyApiFallback = {index: 'index.html'}
     let distributionPath = path.resolve(__dirname, '../../../../client/build/distributions');
-    config.devServer.contentBase.push(distributionPath)
+    config.devServer.static.push({
+        directory : distributionPath,
+        publicPath : '/app/build',
+    })
+    config.devServer.static.push({
+        directory : distributionPath,
+        publicPath : '/',
+    })
 }
 
 config.plugins.push(

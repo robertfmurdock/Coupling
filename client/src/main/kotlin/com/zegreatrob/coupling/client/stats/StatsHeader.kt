@@ -1,16 +1,15 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.childCurry
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.EmptyProps
-import com.zegreatrob.minreact.reactFunction
-import react.RBuilder
-import react.dom.div
-
-val RBuilder.statsHeader get() = childCurry(StatsHeader)
+import react.FC
+import react.PropsWithChildren
+import react.dom.html.ReactHTML.div
 
 private val styles = useStyles("stats/StatsHeader")
 
-val StatsHeader = reactFunction<EmptyProps> { props ->
-    div(classes = styles.className) { props.children() }
+val StatsHeader = FC<PropsWithChildren> { props ->
+    div {
+        className = styles.className
+        props.children()
+    }
 }

@@ -1,67 +1,56 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
-import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
+import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
-import com.zegreatrob.coupling.client.pin.pinSection
-import com.zegreatrob.coupling.client.player.PlayerCardProps
-import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display
 import kotlinx.css.properties.Angle
 import kotlinx.css.properties.deg
 import kotlinx.css.visibility
-import kotlinx.html.classes
 import org.w3c.dom.Node
-import react.RBuilder
-import react.RProps
+import react.ChildrenBuilder
 import react.ReactElement
-import react.dom.attrs
-import react.dom.div
-import react.dom.key
-import react.dom.span
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
+import react.key
 import react.useRef
-import styled.css
-import styled.styledDiv
 
-data class AssignedPairProps(
+data class AssignedPair(
     val tribe: Tribe,
     val pair: PinnedCouplingPair,
     val canDrag: Boolean,
-    val swapPlayersFunc: (PinnedPlayer, String) -> Unit,
-    val pinDropFunc: PinMoveCallback
-) : RProps
+    val swapPlayersFunc: (PinnedPlayer, String) -> Unit = { _, _ -> },
+    val pinDropFunc: PinMoveCallback = {}
+) : DataProps<AssignedPair> {
+    override val component: TMFC<AssignedPair> get() = assignedPair
+}
 
 typealias PinMoveCallback = (String) -> Unit
 
 private val styles = useStyles("pairassignments/AssignedPair")
 
-fun RBuilder.assignedPair(
-    tribe: Tribe,
-    pair: PinnedCouplingPair,
-    swapPlayersFunc: (PinnedPlayer, String) -> Unit,
-    dropPinFunc: PinMoveCallback,
-    canDrag: Boolean,
-    key: String
-) = child(
-    AssignedPair,
-    AssignedPairProps(tribe, pair, canDrag, swapPlayersFunc, dropPinFunc),
-    key = key
-)
+val tiltLeft = (-8).deg
+val tiltRight = 8.deg
 
-val AssignedPair = reactFunction<AssignedPairProps> { props ->
-    val (tribe, pair, canDrag, swapCallback, pinMoveCallback) = props
+val assignedPair = tmFC<AssignedPair> { (tribe, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
@@ -70,14 +59,16 @@ val AssignedPair = reactFunction<AssignedPairProps> { props ->
 
     val playerCard = playerCardComponent(tribe, canDrag, swapCallback)
 
-    span(classes = styles.className) {
-        attrs {
-            ref = pinDroppableRef
-            if (isOver) classes = classes + styles["pairPinOver"]
-        }
+    span {
+        className = styles.className
+        ref = pinDroppableRef
+        if (isOver) className = "$className ${styles["pairPinOver"]}"
         callSign(tribe, callSign, styles["callSign"])
-        pair.players.mapIndexed { index, player -> playerCard(player, if (index % 2 == 0) (-8).deg else 8.deg) }
-        pinSection(pinList = pair.pins, canDrag = canDrag)
+        pair.players.mapIndexed { index, player ->
+            playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
+        }
+
+        child(PinSection(pinList = pair.pins, canDrag = canDrag))
     }
 }
 
@@ -104,45 +95,43 @@ private fun playerCardComponent(
     tribe: Tribe,
     canDrag: Boolean,
     swap: (PinnedPlayer, String) -> Unit
-): RBuilder.(PinnedPlayer, Angle) -> ReactElement = if (canDrag) { player, tilt ->
+): ChildrenBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) { player, tilt ->
     playerFlipped(player.player) {
-        swappablePlayer(tribe, player, canDrag, tilt) { droppedPlayerId: String ->
-            swap(player, droppedPlayerId)
-        }
+        swappablePlayer(player, tribe, canDrag, tilt) { droppedPlayerId: String -> swap(player, droppedPlayerId) }
+            .create()
     }
 } else { player, tilt ->
     playerFlipped(player.player) {
         notSwappablePlayer(tribe, player.player, tilt)
+            .create()
     }
 }
 
-private fun RBuilder.playerFlipped(player: Player, handler: RBuilder.() -> ReactElement) = flipped(flipId = player.id) {
-    styledDiv {
-        attrs { this.key = player.id }
-        css {
+private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactElement) = Flipped {
+    flipId = player.id
+    cssDiv(
+        props = { this.key = player.id },
+        css = {
             display = Display.inlineBlock
             if (player == placeholderPlayer) {
                 visibility = Visibility.hidden
             }
-        }
-        handler()
+        }) {
+        +handler()
     }
 }
 
-private fun RBuilder.notSwappablePlayer(tribe: Tribe, player: Player, tilt: Angle) =
-    playerCard(PlayerCardProps(tribe.id, player, true, tilt = tilt))
+private fun notSwappablePlayer(tribe: Tribe, player: Player, tilt: Angle) =
+    PlayerCard(tribe.id, player, true, tilt = tilt)
 
-private fun RBuilder.swappablePlayer(
-    tribe: Tribe,
-    pinnedPlayer: PinnedPlayer,
-    zoomOnHover: Boolean,
-    tilt: Angle,
-    onDropSwap: (String) -> Unit
-) = draggablePlayer(DraggablePlayerProps(pinnedPlayer, tribe, zoomOnHover, tilt, onDropSwap))
+private fun swappablePlayer(
+    pinnedPlayer: PinnedPlayer, tribe: Tribe, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
+) = DraggablePlayer(pinnedPlayer, tribe, zoomOnHover, tilt, onDropSwap)
 
-private fun RBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
+private fun ChildrenBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
     if (tribe.callSignsEnabled && callSign != null) {
-        span(classes = classes) {
+        span {
+            className = classes
             +"${callSign.adjective} ${callSign.noun}"
         }
     }

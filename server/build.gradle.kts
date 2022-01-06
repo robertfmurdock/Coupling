@@ -1,37 +1,20 @@
-
-import com.zegreatrob.coupling.build.loadPackageJson
-import com.zegreatrob.coupling.build.nodeBinDir
-import com.zegreatrob.coupling.build.nodeExec
-import com.zegreatrob.coupling.build.nodeModulesDir
+import com.zegreatrob.coupling.plugins.NodeExec
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    kotlin("js")
+    id("com.zegreatrob.coupling.plugins.jstools")
+    id("com.zegreatrob.coupling.plugins.node")
+    id("com.zegreatrob.coupling.plugins.serialization")
     id("com.bmuschko.docker-remote-api")
-    id("kotlinx-serialization") version "1.5.21"
 }
 
-kotlin {
-    js {
-        nodejs()
-        useCommonJs()
-        binaries.executable()
+kotlin.js().nodejs()
+kotlin.sourceSets {
+    getByName("main") {
+        resources.srcDir("src/main/javascript")
     }
-
-    sourceSets {
-        all {
-            languageSettings {
-                useExperimentalAnnotation("kotlinx.serialization.ExperimentalSerializationApi")
-            }
-        }
-        val main by getting {
-            resources.srcDir("src/main/javascript")
-        }
-    }
+    all { languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi") }
 }
-
-val packageJson = loadPackageJson()
-
 
 val appConfiguration: Configuration by configurations.creating {
     extendsFrom(configurations["implementation"])
@@ -48,20 +31,11 @@ dependencies {
     implementation(project(":repository-dynamo"))
     implementation(project(":repository-memory"))
     implementation(project(":server_action"))
-    implementation("com.zegreatrob.testmints:minjson:4.1.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
-    implementation("com.soywiz.korlibs.klock:klock:2.1.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-    implementation("com.benasher44:uuid:0.3.0")
-
-    packageJson.dependencies().forEach {
-        implementation(npm(it.first, it.second.asText()))
-    }
-
-    packageJson.devDependencies().forEach {
-        testImplementation(npm(it.first, it.second.asText()))
-    }
-
+    implementation("com.zegreatrob.testmints:minjson")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    implementation("com.soywiz.korlibs.klock:klock:2.4.10")
+    implementation("com.benasher44:uuid:0.3.1")
 }
 
 tasks {
@@ -73,6 +47,42 @@ tasks {
 
     val compileKotlinJs by getting(Kotlin2JsCompile::class)
 
+    val processResources by getting(ProcessResources::class) {}
+
+    val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
+
+    val serverCompile by creating(NodeExec::class) {
+        dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
+        mustRunAfter(clean)
+        inputs.dir(compileKotlinJs.outputFileProperty)
+        inputs.dir(processResources.destinationDir.path)
+        inputs.file(compileProductionExecutableKotlinJs.outputFileProperty)
+        inputs.file(file("package.json"))
+        inputs.file(file("webpack.config.js"))
+        inputs.dir("public")
+        outputs.dir(file("build/webpack-output"))
+
+        nodeCommand = "webpack"
+        arguments = listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
+        environment("NODE_ENV" to "production")
+        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+    }
+
+    create<NodeExec>("serverStats") {
+        dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
+        mustRunAfter(clean)
+
+        nodeCommand = "webpack"
+        arguments = listOf(
+            "--config",
+            project.projectDir.resolve("webpack.config.js").absolutePath,
+            "--profile",
+            "--json=${rootDir.absolutePath}/compilation-stats.json"
+        )
+        environment("NODE_ENV" to "production")
+        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+    }
+
     val copyServerIcons by creating(Copy::class) {
         from("public")
         into("build/executable/public")
@@ -83,159 +93,110 @@ tasks {
         into("build/executable/views")
     }
 
+    val copyServerExecutable by creating(Copy::class) {
+        dependsOn(serverCompile)
+        from("build/webpack-output")
+        into("build/executable")
+    }
+
     val copyServerResources by creating {
         dependsOn(copyServerIcons, copyServerViews)
     }
 
-    val processResources by getting(ProcessResources::class) {}
-
-    val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
-
-    val serverCompile by creating(Exec::class) {
-        dependsOn(copyServerResources, compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
-        mustRunAfter(clean)
-        inputs.dir(compileKotlinJs.outputFile)
-        inputs.dir(processResources.destinationDir.path)
-        inputs.file(compileProductionExecutableKotlinJs.outputFile)
-        inputs.file(file("package.json"))
-        inputs.file(file("webpack.config.js"))
-        inputs.dir("public")
-        outputs.dir(file("build/executable"))
-
-        environment(
-            "NODE_ENV" to "production",
-            "NODE_PATH" to nodeModulesDir,
-            "PATH" to "$nodeBinDir"
-        )
-
-        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
-
-        commandLine = listOf(
-            "$nodeModulesDir/.bin/webpack",
-            "--config",
-            project.projectDir.resolve("webpack.config.js").absolutePath
-        )
-    }
-
-    val serverStats by creating(Exec::class) {
-        dependsOn(copyServerResources, compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
-        mustRunAfter(clean)
-
-        environment(
-            "NODE_ENV" to "production",
-            "NODE_PATH" to nodeModulesDir,
-            "PATH" to "$nodeBinDir"
-        )
-
-        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
-
-        commandLine = listOf(
-            "$nodeModulesDir/.bin/webpack",
-            "--config",
-            project.projectDir.resolve("webpack.config.js").absolutePath,
-            "--profile",
-            "--json=${rootDir.absolutePath}/compilation-stats.json"
-        )
+    val serverAssemble by creating {
+        dependsOn(copyServerResources, copyServerExecutable)
     }
 
     val assemble by getting {
-        dependsOn(serverCompile)
+        dependsOn(serverAssemble)
     }
 
     val packageJson: String? by rootProject
 
-    create<Exec>("updateDependencies") {
-        dependsOn("test")
-        nodeExec(
-            compileKotlinJs,
-            listOf("$nodeModulesDir/.bin/ncu", "-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
-        )
+    val test by getting
+
+    create<NodeExec>("updateDependencies") {
+        dependsOn(test, compileKotlinJs)
+        nodeCommand = "ncu"
+        arguments = listOf("-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
     }
 
-    create<Exec>("start") {
-        dependsOn(assemble, clientConfiguration)
-        nodeExec(compileKotlinJs, listOf(project.relativePath("startup")))
+    create<NodeExec>("start") {
+        dependsOn(assemble, clientConfiguration, compileKotlinJs)
+        arguments = listOf(project.relativePath("startup"))
         environment("NODE_ENV", "production")
-        environment(
-            "CLIENT_PATH",
-            System.getenv("CLIENT_PATH")
-                ?.let { it.ifEmpty { null } }
-                ?: "${file("${rootProject.rootDir.absolutePath}/client/build/distributions")}"
-        )
     }
 
-    create<Exec>("serverlessStart") {
-        dependsOn(assemble, clientConfiguration, "test")
-        nodeExec(
-            compileKotlinJs,
-            listOf("$nodeModulesDir/.bin/serverless", "offline", "--config", project.relativePath("serverless.yml"))
-        )
+    val buildImage by creating(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
+        dependsOn(assemble, compileKotlinJs)
+        inputDir.set(project.projectDir)
+        images.add("zegreatrob/coupling-serverless:latest")
+    }
+
+    create<NodeExec>("serverlessStart") {
+        dependsOn(assemble, clientConfiguration, test, compileKotlinJs)
+        val serverlessConfigFile = project.relativePath("serverless.yml")
+        nodeCommand = "serverless"
+        arguments = listOf("offline", "--config", serverlessConfigFile, "start")
         environment("NODE_ENV", "production")
         environment(
             "LAMBDA_ENDPOINT" to "http://localhost:3002",
-            "WEBSOCKET_HOST" to "localhost:3001"
-        )
-        environment(
-            "CLIENT_PATH",
-            System.getenv("CLIENT_PATH")
-                ?.let { it.ifEmpty { null } }
-                ?: "${file("${rootProject.rootDir.absolutePath}/client/build/distributions")}"
+            "WEBSOCKET_HOST" to "localhost:3001",
+            "TEST_LOGIN_ENABLED" to "true",
+            "NODE_TLS_REJECT_UNAUTHORIZED" to 0
         )
     }
 
     val serverlessBuildDir = "${buildDir.absolutePath}/lambda-dist"
 
-    val serverlessBuild by creating(Exec::class) {
-        dependsOn(assemble, "test")
+    val serverlessBuild by creating(NodeExec::class) {
+        dependsOn(assemble, test, compileKotlinJs)
         environment(
             "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
             "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-            "CLIENT_PATH" to "https://assets.zegreatrob.com/coupling/${version}",
+            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${version}",
         )
-        nodeExec(
-            compileKotlinJs,
-            listOf(
-                "$nodeModulesDir/.bin/serverless",
-                "package",
-                "--config",
-                project.relativePath("serverless.yml"),
-                "--package",
-                serverlessBuildDir,
-                "--stage",
-                serverlessStage
-            )
+        nodeCommand = "serverless"
+        arguments = listOf(
+            "package",
+            "--config",
+            project.relativePath("serverless.yml"),
+            "--package",
+            serverlessBuildDir,
+            "--stage",
+            serverlessStage
         )
     }
 
-    create<Exec>("serverlessDeploy") {
-        dependsOn(serverlessBuild)
+    val serverlessDeploy by creating(NodeExec::class) {
+        dependsOn(serverlessBuild, compileKotlinJs)
         mustRunAfter(
             ":release",
             ":updateGithubRelease",
             ":client:uploadToS3",
         )
-        nodeExec(
-            compileKotlinJs,
-            listOf(
-                "$nodeModulesDir/.bin/serverless",
-                "deploy",
-                "--config",
-                project.relativePath("serverless.yml"),
-                "--package",
-                serverlessBuildDir,
-                "--stage",
-                serverlessStage
-            )
+        if (version.toString().contains("SNAPSHOT")) {
+            enabled = false
+        }
+        nodeCommand = "serverless"
+        arguments = listOf(
+            "deploy",
+            "--config",
+            project.relativePath("serverless.yml"),
+            "--package",
+            serverlessBuildDir,
+            "--stage",
+            serverlessStage
         )
     }
-
+    findByPath(":release")!!.finalizedBy(serverlessDeploy)
 
     artifacts {
-        add(appConfiguration.name, compileKotlinJs.outputFile) {
+        add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
             builtBy(compileKotlinJs)
         }
         add(appConfiguration.name, file("build/executable")) {
-            builtBy(serverCompile)
+            builtBy(serverAssemble)
         }
     }
 }

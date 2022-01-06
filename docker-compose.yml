@@ -1,5 +1,35 @@
-version: '2'
+version: '2.4'
 services:
+  serverless:
+    image: zegreatrob/coupling-serverless:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - LOCAL_DYNAMO_URL=http://dynamo:8000
+      - PUBLIC_URL=https://localhost
+      - CLIENT_URL=https://static.localhost
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+      - LAMBDA_ENDPOINT=http://127.0.0.1:3002
+      - WEBSOCKET_HOST=socket.localhost
+      - API_GATEWAY_MANAGEMENT_API_HOST=http://127.0.0.1:3001
+      - NODE_ENV=production
+      - TEST_LOGIN_ENABLED=true
+      - AUTH0_CLIENT_SECRET
+    extra_hosts:
+      - "static.localhost:host-gateway"
+  caddy:
+    image: caddy:2.4.6-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - $PWD/client:/client
+      - ~/caddy_data:/data
+      - caddy_config:/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   mongo:
     image: mongo
     environment:
@@ -12,12 +42,7 @@ services:
     image: amazon/dynamodb-local
     ports:
       - "8000:8000"
-  statsd:
-    image: hopsoft/graphite-statsd
-    ports:
-      - "3002:80"
-      - "2003:2003"
-      - "8125:8125/udp"
+    command: -jar DynamoDBLocal.jar -sharedDb
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.5
     environment:
@@ -26,40 +51,21 @@ services:
     volumes:
       - es_data:/usr/share/elasticsearch/data
   graylog:
-    image: graylog/graylog:3.2
+    image: graylog/graylog:4.2.2
     links:
       - mongo
       - elasticsearch
     ports:
       - "9000:9000"
-      - "12201:12201"
-      - "1514:1514"
       - "5555:5555"
     environment:
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+      - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_PASSWORD_SECRET:-notSecurepasswordSecret}
+      - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_ROOT_PASSWORD_SHA2:-5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8}
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
-  grafana:
-    image: grafana/grafana
-    links:
-      - statsd
-    ports:
-      - "4001:3000"
-  chrome:
-    image: selenium/standalone-chrome
-    network_mode: host
-    volumes:
-      - /dev/shm:/dev/shm
-    ports:
-      - "4444:4444"
-  seleniumhub:
-    image: selenium/hub
-  chromenode:
-    image: selenium/node-chrome
-    volumes:
-      - /dev/shm:/dev/shm
-    links:
-      - "seleniumhub:hub"
+
+
 volumes:
   mongo_data:
     driver: local
@@ -67,3 +73,4 @@ volumes:
     driver: local
   graylog_journal:
     driver: local
+  caddy_config:

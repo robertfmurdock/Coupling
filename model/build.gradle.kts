@@ -1,7 +1,7 @@
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
 }
 
 kotlin {
@@ -18,23 +18,23 @@ kotlin {
             dependencies {
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:2.1.0")
-                implementation("com.benasher44:uuid:0.3.0")
+                api("com.soywiz.korlibs.klock:klock:2.4.10")
+                implementation("com.benasher44:uuid:0.3.1")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
-                implementation("com.zegreatrob.testmints:standard:4.1.9")
-                implementation("com.zegreatrob.testmints:minassert:4.1.9")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:minassert")
             }
         }
 
         val jvmTest by getting {
             dependencies {
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.0-M1")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.0-M1")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
             }
         }
 

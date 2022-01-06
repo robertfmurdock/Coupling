@@ -3,13 +3,13 @@
 
 package com.zegreatrob.coupling.client.external.reactrouter
 
-import react.RClass
-import react.RProps
+import react.ElementType
+import react.Props
 
 @JsName("Prompt")
-external val PromptComponent: RClass<PromptProps>
+external val PromptComponent: ElementType<PromptProps>
 
-external interface PromptProps : RProps {
+external interface PromptProps : Props {
     var `when`: Boolean
     var message: String
 }

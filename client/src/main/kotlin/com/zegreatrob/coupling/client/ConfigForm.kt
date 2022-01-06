@@ -2,29 +2,26 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.reactFunction
-import kotlinx.html.js.onSubmitFunction
-import org.w3c.dom.events.Event
-import react.RProps
-import react.dom.attrs
-import react.dom.form
+import org.w3c.dom.HTMLFormElement
+import react.FC
+import react.PropsWithChildren
+import react.dom.events.FormEvent
+import react.dom.events.FormEventHandler
+import react.dom.html.ReactHTML.form
 import react.useState
 
 private val styles = useStyles("ConfigForm")
 
-val ConfigForm = reactFunction { props: ConfigFormProps ->
-    val (name, onSubmit, onRemove) = props
-    val (isSaving, setIsSaving) = useState(false)
-    val onSubmitFunc = { event: Event ->
+val ConfigForm = FC { props: ConfigFormProps ->
+    val onRemove = props.onRemove
+    var isSaving by useState(false)
+    val onSubmitFunc: FormEventHandler<HTMLFormElement> = { event: FormEvent<HTMLFormElement> ->
         event.preventDefault()
-        setIsSaving(true)
-        onSubmit()
+        isSaving = true
+        props.onSubmit()
     }
     form {
-        attrs {
-            this.name = name
-            this.onSubmitFunction = onSubmitFunc
-        }
+        onSubmit = onSubmitFunc
         props.children()
         configSaveButton(isSaving, styles["saveButton"])
         if (onRemove != null) {
@@ -33,8 +30,7 @@ val ConfigForm = reactFunction { props: ConfigFormProps ->
     }
 }
 
-data class ConfigFormProps(
-    val name: String = "",
-    val onSubmit: () -> Unit,
-    val onRemove: (() -> Unit)?
-) : RProps
+external interface ConfigFormProps : PropsWithChildren {
+    var onSubmit: () -> Unit
+    var onRemove: (() -> Unit)?
+}

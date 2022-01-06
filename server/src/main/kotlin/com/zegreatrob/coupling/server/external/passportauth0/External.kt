@@ -11,7 +11,6 @@ external class Auth0Strategy(
     func: (Request, String, String, Json, Auth0Profile, (dynamic, dynamic) -> Unit) -> Unit
 )
 
-
 external interface Auth0Profile {
     val displayName: String
     val id: String
@@ -28,9 +27,7 @@ external interface Auth0Email {
     val value: String
 }
 
-
 external interface Auth0Name {
     val familyName: String
     val givenName: String
 }
-

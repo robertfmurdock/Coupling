@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.external.reactwebsocket
 
-import react.RClass
+import react.ElementType
 
 @JsModule("react-websocket")
-external val reactWebsocket: RClass<WebsocketProps>
+external val reactWebsocket: ElementType<WebsocketProps>

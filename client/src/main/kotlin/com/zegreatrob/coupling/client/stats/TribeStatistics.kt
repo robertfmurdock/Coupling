@@ -2,12 +2,12 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.tribe.TribeCardProps
-import com.zegreatrob.coupling.client.tribe.tribeCard
+import com.zegreatrob.coupling.client.tribe.TribeCard
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
-import com.zegreatrob.minreact.reactFunction
-import react.RProps
-import react.dom.div
+import com.zegreatrob.minreact.tmFC
+import react.dom.html.ReactHTML.div
 
 @JsModule("date-fns/formatDistance")
 external val formatDistanceModule: dynamic
@@ -16,25 +16,29 @@ val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> Stri
 
 private val styles = useStyles("stats/TribeStatistics")
 
-data class TribeStatisticsProps(val queryResults: StatisticQueryResults) : RProps
+data class TribeStatistics(val queryResults: StatisticQueryResults) : DataProps<TribeStatistics> {
+    override val component: TMFC<TribeStatistics> = tribeStatistics
+}
 
-val TribeStatistics = reactFunction<TribeStatisticsProps> { props ->
+val tribeStatistics = tmFC<TribeStatistics> { props ->
     val (tribe, players, _, allStats, heatmapData) = props.queryResults
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
-    div(classes = styles.className) {
+    div {
+        className = styles.className
         div {
-            tribeCard(TribeCardProps(tribe))
-            child(TeamStatistics, TeamStatisticsProps(
+            child(TribeCard(tribe))
+            child(TeamStatistics(
                 spinsUntilFullRotation = spinsUntilFullRotation,
                 activePlayerCount = players.size,
                 medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
             ))
         }
         div {
-            div(classes = styles["leftSection"]) {
-                child(PairReportTable, PairReportTableProps(tribe, pairReports))
+            div {
+                className = styles["leftSection"]
+                child(PairReportTable(tribe, pairReports))
             }
-            playerHeatmap(PlayerHeatmapProps(tribe, players, heatmapData))
+            child(PlayerHeatmap(tribe, players, heatmapData))
         }
     }
 }

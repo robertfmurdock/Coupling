@@ -10,9 +10,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
-import react.router.dom.RedirectProps
+import react.router.Navigate
 import kotlin.test.Test
 
 class TribeConfigTest {
@@ -21,7 +20,9 @@ class TribeConfigTest {
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
         val tribe = Tribe(TribeId("1"), name = "1")
     }) exercise {
-        shallow(TribeConfig, TribeConfigProps(tribe, StubDispatchFunc()))
+        shallow(TribeConfig(tribe, StubDispatchFunc()))
+            .find(tribeConfigContent)
+            .shallow()
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
             .assertHasDefaultBadgeName()
@@ -59,16 +60,19 @@ class TribeConfigTest {
             pairingRule = PairingRule.PreferDifferentBadge
         )
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
-        val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
+        val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
     }) exercise {
-        wrapper.find(ConfigForm)
+        wrapper.find(tribeConfigContent)
+            .shallow()
+            .find(ConfigForm)
             .props()
             .onSubmit()
         stubDispatchFunc.simulateSuccess<SaveTribeCommand>()
     } verify {
         stubDispatchFunc.commandsDispatched<SaveTribeCommand>()
             .assertIsEqualTo(listOf(SaveTribeCommand(tribe)))
-        wrapper.find<RedirectProps>("Redirect").props().to
+        wrapper
+            .find(Navigate).props().to
             .assertIsEqualTo("/tribes/")
     }
 
@@ -76,10 +80,15 @@ class TribeConfigTest {
     fun whenTribeIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
         val tribe = Tribe(TribeId(""))
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
-        val wrapper = shallow(TribeConfig, TribeConfigProps(tribe, stubDispatchFunc))
-        val automatedTribeId = wrapper.find<Any>("#tribe-id").prop("value")
+        val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
+        val automatedTribeId = wrapper.find(tribeConfigContent)
+            .shallow()
+            .find<Any>("#tribe-id")
+            .prop("value")
     }) exercise {
-        wrapper.find(ConfigForm)
+        wrapper.find(tribeConfigContent)
+            .shallow()
+            .find(ConfigForm)
             .props()
             .onSubmit()
     } verify {
@@ -89,7 +98,9 @@ class TribeConfigTest {
                 assertIsNotEqualTo("")
                 assertIsEqualTo(automatedTribeId)
             }
-        wrapper.find<Any>("#tribe-id")
+        wrapper.find(tribeConfigContent)
+            .shallow()
+            .find<Any>("#tribe-id")
             .prop("value")
             .assertIsEqualTo(automatedTribeId)
     }

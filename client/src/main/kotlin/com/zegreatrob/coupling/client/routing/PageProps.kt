@@ -8,20 +8,21 @@ import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.SdkSingleton
+import kotlinext.js.Record
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URLSearchParams
-import react.RProps
+import react.Props
 
-data class PageProps(
-    val pathParams: Map<String, String>,
-    val commander: Commander,
-    val search: URLSearchParams
-) : RProps {
-    val tribeId: TribeId? get() = pathParams["tribeId"]?.let(::TribeId)
-    val playerId: String? get() = pathParams["playerId"]
-    val pinId: String? get() = pathParams["pinId"]
+external interface PageProps : Props {
+    var pathParams: Record<String, String>
+    var commander: Commander
+    var search: URLSearchParams
 }
+
+val PageProps.tribeId: TribeId? get() = pathParams["tribeId"]?.let(::TribeId)
+val PageProps.playerId: String? get() = pathParams["playerId"]
+val PageProps.pinId: String? get() = pathParams["pinId"]
 
 interface Commander {
     fun getDispatcher(traceId: Uuid): CommandDispatcher

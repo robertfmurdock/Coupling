@@ -4,7 +4,7 @@ const config = {
     mode: "production",
     entry: "Coupling-server",
     output: {
-        path: path.resolve(__dirname, 'build/executable'),
+        path: path.resolve(__dirname, 'build/webpack-output'),
         filename: 'app.js',
         libraryTarget: 'commonjs'
     },

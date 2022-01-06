@@ -38,9 +38,9 @@ interface DynamoLoggingSyntax {
     private fun logStart(className: String?) = logger.info { mapOf("func" to className, "type" to "Start") }
 
     private fun logEnd(className: String?, duration: TimeSpan) =
-        logger.info { mapOf("action" to className, "type" to "End", "duration" to "$duration") }
+        logger.info { mapOf("func" to className, "type" to "End", "duration" to "$duration") }
 
     private fun logException(exception: Exception, className: String?) =
-        logger.info(exception) { mapOf("action" to className, "type" to "End") }
+        logger.info(exception) { mapOf("func" to className, "type" to "End") }
 
 }

@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 

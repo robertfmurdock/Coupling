@@ -1,19 +1,15 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.EmptyProps
-import com.zegreatrob.minreact.child
-import com.zegreatrob.minreact.reactFunction
-import react.RBuilder
-import react.RHandler
-import react.dom.ul
-
-fun RBuilder.editor(handler: RHandler<EmptyProps>) = child(Editor, handler = handler)
+import react.FC
+import react.PropsWithChildren
+import react.dom.html.ReactHTML.ul
 
 private val styles = useStyles("Editor")
 
-val Editor = reactFunction<EmptyProps> { props ->
-    ul(classes = styles.className) {
+val Editor = FC<PropsWithChildren> { props ->
+    ul {
+        className = styles.className
         props.children()
     }
 }

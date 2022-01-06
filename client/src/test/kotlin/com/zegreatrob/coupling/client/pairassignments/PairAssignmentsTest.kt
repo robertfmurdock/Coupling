@@ -4,8 +4,9 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.player.PlayerRoster
-import com.zegreatrob.coupling.client.user.ServerMessage
+import com.zegreatrob.coupling.client.child
+import com.zegreatrob.coupling.client.player.playerRoster
+import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -15,8 +16,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.testmints.invoke
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
@@ -45,8 +46,7 @@ class PairAssignmentsTest {
         )
     }) exercise {
         shallow(
-            PairAssignments,
-            PairAssignmentsProps(
+            PairAssignments(
                 tribe,
                 players,
                 pairAssignments,
@@ -57,8 +57,8 @@ class PairAssignmentsTest {
             )
         )
     } verify { wrapper ->
-        wrapper.find(PlayerRoster)
-            .props()
+        wrapper.find(playerRoster)
+            .dataprops()
             .players
             .assertIsEqualTo(
                 listOf(rigby, nerd, pantsmaster)
@@ -76,8 +76,7 @@ class PairAssignmentsTest {
         )
     }) exercise {
         shallow(
-            PairAssignments,
-            PairAssignmentsProps(
+            PairAssignments(
                 tribe,
                 players,
                 null,
@@ -88,8 +87,8 @@ class PairAssignmentsTest {
             )
         )
     } verify { wrapper ->
-        wrapper.find(PlayerRoster)
-            .props()
+        wrapper.find(playerRoster)
+            .dataprops()
             .players
             .assertIsEqualTo(players)
     }
@@ -98,19 +97,19 @@ class PairAssignmentsTest {
     fun passesDownTribeIdToServerMessage() = setup(object {
     }) exercise {
         shallow {
-            pairAssignments(
+            child(PairAssignments(
                 tribe,
                 listOf(),
                 null,
-                {},
+                { it: PairAssignmentDocument -> },
                 controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false
-            )
+            ))
         }
     } verify { wrapper ->
-        wrapper.find(ServerMessage)
-            .props()
+        wrapper.find(serverMessage)
+            .dataprops()
             .tribeId
             .assertIsEqualTo(tribe.id)
     }

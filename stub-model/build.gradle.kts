@@ -1,9 +1,8 @@
 
 import com.zegreatrob.coupling.build.BuildConstants
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
 }
 
 kotlin {
@@ -21,8 +20,8 @@ kotlin {
                 api(project(":model"))
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:2.1.0")
-                api("com.benasher44:uuid:0.3.0")
+                api("com.soywiz.korlibs.klock:klock:2.4.10")
+                api("com.benasher44:uuid:0.3.1")
             }
         }
         val jsMain by getting {
@@ -30,11 +29,5 @@ kotlin {
                 api(kotlin("stdlib-js", BuildConstants.kotlinVersion))
             }
         }
-    }
-}
-
-tasks {
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
     }
 }

@@ -25,7 +25,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import org.w3c.dom.url.URL
 import kotlin.js.json
 
 interface ICommandDispatcher :
@@ -113,16 +112,15 @@ class CurrentTribeIdDispatcher(
         .contains(user.email)
 
     private suspend fun players() = playerDeferred.await().value.map { it.data.element }
-    override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? {
-        return commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
-    }
+    override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? =
+        commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
 
 }
 
 fun apiGatewayManagementApi() = ApiGatewayManagementApi(
     json(
         "apiVersion" to "2018-11-29",
-        "endpoint" to "${URL(Config.publicUrl).protocol}//${Config.websocketHost}"
+        "endpoint" to Config.apiGatewayManagementApiHost
     ).add(
         if (Process.getEnv("IS_OFFLINE") == "true")
             json(
@@ -136,4 +134,3 @@ fun apiGatewayManagementApi() = ApiGatewayManagementApi(
             json()
     )
 )
-

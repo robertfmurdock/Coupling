@@ -4,25 +4,26 @@ import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
-import com.zegreatrob.minreact.child
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.tmFC
 import org.w3c.dom.Node
-import react.RBuilder
-import react.RProps
-import react.dom.attrs
-import react.dom.div
+import react.ChildrenBuilder
+import react.dom.html.ReactHTML.div
 import react.useRef
 
-data class DraggableThingProps(
+data class DraggableThing(
     val itemType: String,
     val itemId: String,
     val dropCallback: (String) -> Unit,
-    val handler: RBuilder.(isOver: Boolean) -> Unit
-) : RProps
+    val handler: ChildrenBuilder.(isOver: Boolean) -> Unit
+) : DataProps<DraggableThing> {
+    override val component: TMFC<DraggableThing> get() = draggableThing
+}
 
 private val styles = useStyles<SimpleStyle>("DraggableThing")
 
-val DraggableThing = reactFunction<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
+val draggableThing = tmFC<DraggableThing> { (itemType, itemId, dropCallback, handler) ->
     val draggableRef = useRef<Node>(null)
 
     val (_, drag) = useDrag<Unit>(itemType = itemType, itemId = itemId)
@@ -33,15 +34,9 @@ val DraggableThing = reactFunction<DraggableThingProps> { (itemType, itemId, dro
     )
     drag(drop(draggableRef))
 
-    div(classes = styles.className) {
-        attrs { ref = draggableRef }
+    div {
+        className = styles.className
+        ref = draggableRef
         handler(isOver)
     }
 }
-
-fun RBuilder.draggableThing(
-    itemType: String,
-    itemId: String,
-    dropCallback: (String) -> Unit,
-    handler: RBuilder.(isOver: Boolean) -> Unit
-) = child(DraggableThing, DraggableThingProps(itemType, itemId, dropCallback, handler))

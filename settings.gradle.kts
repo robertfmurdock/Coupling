@@ -1,17 +1,6 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "kotlinx-serialization") {
-                useModule("org.jetbrains.kotlin:kotlin-serialization:${requested.version}")
-            }
-        }
-    }
-}
-
 rootProject.name = "Coupling"
+
+includeBuild("plugins")
 include("action")
 include("client")
 include("e2e")
@@ -24,7 +13,6 @@ include("repository-core")
 include("repository-compound")
 include("repository-dynamo")
 include("repository-memory")
-include("repository-mongo")
 include("repository-validation")
 include("sdk")
 include("server")

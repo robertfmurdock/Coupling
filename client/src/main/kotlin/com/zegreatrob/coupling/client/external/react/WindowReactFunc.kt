@@ -1,16 +1,17 @@
 package com.zegreatrob.coupling.client.external.react
 
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.minreact.reactFunction
-import react.RBuilder
-import react.RProps
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.tmFC
+import react.ChildrenBuilder
 
-inline fun <reified P : RProps> windowReactFunc(crossinline handler: RBuilder.(P, WindowFunctions) -> Unit) =
+inline fun <reified P : DataProps<P>> windowReactFunc(crossinline handler: ChildrenBuilder.(P, WindowFunctions) -> Unit) =
     { windowFunctions: WindowFunctions ->
-        reactFunction<P> {
-            handler(
-                it,
-                windowFunctions
-            )
-        }
+        tmFC<P> { handler(it, windowFunctions) }
     }
+
+inline fun <reified P : DataProps<P>> windowTmFC(crossinline handler: ChildrenBuilder.(P, WindowFunctions) -> Unit) =
+    { windowFunctions: WindowFunctions ->
+        tmFC<P> { handler(it, windowFunctions) }
+    }
+

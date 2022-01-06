@@ -6,12 +6,14 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
 import react.*
-import react.dom.div
+import react.dom.html.ReactHTML.div
 
 val disconnectedMessage = CouplingSocketMessage(
     text = "Not connected",
@@ -19,42 +21,37 @@ val disconnectedMessage = CouplingSocketMessage(
     currentPairAssignments = null
 )
 
-fun RBuilder.couplingWebsocket(
-    tribeId: TribeId,
-    useSsl: Boolean = "https:" == window.location.protocol,
-    onMessage: (Message) -> Unit,
-    children: RBuilder.(((Message) -> Unit)?) -> Unit
-) = childFunction(
-    CouplingWebsocket,
-    CouplingWebsocketProps(tribeId, useSsl, onMessage),
-    {}) { sendMessage: ((Message) -> Unit)? ->
-    children(sendMessage)
-}
-
-val CouplingWebsocket = reactFunction<CouplingWebsocketProps> { props ->
+val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
     val (tribeId, useSsl, onMessageFunc) = props
 
-    val (connected, setConnected) = useState(false)
+    var connected by useState(false)
     val ref = useRef<WebsocketComponent>(null)
 
     val sendMessageFunc = useMemo { sendMessageWithSocketFunc(ref) }
 
     div {
         websocket {
-            attrs {
-                url = buildSocketUrl(tribeId, useSsl).href
-                onMessage = { onMessageFunc(it.fromJsonString<JsonMessage>().toModel()) }
-                onOpen = { setConnected(true) }
-                onClose = { onMessageFunc(disconnectedMessage) }
-                this.ref = { ref.current = it }
-            }
+            url = buildSocketUrl(tribeId, useSsl).href
+            onMessage = { onMessageFunc(it.fromJsonString<JsonMessage>().toModel()) }
+            onOpen = { connected = true }
+            onClose = { onMessageFunc(disconnectedMessage) }
+            this.ref = { ref.current = it }
         }
 
-        props.children(if (connected) sendMessageFunc else null)
+        props.children(this, if (connected) sendMessageFunc else null)
     }
-}.unsafeCast<FunctionalComponent<CouplingWebsocketProps>>()
+}
 
-private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent>) = { message: Message ->
+data class CouplingWebsocket(
+    val tribeId: TribeId,
+    val useSsl: Boolean = "https:" == window.location.protocol,
+    val onMessage: (Message) -> Unit,
+    val children: ChildrenBuilder.(value: ((Message) -> Unit)?) -> Unit
+) : DataProps<CouplingWebsocket> {
+    override val component: TMFC<CouplingWebsocket> get() = couplingWebsocket
+}
+
+private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->
     val websocket = ref.current
     if (websocket != null)
         message.toSerializable().toJsonString().let(websocket::sendMessage)
@@ -62,7 +59,6 @@ private fun sendMessageWithSocketFunc(ref: RMutableRef<WebsocketComponent>) = { 
         console.error("Message not sent, websocket not initialized", message)
 }
 
-data class CouplingWebsocketProps(val tribeId: TribeId, val useSsl: Boolean, val onMessage: (Message) -> Unit) : RProps
 
 private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean) = URL(
     "?tribeId=${encodeURIComponent(tribeId.value)}",

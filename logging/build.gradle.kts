@@ -1,8 +1,8 @@
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
-    id("kotlinx-serialization") version "1.5.21"
+    id("com.zegreatrob.coupling.plugins.mp")
+    id("com.zegreatrob.coupling.plugins.serialization")
 }
 
 kotlin {
@@ -16,20 +16,20 @@ kotlin {
 
     sourceSets {
         all {
-            languageSettings.useExperimentalAnnotation("kotlin.Experimental")
+            languageSettings.optIn("kotlin.Experimental")
         }
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("com.soywiz.korlibs.klock:klock:2.1.0")
-                api("io.github.microutils:kotlin-logging:2.0.10")
+                api("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
             }
         }

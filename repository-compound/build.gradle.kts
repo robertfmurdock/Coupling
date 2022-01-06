@@ -1,8 +1,7 @@
 import com.zegreatrob.coupling.build.BuildConstants
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
 }
 
 kotlin {
@@ -16,7 +15,7 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":repository-core"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
         val commonTest by getting {
@@ -24,8 +23,8 @@ kotlin {
                 implementation(project(":test-logging"))
                 implementation(project(":repository-memory"))
                 implementation(project(":repository-validation"))
-                implementation("com.zegreatrob.testmints:standard:4.1.2")
-                implementation("com.zegreatrob.testmints:minassert:4.1.2")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
@@ -39,8 +38,8 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
             }
         }
 
@@ -51,21 +50,8 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation("com.zegreatrob.testmints:async:4.1.9")
+                implementation("com.zegreatrob.testmints:async")
             }
         }
-    }
-}
-
-tasks {
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "umd"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
-    }
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        kotlinOptions.moduleKind = "commonjs"
-        kotlinOptions.sourceMap = true
-        kotlinOptions.sourceMapEmbedSources = "always"
     }
 }

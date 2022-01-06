@@ -1,42 +1,54 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
-import react.*
+import react.ChildrenBuilder
+import react.useEffectOnce
+import react.useState
 import kotlin.math.round
 
-data class FrameRunnerProps(val sequence: Sequence<Pair<*, Int>>, val speed: Double) : RProps
+data class FrameRunner<S>(
+    val sequence: Sequence<Frame<S>>,
+    val speed: Double,
+    val children: ChildrenBuilder.(value: S) -> Unit
+) : DataProps<FrameRunner<S>> {
+    override val component: TMFC<FrameRunner<S>> get() = fR()
+}
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second
 private fun <A, B, B2> Pair<A, B>.letSecond(transform: (B) -> B2) = first to transform(second)
 private fun <A, B, C> Pair<A, B>.let(transform: (A, B) -> C) = transform(first, second)
 private fun <I, O, O2> ((I) -> O).join(transform: (O) -> O2) = { pair: I -> transform(this(pair)) }
-private fun <I> StateSetter<I?>.curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { it: I -> { this(it) } }
+private fun <I> ((I) -> Unit).curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { it: I -> { this(it) } }
 
-fun <T> RBuilder.frameRunner(sequence: Sequence<Pair<T, Int>>, speed: Double, children: RBuilder.(T) -> Unit) = child(
-    createElement(FrameRunner, FrameRunnerProps(sequence, speed), { value: T ->
-        buildElements { children(value) }
-    })
-)
+data class Frame<T>(val data: T, val delay: Int)
 
-val FrameRunner = reactFunction<FrameRunnerProps> { props ->
+
+val frameRunnerCached = tmFC<FrameRunner<Any>> { props ->
     val (sequence, speed) = props
-    val (state, setState) = useState(sequence.first().first)
-    val scheduleStateFunc = scheduleStateFunc(setState, speed)
+    var state by useState(sequence.first().data)
+    val scheduleStateFunc: (Frame<Any>) -> Unit = scheduleStateFunc({ state = it }, speed)
 
     useEffectOnce { sequence.forEach(scheduleStateFunc) }
-    children(state, props)
+    props.children(this, state)
 }
 
-private fun scheduleStateFunc(setState: StateSetter<Any?>, speed: Double) = setState.statePairToTimeoutArgsFunc()
+private fun <S> fR(): TMFC<FrameRunner<S>> = frameRunnerCached.unsafeCast<TMFC<FrameRunner<S>>>()
+
+private fun scheduleStateFunc(setState: (Any) -> Unit, speed: Double) = setState.statePairToTimeoutArgsFunc()
     .join(pairTransformSecondFunc { it.applySpeed(speed) })
     .join { args -> args.let(::setTimeout); Unit }
 
 private fun Int.applySpeed(speed: Double): Int = round(this / speed).toInt()
 
-private fun StateSetter<Any?>.statePairToTimeoutArgsFunc(): (Pair<Any?, Int>) -> Pair<() -> Unit, Int> =
-    pairTransformFirstFunc(curryOneArgToNoArgsFunc())
+private fun ((Any) -> Unit).statePairToTimeoutArgsFunc(): (Frame<Any>) -> Pair<() -> Unit, Int> =
+    toFrameFunc(pairTransformFirstFunc(curryOneArgToNoArgsFunc()))
 
+fun toFrameFunc(target: (Pair<Any, Int>) -> Pair<() -> Unit, Int>) = fun(it: Frame<Any>): Pair<() -> Unit, Int> {
+    return target(Pair(it.data, it.delay))
+}
 
 private fun <I, O, V> pairTransformFirstFunc(transform: (I) -> O): (Pair<I, V>) -> Pair<O, V> = { pair ->
     pair.letFirst(transform)
@@ -48,8 +60,3 @@ private fun <I, O, K> pairTransformSecondFunc(transform: (I) -> O): (Pair<K, I>)
 
 private fun setTimeout(timedFunc: () -> Unit, time: Int) = window.setTimeout(timedFunc, time)
 
-private fun RBuilder.children(state: Any?, props: FrameRunnerProps): Any {
-    val unsafeCast = props.children.unsafeCast<(Any?) -> Any>()
-    val children = unsafeCast(state)
-    return childList.add(children)
-}

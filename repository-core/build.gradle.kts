@@ -1,7 +1,7 @@
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.zegreatrob.coupling.plugins.mp")
 }
 
 kotlin {
@@ -17,14 +17,14 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":model"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:standard:4.1.2")
-                implementation("com.zegreatrob.testmints:minassert:4.1.6")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
@@ -32,15 +32,15 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
 
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
             }
         }
 
@@ -50,7 +50,4 @@ kotlin {
             }
         }
     }
-}
-
-tasks {
 }

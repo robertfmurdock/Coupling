@@ -95,15 +95,15 @@ private suspend fun handleConnect(request: Request, connectionId: String, event:
 private fun notifyConnectLambda(event: dynamic): Promise<Unit> {
     val options = notifyLambdaOptions()
     val client = LambdaClient(options)
-    return client.send<Unit>(
-        InvokeCommand(
-            json(
-                "FunctionName" to "coupling-server-${Process.getEnv("STAGE")}-notifyConnect",
-                "InvocationType" to "Event",
-                "Payload" to JSON.stringify(event)
-            )
-        )
-    ).catch {
+    console.log("lambda options ${JSON.stringify(options)}")
+    val commandOptions = json(
+        "FunctionName" to "coupling-server-${Process.getEnv("STAGE")}-notifyConnect",
+        "InvocationType" to "Event",
+        "Payload" to JSON.stringify(event)
+    )
+
+    console.log("command options ${JSON.stringify(commandOptions)}")
+    return client.send<Unit>(InvokeCommand(commandOptions)).catch {
         console.log("lambda invoke fail", it)
     }
 }
@@ -181,11 +181,8 @@ private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     User("websocket", "websocket", emptySet()), this, uuid4()
 )
 
-private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(
-    socketDispatcher: CommandDispatcher
-) {
+private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(socketDispatcher: CommandDispatcher) =
     socketDispatcher.execute(BroadcastAction(first, second))
-}
 
 private fun delete(connectionId: String, managementApi: ApiGatewayManagementApi) = managementApi.deleteConnection(
     json("ConnectionId" to connectionId)

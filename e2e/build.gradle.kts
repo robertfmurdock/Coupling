@@ -1,27 +1,24 @@
-import com.zegreatrob.coupling.build.loadPackageJson
+
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import java.io.FileOutputStream
 
 plugins {
-    kotlin("js")
+    id("com.zegreatrob.coupling.plugins.jstools")
 }
 
 kotlin {
     js {
         nodejs { testTask { enabled = false } }
-        useCommonJs()
-        binaries.executable()
         compilations {
             val e2eTest by creating
             binaries.executable(e2eTest)
         }
     }
 }
-
-val packageJson = loadPackageJson()
 
 val appConfiguration: Configuration by configurations.creating {
     attributes {
@@ -42,13 +39,13 @@ kotlin {
                 implementation(project(":sdk"))
                 implementation(project(":test-logging"))
                 implementation(kotlin("test-js"))
-                implementation("io.github.microutils:kotlin-logging:2.0.6")
-                implementation("com.zegreatrob.testmints:standard:4.1.2")
-                implementation("com.zegreatrob.testmints:minassert:4.1.2")
-                implementation("com.zegreatrob.testmints:async:4.1.2")
-                implementation("com.zegreatrob.testmints:wdio:4.1.2")
+                implementation("io.github.microutils:kotlin-logging:2.1.21")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:minassert")
+                implementation("com.zegreatrob.testmints:async")
+                implementation("com.zegreatrob.testmints:wdio")
                 implementation(appConfiguration)
-                packageJson.devDependencies().forEach {
+                jstools.packageJson.devDependencies()?.forEach {
                     implementation(npm(it.first, it.second.asText()))
                 }
             }
@@ -63,14 +60,11 @@ dependencies {
 
     implementation(project(":test-logging"))
     implementation(kotlin("stdlib-js"))
-    implementation("com.benasher44:uuid:0.3.0")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions:1.0.1-pre.213-kotlin-1.5.10")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
-    implementation("com.zegreatrob.testmints:wdio:4.1.2")
-    packageJson.dependencies().forEach {
-        implementation(npm(it.first, it.second.asText()))
-    }
-    packageJson.devDependencies().forEach {
+    implementation("com.benasher44:uuid:0.3.1")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("com.zegreatrob.testmints:wdio")
+    jstools.packageJson.devDependencies()?.forEach {
         implementation(npm(it.first, it.second.asText()))
     }
 }
@@ -102,7 +96,8 @@ tasks {
             compileE2eTestProductionExecutableKotlinJs,
             appConfiguration,
             clientConfiguration,
-            testLoggingLib
+            testLoggingLib,
+            ":composeUp"
         )
         inputs.files(
             appConfiguration,
@@ -115,18 +110,14 @@ tasks {
 
         val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
         outputs.dir(reportDir)
-        val logsDir = "${project.buildDir.absolutePath}/logs/e2e-serverless/"
-        outputs.dir(logsDir)
+        val logsDir = "${project.buildDir.absolutePath}/reports/logs/e2e-serverless/"
 
-        val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"
-        environment("BASEURL" to "http://localhost:3099/local/")
-        environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
+        environment("BASEURL" to "https://localhost/local/")
         environment(
             mapOf(
                 "TEST_LOGIN_ENABLED" to "true",
                 "CLIENT_BASENAME" to "local",
                 "SERVER_DIR" to project(":server").projectDir.absolutePath,
-                "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile --httpPort 3099",
                 "NODE_PATH" to listOf(
                     "${project.rootProject.buildDir.path}/js/node_modules",
                     e2eTestProcessResources.destinationDir
@@ -136,11 +127,13 @@ tasks {
                 "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
                 "REPORT_DIR" to reportDir,
                 "LOGS_DIR" to logsDir,
+                "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
+                "STRICT_SSL" to "false",
             )
         )
         val logFile = file("${logsDir}/run.log")
         logFile.parentFile.mkdirs()
-        standardOutput = logFile.outputStream()
+        standardOutput = FileOutputStream(logFile, true)
     }
 
     val check by getting {

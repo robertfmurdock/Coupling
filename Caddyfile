@@ -1,0 +1,20 @@
+(cors) {
+	@origin header Origin {args.0}
+	header @origin Access-Control-Allow-Origin "{args.0}"
+	header @origin Access-Control-Request-Method GET
+}
+
+localhost {
+    reverse_proxy serverless:3000
+}
+
+static.localhost {
+    root * /client/build/distributions
+    file_server browse
+    import cors localhost
+}
+
+socket.localhost {
+    reverse_proxy serverless:3001
+    import cors localhost
+}

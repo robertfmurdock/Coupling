@@ -1,45 +1,37 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.reactFunction
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import kotlinx.css.marginLeft
 import kotlinx.css.px
 import kotlinx.html.classes
-import react.RBuilder
-import react.RProps
-import react.dom.attrs
-import styled.css
-import styled.styledDiv
 
-data class PinSectionProps(
+data class PinSection(
     val pinList: List<Pin>,
     val scale: PinButtonScale = PinButtonScale.Small,
-    val canDrag: Boolean,
-    val className: String
-) : RProps
-
-fun RBuilder.pinSection(
-    pinList: List<Pin>,
-    scale: PinButtonScale = PinButtonScale.Small,
-    canDrag: Boolean = false,
-    className: String = ""
-) = child(PinSection, PinSectionProps(pinList, scale, canDrag, className), {})
+    val canDrag: Boolean = false,
+    val className: String = ""
+) : DataProps<PinSection> {
+    override val component: TMFC<PinSection> get() = pinSection
+}
 
 private val styles = useStyles("pin/PinSection")
 
-val PinSection =
-    reactFunction<PinSectionProps> { (pinList, scale, canDrag, className) ->
-        styledDiv {
-            attrs {
-                classes = classes + styles.className + className
-                css { marginLeft = -(pinList.size * 12 * scale.factor).px }
-            }
-            pinList.map { pin ->
-                if (canDrag)
-                    draggablePinButton(pin, scale)
-                else
-                    pinButton(pin, scale, key = null, showTooltip = true)
-            }
+val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
+    cssDiv(
+        attrs = { classes = classes + styles.className + className },
+        css = { marginLeft = -(pinList.size * 12 * scale.factor).px }
+    ) {
+        pinList.map { pin ->
+            if (canDrag)
+                child(DraggablePinButton(pin, scale))
+            else
+                child(PinButton(pin, scale, showTooltip = true), key = null)
         }
     }
+}

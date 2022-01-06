@@ -1,37 +1,38 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.invoke
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.reactFunction
-import react.RProps
-import react.dom.div
-import react.dom.span
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.tmFC
+import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 
-data class TeamStatisticsProps(
+data class TeamStatistics(
     val spinsUntilFullRotation: Int,
     val activePlayerCount: Int,
     val medianSpinDuration: String
-) : RProps
+) : DataProps<TeamStatistics> {
+    override val component: TMFC<TeamStatistics> = teamStatistics
+}
 
 private val styles = useStyles("stats/TeamStatistics")
 
-val TeamStatistics =
-    reactFunction<TeamStatisticsProps> { props ->
-        val (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) = props
-        div(classes = styles.className) {
-            statsHeader { +"Team Stats" }
-            div {
-                statLabel { +"Spins Until Full Rotation:" }
-                span(classes = styles["rotationNumber"]) { +"$spinsUntilFullRotation" }
-            }
-            div {
-                statLabel { +"Number of Active Players:" }
-                span(classes = styles["activePlayerCount"]) { +"$activePlayerCount" }
-            }
-            div {
-                statLabel { +"Median Spin Duration:" }
-                span(classes = styles["medianSpinDuration"]) { +medianSpinDuration }
-            }
+val teamStatistics = tmFC<TeamStatistics> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
+    div {
+        className = styles.className
+        StatsHeader { +"Team Stats" }
+        div {
+            StatLabel { +"Spins Until Full Rotation:" }
+            span { className = styles["rotationNumber"]; +"$spinsUntilFullRotation" }
+        }
+        div {
+            StatLabel { +"Number of Active Players:" }
+            span { className = styles["activePlayerCount"]; +"$activePlayerCount" }
+        }
+        div {
+            StatLabel { +"Median Spin Duration:" }
+            span { className = styles["medianSpinDuration"]; +medianSpinDuration }
         }
     }
+}
