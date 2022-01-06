@@ -173,7 +173,7 @@ class WebsocketTest {
     fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(sdkContext { it }
     ) exercise {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
-        val url = "ws://$host/api/${TribeId("whoops").value}/pairAssignments/current"
+        val url = "wss://$host/api/${TribeId("whoops").value}/pairAssignments/current"
         val socket = newWebsocket(url, json())
         CompletableDeferred<Unit>().also { deferred ->
             socket.on("close") { deferred.complete(Unit) }
@@ -201,7 +201,7 @@ class WebsocketTest {
     fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(sdkContext { it }
     ) exercise {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
-        val url = "ws://$host/api/404WTF"
+        val url = "wss://$host/api/404WTF"
         val socket = newWebsocket(url, json())
         CompletableDeferred<Unit>().also { deferred ->
             socket.on("close") { deferred.complete(Unit) }
@@ -245,7 +245,7 @@ class WebsocketTest {
 
     private fun connectToSocket(tribeId: TribeId, cookieStringSync: String): WS {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
-        val url = "ws://$host/api/websocket?tribeId=${tribeId.value}"
+        val url = "wss://$host/api/websocket?tribeId=${tribeId.value}"
         return newWebsocket(url, json("headers" to json("cookie" to cookieStringSync)))
     }
 
