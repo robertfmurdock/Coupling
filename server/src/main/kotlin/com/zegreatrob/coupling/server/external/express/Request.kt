@@ -8,6 +8,7 @@ import kotlin.js.Json
 
 external interface Request {
     val oidc: OIDC
+    val auth: Json?
     val query: Json
     val params: Json
     val body: dynamic
