@@ -68,7 +68,7 @@ private fun Express.injectVariablesForClient(request: Request) = """<script>
     window.auth0Domain = "${Config.AUTH0_DOMAIN}";
     window.basename = "${Config.clientBasename}";
     window.expressEnv = "$env";
-    window.isAuthenticated = ${request.isAuthenticated()};
+    window.isAuthenticated = ${request.oidc.isAuthenticated()};
     window.webpackPublicPath = "${Config.clientUrl}/";
     window.websocketHost = "${Config.websocketHost}/";
     </script>

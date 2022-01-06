@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.express.route
 
+import com.zegreatrob.coupling.server.UserDataService
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.eoic.expressOpenIdConnect
 import com.zegreatrob.coupling.server.external.express.Express
@@ -18,15 +19,36 @@ fun Express.routes() {
     use(
         expressOpenIdConnect(
             json(
-                "authRequired" to true,
+                "authRequired" to false,
                 "auth0Logout" to true,
-                "baseURL" to Config.publicUrl,
+                "baseURL" to "${Config.publicUrl}${Config.clientBasename}",
                 "clientID" to Config.AUTH0_CLIENT_ID,
                 "issuerBaseURL" to "https://${Config.AUTH0_DOMAIN}",
-                "secret" to Config.AUTH0_CLIENT_SECRET
+                "secret" to Config.AUTH0_CLIENT_SECRET,
+                "routes" to json(
+                    "login" to "/auth0-login",
+                    "logout" to "/api/logout",
+                    "callback" to "/auth/signin-auth0"
+                )
             ),
         )
     )
+    use { request, _, next ->
+        val userProfile = request.oidc.user
+        if (userProfile != null) {
+            UserDataService.deserializeUser(
+                request, "${userProfile["email"]}"
+            ) { error, user ->
+                request.asDynamic()["user"] = user
+
+                println("user is ${request.user}")
+                next()
+            }
+        } else {
+            next()
+        }
+    }
+
     get("/", indexRoute())
     get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
     all("/api/*", apiGuard())
@@ -65,7 +87,7 @@ private fun redirectToRoot(): Handler = { _, response, _ -> response.redirect("/
 fun apiGuard(): Handler = { request, response, next ->
     request.statsdkey = listOf("http", request.method.lowercase(), request.path).joinToString(".")
 
-    if (!request.isAuthenticated()) {
+    if (!request.oidc.isAuthenticated()) {
         response.sendStatus(401)
     } else {
         request.scope.launch(block = setupDispatcher(request, next))

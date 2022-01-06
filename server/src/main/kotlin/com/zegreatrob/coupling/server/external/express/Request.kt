@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlin.js.Json
 
 external interface Request {
+    val oidc: OIDC
     val query: Json
     val params: Json
     val body: dynamic
@@ -17,11 +18,15 @@ external interface Request {
     val connectionId: String
     val event: Json?
     fun logout()
-    fun isAuthenticated(): Boolean
-
     val commandDispatcher: CommandDispatcher
     val user: User
     val traceId: Uuid
     val scope: CoroutineScope
     var statsdkey: String?
+}
+
+external interface OIDC {
+    val user: Json?
+
+    fun isAuthenticated() : Boolean
 }

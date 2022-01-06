@@ -23,7 +23,7 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.17.2",
     "express-graphql": "^0.12.0",
-    "express-openid-connect": "^2.5.0",
+    "express-openid-connect": "^2.5.2",
     "express-session": "^1.17.2",
     "express-statsd": "^0.3.0",
     "fs-extra": "^10.0.0",

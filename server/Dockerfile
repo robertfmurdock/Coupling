@@ -2,7 +2,7 @@ FROM node:17
 
 WORKDIR /serverless
 
-RUN npm install serverless serverless-offline serverless-offline-ssm
+RUN npm install serverless serverless-offline serverless-offline-ssm express-openid-connect
 
 COPY build/executable /serverless/build/executable
 COPY serverless.yml /serverless/
