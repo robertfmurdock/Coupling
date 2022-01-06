@@ -112,15 +112,12 @@ tasks {
         outputs.dir(reportDir)
         val logsDir = "${project.buildDir.absolutePath}/reports/logs/e2e-serverless/"
 
-        val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"
         environment("BASEURL" to "https://localhost/local/")
-        environment("CLIENT_PATH", file("${rootProject.rootDir.absolutePath}/client/build/distributions"))
         environment(
             mapOf(
                 "TEST_LOGIN_ENABLED" to "true",
                 "CLIENT_BASENAME" to "local",
                 "SERVER_DIR" to project(":server").projectDir.absolutePath,
-                "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile start",
                 "NODE_PATH" to listOf(
                     "${project.rootProject.buildDir.path}/js/node_modules",
                     e2eTestProcessResources.destinationDir

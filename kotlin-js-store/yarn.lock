@@ -11957,7 +11957,7 @@ serverless-offline@^8.3.1:
     velocityjs "^2.0.5"
     ws "^7.5.6"
 
-serverless@^2.69.1, serverless@^2.70.0:
+serverless@^2.70.0:
   version "2.70.0"
   resolved "https://registry.yarnpkg.com/serverless/-/serverless-2.70.0.tgz#26fdbcfd5ef467148ba8348712e4a27c3ace4d13"
   integrity sha512-NoaaylJFgDhbEWLashrerle8jx35b6iGdF3s+gYOzj8wvLhMOF3rfWzeKNyCBVXC0syx1Q5aYgaYVHUMzXzmSw==

@@ -125,12 +125,6 @@ tasks {
         dependsOn(assemble, clientConfiguration, compileKotlinJs)
         arguments = listOf(project.relativePath("startup"))
         environment("NODE_ENV", "production")
-        environment(
-            "CLIENT_PATH",
-            System.getenv("CLIENT_PATH")
-                ?.let { it.ifEmpty { null } }
-                ?: "${file("${rootProject.rootDir.absolutePath}/client/build/distributions")}"
-        )
     }
 
     val buildImage by creating(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {

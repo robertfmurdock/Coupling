@@ -119,12 +119,10 @@ tasks {
             "$nodeModulesDir/../packages/Coupling-sdk-endpointTest/node_modules"
         ) + processResources.map { it.destinationDir.path }
         relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
-        val serverlessConfigFile = "${project(":server").projectDir.absolutePath}/serverless.yml"
 
         environment(
             "NODE_PATH" to relevantPaths.joinToString(":"),
             "WEBSOCKET_HOST" to "socket.localhost",
-            "APP_PATH" to "${rootProject.buildDir.absolutePath}/js/node_modules/.bin/serverless offline --config $serverlessConfigFile",
             "BASEURL" to "https://localhost/local/",
             "CLIENT_BASENAME" to "local",
             "BASENAME" to "local",
