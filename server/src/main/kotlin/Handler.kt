@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserComma
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.express.middleware.middleware
 import com.zegreatrob.coupling.server.express.route.jwtMiddleware
+import com.zegreatrob.coupling.server.express.route.userLoadingMiddleware
 import com.zegreatrob.coupling.server.external.awssdk.clientlambda.InvokeCommand
 import com.zegreatrob.coupling.server.external.awssdk.clientlambda.LambdaClient
 import com.zegreatrob.coupling.server.external.express.Request
@@ -42,7 +43,9 @@ fun serverless(event: dynamic, context: dynamic): dynamic {
 private val websocketApp by lazy {
     express().apply {
         middleware()
-        use(jwtMiddleware())
+        use(jwtMiddleware { request -> request.query["token"].toString() })
+        use(userLoadingMiddleware())
+
         all("*") { request, response, _ ->
             val connectionId = request.connectionId
             with(request.scope.async {

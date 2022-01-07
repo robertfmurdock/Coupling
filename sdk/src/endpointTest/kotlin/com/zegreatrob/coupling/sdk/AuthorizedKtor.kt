@@ -37,7 +37,7 @@ val altAuthorizedSdkDeferred by lazy {
 }
 
 private suspend fun authorizedKtorSdk(username: String, password: String) =
-    AuthorizedKtorSdk(authorizedKtorClient(username, password))
+    authorizedKtorClient(username, password).let { (client, token) -> AuthorizedKtorSdk(client, token) }
 
 suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
 
@@ -56,7 +56,7 @@ private val generalPurposeClient = HttpClient {
 }
 
 
-private suspend fun authorizedKtorClient(username: String, password: String): HttpClient {
+private suspend fun authorizedKtorClient(username: String, password: String): Pair<HttpClient, String> {
     val accessToken = generateAccessToken(username, password)
 
     val client = defaultClient().config {
@@ -87,10 +87,10 @@ private suspend fun authorizedKtorClient(username: String, password: String): Ht
     }
 
     console.log("ktor logged in for $username")
-    return client
+    return client to accessToken
 }
 
-private suspend fun generateAccessToken(username: String, password: String): String? {
+private suspend fun generateAccessToken(username: String, password: String): String {
     val result = generalPurposeClient.submitForm<JsonObject>(
         url = "https://zegreatrob.us.auth0.com/oauth/token",
         formParameters = Parameters.build {
@@ -102,10 +102,10 @@ private suspend fun generateAccessToken(username: String, password: String): Str
         }
     )
 
-    return result["id_token"]?.jsonPrimitive?.content
+    return result["id_token"]?.jsonPrimitive?.content ?: ""
 }
 
-class AuthorizedKtorSdk(val client: HttpClient) : Sdk,
+class AuthorizedKtorSdk(val client: HttpClient, val token: String) : Sdk,
     TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
 
         override val client get() = client

@@ -40,28 +40,29 @@ fun Express.routes() {
 //    get("/api/logout") { request, response, _ -> request.logout();response.send("ok") }
 
     use(jwtMiddleware())
-
-    use { request, _, next ->
-        val auth = request.auth
-        if (auth != null) {
-            println("user profile is ${JSON.stringify(auth)}")
-            UserDataService.deserializeUser(request, "${auth["email"]}") { _, user ->
-                request.asDynamic()["user"] = user
-                request.asDynamic()["isAuthenticated"] = true
-
-                println("user is ${request.user}")
-                next()
-            }
-        } else {
-            next()
-        }
-    }
+    use(userLoadingMiddleware())
     all("/api/*", apiGuard())
     use("/api/graphql", graphqlHTTP(json("schema" to couplingSchema(), "graphiql" to true)))
     get("*", indexRoute())
 }
 
-fun jwtMiddleware(): Handler = jwt(
+fun userLoadingMiddleware(): Handler = { request, _, next ->
+    val auth = request.auth
+    if (auth != null) {
+        println("user profile is ${JSON.stringify(auth)}")
+        UserDataService.deserializeUser(request, "${auth["email"]}") { _, user ->
+            request.asDynamic()["user"] = user
+            request.asDynamic()["isAuthenticated"] = true
+
+            println("user is ${request.user}")
+            next()
+        }
+    } else {
+        next()
+    }
+}
+
+fun jwtMiddleware(getToken: ((Request) -> String)? = null): Handler = jwt(
     json(
         "secret" to expressJwtSecret(
             json(
@@ -74,7 +75,13 @@ fun jwtMiddleware(): Handler = jwt(
         "issuer" to "https://${Config.AUTH0_DOMAIN}/",
         "algorithms" to arrayOf("RS256"),
         "requestProperty" to "auth",
-    )
+    ).let {
+        if (getToken == null) {
+            it
+        } else {
+            it.add(json("getToken" to getToken))
+        }
+    }
 )
 
 private fun Express.authRoutes() {
