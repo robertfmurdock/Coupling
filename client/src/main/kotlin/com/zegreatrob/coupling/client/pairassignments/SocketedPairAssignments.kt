@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.CouplingWebsocket
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.disconnectedMessage
+import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
@@ -15,7 +16,11 @@ import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import react.StateSetter
+import react.dom.html.ReactHTML.div
+import react.useEffect
 import react.useMemo
 import react.useState
 
@@ -35,12 +40,24 @@ val socketedPairAssignments = tmFC<SocketedPairAssignments> { (tribe, players, o
     val (message, setMessage) = useState(disconnectedMessage)
     val onMessageFunc: (Message) -> Unit = { handleMessage(it, setMessage, setPairAssignments) }
 
-    child(CouplingWebsocket(tribe.id, onMessage = onMessageFunc) {
-        val updatePairAssignments = useMemo(controls.dispatchFunc) {
-            updatePairAssignmentsFunc(setPairAssignments, controls.dispatchFunc, tribe.id)
-        }
-        child(PairAssignments(tribe, players, pairAssignments, updatePairAssignments, controls, message, allowSave))
-    })
+    val (_, _, _, _, _, getIdTokenClaims) = useAuth0Data()
+
+    var token by useState("")
+
+    useEffect {
+        MainScope().launch { token = getIdTokenClaims() }
+    }
+
+    if (token.isNotBlank()) {
+        child(CouplingWebsocket(tribe.id, onMessage = onMessageFunc, token = token) {
+            val updatePairAssignments = useMemo(controls.dispatchFunc) {
+                updatePairAssignmentsFunc(setPairAssignments, controls.dispatchFunc, tribe.id)
+            }
+            child(PairAssignments(tribe, players, pairAssignments, updatePairAssignments, controls, message, allowSave))
+        })
+    } else {
+        div()
+    }
 }
 
 private fun handleMessage(

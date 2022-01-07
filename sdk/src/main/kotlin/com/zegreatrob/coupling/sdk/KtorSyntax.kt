@@ -42,4 +42,5 @@ private val defaultClient = defaultClient()
 
 interface KtorSyntax {
     val client: HttpClient get() = defaultClient
+    suspend fun getIdToken() : String
 }

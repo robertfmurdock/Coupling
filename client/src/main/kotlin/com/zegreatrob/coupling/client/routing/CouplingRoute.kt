@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
+import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import kotlinx.browser.window
 import react.ChildrenBuilder
 import react.FC
@@ -25,10 +26,16 @@ val CouplingRoute = FC<CouplingRouteProps> {
     val params = useParams()
     val navigate = useNavigate()
 
+    val auth0Data = useAuth0Data()
+    val (_, _, _, _, _, getIdTokenClaims) = auth0Data
+
+    println("auth 0 data $auth0Data")
+
+
     it.rComponent {
         pathParams = params
         search = searchParams
-        commander = MasterCommander
+        commander = MasterCommander(getIdTokenClaims)
     }
     window.asDynamic().pathSetter = newPathSetter(navigate)
 }

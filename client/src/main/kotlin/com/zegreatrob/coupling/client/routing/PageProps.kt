@@ -30,15 +30,17 @@ interface Commander {
     suspend fun <T> runQuery(dispatch: suspend CommandDispatcher.() -> T): T = tracingDispatcher().dispatch()
 }
 
-object MasterCommander : Commander {
+class MasterCommander(getIdentityToken: suspend ()-> String) : Commander {
     private val backend = LocalStorageRepositoryBackend()
+    private val sdk = SdkSingleton(getIdentityToken)
 
     override fun getDispatcher(traceId: Uuid): CommandDispatcher = CommandDispatcher(
         traceId,
         if (window["inMemory"] == true) {
             MemoryRepositoryCatalog("test-user", backend, TimeProvider)
         } else {
-            SdkSingleton
-        }
+            sdk
+        },
+        sdk
     )
 }

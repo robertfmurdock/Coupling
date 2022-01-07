@@ -6,7 +6,6 @@ import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.logging.*
-import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import kotlinx.coroutines.MainScope
@@ -37,7 +36,7 @@ val altAuthorizedSdkDeferred by lazy {
 }
 
 private suspend fun authorizedKtorSdk(username: String, password: String) =
-    authorizedKtorClient(username, password).let { (client, token) -> AuthorizedKtorSdk(client, token) }
+    AuthorizedKtorSdk(generateAccessToken(username, password))
 
 suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
 
@@ -55,10 +54,7 @@ private val generalPurposeClient = HttpClient {
     }
 }
 
-
-private suspend fun authorizedKtorClient(username: String, password: String): Pair<HttpClient, String> {
-    val accessToken = generateAccessToken(username, password)
-
+private fun buildClientWithToken(accessToken: String): HttpClient {
     val client = defaultClient().config {
         followRedirects = false
         val baseUrl = Url("${process.env.BASEURL}")
@@ -73,7 +69,7 @@ private suspend fun authorizedKtorClient(username: String, password: String): Pa
                 }
                 encodedPath = "${baseUrl.encodedPath}$encodedPath"
             }
-            header("Authorization", "Bearer $accessToken")
+//            header("Authorization", "Bearer $accessToken")
         }
         install(Logging) {
             val ktorLogger = KotlinLogging.logger("ktor")
@@ -85,9 +81,7 @@ private suspend fun authorizedKtorClient(username: String, password: String): Pa
             level = LogLevel.ALL
         }
     }
-
-    console.log("ktor logged in for $username")
-    return client to accessToken
+    return client
 }
 
 private suspend fun generateAccessToken(username: String, password: String): String {
@@ -105,11 +99,10 @@ private suspend fun generateAccessToken(username: String, password: String): Str
     return result["id_token"]?.jsonPrimitive?.content ?: ""
 }
 
-class AuthorizedKtorSdk(val client: HttpClient, val token: String) : Sdk,
+class AuthorizedKtorSdk(val token: String) : Sdk,
     TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
-
-        override val client get() = client
+        override suspend fun getIdToken(): String = token
+        override val client by lazy { buildClientWithToken(token) }
 
         override fun basename() = process.env.BASENAME.unsafeCast<String?>() ?: ""
-    }) {
-}
+    })

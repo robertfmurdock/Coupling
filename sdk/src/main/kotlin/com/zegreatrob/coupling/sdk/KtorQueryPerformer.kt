@@ -23,10 +23,13 @@ interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
     }
 
     private suspend fun postStringToJsonObject(body: dynamic) = JSON.parse<Json>(client.post("/api/graphql") {
+        header("Authorization", "Bearer ${getIdToken()}")
         this.body = TextContent(JSON.stringify(body), ContentType.Application.Json)
     })
 
     override suspend fun get(path: String): dynamic {
-        return client.get<String?>(path)
+        return client.get<String?>(path) {
+            header("Authorization", "Bearer ${getIdToken()}")
+        }
     }
 }

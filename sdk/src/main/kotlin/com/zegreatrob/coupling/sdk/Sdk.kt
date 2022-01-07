@@ -39,7 +39,10 @@ interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkP
     override val tribeRepository get() = this
 }
 
-object SdkSingleton : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {})
+class SdkSingleton(getIdTokenFunc: suspend () -> String) : Sdk,
+    TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
+        override suspend fun getIdToken(): String = getIdTokenFunc.invoke()
+    })
 
 interface SdkSyntax {
     val sdk: Sdk

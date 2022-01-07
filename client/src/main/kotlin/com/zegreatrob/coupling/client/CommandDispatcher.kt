@@ -20,9 +20,9 @@ import com.zegreatrob.coupling.client.tribe.TribeListQueryDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeQueryDispatcher
 import com.zegreatrob.coupling.client.user.LogoutCommandDispatcher
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
-import com.zegreatrob.coupling.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.Sdk
 
-class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: RepositoryCatalog) :
+class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: RepositoryCatalog, override val sdk: Sdk) :
     PinCommandDispatcher,
     PairAssignmentsCommandDispatcher,
     NewPairAssignmentsCommandDispatcher,
@@ -41,6 +41,4 @@ class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: Repositor
     LogoutCommandDispatcher,
     NewTribeCommandDispatcher,
     StatisticsQueryDispatcher,
-    LoggingActionExecuteSyntax {
-    override val sdk = SdkSingleton
-}
+    LoggingActionExecuteSyntax
