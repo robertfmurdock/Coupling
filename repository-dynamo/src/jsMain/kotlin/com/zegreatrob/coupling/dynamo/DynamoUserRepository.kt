@@ -93,6 +93,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
         performQuery(emailQueryParams(email))
             .itemsNode()
             .mapNotNull { it.getDynamoStringValue("id") }
+            .distinct()
     }.mapNotNull { userId ->
         logAsync("get user with id latest revision") {
             performQuery(queryParams(userId))
