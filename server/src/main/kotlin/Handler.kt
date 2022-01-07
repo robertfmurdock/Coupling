@@ -43,7 +43,7 @@ fun serverless(event: dynamic, context: dynamic): dynamic {
 private val websocketApp by lazy {
     express().apply {
         middleware()
-        use(jwtMiddleware { request -> request.query["token"].toString() })
+        use(jwtMiddleware { request -> request.query["token"] })
         use(userLoadingMiddleware())
 
         all("*") { request, response, _ ->

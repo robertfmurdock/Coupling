@@ -62,7 +62,7 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
     }
 }
 
-fun jwtMiddleware(getToken: ((Request) -> String)? = null): Handler = jwt(
+fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler = jwt(
     json(
         "secret" to expressJwtSecret(
             json(
@@ -75,6 +75,7 @@ fun jwtMiddleware(getToken: ((Request) -> String)? = null): Handler = jwt(
         "issuer" to "https://${Config.AUTH0_DOMAIN}/",
         "algorithms" to arrayOf("RS256"),
         "requestProperty" to "auth",
+        "credentialsRequired" to false,
     ).let {
         if (getToken == null) {
             it

@@ -249,7 +249,9 @@ private fun String.toCouplingServerMessage(): CouplingSocketMessage =
 
 fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()
 
-private fun expectedOnlinePlayerList(username: String) = listOf(Player(email = username, name = "", id = "-1"))
+private fun expectedOnlinePlayerList(email: String) = listOf(
+    Player(email = email, name = email.substring(0, email.indexOf("@")), id = "-1")
+)
 
 data class SocketWrapper(
     val socket: WS,
