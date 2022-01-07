@@ -77,7 +77,7 @@ class SpinTest {
 
     @Test
     fun givenTheLongestPairRuleItWillIgnoreBadges() = asyncSetup(object : ScopeMint() {
-        val sdk = setupScope.async { authorizedKtorSdk(username = "eT-user-${uuid4()}") }
+        val sdk = setupScope.async { authorizedKtorSdk() }
         val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
@@ -118,7 +118,7 @@ class SpinTest {
             }
 
         @Test
-        fun whenAPinExistsWillAssignOnePinToPair() = sdkSetup { pinExistsSetup(it) }) {
+        fun whenAPinExistsWillAssignOnePinToPair() = sdkSetup({ pinExistsSetup(it) }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, listOf(pin))
@@ -129,7 +129,7 @@ class SpinTest {
         }
 
         @Test
-        fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup { pinExistsSetup(it) }) {
+        fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup({ pinExistsSetup(it) }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, emptyList())

@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.logging.JsonFormatter
 import com.zegreatrob.coupling.server.Process
-import com.zegreatrob.coupling.stubmodel.uuidString
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
@@ -19,11 +18,28 @@ import mu.KotlinLoggingConfiguration
 
 external val process: dynamic
 
-private const val userEmail = "test@test.tes"
+const val primaryAuthorizedUsername = "couplingtestuser@gmail.com"
+val primaryTestPassword = Process.getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
 
-suspend fun authorizedKtorSdk(username: String = "${uuidString()}-$userEmail") = AuthorizedKtorSdk(
-    authorizedKtorClient(username)
-)
+val primaryAuthorizedSdkDeferred by lazy {
+    MainScope().async {
+        authorizedKtorSdk(primaryAuthorizedUsername, primaryTestPassword)
+    }
+}
+
+const val altAuthorizedUsername = "couplingtestuser.alt@gmail.com"
+val altTestPassword = Process.getEnv("COUPLING_ALT_TEST_PASSWORD") ?: ""
+
+val altAuthorizedSdkDeferred by lazy {
+    MainScope().async {
+        authorizedKtorSdk(altAuthorizedUsername, altTestPassword)
+    }
+}
+
+private suspend fun authorizedKtorSdk(username: String, password: String) =
+    AuthorizedKtorSdk(authorizedKtorClient(username, password))
+
+suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
 
 private val generalPurposeClient = HttpClient {
     install(JsonFeature)
@@ -39,10 +55,10 @@ private val generalPurposeClient = HttpClient {
     }
 }
 
-val accessTokenDeferred by lazy { MainScope().async { generateAccessToken() } }
 
-private suspend fun authorizedKtorClient(username: String): HttpClient {
-    val accessToken = accessTokenDeferred.await()
+private suspend fun authorizedKtorClient(username: String, password: String): HttpClient {
+    val accessToken = generateAccessToken(username, password)
+
     val client = defaultClient().config {
         followRedirects = false
         val baseUrl = Url("${process.env.BASEURL}")
@@ -74,25 +90,20 @@ private suspend fun authorizedKtorClient(username: String): HttpClient {
     return client
 }
 
-private suspend fun generateAccessToken(): String? {
+private suspend fun generateAccessToken(username: String, password: String): String? {
     val result = generalPurposeClient.submitForm<JsonObject>(
         url = "https://zegreatrob.us.auth0.com/oauth/token",
         formParameters = Parameters.build {
-            append("grant_type", "client_credentials")
+            append("grant_type", "password")
             append("client_id", "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg")
             append("client_secret", Process.getEnv("AUTH0_CLIENT_SECRET") ?: "")
-            append("audience", "https://localhost/api")
+            append("username", username)
+            append("password", password)
         }
     )
 
-    return result["access_token"]?.jsonPrimitive?.content
+    return result["id_token"]?.jsonPrimitive?.content
 }
-
-inline fun <T> withKtorSdk(crossinline objectSetup: (AuthorizedKtorSdk) -> T): suspend (Unit) -> T = {
-    val sdk = authorizedKtorSdk()
-    objectSetup(sdk)
-}
-
 
 class AuthorizedKtorSdk(val client: HttpClient) : Sdk,
     TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {

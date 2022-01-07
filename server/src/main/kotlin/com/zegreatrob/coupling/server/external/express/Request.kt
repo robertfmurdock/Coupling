@@ -8,6 +8,7 @@ import kotlin.js.Json
 
 external interface Request {
     val auth: Json?
+    val isAuthenticated: Boolean
     val query: Json
     val params: Json
     val body: dynamic
@@ -17,10 +18,10 @@ external interface Request {
     val url: String
     val connectionId: String
     val event: Json?
-    fun logout()
     val commandDispatcher: CommandDispatcher
     val user: User
     val traceId: Uuid
     val scope: CoroutineScope
     var statsdkey: String?
+    fun get(headerName: String): String?
 }

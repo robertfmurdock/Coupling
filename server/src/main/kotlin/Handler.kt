@@ -8,16 +8,14 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.server.CommandDispatcher
-import com.zegreatrob.coupling.server.Process
+import com.zegreatrob.coupling.server.*
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.connection.ConnectTribeUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
-import com.zegreatrob.coupling.server.buildApp
-import com.zegreatrob.coupling.server.commandDispatcher
 import com.zegreatrob.coupling.server.express.middleware.middleware
+import com.zegreatrob.coupling.server.express.route.jwtMiddleware
 import com.zegreatrob.coupling.server.external.awssdk.clientlambda.InvokeCommand
 import com.zegreatrob.coupling.server.external.awssdk.clientlambda.LambdaClient
 import com.zegreatrob.coupling.server.external.express.Request
@@ -44,11 +42,17 @@ fun serverless(event: dynamic, context: dynamic): dynamic {
 private val websocketApp by lazy {
     express().apply {
         middleware()
+        use(jwtMiddleware())
         all("*") { request, response, _ ->
             val connectionId = request.connectionId
             with(request.scope.async {
-                println("connect $connectionId")
-                handleConnect(request, connectionId, request.event)
+                if (!request.isAuthenticated) {
+                    delete(connectionId, apiGatewayManagementApi()).promise().await()
+                    401
+                } else {
+                    println("connect $connectionId")
+                    handleConnect(request, connectionId, request.event)
+                }
             }) {
                 invokeOnCompletion { cause ->
                     if (cause != null) {

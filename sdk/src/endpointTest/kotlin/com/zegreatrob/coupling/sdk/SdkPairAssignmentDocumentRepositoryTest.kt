@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -9,7 +8,6 @@ import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
-import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
@@ -21,8 +19,8 @@ val setJasmineTimeout = js("jasmine.DEFAULT_TIMEOUT_INTERVAL=10000")
 class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator<Sdk> {
 
     override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
-        val user = stubUser().copy(email = "eT-user-${uuid4()}")
-        val sdk = authorizedKtorSdk(username = user.email)
+        val user = stubUser().copy(email = primaryAuthorizedUsername)
+        val sdk = authorizedKtorSdk()
         val tribe = stubTribe()
         sdk.save(tribe)
         TribeContextData(sdk, tribe.id, MagicClock(), user)
@@ -31,7 +29,7 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup({
         val sdk = authorizedKtorSdk()
-        val otherSdk = authorizedKtorSdk(uuidString())
+        val otherSdk = altAuthorizedSdkDeferred.await()
         object {
             val otherTribe = stubTribe()
             val sdk = sdk

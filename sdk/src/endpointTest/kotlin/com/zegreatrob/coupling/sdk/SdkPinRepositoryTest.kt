@@ -1,13 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
-import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
@@ -16,17 +14,16 @@ import kotlin.test.Test
 class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
 
     override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
-        val username = "eT-user-${uuid4()}"
-        val sdk = authorizedKtorSdk(username = username)
+        val sdk = authorizedKtorSdk()
         val tribe = stubTribe()
         sdk.save(tribe)
-        TribeContextData(sdk, tribe.id, MagicClock(), stubUser().copy(email = username))
+        TribeContextData(sdk, tribe.id, MagicClock(), stubUser().copy(email = primaryAuthorizedUsername))
     })
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup({
         val sdk = authorizedKtorSdk()
-        val otherSdk = authorizedKtorSdk(uuidString())
+        val otherSdk = altAuthorizedSdkDeferred.await()
         object {
             val otherTribe = stubTribe()
             val sdk = sdk

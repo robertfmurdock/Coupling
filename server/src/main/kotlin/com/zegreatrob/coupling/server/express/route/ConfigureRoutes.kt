@@ -42,12 +42,12 @@ fun Express.routes() {
     use(jwtMiddleware())
 
     use { request, _, next ->
-        val userProfile = request.auth
-        if (userProfile != null) {
-            UserDataService.deserializeUser(
-                request, "${userProfile["email"]}"
-            ) { error, user ->
+        val auth = request.auth
+        if (auth != null) {
+            println("user profile is ${JSON.stringify(auth)}")
+            UserDataService.deserializeUser(request, "${auth["email"]}") { _, user ->
                 request.asDynamic()["user"] = user
+                request.asDynamic()["isAuthenticated"] = true
 
                 println("user is ${request.user}")
                 next()
@@ -61,24 +61,21 @@ fun Express.routes() {
     get("*", indexRoute())
 }
 
-private fun jwtMiddleware(): Handler {
-    return jwt(
-        json(
-            "secret" to expressJwtSecret(
-                json(
-                    "cache" to true,
-                    "rateLimit" to true,
-                    "jwksRequestsPerMinute" to 5,
-                    "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json"
-                )
-            ),
-            "issuer" to "https://${Config.AUTH0_DOMAIN}/",
-            "algorithms" to arrayOf("RS256"),
-            "audience" to "https://localhost/api",
-            "requestProperty" to "auth",
-        )
+fun jwtMiddleware(): Handler = jwt(
+    json(
+        "secret" to expressJwtSecret(
+            json(
+                "cache" to true,
+                "rateLimit" to true,
+                "jwksRequestsPerMinute" to 5,
+                "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json"
+            )
+        ),
+        "issuer" to "https://${Config.AUTH0_DOMAIN}/",
+        "algorithms" to arrayOf("RS256"),
+        "requestProperty" to "auth",
     )
-}
+)
 
 private fun Express.authRoutes() {
     get("/auth0-login", authenticateAuth0())
@@ -110,7 +107,12 @@ private fun redirectToRoot(): Handler = { _, response, _ -> response.redirect("/
 
 fun apiGuard(): Handler = { request, response, next ->
     request.statsdkey = listOf("http", request.method.lowercase(), request.path).joinToString(".")
-    request.scope.launch(block = setupDispatcher(request, next))
+
+    if (!request.isAuthenticated) {
+        response.sendStatus(401)
+    } else {
+        request.scope.launch(block = setupDispatcher(request, next))
+    }
 }
 
 private fun setupDispatcher(request: Request, next: Next): suspend CoroutineScope.() -> Unit = {

@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.invoke
@@ -19,13 +20,12 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<Sdk>>(sharedSetup = {
         val clock = MagicClock()
-        val email = "eT-user-${uuid4()}"
-        val sdk = authorizedKtorSdk(username = email)
-        SharedContextData(sdk, clock, stubUser().copy(email = "$email._temp"))
+        val sdk = authorizedKtorSdk()
+        SharedContextData(sdk, clock, stubUser().copy(email = primaryAuthorizedUsername))
     })
 
     private val setupWithPlayerMatchingUserTwoSdks = repositorySetup.extend(sharedSetup = { context ->
-        val sdkForOtherUser = authorizedKtorSdk(username = "eT-other-user-${uuid4()}")
+        val sdkForOtherUser = altAuthorizedSdkDeferred.await()
         object {
             val sdk = context.repository
             val sdkForOtherUser = sdkForOtherUser
@@ -42,7 +42,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
         sdk.getTribes()
     } verify { result ->
         result.map { it.data }
-            .assertIsEqualTo(listOf(tribe))
+            .assertContains(tribe)
     }
 
     @Test
@@ -53,7 +53,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
     } exercise {
         sdk.getTribes()
     } verify { result ->
-        result.assertIsEqualTo(emptyList())
+        result.map { it.data }.contains(tribe)
+            .assertIsEqualTo(false)
     }
 
     @Test
@@ -64,7 +65,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
     } exercise {
         sdk.getTribes()
     } verify { result ->
-        result.assertIsEqualTo(emptyList())
+        result.map { it.data }.contains(tribe)
+            .assertIsEqualTo(false)
     }
 
     @Test

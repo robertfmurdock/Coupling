@@ -21,12 +21,10 @@ import kotlin.test.Test
 class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
 
     override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
-
-        val username = "eT-user-${uuid4()}"
-        val sdk = authorizedKtorSdk(username = username)
+        val sdk = authorizedKtorSdk()
         val tribe = stubTribe()
         sdk.save(tribe)
-        val user = stubUser().copy(email = "$username._temp")
+        val user = stubUser().copy(email = primaryAuthorizedUsername)
 
         object : TribeContext<Sdk> {
             override val tribeId = tribe.id
@@ -87,7 +85,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
         @Test
         fun getIsNotAllowed() = runTest {
             val sdk = authorizedKtorSdk()
-            val otherSdk = authorizedKtorSdk("alt-user-${uuid4()}")
+            val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
                     val tribe = stubTribe()
@@ -105,7 +103,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
         @Test
         fun postIsNotAllowed() = runTest {
             val sdk = authorizedKtorSdk()
-            val otherSdk = authorizedKtorSdk("alt-user-${uuid4()}")
+            val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
                     val tribe = stubTribe()
