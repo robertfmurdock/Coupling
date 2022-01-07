@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.welcome
 
+import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
@@ -9,5 +10,6 @@ import react.FC
 private val LoadedWelcome = couplingDataLoader<Welcome>()
 
 val WelcomePage = FC<PageProps> {
-    child(dataLoadProps(LoadedWelcome) { Welcome() })
+    val (_, _, _, _, loginWithRedirect, _) = useAuth0Data()
+    child(dataLoadProps(LoadedWelcome) { Welcome(loginWithRedirect) })
 }

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.routing
 import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.demo.DemoPage
+import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
@@ -26,20 +27,25 @@ import react.dom.html.ReactHTML.div
 import react.router.*
 import react.router.dom.BrowserRouter
 
-data class CouplingRouter(val isSignedIn: Boolean, val animationsDisabled: Boolean) : DataProps<CouplingRouter> {
+data class CouplingRouter(val animationsDisabled: Boolean) : DataProps<CouplingRouter> {
     override val component get() = couplingRouter
 }
 
-val couplingRouter = tmFC<CouplingRouter> { (isSignedIn, animationsDisabled) ->
+val couplingRouter = tmFC<CouplingRouter> { (animationsDisabled) ->
+
+    val (auth0User, _, _, error, loginWithRedirect, getIdTokenClaims) = useAuth0Data()
+
+    val isSignedIn = auth0User == null
+
     BrowserRouter {
         basename = (kotlinx.browser.window["basename"]?.toString() ?: "")
         animationsDisabledContext.Provider(animationsDisabled) {
-            Routes { routes(isSignedIn) }
+            Routes { routes(isSignedIn, loginWithRedirect) }
         }
     }
 }
 
-private fun ChildrenBuilder.routes(isSignedIn: Boolean) {
+private fun ChildrenBuilder.routes(isSignedIn: Boolean, loginWithRedirect: () -> Unit) {
     couplingRoute("/welcome/", WelcomePage)
     couplingRoute("/about", AboutPage)
     couplingRoute("/demo", DemoPage)
