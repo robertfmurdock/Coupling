@@ -26,12 +26,9 @@ fun Express.routes() {
 fun userLoadingMiddleware(): Handler = { request, _, next ->
     val auth = request.auth
     if (auth != null) {
-        println("user profile is ${JSON.stringify(auth)}")
         UserDataService.deserializeUser(request, "${auth["email"]}") { _, user ->
             request.asDynamic()["user"] = user
             request.asDynamic()["isAuthenticated"] = true
-
-            println("user is ${request.user}")
             next()
         }
     } else {

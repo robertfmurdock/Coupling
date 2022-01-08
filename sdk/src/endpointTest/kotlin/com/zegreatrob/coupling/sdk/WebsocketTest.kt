@@ -89,6 +89,7 @@ class WebsocketTest {
         }
     }) {
         sdk.save(tribe)
+        delay(30)
     } exercise {
         val socket1 = openSocket(tribe, sdk.token).also { it.waitForFirstMessage() }
         val socket2 = openSocket(tribe, sdk.token).also { it.waitForFirstMessage() }
