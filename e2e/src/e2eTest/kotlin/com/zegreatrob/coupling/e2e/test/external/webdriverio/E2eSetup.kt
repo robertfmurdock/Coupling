@@ -13,14 +13,16 @@ val e2eSetup: TestTemplate<AuthorizedSdk> by lazy {
 
     asyncTestTemplate(beforeAll = {
         CouplingLogin.sdkProvider.await()
-            .also {
+            .also { sdk ->
+                sdk.getTribes().forEach { sdk.delete(it.data.id) }
+
                 WebdriverBrowser.setUrl("")
                 js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); done()}, undefined)")
                     .unsafeCast<Promise<Unit>>()
                     .await()
                 DataLoadWrapper.getViewFrame().waitToExist()
 
-                TestLogin.login2()
+                TestLogin.login()
                 WebdriverBrowser.getLogs()
             }
     }).extend(

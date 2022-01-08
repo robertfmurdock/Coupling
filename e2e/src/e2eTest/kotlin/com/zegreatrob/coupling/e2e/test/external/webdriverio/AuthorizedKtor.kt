@@ -17,8 +17,8 @@ import mu.KotlinLoggingConfiguration
 
 external val process: dynamic
 
-const val primaryAuthorizedUsername = "couplingtestuser@gmail.com"
-val primaryTestPassword = Process.getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
+const val primaryAuthorizedUsername = "couplingtestuser.e2e@gmail.com"
+val primaryTestPassword = Process.getEnv("COUPLING_E2E_TEST_PASSWORD") ?: ""
 
 val primaryAuthorizedSdkDeferred: Deferred<AuthorizedSdk> by lazyDeferred {
         authorizedKtorSdk(primaryAuthorizedUsername, primaryTestPassword)
