@@ -48,11 +48,13 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
         repository.save(tribe)
     } exercise {
         repository.getTribes()
-    } verify { result ->
+    } verifyAnd { result ->
         result.first { it.data.id == tribe.id }.apply {
             modifyingUserId.assertIsEqualTo(user.email)
             timestamp.assertIsEqualTo(clock.currentTime)
         }
+    } teardown {
+        repository.delete(tribe.id)
     }
 
     @Test
@@ -66,10 +68,12 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
             repository.getTribes(),
             repository.getTribeRecord(tribe.id)?.data
         )
-    } verify { (listResult, getResult) ->
+    } verifyAnd { (listResult, getResult) ->
         listResult.find { it.data.id == tribe.id }
             .assertIsEqualTo(null)
         getResult.assertIsEqualTo(null)
+    } teardown {
+        repository.delete(tribe.id)
     }
 
 }

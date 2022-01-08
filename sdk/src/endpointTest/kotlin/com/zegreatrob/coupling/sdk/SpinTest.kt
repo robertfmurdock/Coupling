@@ -37,10 +37,12 @@ class SpinTest {
         sdk.save(tribe)
     } exercise {
         sdk.requestSpin(tribe.id, players, emptyList())
-    } verify { result ->
+    } verifyAnd { result ->
         result.pairs.assertIsEqualTo(
             listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
         )
+    } teardown {
+        sdk.delete(tribe.id)
     }
 
     @Test
@@ -66,13 +68,15 @@ class SpinTest {
         setupScenario(sdk, tribe, players, history)
     } exercise {
         sdk.requestSpin(tribe.id, players, emptyList())
-    } verify { result ->
+    } verifyAnd { result ->
         result.pairs.assertIsEqualTo(
             listOf(
                 pairOf(players[0], players[3]).withPins(),
                 pairOf(players[1], players[2]).withPins()
             )
         )
+    } teardown {
+        sdk.delete(tribe.id)
     }
 
     @Test
@@ -97,13 +101,15 @@ class SpinTest {
         setupScenario(sdk.await(), tribe, players, history)
     } exercise {
         sdk.await().requestSpin(tribe.id, players, emptyList())
-    } verify { result ->
+    } verifyAnd { result ->
         result.pairs.assertIsEqualTo(
             listOf(
                 pairOf(players[0], players[1]).withPins(),
                 pairOf(players[2], players[3]).withPins()
             )
         )
+    } teardown {
+        sdk.await().delete(tribe.id)
     }
 
     class WhenPinExists {
@@ -122,21 +128,24 @@ class SpinTest {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, listOf(pin))
-        } verify { result ->
+        } verifyAnd { result ->
             result.pairs.assertIsEqualTo(
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
             )
+        } teardown {
+            sdk.delete(tribe.id)
         }
-
         @Test
         fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup({ pinExistsSetup(it) }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, emptyList())
-        } verify { result ->
+        } verifyAnd { result ->
             result.pairs.assertIsEqualTo(
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptyList()))
             )
+        } teardown {
+            sdk.delete(tribe.id)
         }
     }
 

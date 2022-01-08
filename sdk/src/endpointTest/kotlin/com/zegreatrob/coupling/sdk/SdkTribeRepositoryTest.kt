@@ -32,6 +32,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
             val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
             val playerMatchingSdkUser = stubPlayer().copy(email = context.user.email)
         }
+    }, sharedTeardown = {
+        it.sdk.delete(it.tribe.id)
     })
 
     @Test
@@ -85,11 +87,13 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
         repository.save(tribe)
     } exercise {
         repository.getTribes()
-    } verify { result ->
+    } verifyAnd { result ->
         result.first { it.data.id == tribe.id }.apply {
             modifyingUserId.assertIsEqualTo(user.email)
             timestamp.isWithinOneSecondOfNow()
         }
+    } teardown {
+        repository.delete(tribe.id)
     }
 
 }

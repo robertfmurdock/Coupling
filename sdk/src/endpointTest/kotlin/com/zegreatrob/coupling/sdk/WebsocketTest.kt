@@ -51,6 +51,7 @@ class WebsocketTest {
             )
     } teardown { socket ->
         socket.closeAndWait()
+        sdk.delete(tribe.id)
     }
 
     @Test
@@ -80,6 +81,7 @@ class WebsocketTest {
             )
     } teardown { result ->
         result.forEach { it.closeAndWait() }
+        sdk.delete(tribe.id)
     }
 
     @Test
@@ -106,6 +108,7 @@ class WebsocketTest {
         result.forEach {
             it.closeAndWait()
         }
+        sdk.delete(tribe.id)
     }
 
     @Test
@@ -130,6 +133,7 @@ class WebsocketTest {
             )
     } teardown {
         sockets.forEach { it.closeAndWait() }
+        sdk.delete(tribe.id)
     }
 
     @Test
@@ -161,6 +165,7 @@ class WebsocketTest {
             )
     } teardown { openSocket ->
         openSocket.closeAndWait()
+        sdk.delete(tribe.id)
     }
 
     @Test
@@ -223,10 +228,12 @@ class WebsocketTest {
             messageDeferred.complete(Unit)
         }
         messageDeferred
-    } verify { deferred ->
+    } verifyAnd { deferred ->
         withTimeout(100) {
             deferred.await()
         }
+    } teardown {
+        sdk.delete(tribe.id)
     }
 
     private fun openSocket(
