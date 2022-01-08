@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.express.middleware
 
 import com.zegreatrob.coupling.logging.initializeLogging
 import com.zegreatrob.coupling.server.express.Config
+import com.zegreatrob.coupling.server.express.route.jwtMiddleware
 import com.zegreatrob.coupling.server.external.bodyparser.bodyParserJson
 import com.zegreatrob.coupling.server.external.bodyparser.urlencoded
 import com.zegreatrob.coupling.server.external.compression.compression
@@ -25,4 +26,5 @@ fun Express.middleware() {
     use(staticResourcesPublic())
     use(cookieParser())
     initializeLogging(false)
+    use(jwtMiddleware())
 }
