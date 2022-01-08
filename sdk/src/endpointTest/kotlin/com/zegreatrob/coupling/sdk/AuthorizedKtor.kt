@@ -59,7 +59,7 @@ private suspend fun authorizedKtorClient(username: String): HttpClient {
 inline fun <T> withKtorSdk(crossinline objectSetup: (AuthorizedKtorSdk) -> T): suspend (Unit) -> T = {
     val sdk = authorizedKtorSdk()
     objectSetup(sdk)
-}
+        }
 
 
 class AuthorizedKtorSdk(val client: HttpClient) : Sdk,

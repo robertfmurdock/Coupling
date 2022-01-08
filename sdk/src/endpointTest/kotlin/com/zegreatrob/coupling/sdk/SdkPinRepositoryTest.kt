@@ -21,6 +21,8 @@ class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
         val tribe = stubTribe()
         sdk.save(tribe)
         TribeContextData(sdk, tribe.id, MagicClock(), stubUser().copy(email = username))
+    }, sharedTeardown = {
+        it.repository.delete(it.tribeId)
     })
 
     @Test
@@ -37,8 +39,10 @@ class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
         otherSdk.save(otherTribe.id.with(stubPin()))
     } exercise {
         sdk.getPins(otherTribe.id)
-    } verify { result ->
+    } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
+    } teardown {
+        otherSdk.delete(otherTribe.id)
     }
 
     override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {

@@ -39,7 +39,7 @@ external interface WS {
 class WebsocketTest {
 
     @Test
-    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup(sdkContext {
+    fun whenOnlyOneConnectionWillReturnCountOfOne() = sdkSetup({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -55,10 +55,11 @@ class WebsocketTest {
             )
     } teardown { socket ->
         socket.closeAndWait()
+        sdk.delete(tribe.id)
     }
 
     @Test
-    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup(sdkContext {
+    fun whenMultipleConnectionsWillReturnTheTotalCount() = sdkSetup({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -85,10 +86,11 @@ class WebsocketTest {
             )
     } teardown { result ->
         result.forEach { it.closeAndWait() }
+        sdk.delete(tribe.id)
     }
 
     @Test
-    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = asyncSetup(sdkContext {
+    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = sdkSetup({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -111,10 +113,11 @@ class WebsocketTest {
         result.forEach {
             it.closeAndWait()
         }
+        sdk.delete(tribe.id)
     }
 
     @Test
-    fun whenPairsAreSavedWillSendMessageToClients() = asyncSetup(sdkContext {
+    fun whenPairsAreSavedWillSendMessageToClients() = sdkSetup({
         object : SdkContext by it {
             val tribe = stubTribe()
             val sockets = mutableListOf<SocketWrapper>()
@@ -135,10 +138,11 @@ class WebsocketTest {
             )
     } teardown {
         sockets.forEach { it.closeAndWait() }
+        sdk.delete(tribe.id)
     }
 
     @Test
-    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = asyncSetup(sdkContext {
+    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = sdkSetup({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -167,10 +171,11 @@ class WebsocketTest {
             )
     } teardown { openSocket ->
         openSocket.closeAndWait()
+        sdk.delete(tribe.id)
     }
 
     @Test
-    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup(sdkContext { it }
+    fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup({ it }
     ) exercise {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "wss://$host/api/${TribeId("whoops").value}/pairAssignments/current"
@@ -185,7 +190,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = asyncSetup(sdkContext { it }
+    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = sdkSetup({ it }
     ) exercise {
         val socket = connectToSocket(stubTribe().id, getCookieString(sdk))
         CompletableDeferred<Unit>().also { deferred ->
@@ -198,7 +203,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup(sdkContext { it }
+    fun willNotCrashWhenGoingToNonExistingSocketLocation() = sdkSetup({ it }
     ) exercise {
         val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "wss://$host/api/404WTF"
@@ -213,7 +218,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = asyncSetup(sdkContext {
+    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = sdkSetup({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -229,10 +234,12 @@ class WebsocketTest {
             messageDeferred.complete(Unit)
         }
         messageDeferred
-    } verify { deferred ->
+    } verifyAnd { deferred ->
         withTimeout(100) {
             deferred.await()
         }
+    } teardown {
+        sdk.delete(tribe.id)
     }
 
     private fun openSocket(

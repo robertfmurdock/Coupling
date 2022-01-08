@@ -2,9 +2,12 @@ package com.zegreatrob.coupling.repository.validation
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubTribes
+import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 
@@ -18,10 +21,13 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
     } exercise {
         repository.getTribes()
     } verify { result ->
-        result.takeLast(tribes.size)
-            .map { it.data }
-            .assertIsEqualTo(tribes)
+        result.tribes().assertContainsAll(tribes)
     }
+
+    private fun List<Tribe>.assertContainsAll(expectedTribes: List<Tribe>) =
+        expectedTribes.forEach(this::assertContains)
+
+    private fun List<Record<Tribe>>.tribes() = map(Record<Tribe>::data)
 
     @Test
     fun saveMultipleThenGetEachByIdWillReturnSavedTribes() = repositorySetup(object : ContextMint<R>() {
@@ -31,8 +37,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
     } exercise {
         tribes.map { repository.getTribeRecord(it.id)?.data }
     } verify { result ->
-        result.takeLast(tribes.size)
-            .assertIsEqualTo(tribes)
+        result.assertIsEqualTo(tribes)
     }
 
     @Test
@@ -43,11 +48,13 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
         repository.save(tribe)
     } exercise {
         repository.getTribes()
-    } verify { result ->
+    } verifyAnd { result ->
         result.first { it.data.id == tribe.id }.apply {
             modifyingUserId.assertIsEqualTo(user.email)
             timestamp.assertIsEqualTo(clock.currentTime)
         }
+    } teardown {
+        repository.delete(tribe.id)
     }
 
     @Test
@@ -61,10 +68,12 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
             repository.getTribes(),
             repository.getTribeRecord(tribe.id)?.data
         )
-    } verify { (listResult, getResult) ->
+    } verifyAnd { (listResult, getResult) ->
         listResult.find { it.data.id == tribe.id }
             .assertIsEqualTo(null)
         getResult.assertIsEqualTo(null)
+    } teardown {
+        repository.delete(tribe.id)
     }
 
 }

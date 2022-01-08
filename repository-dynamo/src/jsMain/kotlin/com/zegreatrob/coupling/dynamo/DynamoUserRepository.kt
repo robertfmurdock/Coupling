@@ -81,18 +81,19 @@ class DynamoUserRepository private constructor(override val userId: String, over
 
     }
 
-    override suspend fun save(user: User) = performPutItem(user.toRecord().asDynamoJson())
+    override suspend fun save(user: User) = logAsync("saveUser") { performPutItem(user.toRecord().asDynamoJson()) }
 
     override suspend fun getUser() = logAsync("getUser") { performQuery(queryParams(userId)) }
-            .itemsNode()
-            .sortByRecordTimestamp()
-            .lastOrNull()
-            ?.toUserRecord()
+        .itemsNode()
+        .sortByRecordTimestamp()
+        .lastOrNull()
+        ?.toUserRecord()
 
     override suspend fun getUsersWithEmail(email: String) = logAsync("userIdsWithEmail") {
         performQuery(emailQueryParams(email))
             .itemsNode()
             .mapNotNull { it.getDynamoStringValue("id") }
+            .distinct()
     }.mapNotNull { userId ->
         logAsync("get user with id latest revision") {
             performQuery(queryParams(userId))

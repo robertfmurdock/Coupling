@@ -39,12 +39,15 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator<DynamoTribeRepository
         repository.delete(altTribe.id)
     } exercise {
         repository.getTribeRecords()
-    } verify { result ->
+    } verifyAnd { result ->
         result
             .assertContains(Record(tribe, user.email, false, initialSaveTime))
             .assertContains(Record(altTribe, user.email, false, initialSaveTime))
             .assertContains(Record(updatedTribe, user.email, false, updatedSaveTime))
             .assertContains(Record(altTribe, user.email, true, updatedSaveTime))
+    } teardown {
+        repository.delete(tribe.id)
+        repository.delete(altTribe.id)
     }
 
     @Test
@@ -55,9 +58,13 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator<DynamoTribeRepository
         )
     }.bind()) exercise {
         records.forEach { repository.saveRawRecord(it) }
-    } verify {
+    } verifyAnd {
         with(repository.getTribeRecords()) {
             records.forEach { assertContains(it) }
+        }
+    } teardown {
+        records.forEach {
+            repository.delete(it.data.id)
         }
     }
 }

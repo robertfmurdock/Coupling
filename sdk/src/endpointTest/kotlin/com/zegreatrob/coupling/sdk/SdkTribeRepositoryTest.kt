@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.invoke
@@ -32,6 +33,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
             val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
             val playerMatchingSdkUser = stubPlayer().copy(email = context.user.email)
         }
+    }, sharedTeardown = {
+        it.sdk.delete(it.tribe.id)
     })
 
     @Test
@@ -42,7 +45,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
         sdk.getTribes()
     } verify { result ->
         result.map { it.data }
-            .assertIsEqualTo(listOf(tribe))
+            .assertContains(tribe)
     }
 
     @Test
@@ -53,7 +56,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
     } exercise {
         sdk.getTribes()
     } verify { result ->
-        result.assertIsEqualTo(emptyList())
+        result.map { it.data }.contains(tribe)
+            .assertIsEqualTo(false)
     }
 
     @Test
@@ -64,7 +68,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
     } exercise {
         sdk.getTribes()
     } verify { result ->
-        result.assertIsEqualTo(emptyList())
+        result.map { it.data }.contains(tribe)
+            .assertIsEqualTo(false)
     }
 
     @Test
@@ -83,11 +88,13 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
         repository.save(tribe)
     } exercise {
         repository.getTribes()
-    } verify { result ->
+    } verifyAnd { result ->
         result.first { it.data.id == tribe.id }.apply {
             modifyingUserId.assertIsEqualTo(user.email)
             timestamp.isWithinOneSecondOfNow()
         }
+    } teardown {
+        repository.delete(tribe.id)
     }
 
 }

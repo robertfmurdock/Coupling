@@ -20,7 +20,7 @@ object UserDataService {
             .valueOrNull()
     }
 
-    private suspend fun authActionDispatcher(userId: String, traceId: Uuid) = AuthActionDispatcher(
+    suspend fun authActionDispatcher(userId: String, traceId: Uuid) = AuthActionDispatcher(
         userId,
         userRepository(userId),
         traceId

@@ -7,6 +7,7 @@ import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import mu.KotlinLogging
 
 external val process: dynamic
 
@@ -27,14 +28,19 @@ private suspend fun authorizedKtorClient(username: String): HttpClient {
             url {
                 protocol = baseUrl.protocol
                 host = baseUrl.host
-                if(protocol != URLProtocol.HTTPS) {
+                if (protocol != URLProtocol.HTTPS) {
                     port = baseUrl.port
                 }
                 encodedPath = "${baseUrl.encodedPath}$encodedPath"
             }
         }
         install(Logging) {
-            logger = Logger.DEFAULT
+            val ktorLogger = KotlinLogging.logger("ktor")
+            logger = object : Logger {
+                override fun log(message: String) {
+                    ktorLogger.info { message }
+                }
+            }
             level = LogLevel.ALL
         }
     }
@@ -51,7 +57,7 @@ private suspend fun authorizedKtorClient(username: String): HttpClient {
 inline fun <T> withSdk(crossinline objectSetup: (AuthorizedSdk) -> T): suspend (Unit) -> T = {
     val sdk = authorizedSdk()
     objectSetup(sdk)
-}
+        }
 
 
 class AuthorizedSdk(val client: HttpClient, val userEmail: String) : Sdk,

@@ -26,6 +26,8 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
         val tribe = stubTribe()
         sdk.save(tribe)
         TribeContextData(sdk, tribe.id, MagicClock(), user)
+    }, sharedTeardown = {
+        it.repository.delete(it.tribeId)
     })
 
     @Test
@@ -42,8 +44,10 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
         otherSdk.save(otherTribe.id.with(stubPairAssignmentDoc()))
     } exercise {
         sdk.getPairAssignments(TribeId("someoneElseTribe"))
-    } verify { result ->
+    } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
+    } teardown {
+        otherSdk.delete(otherTribe.id)
     }
 
     override fun savedWillIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {

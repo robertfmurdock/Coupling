@@ -34,6 +34,8 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
             override val clock = MagicClock()
             override val user = user
         }
+    }, sharedTeardown = {
+        it.repository.delete(it.tribeId)
     })
 
     override fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() =
@@ -47,9 +49,11 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
             repository.save(tribeId2.with(player2))
         } exercise {
             repository.getPlayers(tribeId)
-        } verify { result ->
+        } verifyAnd { result ->
             result.map { it.data.player }
                 .assertIsEqualTo(listOf(player1))
+        } teardown {
+            repository.delete(tribeId2)
         }
 
     override fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
@@ -96,8 +100,10 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
                     otherSdk.save(tribe.id.with(stubPlayer()))
                 } exercise {
                     sdk.getPlayers(tribe.id)
-                } verify { result ->
+                } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
+                } teardown {
+                    otherSdk.delete(tribe.id)
                 }
             }
         }
@@ -120,8 +126,10 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
                 } exercise {
                     sdk.save(tribe.id.with(player))
                     otherSdk.getPlayers(tribe.id)
-                } verify { result ->
+                } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
+                } teardown {
+                    otherSdk.delete(tribe.id)
                 }
             }
         }

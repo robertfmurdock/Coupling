@@ -101,7 +101,7 @@ class PairAssignmentsTest {
                 tribe,
                 listOf(),
                 null,
-                { it: PairAssignmentDocument -> },
+                { },
                 controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false
