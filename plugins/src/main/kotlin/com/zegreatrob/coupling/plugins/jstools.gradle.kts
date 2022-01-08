@@ -25,7 +25,7 @@ dependencies {
         testImplementation(npm(it.first, it.second.asText()))
     }
     implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.289-kotlin-1.6.10"))
-    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:5.5.14"))
+    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:5.5.15"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.2"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.0"))
 }
