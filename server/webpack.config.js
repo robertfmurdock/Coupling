@@ -13,7 +13,7 @@ const config = {
         __dirname: false
     },
     target: 'node',
-    externals: ["aws-sdk", "express-openid-connect", "openid-connect"],
+    externals: ["aws-sdk"],
     resolve: {
         extensions: ['.js'],
         modules: [
