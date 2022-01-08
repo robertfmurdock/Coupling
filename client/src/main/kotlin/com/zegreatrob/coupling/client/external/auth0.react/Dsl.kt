@@ -12,6 +12,7 @@ fun RBuilder.auth0Provider(clientId: String, domain: String, redirectUri: String
         this.clientId = clientId
         this.domain = domain
         this.redirectUri = redirectUri
+        this.cacheLocation = "localstorage"
     }, handler
 )
 

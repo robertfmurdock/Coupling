@@ -13,6 +13,7 @@ external interface Auth0ProviderProps : Props {
     var domain: String
     var clientId: String
     var redirectUri: String
+    var cacheLocation: String
 }
 
 external fun useAuth0(): Auth0Hook

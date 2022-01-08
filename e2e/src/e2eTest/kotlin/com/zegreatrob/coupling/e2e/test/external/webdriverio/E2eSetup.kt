@@ -20,7 +20,7 @@ val e2eSetup: TestTemplate<AuthorizedSdk> by lazy {
                     .await()
                 DataLoadWrapper.getViewFrame().waitToExist()
 
-                TestLogin.login(it.userEmail)
+                TestLogin.login2()
                 WebdriverBrowser.getLogs()
             }
     }).extend(

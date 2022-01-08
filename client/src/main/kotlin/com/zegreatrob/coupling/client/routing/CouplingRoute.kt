@@ -29,9 +29,6 @@ val CouplingRoute = FC<CouplingRouteProps> {
     val auth0Data = useAuth0Data()
     val (_, _, _, _, _, getIdTokenClaims) = auth0Data
 
-    println("auth 0 data $auth0Data")
-
-
     it.rComponent {
         pathParams = params
         search = searchParams

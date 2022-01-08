@@ -69,7 +69,6 @@ private fun buildClientWithToken(accessToken: String): HttpClient {
                 }
                 encodedPath = "${baseUrl.encodedPath}$encodedPath"
             }
-//            header("Authorization", "Bearer $accessToken")
         }
         install(Logging) {
             val ktorLogger = KotlinLogging.logger("ktor")
