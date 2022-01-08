@@ -23,11 +23,11 @@ import react.dom.html.ReactHTML.span
 
 private val styles = useStyles("Welcome")
 
-data class Welcome(val loginWithRedirect: () -> Unit, val randomProvider: RandomProvider = RandomProvider) : DataProps<Welcome> {
+data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataProps<Welcome> {
     override val component: TMFC<Welcome> get() = welcome
 }
 
-val welcome = tmFC { (loginWithRedirect, randomProvider): Welcome ->
+val welcome = tmFC { (randomProvider): Welcome ->
     var showLoginChooser by useState(false)
     val welcomeTitleRef = useRef<Node>(null)
     useLayoutEffect {
@@ -39,7 +39,7 @@ val welcome = tmFC { (loginWithRedirect, randomProvider): Welcome ->
     div {
         className = styles.className
         div { welcomeSplash(welcomeTitleRef, pair, proverb) }
-        div { comeOnIn(showLoginChooser, loginWithRedirect) { showLoginChooser = true } }
+        div { comeOnIn(showLoginChooser) { showLoginChooser = true } }
     }
 }
 
@@ -111,7 +111,7 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
     child(PlayerCard(welcomeTribeId, pair.player2, className = "right ${styles["playerCard"]}", size = 100))
 }
 
-private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, loginWithRedirect: () -> Unit, onEnterClick: () -> Unit) = div {
+private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) = div {
     className = styles["enterButtonContainer"]
     if (showLoginChooser) {
         LoginChooser()

@@ -11,5 +11,5 @@ private val LoadedWelcome = couplingDataLoader<Welcome>()
 
 val WelcomePage = FC<PageProps> {
     val (_, _, _, _, loginWithRedirect, _) = useAuth0Data()
-    child(dataLoadProps(LoadedWelcome) { Welcome(loginWithRedirect) })
+    child(dataLoadProps(LoadedWelcome) { Welcome() })
 }

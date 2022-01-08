@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.external.reactwebsocket.reactWebsocket
 import com.zegreatrob.coupling.json.toJsonString
 import com.zegreatrob.coupling.json.toSerializable
@@ -19,13 +20,14 @@ class CouplingWebsocketTest {
     fun connectsToTheWebsocketUsingTribe(): Unit = setup(object {
         val tribeId = TribeId("bwahahahaha")
         val useSsl = false
+        val token = "${uuid4()}"
     }) exercise {
-        shallow { child(CouplingWebsocket(tribeId, useSsl, { }) { div {} }) }
+        shallow { child(CouplingWebsocket(tribeId, useSsl, { }, token) { div {} }) }
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
             .assertIsEqualTo(
-                "ws://${window.location.host}/?tribeId=${tribeId.value}"
+                "ws://${window.location.host}/?tribeId=${tribeId.value}&token=$token"
             )
     }
 
@@ -33,13 +35,14 @@ class CouplingWebsocketTest {
     fun whenSslIsOnWillUseHttps() = setup(object {
         val tribeId = TribeId("LOL")
         val useSsl = true
+        val token = "${uuid4()}"
     }) exercise {
-        shallow { child(CouplingWebsocket(tribeId, useSsl, { }) { div {} }) }
+        shallow { child(CouplingWebsocket(tribeId, useSsl, { }, token) { div {} }) }
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
             .assertIsEqualTo(
-                "wss://${window.location.host}/?tribeId=LOL"
+                "wss://${window.location.host}/?tribeId=LOL&token=$token"
             )
     }
 
@@ -47,7 +50,7 @@ class CouplingWebsocketTest {
     fun whenSocketIsClosedUsesNotConnectedMessage(): Unit = setup(object {
         val tribeId = TribeId("Woo")
         var lastMessage: Message? = null
-        val wrapper = shallow { child(CouplingWebsocket(tribeId, false, { lastMessage = it }) { div {} }) }
+        val wrapper = shallow { child(CouplingWebsocket(tribeId, false, { lastMessage = it }, "") { div {} }) }
         val websocketProps = wrapper.find(reactWebsocket).props()
         val expectedMessage = "Not connected"
     }) exercise {

@@ -23,7 +23,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 0
         }
     }) exercise {
-        shallow(Welcome(loginWithRedirect, randomProvider))
+        shallow(Welcome(randomProvider))
     } verify { wrapper ->
         wrapper.leftCard()?.player
             .assertIsEqualTo(
@@ -43,7 +43,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 1
         }
     }) exercise {
-        shallow(Welcome(loginWithRedirect, randomProvider))
+        shallow(Welcome(randomProvider))
     } verify { wrapper ->
         wrapper.leftCard()?.player
             .assertIsEqualTo(
@@ -63,7 +63,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 2
         }
     }) exercise {
-        shallow(Welcome(loginWithRedirect, randomProvider))
+        shallow(Welcome(randomProvider))
     } verify { wrapper ->
         wrapper.leftCard()?.player
             .assertIsEqualTo(
