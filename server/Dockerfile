@@ -4,7 +4,7 @@ WORKDIR /serverless
 
 RUN npm install serverless serverless-offline serverless-offline-ssm
 
-COPY build/executable /serverless/build/executable
+COPY executable /serverless/build/executable
 COPY serverless.yml /serverless/
 COPY deploy /serverless/deploy
 

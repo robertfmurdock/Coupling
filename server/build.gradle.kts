@@ -127,9 +127,21 @@ tasks {
         environment("NODE_ENV", "production")
     }
 
-    val buildImage by creating(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
+    val prepareDockerData by creating(Copy::class) {
         dependsOn(assemble, compileKotlinJs)
-        inputDir.set(project.projectDir)
+        from("build") {
+            include("executable/**")
+        }
+        from(project.projectDir) {
+            include("Dockerfile","serverless.yml", "deploy/**")
+        }
+
+        destinationDir = file("build/docker-data")
+    }
+
+    val buildImage by creating(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
+        dependsOn(prepareDockerData)
+        inputDir.set(file("build/docker-data"))
         images.add("zegreatrob/coupling-serverless:latest")
     }
 
