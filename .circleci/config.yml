@@ -9,6 +9,7 @@ orbs:
       standard:
         machine:
           image: ubuntu-2004:202104-01
+          docker_layer_caching: true
         environment:
           COUPLING_IN_MEMORY: "true"
           SKIP_MONGO_TESTS: "true"
