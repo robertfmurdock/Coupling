@@ -81,6 +81,10 @@ tasks {
     }
     findByPath(":release")!!.finalizedBy(uploadToS3)
 
+    "browserProductionWebpack" {
+        outputs.cacheIf { true }
+    }
+
     val dependencyResources by creating(Copy::class) {
         val javascriptConfig = configurations["runtimeClasspath"]
         dependsOn(javascriptConfig)

@@ -61,6 +61,7 @@ tasks {
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")
         outputs.dir(file("build/webpack-output"))
+        outputs.cacheIf { true }
 
         nodeCommand = "webpack"
         arguments = listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
