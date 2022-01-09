@@ -35,22 +35,6 @@ class WebsocketTest {
     val host = "socket.localhost"
 
     @Test
-    fun derp() = setup(object {
-    }) exercise {
-        val message = CouplingSocketMessage("thing", emptySet(), null)
-        println("message is $message")
-        val messageString = message.toSerializable().toJsonString()
-        println("message json $messageString")
-
-        val message2 = messageString.toCouplingServerMessage()
-        println("message loaded back $message2")
-
-        message
-    } verify { result ->
-
-    }
-
-    @Test
     fun whenOnlyOneConnectionWillReturnCountOfOne() = sdkSetup({
         object : SdkContext by it {
             val tribe = stubTribe()
