@@ -1,5 +1,6 @@
 const path = require('path');
 
+const resourcesPath = path.resolve(__dirname, 'build/processedResources/js/main');
 const config = {
     mode: "production",
     entry: "Coupling-server",
@@ -18,7 +19,7 @@ const config = {
         extensions: ['.js'],
         modules: [
             process.env.NODE_PATH,
-            path.resolve(__dirname, 'build/processedResources/js/main'),
+            resourcesPath,
             path.resolve(__dirname, 'node_modules')
         ],
         alias: {
@@ -28,11 +29,14 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.graphql$/i, use: 'raw-loader'
+                test: /\.graphql$/i,
+                use: 'raw-loader',
+                include: resourcesPath,
             },
         ]
     },
-    plugins: []
+    plugins: [],
+    cache: true
 };
 
 module.exports = config;
