@@ -18,14 +18,18 @@ if(!config.resolve.modules) {
     config.resolve.modules = []
 }
 config.resolve.modules.push(resourcesPath);
-config.resolve.modules.push(path.resolve(__dirname, '../../../../build/js/node_modules'));
+let nodeModules = path.resolve(__dirname, '../../../../build/js/node_modules');
+config.resolve.modules.push(nodeModules);
 config.resolve.fallback = { "assert": false };
 config.module.rules.push(
     {
-        test: /\.(md|graphql)$/, use: 'raw-loader'
+        test: /\.(md|graphql)$/,
+        use: 'raw-loader',
+        include: resourcesPath,
     },
     {
         test: /\.(sa|sc|c)ss$/,
+        include: [resourcesPath, nodeModules],
         use: [
             {
                 loader: MiniCssExtractPlugin.loader,
@@ -42,6 +46,7 @@ config.module.rules.push(
         ],
     }, {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        include: [resourcesPath, nodeModules],
         type: 'asset'
     }
 );
@@ -61,6 +66,8 @@ if (config.devServer) {
         publicPath : '/',
     })
 }
+
+config.cache = true
 
 config.plugins.push(
     new HtmlWebpackPlugin({
