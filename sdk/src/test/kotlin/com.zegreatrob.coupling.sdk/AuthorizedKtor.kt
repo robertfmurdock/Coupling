@@ -56,8 +56,9 @@ private val generalPurposeClient = HttpClient {
 private val baseUrl = Url("https://localhost/local/")
 private const val baseName = "/local"
 
+private val ktorLogger = KotlinLogging.logger("ktor")
 
-private fun buildClientWithToken(accessToken: String): HttpClient {
+private fun buildClientWithToken(): HttpClient {
     js("process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'")
 
     val client = defaultClient().config {
@@ -74,13 +75,10 @@ private fun buildClientWithToken(accessToken: String): HttpClient {
             }
         }
         install(Logging) {
-            val ktorLogger = KotlinLogging.logger("ktor")
             logger = object : Logger {
-                override fun log(message: String) {
-                    ktorLogger.info { message }
-                }
+                override fun log(message: String) = ktorLogger.info { message }
             }
-            level = LogLevel.ALL
+            level = LogLevel.INFO
         }
     }
     return client
@@ -104,7 +102,7 @@ private suspend fun generateAccessToken(username: String, password: String): Str
 class AuthorizedKtorSdk(val token: String) : Sdk,
     TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
         override suspend fun getIdToken(): String = token
-        override val client by lazy { buildClientWithToken(token) }
+        override val client by lazy(::buildClientWithToken)
 
         override fun basename() = baseName
     })

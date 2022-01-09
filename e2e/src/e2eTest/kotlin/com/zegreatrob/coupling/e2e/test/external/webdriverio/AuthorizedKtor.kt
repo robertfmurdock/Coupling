@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.e2e.test.external.webdriverio
 
-import com.zegreatrob.coupling.logging.JsonFormatter
 import com.zegreatrob.coupling.sdk.*
 import com.zegreatrob.coupling.server.Process
 import io.ktor.client.*
@@ -13,7 +12,6 @@ import kotlinx.coroutines.Deferred
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import mu.KotlinLogging
-import mu.KotlinLoggingConfiguration
 
 external val process: dynamic
 
@@ -32,16 +30,14 @@ suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
 private val generalPurposeClient = HttpClient {
     install(JsonFeature)
     install(Logging) {
-        KotlinLoggingConfiguration.FORMATTER = JsonFormatter()
-        val ktorLogger = KotlinLogging.logger("ktor")
+        level = LogLevel.INFO
         logger = object : Logger {
-            override fun log(message: String) {
-                ktorLogger.info { message }
-            }
+            override fun log(message: String) = ktorLogger.info { message }
         }
-        level = LogLevel.ALL
     }
 }
+
+private val ktorLogger = KotlinLogging.logger("ktor")
 
 private fun buildClientWithToken(): HttpClient {
     val client = defaultClient().config {
@@ -60,13 +56,10 @@ private fun buildClientWithToken(): HttpClient {
             }
         }
         install(Logging) {
-            val ktorLogger = KotlinLogging.logger("ktor")
+            level = LogLevel.INFO
             logger = object : Logger {
-                override fun log(message: String) {
-                    ktorLogger.info { message }
-                }
+                override fun log(message: String) = ktorLogger.info { message }
             }
-            level = LogLevel.ALL
         }
     }
     return client
