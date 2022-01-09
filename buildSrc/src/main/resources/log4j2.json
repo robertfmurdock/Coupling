@@ -3,6 +3,11 @@
     "Appenders": {
       "Console": {
         "JsonLayout": {
+          "keyValuePair": {
+            "key": "timestamp",
+            "value": "$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"
+          },
+          "includeTimeMillis": true,
           "eventEol": true,
           "compact": true,
           "objectMessageAsJsonObject": true
@@ -12,16 +17,26 @@
       },
       "File": {
         "JsonLayout": {
+          "keyValuePair": {
+            "key": "timestamp",
+            "value": "$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"
+          },
+          "includeTimeMillis": true,
           "eventEol": true,
           "compact": true,
           "objectMessageAsJsonObject": true
         },
         "name": "File",
-        "fileName": "build/test-output/test.log",
+        "fileName": "build/test-output/test.jsonl",
         "createOnDemand": true
       },
       "Socket": {
         "JsonLayout": {
+          "keyValuePair": {
+            "key": "timestamp",
+            "value": "$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"
+          },
+          "includeTimeMillis": true,
           "eventEol": true,
           "compact": true,
           "objectMessageAsJsonObject": true

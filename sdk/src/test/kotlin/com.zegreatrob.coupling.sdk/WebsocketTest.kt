@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.json.*
+import com.zegreatrob.coupling.json.JsonCouplingSocketMessage
+import com.zegreatrob.coupling.json.JsonMessage
+import com.zegreatrob.coupling.json.fromJsonString
+import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
@@ -12,7 +15,6 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.setup
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
@@ -45,7 +47,6 @@ class WebsocketTest {
         openSocket(tribe, sdk.token)
             .apply { waitForFirstMessage() }
     } verifyAnd { (_, messages) ->
-        println("messages are ${JSON.stringify(messages)}")
         messages.first().toCouplingServerMessage()
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)

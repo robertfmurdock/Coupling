@@ -4,6 +4,8 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 afterEvaluate {
     tasks.withType(KotlinJsTest::class) {
-        addTestListener(JsonLoggingTestListener(path))
+        val jsonLoggingListener = JsonLoggingTestListener(path)
+        addTestListener(jsonLoggingListener)
+        addTestOutputListener(jsonLoggingListener)
     }
 }
