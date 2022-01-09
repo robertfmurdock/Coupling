@@ -7,4 +7,4 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonElement
 
 val currentPairAssignmentResolve =
-    dispatch(tribeCommand, { _, _: JsonElement -> CurrentPairAssignmentDocumentQuery }) { it?.toSerializable() }
+    dispatch(tribeCommand, { _, _: JsonElement -> CurrentPairAssignmentDocumentQuery }) { it.toSerializable() }

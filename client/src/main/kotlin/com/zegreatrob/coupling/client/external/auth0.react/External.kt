@@ -26,6 +26,7 @@ external interface Auth0Hook {
     val error: Throwable?
     fun getAccessTokenSilently(): Promise<String>
     fun getIdTokenClaims(): Promise<Json>
+    fun logout(json: Json = definedExternally)
 }
 
 external interface Auth0User {

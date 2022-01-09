@@ -29,7 +29,8 @@ fun useAuth0Data(): AuthHookData {
                 hook.getIdTokenClaims().collectRawToken()
             else
                 ""
-        }
+        },
+        logout = hook::logout
     )
 }
 
@@ -42,5 +43,6 @@ data class AuthHookData(
     val loading: Boolean,
     val error: Throwable?,
     val loginWithRedirect: () -> Unit,
-    val getIdTokenClaims: suspend () -> String
+    val getIdTokenClaims: suspend () -> String,
+    val logout: (Json) -> Unit
 )

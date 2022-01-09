@@ -10,11 +10,11 @@ import kotlin.js.json
 
 interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
 
-    override suspend fun doQuery(body: Json): dynamic {
+    override suspend fun doQuery(body: Json): Json {
         return postStringToJsonObject(body)
     }
 
-    override suspend fun doQuery(body: String): dynamic {
+    override suspend fun doQuery(body: String): Json {
         return postStringToJsonObject(json("query" to body))
     }
 
@@ -22,14 +22,19 @@ interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
         postStringToJsonObject(body)
     }
 
-    private suspend fun postStringToJsonObject(body: dynamic) = JSON.parse<Json>(client.post("/api/graphql") {
-        header("Authorization", "Bearer ${getIdToken()}")
-        this.body = TextContent(JSON.stringify(body), ContentType.Application.Json)
-    })
-
-    override suspend fun get(path: String): dynamic {
-        return client.get<String?>(path) {
+    private suspend fun postStringToJsonObject(body: dynamic): Json {
+        val result = JSON.parse<Json>(client.post("/api/graphql") {
             header("Authorization", "Bearer ${getIdToken()}")
+            this.body = TextContent(JSON.stringify(body), ContentType.Application.Json)
+        })
+        val errors = result["errors"]
+        if (errors != null && errors.unsafeCast<Array<Any?>>().isNotEmpty()) {
+            throw Error("Failed with errors: ${JSON.stringify(errors)}. Full body is ${JSON.stringify(result)}")
         }
+        return result
+    }
+
+    override suspend fun get(path: String): String? = client.get(path) {
+        header("Authorization", "Bearer ${getIdToken()}")
     }
 }

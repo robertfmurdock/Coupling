@@ -18,7 +18,6 @@ import com.zegreatrob.coupling.client.tribe.NewTribeCommandDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeListQueryDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeQueryDispatcher
-import com.zegreatrob.coupling.client.user.LogoutCommandDispatcher
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.Sdk
 
@@ -38,7 +37,6 @@ class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: Repositor
     TribePlayerQueryDispatcher,
     TribePinQueryDispatcher,
     TribePinListQueryDispatcher,
-    LogoutCommandDispatcher,
     NewTribeCommandDispatcher,
     StatisticsQueryDispatcher,
     LoggingActionExecuteSyntax

@@ -73,10 +73,10 @@ type PairAssignmentDocumentRecord {
 type TribeData {
     id: String!
     tribe: TribeRecord
-    pinList: [PinRecord]!
-    playerList: [PlayerRecord]!
-    retiredPlayers: [PlayerRecord]!
-    pairAssignmentDocumentList: [PairAssignmentDocumentRecord]!
+    pinList: [PinRecord]
+    playerList: [PlayerRecord]
+    retiredPlayers: [PlayerRecord]
+    pairAssignmentDocumentList: [PairAssignmentDocumentRecord]
     currentPairAssignmentDocument: PairAssignmentDocumentRecord
 }
 

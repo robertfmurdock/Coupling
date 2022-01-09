@@ -25,8 +25,8 @@ interface QueryPerformer {
 
     fun basename(): dynamic = if (js("global.window").unsafeCast<Window?>() != null) window["basename"] else ""
 
-    suspend fun doQuery(body: String): dynamic
-    suspend fun doQuery(body: Json): dynamic
+    suspend fun doQuery(body: String): Json
+    suspend fun doQuery(body: Json): Json
     fun postAsync(body: dynamic): Deferred<Json>
 
     suspend fun get(path: String): dynamic
