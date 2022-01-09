@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.plugins
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.TextNode
@@ -11,7 +12,8 @@ import org.apache.logging.log4j.message.ObjectMessage
 import org.gradle.api.tasks.testing.*
 
 
-class JsonLoggingTestListener(private val taskName: String, val testRunIdentifier: String) : TestListener, TestOutputListener {
+class JsonLoggingTestListener(private val taskName: String, val testRunIdentifier: String) : TestListener,
+    TestOutputListener {
 
     companion object {
         val logger: Logger = LogManager.getLogger("test")
@@ -27,7 +29,8 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
     private fun testInfo(testDescriptor: TestDescriptor) = mapOf(
         "taskName" to taskName,
         "testParent" to testDescriptor.parent?.name,
-        "testName" to testDescriptor.name
+        "testName" to testDescriptor.name,
+        "testRunIdentifier" to testRunIdentifier
     )
 
     private fun Map<String, String?>.asMessage() = ObjectMessage(this)
@@ -56,20 +59,33 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
     }
 
     override fun onOutput(testDescriptor: TestDescriptor?, outputEvent: TestOutputEvent?) {
-        if(outputEvent != null) {
-            val tree = mapper.readTree(outputEvent.message)
-            val level = Level.getLevel(tree["level"].textValue())
-            logger.log(level) {
-                ObjectMessage(mapper.createObjectNode().apply {
-                    set<JsonNode>("type", TextNode("forward"))
-                    set<JsonNode>("taskName", TextNode(taskName))
-                    set<JsonNode>("testParent", TextNode(testDescriptor?.parent?.name ?: ""))
-                    set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
-                    set<JsonNode>("originalLogger", tree["name"])
-                    set<JsonNode>("originalMessage", tree["message"])
-                }) }
+        if (outputEvent != null) {
+            try {
+                val tree = mapper.readTree(outputEvent.message)
+                val level = Level.getLevel(tree["level"].textValue())
+                logger.log(level) {
+                    ObjectMessage(mapper.createObjectNode().apply {
+                        set<JsonNode>("type", TextNode("forward"))
+                        set<JsonNode>("taskName", TextNode(taskName))
+                        set<JsonNode>("testParent", TextNode(testDescriptor?.parent?.name ?: ""))
+                        set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
+                        set<JsonNode>("originalLogger", tree["name"])
+                        set<JsonNode>("originalMessage", tree["message"])
+                        set<JsonNode>("testRunIdentifier", TextNode(testRunIdentifier))
+                    })
+                }
+            } catch (problem: JsonParseException) {
+                logger.info {
+                    ObjectMessage(mapper.createObjectNode().apply {
+                        set<JsonNode>("type", TextNode("forward"))
+                        set<JsonNode>("taskName", TextNode(taskName))
+                        set<JsonNode>("testParent", TextNode(testDescriptor?.parent?.name ?: ""))
+                        set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
+                        set<JsonNode>("originalMessage", TextNode(outputEvent.message))
+                        set<JsonNode>("testRunIdentifier", TextNode(testRunIdentifier))
+                    })
+                }
+            }
         }
     }
-
 }
-
