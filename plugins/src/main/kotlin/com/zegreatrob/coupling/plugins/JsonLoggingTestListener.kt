@@ -11,7 +11,7 @@ import org.apache.logging.log4j.message.ObjectMessage
 import org.gradle.api.tasks.testing.*
 
 
-class JsonLoggingTestListener(private val taskName: String) : TestListener, TestOutputListener {
+class JsonLoggingTestListener(private val taskName: String, val testRunIdentifier: String) : TestListener, TestOutputListener {
 
     companion object {
         val logger: Logger = LogManager.getLogger("test")
