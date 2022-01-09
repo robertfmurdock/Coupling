@@ -4,13 +4,14 @@ import kotlin.js.Json
 import kotlin.reflect.KProperty
 
 object LoadGqlFile {
-    operator fun getValue(holder: Any, property: KProperty<*>) = loadTextFile(property.name)
+    operator fun getValue(holder: Any, property: KProperty<*>): String = loadTextFile(property.name)
 
     private fun loadTextFile(path: String) = kotlinext.js.require("fs")
         ?.readFileSync.unsafeCast<((String, String) -> dynamic)?>()
         ?.let { readFileSync ->
-            js("process.env").unsafeCast<Json>()["NODE_PATH"].unsafeCast<String>()
-                .split(":")
+            val nodePaths = js("process.env").unsafeCast<Json>()["NODE_PATH"].unsafeCast<String?>()
+                ?.split(":") ?: emptyList()
+            (nodePaths + "${js("__dirname")}")
                 .asSequence()
                 .mapNotNull { nodePath ->
                     try {

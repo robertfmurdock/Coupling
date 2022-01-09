@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.json.JsonCouplingSocketMessage
-import com.zegreatrob.coupling.json.JsonMessage
-import com.zegreatrob.coupling.json.fromJsonString
-import com.zegreatrob.coupling.json.toModel
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
@@ -15,6 +12,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.setup
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
@@ -28,11 +26,29 @@ fun newWebsocket(url: String, options: dynamic): WS = js("new (require('ws'))(ur
 external interface WS {
     val readyState: Int
 
-    fun on(event: String, callback: (String) -> Unit)
+    fun on(event: String, callback: (Any) -> Unit)
     fun close()
 }
 
 class WebsocketTest {
+
+    val host = "socket.localhost"
+
+    @Test
+    fun derp() = setup(object {
+    }) exercise {
+        val message = CouplingSocketMessage("thing", emptySet(), null)
+        println("message is $message")
+        val messageString = message.toSerializable().toJsonString()
+        println("message json $messageString")
+
+        val message2 = messageString.toCouplingServerMessage()
+        println("message loaded back $message2")
+
+        message
+    } verify { result ->
+
+    }
 
     @Test
     fun whenOnlyOneConnectionWillReturnCountOfOne() = sdkSetup({
@@ -45,6 +61,7 @@ class WebsocketTest {
         openSocket(tribe, sdk.token)
             .apply { waitForFirstMessage() }
     } verifyAnd { (_, messages) ->
+        println("messages are ${JSON.stringify(messages)}")
         messages.first().toCouplingServerMessage()
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
@@ -171,7 +188,6 @@ class WebsocketTest {
     @Test
     fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup({ it }
     ) exercise {
-        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "wss://$host/api/${TribeId("whoops").value}/pairAssignments/current"
         val socket = newWebsocket(url, json())
         CompletableDeferred<Unit>().also { deferred ->
@@ -199,7 +215,6 @@ class WebsocketTest {
     @Test
     fun willNotCrashWhenGoingToNonExistingSocketLocation() = sdkSetup({ it }
     ) exercise {
-        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "wss://$host/api/404WTF"
         val socket = newWebsocket(url, json())
         CompletableDeferred<Unit>().also { deferred ->
@@ -245,7 +260,6 @@ class WebsocketTest {
     }
 
     private fun connectToSocket(tribeId: TribeId, bearerToken: String): WS {
-        val host = process.env.WEBSOCKET_HOST.unsafeCast<String>()
         val url = "wss://$host/api/websocket?tribeId=${tribeId.value}&token=${bearerToken}"
         return newWebsocket(url, json())
     }
@@ -273,7 +287,7 @@ data class SocketWrapper(
     init {
         socket.on("message") {
             logger.info { "message received" }
-            messages.add(it)
+            messages.add("$it")
             logger.info { "handlers: ${messageHandlers.size}" }
             messageHandlers.forEach { handler -> handler() }
         }

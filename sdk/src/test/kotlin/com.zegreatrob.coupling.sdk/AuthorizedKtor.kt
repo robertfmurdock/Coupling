@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.logging.JsonFormatter
-import com.zegreatrob.coupling.server.Process
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
@@ -54,11 +53,15 @@ private val generalPurposeClient = HttpClient {
     }
 }
 
+private val baseUrl = Url("https://localhost/local/")
+private const val baseName = "/local"
+
+
 private fun buildClientWithToken(accessToken: String): HttpClient {
+    js("process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'")
+
     val client = defaultClient().config {
         followRedirects = false
-        val baseUrl = Url("${process.env.BASEURL}")
-
         defaultRequest {
             expectSuccess = false
             url {
@@ -103,5 +106,5 @@ class AuthorizedKtorSdk(val token: String) : Sdk,
         override suspend fun getIdToken(): String = token
         override val client by lazy { buildClientWithToken(token) }
 
-        override fun basename() = process.env.BASENAME.unsafeCast<String?>() ?: ""
+        override fun basename() = baseName
     })

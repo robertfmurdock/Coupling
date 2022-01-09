@@ -13,9 +13,6 @@ import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
 import kotlin.test.Test
 
-@Suppress("unused")
-val setJasmineTimeout = js("jasmine.DEFAULT_TIMEOUT_INTERVAL=10000")
-
 class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator<Sdk> {
 
     override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {

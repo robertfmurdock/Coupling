@@ -1,10 +1,5 @@
+
 import com.zegreatrob.coupling.build.BuildConstants
-import com.zegreatrob.coupling.plugins.NodeExec
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
-import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
-import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import java.io.FileOutputStream
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -12,38 +7,17 @@ plugins {
     id("com.zegreatrob.coupling.plugins.serialization")
 }
 
-val appConfiguration: Configuration by configurations.creating {
-    attributes {
-        attribute(KotlinJsCompilerAttribute.jsCompilerAttribute, KotlinJsCompilerAttribute.ir)
-        attribute(ProjectLocalConfigurations.ATTRIBUTE, ProjectLocalConfigurations.PUBLIC_VALUE)
-        attribute(KotlinPlatformType.attribute, KotlinPlatformType.js)
-    }
-}
-
-val testLoggingLib: Configuration by configurations.creating
-
 kotlin {
     js {
-        nodejs {}
-        compilations {
-            val endpointTest by compilations.creating
-            binaries.executable(endpointTest)
-        }
+        nodejs { testTask { useMocha { timeout = "10s" } } }
     }
     sourceSets {
         val main by getting
-        val test by getting
-        val endpointTest by getting {
+        val test by getting {
             dependsOn(main)
-            dependsOn(test)
         }
         all { languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi") }
     }
-}
-
-dependencies {
-    appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
-    testLoggingLib(project(mapOf("path" to ":test-logging", "configuration" to "testLoggingLib")))
 }
 
 dependencies {
@@ -66,83 +40,15 @@ dependencies {
     testImplementation(project(":test-logging"))
     testImplementation(project(":stub-model"))
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("com.zegreatrob.testmints:standard")
-    testImplementation("com.zegreatrob.testmints:minassert")
     testImplementation("com.benasher44:uuid:0.3.1")
     testImplementation("com.zegreatrob.testmints:standard")
     testImplementation("com.zegreatrob.testmints:minassert")
-    testImplementation("com.zegreatrob.testmints:async")
-
-    testImplementation(project(":server"))
-    testImplementation("com.zegreatrob.testmints:standard")
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.testmints:minassert")
 }
 
 tasks {
-
-    val compileKotlinJs by getting(Kotlin2JsCompile::class) {}
-    val compileTestKotlinJs by getting(Kotlin2JsCompile::class) {}
-    val compileEndpointTestKotlinJs by getting(Kotlin2JsCompile::class) {
-        dependsOn("generateExternalsIntegrated")
+    "nodeTest" {
+        dependsOn(":composeUp")
     }
-    val endpointTestEndpointTestProductionExecutableCompileSync by getting {}
-    val endpointTestEndpointTestDevelopmentExecutableCompileSync by getting {}
-
-    val compileEndpointTestProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
-
-    val endpointTest by creating(NodeExec::class) {
-        dependsOn(
-            "assemble",
-            compileKotlinJs,
-            compileTestKotlinJs,
-            compileEndpointTestKotlinJs,
-            compileEndpointTestProductionExecutableKotlinJs,
-            endpointTestEndpointTestProductionExecutableCompileSync,
-            endpointTestEndpointTestDevelopmentExecutableCompileSync,
-            testLoggingLib,
-            appConfiguration,
-            ":composeUp"
-        )
-        inputs.file(projectDir.path + "/endpoint-wrapper.js")
-        inputs.files(appConfiguration, testLoggingLib)
-
-        outputs.dir("build/test-results/jsTest")
-
-        val processResources = withType(ProcessResources::class.java)
-
-        dependsOn(processResources)
-
-        inputs.files(compileEndpointTestProductionExecutableKotlinJs.outputFileProperty)
-        val relevantPaths = listOf(
-            "$nodeModulesDir",
-            "$nodeModulesDir/../packages/Coupling-sdk-endpointTest/node_modules"
-        ) + processResources.map { it.destinationDir.path }
-        relevantPaths.forEach { if (File(it).isDirectory) inputs.dir(it) }
-
-        environment(
-            "NODE_PATH" to relevantPaths.joinToString(":"),
-            "WEBSOCKET_HOST" to "socket.localhost",
-            "BASEURL" to "https://localhost/local/",
-            "CLIENT_BASENAME" to "local",
-            "BASENAME" to "local",
-            "NODE_TLS_REJECT_UNAUTHORIZED" to "0",
-        )
-
-        arguments = listOf(
-            "--unhandled-rejections=strict",
-            project.relativePath("endpoint-wrapper"),
-            "${compileEndpointTestProductionExecutableKotlinJs.outputFile}"
-        )
-
-        val logsDir = "${project.buildDir.absolutePath}/reports/tests/"
-        val logFile = file("${logsDir}/run.log")
-        logFile.parentFile.mkdirs()
-        standardOutput = FileOutputStream(logFile, true)
-    }
-
-    val check by getting {
-        dependsOn(endpointTest)
-    }
-
 }
