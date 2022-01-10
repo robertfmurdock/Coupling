@@ -16,7 +16,6 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
 import mu.KotlinLogging
 import kotlin.js.json
@@ -93,7 +92,6 @@ class WebsocketTest {
         }
     }) {
         sdk.save(tribe)
-        delay(30)
     } exercise {
         val socket1 = openSocket(tribe, sdk.token).also { it.waitForFirstMessage() }
         val socket2 = openSocket(tribe, sdk.token).also { it.waitForFirstMessage() }
@@ -321,7 +319,6 @@ data class SocketWrapper(
             logger.info { "close explicitly triggered" }
             closeDeferred.await()
             closeHandlers = closeHandlers - closeHandler
-            delay(50)
         } else {
             logger.info { "already closed" }
         }
