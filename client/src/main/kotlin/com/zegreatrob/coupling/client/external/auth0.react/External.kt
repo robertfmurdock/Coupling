@@ -21,8 +21,8 @@ external fun useAuth0(): Auth0Hook
 external interface Auth0Hook {
     fun loginWithRedirect()
     val user: Auth0User?
-    val isLoading: Boolean
-    val isAuthenticated: Boolean
+    val isLoading: Boolean?
+    val isAuthenticated: Boolean?
     val error: Throwable?
     fun getAccessTokenSilently(): Promise<String>
     fun getIdTokenClaims(): Promise<Json>

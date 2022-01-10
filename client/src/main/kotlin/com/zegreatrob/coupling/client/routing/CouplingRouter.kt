@@ -32,19 +32,19 @@ data class CouplingRouter(val animationsDisabled: Boolean) : DataProps<CouplingR
 }
 
 val couplingRouter = tmFC<CouplingRouter> { (animationsDisabled) ->
-    val (_, isSignedIn, isLoading, _, loginWithRedirect, _) = useAuth0Data()
+    val (_, isSignedIn, isLoading) = useAuth0Data()
 
     BrowserRouter {
         basename = (kotlinx.browser.window["basename"]?.toString() ?: "")
         animationsDisabledContext.Provider(animationsDisabled) {
             if (!isLoading) {
-                Routes { routes(isSignedIn, loginWithRedirect) }
+                Routes { routes(isSignedIn) }
             }
         }
     }
 }
 
-private fun ChildrenBuilder.routes(isSignedIn: Boolean, loginWithRedirect: () -> Unit) {
+private fun ChildrenBuilder.routes(isSignedIn: Boolean) {
     couplingRoute("/welcome/", WelcomePage)
     couplingRoute("/about", AboutPage)
     couplingRoute("/demo", DemoPage)

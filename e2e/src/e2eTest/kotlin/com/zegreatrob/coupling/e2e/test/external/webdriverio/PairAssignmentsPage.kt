@@ -36,7 +36,7 @@ object CurrentPairAssignmentsPanel : StyleSyntax {
                     val b = !saveButton.isPresent()
                     b
                 } catch (e: Error) {
-                    console.log("error ${e}")
+                    console.log("error $e")
                     throw e
                 }
             },

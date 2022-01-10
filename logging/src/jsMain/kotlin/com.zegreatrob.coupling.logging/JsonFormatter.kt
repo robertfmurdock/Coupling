@@ -103,7 +103,7 @@ class JsonFormatter : Formatter {
         var msg = emptyList<String>()
         var current = this
         while (current != null && current.cause != current) {
-            msg += ", Caused by: '${current.message}'"
+            msg = msg + ", Caused by: '${current.message}'"
             current = current.cause
         }
         return msg

@@ -10,7 +10,7 @@ import kotlin.js.Json
 external val default: ElementType<PopupProps>
 
 external interface PopupProps : PropsWithClassName {
-    var modal: Boolean
+    var modal: Boolean?
     var trigger: (Boolean) -> ReactElement
     var open: Boolean?
     var on: Array<String>

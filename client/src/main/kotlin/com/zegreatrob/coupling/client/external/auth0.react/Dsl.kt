@@ -19,13 +19,13 @@ fun RBuilder.auth0Provider(clientId: String, domain: String, redirectUri: String
 fun useAuth0Data(): AuthHookData {
     val hook = useAuth0()
     return AuthHookData(
-        user = if (hook.isAuthenticated) hook.user else null,
-        authenticated = hook.isAuthenticated,
-        loading = hook.isLoading,
+        user = if (hook.isAuthenticated == true) hook.user else null,
+        authenticated = hook.isAuthenticated == true,
+        loading = hook.isLoading == true,
         error = hook.error,
         loginWithRedirect = hook::loginWithRedirect,
         getIdTokenClaims = {
-            if (hook.isAuthenticated)
+            if (hook.isAuthenticated == true)
                 hook.getIdTokenClaims().collectRawToken()
             else
                 ""

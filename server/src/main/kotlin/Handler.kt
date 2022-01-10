@@ -49,7 +49,7 @@ private val websocketApp by lazy {
         all("*") { request, response, _ ->
             val connectionId = request.connectionId
             with(request.scope.async {
-                if (!request.isAuthenticated) {
+                if (request.isAuthenticated != true) {
                     delete(connectionId, apiGatewayManagementApi()).promise().await()
                     401
                 } else {

@@ -20,7 +20,7 @@ external interface Route {
 }
 
 external interface RouterParams {
-    val mergeParams: Boolean
+    val mergeParams: Boolean?
 }
 
 external fun static(path: String, options: Json): Handler

@@ -8,7 +8,7 @@ import kotlin.js.Json
 
 external interface Request {
     val auth: Json?
-    val isAuthenticated: Boolean
+    val isAuthenticated: Boolean?
     val query: Json
     val params: Json
     val body: dynamic

@@ -10,6 +10,6 @@ import react.Props
 external val PromptComponent: ElementType<PromptProps>
 
 external interface PromptProps : Props {
-    var `when`: Boolean
+    var `when`: Boolean?
     var message: String
 }

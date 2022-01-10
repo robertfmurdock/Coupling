@@ -13,6 +13,7 @@ import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.router.Navigate
 import react.useState
+import kotlin.js.Json
 
 data class PinConfig(
     val tribe: Tribe,
@@ -25,7 +26,7 @@ data class PinConfig(
 }
 
 val pinConfig = tmFC { (tribe, pin, pinList, reload, dispatchFunc): PinConfig ->
-    val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic())
+    val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)

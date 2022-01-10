@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.env
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.Handler
-import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.node_fetch.FetchResult
 import com.zegreatrob.coupling.server.external.node_fetch.fetch
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.RewritingStream
@@ -35,7 +34,7 @@ fun Express.indexRoute(): Handler = { request, response, _ ->
                 replaceNextText = "Coupling"
             }
             if (tag.tagName == "head") {
-                rewritingStream.emitRaw(injectVariablesForClient(request))
+                rewritingStream.emitRaw(injectVariablesForClient())
             }
         }
 
@@ -63,7 +62,7 @@ private fun rewriteLinksToStaticResources(tag: Tag) {
     }.toTypedArray()
 }
 
-private fun Express.injectVariablesForClient(request: Request) = """<script>
+private fun Express.injectVariablesForClient() = """<script>
     window.auth0ClientId = "${Config.AUTH0_CLIENT_ID}";
     window.auth0Domain = "${Config.AUTH0_DOMAIN}";
     window.basename = "${Config.clientBasename}";
