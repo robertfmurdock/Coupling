@@ -6775,10 +6775,10 @@ find-up@^4.0.0:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
 
-fitty@^2.3.5:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/fitty/-/fitty-2.3.5.tgz#c3ac247803a6b41a5a44bcd4463a7d5bf4872f89"
-  integrity sha512-ZC/GQBxpcexh2/CGpeBcWwbZIE92Br1smrYZ+kYtoxjeXM09zCjCijpP39plKVcArImnUV3T1/DpZNIAwzmT8w==
+fitty@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/fitty/-/fitty-2.3.6.tgz#1dc2f3fbf6ffd4766b4fdd8b3d55a0cb01334ed1"
+  integrity sha512-ENp/+MqqYmXBGHC0dlltCX75+5zL5m0uiIGCgYdoThao99BrJpNYzEh3xrvhiy4b7O5X82CQT7dPTiB53H6stw==
 
 flat@^4.1.0:
   version "4.1.1"
