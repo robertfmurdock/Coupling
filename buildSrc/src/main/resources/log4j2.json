@@ -3,10 +3,13 @@
     "Appenders": {
       "Console": {
         "JsonLayout": {
-          "keyValuePair": {
+          "keyValuePair": [{
             "key": "timestamp",
             "value": "$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"
-          },
+          },{
+            "key": "testRunIdentifier",
+            "value": "$${sys:testRunIdentifier}"
+          }],
           "includeTimeMillis": true,
           "eventEol": true,
           "compact": true,
@@ -17,10 +20,13 @@
       },
       "File": {
         "JsonLayout": {
-          "keyValuePair": {
+          "keyValuePair": [{
             "key": "timestamp",
             "value": "$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"
-          },
+          },{
+            "key": "testRunIdentifier",
+            "value": "$${sys:testRunIdentifier}"
+          }],
           "includeTimeMillis": true,
           "eventEol": true,
           "compact": true,
@@ -32,10 +38,13 @@
       },
       "Socket": {
         "JsonLayout": {
-          "keyValuePair": {
+          "keyValuePair": [{
             "key": "timestamp",
             "value": "$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"
-          },
+          },{
+            "key": "testRunIdentifier",
+            "value": "$${sys:testRunIdentifier}"
+          }],
           "includeTimeMillis": true,
           "eventEol": true,
           "compact": true,

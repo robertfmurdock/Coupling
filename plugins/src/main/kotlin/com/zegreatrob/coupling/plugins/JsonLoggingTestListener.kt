@@ -30,7 +30,6 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
         "taskName" to taskName,
         "testParent" to testDescriptor.parent?.name,
         "testName" to testDescriptor.name,
-        "testRunIdentifier" to testRunIdentifier
     )
 
     private fun Map<String, String?>.asMessage() = ObjectMessage(this)
@@ -71,7 +70,6 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
                         set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
                         set<JsonNode>("originalLogger", tree["name"])
                         set<JsonNode>("originalMessage", tree["message"])
-                        set<JsonNode>("testRunIdentifier", TextNode(testRunIdentifier))
                     })
                 }
             } catch (problem: JsonParseException) {
@@ -82,7 +80,6 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
                         set<JsonNode>("testParent", TextNode(testDescriptor?.parent?.name ?: ""))
                         set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
                         set<JsonNode>("originalMessage", TextNode(outputEvent.message))
-                        set<JsonNode>("testRunIdentifier", TextNode(testRunIdentifier))
                     })
                 }
             }

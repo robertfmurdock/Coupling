@@ -23,6 +23,8 @@ val objectMapper = ObjectMapper()
 afterEvaluate {
     val testRunIdentifier: String = getTestRunIdentifier()
 
+    System.setProperty("testRunIdentifier", testRunIdentifier)
+
     tasks.withType(KotlinJsTest::class) {
         val jsonLoggingListener = JsonLoggingTestListener(path, testRunIdentifier)
         addTestListener(jsonLoggingListener)
