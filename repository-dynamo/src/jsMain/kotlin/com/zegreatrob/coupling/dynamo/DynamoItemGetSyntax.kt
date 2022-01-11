@@ -19,7 +19,7 @@ interface DynamoItemGetSyntax : DynamoScanSyntax,
     }
 
     private fun queryParams(tribeId: TribeId?, id: String) = if (tribeId != null) json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":tribeId" to tribeId.value,
             ":id" to id
@@ -27,7 +27,7 @@ interface DynamoItemGetSyntax : DynamoScanSyntax,
         "KeyConditionExpression" to "tribeId = :tribeId",
         "FilterExpression" to "id = :id"
     ) else json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":id" to id
         ),
@@ -35,14 +35,14 @@ interface DynamoItemGetSyntax : DynamoScanSyntax,
     )
 
     private fun singleScanParams(id: String, tribeId: TribeId?) = if (tribeId == null) json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":id" to id
         ),
         "FilterExpression" to "id = :id"
     )
     else json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":id" to id,
             ":tribeId" to tribeId.value

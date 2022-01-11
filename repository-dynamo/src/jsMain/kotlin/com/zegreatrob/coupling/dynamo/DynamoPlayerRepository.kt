@@ -32,7 +32,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
         override val createTableParams: Json
             get() = json(
-                "TableName" to tableName,
+                "TableName" to prefixedTableName,
                 "KeySchema" to arrayOf(
                     json(
                         "AttributeName" to "tribeId",
@@ -141,7 +141,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         }
 
     private fun playerIdScanParams(recordTribePlayerIds: List<String>) = json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "IndexName" to playerEmailIndex,
         "ExpressionAttributeValues" to json(
             ":playerIdList" to recordTribePlayerIds.toTypedArray()
@@ -150,7 +150,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     )
 
     private fun emailQueryParams(email: String) = json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "IndexName" to playerEmailIndex,
         "ExpressionAttributeValues" to json(":email" to email),
         "KeyConditionExpression" to "email = :email"

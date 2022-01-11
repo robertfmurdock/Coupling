@@ -50,7 +50,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
     }
 
     private fun queryParams(tribeId: TribeId) = json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":entityType" to ENTITY_TYPE,
             ":tribeId" to tribeId.value
@@ -62,7 +62,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
     )
 
     private fun queryParams(connectionId: String) = json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":entityType" to "USER_CONNECTION",
             ":id" to connectionId
@@ -85,7 +85,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
 
         override val createTableParams: Json
             get() = json(
-                "TableName" to tableName,
+                "TableName" to prefixedTableName,
                 "KeySchema" to arrayOf(
                     json(
                         "AttributeName" to "entityType",

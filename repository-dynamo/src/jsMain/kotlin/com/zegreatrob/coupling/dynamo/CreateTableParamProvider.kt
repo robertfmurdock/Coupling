@@ -5,7 +5,7 @@ import kotlin.js.json
 interface CreateTableParamProvider : DynamoCreateTableSyntax, DynamoTableNameSyntax {
     override val createTableParams
         get() = json(
-            "TableName" to tableName,
+            "TableName" to prefixedTableName,
             "KeySchema" to arrayOf(
                 json(
                     "AttributeName" to "id",

@@ -12,7 +12,7 @@ interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax {
     val createTableParams: Json
 
     suspend fun ensureTableExists() {
-        if (validatedTableList.contains(tableName)) {
+        if (validatedTableList.contains(prefixedTableName)) {
             return
         } else {
             if (!checkTableExists()) {
@@ -22,7 +22,7 @@ interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax {
                     yield()
                 }
             }
-            validatedTableList.add(tableName)
+            validatedTableList.add(prefixedTableName)
         }
     }
 
@@ -39,7 +39,7 @@ interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax {
         .let { it["Table"].unsafeCast<Json>()["TableStatus"] }
 
     private suspend fun describeTribeTable(): Json =
-        dynamoDB.describeTable(json("TableName" to tableName))
+        dynamoDB.describeTable(json("TableName" to prefixedTableName))
             .await()
 
 }

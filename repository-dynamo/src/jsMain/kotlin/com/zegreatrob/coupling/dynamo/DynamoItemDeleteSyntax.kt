@@ -16,7 +16,7 @@ interface DynamoItemDeleteSyntax : DynamoDBSyntax, DynamoTableNameSyntax, Dynamo
     }
 
     private fun deleteItemParams(keyJson: Json) = json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "Key" to keyJson
     )
 

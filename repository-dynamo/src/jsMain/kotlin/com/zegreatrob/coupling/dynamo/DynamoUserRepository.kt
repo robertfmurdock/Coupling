@@ -27,7 +27,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
 
         override val createTableParams: Json
             get() = json(
-                "TableName" to tableName,
+                "TableName" to prefixedTableName,
                 "KeySchema" to arrayOf(
                     json(
                         "AttributeName" to "id",
@@ -105,13 +105,13 @@ class DynamoUserRepository private constructor(override val userId: String, over
     }
 
     private fun queryParams(id: String) = json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(":id" to id),
         "KeyConditionExpression" to "id = :id"
     )
 
     private fun emailQueryParams(email: String) = json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "IndexName" to userEmailIndex,
         "ExpressionAttributeValues" to json(":email" to email),
         "KeyConditionExpression" to "email = :email"

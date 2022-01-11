@@ -16,7 +16,7 @@ interface DynamoItemPutSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoLog
     }
 
     private fun putItemParams(itemJson: Json) = json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "Item" to itemJson
     )
 

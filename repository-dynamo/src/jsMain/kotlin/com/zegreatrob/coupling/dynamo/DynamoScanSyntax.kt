@@ -9,12 +9,12 @@ interface DynamoScanSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemSy
 
     suspend fun performScan(scanParams: Json) = dynamoDBClient.scan(scanParams).await()
 
-    suspend fun scanAllRecords(): Array<Json> = performScan(json("TableName" to tableName))
+    suspend fun scanAllRecords(): Array<Json> = performScan(json("TableName" to prefixedTableName))
         .continueScan()
 
     suspend fun Json.continueScan(): Array<Json> = if (this["LastEvaluatedKey"] != null) {
         itemsNode() + performScan(
-            json("TableName" to tableName, "ExclusiveStartKey" to this["LastEvaluatedKey"])
+            json("TableName" to prefixedTableName, "ExclusiveStartKey" to this["LastEvaluatedKey"])
         ).continueScan()
     } else
         itemsNode()

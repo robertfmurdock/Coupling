@@ -3,5 +3,6 @@
   "COOKIE_DOMAIN":  "localhost",
   "AUTH0_CLIENT_ID": null,
   "AUTH0_CLIENT_SECRET": null,
-  "CLIENT_BASENAME": "/local"
+  "CLIENT_BASENAME": "/local",
+  "DYNAMO_PREFIX" : "local-"
 }

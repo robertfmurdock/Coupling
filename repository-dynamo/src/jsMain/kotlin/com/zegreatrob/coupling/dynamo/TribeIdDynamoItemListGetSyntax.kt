@@ -11,7 +11,7 @@ interface TribeIdDynamoItemListGetSyntax : DynamoQueryItemListGetSyntax, DynamoL
         logAsync("getDeleteItems") { queryForDeletedItemList(itemListQueryParams()) }
 
     fun TribeId.itemListQueryParams() = json(
-        "TableName" to tableName,
+        "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(":tribeId" to value),
         "KeyConditionExpression" to "tribeId = :tribeId"
     )
