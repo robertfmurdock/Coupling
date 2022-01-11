@@ -1,17 +1,17 @@
 # News
 
-## June 11, 2021
+## January 11, 2022
 
-Howdy hi! You may notice things are slightly different here at Coupling... but most likely not. Hopefully not!
+Hey all!
 
-What changed you ask?
+I just posted a write-up of all the changes I made to Coupling in 2022. There's a lot! You can read it here: [https://robertfmurdock.github.io/2022/01/10/Grow-Together,-2021.html](https://robertfmurdock.github.io/2022/01/10/Grow-Together,-2021.html)
 
-Well the app is now being served as a serverless function rather than a container. It has been on the docker-container based hosting for many years (ever since it transitioned off of a heroku slug), but it was time to change things up a little. Took a little elbow grease because I still wanted to keep the websocket working, but it looks like I did it! Hooray!
+Most recently, I switched the Auth0 client style, so you may have had to log in again. Sorry about that! Hopefully it wasn't too much of a hiccup.
 
-That said, if you want to keep the low-key socket functionality working, you may have to clear your cookies for the site (I tweaked the cookie domain). That should be as simple as logging out and logging back in again.
+That's basically all I have to say! Ta for now.
 
-As always, let me know if you see anything funky - open an issue at [the github](https://www.github.com/robertfmurdock/coupling).
+Remember, if anything is acting goofy for you, just open an issue at [the github](https://www.github.com/robertfmurdock/coupling).
 
-One love.
+Live long and prosper,
 
 - RoB
