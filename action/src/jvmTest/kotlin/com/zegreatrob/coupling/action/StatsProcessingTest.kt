@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.Year
 import java.io.File
+import kotlin.math.roundToInt
 import kotlin.test.Ignore
 import kotlin.test.Test
 
@@ -65,7 +66,15 @@ class StatsProcessingTest {
                 println("notable tribe in $year: $tribeName, $tribeId")
                 val sortedDates = pairRecordGroups.map { group -> group.value.first().dateRecord() }
                     .sorted()
-                println("started in ${sortedDates.first().month} and last spin in ${sortedDates.last().month}")
+
+                val playerCount = pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair-> pair["players"].size() } }
+                    .average()
+                    .roundToInt()
+
+                val pinCount = pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair-> pair["pins"].size() } }
+                    .average()
+
+                println("started in ${sortedDates.first().month} and last spin in ${sortedDates.last().month}. average of $playerCount players, average of $pinCount pins")
             }
         }.size
 
