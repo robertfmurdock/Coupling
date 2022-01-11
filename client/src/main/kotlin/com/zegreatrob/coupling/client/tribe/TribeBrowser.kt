@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.client.ConfigHeader
-import com.zegreatrob.coupling.client.cssDiv
-import com.zegreatrob.coupling.client.cssSpan
+import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.red
@@ -12,7 +10,6 @@ import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
-import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.EndpointFinder.gqlEndpoint
 import com.zegreatrob.minreact.DataProps
@@ -21,14 +18,14 @@ import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import react.ChildrenBuilder
-import react.Fragment
-import react.create
+import react.RBuilder
 import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.img
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
+import styled.styledDiv
 import kotlin.js.json
 
 data class TribeBrowser(val tribe: Tribe) : DataProps<TribeBrowser> {
@@ -66,7 +63,7 @@ private fun ChildrenBuilder.notificationSection() = cssSpan(css = { position = P
 }
 
 private fun popupRecentInfo() = popup(
-    trigger = { open -> Fragment.create { notificationButton(open) } },
+    trigger = { open -> notificationButton(open) },
     modal = true,
     on = arrayOf("click"),
     handler = {
@@ -86,25 +83,27 @@ private fun popupRecentInfo() = popup(
         }
     },
     contentStyle = json(
-        "border-radius" to "30px",
-        "border-color" to "black",
-        "border-width" to "1px"
+        "borderRadius" to "30px",
+        "borderColor" to "black",
+        "borderWidth" to "1px"
     )
 )
 
-private fun ChildrenBuilder.notificationButton(open: Boolean) = cssDiv(css = {
-    backgroundColor = Color.darkCyan
-    borderColor = Color.black
-    color = if (open) Color.darkGray else Color.white
-    borderRadius = 40.px
-    height = 50.px
-    width = 50.px
-    textAlign = TextAlign.center
-    verticalAlign = VerticalAlign.middle
-}) {
-    i { className = "fa fa-exclamation-circle" }
-}
-
+private fun notificationButton(open: Boolean) = bridge(
+    RBuilder::styledDiv,
+    {},
+    {}, css = fun CssBuilder.() {
+        backgroundColor = Color.darkCyan
+        borderColor = Color.black
+        color = if (open) Color.darkGray else Color.white
+        borderRadius = 40.px
+        height = 50.px
+        width = 50.px
+        textAlign = TextAlign.center
+        verticalAlign = VerticalAlign.middle
+    }, builder = fun ChildrenBuilder.() {
+        i { className = "fa fa-exclamation-circle" }
+    })
 
 private fun ChildrenBuilder.tribeControlButtons() = span {
     className = styles["controlButtons"]

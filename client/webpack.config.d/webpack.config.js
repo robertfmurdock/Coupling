@@ -79,9 +79,11 @@ config.plugins.push(
         devServer: config.devServer ? config.devServer.port : undefined,
         appMountClass: 'view-container',
         window: config.devServer ? {
-            isAuthenticated: true,
             expressEnv: "dev",
             inMemory: true,
+            auth0ClientId: "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg",
+            auth0Domain: "zegreatrob.us.auth0.com",
+            basename: ''
         } : {}
     }),
     new ScriptExtHtmlWebpackPlugin({
