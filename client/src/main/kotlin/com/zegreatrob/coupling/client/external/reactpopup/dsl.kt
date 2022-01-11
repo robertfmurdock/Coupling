@@ -11,8 +11,10 @@ fun popup(
     modal: Boolean,
     on: Array<String>,
     open: Boolean? = false,
-    handler: ChildrenBuilder.()->Unit,
-    contentStyle: Json? = null
+    handler: ChildrenBuilder.() -> Unit,
+    contentStyle: Json? = null,
+    onOpen: () -> Unit = {},
+    onClose: () -> Unit = {},
 ) = buildElement {
     styledPopup {
         attrs {
@@ -21,6 +23,8 @@ fun popup(
             this.open = open
             this.trigger = { isOpen -> trigger(isOpen) }
             this.contentStyle = contentStyle
+            this.onOpen = onOpen
+            this.onClose = onClose
         }
         +Fragment.create(handler)
     }.also {

@@ -15,4 +15,6 @@ external interface PopupProps : PropsWithClassName {
     var open: Boolean?
     var on: Array<String>
     var contentStyle: Json?
+    var onOpen: () -> Unit
+    var onClose: () -> Unit
 }
