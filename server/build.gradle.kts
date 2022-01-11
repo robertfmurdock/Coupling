@@ -134,7 +134,7 @@ tasks {
             include("executable/**")
         }
         from(project.projectDir) {
-            include("Dockerfile","serverless.yml", "deploy/**")
+            include("Dockerfile", "serverless.yml", "deploy/**")
         }
 
         destinationDir = file("build/docker-data")
@@ -160,14 +160,13 @@ tasks {
         )
     }
 
-    val serverlessBuildDir = "${buildDir.absolutePath}/lambda-dist"
-
-    val serverlessBuild by creating(NodeExec::class) {
+    fun NodeExec.configureBuild(stage: String) {
+        val serverlessBuildDir = "${project.buildDir.absolutePath}/${stage}/lambda-dist"
         dependsOn(assemble, test, compileKotlinJs)
         environment(
             "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
             "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${version}",
+            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${project.version}",
         )
         nodeCommand = "serverless"
         arguments = listOf(
@@ -177,12 +176,21 @@ tasks {
             "--package",
             serverlessBuildDir,
             "--stage",
-            serverlessStage
+            stage
         )
     }
 
-    val serverlessDeploy by creating(NodeExec::class) {
-        dependsOn(serverlessBuild, compileKotlinJs)
+    val serverlessBuild by creating(NodeExec::class) {
+        this.configureBuild("prod")
+    }
+
+    val serverlessBuildSandbox by creating(NodeExec::class) {
+        this.configureBuild("dev")
+    }
+
+    fun NodeExec.configureDeploy(stage: String) {
+        val serverlessBuildDir = "${project.buildDir.absolutePath}/${stage}/lambda-dist"
+        dependsOn(compileKotlinJs)
         mustRunAfter(
             ":release",
             ":updateGithubRelease",
@@ -199,10 +207,21 @@ tasks {
             "--package",
             serverlessBuildDir,
             "--stage",
-            serverlessStage
+            stage
         )
     }
-    findByPath(":release")!!.finalizedBy(serverlessDeploy)
+
+    val serverlessDeploy by creating(NodeExec::class) {
+        dependsOn(serverlessBuild)
+        configureDeploy("prod")
+    }
+
+    val serverlessSandboxDeploy by creating(NodeExec::class) {
+        dependsOn(serverlessBuildSandbox)
+        configureDeploy("dev")
+    }
+
+    findByPath(":release")!!.finalizedBy(serverlessDeploy, serverlessSandboxDeploy)
 
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
@@ -213,10 +232,3 @@ tasks {
         }
     }
 }
-
-val serverlessStage
-    get() = if ("$version".contains("SNAPSHOT")) {
-        "dev"
-    } else {
-        "prod"
-    }
