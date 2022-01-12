@@ -32,11 +32,13 @@ val GraphIQLPage = FC<PageProps> {
         child(DataLoader({ auth0Data.getIdTokenClaims() }, { null }) { state: DataLoadState<String?> ->
             when (state) {
                 is EmptyState -> div()
-                is PendingState -> div()
+                is PendingState -> +"Loading authorization..."
                 is ResolvedState -> GraphiQL {
+                    this.editorTheme = "dracula"
                     this.fetcher = createGraphiQLFetcher(
                         json(
-                            "url" to graphQlUrl, "headers" to json("Authorization" to "Bearer ${state.result}")
+                            "url" to graphQlUrl,
+                            "headers" to json("Authorization" to "Bearer ${state.result}")
                         )
                     )
                 }
@@ -48,8 +50,7 @@ val GraphIQLPage = FC<PageProps> {
 }
 
 external interface GraphiQLProps : Props {
-
+    var editorTheme: String
     var fetcher: (graphQlParams: Json) -> Promise<String>
-
 }
 
