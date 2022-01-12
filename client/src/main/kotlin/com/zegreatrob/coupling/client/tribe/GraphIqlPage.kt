@@ -48,9 +48,3 @@ val GraphIQLPage = FC<PageProps> {
 }.also {
     kotlinext.js.require("graphiql/graphiql.css").unsafeCast()
 }
-
-external interface GraphiQLProps : Props {
-    var editorTheme: String
-    var fetcher: (graphQlParams: Json) -> Promise<String>
-}
-
