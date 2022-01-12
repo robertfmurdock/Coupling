@@ -185,7 +185,7 @@ tasks {
     }
 
     val serverlessBuildSandbox by creating(NodeExec::class) {
-        this.configureBuild("dev")
+        this.configureBuild("sandbox")
     }
 
     fun NodeExec.configureDeploy(stage: String) {
