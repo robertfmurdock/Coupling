@@ -32,6 +32,12 @@ val testLoggingLib: Configuration by configurations.creating { }
 
 val clientConfiguration: Configuration by configurations.creating
 
+configurations {
+    "e2eTestImplementation" {
+        extendsFrom(appConfiguration)
+    }
+}
+
 kotlin {
     sourceSets {
         val e2eTest by getting {
@@ -44,7 +50,6 @@ kotlin {
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("com.zegreatrob.testmints:async")
                 implementation("com.zegreatrob.testmints:wdio")
-                implementation(appConfiguration)
                 jstools.packageJson.devDependencies()?.forEach {
                     implementation(npm(it.first, it.second.asText()))
                 }

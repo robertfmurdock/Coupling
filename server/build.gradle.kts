@@ -25,7 +25,9 @@ val clientConfiguration: Configuration by configurations.creating
 inline fun <reified T : Named> Project.namedAttribute(value: String) = objects.named(T::class.java, value)
 
 dependencies {
-    clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
+    clientConfiguration(
+        project(mapOf("path" to ":client", "configuration" to "clientConfiguration"))
+    )
     implementation(kotlin("stdlib"))
     implementation(project(":json"))
     implementation(project(":repository-dynamo"))

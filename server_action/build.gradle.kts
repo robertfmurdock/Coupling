@@ -41,10 +41,6 @@ kotlin {
             }
         }
 
-        val jsMain by getting {
-            dependencies {
-            }
-        }
         val jsTest by getting {
             dependencies {
                 api(project(":logging"))
