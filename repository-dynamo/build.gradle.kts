@@ -26,7 +26,7 @@ kotlin {
                 api(project(":repository-core"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("com.soywiz.korlibs.klock:klock:2.4.10")
+                implementation("com.soywiz.korlibs.klock:klock:2.4.12")
                 implementation("com.benasher44:uuid:0.3.1")
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
             }

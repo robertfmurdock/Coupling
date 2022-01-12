@@ -27,7 +27,7 @@ kotlin {
                 api(project(":model"))
                 api(kotlin("stdlib", kotlinVersion))
                 api(kotlin("stdlib-common", kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:2.4.10")
+                api("com.soywiz.korlibs.klock:klock:2.4.12")
                 api("com.benasher44:uuid:0.3.1")
             }
         }

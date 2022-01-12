@@ -18,7 +18,7 @@ kotlin {
             dependencies {
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
-                api("com.soywiz.korlibs.klock:klock:2.4.10")
+                api("com.soywiz.korlibs.klock:klock:2.4.12")
                 implementation("com.benasher44:uuid:0.3.1")
             }
         }
