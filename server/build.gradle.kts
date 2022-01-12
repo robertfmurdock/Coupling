@@ -218,7 +218,7 @@ tasks {
 
     val serverlessSandboxDeploy by creating(NodeExec::class) {
         dependsOn(serverlessBuildSandbox)
-        configureDeploy("dev")
+        configureDeploy("sandbox")
     }
 
     findByPath(":release")!!.finalizedBy(serverlessDeploy, serverlessSandboxDeploy)
