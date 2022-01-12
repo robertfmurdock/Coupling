@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.sdk.EndpointFinder.gqlEndpoint
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
@@ -23,7 +22,6 @@ import kotlinx.css.properties.animation
 import kotlinx.css.properties.s
 import react.ChildrenBuilder
 import react.RBuilder
-import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.img
@@ -160,8 +158,8 @@ private fun ChildrenBuilder.logoutButton() = Link {
     }
 }
 
-private fun ChildrenBuilder.gqlButton() = a {
-    href = gqlEndpoint
+private fun ChildrenBuilder.gqlButton() = Link {
+    to = "/graphiql"
     child(CouplingButton(large, white, styles["gqlButton"])) {
         img {
             src = svgPath("graphql")

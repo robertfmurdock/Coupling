@@ -9,6 +9,6 @@ fun Express.routes() {
     get("/", indexRoute())
     use(userLoadingMiddleware())
     all("/api/*", apiGuard())
-    use("/api/graphql", graphqlHTTP(json("schema" to couplingSchema(), "graphiql" to true)))
+    use("/api/graphql", graphqlHTTP(json("schema" to couplingSchema())))
     get("*", indexRoute())
 }

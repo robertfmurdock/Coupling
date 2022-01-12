@@ -11,18 +11,12 @@ import kotlin.js.Json
 import kotlin.js.json
 
 interface GqlSyntax {
-
     val performer: QueryPerformer
-
     suspend fun String.performQuery(): dynamic = performer.doQuery(this)
-
     suspend fun performQuery(body: Json): dynamic = performer.doQuery(body)
-
 }
 
 interface QueryPerformer {
-    val gqlEndpoint get() = "${basename()}/api/graphql"
-
     fun basename(): dynamic = if (js("global.window").unsafeCast<Window?>() != null) window["basename"] else ""
 
     suspend fun doQuery(body: String): Json
@@ -48,7 +42,5 @@ suspend inline fun <reified I, reified O, M> GqlSyntax.doQuery(
     ?.let(toOutput)
 
 object EndpointFinder {
-    val gqlEndpoint get() = "${basename()}/api/graphql"
-
     fun basename(): dynamic = if (js("global.window").unsafeCast<Window?>() != null) window["basename"] else ""
 }
