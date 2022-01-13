@@ -107,7 +107,7 @@ private fun String?.rangeOfStringLength() = (0..(this ?: "").length)
 
 data class MakeTribe(val tribe: Tribe) : DemoAnimationState() {
     override val descriptionSelector = ".${useStyles("tribe/TribeConfig").className} input[name=name]"
-    override val placement= Placement.bottomStart
+    override val placement = Placement.bottomStart
     override val description = """
 
 ## First, we configure a new tribe.
@@ -161,10 +161,8 @@ data class CurrentPairs(
         }
     )
 
-    private fun classSelector(className: String) = ".$className"
-
     override val description = if (pairAssignments == null) {
-"""
+        """
 ## Alright. Now we're prepared. 
 
 Its time to spin!
@@ -176,5 +174,19 @@ We'll hit the spin button.
     }
 }
 
+private fun classSelector(className: String) = ".$className"
+
 data class PrepareToSpin(val tribe: Tribe, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
-    DemoAnimationState()
+    DemoAnimationState() {
+    private val prepareSpinStyles = useStyles("PrepareSpin")
+    override val descriptionSelector = ".${prepareSpinStyles.className} div:nth-of-type(2)"
+    override val placement: Placement = Placement.bottom
+    override val description: String = """
+        ## Time to choose today's players!
+        
+        We'll tap on the people we want to include, or again to exclude.
+        
+        Once we're ready, we'll hit spin again. 
+        
+    """.trimIndent()
+}

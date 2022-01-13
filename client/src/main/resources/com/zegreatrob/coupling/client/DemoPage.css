@@ -7,6 +7,7 @@
     border-radius: 20px;
     width: 400px;
     z-index: 200;
+    display: inline-block;
 }
 
 :local(.popper) h2 {

@@ -34,6 +34,9 @@ import react.dom.html.ReactHTML.div
 import react.popper.PopperInstance
 import react.popper.UsePopperOptions
 import react.popper.usePopper
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
+
 
 interface NoOpDispatcher : TribeConfigDispatcher, PlayerConfigDispatcher, PinCommandDispatcher,
     DeletePairAssignmentsCommandDispatcher, NewPairAssignmentsCommandDispatcher {
@@ -53,6 +56,7 @@ val demoSequence by kotlin.lazy { DemoAnimationState.generateSequence() }
 val DemoPage = FC<PageProps> { props ->
     val frameIndex = props.search.get("frame")
     val currentFrame = frameIndex?.toIntOrNull()?.let { demoSequence.toList()[it] }
+
     if (currentFrame != null) {
         demoPageFrame(currentFrame.data)
     } else {
@@ -63,31 +67,34 @@ val DemoPage = FC<PageProps> { props ->
 }
 
 private fun ChildrenBuilder.demoPageFrame(state: DemoAnimationState) {
-    div {
-        val popperRef = useRef<HTMLElement>()
-        val arrowRef = useRef<HTMLElement>()
+    val popperRef = useRef<HTMLElement>()
+    val arrowRef = useRef<HTMLElement>()
 
-        val (referenceElement, setReferenceElement) = useState<Element?>(null)
+    val (referenceElement, setReferenceElement) = useState<Element?>(null)
 
-        useLayoutEffect(state) {
-            val className = state.descriptionSelector
-            val element: Element? = if (className.isNotBlank()) document.querySelector(className) else null
-            setReferenceElement(element)
-        }
+    useLayoutEffect(state) {
+        val className = state.descriptionSelector
+        val element: Element? = if (className.isNotBlank()) document.querySelector(className) else null
+        setReferenceElement(element)
+    }
 
-        val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef, state))
+    val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef, state))
 
-        popperDiv(popperRef, arrowRef, state, popperInstance)
-
+    Flipper {
+        flipKey = "${state}"
         div {
-            when (state) {
-                Start -> +"Starting..."
-                ShowIntro -> +"Alright, here's an example of how you might use the app."
-                is MakeTribe -> tribeConfigFrame(state)
-                is AddPlayer -> playerConfigFrame(state)
-                is AddPin -> pinConfigFrame(state)
-                is CurrentPairs -> pairAssignmentsFrame(state)
-                is PrepareToSpin -> prepareSpinFrame(state)
+            popperDiv(popperRef, arrowRef, state, popperInstance)
+
+            div {
+                when (state) {
+                    Start -> +"Starting..."
+                    ShowIntro -> +"Alright, here's an example of how you might use the app."
+                    is MakeTribe -> tribeConfigFrame(state)
+                    is AddPlayer -> playerConfigFrame(state)
+                    is AddPin -> pinConfigFrame(state)
+                    is CurrentPairs -> pairAssignmentsFrame(state)
+                    is PrepareToSpin -> prepareSpinFrame(state)
+                }
             }
         }
     }
@@ -112,8 +119,7 @@ private fun ChildrenBuilder.popperDiv(
     arrowRef: MutableRefObject<HTMLElement>,
     state: DemoAnimationState,
     popperInstance: PopperInstance
-) {
-    div {
+) = div {
         className = styles["popper"]
         ref = popperRef
         style = popperInstance.styles[Popper]
@@ -126,7 +132,6 @@ private fun ChildrenBuilder.popperDiv(
             +popperInstance.attributes[Arrow]
         }
     }
-}
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     val (tribe, players, pins) = state
