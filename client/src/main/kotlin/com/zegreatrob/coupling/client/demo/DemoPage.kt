@@ -31,12 +31,11 @@ import popper.core.modifiers.Arrow
 import popper.core.modifiers.Offset
 import react.*
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.i
 import react.popper.PopperInstance
+import kotlinx.browser.window
 import react.popper.UsePopperOptions
 import react.popper.usePopper
-import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
-import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
-
 
 interface NoOpDispatcher : TribeConfigDispatcher, PlayerConfigDispatcher, PinCommandDispatcher,
     DeletePairAssignmentsCommandDispatcher, NewPairAssignmentsCommandDispatcher {
@@ -72,29 +71,27 @@ private fun ChildrenBuilder.demoPageFrame(state: DemoAnimationState) {
 
     val (referenceElement, setReferenceElement) = useState<Element?>(null)
 
+    val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef, state))
+
     useLayoutEffect(state) {
         val className = state.descriptionSelector
         val element: Element? = if (className.isNotBlank()) document.querySelector(className) else null
         setReferenceElement(element)
+        popperInstance.forceUpdate?.invoke()
     }
 
-    val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef, state))
+    div {
+        popperDiv(popperRef, arrowRef, state, popperInstance)
 
-    Flipper {
-        flipKey = "${state}"
         div {
-            popperDiv(popperRef, arrowRef, state, popperInstance)
-
-            div {
-                when (state) {
-                    Start -> +"Starting..."
-                    ShowIntro -> +"Alright, here's an example of how you might use the app."
-                    is MakeTribe -> tribeConfigFrame(state)
-                    is AddPlayer -> playerConfigFrame(state)
-                    is AddPin -> pinConfigFrame(state)
-                    is CurrentPairs -> pairAssignmentsFrame(state)
-                    is PrepareToSpin -> prepareSpinFrame(state)
-                }
+            when (state) {
+                Start -> +"Starting..."
+                ShowIntro -> +"Alright, here's an example of how you might use the app."
+                is MakeTribe -> tribeConfigFrame(state)
+                is AddPlayer -> playerConfigFrame(state)
+                is AddPin -> pinConfigFrame(state)
+                is CurrentPairs -> pairAssignmentsFrame(state)
+                is PrepareToSpin -> prepareSpinFrame(state)
             }
         }
     }
@@ -120,18 +117,18 @@ private fun ChildrenBuilder.popperDiv(
     state: DemoAnimationState,
     popperInstance: PopperInstance
 ) = div {
-        className = styles["popper"]
-        ref = popperRef
-        style = popperInstance.styles[Popper]
-        +popperInstance.attributes[Popper]
-        Markdown { +state.description }
-        div {
-            className = styles["arrow"]
-            ref = arrowRef
-            style = popperInstance.styles[Arrow]
-            +popperInstance.attributes[Arrow]
-        }
+    className = styles["popper"]
+    ref = popperRef
+    style = popperInstance.styles[Popper]
+    +popperInstance.attributes[Popper]
+    Markdown { +state.description }
+    div {
+        className = styles["arrow"]
+        ref = arrowRef
+        style = popperInstance.styles[Arrow]
+        +popperInstance.attributes[Arrow]
     }
+}
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     val (tribe, players, pins) = state

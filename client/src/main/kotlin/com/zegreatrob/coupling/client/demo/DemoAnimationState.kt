@@ -68,7 +68,7 @@ sealed class DemoAnimationState {
                 (PrepareToSpin(demoTribe, players.map { it to true }, pins) to 1500) +
                 (PrepareToSpin(demoTribe, players.map { it to (it != player3) }, pins) to 1500) +
                 (CurrentPairs(demoTribe, players, pins, pairAssignments, true) to 1500) +
-                (CurrentPairs(demoTribe, players, pins, pairAssignments, false) to 10000)
+                (CurrentPairs(demoTribe, players, pins, pairAssignments, false) to 12000)
     }
 
 }
@@ -153,13 +153,16 @@ data class CurrentPairs(
 
     private val pairAssignmentStyles = useStyles("pairassignments/PairAssignments")
 
-    override val descriptionSelector = classSelector(
-        if (pairAssignments == null) {
-            pairAssignmentStyles["newPairsButton"]
-        } else {
-            pairAssignmentStyles.className
-        }
-    )
+    override val descriptionSelector = if (pairAssignments == null) {
+        classSelector(pairAssignmentStyles["newPairsButton"])
+    } else {
+        ".${pairAssignmentStyles.className} div"
+    }
+    override val placement: Placement = if (pairAssignments == null) {
+        super.placement
+    } else {
+        Placement.bottom
+    }
 
     override val description = if (pairAssignments == null) {
         """
@@ -169,8 +172,24 @@ Its time to spin!
 
 We'll hit the spin button.
 """
+    } else if(allowSave){
+        """
+            ## Here they are!
+        
+            If we want to swap people, we can drag one to another.
+            
+            Once we like it, we lock it in by hitting "save".
+        """.trimIndent()
     } else {
-        "## And now for something completely different."
+        """
+            ## All done and ready to go!
+        
+            That's basic usage! You can probably figure it out from here.
+            
+            Thanks for watching, and...
+            
+            Happy Coupling!
+        """.trimIndent()
     }
 }
 
