@@ -65,7 +65,7 @@ dependencies {
 
     implementation(project(":test-logging"))
     implementation(kotlin("stdlib-js"))
-    implementation("com.benasher44:uuid:0.3.1")
+    implementation("com.benasher44:uuid:0.4.0")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("com.zegreatrob.testmints:wdio")

@@ -40,7 +40,7 @@ dependencies {
     testImplementation(project(":test-logging"))
     testImplementation(project(":stub-model"))
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("com.benasher44:uuid:0.3.1")
+    testImplementation("com.benasher44:uuid:0.4.0")
     testImplementation("com.zegreatrob.testmints:standard")
     testImplementation("com.zegreatrob.testmints:minassert")
     testImplementation("com.zegreatrob.testmints:async")
