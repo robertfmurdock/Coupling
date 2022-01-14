@@ -54,6 +54,6 @@ private fun <P : DataProps<P>> ChildrenBuilder.resolvedComponent(state: Resolved
     }
 }
 
-private fun ChildrenBuilder.notFoundContent() = Navigate { this.to = Paths.tribeList() }.also {
+private fun ChildrenBuilder.notFoundContent() = Navigate { this.to = Paths.welcome() }.also {
     console.error("Data was not found.")
 }
