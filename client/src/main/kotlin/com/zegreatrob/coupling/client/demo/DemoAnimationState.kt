@@ -52,6 +52,7 @@ sealed class DemoAnimationState {
     open val descriptionSelector: String get() = ""
     open val description: String get() = ""
     open val placement: Placement get() = Placement.right
+    open val showReturnButton: Boolean = false
 
     companion object {
         fun generateSequence(): Sequence<Frame<DemoAnimationState>> = listOfPairs()
@@ -164,6 +165,8 @@ data class CurrentPairs(
         Placement.bottom
     }
 
+    override val showReturnButton: Boolean = pairAssignments != null && !allowSave
+
     override val description = if (pairAssignments == null) {
         """
 ## Alright. Now we're prepared. 
@@ -189,6 +192,7 @@ We'll hit the spin button.
             Thanks for watching, and...
             
             Happy Coupling!
+            
         """.trimIndent()
     }
 }

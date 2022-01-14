@@ -1,8 +1,9 @@
 package com.zegreatrob.coupling.client.demo
 
-import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.FrameRunner
+import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.dom.CouplingButton
+import com.zegreatrob.coupling.client.dom.pink
+import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
@@ -23,6 +24,11 @@ import com.zegreatrob.minreact.child
 import com.zegreatrob.testmints.action.async.SuspendAction
 import kotlinext.js.jso
 import kotlinx.browser.document
+import kotlinx.css.*
+import kotlinx.css.properties.IterationCount
+import kotlinx.css.properties.animation
+import kotlinx.css.properties.radialGradient
+import kotlinx.css.properties.s
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import popper.core.Popper
@@ -31,11 +37,11 @@ import popper.core.modifiers.Arrow
 import popper.core.modifiers.Offset
 import react.*
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML.img
 import react.popper.PopperInstance
-import kotlinx.browser.window
 import react.popper.UsePopperOptions
 import react.popper.usePopper
+import react.router.dom.Link
 
 interface NoOpDispatcher : TribeConfigDispatcher, PlayerConfigDispatcher, PinCommandDispatcher,
     DeletePairAssignmentsCommandDispatcher, NewPairAssignmentsCommandDispatcher {
@@ -122,6 +128,41 @@ private fun ChildrenBuilder.popperDiv(
     style = popperInstance.styles[Popper]
     +popperInstance.attributes[Popper]
     Markdown { +state.description }
+    if (state.showReturnButton) {
+        Link {
+            this.to = "/tribes"
+            child(CouplingButton(colorRuleSet = pink, sizeRuleSet = supersize, css = {
+                animation("pulsate", 0.75.s, iterationCount = IterationCount.infinite)
+            })) {
+                cssDiv(css = {
+                    display = Display.flex
+                    alignItems = Align.center
+                }) {
+                    cssDiv(css = {
+                        position = Position.relative
+                        width = 38.px
+                        height = 36.px
+                    }) {
+                        cssDiv(css = {
+                            position = Position.absolute
+                            zIndex = 10
+                        }) { img { src = svgPath("logo") } }
+                        cssDiv(css = {
+                            position = Position.absolute
+                            width = 36.px
+                            height = 36.px
+                            backgroundImage = radialGradient {
+                                colorStop(Color.yellow)
+                                colorStop(Color("#ffff003d"))
+                                colorStop(Color("#e22092"))
+                            }
+                            borderRadius = 75.px
+                        })
+                    }
+                }
+            }
+        }
+    }
     div {
         className = styles["arrow"]
         ref = arrowRef
