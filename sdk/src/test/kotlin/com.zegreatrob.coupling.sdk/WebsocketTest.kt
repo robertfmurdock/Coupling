@@ -217,18 +217,14 @@ class WebsocketTest {
     }) {
         sdk.save(tribe)
     } exercise {
-        val socket = connectToSocket(tribe.id, sdk.token)
-        val messageDeferred = CompletableDeferred<Unit>()
-        socket.on("open") {
-            socket.close()
+        openSocket(tribe, sdk.token).apply {
+            socket.on("open") {
+                socket.close()
+            }
         }
-        socket.on("close") {
-            messageDeferred.complete(Unit)
-        }
-        messageDeferred
-    } verifyAnd { deferred ->
+    } verifyAnd { socketWrapper ->
         withTimeout(100) {
-            deferred.await()
+            socketWrapper.waitForClose()
         }
     } teardown {
         sdk.delete(tribe.id)
@@ -307,21 +303,27 @@ data class SocketWrapper(
     suspend fun closeAndWait() {
         logger.info { "close and wait started" }
         if (this.socket.readyState != 3) {
-            val closeDeferred = CompletableDeferred<Unit>()
-            val closeHandler: () -> Unit = {
-                logger.info { "close deferred handled" }
-                if (!closeDeferred.isCompleted)
-                    closeDeferred.complete(Unit)
-            }
-            closeHandlers = closeHandlers + closeHandler
-            logger.info { "close deferred attached" }
             this.socket.close()
             logger.info { "close explicitly triggered" }
-            closeDeferred.await()
-            closeHandlers = closeHandlers - closeHandler
+            waitForClose()
         } else {
             logger.info { "already closed" }
         }
         logger.info { "close and wait complete" }
     }
+
+    suspend fun waitForClose() {
+        val closeDeferred = CompletableDeferred<Unit>()
+        val closeHandler: () -> Unit = {
+            logger.info { "close deferred handled" }
+            if (!closeDeferred.isCompleted)
+                closeDeferred.complete(Unit)
+        }
+        closeHandlers = closeHandlers + closeHandler
+        logger.info { "close deferred attached" }
+
+        closeDeferred.await()
+        closeHandlers = closeHandlers - closeHandler
+    }
+
 }
