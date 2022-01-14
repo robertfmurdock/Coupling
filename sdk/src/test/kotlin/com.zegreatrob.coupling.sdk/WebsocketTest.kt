@@ -200,12 +200,10 @@ class WebsocketTest {
     ) exercise {
         val url = "wss://$host/api/404WTF"
         val socket = newWebsocket(url, json())
-        CompletableDeferred<Unit>().also { deferred ->
-            socket.on("close") { deferred.complete(Unit) }
-        }
-    } verify { deferred ->
+        SocketWrapper(socket)
+    } verify { wrapper ->
         withTimeout(100) {
-            deferred.await()
+            wrapper.waitForClose()
         }
     }
 
