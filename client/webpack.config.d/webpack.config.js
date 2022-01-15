@@ -76,9 +76,8 @@ const cdnVars = {
     "react-router": "ReactRouter",
     "react-router-dom": "ReactRouterDOM",
     "history": "HistoryLibrary",
-    // "blueimp-md5": "md5",
-    // "dom-to-image": "domtoimage",
-    // "graphiql" : "GraphiQL"
+    "blueimp-md5": "md5",
+    "dom-to-image": "domtoimage"
 }
 
 const cdnFilenameCorrections = {
@@ -102,6 +101,7 @@ config.plugins.push(
         template: path.resolve(resourcesPath, 'template.html'),
         devServer: config.devServer ? config.devServer.port : undefined,
         appMountClass: 'view-container',
+        inject: false,
         window: config.devServer ? {
             expressEnv: "dev",
             inMemory: true,
@@ -124,7 +124,7 @@ config.plugins.push(
                 return lookupFileName(libName, version)
                     .then(filename => filename ? `https://cdnjs.cloudflare.com/ajax/libs/${libName}/${version}/${filename}`
                         : null)
-                    .then(url => (url ? {name: libName, var: cdnVars[libName] ?? libName, url, version} : null))
+                    .then(url => url ? {name: libName, var: cdnVars[libName] ?? libName, url, version} : null)
                     .catch(() => null)
             } else {
                 return null

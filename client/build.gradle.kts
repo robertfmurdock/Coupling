@@ -10,6 +10,7 @@ kotlin {
     js {
         browser {
             webpackTask {
+                inputs.files("${project.projectDir}/src/resources")
                 val profile: String? by project
                 if(!profile.isNullOrBlank()) {
                     this.args.add("--profile")

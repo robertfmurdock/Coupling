@@ -11,11 +11,9 @@ import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.Tag
 import com.zegreatrob.coupling.server.external.stream.Readable
 import kotlin.js.Promise
 
-val indexHtmlPromise by lazy {
-    fetch("${Config.clientUrl}/index.html")
+val indexHtmlPromise get() = fetch("${Config.clientUrl}/index.html")
         .then(FetchResult::text)
         .unsafeCast<Promise<String>>()
-}
 
 fun Express.indexRoute(): Handler = { request, response, _ ->
     indexHtmlPromise.then { indexHtml ->
