@@ -1,4 +1,3 @@
-
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
@@ -17,6 +16,7 @@ kotlin {
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
         }
     }
+
 }
 
 val clientConfiguration: Configuration by configurations.creating
@@ -59,6 +59,7 @@ dependencies {
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
+
     val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class)
     val browserProductionWebpack by getting(KotlinWebpack::class)
     val browserDistribution by getting {}

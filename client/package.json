@@ -61,6 +61,11 @@
     "url-loader": "^4.1.1",
     "graphiql": "^1.5.16",
     "graphql": "^16.2.0",
-    "@graphiql/toolkit": "^0.4.2"
+    "@graphiql/toolkit": "^0.4.2",
+    "webpack-bundle-analyzer" : "^4.5.0",
+    "webpack-cdn-plugin": "^3.3.1",
+    "@effortlessmotion/dynamic-cdn-webpack-plugin" : "^5.0.1",
+    "module-to-cdn": "^3.1.5",
+    "node-fetch": "^3.1.0"
   }
 }

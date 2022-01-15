@@ -4,6 +4,11 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const DynamicCdnWebpackPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin');
+const fetch = require("node-fetch/lib/index.js")
+const moduleToCdn = require('module-to-cdn');
+
+// throw Error("react module CDN reference "+JSON.stringify(moduleToCdn('react-router', '6.2.1')))
 
 const resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
 
@@ -14,13 +19,13 @@ if (config.entry && config.entry.main) {
 if (config.output) {
     config.output.publicPath = '/app/build/'
 }
-if(!config.resolve.modules) {
+if (!config.resolve.modules) {
     config.resolve.modules = []
 }
 config.resolve.modules.push(resourcesPath);
-let nodeModules = path.resolve(__dirname, '../../../../build/js/node_modules');
+const nodeModules = path.resolve(__dirname, '../../../../build/js/node_modules');
 config.resolve.modules.push(nodeModules);
-config.resolve.fallback = { "assert": false };
+config.resolve.fallback = {"assert": false};
 config.module.rules.push(
     {
         test: /\.(md|graphql)$/,
@@ -58,23 +63,47 @@ if (config.devServer) {
     config.devServer.historyApiFallback = {index: 'index.html'}
     let distributionPath = path.resolve(__dirname, '../../../../client/build/distributions');
     config.devServer.static.push({
-        directory : distributionPath,
-        publicPath : '/app/build',
+        directory: distributionPath,
+        publicPath: '/app/build',
     })
     config.devServer.static.push({
-        directory : distributionPath,
-        publicPath : '/',
+        directory: distributionPath,
+        publicPath: '/',
     })
 }
 
 config.cache = true
+
+const cdnVars = {
+    "react": "React",
+    "react-dom": "ReactDOM",
+    "react-router": "ReactRouter",
+    "react-router-dom": "ReactRouterDOM",
+    "blueimp-md5": "md5",
+    "dom-to-image": "domtoimage",
+    "history": "HistoryLibrary",
+    "graphiql" : "GraphiQL"
+}
+
+const cdnFilenameCorrections = {
+    "react-router": "react-router.production.min.js",
+    "react-router-dom": "react-router-dom.production.min.js"
+}
+
+function lookupFileName(libName, version) {
+    return cdnFilenameCorrections[libName]
+        ? Promise.resolve(cdnFilenameCorrections[libName])
+        : fetch(`https://api.cdnjs.com/libraries/${libName}`)
+            .then((result) => result.json())
+            .then(body => body.versions.includes(version) ? body.filename : null);
+}
 
 config.plugins.push(
     new HtmlWebpackPlugin({
         alwaysWriteToDisk: true,
         title: 'Coupling Dev Server',
         file: "index.html",
-        scriptLoading: 'defer',
+        scriptLoading: 'blocking',
         template: path.resolve(resourcesPath, 'template.html'),
         devServer: config.devServer ? config.devServer.port : undefined,
         appMountClass: 'view-container',
@@ -97,4 +126,17 @@ config.plugins.push(
     new MiniCssExtractPlugin({
         filename: 'styles.css',
     }),
+    new DynamicCdnWebpackPlugin({
+        resolver: function (libName, version) {
+            if (cdnVars[libName]) {
+                return lookupFileName(libName, version)
+                    .then(filename => filename ? `https://cdnjs.cloudflare.com/ajax/libs/${libName}/${version}/${filename}`
+                        : null)
+                    .then(url => (url ? {name: libName, var: cdnVars[libName] ?? libName, url, version} : null))
+                    .catch(() => null)
+            } else {
+                return null
+            }
+        }
+    })
 );

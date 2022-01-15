@@ -9,6 +9,7 @@ fun main() {
         return
     require("com/zegreatrob/coupling/client/animations.css")
     require("@fortawesome/fontawesome-free/css/all.css")
+    require("history")
 
     configureDragDropWebkitMobile()
 
