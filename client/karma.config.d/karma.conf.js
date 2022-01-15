@@ -8,8 +8,6 @@ const webdriverConfig = {
     port: seleniumAddress.port
 };
 
-config.crossOriginAttribute = false
-
 config.customLaunchers = {
     'remote-chrome': {
         base: 'WebDriver',
