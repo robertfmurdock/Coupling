@@ -7,7 +7,17 @@ plugins {
 }
 
 kotlin {
-    js { browser() }
+    js {
+        browser {
+            webpackTask {
+                val profile: String? by project
+                if(!profile.isNullOrBlank()) {
+                    this.args.add("--profile")
+                    this.args.add("--json=${buildDir}/reports/stats.json")
+                }
+            }
+        }
+    }
     sourceSets {
         val main by getting {
             resources.srcDir("src/main/javascript")

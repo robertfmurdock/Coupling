@@ -1,14 +1,10 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DynamicCdnWebpackPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin');
 const fetch = require("node-fetch/lib/index.js")
-const moduleToCdn = require('module-to-cdn');
-
-// throw Error("react module CDN reference "+JSON.stringify(moduleToCdn('react-router', '6.2.1')))
 
 const resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
 
@@ -79,10 +75,10 @@ const cdnVars = {
     "react-dom": "ReactDOM",
     "react-router": "ReactRouter",
     "react-router-dom": "ReactRouterDOM",
-    "blueimp-md5": "md5",
-    "dom-to-image": "domtoimage",
     "history": "HistoryLibrary",
-    "graphiql" : "GraphiQL"
+    // "blueimp-md5": "md5",
+    // "dom-to-image": "domtoimage",
+    // "graphiql" : "GraphiQL"
 }
 
 const cdnFilenameCorrections = {
@@ -103,7 +99,6 @@ config.plugins.push(
         alwaysWriteToDisk: true,
         title: 'Coupling Dev Server',
         file: "index.html",
-        scriptLoading: 'blocking',
         template: path.resolve(resourcesPath, 'template.html'),
         devServer: config.devServer ? config.devServer.port : undefined,
         appMountClass: 'view-container',
@@ -114,9 +109,6 @@ config.plugins.push(
             auth0Domain: "zegreatrob.us.auth0.com",
             basename: ''
         } : {}
-    }),
-    new ScriptExtHtmlWebpackPlugin({
-        defaultAttribute: 'async'
     }),
     new HtmlWebpackHarddiskPlugin(),
     new FaviconsWebpackPlugin({
