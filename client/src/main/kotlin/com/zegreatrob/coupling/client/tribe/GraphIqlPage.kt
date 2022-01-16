@@ -13,11 +13,7 @@ import kotlinx.css.textAlign
 import kotlinx.css.vh
 import org.w3c.dom.get
 import react.FC
-import react.Props
 import react.dom.html.ReactHTML.div
-import kotlin.js.Json
-import kotlin.js.Promise
-import kotlin.js.json
 
 private val graphQlUrl = "${WindowFunctions.window.location.origin}${window["basename"]?.toString()}/api/graphql"
 
@@ -29,22 +25,15 @@ val GraphIQLPage = FC<PageProps> {
         textAlign = TextAlign.left
         height = 100.vh
     }) {
-        child(DataLoader({ auth0Data.getIdTokenClaims() }, { null }) { state: DataLoadState<String?> ->
+        child(DataLoader({ auth0Data.getIdTokenClaims() }, { "" }) { state: DataLoadState<String> ->
             when (state) {
                 is EmptyState -> div()
                 is PendingState -> +"Loading authorization..."
                 is ResolvedState -> GraphiQL {
                     this.editorTheme = "dracula"
-                    this.fetcher = createGraphiQLFetcher(
-                        json(
-                            "url" to graphQlUrl,
-                            "headers" to json("Authorization" to "Bearer ${state.result}")
-                        )
-                    )
+                    this.fetcher = createGraphiQLFetcher(graphQlUrl, state.result)
                 }
             }
         })
     }
-}.also {
-    kotlinext.js.require("graphiql/graphiql.css").unsafeCast()
 }

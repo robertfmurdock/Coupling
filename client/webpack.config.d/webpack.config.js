@@ -76,13 +76,16 @@ const cdnVars = {
     "react-router": "ReactRouter",
     "react-router-dom": "ReactRouterDOM",
     "history": "HistoryLibrary",
+    "graphiql": "GraphiQL",
+    "graphql": "lololol",
     "blueimp-md5": "md5",
     "dom-to-image": "domtoimage"
 }
 
 const cdnFilenameCorrections = {
     "react-router": "react-router.production.min.js",
-    "react-router-dom": "react-router-dom.production.min.js"
+    "react-router-dom": "react-router-dom.production.min.js",
+    "graphql" : "lol"
 }
 
 function lookupFileName(libName, version) {
@@ -119,6 +122,7 @@ config.plugins.push(
         filename: 'styles.css',
     }),
     new DynamicCdnWebpackPlugin({
+        verbose: true,
         resolver: function (libName, version) {
             if (cdnVars[libName]) {
                 return lookupFileName(libName, version)
