@@ -120,7 +120,6 @@ config.plugins.push(
         filename: 'styles.css',
     }),
     new DynamicCdnWebpackPlugin({
-        verbose: true,
         resolver: function (libName, version) {
             if (cdnVars[libName]) {
                 return lookupFileName(libName, version)
