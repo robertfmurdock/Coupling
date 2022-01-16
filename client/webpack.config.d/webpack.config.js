@@ -76,16 +76,14 @@ const cdnVars = {
     "react-router": "ReactRouter",
     "react-router-dom": "ReactRouterDOM",
     "history": "HistoryLibrary",
-    "graphiql": "GraphiQL",
-    "graphql": "lololol",
     "blueimp-md5": "md5",
-    "dom-to-image": "domtoimage"
+    "dom-to-image": "domtoimage",
+    "fitty": "fitty",
 }
 
 const cdnFilenameCorrections = {
     "react-router": "react-router.production.min.js",
-    "react-router-dom": "react-router-dom.production.min.js",
-    "graphql" : "lol"
+    "react-router-dom": "react-router-dom.production.min.js"
 }
 
 function lookupFileName(libName, version) {
