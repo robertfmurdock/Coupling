@@ -36,6 +36,8 @@ dependencies {
     implementation("com.zegreatrob.testmints:minjson")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    implementation("io.ktor:ktor-client-core:1.6.7")
+    implementation("io.ktor:ktor-client-serialization:1.6.7")
     implementation("com.soywiz.korlibs.klock:klock:2.4.12")
     implementation("com.benasher44:uuid:0.4.0")
 }
@@ -157,7 +159,6 @@ tasks {
         environment(
             "LAMBDA_ENDPOINT" to "http://localhost:3002",
             "WEBSOCKET_HOST" to "localhost:3001",
-            "TEST_LOGIN_ENABLED" to "true",
             "NODE_TLS_REJECT_UNAUTHORIZED" to 0
         )
     }

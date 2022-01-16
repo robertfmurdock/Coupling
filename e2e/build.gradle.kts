@@ -120,7 +120,6 @@ tasks {
         environment("BASEURL" to "https://localhost/local/")
         environment(
             mapOf(
-                "TEST_LOGIN_ENABLED" to "true",
                 "CLIENT_BASENAME" to "local",
                 "SERVER_DIR" to project(":server").projectDir.absolutePath,
                 "NODE_PATH" to listOf(

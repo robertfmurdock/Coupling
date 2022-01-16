@@ -13,8 +13,6 @@ services:
       - WEBSOCKET_HOST=socket.localhost
       - API_GATEWAY_MANAGEMENT_API_HOST=http://127.0.0.1:3001
       - NODE_ENV=production
-      - TEST_LOGIN_ENABLED=true
-      - AUTH0_CLIENT_SECRET
     extra_hosts:
       - "static.localhost:host-gateway"
   caddy:

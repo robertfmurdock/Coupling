@@ -9,6 +9,8 @@ import com.zegreatrob.coupling.server.express.async
 import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.express.Request
 
+
+
 fun userLoadingMiddleware(): Handler = { request, _, next ->
     val auth = request.auth
     if (auth == null) {
