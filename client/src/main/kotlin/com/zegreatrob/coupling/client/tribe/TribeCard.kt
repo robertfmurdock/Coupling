@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.cssSpan
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -34,8 +35,10 @@ val tribeCard = tmFC<TribeCard> { (tribe, size) ->
             },
             css = tribeCardCss(size)
         ) {
-            child(TribeCardHeader(tribe, size))
-            tribeGravatar(tribe, size)
+            cssDiv(css = { margin((size * 0.02).px) }) {
+                child(TribeCardHeader(tribe, size))
+                tribeGravatar(tribe, size)
+            }
         }
     }
 }
@@ -43,7 +46,6 @@ val tribeCard = tmFC<TribeCard> { (tribe, size) ->
 private fun tribeCardCss(size: Int): RuleSet = {
     width = size.px
     height = (size * 1.4).px
-    padding((size * 0.02).px)
     borderWidth = (size * 0.01).px
 }
 

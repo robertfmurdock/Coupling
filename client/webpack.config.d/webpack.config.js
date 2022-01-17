@@ -77,8 +77,7 @@ const cdnVars = {
     "react-router-dom": "ReactRouterDOM",
     "history": "HistoryLibrary",
     "blueimp-md5": "md5",
-    "dom-to-image": "domtoimage",
-    "fitty": "fitty",
+    "dom-to-image": "domtoimage"
 }
 
 const cdnFilenameCorrections = {

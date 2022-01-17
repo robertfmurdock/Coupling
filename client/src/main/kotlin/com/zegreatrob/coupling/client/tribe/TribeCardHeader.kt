@@ -9,9 +9,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.height
-import kotlinx.css.margin
-import kotlinx.css.px
+import kotlinx.css.*
 import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.ref
@@ -33,18 +31,25 @@ val tribeCardHeader = tmFC<TribeCardHeader> { (tribe, size) ->
         props = { ref = tribeNameRef },
         css = {
             margin((size * 0.02).px, 0.px, 0.px, 0.px)
-            height = (size * 0.35).px
+            height = (size * 0.33).px
+            overflow = Overflow.hidden
         }
     ) {
-        Link {
-            to = tribe.tribeConfigPath()
-            +(tribe.name ?: "Unknown")
+        cssDiv(css = {
+            display = Display.flex
+            alignItems = Align.center
+            height = (size * 0.33).px
+        }) {
+            Link {
+                to = tribe.tribeConfigPath()
+                +(tribe.name ?: "Unknown")
+            }
         }
     }
 }
 
 private fun Node.fitTribeName(size: Int) = fitty(
     maxFontHeight = (size * 0.3),
-    minFontHeight = (size * 0.16),
+    minFontHeight = (size * 0.10),
     multiLine = true
 )

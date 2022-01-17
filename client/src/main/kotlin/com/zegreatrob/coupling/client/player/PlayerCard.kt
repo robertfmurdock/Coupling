@@ -48,8 +48,10 @@ val playerCard = tmFC<PlayerCard> { props ->
             }
             playerCardRuleSet(size)()
         }) {
-        playerGravatarImage(player, size)
-        child(PlayerCardHeader(tribeId, player, linkToConfig, size))
+        cssDiv(css = { margin((size * 0.02).px) }) {
+            playerGravatarImage(player, size)
+            child(PlayerCardHeader(tribeId, player, linkToConfig, size))
+        }
     }
 }
 
@@ -65,7 +67,6 @@ private fun additionalClasses(className: String?, deselected: Boolean) = setOf(c
 private fun playerCardRuleSet(size: Int): RuleSet = {
     width = size.px
     height = (size * 1.4).px
-    padding(all = (size * 0.06).px)
     borderWidth = (size * 0.04).px
     borderRadius = (size * 0.08).px
     boxShadow(Color("rgba(0, 0, 0, 0.6)"), (size * 0.02).px, (size * 0.04).px, (size * 0.04).px)

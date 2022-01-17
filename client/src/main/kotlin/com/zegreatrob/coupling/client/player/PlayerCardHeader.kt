@@ -11,12 +11,12 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.margin
-import kotlinx.css.px
+import kotlinx.css.*
 import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
+import react.ref
 import react.router.dom.Link
 import react.useLayoutEffect
 import react.useRef
@@ -36,11 +36,22 @@ private val playerCardHeader = tmFC<PlayerCardHeader> { props ->
     val (tribeId, player, linkToConfig, size) = props
     val playerNameRef = useRef<Node>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
-    cssDiv(attrs = { classes = setOf(styles["header"]) }, css = { margin(top = (size * 0.02).px) }) {
-        optionalLink(shouldLink = linkToConfig, url = tribeId.with(player).playerConfigPage()) {
-            div {
-                ref = playerNameRef
-                +(player.name.ifBlank { "Unknown" })
+    cssDiv(attrs = { classes = setOf(styles["header"]) },
+        props = { ref = playerNameRef },
+        css = {
+            margin(top = (size * 0.02).px)
+            height = (size * 0.33).px
+            overflow = Overflow.hidden
+        }) {
+        cssDiv(css = {
+            display = Display.flex
+            alignItems = Align.center
+            height = (size * 0.33).px
+        }) {
+            optionalLink(shouldLink = linkToConfig, url = tribeId.with(player).playerConfigPage()) {
+                div {
+                    +(player.name.ifBlank { "Unknown" })
+                }
             }
         }
     }
@@ -55,8 +66,8 @@ private fun ChildrenBuilder.optionalLink(
 else
     handler()
 
-private fun Node.fitPlayerName(size: Int) {
-    val maxFontHeight = (size * 0.31)
-    val minFontHeight = (size * 0.16)
-    fitty(maxFontHeight, minFontHeight, true)
-}
+private fun Node.fitPlayerName(size: Int) = fitty(
+    maxFontHeight = (size * 0.31),
+    minFontHeight = (size * 0.10),
+    multiLine = true
+)
