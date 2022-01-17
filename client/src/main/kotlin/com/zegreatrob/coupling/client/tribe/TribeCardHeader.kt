@@ -28,21 +28,28 @@ val tribeCardHeader = tmFC<TribeCardHeader> { (tribe, size) ->
     useLayoutEffect { tribeNameRef.current?.fitTribeName(size) }
     cssDiv(
         attrs = { classes = setOf(styles["header"]) },
-        props = { ref = tribeNameRef },
         css = {
             margin((size * 0.02).px, 0.px, 0.px, 0.px)
             height = (size * 0.33).px
+            borderRadius = (size / 10).px
             overflow = Overflow.hidden
         }
     ) {
-        cssDiv(css = {
-            display = Display.flex
-            alignItems = Align.center
-            height = (size * 0.33).px
-        }) {
-            Link {
-                to = tribe.tribeConfigPath()
-                +(tribe.name ?: "Unknown")
+        cssDiv(
+            props = { ref = tribeNameRef },
+            css = {
+                height = (size * 0.33).px
+            }
+        ) {
+            cssDiv(css = {
+                display = Display.flex
+                alignItems = Align.center
+                height = (size * 0.33).px
+            }) {
+                Link {
+                    to = tribe.tribeConfigPath()
+                    +(tribe.name ?: "Unknown")
+                }
             }
         }
     }

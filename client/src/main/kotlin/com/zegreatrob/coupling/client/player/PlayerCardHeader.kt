@@ -36,21 +36,27 @@ private val playerCardHeader = tmFC<PlayerCardHeader> { props ->
     val (tribeId, player, linkToConfig, size) = props
     val playerNameRef = useRef<Node>(null)
     useLayoutEffect { playerNameRef.current?.fitPlayerName(size) }
-    cssDiv(attrs = { classes = setOf(styles["header"]) },
-        props = { ref = playerNameRef },
+    cssDiv(
+        attrs = { classes = setOf(styles["header"]) },
         css = {
             margin(top = (size * 0.02).px)
             height = (size * 0.33).px
             overflow = Overflow.hidden
-        }) {
-        cssDiv(css = {
-            display = Display.flex
-            alignItems = Align.center
-            height = (size * 0.33).px
-        }) {
-            optionalLink(shouldLink = linkToConfig, url = tribeId.with(player).playerConfigPage()) {
-                div {
-                    +(player.name.ifBlank { "Unknown" })
+        }
+    ) {
+        cssDiv(
+            props = { ref = playerNameRef },
+            css = { height = (size * 0.33).px }
+        ) {
+            cssDiv(css = {
+                display = Display.flex
+                alignItems = Align.center
+                height = (size * 0.33).px
+            }) {
+                optionalLink(shouldLink = linkToConfig, url = tribeId.with(player).playerConfigPage()) {
+                    div {
+                        +(player.name.ifBlank { "Unknown" })
+                    }
                 }
             }
         }

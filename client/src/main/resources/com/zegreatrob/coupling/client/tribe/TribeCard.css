@@ -18,7 +18,6 @@
 
 :local(.header) {
     background: hsla(212, 37%, 95%, 0.85) url(../overlay.png) repeat-x;
-    border-radius: 15px;
     font-weight: bold;
     z-index: 100;
     position: relative;
