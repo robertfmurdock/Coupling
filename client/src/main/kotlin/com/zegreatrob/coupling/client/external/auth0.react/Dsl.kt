@@ -45,7 +45,7 @@ fun useAuth0Data(): AuthHookData {
         getAccessTokenSilently = {
             hook.getAccessTokenSilently(
                 json(
-                    "audience" to "${window.location.origin}/api",
+                    "audience" to "https://${window.location.hostname}/api",
                     "scope" to "email"
                 )
             ).await()

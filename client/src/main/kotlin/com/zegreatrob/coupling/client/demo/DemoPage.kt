@@ -134,32 +134,7 @@ private fun ChildrenBuilder.popperDiv(
             child(CouplingButton(colorRuleSet = pink, sizeRuleSet = supersize, css = {
                 animation("pulsate", 0.75.s, iterationCount = IterationCount.infinite)
             })) {
-                cssDiv(css = {
-                    display = Display.flex
-                    alignItems = Align.center
-                }) {
-                    cssDiv(css = {
-                        position = Position.relative
-                        width = 38.px
-                        height = 36.px
-                    }) {
-                        cssDiv(css = {
-                            position = Position.absolute
-                            zIndex = 10
-                        }) { img { src = svgPath("logo") } }
-                        cssDiv(css = {
-                            position = Position.absolute
-                            width = 36.px
-                            height = 36.px
-                            backgroundImage = radialGradient {
-                                colorStop(Color.yellow)
-                                colorStop(Color("#ffff003d"))
-                                colorStop(Color("#e22092"))
-                            }
-                            borderRadius = 75.px
-                        })
-                    }
-                }
+                couplingLogo()
             }
         }
     }
@@ -168,6 +143,33 @@ private fun ChildrenBuilder.popperDiv(
         ref = arrowRef
         style = popperInstance.styles[Arrow]
         +popperInstance.attributes[Arrow]
+    }
+}
+
+fun ChildrenBuilder.couplingLogo() = cssDiv(css = {
+    display = Display.flex
+    alignItems = Align.center
+}) {
+    cssDiv(css = {
+        position = Position.relative
+        width = 38.px
+        height = 36.px
+    }) {
+        cssDiv(css = {
+            position = Position.absolute
+            zIndex = 10
+        }) { img { src = svgPath("logo") } }
+        cssDiv(css = {
+            position = Position.absolute
+            width = 36.px
+            height = 36.px
+            backgroundImage = radialGradient {
+                colorStop(Color.yellow)
+                colorStop(Color("#ffff003d"))
+                colorStop(Color("#e22092"))
+            }
+            borderRadius = 75.px
+        })
     }
 }
 

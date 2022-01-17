@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.red
-import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -24,7 +23,6 @@ import react.ChildrenBuilder
 import react.RBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
-import react.dom.html.ReactHTML.img
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
 import react.useState
@@ -85,7 +83,7 @@ private fun ChildrenBuilder.notificationSection(
     }
 }
 
-private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onClose: () -> Unit) = popup(
+fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onClose: () -> Unit) = popup(
     trigger = { open -> notificationButton(open, seenNotification) },
     modal = true,
     on = arrayOf("click"),
@@ -146,7 +144,7 @@ private fun ChildrenBuilder.tribeControlButtons(seenNotification: Boolean, recen
         className = styles["controlButtons"]
         tribeSelectButton()
         logoutButton()
-        gqlButton()
+        GqlButton()
         notificationSection(seenNotification, recentInfoMd, onClose)
     }
 
@@ -155,17 +153,6 @@ private fun ChildrenBuilder.logoutButton() = Link {
     child(CouplingButton(large, red, styles["logoutButton"])) {
         i { className = "fa fa-sign-out-alt" }
         span { +"Sign Out" }
-    }
-}
-
-private fun ChildrenBuilder.gqlButton() = Link {
-    to = "/graphiql"
-    child(CouplingButton(large, white, styles["gqlButton"])) {
-        img {
-            src = svgPath("graphql")
-            height = 18.0
-            width = 18.0
-        }
     }
 }
 

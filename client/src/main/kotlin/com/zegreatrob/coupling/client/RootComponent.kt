@@ -13,7 +13,7 @@ val RootComponent = fc<Props> {
         clientId = "${kotlinx.browser.window["auth0ClientId"]}",
         domain = "${kotlinx.browser.window["auth0Domain"]}",
         redirectUri = "${window.location.origin}${kotlinx.browser.window["basename"]?.toString()}",
-        audience = "${window.location.origin}/api",
+        audience = "https://${window.location.hostname}/api",
         scope = "email",
     ) {
         child(CouplingRouter(animationsDisabled))

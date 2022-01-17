@@ -6,10 +6,7 @@ import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.CssBuilder
 import kotlinx.css.RuleSet
-import kotlinx.html.BUTTON
-import kotlinx.html.DIV
-import kotlinx.html.SPAN
-import kotlinx.html.Tag
+import kotlinx.html.*
 import org.w3c.dom.Node
 import react.*
 import react.dom.DOMProps
@@ -91,6 +88,14 @@ fun ChildrenBuilder.cssDiv(
     css: CssBuilder.() -> Unit,
     builder: ChildrenBuilder.() -> Unit = {}
 ) = +bridge(RBuilder::styledDiv, attrs, props, css = css, builder = builder)
+
+fun ChildrenBuilder.cssH1(
+    attrs: H1.() -> Unit = {},
+    props: DOMProps.() -> Unit = {},
+    css: CssBuilder.() -> Unit,
+    builder: (ChildrenBuilder).() -> Unit = {}
+) = +bridge(RBuilder::styledH1, attrs, props, css = css, builder = builder)
+
 
 fun ChildrenBuilder.cssButton(
     attrs: BUTTON.() -> Unit = {},

@@ -4,10 +4,15 @@
     border: 8px solid rgb(94, 84, 102);
     background-color: hsla(0, 0%, 80%, 1);
     padding: 0 42px 42px;
+    min-width: 420px;
 }
 
 :local(.className) > div {
     padding: 7px;
+}
+
+:local(.className) * {
+    vertical-align: middle;
 }
 
 :local(.newTribeButton) {
