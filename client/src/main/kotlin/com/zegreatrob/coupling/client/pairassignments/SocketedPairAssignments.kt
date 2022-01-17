@@ -40,12 +40,12 @@ val socketedPairAssignments = tmFC<SocketedPairAssignments> { (tribe, players, o
     val (message, setMessage) = useState(disconnectedMessage)
     val onMessageFunc: (Message) -> Unit = { handleMessage(it, setMessage, setPairAssignments) }
 
-    val (_, _, _, _, _, getIdTokenClaims) = useAuth0Data()
+    val auth0Data = useAuth0Data()
 
     var token by useState("")
 
     useEffect {
-        MainScope().launch { token = getIdTokenClaims() }
+        MainScope().launch { token = auth0Data.getAccessTokenSilently() }
     }
 
     if (token.isNotBlank()) {

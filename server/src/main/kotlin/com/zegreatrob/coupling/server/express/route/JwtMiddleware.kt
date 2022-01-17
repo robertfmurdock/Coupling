@@ -18,6 +18,7 @@ fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler = jwt(
             )
         ),
         "issuer" to "https://${Config.AUTH0_DOMAIN}/",
+        "audience" to "${Config.publicUrl}/api",
         "algorithms" to arrayOf("RS256"),
         "requestProperty" to "auth",
         "credentialsRequired" to false,

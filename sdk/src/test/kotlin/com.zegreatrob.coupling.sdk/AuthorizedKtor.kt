@@ -93,10 +93,12 @@ private suspend fun generateAccessToken(username: String, password: String): Str
             append("client_secret", Process.getEnv("AUTH0_CLIENT_SECRET") ?: "")
             append("username", username)
             append("password", password)
+            append("audience", "https://localhost/api")
+            append("scope", "email")
         }
     )
 
-    return result["id_token"]?.jsonPrimitive?.content ?: ""
+    return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
 class AuthorizedKtorSdk(val token: String) : Sdk,

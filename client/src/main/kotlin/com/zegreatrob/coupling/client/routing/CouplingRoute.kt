@@ -27,12 +27,11 @@ val CouplingRoute = FC<CouplingRouteProps> {
     val navigate = useNavigate()
 
     val auth0Data = useAuth0Data()
-    val (_, _, _, _, _, getIdTokenClaims) = auth0Data
 
     it.rComponent {
         pathParams = params
         search = searchParams
-        commander = MasterCommander(getIdTokenClaims)
+        commander = MasterCommander(auth0Data.getAccessTokenSilently)
     }
     window.asDynamic().pathSetter = newPathSetter(navigate)
 }

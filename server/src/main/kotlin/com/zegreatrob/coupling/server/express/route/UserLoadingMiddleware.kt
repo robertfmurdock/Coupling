@@ -9,8 +9,6 @@ import com.zegreatrob.coupling.server.express.async
 import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.express.Request
 
-
-
 fun userLoadingMiddleware(): Handler = { request, _, next ->
     val auth = request.auth
     if (auth == null) {
@@ -18,7 +16,7 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
         next()
     } else {
         request.scope.async({ _, _ -> next() }) {
-            UserDataService.authActionDispatcher("${auth["email"]}", uuid4())
+            UserDataService.authActionDispatcher("${auth["https://zegreatrob.com/email"]}", uuid4())
                 .invoke(FindOrCreateUserAction)
                 .valueOrNull()
                 .let(request::setUser)

@@ -15,8 +15,8 @@ import react.dom.html.ReactHTML.div
 private val styles = useStyles("LoginChooser")
 
 val LoginChooser = FC<Props> {
-    val (_, _, _, _, loginWithRedirect, _) = useAuth0Data()
-    val signInFunc = { loginWithRedirect() }
+    val auth0Data = useAuth0Data()
+    val signInFunc = { auth0Data.loginWithRedirect() }
     div {
         className = styles.className
         div {

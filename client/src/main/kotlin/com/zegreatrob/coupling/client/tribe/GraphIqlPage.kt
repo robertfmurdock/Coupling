@@ -25,7 +25,7 @@ val GraphIQLPage = FC<PageProps> {
         textAlign = TextAlign.left
         height = 100.vh
     }) {
-        child(DataLoader({ auth0Data.getIdTokenClaims() }, { "" }) { state: DataLoadState<String> ->
+        child(DataLoader({ auth0Data.getAccessTokenSilently() }, { "" }) { state: DataLoadState<String> ->
             when (state) {
                 is EmptyState -> div()
                 is PendingState -> +"Loading authorization..."

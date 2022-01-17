@@ -27,7 +27,7 @@ object TestLogin : BrowserSyntax {
         val client = HttpClient {
             install(JsonFeature)
         }
-        val audience = "default"
+        val audience = "https://localhost/api"
         val scope = "openid profile email"
         val clientId = "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg"
         val clientSecret = Process.getEnv("AUTH0_CLIENT_SECRET") ?: ""
@@ -36,6 +36,7 @@ object TestLogin : BrowserSyntax {
                 append("grant_type", "password")
                 append("username", primaryAuthorizedUsername)
                 append("password", primaryTestPassword)
+                append("audience", audience)
                 append("scope", scope)
                 append("client_id", clientId)
                 append("client_secret", clientSecret)
@@ -53,7 +54,7 @@ object TestLogin : BrowserSyntax {
                 "id_token" to idToken,
                 "token_type" to "Bearer",
                 "scope" to scope,
-                "audience" to "default",
+                "audience" to audience,
                 "expires_in" to expiresIn,
                 "decodedToken" to json(
                     "user" to jwtDecode(idToken),

@@ -14,6 +14,8 @@ external interface Auth0ProviderProps : Props {
     var clientId: String
     var redirectUri: String
     var cacheLocation: String
+    var audience: String
+    var scope: String
 }
 
 external fun useAuth0(): Auth0Hook
@@ -24,7 +26,7 @@ external interface Auth0Hook {
     val isLoading: Boolean?
     val isAuthenticated: Boolean?
     val error: Throwable?
-    fun getAccessTokenSilently(): Promise<String>
+    fun getAccessTokenSilently(options: Json): Promise<String>
     fun getIdTokenClaims(): Promise<Json>
     fun logout(json: Json = definedExternally)
 }

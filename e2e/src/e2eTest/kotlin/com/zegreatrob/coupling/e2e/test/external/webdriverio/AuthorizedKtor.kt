@@ -23,7 +23,8 @@ val primaryAuthorizedSdkDeferred: Deferred<AuthorizedSdk> by lazyDeferred {
 }
 
 private suspend fun authorizedKtorSdk(username: String, password: String) =
-    AuthorizedSdk(generateAccessToken(username, password))
+    AuthorizedSdk(generateAccessToken(username, password)
+    )
 
 suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
 
@@ -74,10 +75,12 @@ private suspend fun generateAccessToken(username: String, password: String): Str
             append("client_secret", Process.getEnv("AUTH0_CLIENT_SECRET") ?: "")
             append("username", username)
             append("password", password)
+            append("audience", "https://localhost/api")
+            append("scope", "email")
         }
     )
 
-    return result["id_token"]?.jsonPrimitive?.content ?: ""
+    return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
 class AuthorizedSdk(val token: String) : Sdk,
