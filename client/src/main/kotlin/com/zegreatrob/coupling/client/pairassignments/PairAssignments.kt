@@ -90,7 +90,7 @@ private fun ChildrenBuilder.topPairSection(
     currentPairSection(
         tribe,
         players,
-        pairAssignments,
+        pairAssignments?.overlayUpdatedPlayers(players),
         setPairs,
         allowSave,
         controls,
@@ -101,6 +101,12 @@ private fun ChildrenBuilder.topPairSection(
     }
 }
 
+private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) = copy(pairs = pairs.map { pair ->
+    pair.copy(players = pair.players.map { pinnedPlayer ->
+        pinnedPlayer.copy(player = players.firstOrNull { p -> p.id == pinnedPlayer.player.id }
+            ?: pinnedPlayer.player)
+    })
+})
 
 private fun ChildrenBuilder.currentPairSection(
     tribe: Tribe,
