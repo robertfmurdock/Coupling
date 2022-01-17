@@ -65,7 +65,8 @@ private fun additionalClasses(className: String?, deselected: Boolean) = setOf(c
     }
 
 private fun playerCardRuleSet(size: Int): RuleSet = {
-    width = size.px
+    val totalExtraMarginNeededForImage = 2 * (size * 0.02)
+    width = (size + totalExtraMarginNeededForImage).px
     height = (size * 1.4).px
     borderWidth = (size * 0.04).px
     borderRadius = (size * 0.08).px

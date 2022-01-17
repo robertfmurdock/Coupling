@@ -44,7 +44,8 @@ val tribeCard = tmFC<TribeCard> { (tribe, size) ->
 }
 
 private fun tribeCardCss(size: Int): RuleSet = {
-    width = size.px
+    val totalExtraMarginNeededForImage = 2 * (size * 0.02)
+    width = (size + totalExtraMarginNeededForImage).px
     height = (size * 1.4).px
     borderWidth = (size * 0.01).px
 }
