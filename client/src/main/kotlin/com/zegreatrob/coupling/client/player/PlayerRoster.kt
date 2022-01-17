@@ -40,12 +40,14 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
         css = { overrides() }
     ) {
         div {
-            div {
-                this.className = styles["header"]
-                +(label ?: "Players")
+            if(players.isNotEmpty()) {
+                div {
+                    this.className = styles["header"]
+                    +(label ?: "Players")
+                }
+                renderPlayers(players, tribeId)
+                    .forEach(::child)
             }
-            renderPlayers(players, tribeId)
-                .forEach(::child)
         }
         addPlayerButton(tribeId)
     }
