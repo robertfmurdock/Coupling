@@ -11,6 +11,8 @@ import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import react.ChildrenBuilder
+import react.FC
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.img
 import react.dom.html.ReactHTML.span
@@ -46,7 +48,8 @@ val tribeList = tmFC<TribeList> { (tribes) ->
                 }) {
                     cssSpan(css = { flexGrow = 2.0; textAlign = TextAlign.left }) { +"Tribe List" }
                     span {
-                        aboutButton()
+                        AboutButton()
+                        LogoutButton()
                         GqlButton()
                     }
                 }
@@ -61,17 +64,19 @@ val tribeList = tmFC<TribeList> { (tribes) ->
     }
 }
 
-private fun ChildrenBuilder.aboutButton() = Link {
-    to = "/about"
-    child(CouplingButton(large, orange, "")) {
-        cssSpan(css = { margin(2.px) }) {
-            img {
-                src = svgPath("logo")
-                width = 27.0
-                height = 18.0
+private val AboutButton = FC<Props> {
+    Link {
+        to = "/about"
+        child(CouplingButton(large, orange, "")) {
+            cssSpan(css = { margin(2.px) }) {
+                img {
+                    src = svgPath("logo")
+                    width = 27.0
+                    height = 18.0
+                }
             }
+            span { +"About" }
         }
-        span { +"About" }
     }
 }
 

@@ -22,11 +22,3 @@
     display: inline-block;
     margin: 0 20px;
 }
-
-:local(.tribeSelectButton) {
-    /*! Do not remove */
-}
-
-:local(.logoutButton) {
-    /*! Do not remove */
-}

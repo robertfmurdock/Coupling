@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.*
-import com.zegreatrob.coupling.client.dom.CouplingButton
-import com.zegreatrob.coupling.client.dom.large
-import com.zegreatrob.coupling.client.dom.red
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -12,7 +9,6 @@ import com.zegreatrob.coupling.client.external.reactpopup.popup
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
-import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.localStorage
 import kotlinx.css.*
@@ -24,7 +20,6 @@ import react.RBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
-import react.router.dom.Link
 import react.useState
 import styled.styledDiv
 import kotlin.js.json
@@ -142,24 +137,8 @@ private fun notificationButton(open: Boolean, seenNotification: Boolean) = bridg
 private fun ChildrenBuilder.tribeControlButtons(seenNotification: Boolean, recentInfoMd: String, onClose: () -> Unit) =
     span {
         className = styles["controlButtons"]
-        tribeSelectButton()
-        logoutButton()
+        TribeSelectButton()
+        LogoutButton()
         GqlButton()
         notificationSection(seenNotification, recentInfoMd, onClose)
     }
-
-private fun ChildrenBuilder.logoutButton() = Link {
-    to = "/logout"
-    child(CouplingButton(large, red, styles["logoutButton"])) {
-        i { className = "fa fa-sign-out-alt" }
-        span { +"Sign Out" }
-    }
-}
-
-private fun ChildrenBuilder.tribeSelectButton() = Link {
-    to = "/tribes/"
-    child(CouplingButton(large, className = styles["tribeSelectButton"])) {
-        i { className = "fa fa-arrow-circle-up" }
-        span { +"Tribe select" }
-    }
-}
