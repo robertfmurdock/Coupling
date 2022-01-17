@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.routing
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.Paths
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
@@ -11,8 +10,8 @@ import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.react.dataloader.*
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.execute
+import kotlinx.browser.window
 import react.ChildrenBuilder
-import react.router.Navigate
 
 data class CouplingLoaderProps<P : DataProps<P>>(override val component: TMFC<CouplingLoaderProps<P>>, val getDataAsync: DataLoadFunc<P?>) :
     DataProps<CouplingLoaderProps<P>>
@@ -54,6 +53,7 @@ private fun <P : DataProps<P>> ChildrenBuilder.resolvedComponent(state: Resolved
     }
 }
 
-private fun ChildrenBuilder.notFoundContent() = Navigate { this.to = Paths.welcome() }.also {
-    console.error("Data was not found.")
+private fun notFoundContent() {
+    console.error("Data was not found. Reloading.")
+    window.location.reload()
 }
