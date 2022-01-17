@@ -29,6 +29,8 @@ val tribeList = tmFC<TribeList> { (tribes) ->
         className = styles.className
         cssDiv(css = {
             display = Display.flex
+            backgroundColor = Color("#faf0d2")
+            borderRadius = 50.px
         }) {
             cssSpan(css = {
                 margin(10.px)
@@ -46,11 +48,14 @@ val tribeList = tmFC<TribeList> { (tribes) ->
                     display = Display.flex
                     alignItems = Align.center
                 }) {
-                    cssSpan(css = { flexGrow = 2.0; textAlign = TextAlign.left }) { +"Tribe List" }
+                    cssSpan(css = { flexGrow = 2.0; textAlign = TextAlign.left }) {
+                        +"Tribe List"
+                    }
                     span {
                         AboutButton()
                         LogoutButton()
                         GqlButton()
+                        NotificationButton()
                     }
                 }
             }
@@ -68,6 +73,7 @@ private val AboutButton = FC<Props> {
     Link {
         to = "/about"
         child(CouplingButton(large, orange, "")) {
+            span { +"About" }
             cssSpan(css = { margin(2.px) }) {
                 img {
                     src = svgPath("logo")
@@ -75,7 +81,6 @@ private val AboutButton = FC<Props> {
                     height = 18.0
                 }
             }
-            span { +"About" }
         }
     }
 }

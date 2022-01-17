@@ -2,7 +2,7 @@
 }
 
 :local(.viewFrame).ng-enter {
-    animation: 1s spin-in;
+    animation: 0.25s spin-in;
     z-index: 100;
 }
 
