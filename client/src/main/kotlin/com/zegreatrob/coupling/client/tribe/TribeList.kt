@@ -14,8 +14,8 @@ import react.ChildrenBuilder
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.img
 import react.dom.html.ReactHTML.span
+import react.dom.svg.ReactSVG
 import react.router.dom.Link
 
 data class TribeList(val tribes: List<Tribe>) : DataProps<TribeList> {
@@ -37,11 +37,7 @@ val tribeList = tmFC<TribeList> { (tribes) ->
                 display = Display.flex
                 alignItems = Align.center
             }) {
-                img {
-                    src = svgPath("logo")
-                    width = 72.0
-                    height = 48.0
-                }
+                proportionateSvg(72.0, 48.0, 36.0, 24.0, svgPath("logo"))
             }
             cssH1(css = { flexGrow = 2.0; display = Display.inlineBlock }) {
                 cssDiv(css = {
@@ -69,17 +65,32 @@ val tribeList = tmFC<TribeList> { (tribes) ->
     }
 }
 
+private fun ChildrenBuilder.proportionateSvg(
+    width: Double,
+    height: Double,
+    originalWidth: Double,
+    originalHeight: Double,
+    href: String
+) {
+    ReactSVG.svg {
+        fill = "none"
+        viewBox = "0 0 $originalWidth $originalHeight"
+        this.width = width
+        this.height = height
+        ReactSVG.image {
+            this.href = href
+            preserveAspectRatio = "true"
+        }
+    }
+}
+
 private val AboutButton = FC<Props> {
     Link {
         to = "/about"
         child(CouplingButton(large, orange, "")) {
             span { +"About" }
             cssSpan(css = { margin(2.px) }) {
-                img {
-                    src = svgPath("logo")
-                    width = 27.0
-                    height = 18.0
-                }
+                proportionateSvg(27.0, 18.0, 36.0, 24.0, svgPath("logo"))
             }
         }
     }
