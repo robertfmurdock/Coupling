@@ -173,12 +173,10 @@ class WebsocketTest {
     ) exercise {
         val url = "wss://$host/api/${TribeId("whoops").value}/pairAssignments/current"
         val socket = newWebsocket(url, json())
-        CompletableDeferred<Unit>().also { deferred ->
-            socket.on("close") { deferred.complete(Unit) }
-        }
-    } verify { deferred ->
+        SocketWrapper(socket)
+    } verify { wrapper ->
         withTimeout(100) {
-            deferred.await()
+            wrapper.waitForClose()
         }
     }
 
@@ -186,12 +184,10 @@ class WebsocketTest {
     fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = sdkSetup({ it }
     ) exercise {
         val socket = connectToSocket(stubTribe().id, sdk.token)
-        CompletableDeferred<Unit>().also { deferred ->
-            socket.on("close") { deferred.complete(Unit) }
-        }
-    } verify { deferred ->
+        SocketWrapper(socket)
+    } verify { wrapper ->
         withTimeout(200) {
-            deferred.await()
+            wrapper.waitForClose()
         }
     }
 
