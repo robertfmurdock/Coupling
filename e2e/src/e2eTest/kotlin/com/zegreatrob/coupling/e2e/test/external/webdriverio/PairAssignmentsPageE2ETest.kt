@@ -4,6 +4,9 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.e2e.test.external.webdriverio.AssignedPair.assignedPairCallSigns
 import com.zegreatrob.coupling.e2e.test.external.webdriverio.AssignedPair.assignedPairElements
+import com.zegreatrob.coupling.e2e.test.external.webdriverio.ConfigHeader.retiredPlayersButton
+import com.zegreatrob.coupling.e2e.test.external.webdriverio.ConfigHeader.statisticsButton
+import com.zegreatrob.coupling.e2e.test.external.webdriverio.ConfigHeader.viewHistoryButton
 import com.zegreatrob.coupling.e2e.test.external.webdriverio.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.external.webdriverio.TribeCard.header
 import com.zegreatrob.coupling.model.pairassignmentdocument.*

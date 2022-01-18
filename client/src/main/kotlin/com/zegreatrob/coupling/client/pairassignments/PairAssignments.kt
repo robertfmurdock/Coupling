@@ -163,10 +163,6 @@ private fun ChildrenBuilder.controlPanel(tribe: Tribe) = div {
     div {
         className = styles["controlPanel"]
         div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
-        viewHistoryButton(tribe, styles["viewHistoryButton"])
-        pinListButton(tribe, styles["pinListButton"])
-        statisticsButton(tribe, styles["statisticsButton"])
-        viewRetireesButton(tribe, styles["retiredPlayersButton"])
     }
 }
 
@@ -227,7 +223,7 @@ private fun ChildrenBuilder.prepareToSpinButton(tribe: Tribe, className: String)
     }
 }
 
-private fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String) = Link {
+fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/history/"
     child(CouplingButton(large, green, className)) {
         i { this.className = "fa fa-history" }
@@ -235,7 +231,7 @@ private fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String) =
     }
 }
 
-private fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String) = Link {
+fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/pins/"
     child(CouplingButton(large, white, className)) {
         i { this.className = "fa fa-peace" }
@@ -243,7 +239,7 @@ private fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String) = Lin
     }
 }
 
-private fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String) = Link {
+fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/statistics"
     child(CouplingButton(large, className = className)) {
         i { this.className = "fa fa-database" }
@@ -251,7 +247,7 @@ private fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String) = 
     }
 }
 
-private fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String) = Link {
+fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/players/retired"
     child(CouplingButton(large, yellow, className)) {
         i { this.className = "fa fa-user-slash" }

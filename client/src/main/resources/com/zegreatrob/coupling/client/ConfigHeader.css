@@ -1,18 +1,26 @@
 :local(.className) {
     text-align: left;
-    display: flex;
     margin: 5px;
 }
 
-:local(.className) > div {
-    display: inline-block;
-    vertical-align: middle;
-}
-
 :local(.className) h1 {
-    display: inline-block;
-    vertical-align: middle;
     margin-left: 15px;
     text-decoration: underline;
     flex-grow: 2;
+}
+
+:local(.statisticsButton) {
+    /*! Do not remove */
+}
+
+:local(.pinListButton) {
+    /*! Do not remove */
+}
+
+:local(.viewHistoryButton) {
+    /*! Do not remove */
+}
+
+:local(.retiredPlayersButton) {
+    /*! Do not remove */
 }

@@ -35,22 +35,6 @@
     animation-duration: 0.75s;
 }
 
-:local(.statisticsButton) {
-    /*! Do not remove */
-}
-
-:local(.pinListButton) {
-    /*! Do not remove */
-}
-
-:local(.viewHistoryButton) {
-    /*! Do not remove */
-}
-
-:local(.retiredPlayersButton) {
-    /*! Do not remove */
-}
-
 :local(.copyToClipboardButton) {
     /*! Do not remove */
 }

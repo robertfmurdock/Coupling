@@ -59,5 +59,3 @@ private fun ChildrenBuilder.reportPlayerCard(player: Player, tribe: Tribe) = div
     key = player.id
     child(PlayerCard(tribe.id, player, size = 50))
 }
-
-

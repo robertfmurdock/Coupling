@@ -7,20 +7,21 @@ import com.zegreatrob.wrapper.wdio.WebdriverElementArray
 
 object PairAssignmentsPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/PairAssignments")
-    val viewHistoryButton by getting()
     val newPairsButton by getting()
-    val statisticsButton by getting()
-    val retiredPlayersButton by getting()
-
     suspend fun goTo(id: TribeId) {
         WebdriverBrowser.setLocation("/${id.value}/pairAssignments/current/")
         waitForPage()
     }
-
     suspend fun waitForPage() {
         element().waitToExist()
     }
+}
 
+object ConfigHeader : StyleSyntax {
+    override val styles = loadStyles("ConfigHeader")
+    val viewHistoryButton by getting()
+    val statisticsButton by getting()
+    val retiredPlayersButton by getting()
 }
 
 object CurrentPairAssignmentsPanel : StyleSyntax {
