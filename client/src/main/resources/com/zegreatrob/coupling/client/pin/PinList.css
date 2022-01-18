@@ -10,14 +10,3 @@
     border-radius: 82px;
     text-align: left;
 }
-
-:local(.tribeBrowser) {
-    white-space: normal;
-    float: left;
-    display: inline-block;
-    vertical-align: top;
-    border-radius: 20px;
-    padding: 10px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-}
