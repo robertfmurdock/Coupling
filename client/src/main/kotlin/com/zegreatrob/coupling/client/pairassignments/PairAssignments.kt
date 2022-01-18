@@ -222,35 +222,3 @@ private fun ChildrenBuilder.prepareToSpinButton(tribe: Tribe, className: String)
         +"Prepare to spin!"
     }
 }
-
-fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String = "") = Link {
-    to = "/${tribe.id.value}/history/"
-    child(CouplingButton(large, green, className)) {
-        i { this.className = "fa fa-history" }
-        +" History!"
-    }
-}
-
-fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String = "") = Link {
-    to = "/${tribe.id.value}/pins/"
-    child(CouplingButton(large, white, className)) {
-        i { this.className = "fa fa-peace" }
-        +" Pin Bag!"
-    }
-}
-
-fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String = "") = Link {
-    to = "/${tribe.id.value}/statistics"
-    child(CouplingButton(large, className = className)) {
-        i { this.className = "fa fa-database" }
-        +" Statistics!"
-    }
-}
-
-fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String = "") = Link {
-    to = "/${tribe.id.value}/players/retired"
-    child(CouplingButton(large, yellow, className)) {
-        i { this.className = "fa fa-user-slash" }
-        +" Retirees!"
-    }
-}

@@ -1,11 +1,8 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.pairassignments.pinListButton
-import com.zegreatrob.coupling.client.pairassignments.statisticsButton
-import com.zegreatrob.coupling.client.pairassignments.viewHistoryButton
-import com.zegreatrob.coupling.client.pairassignments.viewRetireesButton
 import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.client.tribe.TribeSelectButton
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -18,6 +15,8 @@ import react.ChildrenBuilder
 import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.i
+import react.router.dom.Link
 
 external interface ConfigHeaderProps : PropsWithChildren {
     var tribe: Tribe
@@ -46,7 +45,7 @@ private fun ChildrenBuilder.tribeControls(props: ConfigHeaderProps, tribe: Tribe
     cssH1(css = {
         display = Display.flex
         flexDirection = FlexDirection.column
-        alignItems = Align.end
+        alignItems = Align.center
     }) {
         topControlRow(props)
         cssDiv(css = { margin(0.px, 20.px) }) {
@@ -54,6 +53,8 @@ private fun ChildrenBuilder.tribeControls(props: ConfigHeaderProps, tribe: Tribe
                 display = Display.inlineBlock
                 borderRadius = 20.px
                 padding(5.px)
+                margin(2.px)
+                fontSize = 0.pt
                 backgroundColor = Color("#d5cdc3")
                 boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
             }) {
@@ -87,5 +88,37 @@ private fun ChildrenBuilder.topControlRow(props: ConfigHeaderProps) = cssDiv(css
             GqlButton()
             NotificationButton()
         }
+    }
+}
+
+fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String = "") = Link {
+    to = "/${tribe.id.value}/history/"
+    child(CouplingButton(large, green, className)) {
+        i { this.className = "fa fa-history" }
+        +" History!"
+    }
+}
+
+fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String = "") = Link {
+    to = "/${tribe.id.value}/pins/"
+    child(CouplingButton(large, white, className)) {
+        i { this.className = "fa fa-peace" }
+        +" Pin Bag!"
+    }
+}
+
+fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String = "") = Link {
+    to = "/${tribe.id.value}/statistics"
+    child(CouplingButton(large, blue, className = className)) {
+        i { this.className = "fa fa-database" }
+        +" Statistics!"
+    }
+}
+
+fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String = "") = Link {
+    to = "/${tribe.id.value}/players/retired"
+    child(CouplingButton(large, yellow, className)) {
+        i { this.className = "fa fa-user-slash" }
+        +" Retirees!"
     }
 }

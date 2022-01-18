@@ -62,9 +62,11 @@ val pink: RuleSet = {
     }
 }
 val green: RuleSet = {
-    backgroundColor = Color("#42805e")
+    backgroundColor = Color("#7fd8be")
+    color = Color("#3e474c")
+    put("text-shadow", "none")
     rule(":hover") {
-        backgroundColor = Color("#29533d")
+        backgroundColor = Color("#68b39d")
     }
 }
 val red: RuleSet = {
@@ -80,9 +82,9 @@ val orange: RuleSet = {
     }
 }
 val blue: RuleSet = {
-    backgroundColor = Color("#2981e4")
+    backgroundColor = Color("#345995")
     rule(":hover") {
-        backgroundColor = Color("#2575cf")
+        backgroundColor = Color("#5188e1")
     }
 }
 val white: RuleSet = {
@@ -90,13 +92,15 @@ val white: RuleSet = {
     color = Color("#3e474c")
     put("text-shadow", "none")
     rule(":hover") {
-        backgroundColor = Color("#dde9e9")
+        backgroundColor = Color("#cdd7d7")
     }
 }
 val yellow: RuleSet = {
-    backgroundColor = Color("#ffb515")
+    backgroundColor = Color("#eac435")
+    color = Color("#3e474c")
+    put("text-shadow", "none")
     rule(":hover") {
-        backgroundColor = Color("#fc9200")
+        backgroundColor = Color("#cbaa2d")
     }
 }
 val black: RuleSet = {

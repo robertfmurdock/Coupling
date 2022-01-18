@@ -2458,9 +2458,9 @@
     write-file-atomic "^3.0.3"
 
 "@serverless/utils@^5.20.2":
-  version "5.20.2"
-  resolved "https://registry.yarnpkg.com/@serverless/utils/-/utils-5.20.2.tgz#f02ef61304771ad4f2a553e8d91b7ae7b1197724"
-  integrity sha512-u7+oVwbq1BunmLI0T9egRL93Xg3TGxNsqogXqzxSLtjMWiImsadv3/gUJfXz/wTI9VXfbtQZvsVYMaRpS0JiqA==
+  version "5.20.3"
+  resolved "https://registry.yarnpkg.com/@serverless/utils/-/utils-5.20.3.tgz#5ab15cf8eceb81934946f2deeee028c6b9b6e270"
+  integrity sha512-MG3DQJdto+LaeVY9gh/z0xloAfT0h1Y3Pa4/yYcKe8Dy5HYtSujuav0MvTOH18+s2outjKKJDxTh6tZuyNqFDQ==
   dependencies:
     archive-type "^4.0.0"
     chalk "^4.1.2"
@@ -2481,7 +2481,7 @@
     jwt-decode "^3.1.2"
     lodash "^4.17.21"
     log "^6.3.1"
-    log-node "^8.0.2"
+    log-node "^8.0.3"
     make-dir "^3.1.0"
     memoizee "^0.4.15"
     ncjsm "^4.2.0"
@@ -4367,10 +4367,25 @@ chokidar@3.3.0:
   optionalDependencies:
     fsevents "~2.1.1"
 
-chokidar@3.5.2, chokidar@^3.0.0, chokidar@^3.4.1, chokidar@^3.5.1, chokidar@^3.5.2:
+chokidar@3.5.2, chokidar@^3.5.1:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
   integrity sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==
+  dependencies:
+    anymatch "~3.1.2"
+    braces "~3.0.2"
+    glob-parent "~5.1.2"
+    is-binary-path "~2.1.0"
+    is-glob "~4.0.1"
+    normalize-path "~3.0.0"
+    readdirp "~3.6.0"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
+chokidar@^3.0.0, chokidar@^3.4.1, chokidar@^3.5.2:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
+  integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
   dependencies:
     anymatch "~3.1.2"
     braces "~3.0.2"
@@ -8850,7 +8865,7 @@ lodash@4.17.x, lodash@>=4.17.21, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
-log-node@^8.0.2:
+log-node@^8.0.3:
   version "8.0.3"
   resolved "https://registry.yarnpkg.com/log-node/-/log-node-8.0.3.tgz#441bf1a72f9f1c28b62f5bf42e9eb3765af74d73"
   integrity sha512-1UBwzgYiCIDFs8A0rM2QdBFo8Wd8UQ0HrSTu/MNI+/2zN3NoHRj2fhplurAyuxTYUXu3Oohugq1jAn5s05u1MQ==
@@ -10747,9 +10762,9 @@ puppeteer-core@^10.1.0:
     ws "7.4.6"
 
 puppeteer-core@^13.0.0:
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-13.1.0.tgz#2e7872950f44dba350ec6ccfe766a5609ebbdaa8"
-  integrity sha512-Eh3nH1OzfySYZGuzbhpZt7feB8rrOEoTbw7iMI/HAamFmsBg2a1nVKhqhQFEvaeXcPqqMiY3oO7M2Ba/l1vN8g==
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-13.1.1.tgz#bd07b225732210c570fb8af1ff959bb91806dbdc"
+  integrity sha512-pXVcEFv5wgayHtwl5WBB8dyFHkdA7eLcAUuF9cprsoJQVU1sgA32OCfmXqNfvcej85Y5ceAcin09c8qLopdkfQ==
   dependencies:
     debug "4.3.2"
     devtools-protocol "0.0.948846"
