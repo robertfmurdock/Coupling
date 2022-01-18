@@ -61,12 +61,18 @@ val pink: RuleSet = {
         backgroundColor = Color("#c81e82")
     }
 }
-val green: RuleSet = {
+val lightGreen: RuleSet = {
     backgroundColor = Color("#7fd8be")
     color = Color("#3e474c")
     put("text-shadow", "none")
     rule(":hover") {
         backgroundColor = Color("#68b39d")
+    }
+}
+val green: RuleSet = {
+    backgroundColor = Color("#42805e")
+    rule(":hover") {
+        backgroundColor = Color("#29533d")
     }
 }
 val red: RuleSet = {

@@ -93,7 +93,7 @@ private fun ChildrenBuilder.topControlRow(props: ConfigHeaderProps) = cssDiv(css
 
 fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/history/"
-    child(CouplingButton(large, green, className)) {
+    child(CouplingButton(large, lightGreen, className)) {
         i { this.className = "fa fa-history" }
         +" History!"
     }
