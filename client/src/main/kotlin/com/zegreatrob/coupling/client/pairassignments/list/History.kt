@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
+import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.red
@@ -12,7 +13,6 @@ import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.PinSection
-import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -44,16 +44,12 @@ val historyFunc = windowReactFunc<History> { (tribe, history, controls), windowF
     }
     div {
         className = styles.className
-        div {
-            className = styles["tribeBrowser"]
-            child(TribeCard(tribe))
+        ConfigHeader {
+            this.tribe = tribe
+            +"History!"
         }
         span {
             className = styles["historyView"]
-            div {
-                className = styles["header"]
-                +"History!"
-            }
             history.forEach {
                 pairAssignmentRow(it, onDeleteFactory(it.id))
             }
