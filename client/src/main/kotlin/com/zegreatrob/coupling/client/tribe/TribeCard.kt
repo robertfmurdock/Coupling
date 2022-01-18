@@ -48,6 +48,7 @@ private fun tribeCardCss(size: Int): RuleSet = {
     width = (size + totalExtraMarginNeededForImage).px
     height = (size * 1.4).px
     borderWidth = (size * 0.01).px
+    borderRadius = (size * 10.0 / 150).px
 }
 
 

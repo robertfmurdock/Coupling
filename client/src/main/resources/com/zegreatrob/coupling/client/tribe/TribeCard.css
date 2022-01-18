@@ -1,6 +1,5 @@
 :local(.className) {
     display: inline-block;
-    border-radius: 10px;
     border-style: outset;
     border-color: #f5f5f5;
     background-color: lightsteelblue;

@@ -7,7 +7,6 @@
     background: darkseagreen url(../overlay.png) repeat-x;
     text-align: center;
     text-decoration: none;
-    border-radius: 6px;
     color: black;
     margin: 0 2px 0 2px;
     top: 0
@@ -19,7 +18,6 @@
 
 :local(.header) {
     background: rgba(255, 255, 255, 0.4) url(../overlay.png) repeat-x;
-    border-radius: 15px;
     border-style: solid;
     border-color: #00000054;
     border-width: 1px;
