@@ -46,7 +46,20 @@ val playerConfigContent = tmFC<PlayerConfigContent> { (tribe, player, players, o
             className = styles.className
             ConfigHeader {
                 this.tribe = tribe
-                +"Player Configuration"
+                cssDiv(css = {
+                    display = Display.flex
+                    alignItems = Align.baseline
+                    descendants { verticalAlign = VerticalAlign.middle }
+                }) {
+                    cssSpan(css = { flexGrow = 2.0 }) {
+                        +"Player Configuration"
+                    }
+                    cssSpan(css = { margin(0.px, 20.px) }) {
+                        LogoutButton()
+                        GqlButton()
+                        NotificationButton()
+                    }
+                }
             }
             div {
                 div {
