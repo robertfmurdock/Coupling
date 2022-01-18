@@ -50,18 +50,20 @@ private fun ChildrenBuilder.tribeControls(props: ConfigHeaderProps, tribe: Tribe
         topControlRow(props)
         cssDiv(css = { margin(0.px, 20.px) }) {
             cssDiv(css = {
-                display = Display.inlineBlock
+                display = Display.inlineFlex
+                alignItems = Align.center
                 borderRadius = 20.px
                 padding(5.px)
                 margin(2.px)
                 fontSize = 0.pt
-                backgroundColor = Color("#d5cdc3")
+                backgroundColor = Color("#00000014")
                 boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
             }) {
                 viewHistoryButton(tribe, styles["viewHistoryButton"])
                 pinListButton(tribe, styles["pinListButton"])
                 statisticsButton(tribe, styles["statisticsButton"])
                 viewRetireesButton(tribe, styles["retiredPlayersButton"])
+                settingsButton(tribe)
             }
         }
     }
@@ -120,5 +122,15 @@ fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String = "") = L
     child(CouplingButton(large, yellow, className)) {
         i { this.className = "fa fa-user-slash" }
         +" Retirees!"
+    }
+}
+
+fun ChildrenBuilder.settingsButton(tribe: Tribe, className: String = "") = Link {
+    to = "/${tribe.id.value}/edit"
+    child(CouplingButton(large, black, className, css = {
+        fontSize = 24.px
+        padding(2.px, 3.px, 0.px)
+    })) {
+        i { this.className = "fa fa-cog" }
     }
 }

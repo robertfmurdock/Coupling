@@ -175,7 +175,7 @@ class WebsocketTest {
         val socket = newWebsocket(url, json())
         SocketWrapper(socket)
     } verify { wrapper ->
-        withTimeout(100) {
+        withTimeout(400) {
             wrapper.waitForClose()
         }
     }
@@ -186,7 +186,7 @@ class WebsocketTest {
         val socket = connectToSocket(stubTribe().id, sdk.token)
         SocketWrapper(socket)
     } verify { wrapper ->
-        withTimeout(200) {
+        withTimeout(400) {
             wrapper.waitForClose()
         }
     }
@@ -198,7 +198,7 @@ class WebsocketTest {
         val socket = newWebsocket(url, json())
         SocketWrapper(socket)
     } verify { wrapper ->
-        withTimeout(100) {
+        withTimeout(400) {
             wrapper.waitForClose()
         }
     }
@@ -217,7 +217,7 @@ class WebsocketTest {
             }
         }
     } verifyAnd { socketWrapper ->
-        withTimeout(100) {
+        withTimeout(400) {
             socketWrapper.waitForClose()
         }
     } teardown {
