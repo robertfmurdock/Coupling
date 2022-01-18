@@ -1,7 +1,7 @@
 :local(.className) {
     text-align: left;
     display: flex;
-    margin: 2px;
+    margin: 5px;
 }
 
 :local(.className) > div {

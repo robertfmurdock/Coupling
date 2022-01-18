@@ -21,27 +21,6 @@ import kotlin.test.Test
 class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
 
     @Test
-    fun willShowTribeCard() = setup(object {
-        val tribe = Tribe(TribeId("1"))
-    }) exercise {
-        shallow(
-            TribeStatistics(
-                StatisticQueryResults(
-                    tribe = tribe,
-                    players = emptyList(),
-                    history = emptyList(),
-                    heatmapData = perform(CalculateHeatMapAction(emptyList(), emptyList(), 0)),
-                    report = perform(ComposeStatisticsAction(tribe, emptyList(), emptyList()))
-                )
-            )
-        )
-    } verify { wrapper ->
-        wrapper.find(tribeCard)
-            .dataprops()
-            .tribe.assertIsEqualTo(tribe)
-    }
-
-    @Test
     fun willShowPairings() = setup(object {
         val players = listOf(
             Player("harry", name = "Harry"),

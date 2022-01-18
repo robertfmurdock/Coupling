@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.stats
 
+import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
@@ -25,17 +25,20 @@ val tribeStatistics = tmFC<TribeStatistics> { props ->
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div {
         className = styles.className
-        div {
-            child(TribeCard(tribe))
-            child(TeamStatistics(
-                spinsUntilFullRotation = spinsUntilFullRotation,
-                activePlayerCount = players.size,
-                medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
-            ))
+        ConfigHeader {
+            this.tribe = tribe
+            +"Statistics"
         }
         div {
             div {
                 className = styles["leftSection"]
+                div {
+                    child(TeamStatistics(
+                        spinsUntilFullRotation = spinsUntilFullRotation,
+                        activePlayerCount = players.size,
+                        medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
+                    ))
+                }
                 child(PairReportTable(tribe, pairReports))
             }
             child(PlayerHeatmap(tribe, players, heatmapData))
