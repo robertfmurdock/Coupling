@@ -13,8 +13,3 @@
 :local(.headerText) {
     flex-grow: 2;
 }
-
-:local(.controlButtons) {
-    display: inline-block;
-    margin: 0 20px;
-}
