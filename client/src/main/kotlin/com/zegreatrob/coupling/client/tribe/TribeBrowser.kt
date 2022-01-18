@@ -25,14 +25,7 @@ val tribeBrowser = tmFC<TribeBrowser> { (tribe) ->
         className = styles.className
         ConfigHeader {
             this.tribe = tribe
-            span {
-                className = styles["headerContents"]
-                span {
-                    className = styles["headerText"]
-                    +(tribe.name ?: "")
-                }
-                tribeControlButtons()
-            }
+            +(tribe.name ?: "")
         }
     }
 }

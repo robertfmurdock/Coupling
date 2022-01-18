@@ -39,7 +39,7 @@ val tribeConfigContent = tmFC<TribeConfigContent> { (tribe, isNew, onChange, onS
         className = styles.className
         ConfigHeader {
             this.tribe = tribe
-            span { +"Tribe Configuration" }
+            +"Tribe Configuration"
         }
         div {
             tribeConfigEditor(tribe, isNew ?: false, onChange, onSave, onDelete)
