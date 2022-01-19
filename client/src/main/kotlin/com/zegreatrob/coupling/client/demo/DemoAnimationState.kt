@@ -5,6 +5,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.playerImage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -17,12 +18,19 @@ import popper.core.Placement
 
 private val demoTribe = Tribe(id = TribeId("${uuid4()}"), name = "The Simpsons")
 
-private val player1 = Player(name = "Homer")
-private val player2 = Player(name = "Marge")
-private val player3 = Player(name = "Bart")
-private val player4 = Player(name = "Lisa")
-private val player5 = Player(name = "Maggie")
-private val player6 = Player(name = "Santa's Lil Helper")
+private val homer by playerImage()
+private val marge by playerImage()
+private val bart by playerImage()
+private val lisa by playerImage()
+private val maggie by playerImage()
+private val slh by playerImage()
+
+private val player1 = Player(name = "Homer", imageURL = homer)
+private val player2 = Player(name = "Marge", imageURL = marge)
+private val player3 = Player(name = "Bart", imageURL = bart)
+private val player4 = Player(name = "Lisa", imageURL = lisa)
+private val player5 = Player(name = "Maggie", imageURL = maggie)
+private val player6 = Player(name = "Santa's Lil Helper", imageURL = slh)
 
 private val players = listOf(
     player1,
