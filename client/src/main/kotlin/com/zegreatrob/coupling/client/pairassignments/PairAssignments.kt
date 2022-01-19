@@ -174,7 +174,7 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
         child(
             CouplingButton(
                 large,
-                black,
+                white,
                 styles["copyToClipboardButton"],
                 onClick = ref.current?.copyToClipboardOnClick() ?: {},
                 attrs = { tabIndex = "-1" })
