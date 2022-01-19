@@ -28,7 +28,7 @@ object TestLogin : BrowserSyntax {
             install(JsonFeature)
         }
         val audience = "https://localhost/api"
-        val scope = "openid profile email"
+        val scope = "openid profile email offline_access"
         val clientId = "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg"
         val clientSecret = Process.getEnv("AUTH0_CLIENT_SECRET") ?: ""
         val result = client.submitForm<JsonObject>(url = "https://zegreatrob.us.auth0.com/oauth/token",

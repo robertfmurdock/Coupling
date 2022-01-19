@@ -16,6 +16,7 @@ external interface Auth0ProviderProps : Props {
     var cacheLocation: String
     var audience: String
     var scope: String
+    var useRefreshTokens: Boolean?
 }
 
 external fun useAuth0(): Auth0Hook
