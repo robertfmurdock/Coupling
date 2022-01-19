@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.Paths.playerConfigPage
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.domtoimage.domToImage
@@ -11,15 +10,14 @@ import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator
-import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.player.PlayerRoster
+import com.zegreatrob.coupling.client.player.TinyPlayerList
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
@@ -102,12 +100,7 @@ private fun ChildrenBuilder.topPairSection(
     cssDiv(css = { float = Float.right; width = 0.px }) {
         div { copyToClipboardButton(pairSectionNode) }
 
-        players.forEach { player ->
-            Link {
-                to = tribe.id.with(player).playerConfigPage()
-                child(PlayerCard(tribe.id, player, linkToConfig = false, size = 35))
-            }
-        }
+        child(TinyPlayerList(tribe, players))
     }
 }
 
