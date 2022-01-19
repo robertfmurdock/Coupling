@@ -20,7 +20,9 @@ import com.zegreatrob.coupling.client.tribe.TribeConfigContent
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.testmints.action.async.SuspendAction
 import kotlinext.js.jso
 import kotlinx.browser.document
@@ -61,17 +63,20 @@ val demoSequence by kotlin.lazy { DemoAnimationState.generateSequence() }
 val DemoPage = FC<PageProps> { props ->
     val frameIndex = props.search.get("frame")
     val currentFrame = frameIndex?.toIntOrNull()?.let { demoSequence.toList()[it] }
-
     if (currentFrame != null) {
-        demoPageFrame(currentFrame.data)
+        child(DemoPageFrame(currentFrame.data))
     } else {
         child(FrameRunner(demoSequence, 1.0) { state: DemoAnimationState ->
-            demoPageFrame(state)
+            child(DemoPageFrame(state))
         })
     }
 }
 
-private fun ChildrenBuilder.demoPageFrame(state: DemoAnimationState) {
+data class DemoPageFrame(val state: DemoAnimationState) : DataProps<DemoPageFrame> {
+    override val component = demoPageFrame
+}
+
+private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
     val popperRef = useRef<HTMLElement>()
     val arrowRef = useRef<HTMLElement>()
 
@@ -88,8 +93,18 @@ private fun ChildrenBuilder.demoPageFrame(state: DemoAnimationState) {
 
     div {
         popperDiv(popperRef, arrowRef, state, popperInstance)
+        cssDiv(css = {
+            position = Position.absolute
+            backgroundColor = Color("#e3002b61")
+            position = Position.absolute;
+            width = 100.pct
+            marginLeft = LinearDimension.auto
+            marginRight = LinearDimension.auto
+        }) {
+            +"-- DEMO MODE -- ALL BUTTONS WILL NOT WORK -- DON'T GET IT TWISTED --"
+        }
 
-        div {
+        cssDiv(css = { pointerEvents = PointerEvents.none }) {
             when (state) {
                 Start -> +"Starting..."
                 ShowIntro -> +"Alright, here's an example of how you might use the app."
