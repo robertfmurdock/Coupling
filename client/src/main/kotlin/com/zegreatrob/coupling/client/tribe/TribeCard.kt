@@ -16,7 +16,9 @@ import kotlinx.css.*
 import kotlinx.html.classes
 import kotlinx.html.tabIndex
 import react.ChildrenBuilder
+import react.dom.html.ReactHTML
 import react.router.dom.Link
+import kotlin.collections.set
 
 data class TribeCard(val tribe: Tribe, val size: Int = 150) : DataProps<TribeCard> {
     override val component: TMFC<TribeCard> = tribeCard
@@ -54,12 +56,21 @@ private fun tribeCardCss(size: Int): RuleSet = {
 
 val noTribeImagePath = pngPath("tribes/no-tribe")
 
-private fun ChildrenBuilder.tribeGravatar(tribe: Tribe, size: Int) = gravatarImage(
-    email = tribe.email,
-    alt = "tribe-img",
-    fallback = noTribeImagePath,
-    options = object : GravatarOptions {
-        override val size = size
-        override val default = "identicon"
+private fun ChildrenBuilder.tribeGravatar(tribe: Tribe, size: Int) = if (tribe.imageURL != null) {
+    ReactHTML.img {
+        this.src = tribe.imageURL
+        alt = "icon"
+        this.width = size.toDouble()
+        this.height = size.toDouble()
     }
-)
+} else {
+    gravatarImage(
+        email = tribe.email,
+        alt = "tribe-img",
+        fallback = noTribeImagePath,
+        options = object : GravatarOptions {
+            override val size = size
+            override val default = "identicon"
+        }
+    )
+}

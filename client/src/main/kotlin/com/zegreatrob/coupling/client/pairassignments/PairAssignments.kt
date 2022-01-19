@@ -170,18 +170,16 @@ private fun ChildrenBuilder.controlPanel(tribe: Tribe) = div {
 }
 
 private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
-    ref.current?.let { node ->
-        if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
-            child(
-                CouplingButton(
-                    large,
-                    black,
-                    styles["copyToClipboardButton"],
-                    onClick = node.copyToClipboardOnClick(),
-                    attrs = { tabIndex = "-1" })
-            ) {
-                i { className = "fa fa-clipboard" }
-            }
+    if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
+        child(
+            CouplingButton(
+                large,
+                black,
+                styles["copyToClipboardButton"],
+                onClick = ref.current?.copyToClipboardOnClick() ?: {},
+                attrs = { tabIndex = "-1" })
+        ) {
+            i { className = "fa fa-clipboard" }
         }
     }
 }

@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.Frame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.playerImage
+import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -16,7 +17,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import popper.core.Placement
 
-private val demoTribe = Tribe(id = TribeId("${uuid4()}"), name = "The Simpsons")
+private val demoTribe = Tribe(id = TribeId("${uuid4()}"), name = "The Simpsons", imageURL = svgPath("tribes/simpsons"))
 
 private val homer by playerImage()
 private val marge by playerImage()
@@ -91,7 +92,7 @@ object Start : DemoAnimationState()
 object ShowIntro : DemoAnimationState()
 
 fun makeTribeSequence() = demoTribe.name.rangeOfStringLength().map { index ->
-    MakeTribe(Tribe(id = demoTribe.id, name = demoTribe.name?.substring(0, index)))
+    MakeTribe(demoTribe.copy(name = demoTribe.name?.substring(0, index)))
 }
 
 fun makePlayerSequence() = players.flatMapIndexed { playerIndex, player ->
