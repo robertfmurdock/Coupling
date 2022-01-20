@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.external.react
 
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
+import react.dom.html.InputType
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import kotlin.js.Json
@@ -37,11 +38,12 @@ fun ChildrenBuilder.configInput(
     id: String,
     name: String,
     value: String,
-    type: react.dom.html.InputType,
+    type: InputType,
     onChange: (ChangeEvent<*>) -> Unit,
     placeholder: String = "",
     list: String = "",
-    checked: Boolean = false
+    checked: Boolean = false,
+    autoFocus: Boolean? = false
 ) {
     label { htmlFor = id; +labelText }
     input {
@@ -53,5 +55,6 @@ fun ChildrenBuilder.configInput(
         this.list = list
         this.checked = checked
         this.onChange = onChange
+        this.autoFocus = autoFocus
     }
 }

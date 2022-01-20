@@ -100,8 +100,9 @@ private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
         name = "icon",
         value = pin.icon,
         type = react.dom.html.InputType.text,
+        onChange = onChange,
         placeholder = "Font-awesome icon codes, without the size class",
-        onChange = onChange
+        autoFocus = false
     )
     span {
         +"This is the icon for the pin. This will be its primary identifier, so "
@@ -120,7 +121,8 @@ private fun ChildrenBuilder.nameInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
         value = pin.name,
         type = react.dom.html.InputType.text,
         onChange = onChange,
-        placeholder = "The name of the pin."
+        placeholder = "The name of the pin.",
+        autoFocus = true
     )
     span { +"This is what you call the pin. You won't see this much." }
 }

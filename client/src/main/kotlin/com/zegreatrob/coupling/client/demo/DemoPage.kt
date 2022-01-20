@@ -145,7 +145,8 @@ private fun ChildrenBuilder.popperDiv(
     Markdown { +state.description }
     if (state.showReturnButton) {
         Link {
-            this.to = "/tribes"
+            to = "/tribes"
+            tabIndex = -1
             child(CouplingButton(colorRuleSet = pink, sizeRuleSet = supersize, css = {
                 animation("pulsate", 0.75.s, iterationCount = IterationCount.infinite)
             })) {

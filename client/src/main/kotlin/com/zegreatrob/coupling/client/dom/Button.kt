@@ -94,21 +94,37 @@ val blue: RuleSet = {
     }
 }
 val white: RuleSet = {
-    backgroundColor = Color("#f3ffff")
-    color = Color("#3e474c")
+    buttonColorsWithFocus(
+        backgroundColor = Color("#f3ffff"),
+        color = Color("#3e474c")
+    )
     put("text-shadow", "none")
     rule(":hover") {
         backgroundColor = Color("#cdd7d7")
     }
 }
 val yellow: RuleSet = {
-    backgroundColor = Color("#eac435")
-    color = Color("#3e474c")
+    buttonColorsWithFocus(
+        backgroundColor = Color("#eac435"),
+        color = Color("#3e474c")
+    )
+
     put("text-shadow", "none")
     rule(":hover") {
         backgroundColor = Color("#cbaa2d")
     }
 }
+
+private fun CssBuilder.buttonColorsWithFocus(backgroundColor: Color, color: Color) {
+    this.backgroundColor = backgroundColor
+    this.color = color
+    focus {
+        outlineColor = Color.transparent
+        outlineWidth = 2.px
+        outlineOffset = 2.px
+    }
+}
+
 val black: RuleSet = {
     backgroundColor = Color("#222222")
     rule(":hover") {

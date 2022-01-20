@@ -95,6 +95,7 @@ private fun ChildrenBuilder.topControlRow(props: ConfigHeaderProps) = cssDiv(css
 
 fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/history/"
+    tabIndex = -1
     child(CouplingButton(large, lightGreen, className)) {
         i { this.className = "fa fa-history" }
         +" History!"
@@ -103,6 +104,7 @@ fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String = "") = Li
 
 fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/pins/"
+    tabIndex = -1
     child(CouplingButton(large, white, className)) {
         i { this.className = "fa fa-peace" }
         +" Pin Bag!"
@@ -111,6 +113,7 @@ fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String = "") = Link {
 
 fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/statistics"
+    tabIndex = -1
     child(CouplingButton(large, blue, className = className)) {
         i { this.className = "fa fa-database" }
         +" Statistics!"
@@ -119,6 +122,7 @@ fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String = "") = Lin
 
 fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/players/retired"
+    tabIndex = -1
     child(CouplingButton(large, yellow, className)) {
         i { this.className = "fa fa-user-slash" }
         +" Retirees!"
@@ -127,6 +131,7 @@ fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String = "") = L
 
 fun ChildrenBuilder.settingsButton(tribe: Tribe, className: String = "") = Link {
     to = "/${tribe.id.value}/edit"
+    tabIndex = -1
     child(CouplingButton(large, black, className, css = {
         fontSize = 24.px
         padding(2.px, 3.px, 0.px)

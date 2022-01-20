@@ -219,6 +219,7 @@ private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { 
 
 private fun ChildrenBuilder.prepareToSpinButton(tribe: Tribe, className: String) = Link {
     to = "/${tribe.id.value}/prepare/"
+    tabIndex = -1
     child(CouplingButton(supersize, pink, className)) {
         +"Prepare to spin!"
     }

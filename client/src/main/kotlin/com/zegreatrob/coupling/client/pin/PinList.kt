@@ -40,6 +40,7 @@ val pinList = tmFC<PinList> { (tribe, pins) ->
         div {
             Link {
                 to = "/${tribe.id.value}/pin/new"
+                tabIndex = -1
                 child(CouplingButton(large, orange)) {
                     +"Add a new pin."
                 }

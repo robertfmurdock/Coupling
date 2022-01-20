@@ -13,6 +13,7 @@ import react.router.dom.Link
 val LogoutButton = FC<Props> {
     Link {
         to = "/logout"
+        tabIndex = -1
         child(CouplingButton(large, red)) {
             i { className = "fa fa-sign-out-alt" }
             span { +"Sign Out" }

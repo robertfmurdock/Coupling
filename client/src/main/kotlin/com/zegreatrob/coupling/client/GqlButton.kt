@@ -12,6 +12,7 @@ import react.router.dom.Link
 val GqlButton = FC<Props> {
     Link {
         to = "/graphiql"
+        tabIndex = -1
         child(CouplingButton(large, white)) {
             img {
                 src = svgPath("graphql")

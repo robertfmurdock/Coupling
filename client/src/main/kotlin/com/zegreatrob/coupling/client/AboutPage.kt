@@ -42,6 +42,7 @@ private fun ChildrenBuilder.backButtonSection() = cssDiv(css = { position = Posi
 
 private fun ChildrenBuilder.backButton() = Link {
     to = "/tribes"
+    tabIndex = -1
     child(CouplingButton(large, blue, "", {})) {
         i { className = "fa fa-step-backward" }
         span { +"Back to Coupling!" }

@@ -55,6 +55,7 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
 
 private fun ChildrenBuilder.addPlayerButton(tribeId: TribeId) = Link {
     to = "/${tribeId.value}/player/new/"
+    tabIndex = -1
     child(CouplingButton(large, orange, styles["addPlayerButton"])) {
         +"Add a new player!"
     }

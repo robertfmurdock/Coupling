@@ -8,25 +8,6 @@ import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
 
-fun RBuilder.auth0Provider(
-    clientId: String,
-    domain: String,
-    redirectUri: String,
-    audience: String,
-    scope: String,
-    handler: RBuilder.() -> Unit
-) = child(
-    Auth0Provider,
-    jso {
-        this.clientId = clientId
-        this.domain = domain
-        this.redirectUri = redirectUri
-        this.cacheLocation = "localstorage"
-        this.audience = audience
-        this.scope = scope
-    }, handler
-)
-
 fun useAuth0Data(): AuthHookData {
     val hook = useAuth0()
     return AuthHookData(

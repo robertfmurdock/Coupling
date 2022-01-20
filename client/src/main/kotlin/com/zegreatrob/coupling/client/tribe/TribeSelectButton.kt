@@ -12,6 +12,7 @@ import react.router.dom.Link
 val TribeSelectButton = FC<Props> {
     Link {
         to = "/tribes/"
+        tabIndex = -1
         child(CouplingButton(large)) {
             i { className = "fa fa-arrow-circle-up" }
             span { +"Tribe select" }

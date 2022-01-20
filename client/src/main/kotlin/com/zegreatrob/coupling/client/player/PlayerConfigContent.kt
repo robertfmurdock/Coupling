@@ -108,7 +108,8 @@ private fun ChildrenBuilder.nameInput(player: Player, onChange: (ChangeEvent<*>)
         value = player.name,
         type = InputType.text,
         onChange = onChange,
-        placeholder = "My name is..."
+        placeholder = "My name is...",
+        autoFocus = true
     )
     span { +"What's your moniker?" }
 }
@@ -121,7 +122,7 @@ private fun ChildrenBuilder.emailInput(player: Player, onChange: (ChangeEvent<*>
         value = player.email,
         type = InputType.text,
         onChange = onChange,
-        placeholder = "email"
+        placeholder = "email",
     )
     span {
         +"Email provides access privileges, so you can see all Tribes you're in!"
@@ -140,7 +141,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
             value = player.callSignAdjective,
             type = InputType.text,
             onChange = onChange,
-            list = "callSignAdjectiveOptions"
+            list = "callSignAdjectiveOptions",
         )
         datalist { id = "callSignAdjectiveOptions" }
         span { +"I feel the need..." }
@@ -153,7 +154,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
             value = player.callSignNoun,
             type = InputType.text,
             onChange = onChange,
-            list = "callSignNounOptions"
+            list = "callSignNounOptions",
         )
         datalist { id = "callSignNounOptions" }
         span { +"... the need for speed!" }

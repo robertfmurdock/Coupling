@@ -164,7 +164,7 @@ private fun ChildrenBuilder.altBadgeInput(tribe: Tribe, onChange: (ChangeEvent<*
     name = "alternateBadgeName",
     value = tribe.alternateBadgeName,
     type = InputType.text,
-    onChange = onChange
+    onChange = onChange,
 )
 
 private fun ChildrenBuilder.defaultBadgeInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -173,7 +173,7 @@ private fun ChildrenBuilder.defaultBadgeInput(tribe: Tribe, onChange: (ChangeEve
     name = "defaultBadgeName",
     value = tribe.defaultBadgeName,
     type = InputType.text,
-    onChange = onChange
+    onChange = onChange,
 )
 
 private fun ChildrenBuilder.enableBadgesInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -183,7 +183,7 @@ private fun ChildrenBuilder.enableBadgesInput(tribe: Tribe, onChange: (ChangeEve
     value = tribe.id.value,
     type = InputType.checkbox,
     onChange = onChange,
-    checked = tribe.badgesEnabled
+    checked = tribe.badgesEnabled,
 )
 
 private fun ChildrenBuilder.enableAnimationsInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -193,7 +193,7 @@ private fun ChildrenBuilder.enableAnimationsInput(tribe: Tribe, onChange: (Chang
     value = tribe.id.value,
     type = InputType.checkbox,
     onChange = onChange,
-    checked = tribe.animationEnabled
+    checked = tribe.animationEnabled,
 )
 
 private fun ChildrenBuilder.enableCallSignsInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -203,7 +203,7 @@ private fun ChildrenBuilder.enableCallSignsInput(tribe: Tribe, onChange: (Change
     value = tribe.id.value,
     type = InputType.checkbox,
     onChange = onChange,
-    checked = tribe.callSignsEnabled
+    checked = tribe.callSignsEnabled,
 )
 
 private fun ChildrenBuilder.uniqueIdInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -212,7 +212,7 @@ private fun ChildrenBuilder.uniqueIdInput(tribe: Tribe, onChange: (ChangeEvent<*
     name = "id",
     value = tribe.id.value,
     type = InputType.text,
-    onChange = onChange
+    onChange = onChange,
 )
 
 private fun ChildrenBuilder.emailInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -222,7 +222,7 @@ private fun ChildrenBuilder.emailInput(tribe: Tribe, onChange: (ChangeEvent<*>) 
     value = tribe.email ?: "",
     type = InputType.text,
     onChange = onChange,
-    placeholder = "Enter the tribe email here"
+    placeholder = "Enter the tribe email here",
 )
 
 private fun ChildrenBuilder.nameInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -232,7 +232,8 @@ private fun ChildrenBuilder.nameInput(tribe: Tribe, onChange: (ChangeEvent<*>) -
     value = tribe.name ?: "",
     type = InputType.text,
     onChange = onChange,
-    placeholder = "Enter the tribe name here"
+    placeholder = "Enter the tribe name here",
+    autoFocus = true
 )
 
 private val pairingRuleDescriptions = mapOf(
