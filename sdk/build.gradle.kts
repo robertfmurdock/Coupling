@@ -23,7 +23,7 @@ kotlin {
 dependencies {
     implementation(project(":model"))
     implementation(project(":repository-core"))
-    implementation("com.zegreatrob.testmints:minjson")
+    implementation("com.zegreatrob.jsmints:minjson")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")

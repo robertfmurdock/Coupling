@@ -39,10 +39,10 @@ dependencies {
     implementation(project(":action"))
     implementation(project(":logging"))
     implementation(project(":repository-memory"))
-    implementation("com.zegreatrob.testmints:minreact")
-    implementation("com.zegreatrob.testmints:react-data-loader")
     implementation("com.zegreatrob.testmints:action")
     implementation("com.zegreatrob.testmints:action-async")
+    implementation("com.zegreatrob.jsmints:minreact")
+    implementation("com.zegreatrob.jsmints:react-data-loader")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css")
@@ -60,11 +60,11 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    testImplementation("com.zegreatrob.testmints:minenzyme")
     testImplementation("com.zegreatrob.testmints:standard")
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.testmints:minassert")
     testImplementation("com.zegreatrob.testmints:minspy")
+    testImplementation("com.zegreatrob.jsmints:minenzyme")
 }
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
