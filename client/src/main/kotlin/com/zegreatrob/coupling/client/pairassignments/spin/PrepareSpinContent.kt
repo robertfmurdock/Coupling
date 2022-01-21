@@ -86,6 +86,7 @@ private fun ChildrenBuilder.selectorAreaDiv(children: ChildrenBuilder.() -> Unit
 
 private fun ChildrenBuilder.playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     css = {
+        classes.add(styles["playerSelector"])
         display = Display.inlineBlock
         flex(1.0)
         margin(5.px)

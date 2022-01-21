@@ -128,7 +128,7 @@ We'll enter the name and then save.
 }
 
 data class AddPlayer(val tribe: Tribe, val newPlayer: Player, val players: List<Player>) : DemoAnimationState() {
-    override val descriptionSelector = ".${useStyles("player/PlayerConfig").className} h1"
+    override val descriptionSelector = ".${useStyles("player/PlayerConfig").className} li:first-of-type"
     override val description = """
 ## Now we'll add a few players. 
 
@@ -142,7 +142,7 @@ In this way, your entire team can operate Coupling.
 }
 
 data class AddPin(val tribe: Tribe, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState() {
-    override val descriptionSelector = ".${useStyles("pin/PinConfig").className} h1"
+    override val descriptionSelector = ".${useStyles("pin/PinConfig").className} li:first-of-type"
     override val description = """
 ## And now... a pin! 
 
@@ -211,8 +211,8 @@ private fun classSelector(className: String) = ".$className"
 data class PrepareToSpin(val tribe: Tribe, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
     DemoAnimationState() {
     private val prepareSpinStyles = useStyles("PrepareSpin")
-    override val descriptionSelector = ".${prepareSpinStyles.className} div:nth-of-type(2)"
-    override val placement: Placement = Placement.bottom
+    override val descriptionSelector = ".${prepareSpinStyles["playerSelector"]}"
+    override val placement: Placement = Placement.right
     override val description: String = """
         ## Time to choose today's players!
         

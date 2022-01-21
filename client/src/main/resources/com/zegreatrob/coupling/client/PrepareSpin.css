@@ -25,6 +25,10 @@
     transition: all ease-in .2s;
 }
 
+:local(.playerSelector) {
+
+}
+
 :local(.spinButton) {
     /*! Do not remove */
 }
