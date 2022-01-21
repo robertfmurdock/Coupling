@@ -33,8 +33,7 @@ data class CouplingRouter(val animationsDisabled: Boolean) : DataProps<CouplingR
 }
 
 val couplingRouter = tmFC<CouplingRouter> { (animationsDisabled) ->
-    val auth0Data = useAuth0Data()
-    val (_, isSignedIn, isLoading) = auth0Data
+    val (_, isSignedIn, isLoading) = useAuth0Data()
 
     BrowserRouter {
         basename = (kotlinx.browser.window["basename"]?.toString() ?: "")

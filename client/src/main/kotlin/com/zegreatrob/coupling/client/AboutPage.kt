@@ -13,8 +13,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 import kotlinx.css.*
-import react.ChildrenBuilder
 import react.FC
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
@@ -34,31 +34,37 @@ val AboutPage = FC<PageProps> {
     }
 }
 
-private fun ChildrenBuilder.backButtonSection() = cssDiv(css = { position = Position.relative }) {
-    cssSpan(css = { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }) {
-        backButton()
+private val backButtonSection = FC<Props> {
+    cssDiv(css = { position = Position.relative }) {
+        cssSpan(css = { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }) {
+            backButton()
+        }
     }
 }
 
-private fun ChildrenBuilder.backButton() = Link {
-    to = "/tribes"
-    tabIndex = -1
-    child(CouplingButton(large, blue, "", {})) {
-        i { className = "fa fa-step-backward" }
-        span { +"Back to Coupling!" }
+private val backButton = FC<Props> {
+    Link {
+        to = "/tribes"
+        tabIndex = -1
+        child(CouplingButton(large, blue, "", {})) {
+            i { className = "fa fa-step-backward" }
+            span { +"Back to Coupling!" }
+        }
     }
 }
 
-private fun ChildrenBuilder.playerHeader() = div {
-    val tribeId = TribeId("developers")
-    val rob by playerImage()
-    val autumn by playerImage()
+private val playerHeader = FC<Props> {
+    div {
+        val tribeId = TribeId("developers")
+        val rob by playerImage()
+        val autumn by playerImage()
 
-    listOf(
-        "left" to Player("1", name = "RoB", imageURL = rob),
-        "right" to Player("2", name = "Autumn", imageURL = autumn)
-    ).forEach { (side, player) ->
-        child(PlayerCard(tribeId, player, className = playerCardStyles(side)))
+        listOf(
+            "left" to Player("1", name = "RoB", imageURL = rob),
+            "right" to Player("2", name = "Autumn", imageURL = autumn)
+        ).forEach { (side, player) ->
+            child(PlayerCard(tribeId, player, className = playerCardStyles(side)))
+        }
     }
 }
 
