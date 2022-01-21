@@ -14,6 +14,7 @@ val LogoutButton = FC<Props> {
     Link {
         to = "/logout"
         tabIndex = -1
+        draggable = false
         child(CouplingButton(large, red)) {
             i { className = "fa fa-sign-out-alt" }
             span { +"Sign Out" }

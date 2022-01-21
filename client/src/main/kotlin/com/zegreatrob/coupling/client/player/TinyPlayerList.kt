@@ -23,6 +23,7 @@ val tinyPlayerList = tmFC<TinyPlayerList> { (tribe, players) ->
     players.forEach { player ->
         Link {
             to = tribe.id.with(player).playerConfigPage()
+            draggable = false
             val tilt = random.nextInt(7) - 3
             child(PlayerCard(tribe.id, player, linkToConfig = false, size = 40, tilt = tilt.deg), key = player.id)
         }

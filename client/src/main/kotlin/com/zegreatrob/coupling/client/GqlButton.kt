@@ -13,6 +13,7 @@ val GqlButton = FC<Props> {
     Link {
         to = "/graphiql"
         tabIndex = -1
+        draggable = false
         child(CouplingButton(large, white)) {
             img {
                 src = svgPath("graphql")

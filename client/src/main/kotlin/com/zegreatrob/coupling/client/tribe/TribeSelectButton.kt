@@ -13,6 +13,7 @@ val TribeSelectButton = FC<Props> {
     Link {
         to = "/tribes/"
         tabIndex = -1
+        draggable = false
         child(CouplingButton(large)) {
             i { className = "fa fa-arrow-circle-up" }
             span { +"Tribe select" }

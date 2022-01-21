@@ -46,6 +46,7 @@ private val backButton = FC<Props> {
     Link {
         to = "/tribes"
         tabIndex = -1
+        draggable = false
         child(CouplingButton(large, blue, "", {})) {
             i { className = "fa fa-step-backward" }
             span { +"Back to Coupling!" }

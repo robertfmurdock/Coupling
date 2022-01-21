@@ -88,6 +88,7 @@ private val AboutButton = FC<Props> {
     Link {
         to = "/about"
         tabIndex = -1
+        draggable = false
         child(CouplingButton(large, orange, "")) {
             span { +"About" }
             cssSpan(css = { margin(2.px) }) {
@@ -100,5 +101,6 @@ private val AboutButton = FC<Props> {
 private fun ChildrenBuilder.newTribeButton(className: String) = Link {
     to = "/new-tribe/"
     tabIndex = -1
+    draggable = false
     child(CouplingButton(supersize, green, className)) { +"Add a new tribe!" }
 }
