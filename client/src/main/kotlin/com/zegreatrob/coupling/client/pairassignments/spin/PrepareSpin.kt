@@ -8,8 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.router.Navigate
@@ -21,9 +20,7 @@ data class PrepareSpin(
     val currentPairsDoc: PairAssignmentDocument?,
     val pins: List<Pin>,
     val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>
-) : DataProps<PrepareSpin> {
-    override val component: TMFC<PrepareSpin> get() = prepareSpin
-}
+) : DataPropsBind<PrepareSpin>(prepareSpin)
 
 val prepareSpin = tmFC<PrepareSpin> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
     var playerSelections by useState(defaultSelections(players, currentPairsDoc))

@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import org.w3c.dom.HTMLSelectElement
@@ -29,9 +28,8 @@ data class TribeConfigContent(
     var onChange: (ChangeEvent<*>) -> Unit,
     var onSave: () -> Unit,
     var onDelete: (() -> Unit)?,
-) : DataProps<TribeConfigContent> {
-    override val component: TMFC<TribeConfigContent> get() = tribeConfigContent
-}
+) : DataPropsBind<TribeConfigContent>(tribeConfigContent)
+
 private val styles = useStyles("tribe/TribeConfig")
 
 val tribeConfigContent = tmFC<TribeConfigContent> { (tribe, isNew, onChange, onSave, onDelete) ->

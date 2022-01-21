@@ -8,8 +8,7 @@ import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
@@ -32,9 +31,7 @@ data class PlayerConfigContent(
     val onChange: (ChangeEvent<*>) -> Unit,
     val onSubmit: () -> Unit,
     val onRemove: () -> Unit
-) : DataProps<PlayerConfigContent> {
-    override val component: TMFC<PlayerConfigContent> = playerConfigContent
-}
+) : DataPropsBind<PlayerConfigContent>(playerConfigContent)
 
 private val styles = useStyles("player/PlayerConfigEditor")
 private val playerConfigStyles = useStyles("player/PlayerConfig")

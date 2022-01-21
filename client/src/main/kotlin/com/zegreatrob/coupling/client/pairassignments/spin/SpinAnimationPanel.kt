@@ -11,8 +11,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.Display
@@ -27,9 +26,7 @@ data class SpinAnimationPanel(
     val tribe: Tribe,
     val rosteredPairAssignments: RosteredPairAssignments,
     val state: SpinAnimationState
-) : DataProps<SpinAnimationPanel> {
-    override val component: TMFC<SpinAnimationPanel> get() = spinAnimationPanel
-}
+) : DataPropsBind<SpinAnimationPanel>(spinAnimationPanel)
 
 val placeholderPlayer = Player("?", name = "Next...", callSignAdjective = "--------", callSignNoun = "--------")
 

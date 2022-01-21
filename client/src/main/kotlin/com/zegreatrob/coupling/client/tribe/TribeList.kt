@@ -5,8 +5,7 @@ import com.zegreatrob.coupling.client.dom.*
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
@@ -18,9 +17,7 @@ import react.dom.html.ReactHTML.span
 import react.dom.svg.ReactSVG
 import react.router.dom.Link
 
-data class TribeList(val tribes: List<Tribe>) : DataProps<TribeList> {
-    override val component: TMFC<TribeList> get() = tribeList
-}
+data class TribeList(val tribes: List<Tribe>) : DataPropsBind<TribeList>(tribeList)
 
 private val styles = useStyles("tribe/TribeList")
 

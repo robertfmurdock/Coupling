@@ -1,8 +1,7 @@
 package com.zegreatrob.coupling.client.dom
 
 import com.zegreatrob.coupling.client.cssButton
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
@@ -140,9 +139,7 @@ data class CouplingButton(
     val onClick: () -> Unit = {},
     val attrs: BUTTON.() -> Unit = {},
     val css: CssBuilder.() -> Unit = {}
-) : DataProps<CouplingButton> {
-    override val component: TMFC<CouplingButton> get() = couplingButton
-}
+) : DataPropsBind<CouplingButton> (couplingButton)
 
 val couplingButton = tmFC<CouplingButton> { props ->
     val (sizeRuleSet, colorRuleSet, className, onClick, block, css) = props

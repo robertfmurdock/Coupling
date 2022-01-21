@@ -3,8 +3,7 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.marginLeft
@@ -16,9 +15,7 @@ data class PinSection(
     val scale: PinButtonScale = PinButtonScale.Small,
     val canDrag: Boolean = false,
     val className: String = ""
-) : DataProps<PinSection> {
-    override val component: TMFC<PinSection> get() = pinSection
-}
+) : DataPropsBind<PinSection>(pinSection)
 
 private val styles = useStyles("pin/PinSection")
 

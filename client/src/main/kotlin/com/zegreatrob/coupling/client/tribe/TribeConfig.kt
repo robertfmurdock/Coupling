@@ -8,8 +8,7 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.router.Navigate
@@ -17,9 +16,7 @@ import react.useState
 import kotlin.js.Json
 
 data class TribeConfig(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) :
-    DataProps<TribeConfig> {
-    override val component: TMFC<TribeConfig> get() = tribeConfig
-}
+    DataPropsBind<TribeConfig>(tribeConfig)
 
 interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
     override val tribeRepository: TribeRepository

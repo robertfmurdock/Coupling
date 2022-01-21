@@ -4,8 +4,7 @@ import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
@@ -27,9 +26,7 @@ data class PinButton(
     val className: String = "",
     val showTooltip: Boolean = true,
     val onClick: () -> Unit = {}
-) : DataProps<PinButton> {
-    override val component: TMFC<PinButton> get() = pinButton
-}
+) : DataPropsBind<PinButton>(pinButton)
 
 private val styles = useStyles("pin/PinButton")
 

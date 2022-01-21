@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
@@ -13,9 +13,7 @@ data class FrameRunner<S>(
     val sequence: Sequence<Frame<S>>,
     val speed: Double,
     val children: ChildrenBuilder.(value: S) -> Unit
-) : DataProps<FrameRunner<S>> {
-    override val component: TMFC<FrameRunner<S>> get() = fR()
-}
+) : DataPropsBind<FrameRunner<S>>(fR())
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second
 private fun <A, B, B2> Pair<A, B>.letSecond(transform: (B) -> B2) = first to transform(second)

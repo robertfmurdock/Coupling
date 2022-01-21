@@ -7,8 +7,7 @@ import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
@@ -28,9 +27,7 @@ data class PlayerCard(
     val onClick: ((Event) -> Unit) = {},
     val deselected: Boolean = false,
     val tilt: Angle = 0.deg
-) : DataProps<PlayerCard> {
-    override val component: TMFC<PlayerCard> get() = playerCard
-}
+) : DataPropsBind<PlayerCard>(playerCard)
 
 private val styles = useStyles("player/PlayerCard")
 

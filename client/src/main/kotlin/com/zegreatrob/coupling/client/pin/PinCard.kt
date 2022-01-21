@@ -3,17 +3,14 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 
-data class PinCard(val tribeId: TribeId, val pin: Pin, val shouldLink: Boolean = true) : DataProps<PinCard> {
-    override val component: TMFC<PinCard> get() = pinCard
-}
+data class PinCard(val tribeId: TribeId, val pin: Pin, val shouldLink: Boolean = true) : DataPropsBind<PinCard>(pinCard)
 
 private val styles = useStyles("pin/PinCard")
 

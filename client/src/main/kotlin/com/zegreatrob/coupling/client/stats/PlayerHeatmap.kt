@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
@@ -15,9 +14,7 @@ import react.dom.html.ReactHTML.div
 import react.key
 
 data class PlayerHeatmap(val tribe: Tribe, val players: List<Player>, val heatmapData: List<List<Double?>>) :
-    DataProps<PlayerHeatmap> {
-    override val component: TMFC<PlayerHeatmap> = playerHeatmap
-}
+    DataPropsBind<PlayerHeatmap>(playerHeatmap)
 
 private val styles = useStyles("stats/PlayerHeatmap")
 

@@ -7,8 +7,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignmen
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
@@ -22,9 +21,7 @@ data class PairAssignmentsAnimator(
     val pairAssignments: PairAssignmentDocument,
     val enabled: Boolean,
     val children: ChildrenBuilder.() -> Unit
-) : DataProps<PairAssignmentsAnimator> {
-    override val component: TMFC<PairAssignmentsAnimator> get() = pairAssignmentsAnimator
-}
+) : DataPropsBind<PairAssignmentsAnimator>(pairAssignmentsAnimator)
 
 private val animationContextConsumer: Consumer<Boolean> = animationsDisabledContext.Consumer
 

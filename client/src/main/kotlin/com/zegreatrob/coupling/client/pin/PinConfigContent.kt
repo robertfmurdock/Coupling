@@ -11,8 +11,7 @@ import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
@@ -35,9 +34,7 @@ data class PinConfigContent(
     val onChange: (ChangeEvent<*>) -> Unit,
     val onSubmit: () -> Unit,
     val onRemove: (() -> Unit)?
-) : DataProps<PinConfigContent> {
-    override val component: TMFC<PinConfigContent> = pinConfigContent
-}
+) : DataPropsBind<PinConfigContent>(pinConfigContent)
 
 private val pinConfigStyles = useStyles("pin/PinConfig")
 

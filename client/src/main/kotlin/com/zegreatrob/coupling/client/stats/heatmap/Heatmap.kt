@@ -3,8 +3,7 @@ package com.zegreatrob.coupling.client.stats.heatmap
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.height
 import kotlinx.css.px
@@ -18,9 +17,7 @@ import react.useRef
 @JsModule("com/zegreatrob/coupling/client/components/heatmap/D3Heatmap")
 external val d3Heatmap: dynamic
 
-data class Heatmap(val data: List<List<Double?>>, val className: String) : DataProps<Heatmap> {
-    override val component: TMFC<Heatmap> get() = heatmap
-}
+data class Heatmap(val data: List<List<Double?>>, val className: String) : DataPropsBind<Heatmap>(heatmap)
 
 private val styles = useStyles("stats/heatmap/Heatmap")
 

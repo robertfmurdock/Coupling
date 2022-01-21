@@ -12,8 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import org.w3c.dom.Node
@@ -23,9 +22,7 @@ import react.dom.html.ReactHTML.span
 
 private val styles = useStyles("Welcome")
 
-data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataProps<Welcome> {
-    override val component: TMFC<Welcome> get() = welcome
-}
+data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataPropsBind<Welcome>(welcome)
 
 val welcome = tmFC { (randomProvider): Welcome ->
     var showLoginChooser by useState(false)

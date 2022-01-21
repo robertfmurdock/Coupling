@@ -15,8 +15,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.Display
@@ -39,9 +38,7 @@ data class AssignedPair(
     val canDrag: Boolean,
     val swapPlayersFunc: (PinnedPlayer, String) -> Unit = { _, _ -> },
     val pinDropFunc: PinMoveCallback = {}
-) : DataProps<AssignedPair> {
-    override val component: TMFC<AssignedPair> get() = assignedPair
-}
+) : DataPropsBind<AssignedPair>(assignedPair)
 
 typealias PinMoveCallback = (String) -> Unit
 

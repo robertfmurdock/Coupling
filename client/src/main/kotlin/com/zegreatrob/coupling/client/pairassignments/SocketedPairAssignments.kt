@@ -12,8 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.coroutines.MainScope
@@ -30,9 +29,7 @@ data class SocketedPairAssignments(
     val pairAssignments: PairAssignmentDocument?,
     val controls: Controls<PairAssignmentsCommandDispatcher>,
     val allowSave: Boolean
-) : DataProps<SocketedPairAssignments> {
-    override val component: TMFC<SocketedPairAssignments> get() = socketedPairAssignments
-}
+) : DataPropsBind<SocketedPairAssignments>(socketedPairAssignments)
 
 val socketedPairAssignments = tmFC<SocketedPairAssignments> { (tribe, players, originalPairs, controls, allowSave) ->
     val (pairAssignments, setPairAssignments) = useState(originalPairs)

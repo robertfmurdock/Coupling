@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.client.pin.PinConfigContent
 import com.zegreatrob.coupling.client.player.PlayerConfigContent
 import com.zegreatrob.coupling.client.tribe.TribeConfigContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.testmints.action.async.SuspendAction
@@ -30,9 +30,7 @@ import react.popper.PopperInstance
 import react.popper.UsePopperOptions
 import react.popper.usePopper
 
-data class DemoPageFrame(val state: DemoAnimationState) : DataProps<DemoPageFrame> {
-    override val component = demoPageFrame
-}
+data class DemoPageFrame(val state: DemoAnimationState) : DataPropsBind<DemoPageFrame>(demoPageFrame)
 
 private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
     val popperRef = useRef<HTMLElement>()

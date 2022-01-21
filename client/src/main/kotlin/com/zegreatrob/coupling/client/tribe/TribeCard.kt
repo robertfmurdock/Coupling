@@ -8,8 +8,7 @@ import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
@@ -20,9 +19,7 @@ import react.dom.html.ReactHTML
 import react.router.dom.Link
 import kotlin.collections.set
 
-data class TribeCard(val tribe: Tribe, val size: Int = 150) : DataProps<TribeCard> {
-    override val component: TMFC<TribeCard> = tribeCard
-}
+data class TribeCard(val tribe: Tribe, val size: Int = 150) : DataPropsBind<TribeCard>(tribeCard)
 
 private val styles = useStyles("tribe/TribeCard")
 

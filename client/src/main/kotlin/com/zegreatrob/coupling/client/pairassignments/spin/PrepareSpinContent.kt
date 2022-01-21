@@ -15,8 +15,7 @@ import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
@@ -42,9 +41,7 @@ data class PrepareSpinContent(
     var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     var setPinSelections: (List<String?>) -> Unit,
     var onSpin: () -> Unit
-) : DataProps<PrepareSpinContent> {
-    override val component: TMFC<PrepareSpinContent> get() = prepareSpinContent
-}
+) : DataPropsBind<PrepareSpinContent>(prepareSpinContent)
 
 val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
     val (tribe, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props

@@ -9,8 +9,7 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.RuleSet
@@ -25,9 +24,7 @@ data class PlayerRoster(
     val tribeId: TribeId,
     val className: String? = null,
     val cssOverrides: RuleSet = {}
-) : DataProps<PlayerRoster> {
-    override val component: TMFC<PlayerRoster> get() = playerRoster
-}
+) : DataPropsBind<PlayerRoster>(playerRoster)
 
 private val styles = useStyles("player/PlayerRoster")
 
@@ -40,7 +37,7 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
         css = { overrides() }
     ) {
         div {
-            if(players.isNotEmpty()) {
+            if (players.isNotEmpty()) {
                 div {
                     this.className = styles["header"]
                     +(label ?: "Players")

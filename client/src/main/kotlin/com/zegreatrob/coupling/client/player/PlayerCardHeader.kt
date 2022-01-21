@@ -7,8 +7,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 
 private val styles = useStyles("player/PlayerCard")
@@ -18,9 +17,7 @@ data class PlayerCardHeader(
     val player: Player,
     val linkToConfig: Boolean,
     val size: Int
-) : DataProps<PlayerCardHeader> {
-    override val component: TMFC<PlayerCardHeader> get() = playerCardHeader
-}
+) : DataPropsBind<PlayerCardHeader>(playerCardHeader)
 
 private val playerCardHeader = tmFC<PlayerCardHeader> { props ->
     val (tribeId, player, linkToConfig, size) = props

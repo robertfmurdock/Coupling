@@ -3,8 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.dom.html.ReactHTML.div
@@ -16,9 +15,7 @@ val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> Stri
 
 private val styles = useStyles("stats/TribeStatistics")
 
-data class TribeStatistics(val queryResults: StatisticQueryResults) : DataProps<TribeStatistics> {
-    override val component: TMFC<TribeStatistics> = tribeStatistics
-}
+data class TribeStatistics(val queryResults: StatisticQueryResults) : DataPropsBind<TribeStatistics>(tribeStatistics)
 
 val tribeStatistics = tmFC<TribeStatistics> { props ->
     val (tribe, players, _, allStats, heatmapData) = props.queryResults

@@ -12,8 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
@@ -27,9 +26,7 @@ data class CurrentPairAssignmentsPanel(
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
     val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
-) : DataProps<CurrentPairAssignmentsPanel> {
-    override val component: TMFC<CurrentPairAssignmentsPanel> get() = currentPairAssignmentsPanel
-}
+) : DataPropsBind<CurrentPairAssignmentsPanel> (currentPairAssignmentsPanel)
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 

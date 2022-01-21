@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
 import org.w3c.dom.get
@@ -48,9 +47,7 @@ data class CouplingWebsocket(
     val onMessage: (Message) -> Unit,
     val token: String,
     val children: ChildrenBuilder.(value: ((Message) -> Unit)?) -> Unit
-) : DataProps<CouplingWebsocket> {
-    override val component: TMFC<CouplingWebsocket> get() = couplingWebsocket
-}
+) : DataPropsBind<CouplingWebsocket> (couplingWebsocket)
 
 private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->
     val websocket = ref.current

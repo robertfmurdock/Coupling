@@ -9,8 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
@@ -20,9 +19,9 @@ import react.key
 
 private val styles = useStyles("stats/PairReportTable")
 
-data class PairReportTable(val tribe: Tribe, val pairReports: List<PairReport>) : DataProps<PairReportTable> {
-    override val component: TMFC<PairReportTable> = pairReportTable
-}
+data class PairReportTable(val tribe: Tribe, val pairReports: List<PairReport>) : DataPropsBind<PairReportTable>(
+    pairReportTable
+)
 
 val pairReportTable = tmFC<PairReportTable> { (tribe, pairReports) ->
     div {
@@ -35,7 +34,7 @@ val pairReportTable = tmFC<PairReportTable> { (tribe, pairReports) ->
 
 private fun ChildrenBuilder.pairReport(index: Int, pairReport: PairReport, tribe: Tribe) = div {
     className = styles["pairReport"]
-     key = "$index"
+    key = "$index"
     pairReport.pair.asArray().map { player -> reportPlayerCard(player, tribe) }
 
     div {

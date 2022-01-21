@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import react.router.Navigate
 import react.useState
@@ -21,9 +21,7 @@ data class PlayerConfig(
     val players: List<Player>,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out PlayerConfigDispatcher>
-) : DataProps<PlayerConfig> {
-    override val component get() = playerConfig
-}
+) : DataPropsBind<PlayerConfig>(playerConfig)
 
 val playerConfig by lazy { playerConfigFunc(WindowFunctions) }
 

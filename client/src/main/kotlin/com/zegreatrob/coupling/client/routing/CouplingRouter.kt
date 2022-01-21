@@ -19,7 +19,7 @@ import com.zegreatrob.coupling.client.tribe.TribeConfigPage
 import com.zegreatrob.coupling.client.tribe.TribeListPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.welcome.WelcomePage
-import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
 import org.w3c.dom.get
@@ -28,9 +28,7 @@ import react.dom.html.ReactHTML.div
 import react.router.*
 import react.router.dom.BrowserRouter
 
-data class CouplingRouter(val animationsDisabled: Boolean) : DataProps<CouplingRouter> {
-    override val component get() = couplingRouter
-}
+data class CouplingRouter(val animationsDisabled: Boolean) : DataPropsBind<CouplingRouter> (couplingRouter)
 
 val couplingRouter = tmFC<CouplingRouter> { (animationsDisabled) ->
     val (_, isSignedIn, isLoading) = useAuth0Data()

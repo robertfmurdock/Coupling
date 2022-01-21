@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.Paths.playerConfigPage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.properties.deg
@@ -13,9 +13,7 @@ import react.useState
 import kotlin.js.Date
 import kotlin.random.Random
 
-data class TinyPlayerList(val tribe: Tribe, val players: List<Player>) : DataProps<TinyPlayerList> {
-    override val component = tinyPlayerList
-}
+data class TinyPlayerList(val tribe: Tribe, val players: List<Player>) : DataPropsBind<TinyPlayerList>(tinyPlayerList)
 
 val tinyPlayerList = tmFC<TinyPlayerList> { (tribe, players) ->
     val ref by useState { Date.now().toLong() }

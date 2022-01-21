@@ -2,8 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
@@ -12,9 +11,7 @@ data class TeamStatistics(
     val spinsUntilFullRotation: Int,
     val activePlayerCount: Int,
     val medianSpinDuration: String
-) : DataProps<TeamStatistics> {
-    override val component: TMFC<TeamStatistics> = teamStatistics
-}
+) : DataPropsBind<TeamStatistics>(teamStatistics)
 
 private val styles = useStyles("stats/TeamStatistics")
 

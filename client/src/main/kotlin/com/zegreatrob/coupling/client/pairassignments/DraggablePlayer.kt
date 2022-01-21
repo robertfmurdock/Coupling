@@ -5,8 +5,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.properties.Angle
@@ -17,9 +16,7 @@ data class DraggablePlayer(
     val zoomOnHover: Boolean,
     val tilt: Angle,
     val onPlayerDrop: (String) -> Unit
-) : DataProps<DraggablePlayer> {
-    override val component: TMFC<DraggablePlayer> get() = draggablePlayer
-}
+) : DataPropsBind<DraggablePlayer> (draggablePlayer)
 
 const val playerDragItemType = "PLAYER"
 

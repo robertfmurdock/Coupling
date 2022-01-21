@@ -19,8 +19,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
@@ -52,9 +51,7 @@ data class PairAssignments(
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     val message: CouplingSocketMessage,
     val allowSave: Boolean
-) : DataProps<PairAssignments> {
-    override val component: TMFC<PairAssignments> get() = com.zegreatrob.coupling.client.pairassignments.pairAssignments
-}
+) : DataPropsBind<PairAssignments>(com.zegreatrob.coupling.client.pairassignments.pairAssignments)
 
 private val styles = useStyles("pairassignments/PairAssignments")
 
