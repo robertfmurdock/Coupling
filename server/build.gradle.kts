@@ -182,11 +182,11 @@ tasks {
     }
 
     val serverlessBuild by creating(NodeExec::class) {
-        this.configureBuild("prod")
+        configureBuild("prod")
     }
 
     val serverlessBuildSandbox by creating(NodeExec::class) {
-        this.configureBuild("sandbox")
+        configureBuild("sandbox")
     }
 
     fun NodeExec.configureDeploy(stage: String) {
@@ -222,7 +222,16 @@ tasks {
         configureDeploy("sandbox")
     }
 
-    findByPath(":release")!!.finalizedBy(serverlessDeploy, serverlessSandboxDeploy)
+    val serverlessBuildPrerelease by creating(NodeExec::class) {
+        configureBuild("prerelease")
+    }
+
+    val serverlessPrereleaseDeploy by creating(NodeExec::class) {
+        dependsOn(serverlessBuildPrerelease)
+        configureDeploy("prerelease")
+    }
+
+    findByPath(":release")!!.finalizedBy(serverlessDeploy, serverlessSandboxDeploy, serverlessPrereleaseDeploy)
 
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
