@@ -2,7 +2,7 @@ const path = require('path');
 
 const resourcesPath = path.resolve(__dirname, 'build/processedResources/js/main');
 const config = {
-    mode: "development",
+    mode: "production",
     entry: "Coupling-server",
     output: {
         path: path.resolve(__dirname, 'build/webpack-output'),
@@ -15,7 +15,6 @@ const config = {
     },
     target: 'node',
     externals: ["aws-sdk"],
-    devtool: 'eval-source-map',
     resolve: {
         extensions: ['.js'],
         modules: [
