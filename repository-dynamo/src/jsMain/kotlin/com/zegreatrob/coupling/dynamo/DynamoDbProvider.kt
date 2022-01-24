@@ -15,7 +15,12 @@ object DynamoDbProvider : DynamoDBSyntax {
     val logger = KotlinLogging.logger("DYNAMODB")
 
     private fun dynamoConfig(): Json {
-        val json = json("region" to "us-east-1")
+        val json = json(
+            "region" to "us-east-1",
+            "retryMode" to "standard",
+            "useFipsEndpoint" to false,
+            "useDualstackEndpoint" to false,
+        )
         val secret = js("process.env.AWS_SECRET_ACCESS_KEY").unsafeCast<String?>()
         val localDynamo = js("process.env.LOCAL_DYNAMO").unsafeCast<String?>() == "true"
         return if (!localDynamo && secret != null) {
