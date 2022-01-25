@@ -22,6 +22,7 @@ val primaryTestPassword = Process.getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
 val primaryAuthorizedSdkDeferred by lazy {
     MainScope().async {
         authorizedKtorSdk(primaryAuthorizedUsername, primaryTestPassword)
+            .apply { deleteAnyDisplayedTribes() }
     }
 }
 
@@ -31,6 +32,13 @@ val altTestPassword = Process.getEnv("COUPLING_ALT_TEST_PASSWORD") ?: ""
 val altAuthorizedSdkDeferred by lazy {
     MainScope().async {
         authorizedKtorSdk(altAuthorizedUsername, altTestPassword)
+            .apply { deleteAnyDisplayedTribes() }
+    }
+}
+
+private suspend fun AuthorizedKtorSdk.deleteAnyDisplayedTribes() {
+    getTribes().forEach {
+        delete(it.data.id)
     }
 }
 

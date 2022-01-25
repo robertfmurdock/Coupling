@@ -14,4 +14,5 @@ object Mutations {
 
 object Queries {
     val listTribes by LoadGqlFile
+    val user by LoadGqlFile
 }

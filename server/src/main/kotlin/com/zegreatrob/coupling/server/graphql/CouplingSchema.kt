@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.server.entity.tribe.deleteTribeResolver
 import com.zegreatrob.coupling.server.entity.tribe.saveTribeResolver
 import com.zegreatrob.coupling.server.entity.tribe.tribeListResolve
 import com.zegreatrob.coupling.server.entity.tribe.tribeResolve
+import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.external.graphql_tools.makeExecutableSchema
 import kotlin.js.json
@@ -27,6 +28,7 @@ fun couplingSchema() = makeExecutableSchema(
 
 fun couplingResolvers() = json(
     "Query" to json(
+        "user" to userResolve,
         "tribeList" to tribeListResolve,
         "tribeData" to entityWithId,
     ),

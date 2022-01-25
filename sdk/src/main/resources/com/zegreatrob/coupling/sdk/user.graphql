@@ -1,0 +1,10 @@
+query user {
+    user {
+        id
+        email
+        authorizedTribeIds
+        modifyingUserEmail
+        timestamp
+        isDeleted
+    }
+}

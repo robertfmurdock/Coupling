@@ -41,7 +41,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     } exercise {
         repository.getUser()
     } verify { result ->
-        result?.data
+        result!!.data
             .assertIsEqualTo(updatedUser)
     }
 
@@ -72,7 +72,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     } exercise {
         repository.getUser()
     } verify { result ->
-        result?.data
+        result!!.data
             .assertIsEqualTo(updatedUser2)
     }
 

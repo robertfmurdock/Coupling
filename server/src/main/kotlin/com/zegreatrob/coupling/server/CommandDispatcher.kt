@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.*
+import com.zegreatrob.coupling.server.action.user.UserQueryDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
@@ -33,6 +34,7 @@ interface ICommandDispatcher :
     TribeDispatcher,
     PairAssignmentDispatcher,
     UserDispatcher,
+    UserQueryDispatcher,
     ConnectTribeUserCommandDispatcher,
     ConnectionsQueryDispatcher,
     DisconnectTribeUserCommandDispatcher,
