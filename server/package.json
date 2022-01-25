@@ -12,6 +12,7 @@
     "@aws-sdk/client-lambda": "~3.48.0",
     "@aws-sdk/smithy-client": "^3.47.2",
     "@graphql-tools/schema": "^8.3.1",
+    "@graphql-tools/stitch": "^8.4.3",
     "aws-sdk": "2.1062.0",
     "body-parser": "^1.19.1",
     "compression": "^1.7.4",

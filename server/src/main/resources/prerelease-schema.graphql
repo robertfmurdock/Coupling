@@ -1,0 +1,14 @@
+type BoostRecord {
+    id: String!
+    userId: String!
+    tribeIds: [String]!
+    expirationDate: String
+    modifyingUserEmail: String
+    timestamp: String
+    isDeleted: Boolean
+}
+
+type TribeData {
+    id: String!
+    boost: BoostRecord
+}

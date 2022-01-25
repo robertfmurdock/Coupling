@@ -2,5 +2,6 @@
   "WEBSOCKET_HOST": "socket.local",
   "AUTH0_CLIENT_ID": null,
   "CLIENT_BASENAME": "/local",
+  "ENABLE_PRERELEASE_FEATURES": "true",
   "DYNAMO_PREFIX" : "local-"
 }

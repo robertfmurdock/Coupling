@@ -23,7 +23,6 @@ type UserRecord {
     isDeleted: Boolean
 }
 
-
 type Pin {
     id: String!
     icon: String
@@ -188,8 +187,6 @@ input PinnedPlayerInput {
     pins: [PinInput]!
 }
 
-
-
 """
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
@@ -198,7 +195,6 @@ type Query {
     tribeData(id: String!): TribeData
     user: UserRecord
 }
-
 
 """
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)

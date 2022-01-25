@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.server.Process
 import org.w3c.dom.url.URL
 
 object Config {
+    val prereleaseMode: Boolean = Process.getEnv("ENABLE_PRERELEASE_FEATURES")?.toBoolean() ?: false
     val port get() = Process.getEnv("PORT")?.toIntOrNull() ?: 3000
     val disableLogging get() = Process.getEnv("DISABLE_LOGGING")?.toBoolean() ?: false
     const val buildDate: String = "None"

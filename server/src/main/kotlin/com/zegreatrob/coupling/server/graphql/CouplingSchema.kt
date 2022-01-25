@@ -13,8 +13,11 @@ import com.zegreatrob.coupling.server.entity.tribe.saveTribeResolver
 import com.zegreatrob.coupling.server.entity.tribe.tribeListResolve
 import com.zegreatrob.coupling.server.entity.tribe.tribeResolve
 import com.zegreatrob.coupling.server.entity.user.userResolve
+import com.zegreatrob.coupling.server.express.Config
+import com.zegreatrob.coupling.server.external.graphql.GraphQLSchema
 import com.zegreatrob.coupling.server.external.graphql.Resolver
-import com.zegreatrob.coupling.server.external.graphql_tools.makeExecutableSchema
+import com.zegreatrob.coupling.server.external.graphql_tools.schema.makeExecutableSchema
+import com.zegreatrob.coupling.server.external.graphql_tools.stitch.stitchSchemas
 import kotlin.js.json
 
 private val entityWithId: Resolver = { _, args, _ -> json("id" to args["id"]) }
@@ -25,6 +28,25 @@ fun couplingSchema() = makeExecutableSchema(
         "resolvers" to couplingResolvers()
     )
 )
+
+fun prereleaseSchema() = makeExecutableSchema(
+    json(
+        "typeDefs" to "${js("require('prerelease-schema.graphql')").default}",
+    )
+)
+
+fun unifiedSchema() = addPrereleaseSchema(couplingSchema())
+
+private fun addPrereleaseSchema(standardSchema: GraphQLSchema) = if (!Config.prereleaseMode) standardSchema else {
+    stitchSchemas(
+        json(
+            "subschemas" to arrayOf(
+                json("schema" to standardSchema),
+                json("schema" to prereleaseSchema())
+            )
+        )
+    )
+}
 
 fun couplingResolvers() = json(
     "Query" to json(
