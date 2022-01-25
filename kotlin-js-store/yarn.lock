@@ -2573,7 +2573,7 @@
     request "^2.88.0"
     request-promise-native "^1.0.8"
 
-"@testim/chrome-version@^1.0.7":
+"@testim/chrome-version@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@testim/chrome-version/-/chrome-version-1.1.2.tgz#092005c5b77bd3bb6576a4677110a11485e11864"
   integrity sha512-1c4ZOETSRpI0iBfIFUqU4KqwBAB2lHUAlBjZz/YqOHqwM9dTTzjV6Km0ZkiEiSCx/tLr1BtESIKyWWMww+RUqw==
@@ -3851,12 +3851,19 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axios@^0.21.1, axios@^0.21.2:
+axios@^0.21.1:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   dependencies:
     follow-redirects "^1.14.0"
+
+axios@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
+  dependencies:
+    follow-redirects "^1.14.4"
 
 "babel-plugin-styled-components@>= 1.12.0":
   version "2.0.2"
@@ -4459,13 +4466,13 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@97.0.0:
-  version "97.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-97.0.0.tgz#7005b1a15a6456558d0fc4d5b72c98c12d1b033d"
-  integrity sha512-SZ9MW+/6/Ypz20CNdRKocsmRM2AJ/YwHaWpA1Np2QVPFUbhjhus6vBtqFD+l8M5qrktLWPQSjTwIsDckNfXIRg==
+chromedriver@97.0.2:
+  version "97.0.2"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-97.0.2.tgz#b6c26f6667ad40dc8cf08818878cc064787116fc"
+  integrity sha512-sOAfKCR3WsHvmKedZoWa+3tBVGdPtxq4zKxgKZCoJ2c924olBTW4Bnha6SHl93Yo7+QqsNn6ZpAC0ojhutacAg==
   dependencies:
-    "@testim/chrome-version" "^1.0.7"
-    axios "^0.21.2"
+    "@testim/chrome-version" "^1.1.2"
+    axios "^0.24.0"
     del "^6.0.0"
     extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
@@ -6782,7 +6789,7 @@ flip-toolkit@7.0.13:
   dependencies:
     rematrix "0.2.2"
 
-follow-redirects@^1.0.0, follow-redirects@^1.14.0:
+follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.14.4:
   version "1.14.7"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
   integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
@@ -11726,7 +11733,7 @@ serverless-offline@^8.3.1:
     velocityjs "^2.0.5"
     ws "^7.5.6"
 
-serverless@^2.72.1:
+serverless@^2.72.2:
   version "2.72.2"
   resolved "https://registry.yarnpkg.com/serverless/-/serverless-2.72.2.tgz#bb09965818cfa0683018900717c393a464a1ee5d"
   integrity sha512-xlxaWyq4b58DIX3prwIikBmXj0z4R+YI9zcDPYgQc78mKJ0qTgCK7BMoy6dlVuHXnfhBkhT3uT/EhFvjKIdk6g==
