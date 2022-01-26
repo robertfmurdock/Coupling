@@ -15,6 +15,7 @@ import com.zegreatrob.minreact.child
 import kotlinx.css.*
 import react.FC
 import react.Props
+import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
@@ -23,12 +24,18 @@ import react.router.dom.Link
 private val styles = useStyles("About")
 
 val AboutPage = FC<PageProps> {
+    aboutPageContent {
+        Markdown { +loadMarkdownString("About") }
+    }
+}
+
+val aboutPageContent = FC<PropsWithChildren> {
     div {
         className = styles.className
         div {
             className = styles["content"]
             backButtonSection()
-            Markdown { +loadMarkdownString("About") }
+            it.children()
             playerHeader()
         }
     }

@@ -87,9 +87,28 @@ private fun <T> List<T>.pairWithDurations(firstDuration: Int, duration: Int) = m
     it to if (index == 0) firstDuration else duration
 }
 
-object Start : DemoAnimationState()
+object Start : DemoAnimationState() {
+    val text = """
+        # A Demo of Coupling
+        
+        How's this thing work? Well here's some typical usage.
+        
+        ---
+        
+""".trimIndent()
+}
 
-object ShowIntro : DemoAnimationState()
+object ShowIntro : DemoAnimationState() {
+    val text = """
+        # A Demo of Coupling
+        
+        Alright! Here we go!
+        
+        ---
+        
+        #### See you on the other side!
+""".trimIndent()
+}
 
 fun makeTribeSequence() = demoTribe.name.rangeOfStringLength().map { index ->
     MakeTribe(demoTribe.copy(name = demoTribe.name?.substring(0, index)))
@@ -184,7 +203,7 @@ Its time to spin!
 
 We'll hit the spin button.
 """
-    } else if(allowSave){
+    } else if (allowSave) {
         """
             ## Here they are!
         

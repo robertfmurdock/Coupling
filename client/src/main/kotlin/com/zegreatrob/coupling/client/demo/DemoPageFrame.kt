@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.client.aboutPageContent
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
@@ -61,8 +62,8 @@ private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
 
         cssDiv(css = { pointerEvents = PointerEvents.none }) {
             when (state) {
-                Start -> +"Starting..."
-                ShowIntro -> +"Alright, here's an example of how you might use the app."
+                is Start -> aboutPageContent { Markdown { +state.text } }
+                is ShowIntro -> aboutPageContent { Markdown { +state.text } }
                 is MakeTribe -> tribeConfigFrame(state)
                 is AddPlayer -> playerConfigFrame(state)
                 is AddPin -> pinConfigFrame(state)
@@ -92,20 +93,25 @@ private fun ChildrenBuilder.popperDiv(
     arrowRef: MutableRefObject<HTMLElement>,
     state: DemoAnimationState,
     popperInstance: PopperInstance
-) = div {
-    className = styles["popper"]
-    ref = popperRef
-    style = popperInstance.styles[Popper]
-    +popperInstance.attributes[Popper]
-    Markdown { +state.description }
-    if (state.showReturnButton) {
-        returnToCouplingButton()
-    }
+) = cssDiv(css = {
+    if (state.description.isBlank()) display = Display.none
+}) {
     div {
-        className = styles["arrow"]
-        ref = arrowRef
-        style = popperInstance.styles[Arrow]
-        +popperInstance.attributes[Arrow]
+        className = styles["popper"]
+        ref = popperRef
+        style = popperInstance.styles[Popper]
+
+        +popperInstance.attributes[Popper]
+        Markdown { +state.description }
+        if (state.showReturnButton) {
+            returnToCouplingButton()
+        }
+        div {
+            className = styles["arrow"]
+            ref = arrowRef
+            style = popperInstance.styles[Arrow]
+            +popperInstance.attributes[Arrow]
+        }
     }
 }
 
