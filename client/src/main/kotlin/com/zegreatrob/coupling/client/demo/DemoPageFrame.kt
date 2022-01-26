@@ -53,7 +53,7 @@ private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
         cssDiv(css = {
             position = Position.absolute
             backgroundColor = Color("#e3002b61")
-            width = 100.pct
+            width = 100.vw
             marginLeft = LinearDimension.auto
             marginRight = LinearDimension.auto
         }) {

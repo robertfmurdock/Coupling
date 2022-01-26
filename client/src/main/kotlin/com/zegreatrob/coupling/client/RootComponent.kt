@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.external.auth0.react.Auth0Provider
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions.Companion.window
 import com.zegreatrob.coupling.client.routing.CouplingRouter
 import com.zegreatrob.minreact.child
-import kotlinx.css.*
 import org.w3c.dom.get
 import react.FC
 import react.Props
@@ -20,12 +19,6 @@ val RootComponent = FC<Props> {
         scope = "email"
         useRefreshTokens = true
 
-        cssDiv(css = {
-            display = Display.inlineBlock
-            minHeight = 100.vh
-            margin(0.px, 20.px)
-        }) {
-            child(CouplingRouter(animationsDisabled))
-        }
+        child(CouplingRouter(animationsDisabled))
     }
 }

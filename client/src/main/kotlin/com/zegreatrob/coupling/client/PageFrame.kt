@@ -19,6 +19,9 @@ val pageFrame = tmFC<PageFrame> { props ->
         borderLeftWidth = 12.px
         borderRightWidth = 12.px
         borderRadius = 82.px
+        margin(0.px, 20.px)
+        display = Display.inlineBlock
+        minHeight = 100.vh
         this.borderColor = props.borderColor
         this.backgroundColor = props.backgroundColor
     }, attrs = { props.className?.let { this.classes = setOf(it) } }) {
