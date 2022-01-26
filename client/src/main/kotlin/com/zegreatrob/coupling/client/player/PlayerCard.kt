@@ -31,8 +31,7 @@ data class PlayerCard(
 
 private val styles = useStyles("player/PlayerCard")
 
-val playerCard = tmFC<PlayerCard> { props ->
-    val (tribeId, player, linkToConfig, className, size, onClick, deselected, tilt) = props
+val playerCard = tmFC<PlayerCard> { (tribeId, player, linkToConfig, className, size, onClick, deselected, tilt) ->
     cssDiv(
         attrs = {
             classes = classes + additionalClasses(className, deselected)

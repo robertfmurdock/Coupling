@@ -9,6 +9,9 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.display
 import org.w3c.dom.HTMLSelectElement
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
@@ -35,11 +38,14 @@ private val styles = useStyles("tribe/TribeConfig")
 val tribeConfigContent = tmFC<TribeConfigContent> { (tribe, isNew, onChange, onSave, onDelete) ->
     ConfigFrame {
         className = styles.className
+        backgroundColor = Color("hsla(45, 80%, 96%, 1)")
+        borderColor = Color("#ff8c00")
+
         ConfigHeader {
             this.tribe = tribe
             +"Tribe Configuration"
         }
-        div {
+        cssDiv(css = { display = Display.flex }) {
             tribeConfigEditor(tribe, isNew ?: false, onChange, onSave, onDelete)
             child(TribeCard(tribe))
         }

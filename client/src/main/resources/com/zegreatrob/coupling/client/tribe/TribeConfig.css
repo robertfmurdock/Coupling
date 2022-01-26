@@ -1,10 +1,4 @@
 :local(.className) {
-    background: hsla(45, 80%, 96%, 1);
-    border-color: #ff8c00;
-}
-
-:local(.className) > div > div {
-    display: flex;
 }
 
 :local(.tribeConfigEditor) {

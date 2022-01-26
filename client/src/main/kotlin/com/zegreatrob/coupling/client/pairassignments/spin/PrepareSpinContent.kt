@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
+import com.zegreatrob.coupling.client.PageFrame
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
@@ -47,26 +48,28 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
     val (tribe, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props
     div {
         className = styles.className
-        div { child(TribeBrowser(tribe)) }
-        div {
-            div { spinButton(onSpin) }
-            selectorAreaDiv {
-                playerSelectorDiv {
-                    h1 { +"Please select players to spin." }
-                    h2 { +"Tap a player to include or exclude them." }
-                    +"When you're done with your selections, hit the spin button above!"
-                    cssDiv(css = { margin(10.px, null) }) {
-                        selectAllButton(playerSelections, setPlayerSelections)
-                        selectNoneButton(playerSelections, setPlayerSelections)
+        child(PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2"))) {
+            div { child(TribeBrowser(tribe)) }
+            div {
+                div { spinButton(onSpin) }
+                selectorAreaDiv {
+                    playerSelectorDiv {
+                        h1 { +"Please select players to spin." }
+                        h2 { +"Tap a player to include or exclude them." }
+                        +"When you're done with your selections, hit the spin button above!"
+                        cssDiv(css = { margin(10.px, null) }) {
+                            selectAllButton(playerSelections, setPlayerSelections)
+                            selectNoneButton(playerSelections, setPlayerSelections)
+                        }
+                        selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
                     }
-                    selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
-                }
-                if (pins.isNotEmpty()) {
-                    pinSelectorDiv {
-                        h1 { br {} }
-                        h2 { +"Also, Pins." }
-                        +"Tap any pin to skip."
-                        pinSelector(pinSelections, setPinSelections, pins)
+                    if (pins.isNotEmpty()) {
+                        pinSelectorDiv {
+                            h1 { br {} }
+                            h2 { +"Also, Pins." }
+                            +"Tap any pin to skip."
+                            pinSelector(pinSelections, setPinSelections, pins)
+                        }
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ConfigHeader
+import com.zegreatrob.coupling.client.PageFrame
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -25,25 +26,27 @@ val tribeStatistics = tmFC<TribeStatistics> { props ->
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div {
         className = styles.className
-        ConfigHeader {
-            this.tribe = tribe
-            +"Statistics"
-        }
-        cssDiv(css = {
-            whiteSpace = WhiteSpace.nowrap
-            display = Display.inlineFlex
-        }) {
-            cssDiv(css = { flexGrow = 0.0 }, attrs = { classes = setOf(styles["leftSection"]) }) {
-                div {
-                    child(TeamStatistics(
-                        spinsUntilFullRotation = spinsUntilFullRotation,
-                        activePlayerCount = players.size,
-                        medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
-                    ))
-                }
-                child(PairReportTable(tribe, pairReports))
+        child(PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9"))) {
+            ConfigHeader {
+                this.tribe = tribe
+                +"Statistics"
             }
-            child(PlayerHeatmap(tribe, players, heatmapData))
+            cssDiv(css = {
+                whiteSpace = WhiteSpace.nowrap
+                display = Display.inlineFlex
+            }) {
+                cssDiv(css = { flexGrow = 0.0 }, attrs = { classes = setOf(styles["leftSection"]) }) {
+                    div {
+                        child(TeamStatistics(
+                            spinsUntilFullRotation = spinsUntilFullRotation,
+                            activePlayerCount = players.size,
+                            medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
+                        ))
+                    }
+                    child(PairReportTable(tribe, pairReports))
+                }
+                child(PlayerHeatmap(tribe, players, heatmapData))
+            }
         }
     }
 }

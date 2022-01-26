@@ -1,0 +1,27 @@
+package com.zegreatrob.coupling.client
+
+import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.children
+import com.zegreatrob.minreact.tmFC
+import kotlinx.css.*
+import kotlinx.html.classes
+
+
+data class PageFrame(val borderColor: Color, val backgroundColor: Color, val className: String? = null) :
+    DataPropsBind<PageFrame>(pageFrame)
+
+val pageFrame = tmFC<PageFrame> { props ->
+    cssDiv(css = {
+        padding(0.px, 25.px, 25.px, 25.px)
+        borderStyle = BorderStyle.solid
+        borderTopWidth = 2.px
+        borderBottomWidth = 2.px
+        borderLeftWidth = 12.px
+        borderRightWidth = 12.px
+        borderRadius = 82.px
+        this.borderColor = props.borderColor
+        this.backgroundColor = props.backgroundColor
+    }, attrs = { props.className?.let { this.classes = setOf(it) } }) {
+        props.children?.let { child(it) }
+    }
+}

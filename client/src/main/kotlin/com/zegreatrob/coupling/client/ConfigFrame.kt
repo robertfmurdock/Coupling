@@ -1,18 +1,26 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.minreact.child
+import kotlinx.css.Color
+import kotlinx.css.marginTop
+import kotlinx.css.px
 import react.FC
 import react.PropsWithChildren
 import react.PropsWithClassName
-import react.dom.html.ReactHTML.div
 
-private val styles = useStyles("ConfigFrame")
-
-external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren
+external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren {
+    var borderColor: Color?
+    var backgroundColor: Color?
+}
 
 val ConfigFrame = FC<ConfigFrameProps> { props ->
-    div {
-        className = listOfNotNull(styles.className, props.className).joinToString(" ")
-        div { props.children() }
+    child(
+        PageFrame(
+            className = props.className,
+            borderColor = props.borderColor ?: Color.black,
+            backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)")
+        )
+    ) {
+        cssDiv(css = { marginTop = 30.px }) { props.children() }
     }
 }

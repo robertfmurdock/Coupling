@@ -29,14 +29,15 @@ val AboutPage = FC<PageProps> {
     }
 }
 
-val aboutPageContent = FC<PropsWithChildren> {
+val aboutPageContent = FC<PropsWithChildren> { props ->
     div {
         className = styles.className
-        div {
-            className = styles["content"]
-            backButtonSection()
-            it.children()
-            playerHeader()
+        child(PageFrame(borderColor = Color("rgb(94, 84, 102)"), backgroundColor = Color("floralwhite"))) {
+            cssDiv(css = { width = 40.em }) {
+                backButtonSection()
+                props.children()
+                playerHeader()
+            }
         }
     }
 }
