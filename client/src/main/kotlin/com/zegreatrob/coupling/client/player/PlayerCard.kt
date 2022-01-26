@@ -68,6 +68,7 @@ private fun playerCardRuleSet(size: Int): RuleSet = {
     borderWidth = (size * 0.04).px
     borderRadius = (size * 0.08).px
     boxShadow(Color("rgba(0, 0, 0, 0.6)"), (size * 0.02).px, (size * 0.04).px, (size * 0.04).px)
+    flex(0.0, 0.0)
 }
 
 private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {

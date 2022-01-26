@@ -48,8 +48,8 @@ private fun tribeCardCss(size: Int): RuleSet = {
     height = (size * 1.4).px
     borderWidth = (size * 0.01).px
     borderRadius = (size * 10.0 / 150).px
+    flex(0.0, 0.0)
 }
-
 
 val noTribeImagePath = pngPath("tribes/no-tribe")
 

@@ -32,6 +32,7 @@ val ConfigHeader = FC<ConfigHeaderProps> { props ->
             display = Display.flex
             flexDirection = FlexDirection.row
             alignItems = Align.center
+            whiteSpace = WhiteSpace.nowrap
         }) {
             child(TribeCard(tribe, 75))
             tribeControls(props, tribe)
@@ -48,7 +49,10 @@ private fun ChildrenBuilder.tribeControls(props: ConfigHeaderProps, tribe: Tribe
         alignItems = Align.center
     }) {
         topControlRow(props)
-        cssDiv(css = { margin(0.px, 20.px) }) {
+        cssDiv(css = {
+            margin(0.px, 20.px)
+            display = Display.flex
+        }) {
             cssDiv(css = {
                 display = Display.inlineFlex
                 alignItems = Align.center

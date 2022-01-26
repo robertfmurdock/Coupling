@@ -1,11 +1,14 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ConfigHeader
+import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import kotlinx.css.*
+import kotlinx.html.classes
 import react.dom.html.ReactHTML.div
 
 @JsModule("date-fns/formatDistance")
@@ -26,9 +29,11 @@ val tribeStatistics = tmFC<TribeStatistics> { props ->
             this.tribe = tribe
             +"Statistics"
         }
-        div {
-            div {
-                className = styles["leftSection"]
+        cssDiv(css = {
+            whiteSpace = WhiteSpace.nowrap
+            display = Display.inlineFlex
+        }) {
+            cssDiv(css = { flexGrow = 0.0 }, attrs = { classes = setOf(styles["leftSection"]) }) {
                 div {
                     child(TeamStatistics(
                         spinsUntilFullRotation = spinsUntilFullRotation,
