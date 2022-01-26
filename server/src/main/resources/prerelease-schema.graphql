@@ -12,3 +12,8 @@ type TribeData {
     id: String!
     boost: BoostRecord
 }
+
+type UserRecord {
+    id: String!
+    boost: BoostRecord
+}
