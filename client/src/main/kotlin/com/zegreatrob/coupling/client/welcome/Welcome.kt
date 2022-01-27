@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.client.playerImage
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -39,8 +38,6 @@ val welcome = tmFC { (randomProvider): Welcome ->
         div { comeOnIn(showLoginChooser) { showLoginChooser = true } }
     }
 }
-
-val welcomeTribeId = TribeId("welcome")
 
 val frodo by playerImage()
 val samwise by playerImage()
@@ -104,8 +101,8 @@ private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>
 
 private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
     className = styles["welcomePair"]
-    child(PlayerCard(welcomeTribeId, pair.player1, className = "left ${styles["playerCard"]}", size = 100))
-    child(PlayerCard(welcomeTribeId, pair.player2, className = "right ${styles["playerCard"]}", size = 100))
+    child(PlayerCard(pair.player1, className = "left ${styles["playerCard"]}", size = 100))
+    child(PlayerCard(pair.player2, className = "right ${styles["playerCard"]}", size = 100))
 }
 
 private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) = div {

@@ -4,8 +4,6 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
@@ -25,7 +23,7 @@ class PlayerHeatmapBuilderTest {
             Player("moe")
         )
     }) exercise {
-        shallow(PlayerHeatmap(tribe = Tribe(TribeId("2")), players = players, heatmapData = emptyList()))
+        shallow(PlayerHeatmap(players = players, heatmapData = emptyList()))
     } verify { wrapper ->
         wrapper.find<Any>(".${styles["heatmapPlayersSideRow"]}")
             .find(playerCard)
@@ -43,7 +41,7 @@ class PlayerHeatmapBuilderTest {
             Player("moe")
         )
     }) exercise {
-        shallow(PlayerHeatmap(tribe = Tribe(TribeId("2")), players = players, heatmapData = emptyList()))
+        shallow(PlayerHeatmap(players = players, heatmapData = emptyList()))
     } verify { wrapper ->
         wrapper.find<Any>(".${styles["heatmapPlayersTopRow"]}")
             .find(playerCard)

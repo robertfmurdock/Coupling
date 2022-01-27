@@ -54,7 +54,7 @@ val assignedPair = tmFC<AssignedPair> { (tribe, pair, canDrag, swapCallback, pin
     val pinDroppableRef = useRef<Node>(null)
     drop(pinDroppableRef)
 
-    val playerCard = playerCardComponent(tribe, canDrag, swapCallback)
+    val playerCard = playerCardComponent(canDrag, swapCallback)
 
     span {
         className = styles.className
@@ -89,17 +89,16 @@ private fun usePinDrop(pinMoveCallback: PinMoveCallback) = useDrop(
 )
 
 private fun playerCardComponent(
-    tribe: Tribe,
     canDrag: Boolean,
     swap: (PinnedPlayer, String) -> Unit
 ): ChildrenBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) { player, tilt ->
     playerFlipped(player.player) {
-        swappablePlayer(player, tribe, canDrag, tilt) { droppedPlayerId: String -> swap(player, droppedPlayerId) }
+        swappablePlayer(player, canDrag, tilt) { droppedPlayerId: String -> swap(player, droppedPlayerId) }
             .create()
     }
 } else { player, tilt ->
     playerFlipped(player.player) {
-        notSwappablePlayer(tribe, player.player, tilt)
+        notSwappablePlayer(player.player, tilt)
             .create()
     }
 }
@@ -118,12 +117,11 @@ private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactEl
     }
 }
 
-private fun notSwappablePlayer(tribe: Tribe, player: Player, tilt: Angle) =
-    PlayerCard(tribe.id, player, true, tilt = tilt)
+private fun notSwappablePlayer(player: Player, tilt: Angle) = PlayerCard(player, tilt = tilt)
 
 private fun swappablePlayer(
-    pinnedPlayer: PinnedPlayer, tribe: Tribe, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
-) = DraggablePlayer(pinnedPlayer, tribe, zoomOnHover, tilt, onDropSwap)
+    pinnedPlayer: PinnedPlayer, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
+) = DraggablePlayer(pinnedPlayer, zoomOnHover, tilt, onDropSwap)
 
 private fun ChildrenBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
     if (tribe.callSignsEnabled && callSign != null) {

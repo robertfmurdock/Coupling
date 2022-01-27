@@ -43,9 +43,9 @@ val tribeStatistics = tmFC<TribeStatistics> { props ->
                             medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
                         ))
                     }
-                    child(PairReportTable(tribe, pairReports))
+                    child(PairReportTable(pairReports))
                 }
-                child(PlayerHeatmap(tribe, players, heatmapData))
+                child(PlayerHeatmap(players, heatmapData))
             }
         }
     }

@@ -88,8 +88,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouEditAnExistingPlayer() = currentPairAssignmentPageSetup {
             goTo(tribe.id)
         } exercise {
-            PlayerRoster.playerElements.first().element(PlayerCard.header.selector)
-                .click()
+            PlayerRoster.playerElements.first().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/player/${players[0].id}/"))

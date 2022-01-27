@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -19,19 +18,17 @@ import react.ChildrenBuilder
 import react.dom.html.ReactHTML.img
 
 data class PlayerCard(
-    val tribeId: TribeId,
     val player: Player,
-    val linkToConfig: Boolean = false,
     val className: String? = null,
     val size: Int = 100,
-    val onClick: ((Event) -> Unit) = {},
+    val onClick: (Event) -> Unit = {},
     val deselected: Boolean = false,
     val tilt: Angle = 0.deg
 ) : DataPropsBind<PlayerCard>(playerCard)
 
 private val styles = useStyles("player/PlayerCard")
 
-val playerCard = tmFC<PlayerCard> { (tribeId, player, linkToConfig, className, size, onClick, deselected, tilt) ->
+val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselected, tilt) ->
     cssDiv(
         attrs = {
             classes = classes + additionalClasses(className, deselected)
@@ -46,7 +43,7 @@ val playerCard = tmFC<PlayerCard> { (tribeId, player, linkToConfig, className, s
         }) {
         cssDiv(css = { margin((size * 0.02).px) }) {
             playerGravatarImage(player, size)
-            child(PlayerCardHeader(tribeId, player, linkToConfig, size))
+            child(PlayerCardHeader(player, size))
         }
     }
 }

@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -72,7 +71,7 @@ private fun ChildrenBuilder.placeholderPlayerCard() =
 private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) = Flipped {
     flipId = player.id
     cssDiv(props = { this.key = key ?: "" }, css = { display = Display.inlineBlock }) {
-        child(PlayerCard(TribeId(""), player))
+        child(PlayerCard(player))
     }
 }
 

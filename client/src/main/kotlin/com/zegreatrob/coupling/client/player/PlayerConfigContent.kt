@@ -51,7 +51,7 @@ val playerConfigContent = tmFC<PlayerConfigContent> { (tribe, player, players, o
                     playerConfigForm(player, tribe, onChange, onSubmit, onRemove)
 //                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
                 }
-                child(PlayerCard(tribe.id, player, size = 250))
+                child(PlayerCard(player, size = 250))
             }
         }
         div {

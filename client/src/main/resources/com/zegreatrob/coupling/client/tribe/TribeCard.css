@@ -30,9 +30,3 @@
 :local(.header) {
     transition: background ease-out 0.4s;
 }
-
-:local(.header):hover {
-    transition: background ease-out 0.4s;
-    z-index: 1;
-    background: rgba(202, 206, 211, 0.85) url(../overlay.png) repeat-x;
-}

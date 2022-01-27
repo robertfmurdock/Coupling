@@ -61,7 +61,7 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
                             selectAllButton(playerSelections, setPlayerSelections)
                             selectNoneButton(playerSelections, setPlayerSelections)
                         }
-                        selectablePlayerCardList(playerSelections, setPlayerSelections, tribe)
+                        selectablePlayerCardList(playerSelections, setPlayerSelections)
                     }
                     if (pins.isNotEmpty()) {
                         pinSelectorDiv {
@@ -209,30 +209,27 @@ private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit) = child
 
 private fun ChildrenBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,
-    setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
-    tribe: Tribe
+    setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit
 ) = playerSelections.map { (player, isSelected) ->
     cssDiv(css = { paddingBottom = 30.px; display = Display.inlineBlock }) {
-        child(playerCard(tribe, player, isSelected, setPlayerSelections, playerSelections))
+        child(playerCard(player, isSelected, setPlayerSelections, playerSelections))
     }
 }
 
 private fun playerCard(
-    tribe: Tribe,
     player: Player,
     isSelected: Boolean,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
     playerSelections: List<Pair<Player, Boolean>>
 ) = PlayerCard(
-    tribe.id,
     player,
     className = styles["playerCard"],
-    deselected = !isSelected,
     onClick = {
         setPlayerSelections(
             flipSelectionForPlayer(player, isSelected, playerSelections)
         )
-    }
+    },
+    deselected = !isSelected
 )
 
 private fun flipSelectionForPlayer(

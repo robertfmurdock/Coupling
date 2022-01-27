@@ -40,12 +40,6 @@
     transition: all ease-out 0.4s;
 }
 
-:local(.player):not([disabled="true"]) :local(.header):hover {
-    transition: all ease-out 0.4s;
-    z-index: 1;
-    background: lightyellow url(../overlay.png) repeat-x;
-}
-
 :local(.playerIcon) {
     /*! Do not remove */
 }

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.Paths.playerConfigPage
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
@@ -9,14 +9,19 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.RuleSet
+import kotlinx.css.properties.deg
 import kotlinx.html.classes
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
+import react.useState
+import kotlin.js.Date
+import kotlin.random.Random
 
 data class PlayerRoster(
     val label: String? = null,
@@ -29,6 +34,9 @@ data class PlayerRoster(
 private val styles = useStyles("player/PlayerRoster")
 
 val playerRoster = tmFC { (label, players, tribeId, className, overrides): PlayerRoster ->
+    val ref by useState { Date.now().toLong() }
+    val random = Random(ref)
+
     cssDiv(
         attrs = {
             if (className != null) classes = classes + className
@@ -42,8 +50,17 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
                     this.className = styles["header"]
                     +(label ?: "Players")
                 }
-                renderPlayers(players, tribeId)
-                    .forEach(::child)
+                players.map { player ->
+                    Link {
+                        to = tribeId.with(player).playerConfigPage()
+                        draggable = false
+                        val tilt = random.nextInt(7) - 3
+                        child(
+                            PlayerCard(player, tilt = tilt.deg),
+                            key = player.id
+                        )
+                    }
+                }
             }
         }
         addPlayerButton(tribeId)
@@ -59,9 +76,3 @@ private fun ChildrenBuilder.addPlayerButton(tribeId: TribeId) = Link {
     }
 }
 
-private fun renderPlayers(players: List<Player>, tribeId: TribeId) = players.map { player ->
-    create(
-        PlayerCard(tribeId, player, linkToConfig = true),
-        key = player.id
-    )
-}

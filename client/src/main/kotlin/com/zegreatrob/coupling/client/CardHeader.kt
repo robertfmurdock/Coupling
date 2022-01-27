@@ -4,11 +4,9 @@ import com.zegreatrob.coupling.client.fitty.fitty
 import kotlinx.css.*
 import org.w3c.dom.Node
 import react.*
-import react.router.dom.Link
 
 external interface CardHeaderProps : PropsWithClassName {
     var size: Int
-    var linkUrl: String?
     var headerContent: String
 }
 
@@ -38,21 +36,11 @@ val CardHeader = FC<CardHeaderProps> { props ->
                 alignItems = Align.center
                 height = (size * 0.33).px
             }) {
-                optionalLink(props.linkUrl) {
-                    +props.headerContent.ifBlank { "Unknown" }
-                }
+                +props.headerContent.ifBlank { "Unknown" }
             }
         }
     }
 }
-
-private fun ChildrenBuilder.optionalLink(
-    url: String?,
-    handler: ChildrenBuilder.() -> Unit
-) = if (url != null)
-    Link { to = url; handler() }
-else
-    handler()
 
 private fun Node.fitContent(size: Int) = fitty(
     maxFontHeight = (size * 0.3),

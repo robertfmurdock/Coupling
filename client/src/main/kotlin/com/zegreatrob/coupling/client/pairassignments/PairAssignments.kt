@@ -71,7 +71,7 @@ val pairAssignments = tmFC<PairAssignments> { props ->
             controlPanel(tribe)
             unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments))
 
-            child(ServerMessage(tribe.id, message), key = "${message.text} ${message.players.size}")
+            child(ServerMessage(message), key = "${message.text} ${message.players.size}")
         }
     }
 }

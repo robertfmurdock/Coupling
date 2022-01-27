@@ -4,9 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.child
 import com.zegreatrob.coupling.client.player.playerRoster
-import com.zegreatrob.coupling.client.user.serverMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -91,27 +89,6 @@ class PairAssignmentsTest {
             .dataprops()
             .players
             .assertIsEqualTo(players)
-    }
-
-    @Test
-    fun passesDownTribeIdToServerMessage() = setup(object {
-    }) exercise {
-        shallow {
-            child(PairAssignments(
-                tribe,
-                listOf(),
-                null,
-                { },
-                controls = Controls(StubDispatchFunc()) {},
-                message = CouplingSocketMessage("", emptySet(), null),
-                allowSave = false
-            ))
-        }
-    } verify { wrapper ->
-        wrapper.find(serverMessage)
-            .dataprops()
-            .tribeId
-            .assertIsEqualTo(tribe.id)
     }
 
 }

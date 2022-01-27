@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.child
 import kotlinx.css.*
 import react.FC
@@ -64,7 +63,6 @@ private val backButton = FC<Props> {
 
 private val playerHeader = FC<Props> {
     div {
-        val tribeId = TribeId("developers")
         val rob by playerImage()
         val autumn by playerImage()
 
@@ -72,7 +70,7 @@ private val playerHeader = FC<Props> {
             "left" to Player("1", name = "RoB", imageURL = rob),
             "right" to Player("2", name = "Autumn", imageURL = autumn)
         ).forEach { (side, player) ->
-            child(PlayerCard(tribeId, player, className = playerCardStyles(side)))
+            child(PlayerCard(player, className = playerCardStyles(side)))
         }
     }
 }

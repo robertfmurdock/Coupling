@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -23,22 +22,22 @@ import react.key
 
 private val styles = useStyles("stats/PairReportTable")
 
-data class PairReportTable(val tribe: Tribe, val pairReports: List<PairReport>) : DataPropsBind<PairReportTable>(
+data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<PairReportTable>(
     pairReportTable
 )
 
-val pairReportTable = tmFC<PairReportTable> { (tribe, pairReports) ->
+val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
     cssDiv(css = { whiteSpace = WhiteSpace.normal }, attrs = { classes = setOf(styles.className) }) {
         pairReports.mapIndexed { index, pairReport ->
-            pairReport(index, pairReport, tribe)
+            pairReport(index, pairReport)
         }
     }
 }
 
-private fun ChildrenBuilder.pairReport(index: Int, pairReport: PairReport, tribe: Tribe) = div {
+private fun ChildrenBuilder.pairReport(index: Int, pairReport: PairReport) = div {
     className = styles["pairReport"]
     key = "$index"
-    pairReport.pair.asArray().map { player -> reportPlayerCard(player, tribe) }
+    pairReport.pair.asArray().map { player -> reportPlayerCard(player) }
 
     div {
         className = styles["pairStatistics"]
@@ -56,8 +55,8 @@ private fun TimeResult.presentationString() = when (this) {
     NeverPaired -> "Never Paired"
 }
 
-private fun ChildrenBuilder.reportPlayerCard(player: Player, tribe: Tribe) = div {
+private fun ChildrenBuilder.reportPlayerCard(player: Player) = div {
     className = styles["playerCard"]
     key = player.id
-    child(PlayerCard(tribe.id, player, size = 50))
+    child(PlayerCard(player, size = 50))
 }

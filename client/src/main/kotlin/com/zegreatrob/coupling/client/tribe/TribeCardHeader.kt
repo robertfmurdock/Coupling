@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.CardHeader
-import com.zegreatrob.coupling.client.Paths.tribeConfigPath
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.tribe.Tribe
@@ -16,7 +15,6 @@ val tribeCardHeader = tmFC<TribeCardHeader> { (tribe, size) ->
     CardHeader {
         this.size = size
         this.className = styles["header"]
-        this.linkUrl = tribe.tribeConfigPath()
         this.headerContent = tribe.name ?: ""
     }
 }
