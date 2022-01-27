@@ -18,6 +18,7 @@ import kotlinx.css.properties.deg
 import kotlinx.html.classes
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
+import react.key
 import react.router.dom.Link
 import react.useState
 import kotlin.js.Date
@@ -54,11 +55,9 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
                     Link {
                         to = tribeId.with(player).playerConfigPage()
                         draggable = false
+                        key = player.id
                         val tilt = random.nextInt(7) - 3
-                        child(
-                            PlayerCard(player, tilt = tilt.deg),
-                            key = player.id
-                        )
+                        child(PlayerCard(player, tilt = tilt.deg))
                     }
                 }
             }

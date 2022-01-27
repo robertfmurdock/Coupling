@@ -12,6 +12,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import react.dom.html.ReactHTML.div
+import react.key
 import react.router.dom.Link
 
 data class RetiredPlayers(val tribe: Tribe, val retiredPlayers: List<Player>) :
@@ -32,10 +33,8 @@ val retiredPlayers = tmFC<RetiredPlayers> { (tribe, players) ->
                 Link {
                     to = tribe.id.with(player).playerConfigPage()
                     draggable = false
-                    child(
-                        PlayerCard(player, deselected = true),
-                        key = player.id
-                    )
+                    key = player.id
+                    child(PlayerCard(player, deselected = true))
                 }
             }
         }

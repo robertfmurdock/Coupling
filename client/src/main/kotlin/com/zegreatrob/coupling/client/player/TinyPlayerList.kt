@@ -8,6 +8,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.properties.deg
+import react.key
 import react.router.dom.Link
 import react.useState
 import kotlin.js.Date
@@ -20,10 +21,11 @@ val tinyPlayerList = tmFC<TinyPlayerList> { (tribe, players) ->
     val random = Random(ref)
     players.forEach { player ->
         Link {
+            key = player.id
             to = tribe.id.with(player).playerConfigPage()
             draggable = false
             val tilt = random.nextInt(7) - 3
-            child(PlayerCard(player, size = 40, tilt = tilt.deg), key = player.id)
+            child(PlayerCard(player, size = 40, tilt = tilt.deg))
         }
     }
 }

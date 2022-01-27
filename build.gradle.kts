@@ -18,8 +18,6 @@ semanticRelease {
     changeLog(closureOf<SemanticReleaseChangeLogService> {
         changeScope = KotlinClosure1<Commit, ChangeScope>({ ChangeScope.PATCH })
     })
-
-
 }
 
 dockerCompose {

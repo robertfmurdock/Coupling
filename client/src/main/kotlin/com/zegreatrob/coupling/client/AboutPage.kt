@@ -70,7 +70,7 @@ private val playerHeader = FC<Props> {
             "left" to Player("1", name = "RoB", imageURL = rob),
             "right" to Player("2", name = "Autumn", imageURL = autumn)
         ).forEach { (side, player) ->
-            child(PlayerCard(player, className = playerCardStyles(side)))
+            child(PlayerCard(player, className = playerCardStyles(side)), key = player.id)
         }
     }
 }
