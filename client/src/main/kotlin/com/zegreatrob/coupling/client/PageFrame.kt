@@ -24,7 +24,9 @@ val pageFrame = tmFC<PageFrame> { props ->
         minHeight = 100.vh
         this.borderColor = props.borderColor
         this.backgroundColor = props.backgroundColor
-    }, attrs = { props.className?.let { this.classes = setOf(it) } }) {
+    }, attrs = {
+        props.className?.let { classes = classes + it }
+    }) {
         props.children?.let { child(it) }
     }
 }

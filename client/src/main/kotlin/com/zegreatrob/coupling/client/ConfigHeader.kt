@@ -143,7 +143,7 @@ fun ChildrenBuilder.settingsButton(tribe: Tribe, className: String = "") = Link 
     draggable = false
     child(CouplingButton(large, black, className, css = {
         fontSize = 24.px
-        padding(2.px, 3.px, 0.px)
+        padding(1.px, 4.px, 2.px)
     })) {
         i { this.className = "fa fa-cog" }
     }

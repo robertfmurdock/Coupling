@@ -2,8 +2,6 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.minreact.child
 import kotlinx.css.Color
-import kotlinx.css.marginTop
-import kotlinx.css.px
 import react.FC
 import react.PropsWithChildren
 import react.PropsWithClassName
@@ -21,6 +19,6 @@ val ConfigFrame = FC<ConfigFrameProps> { props ->
             backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)")
         )
     ) {
-        cssDiv(css = { marginTop = 30.px }) { props.children() }
+        props.children()
     }
 }

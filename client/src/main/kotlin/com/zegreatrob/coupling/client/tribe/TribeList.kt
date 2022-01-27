@@ -13,6 +13,7 @@ import react.ChildrenBuilder
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
 import react.dom.svg.ReactSVG
 import react.router.dom.Link
@@ -22,33 +23,44 @@ data class TribeList(val tribes: List<Tribe>) : DataPropsBind<TribeList>(tribeLi
 private val styles = useStyles("tribe/TribeList")
 
 val tribeList = tmFC<TribeList> { (tribes) ->
-    div {
-        className = styles.className
+    child(
+        PageFrame(
+            borderColor = Color("rgb(94, 84, 102)"),
+            backgroundColor = Color("hsla(0, 0%, 80%, 1)"),
+            styles.className
+        )
+    ) {
         cssDiv(css = {
-            display = Display.flex
             backgroundColor = Color("#faf0d2")
             borderRadius = 50.px
         }) {
-            cssSpan(css = {
-                margin(10.px)
+            cssDiv(css = {
                 display = Display.flex
-                alignItems = Align.center
+                textAlign = TextAlign.left
+                margin(5.px)
             }) {
-                proportionateSvg(72.0, 48.0, 36.0, 24.0, svgPath("logo"))
-            }
-            cssH1(css = { flexGrow = 2.0; display = Display.inlineBlock }) {
-                cssDiv(css = {
+                cssSpan(css = {
+                    margin(10.px)
                     display = Display.flex
                     alignItems = Align.center
                 }) {
-                    cssSpan(css = { flexGrow = 2.0; textAlign = TextAlign.left }) {
-                        +"Tribe List"
-                    }
-                    span {
-                        AboutButton()
-                        LogoutButton()
-                        GqlButton()
-                        NotificationButton()
+                    proportionateSvg(72.0, 48.0, 36.0, 24.0, svgPath("logo"))
+                }
+                cssH1(css = { flexGrow = 2.0; display = Display.inlineBlock }) {
+                    cssDiv(css = {
+                        display = Display.flex
+                        alignItems = Align.center
+                    }) {
+                        cssSpan(css = { flexGrow = 2.0; textAlign = TextAlign.left }) {
+                            +"Tribe List"
+                        }
+                        cssSpan(css = { margin(0.px, 20.px) }) {
+                            AboutButton()
+                            DemoButton()
+                            LogoutButton()
+                            GqlButton()
+                            NotificationButton()
+                        }
                     }
                 }
             }
@@ -76,7 +88,6 @@ private fun ChildrenBuilder.proportionateSvg(
         this.height = height
         ReactSVG.image {
             this.href = href
-            preserveAspectRatio = "true"
         }
     }
 }
@@ -95,9 +106,23 @@ private val AboutButton = FC<Props> {
     }
 }
 
+private val DemoButton = FC<Props> {
+    Link {
+        to = "/demo"
+        tabIndex = -1
+        draggable = false
+        child(CouplingButton(large, lightGreen, "")) {
+            i {
+                this.className = "fa fa-play"
+            }
+            span { +" Demo" }
+        }
+    }
+}
+
 private fun ChildrenBuilder.newTribeButton(className: String) = Link {
     to = "/new-tribe/"
-    tabIndex = -1
     draggable = false
+    tabIndex = -1
     child(CouplingButton(supersize, green, className)) { +"Add a new tribe!" }
 }

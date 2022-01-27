@@ -151,6 +151,9 @@ val couplingButton = tmFC<CouplingButton> { props ->
             block()
         },
         css = {
+            descendants {
+                verticalAlign = VerticalAlign.middle
+            }
             buttonRuleset()
             sizeRuleSet()
             colorRuleSet()
