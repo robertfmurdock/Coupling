@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.welcome
 
+import com.zegreatrob.coupling.client.DemoButton
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.dom.white
@@ -24,5 +25,6 @@ val LoginChooser = FC<Props> {
                 +"Login"
             }
         }
+        div { DemoButton() }
     }
 }

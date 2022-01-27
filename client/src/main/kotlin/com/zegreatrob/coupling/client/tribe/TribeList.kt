@@ -13,7 +13,6 @@ import react.ChildrenBuilder
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
 import react.dom.svg.ReactSVG
 import react.router.dom.Link
@@ -102,20 +101,6 @@ private val AboutButton = FC<Props> {
             cssSpan(css = { margin(2.px) }) {
                 proportionateSvg(27.0, 18.0, 36.0, 24.0, svgPath("logo"))
             }
-        }
-    }
-}
-
-private val DemoButton = FC<Props> {
-    Link {
-        to = "/demo"
-        tabIndex = -1
-        draggable = false
-        child(CouplingButton(large, lightGreen, "")) {
-            i {
-                this.className = "fa fa-play"
-            }
-            span { +" Demo" }
         }
     }
 }
