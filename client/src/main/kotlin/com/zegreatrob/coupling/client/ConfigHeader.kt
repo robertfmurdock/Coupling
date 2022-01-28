@@ -141,10 +141,10 @@ fun ChildrenBuilder.settingsButton(tribe: Tribe, className: String = "") = Link 
     to = "/${tribe.id.value}/edit"
     tabIndex = -1
     draggable = false
-    child(CouplingButton(large, black, className, css = {
+    child(CouplingButton(large, black, className) {
         fontSize = 24.px
         padding(1.px, 4.px, 2.px)
-    })) {
+    }) {
         i { this.className = "fa fa-cog" }
     }
 }

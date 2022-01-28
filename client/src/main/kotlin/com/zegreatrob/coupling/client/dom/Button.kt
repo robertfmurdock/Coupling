@@ -6,6 +6,7 @@ import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
+import kotlinx.css.properties.PlayState
 import kotlinx.css.properties.TextDecoration
 import kotlinx.css.properties.boxShadow
 import kotlinx.html.BUTTON
@@ -32,8 +33,12 @@ val buttonRuleset: RuleSet = {
     put("text-stroke-color", "initial")
     margin = "2px"
 
-    rule(":visited") {
+    visited {
         borderBottom = "1px solid rgba(0, 0, 0, 0.25)"
+    }
+
+    disabled {
+        animationPlayState = PlayState.paused
     }
 }
 
@@ -56,7 +61,10 @@ val supersize: RuleSet = {
 }
 val pink: RuleSet = {
     backgroundColor = Color("#e22092")
-    rule(":hover") {
+    hover {
+        backgroundColor = Color("#c81e82")
+    }
+    disabled {
         backgroundColor = Color("#c81e82")
     }
 }
@@ -64,31 +72,31 @@ val lightGreen: RuleSet = {
     backgroundColor = Color("#7fd8be")
     color = Color("#3e474c")
     put("text-shadow", "none")
-    rule(":hover") {
+    hover {
         backgroundColor = Color("#68b39d")
     }
 }
 val green: RuleSet = {
     backgroundColor = Color("#42805e")
-    rule(":hover") {
+    hover {
         backgroundColor = Color("#29533d")
     }
 }
 val red: RuleSet = {
     backgroundColor = Color("#e62727")
-    rule(":hover") {
+    hover {
         backgroundColor = Color("#cf2525")
     }
 }
 val orange: RuleSet = {
     backgroundColor = Color("#ff5c00")
-    rule(":hover") {
+    hover {
         backgroundColor = Color("#d45500")
     }
 }
 val blue: RuleSet = {
     backgroundColor = Color("#345995")
-    rule(":hover") {
+    hover {
         backgroundColor = Color("#5188e1")
     }
 }
@@ -139,7 +147,7 @@ data class CouplingButton(
     val onClick: () -> Unit = {},
     val attrs: BUTTON.() -> Unit = {},
     val css: CssBuilder.() -> Unit = {}
-) : DataPropsBind<CouplingButton> (couplingButton)
+) : DataPropsBind<CouplingButton>(couplingButton)
 
 val couplingButton = tmFC<CouplingButton> { props ->
     val (sizeRuleSet, colorRuleSet, className, onClick, block, css) = props

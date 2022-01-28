@@ -21,9 +21,9 @@ val returnToCouplingButton = FC<Props> {
         to = "/tribes"
         tabIndex = -1
         draggable = false
-        child(CouplingButton(colorRuleSet = pink, sizeRuleSet = supersize, css = {
+        child(CouplingButton(sizeRuleSet = supersize, colorRuleSet = pink) {
             animation("pulsate", 0.75.s, iterationCount = IterationCount.infinite)
-        })) {
+        }) {
             couplingLogo()
         }
     }

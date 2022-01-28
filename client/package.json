@@ -9,7 +9,9 @@
   "devDependencies": {
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
-    "node-fetch": "^3.2.0"
+    "node-fetch": "^3.2.0",
+    "@testing-library/react" : "^12.1.2",
+    "@testing-library/user-event": "^13.5.0"
   },
   "scripts": {
     "webpack": "webpack",

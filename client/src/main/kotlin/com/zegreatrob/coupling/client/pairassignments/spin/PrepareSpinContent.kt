@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.PageFrame
 import com.zegreatrob.coupling.client.cssDiv
+import com.zegreatrob.coupling.client.cssSpan
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
@@ -46,12 +47,23 @@ data class PrepareSpinContent(
 
 val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
     val (tribe, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props
+
+    val enabled = playerSelections.any { it.second }
+
     div {
         className = styles.className
         child(PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2"))) {
             div { child(TribeBrowser(tribe)) }
             div {
-                div { spinButton(onSpin) }
+                div {
+                    spinButton(onSpin, enabled = enabled)
+                    if (!enabled) {
+                        cssSpan(css = {
+                            position = Position.absolute
+                            width = 12.em
+                        }) { +"Please tap a player to include them before spinning." }
+                    }
+                }
                 selectorAreaDiv {
                     playerSelectorDiv {
                         h1 { +"Please select players to spin." }
@@ -131,7 +143,8 @@ private fun ChildrenBuilder.batchSelectButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
-) = child(CouplingButton(className = className,
+) = child(CouplingButton(
+    className = className,
     onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
 )) { +text }
 
@@ -192,20 +205,20 @@ private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {})
 
 private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 
-private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit) = child(
+private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit, enabled: Boolean) = child(
     CouplingButton(
         supersize,
         pink,
         styles["spinButton"],
         onClick = generateNewPairsFunc,
-        css = {
-            marginBottom = 10.px
-            animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
-        }
-    )) {
+        attrs = { disabled = !enabled }
+    ) {
+        marginBottom = 10.px
+        animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
+    }
+) {
     +"Spin!"
 }
-
 
 private fun ChildrenBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,

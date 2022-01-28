@@ -6,8 +6,10 @@ import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpinContent
+import com.zegreatrob.coupling.client.external.testinglibrary.react.render
+import com.zegreatrob.coupling.client.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
+import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpinContent
 import com.zegreatrob.coupling.client.pin.pinButton
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -20,17 +22,25 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.findByClass
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
+import kotlinx.dom.hasClass
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.asList
+import org.w3c.dom.get
+import react.router.MemoryRouter
+import kotlin.js.json
 import kotlin.test.Test
 
 class PrepareSpinTest {
 
     companion object {
         val styles: SimpleStyle = useStyles("PrepareSpin")
+        val playerCardStyles = useStyles("player/PlayerCard")
     }
 
     @Test
@@ -95,6 +105,33 @@ class PrepareSpinTest {
         wrapper.find(prepareSpinContent)
             .shallow()
             .find(playerCard).map { it.dataprops().deselected.assertIsEqualTo(true) }
+    }
+
+    @Test
+    fun whenAllPlayersAreDeselectedSpinButtonWillBeDisabled() = setup(object {
+        val tribe = stubTribe()
+        val players = stubPlayers(3)
+        val currentPairs = PairAssignmentDocument(
+            PairAssignmentDocumentId(""),
+            DateTime.now(), listOf(
+                pairOf(players[0], players[1]).withPins(emptyList()),
+                pairOf(players[2]).withPins(emptyList())
+            )
+        )
+        val result = render(
+            PrepareSpin(tribe, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
+            json("wrapper" to MemoryRouter)
+        )
+    }) exercise {
+        val playerCards = result.container.querySelectorAll(".${playerCardStyles["player"]}").asList()
+        playerCards.forEach {
+            if ((it as? HTMLElement)?.hasClass(playerCardStyles["deselected"]) == false) {
+                userEvent.click(it)
+            }
+        }
+    } verify {
+        result.getByText("Spin!").attributes["disabled"]
+            .assertIsNotEqualTo(null)
     }
 
     @Test
