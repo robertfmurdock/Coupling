@@ -2,10 +2,6 @@
     /*! Do not remove */
 }
 
-:local(.className) > div {
-    display: flex;
-}
-
 :local(.className) :local(.player) {
     vertical-align: top;
     flex-grow: 2;

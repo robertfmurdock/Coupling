@@ -63,11 +63,11 @@ private fun ChildrenBuilder.tribeControls(props: ConfigHeaderProps, tribe: Tribe
                 backgroundColor = Color("#00000014")
                 boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
             }) {
+                settingsButton(tribe)
                 viewHistoryButton(tribe, styles["viewHistoryButton"])
                 pinListButton(tribe, styles["pinListButton"])
                 statisticsButton(tribe, styles["statisticsButton"])
                 viewRetireesButton(tribe, styles["retiredPlayersButton"])
-                settingsButton(tribe)
             }
         }
     }
