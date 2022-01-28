@@ -7,14 +7,15 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.pngPath
+import com.zegreatrob.coupling.client.visuallyHidden
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.*
 import kotlinx.html.classes
-import kotlinx.html.tabIndex
 import react.ChildrenBuilder
+import react.dom.aria.ariaHidden
 import react.dom.html.ReactHTML
 import react.router.dom.Link
 import kotlin.collections.set
@@ -26,11 +27,12 @@ private val styles = useStyles("tribe/TribeCard")
 val tribeCard = tmFC<TribeCard> { (tribe, size) ->
     Link {
         to = tribe.id.currentPairsPage()
+        visuallyHidden { +"Tribe Home Page" }
         cssSpan(
             attrs = {
                 classes = classes + styles.className
-                tabIndex = "0"
                 attributes["data-tribe-id"] = tribe.id.value
+                ariaHidden = true
             },
             css = tribeCardCss(size)
         ) {

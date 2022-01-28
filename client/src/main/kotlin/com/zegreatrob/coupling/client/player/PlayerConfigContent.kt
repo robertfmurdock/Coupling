@@ -122,10 +122,13 @@ private fun ChildrenBuilder.emailInput(player: Player, onChange: (ChangeEvent<*>
         placeholder = "email",
     )
     span {
-        +"Email provides access privileges, so you can see all Tribes you're in!"
-        +"To change your player picture, assign a"
-        gravatarLink()
-        +"to this email."
+        div { +"Email provides access privileges;" }
+        div { +"That means if someone with that email logs into Coupling, they can see their tribe!" }
+        div {
+            +"To change your player picture, assign a"
+            gravatarLink()
+            +"to this email."
+        }
     }
 }
 
