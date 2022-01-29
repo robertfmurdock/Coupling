@@ -10,16 +10,15 @@ val validatedTableList = mutableListOf<String>()
 
 interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax, DynamoLoggingSyntax {
     val createTableParams: Json
-    val ensureTableExistsLogHeader get() = "ensureTableExists $prefixedTableName"
-    suspend fun ensureTableExists() = logAsync(ensureTableExistsLogHeader) {
-        if (validatedTableList.contains(prefixedTableName)) {
-            return@logAsync
-        } else {
-            if (!checkTableExists()) {
-                createTable()
-                waitForActive()
+    suspend fun ensureTableExists() {
+        if (!validatedTableList.contains(prefixedTableName)) {
+            logAsync("ensureTableExists $prefixedTableName") {
+                if (!checkTableExists()) {
+                    createTable()
+                    waitForActive()
+                }
+                validatedTableList.add(prefixedTableName)
             }
-            validatedTableList.add(prefixedTableName)
         }
     }
 
