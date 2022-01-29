@@ -14,7 +14,7 @@ import kotlin.test.Test
 interface BoostRepositoryValidator<R : BoostRepository, SC : SharedContext<R>> {
 
     val boostSetup: TestTemplate<SC>
-    fun buildRepository(user: User, clock: MagicClock): R
+    suspend fun buildRepository(user: User, clock: MagicClock): R
 
     @Test
     fun getBoostWhenThereIsNoneReturnsNull() = boostSetup {
@@ -80,8 +80,9 @@ interface BoostRepositoryValidator<R : BoostRepository, SC : SharedContext<R>> {
 
     @Test
     fun getSavedBoostByTribeIdForBoostFromDifferentUserWillReturnContent() = boostSetup({ sharedContext ->
+        val altRepository = buildRepository(stubUser(), sharedContext.clock)
         object : SharedContext<R> by sharedContext {
-            val altRepository = buildRepository(stubUser(), clock)
+            val altRepository = altRepository
             val tribeId = TribeId("${uuid4()}")
             val boost = Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), tribeId, TribeId("${uuid4()}")))
         }
@@ -91,6 +92,21 @@ interface BoostRepositoryValidator<R : BoostRepository, SC : SharedContext<R>> {
         altRepository.getByTribeId(tribeId)
     } verify { result ->
         result?.data.assertIsEqualTo(boost)
+    }
+
+    @Test
+    fun getSavedBoostByTribeIdForBoostRemovedBoostWillReturnNull() = boostSetup({ sharedContext ->
+        object : SharedContext<R> by sharedContext {
+            val tribeId = TribeId("${uuid4()}")
+            val boost = Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), tribeId, TribeId("${uuid4()}")))
+        }
+    }) {
+        repository.save(boost)
+        repository.save(boost.copy(tribeIds = boost.tribeIds.minus(tribeId)))
+    } exercise {
+        repository.getByTribeId(tribeId)
+    } verify { result ->
+        result?.data.assertIsEqualTo(null)
     }
 
 }

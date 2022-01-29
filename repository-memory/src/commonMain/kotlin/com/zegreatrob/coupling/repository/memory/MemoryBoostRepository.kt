@@ -12,14 +12,14 @@ class MemoryBoostRepository(
     private val recordBackend: RecordBackend<Boost> = SimpleRecordBackend()
 ) : TypeRecordSyntax<Boost>, RecordBackend<Boost> by recordBackend, BoostRepository {
 
-    override fun get(): Record<Boost>? = records.lastOrNull { it.data.userId == userId }
+    override suspend fun get(): Record<Boost>? = records.lastOrNull { it.data.userId == userId }
 
-    override fun save(boost: Boost) = boost.record().save()
+    override suspend fun save(boost: Boost) = boost.record().save()
 
-    override fun getByTribeId(tribeId: TribeId): Record<Boost>? = allLatestRecords().firstOrNull {
+    override suspend fun getByTribeId(tribeId: TribeId): Record<Boost>? = allLatestRecords().firstOrNull {
         it.data.tribeIds.contains(tribeId)
     }
 
-    override fun allLatestRecords() = records.groupBy { it.data.id }.map { it.value.last() }
+    private fun allLatestRecords() = records.groupBy { it.data.id }.map { it.value.last() }
 
 }

@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.repository.memory
+package com.zegreatrob.coupling.dynamo
 
-import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.validation.BoostRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
@@ -8,12 +7,8 @@ import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
-class MemoryBoostRepositoryTest :
-    BoostRepositoryValidator<MemoryBoostRepository, SharedContextData<MemoryBoostRepository>> {
-
-    companion object {
-        val recordBackend = SimpleRecordBackend<Boost>()
-    }
+class DynamoBoostRepositoryTest :
+    BoostRepositoryValidator<DynamoBoostRepository, SharedContextData<DynamoBoostRepository>> {
 
     override val boostSetup = asyncTestTemplate(sharedSetup = {
         val user = stubUser()
@@ -21,7 +16,6 @@ class MemoryBoostRepositoryTest :
         SharedContextData(buildRepository(user, clock = clock), clock, user)
     })
 
-    override suspend fun buildRepository(user: User, clock: MagicClock) =
-        MemoryBoostRepository(user.id, clock, recordBackend)
+    override suspend fun buildRepository(user: User, clock: MagicClock) = DynamoBoostRepository(user.id, clock)
 
 }

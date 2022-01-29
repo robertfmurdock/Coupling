@@ -5,8 +5,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 
 interface BoostRepository {
-    fun get(): Record<Boost>?
-    fun save(boost: Boost)
-    fun getByTribeId(tribeId: TribeId): Record<Boost>?
-    fun allLatestRecords(): List<Record<Boost>>
+    suspend fun get(): Record<Boost>?
+    suspend fun save(boost: Boost)
+    suspend fun getByTribeId(tribeId: TribeId): Record<Boost>?
 }
