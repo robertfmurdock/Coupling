@@ -16,7 +16,6 @@ import kotlin.js.json
 interface SdkBoostRepository : BoostRepository, GqlSyntax {
 
     override suspend fun get() = performer.postAsync(boostQuery()).await()
-        .also { println("got ${JSON.stringify(it)}") }
         .at<Json>("/data/user/boost")
         ?.toBoostRecord()
 
@@ -24,6 +23,8 @@ interface SdkBoostRepository : BoostRepository, GqlSyntax {
 
     private fun Json.toBoostRecord(): Record<Boost> = couplingJsonFormat.decodeFromDynamic<JsonBoostRecord>(this)
         .toModelRecord()
+
+    override suspend fun delete() = performQuery(json("query" to Mutations.deleteBoost))
 
     override suspend fun save(boost: Boost) = doQuery(Mutations.saveBoost, boost.saveBoostInput())
         .unsafeCast<Unit>()

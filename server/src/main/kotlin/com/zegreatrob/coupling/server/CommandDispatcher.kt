@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
 import com.zegreatrob.coupling.server.action.boost.BoostQueryDispatcher
+import com.zegreatrob.coupling.server.action.boost.DeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.SaveBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.connection.*
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
@@ -157,6 +158,7 @@ fun apiGatewayManagementApi() = ApiGatewayManagementApi(
     )
 )
 
-interface PrereleaseDispatcher : ICommandDispatcher, SaveBoostCommandDispatcher, BoostQueryDispatcher {
+interface PrereleaseDispatcher : ICommandDispatcher, SaveBoostCommandDispatcher, BoostQueryDispatcher,
+    DeleteBoostCommandDispatcher {
     override val boostRepository: BoostRepository
 }

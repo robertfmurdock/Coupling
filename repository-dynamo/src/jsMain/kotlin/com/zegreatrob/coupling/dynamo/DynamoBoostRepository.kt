@@ -59,6 +59,7 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
             .sortByRecordTimestamp()
             .lastOrNull()
             ?.toBoostRecord()
+            ?.let { if (it.isDeleted) null else it }
     }
 
     override suspend fun save(boost: Boost) {
@@ -70,6 +71,16 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
                 launch { performPutItem(dynamoJson.add(json("pk" to tribeKey(tribeId)))) }
             }
         }
+    }
+
+    override suspend fun delete() {
+        get()
+            ?.copy(isDeleted = true)
+            ?.asDynamoJson()
+            ?.let {
+                performPutItem(it)
+            }
+
     }
 
     override suspend fun getByTribeId(tribeId: TribeId) = getByPk(tribeKey(tribeId))

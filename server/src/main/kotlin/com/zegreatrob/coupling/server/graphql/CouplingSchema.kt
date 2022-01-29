@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.server.entity.boost.boostResolver
+import com.zegreatrob.coupling.server.entity.boost.deleteBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.saveBoostResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.*
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
@@ -41,6 +42,7 @@ fun prereleaseSchema() = makeExecutableSchema(
 private fun prereleaseResolvers() = json(
     "Mutation" to json(
         "saveBoost" to saveBoostResolver,
+        "deleteBoost" to deleteBoostResolver,
     ),
     "UserRecord" to json(
         "boost" to boostResolver,

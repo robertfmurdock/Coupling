@@ -16,6 +16,10 @@ class MemoryBoostRepository(
 
     override suspend fun save(boost: Boost) = boost.record().save()
 
+    override suspend fun delete() {
+        get()?.save()
+    }
+
     override suspend fun getByTribeId(tribeId: TribeId): Record<Boost>? = allLatestRecords().firstOrNull {
         it.data.tribeIds.contains(tribeId)
     }

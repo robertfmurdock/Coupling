@@ -4,6 +4,7 @@ object Mutations {
     val spin by LoadGqlFile
     val savePin by LoadGqlFile
     val saveBoost by LoadGqlFile
+    val deleteBoost by LoadGqlFile
     val saveTribe by LoadGqlFile
     val savePlayer by LoadGqlFile
     val savePairAssignments by LoadGqlFile

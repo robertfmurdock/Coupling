@@ -25,6 +25,7 @@ input SaveBoostInput {
 
 type Mutation {
     saveBoost(input: SaveBoostInput!): Boolean
+    deleteBoost: Boolean
 }
 
 type Query { _: String }

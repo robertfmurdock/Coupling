@@ -4,6 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.repository.BoostDelete
 import com.zegreatrob.coupling.repository.BoostGet
 import com.zegreatrob.coupling.repository.BoostSave
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
@@ -13,13 +14,14 @@ import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
-interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet, R : BoostSave {
+interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet, R : BoostSave, R : BoostDelete {
 
     val repositorySetup: TestTemplate<SC>
     suspend fun buildRepository(user: User, clock: MagicClock): R
 
     @Test
     fun getBoostWhenThereIsNoneReturnsNull() = repositorySetup {
+        repository.delete()
     } exercise {
         repository.get()
     } verify { result ->
@@ -37,6 +39,16 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet
         repository.get()
     } verify { result ->
         result?.data.assertIsEqualTo(boost)
+    }
+
+    @Test
+    fun deleteWillMakeBoostNotRecoverableThroughGet() = repositorySetup {
+        repository.save(Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}"))))
+        repository.delete()
+    } exercise {
+        repository.get()
+    } verify { result ->
+        result.assertIsEqualTo(null)
     }
 
     @Test

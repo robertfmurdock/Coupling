@@ -21,17 +21,30 @@ inline fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, reifi
     crossinline dispatcherFunc: GraphQLDispatcherProvider<D>,
     crossinline queryFunc: (Json, I) -> Q,
     crossinline toSerializable: (R) -> J
-) = { entity: Json, args: Json, request: Request, info: Json ->
-
-    println("graphql entity ${JSON.stringify(entity)}, args ${JSON.stringify(args)}, info ${JSON.stringify(info)}")
-
+) = { entity: Json, args: Json, request: Request, _: Json ->
     request.scope.promise {
-        val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
-        val command = queryFunc(entity, input)
-        dispatcherFunc(request, entity, input)
-            ?.execute(command)
-            ?.successOrNull { couplingJsonFormat.encodeToDynamic(toSerializable(it)) }
+        try {
+            val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
+            val command = queryFunc(entity, input)
+            dispatcherFunc(request, entity, input)
+                ?.execute(command)
+                ?.successOrNull { encodeSuccessToJson(toSerializable, it) }
+        } catch (error: Throwable) {
+            error.printStackTrace()
+            throw error
+        }
     }
+}
+
+inline fun <reified J, reified R> encodeSuccessToJson(toSerializable: (R) -> J, it: R): dynamic {
+
+    println("encoding $it")
+
+    val value = toSerializable(it)
+
+    println("serializable is $value")
+
+    return couplingJsonFormat.encodeToDynamic(value)
 }
 
 inline fun <J, R> Result<R>.successOrNull(toJson: (R) -> J) = when (this) {
