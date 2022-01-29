@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
+import com.zegreatrob.coupling.server.action.boost.SaveBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.connection.*
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
@@ -22,6 +23,7 @@ import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import com.zegreatrob.coupling.server.express.Config
+import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
@@ -69,6 +71,22 @@ class CommandDispatcher(
 
 }
 
+interface ICurrentTribeIdDispatcher :
+    ICommandDispatcher,
+    PinsQueryDispatcher,
+    PlayersQueryDispatcher,
+    SavePlayerCommandDispatcher,
+    DeletePlayerCommandDispatcher,
+    RetiredPlayersQueryDispatcher,
+    SavePairAssignmentDocumentCommandDispatcher,
+    DeletePairAssignmentDocumentCommandDispatcher,
+    DeleteTribeCommandDispatcher,
+    DeletePinCommandDispatcher,
+    SavePinCommandDispatcher,
+    CurrentPairAssignmentDocumentQueryDispatcher,
+    ProposeNewPairsCommandDispatcher,
+    PairAssignmentDocumentListQueryDispatcher
+
 class CurrentTribeIdDispatcher(
     override val currentTribeId: TribeId,
     private val commandDispatcher: CommandDispatcher
@@ -86,7 +104,8 @@ class CurrentTribeIdDispatcher(
     SavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQueryDispatcher,
     ProposeNewPairsCommandDispatcher,
-    PairAssignmentDocumentListQueryDispatcher {
+    PairAssignmentDocumentListQueryDispatcher,
+    ICurrentTribeIdDispatcher {
     override val userId: String get() = commandDispatcher.userId
 
     suspend fun isAuthorized() = currentTribeId.validateAuthorized() != null
@@ -136,3 +155,9 @@ fun apiGatewayManagementApi() = ApiGatewayManagementApi(
             json()
     )
 )
+
+interface PrereleaseTribeIdDispatcher :
+    SaveBoostCommandDispatcher,
+    SuspendActionExecuteSyntax
+
+

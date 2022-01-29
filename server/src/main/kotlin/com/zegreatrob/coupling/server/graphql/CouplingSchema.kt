@@ -32,6 +32,11 @@ fun couplingSchema() = makeExecutableSchema(
 fun prereleaseSchema() = makeExecutableSchema(
     json(
         "typeDefs" to "${js("require('prerelease-schema.graphql')").default}",
+//        "resolvers" to json(
+//            "Mutation" to json(
+//                "saveBoost" to saveBoostResolver,
+//            ),
+//        )
     )
 )
 

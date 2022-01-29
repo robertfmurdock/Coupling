@@ -1,0 +1,9 @@
+query boost {
+    user {
+        boost {
+            id
+            userId
+            tribeIds
+        }
+    }
+}

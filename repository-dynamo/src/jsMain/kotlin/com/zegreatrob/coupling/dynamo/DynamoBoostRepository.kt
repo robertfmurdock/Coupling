@@ -5,13 +5,13 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.UserEmailSyntax
-import com.zegreatrob.coupling.repository.BoostRepository
+import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.js.json
 
 class DynamoBoostRepository private constructor(override val userId: String, override val clock: TimeProvider) :
-    BoostRepository,
+    ExtendedBoostRepository,
     UserEmailSyntax,
     DynamoBoostJsonMapping,
     RecordSyntax {
@@ -52,7 +52,7 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
         )
     }
 
-    override suspend fun get(): Record<Boost>? = getByPk("user-$userId")
+    override suspend fun get(): Record<Boost>? = getByPk(userKey(userId))
 
     private suspend fun getByPk(pk: String) =
         performQuery(queryParams(pk))
@@ -67,16 +67,20 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
         coroutineScope {
             performPutItem(dynamoJson)
             boost.tribeIds.forEach { tribeId ->
-                launch { performPutItem(dynamoJson.add(json("pk" to "tribe-${tribeId.value}"))) }
+                launch { performPutItem(dynamoJson.add(json("pk" to tribeKey(tribeId)))) }
             }
         }
     }
 
-    override suspend fun getByTribeId(tribeId: TribeId) = getByPk("tribe-${tribeId.value}")
+    override suspend fun getByTribeId(tribeId: TribeId) = getByPk(tribeKey(tribeId))
         ?.verifyTribeHasCurrentAccess(tribeId)
 
-    private suspend fun Record<Boost>.verifyTribeHasCurrentAccess(tribeId: TribeId) = getByPk("user-${data.userId}")
+    private fun tribeKey(tribeId: TribeId) = "tribe-${tribeId.value}"
+
+    private suspend fun Record<Boost>.verifyTribeHasCurrentAccess(tribeId: TribeId) = getByPk(userKey(data.userId))
         ?.let { if (it.data.tribeIds.contains(tribeId)) it else null }
+
+    private fun userKey(userId: String) = "user-$userId"
 
     private fun queryParams(id: String) = json(
         "TableName" to prefixedTableName,

@@ -4,20 +4,22 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.repository.BoostRepository
+import com.zegreatrob.coupling.repository.BoostGet
+import com.zegreatrob.coupling.repository.BoostSave
+import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
-interface BoostRepositoryValidator<R : BoostRepository, SC : SharedContext<R>> {
+interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet, R : BoostSave {
 
-    val boostSetup: TestTemplate<SC>
+    val repositorySetup: TestTemplate<SC>
     suspend fun buildRepository(user: User, clock: MagicClock): R
 
     @Test
-    fun getBoostWhenThereIsNoneReturnsNull() = boostSetup {
+    fun getBoostWhenThereIsNoneReturnsNull() = repositorySetup {
     } exercise {
         repository.get()
     } verify { result ->
@@ -25,7 +27,7 @@ interface BoostRepositoryValidator<R : BoostRepository, SC : SharedContext<R>> {
     }
 
     @Test
-    fun getSavedBoostWillReturnSuccessfully() = boostSetup({ sharedContext ->
+    fun getSavedBoostWillReturnSuccessfully() = repositorySetup({ sharedContext ->
         object : SharedContext<R> by sharedContext {
             val boost by lazy { Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}"))) }
         }
@@ -38,7 +40,7 @@ interface BoostRepositoryValidator<R : BoostRepository, SC : SharedContext<R>> {
     }
 
     @Test
-    fun saveBoostRepeatedlyGetsLatest() = boostSetup({ parent: SharedContext<R> ->
+    fun saveBoostRepeatedlyGetsLatest() = repositorySetup({ parent: SharedContext<R> ->
         object : SharedContext<R> by parent {
             val boost = Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}")))
             val updatedBoost1 = boost.copy(tribeIds = emptySet())
@@ -57,8 +59,13 @@ interface BoostRepositoryValidator<R : BoostRepository, SC : SharedContext<R>> {
             .assertIsEqualTo(updatedBoost2)
     }
 
+}
+
+interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : SharedContext<R>> :
+    BoostRepositoryValidator<R, SC> {
+
     @Test
-    fun saveBoostRepeatedlyGetByTribeGetsLatest() = boostSetup({ sharedContext ->
+    fun saveBoostRepeatedlyGetByTribeGetsLatest() = repositorySetup({ sharedContext ->
         object : SharedContext<R> by sharedContext {
             val tribeId = TribeId("${uuid4()}")
             val boost = Boost("${uuid4()}", user.id, setOf(tribeId, TribeId("${uuid4()}")))
@@ -79,7 +86,7 @@ interface BoostRepositoryValidator<R : BoostRepository, SC : SharedContext<R>> {
     }
 
     @Test
-    fun getSavedBoostByTribeIdForBoostFromDifferentUserWillReturnContent() = boostSetup({ sharedContext ->
+    fun getSavedBoostByTribeIdForBoostFromDifferentUserWillReturnContent() = repositorySetup({ sharedContext ->
         val altRepository = buildRepository(stubUser(), sharedContext.clock)
         object : SharedContext<R> by sharedContext {
             val altRepository = altRepository
@@ -95,7 +102,7 @@ interface BoostRepositoryValidator<R : BoostRepository, SC : SharedContext<R>> {
     }
 
     @Test
-    fun getSavedBoostByTribeIdForBoostRemovedBoostWillReturnNull() = boostSetup({ sharedContext ->
+    fun getSavedBoostByTribeIdForBoostRemovedBoostWillReturnNull() = repositorySetup({ sharedContext ->
         object : SharedContext<R> by sharedContext {
             val tribeId = TribeId("${uuid4()}")
             val boost = Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), tribeId, TribeId("${uuid4()}")))

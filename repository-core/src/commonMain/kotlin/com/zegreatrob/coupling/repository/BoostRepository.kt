@@ -4,8 +4,18 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-interface BoostRepository {
-    suspend fun get(): Record<Boost>?
-    suspend fun save(boost: Boost)
+interface BoostRepository : BoostGet, BoostSave
+
+interface ExtendedBoostRepository : BoostRepository, BoostGetByTribeId
+
+interface BoostGetByTribeId {
     suspend fun getByTribeId(tribeId: TribeId): Record<Boost>?
+}
+
+interface BoostSave {
+    suspend fun save(boost: Boost)
+}
+
+interface BoostGet {
+    suspend fun get(): Record<Boost>?
 }

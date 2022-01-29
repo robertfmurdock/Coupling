@@ -17,3 +17,16 @@ type UserRecord {
     id: String!
     boost: BoostRecord
 }
+
+input SaveBoostInput {
+    id: String!
+    tribeIds: [String]!
+}
+
+type Mutation {
+    saveBoost(input: SaveBoostInput!): Boolean
+}
+
+type Query {
+
+}

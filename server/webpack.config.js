@@ -4,6 +4,7 @@ const resourcesPath = path.resolve(__dirname, 'build/processedResources/js/main'
 const config = {
     mode: "production",
     entry: "Coupling-server",
+    devtool: 'eval-source-map',
     output: {
         path: path.resolve(__dirname, 'build/webpack-output'),
         filename: 'app.js',

@@ -22,10 +22,10 @@ class SdkUserRepositoryTest {
     fun willReturnTheUser() = repositorySetup({ it }) exercise {
         repository.getUser()
     } verify { result ->
-        result?.data.let {
-            it?.email.assertIsEqualTo(primaryAuthorizedUsername)
-            it?.id.assertIsNotEqualTo(null)
-            it?.authorizedTribeIds.assertIsNotEqualTo(null)
+        result.data.let {
+            it.email.assertIsEqualTo(primaryAuthorizedUsername)
+            it.id.assertIsNotEqualTo(null)
+            it.authorizedTribeIds.assertIsNotEqualTo(null)
         }
     }
 

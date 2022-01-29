@@ -1,18 +1,14 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.invoke
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.promise
 import kotlin.js.Json
-import kotlin.js.Promise
 import kotlin.js.json
 import kotlin.test.Test
 
