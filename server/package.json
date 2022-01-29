@@ -7,13 +7,13 @@
     "../test": "test"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "~3.48.0",
-    "@aws-sdk/lib-dynamodb": "~3.48.0",
-    "@aws-sdk/client-lambda": "~3.48.0",
-    "@aws-sdk/smithy-client": "^3.47.2",
+    "@aws-sdk/client-dynamodb": "~3.49.0",
+    "@aws-sdk/lib-dynamodb": "~3.49.0",
+    "@aws-sdk/client-lambda": "~3.49.0",
+    "@aws-sdk/smithy-client": "^3.49.0",
     "@graphql-tools/schema": "^8.3.1",
     "@graphql-tools/stitch": "^8.4.3",
-    "aws-sdk": "2.1065.0",
+    "aws-sdk": "2.1066.0",
     "body-parser": "^1.19.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -43,7 +43,7 @@
     "jasmine-core": "^4.0.0",
     "jasmine-reporters": "^2.5.0",
     "npm-check-updates": "^12.2.1",
-    "serverless": "^2.72.2",
+    "serverless": "^3.0.1",
     "serverless-offline": "^8.4.0",
     "serverless-offline-ssm": "^5.2.0"
   },
