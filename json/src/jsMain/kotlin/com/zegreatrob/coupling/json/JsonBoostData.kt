@@ -3,4 +3,4 @@ package com.zegreatrob.coupling.json
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SaveBoostInput(val id: String, val tribeIds: List<String>)
+data class SaveBoostInput(val tribeIds: List<String>)

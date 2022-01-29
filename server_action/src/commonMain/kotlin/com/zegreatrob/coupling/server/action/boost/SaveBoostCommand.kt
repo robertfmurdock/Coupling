@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.repository.BoostSave
 
-data class SaveBoostCommand(val id: String, val tribeIds: Set<TribeId>) :
+data class SaveBoostCommand(val tribeIds: Set<TribeId>) :
     SimpleSuspendResultAction<SaveBoostCommandDispatcher, Boost> {
     override val performFunc = link(SaveBoostCommandDispatcher::perform)
 }
@@ -16,7 +16,7 @@ interface SaveBoostCommandDispatcher : BoostSaveSyntax, AuthenticatedUserSyntax 
 
     suspend fun perform(command: SaveBoostCommand) = command.save().successResult()
 
-    private suspend fun SaveBoostCommand.save() = Boost(id, user.id, tribeIds).apply { save() }
+    private suspend fun SaveBoostCommand.save() = Boost(user.id, tribeIds).apply { save() }
 
 }
 

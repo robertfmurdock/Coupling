@@ -31,7 +31,7 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet
     @Test
     fun getSavedBoostWillReturnSuccessfully() = repositorySetup({ sharedContext ->
         object : SharedContext<R> by sharedContext {
-            val boost by lazy { Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}"))) }
+            val boost by lazy { Boost(user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}"))) }
         }
     }) {
         repository.save(boost)
@@ -43,7 +43,7 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet
 
     @Test
     fun deleteWillMakeBoostNotRecoverableThroughGet() = repositorySetup {
-        repository.save(Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}"))))
+        repository.save(Boost(user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}"))))
         repository.delete()
     } exercise {
         repository.get()
@@ -54,7 +54,7 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet
     @Test
     fun saveBoostRepeatedlyGetsLatest() = repositorySetup({ parent: SharedContext<R> ->
         object : SharedContext<R> by parent {
-            val boost = Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}")))
+            val boost = Boost(user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}")))
             val updatedBoost1 = boost.copy(tribeIds = emptySet())
             val updatedBoost2 = updatedBoost1.copy(tribeIds = setOf(TribeId("${uuid4()}")))
         }
@@ -80,7 +80,7 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
     fun saveBoostRepeatedlyGetByTribeGetsLatest() = repositorySetup({ sharedContext ->
         object : SharedContext<R> by sharedContext {
             val tribeId = TribeId("${uuid4()}")
-            val boost = Boost("${uuid4()}", user.id, setOf(tribeId, TribeId("${uuid4()}")))
+            val boost = Boost(user.id, setOf(tribeId, TribeId("${uuid4()}")))
             val updatedBoost1 = boost.copy(tribeIds = emptySet())
             val updatedBoost2 = updatedBoost1.copy(tribeIds = setOf(tribeId))
         }
@@ -103,7 +103,7 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
         object : SharedContext<R> by sharedContext {
             val altRepository = altRepository
             val tribeId = TribeId("${uuid4()}")
-            val boost = Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), tribeId, TribeId("${uuid4()}")))
+            val boost = Boost(user.id, setOf(TribeId("${uuid4()}"), tribeId, TribeId("${uuid4()}")))
         }
     }) {
         repository.save(boost)
@@ -117,7 +117,7 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
     fun getSavedBoostByTribeIdForBoostRemovedBoostWillReturnNull() = repositorySetup({ sharedContext ->
         object : SharedContext<R> by sharedContext {
             val tribeId = TribeId("${uuid4()}")
-            val boost = Boost("${uuid4()}", user.id, setOf(TribeId("${uuid4()}"), tribeId, TribeId("${uuid4()}")))
+            val boost = Boost(user.id, setOf(TribeId("${uuid4()}"), tribeId, TribeId("${uuid4()}")))
         }
     }) {
         repository.save(boost)

@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class JsonBoostRecord(
-    val id: String,
     val userId: String,
     val tribeIds: Set<String>,
     val modifyingUserEmail: String,
@@ -18,14 +17,13 @@ data class JsonBoostRecord(
 )
 
 fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(
-    data = Boost(id, userId, tribeIds.map { TribeId(it) }.toSet()),
+    data = Boost(userId, tribeIds.map { TribeId(it) }.toSet()),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
     timestamp = DateTime.fromString(timestamp).local
 )
 
 fun Record<Boost>.toSerializable() = JsonBoostRecord(
-    id = data.id,
     userId = data.userId,
     tribeIds = data.tribeIds.map(TribeId::value).toSet(),
     modifyingUserEmail = modifyingUserId,

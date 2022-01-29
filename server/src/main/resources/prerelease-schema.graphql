@@ -1,5 +1,4 @@
 type BoostRecord {
-    id: String!
     userId: String!
     tribeIds: [String]!
     expirationDate: String
@@ -19,7 +18,6 @@ type UserRecord {
 }
 
 input SaveBoostInput {
-    id: String!
     tribeIds: [String]!
 }
 

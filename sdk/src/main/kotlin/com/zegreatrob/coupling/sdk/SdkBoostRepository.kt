@@ -29,6 +29,6 @@ interface SdkBoostRepository : BoostRepository, GqlSyntax {
     override suspend fun save(boost: Boost) = doQuery(Mutations.saveBoost, boost.saveBoostInput())
         .unsafeCast<Unit>()
 
-    private fun Boost.saveBoostInput() = SaveBoostInput(id, tribeIds.map(TribeId::value))
+    private fun Boost.saveBoostInput() = SaveBoostInput(tribeIds.map(TribeId::value))
 
 }

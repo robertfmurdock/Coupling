@@ -13,17 +13,18 @@ class MemoryBoostRepository(
 ) : TypeRecordSyntax<Boost>, RecordBackend<Boost> by recordBackend, ExtendedBoostRepository {
 
     override suspend fun get(): Record<Boost>? = records.lastOrNull { it.data.userId == userId }
+        ?.let { if (it.isDeleted) null else it }
 
     override suspend fun save(boost: Boost) = boost.record().save()
 
     override suspend fun delete() {
-        get()?.save()
+        get()?.data?.deletionRecord()?.save()
     }
 
     override suspend fun getByTribeId(tribeId: TribeId): Record<Boost>? = allLatestRecords().firstOrNull {
         it.data.tribeIds.contains(tribeId)
     }
 
-    private fun allLatestRecords() = records.groupBy { it.data.id }.map { it.value.last() }
+    private fun allLatestRecords() = records.groupBy { it.data.userId }.map { it.value.last() }
 
 }
