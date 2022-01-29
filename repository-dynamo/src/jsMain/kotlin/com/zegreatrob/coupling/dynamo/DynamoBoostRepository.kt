@@ -4,7 +4,6 @@ import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -12,7 +11,6 @@ import kotlin.js.json
 
 class DynamoBoostRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     ExtendedBoostRepository,
-    UserEmailSyntax,
     DynamoBoostJsonMapping,
     RecordSyntax {
 
@@ -21,7 +19,8 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
         DynamoItemPutSyntax,
         DynamoQuerySyntax,
         DynamoItemSyntax,
-        DynamoScanSyntax {
+        DynamoScanSyntax,
+        DynamoLoggingSyntax {
         override val tableName = "BOOST"
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoBoostRepository(userId, clock)
             .also { ensureTableExists() }
@@ -54,12 +53,13 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
 
     override suspend fun get(): Record<Boost>? = getByPk(userKey(userId))
 
-    private suspend fun getByPk(pk: String) =
+    private suspend fun getByPk(pk: String) = logAsync("get boost for pk") {
         performQuery(queryParams(pk))
             .itemsNode()
             .sortByRecordTimestamp()
             .lastOrNull()
             ?.toBoostRecord()
+    }
 
     override suspend fun save(boost: Boost) {
         val boostRecord = boost.toRecord()

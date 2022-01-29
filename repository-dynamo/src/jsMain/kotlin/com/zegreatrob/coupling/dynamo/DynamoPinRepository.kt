@@ -9,13 +9,13 @@ import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import kotlin.js.Json
 
 class DynamoPinRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     PinRepository,
-    UserEmailSyntax,
+    UserIdSyntax,
     DynamoPinJsonMapping,
     RecordSyntax {
 

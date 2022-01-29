@@ -4,13 +4,13 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 
 object FindOrCreateUserAction : SimpleSuspendResultAction<FindOrCreateUserActionDispatcher, User> {
     override val performFunc = link(FindOrCreateUserActionDispatcher::perform)
 }
 
-interface FindOrCreateUserActionDispatcher : UserEmailSyntax, UserSaveSyntax, UserGetSyntax {
+interface FindOrCreateUserActionDispatcher : UserIdSyntax, UserSaveSyntax, UserGetSyntax {
 
     suspend fun perform(action: FindOrCreateUserAction) = findOrCreateUser().successResult()
 

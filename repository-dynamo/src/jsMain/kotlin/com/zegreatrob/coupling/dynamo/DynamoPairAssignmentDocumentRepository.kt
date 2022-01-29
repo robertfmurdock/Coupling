@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmen
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import kotlin.js.Json
 
@@ -16,7 +16,7 @@ import kotlin.js.Json
 class DynamoPairAssignmentDocumentRepository private constructor(
     override val userId: String,
     override val clock: TimeProvider
-) : PairAssignmentDocumentRepository, UserEmailSyntax, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
+) : PairAssignmentDocumentRepository, UserIdSyntax, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
 
     companion object : DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>,
         TribeCreateTableParamProvider,

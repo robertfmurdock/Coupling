@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.memory.*
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -27,7 +27,7 @@ class MemoryRepositoryCatalog private constructor(
     override val liveInfoRepository: LiveInfoRepository
 ) :
     RepositoryCatalog,
-    UserEmailSyntax,
+    UserIdSyntax,
     ClockSyntax {
 
     init {

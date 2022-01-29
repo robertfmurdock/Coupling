@@ -15,17 +15,15 @@ import kotlin.js.json
 
 interface SdkBoostRepository : BoostRepository, GqlSyntax {
 
-    override suspend fun get(): Record<Boost>? {
-        return performer.postAsync(boostQuery()).await()
-            .at<Json>("/data/boost")
-            .toTribeRecordList()
-    }
+    override suspend fun get() = performer.postAsync(boostQuery()).await()
+        .also { println("got ${JSON.stringify(it)}") }
+        .at<Json>("/data/user/boost")
+        ?.toBoostRecord()
 
     private fun boostQuery() = json("query" to Queries.boost)
 
-    private fun Json?.toTribeRecordList(): Record<Boost>? =
-        couplingJsonFormat.decodeFromDynamic<JsonBoostRecord?>(this)?.toModelRecord()
-
+    private fun Json.toBoostRecord(): Record<Boost> = couplingJsonFormat.decodeFromDynamic<JsonBoostRecord>(this)
+        .toModelRecord()
 
     override suspend fun save(boost: Boost) = doQuery(Mutations.saveBoost, boost.saveBoostInput())
         .unsafeCast<Unit>()

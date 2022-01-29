@@ -209,11 +209,4 @@ type Mutation {
     deletePlayer(input: DeletePlayerInput!): Boolean
     savePairAssignments(input: SavePairAssignmentsInput!): Boolean
     deletePairAssignments(input: DeletePairAssignmentsInput!): Boolean
-
-#    saveBoost(input: SaveBoostInput!): Boolean
 }
-
-#input SaveBoostInput {
-#    id: String!
-#    tribeIds: [String]!
-#}

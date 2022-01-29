@@ -5,9 +5,9 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.UserAuthorizedTribeIdsSyntax
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 
-interface UserAuthenticatedTribeIdSyntax : UserEmailSyntax, UserAuthorizedTribeIdsSyntax {
+interface UserAuthenticatedTribeIdSyntax : UserIdSyntax, UserAuthorizedTribeIdsSyntax {
 
     fun List<TribeElement<String>>.authenticatedFilter() = authenticatedTribeIds().authenticatedFilter()
 

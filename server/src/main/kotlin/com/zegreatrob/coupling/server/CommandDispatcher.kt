@@ -9,7 +9,9 @@ import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayMa
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
+import com.zegreatrob.coupling.server.action.boost.BoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.SaveBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.connection.*
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
@@ -23,7 +25,6 @@ import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import com.zegreatrob.coupling.server.express.Config
-import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
@@ -156,8 +157,6 @@ fun apiGatewayManagementApi() = ApiGatewayManagementApi(
     )
 )
 
-interface PrereleaseTribeIdDispatcher :
-    SaveBoostCommandDispatcher,
-    SuspendActionExecuteSyntax
-
-
+interface PrereleaseDispatcher : ICommandDispatcher, SaveBoostCommandDispatcher, BoostQueryDispatcher {
+    override val boostRepository: BoostRepository
+}

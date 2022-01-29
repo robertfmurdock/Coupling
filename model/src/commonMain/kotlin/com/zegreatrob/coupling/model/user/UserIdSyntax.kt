@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.model.user
 
-interface UserEmailSyntax {
+interface UserIdSyntax {
     val userId: String
 }
 
@@ -8,7 +8,7 @@ interface AuthenticatedUserSyntax {
     val user: User
 }
 
-interface AuthenticatedUserEmailSyntax : AuthenticatedUserSyntax, UserEmailSyntax {
+interface AuthenticatedUserEmailSyntax : AuthenticatedUserSyntax, UserIdSyntax {
     override val userId get() = user.email
 }
 

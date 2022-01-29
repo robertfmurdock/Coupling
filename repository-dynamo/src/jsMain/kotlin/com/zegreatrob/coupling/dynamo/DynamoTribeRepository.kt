@@ -5,14 +5,14 @@ import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlin.js.Json
 
 class DynamoTribeRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     TribeRepository,
     DynamoRecordJsonMapping,
-    UserEmailSyntax,
+    UserIdSyntax,
     ClockSyntax,
     RecordSyntax,
     DynamoTribeJsonMapping {

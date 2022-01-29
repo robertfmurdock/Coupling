@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.dynamo
 
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 
-interface RecordSyntax : UserEmailSyntax, ClockSyntax {
+interface RecordSyntax : UserIdSyntax, ClockSyntax {
     fun <T> T.toRecord() = Record(this, userId, false, now())
 }

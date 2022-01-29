@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.action.tribe
 
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 
-interface UserPlayerIdsSyntax : UserEmailSyntax {
+interface UserPlayerIdsSyntax : UserIdSyntax {
     val playerRepository: PlayerListGetByEmail
     suspend fun getUserPlayerIds() = playerRepository.getPlayerIdsByEmail(userId)
 }

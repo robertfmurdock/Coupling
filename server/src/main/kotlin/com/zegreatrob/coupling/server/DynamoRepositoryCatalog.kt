@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.dynamo.*
 import com.zegreatrob.coupling.model.ClockSyntax
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
@@ -22,7 +22,7 @@ class DynamoRepositoryCatalog private constructor(
     override val liveInfoRepository: LiveInfoRepository
 ) :
     RepositoryCatalog,
-    UserEmailSyntax,
+    UserIdSyntax,
     ClockSyntax {
     companion object {
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoRepositoryCatalog(

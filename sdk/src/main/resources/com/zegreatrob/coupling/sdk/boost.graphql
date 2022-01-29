@@ -4,6 +4,9 @@ query boost {
             id
             userId
             tribeIds
+            isDeleted
+            modifyingUserEmail
+            timestamp
         }
     }
 }

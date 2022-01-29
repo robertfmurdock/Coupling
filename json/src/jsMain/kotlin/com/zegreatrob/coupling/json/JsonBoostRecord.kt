@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.js.toDate
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
@@ -21,4 +22,13 @@ fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
     timestamp = DateTime.fromString(timestamp).local
+)
+
+fun Record<Boost>.toSerializable() = JsonBoostRecord(
+    id = data.id,
+    userId = data.userId,
+    tribeIds = data.tribeIds.map(TribeId::value).toSet(),
+    modifyingUserEmail = modifyingUserId,
+    isDeleted = isDeleted,
+    timestamp = timestamp.toDate().toISOString(),
 )

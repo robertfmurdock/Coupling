@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 
-interface TypeRecordSyntax<T> : UserEmailSyntax, ClockSyntax {
+interface TypeRecordSyntax<T> : UserIdSyntax, ClockSyntax {
 
     fun T.record() = Record(
         data = this,

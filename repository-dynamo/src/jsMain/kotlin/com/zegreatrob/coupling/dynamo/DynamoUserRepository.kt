@@ -3,14 +3,14 @@ package com.zegreatrob.coupling.dynamo
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlin.js.Json
 import kotlin.js.json
 
 class DynamoUserRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     UserRepository,
-    UserEmailSyntax,
+    UserIdSyntax,
     DynamoUserJsonMapping,
     RecordSyntax {
 

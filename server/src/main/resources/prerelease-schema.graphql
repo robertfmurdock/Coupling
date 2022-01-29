@@ -27,6 +27,4 @@ type Mutation {
     saveBoost(input: SaveBoostInput!): Boolean
 }
 
-type Query {
-
-}
+type Query { _: String }

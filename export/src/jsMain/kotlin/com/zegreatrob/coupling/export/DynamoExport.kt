@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -88,7 +88,7 @@ class DynamoRepositoryCatalog private constructor(
     val pinRepository: DynamoPinRepository,
     val userRepository: DynamoUserRepository
 ) :
-    UserEmailSyntax,
+    UserIdSyntax,
     ClockSyntax {
 
     companion object {

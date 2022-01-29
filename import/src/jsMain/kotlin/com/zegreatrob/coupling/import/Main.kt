@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -103,7 +103,7 @@ class DynamoRepositoryCatalog private constructor(
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
     val pinRepository: DynamoPinRepository,
     val userRepository: DynamoUserRepository
-) : UserEmailSyntax, ClockSyntax {
+) : UserIdSyntax, ClockSyntax {
 
     companion object {
         suspend operator fun invoke(userEmail: String, clock: TimeProvider): DynamoRepositoryCatalog {

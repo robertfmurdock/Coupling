@@ -8,38 +8,47 @@ import kotlin.js.json
 
 val validatedTableList = mutableListOf<String>()
 
-interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax {
+interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax, DynamoLoggingSyntax {
     val createTableParams: Json
-
-    suspend fun ensureTableExists() {
+    val ensureTableExistsLogHeader get() = "ensureTableExists $prefixedTableName"
+    suspend fun ensureTableExists() = logAsync(ensureTableExistsLogHeader) {
         if (validatedTableList.contains(prefixedTableName)) {
-            return
+            return@logAsync
         } else {
             if (!checkTableExists()) {
                 createTable()
-
-                while (tableStatus() != "ACTIVE") {
-                    yield()
-                }
+                waitForActive()
             }
             validatedTableList.add(prefixedTableName)
         }
     }
 
-    suspend fun checkTableExists() = try {
-        describeTribeTable()
-        true
-    } catch (throwable: Throwable) {
-        false
+    val waitForActiveLogHeader get() = "waitForActive $prefixedTableName"
+    private suspend fun waitForActive() = logAsync(waitForActiveLogHeader) {
+        while (tableStatus() != "ACTIVE") {
+            yield()
+        }
     }
 
-    suspend fun createTable() = dynamoDB.createTable(createTableParams).await()
+    val checkTableExistsLogHeader get() = "checkTableExists $prefixedTableName"
+    suspend fun checkTableExists() = logAsync(checkTableExistsLogHeader) {
+        try {
+            describeTribeTable()
+            true
+        } catch (throwable: Throwable) {
+            false
+        }
+    }
+
+    val createTableLogHeader get() = "create table $prefixedTableName"
+    suspend fun createTable(): dynamic = logAsync(createTableLogHeader) {
+        dynamoDB.createTable(createTableParams).await()
+    }
 
     suspend fun tableStatus() = describeTribeTable()
         .let { it["Table"].unsafeCast<Json>()["TableStatus"] }
 
-    private suspend fun describeTribeTable(): Json =
-        dynamoDB.describeTable(json("TableName" to prefixedTableName))
-            .await()
+    private suspend fun describeTribeTable(): Json = dynamoDB.describeTable(json("TableName" to prefixedTableName))
+        .await()
 
 }

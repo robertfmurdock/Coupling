@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.server.graphql
 
+import com.zegreatrob.coupling.server.entity.boost.boostResolver
+import com.zegreatrob.coupling.server.entity.boost.saveBoostResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.*
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
@@ -17,10 +19,10 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.graphql.GraphQLSchema
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.external.graphql_tools.schema.makeExecutableSchema
-import com.zegreatrob.coupling.server.external.graphql_tools.stitch.stitchSchemas
+import com.zegreatrob.coupling.server.external.graphql_tools.schema.mergeSchemas
 import kotlin.js.json
 
-private val entityWithId: Resolver = { _, args, _ -> json("id" to args["id"]) }
+private val entityWithId: Resolver = { _, args, _, _ -> json("id" to args["id"]) }
 
 fun couplingSchema() = makeExecutableSchema(
     json(
@@ -32,25 +34,28 @@ fun couplingSchema() = makeExecutableSchema(
 fun prereleaseSchema() = makeExecutableSchema(
     json(
         "typeDefs" to "${js("require('prerelease-schema.graphql')").default}",
-//        "resolvers" to json(
-//            "Mutation" to json(
-//                "saveBoost" to saveBoostResolver,
-//            ),
-//        )
+        "resolvers" to prereleaseResolvers()
+    )
+)
+
+private fun prereleaseResolvers() = json(
+    "Mutation" to json(
+        "saveBoost" to saveBoostResolver,
+    ),
+    "UserRecord" to json(
+        "boost" to boostResolver,
     )
 )
 
 fun unifiedSchema() = addPrereleaseSchema(couplingSchema())
 
 private fun addPrereleaseSchema(standardSchema: GraphQLSchema) = if (!Config.prereleaseMode) standardSchema else {
-    stitchSchemas(
-        json(
-            "subschemas" to arrayOf(
-                json("schema" to standardSchema),
-                json("schema" to prereleaseSchema())
-            )
-        )
-    )
+    try {
+        mergeSchemas(json("schemas" to arrayOf(standardSchema, prereleaseSchema())))
+    } catch (anything: Throwable) {
+        println("error $anything")
+        throw  anything
+    }
 }
 
 fun couplingResolvers() = json(

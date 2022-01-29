@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.json.TribeInput
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.CurrentTribeIdDispatcher
-import com.zegreatrob.coupling.server.ICurrentTribeIdDispatcher
-import com.zegreatrob.coupling.server.PrereleaseTribeIdDispatcher
+import com.zegreatrob.coupling.server.ICommandDispatcher
+import com.zegreatrob.coupling.server.PrereleaseDispatcher
 import com.zegreatrob.coupling.server.express.Config
 
 object DispatcherProviders {
@@ -21,17 +21,16 @@ object DispatcherProviders {
             .let { if (it.isAuthorized()) it else null }
     }
 
-    val prereleaseTribeCommand: GraphQLDispatcherProvider<PrereleaseTribeIdDispatcher> = { request, entity, args ->
-        val dispatcher = tribeCommand(request, entity, args)
+    val prereleaseCommand: GraphQLDispatcherProvider<PrereleaseDispatcher> = { request, entity, args ->
+        val dispatcher = command(request, entity, args)
 
         if (dispatcher == null || !Config.prereleaseMode)
             null
         else {
-            val boostRepo = DynamoBoostRepository(dispatcher.userId, TimeProvider)
-
-            object : PrereleaseTribeIdDispatcher, ICurrentTribeIdDispatcher by dispatcher {
+            val boostRepo = DynamoBoostRepository(dispatcher.user.id, TimeProvider)
+            object : PrereleaseDispatcher, ICommandDispatcher by dispatcher {
                 override val boostRepository = boostRepo
-                override val userId = dispatcher.userId
+                override val userId = dispatcher.user.id
 
                 override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message) =
                     dispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)

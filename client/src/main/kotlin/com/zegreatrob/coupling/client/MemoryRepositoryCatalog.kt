@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.ClockSyntax
-import com.zegreatrob.coupling.model.user.UserEmailSyntax
+import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
@@ -22,7 +22,7 @@ class MemoryRepositoryCatalog private constructor(
     override val pinRepository: PinRepository
 ) :
     RepositoryCatalog,
-    UserEmailSyntax,
+    UserIdSyntax,
     ClockSyntax {
 
     constructor(userEmail: String, backend: LocalStorageRepositoryBackend, clock: TimeProvider) : this(
