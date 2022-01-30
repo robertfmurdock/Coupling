@@ -121,7 +121,13 @@ tasks {
     create<NodeExec>("updateDependencies") {
         dependsOn(test, compileKotlinJs)
         nodeCommand = "ncu"
-        arguments = listOf("-u", "--packageFile", "${System.getenv("PWD")}/$packageJson")
+        arguments = listOf(
+            "-u",
+            "--packageFile",
+            "${System.getenv("PWD")}/$packageJson",
+            "--configFilePath",
+            "${rootDir}/.ncurc.json"
+        )
     }
 
     create<NodeExec>("start") {
