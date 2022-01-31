@@ -13,7 +13,7 @@ class MemoryBoostRepository(
 ) : TypeRecordSyntax<Boost>, RecordBackend<Boost> by recordBackend, ExtendedBoostRepository {
 
     override suspend fun get(): Record<Boost>? = records.lastOrNull { it.data.userId == userId }
-        ?.let { if (it.isDeleted) null else it }
+        ?.takeUnless { it.isDeleted }
 
     override suspend fun save(boost: Boost) = boost.record().save()
 

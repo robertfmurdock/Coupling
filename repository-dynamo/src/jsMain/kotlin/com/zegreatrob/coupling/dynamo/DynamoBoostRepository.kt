@@ -5,8 +5,10 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
+import kotlinext.js.clone
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlin.js.Json
 import kotlin.js.json
 
 class DynamoBoostRepository private constructor(override val userId: String, override val clock: TimeProvider) :
@@ -59,37 +61,49 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
             .sortByRecordTimestamp()
             .lastOrNull()
             ?.toBoostRecord()
-            ?.let { if (it.isDeleted) null else it }
+            ?.takeUnless { it.isDeleted }
     }
 
-    override suspend fun save(boost: Boost) {
-        val boostRecord = boost.toRecord()
-        val dynamoJson = boostRecord.asDynamoJson()
-        coroutineScope {
-            performPutItem(dynamoJson)
-            boost.tribeIds.forEach { tribeId ->
-                launch { performPutItem(dynamoJson.add(json("pk" to tribeKey(tribeId)))) }
-            }
+    override suspend fun save(boost: Boost) = boost.toRecord().putRecordWithClones()
+
+    private suspend fun Record<Boost>.putRecordWithClones() {
+        val dynamoJson = asDynamoJson()
+        val tribeIdsToUpdate = allTribeCopiesToUpdate(this)
+        (buildTribeCopyRecordJson(tribeIdsToUpdate, dynamoJson) + dynamoJson)
+            .performPutItems()
+    }
+
+    private fun buildTribeCopyRecordJson(tribeIdsToUpdate: Set<TribeId>, dynamoJson: Json) =
+        tribeIdsToUpdate.map { tribeId ->
+            copyWithDifferentPk(dynamoJson, tribeId)
+        }
+
+    private suspend fun List<Json>.performPutItems() = coroutineScope {
+        forEach {
+            launch { performPutItem(it) }
         }
     }
+
+    private fun copyWithDifferentPk(dynamoJson: Json, tribeId: TribeId) =
+        clone(dynamoJson).add(json("pk" to tribeKey(tribeId)))
+
+    private suspend fun allTribeCopiesToUpdate(boostRecord: Record<Boost>): Set<TribeId> {
+        val previousRecord = getByPk(userKey(boostRecord.data.userId))
+        return boostRecord.data.tribeIds + previousRecord.previousRecordTribeIds()
+    }
+
+    private fun Record<Boost>?.previousRecordTribeIds() = (this?.data?.tribeIds ?: emptySet())
 
     override suspend fun delete() {
         get()
             ?.copy(isDeleted = true)
-            ?.asDynamoJson()
-            ?.let {
-                performPutItem(it)
-            }
-
+            ?.putRecordWithClones()
     }
 
     override suspend fun getByTribeId(tribeId: TribeId) = getByPk(tribeKey(tribeId))
-        ?.verifyTribeHasCurrentAccess(tribeId)
+        ?.takeIf { it.data.tribeIds.contains(tribeId) }
 
     private fun tribeKey(tribeId: TribeId) = "tribe-${tribeId.value}"
-
-    private suspend fun Record<Boost>.verifyTribeHasCurrentAccess(tribeId: TribeId) = getByPk(userKey(data.userId))
-        ?.let { if (it.data.tribeIds.contains(tribeId)) it else null }
 
     private fun userKey(userId: String) = "user-$userId"
 

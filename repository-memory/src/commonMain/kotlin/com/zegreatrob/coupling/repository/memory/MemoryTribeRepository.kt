@@ -14,7 +14,7 @@ class MemoryTribeRepository(
     override suspend fun save(tribe: Tribe) = tribe.record().save()
 
     override suspend fun getTribeRecord(tribeId: TribeId) = tribeId.findTribe()
-        ?.let { if (it.isDeleted) null else it }
+        ?.takeUnless { it.isDeleted }
 
     override suspend fun getTribes() = recordList()
         .filterNot { it.isDeleted }
