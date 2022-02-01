@@ -31,7 +31,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("com.benasher44:uuid:0.4.0")
-                implementation("com.soywiz.korlibs.klock:klock:2.4.12")
+                implementation("com.soywiz.korlibs.klock:klock:2.4.13")
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
