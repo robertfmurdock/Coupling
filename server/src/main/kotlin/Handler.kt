@@ -100,14 +100,11 @@ private suspend fun handleConnect(request: Request, connectionId: String, event:
 private fun notifyConnectLambda(event: dynamic): Promise<Unit> {
     val options = notifyLambdaOptions()
     val client = LambdaClient(options)
-    console.log("lambda options ${JSON.stringify(options)}")
     val commandOptions = json(
         "FunctionName" to "coupling-server-${Process.getEnv("STAGE")}-notifyConnect",
         "InvocationType" to "Event",
         "Payload" to JSON.stringify(event)
     )
-
-    console.log("command options ${JSON.stringify(commandOptions)}")
     return client.send<Unit>(InvokeCommand(commandOptions)).catch {
         console.log("lambda invoke fail", it)
     }
@@ -158,7 +155,6 @@ fun notifyConnect(event: Json) = MainScope().promise {
         ?.let { results ->
             socketDispatcher.managementApi.postToConnection(
                 json("ConnectionId" to connectionId, "Data" to results.second.toSerializable().toJsonString())
-                    .also { console.log("Sending message to ", connectionId, JSON.stringify(it)) }
             ).promise()
         }
 }.then {
