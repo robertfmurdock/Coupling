@@ -27,7 +27,7 @@ class SpinTest {
     @Test
     fun willTakeThePlayersGivenAndUseThoseForPairing() = sdkSetup({ context ->
         object : SdkContext by context {
-            val tribe = Tribe(id = TribeId(uuid4().toString()), name = "test", pairingRule = PairingRule.LongestTime)
+            val tribe = Tribe(id = TribeId(uuid4().toString()), name = "commonTest", pairingRule = PairingRule.LongestTime)
             val players = listOf(
                 Player(name = "dude1"),
                 Player(name = "dude2")
