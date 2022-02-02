@@ -37,13 +37,7 @@ inline fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, reifi
 }
 
 inline fun <reified J, reified R> encodeSuccessToJson(toSerializable: (R) -> J, it: R): dynamic {
-
-    println("encoding $it")
-
     val value = toSerializable(it)
-
-    println("serializable is $value")
-
     return couplingJsonFormat.encodeToDynamic(value)
 }
 

@@ -6,6 +6,7 @@ import io.ktor.client.features.*
 import io.ktor.client.features.cookies.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.websocket.*
 import io.ktor.http.*
 import org.w3c.dom.Window
 import org.w3c.dom.get

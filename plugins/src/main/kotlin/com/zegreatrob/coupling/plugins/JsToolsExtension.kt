@@ -8,5 +8,7 @@ abstract class JsToolsExtension(val packageJson: PackageJson)
 
 fun Project.loadPackageJson(): PackageJson {
     val packageJsonPath = "${projectDir.path}/package.json"
-    return PackageJson(ObjectMapper().readTree(File(packageJsonPath)))
+    val file = File(packageJsonPath)
+    val json = if(file.exists()) ObjectMapper().readTree(file) else null
+    return PackageJson(json)
 }

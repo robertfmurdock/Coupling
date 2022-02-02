@@ -5,6 +5,7 @@ import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.logging.*
+import io.ktor.client.features.websocket.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import kotlinx.coroutines.MainScope
@@ -47,8 +48,12 @@ private suspend fun authorizedKtorSdk(username: String, password: String) =
 
 suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
 
-private val generalPurposeClient = HttpClient {
+val generalPurposeClient = HttpClient {
     install(JsonFeature)
+    install(WebSockets) {
+
+    }
+
     install(Logging) {
         KotlinLoggingConfiguration.FORMATTER = JsonFormatter()
         val ktorLogger = KotlinLogging.logger("ktor")
