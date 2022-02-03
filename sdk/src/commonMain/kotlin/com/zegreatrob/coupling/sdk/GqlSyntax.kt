@@ -1,33 +1,37 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.fromJsonDynamic
-import com.zegreatrob.coupling.json.toJsonDynamic
-import com.zegreatrob.minjson.at
-import kotlinx.browser.window
+import com.zegreatrob.coupling.json.fromJsonElement
+import com.zegreatrob.coupling.json.toJsonElement
 import kotlinx.coroutines.Deferred
-import org.w3c.dom.Window
-import org.w3c.dom.get
-import kotlin.js.Json
-import kotlin.js.json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
 
 interface GqlSyntax {
     val performer: QueryPerformer
-    suspend fun String.performQuery(): dynamic = performer.doQuery(this)
-    suspend fun performQuery(body: Json): dynamic = performer.doQuery(body)
+    suspend fun String.performQuery(): JsonElement = performer.doQuery(this)
+    suspend fun performQuery(body: JsonElement): JsonElement = performer.doQuery(body)
 }
 
 interface QueryPerformer {
-    fun basename(): dynamic = if (js("global.window").unsafeCast<Window?>() != null) window["basename"] else ""
+    fun basename() : String? = com.zegreatrob.coupling.sdk.basename()
+    suspend fun doQuery(body: String): JsonElement
+    suspend fun doQuery(body: JsonElement): JsonElement
+    fun postAsync(body: JsonElement): Deferred<JsonElement>
 
-    suspend fun doQuery(body: String): Json
-    suspend fun doQuery(body: Json): Json
-    fun postAsync(body: dynamic): Deferred<Json>
-
-    suspend fun get(path: String): dynamic
+    suspend fun get(path: String): JsonElement
 }
 
-suspend inline fun <reified T> GqlSyntax.doQuery(query: String, input: T): dynamic = performQuery(
-    json("query" to query, "variables" to json("input" to input.toJsonDynamic()))
+expect fun basename() : String?
+
+suspend inline fun <reified T> GqlSyntax.doQuery(query: String, input: T): JsonElement = performQuery(
+    JsonObject(
+        mapOf(
+            "query" to JsonPrimitive(query),
+            "variables" to JsonObject(mapOf("input" to input.toJsonElement()))
+        )
+    )
 )
 
 suspend inline fun <reified I, reified O, M> GqlSyntax.doQuery(
@@ -35,12 +39,8 @@ suspend inline fun <reified I, reified O, M> GqlSyntax.doQuery(
     input: I,
     resultName: String,
     toOutput: (O) -> M
-): M? = doQuery(mutation, input).unsafeCast<Json>()
-    .at<Json>("/data")!!
-    .at<Json>("/$resultName")
-    ?.fromJsonDynamic<O>()
+): M? = doQuery(mutation, input)
+    .jsonObject["data"]!!
+    .jsonObject[resultName]
+    ?.fromJsonElement<O>()
     ?.let(toOutput)
-
-object EndpointFinder {
-    fun basename(): dynamic = if (js("global.window").unsafeCast<Window?>() != null) window["basename"] else ""
-}

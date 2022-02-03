@@ -8,5 +8,5 @@ interface SdkPlayerDeleter : PlayerDelete, GqlSyntax {
         Mutations.deletePlayer,
         mapOf("tribeId" to tribeId.value, "playerId" to playerId),
         "deletePlayer"
-    ) { it: Boolean -> it } ?: false
+    ) { it: Boolean? -> it } ?: false
 }

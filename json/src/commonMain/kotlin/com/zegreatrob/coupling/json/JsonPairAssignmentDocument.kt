@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.js.toDate
+import com.soywiz.klock.ISO8601
+import com.soywiz.klock.parse
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
@@ -64,18 +64,18 @@ data class SpinInput(
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     id = id.value,
-    date = date.toDate().toISOString(),
+    date = date.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
     pairs = pairs.map(PinnedCouplingPair::toSerializable)
 )
 
 fun TribeRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDocumentRecord(
     id = data.element.id.value,
-    date = data.element.date.toDate().toISOString(),
+    date = data.element.date.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable),
     tribeId = data.id.value,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp.toDate().toISOString(),
+    timestamp = timestamp.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
 )
 
 fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
@@ -97,19 +97,19 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
 fun TribeIdPairAssignmentDocument.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
     tribeId = tribeId.value,
     pairAssignmentsId = element.id.value,
-    date = element.date.toDate().toISOString(),
+    date = element.date.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
     pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
 )
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     id = PairAssignmentDocumentId(id),
-    date = DateTime.fromString(date).local,
+    date = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(date).local,
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
 
 fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
     id = PairAssignmentDocumentId(pairAssignmentsId),
-    date = DateTime.fromString(date).local,
+    date = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(date).local,
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
 
@@ -117,13 +117,13 @@ fun JsonPairAssignmentDocumentRecord.toModel() = TribeRecord(
     TribeId(tribeId).with(
         PairAssignmentDocument(
             id = PairAssignmentDocumentId(id),
-            date = DateTime.fromString(date).local,
+            date = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(date).local,
             pairs = pairs.map(JsonPinnedCouplingPair::toModel)
         )
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = DateTime.fromString(timestamp).local
+    timestamp = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(timestamp).local
 )
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(

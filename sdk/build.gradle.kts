@@ -32,9 +32,12 @@ kotlin {
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
-
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+            }
+        }
         val commonTest by getting {
-            dependsOn(commonMain)
             dependencies {
                 implementation(project(":repository-validation"))
                 implementation(project(":test-logging"))

@@ -8,5 +8,5 @@ interface SdkTribeDelete : TribeDelete, GqlSyntax {
         Mutations.deleteTribe,
         mapOf("tribeId" to tribeId.value),
         "deleteTribe"
-    ) { it: Boolean -> it } ?: false
+    ) { it: Boolean? -> it } ?: false
 }

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.js.toDate
+import com.soywiz.klock.ISO8601
+import com.soywiz.klock.parse
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
@@ -79,7 +79,7 @@ fun TribeRecord<Player>.toSerializable() = JsonPlayerRecord(
     tribeId = data.id.value,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp.toDate().toISOString(),
+    timestamp = timestamp.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
 )
 
 fun SavePlayerInput.toModel(): Player = Player(
@@ -116,5 +116,5 @@ fun JsonPlayerRecord.toModel(): TribeRecord<Player> = TribeRecord(
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = DateTime.fromString(timestamp).local
+    timestamp = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(timestamp).local
 )

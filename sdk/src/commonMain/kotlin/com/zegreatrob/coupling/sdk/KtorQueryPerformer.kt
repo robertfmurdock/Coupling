@@ -2,39 +2,41 @@ package com.zegreatrob.coupling.sdk
 
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.http.content.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
-import kotlin.js.Json
-import kotlin.js.json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonArray
 
 interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
 
-    override suspend fun doQuery(body: Json): Json {
+    override suspend fun doQuery(body: JsonElement): JsonElement {
         return postStringToJsonObject(body)
     }
 
-    override suspend fun doQuery(body: String): Json {
-        return postStringToJsonObject(json("query" to body))
+    override suspend fun doQuery(body: String): JsonElement {
+        return postStringToJsonObject(JsonObject(mapOf("query" to JsonPrimitive(body))))
     }
 
-    override fun postAsync(body: dynamic) = MainScope().async {
+    override fun postAsync(body: JsonElement) = MainScope().async {
         postStringToJsonObject(body)
     }
 
-    private suspend fun postStringToJsonObject(body: dynamic): Json {
-        val result = JSON.parse<Json>(client.post("/api/graphql") {
+    private suspend fun postStringToJsonObject(body: JsonElement): JsonElement {
+        val result = client.post<JsonObject>("/api/graphql") {
             header("Authorization", "Bearer ${getIdToken()}")
-            this.body = TextContent(JSON.stringify(body), ContentType.Application.Json)
-        })
+            contentType(ContentType.Application.Json)
+            this.body = body
+        }
         val errors = result["errors"]
-        if (errors != null && errors.unsafeCast<Array<Any?>>().isNotEmpty()) {
-            throw Error("Failed with errors: ${JSON.stringify(errors)}. Full body is ${JSON.stringify(result)}")
+        if (errors != null && errors.jsonArray.isNotEmpty()) {
+            throw Error("Failed with errors: ${errors}. Full body is $result")
         }
         return result
     }
 
-    override suspend fun get(path: String): String? = client.get(path) {
+    override suspend fun get(path: String): JsonElement = client.get(path) {
         header("Authorization", "Bearer ${getIdToken()}")
     }
 }

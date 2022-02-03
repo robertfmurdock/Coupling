@@ -1,33 +1,31 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.JsonBoostRecord
-import com.zegreatrob.coupling.json.SaveBoostInput
-import com.zegreatrob.coupling.json.couplingJsonFormat
-import com.zegreatrob.coupling.json.toModelRecord
+import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.Boost
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.BoostRepository
-import com.zegreatrob.minjson.at
-import kotlinx.serialization.json.decodeFromDynamic
-import kotlin.js.Json
-import kotlin.js.json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 interface SdkBoostRepository : BoostRepository, GqlSyntax {
 
     override suspend fun get() = performer.postAsync(boostQuery()).await()
-        .at<Json>("/data/user/boost")
+        .at("/data/user/boost")
         ?.toBoostRecord()
 
-    private fun boostQuery() = json("query" to Queries.boost)
+    private fun boostQuery() = buildJsonObject { put("query", Queries.boost) }
 
-    private fun Json.toBoostRecord(): Record<Boost> = couplingJsonFormat.decodeFromDynamic<JsonBoostRecord>(this)
-        .toModelRecord()
+    private fun JsonElement.toBoostRecord() = fromJsonElement<JsonBoostRecord?>()
+        ?.toModelRecord()
 
-    override suspend fun delete() = performQuery(json("query" to Mutations.deleteBoost))
+    override suspend fun delete() {
+        performQuery(buildJsonObject { put("query", Mutations.deleteBoost) })
+    }
 
-    override suspend fun save(boost: Boost) = doQuery(Mutations.saveBoost, boost.saveBoostInput())
-        .unsafeCast<Unit>()
+    override suspend fun save(boost: Boost) {
+        doQuery(Mutations.saveBoost, boost.saveBoostInput())
+    }
 
     private fun Boost.saveBoostInput() = SaveBoostInput(tribeIds.map(TribeId::value))
 

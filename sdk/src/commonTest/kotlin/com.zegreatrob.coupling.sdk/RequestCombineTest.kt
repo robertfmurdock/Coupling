@@ -8,24 +8,23 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlin.js.Json
-import kotlin.js.json
+import kotlinx.serialization.json.*
 import kotlin.test.Test
 
 class RequestCombineTest {
 
     @Test
     fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = asyncSetup(object {
-        val allPostCalls = mutableListOf<dynamic>()
+        val allPostCalls = mutableListOf<JsonElement>()
         val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(object: QueryPerformer {
 
-          override  suspend fun doQuery(body: String): dynamic {
+          override  suspend fun doQuery(body: String): JsonElement {
+              return stubResponseData().apply { allPostCalls.add(JsonPrimitive( body)) }
+          }
+          override  suspend fun doQuery(body: JsonElement): JsonElement {
               return stubResponseData().apply { allPostCalls.add(body) }
           }
-          override  suspend fun doQuery(body: Json): dynamic {
-              return stubResponseData().apply { allPostCalls.add(body) }
-          }
-          override  fun postAsync(body: dynamic): Deferred<Json> {
+          override  fun postAsync(body: JsonElement): Deferred<JsonElement> {
               return CompletableDeferred(stubResponseData().apply { allPostCalls.add(body) })
           }
 
@@ -45,13 +44,13 @@ class RequestCombineTest {
 
 }
 
-private fun stubResponseData() = json(
-    "data" to json(
-        "data" to json(
-            "tribe" to json(
-                "playerList" to emptyArray<Json>(),
-                "pinList" to emptyArray<Json>()
-            )
-        )
-    )
-)
+private fun stubResponseData() = buildJsonObject {
+    putJsonObject("data") {
+        putJsonObject("data") {
+            putJsonObject("tribe") {
+               putJsonArray("playerList"){}
+               putJsonArray("pinList"){}
+            }
+        }
+    }
+}

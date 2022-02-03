@@ -1,24 +1,25 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.JsonTribeRecord
-import com.zegreatrob.coupling.json.couplingJsonFormat
+import com.zegreatrob.coupling.json.fromJsonElement
 import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.tribe.TribeListGet
-import com.zegreatrob.minjson.at
-import kotlinx.serialization.json.decodeFromDynamic
-import kotlin.js.Json
-import kotlin.js.json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.put
 
 interface SdkTribeListGet : TribeListGet, GqlSyntax {
     override suspend fun getTribes() = performer.postAsync(tribeListQuery()).await()
-        .at<Json>("/data/tribeList")
+        .jsonObject["data"]
+        ?.jsonObject?.get("tribeList")
         .toTribeRecordList()
 
-    private fun tribeListQuery() = json("query" to Queries.listTribes)
+    private fun tribeListQuery() = buildJsonObject { put("query", Queries.listTribes) }
 
-    private fun Json?.toTribeRecordList(): List<Record<Tribe>> =
-        couplingJsonFormat.decodeFromDynamic<List<JsonTribeRecord>>(this)
-            .map(JsonTribeRecord::toModelRecord)
+    private fun JsonElement?.toTribeRecordList(): List<Record<Tribe>> = this?.fromJsonElement<List<JsonTribeRecord>>()
+        ?.map(JsonTribeRecord::toModelRecord)
+        ?: emptyList()
 }

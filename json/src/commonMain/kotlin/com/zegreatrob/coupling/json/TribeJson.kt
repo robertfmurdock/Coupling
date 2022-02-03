@@ -3,13 +3,13 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
-import kotlin.js.Json
+import kotlinx.serialization.json.jsonObject
 
 val tribeJsonKeys
     get() = Record(Tribe(TribeId("")), "")
         .toSerializable()
-        .toJsonDynamic()
-        .unsafeCast<Json>()
-        .getKeys()
+        .toJsonElement()
+        .jsonObject
+        .keys
 
 val tribeRecordJsonKeys get() = tribeJsonKeys

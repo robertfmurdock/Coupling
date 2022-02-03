@@ -4,18 +4,16 @@ import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import kotlin.js.Json
+import kotlinx.serialization.json.jsonObject
 
 val pinJsonKeys
     get() = Pin()
         .toSerializable()
-        .toJsonDynamic()
-        .unsafeCast<Json>()
-        .getKeys()
+        .toJsonElement()
+        .jsonObject.keys
 
 val pinRecordJsonKeys
     get() = TribeRecord(TribeId("").with(Pin()), "")
         .toSerializable()
-        .toJsonDynamic()
-        .unsafeCast<Json>()
-        .getKeys()
+        .toJsonElement()
+        .jsonObject.keys

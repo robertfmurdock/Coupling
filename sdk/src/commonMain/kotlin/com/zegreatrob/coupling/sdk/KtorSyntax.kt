@@ -6,10 +6,7 @@ import io.ktor.client.features.*
 import io.ktor.client.features.cookies.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.websocket.*
 import io.ktor.http.*
-import org.w3c.dom.Window
-import org.w3c.dom.get
 
 fun defaultClient() = HttpClient {
     install(JsonFeature) {
@@ -24,24 +21,24 @@ fun defaultClient() = HttpClient {
     defaultRequest {
         expectSuccess = false
 
-        js("global.window")
-            .unsafeCast<Window?>()
-            ?.let { window ->
+        getLocationAndBasename()
+            ?.let { (location, basename) ->
                 url {
-                    protocol = if(window.location.protocol == "http:") URLProtocol.HTTP else URLProtocol.HTTPS
-                    host = window.location.hostname
-                    window.location.port.toIntOrNull()?.let {
-                        port = it
-                    }
-                    encodedPath = "${window["basename"]}/$encodedPath"
+                    protocol = if (location.startsWith("http:")) URLProtocol.HTTP else URLProtocol.HTTPS
+                    val locationUrl = Url(location)
+                    host = locationUrl.host
+                    port = locationUrl.port
+                    encodedPath = "${basename}/$encodedPath"
                 }
             }
     }
 }
 
+expect fun getLocationAndBasename(): Pair<String, String>?
+
 private val defaultClient = defaultClient()
 
 interface KtorSyntax {
     val client: HttpClient get() = defaultClient
-    suspend fun getIdToken() : String
+    suspend fun getIdToken(): String
 }

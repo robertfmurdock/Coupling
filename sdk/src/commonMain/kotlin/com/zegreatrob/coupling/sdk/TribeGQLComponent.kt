@@ -31,4 +31,4 @@ enum class TribeGQLComponent(val value: String, val jsonPath: String) {
     );
 }
 
-private fun queryAllFields(name: String, keys: Array<String>) = "$name {${keys.joinToString(",")}}"
+private fun queryAllFields(name: String, keys: Set<String>) = "$name {${keys.joinToString(",")}}"

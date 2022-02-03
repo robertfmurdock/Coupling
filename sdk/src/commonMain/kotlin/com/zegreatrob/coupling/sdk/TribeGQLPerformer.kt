@@ -2,31 +2,32 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.coroutines.*
-import kotlin.js.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonObject
 
 interface TribeGQLPerformer : GqlSyntax {
 
     suspend fun performTribeGQLQuery(
         tribeId: TribeId,
         components: List<TribeGQLComponent>
-    ): Map<TribeGQLComponent, dynamic> {
+    ): Map<TribeGQLComponent, JsonElement?> {
         val result = sendQuery(tribeId, components)
-        val data = result.data
+        val data = result.jsonObject["data"]
 
         return components.associateWith { component ->
             getNodeAtPath(data, component)
         }
     }
 
-    private fun getNodeAtPath(data: dynamic, component: TribeGQLComponent): Any {
-        var node = data
+    private fun getNodeAtPath(data: JsonElement?, component: TribeGQLComponent): JsonElement? {
+        var node: JsonElement? = data
         component.jsonPath.split("/").filterNot(String::isBlank).forEach { bit ->
-            node = node.unsafeCast<Json?>()?.get(bit)
+            node = node?.jsonObject?.get(bit)
         }
-        return node.unsafeCast<Json>()
+        return node
     }
 
-    private suspend fun sendQuery(tribeId: TribeId, components: List<TribeGQLComponent>): dynamic =
+    private suspend fun sendQuery(tribeId: TribeId, components: List<TribeGQLComponent>) =
         buildFinalQuery(tribeId, components)
             .performQuery()
 
@@ -43,14 +44,14 @@ class BatchingTribeGQLPerformer(override val performer: QueryPerformer) : TribeG
 
     private val batchScope = MainScope() + CoroutineName("batch")
 
-    private var pending: Deferred<Map<TribeGQLComponent, dynamic>>? = null
+    private var pending: Deferred<Map<TribeGQLComponent, JsonElement?>>? = null
 
     private var pendingComponents = emptyList<TribeGQLComponent>()
 
     override suspend fun performTribeGQLQuery(
         tribeId: TribeId,
         components: List<TribeGQLComponent>
-    ): Map<TribeGQLComponent, dynamic> {
+    ): Map<TribeGQLComponent, JsonElement?> {
         pendingComponents = pendingComponents + components
 
         return with(batchScope) {

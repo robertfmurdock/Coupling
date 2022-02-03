@@ -15,8 +15,6 @@ import kotlinx.serialization.json.jsonPrimitive
 import mu.KotlinLogging
 import mu.KotlinLoggingConfiguration
 
-external val process: dynamic
-
 const val primaryAuthorizedUsername = "couplingtestuser@gmail.com"
 val primaryTestPassword = Process.getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
 
