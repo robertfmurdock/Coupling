@@ -13,7 +13,7 @@ interface SdkPairAssignmentDocumentGet : PairAssignmentDocumentGet, GqlQueryComp
         tribeId, PairAssignmentDocumentList, ::toModel
     ) ?: emptyList()
 
-    private fun toModel(list: List<JsonPairAssignmentDocumentRecord>?) = list
-        ?.map(JsonPairAssignmentDocumentRecord::toModel)
+    private fun toModel(list: List<JsonPairAssignmentDocumentRecord>) = list
+        .map(JsonPairAssignmentDocumentRecord::toModel)
 }
 

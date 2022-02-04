@@ -15,7 +15,6 @@ interface AwsSocketCommunicator : SocketCommunicator, AwsManagementApiSyntax {
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? =
         managementApi.postToConnection(
             json("ConnectionId" to connectionId, "Data" to message.toSerializable().toJsonString())
-                .also { console.log("Sending message to ", connectionId, JSON.stringify(it)) }
         ).promise()
             .then({ null }, { oops -> println("oops $oops"); connectionId })
             .await()

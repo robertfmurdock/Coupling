@@ -10,5 +10,5 @@ interface SdkPlayerListGet : PlayerListGet, GqlQueryComponent {
     override suspend fun getPlayers(tribeId: TribeId) = performQueryGetComponent(tribeId, PlayerList, ::toModel)
         ?: emptyList()
 
-    private fun toModel(it: List<JsonPlayerRecord>?) = it?.map(JsonPlayerRecord::toModel)
+    private fun toModel(it: List<JsonPlayerRecord>) = it.map(JsonPlayerRecord::toModel)
 }

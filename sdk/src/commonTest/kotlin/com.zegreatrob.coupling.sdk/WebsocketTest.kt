@@ -126,11 +126,9 @@ class WebsocketTest {
         sdk.save(tribe.id.with(expectedPairDoc))
     } verifyAnd {
         sockets.first()
-            .readAllAvailableMessages()
-            .map(String::toMessage)
-            .assertIsEqualTo(
-                listOf(PairAssignmentAdjustmentMessage(expectedPairDoc))
-            )
+            .readTextFrame()
+            ?.toMessage()
+            .assertIsEqualTo(PairAssignmentAdjustmentMessage(expectedPairDoc))
     } teardown {
         sockets.forEach { it.close() }
         sdk.delete(tribe.id)

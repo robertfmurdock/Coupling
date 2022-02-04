@@ -2,13 +2,11 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.model.tribe.TribeId
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.decodeFromJsonElement
 
 interface GqlQueryComponent : TribeGQLPerformer
 
-@OptIn(ExperimentalSerializationApi::class)
-suspend inline fun <reified T, reified S> GqlQueryComponent.performQueryGetComponent(
+suspend inline fun <reified T, reified S : Any> GqlQueryComponent.performQueryGetComponent(
     tribeId: TribeId,
     gqlComponent: TribeGQLComponent,
     transform: (S) -> T?
@@ -16,7 +14,7 @@ suspend inline fun <reified T, reified S> GqlQueryComponent.performQueryGetCompo
     .let {
         val content = it[gqlComponent]
         if (content != null)
-            transform(couplingJsonFormat.decodeFromJsonElement(content))
+            couplingJsonFormat.decodeFromJsonElement<S?>(content)?.let(transform)
         else
             null
     }

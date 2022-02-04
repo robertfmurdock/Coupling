@@ -10,5 +10,5 @@ interface SdkPinGet : PinGet, GqlQueryComponent {
     override suspend fun getPins(tribeId: TribeId) = performQueryGetComponent(tribeId, PinList, ::toModel)
         ?: emptyList()
 
-    private fun toModel(content: List<JsonPinRecord>?) = content?.map(JsonPinRecord::toModel)
+    private fun toModel(content: List<JsonPinRecord>) = content.map(JsonPinRecord::toModel)
 }
