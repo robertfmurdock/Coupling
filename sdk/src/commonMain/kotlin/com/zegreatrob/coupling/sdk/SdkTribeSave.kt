@@ -6,8 +6,9 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.tribe.TribeSave
 
 interface SdkTribeSave : TribeSave, GqlSyntax {
-    override suspend fun save(tribe: Tribe) = doQuery(Mutations.saveTribe, tribe.saveTribeInput())
-        .unsafeCast<Unit>()
+    override suspend fun save(tribe: Tribe) {
+        doQuery(Mutations.saveTribe, tribe.saveTribeInput())
+    }
 
     private fun Tribe.saveTribeInput() = SaveTribeInput(
         tribeId = id.value,
