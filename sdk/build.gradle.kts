@@ -38,6 +38,8 @@ kotlin {
             }
         }
         val commonTest by getting {
+            resources.srcDirs(commonMain.resources.srcDirs)
+
             dependencies {
                 implementation(project(":repository-validation"))
                 implementation(project(":test-logging"))
