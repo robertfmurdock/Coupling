@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -15,14 +15,14 @@ data class JsonPinRecord(
     val id: String? = null,
     val name: String = "",
     val icon: String = "",
-    override val tribeId: String,
+    override val tribeId: TribeId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: DateTime,
 ) : JsonTribeRecordInfo
 
 interface JsonTribeRecordInfo {
-    val tribeId: String?
+    val tribeId: TribeId?
     val modifyingUserEmail: String?
     val isDeleted: Boolean?
     val timestamp: DateTime?
@@ -39,26 +39,13 @@ data class JsonPinData(override val id: String?, override val name: String, over
 
 @Serializable
 data class SavePinInput(
-    override val tribeId: String,
+    override val tribeId: TribeId,
     val pinId: String?,
     val name: String,
     val icon: String,
 ): TribeInput
 
-@Serializable
-data class PinInput(
-    override val id: String?,
-    override val name: String,
-    override val icon: String,
-) : JsonPin
-
 fun Pin.toSerializable() = JsonPinData(
-    id = id,
-    name = name,
-    icon = icon,
-)
-
-fun Pin.toPinInput() = PinInput(
     id = id,
     name = name,
     icon = icon,
@@ -68,7 +55,7 @@ fun Record<TribeIdPin>.toSerializable() = JsonPinRecord(
     id = data.element.id,
     name = data.element.name,
     icon = data.element.icon,
-    tribeId = data.id.value,
+    tribeId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -81,7 +68,7 @@ fun JsonPinData.toModel(): Pin = Pin(
 )
 
 fun JsonPinRecord.toModel(): Record<TribeIdPin> = Record(
-    data = TribeId(tribeId).with(Pin(id = id, name = name, icon = icon)),
+    data = tribeId.with(Pin(id = id, name = name, icon = icon)),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
     timestamp = timestamp

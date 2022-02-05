@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -12,14 +12,14 @@ import kotlinx.serialization.UseSerializers
 data class JsonUser(
     val id: String,
     val email: String,
-    val authorizedTribeIds: Set<String>
+    val authorizedTribeIds: Set<TribeId>
 )
 
 @Serializable
 data class JsonUserRecord(
     val id: String,
     val email: String,
-    val authorizedTribeIds: Set<String>,
+    val authorizedTribeIds: Set<TribeId>,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
     val timestamp: DateTime,
@@ -28,13 +28,13 @@ data class JsonUserRecord(
 fun User.toSerializable() = JsonUser(
     id = id,
     email = email,
-    authorizedTribeIds = authorizedTribeIds.map { it.value }.toSet()
+    authorizedTribeIds = authorizedTribeIds
 )
 
 fun Record<User>.toSerializable() = JsonUserRecord(
     id = data.id,
     email = data.email,
-    authorizedTribeIds = data.authorizedTribeIds.map { it.value }.toSet(),
+    authorizedTribeIds = data.authorizedTribeIds,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -43,14 +43,14 @@ fun Record<User>.toSerializable() = JsonUserRecord(
 fun JsonUser.toModel() = User(
     id = id,
     email = email,
-    authorizedTribeIds = authorizedTribeIds.map(::TribeId).toSet(),
+    authorizedTribeIds = authorizedTribeIds,
 )
 
 fun JsonUserRecord.toModel() = Record(
     data = User(
         id = id,
         email = email,
-        authorizedTribeIds = authorizedTribeIds.map(::TribeId).toSet(),
+        authorizedTribeIds = authorizedTribeIds,
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,

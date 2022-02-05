@@ -10,7 +10,7 @@ interface SdkPlayerSave : PlayerSave, GqlSyntax {
         doQuery(Mutations.savePlayer, tribeIdPlayer.input())
     }
     private fun TribeIdPlayer.input() = SavePlayerInput(
-        tribeId = tribeId.value,
+        tribeId = tribeId,
         playerId = element.id,
         name = element.name,
         email = element.email,

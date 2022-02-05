@@ -11,7 +11,7 @@ interface SdkTribeSave : TribeSave, GqlSyntax {
     }
 
     private fun Tribe.saveTribeInput() = SaveTribeInput(
-        tribeId = id.value,
+        tribeId = id,
         pairingRule = PairingRule.toValue(pairingRule),
         name = name,
         email = email,

@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.Boost
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.BoostRepository
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
@@ -27,6 +26,6 @@ interface SdkBoostRepository : BoostRepository, GqlSyntax {
         doQuery(Mutations.saveBoost, boost.saveBoostInput())
     }
 
-    private fun Boost.saveBoostInput() = SaveBoostInput(tribeIds.map(TribeId::value))
+    private fun Boost.saveBoostInput() = SaveBoostInput(tribeIds)
 
 }

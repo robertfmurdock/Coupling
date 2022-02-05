@@ -2,8 +2,8 @@
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.tribe.TribeId
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
-interface TribeInput {
-    val tribeId: TribeId
-}
+@Serializable
+data class DeleteTribeInput(override val tribeId: TribeId): TribeInput

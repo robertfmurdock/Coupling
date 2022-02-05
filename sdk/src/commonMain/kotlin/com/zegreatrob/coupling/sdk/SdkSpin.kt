@@ -15,7 +15,7 @@ interface SdkSpin : GqlSyntax {
         SpinInput(
             players = players.map(Player::toSerializable),
             pins = pins.map(Pin::toSerializable),
-            tribeId = tribeId.value
+            tribeId = tribeId
         ),
         "spin",
         ::toOutput

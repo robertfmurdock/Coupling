@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -34,7 +34,7 @@ data class JsonPlayerData(
 @Serializable
 data class SavePlayerInput(
     val playerId: String,
-    override val tribeId: String,
+    override val tribeId: TribeId,
     val name: String = defaultPlayer.name,
     val email: String = defaultPlayer.email,
     val badge: String = "${defaultPlayer.badge}",
@@ -53,7 +53,7 @@ data class JsonPlayerRecord(
     override val callSignNoun: String = defaultPlayer.callSignNoun,
     override val imageURL: String? = defaultPlayer.imageURL,
 
-    override val tribeId: String,
+    override val tribeId: TribeId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: DateTime,
@@ -77,7 +77,7 @@ fun TribeRecord<Player>.toSerializable() = JsonPlayerRecord(
     callSignAdjective = data.element.callSignAdjective,
     callSignNoun = data.element.callSignNoun,
     imageURL = data.element.imageURL,
-    tribeId = data.id.value,
+    tribeId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -104,7 +104,7 @@ fun JsonPlayer.toModel(): Player = Player(
 )
 
 fun JsonPlayerRecord.toModel(): TribeRecord<Player> = TribeRecord(
-    TribeId(tribeId).with(
+    tribeId.with(
         Player(
             id = id,
             badge = badge.toIntOrNull() ?: defaultPlayer.badge,

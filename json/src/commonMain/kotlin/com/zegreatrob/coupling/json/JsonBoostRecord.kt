@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -11,14 +11,14 @@ import kotlinx.serialization.UseSerializers
 @Serializable
 data class JsonBoostRecord(
     val userId: String,
-    val tribeIds: Set<String>,
+    val tribeIds: Set<TribeId>,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
     val timestamp: DateTime,
 )
 
 fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(
-    data = Boost(userId, tribeIds.map { TribeId(it) }.toSet()),
+    data = Boost(userId, tribeIds),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
     timestamp = timestamp
@@ -26,7 +26,7 @@ fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(
 
 fun Record<Boost>.toSerializable() = JsonBoostRecord(
     userId = data.userId,
-    tribeIds = data.tribeIds.map(TribeId::value).toSet(),
+    tribeIds = data.tribeIds,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp

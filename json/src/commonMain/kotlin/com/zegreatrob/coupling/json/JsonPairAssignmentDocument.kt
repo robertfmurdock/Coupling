@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -27,7 +27,7 @@ data class JsonPairAssignmentDocumentRecord(
     val id: String,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>,
-    override val tribeId: String,
+    override val tribeId: TribeId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: DateTime
@@ -35,7 +35,7 @@ data class JsonPairAssignmentDocumentRecord(
 
 @Serializable
 data class SavePairAssignmentsInput(
-    override val tribeId: String,
+    override val tribeId: TribeId,
     val pairAssignmentsId: String,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>,
@@ -58,7 +58,7 @@ data class JsonPinnedPlayer(
 
 @Serializable
 data class SpinInput(
-    override val tribeId: String,
+    override val tribeId: TribeId,
     val players: List<JsonPlayerData>,
     val pins: List<JsonPinData>,
 ) : TribeInput
@@ -73,7 +73,7 @@ fun TribeRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDoc
     id = data.element.id.value,
     date = data.element.date,
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable),
-    tribeId = data.id.value,
+    tribeId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -96,7 +96,7 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
 )
 
 fun TribeIdPairAssignmentDocument.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
-    tribeId = tribeId.value,
+    tribeId = tribeId,
     pairAssignmentsId = element.id.value,
     date = element.date,
     pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
@@ -115,7 +115,7 @@ fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
 )
 
 fun JsonPairAssignmentDocumentRecord.toModel() = TribeRecord(
-    TribeId(tribeId).with(
+    tribeId.with(
         PairAssignmentDocument(
             id = PairAssignmentDocumentId(id),
             date = date,

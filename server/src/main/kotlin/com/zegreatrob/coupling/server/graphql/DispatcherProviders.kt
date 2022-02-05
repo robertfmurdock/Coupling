@@ -14,7 +14,7 @@ object DispatcherProviders {
     val command: GraphQLDispatcherProvider<CommandDispatcher> = { r, _, _ -> r.commandDispatcher }
     val tribeCommand: GraphQLDispatcherProvider<CurrentTribeIdDispatcher> = { request, entity, args ->
         val tribeId = entity?.get("id").unsafeCast<String?>()
-            ?: (args as? TribeInput)?.tribeId
+            ?: (args as? TribeInput)?.tribeId?.value
             ?: ""
         request.commandDispatcher
             .authorizedTribeIdDispatcher(tribeId)

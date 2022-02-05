@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -25,7 +25,7 @@ data class JsonTribe(
 
 @Serializable
 data class JsonTribeRecord(
-    val id: String,
+    val id: TribeId,
     val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
     val badgesEnabled: Boolean = false,
     val defaultBadgeName: String = "Default",
@@ -54,7 +54,7 @@ fun Tribe.toSerializable() = JsonTribe(
 )
 
 fun Record<Tribe>.toSerializable() = JsonTribeRecord(
-    id = data.id.value,
+    id = data.id,
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
     defaultBadgeName = data.defaultBadgeName,
@@ -84,7 +84,7 @@ fun JsonTribe.toModel(): Tribe = Tribe(
 
 fun JsonTribeRecord.toModelRecord(): Record<Tribe> = Record(
     data = Tribe(
-        id = TribeId(id),
+        id = id,
         pairingRule = PairingRule.fromValue(pairingRule),
         badgesEnabled = badgesEnabled,
         defaultBadgeName = defaultBadgeName,
