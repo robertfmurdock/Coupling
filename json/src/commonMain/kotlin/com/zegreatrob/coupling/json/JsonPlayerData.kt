@@ -1,13 +1,14 @@
+@file:UseSerializers(DateTimeSerializer::class)
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.ISO8601
-import com.soywiz.klock.parse
+import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 interface JsonPlayer {
     val id: String
@@ -55,7 +56,7 @@ data class JsonPlayerRecord(
     override val tribeId: String,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
-    override val timestamp: String,
+    override val timestamp: DateTime,
 ) : JsonTribeRecordInfo, JsonPlayer
 
 fun Player.toSerializable() = JsonPlayerData(
@@ -79,7 +80,7 @@ fun TribeRecord<Player>.toSerializable() = JsonPlayerRecord(
     tribeId = data.id.value,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
+    timestamp = timestamp,
 )
 
 fun SavePlayerInput.toModel(): Player = Player(
@@ -116,5 +117,5 @@ fun JsonPlayerRecord.toModel(): TribeRecord<Player> = TribeRecord(
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(timestamp).local
+    timestamp = timestamp
 )

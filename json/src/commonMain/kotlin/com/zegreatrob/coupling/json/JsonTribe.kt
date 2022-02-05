@@ -1,12 +1,13 @@
+@file:UseSerializers(DateTimeSerializer::class)
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.ISO8601
-import com.soywiz.klock.parse
+import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class JsonTribe(
@@ -36,7 +37,7 @@ data class JsonTribeRecord(
     val animationSpeed: Double = 1.0,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
-    val timestamp: String,
+    val timestamp: DateTime,
 )
 
 fun Tribe.toSerializable() = JsonTribe(
@@ -65,7 +66,7 @@ fun Record<Tribe>.toSerializable() = JsonTribeRecord(
     animationSpeed = data.animationSpeed,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
+    timestamp = timestamp,
 )
 
 fun JsonTribe.toModel(): Tribe = Tribe(
@@ -96,5 +97,5 @@ fun JsonTribeRecord.toModelRecord(): Record<Tribe> = Record(
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(timestamp).local
+    timestamp = timestamp
 )

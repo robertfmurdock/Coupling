@@ -1,13 +1,14 @@
+@file:UseSerializers(DateTimeSerializer::class)
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.ISO8601
-import com.soywiz.klock.parse
+import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class JsonPinRecord(
@@ -17,14 +18,14 @@ data class JsonPinRecord(
     override val tribeId: String,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
-    override val timestamp: String,
+    override val timestamp: DateTime,
 ) : JsonTribeRecordInfo
 
 interface JsonTribeRecordInfo {
     val tribeId: String?
     val modifyingUserEmail: String?
     val isDeleted: Boolean?
-    val timestamp: String?
+    val timestamp: DateTime?
 }
 
 interface JsonPin {
@@ -70,7 +71,7 @@ fun Record<TribeIdPin>.toSerializable() = JsonPinRecord(
     tribeId = data.id.value,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
+    timestamp = timestamp,
 )
 
 fun JsonPinData.toModel(): Pin = Pin(
@@ -83,5 +84,5 @@ fun JsonPinRecord.toModel(): Record<TribeIdPin> = Record(
     data = TribeId(tribeId).with(Pin(id = id, name = name, icon = icon)),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(timestamp).local
+    timestamp = timestamp
 )
