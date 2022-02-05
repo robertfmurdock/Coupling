@@ -16,7 +16,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.test.Test
 
-interface PinRepositoryValidator<R : PinRepository, C : TribeContext<R>> : RepositoryValidator<R, C> {
+interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, TribeContext<R>> {
 
     @Test
     fun canSaveAndGetPins() = repositorySetup(object : TribeContextMint<R>() {

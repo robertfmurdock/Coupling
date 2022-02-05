@@ -15,7 +15,7 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
-class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository, TribeContext<CompoundPinRepository>> {
+class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> {
 
     private val compoundRepositorySetup = asyncTestTemplate(sharedSetup = {
         object {
