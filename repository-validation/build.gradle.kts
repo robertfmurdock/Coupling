@@ -20,9 +20,10 @@ kotlin {
                 api(project(":test-logging"))
                 api(project(":stub-model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")
+                implementation("com.zegreatrob.testmints:standard")
+                implementation("com.zegreatrob.testmints:async")
+                implementation("com.zegreatrob.testmints:minassert")
             }
         }
 
@@ -30,15 +31,14 @@ kotlin {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
                 implementation(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+                implementation("org.jetbrains.kotlin:kotlin-test-junit")
             }
         }
 
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("com.zegreatrob.testmints:async")
+
             }
         }
     }
