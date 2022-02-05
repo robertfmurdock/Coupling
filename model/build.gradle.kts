@@ -19,6 +19,7 @@ kotlin {
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
                 api("com.soywiz.korlibs.klock:klock:2.4.13")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation("com.benasher44:uuid:0.4.0")
             }
         }

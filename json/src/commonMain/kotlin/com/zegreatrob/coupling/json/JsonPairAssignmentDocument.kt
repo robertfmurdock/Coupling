@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.json
 
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.ISO8601
 import com.soywiz.klock.parse
 import com.zegreatrob.coupling.model.TribeRecord
@@ -64,18 +65,18 @@ data class SpinInput(
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     id = id.value,
-    date = date.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
+    date = date.toCustomIsoString(),
     pairs = pairs.map(PinnedCouplingPair::toSerializable)
 )
 
 fun TribeRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDocumentRecord(
     id = data.element.id.value,
-    date = data.element.date.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
+    date = data.element.date.toCustomIsoString(),
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable),
     tribeId = data.id.value,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
+    timestamp = timestamp.toCustomIsoString(),
 )
 
 fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
@@ -97,33 +98,42 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
 fun TribeIdPairAssignmentDocument.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
     tribeId = tribeId.value,
     pairAssignmentsId = element.id.value,
-    date = element.date.format(ISO8601.DATETIME_UTC_COMPLETE_FRACTION),
+    date = element.date.toCustomIsoString(),
     pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
 )
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     id = PairAssignmentDocumentId(id),
-    date = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(date).local,
+    date = date.parseISODateTime(),
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
 
 fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
     id = PairAssignmentDocumentId(pairAssignmentsId),
-    date = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(date).local,
+    date = date.parseISODateTime(),
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
+
+private fun String.parseISODateTime() =
+    ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(this).local
+
+private fun DateTime.toCustomIsoString() = format(ISO8601.DATETIME_COMPLETE) + zoneAndMillis(this)
+
+private fun zoneAndMillis(soyDate: DateTime) = ".${soyDate.millisecondsString()}Z"
+
+private fun DateTime.millisecondsString() = milliseconds.toString().padStart(3, '0')
 
 fun JsonPairAssignmentDocumentRecord.toModel() = TribeRecord(
     TribeId(tribeId).with(
         PairAssignmentDocument(
             id = PairAssignmentDocumentId(id),
-            date = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(date).local,
+            date = date.parseISODateTime(),
             pairs = pairs.map(JsonPinnedCouplingPair::toModel)
         )
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = ISO8601.DATETIME_UTC_COMPLETE_FRACTION.parse(timestamp).local
+    timestamp = date.parseISODateTime()
 )
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
