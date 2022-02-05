@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class, PairAssignmentDocumentIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -9,12 +9,25 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.UseSerializers
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+
+@Serializer(forClass = PairAssignmentDocumentId::class)
+class PairAssignmentDocumentIdSerializer: KSerializer<PairAssignmentDocumentId> {
+    override val descriptor = PrimitiveSerialDescriptor("PairAssignmentDocumentId", PrimitiveKind.STRING)
+    override fun deserialize(decoder: Decoder) = PairAssignmentDocumentId(decoder.decodeString())
+    override fun serialize(encoder: Encoder, value: PairAssignmentDocumentId) = encoder.encodeString(value.value)
+}
 
 @Serializable
 data class JsonPairAssignmentDocument(
-    val id: String,
+    val id: PairAssignmentDocumentId,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>
 )
@@ -24,7 +37,7 @@ data class SpinOutput(val result: JsonPairAssignmentDocument)
 
 @Serializable
 data class JsonPairAssignmentDocumentRecord(
-    val id: String,
+    val id: PairAssignmentDocumentId,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>,
     override val tribeId: TribeId,
@@ -36,7 +49,7 @@ data class JsonPairAssignmentDocumentRecord(
 @Serializable
 data class SavePairAssignmentsInput(
     override val tribeId: TribeId,
-    val pairAssignmentsId: String,
+    val pairAssignmentsId: PairAssignmentDocumentId,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>,
 ): TribeInput
@@ -64,13 +77,13 @@ data class SpinInput(
 ) : TribeInput
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
-    id = id.value,
+    id = id,
     date = date,
     pairs = pairs.map(PinnedCouplingPair::toSerializable)
 )
 
 fun TribeRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDocumentRecord(
-    id = data.element.id.value,
+    id = data.element.id,
     date = data.element.date,
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable),
     tribeId = data.id,
@@ -97,19 +110,19 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
 
 fun TribeIdPairAssignmentDocument.toSavePairAssignmentsInput() = SavePairAssignmentsInput(
     tribeId = tribeId,
-    pairAssignmentsId = element.id.value,
+    pairAssignmentsId = element.id,
     date = element.date,
     pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
 )
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
-    id = PairAssignmentDocumentId(id),
+    id = id,
     date = date,
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
 
 fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
-    id = PairAssignmentDocumentId(pairAssignmentsId),
+    id = pairAssignmentsId,
     date = date,
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
@@ -117,7 +130,7 @@ fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
 fun JsonPairAssignmentDocumentRecord.toModel() = TribeRecord(
     tribeId.with(
         PairAssignmentDocument(
-            id = PairAssignmentDocumentId(id),
+            id = id,
             date = date,
             pairs = pairs.map(JsonPinnedCouplingPair::toModel)
         )
