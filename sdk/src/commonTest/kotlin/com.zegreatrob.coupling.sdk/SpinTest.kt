@@ -167,7 +167,7 @@ class SpinTest {
             sdk.tribeRepository.save(tribe)
             tribe.id.with(players).forEach { launch { sdk.save(it) } }
             tribe.id.with(history).forEach { launch { sdk.save(it) } }
-            tribe.id.with(pins).forEach { launch { sdk.save(it) } }
+            tribe.id.with(pins).forEach { launch { sdk.pinRepository.save(it) } }
         }
     }
 

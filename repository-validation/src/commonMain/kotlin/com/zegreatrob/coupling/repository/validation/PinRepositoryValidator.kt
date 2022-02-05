@@ -16,7 +16,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.test.Test
 
-interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, TribeContext<R>> {
+interface PinRepositoryValidator<R : PinRepository, C : TribeContext<R>> : RepositoryValidator<R, C> {
 
     @Test
     fun canSaveAndGetPins() = repositorySetup(object : TribeContextMint<R>() {
@@ -32,7 +32,6 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
         result.map { it.data.pin }
             .assertIsEqualTo(pins)
     }
-
 
     @Test
     fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : TribeContextMint<R>() {

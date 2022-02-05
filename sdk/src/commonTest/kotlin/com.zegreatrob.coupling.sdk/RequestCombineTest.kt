@@ -28,15 +28,13 @@ class RequestCombineTest {
               return CompletableDeferred(stubResponseData().apply { allPostCalls.add(body) })
           }
 
-            override suspend fun get(path: String): dynamic {
-                return null
-            }
+            override suspend fun get(path: String): JsonElement = JsonNull
         }) {}
         val tribeId = TribeId("Random")
     }) exercise {
         coroutineScope {
             launch { sdk.getPlayers(tribeId) }
-            launch { sdk.getPins(tribeId) }
+            launch { sdk.pinRepository.getPins(tribeId) }
         }
     } verify {
         allPostCalls.size.assertIsEqualTo(1)

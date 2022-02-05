@@ -20,7 +20,7 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
 @Suppress("unused")
-class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
+class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository, TribeContext<DynamoPinRepository>> {
 
     override val repositorySetup = asyncTestTemplate<TribeContext<DynamoPinRepository>>(sharedSetup = {
         val clock = MagicClock()

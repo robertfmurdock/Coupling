@@ -67,7 +67,7 @@ class PinConfigE2ETest {
         fun attributesAreShownOnConfig() = tribeSetup(object : TribeContext() {
             val pin = randomPin()
         }.attachTribe()) {
-            sdk.save(tribe.id.with(pin))
+            sdk.pinRepository.save(tribe.id.with(pin))
         } exercise {
             PinConfigPage.goTo(tribe.id, pin.id)
         } verify {
@@ -83,7 +83,7 @@ class PinConfigE2ETest {
         fun clickingDeleteWillRemovePinFromPinList() = tribeSetup(object : TribeContext() {
             val pin = randomPin()
         }.attachTribe()) {
-            sdk.save(tribe.id.with(pin))
+            sdk.pinRepository.save(tribe.id.with(pin))
             PinConfigPage.goTo(tribe.id, pin.id)
         } exercise {
             deleteButton.click()

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPin
@@ -11,15 +12,16 @@ import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
 import kotlin.test.Test
 
-class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
+class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository, SdkTribeContext<SdkPinRepository>> {
 
-    override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPinRepository>>(sharedSetup = {
         val sdk = authorizedKtorSdk()
         val tribe = stubTribe()
         sdk.tribeRepository.save(tribe)
-        TribeContextData(sdk, tribe.id, MagicClock(), stubUser().copy(email = primaryAuthorizedUsername))
+
+        SdkTribeContext(sdk, sdk.pinRepository, tribe.id, MagicClock())
     }, sharedTeardown = {
-        it.repository.tribeRepository.delete(it.tribeId)
+        it.sdk.tribeRepository.delete(it.tribeId)
     })
 
     @Test
@@ -33,16 +35,16 @@ class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
         }
     }) {
         otherSdk.tribeRepository.save(otherTribe)
-        otherSdk.save(otherTribe.id.with(stubPin()))
+        otherSdk.pinRepository.save(otherTribe.id.with(stubPin()))
     } exercise {
-        sdk.getPins(otherTribe.id)
+        sdk.pinRepository.getPins(otherTribe.id)
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
         otherSdk.tribeRepository.delete(otherTribe.id)
     }
 
-    override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
+    override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<SdkPinRepository>() {
         val pin = stubPin()
     }.bind()) {
         repository.save(tribeId.with(pin))
@@ -56,6 +58,15 @@ class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
         }
     }
 
+}
+
+class SdkTribeContext<T>(
+    val sdk: AuthorizedKtorSdk,
+    override val repository: T,
+    override val tribeId: TribeId,
+    override val clock: MagicClock
+) : TribeContext<T> {
+    override val user = stubUser().copy(email = primaryAuthorizedUsername)
 }
 
 fun DateTime.isWithinOneSecondOfNow() {

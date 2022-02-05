@@ -29,7 +29,7 @@ class RequestCombineEndpointTest {
     }) {
         tribeRepository.save(tribe)
         tribe.id.with(pinsToSave)
-            .forEach { sdk.save(it) }
+            .forEach { pinRepository.save(it) }
         tribe.id.with(playersToSave)
             .forEach { playerRepository.save(it) }
     } exercise {

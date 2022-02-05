@@ -31,9 +31,9 @@ interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
     PairAssignmentDocumentRepository
 
 interface Sdk : RepositoryCatalog, SdkPlayerRepository, SdkPairAssignmentsRepository,
-    SdkPinRepository, SdkBoostRepository, SdkSpin, SdkUserGet, SdkSyntax, GqlQueryComponent {
+    SdkBoostRepository, SdkSpin, SdkUserGet, SdkSyntax, GqlQueryComponent {
     override val sdk: Sdk get() = this
-    override val pinRepository get() = this
+    override val pinRepository get() :SdkPinRepository = object : SdkPinRepository, GqlQueryComponent by this {}
     override val pairAssignmentDocumentRepository get() = this
     override val playerRepository get() = this
     override val tribeRepository get() : SdkTribeRepository = object : SdkTribeRepository, GqlQueryComponent by this {}

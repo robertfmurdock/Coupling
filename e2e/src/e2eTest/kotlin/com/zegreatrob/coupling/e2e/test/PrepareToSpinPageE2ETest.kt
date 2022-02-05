@@ -28,7 +28,7 @@ class PrepareToSpinPageE2ETest {
             val sdk = sdkProvider.await()
             sdk.tribeRepository.save(tribe)
             players.forEach { sdk.save(tribe.id.with(it)) }
-            sdk.save(tribe.id.with(pin))
+            sdk.pinRepository.save(tribe.id.with(pin))
 
             FullTribeData(players, listOf(pin), tribe, sdk)
         }).extend(sharedTeardown = {

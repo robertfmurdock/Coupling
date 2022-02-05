@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
 @Suppress("unused")
-class MemoryPinRepositoryTest : PinRepositoryValidator<MemoryPinRepository> {
+class MemoryPinRepositoryTest : PinRepositoryValidator<MemoryPinRepository, TribeContext<MemoryPinRepository>> {
 
     override val repositorySetup = asyncTestTemplate<TribeContext<MemoryPinRepository>>(sharedSetup = {
         val user = stubUser()
