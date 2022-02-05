@@ -30,13 +30,13 @@ interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentGetCurrent,
     PairAssignmentDocumentRepository
 
-interface Sdk : RepositoryCatalog, SdkTribeRepository, SdkPlayerRepository, SdkPairAssignmentsRepository,
-    SdkPinRepository, SdkBoostRepository, SdkSpin, SdkUserGet, SdkSyntax {
+interface Sdk : RepositoryCatalog, SdkPlayerRepository, SdkPairAssignmentsRepository,
+    SdkPinRepository, SdkBoostRepository, SdkSpin, SdkUserGet, SdkSyntax, GqlQueryComponent {
     override val sdk: Sdk get() = this
     override val pinRepository get() = this
     override val pairAssignmentDocumentRepository get() = this
     override val playerRepository get() = this
-    override val tribeRepository get() = this
+    override val tribeRepository get() : SdkTribeRepository = object : SdkTribeRepository, GqlQueryComponent by this {}
 }
 
 class SdkSingleton(getIdTokenFunc: suspend () -> String) : Sdk,

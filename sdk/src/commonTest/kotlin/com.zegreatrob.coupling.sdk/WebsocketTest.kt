@@ -30,7 +30,7 @@ class WebsocketTest {
             val tribe = stubTribe()
         }
     }) {
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
     } exercise {
         val webSocketSession = couplingSocketSession(tribe.id)
         val message = (webSocketSession.incoming.receive() as? Frame.Text)
@@ -42,7 +42,7 @@ class WebsocketTest {
             )
     } teardown { (session) ->
         session.close()
-        sdk.delete(tribe.id)
+        sdk.tribeRepository.delete(tribe.id)
     }
 
     private suspend fun SdkContext.couplingSocketSession(tribeId: TribeId) = generalPurposeClient.webSocketSession {
@@ -55,7 +55,7 @@ class WebsocketTest {
             val tribe = stubTribe()
         }
     }) {
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
     } exercise {
         val twoSessions = listOf(
             couplingSocketSession(tribe.id),
@@ -77,7 +77,7 @@ class WebsocketTest {
             )
     } teardown { (result) ->
         result.forEach { it.close() }
-        sdk.delete(tribe.id)
+        sdk.tribeRepository.delete(tribe.id)
     }
 
     @Test
@@ -86,7 +86,7 @@ class WebsocketTest {
             val tribe = stubTribe()
         }
     }) {
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
     } exercise {
         val socket1 = couplingSocketSession(tribe.id).alsoWaitForFirstFrame()
         val socket2 = couplingSocketSession(tribe.id).alsoWaitForFirstFrame()
@@ -100,7 +100,7 @@ class WebsocketTest {
             )
     } teardown { result ->
         result.forEach { it.close() }
-        sdk.delete(tribe.id)
+        sdk.tribeRepository.delete(tribe.id)
     }
 
     private fun DefaultClientWebSocketSession.readAllAvailableMessages() = generateSequence {
@@ -120,7 +120,7 @@ class WebsocketTest {
             val expectedPairDoc = stubPairAssignmentDoc()
         }
     }) {
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
         sockets.add(couplingSocketSession(tribe.id).alsoWaitForFirstFrame())
     } exercise {
         sdk.save(tribe.id.with(expectedPairDoc))
@@ -131,7 +131,7 @@ class WebsocketTest {
             .assertIsEqualTo(PairAssignmentAdjustmentMessage(expectedPairDoc))
     } teardown {
         sockets.forEach { it.close() }
-        sdk.delete(tribe.id)
+        sdk.tribeRepository.delete(tribe.id)
     }
 
     private suspend fun DefaultClientWebSocketSession.alsoWaitForFirstFrame() = also {
@@ -144,7 +144,7 @@ class WebsocketTest {
             val tribe = stubTribe()
         }
     }) {
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
     } exercise {
         val socketToClose = couplingSocketSession(tribe.id)
             .alsoWaitForFirstFrame()
@@ -161,7 +161,7 @@ class WebsocketTest {
             )
     } teardown { openSocket ->
         openSocket.close()
-        sdk.delete(tribe.id)
+        sdk.tribeRepository.delete(tribe.id)
     }
 
     @Test
@@ -205,7 +205,7 @@ class WebsocketTest {
             val tribe = stubTribe()
         }
     }) {
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
     } exercise {
         couplingSocketSession(tribe.id)
             .apply { close() }
@@ -215,7 +215,7 @@ class WebsocketTest {
                 .assertIsNotEqualTo(null)
         }
     } teardown {
-        sdk.delete(tribe.id)
+        sdk.tribeRepository.delete(tribe.id)
     }
 
 }

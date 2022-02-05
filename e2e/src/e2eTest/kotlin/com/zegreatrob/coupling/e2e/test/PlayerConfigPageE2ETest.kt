@@ -23,7 +23,7 @@ class PlayerConfigPageE2ETest {
             e2eSetup.extend(beforeAll = {
                 val sdk = sdkProvider.await()
                 val tribe = buildTribe()
-                sdk.save(tribe)
+                sdk.tribeRepository.save(tribe)
 
                 val player = buildPlayer()
                 sdk.save(tribe.id.with(player))
@@ -135,7 +135,7 @@ class PlayerConfigPageE2ETest {
         fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = playerSetup(object : PlayerContext() {
             val page = PlayerConfigPage
         }.attachPlayer()) {
-            sdk.save(tribe.copy(badgesEnabled = false))
+            sdk.tribeRepository.save(tribe.copy(badgesEnabled = false))
         } exercise {
             PlayerConfigPage.goTo(tribe.id, player.id)
         } verify {
@@ -160,7 +160,7 @@ class PlayerConfigPageE2ETest {
             val page = PlayerConfigPage
         }) {
             val sdk = sdkProvider.await()
-            sdk.save(tribe)
+            sdk.tribeRepository.save(tribe)
             players.forEach { player -> sdk.save(tribe.id.with(player)) }
             PlayerConfigPage.goTo(tribe.id, players[0].id)
         } exercise {
@@ -286,7 +286,7 @@ class PlayerConfigPageE2ETest {
             )
         }) {
             val sdk = sdkProvider.await()
-            sdk.save(tribe)
+            sdk.tribeRepository.save(tribe)
         } exercise {
             PlayerConfigPage.goToNew(tribe.id)
         } verify {

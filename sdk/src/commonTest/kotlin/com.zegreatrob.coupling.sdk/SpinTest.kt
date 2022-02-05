@@ -34,7 +34,7 @@ class SpinTest {
             )
         }
     }) {
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
     } exercise {
         sdk.requestSpin(tribe.id, players, emptyList())
     } verifyAnd { result ->
@@ -42,7 +42,7 @@ class SpinTest {
             listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
         )
     } teardown {
-        sdk.delete(tribe.id)
+        sdk.tribeRepository.delete(tribe.id)
     }
 
     @Test
@@ -76,7 +76,7 @@ class SpinTest {
             )
         )
     } teardown {
-        sdk.delete(tribe.id)
+        sdk.tribeRepository.delete(tribe.id)
     }
 
     @Test
@@ -109,7 +109,7 @@ class SpinTest {
             )
         )
     } teardown {
-        sdk.await().delete(tribe.id)
+        sdk.await().tribeRepository.delete(tribe.id)
     }
 
     class WhenPinExists {
@@ -133,7 +133,7 @@ class SpinTest {
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
             )
         } teardown {
-            sdk.delete(tribe.id)
+            sdk.tribeRepository.delete(tribe.id)
         }
         @Test
         fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup({ pinExistsSetup(it) }) {
@@ -145,7 +145,7 @@ class SpinTest {
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptyList()))
             )
         } teardown {
-            sdk.delete(tribe.id)
+            sdk.tribeRepository.delete(tribe.id)
         }
     }
 
@@ -164,7 +164,7 @@ class SpinTest {
             history: List<PairAssignmentDocument> = emptyList(),
             pins: List<Pin> = emptyList()
         ) = coroutineScope {
-            sdk.save(tribe)
+            sdk.tribeRepository.save(tribe)
             tribe.id.with(players).forEach { launch { sdk.save(it) } }
             tribe.id.with(history).forEach { launch { sdk.save(it) } }
             tribe.id.with(pins).forEach { launch { sdk.save(it) } }

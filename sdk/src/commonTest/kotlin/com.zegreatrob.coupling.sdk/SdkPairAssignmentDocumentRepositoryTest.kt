@@ -19,10 +19,10 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
         val user = stubUser().copy(email = primaryAuthorizedUsername)
         val sdk = authorizedKtorSdk()
         val tribe = stubTribe()
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
         TribeContextData(sdk, tribe.id, MagicClock(), user)
     }, sharedTeardown = {
-        it.repository.delete(it.tribeId)
+        it.repository.tribeRepository.delete(it.tribeId)
     })
 
     @Test
@@ -35,14 +35,14 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
             val otherSdk = otherSdk
         }
     }) {
-        otherSdk.save(otherTribe)
+        otherSdk.tribeRepository.save(otherTribe)
         otherSdk.save(otherTribe.id.with(stubPairAssignmentDoc()))
     } exercise {
         sdk.getPairAssignments(TribeId("someoneElseTribe"))
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
-        otherSdk.delete(otherTribe.id)
+        otherSdk.tribeRepository.delete(otherTribe.id)
     }
 
     override fun savedWillIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {

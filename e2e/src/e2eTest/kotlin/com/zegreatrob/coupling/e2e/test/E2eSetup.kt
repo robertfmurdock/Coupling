@@ -14,7 +14,7 @@ val e2eSetup: TestTemplate<AuthorizedSdk> by lazy {
     asyncTestTemplate(beforeAll = {
         CouplingLogin.sdkProvider.await()
             .also { sdk ->
-                sdk.getTribes().forEach { sdk.delete(it.data.id) }
+                sdk.tribeRepository.getTribes().forEach { sdk.tribeRepository.delete(it.data.id) }
 
                 WebdriverBrowser.setUrl("")
                 js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); done()}, undefined)")

@@ -23,7 +23,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
     override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
         val sdk = authorizedKtorSdk()
         val tribe = stubTribe()
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
         val user = stubUser().copy(email = primaryAuthorizedUsername)
 
         object : TribeContext<Sdk> {
@@ -33,7 +33,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
             override val user = user
         }
     }, sharedTeardown = {
-        it.repository.delete(it.tribeId)
+        it.repository.tribeRepository.delete(it.tribeId)
     })
 
     override fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() =
@@ -42,7 +42,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
             val tribeId2 = stubTribeId()
             val player2 = player1.copy(id = player1.id)
         }.bind()) {
-            repository.save(stubTribe().copy(id = tribeId2))
+            repository.tribeRepository.save(stubTribe().copy(id = tribeId2))
             repository.save(tribeId.with(player1))
             repository.save(tribeId2.with(player2))
         } exercise {
@@ -51,7 +51,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
             result.map { it.data.player }
                 .assertIsEqualTo(listOf(player1))
         } teardown {
-            repository.delete(tribeId2)
+            repository.tribeRepository.delete(tribeId2)
         }
 
     override fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
@@ -94,14 +94,14 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
                 asyncSetup(object {
                     val tribe = stubTribe()
                 }) {
-                    otherSdk.save(tribe)
+                    otherSdk.tribeRepository.save(tribe)
                     otherSdk.save(tribe.id.with(stubPlayer()))
                 } exercise {
                     sdk.getPlayers(tribe.id)
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.delete(tribe.id)
+                    otherSdk.tribeRepository.delete(tribe.id)
                 }
             }
         }
@@ -120,14 +120,14 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<Sdk> {
                         callSignNoun = "Sauce"
                     )
                 }) {
-                    otherSdk.save(tribe)
+                    otherSdk.tribeRepository.save(tribe)
                 } exercise {
                     sdk.save(tribe.id.with(player))
                     otherSdk.getPlayers(tribe.id)
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.delete(tribe.id)
+                    otherSdk.tribeRepository.delete(tribe.id)
                 }
             }
         }

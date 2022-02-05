@@ -35,7 +35,7 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun AuthorizedKtorSdk.deleteAnyDisplayedTribes() {
+private suspend fun AuthorizedKtorSdk.deleteAnyDisplayedTribes() = with(tribeRepository) {
     getTribes().forEach {
         delete(it.data.id)
     }

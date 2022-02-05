@@ -29,7 +29,7 @@ class PinConfigE2ETest {
         private val tribeSetup = e2eSetup.extend(beforeAll = {
             val sdk = sdkProvider.await()
             val tribe = Tribe(TribeId("${randomInt()}-PinConfigE2ETest-test"))
-            sdk.save(tribe)
+            sdk.tribeRepository.save(tribe)
             sdk to tribe
         })
     }

@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
+import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
@@ -24,7 +24,7 @@ class TribeConfigPageE2ETest {
             val expectedBadgeSelection = "true"
             val page = TribeConfigPage
         }) {
-            sdk.save(tribe)
+            sdk.tribeRepository.save(tribe)
             with(page) {
                 goTo(tribe.id)
 
@@ -61,7 +61,7 @@ class TribeConfigPageE2ETest {
             val tribe = buildTribe().copy(email = "${randomInt()}-email")
             val page = TribeConfigPage
         }) {
-            sdk.save(tribe)
+            sdk.tribeRepository.save(tribe)
         } exercise {
             TribeConfigPage.goTo(tribe.id)
         } verify {
@@ -77,7 +77,7 @@ class TribeConfigPageE2ETest {
         fun canDeleteTribe() = sdkSetup(object : SdkContext() {
             val tribe = buildTribe()
         }) {
-            sdk.save(tribe)
+            sdk.tribeRepository.save(tribe)
             TribeConfigPage.goTo(tribe.id)
         } exercise {
             deleteButton.click()

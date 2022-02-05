@@ -20,7 +20,7 @@ class TribeListPageE2ETest {
             )
 
             val sdk = sdkProvider.await()
-            tribes.forEach { sdk.save(it) }
+            tribes.forEach { sdk.tribeRepository.save(it) }
             object {
                 val tribes = tribes
             }

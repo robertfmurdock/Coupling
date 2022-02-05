@@ -14,7 +14,7 @@ class StatisticsE2ETest {
         val players = generateSequence { Player(id = "${randomInt()}-statsE2E") }
             .take(6).toList()
     }) {
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
         players.forEach { player -> sdk.save(tribe.id.with(player)) }
     } exercise {
         StatisticsPage.goTo(tribe.id)

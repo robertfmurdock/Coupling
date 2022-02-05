@@ -14,34 +14,34 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.invoke
 import kotlin.test.Test
 
-typealias SdkMint = ContextMint<Sdk>
+private typealias SdkMint = ContextMint<SdkTribeRepository>
 
-class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
+class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
 
-    override val repositorySetup = asyncTestTemplate<SharedContext<Sdk>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<SharedContext<SdkTribeRepository>>(sharedSetup = {
         val clock = MagicClock()
         val sdk = authorizedKtorSdk()
-        SharedContextData(sdk, clock, stubUser().copy(email = primaryAuthorizedUsername))
+        SharedContextData(sdk.tribeRepository, clock, stubUser().copy(email = primaryAuthorizedUsername))
     })
 
     private val setupWithPlayerMatchingUserTwoSdks = repositorySetup.extend(sharedSetup = { context ->
         val sdkForOtherUser = altAuthorizedSdkDeferred.await()
         object {
-            val sdk = context.repository
+            val repository = context.repository
             val sdkForOtherUser = sdkForOtherUser
             val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
             val playerMatchingSdkUser = stubPlayer().copy(email = context.user.email)
         }
     }, sharedTeardown = {
-        it.sdk.delete(it.tribe.id)
+        it.repository.delete(it.tribe.id)
     })
 
     @Test
     fun getWillReturnAnyTribeThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.save(tribe)
+        sdkForOtherUser.tribeRepository.save(tribe)
         sdkForOtherUser.save(tribe.id.with(playerMatchingSdkUser))
     } exercise {
-        sdk.getTribes()
+        repository.getTribes()
     } verify { result ->
         result.map { it.data }
             .assertContains(tribe)
@@ -49,11 +49,11 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
 
     @Test
     fun getWillNotReturnTribeIfPlayerHadEmailButThenHadItRemoved() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.save(tribe)
+        sdkForOtherUser.tribeRepository.save(tribe)
         sdkForOtherUser.save(tribe.id.with(playerMatchingSdkUser))
         sdkForOtherUser.save(tribe.id.with(playerMatchingSdkUser.copy(email = "something else")))
     } exercise {
-        sdk.getTribes()
+        repository.getTribes()
     } verify { result ->
         result.map { it.data }.contains(tribe)
             .assertIsEqualTo(false)
@@ -61,11 +61,11 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
 
     @Test
     fun getWillNotReturnTribeIfPlayerHadEmailButPlayerWasRemoved() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.save(tribe)
+        sdkForOtherUser.tribeRepository.save(tribe)
         sdkForOtherUser.save(tribe.id.with(playerMatchingSdkUser))
         sdkForOtherUser.deletePlayer(tribe.id, playerMatchingSdkUser.id)
     } exercise {
-        sdk.getTribes()
+        repository.getTribes()
     } verify { result ->
         result.map { it.data }.contains(tribe)
             .assertIsEqualTo(false)
@@ -73,10 +73,10 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<Sdk> {
 
     @Test
     fun saveWillNotSaveWhenTribeAlreadyExistsForSomeoneElse() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.save(tribe)
+        sdkForOtherUser.tribeRepository.save(tribe)
     } exercise {
-        sdk.save(tribe.copy(name = "changed name"))
-        sdkForOtherUser.getTribeRecord(tribe.id)
+        repository.save(tribe.copy(name = "changed name"))
+        sdkForOtherUser.tribeRepository.getTribeRecord(tribe.id)
     } verify { result ->
         result?.data.assertIsEqualTo(tribe)
     }

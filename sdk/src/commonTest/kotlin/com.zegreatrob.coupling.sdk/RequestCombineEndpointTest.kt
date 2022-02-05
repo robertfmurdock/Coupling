@@ -19,8 +19,7 @@ class RequestCombineEndpointTest {
     @Test
     fun postPlayersAndPinsThenGet() = asyncSetup({
         val sdk = authorizedKtorSdk()
-        object {
-            val sdk = sdk
+        object : Sdk by sdk {
             val tribe = Tribe(id = TribeId("et-${uuid4()}"))
             val playersToSave = listOf(
                 Player(id = "${uuid4()}", name = "Awesome-O", callSignAdjective = "Awesome", callSignNoun = "Sauce")
@@ -28,15 +27,15 @@ class RequestCombineEndpointTest {
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
         }
     }) {
-        sdk.save(tribe)
+        tribeRepository.save(tribe)
         tribe.id.with(pinsToSave)
             .forEach { sdk.save(it) }
         tribe.id.with(playersToSave)
-            .forEach { sdk.save(it) }
+            .forEach { playerRepository.save(it) }
     } exercise {
         coroutineScope {
-            val a1 = async { sdk.getPlayers(tribe.id).map { it.data.player } }
-            val a2 = async { sdk.getPins(tribe.id).map { it.data.pin } }
+            val a1 = async { playerRepository.getPlayers(tribe.id).map { it.data.player } }
+            val a2 = async { pinRepository.getPins(tribe.id).map { it.data.pin } }
             a1.await() to a2.await()
         }
     } verify { (players, pins) ->

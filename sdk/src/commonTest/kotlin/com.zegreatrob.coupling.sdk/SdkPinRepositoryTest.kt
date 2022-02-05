@@ -16,10 +16,10 @@ class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
     override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
         val sdk = authorizedKtorSdk()
         val tribe = stubTribe()
-        sdk.save(tribe)
+        sdk.tribeRepository.save(tribe)
         TribeContextData(sdk, tribe.id, MagicClock(), stubUser().copy(email = primaryAuthorizedUsername))
     }, sharedTeardown = {
-        it.repository.delete(it.tribeId)
+        it.repository.tribeRepository.delete(it.tribeId)
     })
 
     @Test
@@ -32,14 +32,14 @@ class SdkPinRepositoryTest : PinRepositoryValidator<Sdk> {
             val otherSdk = otherSdk
         }
     }) {
-        otherSdk.save(otherTribe)
+        otherSdk.tribeRepository.save(otherTribe)
         otherSdk.save(otherTribe.id.with(stubPin()))
     } exercise {
         sdk.getPins(otherTribe.id)
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
-        otherSdk.delete(otherTribe.id)
+        otherSdk.tribeRepository.delete(otherTribe.id)
     }
 
     override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
