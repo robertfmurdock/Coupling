@@ -21,13 +21,12 @@ class PlayerConfigPageE2ETest {
     companion object {
         private fun playerConfigOnePlayerSetup(buildTribe: () -> Tribe, buildPlayer: () -> Player) =
             e2eSetup.extend(beforeAll = {
-                val sdk = sdkProvider.await()
                 val tribe = buildTribe()
-                sdk.tribeRepository.save(tribe)
-
                 val player = buildPlayer()
-                sdk.playerRepository.save(tribe.id.with(player))
-
+                sdkProvider.await().apply {
+                    tribe.save()
+                    tribe.id.with(player).save()
+                }
                 Triple(player, tribe, sdkProvider.await())
             })
     }
@@ -159,9 +158,10 @@ class PlayerConfigPageE2ETest {
             }.take(5).toList()
             val page = PlayerConfigPage
         }) {
-            val sdk = sdkProvider.await()
-            sdk.tribeRepository.save(tribe)
-            players.forEach { player -> sdk.playerRepository.save(tribe.id.with(player)) }
+            sdkProvider.await().apply {
+                tribe.save()
+                players.forEach { player -> tribe.id.with(player).save() }
+            }
             PlayerConfigPage.goTo(tribe.id, players[0].id)
         } exercise {
             PlayerRoster.playerElements.map { element -> element.text() }.toList()
@@ -285,8 +285,9 @@ class PlayerConfigPageE2ETest {
                 callSignsEnabled = true
             )
         }) {
-            val sdk = sdkProvider.await()
-            sdk.tribeRepository.save(tribe)
+            sdkProvider.await().apply {
+                tribe.save()
+            }
         } exercise {
             PlayerConfigPage.goToNew(tribe.id)
         } verify {

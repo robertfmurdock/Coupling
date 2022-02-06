@@ -1,12 +1,10 @@
 package com.zegreatrob.coupling.sdk
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribe
-import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
@@ -17,9 +15,10 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
     override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPinRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
         val tribe = stubTribe()
-        sdk.tribeRepository.save(tribe)
-
         SdkTribeContext(sdk, sdk.pinRepository, tribe.id, MagicClock())
+            .apply {
+                tribe.save()
+            }
     }, sharedTeardown = {
         it.sdk.tribeRepository.delete(it.tribeId)
     })
@@ -58,15 +57,6 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
         }
     }
 
-}
-
-class SdkTribeContext<T>(
-    val sdk: Sdk,
-    override val repository: T,
-    override val tribeId: TribeId,
-    override val clock: MagicClock
-) : TribeContext<T> {
-    override val user = stubUser().copy(email = primaryAuthorizedUsername)
 }
 
 fun DateTime.isWithinOneSecondOfNow() {
