@@ -18,9 +18,9 @@ class TribeListPageE2ETest {
                 "${randomInt()}-TribeListPageE2ETest-1".let { Tribe(it.let(::TribeId), name = it) },
                 "${randomInt()}-TribeListPageE2ETest-2".let { Tribe(it.let(::TribeId), name = it) }
             )
-
-            val sdk = sdkProvider.await()
-            tribes.forEach { sdk.tribeRepository.save(it) }
+            sdkProvider.await().apply {
+                tribes.forEach { it.save() }
+            }
             object {
                 val tribes = tribes
             }

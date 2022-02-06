@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
+import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import com.zegreatrob.testmints.async.TestTemplate
@@ -13,19 +14,18 @@ val e2eSetup: TestTemplate<Sdk> by lazy {
     JasmineJsonLoggingReporter.initialize()
 
     asyncTestTemplate(beforeAll = {
-        CouplingLogin.sdkProvider.await()
-            .also { sdk ->
-                sdk.tribeRepository.getTribes().forEach { sdk.tribeRepository.delete(it.data.id) }
+        CouplingLogin.sdkProvider.await().apply {
+            getTribes().map(Tribe::id).forEach { it.delete() }
 
-                WebdriverBrowser.setUrl("")
-                js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); done()}, undefined)")
-                    .unsafeCast<Promise<Unit>>()
-                    .await()
-                DataLoadWrapper.getViewFrame().waitToExist()
+            WebdriverBrowser.setUrl("")
+            js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); done()}, undefined)")
+                .unsafeCast<Promise<Unit>>()
+                .await()
+            DataLoadWrapper.getViewFrame().waitToExist()
 
-                TestLogin.login()
-                WebdriverBrowser.getLogs()
-            }
+            TestLogin.login()
+            WebdriverBrowser.getLogs()
+        }
     }).extend(
         sharedTeardown = { checkLogs() }
     )

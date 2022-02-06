@@ -174,11 +174,12 @@ class PairAssignmentsPageE2ETest {
             private val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() })
 
             private val setup = e2eSetup.extend(beforeAll = {
-                val sdk = sdkProvider.await()
-                sdk.tribeRepository.save(tribe)
-                coroutineScope {
-                    launch { players.forEach { sdk.playerRepository.save(tribe.id.with(it)) } }
-                    launch { sdk.pairAssignmentDocumentRepository.save(tribe.id.with(pairAssignmentDocument)) }
+                sdkProvider.await().apply {
+                    tribe.save()
+                    coroutineScope {
+                        launch { players.forEach { tribe.id.with(it).save() } }
+                        launch { sdk.pairAssignmentDocumentRepository.save(tribe.id.with(pairAssignmentDocument)) }
+                    }
                 }
             })
 
@@ -209,8 +210,10 @@ class PairAssignmentsPageE2ETest {
 
         @Test
         fun whenTheTribeHasCallSignsTurnedOffTheyDoNotDisplay() = currentPairAssignmentPageSetup {
-            val sdk = sdkProvider.await()
-            sdk.tribeRepository.save(tribe.copy(callSignsEnabled = false))
+            sdkProvider.await().apply {
+                tribe.copy(callSignsEnabled = false)
+                    .save()
+            }
         } exercise {
             goTo(tribe.id)
         } verify {
@@ -220,8 +223,9 @@ class PairAssignmentsPageE2ETest {
 
         @Test
         fun whenTheTribeHasCallSignsTurnedOnTheyDisplay() = currentPairAssignmentPageSetup {
-            val sdk = sdkProvider.await()
-            sdk.tribeRepository.save(tribe.copy(callSignsEnabled = true))
+            sdkProvider.await().apply {
+                tribe.copy(callSignsEnabled = true).save()
+            }
             WelcomePage.goTo()
         } exercise {
             goTo(tribe.id)
