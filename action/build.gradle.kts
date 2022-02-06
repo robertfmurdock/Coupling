@@ -43,7 +43,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
-                implementation(project(":test-logging"))
+                implementation("com.zegreatrob.coupling.libraries:test-logging")
             }
         }
         val jvmMain by getting {

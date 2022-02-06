@@ -42,7 +42,7 @@ kotlin {
 
             dependencies {
                 implementation(project(":repository-validation"))
-                implementation(project(":test-logging"))
+                implementation("com.zegreatrob.coupling.libraries:test-logging")
                 implementation(project(":stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("com.benasher44:uuid:0.4.0")

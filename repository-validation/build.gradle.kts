@@ -17,7 +17,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":repository-core"))
-                api(project(":test-logging"))
+                api("com.zegreatrob.coupling.libraries:test-logging")
                 api(project(":stub-model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlin:kotlin-test")

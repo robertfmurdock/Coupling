@@ -43,7 +43,7 @@ kotlin {
         val e2eTest by getting {
             dependencies {
                 implementation(project(":sdk"))
-                implementation(project(":test-logging"))
+                implementation("com.zegreatrob.coupling.libraries:test-logging")
                 implementation(kotlin("test-js"))
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
                 implementation("com.zegreatrob.testmints:standard")
@@ -61,9 +61,8 @@ kotlin {
 dependencies {
     appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
     clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
-    testLoggingLib(project(mapOf("path" to ":test-logging", "configuration" to "testLoggingLib")))
-
-    implementation(project(":test-logging"))
+    testLoggingLib("com.zegreatrob.coupling.libraries:test-logging:testLoggingLib")
+    implementation("com.zegreatrob.coupling.libraries:test-logging:testLoggingLib")
     implementation(kotlin("stdlib-js"))
     implementation("com.benasher44:uuid:0.4.0")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
@@ -123,8 +122,9 @@ tasks {
                 "CLIENT_BASENAME" to "local",
                 "SERVER_DIR" to project(":server").projectDir.absolutePath,
                 "NODE_PATH" to listOf(
+                    "${project.rootProject.projectDir.path}/coupling-libraries/build/js/node_modules",
                     "${project.rootProject.buildDir.path}/js/node_modules",
-                    e2eTestProcessResources.destinationDir
+                    e2eTestProcessResources.destinationDir,
                 ).joinToString(":"),
                 "BUILD_DIR" to project.buildDir.absolutePath,
                 "WEBPACK_CONFIG" to webpackConfig,

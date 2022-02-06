@@ -31,7 +31,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(project(":test-logging"))
+                implementation("com.zegreatrob.coupling.libraries:test-logging")
                 implementation(project(":stub-model"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")

@@ -16,6 +16,7 @@
                 <projects>
                   <project path="$PROJECT_DIR$/coupling-libraries" />
                   <project path="$PROJECT_DIR$/coupling-libraries/logging" />
+                  <project path="$PROJECT_DIR$/coupling-libraries/test-logging" />
                 </projects>
               </build>
             </builds>
@@ -35,6 +36,7 @@
             <option value="$PROJECT_DIR$/client" />
             <option value="$PROJECT_DIR$/coupling-libraries" />
             <option value="$PROJECT_DIR$/coupling-libraries/logging" />
+            <option value="$PROJECT_DIR$/coupling-libraries/test-logging" />
             <option value="$PROJECT_DIR$/e2e" />
             <option value="$PROJECT_DIR$/export" />
             <option value="$PROJECT_DIR$/import" />
@@ -51,7 +53,6 @@
             <option value="$PROJECT_DIR$/server_action" />
             <option value="$PROJECT_DIR$/stub-model" />
             <option value="$PROJECT_DIR$/test-action" />
-            <option value="$PROJECT_DIR$/test-logging" />
           </set>
         </option>
       </GradleProjectSettings>

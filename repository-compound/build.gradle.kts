@@ -20,7 +20,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(project(":test-logging"))
+                implementation("com.zegreatrob.coupling.libraries:test-logging")
                 implementation(project(":repository-memory"))
                 implementation(project(":repository-validation"))
                 implementation("com.zegreatrob.testmints:standard")

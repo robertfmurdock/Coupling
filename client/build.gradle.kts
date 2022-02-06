@@ -56,7 +56,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.3")
 
     testImplementation(project(":stub-model"))
-    testImplementation(project(":test-logging"))
+    testImplementation("com.zegreatrob.coupling.libraries:test-logging")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
