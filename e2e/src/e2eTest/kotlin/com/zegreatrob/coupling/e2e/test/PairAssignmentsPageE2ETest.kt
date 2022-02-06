@@ -29,7 +29,9 @@ class PairAssignmentsPageE2ETest {
     companion object {
         private suspend fun AuthorizedSdk.save(tribe: Tribe, players: List<Player>) {
             tribeRepository.save(tribe)
-            players.forEach { save(tribe.id.with(it)) }
+            with(playerRepository) {
+                players.forEach { save(tribe.id.with(it)) }
+            }
         }
     }
 
@@ -174,7 +176,7 @@ class PairAssignmentsPageE2ETest {
                 val sdk = sdkProvider.await()
                 sdk.tribeRepository.save(tribe)
                 coroutineScope {
-                    launch { players.forEach { sdk.save(tribe.id.with(it)) } }
+                    launch { players.forEach { sdk.playerRepository.save(tribe.id.with(it)) } }
                     launch { sdk.save(tribe.id.with(pairAssignmentDocument)) }
                 }
             })

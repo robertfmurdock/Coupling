@@ -27,7 +27,7 @@ class PrepareToSpinPageE2ETest {
             val pin = Pin("${randomInt()}-PairAssignmentsPageE2ETest", name = "e2e-pin")
             val sdk = sdkProvider.await()
             sdk.tribeRepository.save(tribe)
-            players.forEach { sdk.save(tribe.id.with(it)) }
+            players.forEach { sdk.playerRepository.save(tribe.id.with(it)) }
             sdk.pinRepository.save(tribe.id.with(pin))
 
             FullTribeData(players, listOf(pin), tribe, sdk)

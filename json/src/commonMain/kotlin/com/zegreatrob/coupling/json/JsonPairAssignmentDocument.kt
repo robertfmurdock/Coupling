@@ -9,21 +9,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
 import kotlinx.serialization.UseSerializers
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-
-@Serializer(forClass = PairAssignmentDocumentId::class)
-class PairAssignmentDocumentIdSerializer: KSerializer<PairAssignmentDocumentId> {
-    override val descriptor = PrimitiveSerialDescriptor("PairAssignmentDocumentId", PrimitiveKind.STRING)
-    override fun deserialize(decoder: Decoder) = PairAssignmentDocumentId(decoder.decodeString())
-    override fun serialize(encoder: Encoder, value: PairAssignmentDocumentId) = encoder.encodeString(value.value)
-}
 
 @Serializable
 data class JsonPairAssignmentDocument(

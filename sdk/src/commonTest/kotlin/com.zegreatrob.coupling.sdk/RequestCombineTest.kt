@@ -33,7 +33,7 @@ class RequestCombineTest {
         val tribeId = TribeId("Random")
     }) exercise {
         coroutineScope {
-            launch { sdk.getPlayers(tribeId) }
+            launch { sdk.playerRepository.getPlayers(tribeId) }
             launch { sdk.pinRepository.getPins(tribeId) }
         }
     } verify {

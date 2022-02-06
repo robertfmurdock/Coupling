@@ -15,7 +15,7 @@ class StatisticsE2ETest {
             .take(6).toList()
     }) {
         sdk.tribeRepository.save(tribe)
-        players.forEach { player -> sdk.save(tribe.id.with(player)) }
+        players.forEach { player -> sdk.playerRepository.save(tribe.id.with(player)) }
     } exercise {
         StatisticsPage.goTo(tribe.id)
     } verify {

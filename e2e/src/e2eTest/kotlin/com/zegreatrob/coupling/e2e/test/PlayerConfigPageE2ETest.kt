@@ -26,7 +26,7 @@ class PlayerConfigPageE2ETest {
                 sdk.tribeRepository.save(tribe)
 
                 val player = buildPlayer()
-                sdk.save(tribe.id.with(player))
+                sdk.playerRepository.save(tribe.id.with(player))
 
                 Triple(player, tribe, sdkProvider.await())
             })
@@ -161,7 +161,7 @@ class PlayerConfigPageE2ETest {
         }) {
             val sdk = sdkProvider.await()
             sdk.tribeRepository.save(tribe)
-            players.forEach { player -> sdk.save(tribe.id.with(player)) }
+            players.forEach { player -> sdk.playerRepository.save(tribe.id.with(player)) }
             PlayerConfigPage.goTo(tribe.id, players[0].id)
         } exercise {
             PlayerRoster.playerElements.map { element -> element.text() }.toList()

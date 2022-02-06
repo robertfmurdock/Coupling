@@ -15,8 +15,8 @@ class RetiredPlayerConfigE2ETest {
         val player = Player("${randomInt()}-RetiredPlayerConfigE2E", name = "${randomInt()}-RetiredPlayerConfigE2E")
     }) {
         sdk.tribeRepository.save(tribe)
-        sdk.save(tribe.id.with(player))
-        sdk.deletePlayer(tribe.id, player.id)
+        sdk.playerRepository.save(tribe.id.with(player))
+        sdk.playerRepository.deletePlayer(tribe.id, player.id)
     } exercise {
         RetiredPlayerConfig.goTo(tribe.id, player.id)
     } verify {

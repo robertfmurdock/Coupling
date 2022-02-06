@@ -39,7 +39,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
     @Test
     fun getWillReturnAnyTribeThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
         sdkForOtherUser.tribeRepository.save(tribe)
-        sdkForOtherUser.save(tribe.id.with(playerMatchingSdkUser))
+        sdkForOtherUser.playerRepository.save(tribe.id.with(playerMatchingSdkUser))
     } exercise {
         repository.getTribes()
     } verify { result ->
@@ -50,8 +50,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
     @Test
     fun getWillNotReturnTribeIfPlayerHadEmailButThenHadItRemoved() = setupWithPlayerMatchingUserTwoSdks {
         sdkForOtherUser.tribeRepository.save(tribe)
-        sdkForOtherUser.save(tribe.id.with(playerMatchingSdkUser))
-        sdkForOtherUser.save(tribe.id.with(playerMatchingSdkUser.copy(email = "something else")))
+        sdkForOtherUser.playerRepository.save(tribe.id.with(playerMatchingSdkUser))
+        sdkForOtherUser.playerRepository.save(tribe.id.with(playerMatchingSdkUser.copy(email = "something else")))
     } exercise {
         repository.getTribes()
     } verify { result ->
@@ -62,8 +62,8 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
     @Test
     fun getWillNotReturnTribeIfPlayerHadEmailButPlayerWasRemoved() = setupWithPlayerMatchingUserTwoSdks {
         sdkForOtherUser.tribeRepository.save(tribe)
-        sdkForOtherUser.save(tribe.id.with(playerMatchingSdkUser))
-        sdkForOtherUser.deletePlayer(tribe.id, playerMatchingSdkUser.id)
+        sdkForOtherUser.playerRepository.save(tribe.id.with(playerMatchingSdkUser))
+        sdkForOtherUser.playerRepository.deletePlayer(tribe.id, playerMatchingSdkUser.id)
     } exercise {
         repository.getTribes()
     } verify { result ->

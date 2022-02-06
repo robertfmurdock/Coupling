@@ -15,7 +15,7 @@ class RetiredPlayerPageE2ETest {
     companion object {
         private suspend fun delete(players: List<Player>, sdk: Sdk, tribe: Tribe) {
             coroutineScope {
-                players.forEach { launch { sdk.deletePlayer(tribe.id, it.id) } }
+                players.forEach { launch { sdk.playerRepository.deletePlayer(tribe.id, it.id) } }
             }
         }
     }
@@ -32,7 +32,7 @@ class RetiredPlayerPageE2ETest {
         val retiredPlayers = players - notDeletedPlayer
     }) {
         sdk.tribeRepository.save(tribe)
-        players.forEach { sdk.save(tribe.id.with(it)) }
+        players.forEach { sdk.playerRepository.save(tribe.id.with(it)) }
         delete(retiredPlayers, sdk, tribe)
     } exercise {
         RetiredPlayersPage.goTo(tribe.id)
