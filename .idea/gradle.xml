@@ -12,6 +12,12 @@
                   <project path="$PROJECT_DIR$/plugins" />
                 </projects>
               </build>
+              <build path="$PROJECT_DIR$/coupling-libraries" name="coupling-libraries">
+                <projects>
+                  <project path="$PROJECT_DIR$/coupling-libraries" />
+                  <project path="$PROJECT_DIR$/coupling-libraries/logging" />
+                </projects>
+              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
@@ -27,11 +33,12 @@
             <option value="$PROJECT_DIR$/action" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/client" />
+            <option value="$PROJECT_DIR$/coupling-libraries" />
+            <option value="$PROJECT_DIR$/coupling-libraries/logging" />
             <option value="$PROJECT_DIR$/e2e" />
             <option value="$PROJECT_DIR$/export" />
             <option value="$PROJECT_DIR$/import" />
             <option value="$PROJECT_DIR$/json" />
-            <option value="$PROJECT_DIR$/logging" />
             <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/plugins" />
             <option value="$PROJECT_DIR$/repository-compound" />

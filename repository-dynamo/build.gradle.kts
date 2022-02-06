@@ -47,7 +47,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                api(project(":logging"))
+                api("com.zegreatrob.coupling.libraries:logging")
                 implementation(npm("@aws-sdk/client-dynamodb", "3.18.0"))
                 implementation(npm("@aws-sdk/lib-dynamodb", "3.18.0"))
             }

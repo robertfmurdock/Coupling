@@ -43,7 +43,7 @@ kotlin {
 
         val jsTest by getting {
             dependencies {
-                api(project(":logging"))
+                api("com.zegreatrob.coupling.libraries:logging")
             }
         }
     }
