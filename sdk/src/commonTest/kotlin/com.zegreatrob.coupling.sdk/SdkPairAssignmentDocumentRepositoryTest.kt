@@ -13,16 +13,16 @@ import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
 import kotlin.test.Test
 
-class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator<Sdk> {
+class SdkPairAssignmentDocumentRepositoryTest :
+    PairAssignmentDocumentRepositoryValidator<SdkPairAssignmentsRepository> {
 
-    override val repositorySetup = asyncTestTemplate<TribeContext<Sdk>>(sharedSetup = {
-        val user = stubUser().copy(email = primaryAuthorizedUsername)
+    override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPairAssignmentsRepository>>(sharedSetup = {
         val sdk = authorizedKtorSdk()
         val tribe = stubTribe()
         sdk.tribeRepository.save(tribe)
-        TribeContextData(sdk, tribe.id, MagicClock(), user)
+        SdkTribeContext(sdk, sdk.pairAssignmentDocumentRepository, tribe.id, MagicClock())
     }, sharedTeardown = {
-        it.repository.tribeRepository.delete(it.tribeId)
+        it.sdk.tribeRepository.delete(it.tribeId)
     })
 
     @Test
@@ -36,28 +36,29 @@ class SdkPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepository
         }
     }) {
         otherSdk.tribeRepository.save(otherTribe)
-        otherSdk.save(otherTribe.id.with(stubPairAssignmentDoc()))
+        otherSdk.pairAssignmentDocumentRepository.save(otherTribe.id.with(stubPairAssignmentDoc()))
     } exercise {
-        sdk.getPairAssignments(TribeId("someoneElseTribe"))
+        sdk.pairAssignmentDocumentRepository.getPairAssignments(TribeId("someoneElseTribe"))
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
         otherSdk.tribeRepository.delete(otherTribe.id)
     }
 
-    override fun savedWillIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<Sdk>() {
-        val pairAssignmentDoc = stubPairAssignmentDoc()
-    }.bind()) {
-        repository.save(tribeId.with(pairAssignmentDoc))
-    } exercise {
-        repository.getPairAssignments(tribeId)
-    } verify { result ->
-        result.size.assertIsEqualTo(1)
-        result.first().apply {
-            timestamp.assertIsRecentDateTime()
-            modifyingUserId.assertIsEqualTo(user.email)
+    override fun savedWillIncludeModificationDateAndUsername() =
+        repositorySetup(object : TribeContextMint<SdkPairAssignmentsRepository>() {
+            val pairAssignmentDoc = stubPairAssignmentDoc()
+        }.bind()) {
+            repository.save(tribeId.with(pairAssignmentDoc))
+        } exercise {
+            repository.getPairAssignments(tribeId)
+        } verify { result ->
+            result.size.assertIsEqualTo(1)
+            result.first().apply {
+                timestamp.assertIsRecentDateTime()
+                modifyingUserId.assertIsEqualTo(user.email)
+            }
         }
-    }
 
     private fun DateTime.assertIsRecentDateTime() = (DateTime.now() - this)
         .compareTo(2.seconds)

@@ -123,7 +123,7 @@ class WebsocketTest {
         sdk.tribeRepository.save(tribe)
         sockets.add(couplingSocketSession(tribe.id).alsoWaitForFirstFrame())
     } exercise {
-        sdk.save(tribe.id.with(expectedPairDoc))
+        sdk.pairAssignmentDocumentRepository.save(tribe.id.with(expectedPairDoc))
     } verifyAnd {
         sockets.first()
             .readTextFrame()

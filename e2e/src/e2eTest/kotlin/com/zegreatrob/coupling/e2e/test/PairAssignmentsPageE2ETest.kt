@@ -177,7 +177,7 @@ class PairAssignmentsPageE2ETest {
                 sdk.tribeRepository.save(tribe)
                 coroutineScope {
                     launch { players.forEach { sdk.playerRepository.save(tribe.id.with(it)) } }
-                    launch { sdk.save(tribe.id.with(pairAssignmentDocument)) }
+                    launch { sdk.pairAssignmentDocumentRepository.save(tribe.id.with(pairAssignmentDocument)) }
                 }
             })
 
