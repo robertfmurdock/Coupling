@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.sdk.*
+import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.coupling.server.Process
 import io.ktor.client.*
 import io.ktor.client.features.*
@@ -18,12 +20,13 @@ external val process: dynamic
 const val primaryAuthorizedUsername = "couplingtestuser.e2e@gmail.com"
 val primaryTestPassword = Process.getEnv("COUPLING_E2E_TEST_PASSWORD") ?: ""
 
-val primaryAuthorizedSdkDeferred: Deferred<AuthorizedSdk> by lazyDeferred {
-        authorizedKtorSdk(primaryAuthorizedUsername, primaryTestPassword)
+val primaryAuthorizedSdkDeferred: Deferred<Sdk> by lazyDeferred {
+    authorizedKtorSdk(primaryAuthorizedUsername, primaryTestPassword)
 }
 
 private suspend fun authorizedKtorSdk(username: String, password: String) =
-    AuthorizedSdk(generateAccessToken(username, password)
+    AuthorizedSdk(
+        generateAccessToken(username, password)
     )
 
 suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
@@ -83,8 +86,4 @@ private suspend fun generateAccessToken(username: String, password: String): Str
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
-class AuthorizedSdk(val token: String) : Sdk,
-    TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
-        override suspend fun getIdToken(): String = token
-        override val client by lazy { buildClientWithToken() }
-    })
+fun AuthorizedSdk(token: String) = SdkSingleton({ token }, buildClientWithToken())

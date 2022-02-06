@@ -61,7 +61,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
 }
 
 class SdkTribeContext<T>(
-    val sdk: AuthorizedKtorSdk,
+    val sdk: Sdk,
     override val repository: T,
     override val tribeId: TribeId,
     override val clock: MagicClock

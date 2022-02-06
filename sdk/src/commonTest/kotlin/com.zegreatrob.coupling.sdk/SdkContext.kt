@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
 interface SdkContext : SdkSyntax {
-    override val sdk: AuthorizedKtorSdk
+    override val sdk: Sdk
     val username: String
 }
 

@@ -35,14 +35,14 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun AuthorizedKtorSdk.deleteAnyDisplayedTribes() = with(tribeRepository) {
+private suspend fun Sdk.deleteAnyDisplayedTribes() = with(tribeRepository) {
     getTribes().forEach {
         delete(it.data.id)
     }
 }
 
-private suspend fun authorizedKtorSdk(username: String, password: String) =
-    AuthorizedKtorSdk(generateAccessToken(username, password))
+private suspend fun authorizedKtorSdk(username: String, password: String) = generateAccessToken(username, password)
+    .let { token -> SdkSingleton({ token }, buildClient()) }
 
 suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
 
@@ -69,7 +69,7 @@ private const val baseName = "/local"
 
 private val ktorLogger = KotlinLogging.logger("ktor")
 
-private fun buildClientWithToken(): HttpClient {
+private fun buildClient(): HttpClient {
     js("process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'")
 
     val client = defaultClient(null).config {
@@ -111,9 +111,3 @@ private suspend fun generateAccessToken(username: String, password: String): Str
 
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
-
-class AuthorizedKtorSdk(val token: String) : Sdk,
-    TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
-        override suspend fun getIdToken(): String = token
-        override val client by lazy(::buildClientWithToken)
-    })

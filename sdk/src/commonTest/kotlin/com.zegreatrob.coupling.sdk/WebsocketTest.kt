@@ -45,8 +45,11 @@ class WebsocketTest {
         sdk.tribeRepository.delete(tribe.id)
     }
 
-    private suspend fun SdkContext.couplingSocketSession(tribeId: TribeId) = generalPurposeClient.webSocketSession {
-        url("wss://$socketHost/api/websocket?tribeId=${tribeId.value}&token=${sdk.token}")
+    private suspend fun SdkContext.couplingSocketSession(tribeId: TribeId): DefaultClientWebSocketSession {
+        val token = sdk.getToken()
+        return generalPurposeClient.webSocketSession {
+            url("wss://$socketHost/api/websocket?tribeId=${tribeId.value}&token=$token")
+        }
     }
 
     @Test

@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.defaultClient
 import kotlinext.js.Record
 import kotlinx.browser.window
 import org.w3c.dom.get
@@ -31,7 +32,7 @@ interface Commander {
 
 class MasterCommander(getIdentityToken: suspend () -> String) : Commander {
     private val backend = LocalStorageRepositoryBackend()
-    private val sdk = SdkSingleton(getIdentityToken, getLocationAndBasename())
+    private val sdk = SdkSingleton(getIdentityToken, defaultClient(getLocationAndBasename()))
 
     override fun getDispatcher(traceId: Uuid): CommandDispatcher = CommandDispatcher(
         traceId,

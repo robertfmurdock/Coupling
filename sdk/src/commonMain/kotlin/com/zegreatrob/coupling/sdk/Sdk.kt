@@ -36,6 +36,7 @@ class SdkPairAssignmentsRepository(gqlQueryComponent: GqlQueryComponent) : SdkPa
 
 interface Sdk : RepositoryCatalog, SdkBoostRepository, SdkSpin, SdkUserGet, SdkSyntax, GqlQueryComponent,
     GqlFileLoader {
+    suspend fun getToken(): String
     override val sdk: Sdk get() = this
     override val pinRepository get() = SdkPinRepository(this)
     override val pairAssignmentDocumentRepository get() = SdkPairAssignmentsRepository(this)
@@ -45,11 +46,15 @@ interface Sdk : RepositoryCatalog, SdkBoostRepository, SdkSpin, SdkUserGet, SdkS
     override val queries get() = Queries(this)
 }
 
-class SdkSingleton(getIdTokenFunc: suspend () -> String, locationAndBasename: (Pair<String, String>)?) : Sdk,
-    TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
-        override val client: HttpClient = defaultClient(locationAndBasename)
-        override suspend fun getIdToken(): String = getIdTokenFunc.invoke()
-    })
+class SdkSingleton(val getIdTokenFunc: suspend () -> String, val httpClient: HttpClient) : Sdk,
+    TribeGQLPerformer by BatchingTribeGQLPerformer(StandardTribeGQLPerformer(getIdTokenFunc, httpClient)) {
+    override suspend fun getToken(): String = getIdTokenFunc()
+}
+
+class StandardTribeGQLPerformer(val getIdTokenFunc: suspend () -> String, httpClient: HttpClient) : KtorQueryPerformer {
+    override val client = httpClient
+    override suspend fun getIdToken() = getIdTokenFunc.invoke()
+}
 
 interface SdkSyntax {
     val sdk: Sdk

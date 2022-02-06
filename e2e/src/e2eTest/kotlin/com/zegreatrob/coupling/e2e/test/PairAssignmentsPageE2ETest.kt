@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
@@ -27,7 +28,7 @@ import kotlin.test.Test
 class PairAssignmentsPageE2ETest {
 
     companion object {
-        private suspend fun AuthorizedSdk.save(tribe: Tribe, players: List<Player>) {
+        private suspend fun Sdk.save(tribe: Tribe, players: List<Player>) {
             tribeRepository.save(tribe)
             with(playerRepository) {
                 players.forEach { save(tribe.id.with(it)) }

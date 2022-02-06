@@ -15,21 +15,10 @@ class RequestCombineTest {
 
     @Test
     fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = asyncSetup(object {
-        val allPostCalls = mutableListOf<JsonElement>()
-        val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(object: QueryPerformer {
-
-          override  suspend fun doQuery(body: String): JsonElement {
-              return stubResponseData().apply { allPostCalls.add(JsonPrimitive( body)) }
-          }
-          override  suspend fun doQuery(body: JsonElement): JsonElement {
-              return stubResponseData().apply { allPostCalls.add(body) }
-          }
-          override  fun postAsync(body: JsonElement): Deferred<JsonElement> {
-              return CompletableDeferred(stubResponseData().apply { allPostCalls.add(body) })
-          }
-
-            override suspend fun get(path: String): JsonElement = JsonNull
-        }) {}
+        val performer = StubQueryPerformer1()
+        val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(performer) {
+            override suspend fun getToken() = ""
+        }
         val tribeId = TribeId("Random")
     }) exercise {
         coroutineScope {
@@ -37,17 +26,32 @@ class RequestCombineTest {
             launch { sdk.pinRepository.getPins(tribeId) }
         }
     } verify {
-        allPostCalls.size.assertIsEqualTo(1)
+        performer.allPostCalls.size.assertIsEqualTo(1)
     }
 
+}
+
+class StubQueryPerformer1 : QueryPerformer {
+    val allPostCalls = mutableListOf<JsonElement>()
+
+    override suspend fun doQuery(body: String): JsonElement =
+        stubResponseData().apply { allPostCalls.add(JsonPrimitive(body)) }
+
+    override suspend fun doQuery(body: JsonElement): JsonElement =
+        stubResponseData().apply { allPostCalls.add(body) }
+
+    override fun postAsync(body: JsonElement): Deferred<JsonElement> =
+        CompletableDeferred(stubResponseData().apply { allPostCalls.add(body) })
+
+    override suspend fun get(path: String): JsonElement = JsonNull
 }
 
 private fun stubResponseData() = buildJsonObject {
     putJsonObject("data") {
         putJsonObject("data") {
             putJsonObject("tribe") {
-               putJsonArray("playerList"){}
-               putJsonArray("pinList"){}
+                putJsonArray("playerList") {}
+                putJsonArray("pinList") {}
             }
         }
     }
