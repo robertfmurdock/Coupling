@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
-import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
@@ -17,7 +16,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
     PairAssignmentDocumentRepositoryValidator<SdkPairAssignmentsRepository> {
 
     override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPairAssignmentsRepository>>(sharedSetup = {
-        val sdk = authorizedKtorSdk()
+        val sdk = authorizedSdk()
         val tribe = stubTribe()
         sdk.tribeRepository.save(tribe)
         SdkTribeContext(sdk, sdk.pairAssignmentDocumentRepository, tribe.id, MagicClock())
@@ -27,7 +26,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup({
-        val sdk = authorizedKtorSdk()
+        val sdk = authorizedSdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
             val otherTribe = stubTribe()

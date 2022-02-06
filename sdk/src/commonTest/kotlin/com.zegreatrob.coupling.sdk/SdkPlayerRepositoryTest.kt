@@ -20,7 +20,7 @@ import kotlin.test.Test
 class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
     override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPlayerRepository>>(sharedSetup = {
-        val sdk = authorizedKtorSdk()
+        val sdk = authorizedSdk()
         val tribe = stubTribe()
         sdk.tribeRepository.save(tribe)
 
@@ -91,7 +91,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
         @Test
         fun getIsNotAllowed() = runTest {
-            val sdk = authorizedKtorSdk()
+            val sdk = authorizedSdk()
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
@@ -111,7 +111,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
         @Test
         fun postIsNotAllowed() = runTest {
-            val sdk = authorizedKtorSdk()
+            val sdk = authorizedSdk()
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
@@ -137,7 +137,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
         @Test
         fun deleteIsNotAllowed() = runTest {
-            val sdk = authorizedKtorSdk()
+            val sdk = authorizedSdk()
             waitForTest {
                 asyncSetup(object {
                     val tribe = stubTribe()

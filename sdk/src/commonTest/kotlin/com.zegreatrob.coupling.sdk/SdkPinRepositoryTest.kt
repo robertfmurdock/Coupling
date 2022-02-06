@@ -15,7 +15,7 @@ import kotlin.test.Test
 class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
 
     override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPinRepository>>(sharedSetup = {
-        val sdk = authorizedKtorSdk()
+        val sdk = authorizedSdk()
         val tribe = stubTribe()
         sdk.tribeRepository.save(tribe)
 
@@ -26,7 +26,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup({
-        val sdk = authorizedKtorSdk()
+        val sdk = authorizedSdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
             val otherTribe = stubTribe()

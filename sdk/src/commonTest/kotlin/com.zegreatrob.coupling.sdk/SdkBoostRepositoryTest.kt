@@ -10,7 +10,7 @@ class SdkBoostRepositoryTest : BoostRepositoryValidator<Sdk, SharedContextData<S
 
     override val repositorySetup = asyncTestTemplate<SharedContextData<Sdk>>(sharedSetup = {
         val clock = MagicClock()
-        val sdk = authorizedKtorSdk()
+        val sdk = authorizedSdk()
         val user = sdk.getUser().data
         SharedContextData(sdk, clock, user)
     })

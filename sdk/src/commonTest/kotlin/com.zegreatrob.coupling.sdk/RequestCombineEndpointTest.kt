@@ -18,7 +18,7 @@ class RequestCombineEndpointTest {
 
     @Test
     fun postPlayersAndPinsThenGet() = asyncSetup({
-        val sdk = authorizedKtorSdk()
+        val sdk = authorizedSdk()
         object : Sdk by sdk {
             val tribe = Tribe(id = TribeId("et-${uuid4()}"))
             val playersToSave = listOf(

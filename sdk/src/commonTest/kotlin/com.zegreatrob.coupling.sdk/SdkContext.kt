@@ -8,7 +8,7 @@ interface SdkContext : SdkSyntax {
 }
 
 val sdkSetup = asyncTestTemplate<SdkContext>(beforeAll = {
-    val sdk = authorizedKtorSdk()
+    val sdk = authorizedSdk()
     object : SdkContext {
         override val username = primaryAuthorizedUsername
         override val sdk = sdk

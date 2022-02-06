@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.logging.JsonFormatter
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
@@ -13,24 +12,25 @@ import kotlinx.coroutines.async
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import mu.KotlinLogging
-import mu.KotlinLoggingConfiguration
 
 const val primaryAuthorizedUsername = "couplingtestuser@gmail.com"
-val primaryTestPassword = Process.getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
+val primaryTestPassword = getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
+
+expect fun getEnv(name: String) : String?
 
 val primaryAuthorizedSdkDeferred by lazy {
     MainScope().async {
-        authorizedKtorSdk(primaryAuthorizedUsername, primaryTestPassword)
+        authorizedSdk(primaryAuthorizedUsername, primaryTestPassword)
             .apply { deleteAnyDisplayedTribes() }
     }
 }
 
 const val altAuthorizedUsername = "couplingtestuser.alt@gmail.com"
-val altTestPassword = Process.getEnv("COUPLING_ALT_TEST_PASSWORD") ?: ""
+val altTestPassword = getEnv("COUPLING_ALT_TEST_PASSWORD") ?: ""
 
 val altAuthorizedSdkDeferred by lazy {
     MainScope().async {
-        authorizedKtorSdk(altAuthorizedUsername, altTestPassword)
+        authorizedSdk(altAuthorizedUsername, altTestPassword)
             .apply { deleteAnyDisplayedTribes() }
     }
 }
@@ -41,19 +41,16 @@ private suspend fun Sdk.deleteAnyDisplayedTribes() = with(tribeRepository) {
     }
 }
 
-private suspend fun authorizedKtorSdk(username: String, password: String) = generateAccessToken(username, password)
+private suspend fun authorizedSdk(username: String, password: String) = generateAccessToken(username, password)
     .let { token -> SdkSingleton({ token }, buildClient()) }
 
-suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
+suspend fun authorizedSdk() = primaryAuthorizedSdkDeferred.await()
 
 val generalPurposeClient = HttpClient {
     install(JsonFeature)
-    install(WebSockets) {
-
-    }
-
+    install(WebSockets)
+    setupPlatformSpecificKtorSettings()
     install(Logging) {
-        KotlinLoggingConfiguration.FORMATTER = JsonFormatter()
         val ktorLogger = KotlinLogging.logger("ktor")
         logger = object : Logger {
             override fun log(message: String) {
@@ -64,13 +61,14 @@ val generalPurposeClient = HttpClient {
     }
 }
 
+expect fun setupPlatformSpecificKtorSettings()
+
 private val baseUrl = Url("https://localhost/local/")
-private const val baseName = "/local"
 
 private val ktorLogger = KotlinLogging.logger("ktor")
 
 private fun buildClient(): HttpClient {
-    js("process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'")
+    setupPlatformSpecificKtorSettings()
 
     val client = defaultClient(null).config {
         followRedirects = false
@@ -101,7 +99,7 @@ private suspend fun generateAccessToken(username: String, password: String): Str
         formParameters = Parameters.build {
             append("grant_type", "password")
             append("client_id", "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg")
-            append("client_secret", Process.getEnv("AUTH0_CLIENT_SECRET") ?: "")
+            append("client_secret", getEnv("AUTH0_CLIENT_SECRET") ?: "")
             append("username", username)
             append("password", password)
             append("audience", "https://localhost/api")

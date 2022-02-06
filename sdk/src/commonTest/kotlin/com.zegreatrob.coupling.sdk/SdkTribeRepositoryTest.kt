@@ -20,7 +20,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<SdkTribeRepository>>(sharedSetup = {
         val clock = MagicClock()
-        val sdk = authorizedKtorSdk()
+        val sdk = authorizedSdk()
         SharedContextData(sdk.tribeRepository, clock, stubUser().copy(email = primaryAuthorizedUsername))
     })
 

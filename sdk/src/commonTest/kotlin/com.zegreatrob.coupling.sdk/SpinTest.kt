@@ -81,7 +81,7 @@ class SpinTest {
 
     @Test
     fun givenTheLongestPairRuleItWillIgnoreBadges() = asyncSetup(object : ScopeMint() {
-        val sdk = setupScope.async { authorizedKtorSdk() }
+        val sdk = setupScope.async { authorizedSdk() }
         val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
