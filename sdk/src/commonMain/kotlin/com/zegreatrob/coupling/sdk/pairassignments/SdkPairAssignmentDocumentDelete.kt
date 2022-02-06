@@ -5,10 +5,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.GqlSyntax
-import com.zegreatrob.coupling.sdk.Mutations
+import com.zegreatrob.coupling.sdk.GraphQueries
 import kotlinx.serialization.json.*
 
-interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, GqlSyntax {
+interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, GqlSyntax, GraphQueries {
     override suspend fun delete(
         tribeId: TribeId,
         pairAssignmentDocumentId: PairAssignmentDocumentId
@@ -19,7 +19,7 @@ interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, GqlSyn
         ?: false
 
     private fun options(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) = buildJsonObject {
-        put("query", JsonPrimitive(Mutations.deletePairAssignments))
+        put("query", JsonPrimitive(mutations.deletePairAssignments))
         putJsonObject("variables") {
             putJsonObject("input") {
                 put("tribeId", tribeId.value)

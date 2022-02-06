@@ -15,15 +15,12 @@ interface GqlSyntax {
 }
 
 interface QueryPerformer {
-    fun basename() : String? = com.zegreatrob.coupling.sdk.basename()
     suspend fun doQuery(body: String): JsonElement
     suspend fun doQuery(body: JsonElement): JsonElement
     fun postAsync(body: JsonElement): Deferred<JsonElement>
 
     suspend fun get(path: String): JsonElement
 }
-
-expect fun basename() : String?
 
 suspend inline fun <reified T> GqlSyntax.doQuery(query: String, input: T): JsonElement = performQuery(
     JsonObject(

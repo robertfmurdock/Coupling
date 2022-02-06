@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.model.tribe.TribeId
 import kotlinx.serialization.json.decodeFromJsonElement
 
-interface GqlQueryComponent : TribeGQLPerformer
+interface GqlQueryComponent : TribeGQLPerformer, GraphQueries
 
 suspend inline fun <reified T, reified S : Any> GqlQueryComponent.performQueryGetComponent(
     tribeId: TribeId,

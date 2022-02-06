@@ -72,7 +72,7 @@ private val ktorLogger = KotlinLogging.logger("ktor")
 private fun buildClientWithToken(): HttpClient {
     js("process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'")
 
-    val client = defaultClient().config {
+    val client = defaultClient(null).config {
         followRedirects = false
         defaultRequest {
             expectSuccess = false
@@ -116,6 +116,4 @@ class AuthorizedKtorSdk(val token: String) : Sdk,
     TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
         override suspend fun getIdToken(): String = token
         override val client by lazy(::buildClientWithToken)
-
-        override fun basename() = baseName
     })

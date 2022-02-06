@@ -8,7 +8,7 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.http.*
 
-fun defaultClient() = HttpClient {
+fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
     install(JsonFeature) {
         serializer = KotlinxSerializer(couplingJsonFormat)
     }
@@ -21,7 +21,7 @@ fun defaultClient() = HttpClient {
     defaultRequest {
         expectSuccess = false
 
-        getLocationAndBasename()
+        locationAndBasename
             ?.let { (location, basename) ->
                 url {
                     protocol = if (location.startsWith("http:")) URLProtocol.HTTP else URLProtocol.HTTPS
@@ -34,11 +34,7 @@ fun defaultClient() = HttpClient {
     }
 }
 
-expect fun getLocationAndBasename(): Pair<String, String>?
-
-private val defaultClient = defaultClient()
-
 interface KtorSyntax {
-    val client: HttpClient get() = defaultClient
+    val client: HttpClient
     suspend fun getIdToken(): String
 }

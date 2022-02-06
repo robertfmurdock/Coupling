@@ -11,13 +11,13 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.put
 
-interface SdkTribeListGet : TribeListGet, GqlSyntax {
+interface SdkTribeListGet : TribeListGet, GqlSyntax, GraphQueries {
     override suspend fun getTribes() = performer.postAsync(tribeListQuery()).await()
         .jsonObject["data"]
         ?.jsonObject?.get("tribeList")
         .toTribeRecordList()
 
-    private fun tribeListQuery() = buildJsonObject { put("query", Queries.listTribes) }
+    private fun tribeListQuery() = buildJsonObject { put("query", queries.listTribes) }
 
     private fun JsonElement?.toTribeRecordList(): List<Record<Tribe>> = this?.fromJsonElement<List<JsonTribeRecord>>()
         ?.map(JsonTribeRecord::toModelRecord)

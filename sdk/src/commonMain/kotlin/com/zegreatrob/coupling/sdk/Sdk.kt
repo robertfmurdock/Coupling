@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
+import io.ktor.client.*
 
 interface RepositoryCatalog {
     val tribeRepository: TribeRepository
@@ -15,33 +16,38 @@ interface RepositoryCatalog {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
 
-interface SdkTribeRepository : SdkTribeGet, SdkTribeListGet,
-    SdkTribeSave, SdkTribeDelete, TribeRepository
+class SdkTribeRepository(gqlQueryComponent: GqlQueryComponent) : SdkTribeGet, SdkTribeListGet,
+    SdkTribeSave, SdkTribeDelete, TribeRepository,
+    GqlQueryComponent by gqlQueryComponent
 
-interface SdkPlayerRepository : SdkPlayerListGet,
-    SdkPlayerGetDeleted, SdkPlayerSave,
-    SdkPlayerDeleter, PlayerRepository
+class SdkPlayerRepository(gqlQueryComponent: GqlQueryComponent) : SdkPlayerListGet,
+    SdkPlayerGetDeleted, SdkPlayerSave, SdkPlayerDeleter, PlayerRepository,
+    GqlQueryComponent by gqlQueryComponent
 
-interface SdkPinRepository : SdkPinGet, SdkPinSave, SdkPinDelete, PinRepository
+class SdkPinRepository(gqlQueryComponent: GqlQueryComponent) : SdkPinGet, SdkPinSave, SdkPinDelete, PinRepository,
+    GqlQueryComponent by gqlQueryComponent
 
-interface SdkPairAssignmentsRepository : SdkPairAssignmentDocumentGet,
+class SdkPairAssignmentsRepository(gqlQueryComponent: GqlQueryComponent) : SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentSave,
     SdkPairAssignmentDocumentDelete,
     SdkPairAssignmentDocumentGetCurrent,
-    PairAssignmentDocumentRepository
+    PairAssignmentDocumentRepository,
+    GqlQueryComponent by gqlQueryComponent
 
-interface Sdk : RepositoryCatalog, SdkBoostRepository, SdkSpin, SdkUserGet, SdkSyntax, GqlQueryComponent {
+interface Sdk : RepositoryCatalog, SdkBoostRepository, SdkSpin, SdkUserGet, SdkSyntax, GqlQueryComponent,
+    GqlFileLoader {
     override val sdk: Sdk get() = this
-    override val pinRepository get() :SdkPinRepository = object : SdkPinRepository, GqlQueryComponent by this {}
-    override val pairAssignmentDocumentRepository: SdkPairAssignmentsRepository
-        get() = object : SdkPairAssignmentsRepository, GqlQueryComponent by this {}
-    override val playerRepository
-        get() : SdkPlayerRepository = object : SdkPlayerRepository, GqlQueryComponent by this {}
-    override val tribeRepository get() : SdkTribeRepository = object : SdkTribeRepository, GqlQueryComponent by this {}
+    override val pinRepository get() = SdkPinRepository(this)
+    override val pairAssignmentDocumentRepository get() = SdkPairAssignmentsRepository(this)
+    override val playerRepository get() = SdkPlayerRepository(this)
+    override val tribeRepository get() = SdkTribeRepository(this)
+    override val mutations get() = Mutations(this)
+    override val queries get() = Queries(this)
 }
 
-class SdkSingleton(getIdTokenFunc: suspend () -> String) : Sdk,
+class SdkSingleton(getIdTokenFunc: suspend () -> String, locationAndBasename: (Pair<String, String>)?) : Sdk,
     TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
+        override val client: HttpClient = defaultClient(locationAndBasename)
         override suspend fun getIdToken(): String = getIdTokenFunc.invoke()
     })
 

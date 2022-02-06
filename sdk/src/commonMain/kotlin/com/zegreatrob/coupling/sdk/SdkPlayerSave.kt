@@ -5,9 +5,9 @@ import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.tribeId
 import com.zegreatrob.coupling.repository.player.PlayerSave
 
-interface SdkPlayerSave : PlayerSave, GqlSyntax {
+interface SdkPlayerSave : PlayerSave, GqlSyntax, GraphQueries {
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
-        doQuery(Mutations.savePlayer, tribeIdPlayer.input())
+        doQuery(mutations.savePlayer, tribeIdPlayer.input())
     }
     private fun TribeIdPlayer.input() = SavePlayerInput(
         tribeId = tribeId,

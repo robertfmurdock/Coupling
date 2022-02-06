@@ -27,12 +27,11 @@ val PageProps.pinId: String? get() = pathParams["pinId"]
 interface Commander {
     fun getDispatcher(traceId: Uuid): CommandDispatcher
     fun tracingDispatcher() = getDispatcher(uuid4())
-    suspend fun <T> runQuery(dispatch: suspend CommandDispatcher.() -> T): T = tracingDispatcher().dispatch()
 }
 
-class MasterCommander(getIdentityToken: suspend ()-> String) : Commander {
+class MasterCommander(getIdentityToken: suspend () -> String) : Commander {
     private val backend = LocalStorageRepositoryBackend()
-    private val sdk = SdkSingleton(getIdentityToken)
+    private val sdk = SdkSingleton(getIdentityToken, getLocationAndBasename())
 
     override fun getDispatcher(traceId: Uuid): CommandDispatcher = CommandDispatcher(
         traceId,
@@ -43,4 +42,10 @@ class MasterCommander(getIdentityToken: suspend ()-> String) : Commander {
         },
         sdk
     )
+}
+
+fun getLocationAndBasename(): Pair<String, String> {
+    val location = window.location.origin
+    val basename = "${window["basename"]}"
+    return location to basename
 }

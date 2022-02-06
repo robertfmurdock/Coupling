@@ -1,21 +1,26 @@
 package com.zegreatrob.coupling.sdk
 
-object Mutations {
-    val spin by LoadGqlFile
-    val savePin by LoadGqlFile
-    val saveBoost by LoadGqlFile
-    val deleteBoost by LoadGqlFile
-    val saveTribe by LoadGqlFile
-    val savePlayer by LoadGqlFile
-    val savePairAssignments by LoadGqlFile
-    val deleteTribe by LoadGqlFile
-    val deletePin by LoadGqlFile
-    val deletePairAssignments by LoadGqlFile
-    val deletePlayer by LoadGqlFile
+interface GraphQueries {
+    val mutations: Mutations
+    val queries: Queries
 }
 
-object Queries {
-    val listTribes by LoadGqlFile
-    val user by LoadGqlFile
-    val boost by LoadGqlFile
+class Mutations(gqlFileLoader: GqlFileLoader) {
+    val spin by gqlFileLoader
+    val savePin by gqlFileLoader
+    val saveBoost by gqlFileLoader
+    val deleteBoost by gqlFileLoader
+    val saveTribe by gqlFileLoader
+    val savePlayer by gqlFileLoader
+    val savePairAssignments by gqlFileLoader
+    val deleteTribe by gqlFileLoader
+    val deletePin by gqlFileLoader
+    val deletePairAssignments by gqlFileLoader
+    val deletePlayer by gqlFileLoader
+}
+
+class Queries(gqlFileLoader: GqlFileLoader) {
+    val listTribes by gqlFileLoader
+    val user by gqlFileLoader
+    val boost by gqlFileLoader
 }

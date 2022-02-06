@@ -11,9 +11,9 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.put
 
-interface SdkUserGet : UserGet, GqlSyntax {
+interface SdkUserGet : UserGet, GqlSyntax, GraphQueries {
 
-    override suspend fun getUser() = performer.postAsync(buildJsonObject { put("query", Queries.user) }).await()
+    override suspend fun getUser() = performer.postAsync(buildJsonObject { put("query", queries.user) }).await()
         .jsonObject["data"]!!
         .jsonObject["user"]!!
         .toTribeRecordList()

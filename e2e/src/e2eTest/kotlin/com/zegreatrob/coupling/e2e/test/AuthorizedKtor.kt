@@ -41,7 +41,7 @@ private val generalPurposeClient = HttpClient {
 private val ktorLogger = KotlinLogging.logger("ktor")
 
 private fun buildClientWithToken(): HttpClient {
-    val client = defaultClient().config {
+    val client = defaultClient(null).config {
         followRedirects = false
         val baseUrl = Url("${process.env.BASEURL}")
 
@@ -87,6 +87,4 @@ class AuthorizedSdk(val token: String) : Sdk,
     TribeGQLPerformer by BatchingTribeGQLPerformer(object : KtorQueryPerformer {
         override suspend fun getIdToken(): String = token
         override val client by lazy { buildClientWithToken() }
-
-        override fun basename() = process.env.BASENAME.unsafeCast<String?>() ?: ""
     })

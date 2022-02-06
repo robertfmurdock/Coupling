@@ -5,9 +5,9 @@ import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.repository.tribe.TribeSave
 
-interface SdkTribeSave : TribeSave, GqlSyntax {
+interface SdkTribeSave : TribeSave, GqlSyntax, GraphQueries {
     override suspend fun save(tribe: Tribe) {
-        doQuery(Mutations.saveTribe, tribe.saveTribeInput())
+        doQuery(mutations.saveTribe, tribe.saveTribeInput())
     }
 
     private fun Tribe.saveTribeInput() = SaveTribeInput(

@@ -1,3 +1,3 @@
 package com.zegreatrob.coupling.sdk
 
-expect fun loadTextFile(path: String): String
+expect fun loadGqlFile(path: String): String

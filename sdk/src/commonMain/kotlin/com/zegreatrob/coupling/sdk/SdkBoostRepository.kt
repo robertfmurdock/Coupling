@@ -7,23 +7,23 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
-interface SdkBoostRepository : BoostRepository, GqlSyntax {
+interface SdkBoostRepository : BoostRepository, GqlSyntax, GraphQueries {
 
     override suspend fun get() = performer.postAsync(boostQuery()).await()
         .at("/data/user/boost")
         ?.toBoostRecord()
 
-    private fun boostQuery() = buildJsonObject { put("query", Queries.boost) }
+    private fun boostQuery() = buildJsonObject { put("query", queries.boost) }
 
     private fun JsonElement.toBoostRecord() = fromJsonElement<JsonBoostRecord?>()
         ?.toModelRecord()
 
     override suspend fun delete() {
-        performQuery(buildJsonObject { put("query", Mutations.deleteBoost) })
+        performQuery(buildJsonObject { put("query", mutations.deleteBoost) })
     }
 
     override suspend fun save(boost: Boost) {
-        doQuery(Mutations.saveBoost, boost.saveBoostInput())
+        doQuery(mutations.saveBoost, boost.saveBoostInput())
     }
 
     private fun Boost.saveBoostInput() = SaveBoostInput(tribeIds)
