@@ -25,11 +25,10 @@ class PrepareToSpinPageE2ETest {
             val tribe = buildFunkyTribe()
             val players = (1..5).map(Companion::buildPlayer)
             val pin = Pin("${randomInt()}-PairAssignmentsPageE2ETest", name = "e2e-pin")
-            val sdk = sdkProvider.await().apply {
-                tribe.save()
-                players.forEach { tribe.id.with(it).save() }
-                tribe.id.with(pin).save()
-            }
+            val sdk = sdkProvider.await()
+            sdk.tribeRepository.save(tribe)
+            players.forEach { sdk.playerRepository.save(tribe.id.with(it)) }
+            sdk.pinRepository.save(tribe.id.with(pin))
 
             FullTribeData(players, listOf(pin), tribe, sdk)
         }).extend(sharedTeardown = {

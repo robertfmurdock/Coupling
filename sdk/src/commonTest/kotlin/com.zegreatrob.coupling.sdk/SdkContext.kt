@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
-interface SdkContext : SdkProviderSyntax {
+interface SdkContext : SdkSyntax {
     override val sdk: Sdk
     val username: String
 }

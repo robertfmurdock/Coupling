@@ -1,16 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
-import com.zegreatrob.coupling.repository.pin.TribeIdPinSaveSyntax
 import com.zegreatrob.coupling.repository.player.PlayerRepository
-import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
-import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeIdDeleteSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeListSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
@@ -63,12 +56,6 @@ class StandardTribeGQLPerformer(val getIdTokenFunc: suspend () -> String, httpCl
     override suspend fun getIdToken() = getIdTokenFunc.invoke()
 }
 
-interface SdkProviderSyntax {
+interface SdkSyntax {
     val sdk: Sdk
-}
-
-interface SdkSyntax: SdkProviderSyntax, TribeListSyntax, TribeSaveSyntax, TribeIdDeleteSyntax, TribeIdPinsSyntax, TribeIdPinSaveSyntax, TribeIdPlayerSaveSyntax, TribeIdPlayersSyntax {
-    override val tribeRepository: TribeRepository
-    override val pinRepository: PinRepository
-    override val playerRepository: PlayerRepository
 }

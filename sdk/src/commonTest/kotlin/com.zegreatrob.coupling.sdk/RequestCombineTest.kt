@@ -21,11 +21,9 @@ class RequestCombineTest {
         }
         val tribeId = TribeId("Random")
     }) exercise {
-        with(sdk) {
-            coroutineScope {
-                launch { tribeId.getPlayerList() }
-                launch { tribeId.getPins() }
-            }
+        coroutineScope {
+            launch { sdk.playerRepository.getPlayers(tribeId) }
+            launch { sdk.pinRepository.getPins(tribeId) }
         }
     } verify {
         performer.allPostCalls.size.assertIsEqualTo(1)

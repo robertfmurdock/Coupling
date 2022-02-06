@@ -23,10 +23,9 @@ class HistoryPageE2ETest {
     class WithTwoAssignments {
         companion object {
             private val historyPageSetup = e2eSetup.extend(beforeAll = {
+                val sdk = sdkProvider.await()
                 val tribe = buildTribe()
-                val sdk = sdkProvider.await().apply {
-                    tribe.save()
-                }
+                sdk.tribeRepository.save(tribe)
 
                 val pairAssignments = setupTwoPairAssignments(tribe, sdk)
 
