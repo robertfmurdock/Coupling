@@ -1,31 +1,27 @@
-
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
-
+group = "com.zegreatrob.coupling.libraries"
 kotlin {
     targets {
         jvm()
-        js {
-            nodejs()
-            useCommonJs()
-        }
+        js { nodejs() }
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:model")
-                implementation(project(":repository-core"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("com.benasher44:uuid:0.4.0")
+                api("com.zegreatrob.coupling.libraries:model")
+                api(project(":repository-core"))
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation("com.zegreatrob.coupling.libraries:test-logging")
+                implementation(project(":repository-memory"))
                 implementation(project(":repository-validation"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")

@@ -17,7 +17,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(project(":repository-core"))
+                implementation("com.zegreatrob.coupling.libraries:repository-core")
                 implementation("com.zegreatrob.coupling.libraries:model")
                 implementation("com.zegreatrob.coupling.libraries:json")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:${BuildConstants.kotlinVersion}")
@@ -41,7 +41,7 @@ kotlin {
             resources.srcDirs(commonMain.resources.srcDirs)
 
             dependencies {
-                implementation(project(":repository-validation"))
+                implementation("com.zegreatrob.coupling.libraries:repository-validation")
                 implementation("com.zegreatrob.coupling.libraries:test-logging")
                 implementation("com.zegreatrob.coupling.libraries:stub-model")
                 implementation("org.jetbrains.kotlin:kotlin-test")

@@ -23,7 +23,7 @@ kotlin {
         getByName("commonMain") {
             dependencies {
                 api("com.zegreatrob.coupling.libraries:model")
-                api(project(":repository-core"))
+                api("com.zegreatrob.coupling.libraries:repository-core")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
@@ -34,7 +34,7 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                api(project(":repository-validation"))
+                api("com.zegreatrob.coupling.libraries:repository-validation")
                 api("com.zegreatrob.coupling.libraries:stub-model")
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")

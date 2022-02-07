@@ -15,7 +15,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":repository-core"))
+                api("com.zegreatrob.coupling.libraries:repository-core")
                 api("com.zegreatrob.coupling.libraries:model")
                 api("com.zegreatrob.coupling.libraries:action")
                 api("com.zegreatrob.testmints:action")

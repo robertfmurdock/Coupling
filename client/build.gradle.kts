@@ -35,10 +35,10 @@ val clientConfiguration: Configuration by configurations.creating
 dependencies {
     implementation(kotlin("stdlib-js"))
     implementation(project(":sdk"))
-    implementation(project(":repository-memory"))
     implementation("com.zegreatrob.coupling.libraries:model")
     implementation("com.zegreatrob.coupling.libraries:action")
     implementation("com.zegreatrob.coupling.libraries:logging")
+    implementation("com.zegreatrob.coupling.libraries:repository-memory")
     implementation("com.zegreatrob.testmints:action")
     implementation("com.zegreatrob.testmints:action-async")
     implementation("com.zegreatrob.jsmints:minreact")

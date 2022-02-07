@@ -1,9 +1,10 @@
+
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
-
+group = "com.zegreatrob.coupling.libraries"
 kotlin {
     targets {
         jvm()
@@ -16,13 +17,16 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:model")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+                implementation("com.zegreatrob.coupling.libraries:model")
+                implementation(project(":repository-core"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+                implementation("com.benasher44:uuid:0.4.0")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation("com.zegreatrob.coupling.libraries:test-logging")
+                implementation(project(":repository-validation"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")
@@ -32,7 +36,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(kotlin("reflect", BuildConstants.kotlinVersion))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
 
@@ -47,6 +50,11 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation("com.zegreatrob.testmints:async")
             }
         }
     }
