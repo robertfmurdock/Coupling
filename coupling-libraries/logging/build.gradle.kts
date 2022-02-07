@@ -10,7 +10,7 @@ group = "com.zegreatrob.coupling.libraries"
 kotlin {
     targets {
         jvm()
-        js(BOTH) {
+        js {
             nodejs()
             useCommonJs()
         }

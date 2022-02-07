@@ -20,7 +20,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:logging")
+                implementation(project(":logging"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:report")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -55,6 +55,7 @@ kotlin {
 }
 
 val testLoggingLib: Configuration by configurations.creating {
+
 }
 
 tasks {
@@ -63,5 +64,9 @@ tasks {
         add(testLoggingLib.name, compileProductionExecutableKotlinJs.outputFileProperty) {
             builtBy(compileProductionExecutableKotlinJs)
         }
+    }
+
+    val jsJar by getting {
+        dependsOn(compileProductionExecutableKotlinJs)
     }
 }
