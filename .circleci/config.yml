@@ -38,7 +38,7 @@ orbs:
                 cat /etc/hosts
           - restore_cache:
                 key: coupling-cache-6-{{ .Branch }}
-      check:
+      check-libs:
         steps:
           - run:
               name: Compose up
@@ -46,9 +46,6 @@ orbs:
           - run:
               name: Libraries
               command: ./gradlew -p coupling-libraries check
-          - run:
-              name: check and build
-              command: ./gradlew check build
       collect-results:
         steps:
           - save_cache:
@@ -82,7 +79,7 @@ jobs:
     steps:
       - checkout
       - coupling-orb/setup
-      - coupling-orb/check
+      - coupling-orb/check-libs
       - aws-cli/setup
       - run: "./gradlew release build"
       - coupling-orb/collect-results
@@ -102,7 +99,8 @@ jobs:
       - checkout
       - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
-      - coupling-orb/check
+      - coupling-orb/check-libs
+      - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
           update_type: client dependency
@@ -113,7 +111,8 @@ jobs:
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
       - coupling-orb/setup
-      - coupling-orb/check
+      - coupling-orb/check-libs
+      - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
           update_type: server dependency
@@ -123,7 +122,7 @@ jobs:
       - checkout
       - run: "./gradlew useLatestVersions :plugins:useLatestVersions"
       - coupling-orb/setup
-      - coupling-orb/check
+      - coupling-orb/check-libs
       - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
