@@ -34,7 +34,7 @@ val clientConfiguration: Configuration by configurations.creating
 
 dependencies {
     implementation(kotlin("stdlib-js"))
-    implementation(project(":model"))
+    implementation("com.zegreatrob.coupling.libraries:model")
     implementation(project(":sdk"))
     implementation(project(":action"))
     implementation(project(":repository-memory"))
@@ -55,7 +55,7 @@ dependencies {
     implementation("com.benasher44:uuid:0.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.3")
 
-    testImplementation(project(":stub-model"))
+    testImplementation("com.zegreatrob.coupling.libraries:stub-model")
     testImplementation("com.zegreatrob.coupling.libraries:test-logging")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")

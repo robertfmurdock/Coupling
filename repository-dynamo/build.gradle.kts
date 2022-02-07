@@ -22,7 +22,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":model"))
+                api("com.zegreatrob.coupling.libraries:model")
                 api(project(":repository-core"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
@@ -35,7 +35,7 @@ kotlin {
         getByName("commonTest") {
             dependencies {
                 api(project(":repository-validation"))
-                api(project(":stub-model"))
+                api("com.zegreatrob.coupling.libraries:stub-model")
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("com.zegreatrob.testmints:async")

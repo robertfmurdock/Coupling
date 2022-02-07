@@ -17,7 +17,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(project(":model"))
+                implementation("com.zegreatrob.coupling.libraries:model")
                 implementation(project(":repository-core"))
                 implementation(project(":json"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:${BuildConstants.kotlinVersion}")
@@ -43,7 +43,7 @@ kotlin {
             dependencies {
                 implementation(project(":repository-validation"))
                 implementation("com.zegreatrob.coupling.libraries:test-logging")
-                implementation(project(":stub-model"))
+                implementation("com.zegreatrob.coupling.libraries:stub-model")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("com.benasher44:uuid:0.4.0")
                 implementation("com.zegreatrob.testmints:standard")

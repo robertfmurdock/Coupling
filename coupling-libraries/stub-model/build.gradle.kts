@@ -1,10 +1,9 @@
-
 import com.zegreatrob.coupling.build.BuildConstants
 
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
-
+group = "com.zegreatrob.coupling.libraries"
 kotlin {
     targets {
         jvm()
@@ -17,7 +16,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":model"))
+                api("com.zegreatrob.coupling.libraries:model")
                 api(kotlin("stdlib", BuildConstants.kotlinVersion))
                 api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
                 api("com.soywiz.korlibs.klock:klock:2.4.13")

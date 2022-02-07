@@ -16,6 +16,8 @@
                 <projects>
                   <project path="$PROJECT_DIR$/coupling-libraries" />
                   <project path="$PROJECT_DIR$/coupling-libraries/logging" />
+                  <project path="$PROJECT_DIR$/coupling-libraries/model" />
+                  <project path="$PROJECT_DIR$/coupling-libraries/stub-model" />
                   <project path="$PROJECT_DIR$/coupling-libraries/test-logging" />
                 </projects>
               </build>
@@ -36,12 +38,13 @@
             <option value="$PROJECT_DIR$/client" />
             <option value="$PROJECT_DIR$/coupling-libraries" />
             <option value="$PROJECT_DIR$/coupling-libraries/logging" />
+            <option value="$PROJECT_DIR$/coupling-libraries/model" />
+            <option value="$PROJECT_DIR$/coupling-libraries/stub-model" />
             <option value="$PROJECT_DIR$/coupling-libraries/test-logging" />
             <option value="$PROJECT_DIR$/e2e" />
             <option value="$PROJECT_DIR$/export" />
             <option value="$PROJECT_DIR$/import" />
             <option value="$PROJECT_DIR$/json" />
-            <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/plugins" />
             <option value="$PROJECT_DIR$/repository-compound" />
             <option value="$PROJECT_DIR$/repository-core" />
@@ -51,7 +54,6 @@
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
             <option value="$PROJECT_DIR$/server_action" />
-            <option value="$PROJECT_DIR$/stub-model" />
             <option value="$PROJECT_DIR$/test-action" />
           </set>
         </option>

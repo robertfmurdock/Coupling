@@ -15,7 +15,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":model"))
+                api("com.zegreatrob.coupling.libraries:model")
                 api(project(":action"))
                 api(project(":repository-core"))
                 api("com.zegreatrob.testmints:action")
@@ -29,7 +29,7 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                api(project(":stub-model"))
+                api("com.zegreatrob.coupling.libraries:stub-model")
                 api(project(":test-action"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:async")

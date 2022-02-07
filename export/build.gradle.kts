@@ -26,7 +26,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                api(project(":model"))
+                api("com.zegreatrob.coupling.libraries:model")
                 api(kotlin("stdlib", kotlinVersion))
                 api(kotlin("stdlib-common", kotlinVersion))
                 api("com.soywiz.korlibs.klock:klock:2.4.13")

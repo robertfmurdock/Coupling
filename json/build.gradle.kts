@@ -22,7 +22,7 @@ kotlin {
         }
         val commonMain by getting {
             dependencies {
-                implementation(project(":model"))
+                implementation("com.zegreatrob.coupling.libraries:model")
                 implementation(kotlin("stdlib", BuildConstants.kotlinVersion))
                 implementation(kotlin("stdlib-common", BuildConstants.kotlinVersion))
                 implementation("com.soywiz.korlibs.klock:klock:2.4.13")
@@ -32,7 +32,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation("com.zegreatrob.coupling.libraries:test-logging")
-                implementation(project(":stub-model"))
+                implementation("com.zegreatrob.coupling.libraries:stub-model")
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")

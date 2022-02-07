@@ -17,7 +17,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":model"))
+                implementation("com.zegreatrob.coupling.libraries:model")
                 implementation(project(":repository-core"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("com.benasher44:uuid:0.4.0")

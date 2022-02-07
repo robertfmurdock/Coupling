@@ -18,7 +18,7 @@ kotlin {
             dependencies {
                 api(project(":repository-core"))
                 api("com.zegreatrob.coupling.libraries:test-logging")
-                api(project(":stub-model"))
+                api("com.zegreatrob.coupling.libraries:stub-model")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("com.zegreatrob.testmints:standard")

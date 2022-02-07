@@ -3,7 +3,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
-
+group = "com.zegreatrob.coupling.libraries"
 kotlin {
     targets {
         jvm()
@@ -25,7 +25,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:test-logging")
+                implementation(project(":test-logging"))
                 implementation(kotlin("test", BuildConstants.kotlinVersion))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
