@@ -5,7 +5,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
 }
-
+group = "com.zegreatrob.coupling.libraries"
 kotlin {
     targets {
         jvm()
@@ -22,7 +22,7 @@ kotlin {
         }
         val commonMain by getting {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:model")
+                implementation(project(":model"))
                 implementation(kotlin("stdlib", BuildConstants.kotlinVersion))
                 implementation(kotlin("stdlib-common", BuildConstants.kotlinVersion))
                 implementation("com.soywiz.korlibs.klock:klock:2.4.13")
@@ -31,8 +31,8 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:test-logging")
-                implementation("com.zegreatrob.coupling.libraries:stub-model")
+                implementation(project(":test-logging"))
+                implementation(project(":stub-model"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")

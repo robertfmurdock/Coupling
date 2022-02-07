@@ -4,7 +4,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
 }
-
+group = "com.zegreatrob.coupling.libraries"
 kotlin {
 
     targets {
@@ -24,8 +24,8 @@ kotlin {
 
         getByName("commonMain") {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:model")
-                implementation("com.zegreatrob.coupling.libraries:logging")
+                implementation(project(":model"))
+                implementation(project(":logging"))
                 implementation("com.zegreatrob.testmints:action")
                 implementation("com.zegreatrob.testmints:action-async")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
@@ -37,7 +37,7 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                implementation(project(":json"))
+                implementation("com.zegreatrob.coupling.libraries:json")
                 implementation(project(":test-action"))
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
                 implementation("org.jetbrains.kotlin:kotlin-test")

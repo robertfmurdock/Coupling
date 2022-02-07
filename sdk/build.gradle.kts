@@ -17,9 +17,9 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:model")
                 implementation(project(":repository-core"))
-                implementation(project(":json"))
+                implementation("com.zegreatrob.coupling.libraries:model")
+                implementation("com.zegreatrob.coupling.libraries:json")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")

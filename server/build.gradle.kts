@@ -29,7 +29,7 @@ dependencies {
         project(mapOf("path" to ":client", "configuration" to "clientConfiguration"))
     )
     implementation(kotlin("stdlib"))
-    implementation(project(":json"))
+    implementation("com.zegreatrob.coupling.libraries:json")
     implementation(project(":repository-dynamo"))
     implementation(project(":repository-memory"))
     implementation(project(":server_action"))

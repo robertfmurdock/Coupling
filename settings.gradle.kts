@@ -2,12 +2,10 @@ rootProject.name = "Coupling"
 
 includeBuild("plugins")
 includeBuild("coupling-libraries")
-include("action")
 include("client")
 include("e2e")
 include("export")
 include("import")
-include("json")
 include("repository-core")
 include("repository-compound")
 include("repository-dynamo")
@@ -16,5 +14,4 @@ include("repository-validation")
 include("sdk")
 include("server")
 include("server_action")
-include("test-action")
 

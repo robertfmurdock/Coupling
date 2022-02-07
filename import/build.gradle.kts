@@ -33,7 +33,7 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                api(project(":json"))
+                api("com.zegreatrob.coupling.libraries:json")
                 api(project(":repository-dynamo"))
                 api(kotlin("stdlib-js", kotlinVersion))
             }

@@ -4,7 +4,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
 }
-
+group = "com.zegreatrob.coupling.libraries"
 kotlin {
 
     targets {
@@ -18,8 +18,8 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation(project(":action"))
-                implementation("com.zegreatrob.coupling.libraries:test-logging")
+                implementation("com.zegreatrob.coupling.libraries:action")
+                implementation(project(":test-logging"))
                 implementation("com.zegreatrob.testmints:action")
                 implementation("com.zegreatrob.testmints:action-async")
                 implementation("com.zegreatrob.testmints:async")
