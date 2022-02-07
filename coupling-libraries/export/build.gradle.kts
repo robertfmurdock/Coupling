@@ -26,7 +26,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:model")
+                api(project(":model"))
                 api(kotlin("stdlib", kotlinVersion))
                 api(kotlin("stdlib-common", kotlinVersion))
                 api("com.soywiz.korlibs.klock:klock:2.4.13")
@@ -36,7 +36,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(project(":repository-dynamo"))
-                api("com.zegreatrob.coupling.libraries:json")
+                api(project(":json"))
 
                 api(kotlin("stdlib-js", kotlinVersion))
             }

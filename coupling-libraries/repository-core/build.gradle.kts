@@ -16,13 +16,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:model")
+                api(project(":model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:test-logging")
+                implementation(project(":test-logging"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")

@@ -37,13 +37,13 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:json")
+                implementation(project(":json"))
                 implementation(project(":test-action"))
+                implementation(project(":test-logging"))
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
-                implementation("com.zegreatrob.coupling.libraries:test-logging")
             }
         }
         val jvmMain by getting {

@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:model")
+                api(project(":model"))
                 api(project(":repository-core"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }

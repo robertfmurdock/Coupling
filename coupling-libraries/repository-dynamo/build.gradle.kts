@@ -22,8 +22,8 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:model")
-                api("com.zegreatrob.coupling.libraries:repository-core")
+                api(project(":model"))
+                api(project(":repository-core"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
@@ -34,8 +34,8 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:repository-validation")
-                api("com.zegreatrob.coupling.libraries:stub-model")
+                api(project(":repository-validation"))
+                api(project(":stub-model"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("com.zegreatrob.testmints:async")
@@ -47,7 +47,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:logging")
+                api(project(":logging"))
                 implementation(npm("@aws-sdk/client-dynamodb", "3.18.0"))
                 implementation(npm("@aws-sdk/lib-dynamodb", "3.18.0"))
             }

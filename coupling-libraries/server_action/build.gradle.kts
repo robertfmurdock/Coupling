@@ -15,9 +15,9 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:repository-core")
-                api("com.zegreatrob.coupling.libraries:model")
-                api("com.zegreatrob.coupling.libraries:action")
+                api(project(":repository-core"))
+                api(project(":model"))
+                api(project(":action"))
                 api("com.zegreatrob.testmints:action")
                 api("com.zegreatrob.testmints:action-async")
                 implementation("com.benasher44:uuid:0.4.0")
@@ -29,8 +29,8 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:stub-model")
-                api("com.zegreatrob.coupling.libraries:test-action")
+                api(project(":stub-model"))
+                api(project(":test-action"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:async")
                 implementation("com.zegreatrob.testmints:minassert")
@@ -43,7 +43,7 @@ kotlin {
 
         val jsTest by getting {
             dependencies {
-                api("com.zegreatrob.coupling.libraries:logging")
+                api(project(":logging"))
             }
         }
     }
