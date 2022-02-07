@@ -38,6 +38,9 @@ orbs:
                 cat /etc/hosts
           - restore_cache:
                 key: coupling-cache-6-{{ .Branch }}
+          - run:
+              name: Compose up
+              command: ./gradlew composeUp
       collect-results:
         steps:
           - save_cache:

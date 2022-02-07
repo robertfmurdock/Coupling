@@ -16,13 +16,17 @@
                 <projects>
                   <project path="$PROJECT_DIR$/coupling-libraries" />
                   <project path="$PROJECT_DIR$/coupling-libraries/action" />
+                  <project path="$PROJECT_DIR$/coupling-libraries/export" />
+                  <project path="$PROJECT_DIR$/coupling-libraries/import" />
                   <project path="$PROJECT_DIR$/coupling-libraries/json" />
                   <project path="$PROJECT_DIR$/coupling-libraries/logging" />
                   <project path="$PROJECT_DIR$/coupling-libraries/model" />
                   <project path="$PROJECT_DIR$/coupling-libraries/repository-compound" />
                   <project path="$PROJECT_DIR$/coupling-libraries/repository-core" />
+                  <project path="$PROJECT_DIR$/coupling-libraries/repository-dynamo" />
                   <project path="$PROJECT_DIR$/coupling-libraries/repository-memory" />
                   <project path="$PROJECT_DIR$/coupling-libraries/repository-validation" />
+                  <project path="$PROJECT_DIR$/coupling-libraries/server_action" />
                   <project path="$PROJECT_DIR$/coupling-libraries/stub-model" />
                   <project path="$PROJECT_DIR$/coupling-libraries/test-action" />
                   <project path="$PROJECT_DIR$/coupling-libraries/test-logging" />
@@ -44,24 +48,24 @@
             <option value="$PROJECT_DIR$/client" />
             <option value="$PROJECT_DIR$/coupling-libraries" />
             <option value="$PROJECT_DIR$/coupling-libraries/action" />
+            <option value="$PROJECT_DIR$/coupling-libraries/export" />
+            <option value="$PROJECT_DIR$/coupling-libraries/import" />
             <option value="$PROJECT_DIR$/coupling-libraries/json" />
             <option value="$PROJECT_DIR$/coupling-libraries/logging" />
             <option value="$PROJECT_DIR$/coupling-libraries/model" />
             <option value="$PROJECT_DIR$/coupling-libraries/repository-compound" />
             <option value="$PROJECT_DIR$/coupling-libraries/repository-core" />
+            <option value="$PROJECT_DIR$/coupling-libraries/repository-dynamo" />
             <option value="$PROJECT_DIR$/coupling-libraries/repository-memory" />
             <option value="$PROJECT_DIR$/coupling-libraries/repository-validation" />
+            <option value="$PROJECT_DIR$/coupling-libraries/server_action" />
             <option value="$PROJECT_DIR$/coupling-libraries/stub-model" />
             <option value="$PROJECT_DIR$/coupling-libraries/test-action" />
             <option value="$PROJECT_DIR$/coupling-libraries/test-logging" />
             <option value="$PROJECT_DIR$/e2e" />
-            <option value="$PROJECT_DIR$/export" />
-            <option value="$PROJECT_DIR$/import" />
             <option value="$PROJECT_DIR$/plugins" />
-            <option value="$PROJECT_DIR$/repository-dynamo" />
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
-            <option value="$PROJECT_DIR$/server_action" />
           </set>
         </option>
       </GradleProjectSettings>

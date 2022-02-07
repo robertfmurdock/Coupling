@@ -29,46 +29,9 @@ services:
       - caddy_config:/config
     extra_hosts:
       - "host.docker.internal:host-gateway"
-  mongo:
-    image: mongo
-    environment:
-      - AUTH=no
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
   dynamo:
     image: amazon/dynamodb-local
     ports:
       - "8000:8000"
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.5
-    environment:
-      - http.host=0.0.0.0
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    volumes:
-      - es_data:/usr/share/elasticsearch/data
-  graylog:
-    image: graylog/graylog:4.2.2
-    links:
-      - mongo
-      - elasticsearch
-    ports:
-      - "9000:9000"
-      - "5555:5555"
-    environment:
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
-      - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_PASSWORD_SECRET:-notSecurepasswordSecret}
-      - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_ROOT_PASSWORD_SHA2:-5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8}
-    volumes:
-      - graylog_journal:/usr/share/graylog/data/journal
-
-
 volumes:
-  mongo_data:
-    driver: local
-  es_data:
-    driver: local
-  graylog_journal:
-    driver: local
   caddy_config:

@@ -3,7 +3,7 @@ import com.zegreatrob.coupling.build.BuildConstants
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
-
+group = "com.zegreatrob.coupling.libraries"
 kotlin {
     targets {
         js {

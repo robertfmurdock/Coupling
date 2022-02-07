@@ -5,7 +5,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
 }
-
+group = "com.zegreatrob.coupling.libraries"
 kotlin {
     targets {
         jvm()
