@@ -13,7 +13,7 @@ interface NewTribeCommandDispatcher {
 
     private fun newTribe() = Tribe(
         id = TribeId(""),
-        name = "New Tribe",
+        name = "New Party",
         defaultBadgeName = "Default",
         alternateBadgeName = "Alternate"
     )

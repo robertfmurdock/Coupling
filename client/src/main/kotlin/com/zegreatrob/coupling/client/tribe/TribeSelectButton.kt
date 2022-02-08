@@ -16,7 +16,7 @@ val TribeSelectButton = FC<Props> {
         draggable = false
         child(CouplingButton(large)) {
             i { className = "fa fa-arrow-circle-up" }
-            span { +"Tribe select" }
+            span { +"Party select" }
         }
     }
 }

@@ -51,7 +51,7 @@ val tribeList = tmFC<TribeList> { (tribes) ->
                         alignItems = Align.center
                     }) {
                         cssSpan(css = { flexGrow = 2.0; textAlign = TextAlign.left }) {
-                            +"Tribe List"
+                            +"Party List"
                         }
                         cssSpan(css = { margin(0.px, 20.px) }) {
                             AboutButton()
@@ -109,5 +109,5 @@ private fun ChildrenBuilder.newTribeButton(className: String) = Link {
     to = "/new-tribe/"
     draggable = false
     tabIndex = -1
-    child(CouplingButton(supersize, green, className)) { +"Add a new tribe!" }
+    child(CouplingButton(supersize, green, className)) { +"Form a new party!" }
 }

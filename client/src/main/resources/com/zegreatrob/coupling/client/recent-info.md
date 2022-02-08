@@ -1,17 +1,15 @@
 # News
 
-## January 11, 2022
+## February 7, 2022
 
-Hey all!
+Yo yo yo. Yo.
 
-I just posted a write-up of all the changes I made to Coupling in 2021. There's a lot! You can read it here: [https://robertfmurdock.github.io/2022/01/10/Grow-Together,-2021.html](https://robertfmurdock.github.io/2022/01/10/Grow-Together,-2021.html)
+I just made a small change, after many long years, to Coupling.
 
-Most recently, I switched the Auth0 client style, so you may have had to log in again. Sorry about that! Hopefully it wasn't too much of a hiccup.
+We're going to try the word "party" instead of the word "tribe" for the moment. See how it feels. If it vibes with everyone well enough, we'll make the change permanent (at the moment, it is merely surface-level).
 
-That's basically all I have to say! Ta for now.
+So if you have feelings about it, let me know! Open an issue on [github](https://www.github.com/robertfmurdock/coupling), or send me a note.
 
-Remember, if anything is acting goofy for you, just open an issue at [the github](https://www.github.com/robertfmurdock/coupling).
-
-Live long and prosper,
+Keep on keeping on,
 
 - RoB

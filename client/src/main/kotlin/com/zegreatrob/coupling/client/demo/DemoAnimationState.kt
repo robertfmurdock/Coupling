@@ -139,7 +139,7 @@ data class MakeTribe(val tribe: Tribe) : DemoAnimationState() {
     override val placement = Placement.bottomStart
     override val description = """
 
-## First, we configure a new tribe.
+## First, we configure a new party.
 
 We'll enter the name and then save.
 
@@ -153,7 +153,7 @@ data class AddPlayer(val tribe: Tribe, val newPlayer: Player, val players: List<
 
 Just enough players to make it interesting.
 
-Pro tip: if you enter a player's email, they can log in using that email and see the tribe! 
+Pro tip: if you enter a player's email, they can log in using that email and see the party! 
 
 In this way, your entire team can operate Coupling.
 

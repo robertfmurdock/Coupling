@@ -43,7 +43,7 @@ val tribeConfigContent = tmFC<TribeConfigContent> { (tribe, isNew, onChange, onS
 
         ConfigHeader {
             this.tribe = tribe
-            +"Tribe Configuration"
+            +"Party Configuration"
         }
         cssDiv(css = { display = Display.flex }) {
             tribeConfigEditor(tribe, isNew ?: false, onChange, onSave, onDelete)
