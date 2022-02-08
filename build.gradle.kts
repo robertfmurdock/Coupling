@@ -12,6 +12,7 @@ plugins {
     id("de.gliderpilot.semantic-release") version "1.4.2"
     id("com.avast.gradle.docker-compose") version "0.15.0"
     id("com.zegreatrob.coupling.plugins.versioning")
+    base
 }
 
 semanticRelease {
@@ -29,6 +30,17 @@ dockerCompose {
 tasks {
     val composeUp by getting {
         dependsOn(":server:buildImage")
+    }
+    val couplingLibrariesBuild = gradle.includedBuild("coupling-libraries")
+    val couplingLibrariesCheck = couplingLibrariesBuild.task(":check")
+    val check by getting {
+        dependsOn(couplingLibrariesCheck)
+    }
+    val collectResults by creating(Copy::class) {
+        mustRunAfter(couplingLibrariesCheck)
+        dependsOn(couplingLibrariesBuild.task(":collectResults"))
+        from("${couplingLibrariesBuild.projectDir.path}/build/test-output")
+        into("${buildDir.path}/test-output/coupling-libraries")
     }
 }
 

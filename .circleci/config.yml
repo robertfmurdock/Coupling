@@ -43,9 +43,6 @@ orbs:
           - run:
               name: Compose up
               command: ./gradlew composeUp
-          - run:
-              name: Libraries
-              command: ./gradlew -p coupling-libraries check
       collect-results:
         steps:
           - save_cache:
