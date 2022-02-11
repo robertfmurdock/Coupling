@@ -187,47 +187,16 @@ tasks {
         )
     }
 
-    val serverlessBuild by creating(NodeExec::class) {
+    create("serverlessBuild", NodeExec::class) {
         configureBuild("prod")
     }
-
-    val serverlessBuildSandbox by creating(NodeExec::class) {
+    create("serverlessBuildSandbox", NodeExec::class) {
         configureBuild("sandbox")
-    }
-
-    fun NodeExec.configureDeploy(stage: String) {
-        val serverlessBuildDir = "${project.buildDir.absolutePath}/${stage}/lambda-dist"
-        dependsOn(compileKotlinJs)
-        mustRunAfter(
-            ":release",
-            ":updateGithubRelease",
-            ":client:uploadToS3",
-        )
-        if (version.toString().contains("SNAPSHOT")) {
-            enabled = false
-        }
-        nodeCommand = "serverless"
-        arguments = listOf(
-            "deploy",
-            "--config",
-            project.relativePath("serverless.yml"),
-            "--package",
-            serverlessBuildDir,
-            "--stage",
-            stage
-        )
-    }
-
-    val serverlessDeploy by creating(NodeExec::class) {
-        dependsOn(serverlessBuild)
-        configureDeploy("prod")
     }
 
     create("serverlessBuildPrerelease", NodeExec::class) {
         configureBuild("prerelease")
     }
-
-    findByPath(":release")!!.finalizedBy(serverlessDeploy)
 
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
