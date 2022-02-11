@@ -64,6 +64,7 @@
             <option value="$PROJECT_DIR$/coupling-libraries/test-logging" />
             <option value="$PROJECT_DIR$/deploy" />
             <option value="$PROJECT_DIR$/deploy/prerelease" />
+            <option value="$PROJECT_DIR$/deploy/sandbox" />
             <option value="$PROJECT_DIR$/e2e" />
             <option value="$PROJECT_DIR$/plugins" />
             <option value="$PROJECT_DIR$/sdk" />
