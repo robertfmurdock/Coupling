@@ -29,7 +29,7 @@ fun NodeExec.configureDeploy(stage: String) {
     arguments = listOf(
         "deploy",
         "--config",
-        serverProject.absoluteProjectPath("serverless.yml"),
+        "${serverProject.projectDir.absolutePath}/serverless.yml",
         "--package",
         serverlessBuildDir,
         "--stage",
