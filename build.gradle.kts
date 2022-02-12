@@ -33,6 +33,10 @@ tasks {
         dependsOn(":server:buildImage")
     }
     val couplingLibrariesBuild = gradle.includedBuild("coupling-libraries")
+
+    val couplingLibrariesKotlinNodeJsSetup = couplingLibrariesBuild.task(":kotlinNodeJsSetup")
+    val kotlinNodeJsSetup by getting { dependsOn(couplingLibrariesKotlinNodeJsSetup) }
+    
     val couplingLibrariesCheck = couplingLibrariesBuild.task(":check")
     val check by getting {
         dependsOn(couplingLibrariesCheck)
