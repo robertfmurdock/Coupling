@@ -37,11 +37,11 @@ orbs:
                 sudo tee -a /etc/hosts \<<<'127.0.0.1 static.localhost socket.localhost'
                 cat /etc/hosts
           - restore_cache:
-                key: coupling-cache-7-{{ .Branch }}
+                key: coupling-cache-8-{{ .Branch }}
       collect-results:
         steps:
           - save_cache:
-                key: coupling-cache-7-{{ .Branch }}
+                key: coupling-cache-8-{{ .Branch }}
                 paths:
                   - "~/.gradle"
           - run:
