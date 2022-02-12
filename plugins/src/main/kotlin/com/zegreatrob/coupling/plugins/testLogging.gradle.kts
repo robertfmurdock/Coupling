@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.node.TextNode
 import com.zegreatrob.coupling.build.com.zegreatrob.coupling.plugins.TransformingOutputStream
-import gradle.kotlin.dsl.accessors._0def0b2a311a48a48a92e7be672fd977.ext
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -52,7 +51,7 @@ afterEvaluate {
 }
 
 fun Project.getTestRunIdentifier(): String {
-    var testRunIdentifier: Any? by rootProject.ext
+    var testRunIdentifier: Any? by rootProject.extra
     return if (testRunIdentifier != null)
         "$testRunIdentifier"
     else {

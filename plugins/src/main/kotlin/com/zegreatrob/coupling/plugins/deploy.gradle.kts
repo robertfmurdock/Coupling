@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.plugins
 
-import com.zegreatrob.coupling.plugins.NodeExec
-import org.gradle.kotlin.dsl.creating
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.invoke
+import org.gradle.kotlin.dsl.*
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -14,7 +11,15 @@ kotlin {
     js { nodejs() }
 }
 
+val serverProject = project.project(":server")
+fun serverlessBuildDir(stage: String) = "${serverProject.buildDir.absolutePath}/${stage}/lambda-dist"
+val serverlessYmlPath = "${serverProject.projectDir.absolutePath}/serverless.yml"
+
 tasks {
+    val buildDeployBundle by creating(NodeExec::class) {
+        configureBuild(project.name)
+    }
+
     val deploy by creating(NodeExec::class) {
         configureDeploy(project.name)
     }
@@ -22,10 +27,26 @@ tasks {
     findByPath(":release")!!.finalizedBy(deploy)
 }
 
+fun NodeExec.configureBuild(stage: String) {
+    dependsOn(":server:assemble", ":server:test", ":server:compileKotlinJs")
+    environment(
+        "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
+        "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
+        "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${project.version}",
+    )
+    nodeCommand = "serverless"
+    arguments = listOf(
+        "package",
+        "--config",
+        serverlessYmlPath,
+        "--package",
+        serverlessBuildDir(stage),
+        "--stage",
+        stage
+    )
+}
 
 fun NodeExec.configureDeploy(stage: String) {
-    val serverProject = project.project(":server")
-    val serverlessBuildDir = "${serverProject.buildDir.absolutePath}/${stage}/lambda-dist"
     mustRunAfter(
         ":release",
         ":updateGithubRelease",
@@ -38,10 +59,11 @@ fun NodeExec.configureDeploy(stage: String) {
     arguments = listOf(
         "deploy",
         "--config",
-        "${serverProject.projectDir.absolutePath}/serverless.yml",
+        serverlessYmlPath,
         "--package",
-        serverlessBuildDir,
+        serverlessBuildDir(stage),
         "--stage",
         stage
     )
 }
+
