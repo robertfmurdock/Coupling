@@ -88,8 +88,8 @@ jobs:
     executor: coupling-orb/standard
     steps:
       - checkout
-      - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - coupling-orb/setup
+      - run: "./gradlew updateDependencies -PpackageJson=client/package.json"
       - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
@@ -98,9 +98,9 @@ jobs:
     executor: coupling-orb/standard
     steps:
       - checkout
+      - coupling-orb/setup
       - run: "./gradlew updateDependencies -PpackageJson=server/package.json"
       - run: "./gradlew updateDependencies -PpackageJson=e2e/package.json"
-      - coupling-orb/setup
       - run: "./gradlew build"
       - coupling-orb/collect-results
       - coupling-orb/commit-push:
