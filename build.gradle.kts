@@ -34,9 +34,6 @@ tasks {
     }
     val couplingLibrariesBuild = gradle.includedBuild("coupling-libraries")
 
-    val couplingLibrariesKotlinNodeJsSetup = couplingLibrariesBuild.task(":kotlinNodeJsSetup")
-    val kotlinNodeJsSetup by getting { dependsOn(couplingLibrariesKotlinNodeJsSetup) }
-    
     val couplingLibrariesCheck = couplingLibrariesBuild.task(":check")
     val check by getting {
         dependsOn(couplingLibrariesCheck)
@@ -46,6 +43,14 @@ tasks {
         dependsOn(couplingLibrariesBuild.task(":collectResults"))
         from("${couplingLibrariesBuild.projectDir.path}/build/test-output")
         into("${buildDir.path}/test-output/coupling-libraries")
+    }
+}
+
+afterEvaluate {
+    tasks {
+        val couplingLibrariesBuild = gradle.includedBuild("coupling-libraries")
+        val couplingLibrariesKotlinNodeJsSetup = couplingLibrariesBuild.task(":kotlinNodeJsSetup")
+        val kotlinNodeJsSetup by getting { dependsOn(couplingLibrariesKotlinNodeJsSetup) }
     }
 }
 
