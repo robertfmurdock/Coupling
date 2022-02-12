@@ -1,38 +1,9 @@
-import com.zegreatrob.coupling.plugins.NodeExec
-
 plugins {
-    id("com.zegreatrob.coupling.plugins.jstools")
-    id("com.zegreatrob.coupling.plugins.node")
+    id("com.zegreatrob.coupling.plugins.deploy")
 }
 
 tasks {
-    val deploy by creating(NodeExec::class) {
+    "deploy" {
         dependsOn(":server:serverlessBuildPrerelease")
-        configureDeploy("prerelease")
     }
-
-    findByPath(":release")!!.finalizedBy(deploy)
-}
-
-fun NodeExec.configureDeploy(stage: String) {
-    val serverProject = project.project(":server")
-    val serverlessBuildDir = "${serverProject.buildDir.absolutePath}/${stage}/lambda-dist"
-    mustRunAfter(
-        ":release",
-        ":updateGithubRelease",
-        ":client:uploadToS3",
-    )
-    if (version.toString().contains("SNAPSHOT")) {
-        enabled = false
-    }
-    nodeCommand = "serverless"
-    arguments = listOf(
-        "deploy",
-        "--config",
-        "${serverProject.projectDir.absolutePath}/serverless.yml",
-        "--package",
-        serverlessBuildDir,
-        "--stage",
-        stage
-    )
 }
