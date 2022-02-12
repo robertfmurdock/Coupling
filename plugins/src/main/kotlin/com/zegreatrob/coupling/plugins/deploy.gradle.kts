@@ -11,7 +11,7 @@ kotlin {
     js { nodejs() }
 }
 
-val serverProject = project.project(":server")
+val serverProject: Project = project.project(":server")
 fun serverlessBuildDir(stage: String) = "${serverProject.buildDir.absolutePath}/${stage}/lambda-dist"
 val serverlessYmlPath = "${serverProject.projectDir.absolutePath}/serverless.yml"
 
@@ -29,6 +29,7 @@ tasks {
 fun NodeExec.configureBuild(stage: String) {
     dependsOn(":server:assemble", ":server:test", ":server:compileKotlinJs")
     environment(
+        "SERVER_DIR" to serverProject.projectDir.absolutePath,
         "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
         "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
         "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${project.version}",
