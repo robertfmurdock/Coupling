@@ -167,37 +167,6 @@ tasks {
         )
     }
 
-    fun NodeExec.configureBuild(stage: String) {
-        val serverlessBuildDir = "${project.buildDir.absolutePath}/${stage}/lambda-dist"
-        dependsOn(assemble, test, compileKotlinJs)
-        environment(
-            "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
-            "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${project.version}",
-        )
-        nodeCommand = "serverless"
-        arguments = listOf(
-            "package",
-            "--config",
-            project.relativePath("serverless.yml"),
-            "--package",
-            serverlessBuildDir,
-            "--stage",
-            stage
-        )
-    }
-
-    create("serverlessBuild", NodeExec::class) {
-        configureBuild("prod")
-    }
-    create("serverlessBuildSandbox", NodeExec::class) {
-        configureBuild("sandbox")
-    }
-
-    create("serverlessBuildPrerelease", NodeExec::class) {
-        configureBuild("prerelease")
-    }
-
     artifacts {
         add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
             builtBy(compileKotlinJs)

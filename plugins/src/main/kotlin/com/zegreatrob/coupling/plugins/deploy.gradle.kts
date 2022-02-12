@@ -19,11 +19,10 @@ tasks {
     val buildDeployBundle by creating(NodeExec::class) {
         configureBuild(project.name)
     }
-
     val deploy by creating(NodeExec::class) {
+        dependsOn(buildDeployBundle)
         configureDeploy(project.name)
     }
-
     findByPath(":release")!!.finalizedBy(deploy)
 }
 
