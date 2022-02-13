@@ -1,4 +1,4 @@
-import com.zegreatrob.coupling.build.BuildConstants.kotlinVersion
+import com.zegreatrob.coupling.plugins.BuildConstants.kotlinVersion
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 
 plugins {

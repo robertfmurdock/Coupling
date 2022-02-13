@@ -1,5 +1,5 @@
 
-import com.zegreatrob.coupling.build.BuildConstants
+import com.zegreatrob.coupling.plugins.BuildConstants
 
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
