@@ -1,5 +1,3 @@
-import com.zegreatrob.coupling.plugins.BuildConstants
-
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
@@ -16,8 +14,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(kotlin("stdlib", BuildConstants.kotlinVersion))
-                api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
+                api(kotlin("stdlib"))
+                api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock:2.4.13")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation("com.benasher44:uuid:0.4.0")
@@ -26,7 +24,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(project(":test-logging"))
-                implementation(kotlin("test", BuildConstants.kotlinVersion))
+                implementation(kotlin("test"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
             }
@@ -41,12 +39,12 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                api(kotlin("stdlib-js", BuildConstants.kotlinVersion))
+                api(kotlin("stdlib-js"))
             }
         }
         val jsTest by getting {
             dependencies {
-                implementation(kotlin("test-js", BuildConstants.kotlinVersion))
+                implementation(kotlin("test-js"))
             }
         }
         all {

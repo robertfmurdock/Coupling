@@ -1,4 +1,3 @@
-import com.zegreatrob.coupling.plugins.BuildConstants.kotlinVersion
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 
 plugins {
@@ -25,8 +24,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":model"))
-                api(kotlin("stdlib", kotlinVersion))
-                api(kotlin("stdlib-common", kotlinVersion))
+                api(kotlin("stdlib"))
+                api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock:2.4.13")
                 api("com.benasher44:uuid:0.4.0")
             }
@@ -35,7 +34,7 @@ kotlin {
             dependencies {
                 api(project(":json"))
                 api(project(":repository-dynamo"))
-                api(kotlin("stdlib-js", kotlinVersion))
+                api(kotlin("stdlib-js"))
             }
         }
     }

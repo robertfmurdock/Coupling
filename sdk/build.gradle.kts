@@ -1,5 +1,3 @@
-import com.zegreatrob.coupling.plugins.BuildConstants
-
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
@@ -20,8 +18,8 @@ kotlin {
                 implementation("com.zegreatrob.coupling.libraries:repository-core")
                 implementation("com.zegreatrob.coupling.libraries:model")
                 implementation("com.zegreatrob.coupling.libraries:json")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
                 implementation("io.ktor:ktor-client-core:1.6.7")

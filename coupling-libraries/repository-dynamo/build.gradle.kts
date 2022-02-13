@@ -1,6 +1,3 @@
-
-import com.zegreatrob.coupling.plugins.BuildConstants
-
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
@@ -26,7 +23,7 @@ kotlin {
             dependencies {
                 api(project(":model"))
                 api(project(":repository-core"))
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.13")

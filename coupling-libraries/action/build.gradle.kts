@@ -1,5 +1,3 @@
-import com.zegreatrob.coupling.plugins.BuildConstants
-
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
@@ -28,7 +26,7 @@ kotlin {
                 implementation(project(":logging"))
                 implementation("com.zegreatrob.testmints:action")
                 implementation("com.zegreatrob.testmints:action-async")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("com.benasher44:uuid:0.4.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.13")
@@ -48,14 +46,14 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation(kotlin("reflect"))
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
                 implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
             }
         }
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation(kotlin("reflect"))
                 implementation("org.slf4j:slf4j-simple:2.0.0-alpha6")
                 implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")

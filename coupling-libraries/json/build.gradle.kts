@@ -1,6 +1,3 @@
-
-import com.zegreatrob.coupling.plugins.BuildConstants
-
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
@@ -23,8 +20,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":model"))
-                implementation(kotlin("stdlib", BuildConstants.kotlinVersion))
-                implementation(kotlin("stdlib-common", BuildConstants.kotlinVersion))
+                implementation(kotlin("stdlib"))
+                implementation(kotlin("stdlib-common"))
                 implementation("com.soywiz.korlibs.klock:klock:2.4.13")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
@@ -41,13 +38,13 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation(kotlin("reflect"))
             }
         }
 
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation(kotlin("reflect"))
                 implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
             }
@@ -55,7 +52,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-js", BuildConstants.kotlinVersion))
+                implementation(kotlin("stdlib-js"))
             }
         }
     }

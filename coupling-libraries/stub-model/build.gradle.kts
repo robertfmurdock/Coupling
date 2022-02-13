@@ -1,5 +1,3 @@
-import com.zegreatrob.coupling.plugins.BuildConstants
-
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
@@ -17,15 +15,15 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":model"))
-                api(kotlin("stdlib", BuildConstants.kotlinVersion))
-                api(kotlin("stdlib-common", BuildConstants.kotlinVersion))
+                api(kotlin("stdlib"))
+                api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock:2.4.13")
                 api("com.benasher44:uuid:0.4.0")
             }
         }
         val jsMain by getting {
             dependencies {
-                api(kotlin("stdlib-js", BuildConstants.kotlinVersion))
+                api(kotlin("stdlib-js"))
             }
         }
     }

@@ -1,5 +1,3 @@
-import com.zegreatrob.coupling.plugins.BuildConstants
-
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
@@ -31,14 +29,14 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                api(kotlin("reflect", BuildConstants.kotlinVersion))
+                api(kotlin("reflect"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
 
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation(kotlin("reflect"))
                 implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
             }
@@ -46,7 +44,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+                api("org.jetbrains.kotlin:kotlin-stdlib-js")
             }
         }
     }

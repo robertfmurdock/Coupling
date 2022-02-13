@@ -1,4 +1,3 @@
-import com.zegreatrob.coupling.plugins.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
@@ -23,7 +22,7 @@ kotlin {
                 implementation(project(":logging"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:report")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
                 implementation("com.soywiz.korlibs.klock:klock:2.4.13")
                 implementation("org.jetbrains.kotlin:kotlin-test")
@@ -39,7 +38,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                implementation(kotlin("reflect"))
                 implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
                 implementation("org.slf4j:slf4j-simple:2.0.0-alpha6")
@@ -48,7 +47,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
             }
         }
     }

@@ -13,11 +13,9 @@ plugins {
     id("se.patrikerdes.use-latest-versions") version ("0.2.18")
 }
 
-val kotlinVersion = "1.6.10"
-
 dependencies {
-    implementation(kotlin("stdlib", kotlinVersion))
-    implementation(kotlin("gradle-plugin", kotlinVersion))
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("gradle-plugin"))
     implementation("org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.6.10")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     implementation("se.patrikerdes:gradle-use-latest-versions-plugin:0.2.18")

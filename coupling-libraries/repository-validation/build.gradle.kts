@@ -1,5 +1,3 @@
-import com.zegreatrob.coupling.plugins.BuildConstants
-
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
@@ -29,15 +27,15 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                api(kotlin("reflect", BuildConstants.kotlinVersion))
-                implementation(kotlin("reflect", BuildConstants.kotlinVersion))
+                api(kotlin("reflect"))
+                implementation(kotlin("reflect"))
                 implementation("org.jetbrains.kotlin:kotlin-test-junit")
             }
         }
 
         val jsMain by getting {
             dependencies {
-                api("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
+                api("org.jetbrains.kotlin:kotlin-stdlib-js")
 
             }
         }
