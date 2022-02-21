@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
+import com.zegreatrob.coupling.action.user.UserQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.TribeCurrentDataQueryDispatcher
@@ -39,4 +40,5 @@ class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: Repositor
     TribePinListQueryDispatcher,
     NewTribeCommandDispatcher,
     StatisticsQueryDispatcher,
-    LoggingActionExecuteSyntax
+    LoggingActionExecuteSyntax,
+    UserQueryDispatcher by sdk

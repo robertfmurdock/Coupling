@@ -61,6 +61,7 @@ private fun rewriteLinksToStaticResources(tag: Tag) {
 }
 
 private fun Express.injectVariablesForClient() = """<script>
+    window.prereleaseMode = ${Config.prereleaseMode};
     window.auth0ClientId = "${Config.AUTH0_CLIENT_ID}";
     window.auth0Domain = "${Config.AUTH0_DOMAIN}";
     window.basename = "${Config.clientBasename}";

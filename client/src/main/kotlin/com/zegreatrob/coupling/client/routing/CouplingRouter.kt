@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.AboutPage
+import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.demo.DemoPage
 import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
@@ -18,39 +19,43 @@ import com.zegreatrob.coupling.client.tribe.GraphIQLPage
 import com.zegreatrob.coupling.client.tribe.TribeConfigPage
 import com.zegreatrob.coupling.client.tribe.TribeListPage
 import com.zegreatrob.coupling.client.user.Logout
+import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
-import org.w3c.dom.get
-import react.*
+import react.ChildrenBuilder
+import react.FC
+import react.Props
+import react.create
 import react.dom.html.ReactHTML.div
 import react.router.*
 import react.router.dom.BrowserRouter
 
-data class CouplingRouter(val animationsDisabled: Boolean) : DataPropsBind<CouplingRouter> (couplingRouter)
+data class CouplingRouter(val animationsDisabled: Boolean, val config: ClientConfig) :
+    DataPropsBind<CouplingRouter>(couplingRouter)
 
-val couplingRouter = tmFC<CouplingRouter> { (animationsDisabled) ->
+val couplingRouter = tmFC<CouplingRouter> { (animationsDisabled, config) ->
     val (_, isSignedIn, isLoading) = useAuth0Data()
 
     BrowserRouter {
-        basename = (kotlinx.browser.window["basename"]?.toString() ?: "")
+        basename = config.basename
         animationsDisabledContext.Provider(animationsDisabled) {
             if (!isLoading) {
-                Routes { routes(isSignedIn) }
+                Routes { routes(isSignedIn, config) }
             }
         }
     }
 }
 
-private fun ChildrenBuilder.routes(isSignedIn: Boolean) {
+private fun ChildrenBuilder.routes(isSignedIn: Boolean, config: ClientConfig) {
     couplingRoute("/welcome/", WelcomePage)
     couplingRoute("/about", AboutPage)
     couplingRoute("/demo", DemoPage)
 
-    if (isSignedIn) authenticatedRoutes() else redirectUnauthenticated()
+    if (isSignedIn) authenticatedRoutes(config) else redirectUnauthenticated()
 
-    Route { element = createElement { lostRoute() } }
+    Route { element = lostRoute.create() }
 }
 
 private fun ChildrenBuilder.redirectUnauthenticated() = Route {
@@ -63,8 +68,9 @@ val lostRoute = FC<Props> {
     div { +"Hmm, you seem to be lost. At ${location.pathname}" }
 }
 
-private fun ChildrenBuilder.authenticatedRoutes() {
+private fun ChildrenBuilder.authenticatedRoutes(config: ClientConfig) {
     Route { path = "/"; element = redirectToTribes() }
+    if (config.prereleaseMode) couplingRoute("/user", UserPage)
     couplingRoute("/tribes/", TribeListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/graphiql/", GraphIQLPage)

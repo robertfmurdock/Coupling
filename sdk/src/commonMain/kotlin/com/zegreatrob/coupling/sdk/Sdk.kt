@@ -14,6 +14,8 @@ import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
+import com.zegreatrob.coupling.sdk.user.SdkUserGet
+import com.zegreatrob.coupling.sdk.user.SdkUserQueryDispatcher
 import io.ktor.client.*
 
 interface RepositoryCatalog {
@@ -41,8 +43,8 @@ class SdkPairAssignmentsRepository(gqlQueryComponent: GqlQueryComponent) : SdkPa
     PairAssignmentDocumentRepository,
     GqlQueryComponent by gqlQueryComponent
 
-interface Sdk : RepositoryCatalog, SdkBoostRepository, SdkSpin, SdkUserGet, SdkSyntax, GqlQueryComponent,
-    GqlFileLoader {
+interface Sdk : RepositoryCatalog, SdkBoostRepository, SdkSpin, SdkUserGet, SdkUserQueryDispatcher, SdkSyntax,
+    GqlQueryComponent, GqlFileLoader {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
     override val pinRepository get() = SdkPinRepository(this)
@@ -67,7 +69,8 @@ interface SdkProviderSyntax {
     val sdk: Sdk
 }
 
-interface SdkSyntax: SdkProviderSyntax, TribeListSyntax, TribeSaveSyntax, TribeIdDeleteSyntax, TribeIdPinsSyntax, TribeIdPinSaveSyntax, TribeIdPlayerSaveSyntax, TribeIdPlayersSyntax {
+interface SdkSyntax : SdkProviderSyntax, TribeListSyntax, TribeSaveSyntax, TribeIdDeleteSyntax, TribeIdPinsSyntax,
+    TribeIdPinSaveSyntax, TribeIdPlayerSaveSyntax, TribeIdPlayersSyntax {
     override val tribeRepository: TribeRepository
     override val pinRepository: PinRepository
     override val playerRepository: PlayerRepository

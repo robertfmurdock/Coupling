@@ -1,9 +1,8 @@
+package com.zegreatrob.coupling.sdk
+
+import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.repository.validation.MagicClock
-import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
-import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.sdk.authorizedSdk
-import com.zegreatrob.coupling.sdk.primaryAuthorizedUsername
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -12,7 +11,7 @@ import kotlin.test.Test
 
 class SdkUserRepositoryTest {
 
-    val repositorySetup = asyncTestTemplate<SharedContext<Sdk>>(sharedSetup = {
+    val repositorySetup = asyncTestTemplate<SharedContextData<Sdk>>(sharedSetup = {
         val clock = MagicClock()
         val sdk = authorizedSdk()
         SharedContextData(sdk, clock, stubUser().copy(email = primaryAuthorizedUsername))
@@ -22,7 +21,19 @@ class SdkUserRepositoryTest {
     fun willReturnTheUser() = repositorySetup({ it }) exercise {
         repository.getUser()
     } verify { result ->
-        result.data.let {
+        result!!.data.let {
+            it.email.assertIsEqualTo(primaryAuthorizedUsername)
+            it.id.assertIsNotEqualTo(null)
+            it.authorizedTribeIds.assertIsNotEqualTo(null)
+        }
+    }
+
+    @Test
+    fun canPerformUserQuery() = repositorySetup({ it }) {
+    } exercise {
+        repository.perform(UserQuery())
+    } verify { result ->
+        result!!.let {
             it.email.assertIsEqualTo(primaryAuthorizedUsername)
             it.id.assertIsNotEqualTo(null)
             it.authorizedTribeIds.assertIsNotEqualTo(null)

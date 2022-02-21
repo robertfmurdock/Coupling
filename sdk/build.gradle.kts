@@ -15,8 +15,9 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:repository-core")
                 implementation("com.zegreatrob.coupling.libraries:model")
+                implementation("com.zegreatrob.coupling.libraries:action")
+                implementation("com.zegreatrob.coupling.libraries:repository-core")
                 implementation("com.zegreatrob.coupling.libraries:json")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
@@ -30,13 +31,8 @@ kotlin {
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
-        val jsMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-            }
-        }
         val commonTest by getting {
-            resources.srcDirs(commonMain.resources.srcDirs)
+//            resources.srcDirs(commonMain.resources.srcDirs)
 
             dependencies {
                 implementation("com.zegreatrob.coupling.libraries:repository-validation")
@@ -49,6 +45,13 @@ kotlin {
                 implementation("com.zegreatrob.testmints:minassert")
             }
         }
+
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+            }
+        }
+
     }
 }
 
