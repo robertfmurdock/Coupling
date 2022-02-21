@@ -28,7 +28,6 @@ kotlin {
                 implementation("io.ktor:ktor-client-websockets:1.6.7")
                 implementation("com.soywiz.korlibs.klock:klock:2.5.1")
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
-                implementation(npm("ws", "8.5.0"))
             }
         }
         val jsMain by getting {
