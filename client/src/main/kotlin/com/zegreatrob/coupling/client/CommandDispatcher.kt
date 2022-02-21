@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
-import com.zegreatrob.coupling.action.user.UserQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.TribeCurrentDataQueryDispatcher
@@ -19,16 +18,14 @@ import com.zegreatrob.coupling.client.tribe.NewTribeCommandDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeConfigDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeListQueryDispatcher
 import com.zegreatrob.coupling.client.tribe.TribeQueryDispatcher
-import com.zegreatrob.coupling.sdk.RepositoryCatalog
-import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.BarebonesSdk
 
-class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: RepositoryCatalog, override val sdk: Sdk) :
+class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesSdk) :
     PinCommandDispatcher,
     PairAssignmentsCommandDispatcher,
     NewPairAssignmentsCommandDispatcher,
     PlayerConfigDispatcher,
     TribeConfigDispatcher,
-    RepositoryCatalog by repositoryCatalog,
     TribeCurrentDataQueryDispatcher,
     HistoryQueryDispatcher,
     RetiredPlayerQueryDispatcher,
@@ -41,4 +38,4 @@ class CommandDispatcher(override val traceId: Uuid, repositoryCatalog: Repositor
     NewTribeCommandDispatcher,
     StatisticsQueryDispatcher,
     LoggingActionExecuteSyntax,
-    UserQueryDispatcher by sdk
+    BarebonesSdk by sdk

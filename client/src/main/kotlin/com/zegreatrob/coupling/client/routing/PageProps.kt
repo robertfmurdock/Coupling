@@ -7,6 +7,8 @@ import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.sdk.RepositoryCatalog
+import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.defaultClient
 import kotlinx.browser.window
@@ -40,8 +42,7 @@ class MasterCommander(getIdentityToken: suspend () -> String) : Commander {
             MemoryRepositoryCatalog("test-user", backend, TimeProvider)
         } else {
             sdk
-        },
-        sdk
+        }
     )
 }
 

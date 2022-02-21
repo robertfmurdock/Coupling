@@ -32,7 +32,7 @@ kotlin {
             }
         }
         val commonTest by getting {
-//            resources.srcDirs(commonMain.resources.srcDirs)
+            resources.srcDirs(commonMain.resources.srcDirs)
 
             dependencies {
                 implementation("com.zegreatrob.coupling.libraries:repository-validation")

@@ -12,10 +12,16 @@ data class UserConfig(val user: User) : DataProps<UserConfig> {
     override val component = userConfig
 }
 
-private val userConfig = tmFC<UserConfig> {
+private val userConfig = tmFC<UserConfig> { (user) ->
     div {
         className = styles.className
-        +"User is ${it.user}"
-        +"hi"
+        div { +"User ID: ${user.id}" }
+        div { +"User Email: ${user.email}" }
+        div { +"This user owns these tribes:" }
+        user.authorizedTribeIds
+            .map { it.value }
+            .forEach { id ->
+                div { +"Tribe ID: $id" }
+            }
     }
 }

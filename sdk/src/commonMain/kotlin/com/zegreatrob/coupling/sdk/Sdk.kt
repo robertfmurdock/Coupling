@@ -43,8 +43,8 @@ class SdkPairAssignmentsRepository(gqlQueryComponent: GqlQueryComponent) : SdkPa
     PairAssignmentDocumentRepository,
     GqlQueryComponent by gqlQueryComponent
 
-interface Sdk : RepositoryCatalog, SdkBoostRepository, SdkSpin, SdkUserGet, SdkUserQueryDispatcher, SdkSyntax,
-    GqlQueryComponent, GqlFileLoader {
+interface Sdk : BarebonesSdk, RepositoryCatalog, SdkBoostRepository, SdkSpin, SdkUserGet, SdkUserQueryDispatcher,
+    SdkSyntax, GqlQueryComponent, GqlFileLoader {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
     override val pinRepository get() = SdkPinRepository(this)
@@ -66,7 +66,7 @@ class StandardTribeGQLPerformer(val getIdTokenFunc: suspend () -> String, httpCl
 }
 
 interface SdkProviderSyntax {
-    val sdk: Sdk
+    val sdk: BarebonesSdk
 }
 
 interface SdkSyntax : SdkProviderSyntax, TribeListSyntax, TribeSaveSyntax, TribeIdDeleteSyntax, TribeIdPinsSyntax,

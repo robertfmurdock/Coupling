@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.pairassignmentdocument.SpinDispatcher
 import com.zegreatrob.coupling.json.SpinInput
 import com.zegreatrob.coupling.json.SpinOutput
 import com.zegreatrob.coupling.json.toModel
@@ -8,9 +9,9 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.TribeId
 
-interface SdkSpin : GqlSyntax, GraphQueries {
+interface SdkSpin : SpinDispatcher, GqlSyntax, GraphQueries {
 
-    suspend fun requestSpin(tribeId: TribeId, players: List<Player>, pins: List<Pin>) = doQuery(
+    override suspend fun requestSpin(tribeId: TribeId, players: List<Player>, pins: List<Pin>) = doQuery(
         mutations.spin,
         SpinInput(
             players = players.map(Player::toSerializable),
