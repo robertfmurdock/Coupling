@@ -18,8 +18,8 @@ jobs:
           arguments: updateDependencies -PpackageJson=server/package.json
       - uses: burrunan/gradle-cache-action@v1
         name: Update e2e Deps
-          execution-only-caches: true
         with:
+          execution-only-caches: true
           arguments: updateDependencies -PpackageJson=e2e/package.json
       - name: Create Pull Request
         id: cpr
