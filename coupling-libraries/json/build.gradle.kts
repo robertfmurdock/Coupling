@@ -22,7 +22,7 @@ kotlin {
                 implementation(project(":model"))
                 implementation(kotlin("stdlib"))
                 implementation(kotlin("stdlib-common"))
-                implementation("com.soywiz.korlibs.klock:klock:2.5.1")
+                implementation("com.soywiz.korlibs.klock:klock:2.5.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
         }
