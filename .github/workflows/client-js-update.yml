@@ -1,4 +1,4 @@
-name: Gradle Update
+name: Client Javascript Update
 on:
   schedule:
     - cron: "0 16 * * *"

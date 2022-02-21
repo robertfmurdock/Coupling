@@ -11,6 +11,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '25'
+      - uses: c-hive/gha-yarn-cache@v2
+        with:
+          directory: kotlin-js-store
       - uses: burrunan/gradle-cache-action@v1
         name: Update Deps
         with:
