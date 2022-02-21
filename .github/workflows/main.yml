@@ -7,7 +7,7 @@ on:
     tags-ignore:
       - '**'
 jobs:
-  vm-job:
+  build-job:
     runs-on: ubuntu-latest
     env:
       COUPLING_IN_MEMORY: "true"
@@ -21,6 +21,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '25'
+      - uses: c-hive/gha-yarn-cache@v2
+        with:
+          directory: kotlin-js-store
       - uses: satackey/action-docker-layer-caching@v0.0.11
       - uses: burrunan/gradle-cache-action@v1
         name: Build Coupling
