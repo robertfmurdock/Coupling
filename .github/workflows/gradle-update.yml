@@ -19,7 +19,6 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: automerge-$GITHUB_ACTION-$GITHUB_RUN_ID
           token: ${{ secrets.COUPLING_PAT }}
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
