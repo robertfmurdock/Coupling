@@ -1,0 +1,20 @@
+name: Build-Workflow
+on:
+  schedule:
+    - cron: "0 17 * * *"
+  workflow_dispatch:
+jobs:
+  create-update-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: burrunan/gradle-cache-action@v1
+        name: Update Deps
+        with:
+          arguments: useLatestVersions :plugins:useLatestVersions
+      - run: git checkout -b automerge-$GITHUB_ACTION-$GITHUB_RUN_ID
+      - run: "git add ."
+      - run: "git config user.email \"robert.f.murdock@gmail.com\""
+      - run: "git config user.name \"Github Actions in a RoB Suit\""
+      - run: "git commit -m 'Automatic <<parameters.update_type>> update.' || echo 'Ignoring no changes'"
+      - run: "git push -u origin HEAD"
