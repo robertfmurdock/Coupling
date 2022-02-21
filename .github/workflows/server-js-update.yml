@@ -12,12 +12,12 @@ jobs:
         with:
           fetch-depth: '25'
       - uses: burrunan/gradle-cache-action@v1
-        name: Update Deps
+        name: Update Server Deps
         with:
           execution-only-caches: true
           arguments: updateDependencies -PpackageJson=server/package.json
-       - uses: burrunan/gradle-cache-action@v1
-        name: Update Deps
+      - uses: burrunan/gradle-cache-action@v1
+        name: Update e2e Deps
           execution-only-caches: true
         with:
           arguments: updateDependencies -PpackageJson=e2e/package.json
