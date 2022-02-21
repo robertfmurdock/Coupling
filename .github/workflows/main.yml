@@ -24,11 +24,8 @@ jobs:
       - uses: c-hive/gha-yarn-cache@v2
         with:
           directory: kotlin-js-store
-      - uses: burrunan/gradle-cache-action@v1
-        name: Docker Pull
-        with:
-          execution-only-caches: true
-          arguments: composePull
+      - name: Docker Pull
+        run: docker-compose pull dynamo caddy
       - uses: satackey/action-docker-layer-caching@v0.0.11
       - uses: burrunan/gradle-cache-action@v1
         name: Build Coupling

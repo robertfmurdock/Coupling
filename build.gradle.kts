@@ -24,7 +24,6 @@ semanticRelease {
 dockerCompose {
     projectName = "Coupling-root"
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
-    pullAdditionalArgs.set(listOf("caddy", "dynamo"))
     startedServices.set(listOf("serverless", "caddy", "dynamo"))
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
 }
