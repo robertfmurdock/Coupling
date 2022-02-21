@@ -14,8 +14,6 @@ services:
       - API_GATEWAY_MANAGEMENT_API_HOST=http://127.0.0.1:3001
       - NODE_ENV=production
       - ENABLE_PRERELEASE_FEATURES=true
-    extra_hosts:
-      - "static.localhost:host-gateway"
   caddy:
     image: caddy:2.4.6-alpine
     restart: unless-stopped
@@ -27,8 +25,10 @@ services:
       - $PWD/client:/client
       - ~/caddy_data:/data
       - caddy_config:/config
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    networks:
+      default:
+        aliases:
+          - static.localhost
   dynamo:
     image: amazon/dynamodb-local
     ports:

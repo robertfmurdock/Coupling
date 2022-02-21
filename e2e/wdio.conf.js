@@ -86,7 +86,7 @@ const config = {
         if (result.passed) {
             return;
         }
-        const timestamp = new Date().toISOString();
+        const timestamp = new Date().getUTCMilliseconds();
         const filepath = path.join(reportDirectory, 'screenshots/', timestamp + '.png');
         browser.saveScreenshot(filepath);
         process.emit('test:screenshot', filepath);

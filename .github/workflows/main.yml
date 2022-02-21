@@ -1,0 +1,37 @@
+name: Build-Workflow
+on:
+  pull_request:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+jobs:
+  vm-job:
+    runs-on: ubuntu-latest
+    env:
+      COUPLING_IN_MEMORY: "true"
+      AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+      COUPLING_ALT_TEST_PASSWORD: ${{ secrets.COUPLING_ALT_TEST_PASSWORD }}
+      COUPLING_E2E_TEST_PASSWORD: ${{ secrets.COUPLING_E2E_TEST_PASSWORD }}
+      COUPLING_PRIMARY_TEST_PASSWORD: ${{ secrets.COUPLING_PRIMARY_TEST_PASSWORD }}
+    steps:
+      - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
+      - run: cat /etc/hosts
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '25'
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+      - uses: burrunan/gradle-cache-action@v1
+        name: Build Coupling
+        with:
+          arguments: check
+      - name: Collect Results
+        if: ${{ always() }}
+        run: ./gradlew composeLogs collectResults
+      - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: test-output
+          path: |
+            build/test-output/
