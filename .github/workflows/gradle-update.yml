@@ -1,10 +1,11 @@
-name: Build-Workflow
+name: Gradle Update
 on:
   schedule:
     - cron: "0 17 * * *"
   workflow_dispatch:
 jobs:
   create-update-branch:
+    name: "Create Update Branch"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,9 +15,16 @@ jobs:
         name: Update Deps
         with:
           arguments: useLatestVersions :plugins:useLatestVersions
-      - run: git checkout -b automerge-$GITHUB_ACTION-$GITHUB_RUN_ID
-      - run: "git add ."
-      - run: "git config user.email \"robert.f.murdock@gmail.com\""
-      - run: "git config user.name \"Github Actions in a RoB Suit\""
-      - run: "git commit -m 'Automatic <<parameters.update_type>> update.' || echo 'Ignoring no changes'"
-      - run: "git push -u origin HEAD"
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: automerge-$GITHUB_ACTION-$GITHUB_RUN_ID
+          token: ${{ secrets.COUPLING_PAT }}
+      - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v1
+        with:
+          token: ${{ secrets.COUPLING_PAT }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: rebase
