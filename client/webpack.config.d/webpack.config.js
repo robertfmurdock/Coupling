@@ -107,7 +107,8 @@ config.plugins.push(
             inMemory: true,
             auth0ClientId: "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg",
             auth0Domain: "zegreatrob.us.auth0.com",
-            basename: ''
+            basename: '',
+            prereleaseMode: true,
         } : {}
     }),
     new HtmlWebpackHarddiskPlugin(),
