@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "jasmine": "^4.0.2",
-    "jasmine-core": "^4.0.0",
+    "jasmine-core": "^4.0.1",
     "jasmine-reporters": "^2.5.0",
     "npm-check-updates": "^12.4.0",
     "serverless": "^2.72.2",
