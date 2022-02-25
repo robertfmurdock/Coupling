@@ -70,7 +70,6 @@ dependencies {
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
-
     val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class)
     val browserProductionWebpack by getting(KotlinWebpack::class)
     val browserDistribution by getting {}
