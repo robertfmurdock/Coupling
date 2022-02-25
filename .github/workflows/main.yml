@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.COUPLING_PAT }}
+          fetch-depth: 0
       - run: git fetch
       - run: git pull
       - uses: c-hive/gha-yarn-cache@v2
