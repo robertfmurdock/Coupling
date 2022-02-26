@@ -1,5 +1,9 @@
-Coupling [![CircleCI](https://circleci.com/gh/robertfmurdock/Coupling.svg?style=svg)](https://circleci.com/gh/robertfmurdock/Coupling)
+Coupling ![Build](https://github.com/robertfmurdock/Coupling/actions/workflows/main.yml/badge.svg?branch=master)
 ========
+
+![Server JS Updates](https://github.com/robertfmurdock/Coupling/actions/workflows/server-js-update.yml/badge.svg?branch=master)
+![Client JS Updates](https://github.com/robertfmurdock/Coupling/actions/workflows/client-js-update.yml/badge.svg?branch=master)
+![Gradle Lib Updates](https://github.com/robertfmurdock/Coupling/actions/workflows/gradle-update.yml/badge.svg?branch=master)
 
 This is a web site that will automatically assign pairs for any given iteration.
 
