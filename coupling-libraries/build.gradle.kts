@@ -1,6 +1,6 @@
 plugins {
     base
-    id("com.avast.gradle.docker-compose") version "0.15.0"
+    id("com.avast.gradle.docker-compose") version "0.15.1"
 }
 
 tasks {
