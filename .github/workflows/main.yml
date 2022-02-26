@@ -16,7 +16,7 @@ jobs:
       COUPLING_E2E_TEST_PASSWORD: ${{ secrets.COUPLING_E2E_TEST_PASSWORD }}
       COUPLING_PRIMARY_TEST_PASSWORD: ${{ secrets.COUPLING_PRIMARY_TEST_PASSWORD }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GRGIT_USER: ${{ secrets.GITHUB_TOKEN }}
+      GRGIT_USER: ${{ secrets.COUPLING_PAT }}
     steps:
       - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
       - run: cat /etc/hosts
