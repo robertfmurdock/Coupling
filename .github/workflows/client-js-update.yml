@@ -19,6 +19,8 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
+          branch: "create-pull-request/${{github.job}}/${{github.run_id}}"
+          commit-message: "[create-pull-request] ${{github.workflow}}"
           token: ${{ secrets.COUPLING_PAT }}
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
