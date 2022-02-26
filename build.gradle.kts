@@ -21,7 +21,7 @@ semanticRelease {
     })
 
     repo(closureOf<de.gliderpilot.gradle.semanticrelease.GithubRepo> {
-        setGhToken(java.lang.System.getenv("GH_TOKEN"))
+        setGhToken(java.lang.System.getenv("GITHUB_TOKEN"))
     })
 
 }

@@ -15,18 +15,12 @@ jobs:
       COUPLING_ALT_TEST_PASSWORD: ${{ secrets.COUPLING_ALT_TEST_PASSWORD }}
       COUPLING_E2E_TEST_PASSWORD: ${{ secrets.COUPLING_E2E_TEST_PASSWORD }}
       COUPLING_PRIMARY_TEST_PASSWORD: ${{ secrets.COUPLING_PRIMARY_TEST_PASSWORD }}
-      GH_TOKEN: ${{ secrets.COUPLING_PAT }}
-      GRGIT_USER: ${{ secrets.COUPLING_PAT }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GRGIT_USER: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
       - run: cat /etc/hosts
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.COUPLING_PAT }}
-          fetch-depth: 0
-      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
-        with:
-          token: ${{ secrets.COUPLING_PAT }}
       - uses: c-hive/gha-yarn-cache@v2
         with:
           directory: kotlin-js-store
