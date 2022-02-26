@@ -19,6 +19,11 @@ semanticRelease {
     changeLog(closureOf<SemanticReleaseChangeLogService> {
         changeScope = KotlinClosure1<Commit, ChangeScope>({ ChangeScope.PATCH })
     })
+
+    repo(closureOf<de.gliderpilot.gradle.semanticrelease.GithubRepo> {
+        setGhToken(java.lang.System.getenv("GH_TOKEN"))
+    })
+
 }
 
 dockerCompose {
