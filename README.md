@@ -5,6 +5,10 @@ Coupling ![Build](https://github.com/robertfmurdock/Coupling/actions/workflows/m
 ![Client JS Updates](https://github.com/robertfmurdock/Coupling/actions/workflows/client-js-update.yml/badge.svg?branch=master)
 ![Gradle Lib Updates](https://github.com/robertfmurdock/Coupling/actions/workflows/gradle-update.yml/badge.svg?branch=master)
 
+![Latest Release](https://img.shields.io/github/v/release/robertfmurdock/coupling)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/robertfmurdock/coupling)
+![Website](https://img.shields.io/website?down_message=dead...%20uh%20oh&up_message=live&url=https%3A%2F%2Fcoupling.zegreatrob.com)
+
 This is a web site that will automatically assign pairs for any given iteration.
 
 The latest build is currently hosted at https://coupling.zegreatrob.com. Please note that because the app is currently still developing, there's no guarentee that information stored there currently won't be lost during the course of development (though if it is, that will certainly not be intentional).  
