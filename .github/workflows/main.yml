@@ -21,6 +21,8 @@ jobs:
       - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
       - run: cat /etc/hosts
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: c-hive/gha-yarn-cache@v2
         with:
           directory: kotlin-js-store
@@ -36,7 +38,7 @@ jobs:
       - uses: burrunan/gradle-cache-action@v1
         name: Build Coupling
         with:
-          arguments: release check --info
+          arguments: release check
       - uses: burrunan/gradle-cache-action@v1
         if: ${{ always() }}
         name: Collect Results
