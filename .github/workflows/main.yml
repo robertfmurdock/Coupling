@@ -22,6 +22,9 @@ jobs:
         with:
           token: ${{ secrets.COUPLING_PAT }}
           fetch-depth: 0
+      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
       - uses: c-hive/gha-yarn-cache@v2
         with:
           directory: kotlin-js-store
