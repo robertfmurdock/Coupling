@@ -11,6 +11,7 @@ plugins {
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
     id("de.gliderpilot.semantic-release") version "1.4.2"
     id("com.avast.gradle.docker-compose") version "0.15.1"
+    id("com.github.sghill.distribution-sha") version "0.4.0"
     id("com.zegreatrob.coupling.plugins.versioning")
     base
 }
@@ -19,11 +20,9 @@ semanticRelease {
     changeLog(closureOf<SemanticReleaseChangeLogService> {
         changeScope = KotlinClosure1<Commit, ChangeScope>({ ChangeScope.PATCH })
     })
-
     repo(closureOf<de.gliderpilot.gradle.semanticrelease.GithubRepo> {
-        setGhToken(java.lang.System.getenv("GITHUB_TOKEN"))
+        setGhToken(System.getenv("GITHUB_TOKEN"))
     })
-
 }
 
 dockerCompose {
