@@ -10,6 +10,6 @@ private val styles = useStyles("Editor")
 val Editor = FC<PropsWithChildren> { props ->
     ul {
         className = styles.className
-        props.children()
+        +props.children
     }
 }
