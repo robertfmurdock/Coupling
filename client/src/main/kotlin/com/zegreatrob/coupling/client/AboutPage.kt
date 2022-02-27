@@ -34,7 +34,7 @@ val aboutPageContent = FC<PropsWithChildren> { props ->
         child(PageFrame(borderColor = Color("rgb(94, 84, 102)"), backgroundColor = Color("floralwhite"))) {
             cssDiv(css = { width = 40.em }) {
                 backButtonSection()
-                props.children()
+                +props.children
                 playerHeader()
             }
         }

@@ -16,6 +16,6 @@ val visuallyHidden = FC<PropsWithChildren> { props ->
         whiteSpace = WhiteSpace.nowrap
         width = 1.px
     }) {
-        props.children()
+        +props.children
     }
 }

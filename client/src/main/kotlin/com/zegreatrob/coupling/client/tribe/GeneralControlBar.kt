@@ -44,7 +44,7 @@ val GeneralControlBar = FC<GeneralControlBarProps> { props ->
                     cssSpan(css = {
                         margin(0.px, 20.px)
                     }) {
-                        props.children()
+                        +props.children
                     }
                 }
             }

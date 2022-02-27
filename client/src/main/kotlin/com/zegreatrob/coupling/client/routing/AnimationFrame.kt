@@ -33,7 +33,7 @@ val animationFrame = FC<AnimationFrameProps> { props ->
                     className = listOf(className, "ng-enter").joinToString(" ")
                 }
                 onAnimationEnd = { animationState = AnimationState.Stop }
-                props.children()
+                +props.children
             }
         }
     }

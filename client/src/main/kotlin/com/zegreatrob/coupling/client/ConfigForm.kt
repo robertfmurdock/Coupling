@@ -22,7 +22,7 @@ val ConfigForm = FC { props: ConfigFormProps ->
     }
     form {
         onSubmit = onSubmitFunc
-        props.children()
+        +props.children
         configSaveButton(isSaving, styles["saveButton"])
         if (onRemove != null) {
             retireButton(styles["deleteButton"], onRemove)

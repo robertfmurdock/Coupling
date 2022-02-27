@@ -19,6 +19,6 @@ val ConfigFrame = FC<ConfigFrameProps> { props ->
             backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)")
         )
     ) {
-        props.children()
+        +props.children
     }
 }

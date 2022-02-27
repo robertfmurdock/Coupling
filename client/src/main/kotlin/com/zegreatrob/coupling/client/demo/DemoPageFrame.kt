@@ -16,9 +16,9 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.testmints.action.async.SuspendAction
-import kotlinext.js.jso
 import kotlinx.browser.document
 import kotlinx.css.*
+import kotlinx.js.jso
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import popper.core.Popper

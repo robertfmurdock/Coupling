@@ -7,7 +7,7 @@ import kotlin.js.Json
 private val styledPopup = styled(default)
 
 fun popup(
-    trigger: (Boolean) -> ReactElement,
+    trigger: (Boolean) -> ReactNode,
     modal: Boolean,
     on: Array<String>,
     open: Boolean? = false,

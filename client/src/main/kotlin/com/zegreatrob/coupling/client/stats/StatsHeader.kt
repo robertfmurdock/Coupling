@@ -10,6 +10,6 @@ private val styles = useStyles("stats/StatsHeader")
 val StatsHeader = FC<PropsWithChildren> { props ->
     div {
         className = styles.className
-        props.children()
+        +props.children
     }
 }

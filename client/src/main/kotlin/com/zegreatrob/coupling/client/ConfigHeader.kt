@@ -86,7 +86,7 @@ private fun ChildrenBuilder.topControlRow(props: ConfigHeaderProps) = cssDiv(css
         alignItems = Align.baseline
     }) {
         cssSpan(css = { flexGrow = 2.0 }) {
-            props.children()
+            +props.children
         }
         cssSpan(css = { margin(0.px, 20.px) }) {
             TribeSelectButton()

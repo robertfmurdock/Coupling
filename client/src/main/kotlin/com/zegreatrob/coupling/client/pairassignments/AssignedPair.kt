@@ -26,7 +26,7 @@ import kotlinx.css.properties.deg
 import kotlinx.css.visibility
 import org.w3c.dom.Node
 import react.ChildrenBuilder
-import react.ReactElement
+import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.key
@@ -103,7 +103,7 @@ private fun playerCardComponent(
     }
 }
 
-private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactElement) = Flipped {
+private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNode) = Flipped {
     flipId = player.id
     cssDiv(
         props = { this.key = player.id },
