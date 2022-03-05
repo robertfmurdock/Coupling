@@ -16,7 +16,7 @@ kotlin {
             dependencies {
                 api(kotlin("stdlib"))
                 api(kotlin("stdlib-common"))
-                api("com.soywiz.korlibs.klock:klock:2.5.3")
+                api("com.soywiz.korlibs.klock:klock:2.6.1")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation("com.benasher44:uuid:0.4.0")
             }
