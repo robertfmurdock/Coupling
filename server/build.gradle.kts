@@ -36,7 +36,7 @@ dependencies {
     implementation("com.zegreatrob.jsmints:minjson")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-    implementation("com.soywiz.korlibs.klock:klock:2.6.1")
+    implementation("com.soywiz.korlibs.klock:klock:2.6.2")
     implementation("com.benasher44:uuid:0.4.0")
 }
 

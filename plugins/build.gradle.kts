@@ -19,11 +19,11 @@ dependencies {
     implementation("org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.6.10")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     implementation("se.patrikerdes:gradle-use-latest-versions-plugin:0.2.18")
-    implementation("com.soywiz.korlibs.klock:klock:2.6.1")
+    implementation("com.soywiz.korlibs.klock:klock:2.6.2")
     implementation("org.apache.logging.log4j:log4j-core:2.17.2")
     implementation("org.apache.logging.log4j:log4j-iostreams:2.17.2")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha6")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2")
 }
 
 tasks {

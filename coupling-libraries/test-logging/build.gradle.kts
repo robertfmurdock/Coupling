@@ -24,7 +24,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:report")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
-                implementation("com.soywiz.korlibs.klock:klock:2.6.1")
+                implementation("com.soywiz.korlibs.klock:klock:2.6.2")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
