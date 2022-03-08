@@ -33,7 +33,7 @@
     "@auth0/auth0-react": "1.9.0",
     "blueimp-md5": "^2.19.0",
     "core-js": "^3.21.1",
-    "css-loader": "^6.7.0",
+    "css-loader": "^6.7.1",
     "d3": "^7.3.0",
     "d3-color": "^3.0.1",
     "d3-selection": "^3.0.0",
