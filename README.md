@@ -8,6 +8,7 @@ Coupling ![Build](https://github.com/robertfmurdock/Coupling/actions/workflows/m
 ![Latest Release](https://img.shields.io/github/v/release/robertfmurdock/coupling)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/robertfmurdock/coupling)
 ![Website](https://img.shields.io/website?down_message=dead...%20uh%20oh&up_message=live&url=https%3A%2F%2Fcoupling.zegreatrob.com)
+![Testspace tests](https://img.shields.io/testspace/passed/robertfmurdock/robertfmurdock:Coupling/master)
 
 This is a web site that will automatically assign pairs for any given iteration.
 
