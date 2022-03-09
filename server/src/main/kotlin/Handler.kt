@@ -1,7 +1,9 @@
 @file:Suppress("HttpUrlsUsage")
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApi
+import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
+import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.DeleteConnectionCommand
+import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.PostToConnectionCommand
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
@@ -50,7 +52,7 @@ private val websocketApp by lazy {
             val connectionId = request.connectionId
             with(request.scope.async {
                 if (request.isAuthenticated != true) {
-                    delete(connectionId, apiGatewayManagementApi()).promise().await()
+                    delete(connectionId, apiGatewayManagementApiClient()).await()
                     401
                 } else {
                     println("connect $connectionId")
@@ -87,7 +89,7 @@ private suspend fun handleConnect(request: Request, connectionId: String, event:
     val tribeId = request.query["tribeId"].toString().let(::TribeId)
     val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
     return if (result == null) {
-        delete(connectionId, commandDispatcher.managementApi).promise().await()
+        delete(connectionId, commandDispatcher.managementApiClient).await()
         403
     } else {
         with(result) { first.filterNot { it.connectionId == connectionId } to second }
@@ -153,9 +155,11 @@ fun notifyConnect(event: Json) = MainScope().promise {
     val socketDispatcher = socketDispatcher()
     socketDispatcher.execute(ConnectionsQuery(connectionId))
         ?.let { results ->
-            socketDispatcher.managementApi.postToConnection(
-                json("ConnectionId" to connectionId, "Data" to results.second.toSerializable().toJsonString())
-            ).promise()
+            socketDispatcher.managementApiClient.send(
+                PostToConnectionCommand(
+                    json("ConnectionId" to connectionId, "Data" to results.second.toSerializable().toJsonString())
+                )
+            )
         }
 }.then {
     json("statusCode" to 200)
@@ -185,6 +189,6 @@ private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
 private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(socketDispatcher: CommandDispatcher) =
     socketDispatcher.execute(BroadcastAction(first, second))
 
-private fun delete(connectionId: String, managementApi: ApiGatewayManagementApi) = managementApi.deleteConnection(
-    json("ConnectionId" to connectionId)
+private fun delete(connectionId: String, managementApi: ApiGatewayManagementApiClient) = managementApi.send(
+    DeleteConnectionCommand(json("ConnectionId" to connectionId))
 )

@@ -5,7 +5,7 @@ import AwsSocketCommunicator
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
-import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApi
+import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
@@ -54,7 +54,7 @@ class CommandDispatcher(
     private val repositoryCatalog: RepositoryCatalog,
     override val scope: CoroutineScope,
     override val traceId: Uuid,
-    override val managementApi: ApiGatewayManagementApi = apiGatewayManagementApi()
+    override val managementApiClient: ApiGatewayManagementApiClient = apiGatewayManagementApiClient()
 ) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
     override val execute = this
     override val actionDispatcher = this
@@ -140,7 +140,7 @@ class CurrentTribeIdDispatcher(
 
 }
 
-fun apiGatewayManagementApi() = ApiGatewayManagementApi(
+fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(
     json(
         "apiVersion" to "2018-11-29",
         "endpoint" to Config.apiGatewayManagementApiHost
