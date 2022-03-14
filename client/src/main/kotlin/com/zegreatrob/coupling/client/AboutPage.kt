@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.child
+import csstype.ClassName
 import kotlinx.css.*
 import react.FC
 import react.Props
@@ -54,8 +55,8 @@ private val backButton = FC<Props> {
         to = "/tribes"
         tabIndex = -1
         draggable = false
-        child(CouplingButton(large, blue, "", {})) {
-            i { className = "fa fa-step-backward" }
+        child(CouplingButton(large, blue, ClassName(""), {})) {
+            i { className = ClassName("fa fa-step-backward") }
             span { +"Back to Coupling!" }
         }
     }
@@ -75,7 +76,7 @@ private val playerHeader = FC<Props> {
     }
 }
 
-private fun playerCardStyles(sideClassName: String) = listOf(
+private fun playerCardStyles(sideClassName: String) = ClassName(listOf(
     styles["player"],
     styles[sideClassName]
-).joinToString(" ")
+).joinToString(" "))

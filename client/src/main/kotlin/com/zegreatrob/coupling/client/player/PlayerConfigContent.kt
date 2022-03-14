@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.*
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
@@ -166,7 +167,7 @@ private fun ChildrenBuilder.badgeConfig(
     tribe: Tribe,
     player: Player,
     onChange: (ChangeEvent<*>) -> Unit,
-    className: String
+    className: ClassName
 ) = li {
     this.className = className
     label { htmlFor = "badge"; +"Badge" }

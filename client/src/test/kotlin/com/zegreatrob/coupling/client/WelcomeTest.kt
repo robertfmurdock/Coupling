@@ -80,10 +80,10 @@ class WelcomeTest {
     private fun ShallowWrapper<dynamic>.welcomeProverb() = find<Any>(".${styles["welcomeProverb"]}")
 
     private fun ShallowWrapper<dynamic>.leftCard() = find(playerCard).map { it.dataprops() }
-        .find { it.className?.contains("left") ?: false }
+        .find { it.className?.toString()?.contains("left") ?: false }
 
 
     private fun ShallowWrapper<dynamic>.rightCard() =  find(playerCard).map { it.dataprops() }
-        .find { it.className?.contains("right") ?: false }
+        .find { it.className?.toString()?.contains("right") ?: false }
 
 }

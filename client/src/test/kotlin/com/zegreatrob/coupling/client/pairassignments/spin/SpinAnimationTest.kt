@@ -239,17 +239,17 @@ class SpinAnimationTest {
     companion object {
         private val styles = useStyles("pairassignments/SpinAnimation")
 
-        private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass(styles["playerRoster"])
+        private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass("${styles["playerRoster"]}")
             .find(playerCard)
             .map { it.dataprops().player }
             .toList()
 
-        private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass(styles["playerSpotlight"])
+        private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass("${styles["playerSpotlight"]}")
             .find(playerCard).run {
                 if (length == 1) dataprops().player else null
             }
 
-        private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass(styles["pairAssignments"])
+        private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass("${styles["pairAssignments"]}")
             .find(assignedPair)
             .map { it.dataprops().pair }
             .toList()

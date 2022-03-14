@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.cssButton
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.css.properties.PlayState
@@ -143,7 +144,7 @@ data class CouplingButton(
     val sizeRuleSet: RuleSet = medium,
     val colorRuleSet: RuleSet = black,
     @JsName("className")
-    val className: String = "",
+    val className: ClassName = ClassName(""),
     val onClick: () -> Unit = {},
     val attrs: BUTTON.() -> Unit = {},
     val css: CssBuilder.() -> Unit = {}
@@ -153,7 +154,7 @@ val couplingButton = tmFC<CouplingButton> { props ->
     val (sizeRuleSet, colorRuleSet, className, onClick, block, css) = props
     cssButton(
         attrs = {
-            classes = classes + "button" + className
+            classes = classes + "button" + "$className"
             type = ButtonType.button
             onClickFunction = { onClick() }
             block()

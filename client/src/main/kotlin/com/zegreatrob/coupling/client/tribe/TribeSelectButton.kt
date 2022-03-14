@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.tribe
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.minreact.child
+import csstype.ClassName
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.i
@@ -15,7 +16,7 @@ val TribeSelectButton = FC<Props> {
         tabIndex = -1
         draggable = false
         child(CouplingButton(large)) {
-            i { className = "fa fa-arrow-circle-up" }
+            i { className = ClassName("fa fa-arrow-circle-up") }
             span { +"Party select" }
         }
     }

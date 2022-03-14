@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.minreact.child
+import csstype.ClassName
 import kotlinx.css.margin
 import kotlinx.css.px
 import react.FC
@@ -17,7 +18,7 @@ val AboutButton = FC<Props> {
         to = "/about"
         tabIndex = -1
         draggable = false
-        child(CouplingButton(large, orange, "")) {
+        child(CouplingButton(large, orange, ClassName(""))) {
             span { +"About" }
             cssSpan(css = { margin(2.px) }) {
                 CouplingLogo {

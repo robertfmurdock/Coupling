@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.red
 import com.zegreatrob.minreact.child
+import csstype.ClassName
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.i
@@ -16,7 +17,7 @@ val LogoutButton = FC<Props> {
         tabIndex = -1
         draggable = false
         child(CouplingButton(large, red)) {
-            i { className = "fa fa-sign-out-alt" }
+            i { className = ClassName("fa fa-sign-out-alt") }
             span { +"Sign Out" }
         }
     }

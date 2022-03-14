@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.Display
 import kotlinx.css.Visibility
 import kotlinx.css.display
@@ -59,7 +60,7 @@ val assignedPair = tmFC<AssignedPair> { (tribe, pair, canDrag, swapCallback, pin
     span {
         className = styles.className
         ref = pinDroppableRef
-        if (isOver) className = "$className ${styles["pairPinOver"]}"
+        if (isOver) className = ClassName("$className ${styles["pairPinOver"]}")
         callSign(tribe, callSign, styles["callSign"])
         pair.players.mapIndexed { index, player ->
             playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
@@ -123,7 +124,7 @@ private fun swappablePlayer(
     pinnedPlayer: PinnedPlayer, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
 ) = DraggablePlayer(pinnedPlayer, zoomOnHover, tilt, onDropSwap)
 
-private fun ChildrenBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: String) = div {
+private fun ChildrenBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: ClassName) = div {
     if (tribe.callSignsEnabled && callSign != null) {
         span {
             className = classes
