@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.client.tribe.TribeSelectButton
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.child
+import csstype.ClassName
 import kotlinx.css.*
 import kotlinx.css.properties.TextDecorationLine
 import kotlinx.css.properties.boxShadow
@@ -97,47 +98,47 @@ private fun ChildrenBuilder.topControlRow(props: ConfigHeaderProps) = cssDiv(css
     }
 }
 
-fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: String = "") = Link {
+fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/history/"
     tabIndex = -1
     draggable = false
     child(CouplingButton(large, lightGreen, className)) {
-        i { this.className = "fa fa-history" }
+        i { this.className = ClassName("fa fa-history") }
         +" History!"
     }
 }
 
-fun ChildrenBuilder.pinListButton(tribe: Tribe, className: String = "") = Link {
+fun ChildrenBuilder.pinListButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/pins/"
     tabIndex = -1
     draggable = false
     child(CouplingButton(large, white, className)) {
-        i { this.className = "fa fa-peace" }
+        i { this.className = ClassName("fa fa-peace") }
         +" Pin Bag!"
     }
 }
 
-fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: String = "") = Link {
+fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/statistics"
     tabIndex = -1
     draggable = false
     child(CouplingButton(large, blue, className = className)) {
-        i { this.className = "fa fa-database" }
+        i { this.className = ClassName("fa fa-database") }
         +" Statistics!"
     }
 }
 
-fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: String = "") = Link {
+fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/players/retired"
     tabIndex = -1
     draggable = false
     child(CouplingButton(large, yellow, className)) {
-        i { this.className = "fa fa-user-slash" }
+        i { this.className = ClassName("fa fa-user-slash") }
         +" Retirees!"
     }
 }
 
-fun ChildrenBuilder.settingsButton(tribe: Tribe, className: String = "") = Link {
+fun ChildrenBuilder.settingsButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/edit"
     tabIndex = -1
     draggable = false
@@ -145,6 +146,6 @@ fun ChildrenBuilder.settingsButton(tribe: Tribe, className: String = "") = Link 
         fontSize = 24.px
         padding(1.px, 4.px, 2.px)
     }) {
-        i { this.className = "fa fa-cog" }
+        i { this.className = ClassName("fa fa-cog") }
     }
 }

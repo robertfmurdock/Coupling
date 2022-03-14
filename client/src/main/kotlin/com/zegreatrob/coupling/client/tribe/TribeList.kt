@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.Color
 import react.ChildrenBuilder
 import react.create
@@ -49,7 +50,7 @@ val tribeList = tmFC<TribeList> { (tribes) ->
     }
 }
 
-private fun ChildrenBuilder.newTribeButton(className: String) = Link {
+private fun ChildrenBuilder.newTribeButton(className: ClassName) = Link {
     to = "/new-tribe/"
     draggable = false
     tabIndex = -1

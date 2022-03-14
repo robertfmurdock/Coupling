@@ -53,13 +53,13 @@ class PrepareSpinTest {
     }) exercise {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass(styles["selectedPins"])
+            .findByClass("${styles["selectedPins"]}")
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } verify {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass(styles["deselectedPins"]).find(pinButton)
+            .findByClass("${styles["deselectedPins"]}").find(pinButton)
             .dataprops().pin
             .assertIsEqualTo(firstPin)
     }
@@ -75,19 +75,19 @@ class PrepareSpinTest {
     }) {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass(styles["selectedPins"])
+            .findByClass("${styles["selectedPins"]}")
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } exercise {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass(styles["deselectedPins"])
+            .findByClass("${styles["deselectedPins"]}")
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } verify {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass(styles["selectedPins"]).find(pinButton)
+            .findByClass("${styles["selectedPins"]}").find(pinButton)
             .at(0)
             .dataprops()
             .pin
@@ -125,7 +125,7 @@ class PrepareSpinTest {
     }) exercise {
         val playerCards = result.container.querySelectorAll(".${playerCardStyles["player"]}").asList()
         playerCards.forEach {
-            if ((it as? HTMLElement)?.hasClass(playerCardStyles["deselected"]) == false) {
+            if ((it as? HTMLElement)?.hasClass("${playerCardStyles["deselected"]}") == false) {
                 userEvent.click(it)
             }
         }

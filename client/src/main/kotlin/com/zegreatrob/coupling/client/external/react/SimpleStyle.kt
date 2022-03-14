@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.client.external.react
 
+import csstype.ClassName
+
 external interface SimpleStyle {
-    val className: String
+    val className: ClassName
 }
 
-operator fun SimpleStyle.get(propertyName: String): String = let {
+operator fun SimpleStyle.get(propertyName: String): ClassName = let {
     @Suppress("UNUSED_VARIABLE") val prop = propertyName
-    js("it[prop]").unsafeCast<String>()
+    ClassName(js("it[prop]").unsafeCast<String>())
 }
 
 fun <T> useStyles(path: String): T = loadStyles(path)

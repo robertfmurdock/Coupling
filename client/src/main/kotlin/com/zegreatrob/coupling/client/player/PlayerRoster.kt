@@ -41,7 +41,7 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
     cssDiv(
         attrs = {
             if (className != null) classes = classes + className
-            classes = classes + styles.className
+            classes = classes + styles.className.toString()
         },
         css = { overrides() }
     ) {

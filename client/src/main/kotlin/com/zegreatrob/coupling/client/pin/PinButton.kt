@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
@@ -33,7 +34,7 @@ private val styles = useStyles("pin/PinButton")
 val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClick) ->
     cssDiv(
         attrs = {
-            classes = classes + listOf(className, styles.className)
+            classes = (classes + setOf(className, styles.className).map(Any::toString))
             onClickFunction = { onClick() }
         },
         css = { scaledStyles(scale) }
@@ -44,7 +45,7 @@ val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClick) 
                 +pin.name
             }
         }
-        i { this.className = "${scale.faTag} ${targetIcon(pin)}" }
+        i { this.className = ClassName("${scale.faTag} ${targetIcon(pin)}") }
     }
 }
 

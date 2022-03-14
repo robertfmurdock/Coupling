@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.properties.Angle
 
 data class DraggablePlayer(
@@ -41,4 +42,5 @@ private fun playerCardClassName(isOver: Boolean, zoomOnHover: Boolean) = mapOf(
     .keys
     .plus(styles.className)
     .joinToString(" ")
+    .let { ClassName(it) }
 

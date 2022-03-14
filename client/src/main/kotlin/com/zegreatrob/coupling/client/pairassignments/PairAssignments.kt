@@ -22,6 +22,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.css.properties.boxShadow
@@ -176,7 +177,7 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
                 onClick = ref.current?.copyToClipboardOnClick() ?: {},
                 attrs = { tabIndex = "-1" })
         ) {
-            i { className = "fa fa-clipboard" }
+            i { className = ClassName("fa fa-clipboard") }
         }
     }
 }
@@ -214,7 +215,7 @@ private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignm
 
 private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-private fun ChildrenBuilder.prepareToSpinButton(tribe: Tribe, className: String) = Link {
+private fun ChildrenBuilder.prepareToSpinButton(tribe: Tribe, className: ClassName) = Link {
     to = "/${tribe.id.value}/prepare/"
     tabIndex = -1
     draggable = false

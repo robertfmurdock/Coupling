@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.EmptyState
+import csstype.ClassName
 import react.FC
 import react.PropsWithChildren
 import react.create
@@ -30,7 +31,7 @@ val animationFrame = FC<AnimationFrameProps> { props ->
             div.create {
                 className = styles["viewFrame"]
                 if (shouldStartAnimation && !animationsDisabled) {
-                    className = listOf(className, "ng-enter").joinToString(" ")
+                    className = ClassName(listOf(className, "ng-enter").joinToString(" "))
                 }
                 onAnimationEnd = { animationState = AnimationState.Stop }
                 +props.children

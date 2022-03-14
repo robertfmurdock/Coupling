@@ -35,7 +35,7 @@ val tribeStatistics = tmFC<TribeStatistics> { props ->
                 whiteSpace = WhiteSpace.nowrap
                 display = Display.inlineFlex
             }) {
-                cssDiv(css = { flexGrow = 0.0 }, attrs = { classes = setOf(styles["leftSection"]) }) {
+                cssDiv(css = { flexGrow = 0.0 }, attrs = { classes = setOf("${styles["leftSection"]}") }) {
                     div {
                         child(TeamStatistics(
                             spinsUntilFullRotation = spinsUntilFullRotation,

@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
+import csstype.ClassName
 import popper.core.Placement
 
 private val demoTribe = Tribe(id = TribeId("${uuid4()}"), name = "The Simpsons", imageURL = svgPath("tribes/simpsons"))
@@ -225,7 +226,7 @@ We'll hit the spin button.
     }
 }
 
-private fun classSelector(className: String) = ".$className"
+private fun classSelector(className: ClassName) = ".$className"
 
 data class PrepareToSpin(val tribe: Tribe, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
     DemoAnimationState() {
