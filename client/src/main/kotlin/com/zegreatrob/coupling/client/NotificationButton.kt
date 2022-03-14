@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
+import csstype.ClassName
 import kotlinx.browser.localStorage
 import kotlinx.css.*
 import kotlinx.css.properties.IterationCount
@@ -97,5 +98,5 @@ private fun notificationButton(open: Boolean, seenNotification: Boolean) = bridg
         justifyContent = JustifyContent.center
         alignItems = Align.center
     }) {
-    i { className = "fa fa-exclamation-circle ${if (seenNotification) "" else "fa-2x"}" }
+    i { className = ClassName("fa fa-exclamation-circle ${if (seenNotification) "" else "fa-2x"}") }
 }

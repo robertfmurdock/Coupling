@@ -20,6 +20,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.*
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
@@ -101,7 +102,7 @@ private fun ChildrenBuilder.selectorAreaDiv(children: ChildrenBuilder.() -> Unit
 
 private fun ChildrenBuilder.playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     css = {
-        classes.add(styles["playerSelector"])
+        classes.add("${styles["playerSelector"]}")
         display = Display.inlineBlock
         flex(1.0)
         margin(5.px)
@@ -138,7 +139,7 @@ private fun ChildrenBuilder.selectNoneButton(
 ) = batchSelectButton(styles["selectNoneButton"], "All out!", playerSelections, setPlayerSelections, false)
 
 private fun ChildrenBuilder.batchSelectButton(
-    className: String,
+    className: ClassName,
     text: String,
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
@@ -171,7 +172,7 @@ private fun ChildrenBuilder.pinSelector(
 
 
 private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
-    attrs = { classes = classes + styles["selectedPins"] },
+    attrs = { classes = classes + "${styles["selectedPins"]}" },
     css = {
         margin(5.px)
         flex(1.0)
@@ -181,7 +182,7 @@ private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit
 }
 
 private fun ChildrenBuilder.deselectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
-    attrs = { classes = classes + styles["deselectedPins"] },
+    attrs = { classes = classes + "${styles["deselectedPins"]}" },
     css = {
         flex(1.0)
         margin(5.px)

@@ -26,7 +26,7 @@ val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
     cssDiv(css = {
         whiteSpace = WhiteSpace.nowrap
         flexShrink = 0.0
-    }, attrs = { classes = setOf(styles["rightSection"]) }) {
+    }, attrs = { classes = setOf("${styles["rightSection"]}") }) {
         div {
             className = styles["heatmapPlayersTopRow"]
             div { className = styles["spacer"] }
@@ -40,7 +40,7 @@ val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
                 keyedPlayerCard(player)
             }
         }
-        child(Heatmap(heatmapData, styles["heatmap"]))
+        child(Heatmap(heatmapData, "${styles["heatmap"]}"))
     }
 }
 

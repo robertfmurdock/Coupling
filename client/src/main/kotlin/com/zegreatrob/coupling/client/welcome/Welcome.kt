@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import org.w3c.dom.Node
 import react.*
 import react.dom.html.ReactHTML.div
@@ -101,8 +102,8 @@ private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>
 
 private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
     className = styles["welcomePair"]
-    child(PlayerCard(pair.player1, className = "left ${styles["playerCard"]}", size = 100))
-    child(PlayerCard(pair.player2, className = "right ${styles["playerCard"]}", size = 100))
+    child(PlayerCard(pair.player1, className = ClassName("left ${styles["playerCard"]}"), size = 100))
+    child(PlayerCard(pair.player2, className = ClassName("right ${styles["playerCard"]}"), size = 100))
 }
 
 private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) = div {

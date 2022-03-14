@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.lightGreen
 import com.zegreatrob.minreact.child
+import csstype.ClassName
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.i
@@ -15,9 +16,9 @@ val DemoButton = FC<Props> {
         to = "/demo"
         tabIndex = -1
         draggable = false
-        child(CouplingButton(large, lightGreen, "")) {
+        child(CouplingButton(large, lightGreen, ClassName(""))) {
             i {
-                this.className = "fa fa-play"
+                this.className = ClassName("fa fa-play")
             }
             span { +" Demo" }
         }

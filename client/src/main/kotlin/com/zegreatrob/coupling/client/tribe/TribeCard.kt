@@ -30,7 +30,7 @@ val tribeCard = tmFC<TribeCard> { (tribe, size) ->
         visuallyHidden { +"Tribe Home Page" }
         cssSpan(
             attrs = {
-                classes = classes + styles.className
+                classes = classes + styles.className.toString()
                 attributes["data-tribe-id"] = tribe.id.value
                 ariaHidden = true
             },

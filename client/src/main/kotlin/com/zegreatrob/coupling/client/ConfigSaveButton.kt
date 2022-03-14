@@ -4,11 +4,12 @@ import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.blue
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.minreact.child
+import csstype.ClassName
 import kotlinx.html.ButtonType
 import kotlinx.html.tabIndex
 import react.ChildrenBuilder
 
-fun ChildrenBuilder.configSaveButton(isSaving: Boolean, className: String) = child(
+fun ChildrenBuilder.configSaveButton(isSaving: Boolean, className: ClassName) = child(
     CouplingButton(
         sizeRuleSet = supersize,
         colorRuleSet = blue,

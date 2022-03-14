@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.WhiteSpace
 import kotlinx.css.whiteSpace
 import kotlinx.html.classes
@@ -27,7 +28,7 @@ data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<Pa
 )
 
 val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
-    cssDiv(css = { whiteSpace = WhiteSpace.normal }, attrs = { classes = setOf(styles.className) }) {
+    cssDiv(css = { whiteSpace = WhiteSpace.normal }, attrs = { classes = setOf(styles.className.toString()) }) {
         pairReports.mapIndexed { index, pairReport ->
             pairReport(index, pairReport)
         }
@@ -44,7 +45,7 @@ private fun ChildrenBuilder.pairReport(index: Int, pairReport: PairReport) = div
         StatsHeader { +"Stats" }
         StatLabel { +"Spins since last paired:" }
         span {
-            className = "time-since-last-pairing"
+            className = ClassName("time-since-last-pairing")
             +pairReport.timeSinceLastPair.presentationString()
         }
     }

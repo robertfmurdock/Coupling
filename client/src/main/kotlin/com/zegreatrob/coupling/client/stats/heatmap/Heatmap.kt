@@ -25,7 +25,7 @@ val heatmap = tmFC<Heatmap> { (data, className) ->
     useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }
 
     cssDiv(
-        attrs = { classes = classes + styles.className + className },
+        attrs = { classes = classes + styles.className.toString() + className },
         props = { ref = rootRef },
         css = {
             width = rowSize.px

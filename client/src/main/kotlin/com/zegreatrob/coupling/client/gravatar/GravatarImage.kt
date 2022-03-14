@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.gravatar
 
 import com.zegreatrob.coupling.client.external.blueimpMd5.md5
+import csstype.ClassName
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.img
 
@@ -17,7 +18,7 @@ interface GravatarOptions {
 fun ChildrenBuilder.gravatarImage(
     email: String?,
     fallback: String? = null,
-    className: String? = null,
+    className: ClassName? = null,
     alt: String?,
     options: GravatarOptions
 ) = img {

@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.a
@@ -61,7 +62,7 @@ val pinConfigContent = tmFC<PinConfigContent> { (tribe, pin, pinList, onChange, 
     }
 }
 
-private fun ChildrenBuilder.pinBag(tribe: Tribe, pinList: List<Pin>, className: String) = div {
+private fun ChildrenBuilder.pinBag(tribe: Tribe, pinList: List<Pin>, className: ClassName) = div {
     this.className = className
     pinList.map { pin -> child(PinCard(tribe.id, pin), key = pin.id) }
 }

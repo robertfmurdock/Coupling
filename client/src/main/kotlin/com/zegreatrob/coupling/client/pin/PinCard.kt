@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
@@ -20,7 +21,7 @@ val pinCard = tmFC<PinCard> { (tribeId, pin, shouldLink) ->
             className = styles.className
             child(PinButton(pin, PinButtonScale.Small, showTooltip = false))
             div {
-                className = "pin-name"
+                className = ClassName("pin-name")
                 +pin.name
             }
         }

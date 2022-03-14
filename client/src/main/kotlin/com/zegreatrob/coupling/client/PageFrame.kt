@@ -3,11 +3,12 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.*
 import kotlinx.html.classes
 
 
-data class PageFrame(val borderColor: Color, val backgroundColor: Color, val className: String? = null) :
+data class PageFrame(val borderColor: Color, val backgroundColor: Color, val className: ClassName? = null) :
     DataPropsBind<PageFrame>(pageFrame)
 
 val pageFrame = tmFC<PageFrame> { props ->
@@ -25,7 +26,7 @@ val pageFrame = tmFC<PageFrame> { props ->
         this.borderColor = props.borderColor
         this.backgroundColor = props.backgroundColor
     }, attrs = {
-        props.className?.let { classes = classes + it }
+        props.className?.let { classes = classes + "$it" }
     }) {
         props.children?.let { child(it) }
     }

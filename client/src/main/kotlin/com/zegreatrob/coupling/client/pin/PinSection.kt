@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.marginLeft
 import kotlinx.css.px
 import kotlinx.html.classes
@@ -14,14 +15,14 @@ data class PinSection(
     val pinList: List<Pin>,
     val scale: PinButtonScale = PinButtonScale.Small,
     val canDrag: Boolean = false,
-    val className: String = ""
+    val className: ClassName = ClassName("")
 ) : DataPropsBind<PinSection>(pinSection)
 
 private val styles = useStyles("pin/PinSection")
 
 val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
     cssDiv(
-        attrs = { classes = classes + styles.className + className },
+        attrs = { classes = classes + styles.className.toString() + className.toString() },
         css = { marginLeft = -(pinList.size * 12 * scale.factor).px }
     ) {
         pinList.map { pin ->

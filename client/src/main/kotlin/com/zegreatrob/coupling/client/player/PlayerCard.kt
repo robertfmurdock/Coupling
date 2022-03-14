@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import kotlinx.css.*
 import kotlinx.css.properties.*
 import kotlinx.html.classes
@@ -19,7 +20,7 @@ import react.dom.html.ReactHTML.img
 
 data class PlayerCard(
     val player: Player,
-    val className: String? = null,
+    val className: ClassName? = null,
     val size: Int = 100,
     val onClick: (Event) -> Unit = {},
     val deselected: Boolean = false,
@@ -48,11 +49,11 @@ val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselecte
     }
 }
 
-private fun additionalClasses(className: String?, deselected: Boolean) = setOf(className, styles["player"])
-    .filterNotNull()
+private fun additionalClasses(className: ClassName?, deselected: Boolean) = setOf(className, styles["player"])
+    .mapNotNull { it?.toString() }
     .let {
         when {
-            deselected -> it + styles["deselected"]
+            deselected -> it + "${styles["deselected"]}"
             else -> it
         }
     }
