@@ -19,7 +19,8 @@ jobs:
       GRGIT_USER: ${{ secrets.COUPLING_PAT }}
     steps:
       - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
-      - run: cat /etc/hosts
+      - uses: browser-actions/setup-chrome@latest
+      - run: chrome --version
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
