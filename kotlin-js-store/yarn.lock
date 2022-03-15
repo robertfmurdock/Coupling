@@ -13474,10 +13474,10 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-wdio-chromedriver-service@7.2.8:
-  version "7.2.8"
-  resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-7.2.8.tgz#18091be0c5f56cab3e6eb32613fe916b14dbd792"
-  integrity sha512-7JGmcTOBN15jvQPxTeC7t/xsQmlbttcDZStv36iUjbpuIXi7/Br+4pkttd+ES+w5eSJd2A5Ioe2ALRuTd3NeQQ==
+wdio-chromedriver-service@7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-7.3.0.tgz#4b95ede77eafd7e67fe5eba59cd2d81e91163f1d"
+  integrity sha512-vUjmdr9j9wemmSSL0ZHHV3EeLcu6/iB8eHWc2uGLg1nfX+j/Cbhh3wNquGv0svhUsF3s0b29s3wUZ2jQ15F08g==
   dependencies:
     "@wdio/logger" "^7.5.3"
     fs-extra "^9.1.0"
