@@ -20,6 +20,7 @@ jobs:
     steps:
       - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
       - uses: browser-actions/setup-chrome@latest
+      - uses: nanasess/setup-chromedriver@v1
       - run: chrome --version
       - uses: actions/checkout@v2
         with:
