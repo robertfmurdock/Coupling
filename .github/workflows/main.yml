@@ -22,6 +22,7 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
       - uses: nanasess/setup-chromedriver@v1
       - run: chrome --version
+      - run: rm /usr/bin/google-chrome && ln -s $(which chrome) /usr/bin/google-chrome
       - run: which chrome
       - run: which google-chrome
       - uses: actions/checkout@v2
