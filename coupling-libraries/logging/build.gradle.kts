@@ -21,7 +21,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-                implementation("com.soywiz.korlibs.klock:klock:2.6.2")
+                implementation("com.soywiz.korlibs.klock:klock:2.6.3")
                 api("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
