@@ -19,12 +19,6 @@ jobs:
       GRGIT_USER: ${{ secrets.COUPLING_PAT }}
     steps:
       - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
-      - uses: browser-actions/setup-chrome@latest
-      - uses: nanasess/setup-chromedriver@v1
-      - run: chrome --version
-      - run: sudo rm /usr/bin/google-chrome && sudo ln -s $(which chrome) /usr/bin/google-chrome
-      - run: which chrome
-      - run: which google-chrome
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
