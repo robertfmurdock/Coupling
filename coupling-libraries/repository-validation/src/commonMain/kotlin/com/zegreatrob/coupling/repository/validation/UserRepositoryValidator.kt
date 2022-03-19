@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
+import kotlinx.coroutines.delay
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -69,6 +70,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     }) {
         repository.save(updatedUser1)
         repository.save(updatedUser2)
+        delay(20)
     } exercise {
         repository.getUser()
     } verify { result ->

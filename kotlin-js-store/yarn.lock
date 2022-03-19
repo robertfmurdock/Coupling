@@ -2724,10 +2724,10 @@
     lz-string "^1.4.4"
     pretty-format "^27.0.2"
 
-"@testing-library/react@^12.1.3":
-  version "12.1.3"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-12.1.3.tgz#ef26c5f122661ea9b6f672b23dc6b328cadbbf26"
-  integrity sha512-oCULRXWRrBtC9m6G/WohPo1GLcLesH7T4fuKzRAKn1CWVu9BzXtqLXDDTA6KhFNNtRwLtfSMr20HFl+Qrdrvmg==
+"@testing-library/react@^12.1.4":
+  version "12.1.4"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-12.1.4.tgz#09674b117e550af713db3f4ec4c0942aa8bbf2c0"
+  integrity sha512-jiPKOm7vyUw311Hn/HlNQ9P8/lHNtArAx0PisXyFixDDvfl8DbD6EUdbshK5eqauvBSvzZd19itqQ9j3nferJA==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^8.0.0"
@@ -13497,10 +13497,10 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-wdio-chromedriver-service@7.2.8:
-  version "7.2.8"
-  resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-7.2.8.tgz#18091be0c5f56cab3e6eb32613fe916b14dbd792"
-  integrity sha512-7JGmcTOBN15jvQPxTeC7t/xsQmlbttcDZStv36iUjbpuIXi7/Br+4pkttd+ES+w5eSJd2A5Ioe2ALRuTd3NeQQ==
+wdio-chromedriver-service@7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-7.3.0.tgz#4b95ede77eafd7e67fe5eba59cd2d81e91163f1d"
+  integrity sha512-vUjmdr9j9wemmSSL0ZHHV3EeLcu6/iB8eHWc2uGLg1nfX+j/Cbhh3wNquGv0svhUsF3s0b29s3wUZ2jQ15F08g==
   dependencies:
     "@wdio/logger" "^7.5.3"
     fs-extra "^9.1.0"
