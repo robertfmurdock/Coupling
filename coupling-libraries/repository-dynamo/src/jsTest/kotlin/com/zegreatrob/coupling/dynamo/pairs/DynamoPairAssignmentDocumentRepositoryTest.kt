@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.stubmodel.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlinx.coroutines.delay
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -49,6 +50,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         repository.save(tribeId.with(updatedPairAssignmentDocument))
         clock.currentTime = updatedSaveTime2
         repository.delete(tribeId, pairAssignmentDocument.id)
+        delay(10)
     }) exercise {
         repository.getRecords(tribeId)
     } verify { result ->
