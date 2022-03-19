@@ -23,11 +23,11 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-                implementation("io.ktor:ktor-client-core:1.6.7")
-                implementation("io.ktor:ktor-client-serialization:1.6.7")
-                implementation("io.ktor:ktor-client-logging:1.6.7")
-                implementation("io.ktor:ktor-client-websockets:1.6.7")
-                implementation("com.soywiz.korlibs.klock:klock:2.6.2")
+                implementation("io.ktor:ktor-client-core:1.6.8")
+                implementation("io.ktor:ktor-client-serialization:1.6.8")
+                implementation("io.ktor:ktor-client-logging:1.6.8")
+                implementation("io.ktor:ktor-client-websockets:1.6.8")
+                implementation("com.soywiz.korlibs.klock:klock:2.6.3")
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
