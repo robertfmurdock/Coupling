@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.invoke
+import kotlinx.coroutines.delay
 import kotlin.test.Test
 
 interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRepository> :
@@ -107,6 +108,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             repository.save(tribeId.with(pairAssignmentDocument))
         } exercise {
             repository.save(tribeId.with(updatedDocument))
+            delay(30)
             repository.getPairAssignments(tribeId)
         } verify { result ->
             result.data().map { it.document }
