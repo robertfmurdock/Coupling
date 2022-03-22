@@ -7,10 +7,10 @@
     "../test": "test"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "~3.54.1",
-    "@aws-sdk/lib-dynamodb": "~3.54.1",
-    "@aws-sdk/client-lambda": "~3.54.1",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.54.1",
+    "@aws-sdk/client-dynamodb": "~3.55.0",
+    "@aws-sdk/lib-dynamodb": "~3.55.0",
+    "@aws-sdk/client-lambda": "~3.55.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.55.0",
     "@graphql-tools/schema": "^8.3.3",
     "@graphql-tools/stitch": "^8.5.2",
     "body-parser": "^1.19.2",
@@ -24,7 +24,7 @@
     "fs-extra": "^10.0.1",
     "graphql": "^16.3.0",
     "method-override": "^3.0.0",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "node-fetch": "^3.2.3",
     "on-finished": "^2.4.1",
     "parse5": "^6.0.1",
@@ -58,6 +58,6 @@
   },
   "homepage": "https://github.com/robertfmurdock/Coupling",
   "resolutions": {
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.6"
   }
 }
