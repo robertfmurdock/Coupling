@@ -1,5 +1,5 @@
-import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
-import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.PostToConnectionCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
+import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.PostToConnectionCommand
 import com.zegreatrob.coupling.json.toJsonString
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Message

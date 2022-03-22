@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.dynamo.*
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.LiveInfoRepository
+import com.zegreatrob.coupling.repository.dynamo.*
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository

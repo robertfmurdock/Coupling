@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.graphql
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.dynamo.DynamoBoostRepository
 import com.zegreatrob.coupling.json.TribeInput
 import com.zegreatrob.coupling.model.Message
+import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
 import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.CurrentTribeIdDispatcher
 import com.zegreatrob.coupling.server.ICommandDispatcher

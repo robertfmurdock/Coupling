@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.dynamo.DynamoUserRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.import
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.dynamo.*
+import com.zegreatrob.coupling.repository.dynamo.*
 import com.zegreatrob.coupling.import.external.readline.ReadLine
 import com.zegreatrob.coupling.import.external.readline.inputReader
 import com.zegreatrob.coupling.import.external.readline.onEnd

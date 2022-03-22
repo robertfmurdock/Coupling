@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.export
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.dynamo.*
+import com.zegreatrob.coupling.repository.dynamo.*
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record

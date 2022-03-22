@@ -5,11 +5,11 @@ import AwsSocketCommunicator
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
-import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.BoostRepository
+import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
 import com.zegreatrob.coupling.server.action.boost.BoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.DeleteBoostCommandDispatcher

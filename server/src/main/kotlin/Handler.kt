@@ -1,9 +1,9 @@
 @file:Suppress("HttpUrlsUsage")
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
-import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.DeleteConnectionCommand
-import com.zegreatrob.coupling.dynamo.external.awsgatewaymanagement.PostToConnectionCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
+import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.DeleteConnectionCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.PostToConnectionCommand
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
