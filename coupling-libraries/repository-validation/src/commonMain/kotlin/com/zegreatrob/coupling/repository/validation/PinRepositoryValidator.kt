@@ -13,6 +13,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.invoke
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.test.Test
 
@@ -70,6 +71,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
         }
     } exercise {
         repository.deletePin(tribeId, pins[1].id!!)
+        delay(30)
         repository.getPins(tribeId)
     } verify { result ->
         result.map { it.data.pin }
