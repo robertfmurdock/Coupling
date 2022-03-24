@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.invoke
+import kotlinx.coroutines.delay
 import kotlin.test.Test
 
 interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet, R : BoostSave, R : BoostDelete {
@@ -122,6 +123,7 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
     }) {
         repository.save(boost)
         repository.save(boost.copy(tribeIds = boost.tribeIds.minus(tribeId)))
+        delay(30)
     } exercise {
         repository.getByTribeId(tribeId)
     } verify { result ->
