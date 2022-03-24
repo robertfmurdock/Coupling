@@ -29,6 +29,7 @@ const logger = log4js.getLogger('default');
 const path = require('path');
 
 const reportDirectory = path.relative('./', process.env.REPORT_DIR) + "/"
+const testResultsDir = path.relative('./', process.env.TEST_RESULTS_DIR) + "/"
 
 const config = {
     runner: 'local',
@@ -64,7 +65,7 @@ const config = {
     reporters: [
         'dot',
         ['junit', {
-            outputDir: reportDirectory,
+            outputDir: testResultsDir,
             outputFileFormat: (options) => `results-${options.cid}.xml`
         }],
         CustomReporter,

@@ -114,6 +114,8 @@ tasks {
 
         val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
         outputs.dir(reportDir)
+        val testResultsDir = "${project.buildDir.absolutePath}/test-results/"
+        outputs.dir(testResultsDir)
         val logsDir = "${project.buildDir.absolutePath}/reports/logs/e2e-serverless/"
 
         environment("BASEURL" to "https://localhost/local/")
@@ -130,6 +132,7 @@ tasks {
                 "WEBPACK_CONFIG" to webpackConfig,
                 "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
                 "REPORT_DIR" to reportDir,
+                "TEST_RESULTS_DIR" to testResultsDir,
                 "LOGS_DIR" to logsDir,
                 "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
                 "STRICT_SSL" to "false",
