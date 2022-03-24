@@ -63,6 +63,10 @@ const config = {
     framework: 'jasmine',
     reporters: [
         'dot',
+        ['junit', {
+            outputDir: reportDirectory,
+            outputFileFormat: (options) => `results-${options.cid}.xml`
+        }],
         CustomReporter,
         [HtmlReporter, {
             debug: true,
