@@ -66,7 +66,7 @@ const config = {
         'dot',
         ['junit', {
             outputDir: testResultsDir,
-            outputFileFormat: (options) => `results-${options.cid}.xml`
+            outputFileFormat: (options) => `results.xml`
         }],
         CustomReporter,
         [HtmlReporter, {
