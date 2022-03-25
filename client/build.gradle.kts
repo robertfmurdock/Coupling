@@ -51,7 +51,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom-legacy")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
-    implementation("com.soywiz.korlibs.klock:klock:2.6.3")
+    implementation("com.soywiz.korlibs.klock:klock:2.7.0")
     implementation("com.benasher44:uuid:0.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.3")
 
