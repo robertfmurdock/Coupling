@@ -27,7 +27,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-serialization:1.6.8")
                 implementation("io.ktor:ktor-client-logging:1.6.8")
                 implementation("io.ktor:ktor-client-websockets:1.6.8")
-                implementation("com.soywiz.korlibs.klock:klock:2.6.3")
+                implementation("com.soywiz.korlibs.klock:klock:2.7.0")
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
