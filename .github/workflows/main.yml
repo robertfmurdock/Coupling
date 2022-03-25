@@ -61,4 +61,4 @@ jobs:
       - name: Push result to Testspace server
         if: always()
         run: |
-          testspace **/build/test-results/**/*.xml */**/build/test-results/**/*.xml
+          testspace **/test-results/**/*.xml
