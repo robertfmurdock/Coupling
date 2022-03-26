@@ -103,7 +103,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
         val pin = stubPin()
     }.bind()) {
         clock.currentTime = DateTime.now().plus(4.hours)
-        repository.save(tribeId.with(pin))
+        repository.save(tribeId.with(pin)).also { delay(15) }
     } exercise {
         repository.getPins(tribeId)
     } verify { result ->

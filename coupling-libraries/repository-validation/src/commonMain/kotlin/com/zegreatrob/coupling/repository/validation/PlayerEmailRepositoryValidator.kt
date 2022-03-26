@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
+import kotlinx.coroutines.delay
 import kotlin.test.Test
 
 interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
@@ -18,9 +19,9 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         val redHerring = stubPlayer().copy(email = "something else")
         val updatedPlayer = player.copy(name = "Besto")
     }.bind()) {
-        repository.save(tribeId.with(player))
-        repository.save(tribeId.with(redHerring))
-        repository.save(tribeId.with(updatedPlayer))
+        repository.save(tribeId.with(player)).also { delay(15) }
+        repository.save(tribeId.with(redHerring)).also { delay(15) }
+        repository.save(tribeId.with(updatedPlayer)).also { delay(15) }
     } exercise {
         repository.getPlayerIdsByEmail(email)
     } verify { result ->
