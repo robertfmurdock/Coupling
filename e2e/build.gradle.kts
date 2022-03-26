@@ -146,4 +146,8 @@ tasks {
     val check by getting {
         dependsOn(nodeRun)
     }
+
+    val test by getting {
+        dependsOn(nodeRun)
+    }
 }
