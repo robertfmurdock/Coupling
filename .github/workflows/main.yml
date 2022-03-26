@@ -61,4 +61,4 @@ jobs:
       - name: Push result to Testspace server
         if: always()
         run: |
-          testspace $(find **/test-results/**/*.xml)
+          testspace $(find . -path *test-results* -name *.xml)
