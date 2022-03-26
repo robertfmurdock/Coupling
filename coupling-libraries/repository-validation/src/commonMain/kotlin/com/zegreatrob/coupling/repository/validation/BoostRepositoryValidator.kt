@@ -87,9 +87,9 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
         }
     }) {
         with(repository) {
-            save(boost)
-            save(updatedBoost1)
-            save(updatedBoost2)
+            save(boost).also { delay(15) }
+            save(updatedBoost1).also { delay(15) }
+            save(updatedBoost2).also { delay(15) }
         }
     } exercise {
         repository.getByTribeId(tribeId)
