@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.repository.dynamo.pin
 
 import com.soywiz.klock.*
-import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
-import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.tribeRecord
+import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
+import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContext
@@ -29,7 +29,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
     })
 
     @Test
-    fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(buildRepository { context ->
+    fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val pin = stubPin()
@@ -55,7 +55,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
     }
 
     @Test
-    fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
+    fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val records = listOf(

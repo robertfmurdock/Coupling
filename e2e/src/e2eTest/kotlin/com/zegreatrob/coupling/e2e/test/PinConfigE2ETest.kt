@@ -36,7 +36,7 @@ class PinConfigE2ETest {
     }
 
     @Test
-    fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = tribeSetup(object : TribeContext() {
+    fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = tribeSetup.with(object : TribeContext() {
         val newPinName = "Excellent pin name${randomInt()}"
     }.attachTribe()) {
         with(PinConfigPage) {
@@ -65,7 +65,7 @@ class PinConfigE2ETest {
     class WhenThePinExists {
 
         @Test
-        fun attributesAreShownOnConfig() = tribeSetup(object : TribeContext() {
+        fun attributesAreShownOnConfig() = tribeSetup.with(object : TribeContext() {
             val pin = randomPin()
         }.attachTribe()) {
             sdk.pinRepository.save(tribe.id.with(pin))
@@ -81,7 +81,7 @@ class PinConfigE2ETest {
         }
 
         @Test
-        fun clickingDeleteWillRemovePinFromPinList() = tribeSetup(object : TribeContext() {
+        fun clickingDeleteWillRemovePinFromPinList() = tribeSetup.with(object : TribeContext() {
             val pin = randomPin()
         }.attachTribe()) {
             sdk.pinRepository.save(tribe.id.with(pin))

@@ -25,7 +25,7 @@ class WebsocketTest {
     private val socketHost = "socket.localhost"
 
     @Test
-    fun whenOnlyOneConnectionWillReturnCountOfOne() = sdkSetup({
+    fun whenOnlyOneConnectionWillReturnCountOfOne() = sdkSetup.with({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -53,7 +53,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenMultipleConnectionsWillReturnTheTotalCount() = sdkSetup({
+    fun whenMultipleConnectionsWillReturnTheTotalCount() = sdkSetup.with({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -84,7 +84,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = sdkSetup({
+    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = sdkSetup.with({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -116,7 +116,7 @@ class WebsocketTest {
     private suspend fun DefaultClientWebSocketSession.readTextFrame() = (incoming.receive() as? Frame.Text)?.readText()
 
     @Test
-    fun whenPairsAreSavedWillSendMessageToClients() = sdkSetup({
+    fun whenPairsAreSavedWillSendMessageToClients() = sdkSetup.with({
         object : SdkContext by it {
             val tribe = stubTribe()
             val sockets = mutableListOf<DefaultClientWebSocketSession>()
@@ -142,7 +142,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = sdkSetup({
+    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = sdkSetup.with({
         object : SdkContext by it {
             val tribe = stubTribe()
         }
@@ -168,7 +168,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup({ it }
+    fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup(
     ) exercise {
         val url = "wss://$socketHost/api/${TribeId("whoops").value}/pairAssignments/current"
         generalPurposeClient.webSocketSession { url(url) }
@@ -180,7 +180,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = sdkSetup({ it }
+    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = sdkSetup(
     ) exercise {
         couplingSocketSession(stubTribe().id)
     } verify { socket ->
@@ -191,7 +191,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun willNotCrashWhenGoingToNonExistingSocketLocation() = sdkSetup({ it }
+    fun willNotCrashWhenGoingToNonExistingSocketLocation() = sdkSetup(
     ) exercise {
         val url = "wss://$socketHost/api/404WTF"
         generalPurposeClient.webSocketSession { url(url) }
@@ -203,7 +203,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = sdkSetup({
+    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = sdkSetup.with({
         object : SdkContext by it {
             val tribe = stubTribe()
         }

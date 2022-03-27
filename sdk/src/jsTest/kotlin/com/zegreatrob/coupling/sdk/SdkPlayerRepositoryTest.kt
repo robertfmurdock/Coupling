@@ -15,7 +15,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import com.zegreatrob.testmints.async.invoke
+
 import com.zegreatrob.testmints.async.waitForTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -33,7 +33,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
     })
 
     override fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() =
-        repositorySetup({ parent: SdkTribeContext<SdkPlayerRepository> ->
+        repositorySetup.with({ parent: SdkTribeContext<SdkPlayerRepository> ->
             object {
                 val sdk = parent.sdk
                 val repository = parent.repository
@@ -59,7 +59,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         }
 
     override fun deletedPlayersIncludeModificationDateAndUsername() =
-        repositorySetup(object : TribeContextMint<SdkPlayerRepository>() {
+        repositorySetup.with(object : TribeContextMint<SdkPlayerRepository>() {
             val player = stubPlayer()
         }.bind()) {
         } exercise {
@@ -76,7 +76,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         }
 
     override fun savedPlayersIncludeModificationDateAndUsername() =
-        repositorySetup(object : TribeContextMint<SdkPlayerRepository>() {
+        repositorySetup.with(object : TribeContextMint<SdkPlayerRepository>() {
             val player = stubPlayer()
         }.bind()) {
         } exercise {

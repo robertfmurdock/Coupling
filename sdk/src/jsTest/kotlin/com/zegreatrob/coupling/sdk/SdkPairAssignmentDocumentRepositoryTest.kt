@@ -28,7 +28,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
     })
 
     @Test
-    fun givenNoAuthGetIsNotAllowed() = asyncSetup({
+    fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({
         val sdk = authorizedSdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
@@ -48,7 +48,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
     }
 
     override fun savedWillIncludeModificationDateAndUsername() =
-        repositorySetup(object : TribeContextMint<SdkPairAssignmentsRepository>() {
+        repositorySetup.with(object : TribeContextMint<SdkPairAssignmentsRepository>() {
             val pairAssignmentDoc = stubPairAssignmentDoc()
         }.bind()) {
             repository.save(tribeId.with(pairAssignmentDoc))

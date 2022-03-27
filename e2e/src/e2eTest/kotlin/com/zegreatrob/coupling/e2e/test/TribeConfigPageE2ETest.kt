@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.tribe.Tribe
 import com.zegreatrob.coupling.model.tribe.TribeId
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.invoke
+
 import kotlin.test.Test
 
 @Suppress("unused")

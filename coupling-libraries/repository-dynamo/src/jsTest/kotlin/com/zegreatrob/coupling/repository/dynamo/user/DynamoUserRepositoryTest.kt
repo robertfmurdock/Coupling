@@ -32,7 +32,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     })
 
     @Test
-    fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup(buildRepository { context ->
+    fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
             val initialSaveTime = DateTime.now().minus(3.days)
             val updatedUser = user.copy(authorizedTribeIds = setOf(TribeId("clone!")))
@@ -55,7 +55,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     }
 
     @Test
-    fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
+    fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
             val records = listOf(
                 Record(stubUser(), uuidString(), false, DateTime.now().minus(3.months)),
@@ -71,7 +71,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     }
 
     @Test
-    fun canReadEvenWhenRecordIncludesNullInTheAuthorizedTribeIdList() = asyncSetup(buildRepository { context ->
+    fun canReadEvenWhenRecordIncludesNullInTheAuthorizedTribeIdList() = asyncSetup.with(buildRepository { context ->
         object : Context by context, DynamoUserJsonMapping by context.repository {
             override val clock: MagicClock = context.clock
             override val userId = uuidString()

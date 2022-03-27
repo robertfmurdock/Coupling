@@ -17,7 +17,7 @@ import kotlin.test.Test
 interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, TribeContext<R>> {
 
     @Test
-    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = repositorySetup(object : TribeContextMint<R>() {
+    fun saveMultipleInTribeThenGetListWillReturnSavedPlayers() = repositorySetup.with(object : TribeContextMint<R>() {
         val players = stubPlayers(3)
     }.bind()) {
         tribeId.with(players).forEach { repository.save(it) }
@@ -29,7 +29,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : TribeContextMint<R>() {
+    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(object : TribeContextMint<R>() {
         val player = Player(
             callSignAdjective = "1",
             callSignNoun = "2",
@@ -52,7 +52,8 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = repositorySetup(object : TribeContextMint<R>() {
+    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = repositorySetup.with(
+        object : TribeContextMint<R>() {
         val player = stubPlayer()
         val updatedPlayer = player.copy(name = "Timmy!")
     }.bind()) {
@@ -66,7 +67,8 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() = repositorySetup(object : TribeContextMint<R>() {
+    fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() = repositorySetup.with(
+        object : TribeContextMint<R>() {
         val player1 = stubPlayer()
         val tribe2 = stubTribeId()
         val player2 = player1.copy(id = player1.id)
@@ -81,7 +83,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deleteWillRemoveAGivenPlayer() = repositorySetup(object : TribeContextMint<R>() {
+    fun deleteWillRemoveAGivenPlayer() = repositorySetup.with(object : TribeContextMint<R>() {
         val player = stubPlayer()
     }.bind()) {
         repository.save(tribeId.with(player))
@@ -95,7 +97,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deletedPlayersShowUpInGetDeleted() = repositorySetup(object : TribeContextMint<R>() {
+    fun deletedPlayersShowUpInGetDeleted() = repositorySetup.with(object : TribeContextMint<R>() {
         val player = stubPlayer()
     }.bind()) {
         repository.save(tribeId.with(player))
@@ -108,7 +110,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = repositorySetup(object : TribeContextMint<R>() {
+    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = repositorySetup.with(object : TribeContextMint<R>() {
         val player = stubPlayer()
         val playerId = player.id
     }.bind()) {
@@ -124,7 +126,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deleteWithUnknownPlayerIdWillReturnFalse() = repositorySetup(object : TribeContextMint<R>() {
+    fun deleteWithUnknownPlayerIdWillReturnFalse() = repositorySetup.with(object : TribeContextMint<R>() {
         val playerId = "${uuid4()}"
     }.bind()) exercise {
         repository.deletePlayer(tribeId, playerId)
@@ -133,7 +135,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<R>() {
+    fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup.with(object : TribeContextMint<R>() {
         val player = stubPlayer()
     }.bind()) {
     } exercise {
@@ -154,7 +156,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     }
 
     @Test
-    fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<R>() {
+    fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup.with(object : TribeContextMint<R>() {
         val player = stubPlayer()
     }.bind()) {
     } exercise {

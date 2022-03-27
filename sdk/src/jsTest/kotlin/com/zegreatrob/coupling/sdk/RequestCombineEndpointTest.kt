@@ -17,7 +17,7 @@ import kotlin.test.Test
 class RequestCombineEndpointTest {
 
     @Test
-    fun postPlayersAndPinsThenGet() = asyncSetup({
+    fun postPlayersAndPinsThenGet() = asyncSetup.with({
         val sdk = authorizedSdk()
         object : Sdk by sdk {
             val tribe = Tribe(id = TribeId("et-${uuid4()}"))

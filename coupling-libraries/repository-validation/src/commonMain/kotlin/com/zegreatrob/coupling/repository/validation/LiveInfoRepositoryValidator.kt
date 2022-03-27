@@ -12,7 +12,7 @@ import kotlin.test.Test
 interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
-    fun connectionListWillReturnLastSaved() = repositorySetup(object : ContextMint<R>() {
+    fun connectionListWillReturnLastSaved() = repositorySetup.with(object : ContextMint<R>() {
         val tribeId = stubTribeId()
         val connections = listOf(
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
@@ -28,7 +28,7 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
     }
 
     @Test
-    fun getWillReturnConnection() = repositorySetup(object : ContextMint<R>() {
+    fun getWillReturnConnection() = repositorySetup.with(object : ContextMint<R>() {
         val tribeId = stubTribeId()
         val expectedConnection = CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
         val connections = listOf(
@@ -45,7 +45,7 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
     }
 
     @Test
-    fun deleteWillMakeGetNoLongerReturnValue() = repositorySetup(object : ContextMint<R>() {
+    fun deleteWillMakeGetNoLongerReturnValue() = repositorySetup.with(object : ContextMint<R>() {
         val tribeId = stubTribeId()
         val connections = listOf(
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),

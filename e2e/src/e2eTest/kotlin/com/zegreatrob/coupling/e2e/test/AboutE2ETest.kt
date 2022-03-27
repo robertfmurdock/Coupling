@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.invoke
+
 import kotlin.test.Test
 
 class AboutE2ETest {

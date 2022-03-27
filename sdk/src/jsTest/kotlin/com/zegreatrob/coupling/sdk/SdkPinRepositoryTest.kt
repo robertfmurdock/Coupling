@@ -27,7 +27,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
     })
 
     @Test
-    fun givenNoAuthGetIsNotAllowed() = asyncSetup({
+    fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({
         val sdk = authorizedSdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
@@ -46,7 +46,8 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
         otherSdk.tribeRepository.delete(otherTribe.id)
     }
 
-    override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<SdkPinRepository>() {
+    override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(
+        object : TribeContextMint<SdkPinRepository>() {
         val pin = stubPin()
     }.bind()) {
         repository.save(tribeId.with(pin))

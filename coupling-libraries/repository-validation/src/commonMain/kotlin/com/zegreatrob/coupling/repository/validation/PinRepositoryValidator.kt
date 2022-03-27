@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.invoke
+
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ import kotlin.test.Test
 interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, TribeContext<R>> {
 
     @Test
-    fun canSaveAndGetPins() = repositorySetup(object : TribeContextMint<R>() {
+    fun canSaveAndGetPins() = repositorySetup.with(object : TribeContextMint<R>() {
         val pins = listOf(
             stubPin(),
             stubPin(),
@@ -35,7 +35,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup(object : TribeContextMint<R>() {
+    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(object : TribeContextMint<R>() {
         val pin = Pin(
             id = null,
             name = "",
@@ -57,7 +57,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }
 
     @Test
-    fun saveThenDeleteWillNotShowThatPin() = repositorySetup(object : TribeContextMint<R>() {
+    fun saveThenDeleteWillNotShowThatPin() = repositorySetup.with(object : TribeContextMint<R>() {
         val pins = listOf(
             stubPin(),
             stubPin(),
@@ -82,7 +82,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }
 
     @Test
-    fun deleteWillFailWhenPinDoesNotExist() = repositorySetup(object : TribeContextMint<R>() {
+    fun deleteWillFailWhenPinDoesNotExist() = repositorySetup.with(object : TribeContextMint<R>() {
     }.bind()) {
     } exercise {
         repository.deletePin(tribeId, "${uuid4()}")
@@ -99,7 +99,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }
 
     @Test
-    fun savedPinsIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<R>() {
+    fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(object : TribeContextMint<R>() {
         val pin = stubPin()
     }.bind()) {
         clock.currentTime = DateTime.now().plus(4.hours)
