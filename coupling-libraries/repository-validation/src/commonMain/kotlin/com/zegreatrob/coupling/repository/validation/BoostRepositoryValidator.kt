@@ -1,3 +1,4 @@
+
 package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4
@@ -11,10 +12,10 @@ import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
-
-import kotlinx.coroutines.delay
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet, R : BoostSave, R : BoostDelete {
 
     val repositorySetup: TestTemplate<SC>
@@ -22,11 +23,11 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet
 
     @Test
     fun getBoostWhenThereIsNoneReturnsNull() = repositorySetup {
-        repository.delete()
     } exercise {
+        repository.delete()
+    } verifyWithWait {
         repository.get()
-    } verify { result ->
-        result.assertIsEqualTo(null)
+            .assertIsEqualTo(null)
     }
 
     @Test
@@ -34,22 +35,21 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet
         object : SharedContext<R> by sharedContext {
             val boost by lazy { Boost(user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}"))) }
         }
-    }) {
+    }) exercise {
         repository.save(boost)
-    } exercise {
-        repository.get()
-    } verify { result ->
-        result?.data.assertIsEqualTo(boost)
+    } verifyWithWait {
+        repository.get()?.data
+            .assertIsEqualTo(boost)
     }
 
     @Test
     fun deleteWillMakeBoostNotRecoverableThroughGet() = repositorySetup {
+    } exercise {
         repository.save(Boost(user.id, setOf(TribeId("${uuid4()}"), TribeId("${uuid4()}"))))
         repository.delete()
-    } exercise {
+    } verifyWithWait {
         repository.get()
-    } verify { result ->
-        result.assertIsEqualTo(null)
+            .assertIsEqualTo(null)
     }
 
     @Test
@@ -59,21 +59,20 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet
             val updatedBoost1 = boost.copy(tribeIds = emptySet())
             val updatedBoost2 = updatedBoost1.copy(tribeIds = setOf(TribeId("${uuid4()}")))
         }
-    }) {
+    }) exercise {
         with(repository) {
             save(boost)
             save(updatedBoost1)
             save(updatedBoost2)
         }
-    } exercise {
-        repository.get()
-    } verify { result ->
-        result?.data
+    } verifyWithWait {
+        repository.get()?.data
             .assertIsEqualTo(updatedBoost2)
     }
 
 }
 
+@ExperimentalTime
 interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : SharedContext<R>> :
     BoostRepositoryValidator<R, SC> {
 
@@ -85,16 +84,14 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
             val updatedBoost1 = boost.copy(tribeIds = emptySet())
             val updatedBoost2 = updatedBoost1.copy(tribeIds = setOf(tribeId))
         }
-    }) {
+    }) exercise {
         with(repository) {
-            save(boost).also { delay(15) }
-            save(updatedBoost1).also { delay(15) }
-            save(updatedBoost2).also { delay(15) }
+            save(boost)
+            save(updatedBoost1)
+            save(updatedBoost2)
         }
-    } exercise {
-        repository.getByTribeId(tribeId)
-    } verify { result ->
-        result?.data
+    } verifyWithWait {
+        repository.getByTribeId(tribeId)?.data
             .assertIsEqualTo(updatedBoost2)
     }
 
@@ -107,11 +104,12 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
             val boost = Boost(user.id, setOf(TribeId("${uuid4()}"), tribeId, TribeId("${uuid4()}")))
         }
     }) {
-        repository.save(boost)
+
     } exercise {
-        altRepository.getByTribeId(tribeId)
-    } verify { result ->
-        result?.data.assertIsEqualTo(boost)
+        repository.save(boost)
+    } verifyWithWait {
+        altRepository.getByTribeId(tribeId)?.data
+            .assertIsEqualTo(boost)
     }
 
     @Test
@@ -120,14 +118,12 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
             val tribeId = TribeId("${uuid4()}")
             val boost = Boost(user.id, setOf(TribeId("${uuid4()}"), tribeId, TribeId("${uuid4()}")))
         }
-    }) {
+    }) exercise {
         repository.save(boost)
         repository.save(boost.copy(tribeIds = boost.tribeIds.minus(tribeId)))
-        delay(30)
-    } exercise {
-        repository.getByTribeId(tribeId)
-    } verify { result ->
-        result?.data.assertIsEqualTo(null)
+    } verifyWithWait {
+        repository.getByTribeId(tribeId)?.data
+            .assertIsEqualTo(null)
     }
 
 }

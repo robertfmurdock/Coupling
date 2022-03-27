@@ -14,10 +14,10 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
-
-import kotlinx.coroutines.delay
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRepository> :
     RepositoryValidator<R, TribeContext<R>> {
 
@@ -108,10 +108,8 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             repository.save(tribeId.with(pairAssignmentDocument))
         } exercise {
             repository.save(tribeId.with(updatedDocument))
-            delay(30)
-            repository.getPairAssignments(tribeId)
-        } verify { result ->
-            result.data().map { it.document }
+        } verifyWithWait {
+            repository.getPairAssignments(tribeId).data().map { it.document }
                 .assertIsEqualTo(listOf(updatedDocument))
         }
 

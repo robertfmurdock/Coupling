@@ -6,9 +6,10 @@ import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.coroutines.delay
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
@@ -19,12 +20,11 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
         ).sortedBy { it.connectionId }
-    }.bind()) {
+    }.bind()).exercise {
         connections.forEach { repository.save(it) }
-    } exercise {
+    } verifyWithWait {
         repository.connectionList(tribeId)
-    } verify { result ->
-        result.assertIsEqualTo(connections)
+            .assertIsEqualTo(connections)
     }
 
     @Test
@@ -36,12 +36,11 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
             expectedConnection,
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
         )
-    }.bind()) {
+    }.bind()) exercise {
         connections.forEach { repository.save(it) }
-    } exercise {
+    } verifyWithWait {
         repository.get(expectedConnection.connectionId)
-    } verify { result ->
-        result.assertIsEqualTo(expectedConnection)
+            .assertIsEqualTo(expectedConnection)
     }
 
     @Test
@@ -56,10 +55,9 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
         connections.forEach { repository.save(it) }
     } exercise {
         repository.delete(tribeId, connections[1].connectionId)
-        delay(30)
+    } verifyWithWait {
         repository.connectionList(tribeId)
-    } verify { result ->
-        result.assertIsEqualTo(listOf(connections[0], connections[2]).sortedBy { it.connectionId })
+            .assertIsEqualTo(listOf(connections[0], connections[2]).sortedBy { it.connectionId })
     }
 
 }

@@ -20,8 +20,10 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.js.json
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
+@ExperimentalTime
 class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRepository> {
 
     override val repositorySetup = asyncTestTemplate<TribeContext<DynamoPlayerRepository>>(sharedSetup = {
