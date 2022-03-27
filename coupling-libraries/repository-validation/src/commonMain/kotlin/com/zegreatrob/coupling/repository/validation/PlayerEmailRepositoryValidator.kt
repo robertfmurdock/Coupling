@@ -19,14 +19,13 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         val player = stubPlayer().copy(email = email)
         val redHerring = stubPlayer().copy(email = "something else")
         val updatedPlayer = player.copy(name = "Besto")
-    }.bind()) {
+    }.bind()) exercise {
         repository.save(tribeId.with(player))
         repository.save(tribeId.with(redHerring))
         repository.save(tribeId.with(updatedPlayer))
-    } exercise {
+    } verifyWithWait {
         repository.getPlayerIdsByEmail(email)
-    } verifyWithWait { result ->
-        result.assertIsEqualTo(listOf(tribeId.with(player.id)), "Could not find by email <$email>")
+            .assertIsEqualTo(listOf(tribeId.with(player.id)), "Could not find by email <$email>")
     }
 
     @Test
@@ -35,13 +34,12 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
             val updatedPlayer = player.copy(name = "Besto", email = "something else ")
-        }.bind()) {
+        }.bind()) exercise {
             repository.save(tribeId.with(player))
             repository.save(tribeId.with(updatedPlayer))
-        } exercise {
+        } verifyWithWait {
             repository.getPlayerIdsByEmail(email)
-        } verify { result ->
-            result.assertIsEqualTo(emptyList())
+                .assertIsEqualTo(emptyList())
         }
 
     @Test
@@ -49,13 +47,12 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         repositorySetup.with(object : TribeContextMint<R>() {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
-        }.bind()) {
+        }.bind()) exercise {
             repository.save(tribeId.with(player))
             repository.deletePlayer(tribeId, player.id)
-        } exercise {
+        } verifyWithWait {
             repository.getPlayerIdsByEmail(email)
-        } verify { result ->
-            result.assertIsEqualTo(emptyList())
+                .assertIsEqualTo(emptyList())
         }
 
 }
