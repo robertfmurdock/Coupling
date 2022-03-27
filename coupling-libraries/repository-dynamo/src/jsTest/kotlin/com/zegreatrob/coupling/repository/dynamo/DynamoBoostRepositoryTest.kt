@@ -6,7 +6,9 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 class DynamoBoostRepositoryTest :
     ExtendedBoostRepositoryValidator<DynamoBoostRepository, SharedContextData<DynamoBoostRepository>> {
 

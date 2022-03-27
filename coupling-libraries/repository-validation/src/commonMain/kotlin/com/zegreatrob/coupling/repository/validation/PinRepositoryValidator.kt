@@ -11,12 +11,12 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, TribeContext<R>> {
 
     @Test
@@ -71,10 +71,8 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
         }
     } exercise {
         repository.deletePin(tribeId, pins[1].id!!)
-        delay(30)
-        repository.getPins(tribeId)
-    } verify { result ->
-        result.map { it.data.pin }
+    } verifyWithWait {
+        repository.getPins(tribeId).map { it.data.pin }
             .assertContains(pins[0])
             .assertContains(pins[2])
             .size
@@ -101,12 +99,11 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     @Test
     fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(object : TribeContextMint<R>() {
         val pin = stubPin()
-    }.bind()) {
+    }.bind()) exercise {
         clock.currentTime = DateTime.now().plus(4.hours)
-        repository.save(tribeId.with(pin)).also { delay(15) }
-    } exercise {
-        repository.getPins(tribeId)
-    } verify { result ->
+        repository.save(tribeId.with(pin))
+    } verify {
+        val result = repository.getPins(tribeId)
         result.size.assertIsEqualTo(1)
         result.first().apply {
             timestamp.assertIsEqualTo(clock.currentTime)

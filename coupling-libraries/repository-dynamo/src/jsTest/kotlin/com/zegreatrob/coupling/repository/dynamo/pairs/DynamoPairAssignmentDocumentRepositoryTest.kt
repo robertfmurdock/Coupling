@@ -17,9 +17,10 @@ import com.zegreatrob.coupling.stubmodel.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotlinx.coroutines.delay
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 @Suppress("unused")
 class DynamoPairAssignmentDocumentRepositoryTest :
     PairAssignmentDocumentRepositoryValidator<DynamoPairAssignmentDocumentRepository> {
@@ -34,28 +35,25 @@ class DynamoPairAssignmentDocumentRepositoryTest :
     @Test
     fun getPairAssignmentDocumentRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(
         buildRepository { context ->
-        object : Context by context {
-            val tribeId = stubTribeId()
-            val pairAssignmentDocument = stubPairAssignmentDoc()
-            val initialSaveTime = DateTime.now().minus(3.days)
-            val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
-                pairs = listOf(pairOf(stubPlayer()).withPins(emptyList()))
-            )
-            val updatedSaveTime = initialSaveTime.plus(2.hours)
-            val updatedSaveTime2 = initialSaveTime.plus(4.hours)
-        }
-    }, additionalActions = {
+            object : Context by context {
+                val tribeId = stubTribeId()
+                val pairAssignmentDocument = stubPairAssignmentDoc()
+                val initialSaveTime = DateTime.now().minus(3.days)
+                val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
+                    pairs = listOf(pairOf(stubPlayer()).withPins(emptyList()))
+                )
+                val updatedSaveTime = initialSaveTime.plus(2.hours)
+                val updatedSaveTime2 = initialSaveTime.plus(4.hours)
+            }
+        }) exercise {
         clock.currentTime = initialSaveTime
         repository.save(tribeId.with(pairAssignmentDocument))
         clock.currentTime = updatedSaveTime
         repository.save(tribeId.with(updatedPairAssignmentDocument))
         clock.currentTime = updatedSaveTime2
         repository.delete(tribeId, pairAssignmentDocument.id)
-        delay(10)
-    }) exercise {
+    } verify {
         repository.getRecords(tribeId)
-    } verify { result ->
-        result
             .assertContains(Record(tribeId.with(pairAssignmentDocument), user.email, false, initialSaveTime))
             .assertContains(Record(tribeId.with(updatedPairAssignmentDocument), user.email, false, updatedSaveTime))
             .assertContains(Record(tribeId.with(updatedPairAssignmentDocument), user.email, true, updatedSaveTime2))

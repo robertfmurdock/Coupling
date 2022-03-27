@@ -14,7 +14,9 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 class SdkPairAssignmentDocumentRepositoryTest :
     PairAssignmentDocumentRepositoryValidator<SdkPairAssignmentsRepository> {
 

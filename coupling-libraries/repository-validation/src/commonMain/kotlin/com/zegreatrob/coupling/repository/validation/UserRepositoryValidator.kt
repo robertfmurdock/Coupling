@@ -8,11 +8,11 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-
-import kotlinx.coroutines.delay
 import kotlin.test.Test
 import kotlin.test.fail
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
@@ -67,14 +67,11 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
             val updatedUser1 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
             val updatedUser2 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId()))
         }
-    }) {
+    }) exercise {
         repository.save(updatedUser1)
         repository.save(updatedUser2)
-        delay(20)
-    } exercise {
-        repository.getUser()
-    } verify { result ->
-        result?.data
+    } verifyWithWait {
+        repository.getUser()?.data
             .assertIsEqualTo(updatedUser2)
     }
 
