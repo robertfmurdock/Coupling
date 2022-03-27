@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import com.zegreatrob.testmints.async.invoke
+
 import kotlin.test.Test
 
 private typealias SdkMint = ContextMint<SdkTribeRepository>
@@ -81,7 +81,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
         result?.data.assertIsEqualTo(tribe)
     }
 
-    override fun saveWillIncludeModificationInformation() = repositorySetup(object : SdkMint() {
+    override fun saveWillIncludeModificationInformation() = repositorySetup.with(object : SdkMint() {
         val tribe = stubTribe()
     }.bind()) {
         repository.save(tribe)

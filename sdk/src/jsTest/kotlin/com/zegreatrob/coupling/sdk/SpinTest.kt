@@ -16,7 +16,7 @@ import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.ScopeMint
-import com.zegreatrob.testmints.async.invoke
+
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ import kotlin.test.Test
 class SpinTest {
 
     @Test
-    fun willTakeThePlayersGivenAndUseThoseForPairing() = sdkSetup({ context ->
+    fun willTakeThePlayersGivenAndUseThoseForPairing() = sdkSetup.with({ context ->
         object : SdkContext by context {
             val tribe = Tribe(id = TribeId(uuid4().toString()), name = "commonTest", pairingRule = PairingRule.LongestTime)
             val players = listOf(
@@ -46,7 +46,7 @@ class SpinTest {
     }
 
     @Test
-    fun givenTheTribeRuleIsPreferDifferentBadgeThenPairsWillComply() = sdkSetup({
+    fun givenTheTribeRuleIsPreferDifferentBadgeThenPairsWillComply() = sdkSetup.with({
         object : SdkContext by it {
             val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
             val players = fourPlayersTwoDefaultTwoAlternate()
@@ -124,7 +124,7 @@ class SpinTest {
             }
 
         @Test
-        fun whenAPinExistsWillAssignOnePinToPair() = sdkSetup({ pinExistsSetup(it) }) {
+        fun whenAPinExistsWillAssignOnePinToPair() = sdkSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, listOf(pin))
@@ -136,7 +136,7 @@ class SpinTest {
             sdk.tribeRepository.delete(tribe.id)
         }
         @Test
-        fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup({ pinExistsSetup(it) }) {
+        fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, tribe, players, pins = listOf(pin))
         } exercise {
             sdk.requestSpin(tribe.id, players, emptyList())

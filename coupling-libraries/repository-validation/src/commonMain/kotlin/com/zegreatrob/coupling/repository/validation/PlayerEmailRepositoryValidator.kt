@@ -6,21 +6,22 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
+import kotlinx.coroutines.delay
 import kotlin.test.Test
 
 interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         where R : PlayerRepository, R : PlayerListGetByEmail {
 
     @Test
-    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = repositorySetup(object : TribeContextMint<R>() {
+    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = repositorySetup.with(object : TribeContextMint<R>() {
         val email = "test-${uuid4()}@zegreatrob.com"
         val player = stubPlayer().copy(email = email)
         val redHerring = stubPlayer().copy(email = "something else")
         val updatedPlayer = player.copy(name = "Besto")
     }.bind()) {
-        repository.save(tribeId.with(player))
-        repository.save(tribeId.with(redHerring))
-        repository.save(tribeId.with(updatedPlayer))
+        repository.save(tribeId.with(player)).also { delay(15) }
+        repository.save(tribeId.with(redHerring)).also { delay(15) }
+        repository.save(tribeId.with(updatedPlayer)).also { delay(15) }
     } exercise {
         repository.getPlayerIdsByEmail(email)
     } verify { result ->
@@ -29,7 +30,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
 
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() =
-        repositorySetup(object : TribeContextMint<R>() {
+        repositorySetup.with(object : TribeContextMint<R>() {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
             val updatedPlayer = player.copy(name = "Besto", email = "something else ")
@@ -44,7 +45,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
 
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatHaveBeenRemoved() =
-        repositorySetup(object : TribeContextMint<R>() {
+        repositorySetup.with(object : TribeContextMint<R>() {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
         }.bind()) {

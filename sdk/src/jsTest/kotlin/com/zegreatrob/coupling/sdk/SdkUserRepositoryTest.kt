@@ -18,7 +18,7 @@ class SdkUserRepositoryTest {
     })
 
     @Test
-    fun willReturnTheUser() = repositorySetup({ it }) exercise {
+    fun willReturnTheUser() = repositorySetup() exercise {
         repository.getUser()
     } verify { result ->
         result!!.data.let {
@@ -29,7 +29,7 @@ class SdkUserRepositoryTest {
     }
 
     @Test
-    fun canPerformUserQuery() = repositorySetup({ it }) {
+    fun canPerformUserQuery() = repositorySetup {
     } exercise {
         repository.perform(UserQuery())
     } verify { result ->

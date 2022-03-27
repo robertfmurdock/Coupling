@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.testmints.async.invoke
+
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlin.test.Test
 

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.dynamo.tribe
 
 import com.soywiz.klock.*
-import com.zegreatrob.coupling.repository.dynamo.DynamoTribeRepository
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.repository.dynamo.DynamoTribeRepository
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -24,7 +24,7 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator<DynamoTribeRepository
     })
 
     @Test
-    fun getTribeRecordsWillReturnAllRecordsForAllUsers() = repositorySetup(object : TribeMint() {
+    fun getTribeRecordsWillReturnAllRecordsForAllUsers() = repositorySetup.with(object : TribeMint() {
         val initialSaveTime = DateTime.now().minus(3.days)
         val tribe = stubTribe()
         val updatedTribe = tribe.copy(name = "CLONE!")
@@ -51,7 +51,7 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator<DynamoTribeRepository
     }
 
     @Test
-    fun canSaveRawRecord() = repositorySetup(object : TribeMint() {
+    fun canSaveRawRecord() = repositorySetup.with(object : TribeMint() {
         val records = listOf(
             Record(stubTribe(), uuidString(), false, DateTime.now().minus(3.months)),
             Record(stubTribe(), uuidString(), true, DateTime.now().minus(2.years))

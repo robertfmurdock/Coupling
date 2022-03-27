@@ -14,7 +14,7 @@ import kotlin.test.Test
 interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
-    fun saveMultipleThenGetListWillReturnSavedTribes() = repositorySetup(object : ContextMint<R>() {
+    fun saveMultipleThenGetListWillReturnSavedTribes() = repositorySetup.with(object : ContextMint<R>() {
         val tribes = stubTribes(3)
     }.bind()) {
         tribes.forEach { repository.save(it) }
@@ -30,7 +30,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
     private fun List<Record<Tribe>>.tribes() = map(Record<Tribe>::data)
 
     @Test
-    fun saveMultipleThenGetEachByIdWillReturnSavedTribes() = repositorySetup(object : ContextMint<R>() {
+    fun saveMultipleThenGetEachByIdWillReturnSavedTribes() = repositorySetup.with(object : ContextMint<R>() {
         val tribes = stubTribes(3)
     }.bind()) {
         tribes.forEach { repository.save(it) }
@@ -41,7 +41,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
     }
 
     @Test
-    fun saveWillIncludeModificationInformation() = repositorySetup(object : ContextMint<R>() {
+    fun saveWillIncludeModificationInformation() = repositorySetup.with(object : ContextMint<R>() {
         val tribe = stubTribe()
     }.bind()) {
         clock.currentTime = DateTime.now().minus(3.days)
@@ -58,7 +58,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
     }
 
     @Test
-    fun deleteWillMakeTribeInaccessible() = repositorySetup(object : ContextMint<R>() {
+    fun deleteWillMakeTribeInaccessible() = repositorySetup.with(object : ContextMint<R>() {
         val tribe = stubTribe()
     }.bind()) {
         repository.save(tribe)

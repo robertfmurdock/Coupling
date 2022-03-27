@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.invoke
+
 import kotlinx.coroutines.delay
 import kotlin.test.Test
 
@@ -23,7 +23,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
 
     @Test
     fun saveMultipleThenGetListWillReturnSavedDocumentsNewestToOldest() =
-        repositorySetup(object : TribeContextMint<R>() {
+        repositorySetup.with(object : TribeContextMint<R>() {
             val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
             val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
             val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
@@ -38,7 +38,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
         }
 
     @Test
-    fun getCurrentPairAssignmentsOnlyReturnsTheNewest() = repositorySetup(object : TribeContextMint<R>() {
+    fun getCurrentPairAssignmentsOnlyReturnsTheNewest() = repositorySetup.with(object : TribeContextMint<R>() {
         val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
         val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
         val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
@@ -59,7 +59,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     }
 
     @Test
-    fun savedWillIncludeModificationDateAndUsername() = repositorySetup(object : TribeContextMint<R>() {
+    fun savedWillIncludeModificationDateAndUsername() = repositorySetup.with(object : TribeContextMint<R>() {
         val pairAssignmentDoc = stubPairAssignmentDoc()
     }.bind()) {
         clock.currentTime = DateTime.now().plus(4.hours)
@@ -75,7 +75,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     }
 
     @Test
-    fun saveAndDeleteThenGetWillReturnNothing() = repositorySetup(object : TribeContextMint<R>() {
+    fun saveAndDeleteThenGetWillReturnNothing() = repositorySetup.with(object : TribeContextMint<R>() {
         val document = stubPairAssignmentDoc()
     }.bind()) {
         repository.save(tribeId.with(document))
@@ -89,7 +89,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     }
 
     @Test
-    fun deleteWhenDocumentDoesNotExistWillReturnFalse() = repositorySetup(object : TribeContextMint<R>() {
+    fun deleteWhenDocumentDoesNotExistWillReturnFalse() = repositorySetup.with(object : TribeContextMint<R>() {
         val id = PairAssignmentDocumentId("${uuid4()}")
     }.bind()) exercise {
         repository.delete(tribeId, id)
@@ -99,7 +99,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
 
     @Test
     fun afterSavingUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() =
-        repositorySetup(object : TribeContextMint<R>() {
+        repositorySetup.with(object : TribeContextMint<R>() {
             val originalDateTime = DateTime.now()
             val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
             val updatedDateTime = originalDateTime.plus(3.days)

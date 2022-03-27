@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.repository.dynamo.player
 
 import com.soywiz.klock.*
-import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
-import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
-import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.tribeRecord
+import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
+import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContext
@@ -37,7 +37,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     })
 
     @Test
-    fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(buildRepository { context ->
+    fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val player = stubPlayer()
@@ -63,7 +63,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     }
 
     @Test
-    fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
+    fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val records = listOf(
@@ -80,7 +80,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     }
 
     @Test
-    fun getPlayerRecordsWillIgnorePlayerRecordsWithoutId() = asyncSetup(buildRepository { context ->
+    fun getPlayerRecordsWillIgnorePlayerRecordsWithoutId() = asyncSetup.with(buildRepository { context ->
         object : Context by context, DynamoRecordJsonMapping {
             val tribeId = stubTribeId()
             override val userId: String = "test user"
@@ -103,7 +103,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     }
 
     @Test
-    fun getPlayersWillIgnorePlayerRecordsWithout() = asyncSetup(buildRepository { context ->
+    fun getPlayersWillIgnorePlayerRecordsWithout() = asyncSetup.with(buildRepository { context ->
         object : Context by context, DynamoRecordJsonMapping {
             val tribeId = stubTribeId()
             override val userId: String = "test user"

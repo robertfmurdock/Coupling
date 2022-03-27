@@ -32,7 +32,8 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         })
 
     @Test
-    fun getPairAssignmentDocumentRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(buildRepository { context ->
+    fun getPairAssignmentDocumentRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(
+        buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val pairAssignmentDocument = stubPairAssignmentDoc()
@@ -61,7 +62,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
     }
 
     @Test
-    fun canSaveRawRecord() = asyncSetup(buildRepository { context ->
+    fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
             val tribeId = stubTribeId()
             val records = listOf(

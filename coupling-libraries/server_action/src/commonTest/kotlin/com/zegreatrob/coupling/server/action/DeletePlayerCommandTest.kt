@@ -10,7 +10,7 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.invoke
+
 import kotlin.test.Test
 
 class DeletePlayerCommandTest {

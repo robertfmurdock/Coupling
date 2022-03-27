@@ -10,7 +10,7 @@ fun <C : SdkContext> C.attach(sdk: Sdk) = also {
     this.sdk = sdk
 }
 
-fun <C : SdkContext> sdkSetup(context: C, additionalActions: suspend C.() -> Unit) = e2eSetup(
+fun <C : SdkContext> sdkSetup(context: C, additionalActions: suspend C.() -> Unit) = e2eSetup.with(
     { context.attachSdk() }, additionalActions = additionalActions
 )
 

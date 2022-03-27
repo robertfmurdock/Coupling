@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.invoke
+
 import kotlinx.coroutines.delay
 import kotlin.test.Test
 import kotlin.test.fail
@@ -23,7 +23,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     }
 
     @Test
-    fun getUsersWithEmailWillShowAllUsersWithEmail() = repositorySetup(object : ContextMint<R>() {
+    fun getUsersWithEmailWillShowAllUsersWithEmail() = repositorySetup.with(object : ContextMint<R>() {
         val userWithEmail = stubUser()
     }.bind()) {
         repository.save(userWithEmail)
@@ -35,7 +35,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     }
 
     @Test
-    fun saveUserThenGetWillContainAllSavedValues() = repositorySetup(object : ContextMint<R>() {
+    fun saveUserThenGetWillContainAllSavedValues() = repositorySetup.with(object : ContextMint<R>() {
         val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId())) }
     }.bind()) {
         repository.save(updatedUser)
@@ -47,7 +47,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     }
 
     @Test
-    fun saveUserThenGetWillIncludeMarkingInformation() = repositorySetup(object : ContextMint<R>() {
+    fun saveUserThenGetWillIncludeMarkingInformation() = repositorySetup.with(object : ContextMint<R>() {
         val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId())) }
     }.bind()) {
         clock.currentTime = DateTime.now().plus(10.days)
@@ -62,7 +62,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     }
 
     @Test
-    fun saveUserRepeatedlyGetsLatest() = repositorySetup({ sharedContext ->
+    fun saveUserRepeatedlyGetsLatest() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
             val updatedUser1 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
             val updatedUser2 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId()))
