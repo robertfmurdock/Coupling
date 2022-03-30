@@ -11,8 +11,6 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 
@@ -63,13 +61,10 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
             stubPin(),
             stubPin()
         )
-    }.bind()) {
-        coroutineScope {
-            tribeId.with(pins).forEach {
-                launch { repository.save(it) }
-            }
+    }.bind()) exercise {
+        tribeId.with(pins).forEach {
+            repository.save(it)
         }
-    } exercise {
         repository.deletePin(tribeId, pins[1].id!!)
     } verifyWithWait {
         repository.getPins(tribeId).map { it.data.pin }
