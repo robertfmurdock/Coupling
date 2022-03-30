@@ -27,7 +27,9 @@ import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.findByClass
 import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
+import kotlinx.coroutines.await
 import kotlinx.dom.hasClass
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
@@ -37,6 +39,8 @@ import kotlin.js.json
 import kotlin.test.Test
 
 class PrepareSpinTest {
+
+    val user = userEvent.setup()
 
     companion object {
         val styles: SimpleStyle = useStyles("PrepareSpin")
@@ -108,7 +112,7 @@ class PrepareSpinTest {
     }
 
     @Test
-    fun whenAllPlayersAreDeselectedSpinButtonWillBeDisabled() = setup(object {
+    fun whenAllPlayersAreDeselectedSpinButtonWillBeDisabled() = asyncSetup(object {
         val tribe = stubTribe()
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(
@@ -126,11 +130,12 @@ class PrepareSpinTest {
         val playerCards = result.container.querySelectorAll(".${playerCardStyles["player"]}").asList()
         playerCards.forEach {
             if ((it as? HTMLElement)?.hasClass("${playerCardStyles["deselected"]}") == false) {
-                userEvent.click(it)
+                user.click(it).await()
             }
         }
     } verify {
-        result.getByText("Spin!").attributes["disabled"]
+        result.getByText("Spin!")
+            .attributes["disabled"]
             .assertIsNotEqualTo(null)
     }
 
