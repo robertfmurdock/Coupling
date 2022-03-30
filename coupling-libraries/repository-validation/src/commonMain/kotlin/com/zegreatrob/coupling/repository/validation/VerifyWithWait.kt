@@ -9,12 +9,12 @@ import kotlin.time.TimeSource
 @ExperimentalTime
 infix fun <C : Any, R> Exercise<C, R>.verifyWithWait(assertionFunctions: suspend C.(R) -> Unit): TestResult =
     this.verify { result ->
-        val timeout = 200
+        val timeout = 2000
         val mark = TimeSource.Monotonic.markNow()
         var lastError: Throwable? = runAssertions(assertionFunctions, result)
         var retryCount = 0
         while (lastError != null && mark.elapsedNow().inWholeMilliseconds < timeout) {
-            println("RETRYING ${retryCount++} elapsed${mark.elapsedNow().inWholeMilliseconds}")
+            println("RETRYING ${retryCount++} elapsed ${mark.elapsedNow().inWholeMilliseconds}ms")
             lastError = runAssertions(assertionFunctions, result)
             delay(20)
         }
