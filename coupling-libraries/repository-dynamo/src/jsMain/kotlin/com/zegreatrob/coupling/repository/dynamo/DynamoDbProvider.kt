@@ -16,6 +16,7 @@ object DynamoDbProvider : DynamoDBSyntax {
 
     private fun dynamoConfig(): Json {
         val json = json(
+            "defaultsMode" to "standard",
             "region" to "us-east-1",
             "retryMode" to "standard",
             "useFipsEndpoint" to false,
