@@ -2,7 +2,7 @@ const path = require('path');
 
 const resourcesPath = path.resolve(__dirname, 'build/processedResources/js/main');
 const config = {
-    mode: "production",
+    mode: "development",
     entry: "Coupling-server",
     output: {
         path: path.resolve(__dirname, 'build/webpack-output'),
