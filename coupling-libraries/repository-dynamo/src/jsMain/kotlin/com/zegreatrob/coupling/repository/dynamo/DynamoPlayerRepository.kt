@@ -125,7 +125,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                     .itemsNode()
                     .mapNotNull { it.getDynamoStringValue("id") }
             }
-            logger.debug { "found player ids $playerIdsWithEmail" }
+            logger.info { "found player ids $playerIdsWithEmail" }
 
             logAsync("recordsWithIds") {
                 performScan(playerIdScanParams(playerIdsWithEmail))
