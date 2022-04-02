@@ -40,9 +40,11 @@ class WebsocketTest {
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
             )
-    } teardown { (session) ->
-        session.close()
-        sdk.tribeRepository.delete(tribe.id)
+    } teardown { result ->
+        result?.let { (session) ->
+            session.close()
+            sdk.tribeRepository.delete(tribe.id)
+        }
     }
 
     private suspend fun SdkContext.couplingSocketSession(tribeId: TribeId): DefaultClientWebSocketSession {
@@ -78,9 +80,11 @@ class WebsocketTest {
                     "Users viewing this page: 3", expectedOnlinePlayerList(username).toSet(), null
                 )
             )
-    } teardown { (result) ->
-        result.forEach { it.close() }
-        sdk.tribeRepository.delete(tribe.id)
+    } teardown { result ->
+        result?.let { (session) ->
+            session.forEach { it.close() }
+            sdk.tribeRepository.delete(tribe.id)
+        }
     }
 
     @Test
@@ -102,16 +106,9 @@ class WebsocketTest {
                 CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet())
             )
     } teardown { result ->
-        result.forEach { it.close() }
+        result?.forEach { it.close() }
         sdk.tribeRepository.delete(tribe.id)
     }
-
-    private fun DefaultClientWebSocketSession.readAllAvailableMessages() = generateSequence {
-        with(incoming.tryReceive()) {
-            if (!isSuccess) null else getOrThrow() as? Frame.Text
-        }
-    }.map(Frame.Text::readText)
-        .toList()
 
     private suspend fun DefaultClientWebSocketSession.readTextFrame() = (incoming.receive() as? Frame.Text)?.readText()
 
@@ -163,7 +160,7 @@ class WebsocketTest {
                 CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet())
             )
     } teardown { openSocket ->
-        openSocket.close()
+        openSocket?.close()
         sdk.tribeRepository.delete(tribe.id)
     }
 
