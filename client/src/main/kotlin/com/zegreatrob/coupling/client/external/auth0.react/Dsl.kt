@@ -1,9 +1,7 @@
 package com.zegreatrob.coupling.client.external.auth0.react
 
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions.Companion.window
-import kotlinext.js.jso
 import kotlinx.coroutines.await
-import react.RBuilder
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
