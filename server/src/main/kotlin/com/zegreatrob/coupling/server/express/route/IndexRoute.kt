@@ -15,7 +15,7 @@ val indexHtmlPromise get() = fetch("${Config.clientUrl}/index.html")
         .then(FetchResult::text)
         .unsafeCast<Promise<String>>()
 
-fun Express.indexRoute(): Handler = { request, response, _ ->
+fun Express.indexRoute(): Handler = { _, response, _ ->
     indexHtmlPromise.then { indexHtml ->
         response.type("html")
         val indexStream = Readable.from(arrayOf(indexHtml))
