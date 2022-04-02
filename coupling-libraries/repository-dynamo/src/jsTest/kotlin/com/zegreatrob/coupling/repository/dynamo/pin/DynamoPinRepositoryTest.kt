@@ -6,10 +6,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.tribeRecord
 import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
-import com.zegreatrob.coupling.repository.validation.MagicClock
-import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeContext
-import com.zegreatrob.coupling.repository.validation.TribeContextData
+import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubTribeId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -67,8 +64,8 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
         }
     }) exercise {
         records.forEach { repository.saveRawRecord(it) }
-        repository.getPinRecords(tribeId)
-    } verify { loadedRecords ->
+    } verifyWithWait {
+        val loadedRecords = repository.getPinRecords(tribeId)
         records.forEach { loadedRecords.assertContains(it) }
     }
 }
