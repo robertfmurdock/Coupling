@@ -146,7 +146,6 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
     private fun playerIdScanParams(recordTribePlayerIds: Set<String>) = json(
         "TableName" to prefixedTableName,
-        "IndexName" to playerEmailIndex,
         "ExpressionAttributeValues" to json(
             ":playerIdList" to recordTribePlayerIds.toTypedArray()
         ),
