@@ -124,15 +124,18 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                 performQuery(emailQueryParams(email))
                     .itemsNode()
                     .mapNotNull { it.getDynamoStringValue("id") }
+                    .toSet()
             }
             logger.info { "found player ids $playerIdsWithEmail" }
 
             logAsync("recordsWithIds") {
                 performScan(playerIdScanParams(playerIdsWithEmail))
                     .itemsNode()
+                    .also { logger.info { "got records with ids ${it.size} " } }
                     .sortByRecordTimestamp()
                     .groupBy { it.getDynamoStringValue("id") }
                     .map { it.value.last() }
+                    .also { logger.info { "most recent is  ${JSON.stringify(it)} " } }
                     .filter { it["email"] == email && it["isDeleted"] != true }
                     .map {
                         TribeId(it.getDynamoStringValue("tribeId") ?: "")
@@ -141,7 +144,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
             }
         }
 
-    private fun playerIdScanParams(recordTribePlayerIds: List<String>) = json(
+    private fun playerIdScanParams(recordTribePlayerIds: Set<String>) = json(
         "TableName" to prefixedTableName,
         "IndexName" to playerEmailIndex,
         "ExpressionAttributeValues" to json(
