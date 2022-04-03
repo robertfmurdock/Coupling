@@ -5,6 +5,8 @@ on:
       - '**'
     tags-ignore:
       - '**'
+  workflow_dispatch:
+
 jobs:
   build-job:
     name: "Build"
@@ -45,7 +47,7 @@ jobs:
         name: Build Coupling
         with:
           read-only: ${{ github.ref != 'refs/heads/master' }}
-          arguments: release check --scan
+          arguments: :coupling-libraries:check --scan
       - uses: burrunan/gradle-cache-action@v1
         if: ${{ always() }}
         name: Collect Results
