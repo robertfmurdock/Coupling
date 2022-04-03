@@ -4,9 +4,12 @@ import com.soywiz.klock.*
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.tribeRecord
+import com.zegreatrob.coupling.repository.dynamo.DynamoDbProvider
 import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
+import com.zegreatrob.coupling.repository.dynamo.external.awsdynamoclient.ScanCommand
+import com.zegreatrob.coupling.repository.dynamo.external.awsdynamoclient.ScanCommandOutput
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContext
@@ -18,6 +21,9 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlinx.coroutines.test.TestResult
+import kotlinx.js.jso
+import kotlin.js.Promise
 import kotlin.js.json
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
@@ -37,6 +43,20 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
             override val repository = repo
         }
     })
+
+    @Test
+    override fun getPlayersForEmailsWillReturnLatestVersionOfPlayers(): TestResult {
+        val test = super.getPlayersForEmailsWillReturnLatestVersionOfPlayers()
+        return test.then {
+            console.log("holup")
+            return@then DynamoDbProvider.dynamoClient.send(ScanCommand(jso {
+                this.TableName = DynamoPlayerRepository.prefixedTableName
+            })).then { output: ScanCommandOutput ->
+                println("OUTPUT IS ${JSON.stringify(output.Items)}")
+            }
+        }.unsafeCast<Promise<Unit>>()
+    }
+
 
     @Test
     fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(buildRepository { context ->

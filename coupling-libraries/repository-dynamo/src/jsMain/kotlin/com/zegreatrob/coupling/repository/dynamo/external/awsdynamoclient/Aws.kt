@@ -19,3 +19,21 @@ external class DynamoDB(options: Json) {
     fun createTable(json: Json): Promise<dynamic>
 
 }
+
+external class DynamoDBClient(options: Json) {
+    fun send(command: DynamoCommand):Promise<ScanCommandOutput>
+}
+
+external interface DynamoCommand
+
+external class ScanCommand(input : ScanCommandInput) : DynamoCommand
+
+external interface ScanCommandInput {
+    var TableName: String
+    var IndexName: String?
+    var ProjectionExpression: String
+}
+external interface ScanCommandOutput {
+    val Count: Int
+    val Items: Json
+}
