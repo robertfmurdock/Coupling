@@ -53,7 +53,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
     implementation("com.soywiz.korlibs.klock:klock:2.7.0")
     implementation("com.benasher44:uuid:0.4.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.5")
 
     testImplementation("com.zegreatrob.coupling.libraries:stub-model")
     testImplementation("com.zegreatrob.coupling.libraries:test-logging")
