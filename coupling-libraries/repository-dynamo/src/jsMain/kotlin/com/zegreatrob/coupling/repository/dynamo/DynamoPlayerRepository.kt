@@ -130,6 +130,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
             logAsync("recordsWithIds") {
                 performScan(playerIdScanParams(playerIdsWithEmail))
+                    .also { logger.info { "scan result is ${JSON.stringify(it)}" } }
                     .itemsNode()
                     .also { logger.info { "got records with ids ${it.size} " } }
                     .sortByRecordTimestamp()
