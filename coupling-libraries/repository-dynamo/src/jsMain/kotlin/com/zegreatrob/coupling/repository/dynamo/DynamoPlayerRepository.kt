@@ -126,15 +126,11 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                     .mapNotNull { it.getDynamoStringValue("id") }
                     .toSet()
             }
-            logger.info { "found player ids $playerIdsWithEmail" }
-
             logAsync("recordsWithIds") {
                 scanAllRecords(playerIdScanParams(playerIdsWithEmail))
-                    .also { logger.info { "got records with ids ${it.size} " } }
                     .sortByRecordTimestamp()
                     .groupBy { it.getDynamoStringValue("id") }
                     .map { it.value.last() }
-                    .also { logger.info { "most recent is  ${JSON.stringify(it)} " } }
                     .filter { it["email"] == email && it["isDeleted"] != true }
                     .map {
                         TribeId(it.getDynamoStringValue("tribeId") ?: "")

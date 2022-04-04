@@ -6,10 +6,11 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 
+@ExperimentalCoroutinesApi
 @ExperimentalTime
 interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         where R : PlayerRepository, R : PlayerListGetByEmail {
@@ -21,11 +22,11 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         val redHerring = stubPlayer().copy(email = "something else")
         val updatedPlayer = player.copy(name = "Besto")
     }.bind()) exercise {
-        repository.save(tribeId.with(player))
-        delay(30)
-        repository.save(tribeId.with(redHerring))
-        delay(30)
-        repository.save(tribeId.with(updatedPlayer))
+        with(repository) {
+            save(tribeId.with(player))
+            save(tribeId.with(redHerring))
+            save(tribeId.with(updatedPlayer))
+        }
     } verifyWithWait {
         repository.getPlayerIdsByEmail(email)
             .assertIsEqualTo(listOf(tribeId.with(player.id)), "Could not find by email <$email>")
