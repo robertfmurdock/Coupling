@@ -55,8 +55,16 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
                 println("OUTPUT IS ${JSON.stringify(output.Items)}")
             }
         }.unsafeCast<Promise<Unit>>()
+            .catch { error ->
+                console.log("holup")
+                return@catch DynamoDbProvider.dynamoClient.send(ScanCommand(jso {
+                    this.TableName = DynamoPlayerRepository.prefixedTableName
+                })).then { output: ScanCommandOutput ->
+                    println("OUTPUT IS ${JSON.stringify(output.Items)}")
+                    throw error
+                }
+            }.unsafeCast<Promise<Unit>>()
     }
-
 
     @Test
     fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(buildRepository { context ->
