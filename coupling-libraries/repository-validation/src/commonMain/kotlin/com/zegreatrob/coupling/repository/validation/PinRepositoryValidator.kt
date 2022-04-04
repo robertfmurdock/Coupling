@@ -11,9 +11,11 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 
+@ExperimentalCoroutinesApi
 @ExperimentalTime
 interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, TribeContext<R>> {
 
@@ -26,9 +28,9 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
         )
     }.bind()) exercise {
         tribeId.with(pins).forEach { repository.save(it) }
+    } verifyWithWait {
         repository.getPins(tribeId)
-    } verify { result ->
-        result.map { it.data.pin }
+            .map { it.data.pin }
             .assertIsEqualTo(pins)
     }
 
@@ -39,12 +41,10 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
             name = "",
             icon = ""
         )
-    }.bind()) {
+    }.bind()) exercise {
         repository.save(tribeId.with(pin))
-    } exercise {
-        repository.getPins(tribeId)
-    } verify { result ->
-        result.map { it.data.pin }
+    } verifyWithWait {
+        repository.getPins(tribeId).map { it.data.pin }
             .also { it.assertHasIds() }
             .map { it.copy(id = null) }
             .assertIsEqualTo(listOf(pin))
@@ -97,7 +97,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }.bind()) exercise {
         clock.currentTime = DateTime.now().plus(4.hours)
         repository.save(tribeId.with(pin))
-    } verify {
+    } verifyWithWait {
         val result = repository.getPins(tribeId)
         result.size.assertIsEqualTo(1)
         result.first().apply {
