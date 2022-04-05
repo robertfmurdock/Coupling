@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.MainScope
@@ -24,11 +25,11 @@ interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
     }
 
     private suspend fun postStringToJsonObject(body: JsonElement): JsonElement {
-        val result = client.post<JsonObject>("/api/graphql") {
+        val result = client.post("api/graphql") {
             header("Authorization", "Bearer ${getIdToken()}")
             contentType(ContentType.Application.Json)
-            this.body = body
-        }
+            setBody(body)
+        }.body<JsonObject>()
         val errors = result["errors"]
         if (errors != null && errors.jsonArray.isNotEmpty()) {
             throw Error("Failed with errors: ${errors}. Full body is $result")
@@ -38,5 +39,5 @@ interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
 
     override suspend fun get(path: String): JsonElement = client.get(path) {
         header("Authorization", "Bearer ${getIdToken()}")
-    }
+    }.body()
 }

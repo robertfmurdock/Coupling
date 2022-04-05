@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.sdk
 
 import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.logging.*
-import io.ktor.client.features.websocket.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.logging.*
+import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.serialization.json.JsonObject
@@ -16,7 +17,7 @@ import mu.KotlinLogging
 const val primaryAuthorizedUsername = "couplingtestuser@gmail.com"
 val primaryTestPassword = getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
 
-expect fun getEnv(name: String) : String?
+expect fun getEnv(name: String): String?
 
 val primaryAuthorizedSdkDeferred by lazy {
     MainScope().async {
@@ -47,7 +48,7 @@ private suspend fun authorizedSdk(username: String, password: String) = generate
 suspend fun authorizedSdk() = primaryAuthorizedSdkDeferred.await()
 
 val generalPurposeClient = HttpClient {
-    install(JsonFeature)
+    install(ContentNegotiation) { json() }
     install(WebSockets)
     setupPlatformSpecificKtorSettings()
     install(Logging) {
@@ -74,14 +75,7 @@ private fun buildClient(): HttpClient {
         followRedirects = false
         defaultRequest {
             expectSuccess = false
-            url {
-                protocol = baseUrl.protocol
-                host = baseUrl.host
-                if (protocol != URLProtocol.HTTPS) {
-                    port = baseUrl.port
-                }
-                encodedPath = "${baseUrl.encodedPath}$encodedPath"
-            }
+            url(baseUrl.toString())
         }
         install(Logging) {
             logger = object : Logger {
@@ -94,7 +88,7 @@ private fun buildClient(): HttpClient {
 }
 
 private suspend fun generateAccessToken(username: String, password: String): String {
-    val result = generalPurposeClient.submitForm<JsonObject>(
+    val result = generalPurposeClient.submitForm(
         url = "https://zegreatrob.us.auth0.com/oauth/token",
         formParameters = Parameters.build {
             append("grant_type", "password")
@@ -105,7 +99,7 @@ private suspend fun generateAccessToken(username: String, password: String): Str
             append("audience", "https://localhost/api")
             append("scope", "email")
         }
-    )
+    ).body<JsonObject>()
 
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }

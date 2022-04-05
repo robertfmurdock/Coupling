@@ -1,26 +1,23 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.couplingJsonFormat
 import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.cookies.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.cookies.*
+import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.http.HttpHeaders.UserAgent
+import io.ktor.serialization.kotlinx.json.*
 
 fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
-    install(JsonFeature) {
-        serializer = KotlinxSerializer(couplingJsonFormat)
-    }
-    install(UserAgent) {
-        agent = "CouplingSdk"
+    install(ContentNegotiation) {
+        json()
     }
     install(HttpCookies) {
         storage = AcceptAllCookiesStorage()
     }
     defaultRequest {
         expectSuccess = false
-
+        header(UserAgent, "CouplingSdk")
         locationAndBasename
             ?.let { (location, basename) ->
                 url {
@@ -28,7 +25,7 @@ fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
                     val locationUrl = Url(location)
                     host = locationUrl.host
                     port = locationUrl.port
-                    encodedPath = "${basename}/$encodedPath"
+                    encodedPath = "${basename}$encodedPath"
                 }
             }
     }

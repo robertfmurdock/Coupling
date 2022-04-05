@@ -14,9 +14,9 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubTribe
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import io.ktor.client.features.websocket.*
+import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
-import io.ktor.http.cio.websocket.*
+import io.ktor.websocket.*
 import kotlinx.coroutines.withTimeout
 import kotlin.test.Test
 

@@ -5,11 +5,12 @@ import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.coupling.server.Process
 import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.logging.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.Deferred
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -32,7 +33,7 @@ private suspend fun authorizedKtorSdk(username: String, password: String) =
 suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
 
 private val generalPurposeClient = HttpClient {
-    install(JsonFeature)
+    install(ContentNegotiation) { json() }
     install(Logging) {
         level = LogLevel.INFO
         logger = object : Logger {
@@ -50,14 +51,7 @@ private fun buildClientWithToken(): HttpClient {
 
         defaultRequest {
             expectSuccess = false
-            url {
-                protocol = baseUrl.protocol
-                host = baseUrl.host
-                if (protocol != URLProtocol.HTTPS) {
-                    port = baseUrl.port
-                }
-                encodedPath = "${baseUrl.encodedPath}$encodedPath"
-            }
+            url(baseUrl.toString())
         }
         install(Logging) {
             level = LogLevel.INFO
@@ -70,7 +64,7 @@ private fun buildClientWithToken(): HttpClient {
 }
 
 private suspend fun generateAccessToken(username: String, password: String): String {
-    val result = generalPurposeClient.submitForm<JsonObject>(
+    val result = generalPurposeClient.submitForm(
         url = "https://zegreatrob.us.auth0.com/oauth/token",
         formParameters = Parameters.build {
             append("grant_type", "password")
@@ -81,7 +75,7 @@ private suspend fun generateAccessToken(username: String, password: String): Str
             append("audience", "https://localhost/api")
             append("scope", "email")
         }
-    )
+    ).body<JsonObject>()
 
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }

@@ -50,6 +50,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("com.zegreatrob.testmints:async")
                 implementation("com.zegreatrob.jsmints:wdio")
+
                 jstools.packageJson.devDependencies()?.forEach {
                     implementation(npm(it.first, it.second.asText()))
                 }
@@ -68,6 +69,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("com.zegreatrob.jsmints:wdio")
+
     jstools.packageJson.devDependencies()?.forEach {
         implementation(npm(it.first, it.second.asText()))
     }

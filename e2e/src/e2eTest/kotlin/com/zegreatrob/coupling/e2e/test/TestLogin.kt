@@ -4,9 +4,11 @@ import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.server.Process
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import io.ktor.client.*
-import io.ktor.client.features.json.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.await
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.int
@@ -25,13 +27,15 @@ object TestLogin : BrowserSyntax {
 
     suspend fun login() {
         val client = HttpClient {
-            install(JsonFeature)
+            install(ContentNegotiation) {
+                json()
+            }
         }
         val audience = "https://localhost/api"
         val scope = "openid profile email offline_access"
         val clientId = "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg"
         val clientSecret = Process.getEnv("AUTH0_CLIENT_SECRET") ?: ""
-        val result = client.submitForm<JsonObject>(url = "https://zegreatrob.us.auth0.com/oauth/token",
+        val result = client.submitForm(url = "https://zegreatrob.us.auth0.com/oauth/token",
             formParameters = Parameters.build {
                 append("grant_type", "password")
                 append("username", primaryAuthorizedUsername)
@@ -41,7 +45,7 @@ object TestLogin : BrowserSyntax {
                 append("client_id", clientId)
                 append("client_secret", clientSecret)
             }
-        )
+        ).body<JsonObject>()
         val accessToken = result["access_token"]!!.jsonPrimitive.content
         val idToken = result["id_token"]!!.jsonPrimitive.content
         val expiresIn = result["expires_in"]!!.jsonPrimitive.int

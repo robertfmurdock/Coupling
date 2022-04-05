@@ -24,8 +24,8 @@ dependencies {
     toolsExtension.packageJson.devDependencies()?.forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
-    implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.325-kotlin-1.6.10"))
-    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:7.1.1"))
+    implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.326-kotlin-1.6.20"))
+    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:7.2.0"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.2"))
-    implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.0"))
+    implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.1"))
 }
