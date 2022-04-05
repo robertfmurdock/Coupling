@@ -32,22 +32,6 @@
                   <project path="$PROJECT_DIR$/coupling-libraries/test-logging" />
                 </projects>
               </build>
-              <build path="$PROJECT_DIR$/../jsmints" name="jsmints">
-                <projects>
-                  <project path="$PROJECT_DIR$/../jsmints" />
-                  <project path="$PROJECT_DIR$/../jsmints/jsmints-bom" />
-                  <project path="$PROJECT_DIR$/../jsmints/minenzyme" />
-                  <project path="$PROJECT_DIR$/../jsmints/minjson" />
-                  <project path="$PROJECT_DIR$/../jsmints/minreact" />
-                  <project path="$PROJECT_DIR$/../jsmints/react-data-loader" />
-                  <project path="$PROJECT_DIR$/../jsmints/wdio" />
-                </projects>
-              </build>
-              <build path="$PROJECT_DIR$/../jsmints/jsmints-plugins" name="jsmints-plugins">
-                <projects>
-                  <project path="$PROJECT_DIR$/../jsmints/jsmints-plugins" />
-                </projects>
-              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
@@ -86,14 +70,6 @@
             <option value="$PROJECT_DIR$/plugins" />
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
-            <option value="$PROJECT_DIR$/../jsmints" />
-            <option value="$PROJECT_DIR$/../jsmints/jsmints-bom" />
-            <option value="$PROJECT_DIR$/../jsmints/jsmints-plugins" />
-            <option value="$PROJECT_DIR$/../jsmints/minenzyme" />
-            <option value="$PROJECT_DIR$/../jsmints/minjson" />
-            <option value="$PROJECT_DIR$/../jsmints/minreact" />
-            <option value="$PROJECT_DIR$/../jsmints/react-data-loader" />
-            <option value="$PROJECT_DIR$/../jsmints/wdio" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -83,7 +83,7 @@ private fun popperOptions(arrowRef: MutableRefObject<HTMLElement>, state: DemoAn
             }
         },
         Offset.modifier {
-            this.options = jso { offset = arrayOf(0, 10) }
+            this.options = jso { offset = Offset(0.0, 10.0) }
         }
     )
 }
