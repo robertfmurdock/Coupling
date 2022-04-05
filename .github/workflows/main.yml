@@ -9,6 +9,8 @@ jobs:
   build-job:
     name: "Build"
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.ref }}
     env:
       COUPLING_IN_MEMORY: "true"
       AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
