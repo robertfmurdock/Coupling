@@ -14,9 +14,11 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 
+@ExperimentalCoroutinesApi
 @Suppress("unused")
 @ExperimentalTime
 class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
@@ -37,17 +39,15 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
             val updatedSaveTime = initialSaveTime.plus(2.hours)
             val updatedSaveTime2 = initialSaveTime.plus(4.hours)
         }
-    }, additionalActions = {
+    }) exercise {
         clock.currentTime = initialSaveTime
         repository.save(tribeId.with(pin))
         clock.currentTime = updatedSaveTime
         repository.save(tribeId.with(updatedPin))
         clock.currentTime = updatedSaveTime2
         repository.deletePin(tribeId, pin.id!!)
-    }) exercise {
+    } verifyWithWait {
         repository.getPinRecords(tribeId)
-    } verify { result ->
-        result
             .assertContains(Record(tribeId.with(pin), user.email, false, initialSaveTime))
             .assertContains(Record(tribeId.with(updatedPin), user.email, false, updatedSaveTime))
             .assertContains(Record(tribeId.with(updatedPin), user.email, true, updatedSaveTime2))
