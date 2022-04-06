@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -12,7 +11,7 @@ kotlin {
             webpackTask {
                 inputs.files("${project.projectDir}/src/main/resources")
                 val profile: String? by project
-                if(!profile.isNullOrBlank()) {
+                if (!profile.isNullOrBlank()) {
                     this.args.add("--profile")
                     this.args.add("--json=${buildDir}/reports/stats.json")
                 }
@@ -70,33 +69,37 @@ dependencies {
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
-    val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class)
-    val browserProductionWebpack by getting(KotlinWebpack::class)
-    val browserDistribution by getting {}
-
-    artifacts {
-        add(clientConfiguration.name, compileProductionExecutableKotlinJs.outputFileProperty) {
-            builtBy(compileProductionExecutableKotlinJs)
-        }
-        add(clientConfiguration.name, browserProductionWebpack.destinationDirectory) {
-            builtBy(browserProductionWebpack, browserDistribution)
+    compileProductionExecutableKotlinJs {
+        artifacts {
+            add(clientConfiguration.name, outputFileProperty) {
+                builtBy(compileProductionExecutableKotlinJs)
+            }
         }
     }
-    val uploadToS3 = create<Exec>("uploadToS3") {
+    val browserDistribution = named("browserDistribution")
+    val browserProductionWebpack = named("browserProductionWebpack", KotlinWebpack::class) {
+        artifacts {
+            add(clientConfiguration.name, destinationDirectory) {
+                builtBy(this@named, browserDistribution)
+            }
+        }
+    }
+
+    val uploadToS3 by registering(Exec::class) {
         dependsOn(browserProductionWebpack)
         if (version.toString().contains("SNAPSHOT")) {
             enabled = false
         }
-        val absolutePath = browserProductionWebpack.destinationDirectory.absolutePath
+        val absolutePath = browserProductionWebpack.get().destinationDirectory.absolutePath
         commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${version}".split(" ")
     }
     findByPath(":release")!!.finalizedBy(uploadToS3)
 
-    "browserProductionWebpack" {
+    named("browserProductionWebpack") {
         outputs.cacheIf { true }
     }
 
-    val dependencyResources by creating(Copy::class) {
+    val dependencyResources by registering(Copy::class) {
         val javascriptConfig = configurations["runtimeClasspath"]
         dependsOn(javascriptConfig)
         duplicatesStrategy = DuplicatesStrategy.WARN
@@ -132,7 +135,7 @@ tasks {
         })
     }
 
-    val processResources by getting {
+    named("processResources") {
         dependsOn(dependencyResources)
     }
 }

@@ -33,16 +33,16 @@ dockerCompose {
 }
 
 tasks {
-    val composeUp by getting {
+    named("composeUp") {
         dependsOn(":server:buildImage")
     }
     val couplingLibrariesBuild = gradle.includedBuild("coupling-libraries")
 
     val couplingLibrariesCheck = couplingLibrariesBuild.task(":check")
-    val check by getting {
+    named("check") {
         dependsOn(couplingLibrariesCheck)
     }
-    val collectResults by creating(Copy::class) {
+    val collectResults by registering(Copy::class) {
         mustRunAfter(couplingLibrariesCheck)
         dependsOn(couplingLibrariesBuild.task(":collectResults"))
         from("${couplingLibrariesBuild.projectDir.path}/build/test-output")
@@ -54,7 +54,7 @@ afterEvaluate {
     tasks {
         val couplingLibrariesBuild = gradle.includedBuild("coupling-libraries")
         val couplingLibrariesKotlinNodeJsSetup = couplingLibrariesBuild.task(":kotlinNodeJsSetup")
-        val kotlinNodeJsSetup by getting { dependsOn(couplingLibrariesKotlinNodeJsSetup) }
+        named("kotlinNodeJsSetup") { dependsOn(couplingLibrariesKotlinNodeJsSetup) }
     }
 }
 

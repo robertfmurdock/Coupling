@@ -1,5 +1,4 @@
 import com.zegreatrob.coupling.plugins.NodeExec
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -41,24 +40,26 @@ dependencies {
 }
 
 tasks {
-    val clean by getting {
+    clean {
         doLast {
             delete(file("build"))
         }
     }
 
-    val compileKotlinJs by getting(Kotlin2JsCompile::class)
+    compileKotlinJs {
+        artifacts {
+            add(appConfiguration.name, compileKotlinJs.get().outputFileProperty) {
+                builtBy(compileKotlinJs)
+            }
+        }
+    }
 
-    val processResources by getting(ProcessResources::class) {}
-
-    val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
-
-    val serverCompile by creating(NodeExec::class) {
+    val serverCompile by registering(NodeExec::class) {
         dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
         mustRunAfter(clean)
-        inputs.dir(compileKotlinJs.outputFileProperty)
-        inputs.dir(processResources.destinationDir.path)
-        inputs.file(compileProductionExecutableKotlinJs.outputFileProperty)
+        inputs.dir(compileKotlinJs.get().outputFileProperty)
+        inputs.dir(processResources.get().destinationDir.path)
+        inputs.file(compileProductionExecutableKotlinJs.get().outputFileProperty)
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")
@@ -71,7 +72,7 @@ tasks {
         workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
     }
 
-    create<NodeExec>("serverStats") {
+    register<NodeExec>("serverStats") {
         dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
         mustRunAfter(clean)
 
@@ -86,39 +87,37 @@ tasks {
         workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
     }
 
-    val copyServerIcons by creating(Copy::class) {
+    val copyServerIcons by registering(Copy::class) {
         from("public")
         into("build/executable/public")
     }
 
-    val copyServerViews by creating(Copy::class) {
+    val copyServerViews by registering(Copy::class) {
         from("views")
         into("build/executable/views")
     }
 
-    val copyServerExecutable by creating(Copy::class) {
+    val copyServerExecutable by registering(Copy::class) {
         dependsOn(serverCompile)
         from("build/webpack-output")
         into("build/executable")
     }
 
-    val copyServerResources by creating {
+    val copyServerResources by registering {
         dependsOn(copyServerIcons, copyServerViews)
     }
 
-    val serverAssemble by creating {
+    val serverAssemble by registering {
         dependsOn(copyServerResources, copyServerExecutable)
     }
 
-    val assemble by getting {
+    assemble {
         dependsOn(serverAssemble)
     }
 
     val packageJson: String? by rootProject
 
-    val test by getting
-
-    create<NodeExec>("updateDependencies") {
+    register<NodeExec>("updateDependencies") {
         dependsOn(test, compileKotlinJs)
         nodeCommand = "ncu"
         arguments = listOf(
@@ -130,13 +129,13 @@ tasks {
         )
     }
 
-    create<NodeExec>("start") {
+    register<NodeExec>("start") {
         dependsOn(assemble, clientConfiguration, compileKotlinJs)
         arguments = listOf(project.relativePath("startup"))
         environment("NODE_ENV", "production")
     }
 
-    val prepareDockerData by creating(Copy::class) {
+    val prepareDockerData by registering(Copy::class) {
         dependsOn(assemble, compileKotlinJs)
         from("build") {
             include("executable/**")
@@ -148,13 +147,13 @@ tasks {
         destinationDir = file("build/docker-data")
     }
 
-    val buildImage by creating(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
+    val buildImage by registering(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
         dependsOn(prepareDockerData)
         inputDir.set(file("build/docker-data"))
         images.add("zegreatrob/coupling-serverless:latest")
     }
 
-    create<NodeExec>("serverlessStart") {
+    register<NodeExec>("serverlessStart") {
         dependsOn(assemble, clientConfiguration, test, compileKotlinJs)
         val serverlessConfigFile = project.relativePath("serverless.yml")
         nodeCommand = "serverless"
@@ -186,22 +185,16 @@ tasks {
             stage
         )
     }
-
-    create("serverlessBuild", NodeExec::class) {
+    register("serverlessBuild", NodeExec::class) {
         configureBuild("prod")
     }
-    create("serverlessBuildSandbox", NodeExec::class) {
+    register("serverlessBuildSandbox", NodeExec::class) {
         configureBuild("sandbox")
     }
-
-    create("serverlessBuildPrerelease", NodeExec::class) {
+    register("serverlessBuildPrerelease", NodeExec::class) {
         configureBuild("prerelease")
     }
-
     artifacts {
-        add(appConfiguration.name, compileKotlinJs.outputFileProperty) {
-            builtBy(compileKotlinJs)
-        }
         add(appConfiguration.name, file("build/executable")) {
             builtBy(serverAssemble)
         }

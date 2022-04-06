@@ -3,7 +3,7 @@ plugins {
 }
 
 tasks {
-    "deploy" {
+    named("deploy") {
         dependsOn(":server:serverlessBuildSandbox")
     }
 }

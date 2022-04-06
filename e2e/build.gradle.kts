@@ -1,9 +1,7 @@
-
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import java.io.FileOutputStream
 
 plugins {
@@ -76,26 +74,25 @@ dependencies {
 }
 
 tasks {
-    val compileProductionExecutableKotlinJs by getting(Kotlin2JsCompile::class) {}
-    val compileE2eTestProductionExecutableKotlinJs by getting {}
-    val productionExecutableCompileSync by getting {}
+    val compileE2eTestProductionExecutableKotlinJs = named("compileE2eTestProductionExecutableKotlinJs")
+    val productionExecutableCompileSync = named("productionExecutableCompileSync")
 
-    val e2eTestProcessResources by getting(ProcessResources::class)
-
-    val dependencyResources by creating(Copy::class) {
-        dependsOn(":client:processResources")
-        duplicatesStrategy = DuplicatesStrategy.WARN
-        into(e2eTestProcessResources.destinationDir)
-        from("$rootDir/client/build/processedResources/js/main")
+    val e2eTestProcessResources = named("e2eTestProcessResources", ProcessResources::class) {
+        dependsOn("dependencyResources")
     }
 
-    e2eTestProcessResources.dependsOn(dependencyResources)
+    val dependencyResources by registering(Copy::class) {
+        dependsOn(":client:processResources")
+        duplicatesStrategy = DuplicatesStrategy.WARN
+        into(e2eTestProcessResources.get().destinationDir)
+        from("$rootDir/client/build/processedResources/js/main")
+    }
 
     val wdioConfig = project.projectDir.resolve("wdio.conf.js")
     val webpackConfig = project.projectDir.resolve("webpack.config.js")
     val webpackedWdioConfigOutput = "config"
 
-    val nodeRun by getting(NodeJsExec::class) {
+    val nodeRun = named("nodeRun", NodeJsExec::class) {
         dependsOn(
             compileProductionExecutableKotlinJs,
             productionExecutableCompileSync,
@@ -110,8 +107,8 @@ tasks {
             clientConfiguration,
             testLoggingLib
         )
-        inputs.files(compileProductionExecutableKotlinJs.outputs.files)
-        inputs.files(compileE2eTestProductionExecutableKotlinJs.outputs.files)
+        inputs.files(compileProductionExecutableKotlinJs.get().outputs.files)
+        inputs.files(compileE2eTestProductionExecutableKotlinJs.get().outputs.files)
         inputs.files(wdioConfig)
 
         val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
@@ -128,7 +125,7 @@ tasks {
                 "NODE_PATH" to listOf(
                     "${project.rootProject.projectDir.path}/coupling-libraries/build/js/node_modules",
                     "${project.rootProject.buildDir.path}/js/node_modules",
-                    e2eTestProcessResources.destinationDir,
+                    e2eTestProcessResources.get().destinationDir,
                 ).joinToString(":"),
                 "BUILD_DIR" to project.buildDir.absolutePath,
                 "WEBPACK_CONFIG" to webpackConfig,

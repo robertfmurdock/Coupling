@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         all { languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi") }
 
-        val commonMain by getting {
+        val commonMain = named("commonMain") {
             dependencies {
                 implementation("com.zegreatrob.coupling.libraries:model")
                 implementation("com.zegreatrob.coupling.libraries:action")
@@ -33,8 +33,8 @@ kotlin {
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
             }
         }
-        val commonTest by getting {
-            resources.srcDirs(commonMain.resources.srcDirs)
+        named("commonTest") {
+            resources.srcDirs(commonMain.get().resources.srcDirs)
 
             dependencies {
                 implementation("com.zegreatrob.coupling.libraries:repository-validation")
@@ -48,7 +48,7 @@ kotlin {
             }
         }
 
-        val jsMain by getting {
+        named("jsMain") {
             dependencies {
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
             }
