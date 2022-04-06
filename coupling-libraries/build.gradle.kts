@@ -4,10 +4,10 @@ plugins {
 }
 
 tasks {
-    val check by getting {
+    check {
         dependsOn(project.getTasksByName("check", true).filterNot { it.project == this.project })
     }
-    val collectResults by creating {
+    val collectResults by registering {
         dependsOn(project.getTasksByName("collectResults", true).filterNot { it.project == this.project })
     }
 }

@@ -55,6 +55,7 @@ kotlin {
 }
 
 tasks {
-    val jsNodeTest by getting
-    jsNodeTest.dependsOn(":composeUp")
+    named("jsNodeTest") {
+        dependsOn(":composeUp")
+    }
 }

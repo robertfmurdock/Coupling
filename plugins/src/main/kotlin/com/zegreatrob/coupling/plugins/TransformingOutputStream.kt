@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.build.com.zegreatrob.coupling.plugins
+package com.zegreatrob.coupling.plugins
 
 import java.io.ByteArrayOutputStream
 import java.io.IOException

@@ -43,7 +43,7 @@ kotlin {
 val inputFile: String? by project
 
 tasks {
-    val jsNodeRun by getting(NodeJsExec::class) {
+    named("jsNodeRun", NodeJsExec::class) {
         inputFile?.let {
             standardInput = file(it).inputStream()
         }

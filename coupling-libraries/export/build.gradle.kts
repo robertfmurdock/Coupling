@@ -46,7 +46,7 @@ kotlin {
 val outputFile: String? by project
 
 tasks {
-    val jsNodeRun by getting(NodeJsExec::class) {
+    named("jsNodeRun", NodeJsExec::class) {
         outputFile?.let {
             standardOutput = file("${System.getProperty("user.dir")}/$it").outputStream()
         }
