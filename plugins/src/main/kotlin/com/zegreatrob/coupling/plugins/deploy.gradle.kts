@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.plugins
 
-import org.gradle.kotlin.dsl.*
-
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.coupling.plugins.node")
@@ -16,7 +14,7 @@ fun serverlessBuildDir(stage: String) = "${serverProject.buildDir.absolutePath}/
 val serverlessYmlPath = "${serverProject.projectDir.absolutePath}/serverless.yml"
 
 tasks {
-    val deploy by creating(NodeExec::class) {
+    val deploy by registering(NodeExec::class) {
         configureDeploy(project.name)
     }
     findByPath(":release")!!.finalizedBy(deploy)
