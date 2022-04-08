@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import io.ktor.client.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -15,8 +16,8 @@ fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
     install(HttpCookies) {
         storage = AcceptAllCookiesStorage()
     }
+    expectSuccess = false
     defaultRequest {
-        expectSuccess = false
         header(UserAgent, "CouplingSdk")
         locationAndBasename
             ?.let { (location, basename) ->
