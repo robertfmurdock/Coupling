@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.forms.*
@@ -73,8 +74,8 @@ private fun buildClient(): HttpClient {
 
     val client = defaultClient(null).config {
         followRedirects = false
+        expectSuccess = false
         defaultRequest {
-            expectSuccess = false
             url(baseUrl.toString())
         }
         install(Logging) {

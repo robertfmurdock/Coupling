@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.server.Process
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
@@ -47,10 +48,10 @@ private val ktorLogger = KotlinLogging.logger("ktor")
 private fun buildClientWithToken(): HttpClient {
     val client = defaultClient(null).config {
         followRedirects = false
+        expectSuccess = false
         val baseUrl = Url("${process.env.BASEURL}")
 
         defaultRequest {
-            expectSuccess = false
             url(baseUrl.toString())
         }
         install(Logging) {
