@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:7.2.2"))
+    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:7.2.4"))
     "commonMainImplementation"(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.1.2"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.2"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.1"))
