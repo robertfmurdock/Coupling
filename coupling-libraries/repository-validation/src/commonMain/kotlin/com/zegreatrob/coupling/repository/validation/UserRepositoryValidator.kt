@@ -2,8 +2,6 @@ package com.zegreatrob.coupling.repository.validation
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
-import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -25,36 +23,33 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     @Test
     fun getUsersWithEmailWillShowAllUsersWithEmail() = repositorySetup.with(object : ContextMint<R>() {
         val userWithEmail = stubUser()
-    }.bind()) {
+    }.bind()) exercise {
         repository.save(userWithEmail)
-    } exercise {
+    } verifyWithWait {
         repository.getUsersWithEmail(userWithEmail.email)
-    } verify { result ->
-        result.map { it.data }
+            .map { it.data }
             .assertIsEqualTo(listOf(userWithEmail))
     }
 
     @Test
     fun saveUserThenGetWillContainAllSavedValues() = repositorySetup.with(object : ContextMint<R>() {
         val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
-    }.bind()) {
+    }.bind()) exercise {
         repository.save(updatedUser)
-    } exercise {
-        repository.getUser()
-    } verify { result ->
-        result!!.data
+    } verifyWithWait {
+        repository.getUser()!!
+            .data
             .assertIsEqualTo(updatedUser)
     }
 
     @Test
     fun saveUserThenGetWillIncludeMarkingInformation() = repositorySetup.with(object : ContextMint<R>() {
         val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
-    }.bind()) {
+    }.bind()) exercise {
         clock.currentTime = DateTime.now().plus(10.days)
         repository.save(updatedUser)
-    } exercise {
-        repository.getUser()
-    } verify { result: Record<User>? ->
+    } verifyWithWait {
+        val result = repository.getUser()
         if (result == null)
             fail()
         result.modifyingUserId.assertIsEqualTo(user.id)
