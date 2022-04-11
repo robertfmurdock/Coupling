@@ -29,14 +29,14 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         asyncTestTemplate<TribeContext<DynamoPairAssignmentDocumentRepository>>(sharedSetup = {
             val clock = MagicClock()
             val user = stubUser()
-            TribeContextData(DynamoPairAssignmentDocumentRepository(user.email, clock), stubTribeId(), clock, user)
+            TribeContextData(DynamoPairAssignmentDocumentRepository(user.email, clock), stubPartyId(), clock, user)
         })
 
     @Test
     fun getPairAssignmentDocumentRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(
         buildRepository { context ->
             object : Context by context {
-                val tribeId = stubTribeId()
+                val tribeId = stubPartyId()
                 val pairAssignmentDocument = stubPairAssignmentDoc()
                 val initialSaveTime = DateTime.now().minus(3.days)
                 val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
@@ -62,7 +62,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
     @Test
     fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
-            val tribeId = stubTribeId()
+            val tribeId = stubPartyId()
             val records = listOf(
                 tribeRecord(tribeId, stubPairAssignmentDoc(), uuidString(), false, DateTime.now().minus(3.months)),
                 tribeRecord(tribeId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years))

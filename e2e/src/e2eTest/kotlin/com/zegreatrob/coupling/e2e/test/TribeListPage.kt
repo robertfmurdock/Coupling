@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 
@@ -11,7 +11,7 @@ object TribeListPage : StyleSyntax {
 
     val tribeCardElements get() = TribeCard.element().all()
 
-    fun tribeCardElement(tribeId: TribeId) = WebdriverElement(
+    fun tribeCardElement(tribeId: PartyId) = WebdriverElement(
         ".${TribeCard.styles.className}[data-tribe-id=\"${tribeId.value}\"]"
     )
 

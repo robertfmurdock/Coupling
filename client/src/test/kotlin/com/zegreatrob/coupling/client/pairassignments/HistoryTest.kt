@@ -13,8 +13,8 @@ import com.zegreatrob.coupling.client.pairassignments.list.History
 import com.zegreatrob.coupling.client.pairassignments.list.historyFunc
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
@@ -32,7 +32,7 @@ class HistoryTest {
     @Test
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = setup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
-        val tribe = Tribe(TribeId("me"))
+        val tribe = Party(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val history = listOf(PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList()))
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
@@ -55,7 +55,7 @@ class HistoryTest {
     @Test
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = setup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
-        val tribe = Tribe(TribeId("me"))
+        val tribe = Party(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val history = listOf(
             PairAssignmentDocument(

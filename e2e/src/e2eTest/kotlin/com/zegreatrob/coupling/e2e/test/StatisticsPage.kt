@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 
 object StatisticsPage : StyleSyntax {
@@ -11,7 +11,7 @@ object StatisticsPage : StyleSyntax {
     val rotationNumber by teamStatisticsStyles.getting()
     val pairReport by pairReportTableStyles.getAll()
 
-    suspend fun goTo(tribeId: TribeId) {
+    suspend fun goTo(tribeId: PartyId) {
         WebdriverBrowser.setLocation("/${tribeId.value}/statistics")
         waitForPage()
     }

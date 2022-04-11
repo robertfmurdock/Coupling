@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -20,22 +20,22 @@ class RequestCombineEndpointTest {
     fun postPlayersAndPinsThenGet() = asyncSetup.with({
         val sdk = authorizedSdk()
         object : Sdk by sdk {
-            val tribe = Tribe(id = TribeId("et-${uuid4()}"))
+            val party = Party(id = PartyId("et-${uuid4()}"))
             val playersToSave = listOf(
                 Player(id = "${uuid4()}", name = "Awesome-O", callSignAdjective = "Awesome", callSignNoun = "Sauce")
             )
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
         }
     }) {
-        tribe.save()
-        tribe.id.with(pinsToSave)
+        party.save()
+        party.id.with(pinsToSave)
             .forEach { it.save() }
-        tribe.id.with(playersToSave)
+        party.id.with(playersToSave)
             .forEach { it.save() }
     } exercise {
         coroutineScope {
-            val a1 = async { playerRepository.getPlayers(tribe.id).map { it.data.player } }
-            val a2 = async { pinRepository.getPins(tribe.id).map { it.data.pin } }
+            val a1 = async { playerRepository.getPlayers(party.id).map { it.data.player } }
+            val a2 = async { pinRepository.getPins(party.id).map { it.data.pin } }
             a1.await() to a2.await()
         }
     } verify { (players, pins) ->

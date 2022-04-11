@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -26,7 +26,7 @@ import react.dom.html.ReactHTML.span
 import react.key
 
 data class PlayerConfigContent(
-    val tribe: Tribe,
+    val tribe: Party,
     val player: Player,
     val players: List<Player>,
     val onChange: (ChangeEvent<*>) -> Unit,
@@ -75,7 +75,7 @@ private fun ChildrenBuilder.promptOnExit(shouldShowPrompt: Boolean) = PromptComp
 
 private fun ChildrenBuilder.playerConfigForm(
     player: Player,
-    tribe: Tribe,
+    tribe: Party,
     onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
     onRemoveFunc: (() -> Unit)?
@@ -85,7 +85,7 @@ private fun ChildrenBuilder.playerConfigForm(
     editorDiv(tribe, player, onChange)
 }
 
-private fun ChildrenBuilder.editorDiv(tribe: Tribe, player: Player, onChange: (ChangeEvent<*>) -> Unit) = div {
+private fun ChildrenBuilder.editorDiv(tribe: Party, player: Player, onChange: (ChangeEvent<*>) -> Unit) = div {
     Editor {
         li { nameInput(player, onChange) }
         li { emailInput(player, onChange) }
@@ -164,7 +164,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
 }
 
 private fun ChildrenBuilder.badgeConfig(
-    tribe: Tribe,
+    tribe: Party,
     player: Player,
     onChange: (ChangeEvent<*>) -> Unit,
     className: ClassName
@@ -182,14 +182,14 @@ private fun ChildrenBuilder.badgeConfig(
     span { +"Your badge makes you feel... different than the others." }
 }
 
-private fun ChildrenBuilder.altBadgeOption(tribe: Tribe) = option {
+private fun ChildrenBuilder.altBadgeOption(tribe: Party) = option {
     id = "alt-badge-option"
     key = "${Badge.Alternate.value}"
     value = "${Badge.Alternate.value}"
     label = tribe.alternateBadgeName
 }
 
-private fun ChildrenBuilder.defaultBadgeOption(tribe: Tribe) = option {
+private fun ChildrenBuilder.defaultBadgeOption(tribe: Party) = option {
     id = "default-badge-option"
     key = "${Badge.Default.value}"
     value = "${Badge.Default.value}"

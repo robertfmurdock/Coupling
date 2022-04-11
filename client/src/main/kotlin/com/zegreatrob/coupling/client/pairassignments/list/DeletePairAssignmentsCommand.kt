@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocumentId
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentIdDeleteSyntax
 
-data class DeletePairAssignmentsCommand(val tribeId: TribeId, val pairAssignmentDocumentId: PairAssignmentDocumentId) :
+data class DeletePairAssignmentsCommand(val tribeId: PartyId, val pairAssignmentDocumentId: PairAssignmentDocumentId) :
     SimpleSuspendResultAction<DeletePairAssignmentsCommandDispatcher, Unit> {
     override val performFunc = link(DeletePairAssignmentsCommandDispatcher::perform)
 }

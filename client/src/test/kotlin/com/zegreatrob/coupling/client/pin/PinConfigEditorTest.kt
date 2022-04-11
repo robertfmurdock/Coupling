@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minenzyme.simulateInputChange
@@ -16,7 +16,7 @@ class PinConfigEditorTest {
 
     @Test
     fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
-        val tribe = Tribe(TribeId(""))
+        val tribe = Party(PartyId(""))
         val pin = Pin(id = null)
     }) exercise {
         shallow(PinConfig(tribe, pin, emptyList(), {}, StubDispatchFunc()))
@@ -31,7 +31,7 @@ class PinConfigEditorTest {
 
     @Test
     fun whenGivenPinHasIdWillShowDeleteButton() = setup(object {
-        val tribe = Tribe(TribeId(""))
+        val tribe = Party(PartyId(""))
         val pin = Pin(id = "excellent id")
     }) exercise {
         shallow(PinConfig(tribe, pin, emptyList(), {}, StubDispatchFunc()))
@@ -46,7 +46,7 @@ class PinConfigEditorTest {
 
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = setup(object {
-        val tribe = Tribe(TribeId("dumb tribe"))
+        val tribe = Party(PartyId("dumb tribe"))
         val pin = Pin(id = null, name = "")
         val newName = "pin new name"
         val newIcon = "pin new icon"

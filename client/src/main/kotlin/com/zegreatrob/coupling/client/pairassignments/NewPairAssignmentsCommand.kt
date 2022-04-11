@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentDocumentSaveSyntax
@@ -16,7 +16,7 @@ import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-data class NewPairAssignmentsCommand(val tribeId: TribeId, val playerIds: List<String>, val pinIds: List<String>) :
+data class NewPairAssignmentsCommand(val tribeId: PartyId, val playerIds: List<String>, val pinIds: List<String>) :
     SimpleSuspendAction<NewPairAssignmentsCommandDispatcher, Unit?> {
     override val performFunc = link(NewPairAssignmentsCommandDispatcher::perform)
 }

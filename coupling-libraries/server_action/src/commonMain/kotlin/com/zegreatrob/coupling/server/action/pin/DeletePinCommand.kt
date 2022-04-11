@@ -13,5 +13,5 @@ interface DeletePinCommandDispatcher : PinIdDeleteSyntax, CurrentTribeIdSyntax {
         .deletePin()
         .deletionResult("Pin")
 
-    private fun DeletePinCommand.tribeIdPinId() = TribeIdPinId(currentTribeId, pinId)
+    private fun DeletePinCommand.tribeIdPinId() = TribeIdPinId(currentPartyId, pinId)
 }

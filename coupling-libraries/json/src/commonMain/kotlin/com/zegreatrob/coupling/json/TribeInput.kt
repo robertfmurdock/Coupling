@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface TribeInput {
-    val tribeId: TribeId
+    val tribeId: PartyId
 }

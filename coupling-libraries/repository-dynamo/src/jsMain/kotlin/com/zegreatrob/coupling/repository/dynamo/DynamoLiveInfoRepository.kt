@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.CouplingConnection
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import kotlin.js.Json
 import kotlin.js.json
@@ -10,12 +10,12 @@ import kotlin.js.json
 class DynamoLiveInfoRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     LiveInfoRepository, DynamoPlayerJsonMapping {
 
-    override suspend fun connectionList(tribeId: TribeId) = tribeId.logAsync("connectionList") {
-        performQuery(queryParams(tribeId))
+    override suspend fun connectionList(partyId: PartyId) = partyId.logAsync("connectionList") {
+        performQuery(queryParams(partyId))
             .itemsNode()
             .mapNotNull {
                 it["userPlayer"].unsafeCast<Json>().toPlayer()
-                    ?.let { player -> CouplingConnection(it["id"].toString(), tribeId, player) }
+                    ?.let { player -> CouplingConnection(it["id"].toString(), partyId, player) }
             }.sortedBy { it.connectionId }
     }
 
@@ -27,7 +27,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
                     ?.let { player ->
                         CouplingConnection(
                             it["id"].toString(),
-                            it["tribeId"].toString().let(::TribeId),
+                            it["tribeId"].toString().let(::PartyId),
                             player
                         )
                     }
@@ -40,20 +40,20 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         )
     }
 
-    override suspend fun delete(tribeId: TribeId, connectionId: String) = connectionId.logAsync("deleteConnection") {
+    override suspend fun delete(partyId: PartyId, connectionId: String) = connectionId.logAsync("deleteConnection") {
         performDeleteItem(
             json(
                 "entityType" to ENTITY_TYPE,
-                "tribeId+id" to "${tribeId.value}+$connectionId"
+                "tribeId+id" to "${partyId.value}+$connectionId"
             )
         )
     }
 
-    private fun queryParams(tribeId: TribeId) = json(
+    private fun queryParams(partyId: PartyId) = json(
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":entityType" to ENTITY_TYPE,
-            ":tribeId" to tribeId.value
+            ":tribeId" to partyId.value
         ),
         "ExpressionAttributeNames" to json(
             "#sortKey" to "tribeId+id",
@@ -112,9 +112,9 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
 
     private fun CouplingConnection.toDynamoJson() = json(
         "entityType" to ENTITY_TYPE,
-        "tribeId" to tribeId.value,
+        "tribeId" to partyId.value,
         "id" to connectionId,
-        "tribeId+id" to "${tribeId.value}+$connectionId",
+        "tribeId+id" to "${partyId.value}+$connectionId",
         "userPlayer" to userPlayer.toDynamoJson()
     )
 

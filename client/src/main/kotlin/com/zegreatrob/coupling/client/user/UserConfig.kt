@@ -37,7 +37,7 @@ private val userConfig = tmFC<UserConfig> { (user) ->
         div { +"User ID: ${user.id}" }
         div { +"User Email: ${user.email}" }
         div { +"This user owns these tribes:" }
-        user.authorizedTribeIds
+        user.authorizedPartyIds
             .map { it.value }
             .forEach { id ->
                 div { +"Tribe ID: $id" }

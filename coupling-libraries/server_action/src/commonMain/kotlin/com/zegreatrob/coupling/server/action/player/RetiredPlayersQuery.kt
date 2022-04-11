@@ -12,5 +12,5 @@ object RetiredPlayersQuery : SimpleSuspendResultAction<RetiredPlayersQueryDispat
 }
 
 interface RetiredPlayersQueryDispatcher : CurrentTribeIdSyntax, TribeIdRetiredPlayerRecordsSyntax {
-    suspend fun perform(query: RetiredPlayersQuery) = currentTribeId.loadRetiredPlayerRecords().successResult()
+    suspend fun perform(query: RetiredPlayersQuery) = currentPartyId.loadRetiredPlayerRecords().successResult()
 }

@@ -11,8 +11,8 @@ import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.TribeCard.header
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -28,7 +28,7 @@ import kotlin.test.Test
 class PairAssignmentsPageE2ETest {
 
     companion object {
-        private suspend fun Sdk.save(tribe: Tribe, players: List<Player>) {
+        private suspend fun Sdk.save(tribe: Party, players: List<Player>) {
             tribeRepository.save(tribe)
             with(playerRepository) {
                 players.forEach { save(tribe.id.with(it)) }
@@ -40,8 +40,8 @@ class PairAssignmentsPageE2ETest {
 
         companion object {
             val tribe by lazy {
-                Tribe(
-                    TribeId("${randomInt()}-PairAssignmentsPageE2ETest"),
+                Party(
+                    PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
                     name = "${randomInt()}-PairAssignmentsPageE2ETest"
                 )
             }
@@ -142,8 +142,8 @@ class PairAssignmentsPageE2ETest {
 
         companion object {
             val tribe by lazy {
-                Tribe(
-                    TribeId("${randomInt()}-PairAssignmentsPageE2ETest"),
+                Party(
+                    PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
                     name = "${randomInt()}-PairAssignmentsPageE2ETest"
                 )
             }

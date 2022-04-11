@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.pin.PinRepository
 
 class CompoundPinRepository(val repository1: PinRepository, val repository2: PinRepository) :
@@ -11,7 +11,7 @@ class CompoundPinRepository(val repository1: PinRepository, val repository2: Pin
         it.save(tribeIdPin)
     }
 
-    override suspend fun deletePin(tribeId: TribeId, pinId: String) = repository1.deletePin(tribeId, pinId).also {
+    override suspend fun deletePin(tribeId: PartyId, pinId: String) = repository1.deletePin(tribeId, pinId).also {
         repository2.deletePin(tribeId, pinId)
     }
 }

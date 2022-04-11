@@ -8,10 +8,10 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
-import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import io.ktor.client.plugins.websocket.*
@@ -27,7 +27,7 @@ class WebsocketTest {
     @Test
     fun whenOnlyOneConnectionWillReturnCountOfOne() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubTribe()
+            val tribe = stubParty()
         }
     }) {
         sdk.tribeRepository.save(tribe)
@@ -47,17 +47,17 @@ class WebsocketTest {
         }
     }
 
-    private suspend fun SdkContext.couplingSocketSession(tribeId: TribeId): DefaultClientWebSocketSession {
+    private suspend fun SdkContext.couplingSocketSession(partyId: PartyId): DefaultClientWebSocketSession {
         val token = sdk.getToken()
         return generalPurposeClient.webSocketSession {
-            url("wss://$socketHost/api/websocket?tribeId=${tribeId.value}&token=$token")
+            url("wss://$socketHost/api/websocket?tribeId=${partyId.value}&token=$token")
         }
     }
 
     @Test
     fun whenMultipleConnectionsWillReturnTheTotalCount() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubTribe()
+            val tribe = stubParty()
         }
     }) {
         sdk.tribeRepository.save(tribe)
@@ -90,7 +90,7 @@ class WebsocketTest {
     @Test
     fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubTribe()
+            val tribe = stubParty()
         }
     }) {
         sdk.tribeRepository.save(tribe)
@@ -115,7 +115,7 @@ class WebsocketTest {
     @Test
     fun whenPairsAreSavedWillSendMessageToClients() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubTribe()
+            val tribe = stubParty()
             val sockets = mutableListOf<DefaultClientWebSocketSession>()
             val expectedPairDoc = stubPairAssignmentDoc()
         }
@@ -141,7 +141,7 @@ class WebsocketTest {
     @Test
     fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubTribe()
+            val tribe = stubParty()
         }
     }) {
         sdk.tribeRepository.save(tribe)
@@ -167,7 +167,7 @@ class WebsocketTest {
     @Test
     fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup(
     ) exercise {
-        val url = "wss://$socketHost/api/${TribeId("whoops").value}/pairAssignments/current"
+        val url = "wss://$socketHost/api/${PartyId("whoops").value}/pairAssignments/current"
         generalPurposeClient.webSocketSession { url(url) }
     } verify { socket ->
         withTimeout(400) {
@@ -179,7 +179,7 @@ class WebsocketTest {
     @Test
     fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = sdkSetup(
     ) exercise {
-        couplingSocketSession(stubTribe().id)
+        couplingSocketSession(stubParty().id)
     } verify { socket ->
         withTimeout(400) {
             (socket.incoming.receive() as? Frame.Close)
@@ -202,7 +202,7 @@ class WebsocketTest {
     @Test
     fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubTribe()
+            val tribe = stubParty()
         }
     }) {
         sdk.tribeRepository.save(tribe)

@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
-import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlin.test.Test
@@ -70,7 +70,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() = repositorySetup.with(
         object : TribeContextMint<R>() {
         val player1 = stubPlayer()
-        val tribe2 = stubTribeId()
+        val tribe2 = stubPartyId()
         val player2 = player1.copy(id = player1.id)
     }.bind()) {
         repository.save(tribeId.with(player1))

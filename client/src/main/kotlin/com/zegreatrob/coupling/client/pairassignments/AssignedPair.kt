@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -34,7 +34,7 @@ import react.key
 import react.useRef
 
 data class AssignedPair(
-    val tribe: Tribe,
+    val tribe: Party,
     val pair: PinnedCouplingPair,
     val canDrag: Boolean,
     val swapPlayersFunc: (PinnedPlayer, String) -> Unit = { _, _ -> },
@@ -124,7 +124,7 @@ private fun swappablePlayer(
     pinnedPlayer: PinnedPlayer, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
 ) = DraggablePlayer(pinnedPlayer, zoomOnHover, tilt, onDropSwap)
 
-private fun ChildrenBuilder.callSign(tribe: Tribe, callSign: CallSign?, classes: ClassName) = div {
+private fun ChildrenBuilder.callSign(tribe: Party, callSign: CallSign?, classes: ClassName) = div {
     if (tribe.callSignsEnabled && callSign != null) {
         span {
             className = classes

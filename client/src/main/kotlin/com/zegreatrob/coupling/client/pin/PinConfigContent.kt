@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -29,7 +29,7 @@ import react.key
 private val styles = useStyles("pin/PinConfigEditor")
 
 data class PinConfigContent(
-    val tribe: Tribe,
+    val tribe: Party,
     val pin: Pin,
     val pinList: List<Pin>,
     val onChange: (ChangeEvent<*>) -> Unit,
@@ -62,7 +62,7 @@ val pinConfigContent = tmFC<PinConfigContent> { (tribe, pin, pinList, onChange, 
     }
 }
 
-private fun ChildrenBuilder.pinBag(tribe: Tribe, pinList: List<Pin>, className: ClassName) = div {
+private fun ChildrenBuilder.pinBag(tribe: Party, pinList: List<Pin>, className: ClassName) = div {
     this.className = className
     pinList.map { pin -> child(PinCard(tribe.id, pin), key = pin.id) }
 }

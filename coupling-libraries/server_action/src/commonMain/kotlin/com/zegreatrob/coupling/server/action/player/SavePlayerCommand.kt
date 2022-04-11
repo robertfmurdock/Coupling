@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.action.player
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
@@ -16,7 +15,7 @@ interface SavePlayerCommandDispatcher : TribeIdPlayerSaveSyntax, CurrentTribeIdS
 
     suspend fun perform(command: SavePlayerCommand) = command.sldkfjldksjf().successResult()
 
-    private suspend fun SavePlayerCommand.sldkfjldksjf() = currentTribeId.with(player)
+    private suspend fun SavePlayerCommand.sldkfjldksjf() = currentPartyId.with(player)
         .apply { save() }
         .run { player }
 

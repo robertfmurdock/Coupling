@@ -26,6 +26,6 @@ interface SdkBoostRepository : BoostRepository, GqlSyntax, GraphQueries {
         doQuery(mutations.saveBoost, boost.saveBoostInput())
     }
 
-    private fun Boost.saveBoostInput() = SaveBoostInput(tribeIds)
+    private fun Boost.saveBoostInput() = SaveBoostInput(partyIds)
 
 }

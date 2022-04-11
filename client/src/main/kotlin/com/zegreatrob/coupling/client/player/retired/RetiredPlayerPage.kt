@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.routing.*
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minreact.child
 import react.ChildrenBuilder
 import react.FC
@@ -20,7 +20,7 @@ val RetiredPlayerPage = FC<PageProps> { props ->
         div { +"Hey, we're missing the tribe id or the player id. Things have gone terribly, terribly wrong." }
 }
 
-private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, tribeId: TribeId, playerId: String) =
+private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, tribeId: PartyId, playerId: String) =
     child(dataLoadProps(
         component = LoadedRetiredPlayer,
         commander = props.commander,

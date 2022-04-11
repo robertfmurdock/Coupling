@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pin.PinSave
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -21,7 +21,7 @@ class SavePinCommandTest {
         val saveSpy = SpyData<TribeIdPin, Unit>()
         override suspend fun save(tribeIdPin: TribeIdPin) = saveSpy.spyFunction(tribeIdPin)
 
-        val tribe = Tribe(TribeId("thing"))
+        val tribe = Party(PartyId("thing"))
         val pin = Pin("1", "one", "icon 1")
 
     }) exercise {

@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minenzyme.simulateInputChange
@@ -21,7 +21,7 @@ class PlayerConfigTest {
 
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
-        val tribe = Tribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
+        val tribe = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
         val player = Player(id = "blarg")
     }) exercise {
         shallow(PlayerConfig(tribe, player, emptyList(), {}, StubDispatchFunc()))
@@ -35,7 +35,7 @@ class PlayerConfigTest {
 
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
-        val tribe = Tribe(id = TribeId("party"), name = "Party tribe", badgesEnabled = true)
+        val tribe = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
         shallow(PlayerConfig(tribe, player, emptyList(), {}, StubDispatchFunc()))
@@ -49,7 +49,7 @@ class PlayerConfigTest {
 
     @Test
     fun submitWillSaveAndReload() = setup(object {
-        val tribe = Tribe(TribeId("party"))
+        val tribe = Party(PartyId("party"))
         val player = Player(id = "blarg", badge = Badge.Default.value)
         val reloaderSpy = SpyData<Unit, Unit>()
 
@@ -79,7 +79,7 @@ class PlayerConfigTest {
             override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         }
         val pathSetterSpy = SpyData<String, Unit>()
-        val tribe = Tribe(TribeId("party"))
+        val tribe = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
@@ -107,7 +107,7 @@ class PlayerConfigTest {
         val windowFunctions = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         }
-        val tribe = Tribe(TribeId("party"))
+        val tribe = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
@@ -125,7 +125,7 @@ class PlayerConfigTest {
 
     @Test
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object {
-        val tribe = Tribe(TribeId("party"))
+        val tribe = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
         val wrapper = shallow(PlayerConfig(tribe, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
@@ -140,7 +140,7 @@ class PlayerConfigTest {
 
     @Test
     fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = setup(object {
-        val tribe = Tribe(TribeId("party"))
+        val tribe = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
         shallow(PlayerConfig(tribe, player, emptyList(), {}, StubDispatchFunc()))

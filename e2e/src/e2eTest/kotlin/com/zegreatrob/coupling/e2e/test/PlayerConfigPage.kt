@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
@@ -17,12 +17,12 @@ object PlayerConfigPage : StyleSyntax {
     fun adjectiveTextInput() = WebdriverElement(By.id("adjective-input"))
     fun nounTextInput() = WebdriverElement(By.id("noun-input"))
 
-    suspend fun goTo(tribeId: TribeId, playerId: String?) {
+    suspend fun goTo(tribeId: PartyId, playerId: String?) {
         WebdriverBrowser.setLocation("/${tribeId.value}/player/${playerId}")
         waitForPage()
     }
 
-    suspend fun goToNew(tribeId: TribeId) {
+    suspend fun goToNew(tribeId: PartyId) {
         WebdriverBrowser.setLocation("/${tribeId.value}/player/new")
         waitForPage()
     }

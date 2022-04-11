@@ -1,18 +1,18 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-class NewTribeCommand : SimpleSuspendAction<NewTribeCommandDispatcher, Tribe?> {
+class NewTribeCommand : SimpleSuspendAction<NewTribeCommandDispatcher, Party?> {
     override val performFunc = link(NewTribeCommandDispatcher::perform)
 }
 
 interface NewTribeCommandDispatcher {
-    suspend fun perform(command: NewTribeCommand) = newTribe()
+    suspend fun perform(command: NewTribeCommand) = newParty()
 
-    private fun newTribe() = Tribe(
-        id = TribeId(""),
+    private fun newParty() = Party(
+        id = PartyId(""),
         name = "New Party",
         defaultBadgeName = "Default",
         alternateBadgeName = "Alternate"

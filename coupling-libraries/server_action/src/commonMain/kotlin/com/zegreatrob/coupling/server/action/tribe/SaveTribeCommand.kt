@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.UnauthorizedResult
 import com.zegreatrob.coupling.action.successResult
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.model.tribe.TribeElement
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.await
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
-data class SaveTribeCommand(val tribe: Tribe) :
+data class SaveTribeCommand(val tribe: Party) :
     SimpleSuspendResultAction<SaveTribeCommandDispatcher, Unit> {
     override val performFunc = link(SaveTribeCommandDispatcher::perform)
 }
@@ -36,7 +36,7 @@ interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGe
     private suspend fun SaveTribeCommand.saveTribeAndUser() = withContext(coroutineContext) {
         launch { tribe.save() }
         launch {
-            user.copy(authorizedTribeIds = user.authorizedTribeIds + tribe.id)
+            user.copy(authorizedPartyIds = user.authorizedPartyIds + tribe.id)
                 .saveIfUserChanged()
         }
     }
@@ -52,11 +52,11 @@ interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGe
             async { getUserPlayerIds() })
     }
 
-    private fun shouldSave(tribeId: TribeId, loadedTribe: Tribe?, playerList: List<TribeElement<String>>) =
+    private fun shouldSave(tribeId: PartyId, loadedTribe: Party?, playerList: List<TribeElement<String>>) =
         tribeIsNew(loadedTribe)
                 || playerList.authenticatedTribeIds().contains(tribeId)
 
-    private fun tribeIsNew(existingTribe: Tribe?) = existingTribe == null
+    private fun tribeIsNew(existingTribe: Party?) = existingTribe == null
 
     private suspend fun Boolean.whenAuthorized(block: suspend () -> Unit): Result<Unit> = let {
         if (it) {

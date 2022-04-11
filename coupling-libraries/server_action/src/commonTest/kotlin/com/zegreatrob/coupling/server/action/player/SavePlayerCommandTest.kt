@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.player
 
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.coupling.testaction.verifySuccess
@@ -18,7 +18,7 @@ class SavePlayerCommandTest {
 
     @Test
     fun willSaveToRepository() = asyncSetup(object : SavePlayerCommandDispatcher {
-        override val currentTribeId = TribeId("woo")
+        override val currentPartyId = PartyId("woo")
         val player = Player(
             id = "1",
             badge = 1,
@@ -28,7 +28,7 @@ class SavePlayerCommandTest {
             email = "tim@tim.meat",
             imageURL = "italian.jpg"
         )
-        override val playerRepository = PlayerSaverSpy().apply { whenever(currentTribeId.with(player), Unit) }
+        override val playerRepository = PlayerSaverSpy().apply { whenever(currentPartyId.with(player), Unit) }
     }) exercise {
         perform(SavePlayerCommand(player))
     } verifySuccess { result ->

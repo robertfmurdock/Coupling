@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo.user
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.*
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
@@ -37,7 +37,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
             val initialSaveTime = DateTime.now().minus(3.days)
-            val updatedUser = user.copy(authorizedTribeIds = setOf(TribeId("clone!")))
+            val updatedUser = user.copy(authorizedPartyIds = setOf(PartyId("clone!")))
             val updatedSaveTime = initialSaveTime.plus(2.hours)
             val altUser = stubUser()
         }
@@ -85,7 +85,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                 json(
                     "id" to record.data.id,
                     "email" to record.data.email,
-                    "authorizedTribeIds" to record.data.authorizedTribeIds.map { it.value }
+                    "authorizedTribeIds" to record.data.authorizedPartyIds.map { it.value }
                         .plus(null)
                         .toTypedArray()
                 )

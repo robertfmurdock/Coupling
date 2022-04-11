@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.tribe
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface TribeRepository : TribeGet,
     TribeListGet,
@@ -10,17 +10,17 @@ interface TribeRepository : TribeGet,
     TribeDelete
 
 interface TribeSave {
-    suspend fun save(tribe: Tribe)
+    suspend fun save(tribe: Party)
 }
 
 interface TribeDelete {
-    suspend fun delete(tribeId: TribeId): Boolean
+    suspend fun delete(partyId: PartyId): Boolean
 }
 
 interface TribeGet {
-    suspend fun getTribeRecord(tribeId: TribeId): Record<Tribe>?
+    suspend fun getTribeRecord(partyId: PartyId): Record<Party>?
 }
 
 interface TribeListGet {
-    suspend fun getTribes(): List<Record<Tribe>>
+    suspend fun getTribes(): List<Record<Party>>
 }

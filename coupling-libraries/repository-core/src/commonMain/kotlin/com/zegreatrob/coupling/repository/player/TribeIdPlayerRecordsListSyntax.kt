@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.player
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface TribeIdPlayerRecordsListSyntax {
     val playerRepository: PlayerListGet
-    suspend fun TribeId.getPlayerRecords() = playerRepository.getPlayers(this)
+    suspend fun PartyId.getPlayerRecords() = playerRepository.getPlayers(this)
 }

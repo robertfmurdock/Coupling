@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
-import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
@@ -38,7 +38,7 @@ class CompoundTribeRepositoryTest : TribeRepositoryValidator<CompoundTribeReposi
 
         val compoundRepo = CompoundTribeRepository(repository1, repository2)
 
-        val tribe = stubTribe()
+        val tribe = stubParty()
     }) exercise {
         compoundRepo.save(tribe)
     } verify {
@@ -56,7 +56,7 @@ class CompoundTribeRepositoryTest : TribeRepositoryValidator<CompoundTribeReposi
 
         val compoundRepo = CompoundTribeRepository(repository1, repository2)
 
-        val tribe = stubTribe()
+        val tribe = stubParty()
     }) exercise {
         compoundRepo.save(tribe)
         compoundRepo.delete(tribe.id)

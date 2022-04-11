@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface TribeIdHistorySyntax : TribeIdPairAssignmentRecordsSyntax {
-    suspend fun TribeId.loadHistory() = loadPairAssignmentRecords().elements
+    suspend fun PartyId.loadHistory() = loadPairAssignmentRecords().elements
 }

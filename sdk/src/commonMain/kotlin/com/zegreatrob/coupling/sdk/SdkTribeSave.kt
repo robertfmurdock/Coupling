@@ -2,15 +2,15 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.SaveTribeInput
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.repository.tribe.TribeSave
 
 interface SdkTribeSave : TribeSave, GqlSyntax, GraphQueries {
-    override suspend fun save(tribe: Tribe) {
+    override suspend fun save(tribe: Party) {
         doQuery(mutations.saveTribe, tribe.saveTribeInput())
     }
 
-    private fun Tribe.saveTribeInput() = SaveTribeInput(
+    private fun Party.saveTribeInput() = SaveTribeInput(
         tribeId = id,
         pairingRule = PairingRule.toValue(pairingRule),
         name = name,

@@ -16,5 +16,5 @@ interface DeletePlayerCommandDispatcher : TribeIdPlayerIdDeleteSyntax, CurrentTr
         .run { deletePlayer() }
         .deletionResult("Player")
 
-    private fun DeletePlayerCommand.tribeIdPlayerId() = TribeIdPlayerId(currentTribeId, playerId)
+    private fun DeletePlayerCommand.tribeIdPlayerId() = TribeIdPlayerId(currentPartyId, playerId)
 }

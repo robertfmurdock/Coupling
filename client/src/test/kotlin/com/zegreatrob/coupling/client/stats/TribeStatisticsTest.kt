@@ -9,8 +9,8 @@ import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
@@ -27,7 +27,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = Tribe(TribeId("1"), name = "Mathematica")
+        val tribe = Party(PartyId("1"), name = "Mathematica")
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
@@ -95,7 +95,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             )
         )
-        val tribe = Tribe(TribeId("2"), name = "Mathematica")
+        val tribe = Party(PartyId("2"), name = "Mathematica")
         val report = perform(ComposeStatisticsAction(tribe, players, history))
         val heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation))
     }) exercise {
@@ -122,8 +122,8 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = Tribe(
-            TribeId("2"),
+        val tribe = Party(
+            PartyId("2"),
             name = "Mathematica"
         )
         val report = perform(ComposeStatisticsAction(tribe, players, emptyList()))
@@ -148,8 +148,8 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = Tribe(
-            TribeId("2"),
+        val tribe = Party(
+            PartyId("2"),
             name = "Mathematica"
         )
         val history = listOf(

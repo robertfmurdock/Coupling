@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.player.PlayerDelete
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
@@ -18,7 +18,7 @@ class DeletePlayerCommandTest {
     fun willUseRepositoryToRemove() = asyncSetup(object : DeletePlayerCommandDispatcher {
         val playerId = "ThatGuyGetHim"
         override val playerRepository = PlayerRepositorySpy().apply { whenever(playerId, true) }
-        override val currentTribeId = TribeId("")
+        override val currentPartyId = PartyId("")
     }) exercise {
         perform(DeletePlayerCommand(playerId))
     } verifySuccess {
@@ -26,6 +26,6 @@ class DeletePlayerCommandTest {
     }
 
     class PlayerRepositorySpy : PlayerDelete, Spy<String, Boolean> by SpyData() {
-        override suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean = spyFunction(playerId)
+        override suspend fun deletePlayer(partyId: PartyId, playerId: String): Boolean = spyFunction(playerId)
     }
 }

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -16,7 +16,7 @@ import react.create
 import react.dom.html.ReactHTML.div
 
 data class PairAssignmentsAnimator(
-    val tribe: Tribe,
+    val tribe: Party,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument,
     val enabled: Boolean,
@@ -42,7 +42,7 @@ val pairAssignmentsAnimator = tmFC<PairAssignmentsAnimator> { props ->
 
 private fun ChildrenBuilder.spinFrameRunner(
     pairAssignments: PairAssignmentDocument,
-    tribe: Tribe,
+    tribe: Party,
     players: List<Player>,
     props: PairAssignmentsAnimator
 ) {
@@ -55,7 +55,7 @@ private fun ChildrenBuilder.spinFrameRunner(
 private fun ChildrenBuilder.flipperSpinAnimation(
     state: SpinAnimationState,
     props: PairAssignmentsAnimator,
-    tribe: Tribe,
+    tribe: Party,
     rosteredPairAssignments: RosteredPairAssignments
 ) = Flipper {
     flipKey = state.toString()

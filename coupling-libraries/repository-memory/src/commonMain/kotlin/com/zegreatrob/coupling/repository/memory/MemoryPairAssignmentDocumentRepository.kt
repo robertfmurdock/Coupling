@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.pairassignmentdocument.tribeId
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 
 class MemoryPairAssignmentDocumentRepository(
@@ -23,21 +23,21 @@ class MemoryPairAssignmentDocumentRepository(
             .record()
             .save()
 
-    override suspend fun getPairAssignments(tribeId: TribeId): List<Record<TribeIdPairAssignmentDocument>> =
+    override suspend fun getPairAssignments(tribeId: PartyId): List<Record<TribeIdPairAssignmentDocument>> =
         tribeId.records()
             .filterNot { it.isDeleted }
             .sortedByDescending { it.data.document.date }
 
-    override suspend fun getCurrentPairAssignments(tribeId: TribeId) = tribeId.records()
+    override suspend fun getCurrentPairAssignments(tribeId: PartyId) = tribeId.records()
         .filterNot { it.isDeleted }
         .maxByOrNull { it.data.document.date }
 
-    private fun TribeId.records() = records.asSequence()
+    private fun PartyId.records() = records.asSequence()
         .filter { (data) -> data.tribeId == this }
         .groupBy { (data) -> data.document.id }
         .map { it.value.last() }
 
-    override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
+    override suspend fun delete(tribeId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
         val tribeIdPairAssignmentDocument = record(tribeId, pairAssignmentDocumentId)?.data
 
         return if (tribeIdPairAssignmentDocument == null) {
@@ -48,7 +48,7 @@ class MemoryPairAssignmentDocumentRepository(
         }
     }
 
-    private fun record(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) = tribeId.records()
+    private fun record(tribeId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = tribeId.records()
         .find { (data) -> data.document.id == pairAssignmentDocumentId }
 
 }

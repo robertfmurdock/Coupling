@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
@@ -10,9 +10,9 @@ import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-typealias TribePinData = Triple<Tribe, List<Pin>, Pin>
+typealias TribePinData = Triple<Party, List<Pin>, Pin>
 
-data class TribePinQuery(val tribeId: TribeId, val pinId: String?) :
+data class TribePinQuery(val tribeId: PartyId, val pinId: String?) :
     SimpleSuspendAction<TribePinQueryDispatcher, TribePinData?> {
     override val performFunc = link(TribePinQueryDispatcher::perform)
 }
@@ -23,7 +23,7 @@ interface TribePinQueryDispatcher : TribeIdGetSyntax, TribeIdPinsSyntax {
     private suspend fun TribePinQuery.getData() = tribeId.getData()
         ?.let { (tribe, pins) -> TribePinData(tribe, pins, pins.findOrDefaultNew(pinId)) }
 
-    private suspend fun TribeId.getData() = coroutineScope {
+    private suspend fun PartyId.getData() = coroutineScope {
         await(async { get() }, async { getPins() })
     }.let { (tribe, pins) -> if (tribe == null) null else Pair(tribe, pins) }
 }

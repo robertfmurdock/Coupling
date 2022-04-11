@@ -13,5 +13,5 @@ interface AuthenticatedUserEmailSyntax : AuthenticatedUserSyntax, UserIdSyntax {
 }
 
 interface UserAuthorizedTribeIdsSyntax : AuthenticatedUserSyntax {
-    fun userAuthorizedTribeIds() = user.authorizedTribeIds
+    fun userAuthorizedTribeIds() = user.authorizedPartyIds
 }

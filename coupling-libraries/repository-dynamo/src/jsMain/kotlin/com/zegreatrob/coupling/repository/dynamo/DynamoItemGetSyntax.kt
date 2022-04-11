@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import kotlin.js.json
 
 interface DynamoItemGetSyntax : DynamoScanSyntax,
@@ -10,18 +10,18 @@ interface DynamoItemGetSyntax : DynamoScanSyntax,
     DynamoTableNameSyntax,
     DynamoLoggingSyntax {
 
-    suspend fun performGetSingleItemQuery(id: String, tribeId: TribeId? = null) = logAsync("getSingleItem") {
-        performQuery(queryParams(tribeId, id))
+    suspend fun performGetSingleItemQuery(id: String, partyId: PartyId? = null) = logAsync("getSingleItem") {
+        performQuery(queryParams(partyId, id))
             .itemsNode()
             .sortByRecordTimestamp()
             .lastOrNull()
             ?.let(::excludeDeleted)
     }
 
-    private fun queryParams(tribeId: TribeId?, id: String) = if (tribeId != null) json(
+    private fun queryParams(partyId: PartyId?, id: String) = if (partyId != null) json(
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
-            ":tribeId" to tribeId.value,
+            ":tribeId" to partyId.value,
             ":id" to id
         ),
         "KeyConditionExpression" to "tribeId = :tribeId",
@@ -34,7 +34,7 @@ interface DynamoItemGetSyntax : DynamoScanSyntax,
         "KeyConditionExpression" to "id = :id"
     )
 
-    private fun singleScanParams(id: String, tribeId: TribeId?) = if (tribeId == null) json(
+    private fun singleScanParams(id: String, partyId: PartyId?) = if (partyId == null) json(
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":id" to id
@@ -45,7 +45,7 @@ interface DynamoItemGetSyntax : DynamoScanSyntax,
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":id" to id,
-            ":tribeId" to tribeId.value
+            ":tribeId" to partyId.value
         ),
         "FilterExpression" to "id = :id AND tribeId = :tribeId"
     )

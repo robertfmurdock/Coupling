@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.connection
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface CurrentTribeIdSyntax {
-    val currentTribeId: TribeId
+    val currentPartyId: PartyId
 }

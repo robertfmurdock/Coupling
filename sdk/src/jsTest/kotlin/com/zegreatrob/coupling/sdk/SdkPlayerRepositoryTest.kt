@@ -8,9 +8,9 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContextMint
 import com.zegreatrob.coupling.repository.validation.bind
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubTribe
-import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -24,7 +24,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
     override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPlayerRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
-        val tribe = stubTribe()
+        val tribe = stubParty()
         sdk.tribeRepository.save(tribe)
 
         SdkTribeContext(sdk, sdk.playerRepository, tribe.id, MagicClock())
@@ -42,11 +42,11 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                 val tribeId = parent.tribeId
 
                 val player1 = stubPlayer()
-                val tribeId2 = stubTribeId()
+                val tribeId2 = stubPartyId()
                 val player2 = player1.copy(id = player1.id)
             }
         }) {
-            sdk.tribeRepository.save(stubTribe().copy(id = tribeId2))
+            sdk.tribeRepository.save(stubParty().copy(id = tribeId2))
             repository.save(tribeId.with(player1))
             repository.save(tribeId2.with(player2))
         } exercise {
@@ -98,7 +98,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
-                    val tribe = stubTribe()
+                    val tribe = stubParty()
                 }) {
                     otherSdk.tribeRepository.save(tribe)
                     otherSdk.playerRepository.save(tribe.id.with(stubPlayer()))
@@ -118,7 +118,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
-                    val tribe = stubTribe()
+                    val tribe = stubParty()
                     val player = Player(
                         id = "${uuid4()}",
                         name = "Awesome-O",
@@ -143,7 +143,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             val sdk = authorizedSdk()
             waitForTest {
                 asyncSetup(object {
-                    val tribe = stubTribe()
+                    val tribe = stubParty()
                 }) exercise {
                     sdk.playerRepository.deletePlayer(tribe.id, "player id")
                 } verify { result ->

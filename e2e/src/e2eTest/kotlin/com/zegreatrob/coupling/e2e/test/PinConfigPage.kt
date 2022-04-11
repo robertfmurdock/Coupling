@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
@@ -20,12 +20,12 @@ object PinConfigPage : StyleSyntax {
             .map { it.text() }
     }
 
-    suspend fun TribeId.goToNew() {
+    suspend fun PartyId.goToNew() {
         WebdriverBrowser.setLocation("/$value/pin/new")
         waitForLoad()
     }
 
-    suspend fun goTo(tribeId: TribeId, pinId: String?) {
+    suspend fun goTo(tribeId: PartyId, pinId: String?) {
         WebdriverBrowser.setLocation("/${tribeId.value}/pin/$pinId")
         waitForLoad()
     }

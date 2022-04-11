@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.coupling.client.visuallyHidden
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -20,7 +20,7 @@ import react.dom.html.ReactHTML
 import react.router.dom.Link
 import kotlin.collections.set
 
-data class TribeCard(val tribe: Tribe, val size: Int = 150) : DataPropsBind<TribeCard>(tribeCard)
+data class TribeCard(val tribe: Party, val size: Int = 150) : DataPropsBind<TribeCard>(tribeCard)
 
 private val styles = useStyles("tribe/TribeCard")
 
@@ -55,7 +55,7 @@ private fun tribeCardCss(size: Int): RuleSet = {
 
 val noTribeImagePath = pngPath("tribes/no-tribe")
 
-private fun ChildrenBuilder.tribeGravatar(tribe: Tribe, size: Int) = if (tribe.imageURL != null) {
+private fun ChildrenBuilder.tribeGravatar(tribe: Party, size: Int) = if (tribe.imageURL != null) {
     ReactHTML.img {
         this.src = tribe.imageURL
         alt = "icon"

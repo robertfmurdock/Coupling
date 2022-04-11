@@ -15,6 +15,6 @@ interface SavePinCommandDispatcher : TribeIdPinSaveSyntax, CurrentTribeIdSyntax 
 
     suspend fun perform(command: SavePinCommand) = command.save().successResult()
 
-    private suspend fun SavePinCommand.save() = currentTribeId.with(pin).save().let { pin }
+    private suspend fun SavePinCommand.save() = currentPartyId.with(pin).save().let { pin }
 
 }

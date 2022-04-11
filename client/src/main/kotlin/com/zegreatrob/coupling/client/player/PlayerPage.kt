@@ -5,12 +5,12 @@ import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.playerId
 import com.zegreatrob.coupling.client.tribePageFunction
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minreact.child
 
 private val LoadedPlayer = couplingDataLoader<PlayerConfig>()
 
-val PlayerPage = tribePageFunction { props: PageProps, tribeId: TribeId ->
+val PlayerPage = tribePageFunction { props: PageProps, tribeId: PartyId ->
     child(dataLoadProps(
         LoadedPlayer,
         commander = props.commander,

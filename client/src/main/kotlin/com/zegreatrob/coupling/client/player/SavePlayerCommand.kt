@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class SavePlayerCommand(val tribeId: TribeId, val player: Player) :
+data class SavePlayerCommand(val tribeId: PartyId, val player: Player) :
     SimpleSuspendAction<SavePlayerCommandDispatcher, Unit> {
     override val performFunc = link(SavePlayerCommandDispatcher::perform)
 }

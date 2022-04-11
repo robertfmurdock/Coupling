@@ -20,7 +20,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
-import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
@@ -49,7 +49,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenSelectedPinIsClickedWillDeselectPin() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
@@ -70,7 +70,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenDeselectedPinIsClickedWillSelectPin() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
@@ -100,7 +100,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenThereIsNoHistoryAllPlayersWillDefaultToDeselected() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val players = stubPlayers(3)
         val currentPairs = null
     }) exercise {
@@ -113,7 +113,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenAllPlayersAreDeselectedSpinButtonWillBeDisabled() = asyncSetup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(
             PairAssignmentDocumentId(""),
@@ -141,7 +141,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenTheAllButtonIsClickedAllPlayersBecomeSelected() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val players = stubPlayers(3)
         val currentPairs = null
         val wrapper = shallow(PrepareSpin(tribe, players, currentPairs, emptyList(), StubDispatchFunc()))
@@ -158,7 +158,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenTheNoneButtonIsClickedAllPlayersBecomeDeselected() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),

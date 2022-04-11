@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.tribe
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface TribeIdGetSyntax : TribeIdGetRecordSyntax {
-    suspend fun TribeId.get() = loadRecord()?.data
+    suspend fun PartyId.get() = loadRecord()?.data
 }

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
@@ -8,7 +8,7 @@ import kotlinx.serialization.json.jsonObject
 interface TribeGQLPerformer : GqlSyntax {
 
     suspend fun performTribeGQLQuery(
-        tribeId: TribeId,
+        tribeId: PartyId,
         components: List<TribeGQLComponent>
     ): Map<TribeGQLComponent, JsonElement?> {
         val result = sendQuery(tribeId, components)
@@ -27,14 +27,14 @@ interface TribeGQLPerformer : GqlSyntax {
         return node
     }
 
-    private suspend fun sendQuery(tribeId: TribeId, components: List<TribeGQLComponent>) =
+    private suspend fun sendQuery(tribeId: PartyId, components: List<TribeGQLComponent>) =
         buildFinalQuery(tribeId, components)
             .performQuery()
 
-    private fun buildFinalQuery(tribeId: TribeId, components: List<TribeGQLComponent>) =
+    private fun buildFinalQuery(tribeId: PartyId, components: List<TribeGQLComponent>) =
         "{ ${tribeId.tribeQueryArgs()} { ${components.tribeComponentString()} } }"
 
-    private fun TribeId.tribeQueryArgs() = "tribeData(id: \"$value\")"
+    private fun PartyId.tribeQueryArgs() = "tribeData(id: \"$value\")"
 
     private fun List<TribeGQLComponent>.tribeComponentString() = joinToString(",") { it.value }
 
@@ -49,7 +49,7 @@ class BatchingTribeGQLPerformer(override val performer: QueryPerformer) : TribeG
     private var pendingComponents = emptyList<TribeGQLComponent>()
 
     override suspend fun performTribeGQLQuery(
-        tribeId: TribeId,
+        tribeId: PartyId,
         components: List<TribeGQLComponent>
     ): Map<TribeGQLComponent, JsonElement?> {
         pendingComponents = pendingComponents + components

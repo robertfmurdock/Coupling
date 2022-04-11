@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPin
-import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
@@ -29,7 +29,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()
         )
@@ -56,7 +56,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val pairAssignments = stubPairAssignmentDoc()
         val dispatchFunc = StubDispatchFunc<PairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
@@ -82,7 +82,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -118,7 +118,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPinDropWillTakeMovePinFromOnePairToAnother() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val pin1 = stubPin()
         val pin2 = stubPin()
         val pair1 = pairOf(Player("1", name = "1"), Player("2", name = "2")).withPins(listOf(pin1))
@@ -150,7 +150,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPlayerDropTheSwapWillNotLosePinAssignments() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -189,7 +189,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object {
-        val tribe = stubTribe()
+        val tribe = stubParty()
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")

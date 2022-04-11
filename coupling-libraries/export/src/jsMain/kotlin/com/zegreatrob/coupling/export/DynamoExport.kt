@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.model.tribe.TribeElement
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -38,24 +38,24 @@ private suspend fun DynamoRepositoryCatalog.outputTribes() = tribeRepository.get
 
 private suspend fun collectTribeData(
     repositoryCatalog: DynamoRepositoryCatalog,
-    tribeId: TribeId,
-    tribeRecords: List<Record<Tribe>>
+    partyId: PartyId,
+    partyRecords: List<Record<Party>>
 ) : Json = couplingJsonFormat.encodeToDynamic(
-    tribeDataSerializable(tribeId, tribeRecords, repositoryCatalog)
+    tribeDataSerializable(partyId, partyRecords, repositoryCatalog)
 ).unsafeCast<Json>()
 
 private suspend fun tribeDataSerializable(
-    tribeId: TribeId,
-    tribeRecords: List<Record<Tribe>>,
+    partyId: PartyId,
+    partyRecords: List<Record<Party>>,
     repositoryCatalog: DynamoRepositoryCatalog
 ) = TribeData(
-    tribeId = tribeId.value,
-    tribeRecords = tribeRecords.map(Record<Tribe>::toSerializable),
-    playerRecords = repositoryCatalog.playerRepository.getPlayerRecords(tribeId)
+    tribeId = partyId.value,
+    tribeRecords = partyRecords.map(Record<Party>::toSerializable),
+    playerRecords = repositoryCatalog.playerRepository.getPlayerRecords(partyId)
         .map(Record<TribeElement<Player>>::toSerializable),
-    pairAssignmentRecords = repositoryCatalog.pairAssignmentDocumentRepository.getRecords(tribeId)
+    pairAssignmentRecords = repositoryCatalog.pairAssignmentDocumentRepository.getRecords(partyId)
         .map(TribeRecord<PairAssignmentDocument>::toSerializable),
-    pinRecords = repositoryCatalog.pinRepository.getPinRecords(tribeId)
+    pinRecords = repositoryCatalog.pinRepository.getPinRecords(partyId)
         .map(Record<TribeElement<Pin>>::toSerializable),
 )
 

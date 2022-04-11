@@ -24,7 +24,7 @@ class SdkUserRepositoryTest {
         result!!.data.let {
             it.email.assertIsEqualTo(primaryAuthorizedUsername)
             it.id.assertIsNotEqualTo(null)
-            it.authorizedTribeIds.assertIsNotEqualTo(null)
+            it.authorizedPartyIds.assertIsNotEqualTo(null)
         }
     }
 
@@ -36,7 +36,7 @@ class SdkUserRepositoryTest {
         result!!.let {
             it.email.assertIsEqualTo(primaryAuthorizedUsername)
             it.id.assertIsNotEqualTo(null)
-            it.authorizedTribeIds.assertIsNotEqualTo(null)
+            it.authorizedPartyIds.assertIsNotEqualTo(null)
         }
     }
 

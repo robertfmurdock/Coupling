@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.LiveInfoRepository
@@ -50,7 +50,7 @@ class MemoryRepositoryCatalog private constructor(
 }
 
 class MemoryRepositoryBackend {
-    val tribe = SimpleRecordBackend<Tribe>()
+    val tribe = SimpleRecordBackend<Party>()
     val player = SimpleRecordBackend<TribeIdPlayer>()
     val pairAssignments = SimpleRecordBackend<TribeIdPairAssignmentDocument>()
     val pin = SimpleRecordBackend<TribeIdPin>()

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.json.toJsonString
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
@@ -17,8 +17,8 @@ import kotlin.test.Test
 class CouplingWebsocketTest {
 
     @Test
-    fun connectsToTheWebsocketUsingTribe(): Unit = setup(object {
-        val tribeId = TribeId("bwahahahaha")
+    fun connectsToTheWebsocketUsingParty(): Unit = setup(object {
+        val tribeId = PartyId("bwahahahaha")
         val useSsl = false
         val token = "${uuid4()}"
     }) exercise {
@@ -33,7 +33,7 @@ class CouplingWebsocketTest {
 
     @Test
     fun whenSslIsOnWillUseHttps() = setup(object {
-        val tribeId = TribeId("LOL")
+        val tribeId = PartyId("LOL")
         val useSsl = true
         val token = "${uuid4()}"
     }) exercise {
@@ -48,7 +48,7 @@ class CouplingWebsocketTest {
 
     @Test
     fun whenSocketIsClosedUsesNotConnectedMessage(): Unit = setup(object {
-        val tribeId = TribeId("Woo")
+        val tribeId = PartyId("Woo")
         var lastMessage: Message? = null
         val wrapper = shallow { child(CouplingWebsocket(tribeId, false, { lastMessage = it }, "") { div {} }) }
         val websocketProps = wrapper.find(reactWebsocket).props()

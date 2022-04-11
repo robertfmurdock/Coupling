@@ -4,7 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
@@ -14,7 +14,7 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
 
     @Test
     fun connectionListWillReturnLastSaved() = repositorySetup.with(object : ContextMint<R>() {
-        val tribeId = stubTribeId()
+        val tribeId = stubPartyId()
         val connections = listOf(
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
@@ -29,7 +29,7 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
 
     @Test
     fun getWillReturnConnection() = repositorySetup.with(object : ContextMint<R>() {
-        val tribeId = stubTribeId()
+        val tribeId = stubPartyId()
         val expectedConnection = CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
         val connections = listOf(
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
@@ -45,7 +45,7 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
 
     @Test
     fun deleteWillMakeGetNoLongerReturnValue() = repositorySetup.with(object : ContextMint<R>() {
-        val tribeId = stubTribeId()
+        val tribeId = stubPartyId()
         val connections = listOf(
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
             CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),

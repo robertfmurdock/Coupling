@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.tribe.TribeBrowser
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
@@ -15,7 +15,7 @@ import react.dom.html.ReactHTML.div
 import react.key
 import react.router.dom.Link
 
-data class RetiredPlayers(val tribe: Tribe, val retiredPlayers: List<Player>) :
+data class RetiredPlayers(val tribe: Party, val retiredPlayers: List<Player>) :
     DataPropsBind<RetiredPlayers>(com.zegreatrob.coupling.client.player.retired.retiredPlayers)
 
 private val styles = useStyles("player/RetiredPlayers")

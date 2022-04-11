@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 
@@ -18,7 +18,7 @@ data class RunGameAction(
     val players: List<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-    val tribe: Tribe
+    val party: Party
 ) : SimpleExecutableAction<RunGameActionDispatcher, PairAssignmentDocument> {
     override val performFunc = link(RunGameActionDispatcher::perform)
 }
@@ -32,7 +32,7 @@ interface RunGameActionDispatcher : Clock, ExecutableActionExecuteSyntax, FindNe
     private fun RunGameAction.assignPins(pairs: List<CouplingPair>) = execute(assignPinsAction(pairs))
     private fun RunGameAction.assignPinsAction(pairs: List<CouplingPair>) = AssignPinsAction(pairs, pins, history)
     private fun RunGameAction.findNewPairs() = execute(findNewPairsAction())
-    private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(Game(history, players, tribe.pairingRule))
+    private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(Game(history, players, party.pairingRule))
     private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
         id = PairAssignmentDocumentId("${uuid4()}"),
         date = currentDate(),

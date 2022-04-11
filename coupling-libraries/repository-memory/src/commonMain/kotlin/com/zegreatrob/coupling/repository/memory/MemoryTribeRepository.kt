@@ -1,19 +1,19 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 
 class MemoryTribeRepository(
     override val userId: String,
     override val clock: TimeProvider,
-    private val recordBackend: RecordBackend<Tribe> = SimpleRecordBackend()
-) : TribeRepository, TypeRecordSyntax<Tribe>, RecordBackend<Tribe> by recordBackend {
+    private val recordBackend: RecordBackend<Party> = SimpleRecordBackend()
+) : TribeRepository, TypeRecordSyntax<Party>, RecordBackend<Party> by recordBackend {
 
-    override suspend fun save(tribe: Tribe) = tribe.record().save()
+    override suspend fun save(party: Party) = party.record().save()
 
-    override suspend fun getTribeRecord(tribeId: TribeId) = tribeId.findTribe()
+    override suspend fun getTribeRecord(tribeId: PartyId) = tribeId.findParty()
         ?.takeUnless { it.isDeleted }
 
     override suspend fun getTribes() = recordList()
@@ -22,16 +22,16 @@ class MemoryTribeRepository(
     private fun recordList() = records.groupBy { (tribe) -> tribe.id }
         .map { it.value.last() }
 
-    override suspend fun delete(tribeId: TribeId) = tribeId.findTribe()?.data.deleteRecord()
+    override suspend fun delete(tribeId: PartyId) = tribeId.findParty()?.data.deleteRecord()
 
-    private fun Tribe?.deleteRecord() = if (this == null) {
+    private fun Party?.deleteRecord() = if (this == null) {
         false
     } else {
         deletionRecord().save()
         true
     }
 
-    private fun TribeId.findTribe() = recordList()
+    private fun PartyId.findParty() = recordList()
         .firstOrNull { it.data.id == this }
 
 }

@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 
 object RetiredPlayersPage : StyleSyntax {
     override val styles = loadStyles("player/RetiredPlayers")
 
-    suspend fun goTo(tribeId: TribeId) {
+    suspend fun goTo(tribeId: PartyId) {
         WebdriverBrowser.setLocation("/${tribeId.value}/players/retired")
         waitForPage()
     }

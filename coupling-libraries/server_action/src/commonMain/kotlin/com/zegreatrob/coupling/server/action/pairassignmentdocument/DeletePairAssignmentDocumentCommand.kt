@@ -19,7 +19,7 @@ interface DeletePairAssignmentDocumentCommandDispatcher : PairAssignmentDocument
         .deletionResult("Pair Assignment Document")
 
     private fun DeletePairAssignmentDocumentCommand.tribeIdPairAssignmentId() = TribeIdPairAssignmentDocumentId(
-        currentTribeId, pairAssignmentDocumentId
+        currentPartyId, pairAssignmentDocumentId
     )
 
 }

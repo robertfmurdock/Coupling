@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.PlayerCard.header
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -19,9 +19,9 @@ import kotlin.test.Test
 class PlayerConfigPageE2ETest {
 
     companion object {
-        private fun playerConfigOnePlayerSetup(buildTribe: () -> Tribe, buildPlayer: () -> Player) =
+        private fun playerConfigOnePlayerSetup(buildParty: () -> Party, buildPlayer: () -> Player) =
             e2eSetup.extend(beforeAll = {
-                val tribe = buildTribe()
+                val tribe = buildParty()
                 val player = buildPlayer()
                 sdkProvider.await().apply {
                     tribe.save()
@@ -35,7 +35,7 @@ class PlayerConfigPageE2ETest {
 
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
-                buildTribe = { Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E")) },
+                buildParty = { Party(PartyId("${randomInt()}-PlayerConfigPageE2E")) },
                 buildPlayer = {
                     Player(
                         "${randomInt()}-PlayerConfigPageE2E",
@@ -149,7 +149,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun willShowAllPlayers() = e2eSetup(object {
-            val tribe = Tribe(TribeId("${randomInt()}-PlayerConfigPageE2E"))
+            val tribe = Party(PartyId("${randomInt()}-PlayerConfigPageE2E"))
             val players = generateSequence {
                 Player(
                     id = "${randomInt()}-PlayerConfigPageE2E",
@@ -175,9 +175,9 @@ class PlayerConfigPageE2ETest {
 
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
-                buildTribe = {
-                    Tribe(
-                        TribeId("${randomInt()}-PlayerConfigPageE2E"),
+                buildParty = {
+                    Party(
+                        PartyId("${randomInt()}-PlayerConfigPageE2E"),
                         badgesEnabled = true,
                         defaultBadgeName = "Badge 1",
                         alternateBadgeName = "Badge 2"
@@ -241,9 +241,9 @@ class PlayerConfigPageE2ETest {
 
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
-                buildTribe = {
-                    Tribe(
-                        TribeId("${randomInt()}-PlayerConfigPageE2E"),
+                buildParty = {
+                    Party(
+                        PartyId("${randomInt()}-PlayerConfigPageE2E"),
                         callSignsEnabled = true
                     )
                 },
@@ -280,8 +280,8 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun willSuggestCallSign() = e2eSetup(object {
-            val tribe = Tribe(
-                id = TribeId("${randomInt()}-WithOneTribeNoPlayers"),
+            val tribe = Party(
+                id = PartyId("${randomInt()}-WithOneTribeNoPlayers"),
                 callSignsEnabled = true
             )
         }) {

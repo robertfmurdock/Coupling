@@ -5,7 +5,7 @@ import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
-import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
@@ -36,7 +36,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
 
     @Test
     fun saveUserThenGetWillContainAllSavedValues() = repositorySetup.with(object : ContextMint<R>() {
-        val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId())) }
+        val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
     }.bind()) {
         repository.save(updatedUser)
     } exercise {
@@ -48,7 +48,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
 
     @Test
     fun saveUserThenGetWillIncludeMarkingInformation() = repositorySetup.with(object : ContextMint<R>() {
-        val updatedUser by lazy { user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId())) }
+        val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
     }.bind()) {
         clock.currentTime = DateTime.now().plus(10.days)
         repository.save(updatedUser)
@@ -64,8 +64,8 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     @Test
     fun saveUserRepeatedlyGetsLatest() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
-            val updatedUser1 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId(), stubTribeId()))
-            val updatedUser2 = sharedContext.user.copy(authorizedTribeIds = setOf(stubTribeId()))
+            val updatedUser1 = sharedContext.user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId()))
+            val updatedUser2 = sharedContext.user.copy(authorizedPartyIds = setOf(stubPartyId()))
         }
     }) exercise {
         repository.save(updatedUser1)

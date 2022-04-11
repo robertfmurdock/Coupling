@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.repository.validation
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubTribes
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -24,10 +24,10 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
         result.tribes().assertContainsAll(tribes)
     }
 
-    private fun List<Tribe>.assertContainsAll(expectedTribes: List<Tribe>) =
+    private fun List<Party>.assertContainsAll(expectedTribes: List<Party>) =
         expectedTribes.forEach(this::assertContains)
 
-    private fun List<Record<Tribe>>.tribes() = map(Record<Tribe>::data)
+    private fun List<Record<Party>>.tribes() = map(Record<Party>::data)
 
     @Test
     fun saveMultipleThenGetEachByIdWillReturnSavedTribes() = repositorySetup.with(object : ContextMint<R>() {
@@ -42,7 +42,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
 
     @Test
     fun saveWillIncludeModificationInformation() = repositorySetup.with(object : ContextMint<R>() {
-        val tribe = stubTribe()
+        val tribe = stubParty()
     }.bind()) {
         clock.currentTime = DateTime.now().minus(3.days)
         repository.save(tribe)
@@ -59,7 +59,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
 
     @Test
     fun deleteWillMakeTribeInaccessible() = repositorySetup.with(object : ContextMint<R>() {
-        val tribe = stubTribe()
+        val tribe = stubParty()
     }.bind()) {
         repository.save(tribe)
     } exercise {

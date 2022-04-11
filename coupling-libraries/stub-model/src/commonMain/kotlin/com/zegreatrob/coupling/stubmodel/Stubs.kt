@@ -11,17 +11,17 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.User
 
 
-fun stubTribes(number: Int) = generateSequence { stubTribe() }.take(number).toList()
+fun stubTribes(number: Int) = generateSequence { stubParty() }.take(number).toList()
 
 var tribeCounter = 1
 
-fun stubTribe() = Tribe(
-    id = stubTribeId(),
+fun stubParty() = Party(
+    id = stubPartyId(),
     name = "Stub Tribe $tribeCounter",
     alternateBadgeName = "Badgely",
     badgesEnabled = tribeCounter % 2 == 0,
@@ -35,7 +35,7 @@ fun stubTribe() = Tribe(
 
 private fun stubPairingRule() = PairingRule.values()[tribeCounter % PairingRule.values().size]
 
-fun stubTribeId() = TribeId(uuidString())
+fun stubPartyId() = PartyId(uuidString())
 
 var playerCounter = 1
 fun stubPlayer() = Player(
@@ -66,7 +66,6 @@ fun stubSimplePairAssignmentDocument(date: DateTime = DateTime.now()) = PairAssi
         id to stubPairAssignmentDoc().copy(date = date, id = id)
     }
 
-
 var pairAssignmentDocumentCounter = 1
 fun stubPairAssignmentDoc() = PairAssignmentDocument(
     id = PairAssignmentDocumentId(uuidString()),
@@ -89,5 +88,5 @@ var userCounter = 1
 fun stubUser() = User(
     id = uuidString(),
     email = "$userCounter-${uuidString()}@gmail.com",
-    authorizedTribeIds = setOf(stubTribeId())
+    authorizedPartyIds = setOf(stubPartyId())
 ).also { userCounter++ }

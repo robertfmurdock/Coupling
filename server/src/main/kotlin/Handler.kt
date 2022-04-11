@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.*
 import com.zegreatrob.coupling.server.action.BroadcastAction
@@ -86,7 +86,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic) = js("require('ser
 
 private suspend fun handleConnect(request: Request, connectionId: String, event: Any?): Int {
     val commandDispatcher = with(request) { commandDispatcher(user, scope, traceId) }
-    val tribeId = request.query["tribeId"].toString().let(::TribeId)
+    val tribeId = request.query["tribeId"].toString().let(::PartyId)
     val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
     return if (result == null) {
         delete(connectionId, commandDispatcher.managementApiClient).await()

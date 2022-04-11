@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 
@@ -19,12 +19,12 @@ class RequestCombineTest {
         val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(performer) {
             override suspend fun getToken() = ""
         }
-        val tribeId = TribeId("Random")
+        val partyId = PartyId("Random")
     }) exercise {
         with(sdk) {
             coroutineScope {
-                launch { tribeId.getPlayerList() }
-                launch { tribeId.getPins() }
+                launch { partyId.getPlayerList() }
+                launch { partyId.getPins() }
             }
         }
     } verify {

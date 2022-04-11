@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -38,22 +38,22 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         record.asDynamoJson()
     )
 
-    override suspend fun getPairAssignments(tribeId: TribeId) = tribeId.queryForItemList()
+    override suspend fun getPairAssignments(partyId: PartyId) = partyId.queryForItemList()
         .map { toRecord(it) }
         .sortedByDescending { it.data.document.date }
 
-    override suspend fun getCurrentPairAssignments(tribeId: TribeId) = tribeId.queryForItemList()
+    override suspend fun getCurrentPairAssignments(partyId: PartyId) = partyId.queryForItemList()
         .map { toRecord(it) }
         .maxByOrNull { it.data.document.date }
 
-    override suspend fun delete(tribeId: TribeId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
+    override suspend fun delete(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
         performDelete(
-            pairAssignmentDocumentId.value, tribeId, now(), ::toRecord
+            pairAssignmentDocumentId.value, partyId, now(), ::toRecord
         ) { asDynamoJson() }
 
-    suspend fun getRecords(tribeId: TribeId): List<TribeRecord<PairAssignmentDocument>> =
-        tribeId.logAsync("getPairAssignmentRecords") {
-            performQuery(tribeId.itemListQueryParams()).itemsNode()
+    suspend fun getRecords(partyId: PartyId): List<TribeRecord<PairAssignmentDocument>> =
+        partyId.logAsync("getPairAssignmentRecords") {
+            performQuery(partyId.itemListQueryParams()).itemsNode()
         }
             .map { toRecord(it) }
             .sortedByDescending { it.timestamp }
@@ -62,7 +62,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         json.tribeId().with(json.toPairAssignmentDocument())
     )
 
-    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::TribeId)
+    private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::PartyId)
 
 
 }

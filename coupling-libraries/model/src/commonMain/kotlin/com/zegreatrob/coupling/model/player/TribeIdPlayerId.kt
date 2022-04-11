@@ -1,5 +1,5 @@
 package com.zegreatrob.coupling.model.player
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
-data class TribeIdPlayerId(val tribeId: TribeId, val playerId: String)
+data class TribeIdPlayerId(val partyId: PartyId, val playerId: String)

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.sdk.Sdk
 
-fun <C1 : TribeContext> C1.attachTribe(): suspend (Pair<Sdk, Tribe>) -> C1 = { pair: Pair<Sdk, Tribe> ->
+fun <C1 : TribeContext> C1.attachParty(): suspend (Pair<Sdk, Party>) -> C1 = { pair: Pair<Sdk, Party> ->
     also {
         this.tribe = pair.second
         this.sdk = pair.first
@@ -11,5 +11,5 @@ fun <C1 : TribeContext> C1.attachTribe(): suspend (Pair<Sdk, Tribe>) -> C1 = { p
 }
 
 abstract class TribeContext : SdkContext() {
-    lateinit var tribe: Tribe
+    lateinit var tribe: Party
 }

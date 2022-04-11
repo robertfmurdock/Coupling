@@ -20,7 +20,7 @@ object PlayersQuery : SimpleSuspendResultAction<PlayersQueryDispatcher, List<Rec
 interface PlayersQueryDispatcher : CurrentTribeIdSyntax, TribeIdPlayerRecordsListSyntax, FindCallSignActionDispatcher {
     suspend fun perform(query: PlayersQuery) = doWork().successResult()
 
-    private suspend fun doWork() = currentTribeId.getPlayerRecords().populateMissingCallSigns()
+    private suspend fun doWork() = currentPartyId.getPlayerRecords().populateMissingCallSigns()
 
     private fun List<TribeRecord<Player>>.populateMissingCallSigns() = foldIndexedToList { index, acc, record ->
         val callSign = findCallSign(index, acc, record)

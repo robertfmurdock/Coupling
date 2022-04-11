@@ -2,12 +2,12 @@ package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import react.dom.html.ReactHTML.div
 
-data class TribeBrowser(val tribe: Tribe) : DataPropsBind<TribeBrowser>(tribeBrowser)
+data class TribeBrowser(val tribe: Party) : DataPropsBind<TribeBrowser>(tribeBrowser)
 
 private val styles = useStyles("tribe/TribeBrowser")
 

@@ -2,14 +2,14 @@ package com.zegreatrob.coupling.sdk
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.seconds
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContextMint
 import com.zegreatrob.coupling.repository.validation.bind
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
-import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
@@ -22,7 +22,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
 
     override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPairAssignmentsRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
-        val tribe = stubTribe()
+        val tribe = stubParty()
         sdk.tribeRepository.save(tribe)
         SdkTribeContext(sdk, sdk.pairAssignmentDocumentRepository, tribe.id, MagicClock())
     }, sharedTeardown = {
@@ -34,7 +34,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
         val sdk = authorizedSdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
-            val otherTribe = stubTribe()
+            val otherTribe = stubParty()
             val sdk = sdk
             val otherSdk = otherSdk
         }
@@ -42,7 +42,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
         otherSdk.tribeRepository.save(otherTribe)
         otherSdk.pairAssignmentDocumentRepository.save(otherTribe.id.with(stubPairAssignmentDoc()))
     } exercise {
-        sdk.pairAssignmentDocumentRepository.getPairAssignments(TribeId("someoneElseTribe"))
+        sdk.pairAssignmentDocumentRepository.getPairAssignments(PartyId("someoneElseTribe"))
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {

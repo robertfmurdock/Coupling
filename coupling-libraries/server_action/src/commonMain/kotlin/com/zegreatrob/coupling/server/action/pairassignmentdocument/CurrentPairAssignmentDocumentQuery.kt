@@ -17,7 +17,7 @@ interface CurrentPairAssignmentDocumentQueryDispatcher : CurrentTribeIdSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentGetCurrent
 
     suspend fun perform(query: CurrentPairAssignmentDocumentQuery) =
-        pairAssignmentDocumentRepository.getCurrentPairAssignments(currentTribeId)
+        pairAssignmentDocumentRepository.getCurrentPairAssignments(currentPartyId)
             ?.successResult()
             ?: NotFoundResult("currentPairAssignment")
 }

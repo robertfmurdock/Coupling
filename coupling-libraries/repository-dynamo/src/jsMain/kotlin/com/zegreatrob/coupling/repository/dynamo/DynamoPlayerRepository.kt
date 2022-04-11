@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.tribe.TribeElement
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
@@ -91,15 +91,15 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
             )
     }
 
-    override suspend fun getPlayers(tribeId: TribeId) = tribeId.queryForItemList().mapNotNull { it.toPlayerRecord() }
+    override suspend fun getPlayers(partyId: PartyId) = partyId.queryForItemList().mapNotNull { it.toPlayerRecord() }
 
-    suspend fun getPlayerRecords(tribeId: TribeId) = tribeId.logAsync("itemList") {
-        performQuery(tribeId.itemListQueryParams()).itemsNode()
+    suspend fun getPlayerRecords(partyId: PartyId) = partyId.logAsync("itemList") {
+        performQuery(partyId.itemListQueryParams()).itemsNode()
     }.mapNotNull { it.toPlayerRecord() }
 
-    private fun Json.toPlayerRecord() = toPlayer()?.let { toRecord(tribeId().with(it)) }
+    private fun Json.toPlayerRecord() = toPlayer()?.let { toRecord(PartyId().with(it)) }
 
-    private fun Json.tribeId() = TribeId(this["tribeId"].unsafeCast<String>())
+    private fun Json.PartyId() = PartyId(this["tribeId"].unsafeCast<String>())
 
     override suspend fun save(tribeIdPlayer: TribeIdPlayer) = saveRawRecord(
         tribeIdPlayer.copyWithIdCorrection().toRecord()
@@ -111,11 +111,11 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
     suspend fun saveRawRecord(record: TribeRecord<Player>) = performPutItem(record.asDynamoJson())
 
-    override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = performDelete(
-        playerId, tribeId, now(), { toPlayerRecord() }, { asDynamoJson() }
+    override suspend fun deletePlayer(partyId: PartyId, playerId: String) = performDelete(
+        playerId, partyId, now(), { toPlayerRecord() }, { asDynamoJson() }
     )
 
-    override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.queryForDeletedItemList()
+    override suspend fun getDeleted(partyId: PartyId): List<Record<TribeIdPlayer>> = partyId.queryForDeletedItemList()
         .mapNotNull { it.toPlayerRecord() }
 
     override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> =
@@ -133,7 +133,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                     .map { it.value.last() }
                     .filter { it["email"] == email && it["isDeleted"] != true }
                     .map {
-                        TribeId(it.getDynamoStringValue("tribeId") ?: "")
+                        PartyId(it.getDynamoStringValue("tribeId") ?: "")
                             .with(it.getDynamoStringValue("id") ?: "")
                     }
             }

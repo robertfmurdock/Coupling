@@ -13,6 +13,6 @@ object PairAssignmentDocumentListQuery :
 }
 
 interface PairAssignmentDocumentListQueryDispatcher : TribeIdPairAssignmentRecordsSyntax, CurrentTribeIdSyntax {
-    suspend fun perform(query: PairAssignmentDocumentListQuery) = currentTribeId.loadPairAssignmentRecords()
+    suspend fun perform(query: PairAssignmentDocumentListQuery) = currentPartyId.loadPairAssignmentRecords()
         .successResult()
 }

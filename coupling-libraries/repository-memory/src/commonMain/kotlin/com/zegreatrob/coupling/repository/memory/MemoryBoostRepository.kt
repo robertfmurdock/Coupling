@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.memory
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 
 class MemoryBoostRepository(
@@ -21,8 +21,8 @@ class MemoryBoostRepository(
         get()?.data?.deletionRecord()?.save()
     }
 
-    override suspend fun getByTribeId(tribeId: TribeId): Record<Boost>? = allLatestRecords().firstOrNull {
-        it.data.tribeIds.contains(tribeId)
+    override suspend fun getByPartyId(tribeId: PartyId): Record<Boost>? = allLatestRecords().firstOrNull {
+        it.data.partyIds.contains(tribeId)
     }
 
     private fun allLatestRecords() = records.groupBy { it.data.userId }.map { it.value.last() }

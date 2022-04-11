@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdHistorySyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
@@ -11,16 +11,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-typealias HistoryData = Pair<Tribe, List<PairAssignmentDocument>>
+typealias HistoryData = Pair<Party, List<PairAssignmentDocument>>
 
-data class HistoryQuery(val tribeId: TribeId) : SimpleSuspendAction<HistoryQueryDispatcher, HistoryData?> {
+data class HistoryQuery(val tribeId: PartyId) : SimpleSuspendAction<HistoryQueryDispatcher, HistoryData?> {
     override val performFunc = link(HistoryQueryDispatcher::perform)
 }
 
 interface HistoryQueryDispatcher : TribeIdGetSyntax, TribeIdHistorySyntax {
     suspend fun perform(query: HistoryQuery) = query.tribeId.getData()
 
-    private suspend fun TribeId.getData() = withContext(Dispatchers.Default) {
+    private suspend fun PartyId.getData() = withContext(Dispatchers.Default) {
         await(
             async { get() },
             async { loadHistory() }

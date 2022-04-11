@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -23,7 +23,7 @@ class HistoryPageE2ETest {
     class WithTwoAssignments {
         companion object {
             private val historyPageSetup = e2eSetup.extend(beforeAll = {
-                val tribe = buildTribe()
+                val tribe = buildParty()
                 val sdk = sdkProvider.await().apply {
                     tribe.save()
                 }
@@ -34,7 +34,7 @@ class HistoryPageE2ETest {
                 Context(pairAssignments)
             })
 
-            private suspend fun setupTwoPairAssignments(tribe: Tribe, sdk: Sdk) = listOf(
+            private suspend fun setupTwoPairAssignments(tribe: Party, sdk: Sdk) = listOf(
                 buildPairAssignmentDocument(1, listOf(pairOf(Player(name = "Ollie"), Player(name = "Speedy")))),
                 buildPairAssignmentDocument(2, listOf(pairOf(Player(name = "Arthur"), Player(name = "Garth"))))
             ).onEach { sdk.pairAssignmentDocumentRepository.save(tribe.id.with(it)) }
@@ -45,8 +45,8 @@ class HistoryPageE2ETest {
                 pairs.map { it.withPins(emptyList()) }
             )
 
-            private fun buildTribe() = "${randomInt()}-HistoryPageE2ETest".let {
-                Tribe(it.let(::TribeId), name = it)
+            private fun buildParty() = "${randomInt()}-HistoryPageE2ETest".let {
+                Party(it.let(::PartyId), name = it)
             }
         }
 

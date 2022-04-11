@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import com.zegreatrob.testmints.async.TestTemplate
@@ -15,7 +15,7 @@ val e2eSetup: TestTemplate<Sdk> by lazy {
 
     asyncTestTemplate(beforeAll = {
         CouplingLogin.sdkProvider.await().apply {
-            getTribes().map(Tribe::id).forEach { it.delete() }
+            getTribes().map(Party::id).forEach { it.delete() }
 
             WebdriverBrowser.setUrl("")
             js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); done()}, undefined)")

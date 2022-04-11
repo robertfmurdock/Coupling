@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContext
 import com.zegreatrob.coupling.repository.validation.TribeContextData
 import com.zegreatrob.coupling.stubmodel.stubPin
-import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
@@ -29,7 +29,7 @@ class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> 
 
             val compoundRepo = CompoundPinRepository(repository1, repository2)
 
-            val tribeId = stubTribeId()
+            val tribeId = stubPartyId()
             val pin = stubPin()
         }
     })

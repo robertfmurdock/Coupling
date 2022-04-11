@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
@@ -8,7 +8,7 @@ import com.zegreatrob.wrapper.wdio.WebdriverElementArray
 object PairAssignmentsPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/PairAssignments")
     val newPairsButton by getting()
-    suspend fun goTo(id: TribeId) {
+    suspend fun goTo(id: PartyId) {
         WebdriverBrowser.setLocation("/${id.value}/pairAssignments/current/")
         waitForPage()
     }

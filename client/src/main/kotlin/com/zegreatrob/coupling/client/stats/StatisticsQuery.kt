@@ -7,18 +7,18 @@ import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class StatisticsQuery(val tribeId: TribeId) :
+data class StatisticsQuery(val tribeId: PartyId) :
     SimpleSuspendAction<StatisticsQueryDispatcher, StatisticQueryResults?> {
     override val performFunc = link(StatisticsQueryDispatcher::perform)
 }
 
 data class StatisticQueryResults(
-    val tribe: Tribe,
+    val tribe: Party,
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
     val report: StatisticsReport,
@@ -37,13 +37,13 @@ interface StatisticsQueryDispatcher : ExecutableActionExecuteSyntax,
         StatisticQueryResults(tribe, players, history, report, heatmapData)
     }
 
-    private fun calculateStats(tribe: Tribe, players: List<Player>, history: List<PairAssignmentDocument>)
+    private fun calculateStats(tribe: Party, players: List<Player>, history: List<PairAssignmentDocument>)
             : Pair<StatisticsReport, List<List<Double?>>> {
         val statisticsReport = composeStatistics(tribe, players, history)
         return statisticsReport to calculateHeatMap(players, history, statisticsReport)
     }
 
-    private fun composeStatistics(tribe: Tribe, players: List<Player>, history: List<PairAssignmentDocument>) =
+    private fun composeStatistics(tribe: Party, players: List<Player>, history: List<PairAssignmentDocument>) =
         execute(ComposeStatisticsAction(tribe, players, history))
 
     private fun calculateHeatMap(

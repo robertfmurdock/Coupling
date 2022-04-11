@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -37,7 +37,7 @@ val playerJsonKeys = Player(
     .jsonObject.keys
 
 val playerRecordJsonKeys = TribeRecord(
-    TribeId("").with(
+    PartyId("").with(
         Player(
             id = "1",
             badge = 1,

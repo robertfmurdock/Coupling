@@ -2,30 +2,30 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
-import com.zegreatrob.coupling.model.tribe.defaultTribe
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.tribe.defaultParty
 import kotlin.js.Json
 import kotlin.js.json
 
 interface DynamoTribeJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping {
 
-    fun Record<Tribe>.asDynamoJson() = recordJson().add(data.asDynamoJson())
+    fun Record<Party>.asDynamoJson() = recordJson().add(data.asDynamoJson())
 
-    fun Json.toTribe() = Tribe(
-        id = TribeId(getDynamoStringValue("id") ?: ""),
+    fun Json.toParty() = Party(
+        id = PartyId(getDynamoStringValue("id") ?: ""),
         name = getDynamoStringValue("name"),
         email = getDynamoStringValue("email"),
         pairingRule = getDynamoNumberValue("pairingRule")?.toInt().let { PairingRule.fromValue(it) },
         defaultBadgeName = getDynamoStringValue("defaultBadgeName") ?: "",
         alternateBadgeName = getDynamoStringValue("alternateBadgeName") ?: "",
-        badgesEnabled = getDynamoBoolValue("badgesEnabled") ?: defaultTribe.badgesEnabled,
-        callSignsEnabled = getDynamoBoolValue("callSignsEnabled") ?: defaultTribe.callSignsEnabled,
-        animationEnabled = getDynamoBoolValue("animationEnabled") ?: defaultTribe.animationEnabled,
-        animationSpeed = getDynamoNumberValue("animationSpeed")?.toDouble() ?: defaultTribe.animationSpeed
+        badgesEnabled = getDynamoBoolValue("badgesEnabled") ?: defaultParty.badgesEnabled,
+        callSignsEnabled = getDynamoBoolValue("callSignsEnabled") ?: defaultParty.callSignsEnabled,
+        animationEnabled = getDynamoBoolValue("animationEnabled") ?: defaultParty.animationEnabled,
+        animationSpeed = getDynamoNumberValue("animationSpeed")?.toDouble() ?: defaultParty.animationSpeed
     )
 
-    fun Tribe.asDynamoJson() = json(
+    fun Party.asDynamoJson() = json(
         "id" to id.value,
         "name" to name,
         "email" to email,

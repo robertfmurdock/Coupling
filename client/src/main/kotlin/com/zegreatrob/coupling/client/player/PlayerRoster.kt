@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
@@ -27,7 +27,7 @@ import kotlin.random.Random
 data class PlayerRoster(
     val label: String? = null,
     val players: List<Player>,
-    val tribeId: TribeId,
+    val tribeId: PartyId,
     val className: String? = null,
     val cssOverrides: RuleSet = {}
 ) : DataPropsBind<PlayerRoster>(playerRoster)
@@ -66,7 +66,7 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
     }
 }
 
-private fun ChildrenBuilder.addPlayerButton(tribeId: TribeId) = Link {
+private fun ChildrenBuilder.addPlayerButton(tribeId: PartyId) = Link {
     to = "/${tribeId.value}/player/new/"
     tabIndex = -1
     draggable = false

@@ -3,14 +3,14 @@ package com.zegreatrob.coupling.repository.pin
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface PinRepository : PinSave,
     PinGet,
     PinDelete
 
 interface PinGet {
-    suspend fun getPins(tribeId: TribeId): List<TribeRecord<Pin>>
+    suspend fun getPins(tribeId: PartyId): List<TribeRecord<Pin>>
 }
 
 interface PinSave {
@@ -18,5 +18,5 @@ interface PinSave {
 }
 
 interface PinDelete {
-    suspend fun deletePin(tribeId: TribeId, pinId: String): Boolean
+    suspend fun deletePin(tribeId: PartyId, pinId: String): Boolean
 }

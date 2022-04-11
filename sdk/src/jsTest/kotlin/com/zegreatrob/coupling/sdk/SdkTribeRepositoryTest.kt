@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -29,60 +29,60 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
         object {
             val repository = context.repository
             val sdkForOtherUser = sdkForOtherUser
-            val tribe = Tribe(TribeId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+            val party = Party(PartyId(uuid4().toString()), name = "tribe-from-endpoint-tests")
             val playerMatchingSdkUser = stubPlayer().copy(email = context.user.email)
         }
     }, sharedTeardown = {
-        it.repository.delete(it.tribe.id)
+        it.repository.delete(it.party.id)
     })
 
     @Test
     fun getWillReturnAnyTribeThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.tribeRepository.save(tribe)
-        sdkForOtherUser.playerRepository.save(tribe.id.with(playerMatchingSdkUser))
+        sdkForOtherUser.tribeRepository.save(party)
+        sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
     } exercise {
         repository.getTribes()
     } verify { result ->
         result.map { it.data }
-            .assertContains(tribe)
+            .assertContains(party)
     }
 
     @Test
     fun getWillNotReturnTribeIfPlayerHadEmailButThenHadItRemoved() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.tribeRepository.save(tribe)
-        sdkForOtherUser.playerRepository.save(tribe.id.with(playerMatchingSdkUser))
-        sdkForOtherUser.playerRepository.save(tribe.id.with(playerMatchingSdkUser.copy(email = "something else")))
+        sdkForOtherUser.tribeRepository.save(party)
+        sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
+        sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser.copy(email = "something else")))
     } exercise {
         repository.getTribes()
     } verify { result ->
-        result.map { it.data }.contains(tribe)
+        result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
     }
 
     @Test
     fun getWillNotReturnTribeIfPlayerHadEmailButPlayerWasRemoved() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.tribeRepository.save(tribe)
-        sdkForOtherUser.playerRepository.save(tribe.id.with(playerMatchingSdkUser))
-        sdkForOtherUser.playerRepository.deletePlayer(tribe.id, playerMatchingSdkUser.id)
+        sdkForOtherUser.tribeRepository.save(party)
+        sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
+        sdkForOtherUser.playerRepository.deletePlayer(party.id, playerMatchingSdkUser.id)
     } exercise {
         repository.getTribes()
     } verify { result ->
-        result.map { it.data }.contains(tribe)
+        result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
     }
 
     @Test
     fun saveWillNotSaveWhenTribeAlreadyExistsForSomeoneElse() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.tribeRepository.save(tribe)
+        sdkForOtherUser.tribeRepository.save(party)
     } exercise {
-        repository.save(tribe.copy(name = "changed name"))
-        sdkForOtherUser.tribeRepository.getTribeRecord(tribe.id)
+        repository.save(party.copy(name = "changed name"))
+        sdkForOtherUser.tribeRepository.getTribeRecord(party.id)
     } verify { result ->
-        result?.data.assertIsEqualTo(tribe)
+        result?.data.assertIsEqualTo(party)
     }
 
     override fun saveWillIncludeModificationInformation() = repositorySetup.with(object : SdkMint() {
-        val tribe = stubTribe()
+        val tribe = stubParty()
     }.bind()) {
         repository.save(tribe)
     } exercise {

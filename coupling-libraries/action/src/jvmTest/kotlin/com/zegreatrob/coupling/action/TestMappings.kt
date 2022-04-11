@@ -11,8 +11,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 val mapper = ObjectMapper()
 
@@ -24,7 +24,7 @@ actual fun loadJsonTribeSetup(fileResource: String): TribeSetup {
     val tribeJson = fileJson["tribe"]
 
     return TribeSetup(
-        tribe = Tribe(
+        party = Party(
             name = tribeJson["name"].textValue(),
             pairingRule = tribeJson["pairingRule"].intValue().let {
                 PairingRule.fromValue(
@@ -33,7 +33,7 @@ actual fun loadJsonTribeSetup(fileResource: String): TribeSetup {
             },
             defaultBadgeName = tribeJson["defaultBadgeName"].textValue(),
             alternateBadgeName = tribeJson["alternateBadgeName"].textValue(),
-            id = tribeJson["id"].textValue().let(::TribeId)
+            id = tribeJson["id"].textValue().let(::PartyId)
         ),
         players = fileJson["players"].map { it.toPlayer() },
         history = fileJson["history"].map {

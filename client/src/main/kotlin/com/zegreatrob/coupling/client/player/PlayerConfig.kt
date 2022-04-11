@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import react.router.Navigate
@@ -16,7 +16,7 @@ import react.useState
 import kotlin.js.Json
 
 data class PlayerConfig(
-    val tribe: Tribe,
+    val tribe: Party,
     val player: Player,
     val players: List<Player>,
     val reload: () -> Unit,

@@ -16,9 +16,9 @@ interface DisconnectTribeUserCommandDispatcher : CouplingConnectionGetSyntax, Co
     }
 
     private suspend fun CouplingConnection.deleteAndLoadRemainingConnections() = delete()
-        .let { tribeId.loadConnections() }
+        .let { partyId.loadConnections() }
         .let { it to couplingSocketMessage(it, null) }
 
-    private suspend fun CouplingConnection.delete() = deleteConnection(tribeId, connectionId)
+    private suspend fun CouplingConnection.delete() = deleteConnection(partyId, connectionId)
 }
 

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.model.tribe
 
-data class Tribe(
-    val id: TribeId,
+data class Party(
+    val id: PartyId,
     val pairingRule: PairingRule = PairingRule.LongestTime,
     val badgesEnabled: Boolean = false,
     val defaultBadgeName: String = "Default",
@@ -14,4 +14,4 @@ data class Tribe(
     val imageURL: String? = null,
 )
 
-val defaultTribe = Tribe(TribeId("DEFAULT"))
+val defaultParty = Party(PartyId("DEFAULT"))

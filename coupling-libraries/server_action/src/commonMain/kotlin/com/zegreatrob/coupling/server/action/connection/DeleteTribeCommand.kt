@@ -14,11 +14,11 @@ object DeleteTribeCommand : SimpleSuspendResultAction<DeleteTribeCommandDispatch
 
 interface DeleteTribeCommandDispatcher : TribeIdDeleteSyntax, CurrentTribeIdSyntax, AuthenticatedUserSyntax,
     UserSaveSyntax {
-    suspend fun perform(command: DeleteTribeCommand) = currentTribeId.delete().deletionResult("Tribe")
+    suspend fun perform(command: DeleteTribeCommand) = currentPartyId.delete().deletionResult("Tribe")
         .also {
             if (it is SuccessfulResult) {
                 user
-                    .copy(authorizedTribeIds = user.authorizedTribeIds.filter { id -> id != currentTribeId }.toSet())
+                    .copy(authorizedPartyIds = user.authorizedPartyIds.filter { id -> id != currentPartyId }.toSet())
                     .saveIfChanged()
             }
         }

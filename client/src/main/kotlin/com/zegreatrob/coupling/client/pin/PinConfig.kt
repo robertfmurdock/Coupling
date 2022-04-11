@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -15,7 +15,7 @@ import react.useState
 import kotlin.js.Json
 
 data class PinConfig(
-    val tribe: Tribe,
+    val tribe: Party,
     val pin: Pin,
     val pinList: List<Pin>,
     val reload: () -> Unit,

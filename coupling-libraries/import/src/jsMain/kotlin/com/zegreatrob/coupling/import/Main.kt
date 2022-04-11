@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.import.external.readline.onEnd
 import com.zegreatrob.coupling.import.external.readline.onNewLine
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.ClockSyntax
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import kotlinx.coroutines.CompletableDeferred
@@ -48,9 +48,9 @@ private fun ReadLine.inputStreamEnd() = CompletableDeferred<Unit>().also { endDe
 private val format = couplingJsonFormat
 
 suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
-    val tribeId = jsonLine["tribeId"].unsafeCast<String>().let(::TribeId)
+    val partyId = jsonLine["tribeId"].unsafeCast<String>().let(::PartyId)
     jsonLine.getArray("tribeRecords").forEach { recordJson ->
-        tryToImport({ "Failed to save tribe $tribeId" }) {
+        tryToImport({ "Failed to save tribe $partyId" }) {
             catalog.tribeRepository.saveRawRecord(
                 format.decodeFromDynamic<JsonTribeRecord>(recordJson).toModelRecord()
             )
@@ -58,19 +58,19 @@ suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     }
     jsonLine.getArray("playerRecords").forEach { recordJson ->
         val record = format.decodeFromDynamic<JsonPlayerRecord>(recordJson).toModel()
-        tryToImport({ "Failed to save player ${record.data.id} in tribe $tribeId" }) {
+        tryToImport({ "Failed to save player ${record.data.id} in tribe $partyId" }) {
             catalog.playerRepository.saveRawRecord(record)
         }
     }
     jsonLine.getArray("pinRecords").forEach { recordJson ->
         val record = format.decodeFromDynamic<JsonPinRecord>(recordJson).toModel()
-        tryToImport({ "Failed to save pin ${record.data.id} in tribe $tribeId" }) {
+        tryToImport({ "Failed to save pin ${record.data.id} in tribe $partyId" }) {
             catalog.pinRepository.saveRawRecord(record)
         }
     }
     jsonLine.getArray("pairAssignmentRecords").forEach { recordJson ->
         val record = format.decodeFromDynamic<JsonPairAssignmentDocumentRecord>(recordJson).toModel()
-        tryToImport({ "Failed to save player ${record.data.id} in tribe $tribeId" }) {
+        tryToImport({ "Failed to save player ${record.data.id} in tribe $partyId" }) {
             catalog.pairAssignmentDocumentRepository.saveRawRecord(record)
         }
     }

@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContext
 import com.zegreatrob.coupling.repository.validation.TribeContextData
-import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.time.ExperimentalTime
@@ -18,6 +18,6 @@ class MemoryPairAssignmentDocumentRepositoryTest :
         asyncTestTemplate<TribeContext<MemoryPairAssignmentDocumentRepository>>(sharedSetup = {
             val clock = MagicClock()
             val user = stubUser()
-            TribeContextData(MemoryPairAssignmentDocumentRepository(user.email, clock), stubTribeId(), clock, user)
+            TribeContextData(MemoryPairAssignmentDocumentRepository(user.email, clock), stubPartyId(), clock, user)
         })
 }

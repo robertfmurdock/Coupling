@@ -13,5 +13,5 @@ object PinsQuery :
 }
 
 interface PinsQueryDispatcher : CurrentTribeIdSyntax, TribeIdPinRecordsSyntax {
-    suspend fun perform(query: PinsQuery) = currentTribeId.getPinRecords().successResult()
+    suspend fun perform(query: PinsQuery) = currentPartyId.getPinRecords().successResult()
 }

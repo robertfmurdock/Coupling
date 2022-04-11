@@ -7,12 +7,12 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.ScopeMint
@@ -27,28 +27,28 @@ class SpinTest {
     @Test
     fun willTakeThePlayersGivenAndUseThoseForPairing() = sdkSetup.with({ context ->
         object : SdkContext by context {
-            val tribe = Tribe(id = TribeId(uuid4().toString()), name = "commonTest", pairingRule = PairingRule.LongestTime)
+            val party = Party(id = PartyId(uuid4().toString()), name = "commonTest", pairingRule = PairingRule.LongestTime)
             val players = listOf(
                 Player(name = "dude1"),
                 Player(name = "dude2")
             )
         }
     }) {
-        sdk.tribeRepository.save(tribe)
+        sdk.tribeRepository.save(party)
     } exercise {
-        sdk.requestSpin(tribe.id, players, emptyList())
+        sdk.requestSpin(party.id, players, emptyList())
     } verifyAnd { result ->
         result.pairs.assertIsEqualTo(
             listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
         )
     } teardown {
-        sdk.tribeRepository.delete(tribe.id)
+        sdk.tribeRepository.delete(party.id)
     }
 
     @Test
     fun givenTheTribeRuleIsPreferDifferentBadgeThenPairsWillComply() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
+            val party = Party(id = PartyId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
@@ -65,9 +65,9 @@ class SpinTest {
             )
         }
     }) {
-        setupScenario(sdk, tribe, players, history)
+        setupScenario(sdk, party, players, history)
     } exercise {
-        sdk.requestSpin(tribe.id, players, emptyList())
+        sdk.requestSpin(party.id, players, emptyList())
     } verifyAnd { result ->
         result.pairs.assertIsEqualTo(
             listOf(
@@ -76,13 +76,13 @@ class SpinTest {
             )
         )
     } teardown {
-        sdk.tribeRepository.delete(tribe.id)
+        sdk.tribeRepository.delete(party.id)
     }
 
     @Test
     fun givenTheLongestPairRuleItWillIgnoreBadges() = asyncSetup(object : ScopeMint() {
         val sdk = setupScope.async { authorizedSdk() }
-        val tribe = Tribe(id = TribeId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
+        val party = Party(id = PartyId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
             PairAssignmentDocument(
@@ -98,9 +98,9 @@ class SpinTest {
             )
         )
     }) {
-        setupScenario(sdk.await(), tribe, players, history)
+        setupScenario(sdk.await(), party, players, history)
     } exercise {
-        sdk.await().requestSpin(tribe.id, players, emptyList())
+        sdk.await().requestSpin(party.id, players, emptyList())
     } verifyAnd { result ->
         result.pairs.assertIsEqualTo(
             listOf(
@@ -109,7 +109,7 @@ class SpinTest {
             )
         )
     } teardown {
-        sdk.await().tribeRepository.delete(tribe.id)
+        sdk.await().tribeRepository.delete(party.id)
     }
 
     class WhenPinExists {
@@ -117,7 +117,7 @@ class SpinTest {
         private val pinExistsSetup
             get() = { context: SdkContext ->
                 object : SdkContext by context {
-                    val tribe = stubTribe()
+                    val tribe = stubParty()
                     val players = listOf(stubPlayer())
                     val pin = stubPin()
                 }
@@ -159,15 +159,15 @@ class SpinTest {
     companion object {
         private suspend fun setupScenario(
             sdk: Sdk,
-            tribe: Tribe,
+            party: Party,
             players: List<Player> = emptyList(),
             history: List<PairAssignmentDocument> = emptyList(),
             pins: List<Pin> = emptyList()
         ) = coroutineScope {
-            sdk.tribeRepository.save(tribe)
-            tribe.id.with(players).forEach { launch { sdk.playerRepository.save(it) } }
-            tribe.id.with(history).forEach { launch { sdk.pairAssignmentDocumentRepository.save(it) } }
-            tribe.id.with(pins).forEach { launch { sdk.pinRepository.save(it) } }
+            sdk.tribeRepository.save(party)
+            party.id.with(players).forEach { launch { sdk.playerRepository.save(it) } }
+            party.id.with(history).forEach { launch { sdk.pairAssignmentDocumentRepository.save(it) } }
+            party.id.with(pins).forEach { launch { sdk.pinRepository.save(it) } }
         }
     }
 

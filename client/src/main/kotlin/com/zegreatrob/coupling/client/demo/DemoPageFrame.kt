@@ -64,7 +64,7 @@ private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
             when (state) {
                 is Start -> aboutPageContent { Markdown { +state.text } }
                 is ShowIntro -> aboutPageContent { Markdown { +state.text } }
-                is MakeTribe -> tribeConfigFrame(state)
+                is MakeParty -> tribeConfigFrame(state)
                 is AddPlayer -> playerConfigFrame(state)
                 is AddPin -> pinConfigFrame(state)
                 is CurrentPairs -> pairAssignmentsFrame(state)
@@ -115,7 +115,7 @@ private fun ChildrenBuilder.popperDiv(
     }
 }
 
-private fun ChildrenBuilder.tribeConfigFrame(state: MakeTribe) {
+private fun ChildrenBuilder.tribeConfigFrame(state: MakeParty) {
     child(TribeConfigContent(state.tribe, true, {}, {}, {}))
 }
 

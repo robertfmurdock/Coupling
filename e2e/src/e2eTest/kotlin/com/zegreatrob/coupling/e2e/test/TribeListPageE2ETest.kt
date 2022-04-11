@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.TribeListPage.newTribeButton
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 
@@ -15,8 +15,8 @@ class TribeListPageE2ETest {
     companion object {
         private val twoTribesSetup = e2eSetup.extend(beforeAll = {
             val tribes = listOf(
-                "${randomInt()}-TribeListPageE2ETest-1".let { Tribe(it.let(::TribeId), name = it) },
-                "${randomInt()}-TribeListPageE2ETest-2".let { Tribe(it.let(::TribeId), name = it) }
+                "${randomInt()}-TribeListPageE2ETest-1".let { Party(it.let(::PartyId), name = it) },
+                "${randomInt()}-TribeListPageE2ETest-2".let { Party(it.let(::PartyId), name = it) }
             )
             sdkProvider.await().apply {
                 tribes.forEach { it.save() }
@@ -28,7 +28,7 @@ class TribeListPageE2ETest {
     }
 
     @Test
-    fun shouldHaveSectionForEachTribe() = twoTribesSetup() exercise {
+    fun shouldHaveSectionForEachParty() = twoTribesSetup() exercise {
         TribeListPage.tribeCardElements.map { it.text() }
     } verify { listedTribeNames ->
         tribes.map { it.name }

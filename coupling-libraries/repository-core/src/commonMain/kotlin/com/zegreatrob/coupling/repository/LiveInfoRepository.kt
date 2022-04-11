@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.repository
 
 import com.zegreatrob.coupling.model.CouplingConnection
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface LiveInfoRepository {
-    suspend fun connectionList(tribeId: TribeId): List<CouplingConnection>
+    suspend fun connectionList(tribeId: PartyId): List<CouplingConnection>
     suspend fun get(connectionId: String): CouplingConnection?
     suspend fun save(connection: CouplingConnection)
-    suspend fun delete(tribeId: TribeId, connectionId: String)
+    suspend fun delete(tribeId: PartyId, connectionId: String)
 }

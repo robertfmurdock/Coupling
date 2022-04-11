@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.model.user.User
 
 class LocalStorageRepositoryBackend {
-    val tribe by localBackend(List<Record<Tribe>>::toSerializableString, String::toTribeRecords)
+    val tribe by localBackend(List<Record<Party>>::toSerializableString, String::toTribeRecords)
     val player by localBackend(List<TribeRecord<Player>>::toSerializableString, String::toPlayerRecords)
     val pairAssignments by localBackend(
         List<TribeRecord<PairAssignmentDocument>>::toSerializableString,
@@ -20,8 +20,8 @@ class LocalStorageRepositoryBackend {
     val user by localBackend(List<Record<User>>::toSerializableString, String::toUserRecords)
 }
 
-fun List<Record<Tribe>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
-fun String.toTribeRecords(): List<Record<Tribe>> = fromJsonString<List<JsonTribeRecord>>().map { it.toModelRecord() }
+fun List<Record<Party>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
+fun String.toTribeRecords(): List<Record<Party>> = fromJsonString<List<JsonTribeRecord>>().map { it.toModelRecord() }
 
 fun List<TribeRecord<Player>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPlayerRecords(): List<TribeRecord<Player>> = fromJsonString<List<JsonPlayerRecord>>().map { it.toModel() }

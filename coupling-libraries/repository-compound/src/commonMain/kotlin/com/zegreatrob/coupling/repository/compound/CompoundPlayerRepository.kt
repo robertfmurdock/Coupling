@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 
 class CompoundPlayerRepository(
@@ -13,7 +13,7 @@ class CompoundPlayerRepository(
         it.save(tribeIdPlayer)
     }
 
-    override suspend fun deletePlayer(tribeId: TribeId, playerId: String) = repository1.deletePlayer(tribeId, playerId)
+    override suspend fun deletePlayer(tribeId: PartyId, playerId: String) = repository1.deletePlayer(tribeId, playerId)
         .also { repository2.deletePlayer(tribeId, playerId) }
 
 }

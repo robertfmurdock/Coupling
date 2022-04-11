@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.tribe.TribeCard
 import com.zegreatrob.coupling.client.tribe.TribeSelectButton
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.child
 import csstype.ClassName
 import kotlinx.css.*
@@ -20,7 +20,7 @@ import react.dom.html.ReactHTML.i
 import react.router.dom.Link
 
 external interface ConfigHeaderProps : PropsWithChildren {
-    var tribe: Tribe
+    var tribe: Party
 }
 
 private val styles = useStyles("ConfigHeader")
@@ -41,7 +41,7 @@ val ConfigHeader = FC<ConfigHeaderProps> { props ->
     }
 }
 
-private fun ChildrenBuilder.tribeControls(props: ConfigHeaderProps, tribe: Tribe) = cssDiv(css = {
+private fun ChildrenBuilder.tribeControls(props: ConfigHeaderProps, tribe: Party) = cssDiv(css = {
     flexGrow = 2.0
 }) {
     cssH1(css = {
@@ -98,7 +98,7 @@ private fun ChildrenBuilder.topControlRow(props: ConfigHeaderProps) = cssDiv(css
     }
 }
 
-fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
+fun ChildrenBuilder.viewHistoryButton(tribe: Party, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/history/"
     tabIndex = -1
     draggable = false
@@ -108,7 +108,7 @@ fun ChildrenBuilder.viewHistoryButton(tribe: Tribe, className: ClassName = Class
     }
 }
 
-fun ChildrenBuilder.pinListButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
+fun ChildrenBuilder.pinListButton(tribe: Party, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/pins/"
     tabIndex = -1
     draggable = false
@@ -118,7 +118,7 @@ fun ChildrenBuilder.pinListButton(tribe: Tribe, className: ClassName = ClassName
     }
 }
 
-fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
+fun ChildrenBuilder.statisticsButton(tribe: Party, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/statistics"
     tabIndex = -1
     draggable = false
@@ -128,7 +128,7 @@ fun ChildrenBuilder.statisticsButton(tribe: Tribe, className: ClassName = ClassN
     }
 }
 
-fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
+fun ChildrenBuilder.viewRetireesButton(tribe: Party, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/players/retired"
     tabIndex = -1
     draggable = false
@@ -138,7 +138,7 @@ fun ChildrenBuilder.viewRetireesButton(tribe: Tribe, className: ClassName = Clas
     }
 }
 
-fun ChildrenBuilder.settingsButton(tribe: Tribe, className: ClassName = ClassName("")) = Link {
+fun ChildrenBuilder.settingsButton(tribe: Party, className: ClassName = ClassName("")) = Link {
     to = "/${tribe.id.value}/edit"
     tabIndex = -1
     draggable = false

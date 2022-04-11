@@ -6,7 +6,7 @@ interface PairAssignmentDocumentIdDeleteSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentDelete
 
     suspend fun TribeIdPairAssignmentDocumentId.delete() = pairAssignmentDocumentRepository.delete(
-        tribeId,
+        partyId,
         pairAssignmentDocumentId
     )
 }

@@ -32,8 +32,8 @@ interface ProposeNewPairsCommandDispatcher : ExecutableActionExecuteSyntax, RunG
 
     private suspend fun loadData() = coroutineScope {
         await(
-            async { currentTribeId.loadHistory() },
-            async { currentTribeId.get() }
+            async { currentPartyId.loadHistory() },
+            async { currentPartyId.get() }
         )
     }.let { (history, tribe) -> if (tribe == null) null else history to tribe }
 

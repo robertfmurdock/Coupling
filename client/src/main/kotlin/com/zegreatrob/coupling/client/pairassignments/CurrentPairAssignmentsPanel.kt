@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -21,7 +21,7 @@ import react.router.Navigate
 import react.useState
 
 data class CurrentPairAssignmentsPanel(
-    val tribe: Tribe,
+    val tribe: Party,
     val pairAssignments: PairAssignmentDocument,
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
@@ -61,7 +61,7 @@ private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) 
 }
 
 private fun ChildrenBuilder.pairAssignmentList(
-    tribe: Tribe,
+    tribe: Party,
     pairAssignments: PairAssignmentDocument,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean

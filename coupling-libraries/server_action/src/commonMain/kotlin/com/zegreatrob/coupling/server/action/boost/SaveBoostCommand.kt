@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.server.action.boost
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.Boost
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.repository.BoostSave
 
-data class SaveBoostCommand(val tribeIds: Set<TribeId>) :
+data class SaveBoostCommand(val tribeIds: Set<PartyId>) :
     SimpleSuspendResultAction<SaveBoostCommandDispatcher, Boost> {
     override val performFunc = link(SaveBoostCommandDispatcher::perform)
 }

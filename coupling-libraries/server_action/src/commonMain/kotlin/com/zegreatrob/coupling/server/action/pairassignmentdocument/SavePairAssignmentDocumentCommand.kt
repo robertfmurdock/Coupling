@@ -21,14 +21,14 @@ data class SavePairAssignmentDocumentCommand(val pairAssignmentDocument: PairAss
 interface SavePairAssignmentDocumentCommandDispatcher : TribeIdPairAssignmentDocumentSaveSyntax, CurrentTribeIdSyntax,
     CouplingConnectionGetSyntax, SuspendActionExecuteSyntax, BroadcastActionDispatcher {
     suspend fun perform(command: SavePairAssignmentDocumentCommand) = with(command) {
-        currentTribeId.with(pairAssignmentDocument)
+        currentPartyId.with(pairAssignmentDocument)
             .apply { save() }
             .apply { execute(broadcastAction()) }
             .successResult()
     }
 
     suspend fun SavePairAssignmentDocumentCommand.broadcastAction() = BroadcastAction(
-        currentTribeId.loadConnections(),
+        currentPartyId.loadConnections(),
         PairAssignmentAdjustmentMessage(pairAssignmentDocument)
     )
 }

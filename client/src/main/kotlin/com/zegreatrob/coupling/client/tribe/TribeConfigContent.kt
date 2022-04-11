@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -26,7 +26,7 @@ import react.dom.html.ReactHTML.span
 import react.key
 
 data class TribeConfigContent(
-    var tribe: Tribe,
+    var tribe: Party,
     var isNew: Boolean?,
     var onChange: (ChangeEvent<*>) -> Unit,
     var onSave: () -> Unit,
@@ -53,7 +53,7 @@ val tribeConfigContent = tmFC<TribeConfigContent> { (tribe, isNew, onChange, onS
 }
 
 private fun ChildrenBuilder.tribeConfigEditor(
-    updatedTribe: Tribe,
+    updatedTribe: Party,
     isNew: Boolean,
     onChange: (ChangeEvent<*>) -> Unit,
     onSave: () -> Unit,
@@ -67,7 +67,7 @@ private fun ChildrenBuilder.tribeConfigEditor(
     }
 }
 
-private fun ChildrenBuilder.editorDiv(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit, isNew: Boolean) =
+private fun ChildrenBuilder.editorDiv(tribe: Party, onChange: (ChangeEvent<*>) -> Unit, isNew: Boolean) =
     div {
         Editor {
             li {
@@ -120,7 +120,7 @@ private fun ChildrenBuilder.editorDiv(tribe: Tribe, onChange: (ChangeEvent<*>) -
         }
     }
 
-private fun ChildrenBuilder.animationSpeedSelect(tribe: Tribe, onChange: ChangeEventHandler<HTMLSelectElement>) {
+private fun ChildrenBuilder.animationSpeedSelect(tribe: Party, onChange: ChangeEventHandler<HTMLSelectElement>) {
     label {
         htmlFor = "animation-speed"
         +"Animation Speed"
@@ -141,7 +141,7 @@ private fun ChildrenBuilder.animationSpeedSelect(tribe: Tribe, onChange: ChangeE
     }
 }
 
-private fun ChildrenBuilder.pairingRuleSelect(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) {
+private fun ChildrenBuilder.pairingRuleSelect(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) {
     label {
         htmlFor = "pairing-rule"
         +"Pairing Rule"
@@ -162,7 +162,7 @@ private fun ChildrenBuilder.pairingRuleSelect(tribe: Tribe, onChange: (ChangeEve
     }
 }
 
-private fun ChildrenBuilder.altBadgeInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.altBadgeInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Alt Badge Name",
     id = "alt-badge-name",
     name = "alternateBadgeName",
@@ -171,7 +171,7 @@ private fun ChildrenBuilder.altBadgeInput(tribe: Tribe, onChange: (ChangeEvent<*
     onChange = onChange,
 )
 
-private fun ChildrenBuilder.defaultBadgeInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.defaultBadgeInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Default Badge Name",
     id = "default-badge-name",
     name = "defaultBadgeName",
@@ -180,7 +180,7 @@ private fun ChildrenBuilder.defaultBadgeInput(tribe: Tribe, onChange: (ChangeEve
     onChange = onChange,
 )
 
-private fun ChildrenBuilder.enableBadgesInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.enableBadgesInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Badges",
     id = "badge-checkbox",
     name = "badgesEnabled",
@@ -190,7 +190,7 @@ private fun ChildrenBuilder.enableBadgesInput(tribe: Tribe, onChange: (ChangeEve
     checked = tribe.badgesEnabled,
 )
 
-private fun ChildrenBuilder.enableAnimationsInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.enableAnimationsInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Animations",
     id = "animations-checkbox",
     name = "animationsEnabled",
@@ -200,7 +200,7 @@ private fun ChildrenBuilder.enableAnimationsInput(tribe: Tribe, onChange: (Chang
     checked = tribe.animationEnabled,
 )
 
-private fun ChildrenBuilder.enableCallSignsInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.enableCallSignsInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Call Signs",
     id = "call-sign-checkbox",
     name = "callSignsEnabled",
@@ -210,7 +210,7 @@ private fun ChildrenBuilder.enableCallSignsInput(tribe: Tribe, onChange: (Change
     checked = tribe.callSignsEnabled,
 )
 
-private fun ChildrenBuilder.uniqueIdInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.uniqueIdInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Unique Id",
     id = "tribe-id",
     name = "id",
@@ -219,7 +219,7 @@ private fun ChildrenBuilder.uniqueIdInput(tribe: Tribe, onChange: (ChangeEvent<*
     onChange = onChange,
 )
 
-private fun ChildrenBuilder.emailInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.emailInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Email",
     id = "tribe-email",
     name = "email",
@@ -229,7 +229,7 @@ private fun ChildrenBuilder.emailInput(tribe: Tribe, onChange: (ChangeEvent<*>) 
     placeholder = "Enter the tribe email here",
 )
 
-private fun ChildrenBuilder.nameInput(tribe: Tribe, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.nameInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Name",
     id = "tribe-name",
     name = "name",

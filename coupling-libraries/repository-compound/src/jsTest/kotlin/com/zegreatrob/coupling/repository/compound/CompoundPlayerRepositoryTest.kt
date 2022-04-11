@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContext
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -31,7 +31,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
             val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
             object : TribeContext<CompoundPlayerRepository> {
-                override val tribeId = stubTribeId()
+                override val tribeId = stubPartyId()
                 override val repository = compoundRepo
                 override val clock = clock
                 override val user = stubUser
@@ -48,7 +48,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
 
         val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
-        val tribeId = stubTribeId()
+        val tribeId = stubPartyId()
         val player = stubPlayer()
     }) exercise {
         compoundRepo.save(tribeId.with(player))
@@ -66,7 +66,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
 
         val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
-        val tribeId = stubTribeId()
+        val tribeId = stubPartyId()
         val player = stubPlayer()
     }) exercise {
         compoundRepo.save(tribeId.with(player))

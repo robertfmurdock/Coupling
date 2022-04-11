@@ -3,10 +3,10 @@
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class DeletePairAssignmentsInput(val pairAssignmentsId: PairAssignmentDocumentId, override val tribeId: TribeId) :
+data class DeletePairAssignmentsInput(val pairAssignmentsId: PairAssignmentDocumentId, override val tribeId: PartyId) :
     TribeInput

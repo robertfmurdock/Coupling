@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
@@ -11,7 +11,7 @@ class RetiredPlayerConfigE2ETest {
 
     @Test
     fun willShowThePlayerData() = sdkSetup(object : SdkContext() {
-        val tribe = Tribe(TribeId("${randomInt()}-RetiredPlayerConfigE2E"))
+        val tribe = Party(PartyId("${randomInt()}-RetiredPlayerConfigE2E"))
         val player = Player("${randomInt()}-RetiredPlayerConfigE2E", name = "${randomInt()}-RetiredPlayerConfigE2E")
     }) {
         sdk.tribeRepository.save(tribe)

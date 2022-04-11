@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.tribe.TribeDelete
 
 interface SdkTribeDelete : TribeDelete, GqlSyntax, GraphQueries {
-    override suspend fun delete(tribeId: TribeId): Boolean = doQuery(
+    override suspend fun delete(partyId: PartyId): Boolean = doQuery(
         mutations.deleteTribe,
-        mapOf("tribeId" to tribeId.value),
+        mapOf("tribeId" to partyId.value),
         "deleteTribe"
     ) { it: Boolean? -> it } ?: false
 }

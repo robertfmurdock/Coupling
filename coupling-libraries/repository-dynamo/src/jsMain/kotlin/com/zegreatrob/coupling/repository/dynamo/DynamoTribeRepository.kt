@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import kotlin.js.Json
@@ -30,20 +30,20 @@ class DynamoTribeRepository private constructor(override val userId: String, ove
         override val construct = ::DynamoTribeRepository
     }
 
-    override suspend fun getTribeRecord(tribeId: TribeId) = performGetSingleItemQuery(tribeId.value)
-        ?.let { it.toRecord(it.toTribe()) }
+    override suspend fun getTribeRecord(partyId: PartyId) = performGetSingleItemQuery(partyId.value)
+        ?.let { it.toRecord(it.toParty()) }
 
     override suspend fun getTribes() = scanAllRecords()
-        .map { it.toRecord(it.toTribe()) }
+        .map { it.toRecord(it.toParty()) }
         .sortedBy { it.timestamp }
         .groupBy { it.data.id }
         .map { it.value.last() }
         .filterNot { it.isDeleted }
 
-    override suspend fun save(tribe: Tribe) = performPutItem(tribe.toRecord().asDynamoJson())
+    override suspend fun save(party: Party) = performPutItem(party.toRecord().asDynamoJson())
 
-    override suspend fun delete(tribeId: TribeId) = performDelete(
-        tribeId.value,
+    override suspend fun delete(partyId: PartyId) = performDelete(
+        partyId.value,
         null,
         now(),
         { asTribeRecord() },
@@ -54,8 +54,8 @@ class DynamoTribeRepository private constructor(override val userId: String, ove
         .sortByRecordTimestamp()
         .map { it.asTribeRecord() }
 
-    private fun Json.asTribeRecord() = toRecord(toTribe())
+    private fun Json.asTribeRecord() = toRecord(toParty())
 
-    suspend fun saveRawRecord(record: Record<Tribe>) = performPutItem(record.asDynamoJson())
+    suspend fun saveRawRecord(record: Record<Party>) = performPutItem(record.asDynamoJson())
 
 }

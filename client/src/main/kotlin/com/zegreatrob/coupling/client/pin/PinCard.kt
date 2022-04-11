@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -11,7 +11,7 @@ import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 
-data class PinCard(val tribeId: TribeId, val pin: Pin, val shouldLink: Boolean = true) : DataPropsBind<PinCard>(pinCard)
+data class PinCard(val tribeId: PartyId, val pin: Pin, val shouldLink: Boolean = true) : DataPropsBind<PinCard>(pinCard)
 
 private val styles = useStyles("pin/PinCard")
 
@@ -30,7 +30,7 @@ val pinCard = tmFC<PinCard> { (tribeId, pin, shouldLink) ->
 
 private fun ChildrenBuilder.optionalLink(
     shouldLink: Boolean,
-    tribeId: TribeId,
+    tribeId: PartyId,
     pin: Pin,
     handler: ChildrenBuilder.() -> Unit
 ) {

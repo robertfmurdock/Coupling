@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.selectNoneButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.spinButton
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
@@ -22,7 +22,7 @@ class PrepareToSpinPageE2ETest {
     companion object {
 
         private val pinTribeSetup: TestTemplate<FullTribeData> = e2eSetup.extend(beforeAll = {
-            val tribe = buildFunkyTribe()
+            val tribe = buildFunkyParty()
             val players = (1..5).map(Companion::buildPlayer)
             val pin = Pin("${randomInt()}-PairAssignmentsPageE2ETest", name = "e2e-pin")
             val sdk = sdkProvider.await().apply {
@@ -40,8 +40,8 @@ class PrepareToSpinPageE2ETest {
                 WebdriverBrowser.dismissAlert()
         })
 
-        private fun buildFunkyTribe() = Tribe(
-            id = TribeId("${randomInt()}-PairAssignmentsPageE2ETest"),
+        private fun buildFunkyParty() = Party(
+            id = PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
             name = "Funkytown"
         )
 

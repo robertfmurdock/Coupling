@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentDocumentSaveSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class SavePairAssignmentsCommand(val tribeId: TribeId, val pairAssignments: PairAssignmentDocument) :
+data class SavePairAssignmentsCommand(val tribeId: PartyId, val pairAssignments: PairAssignmentDocument) :
     SimpleSuspendAction<SavePairAssignmentsCommandDispatcher, Unit> {
     override val performFunc = link(SavePairAssignmentsCommandDispatcher::perform)
 }

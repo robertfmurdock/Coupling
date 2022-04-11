@@ -4,8 +4,8 @@ package com.zegreatrob.coupling.json
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -25,7 +25,7 @@ data class JsonTribe(
 
 @Serializable
 data class JsonTribeRecord(
-    val id: TribeId,
+    val id: PartyId,
     val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
     val badgesEnabled: Boolean = false,
     val defaultBadgeName: String = "Default",
@@ -40,7 +40,7 @@ data class JsonTribeRecord(
     val timestamp: DateTime,
 )
 
-fun Tribe.toSerializable() = JsonTribe(
+fun Party.toSerializable() = JsonTribe(
     id = id.value,
     pairingRule = PairingRule.toValue(pairingRule),
     badgesEnabled = badgesEnabled,
@@ -53,7 +53,7 @@ fun Tribe.toSerializable() = JsonTribe(
     animationSpeed = animationSpeed,
 )
 
-fun Record<Tribe>.toSerializable() = JsonTribeRecord(
+fun Record<Party>.toSerializable() = JsonTribeRecord(
     id = data.id,
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
@@ -69,8 +69,8 @@ fun Record<Tribe>.toSerializable() = JsonTribeRecord(
     timestamp = timestamp,
 )
 
-fun JsonTribe.toModel(): Tribe = Tribe(
-    id = TribeId(id),
+fun JsonTribe.toModel(): Party = Party(
+    id = PartyId(id),
     pairingRule = PairingRule.fromValue(pairingRule),
     badgesEnabled = badgesEnabled,
     defaultBadgeName = defaultBadgeName,
@@ -82,8 +82,8 @@ fun JsonTribe.toModel(): Tribe = Tribe(
     animationSpeed = animationSpeed,
 )
 
-fun JsonTribeRecord.toModelRecord(): Record<Tribe> = Record(
-    data = Tribe(
+fun JsonTribeRecord.toModelRecord(): Record<Party> = Record(
+    data = Party(
         id = id,
         pairingRule = PairingRule.fromValue(pairingRule),
         badgesEnabled = badgesEnabled,

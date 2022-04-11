@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.json.JsonTribeRecord
 import com.zegreatrob.coupling.json.fromJsonElement
 import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.repository.tribe.TribeListGet
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
@@ -19,7 +19,7 @@ interface SdkTribeListGet : TribeListGet, GqlSyntax, GraphQueries {
 
     private fun tribeListQuery() = buildJsonObject { put("query", queries.listTribes) }
 
-    private fun JsonElement?.toTribeRecordList(): List<Record<Tribe>> = this?.fromJsonElement<List<JsonTribeRecord>>()
+    private fun JsonElement?.toTribeRecordList(): List<Record<Party>> = this?.fromJsonElement<List<JsonTribeRecord>>()
         ?.map(JsonTribeRecord::toModelRecord)
         ?: emptyList()
 }

@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContext
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
@@ -33,7 +33,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         val clock = MagicClock()
         val repo = DynamoPlayerRepository(user.email, clock)
         object : TribeContext<DynamoPlayerRepository> {
-            override val tribeId = stubTribeId()
+            override val tribeId = stubPartyId()
             override val clock = clock
             override val user = user
             override val repository = repo
@@ -43,7 +43,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     @Test
     fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
-            val tribeId = stubTribeId()
+            val tribeId = stubPartyId()
             val player = stubPlayer()
             val initialSaveTime = DateTime.now().minus(3.days)
             val updatedPlayer = player.copy(name = "CLONE")
@@ -69,7 +69,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     @Test
     fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
-            val tribeId = stubTribeId()
+            val tribeId = stubPartyId()
             val records = listOf(
                 tribeRecord(tribeId, stubPlayer(), uuidString(), false, DateTime.now().minus(3.months)),
                 tribeRecord(tribeId, stubPlayer(), uuidString(), true, DateTime.now().minus(2.years))
@@ -86,7 +86,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     @Test
     fun getPlayerRecordsWillIgnorePlayerRecordsWithoutId() = asyncSetup.with(buildRepository { context ->
         object : Context by context, DynamoRecordJsonMapping {
-            val tribeId = stubTribeId()
+            val tribeId = stubPartyId()
             override val userId: String = "test user"
         }
     }) {
@@ -109,7 +109,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     @Test
     fun getPlayersWillIgnorePlayerRecordsWithout() = asyncSetup.with(buildRepository { context ->
         object : Context by context, DynamoRecordJsonMapping {
-            val tribeId = stubTribeId()
+            val tribeId = stubPartyId()
             override val userId: String = "test user"
         }
     }) {

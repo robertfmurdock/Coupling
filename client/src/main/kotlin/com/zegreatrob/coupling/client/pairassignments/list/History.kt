@@ -16,7 +16,7 @@ import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import react.ChildrenBuilder
@@ -27,7 +27,7 @@ import react.key
 private val styles = useStyles("pairassignments/History")
 
 data class History(
-    val tribe: Tribe,
+    val tribe: Party,
     val history: List<PairAssignmentDocument>,
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) : DataPropsBind<History>(com.zegreatrob.coupling.client.pairassignments.list.history)

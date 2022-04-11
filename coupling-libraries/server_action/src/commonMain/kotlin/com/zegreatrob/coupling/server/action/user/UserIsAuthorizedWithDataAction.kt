@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.server.action.user
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
@@ -14,8 +14,8 @@ import com.zegreatrob.coupling.server.action.tribe.UserPlayerIdsSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-data class UserIsAuthorizedWithDataAction(val tribeId: TribeId) :
-    SimpleSuspendResultAction<UserIsAuthorizedWithDataActionDispatcher, Pair<Tribe, List<Player>>?> {
+data class UserIsAuthorizedWithDataAction(val tribeId: PartyId) :
+    SimpleSuspendResultAction<UserIsAuthorizedWithDataActionDispatcher, Pair<Party, List<Player>>?> {
     override val performFunc = link(UserIsAuthorizedWithDataActionDispatcher::perform)
 }
 
@@ -25,7 +25,7 @@ interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedTribeIdSyn
 
     suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.skdjflskdjf().successResult()
 
-    private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf(): Pair<Tribe, List<Player>>? {
+    private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf(): Pair<Party, List<Player>>? {
         val contains = getUserPlayerIds()
             .authenticatedTribeIds()
             .contains(tribeId)

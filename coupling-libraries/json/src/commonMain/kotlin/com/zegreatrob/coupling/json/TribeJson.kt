@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import kotlinx.serialization.json.jsonObject
 
 val tribeJsonKeys
-    get() = Record(Tribe(TribeId("")), "")
+    get() = Record(Party(PartyId("")), "")
         .toSerializable()
         .toJsonElement()
         .jsonObject

@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
 import com.zegreatrob.coupling.model.tribe.TribeElement
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
@@ -39,29 +39,29 @@ class DynamoPinRepository private constructor(override val userId: String, overr
         record.asDynamoJson()
     )
 
-    override suspend fun getPins(tribeId: TribeId) = tribeId.queryForItemList().map {
+    override suspend fun getPins(partyId: PartyId) = partyId.queryForItemList().map {
         it.toRecord()
     }
 
     private fun Json.toRecord(): Record<TribeElement<Pin>> {
-        val tribeId = this["tribeId"].unsafeCast<String>().let(::TribeId)
+        val partyId = this["tribeId"].unsafeCast<String>().let(::PartyId)
         val pin = toPin()
-        return toRecord(tribeId.with(pin))
+        return toRecord(partyId.with(pin))
     }
 
-    override suspend fun deletePin(tribeId: TribeId, pinId: String) = performDelete(
+    override suspend fun deletePin(partyId: PartyId, pinId: String) = performDelete(
         pinId,
-        tribeId,
+        partyId,
         now(),
         { toRecord() },
         { asDynamoJson() }
     )
 
-    suspend fun getPinRecords(tribeId: TribeId) = tribeId.logAsync("itemList") {
-        performQuery(tribeId.itemListQueryParams()).itemsNode()
+    suspend fun getPinRecords(partyId: PartyId) = partyId.logAsync("itemList") {
+        performQuery(partyId.itemListQueryParams()).itemsNode()
     }.map {
         val pin = it.toPin()
-        it.toRecord(tribeId.with(pin))
+        it.toRecord(partyId.with(pin))
     }
 
 

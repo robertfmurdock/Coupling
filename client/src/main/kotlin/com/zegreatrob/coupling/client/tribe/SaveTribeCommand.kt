@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class SaveTribeCommand(val tribe: Tribe) : SimpleSuspendAction<SaveTribeCommandDispatcher, Unit> {
+data class SaveTribeCommand(val tribe: Party) : SimpleSuspendAction<SaveTribeCommandDispatcher, Unit> {
     override val performFunc = link(SaveTribeCommandDispatcher::perform)
 }
 

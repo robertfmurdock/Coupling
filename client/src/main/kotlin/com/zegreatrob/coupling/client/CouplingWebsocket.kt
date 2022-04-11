@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.external.reactwebsocket.websocket
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
@@ -42,7 +42,7 @@ val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
 }
 
 data class CouplingWebsocket(
-    val tribeId: TribeId,
+    val tribeId: PartyId,
     val useSsl: Boolean = "https:" == window.location.protocol,
     val onMessage: (Message) -> Unit,
     val token: String,
@@ -58,7 +58,7 @@ private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { me
 }
 
 
-private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean, token: String) = URL(
+private fun buildSocketUrl(tribeId: PartyId, useSsl: Boolean, token: String) = URL(
     "?tribeId=${encodeURIComponent(tribeId.value)}&token=${encodeURIComponent(token)}",
     "${useSsl.protocol}://$host"
 )

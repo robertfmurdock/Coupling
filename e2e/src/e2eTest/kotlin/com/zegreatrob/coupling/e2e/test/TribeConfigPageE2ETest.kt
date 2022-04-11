@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 
 import kotlin.test.Test
@@ -16,7 +16,7 @@ class TribeConfigPageE2ETest {
 
         @Test
         fun canSaveEditsCorrectly() = sdkSetup(object : BrowserSyntax, SdkContext() {
-            val tribe = buildTribe()
+            val tribe = buildParty()
             val expectedNewName = "Different name"
             val expectedDefaultBadgeName = "New Default Badge Name"
             val expectedAltBadgeName = "New Alt Badge Name"
@@ -58,7 +58,7 @@ class TribeConfigPageE2ETest {
 
         @Test
         fun showsBasicInformation() = sdkSetup(object : SdkContext() {
-            val tribe = buildTribe().copy(email = "${randomInt()}-email")
+            val tribe = buildParty().copy(email = "${randomInt()}-email")
             val page = TribeConfigPage
         }) {
             sdk.tribeRepository.save(tribe)
@@ -74,8 +74,8 @@ class TribeConfigPageE2ETest {
         }
 
         @Test
-        fun canDeleteTribe() = sdkSetup(object : SdkContext() {
-            val tribe = buildTribe()
+        fun canDeleteParty() = sdkSetup(object : SdkContext() {
+            val tribe = buildParty()
         }) {
             sdk.tribeRepository.save(tribe)
             TribeConfigPage.goTo(tribe.id)
@@ -90,8 +90,8 @@ class TribeConfigPageE2ETest {
         }
 
         companion object {
-            private fun buildTribe() = Tribe(
-                id = "${randomInt()}-TribeConfigPageE2ETest-tribeId".let(::TribeId),
+            private fun buildParty() = Party(
+                id = "${randomInt()}-TribeConfigPageE2ETest-tribeId".let(::PartyId),
                 name = "${randomInt()}-TribeConfigPageE2ETest-name"
             )
         }

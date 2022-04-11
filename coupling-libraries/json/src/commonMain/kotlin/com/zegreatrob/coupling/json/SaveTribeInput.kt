@@ -1,13 +1,13 @@
 @file:UseSerializers(TribeIdSerializer::class)
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class SaveTribeInput(
-    val tribeId: TribeId,
+    val tribeId: PartyId,
     val name: String?,
     val email: String?,
     val pairingRule: Int?,

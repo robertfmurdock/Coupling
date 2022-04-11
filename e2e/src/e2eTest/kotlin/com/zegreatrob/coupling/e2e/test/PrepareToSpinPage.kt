@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 
 object PrepareToSpinPage : StyleSyntax {
@@ -13,7 +13,7 @@ object PrepareToSpinPage : StyleSyntax {
 
     val selectedPinElements get() = selectedPins.all(PinButton.pinButtonLocator)
 
-    suspend fun goTo(tribeId: TribeId) {
+    suspend fun goTo(tribeId: PartyId) {
         WebdriverBrowser.setLocation("/${tribeId.value}/prepare/")
         waitForPage()
     }

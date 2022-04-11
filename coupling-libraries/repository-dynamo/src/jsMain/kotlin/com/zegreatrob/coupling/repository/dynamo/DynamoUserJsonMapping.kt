@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.User
 import kotlin.js.Json
 import kotlin.js.json
@@ -13,7 +13,7 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
     fun User.asDynamoJson() = json(
         "id" to id,
         "email" to email,
-        "authorizedTribeIds" to authorizedTribeIds.map { it.value }.toTypedArray()
+        "authorizedTribeIds" to authorizedPartyIds.map { it.value }.toTypedArray()
     )
 
     fun Json.toUser() = User(
@@ -21,7 +21,7 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
         this["email"].toString(),
         this["authorizedTribeIds"]
             .unsafeCast<Array<String?>>()
-            .mapNotNull { it?.let(::TribeId) }
+            .mapNotNull { it?.let(::PartyId) }
             .toSet()
     )
 

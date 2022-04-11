@@ -1,5 +1,5 @@
 package com.zegreatrob.coupling.model
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
-data class Boost(val userId: String, val tribeIds: Set<TribeId>)
+data class Boost(val userId: String, val partyIds: Set<PartyId>)

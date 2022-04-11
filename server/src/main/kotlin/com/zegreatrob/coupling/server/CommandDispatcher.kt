@@ -6,7 +6,7 @@ import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.model.Message
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
@@ -65,7 +65,7 @@ class CommandDispatcher(
         val preexistingJob = authorizedTribeIdDispatcherJob
         return preexistingJob?.await()
             ?: scope.async {
-                CurrentTribeIdDispatcher(TribeId(tribeId), this@CommandDispatcher)
+                CurrentTribeIdDispatcher(PartyId(tribeId), this@CommandDispatcher)
             }.also {
                 authorizedTribeIdDispatcherJob = it
             }.await()
@@ -90,7 +90,7 @@ interface ICurrentTribeIdDispatcher :
     PairAssignmentDocumentListQueryDispatcher
 
 class CurrentTribeIdDispatcher(
-    override val currentTribeId: TribeId,
+    override val currentPartyId: PartyId,
     private val commandDispatcher: CommandDispatcher
 ) :
     ICommandDispatcher by commandDispatcher,
@@ -110,9 +110,9 @@ class CurrentTribeIdDispatcher(
     ICurrentTribeIdDispatcher {
     override val userId: String get() = commandDispatcher.userId
 
-    suspend fun isAuthorized() = currentTribeId.validateAuthorized() != null
+    suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
 
-    private suspend fun TribeId.validateAuthorized() = if (userIsAuthorized(this)) this else null
+    private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
 
     private fun nonCachingPlayerQueryDispatcher() = object : PlayersQueryDispatcher,
         LoggingActionExecuteSyntax by this,
@@ -127,7 +127,7 @@ class CurrentTribeIdDispatcher(
 
     override suspend fun perform(query: PlayersQuery) = playerDeferred.await()
 
-    private suspend fun userIsAuthorized(tribeId: TribeId) = user.authorizedTribeIds.contains(tribeId)
+    private suspend fun userIsAuthorized(tribeId: PartyId) = user.authorizedPartyIds.contains(tribeId)
             || userIsAlsoPlayer()
 
     private suspend fun userIsAlsoPlayer() = players()

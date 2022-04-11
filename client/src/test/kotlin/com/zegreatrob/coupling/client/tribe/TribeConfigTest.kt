@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.model.tribe.PairingRule
 import com.zegreatrob.coupling.model.tribe.PairingRule.Companion.toValue
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
@@ -18,7 +18,7 @@ class TribeConfigTest {
 
     @Test
     fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
-        val tribe = Tribe(TribeId("1"), name = "1")
+        val tribe = Party(PartyId("1"), name = "1")
     }) exercise {
         shallow(TribeConfig(tribe, StubDispatchFunc()))
             .find(tribeConfigContent)
@@ -50,9 +50,9 @@ class TribeConfigTest {
     }
 
     @Test
-    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheTribe() = setup(object {
-        val tribe = Tribe(
-            TribeId("1"),
+    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheParty() = setup(object {
+        val tribe = Party(
+            PartyId("1"),
             name = "1",
             alternateBadgeName = "alt",
             defaultBadgeName = "def",
@@ -78,7 +78,7 @@ class TribeConfigTest {
 
     @Test
     fun whenTribeIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
-        val tribe = Tribe(TribeId(""))
+        val tribe = Party(PartyId(""))
         val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
         val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
         val automatedTribeId = wrapper.find(tribeConfigContent)

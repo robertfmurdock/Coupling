@@ -2,14 +2,14 @@ package com.zegreatrob.coupling.repository
 
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface BoostRepository : BoostGet, BoostSave, BoostDelete
 
 interface ExtendedBoostRepository : BoostRepository, BoostGetByTribeId
 
 interface BoostGetByTribeId {
-    suspend fun getByTribeId(tribeId: TribeId): Record<Boost>?
+    suspend fun getByPartyId(tribeId: PartyId): Record<Boost>?
 }
 
 interface BoostSave {

@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
@@ -27,7 +27,7 @@ data class JsonPairAssignmentDocumentRecord(
     val id: PairAssignmentDocumentId,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>,
-    override val tribeId: TribeId,
+    override val tribeId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: DateTime
@@ -35,7 +35,7 @@ data class JsonPairAssignmentDocumentRecord(
 
 @Serializable
 data class SavePairAssignmentsInput(
-    override val tribeId: TribeId,
+    override val tribeId: PartyId,
     val pairAssignmentsId: PairAssignmentDocumentId,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>,
@@ -58,7 +58,7 @@ data class JsonPinnedPlayer(
 
 @Serializable
 data class SpinInput(
-    override val tribeId: TribeId,
+    override val tribeId: PartyId,
     val players: List<JsonPlayerData>,
     val pins: List<JsonPinData>,
 ) : TribeInput

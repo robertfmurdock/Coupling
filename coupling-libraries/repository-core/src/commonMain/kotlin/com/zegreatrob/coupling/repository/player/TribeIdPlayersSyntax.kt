@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.player
 
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface TribeIdPlayersSyntax : TribeIdPlayerRecordsListSyntax {
-    suspend fun TribeId.getPlayerList() = getPlayerRecords().elements
+    suspend fun PartyId.getPlayerList() = getPlayerRecords().elements
 }

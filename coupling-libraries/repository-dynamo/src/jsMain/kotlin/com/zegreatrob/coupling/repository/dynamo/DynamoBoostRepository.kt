@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import kotlinext.js.clone
 import kotlinx.coroutines.coroutineScope
@@ -73,8 +73,8 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
             .performPutItems()
     }
 
-    private fun buildTribeCopyRecordJson(tribeIdsToUpdate: Set<TribeId>, dynamoJson: Json) =
-        tribeIdsToUpdate.map { tribeId ->
+    private fun buildTribeCopyRecordJson(partyIdsToUpdate: Set<PartyId>, dynamoJson: Json) =
+        partyIdsToUpdate.map { tribeId ->
             copyWithDifferentPk(dynamoJson, tribeId)
         }
 
@@ -84,15 +84,15 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
         }
     }
 
-    private fun copyWithDifferentPk(dynamoJson: Json, tribeId: TribeId) =
-        clone(dynamoJson).add(json("pk" to tribeKey(tribeId)))
+    private fun copyWithDifferentPk(dynamoJson: Json, partyId: PartyId) =
+        clone(dynamoJson).add(json("pk" to tribeKey(partyId)))
 
-    private suspend fun allTribeCopiesToUpdate(boostRecord: Record<Boost>): Set<TribeId> {
+    private suspend fun allTribeCopiesToUpdate(boostRecord: Record<Boost>): Set<PartyId> {
         val previousRecord = getByPk(userKey(boostRecord.data.userId))
-        return boostRecord.data.tribeIds + previousRecord.previousRecordTribeIds()
+        return boostRecord.data.partyIds + previousRecord.previousRecordTribeIds()
     }
 
-    private fun Record<Boost>?.previousRecordTribeIds() = (this?.data?.tribeIds ?: emptySet())
+    private fun Record<Boost>?.previousRecordTribeIds() = (this?.data?.partyIds ?: emptySet())
 
     override suspend fun delete() {
         get()
@@ -100,10 +100,10 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
             ?.putRecordWithClones()
     }
 
-    override suspend fun getByTribeId(tribeId: TribeId) = getByPk(tribeKey(tribeId))
-        ?.takeIf { it.data.tribeIds.contains(tribeId) }
+    override suspend fun getByPartyId(partyId: PartyId) = getByPk(tribeKey(partyId))
+        ?.takeIf { it.data.partyIds.contains(partyId) }
 
-    private fun tribeKey(tribeId: TribeId) = "tribe-${tribeId.value}"
+    private fun tribeKey(partyId: PartyId) = "tribe-${partyId.value}"
 
     private fun userKey(userId: String) = "user-$userId"
 

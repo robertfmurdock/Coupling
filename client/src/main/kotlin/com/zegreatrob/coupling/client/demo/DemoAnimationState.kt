@@ -13,12 +13,12 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import csstype.ClassName
 import popper.core.Placement
 
-private val demoTribe = Tribe(id = TribeId("${uuid4()}"), name = "The Simpsons", imageURL = svgPath("tribes/simpsons"))
+private val demoTribe = Party(id = PartyId("${uuid4()}"), name = "The Simpsons", imageURL = svgPath("tribes/simpsons"))
 
 private val homer by playerImage()
 private val marge by playerImage()
@@ -112,7 +112,7 @@ object ShowIntro : DemoAnimationState() {
 }
 
 fun makeTribeSequence() = demoTribe.name.rangeOfStringLength().map { index ->
-    MakeTribe(demoTribe.copy(name = demoTribe.name?.substring(0, index)))
+    MakeParty(demoTribe.copy(name = demoTribe.name?.substring(0, index)))
 }
 
 fun makePlayerSequence() = players.flatMapIndexed { playerIndex, player ->
@@ -135,7 +135,7 @@ fun makePinSequence() = pins.flatMapIndexed { pinIndex, pin ->
 
 private fun String?.rangeOfStringLength() = (0..(this ?: "").length)
 
-data class MakeTribe(val tribe: Tribe) : DemoAnimationState() {
+data class MakeParty(val tribe: Party) : DemoAnimationState() {
     override val descriptionSelector = ".${useStyles("tribe/TribeConfig").className} input[name=name]"
     override val placement = Placement.bottomStart
     override val description = """
@@ -147,7 +147,7 @@ We'll enter the name and then save.
 """
 }
 
-data class AddPlayer(val tribe: Tribe, val newPlayer: Player, val players: List<Player>) : DemoAnimationState() {
+data class AddPlayer(val tribe: Party, val newPlayer: Player, val players: List<Player>) : DemoAnimationState() {
     override val descriptionSelector = ".${useStyles("player/PlayerConfig").className} li:first-of-type"
     override val description = """
 ## Now we'll add a few players. 
@@ -161,7 +161,7 @@ In this way, your entire team can operate Coupling.
 """
 }
 
-data class AddPin(val tribe: Tribe, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState() {
+data class AddPin(val tribe: Party, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState() {
     override val descriptionSelector = ".${useStyles("pin/PinConfig").className} li:first-of-type"
     override val description = """
 ## And now... a pin! 
@@ -174,7 +174,7 @@ It'll prefer to be with pairs that haven't done it recently, but it's not too pa
 }
 
 data class CurrentPairs(
-    val tribe: Tribe,
+    val tribe: Party,
     val players: List<Player>,
     val pins: List<Pin>,
     val pairAssignments: PairAssignmentDocument?,
@@ -228,7 +228,7 @@ We'll hit the spin button.
 
 private fun classSelector(className: ClassName) = ".$className"
 
-data class PrepareToSpin(val tribe: Tribe, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
+data class PrepareToSpin(val tribe: Party, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
     DemoAnimationState() {
     private val prepareSpinStyles = useStyles("PrepareSpin")
     override val descriptionSelector = ".${prepareSpinStyles["playerSelector"]}"

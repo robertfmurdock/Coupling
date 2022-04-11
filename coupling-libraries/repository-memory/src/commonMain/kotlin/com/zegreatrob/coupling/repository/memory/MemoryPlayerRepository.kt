@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.player.tribeId
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 
@@ -21,15 +21,15 @@ class MemoryPlayerRepository(
             .record().save()
     }
 
-    override suspend fun getPlayers(tribeId: TribeId) = tribeId.players()
+    override suspend fun getPlayers(tribeId: PartyId) = tribeId.players()
         .filterNot { it.isDeleted }
 
-    private fun TribeId.players() = records.asSequence()
+    private fun PartyId.players() = records.asSequence()
         .filter { (data) -> data.tribeId == this }
         .groupBy { (data) -> data.player.id }
         .map { it.value.last() }
 
-    override suspend fun deletePlayer(tribeId: TribeId, playerId: String): Boolean {
+    override suspend fun deletePlayer(tribeId: PartyId, playerId: String): Boolean {
         val tribeIdPlayer = tribeId.players().find { (data) -> data.player.id == playerId }?.data
 
         return if (tribeIdPlayer == null) {
@@ -40,7 +40,7 @@ class MemoryPlayerRepository(
         }
     }
 
-    override suspend fun getDeleted(tribeId: TribeId): List<Record<TribeIdPlayer>> = tribeId.players()
+    override suspend fun getDeleted(tribeId: PartyId): List<Record<TribeIdPlayer>> = tribeId.players()
         .filter { it.isDeleted }
 
     override suspend fun getPlayerIdsByEmail(email: String) = records

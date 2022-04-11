@@ -5,7 +5,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
@@ -15,14 +15,14 @@ data class JsonPinRecord(
     val id: String? = null,
     val name: String = "",
     val icon: String = "",
-    override val tribeId: TribeId,
+    override val tribeId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: DateTime,
 ) : JsonTribeRecordInfo
 
 interface JsonTribeRecordInfo {
-    val tribeId: TribeId?
+    val tribeId: PartyId?
     val modifyingUserEmail: String?
     val isDeleted: Boolean?
     val timestamp: DateTime?
@@ -39,7 +39,7 @@ data class JsonPinData(override val id: String?, override val name: String, over
 
 @Serializable
 data class SavePinInput(
-    override val tribeId: TribeId,
+    override val tribeId: PartyId,
     val pinId: String?,
     val name: String,
     val icon: String,

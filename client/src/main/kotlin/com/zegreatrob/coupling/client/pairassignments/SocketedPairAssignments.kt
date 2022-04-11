@@ -10,8 +10,8 @@ import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -24,7 +24,7 @@ import react.useMemo
 import react.useState
 
 data class SocketedPairAssignments(
-    val tribe: Tribe,
+    val tribe: Party,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val controls: Controls<PairAssignmentsCommandDispatcher>,
@@ -72,7 +72,7 @@ private fun handleMessage(
 private fun updatePairAssignmentsFunc(
     setPairAssignments: StateSetter<PairAssignmentDocument?>,
     dispatchFunc: DispatchFunc<out PairAssignmentsCommandDispatcher>,
-    tribeId: TribeId
+    tribeId: PartyId
 ) = { new: PairAssignmentDocument ->
     setPairAssignments(new)
     dispatchFunc({ SavePairAssignmentsCommand(tribeId, new) }, {}).invoke()

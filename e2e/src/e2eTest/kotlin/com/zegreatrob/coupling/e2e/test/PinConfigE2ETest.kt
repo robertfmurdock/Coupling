@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.PinListPage.element
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -27,7 +27,7 @@ class PinConfigE2ETest {
         )
 
         private val tribeSetup = e2eSetup.extend(beforeAll = {
-            val tribe = Tribe(TribeId("${randomInt()}-PinConfigE2ETest-test"))
+            val tribe = Party(PartyId("${randomInt()}-PinConfigE2ETest-test"))
             val sdk = sdkProvider.await().apply {
                 tribe.save()
             }
@@ -38,7 +38,7 @@ class PinConfigE2ETest {
     @Test
     fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = tribeSetup.with(object : TribeContext() {
         val newPinName = "Excellent pin name${randomInt()}"
-    }.attachTribe()) {
+    }.attachParty()) {
         with(PinConfigPage) {
             tribe.id.goToNew()
             getNameTextField().setValue(newPinName)
@@ -55,7 +55,7 @@ class PinConfigE2ETest {
 
     private suspend fun PinConfigPage.waitForPinNameToAppear(
         newPinName: String,
-        id: TribeId
+        id: PartyId
     ) = WebdriverBrowser.waitUntil(
         { pinBagPinNames().contains(newPinName) },
         waitToBePresentDuration,
@@ -67,7 +67,7 @@ class PinConfigE2ETest {
         @Test
         fun attributesAreShownOnConfig() = tribeSetup.with(object : TribeContext() {
             val pin = randomPin()
-        }.attachTribe()) {
+        }.attachParty()) {
             sdk.pinRepository.save(tribe.id.with(pin))
         } exercise {
             PinConfigPage.goTo(tribe.id, pin.id)
@@ -83,7 +83,7 @@ class PinConfigE2ETest {
         @Test
         fun clickingDeleteWillRemovePinFromPinList() = tribeSetup.with(object : TribeContext() {
             val pin = randomPin()
-        }.attachTribe()) {
+        }.attachParty()) {
             sdk.pinRepository.save(tribe.id.with(pin))
             PinConfigPage.goTo(tribe.id, pin.id)
         } exercise {

@@ -5,7 +5,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
@@ -34,7 +34,7 @@ data class JsonPlayerData(
 @Serializable
 data class SavePlayerInput(
     val playerId: String,
-    override val tribeId: TribeId,
+    override val tribeId: PartyId,
     val name: String = defaultPlayer.name,
     val email: String = defaultPlayer.email,
     val badge: String = "${defaultPlayer.badge}",
@@ -53,7 +53,7 @@ data class JsonPlayerRecord(
     override val callSignNoun: String = defaultPlayer.callSignNoun,
     override val imageURL: String? = defaultPlayer.imageURL,
 
-    override val tribeId: TribeId,
+    override val tribeId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: DateTime,

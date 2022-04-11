@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -14,7 +14,7 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import react.router.dom.Link
 
-data class PinList(val tribe: Tribe, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
+data class PinList(val tribe: Party, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
 
 private val styles = useStyles("pin/PinList")
 

@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubPin
-import com.zegreatrob.coupling.stubmodel.stubTribeId
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
@@ -26,13 +26,13 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
     override val repositorySetup = asyncTestTemplate<TribeContext<DynamoPinRepository>>(sharedSetup = {
         val clock = MagicClock()
         val user = stubUser()
-        TribeContextData(DynamoPinRepository(user.email, clock), stubTribeId(), clock, user)
+        TribeContextData(DynamoPinRepository(user.email, clock), stubPartyId(), clock, user)
     })
 
     @Test
     fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
-            val tribeId = stubTribeId()
+            val tribeId = stubPartyId()
             val pin = stubPin()
             val initialSaveTime = DateTime.now().minus(3.days)
             val updatedPin = pin.copy(name = "CLONE")
@@ -56,7 +56,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
     @Test
     fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
         object : Context by context {
-            val tribeId = stubTribeId()
+            val tribeId = stubPartyId()
             val records = listOf(
                 tribeRecord(tribeId, stubPin(), uuidString(), false, DateTime.now().minus(3.months)),
                 tribeRecord(tribeId, stubPin(), uuidString(), true, DateTime.now().minus(2.years))

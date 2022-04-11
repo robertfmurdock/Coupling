@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
@@ -23,7 +23,7 @@ class RunGameActionTest {
 
         val expectedDate = DateTime.now()
         override fun currentDate() = expectedDate
-        val tribe = Tribe(TribeId("1"), PairingRule.LongestTime)
+        val party = Party(PartyId("1"), PairingRule.LongestTime)
         val players = emptyList<Player>()
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()
@@ -38,7 +38,7 @@ class RunGameActionTest {
         override fun perform(action: FindNewPairsAction): List<CouplingPair> = spy.spyFunction(action)
 
     }) exercise {
-        perform(RunGameAction(players, pins, history, tribe))
+        perform(RunGameAction(players, pins, history, party))
     } verify { result ->
         result.assertIsEqualTo(PairAssignmentDocument(
             id = result.id,

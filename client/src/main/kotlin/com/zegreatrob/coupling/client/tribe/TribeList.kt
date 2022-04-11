@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.dom.green
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -17,7 +17,7 @@ import react.create
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 
-data class TribeList(val tribes: List<Tribe>) : DataPropsBind<TribeList>(tribeList)
+data class TribeList(val tribes: List<Party>) : DataPropsBind<TribeList>(tribeList)
 
 private val styles = useStyles("tribe/TribeList")
 

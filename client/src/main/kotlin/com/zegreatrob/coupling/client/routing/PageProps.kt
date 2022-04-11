@@ -6,7 +6,7 @@ import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.sdk.RepositoryCatalog
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.sdk.SdkSingleton
@@ -23,7 +23,7 @@ external interface PageProps : Props {
     var search: URLSearchParams
 }
 
-val PageProps.tribeId: TribeId? get() = pathParams["tribeId"]?.let(::TribeId)
+val PageProps.tribeId: PartyId? get() = pathParams["tribeId"]?.let(::PartyId)
 val PageProps.playerId: String? get() = pathParams["playerId"]
 val PageProps.pinId: String? get() = pathParams["pinId"]
 

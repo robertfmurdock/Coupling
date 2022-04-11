@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -22,7 +22,7 @@ import react.dom.html.ReactHTML.div
 import react.key
 
 data class SpinAnimationPanel(
-    val tribe: Tribe,
+    val tribe: Party,
     val rosteredPairAssignments: RosteredPairAssignments,
     val state: SpinAnimationState
 ) : DataPropsBind<SpinAnimationPanel>(spinAnimationPanel)
@@ -49,7 +49,7 @@ val spinAnimationPanel = tmFC<SpinAnimationPanel> { (tribe, rosteredPairAssignme
     }
 }
 
-private fun ChildrenBuilder.assignedPairs(tribe: Tribe, revealedPairs: List<PinnedCouplingPair>) = div {
+private fun ChildrenBuilder.assignedPairs(tribe: Party, revealedPairs: List<PinnedCouplingPair>) = div {
     className = styles["pairAssignments"]
     revealedPairs.forEachIndexed { index, it -> child(AssignedPair(tribe, it, false), key = "$index") }
 }

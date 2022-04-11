@@ -22,6 +22,6 @@ interface FindOrCreateUserActionDispatcher : UserIdSyntax, UserSaveSyntax, UserG
         .firstOrNull()
         ?.data
 
-    private suspend fun newUser() = User(id = "${uuid4()}", email = userId, authorizedTribeIds = emptySet())
+    private suspend fun newUser() = User(id = "${uuid4()}", email = userId, authorizedPartyIds = emptySet())
         .apply { save() }
 }

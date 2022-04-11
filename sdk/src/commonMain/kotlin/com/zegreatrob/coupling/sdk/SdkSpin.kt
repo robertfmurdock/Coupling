@@ -7,11 +7,11 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface SdkSpin : SpinDispatcher, GqlSyntax, GraphQueries {
 
-    override suspend fun requestSpin(tribeId: TribeId, players: List<Player>, pins: List<Pin>) = doQuery(
+    override suspend fun requestSpin(tribeId: PartyId, players: List<Player>, pins: List<Pin>) = doQuery(
         mutations.spin,
         SpinInput(
             players = players.map(Player::toSerializable),

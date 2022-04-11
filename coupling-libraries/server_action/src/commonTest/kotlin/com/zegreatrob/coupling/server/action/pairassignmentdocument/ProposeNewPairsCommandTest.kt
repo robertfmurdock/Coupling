@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.tribe.TribeGet
@@ -33,19 +33,19 @@ class ProposeNewPairsCommandTest {
         override val tribeRepository get() = stubRepository
 
         val stubRepository = object : TribeGet, PairAssignmentDocumentGet {
-            override suspend fun getTribeRecord(tribeId: TribeId) = Record(tribe, modifyingUserId = "test")
-                .also { tribeId.assertIsEqualTo(tribe.id) }
+            override suspend fun getTribeRecord(partyId: PartyId) = Record(party, modifyingUserId = "test")
+                .also { partyId.assertIsEqualTo(party.id) }
 
-            override suspend fun getPairAssignments(tribeId: TribeId) = history.map {
-                Record(tribe.id.with(it), modifyingUserId = "")
-            }.also { tribeId.assertIsEqualTo(tribe.id) }
+            override suspend fun getPairAssignments(partyId: PartyId) = history.map {
+                Record(party.id.with(it), modifyingUserId = "")
+            }.also { partyId.assertIsEqualTo(party.id) }
         }
 
         val players = listOf(Player(name = "John"))
         val pins = listOf(Pin(name = "Bobby"))
         val history = listOf(stubPairAssignmentDoc())
-        val tribe = Tribe(TribeId("Tribe Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
-        override val currentTribeId = tribe.id
+        val party = Party(PartyId("Tribe Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
+        override val currentPartyId = party.id
         val expectedPairAssignmentDocument = stubPairAssignmentDoc()
 
         val spy = SpyData<RunGameAction, PairAssignmentDocument>()
@@ -56,7 +56,7 @@ class ProposeNewPairsCommandTest {
         perform(ProposeNewPairsCommand(players, pins))
     } verifySuccess { result ->
         result.assertIsEqualTo(expectedPairAssignmentDocument)
-        spy.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, tribe)))
+        spy.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, party)))
     }
 
 }

@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -29,8 +29,8 @@ class GameExamplesTest {
     class WithUniformBadgesAndLongestTimeRule {
 
         companion object {
-            val tribe = Tribe(
-                id = TribeId("JLA"),
+            val party = Party(
+                id = PartyId("JLA"),
                 pairingRule = PairingRule.LongestTime
             )
 
@@ -54,12 +54,12 @@ class GameExamplesTest {
         @Test
         fun worksWithNoHistory() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
-            val tribe = Tribe(
-                TribeId("Best tribe ever"),
+            val party = Party(
+                PartyId("Best tribe ever"),
                 PairingRule.LongestTime
             )
         }) exercise {
-            perform(RunGameAction(allPlayers, emptyList(), history, tribe))
+            perform(RunGameAction(allPlayers, emptyList(), history, party))
         } verify { result ->
             result.pairs.map { pair -> pair.players.size.assertIsEqualTo(2); pair.players }
                 .flatten()
@@ -70,12 +70,12 @@ class GameExamplesTest {
         @Test
         fun worksWithAnOddNumberOfPlayersAndNoHistory() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
-            val tribe = Tribe(
-                TribeId("Best tribe ever"),
+            val party = Party(
+                PartyId("Best tribe ever"),
                 PairingRule.LongestTime
             )
         }) exercise {
-            perform(RunGameAction(listOf(clark, bruce, diana), emptyList(), history, tribe))
+            perform(RunGameAction(listOf(clark, bruce, diana), emptyList(), history, party))
         } verify { result ->
             result.pairs.size.assertIsEqualTo(2)
         }
@@ -106,7 +106,7 @@ class GameExamplesTest {
                 )
             )
         }) exercise {
-            perform(RunGameAction(allPlayers, emptyList(), history, tribe))
+            perform(RunGameAction(allPlayers, emptyList(), history, party))
         } verify { result ->
             result.pairs.contains(pairOf(bruce, john).toPinnedPair())
         }
@@ -114,8 +114,8 @@ class GameExamplesTest {
 
     class WithDifferentBadgesAndLongestPairRule {
         companion object {
-            val tribe = Tribe(
-                id = TribeId("JLA"),
+            val party = Party(
+                id = PartyId("JLA"),
                 pairingRule = PairingRule.LongestTime
             )
 
@@ -154,7 +154,7 @@ class GameExamplesTest {
                 )
             )
         }) exercise {
-            perform(RunGameAction(allPlayers, emptyList(), history, tribe))
+            perform(RunGameAction(allPlayers, emptyList(), history, party))
         } verify { result ->
             result.pairs.contains(pairOf(bruce, john).toPinnedPair())
         }
@@ -163,8 +163,8 @@ class GameExamplesTest {
 
     @Test
     fun willNotGetStuckWhenPairingPeopleWithDifferentBadges() = setup(object {
-        val tribe = Tribe(
-            TribeId("Avengers"),
+        val party = Party(
+            PartyId("Avengers"),
             PairingRule.PreferDifferentBadge
         )
         val kamala = Player(name = "Ms. Marvel", badge = 0)
@@ -191,7 +191,7 @@ class GameExamplesTest {
             )
         )
     }) exercise {
-        perform(RunGameAction(allPlayers, emptyList(), history, tribe))
+        perform(RunGameAction(allPlayers, emptyList(), history, party))
     } verify { result ->
         result.pairs.contains(pairOf(kamala, logan).toPinnedPair())
     }

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
@@ -40,9 +40,9 @@ class MemoryRepositoryCatalog private constructor(
         MemoryPinRepository(userEmail, clock, backend.pin)
     )
 
-    override suspend fun perform(query: UserQuery) = User(userId, "???", setOf(TribeId("Kind of fake")))
+    override suspend fun perform(query: UserQuery) = User(userId, "???", setOf(PartyId("Kind of fake")))
 
-    override suspend fun requestSpin(tribeId: TribeId, players: List<Player>, pins: List<Pin>): PairAssignmentDocument {
+    override suspend fun requestSpin(tribeId: PartyId, players: List<Player>, pins: List<Pin>): PairAssignmentDocument {
         TODO("Not yet implemented")
     }
 

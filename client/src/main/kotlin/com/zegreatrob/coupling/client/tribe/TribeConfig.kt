@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths
 import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.json.*
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
@@ -15,7 +15,7 @@ import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class TribeConfig(val tribe: Tribe, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) :
+data class TribeConfig(val tribe: Party, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) :
     DataPropsBind<TribeConfig>(tribeConfig)
 
 interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
@@ -24,7 +24,7 @@ interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommand
 
 val tribeConfig = tmFC { (tribe, commandFunc): TribeConfig ->
     val isNew = tribe.id.value == ""
-    val (values, onChange) = useForm(tribe.withDefaultTribeId().toSerializable().toJsonDynamic().unsafeCast<Json>())
+    val (values, onChange) = useForm(tribe.withDefaultPartyId().toSerializable().toJsonDynamic().unsafeCast<Json>())
     val updatedTribe = values.correctTypes().fromJsonDynamic<JsonTribe>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToTribeList = { setRedirectUrl(Paths.tribeList()) }
@@ -43,7 +43,7 @@ private fun Json.correctTypes() = also {
     set("pairingRule", this["pairingRule"].toString().toInt())
 }
 
-private fun Tribe.withDefaultTribeId() = if (id.value.isNotBlank())
+private fun Party.withDefaultPartyId() = if (id.value.isNotBlank())
     this
 else
-    copy(id = TribeId("${uuid4()}"))
+    copy(id = PartyId("${uuid4()}"))

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
@@ -10,15 +10,15 @@ import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-data class TribePinListQuery(val tribeId: TribeId) :
-    SimpleSuspendAction<TribePinListQueryDispatcher, Pair<Tribe, List<Pin>>?> {
+data class TribePinListQuery(val tribeId: PartyId) :
+    SimpleSuspendAction<TribePinListQueryDispatcher, Pair<Party, List<Pin>>?> {
     override val performFunc = link(TribePinListQueryDispatcher::perform)
 }
 
 interface TribePinListQueryDispatcher : TribeIdGetSyntax, TribeIdPinsSyntax {
     suspend fun perform(query: TribePinListQuery) = query.tribeId.getData()
 
-    private suspend fun TribeId.getData() = coroutineScope {
+    private suspend fun PartyId.getData() = coroutineScope {
         await(
             async { get() },
             async { getPins() }

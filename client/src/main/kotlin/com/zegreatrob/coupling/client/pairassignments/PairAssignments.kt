@@ -17,7 +17,7 @@ import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
+import com.zegreatrob.coupling.model.tribe.Party
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
@@ -45,7 +45,7 @@ interface PairAssignmentsCommandDispatcher : SavePairAssignmentsCommandDispatche
 }
 
 data class PairAssignments(
-    val tribe: Tribe,
+    val tribe: Party,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
@@ -78,7 +78,7 @@ val pairAssignments = tmFC<PairAssignments> { props ->
 }
 
 private fun ChildrenBuilder.topPairSection(
-    tribe: Tribe,
+    tribe: Party,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
     setPairs: (PairAssignmentDocument) -> Unit,
@@ -110,7 +110,7 @@ private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) 
 })
 
 private fun ChildrenBuilder.currentPairSection(
-    tribe: Tribe,
+    tribe: Party,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
@@ -135,7 +135,7 @@ private fun ChildrenBuilder.currentPairSection(
 }
 
 private fun pairAssignmentsAnimator(
-    tribe: Tribe,
+    tribe: Party,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument,
     allowSave: Boolean,
@@ -160,7 +160,7 @@ private fun ChildrenBuilder.noPairsHeader() = cssDiv(css = {
     +"No pair assignments yet!"
 }
 
-private fun ChildrenBuilder.controlPanel(tribe: Tribe) = div {
+private fun ChildrenBuilder.controlPanel(tribe: Party) = div {
     div {
         className = styles["controlPanel"]
         div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
@@ -202,7 +202,7 @@ private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it
 
 external class ClipboardItem(params: Json)
 
-private fun ChildrenBuilder.unpairedPlayerSection(tribe: Tribe, players: List<Player>) =
+private fun ChildrenBuilder.unpairedPlayerSection(tribe: Party, players: List<Player>) =
     child(PlayerRoster(label = "Unpaired players", players = players, tribeId = tribe.id))
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
@@ -215,7 +215,7 @@ private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignm
 
 private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-private fun ChildrenBuilder.prepareToSpinButton(tribe: Tribe, className: ClassName) = Link {
+private fun ChildrenBuilder.prepareToSpinButton(tribe: Party, className: ClassName) = Link {
     to = "/${tribe.id.value}/prepare/"
     tabIndex = -1
     draggable = false

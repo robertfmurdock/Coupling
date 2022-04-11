@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Tribe
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
 import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
@@ -16,7 +16,7 @@ import kotlinx.coroutines.coroutineScope
 interface TribeIdLoadMostSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeIdPinsSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentGetCurrent
 
-    suspend fun TribeId.loadMost() = coroutineScope {
+    suspend fun PartyId.loadMost() = coroutineScope {
         await(
             async { get() },
             async { getPlayerList() },
@@ -26,7 +26,7 @@ interface TribeIdLoadMostSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeI
     }
 
     private suspend fun await(
-        tribeDeferred: Deferred<Tribe?>,
+        tribeDeferred: Deferred<Party?>,
         playerListDeferred: Deferred<List<Player>>,
         currentPairsDeferred: Deferred<PairAssignmentDocument?>,
         pinListDeferred: Deferred<List<Pin>>
@@ -35,7 +35,7 @@ interface TribeIdLoadMostSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeI
     }
 
     suspend fun awaitTribeData(
-        tribe: Tribe,
+        tribe: Party,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<PairAssignmentDocument?>,
         pinListDeferred: Deferred<List<Pin>>
@@ -48,7 +48,7 @@ interface TribeIdLoadMostSyntax : TribeIdGetSyntax, TribeIdPlayersSyntax, TribeI
 }
 
 data class TribeDataMost(
-    val tribe: Tribe,
+    val tribe: Party,
     val playerList: List<Player>,
     val currentPairDocument: PairAssignmentDocument?,
     val pinList: List<Pin>

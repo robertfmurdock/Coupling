@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContextMint
 import com.zegreatrob.coupling.repository.validation.bind
 import com.zegreatrob.coupling.stubmodel.stubPin
-import com.zegreatrob.coupling.stubmodel.stubTribe
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
@@ -19,7 +19,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
 
     override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPinRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
-        val tribe = stubTribe()
+        val tribe = stubParty()
         SdkTribeContext(sdk, sdk.pinRepository, tribe.id, MagicClock())
             .apply {
                 tribe.save()
@@ -33,7 +33,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
         val sdk = authorizedSdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
-            val otherTribe = stubTribe()
+            val otherTribe = stubParty()
             val sdk = sdk
             val otherSdk = otherSdk
         }

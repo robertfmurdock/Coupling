@@ -15,7 +15,7 @@ interface ConnectionsQueryDispatcher : CouplingConnectionGetSyntax {
             ?.loadConnections()
     }
 
-    private suspend fun CouplingConnection.loadConnections() =  tribeId.loadConnections()
+    private suspend fun CouplingConnection.loadConnections() =  partyId.loadConnections()
         .let { it to couplingSocketMessage(it, null) }
 
 }

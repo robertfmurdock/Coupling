@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.model.tribe.TribeId
+import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
@@ -18,7 +18,7 @@ object TribeConfigPage : StyleSyntax {
     fun getDifferentBadgesOption() = WebdriverElement("#pairing-rule option[label=\"Prefer Different Badges (Beta)\"]")
     fun getCheckedOption() = WebdriverElement("#pairing-rule option:checked")
 
-    suspend fun goTo(tribeId: TribeId) {
+    suspend fun goTo(tribeId: PartyId) {
         WebdriverBrowser.setLocation("/${tribeId.value}/edit/")
         waitForPage()
     }
