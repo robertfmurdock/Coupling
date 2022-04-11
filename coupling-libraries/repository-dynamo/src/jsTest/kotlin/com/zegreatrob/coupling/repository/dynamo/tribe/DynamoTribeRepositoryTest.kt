@@ -10,9 +10,11 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
 typealias TribeMint = ContextMint<DynamoTribeRepository>
 
+@ExperimentalTime
 @Suppress("unused")
 class DynamoTribeRepositoryTest : TribeRepositoryValidator<DynamoTribeRepository> {
 
@@ -30,17 +32,15 @@ class DynamoTribeRepositoryTest : TribeRepositoryValidator<DynamoTribeRepository
         val updatedTribe = tribe.copy(name = "CLONE!")
         val updatedSaveTime = initialSaveTime.plus(2.hours)
         val altTribe = stubParty()
-    }.bind()) {
+    }.bind()) exercise {
         clock.currentTime = initialSaveTime
         repository.save(tribe)
         repository.save(altTribe)
         clock.currentTime = updatedSaveTime
         repository.save(updatedTribe)
         repository.delete(altTribe.id)
-    } exercise {
+    } verifyWithWaitAnd {
         repository.getTribeRecords()
-    } verifyAnd { result ->
-        result
             .assertContains(Record(tribe, user.email, false, initialSaveTime))
             .assertContains(Record(altTribe, user.email, false, initialSaveTime))
             .assertContains(Record(updatedTribe, user.email, false, updatedSaveTime))
