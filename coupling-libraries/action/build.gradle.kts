@@ -22,8 +22,8 @@ kotlin {
 
         getByName("commonMain") {
             dependencies {
-                implementation(project(":model"))
-                implementation(project(":logging"))
+                implementation(project(":coupling-libraries:model"))
+                implementation(project(":coupling-libraries:logging"))
                 implementation("com.zegreatrob.testmints:action")
                 implementation("com.zegreatrob.testmints:action-async")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
@@ -35,9 +35,9 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                implementation(project(":json"))
-                implementation(project(":test-action"))
-                implementation(project(":test-logging"))
+                implementation(project(":coupling-libraries:json"))
+                implementation(project(":coupling-libraries:test-action"))
+                implementation(project(":coupling-libraries:test-logging"))
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("com.zegreatrob.testmints:standard")

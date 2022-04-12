@@ -18,7 +18,7 @@ class DynamoPinRepository private constructor(override val userId: String, overr
     UserIdSyntax,
     DynamoPinJsonMapping,
     RecordSyntax {
-
+ 
     companion object : DynamoRepositoryCreatorSyntax<DynamoPinRepository>,
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
