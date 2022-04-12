@@ -1,3 +1,7 @@
+repositories {
+    mavenCentral()
+}
+
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
@@ -23,13 +27,14 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
                 api("io.github.microutils:kotlin-logging:2.1.21")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-core")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+                implementation(kotlin("serialization"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
             }
         }

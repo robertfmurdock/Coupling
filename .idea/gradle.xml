@@ -12,26 +12,6 @@
                   <project path="$PROJECT_DIR$/plugins" />
                 </projects>
               </build>
-              <build path="$PROJECT_DIR$/coupling-libraries" name="coupling-libraries">
-                <projects>
-                  <project path="$PROJECT_DIR$/coupling-libraries" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/action" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/export" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/import" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/json" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/logging" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/model" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/repository-compound" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/repository-core" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/repository-dynamo" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/repository-memory" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/repository-validation" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/server_action" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/stub-model" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/test-action" />
-                  <project path="$PROJECT_DIR$/coupling-libraries/test-logging" />
-                </projects>
-              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
@@ -39,7 +19,6 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="/usr/local/Cellar/gradle/7.0.2_1/libexec" />
         <option name="gradleJvm" value="14 (2)" />
         <option name="modules">
           <set>
@@ -68,6 +47,7 @@
             <option value="$PROJECT_DIR$/deploy/sandbox" />
             <option value="$PROJECT_DIR$/e2e" />
             <option value="$PROJECT_DIR$/plugins" />
+            <option value="$PROJECT_DIR$/repository-dynamo" />
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
           </set>

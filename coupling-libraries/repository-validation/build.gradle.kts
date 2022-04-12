@@ -14,14 +14,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":repository-core"))
-                api(project(":test-logging"))
-                api(project(":stub-model"))
+                api(project(":coupling-libraries:repository-core"))
+                api(project(":coupling-libraries:test-logging"))
+                api(project(":coupling-libraries:stub-model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("com.zegreatrob.testmints:async")
-                implementation("com.zegreatrob.testmints:minassert")
+                api("org.jetbrains.kotlin:kotlin-test")
+                api("com.zegreatrob.testmints:standard")
+                api("com.zegreatrob.testmints:async")
+                api("com.zegreatrob.testmints:minassert")
             }
         }
 

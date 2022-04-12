@@ -19,9 +19,9 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation(project(":logging"))
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("com.zegreatrob.testmints:report")
+                api(project(":coupling-libraries:logging"))
+                api("com.zegreatrob.testmints:standard")
+                api("com.zegreatrob.testmints:report")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")

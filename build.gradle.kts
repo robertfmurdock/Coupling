@@ -36,26 +36,6 @@ tasks {
     named("composeUp") {
         dependsOn(":server:buildImage")
     }
-    val couplingLibrariesBuild = gradle.includedBuild("coupling-libraries")
-
-    val couplingLibrariesCheck = couplingLibrariesBuild.task(":check")
-    named("check") {
-        dependsOn(couplingLibrariesCheck)
-    }
-    val collectResults by registering(Copy::class) {
-        mustRunAfter(couplingLibrariesCheck)
-        dependsOn(couplingLibrariesBuild.task(":collectResults"))
-        from("${couplingLibrariesBuild.projectDir.path}/build/test-output")
-        into("${buildDir.path}/test-output/coupling-libraries")
-    }
-}
-
-afterEvaluate {
-    tasks {
-        val couplingLibrariesBuild = gradle.includedBuild("coupling-libraries")
-        val couplingLibrariesKotlinNodeJsSetup = couplingLibrariesBuild.task(":kotlinNodeJsSetup")
-        named("kotlinNodeJsSetup") { dependsOn(couplingLibrariesKotlinNodeJsSetup) }
-    }
 }
 
 yarn.ignoreScripts = false

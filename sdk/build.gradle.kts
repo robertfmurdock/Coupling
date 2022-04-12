@@ -15,10 +15,10 @@ kotlin {
 
         val commonMain = named("commonMain") {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:model")
-                implementation("com.zegreatrob.coupling.libraries:action")
-                implementation("com.zegreatrob.coupling.libraries:repository-core")
-                implementation("com.zegreatrob.coupling.libraries:json")
+                implementation(project(":coupling-libraries:model"))
+                implementation(project(":coupling-libraries:action"))
+                implementation(project(":coupling-libraries:repository-core"))
+                implementation(project(":coupling-libraries:json"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
@@ -36,9 +36,9 @@ kotlin {
             resources.srcDirs(commonMain.get().resources.srcDirs)
 
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:repository-validation")
-                implementation("com.zegreatrob.coupling.libraries:test-logging")
-                implementation("com.zegreatrob.coupling.libraries:stub-model")
+                implementation(project(":coupling-libraries:repository-validation"))
+                implementation(project(":coupling-libraries:test-logging"))
+                implementation(project(":coupling-libraries:stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("com.benasher44:uuid:0.4.0")
                 implementation("com.zegreatrob.testmints:standard")

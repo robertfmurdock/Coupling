@@ -41,7 +41,7 @@ kotlin {
         val e2eTest by getting {
             dependencies {
                 implementation(project(":sdk"))
-                implementation("com.zegreatrob.coupling.libraries:test-logging")
+                implementation(project(":coupling-libraries:test-logging"))
                 implementation(kotlin("test-js"))
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
                 implementation("com.zegreatrob.testmints:standard")
@@ -60,8 +60,6 @@ kotlin {
 dependencies {
     appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
     clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
-    testLoggingLib("com.zegreatrob.coupling.libraries:test-logging:testLoggingLib")
-    implementation("com.zegreatrob.coupling.libraries:test-logging:testLoggingLib")
     implementation(kotlin("stdlib-js"))
     implementation("com.benasher44:uuid:0.4.0")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
