@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.UnauthorizedResult
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.TribeElement
+import com.zegreatrob.coupling.model.tribe.PartyElement
 import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
@@ -52,7 +52,7 @@ interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGe
             async { getUserPlayerIds() })
     }
 
-    private fun shouldSave(tribeId: PartyId, loadedTribe: Party?, playerList: List<TribeElement<String>>) =
+    private fun shouldSave(tribeId: PartyId, loadedTribe: Party?, playerList: List<PartyElement<String>>) =
         tribeIsNew(loadedTribe)
                 || playerList.authenticatedTribeIds().contains(tribeId)
 

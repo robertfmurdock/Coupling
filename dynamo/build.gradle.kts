@@ -3,8 +3,6 @@ plugins {
     id("com.avast.gradle.docker-compose") version "0.15.2"
 }
 
-group = "com.zegreatrob.coupling.libraries"
-
 kotlin {
     targets {
         js {
@@ -47,9 +45,9 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                api(project(":coupling-libraries:logging"))
-                implementation(npm("@aws-sdk/client-dynamodb", "3.18.0"))
-                implementation(npm("@aws-sdk/lib-dynamodb", "3.18.0"))
+//                api(project(":coupling-libraries:logging"))
+//                implementation(npm("@aws-sdk/client-dynamodb", "3.18.0"))
+//                implementation(npm("@aws-sdk/lib-dynamodb", "3.18.0"))
             }
         }
     }
@@ -60,7 +58,6 @@ tasks {
         dependsOn("composeUp")
     }
 }
-
 
 dockerCompose {
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))

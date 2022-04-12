@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.model
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.TribeElement
+import com.zegreatrob.coupling.model.tribe.PartyElement
 
 data class Record<T>(
     val data: T,
@@ -13,7 +13,7 @@ data class Record<T>(
 
 fun <T> List<Record<T>>.data() = map { it.data }
 
-typealias TribeRecord<T> = Record<TribeElement<T>>
+typealias TribeRecord<T> = Record<PartyElement<T>>
 
 fun <T> tribeRecord(
     partyId: PartyId,
@@ -21,7 +21,7 @@ fun <T> tribeRecord(
     modifyingUserEmail: String,
     isDeleted: Boolean = false,
     timestamp: DateTime = DateTime.now()
-) = TribeRecord(TribeElement(partyId, data), modifyingUserEmail, isDeleted, timestamp)
+) = TribeRecord(PartyElement(partyId, data), modifyingUserEmail, isDeleted, timestamp)
 
 val <T> TribeRecord<T>.element get() = this.data.element
 

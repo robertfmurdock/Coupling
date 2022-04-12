@@ -33,7 +33,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api(project(":coupling-libraries:json"))
-                api(project(":repository-dynamo"))
+                api(project(":dynamo"))
                 api(kotlin("stdlib-js"))
             }
         }
