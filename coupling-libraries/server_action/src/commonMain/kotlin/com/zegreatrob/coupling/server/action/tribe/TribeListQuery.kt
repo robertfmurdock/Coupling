@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.TribeElement
+import com.zegreatrob.coupling.model.tribe.PartyElement
 import com.zegreatrob.coupling.repository.tribe.TribeRecordSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -26,7 +26,7 @@ interface TribeListQueryDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerI
         async { getTribeRecords() } to async { getUserPlayerIds() }
     }
 
-    private fun Pair<List<Record<Party>>, List<TribeElement<String>>>.onlyAuthenticatedTribes() =
+    private fun Pair<List<Record<Party>>, List<PartyElement<String>>>.onlyAuthenticatedTribes() =
         let { (tribeRecords, players) ->
             tribeRecords.filter {
                 players.authenticatedFilter()(it)

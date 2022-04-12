@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.model.pin
 
-import com.zegreatrob.coupling.model.tribe.TribeElement
+import com.zegreatrob.coupling.model.tribe.PartyElement
 
 data class Pin(
     val id: String? = null,
@@ -11,7 +11,7 @@ data class Pin(
 
 val defaultPin = Pin(id = "DEFAULT")
 
-typealias TribeIdPin = TribeElement<Pin>
+typealias TribeIdPin = PartyElement<Pin>
 
 val TribeIdPin.tribeId get() = id
 val TribeIdPin.pin get() = element
