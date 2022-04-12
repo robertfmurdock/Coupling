@@ -16,13 +16,13 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation(project(":action"))
-                implementation(project(":test-logging"))
-                implementation("com.zegreatrob.testmints:action")
-                implementation("com.zegreatrob.testmints:action-async")
-                implementation("com.zegreatrob.testmints:async")
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("com.zegreatrob.testmints:minassert")
+                implementation(project(":coupling-libraries:action"))
+                implementation(project(":coupling-libraries:test-logging"))
+                api("com.zegreatrob.testmints:action")
+                api("com.zegreatrob.testmints:action-async")
+                api("com.zegreatrob.testmints:async")
+                api("com.zegreatrob.testmints:standard")
+                api("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")

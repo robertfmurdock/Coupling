@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.TribeElement
+import com.zegreatrob.coupling.model.tribe.PartyElement
 import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserIdSyntax
@@ -118,7 +118,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     override suspend fun getDeleted(partyId: PartyId): List<Record<TribeIdPlayer>> = partyId.queryForDeletedItemList()
         .mapNotNull { it.toPlayerRecord() }
 
-    override suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>> =
+    override suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<String>> =
         logAsync("getPlayerIdsByEmail") {
             val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
                 performQuery(emailQueryParams(email))

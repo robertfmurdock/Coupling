@@ -19,17 +19,17 @@ kotlin {
         }
         val commonMain by getting {
             dependencies {
-                implementation(project(":model"))
+                implementation(project(":coupling-libraries:model"))
                 implementation(kotlin("stdlib"))
                 implementation(kotlin("stdlib-common"))
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation(project(":test-logging"))
-                implementation(project(":stub-model"))
+                implementation(project(":coupling-libraries:test-logging"))
+                implementation(project(":coupling-libraries:stub-model"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")

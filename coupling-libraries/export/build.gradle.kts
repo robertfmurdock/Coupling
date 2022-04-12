@@ -25,7 +25,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                api(project(":model"))
+                api(project(":coupling-libraries:model"))
                 api(kotlin("stdlib"))
                 api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock:2.7.0")
@@ -34,8 +34,8 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                api(project(":repository-dynamo"))
-                api(project(":json"))
+                api(project(":dynamo"))
+                api(project(":coupling-libraries:json"))
 
                 api(kotlin("stdlib-js"))
             }

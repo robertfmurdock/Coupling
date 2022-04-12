@@ -4,7 +4,7 @@ import WDIOReporter from '@wdio/reporter'
 
 
 // noinspection NpmUsedModulesInstalled
-const testLogging = require('coupling-libraries-test-logging');
+const testLogging = require('Coupling-test-logging');
 
 // noinspection JSUnresolvedFunction
 const loggingReporter = new testLogging.com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter();

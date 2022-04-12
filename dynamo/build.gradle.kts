@@ -1,8 +1,7 @@
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
+    id("com.avast.gradle.docker-compose") version "0.15.2"
 }
-
-group = "com.zegreatrob.coupling.libraries"
 
 kotlin {
     targets {
@@ -21,11 +20,11 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":model"))
-                api(project(":repository-core"))
+                api(project(":coupling-libraries:model"))
+                api(project(":coupling-libraries:repository-core"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+                api("org.jetbrains.kotlin-wrappers:kotlin-extensions")
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
                 implementation("com.benasher44:uuid:0.4.0")
                 implementation("io.github.microutils:kotlin-logging:2.1.21")
@@ -33,8 +32,8 @@ kotlin {
         }
         getByName("commonTest") {
             dependencies {
-                api(project(":repository-validation"))
-                api(project(":stub-model"))
+                api(project(":coupling-libraries:repository-validation"))
+                api(project(":coupling-libraries:stub-model"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("com.zegreatrob.testmints:async")
@@ -46,9 +45,9 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                api(project(":logging"))
-                implementation(npm("@aws-sdk/client-dynamodb", "3.18.0"))
-                implementation(npm("@aws-sdk/lib-dynamodb", "3.18.0"))
+//                api(project(":coupling-libraries:logging"))
+//                implementation(npm("@aws-sdk/client-dynamodb", "3.18.0"))
+//                implementation(npm("@aws-sdk/lib-dynamodb", "3.18.0"))
             }
         }
     }
@@ -56,6 +55,13 @@ kotlin {
 
 tasks {
     named("jsNodeTest") {
-        dependsOn(":composeUp")
+        dependsOn("composeUp")
     }
+}
+
+dockerCompose {
+    tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
+    projectName = "Coupling-root"
+    startedServices.set(listOf("dynamo"))
+    containerLogToDir.set(project.file("build/test-output/containers-logs"))
 }

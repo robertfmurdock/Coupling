@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.TribeElement
+import com.zegreatrob.coupling.model.tribe.PartyElement
 import com.zegreatrob.coupling.model.tribe.PartyId
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import kotlinx.coroutines.MainScope
@@ -52,11 +52,11 @@ private suspend fun tribeDataSerializable(
     tribeId = partyId.value,
     tribeRecords = partyRecords.map(Record<Party>::toSerializable),
     playerRecords = repositoryCatalog.playerRepository.getPlayerRecords(partyId)
-        .map(Record<TribeElement<Player>>::toSerializable),
+        .map(Record<PartyElement<Player>>::toSerializable),
     pairAssignmentRecords = repositoryCatalog.pairAssignmentDocumentRepository.getRecords(partyId)
         .map(TribeRecord<PairAssignmentDocument>::toSerializable),
     pinRecords = repositoryCatalog.pinRepository.getPinRecords(partyId)
-        .map(Record<TribeElement<Pin>>::toSerializable),
+        .map(Record<PartyElement<Pin>>::toSerializable),
 )
 
 @Serializable

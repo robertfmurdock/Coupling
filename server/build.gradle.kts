@@ -28,10 +28,10 @@ dependencies {
         project(mapOf("path" to ":client", "configuration" to "clientConfiguration"))
     )
     implementation(kotlin("stdlib"))
-    implementation("com.zegreatrob.coupling.libraries:json")
-    implementation("com.zegreatrob.coupling.libraries:server_action")
-    implementation("com.zegreatrob.coupling.libraries:repository-memory")
-    implementation("com.zegreatrob.coupling.libraries:repository-dynamo")
+    implementation(project(":coupling-libraries:json"))
+    implementation(project(":coupling-libraries:server_action"))
+    implementation(project(":coupling-libraries:repository-memory"))
+    implementation(project(":dynamo"))
     implementation("com.zegreatrob.jsmints:minjson")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
@@ -43,14 +43,6 @@ tasks {
     clean {
         doLast {
             delete(file("build"))
-        }
-    }
-
-    compileKotlinJs {
-        artifacts {
-            add(appConfiguration.name, compileKotlinJs.get().outputFileProperty) {
-                builtBy(compileKotlinJs)
-            }
         }
     }
 
@@ -198,5 +190,11 @@ tasks {
         add(appConfiguration.name, file("build/executable")) {
             builtBy(serverAssemble)
         }
+    }
+}
+
+artifacts {
+    add(appConfiguration.name, tasks.compileKotlinJs.get().outputFileProperty) {
+        builtBy(tasks.compileKotlinJs)
     }
 }

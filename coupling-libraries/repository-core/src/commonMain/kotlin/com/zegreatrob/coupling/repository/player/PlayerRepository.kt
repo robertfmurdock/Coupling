@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.player
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.TribeElement
+import com.zegreatrob.coupling.model.tribe.PartyElement
 import com.zegreatrob.coupling.model.tribe.PartyId
 
 interface PlayerRepository : PlayerListGet,
@@ -30,5 +30,5 @@ interface PlayerListGetDeleted {
 }
 
 interface PlayerListGetByEmail {
-    suspend fun getPlayerIdsByEmail(email: String): List<TribeElement<String>>
+    suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<String>>
 }

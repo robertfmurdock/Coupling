@@ -11,16 +11,16 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":model"))
-                api(project(":repository-core"))
+                api(project(":coupling-libraries:model"))
+                api(project(":coupling-libraries:repository-core"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation("com.zegreatrob.coupling.libraries:test-logging")
-                implementation(project(":repository-memory"))
-                implementation(project(":repository-validation"))
+                implementation(project(":coupling-libraries:test-logging"))
+                implementation(project(":coupling-libraries:repository-memory"))
+                implementation(project(":coupling-libraries:repository-validation"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")

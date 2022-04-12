@@ -14,7 +14,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":model"))
+                api(project(":coupling-libraries:model"))
                 api(kotlin("stdlib"))
                 api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock:2.7.0")

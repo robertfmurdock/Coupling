@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.TribeRecord
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.TribeElement
 import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.tribe.PartyElement
 import com.zegreatrob.coupling.model.tribe.with
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
@@ -43,7 +43,7 @@ class DynamoPinRepository private constructor(override val userId: String, overr
         it.toRecord()
     }
 
-    private fun Json.toRecord(): Record<TribeElement<Pin>> {
+    private fun Json.toRecord(): Record<PartyElement<Pin>> {
         val partyId = this["tribeId"].unsafeCast<String>().let(::PartyId)
         val pin = toPin()
         return toRecord(partyId.with(pin))
