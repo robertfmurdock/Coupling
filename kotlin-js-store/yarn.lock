@@ -2555,10 +2555,10 @@
     yargs "^17.0.0"
     yarn-install "^1.0.0"
 
-"@wdio/cli@7.19.3":
-  version "7.19.3"
-  resolved "https://registry.yarnpkg.com/@wdio/cli/-/cli-7.19.3.tgz#624437efbf4dc49fab664118c249f774bf6e0c42"
-  integrity sha512-u7qfFPDMiBS8SdQhXHrKCTMyqDpaDz0lqbxj8O2fDy5T18YIPFD+HHo4t5AzNo/E+jGi35s+9Jzwp6Tkn7nvZw==
+"@wdio/cli@7.19.4":
+  version "7.19.4"
+  resolved "https://registry.yarnpkg.com/@wdio/cli/-/cli-7.19.4.tgz#5c0e231947e46339c4336844847b7b54b5842177"
+  integrity sha512-Ua3T2B1Xz07QI2MDIZqscpMZs2YQ8c4xtj5q7fpPiD7EIAcPBLmMhXN/DNzNGhT1r1fQFJ15a9kmeod4pPWvoQ==
   dependencies:
     "@types/ejs" "^3.0.5"
     "@types/fs-extra" "^9.0.4"
@@ -2584,7 +2584,7 @@
     lodash.union "^4.6.0"
     mkdirp "^1.0.4"
     recursive-readdir "^2.2.2"
-    webdriverio "7.19.3"
+    webdriverio "7.19.4"
     yargs "^17.0.0"
     yarn-install "^1.0.0"
 
@@ -2657,15 +2657,15 @@
     split2 "^3.2.2"
     stream-buffers "^3.0.2"
 
-"@wdio/local-runner@7.19.3":
-  version "7.19.3"
-  resolved "https://registry.yarnpkg.com/@wdio/local-runner/-/local-runner-7.19.3.tgz#af8e9e8e83ff29d0b31f4357b41222d6e3c780a4"
-  integrity sha512-HISss3hINC64ynM8Fx11I5qUH/EHew0PFK2qey+HxgW7hnJNRHil01wr4fYt8YYP5a4xtgyywvOiZRHX7yRmkA==
+"@wdio/local-runner@7.19.4":
+  version "7.19.4"
+  resolved "https://registry.yarnpkg.com/@wdio/local-runner/-/local-runner-7.19.4.tgz#47610204212fe3057f4694ad14458e95b4dbbde9"
+  integrity sha512-6zfWVn5Zm3WaF7wtoFGiMA5IZeeSZfJPDa40Gr2llzN4Y1onDwonKON9sD2fJ1tiyTxvQ7uSukAnIdOe/EPvxQ==
   dependencies:
     "@types/stream-buffers" "^3.0.3"
     "@wdio/logger" "7.19.0"
     "@wdio/repl" "7.19.3"
-    "@wdio/runner" "7.19.3"
+    "@wdio/runner" "7.19.4"
     "@wdio/types" "7.19.1"
     async-exit-hook "^2.0.1"
     split2 "^4.0.0"
@@ -2752,10 +2752,10 @@
     webdriver "7.10.0"
     webdriverio "7.10.0"
 
-"@wdio/runner@7.19.3":
-  version "7.19.3"
-  resolved "https://registry.yarnpkg.com/@wdio/runner/-/runner-7.19.3.tgz#3abe3848281e06b8a4f8e6b2b04e91402dbee4d6"
-  integrity sha512-aeU4cikPGBavpAb1nN01A8WNWwXeXVTtWD4Z9Oq78kHcoFoCx4jhACnz95PzPzz0/P58tAktS84oiRROi4nXug==
+"@wdio/runner@7.19.4":
+  version "7.19.4"
+  resolved "https://registry.yarnpkg.com/@wdio/runner/-/runner-7.19.4.tgz#3235db7bb62a6fe8f7359b85812c0a26d1deec0d"
+  integrity sha512-WtosofQQDPYB8+4kHyOxqFDuL44IMYCdVt0NyVf8mqf5vBYZpNHYo9u3vae6af0gFyqyHxLBZGREpTdtKwpAIA==
   dependencies:
     "@wdio/config" "7.19.1"
     "@wdio/logger" "7.19.0"
@@ -2764,7 +2764,7 @@
     deepmerge "^4.0.0"
     gaze "^1.1.2"
     webdriver "7.19.3"
-    webdriverio "7.19.3"
+    webdriverio "7.19.4"
 
 "@wdio/types@7.19.1":
   version "7.19.1"
@@ -12922,10 +12922,10 @@ webdriverio@7.10.0:
     serialize-error "^8.0.0"
     webdriver "7.10.0"
 
-webdriverio@7.19.3:
-  version "7.19.3"
-  resolved "https://registry.yarnpkg.com/webdriverio/-/webdriverio-7.19.3.tgz#7d8b56a9dafc25a0c4a0dd33d7ff1481a09e3357"
-  integrity sha512-SZCRrixaML9CxdBZ3h4XC4PR8e70OESNWJtbxV4ZL6JFzaQry+nNb+ewsOhekcHSfQN7kktN3AhazDAJh/1j2A==
+webdriverio@7.19.4:
+  version "7.19.4"
+  resolved "https://registry.yarnpkg.com/webdriverio/-/webdriverio-7.19.4.tgz#6366a7cf5b9166cc36092c06de5e0cf3af52690b"
+  integrity sha512-4ZwP89SZ4rF5tVaAeA7HNND5Obwsb4p010rifNeHhd6EMv8QGk0ZF/Fx29T9FyCMKlf3BCFrjb+E6VbN1+PRrQ==
   dependencies:
     "@types/aria-query" "^5.0.0"
     "@types/node" "^17.0.4"
@@ -13095,37 +13095,7 @@ webpack@5.57.1:
     watchpack "^2.2.0"
     webpack-sources "^3.2.0"
 
-webpack@5.71.0:
-  version "5.71.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.71.0.tgz#b01fcf379570b8c5ee06ca06c829ca168c951884"
-  integrity sha512-g4dFT7CFG8LY0iU5G8nBL6VlkT21Z7dcYDpJAEJV5Q1WLb9UwnFbrem1k7K52ILqEmomN7pnzWFxxE6SlDY56A==
-  dependencies:
-    "@types/eslint-scope" "^3.7.3"
-    "@types/estree" "^0.0.51"
-    "@webassemblyjs/ast" "1.11.1"
-    "@webassemblyjs/wasm-edit" "1.11.1"
-    "@webassemblyjs/wasm-parser" "1.11.1"
-    acorn "^8.4.1"
-    acorn-import-assertions "^1.7.6"
-    browserslist "^4.14.5"
-    chrome-trace-event "^1.0.2"
-    enhanced-resolve "^5.9.2"
-    es-module-lexer "^0.9.0"
-    eslint-scope "5.1.1"
-    events "^3.2.0"
-    glob-to-regexp "^0.4.1"
-    graceful-fs "^4.2.9"
-    json-parse-better-errors "^1.0.2"
-    loader-runner "^4.2.0"
-    mime-types "^2.1.27"
-    neo-async "^2.6.2"
-    schema-utils "^3.1.0"
-    tapable "^2.1.1"
-    terser-webpack-plugin "^5.1.3"
-    watchpack "^2.3.1"
-    webpack-sources "^3.2.3"
-
-webpack@~5.72.0:
+webpack@5.72.0, webpack@~5.72.0:
   version "5.72.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.72.0.tgz#f8bc40d9c6bb489a4b7a8a685101d6022b8b6e28"
   integrity sha512-qmSmbspI0Qo5ld49htys8GY9XhS9CGqFoHTsOVAnjBdg0Zn79y135R+k4IR4rKK6+eKaabMhJwiVB7xw0SJu5w==
