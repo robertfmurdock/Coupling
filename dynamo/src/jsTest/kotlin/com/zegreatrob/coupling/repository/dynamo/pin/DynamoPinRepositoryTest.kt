@@ -23,10 +23,10 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
 
-    override val repositorySetup = asyncTestTemplate<TribeContext<DynamoPinRepository>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<PartyContext<DynamoPinRepository>>(sharedSetup = {
         val clock = MagicClock()
         val user = stubUser()
-        TribeContextData(DynamoPinRepository(user.email, clock), stubPartyId(), clock, user)
+        PartyContextData(DynamoPinRepository(user.email, clock), stubPartyId(), clock, user)
     })
 
     @Test

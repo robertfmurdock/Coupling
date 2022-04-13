@@ -3,29 +3,29 @@ package com.zegreatrob.coupling.repository.validation
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 
-abstract class TribeContextMint<R : Any> : TribeContext<R> {
+abstract class PartyContextMint<R : Any> : PartyContext<R> {
     override lateinit var repository: R
     override lateinit var clock: MagicClock
     override lateinit var user: User
-    override var tribeId: PartyId = PartyId("NO INIT")
+    override var partyId: PartyId = PartyId("NO INIT")
 }
 
-interface TribeContext<R> : SharedContext<R> {
-    val tribeId: PartyId
+interface PartyContext<R> : SharedContext<R> {
+    val partyId: PartyId
 }
 
-data class TribeContextData<R>(
+data class PartyContextData<R>(
     override val repository: R,
-    override val tribeId: PartyId,
+    override val partyId: PartyId,
     override val clock: MagicClock,
     override val user: User
-) : TribeContext<R>
+) : PartyContext<R>
 
-fun <C : TribeContextMint<R>, R> C.bind(): suspend (TribeContext<R>) -> C = { parent: TribeContext<R> ->
+fun <C : PartyContextMint<R>, R> C.bind(): suspend (PartyContext<R>) -> C = { parent: PartyContext<R> ->
     also {
         repository = parent.repository
         clock = parent.clock
         user = parent.user
-        tribeId = parent.tribeId
+        partyId = parent.partyId
     }
 }

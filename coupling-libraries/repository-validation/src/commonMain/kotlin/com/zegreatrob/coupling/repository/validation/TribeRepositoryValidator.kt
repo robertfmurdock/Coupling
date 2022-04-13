@@ -9,71 +9,73 @@ import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
+@ExperimentalCoroutinesApi
 interface TribeRepositoryValidator<R : PartyRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
-    fun saveMultipleThenGetListWillReturnSavedTribes() = repositorySetup.with(object : ContextMint<R>() {
-        val tribes = stubParties(3)
+    fun saveMultipleThenGetListWillReturnSavedParties() = repositorySetup.with(object : ContextMint<R>() {
+        val parties = stubParties(3)
     }.bind()) {
-        tribes.forEach { repository.save(it) }
+        parties.forEach { repository.save(it) }
     } exercise {
         repository.getParties()
     } verify { result ->
-        result.tribes().assertContainsAll(tribes)
+        result.parties().assertContainsAll(parties)
     }
 
-    private fun List<Party>.assertContainsAll(expectedTribes: List<Party>) =
-        expectedTribes.forEach(this::assertContains)
+    private fun List<Party>.assertContainsAll(expectedParties: List<Party>) =
+        expectedParties.forEach(this::assertContains)
 
-    private fun List<Record<Party>>.tribes() = map(Record<Party>::data)
+    private fun List<Record<Party>>.parties() = map(Record<Party>::data)
 
     @Test
-    fun saveMultipleThenGetEachByIdWillReturnSavedTribes() = repositorySetup.with(object : ContextMint<R>() {
-        val tribes = stubParties(3)
+    fun saveMultipleThenGetEachByIdWillReturnSavedParties() = repositorySetup.with(object : ContextMint<R>() {
+        val parties = stubParties(3)
     }.bind()) {
-        tribes.forEach { repository.save(it) }
+        parties.forEach { repository.save(it) }
     } exercise {
-        tribes.map { repository.getPartyRecord(it.id)?.data }
+        parties.map { repository.getPartyRecord(it.id)?.data }
     } verify { result ->
-        result.assertIsEqualTo(tribes)
+        result.assertIsEqualTo(parties)
     }
 
     @Test
     fun saveWillIncludeModificationInformation() = repositorySetup.with(object : ContextMint<R>() {
-        val tribe = stubParty()
+        val party = stubParty()
     }.bind()) {
         clock.currentTime = DateTime.now().minus(3.days)
-        repository.save(tribe)
+        repository.save(party)
     } exercise {
         repository.getParties()
     } verifyAnd { result ->
-        result.first { it.data.id == tribe.id }.apply {
+        result.first { it.data.id == party.id }.apply {
             modifyingUserId.assertIsEqualTo(user.email)
             timestamp.assertIsEqualTo(clock.currentTime)
         }
     } teardown {
-        repository.delete(tribe.id)
+        repository.delete(party.id)
     }
 
     @Test
-    fun deleteWillMakeTribeInaccessible() = repositorySetup.with(object : ContextMint<R>() {
-        val tribe = stubParty()
+    fun deleteWillMakePartyInaccessible() = repositorySetup.with(object : ContextMint<R>() {
+        val party = stubParty()
     }.bind()) {
-        repository.save(tribe)
+        repository.save(party)
     } exercise {
-        repository.delete(tribe.id)
+        repository.delete(party.id)
         Pair(
             repository.getParties(),
-            repository.getPartyRecord(tribe.id)?.data
+            repository.getPartyRecord(party.id)?.data
         )
     } verifyAnd { (listResult, getResult) ->
-        listResult.find { it.data.id == tribe.id }
+        listResult.find { it.data.id == party.id }
             .assertIsEqualTo(null)
         getResult.assertIsEqualTo(null)
     } teardown {
-        repository.delete(tribe.id)
+        repository.delete(party.id)
     }
 
 }

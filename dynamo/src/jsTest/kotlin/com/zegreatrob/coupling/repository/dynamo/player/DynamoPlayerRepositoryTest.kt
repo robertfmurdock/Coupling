@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeContext
+import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -28,12 +28,12 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRepository> {
 
-    override val repositorySetup = asyncTestTemplate<TribeContext<DynamoPlayerRepository>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<PartyContext<DynamoPlayerRepository>>(sharedSetup = {
         val user = stubUser()
         val clock = MagicClock()
         val repo = DynamoPlayerRepository(user.email, clock)
-        object : TribeContext<DynamoPlayerRepository> {
-            override val tribeId = stubPartyId()
+        object : PartyContext<DynamoPlayerRepository> {
+            override val partyId = stubPartyId()
             override val clock = clock
             override val user = user
             override val repository = repo

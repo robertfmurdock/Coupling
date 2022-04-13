@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 
@@ -72,6 +73,7 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet
 
 }
 
+@ExperimentalCoroutinesApi
 @ExperimentalTime
 interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : SharedContext<R>> :
     BoostRepositoryValidator<R, SC> {
@@ -79,10 +81,10 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
     @Test
     fun saveBoostRepeatedlyGetByTribeGetsLatest() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
-            val tribeId = PartyId("${uuid4()}")
-            val boost = Boost(user.id, setOf(tribeId, PartyId("${uuid4()}")))
+            val partyId = PartyId("${uuid4()}")
+            val boost = Boost(user.id, setOf(partyId, PartyId("${uuid4()}")))
             val updatedBoost1 = boost.copy(partyIds = emptySet())
-            val updatedBoost2 = updatedBoost1.copy(partyIds = setOf(tribeId))
+            val updatedBoost2 = updatedBoost1.copy(partyIds = setOf(partyId))
         }
     }) exercise {
         with(repository) {
@@ -91,38 +93,38 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
             save(updatedBoost2)
         }
     } verifyWithWait {
-        repository.getByPartyId(tribeId)?.data
+        repository.getByPartyId(partyId)?.data
             .assertIsEqualTo(updatedBoost2)
     }
 
     @Test
-    fun getSavedBoostByTribeIdForBoostFromDifferentUserWillReturnContent() = repositorySetup.with({ sharedContext ->
+    fun getSavedBoostByPartyIdForBoostFromDifferentUserWillReturnContent() = repositorySetup.with({ sharedContext ->
         val altRepository = buildRepository(stubUser(), sharedContext.clock)
         object : SharedContext<R> by sharedContext {
             val altRepository = altRepository
-            val tribeId = PartyId("${uuid4()}")
-            val boost = Boost(user.id, setOf(PartyId("${uuid4()}"), tribeId, PartyId("${uuid4()}")))
+            val partyId = PartyId("${uuid4()}")
+            val boost = Boost(user.id, setOf(PartyId("${uuid4()}"), partyId, PartyId("${uuid4()}")))
         }
     }) {
 
     } exercise {
         repository.save(boost)
     } verifyWithWait {
-        altRepository.getByPartyId(tribeId)?.data
+        altRepository.getByPartyId(partyId)?.data
             .assertIsEqualTo(boost)
     }
 
     @Test
-    fun getSavedBoostByTribeIdForBoostRemovedBoostWillReturnNull() = repositorySetup.with({ sharedContext ->
+    fun getSavedBoostByPartyIdForBoostRemovedBoostWillReturnNull() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
-            val tribeId = PartyId("${uuid4()}")
-            val boost = Boost(user.id, setOf(PartyId("${uuid4()}"), tribeId, PartyId("${uuid4()}")))
+            val partyId = PartyId("${uuid4()}")
+            val boost = Boost(user.id, setOf(PartyId("${uuid4()}"), partyId, PartyId("${uuid4()}")))
         }
     }) exercise {
         repository.save(boost)
-        repository.save(boost.copy(partyIds = boost.partyIds.minus(tribeId)))
+        repository.save(boost.copy(partyIds = boost.partyIds.minus(partyId)))
     } verifyWithWait {
-        repository.getByPartyId(tribeId)?.data
+        repository.getByPartyId(partyId)?.data
             .assertIsEqualTo(null)
     }
 

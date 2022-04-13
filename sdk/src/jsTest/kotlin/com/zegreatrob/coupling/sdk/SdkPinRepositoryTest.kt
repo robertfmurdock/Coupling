@@ -4,7 +4,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeContextMint
+import com.zegreatrob.coupling.repository.validation.PartyContextMint
 import com.zegreatrob.coupling.repository.validation.bind
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubParty
@@ -25,7 +25,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
                 tribe.save()
             }
     }, sharedTeardown = {
-        it.sdk.partyRepository.delete(it.tribeId)
+        it.sdk.partyRepository.delete(it.partyId)
     })
 
     @Test
@@ -49,12 +49,12 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
     }
 
     override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(
-        object : TribeContextMint<SdkPinRepository>() {
+        object : PartyContextMint<SdkPinRepository>() {
         val pin = stubPin()
     }.bind()) {
-        repository.save(tribeId.with(pin))
+        repository.save(partyId.with(pin))
     } exercise {
-        repository.getPins(tribeId)
+        repository.getPins(partyId)
     } verify { result ->
         result.size.assertIsEqualTo(1)
         result.first().apply {

@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeContext
-import com.zegreatrob.coupling.repository.validation.TribeContextData
+import com.zegreatrob.coupling.repository.validation.PartyContext
+import com.zegreatrob.coupling.repository.validation.PartyContextData
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -35,9 +35,9 @@ class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> 
     })
 
     override val repositorySetup = compoundRepositorySetup
-        .extend<TribeContext<CompoundPinRepository>>(sharedSetup = { parent ->
+        .extend<PartyContext<CompoundPinRepository>>(sharedSetup = { parent ->
             with(parent) {
-                TribeContextData(compoundRepo, tribeId, clock, stubUser)
+                PartyContextData(compoundRepo, tribeId, clock, stubUser)
             }
         })
 

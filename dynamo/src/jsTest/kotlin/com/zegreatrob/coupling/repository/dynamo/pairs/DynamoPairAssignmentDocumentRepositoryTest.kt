@@ -11,8 +11,8 @@ import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext.Companion.buildRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeContext
-import com.zegreatrob.coupling.repository.validation.TribeContextData
+import com.zegreatrob.coupling.repository.validation.PartyContext
+import com.zegreatrob.coupling.repository.validation.PartyContextData
 import com.zegreatrob.coupling.stubmodel.*
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
@@ -26,10 +26,10 @@ class DynamoPairAssignmentDocumentRepositoryTest :
     PairAssignmentDocumentRepositoryValidator<DynamoPairAssignmentDocumentRepository> {
 
     override val repositorySetup =
-        asyncTestTemplate<TribeContext<DynamoPairAssignmentDocumentRepository>>(sharedSetup = {
+        asyncTestTemplate<PartyContext<DynamoPairAssignmentDocumentRepository>>(sharedSetup = {
             val clock = MagicClock()
             val user = stubUser()
-            TribeContextData(DynamoPairAssignmentDocumentRepository(user.email, clock), stubPartyId(), clock, user)
+            PartyContextData(DynamoPairAssignmentDocumentRepository(user.email, clock), stubPartyId(), clock, user)
         })
 
     @Test

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeContext
+import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -20,7 +20,7 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlayerRepository> {
 
-    override val repositorySetup = asyncTestTemplate<TribeContext<CompoundPlayerRepository>>(
+    override val repositorySetup = asyncTestTemplate<PartyContext<CompoundPlayerRepository>>(
         sharedSetup = {
             val clock = MagicClock()
             val stubUser = stubUser()
@@ -30,8 +30,8 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
 
             val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
-            object : TribeContext<CompoundPlayerRepository> {
-                override val tribeId = stubPartyId()
+            object : PartyContext<CompoundPlayerRepository> {
+                override val partyId = stubPartyId()
                 override val repository = compoundRepo
                 override val clock = clock
                 override val user = stubUser

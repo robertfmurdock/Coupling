@@ -16,31 +16,31 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         where R : PlayerRepository, R : PlayerListGetByEmail {
 
     @Test
-    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = repositorySetup.with(object : TribeContextMint<R>() {
+    fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = repositorySetup.with(object : PartyContextMint<R>() {
         val email = "test-${uuid4()}@zegreatrob.com"
         val player = stubPlayer().copy(email = email)
         val redHerring = stubPlayer().copy(email = "something else")
         val updatedPlayer = player.copy(name = "Besto")
     }.bind()) exercise {
         with(repository) {
-            save(tribeId.with(player))
-            save(tribeId.with(redHerring))
-            save(tribeId.with(updatedPlayer))
+            save(partyId.with(player))
+            save(partyId.with(redHerring))
+            save(partyId.with(updatedPlayer))
         }
     } verifyWithWait {
         repository.getPlayerIdsByEmail(email)
-            .assertIsEqualTo(listOf(tribeId.with(player.id)), "Could not find by email <$email>")
+            .assertIsEqualTo(listOf(partyId.with(player.id)), "Could not find by email <$email>")
     }
 
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatChangedTheirEmailToSomethingElse() =
-        repositorySetup.with(object : TribeContextMint<R>() {
+        repositorySetup.with(object : PartyContextMint<R>() {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
             val updatedPlayer = player.copy(name = "Besto", email = "something else ")
         }.bind()) exercise {
-            repository.save(tribeId.with(player))
-            repository.save(tribeId.with(updatedPlayer))
+            repository.save(partyId.with(player))
+            repository.save(partyId.with(updatedPlayer))
         } verifyWithWait {
             repository.getPlayerIdsByEmail(email)
                 .assertIsEqualTo(emptyList())
@@ -48,12 +48,12 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
 
     @Test
     fun getPlayersForEmailsWillNotIncludePlayersThatHaveBeenRemoved() =
-        repositorySetup.with(object : TribeContextMint<R>() {
+        repositorySetup.with(object : PartyContextMint<R>() {
             val email = "test-${uuid4()}@zegreatrob.com"
             val player = stubPlayer().copy(email = email)
         }.bind()) exercise {
-            repository.save(tribeId.with(player))
-            repository.deletePlayer(tribeId, player.id)
+            repository.save(partyId.with(player))
+            repository.deletePlayer(partyId, player.id)
         } verifyWithWait {
             repository.getPlayerIdsByEmail(email)
                 .assertIsEqualTo(emptyList())

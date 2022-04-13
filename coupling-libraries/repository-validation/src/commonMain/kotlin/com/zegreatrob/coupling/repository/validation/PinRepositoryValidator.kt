@@ -17,34 +17,34 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
 @ExperimentalTime
-interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, TribeContext<R>> {
+interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, PartyContext<R>> {
 
     @Test
-    fun canSaveAndGetPins() = repositorySetup.with(object : TribeContextMint<R>() {
+    fun canSaveAndGetPins() = repositorySetup.with(object : PartyContextMint<R>() {
         val pins = listOf(
             stubPin(),
             stubPin(),
             stubPin()
         )
     }.bind()) exercise {
-        tribeId.with(pins).forEach { repository.save(it) }
+        partyId.with(pins).forEach { repository.save(it) }
     } verifyWithWait {
-        repository.getPins(tribeId)
+        repository.getPins(partyId)
             .map { it.data.pin }
             .assertIsEqualTo(pins)
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(object : TribeContextMint<R>() {
+    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(object : PartyContextMint<R>() {
         val pin = Pin(
             id = null,
             name = "",
             icon = ""
         )
     }.bind()) exercise {
-        repository.save(tribeId.with(pin))
+        repository.save(partyId.with(pin))
     } verifyWithWait {
-        repository.getPins(tribeId).map { it.data.pin }
+        repository.getPins(partyId).map { it.data.pin }
             .also { it.assertHasIds() }
             .map { it.copy(id = null) }
             .assertIsEqualTo(listOf(pin))
@@ -55,19 +55,19 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }
 
     @Test
-    fun saveThenDeleteWillNotShowThatPin() = repositorySetup.with(object : TribeContextMint<R>() {
+    fun saveThenDeleteWillNotShowThatPin() = repositorySetup.with(object : PartyContextMint<R>() {
         val pins = listOf(
             stubPin(),
             stubPin(),
             stubPin()
         )
     }.bind()) exercise {
-        tribeId.with(pins).forEach {
+        partyId.with(pins).forEach {
             repository.save(it)
         }
-        repository.deletePin(tribeId, pins[1].id!!)
+        repository.deletePin(partyId, pins[1].id!!)
     } verifyWithWait {
-        repository.getPins(tribeId).map { it.data.pin }
+        repository.getPins(partyId).map { it.data.pin }
             .assertContains(pins[0])
             .assertContains(pins[2])
             .size
@@ -75,10 +75,10 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     }
 
     @Test
-    fun deleteWillFailWhenPinDoesNotExist() = repositorySetup.with(object : TribeContextMint<R>() {
+    fun deleteWillFailWhenPinDoesNotExist() = repositorySetup.with(object : PartyContextMint<R>() {
     }.bind()) {
     } exercise {
-        repository.deletePin(tribeId, "${uuid4()}")
+        repository.deletePin(partyId, "${uuid4()}")
     } verify { result ->
         result.assertIsEqualTo(false)
     }
@@ -86,19 +86,19 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Tri
     @Test
     fun givenNoPinsWillReturnEmptyList() = repositorySetup {
     } exercise {
-        repository.getPins(tribeId)
+        repository.getPins(partyId)
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
 
     @Test
-    fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(object : TribeContextMint<R>() {
+    fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(object : PartyContextMint<R>() {
         val pin = stubPin()
     }.bind()) exercise {
         clock.currentTime = DateTime.now().plus(4.hours)
-        repository.save(tribeId.with(pin))
+        repository.save(partyId.with(pin))
     } verifyWithWait {
-        val result = repository.getPins(tribeId)
+        val result = repository.getPins(partyId)
         result.size.assertIsEqualTo(1)
         result.first().apply {
             timestamp.assertIsEqualTo(clock.currentTime)

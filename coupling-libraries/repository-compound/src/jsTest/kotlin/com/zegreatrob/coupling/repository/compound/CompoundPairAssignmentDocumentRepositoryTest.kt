@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeContext
-import com.zegreatrob.coupling.repository.validation.TribeContextData
+import com.zegreatrob.coupling.repository.validation.PartyContext
+import com.zegreatrob.coupling.repository.validation.PartyContextData
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -36,9 +36,9 @@ class CompoundPairAssignmentDocumentRepositoryTest :
     })
 
     override val repositorySetup =
-        compoundRepositorySetup.extend<TribeContext<CompoundPairAssignmentDocumentRepository>>(
+        compoundRepositorySetup.extend<PartyContext<CompoundPairAssignmentDocumentRepository>>(
             sharedSetup = {
-                TribeContextData(it.compoundRepo, it.tribeId, it.clock, it.stubUser)
+                PartyContextData(it.compoundRepo, it.tribeId, it.clock, it.stubUser)
             })
 
     @Test

@@ -14,27 +14,27 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
 
     @Test
     fun connectionListWillReturnLastSaved() = repositorySetup.with(object : ContextMint<R>() {
-        val tribeId = stubPartyId()
+        val partyId = stubPartyId()
         val connections = listOf(
-            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
-            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
-            CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
+            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
+            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
+            CouplingConnection(uuid4().toString(), partyId, stubPlayer())
         ).sortedBy { it.connectionId }
     }.bind()).exercise {
         connections.forEach { repository.save(it) }
     } verifyWithWait {
-        repository.connectionList(tribeId)
+        repository.connectionList(partyId)
             .assertIsEqualTo(connections)
     }
 
     @Test
     fun getWillReturnConnection() = repositorySetup.with(object : ContextMint<R>() {
-        val tribeId = stubPartyId()
-        val expectedConnection = CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
+        val partyId = stubPartyId()
+        val expectedConnection = CouplingConnection(uuid4().toString(), partyId, stubPlayer())
         val connections = listOf(
-            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
+            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
             expectedConnection,
-            CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
+            CouplingConnection(uuid4().toString(), partyId, stubPlayer())
         )
     }.bind()) exercise {
         connections.forEach { repository.save(it) }
@@ -45,18 +45,18 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
 
     @Test
     fun deleteWillMakeGetNoLongerReturnValue() = repositorySetup.with(object : ContextMint<R>() {
-        val tribeId = stubPartyId()
+        val partyId = stubPartyId()
         val connections = listOf(
-            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
-            CouplingConnection(uuid4().toString(), tribeId, stubPlayer()),
-            CouplingConnection(uuid4().toString(), tribeId, stubPlayer())
+            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
+            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
+            CouplingConnection(uuid4().toString(), partyId, stubPlayer())
         )
     }.bind()) {
         connections.forEach { repository.save(it) }
     } exercise {
-        repository.delete(tribeId, connections[1].connectionId)
+        repository.delete(partyId, connections[1].connectionId)
     } verifyWithWait {
-        repository.connectionList(tribeId)
+        repository.connectionList(partyId)
             .assertIsEqualTo(listOf(connections[0], connections[2]).sortedBy { it.connectionId })
     }
 

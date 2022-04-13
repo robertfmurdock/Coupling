@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
-import com.zegreatrob.coupling.repository.validation.TribeContextMint
+import com.zegreatrob.coupling.repository.validation.PartyContextMint
 import com.zegreatrob.coupling.repository.validation.bind
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
@@ -26,7 +26,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
         sdk.partyRepository.save(tribe)
         SdkPartyContext(sdk, sdk.pairAssignmentDocumentRepository, tribe.id, MagicClock())
     }, sharedTeardown = {
-        it.sdk.partyRepository.delete(it.tribeId)
+        it.sdk.partyRepository.delete(it.partyId)
     })
 
     @Test
@@ -50,12 +50,12 @@ class SdkPairAssignmentDocumentRepositoryTest :
     }
 
     override fun savedWillIncludeModificationDateAndUsername() =
-        repositorySetup.with(object : TribeContextMint<SdkPairAssignmentsRepository>() {
+        repositorySetup.with(object : PartyContextMint<SdkPairAssignmentsRepository>() {
             val pairAssignmentDoc = stubPairAssignmentDoc()
         }.bind()) {
-            repository.save(tribeId.with(pairAssignmentDoc))
+            repository.save(partyId.with(pairAssignmentDoc))
         } exercise {
-            repository.getPairAssignments(tribeId)
+            repository.getPairAssignments(partyId)
         } verify { result ->
             result.size.assertIsEqualTo(1)
             result.first().apply {
