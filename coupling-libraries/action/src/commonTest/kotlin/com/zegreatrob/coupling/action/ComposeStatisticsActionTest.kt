@@ -16,7 +16,7 @@ import kotlin.test.Test
 class ComposeStatisticsActionTest {
 
     companion object : ComposeStatisticsActionDispatcher {
-        val tribe = Party(PartyId("LOL"), PairingRule.LongestTime)
+        val party = Party(PartyId("LOL"), PairingRule.LongestTime)
 
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
             .map { number -> makePlayer("$number") }
@@ -39,7 +39,7 @@ class ComposeStatisticsActionTest {
         companion object {
             private val history = emptyList<PairAssignmentDocument>()
 
-            fun composeStatisticsAction(players: List<Player>) = ComposeStatisticsAction(tribe, players, history)
+            fun composeStatisticsAction(players: List<Player>) = ComposeStatisticsAction(party, players, history)
         }
 
         @Test
@@ -108,7 +108,7 @@ class ComposeStatisticsActionTest {
             fun withNoPlayersNoPairReportsWillBeCreated() = setup(object {
                 val players = makePlayers(0)
             }) exercise {
-                perform(ComposeStatisticsAction(tribe, players, history))
+                perform(ComposeStatisticsAction(party, players, history))
             } verify { (_, pairReports) ->
                 pairReports.assertIsEqualTo(emptyList())
             }
@@ -117,7 +117,7 @@ class ComposeStatisticsActionTest {
             fun withOnePlayersNoPairReportsWillBeCreated() = setup(object {
                 val players = makePlayers(1)
             }) exercise {
-                perform(ComposeStatisticsAction(tribe, players, history))
+                perform(ComposeStatisticsAction(party, players, history))
             } verify { (_, pairReports) ->
                 pairReports.assertIsEqualTo(emptyList())
             }
@@ -126,7 +126,7 @@ class ComposeStatisticsActionTest {
             fun withTwoPlayersOnePairReportWillBeCreated() = setup(object {
                 val players = makePlayers(2)
             }) exercise {
-                perform(ComposeStatisticsAction(tribe, players, history))
+                perform(ComposeStatisticsAction(party, players, history))
             } verify { (_, pairReports) ->
                 pairReports.assertIsEqualTo(
                     listOf(
@@ -139,7 +139,7 @@ class ComposeStatisticsActionTest {
             fun withFivePlayersOnePairReportWillBeCreated() = setup(object {
                 val players = makePlayers(5)
             }) exercise {
-                perform(ComposeStatisticsAction(tribe, players, history))
+                perform(ComposeStatisticsAction(party, players, history))
             } verify { (_, pairReports) ->
                 val (player1, player2, player3, player4, player5) = players
                 pairReports.map { it.pair }
@@ -215,7 +215,7 @@ class ComposeStatisticsActionTest {
             private fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
                 PairAssignmentDocument(date = stubDate, pairs = pairs, id = PairAssignmentDocumentId(""))
         }) exercise {
-            perform(ComposeStatisticsAction(tribe, players, history))
+            perform(ComposeStatisticsAction(party, players, history))
         } verify { (_, pairReports) ->
             pairReports.map { it.timeSinceLastPair }
                 .assertIsEqualTo(
@@ -243,9 +243,9 @@ class ComposeStatisticsActionTest {
 
         @Test
         fun stillSortsCorrectlyWithLargeRealisticHistory() =
-            setup(loadJsonTribeSetup("realistic-sort-test-data/inputs.json")) {
+            setup(loadJsonPartySetup("realistic-sort-test-data/inputs.json")) {
             } exercise {
-                perform(ComposeStatisticsAction(tribe, players, history))
+                perform(ComposeStatisticsAction(party, players, history))
             } verify { result ->
                 val expectedTimesResults = loadResource<Array<Int>>("realistic-sort-test-data/expectResults.json")
                     .map { TimeResultValue(it) }
@@ -267,7 +267,7 @@ class ComposeStatisticsActionTest {
             val history = emptyList<PairAssignmentDocument>()
             val players = emptyList<Player>()
         }) exercise {
-            perform(ComposeStatisticsAction(tribe, players, history))
+            perform(ComposeStatisticsAction(party, players, history))
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(null)
         }
@@ -284,7 +284,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 12))
             )
         }) exercise {
-            perform(ComposeStatisticsAction(tribe, players, history))
+            perform(ComposeStatisticsAction(party, players, history))
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(1.days, "Got ${result.medianSpinDuration?.days} days")
         }
@@ -302,7 +302,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 3))
             )
         }) exercise {
-            perform(ComposeStatisticsAction(tribe, players, history))
+            perform(ComposeStatisticsAction(party, players, history))
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(2.days, "Got ${result.medianSpinDuration?.days} days")
         }
@@ -319,7 +319,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 10))
             )
         }) exercise {
-            perform(ComposeStatisticsAction(tribe, players, history))
+            perform(ComposeStatisticsAction(party, players, history))
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(2.days, "Got ${result.medianSpinDuration?.days} days")
         }
@@ -335,7 +335,7 @@ class ComposeStatisticsActionTest {
                 )
             )
         }) exercise {
-            perform(ComposeStatisticsAction(tribe, players, history))
+            perform(ComposeStatisticsAction(party, players, history))
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(null)
         }
@@ -352,7 +352,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 20, 9))
             )
         }) exercise {
-            perform(ComposeStatisticsAction(tribe, players, history))
+            perform(ComposeStatisticsAction(party, players, history))
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(2.hours, "Got ${result.medianSpinDuration?.hours} hours")
         }
@@ -370,7 +370,7 @@ class ComposeStatisticsActionTest {
             )
 
         }) exercise {
-            perform(ComposeStatisticsAction(tribe, players, history))
+            perform(ComposeStatisticsAction(party, players, history))
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(2.5.days, "Got ${result.medianSpinDuration?.days} days")
         }
@@ -379,7 +379,7 @@ class ComposeStatisticsActionTest {
 
 }
 
-expect fun loadJsonTribeSetup(fileResource: String): TribeSetup
+expect fun loadJsonPartySetup(fileResource: String): PartySetup
 expect inline fun <reified T> loadResource(fileResource: String): T
 
-data class TribeSetup(val party: Party, val players: List<Player>, val history: List<PairAssignmentDocument>)
+data class PartySetup(val party: Party, val players: List<Player>, val history: List<PairAssignmentDocument>)

@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class JsonTribe(
+data class JsonParty(
     val id: String,
     val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
     val badgesEnabled: Boolean = false,
@@ -40,7 +40,7 @@ data class JsonTribeRecord(
     val timestamp: DateTime,
 )
 
-fun Party.toSerializable() = JsonTribe(
+fun Party.toSerializable() = JsonParty(
     id = id.value,
     pairingRule = PairingRule.toValue(pairingRule),
     badgesEnabled = badgesEnabled,
@@ -69,7 +69,7 @@ fun Record<Party>.toSerializable() = JsonTribeRecord(
     timestamp = timestamp,
 )
 
-fun JsonTribe.toModel(): Party = Party(
+fun JsonParty.toModel(): Party = Party(
     id = PartyId(id),
     pairingRule = PairingRule.fromValue(pairingRule),
     badgesEnabled = badgesEnabled,

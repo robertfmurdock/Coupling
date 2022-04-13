@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.stubmodel.stubParty
-import com.zegreatrob.coupling.stubmodel.stubTribes
+import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
@@ -15,7 +15,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
 
     @Test
     fun saveMultipleThenGetListWillReturnSavedTribes() = repositorySetup.with(object : ContextMint<R>() {
-        val tribes = stubTribes(3)
+        val tribes = stubParties(3)
     }.bind()) {
         tribes.forEach { repository.save(it) }
     } exercise {
@@ -31,7 +31,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
 
     @Test
     fun saveMultipleThenGetEachByIdWillReturnSavedTribes() = repositorySetup.with(object : ContextMint<R>() {
-        val tribes = stubTribes(3)
+        val tribes = stubParties(3)
     }.bind()) {
         tribes.forEach { repository.save(it) }
     } exercise {

@@ -18,22 +18,22 @@ val mapper = ObjectMapper()
 
 private val dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
 
-actual fun loadJsonTribeSetup(fileResource: String): TribeSetup {
-    val fileJson = mapper.readTree(TribeSetup::class.java.classLoader.getResource(fileResource))
+actual fun loadJsonPartySetup(fileResource: String): PartySetup {
+    val fileJson = mapper.readTree(PartySetup::class.java.classLoader.getResource(fileResource))
 
-    val tribeJson = fileJson["tribe"]
+    val partyJson = fileJson["tribe"]
 
-    return TribeSetup(
+    return PartySetup(
         party = Party(
-            name = tribeJson["name"].textValue(),
-            pairingRule = tribeJson["pairingRule"].intValue().let {
+            name = partyJson["name"].textValue(),
+            pairingRule = partyJson["pairingRule"].intValue().let {
                 PairingRule.fromValue(
                     it
                 )
             },
-            defaultBadgeName = tribeJson["defaultBadgeName"].textValue(),
-            alternateBadgeName = tribeJson["alternateBadgeName"].textValue(),
-            id = tribeJson["id"].textValue().let(::PartyId)
+            defaultBadgeName = partyJson["defaultBadgeName"].textValue(),
+            alternateBadgeName = partyJson["alternateBadgeName"].textValue(),
+            id = partyJson["id"].textValue().let(::PartyId)
         ),
         players = fileJson["players"].map { it.toPlayer() },
         history = fileJson["history"].map {

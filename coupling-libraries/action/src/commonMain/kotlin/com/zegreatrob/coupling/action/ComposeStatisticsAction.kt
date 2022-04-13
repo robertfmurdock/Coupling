@@ -9,7 +9,7 @@ import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotlin.math.floor
 
 data class ComposeStatisticsAction(
-    val tribe: Party,
+    val party: Party,
     val players: List<Player>,
     val history: List<PairAssignmentDocument>
 ) : SimpleExecutableAction<ComposeStatisticsActionDispatcher, StatisticsReport> {

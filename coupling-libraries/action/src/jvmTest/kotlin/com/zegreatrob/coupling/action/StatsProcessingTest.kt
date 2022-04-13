@@ -18,22 +18,22 @@ class StatsProcessingTest {
 
         val users = mutableListOf<JsonNode>()
 
-        val tribes = mutableListOf<JsonNode>()
+        val parties = mutableListOf<JsonNode>()
 
         File("${System.getenv()["PWD"]}/prod.202201100933.log").forEachLine {
             val tree = objectMapper.readTree(it)
             if (tree["userEmail"] != null) {
                 users.add(tree)
             } else if (tree["tribeId"] != null) {
-                tribes.add(tree)
+                parties.add(tree)
             }
         }
 
         println("found ${users.size} users")
-        println("found ${tribes.size} tribes")
+        println("found ${parties.size} tribes")
 
 
-        val totalPairAssignmentRecords = tribes.sumOf { tribeNode ->
+        val totalPairAssignmentRecords = parties.sumOf { tribeNode ->
             tribeNode["pairAssignmentRecords"]
                 .groupBy { pairAssignmentRecord -> pairAssignmentRecord["id"].textValue() }
                 .size
@@ -41,8 +41,8 @@ class StatsProcessingTest {
         println("found $totalPairAssignmentRecords unique pair assignment records")
 
         (2019..2022).forEach { year ->
-            val pairAssignmentRecordsYear = tribes.map { tribeNode ->
-                tribeNode.countPairAssignmentsFor(year)
+            val pairAssignmentRecordsYear = parties.map { partyNode ->
+                partyNode.countPairAssignmentsFor(year)
             }
 
             println("found ${pairAssignmentRecordsYear.sum()} unique pair assignment records in $year")
@@ -51,7 +51,7 @@ class StatsProcessingTest {
                 val filter = index * 5
                 val count = pairAssignmentRecordsYear.filter { it > filter }.size
                 if (count > 0)
-                    println("found $count tribes with more than $filter in $year")
+                    println("found $count parties with more than $filter in $year")
             }
 
         }
@@ -63,7 +63,7 @@ class StatsProcessingTest {
             if (pairRecordGroups.size > 20) {
                 val tribeName = this["tribeRecords"][0]["name"].textValue()
                 val tribeId = this["tribeRecords"][0]["id"].textValue()
-                println("notable tribe in $year: $tribeName, $tribeId")
+                println("notable party in $year: $tribeName, $tribeId")
                 val sortedDates = pairRecordGroups.map { group -> group.value.first().dateRecord() }
                     .sorted()
 

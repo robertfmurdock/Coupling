@@ -25,7 +25,7 @@ interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommand
 val tribeConfig = tmFC { (tribe, commandFunc): TribeConfig ->
     val isNew = tribe.id.value == ""
     val (values, onChange) = useForm(tribe.withDefaultPartyId().toSerializable().toJsonDynamic().unsafeCast<Json>())
-    val updatedTribe = values.correctTypes().fromJsonDynamic<JsonTribe>().toModel()
+    val updatedTribe = values.correctTypes().fromJsonDynamic<JsonParty>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToTribeList = { setRedirectUrl(Paths.tribeList()) }
     val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }, { redirectToTribeList() })

@@ -16,24 +16,24 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 
 
-fun stubTribes(number: Int) = generateSequence { stubParty() }.take(number).toList()
+fun stubParties(number: Int) = generateSequence { stubParty() }.take(number).toList()
 
-var tribeCounter = 1
+var partyCounter = 1
 
 fun stubParty() = Party(
     id = stubPartyId(),
-    name = "Stub Tribe $tribeCounter",
+    name = "Stub Party $partyCounter",
     alternateBadgeName = "Badgely",
-    badgesEnabled = tribeCounter % 2 == 0,
-    callSignsEnabled = tribeCounter % 2 == 1,
+    badgesEnabled = partyCounter % 2 == 0,
+    callSignsEnabled = partyCounter % 2 == 1,
     defaultBadgeName = "Badgerton",
     email = "stuby@stub.edu",
     pairingRule = stubPairingRule(),
-    animationEnabled = tribeCounter % 2 == 0,
-    animationSpeed = tribeCounter.toDouble()
-).also { tribeCounter++ }
+    animationEnabled = partyCounter % 2 == 0,
+    animationSpeed = partyCounter.toDouble()
+).also { partyCounter++ }
 
-private fun stubPairingRule() = PairingRule.values()[tribeCounter % PairingRule.values().size]
+private fun stubPairingRule() = PairingRule.values()[partyCounter % PairingRule.values().size]
 
 fun stubPartyId() = PartyId(uuidString())
 
