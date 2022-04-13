@@ -22,7 +22,7 @@ class PlayersQueryTest {
 
     @Test
     fun willReturnPlayersFromRepository() = asyncSetup(object : PlayersQueryDispatcher {
-        override val currentPartyId = PartyId("Excellent Tribe")
+        override val currentPartyId = PartyId("Excellent Party")
         val players = listOf(
             Player(
                 id = "1",
@@ -55,7 +55,7 @@ class PlayersQueryTest {
 
     @Test
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = asyncSetup(object : PlayersQueryDispatcher {
-        override val currentPartyId = PartyId("Excellent Tribe")
+        override val currentPartyId = PartyId("Excellent Party")
         val players = listOf(
             Player(id = "1"),
             Player(id = "2"),

@@ -2,4 +2,4 @@ package com.zegreatrob.coupling.server.action.pin
 
 import com.zegreatrob.coupling.model.party.PartyId
 
-data class TribeIdPinId(val tribeId: PartyId, val pinId: String)
+data class PartyIdPinId(val partyId: PartyId, val pinId: String)

@@ -9,12 +9,12 @@ import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
-import com.zegreatrob.coupling.server.action.tribe.UserAuthenticatedPartyIdSyntax
-import com.zegreatrob.coupling.server.action.tribe.UserPlayerIdsSyntax
+import com.zegreatrob.coupling.server.action.party.UserAuthenticatedPartyIdSyntax
+import com.zegreatrob.coupling.server.action.party.UserPlayerIdsSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-data class UserIsAuthorizedWithDataAction(val tribeId: PartyId) :
+data class UserIsAuthorizedWithDataAction(val partyId: PartyId) :
     SimpleSuspendResultAction<UserIsAuthorizedWithDataActionDispatcher, Pair<Party, List<Player>>?> {
     override val performFunc = link(UserIsAuthorizedWithDataActionDispatcher::perform)
 }
@@ -27,23 +27,23 @@ interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedPartyIdSyn
 
     private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf(): Pair<Party, List<Player>>? {
         val contains = getUserPlayerIds()
-            .authenticatedTribeIds()
-            .contains(tribeId)
+            .authenticatedPartyIds()
+            .contains(partyId)
 
         if (contains) {
-            val (tribe, players) = loadTribeAndPlayers()
+            val (party, players) = loadPartyAndPlayers()
 
-            if (tribe != null) {
-                return tribe to players
+            if (party != null) {
+                return party to players
             }
         }
         return null
     }
 
-    private suspend fun UserIsAuthorizedWithDataAction.loadTribeAndPlayers() = coroutineScope {
+    private suspend fun UserIsAuthorizedWithDataAction.loadPartyAndPlayers() = coroutineScope {
         await(
-            async { tribeId.get() },
-            async { tribeId.getPlayerList() }
+            async { partyId.get() },
+            async { partyId.getPlayerList() }
         )
     }
 

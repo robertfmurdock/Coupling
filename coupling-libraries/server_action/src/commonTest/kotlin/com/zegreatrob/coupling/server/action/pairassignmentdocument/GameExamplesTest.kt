@@ -55,7 +55,7 @@ class GameExamplesTest {
         fun worksWithNoHistory() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
             val party = Party(
-                PartyId("Best tribe ever"),
+                PartyId("Best party ever"),
                 PairingRule.LongestTime
             )
         }) exercise {
@@ -71,7 +71,7 @@ class GameExamplesTest {
         fun worksWithAnOddNumberOfPlayersAndNoHistory() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
             val party = Party(
-                PartyId("Best tribe ever"),
+                PartyId("Best party ever"),
                 PairingRule.LongestTime
             )
         }) exercise {

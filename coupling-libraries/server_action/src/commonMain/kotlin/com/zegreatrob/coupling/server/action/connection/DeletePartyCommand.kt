@@ -8,13 +8,13 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.party.PartyIdDeleteSyntax
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 
-object DeleteTribeCommand : SimpleSuspendResultAction<DeleteTribeCommandDispatcher, Unit> {
-    override val performFunc = link(DeleteTribeCommandDispatcher::perform)
+object DeletePartyCommand : SimpleSuspendResultAction<DeletePartyCommandDispatcher, Unit> {
+    override val performFunc = link(DeletePartyCommandDispatcher::perform)
 }
 
-interface DeleteTribeCommandDispatcher : PartyIdDeleteSyntax, CurrentTribeIdSyntax, AuthenticatedUserSyntax,
+interface DeletePartyCommandDispatcher : PartyIdDeleteSyntax, CurrentPartyIdSyntax, AuthenticatedUserSyntax,
     UserSaveSyntax {
-    suspend fun perform(command: DeleteTribeCommand) = currentPartyId.delete().deletionResult("Tribe")
+    suspend fun perform(command: DeletePartyCommand) = currentPartyId.delete().deletionResult("Tribe")
         .also {
             if (it is SuccessfulResult) {
                 user

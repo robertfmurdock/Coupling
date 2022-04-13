@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.action.tribe
+package com.zegreatrob.coupling.server.action.party
 
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail

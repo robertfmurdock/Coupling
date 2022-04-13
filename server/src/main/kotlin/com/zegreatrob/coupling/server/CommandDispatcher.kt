@@ -41,7 +41,7 @@ interface ICommandDispatcher :
     UserQueryDispatcher,
     ConnectPartyUserCommandDispatcher,
     ConnectionsQueryDispatcher,
-    DisconnectTribeUserCommandDispatcher,
+    DisconnectPartyUserCommandDispatcher,
     ReportDocCommandDispatcher,
     DispatchingActionExecutor<CommandDispatcher>,
     RepositoryCatalog,
@@ -82,7 +82,7 @@ interface ICurrentPartyDispatcher :
     RetiredPlayersQueryDispatcher,
     SavePairAssignmentDocumentCommandDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher,
-    DeleteTribeCommandDispatcher,
+    DeletePartyCommandDispatcher,
     DeletePinCommandDispatcher,
     SavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQueryDispatcher,
@@ -101,7 +101,7 @@ class CurrentPartyDispatcher(
     RetiredPlayersQueryDispatcher,
     SavePairAssignmentDocumentCommandDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher,
-    DeleteTribeCommandDispatcher,
+    DeletePartyCommandDispatcher,
     DeletePinCommandDispatcher,
     SavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQueryDispatcher,
@@ -116,7 +116,7 @@ class CurrentPartyDispatcher(
 
     private fun nonCachingPlayerQueryDispatcher() = object : PlayersQueryDispatcher,
         LoggingActionExecuteSyntax by this,
-        CurrentTribeIdSyntax by this,
+        CurrentPartyIdSyntax by this,
         RepositoryCatalog by this {}
 
     private val playerDeferred = scope.async(start = CoroutineStart.LAZY) {

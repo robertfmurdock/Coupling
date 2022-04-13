@@ -12,9 +12,9 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.*
 import com.zegreatrob.coupling.server.action.BroadcastAction
-import com.zegreatrob.coupling.server.action.connection.ConnectTribeUserCommand
+import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
-import com.zegreatrob.coupling.server.action.connection.DisconnectTribeUserCommand
+import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.express.middleware.middleware
 import com.zegreatrob.coupling.server.express.route.jwtMiddleware
@@ -87,7 +87,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic) = js("require('ser
 private suspend fun handleConnect(request: Request, connectionId: String, event: Any?): Int {
     val commandDispatcher = with(request) { commandDispatcher(user, scope, traceId) }
     val tribeId = request.query["tribeId"].toString().let(::PartyId)
-    val result = commandDispatcher.execute(ConnectTribeUserCommand(tribeId, connectionId))
+    val result = commandDispatcher.execute(ConnectPartyUserCommand(tribeId, connectionId))
     return if (result == null) {
         delete(connectionId, commandDispatcher.managementApiClient).await()
         403
@@ -177,7 +177,7 @@ fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
     val socketDispatcher = socketDispatcher()
 
     socketDispatcher
-        .execute(DisconnectTribeUserCommand(connectionId))
+        .execute(DisconnectPartyUserCommand(connectionId))
         ?.broadcast(socketDispatcher)
         .let { json("statusCode" to 200) }
 }

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.action.tribe
+package com.zegreatrob.coupling.server.action.party
 
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
-data class SaveTribeCommand(val tribe: Party) :
+data class SavePartyCommand(val party: Party) :
     SimpleSuspendResultAction<SavePartyCommandDispatcher, Unit> {
     override val performFunc = link(SavePartyCommandDispatcher::perform)
 }
@@ -30,33 +30,33 @@ interface SavePartyCommandDispatcher : UserAuthenticatedPartyIdSyntax, PartyIdGe
 
     override val partyRepository: PartyRepository
 
-    suspend fun perform(command: SaveTribeCommand) = command.isAuthorizedToSave()
-        .whenAuthorized { command.saveTribeAndUser() }
+    suspend fun perform(command: SavePartyCommand) = command.isAuthorizedToSave()
+        .whenAuthorized { command.savePartyAndUser() }
 
-    private suspend fun SaveTribeCommand.saveTribeAndUser() = withContext(coroutineContext) {
-        launch { tribe.save() }
+    private suspend fun SavePartyCommand.savePartyAndUser() = withContext(coroutineContext) {
+        launch { party.save() }
         launch {
-            user.copy(authorizedPartyIds = user.authorizedPartyIds + tribe.id)
+            user.copy(authorizedPartyIds = user.authorizedPartyIds + party.id)
                 .saveIfUserChanged()
         }
     }
 
     private suspend fun User.saveIfUserChanged() = if (this != user) save() else Unit
 
-    private suspend fun SaveTribeCommand.isAuthorizedToSave() = getTribeAndUserPlayerIds()
-        .let { (loadedTribe, players) -> shouldSave(tribe.id, loadedTribe, players) }
+    private suspend fun SavePartyCommand.isAuthorizedToSave() = getPartyAndUserPlayerIds()
+        .let { (loadedParty, players) -> shouldSave(party.id, loadedParty, players) }
 
-    private suspend fun SaveTribeCommand.getTribeAndUserPlayerIds() = coroutineScope {
+    private suspend fun SavePartyCommand.getPartyAndUserPlayerIds() = coroutineScope {
         await(
-            async { tribe.id.get() },
+            async { party.id.get() },
             async { getUserPlayerIds() })
     }
 
-    private fun shouldSave(tribeId: PartyId, loadedTribe: Party?, playerList: List<PartyElement<String>>) =
-        tribeIsNew(loadedTribe)
-                || playerList.authenticatedTribeIds().contains(tribeId)
+    private fun shouldSave(partyId: PartyId, loadedParty: Party?, playerList: List<PartyElement<String>>) =
+        loadedParty.partyIsNew()
+                || playerList.authenticatedPartyIds().contains(partyId)
 
-    private fun tribeIsNew(existingTribe: Party?) = existingTribe == null
+    private fun Party?.partyIsNew() = this == null
 
     private suspend fun Boolean.whenAuthorized(block: suspend () -> Unit): Result<Unit> = let {
         if (it) {

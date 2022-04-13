@@ -22,8 +22,7 @@ interface ReportDocCommandDispatcher : CouplingConnectionGetSyntax {
     private suspend fun loadConnectionsAndGenerateMessage(
         connection: CouplingConnection, document: PairAssignmentDocument?
     ): Pair<List<CouplingConnection>, CouplingSocketMessage> {
-        val tribeId = connection.partyId
-        val connections = tribeId.loadConnections()
+        val connections = connection.partyId.loadConnections()
         return connections to couplingSocketMessage(connections, document)
     }
 }

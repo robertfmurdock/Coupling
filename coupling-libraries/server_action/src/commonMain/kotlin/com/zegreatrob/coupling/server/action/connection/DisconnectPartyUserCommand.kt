@@ -4,13 +4,13 @@ import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class DisconnectTribeUserCommand(val connectionId: String) :
-    SimpleSuspendAction<DisconnectTribeUserCommandDispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
-    override val performFunc = link(DisconnectTribeUserCommandDispatcher::perform)
+data class DisconnectPartyUserCommand(val connectionId: String) :
+    SimpleSuspendAction<DisconnectPartyUserCommandDispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
+    override val performFunc = link(DisconnectPartyUserCommandDispatcher::perform)
 }
 
-interface DisconnectTribeUserCommandDispatcher : CouplingConnectionGetSyntax, CouplingConnectionDeleteSyntax {
-    suspend fun perform(command: DisconnectTribeUserCommand) = with(command) {
+interface DisconnectPartyUserCommandDispatcher : CouplingConnectionGetSyntax, CouplingConnectionDeleteSyntax {
+    suspend fun perform(command: DisconnectPartyUserCommand) = with(command) {
         liveInfoRepository.get(connectionId)
             ?.deleteAndLoadRemainingConnections()
     }

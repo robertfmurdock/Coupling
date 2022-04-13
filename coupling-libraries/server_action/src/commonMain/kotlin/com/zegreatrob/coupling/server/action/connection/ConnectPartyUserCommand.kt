@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
-data class ConnectTribeUserCommand(val tribeId: PartyId, val connectionId: String) :
+data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: String) :
     SimpleSuspendAction<ConnectPartyUserCommandDispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
     override val performFunc = link(ConnectPartyUserCommandDispatcher::perform)
 }
@@ -19,11 +19,11 @@ data class ConnectTribeUserCommand(val tribeId: PartyId, val connectionId: Strin
 interface ConnectPartyUserCommandDispatcher : UserIsAuthorizedWithDataActionDispatcher, SuspendActionExecuteSyntax,
     CouplingConnectionSaveSyntax, CouplingConnectionGetSyntax, AuthenticatedUserSyntax {
 
-    suspend fun perform(command: ConnectTribeUserCommand) = with(command) {
-        tribeId.getAuthorizationData()?.let { (_, players) ->
-        CouplingConnection(connectionId, tribeId, userPlayer(players, user.email))
+    suspend fun perform(command: ConnectPartyUserCommand) = with(command) {
+        partyId.getAuthorizationData()?.let { (_, players) ->
+        CouplingConnection(connectionId, partyId, userPlayer(players, user.email))
                 .also { it.save() }
-                .let { tribeId.loadConnections() }
+                .let { partyId.loadConnections() }
                 .let { it to couplingSocketMessage(it, null) }
         }
     }

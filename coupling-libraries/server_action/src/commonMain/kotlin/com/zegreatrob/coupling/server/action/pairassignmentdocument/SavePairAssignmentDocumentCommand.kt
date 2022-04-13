@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssi
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
 import com.zegreatrob.coupling.server.action.connection.CouplingConnectionGetSyntax
-import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
+import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 data class SavePairAssignmentDocumentCommand(val pairAssignmentDocument: PairAssignmentDocument) :
@@ -18,7 +18,7 @@ data class SavePairAssignmentDocumentCommand(val pairAssignmentDocument: PairAss
     override val performFunc = link(SavePairAssignmentDocumentCommandDispatcher::perform)
 }
 
-interface SavePairAssignmentDocumentCommandDispatcher : PartyIdPairAssignmentDocumentSaveSyntax, CurrentTribeIdSyntax,
+interface SavePairAssignmentDocumentCommandDispatcher : PartyIdPairAssignmentDocumentSaveSyntax, CurrentPartyIdSyntax,
     CouplingConnectionGetSyntax, SuspendActionExecuteSyntax, BroadcastActionDispatcher {
     suspend fun perform(command: SavePairAssignmentDocumentCommand) = with(command) {
         currentPartyId.with(pairAssignmentDocument)

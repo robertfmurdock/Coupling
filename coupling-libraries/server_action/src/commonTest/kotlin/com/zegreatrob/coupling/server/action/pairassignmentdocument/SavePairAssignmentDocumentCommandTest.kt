@@ -24,7 +24,7 @@ class SavePairAssignmentDocumentCommandTest {
 
     @Test
     fun willSendToRepository() = asyncSetup(object : SavePairAssignmentDocumentCommandDispatcher {
-        override val currentPartyId: PartyId get() = PartyId("tribe-239")
+        override val currentPartyId: PartyId get() = PartyId("party-239")
         override val liveInfoRepository: LiveInfoRepository get() = TODO("Not yet implemented")
         override suspend fun PartyId.loadConnections(): List<CouplingConnection> = emptyList()
         override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = null

@@ -44,7 +44,7 @@ class ProposeNewPairsCommandTest {
         val players = listOf(Player(name = "John"))
         val pins = listOf(Pin(name = "Bobby"))
         val history = listOf(stubPairAssignmentDoc())
-        val party = Party(PartyId("Tribe Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
+        val party = Party(PartyId("Party Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
         override val currentPartyId = party.id
         val expectedPairAssignmentDocument = stubPairAssignmentDoc()
 

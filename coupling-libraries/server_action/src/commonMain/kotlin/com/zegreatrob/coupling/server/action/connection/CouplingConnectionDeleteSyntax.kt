@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.repository.LiveInfoRepository
 interface CouplingConnectionDeleteSyntax {
     val liveInfoRepository: LiveInfoRepository
 
-    suspend fun deleteConnection(tribeId: PartyId, connectionId: String) {
-        liveInfoRepository.delete(tribeId, connectionId)
+    suspend fun deleteConnection(partyId: PartyId, connectionId: String) {
+        liveInfoRepository.delete(partyId, connectionId)
     }
 }
