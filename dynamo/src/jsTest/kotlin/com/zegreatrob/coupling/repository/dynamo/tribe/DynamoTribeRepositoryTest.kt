@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo.tribe
 
 import com.soywiz.klock.*
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.repository.dynamo.DynamoTribeRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
 import com.zegreatrob.coupling.repository.validation.*
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubUser
@@ -12,16 +12,16 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 
-typealias TribeMint = ContextMint<DynamoTribeRepository>
+typealias TribeMint = ContextMint<DynamoPartyRepository>
 
 @ExperimentalTime
 @Suppress("unused")
-class DynamoTribeRepositoryTest : TribeRepositoryValidator<DynamoTribeRepository> {
+class DynamoTribeRepositoryTest : TribeRepositoryValidator<DynamoPartyRepository> {
 
-    override val repositorySetup = asyncTestTemplate<SharedContext<DynamoTribeRepository>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<SharedContext<DynamoPartyRepository>>(sharedSetup = {
         val user = stubUser()
         val clock = MagicClock()
-        val repository = DynamoTribeRepository(user.email, clock)
+        val repository = DynamoPartyRepository(user.email, clock)
         SharedContextData(repository, clock, user)
     })
 

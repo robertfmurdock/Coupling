@@ -14,7 +14,7 @@ class RetiredPlayerConfigE2ETest {
         val tribe = Party(PartyId("${randomInt()}-RetiredPlayerConfigE2E"))
         val player = Player("${randomInt()}-RetiredPlayerConfigE2E", name = "${randomInt()}-RetiredPlayerConfigE2E")
     }) {
-        sdk.tribeRepository.save(tribe)
+        sdk.partyRepository.save(tribe)
         sdk.playerRepository.save(tribe.id.with(player))
         sdk.playerRepository.deletePlayer(tribe.id, player.id)
     } exercise {

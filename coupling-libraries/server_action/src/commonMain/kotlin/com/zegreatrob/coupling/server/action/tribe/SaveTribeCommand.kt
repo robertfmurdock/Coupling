@@ -10,9 +10,9 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
+import com.zegreatrob.coupling.repository.party.PartyRepository
+import com.zegreatrob.coupling.repository.party.PartySaveSyntax
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -25,10 +25,10 @@ data class SaveTribeCommand(val tribe: Party) :
     override val performFunc = link(SavePartyCommandDispatcher::perform)
 }
 
-interface SavePartyCommandDispatcher : UserAuthenticatedPartyIdSyntax, TribeIdGetSyntax, TribeSaveSyntax,
+interface SavePartyCommandDispatcher : UserAuthenticatedPartyIdSyntax, PartyIdGetSyntax, PartySaveSyntax,
     UserPlayerIdsSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
 
-    override val tribeRepository: TribeRepository
+    override val partyRepository: PartyRepository
 
     suspend fun perform(command: SaveTribeCommand) = command.isAuthorizedToSave()
         .whenAuthorized { command.saveTribeAndUser() }

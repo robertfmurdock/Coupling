@@ -21,8 +21,8 @@ class MemoryBoostRepository(
         get()?.data?.deletionRecord()?.save()
     }
 
-    override suspend fun getByPartyId(tribeId: PartyId): Record<Boost>? = allLatestRecords().firstOrNull {
-        it.data.partyIds.contains(tribeId)
+    override suspend fun getByPartyId(partyId: PartyId): Record<Boost>? = allLatestRecords().firstOrNull {
+        it.data.partyIds.contains(partyId)
     }
 
     private fun allLatestRecords() = records.groupBy { it.data.userId }.map { it.value.last() }

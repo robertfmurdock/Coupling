@@ -28,8 +28,8 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         override val tableName = "PAIR_ASSIGNMENTS"
     }
 
-    override suspend fun save(tribeIdPairAssignmentDocument: PartyElement<PairAssignmentDocument>) = performPutItem(
-        tribeIdPairAssignmentDocument
+    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) = performPutItem(
+        partyPairDocument
             .toRecord()
             .asDynamoJson()
     )

@@ -12,11 +12,11 @@ import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 data class ConnectTribeUserCommand(val tribeId: PartyId, val connectionId: String) :
-    SimpleSuspendAction<ConnectTribeUserCommandDispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
-    override val performFunc = link(ConnectTribeUserCommandDispatcher::perform)
+    SimpleSuspendAction<ConnectPartyUserCommandDispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
+    override val performFunc = link(ConnectPartyUserCommandDispatcher::perform)
 }
 
-interface ConnectTribeUserCommandDispatcher : UserIsAuthorizedWithDataActionDispatcher, SuspendActionExecuteSyntax,
+interface ConnectPartyUserCommandDispatcher : UserIsAuthorizedWithDataActionDispatcher, SuspendActionExecuteSyntax,
     CouplingConnectionSaveSyntax, CouplingConnectionGetSyntax, AuthenticatedUserSyntax {
 
     suspend fun perform(command: ConnectTribeUserCommand) = with(command) {

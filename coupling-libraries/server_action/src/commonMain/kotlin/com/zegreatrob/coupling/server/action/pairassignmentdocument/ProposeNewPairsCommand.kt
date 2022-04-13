@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdHistorySyntax
-import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistorySyntax
+import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import kotlinx.coroutines.async
@@ -21,7 +21,7 @@ data class ProposeNewPairsCommand(val players: List<Player>, val pins: List<Pin>
 }
 
 interface ProposeNewPairsCommandDispatcher : ExecutableActionExecuteSyntax, RunGameActionDispatcher,
-    TribeIdGetSyntax, TribeIdHistorySyntax, CurrentTribeIdSyntax {
+    PartyIdGetSyntax, PartyIdHistorySyntax, CurrentTribeIdSyntax {
 
     suspend fun perform(command: ProposeNewPairsCommand): Result<PairAssignmentDocument> = command.runGame()
         ?.successResult()

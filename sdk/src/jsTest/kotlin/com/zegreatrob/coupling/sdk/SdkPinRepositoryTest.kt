@@ -17,15 +17,15 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
 
-    override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPinRepository>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<SdkPartyContext<SdkPinRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
         val tribe = stubParty()
-        SdkTribeContext(sdk, sdk.pinRepository, tribe.id, MagicClock())
+        SdkPartyContext(sdk, sdk.pinRepository, tribe.id, MagicClock())
             .apply {
                 tribe.save()
             }
     }, sharedTeardown = {
-        it.sdk.tribeRepository.delete(it.tribeId)
+        it.sdk.partyRepository.delete(it.tribeId)
     })
 
     @Test
@@ -38,14 +38,14 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
             val otherSdk = otherSdk
         }
     }) {
-        otherSdk.tribeRepository.save(otherTribe)
+        otherSdk.partyRepository.save(otherTribe)
         otherSdk.pinRepository.save(otherTribe.id.with(stubPin()))
     } exercise {
         sdk.pinRepository.getPins(otherTribe.id)
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
-        otherSdk.tribeRepository.delete(otherTribe.id)
+        otherSdk.partyRepository.delete(otherTribe.id)
     }
 
     override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(

@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
-import com.zegreatrob.coupling.repository.tribe.TribeGet
+import com.zegreatrob.coupling.repository.party.PartyGet
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.testaction.verifySuccess
@@ -30,10 +30,10 @@ class ProposeNewPairsCommandTest {
 
         override val wheel: Wheel get() = throw NotImplementedError("Do not use")
         override val pairAssignmentDocumentRepository get() = stubRepository
-        override val tribeRepository get() = stubRepository
+        override val partyRepository get() = stubRepository
 
-        val stubRepository = object : TribeGet, PairAssignmentDocumentGet {
-            override suspend fun getTribeRecord(partyId: PartyId) = Record(party, modifyingUserId = "test")
+        val stubRepository = object : PartyGet, PairAssignmentDocumentGet {
+            override suspend fun getPartyRecord(partyId: PartyId) = Record(party, modifyingUserId = "test")
                 .also { partyId.assertIsEqualTo(party.id) }
 
             override suspend fun getPairAssignments(partyId: PartyId) = history.map {

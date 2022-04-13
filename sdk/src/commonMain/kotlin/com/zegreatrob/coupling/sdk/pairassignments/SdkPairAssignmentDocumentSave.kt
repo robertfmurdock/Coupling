@@ -12,12 +12,12 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 
 interface SdkPairAssignmentDocumentSave : PairAssignmentDocumentSave, GqlSyntax, GraphQueries {
-    override suspend fun save(tribeIdPairAssignmentDocument: PartyElement<PairAssignmentDocument>) {
+    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) {
         performQuery(
             buildJsonObject {
                 put("query", mutations.savePairAssignments)
                 putJsonObject("variables") {
-                    put("input", tribeIdPairAssignmentDocument.savePairAssignmentsInput())
+                    put("input", partyPairDocument.savePairAssignmentsInput())
                 }
             }
         )

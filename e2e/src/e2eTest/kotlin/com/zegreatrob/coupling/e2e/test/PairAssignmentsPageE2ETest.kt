@@ -29,7 +29,7 @@ class PairAssignmentsPageE2ETest {
 
     companion object {
         private suspend fun Sdk.save(tribe: Party, players: List<Player>) {
-            tribeRepository.save(tribe)
+            partyRepository.save(tribe)
             with(playerRepository) {
                 players.forEach { save(tribe.id.with(it)) }
             }

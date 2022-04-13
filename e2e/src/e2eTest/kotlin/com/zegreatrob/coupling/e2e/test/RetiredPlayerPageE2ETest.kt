@@ -31,7 +31,7 @@ class RetiredPlayerPageE2ETest {
         val notDeletedPlayer = players[2]
         val retiredPlayers = players - notDeletedPlayer
     }) {
-        sdk.tribeRepository.save(tribe)
+        sdk.partyRepository.save(tribe)
         players.forEach { sdk.playerRepository.save(tribe.id.with(it)) }
         delete(retiredPlayers, sdk, tribe)
     } exercise {

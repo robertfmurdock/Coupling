@@ -19,17 +19,17 @@ class MemoryPairAssignmentDocumentRepository(
     TypeRecordSyntax<PartyElement<PairAssignmentDocument>>,
     RecordBackend<PartyElement<PairAssignmentDocument>> by recordBackend {
 
-    override suspend fun save(tribeIdPairAssignmentDocument: PartyElement<PairAssignmentDocument>) =
-        tribeIdPairAssignmentDocument
+    override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) =
+        partyPairDocument
             .record()
             .save()
 
-    override suspend fun getPairAssignments(tribeId: PartyId): List<Record<PartyElement<PairAssignmentDocument>>> =
-        tribeId.records()
+    override suspend fun getPairAssignments(partyId: PartyId): List<Record<PartyElement<PairAssignmentDocument>>> =
+        partyId.records()
             .filterNot { it.isDeleted }
             .sortedByDescending { it.data.document.date }
 
-    override suspend fun getCurrentPairAssignments(tribeId: PartyId) = tribeId.records()
+    override suspend fun getCurrentPairAssignments(partyId: PartyId) = partyId.records()
         .filterNot { it.isDeleted }
         .maxByOrNull { it.data.document.date }
 
@@ -38,8 +38,8 @@ class MemoryPairAssignmentDocumentRepository(
         .groupBy { (data) -> data.document.id }
         .map { it.value.last() }
 
-    override suspend fun delete(tribeId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
-        val tribeIdPairAssignmentDocument = record(tribeId, pairAssignmentDocumentId)?.data
+    override suspend fun delete(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
+        val tribeIdPairAssignmentDocument = record(partyId, pairAssignmentDocumentId)?.data
 
         return if (tribeIdPairAssignmentDocument == null) {
             false

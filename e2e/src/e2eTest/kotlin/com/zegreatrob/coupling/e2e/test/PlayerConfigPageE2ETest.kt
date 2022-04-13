@@ -134,7 +134,7 @@ class PlayerConfigPageE2ETest {
         fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = playerSetup.with(object : PlayerContext() {
             val page = PlayerConfigPage
         }.attachPlayer()) {
-            sdk.tribeRepository.save(tribe.copy(badgesEnabled = false))
+            sdk.partyRepository.save(tribe.copy(badgesEnabled = false))
         } exercise {
             PlayerConfigPage.goTo(tribe.id, player.id)
         } verify {

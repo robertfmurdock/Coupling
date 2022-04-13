@@ -37,8 +37,8 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun Sdk.deleteAnyDisplayedTribes() = with(tribeRepository) {
-    getTribes().forEach {
+private suspend fun Sdk.deleteAnyDisplayedTribes() = with(partyRepository) {
+    getParties().forEach {
         delete(it.data.id)
     }
 }

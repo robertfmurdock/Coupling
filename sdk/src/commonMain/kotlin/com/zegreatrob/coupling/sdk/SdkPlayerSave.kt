@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.model.player.partyId
 import com.zegreatrob.coupling.repository.player.PlayerSave
 
 interface SdkPlayerSave : PlayerSave, GqlSyntax, GraphQueries {
-    override suspend fun save(tribeIdPlayer: PartyElement<Player>) {
-        doQuery(mutations.savePlayer, tribeIdPlayer.input())
+    override suspend fun save(partyPlayer: PartyElement<Player>) {
+        doQuery(mutations.savePlayer, partyPlayer.input())
     }
 
     private fun PartyElement<Player>.input() =

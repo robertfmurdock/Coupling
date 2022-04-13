@@ -4,14 +4,14 @@ import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.model.player.PartyIdPlayerId
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.repository.player.TribeIdPlayerIdDeleteSyntax
+import com.zegreatrob.coupling.repository.player.PartyPlayerIdDeleteSyntax
 
 data class DeletePlayerCommand(val tribeId: PartyId, val playerId: String) :
     SimpleSuspendResultAction<DeletePlayerCommandDispatcher, Unit> {
     override val performFunc = link(DeletePlayerCommandDispatcher::perform)
 }
 
-interface DeletePlayerCommandDispatcher : TribeIdPlayerIdDeleteSyntax {
+interface DeletePlayerCommandDispatcher : PartyPlayerIdDeleteSyntax {
 
     suspend fun perform(command: DeletePlayerCommand) = command.tribeIdPlayerId()
         .deletePlayer()

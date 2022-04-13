@@ -19,7 +19,7 @@ class SavePinCommandTest {
     fun whenPerformedWillSaveThePinInTheRepository() = asyncSetup(object : SavePinCommandDispatcher, PinSave {
         override val pinRepository: PinSave get() = this
         val saveSpy = SpyData<PartyElement<Pin>, Unit>()
-        override suspend fun save(tribeIdPin: PartyElement<Pin>) = saveSpy.spyFunction(tribeIdPin)
+        override suspend fun save(partyPin: PartyElement<Pin>) = saveSpy.spyFunction(partyPin)
 
         val tribe = Party(PartyId("thing"))
         val pin = Pin("1", "one", "icon 1")

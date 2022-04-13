@@ -14,14 +14,14 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 
 import kotlin.test.Test
 
-private typealias SdkMint = ContextMint<SdkTribeRepository>
+private typealias SdkMint = ContextMint<SdkPartyRepository>
 
-class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
+class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkPartyRepository> {
 
-    override val repositorySetup = asyncTestTemplate<SharedContext<SdkTribeRepository>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<SharedContext<SdkPartyRepository>>(sharedSetup = {
         val clock = MagicClock()
         val sdk = authorizedSdk()
-        SharedContextData(sdk.tribeRepository, clock, stubUser().copy(email = primaryAuthorizedUsername))
+        SharedContextData(sdk.partyRepository, clock, stubUser().copy(email = primaryAuthorizedUsername))
     })
 
     private val setupWithPlayerMatchingUserTwoSdks = repositorySetup.extend(sharedSetup = { context ->
@@ -38,10 +38,10 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
 
     @Test
     fun getWillReturnAnyTribeThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.tribeRepository.save(party)
+        sdkForOtherUser.partyRepository.save(party)
         sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
     } exercise {
-        repository.getTribes()
+        repository.getParties()
     } verify { result ->
         result.map { it.data }
             .assertContains(party)
@@ -49,11 +49,11 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
 
     @Test
     fun getWillNotReturnTribeIfPlayerHadEmailButThenHadItRemoved() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.tribeRepository.save(party)
+        sdkForOtherUser.partyRepository.save(party)
         sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
         sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser.copy(email = "something else")))
     } exercise {
-        repository.getTribes()
+        repository.getParties()
     } verify { result ->
         result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
@@ -61,11 +61,11 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
 
     @Test
     fun getWillNotReturnTribeIfPlayerHadEmailButPlayerWasRemoved() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.tribeRepository.save(party)
+        sdkForOtherUser.partyRepository.save(party)
         sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
         sdkForOtherUser.playerRepository.deletePlayer(party.id, playerMatchingSdkUser.id)
     } exercise {
-        repository.getTribes()
+        repository.getParties()
     } verify { result ->
         result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
@@ -73,10 +73,10 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
 
     @Test
     fun saveWillNotSaveWhenTribeAlreadyExistsForSomeoneElse() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.tribeRepository.save(party)
+        sdkForOtherUser.partyRepository.save(party)
     } exercise {
         repository.save(party.copy(name = "changed name"))
-        sdkForOtherUser.tribeRepository.getTribeRecord(party.id)
+        sdkForOtherUser.partyRepository.getPartyRecord(party.id)
     } verify { result ->
         result?.data.assertIsEqualTo(party)
     }
@@ -86,7 +86,7 @@ class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkTribeRepository> {
     }.bind()) {
         repository.save(tribe)
     } exercise {
-        repository.getTribes()
+        repository.getParties()
     } verifyAnd { result ->
         result.first { it.data.id == tribe.id }.apply {
             modifyingUserId.assertIsEqualTo(user.email)

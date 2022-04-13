@@ -8,13 +8,13 @@ import com.zegreatrob.coupling.repository.dynamo.*
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 
 class DynamoRepositoryCatalog private constructor(
     override val userId: String,
     override val clock: TimeProvider,
-    override val tribeRepository: TribeRepository,
+    override val partyRepository: PartyRepository,
     override val playerRepository: PlayerEmailRepository,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
     override val pinRepository: PinRepository,
@@ -28,7 +28,7 @@ class DynamoRepositoryCatalog private constructor(
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoRepositoryCatalog(
             userId,
             clock,
-            DynamoTribeRepository(userId, clock),
+            DynamoPartyRepository(userId, clock),
             DynamoPlayerRepository(userId, clock),
             DynamoPairAssignmentDocumentRepository(userId, clock),
             DynamoPinRepository(userId, clock),

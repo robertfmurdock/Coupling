@@ -39,7 +39,7 @@ interface ICommandDispatcher :
     PairAssignmentDispatcher,
     UserDispatcher,
     UserQueryDispatcher,
-    ConnectTribeUserCommandDispatcher,
+    ConnectPartyUserCommandDispatcher,
     ConnectionsQueryDispatcher,
     DisconnectTribeUserCommandDispatcher,
     ReportDocCommandDispatcher,
@@ -59,13 +59,13 @@ class CommandDispatcher(
     override val execute = this
     override val actionDispatcher = this
 
-    private var authorizedTribeIdDispatcherJob: Deferred<CurrentPartyIdDispatcher>? = null
+    private var authorizedTribeIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
 
-    suspend fun authorizedTribeIdDispatcher(tribeId: String): CurrentPartyIdDispatcher {
+    suspend fun authorizedTribeIdDispatcher(tribeId: String): CurrentPartyDispatcher {
         val preexistingJob = authorizedTribeIdDispatcherJob
         return preexistingJob?.await()
             ?: scope.async {
-                CurrentPartyIdDispatcher(PartyId(tribeId), this@CommandDispatcher)
+                CurrentPartyDispatcher(PartyId(tribeId), this@CommandDispatcher)
             }.also {
                 authorizedTribeIdDispatcherJob = it
             }.await()
@@ -73,7 +73,7 @@ class CommandDispatcher(
 
 }
 
-interface ICurrentPartyIdDispatcher :
+interface ICurrentPartyDispatcher :
     ICommandDispatcher,
     PinsQueryDispatcher,
     PlayersQueryDispatcher,
@@ -89,7 +89,7 @@ interface ICurrentPartyIdDispatcher :
     ProposeNewPairsCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher
 
-class CurrentPartyIdDispatcher(
+class CurrentPartyDispatcher(
     override val currentPartyId: PartyId,
     private val commandDispatcher: CommandDispatcher
 ) :
@@ -107,7 +107,7 @@ class CurrentPartyIdDispatcher(
     CurrentPairAssignmentDocumentQueryDispatcher,
     ProposeNewPairsCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher,
-    ICurrentPartyIdDispatcher {
+    ICurrentPartyDispatcher {
     override val userId: String get() = commandDispatcher.userId
 
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null

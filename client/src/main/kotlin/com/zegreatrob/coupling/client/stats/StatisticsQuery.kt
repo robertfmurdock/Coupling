@@ -28,7 +28,7 @@ data class StatisticQueryResults(
 interface StatisticsQueryDispatcher : ExecutableActionExecuteSyntax,
     ComposeStatisticsActionDispatcher,
     CalculateHeatMapActionDispatcher,
-    TribeIdLoadAllSyntax {
+    PartyLoadAllSyntax {
 
     suspend fun perform(query: StatisticsQuery) = query.loadAll()
 

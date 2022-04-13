@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -15,11 +15,11 @@ import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class TribeConfig(val tribe: Party, val dispatchFunc: DispatchFunc<out TribeConfigDispatcher>) :
+data class TribeConfig(val tribe: Party, val dispatchFunc: DispatchFunc<out PartyConfigDispatcher>) :
     DataPropsBind<TribeConfig>(tribeConfig)
 
-interface TribeConfigDispatcher : SaveTribeCommandDispatcher, DeleteTribeCommandDispatcher {
-    override val tribeRepository: TribeRepository
+interface PartyConfigDispatcher : SavePartyCommandDispatcher, DeleteTribeCommandDispatcher {
+    override val partyRepository: PartyRepository
 }
 
 val tribeConfig = tmFC { (tribe, commandFunc): TribeConfig ->

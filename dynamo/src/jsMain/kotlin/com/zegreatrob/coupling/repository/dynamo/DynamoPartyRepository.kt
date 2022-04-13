@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserIdSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.party.PartyRepository
 import kotlin.js.Json
 
-class DynamoTribeRepository private constructor(override val userId: String, override val clock: TimeProvider) :
-    TribeRepository,
+class DynamoPartyRepository private constructor(override val userId: String, override val clock: TimeProvider) :
+    PartyRepository,
     DynamoRecordJsonMapping,
     UserIdSyntax,
     ClockSyntax,
@@ -24,16 +24,16 @@ class DynamoTribeRepository private constructor(override val userId: String, ove
         DynamoQueryItemListGetSyntax,
         DynamoItemPutDeleteRecordSyntax,
         ListLatestRecordSyntax,
-        DynamoRepositoryCreatorSyntax<DynamoTribeRepository>,
+        DynamoRepositoryCreatorSyntax<DynamoPartyRepository>,
         DynamoDBSyntax by DynamoDbProvider {
         override val tableName = "TRIBE"
-        override val construct = ::DynamoTribeRepository
+        override val construct = ::DynamoPartyRepository
     }
 
-    override suspend fun getTribeRecord(partyId: PartyId) = performGetSingleItemQuery(partyId.value)
+    override suspend fun getPartyRecord(partyId: PartyId) = performGetSingleItemQuery(partyId.value)
         ?.let { it.toRecord(it.toParty()) }
 
-    override suspend fun getTribes() = scanAllRecords()
+    override suspend fun getParties() = scanAllRecords()
         .map { it.toRecord(it.toParty()) }
         .sortedBy { it.timestamp }
         .groupBy { it.data.id }

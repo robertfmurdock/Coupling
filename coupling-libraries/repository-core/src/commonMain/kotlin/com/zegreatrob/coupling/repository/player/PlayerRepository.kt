@@ -13,19 +13,19 @@ interface PlayerRepository : PlayerListGet,
 interface PlayerEmailRepository : PlayerRepository, PlayerListGetByEmail
 
 interface PlayerDelete {
-    suspend fun deletePlayer(tribeId: PartyId, playerId: String): Boolean
+    suspend fun deletePlayer(partyId: PartyId, playerId: String): Boolean
 }
 
 interface PlayerSave {
-    suspend fun save(tribeIdPlayer: PartyElement<Player>)
+    suspend fun save(partyPlayer: PartyElement<Player>)
 }
 
 interface PlayerListGet {
-    suspend fun getPlayers(tribeId: PartyId): List<PartyRecord<Player>>
+    suspend fun getPlayers(partyId: PartyId): List<PartyRecord<Player>>
 }
 
 interface PlayerListGetDeleted {
-    suspend fun getDeleted(tribeId: PartyId): List<PartyRecord<Player>>
+    suspend fun getDeleted(partyId: PartyId): List<PartyRecord<Player>>
 }
 
 interface PlayerListGetByEmail {

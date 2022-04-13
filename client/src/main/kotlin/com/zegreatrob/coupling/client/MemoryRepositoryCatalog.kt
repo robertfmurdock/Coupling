@@ -12,17 +12,17 @@ import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
-import com.zegreatrob.coupling.repository.memory.MemoryTribeRepository
+import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.sdk.BarebonesSdk
 
 class MemoryRepositoryCatalog private constructor(
     override val userId: String,
     override val clock: TimeProvider,
-    override val tribeRepository: TribeRepository,
+    override val partyRepository: PartyRepository,
     override val playerRepository: PlayerEmailRepository,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
     override val pinRepository: PinRepository
@@ -34,7 +34,7 @@ class MemoryRepositoryCatalog private constructor(
     constructor(userEmail: String, backend: LocalStorageRepositoryBackend, clock: TimeProvider) : this(
         userEmail,
         clock,
-        MemoryTribeRepository(userEmail, clock, backend.tribe),
+        MemoryPartyRepository(userEmail, clock, backend.tribe),
         MemoryPlayerRepository(userEmail, clock, backend.player),
         MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
         MemoryPinRepository(userEmail, clock, backend.pin)

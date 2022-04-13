@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.model.pin.partyId
 import com.zegreatrob.coupling.repository.pin.PinSave
 
 interface SdkPinSave : PinSave, GqlSyntax, GraphQueries {
-    override suspend fun save(tribeIdPin: PartyElement<Pin>) {
-        doQuery(mutations.savePin, tribeIdPin.savePinInput())
+    override suspend fun save(partyPin: PartyElement<Pin>) {
+        doQuery(mutations.savePin, partyPin.savePinInput())
     }
 
     private fun PartyElement<Pin>.savePinInput() =

@@ -34,7 +34,7 @@ class SpinTest {
             )
         }
     }) {
-        sdk.tribeRepository.save(party)
+        sdk.partyRepository.save(party)
     } exercise {
         sdk.requestSpin(party.id, players, emptyList())
     } verifyAnd { result ->
@@ -42,7 +42,7 @@ class SpinTest {
             listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
         )
     } teardown {
-        sdk.tribeRepository.delete(party.id)
+        sdk.partyRepository.delete(party.id)
     }
 
     @Test
@@ -76,7 +76,7 @@ class SpinTest {
             )
         )
     } teardown {
-        sdk.tribeRepository.delete(party.id)
+        sdk.partyRepository.delete(party.id)
     }
 
     @Test
@@ -109,7 +109,7 @@ class SpinTest {
             )
         )
     } teardown {
-        sdk.await().tribeRepository.delete(party.id)
+        sdk.await().partyRepository.delete(party.id)
     }
 
     class WhenPinExists {
@@ -133,7 +133,7 @@ class SpinTest {
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
             )
         } teardown {
-            sdk.tribeRepository.delete(tribe.id)
+            sdk.partyRepository.delete(tribe.id)
         }
         @Test
         fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup.with({ pinExistsSetup(it) }) {
@@ -145,7 +145,7 @@ class SpinTest {
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptyList()))
             )
         } teardown {
-            sdk.tribeRepository.delete(tribe.id)
+            sdk.partyRepository.delete(tribe.id)
         }
     }
 
@@ -164,7 +164,7 @@ class SpinTest {
             history: List<PairAssignmentDocument> = emptyList(),
             pins: List<Pin> = emptyList()
         ) = coroutineScope {
-            sdk.tribeRepository.save(party)
+            sdk.partyRepository.save(party)
             party.id.with(players).forEach { launch { sdk.playerRepository.save(it) } }
             party.id.with(history).forEach { launch { sdk.pairAssignmentDocumentRepository.save(it) } }
             party.id.with(pins).forEach { launch { sdk.pinRepository.save(it) } }

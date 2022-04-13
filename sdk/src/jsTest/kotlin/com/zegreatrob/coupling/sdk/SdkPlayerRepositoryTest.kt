@@ -22,18 +22,18 @@ import kotlin.test.Test
 
 class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
-    override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPlayerRepository>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<SdkPartyContext<SdkPlayerRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
         val tribe = stubParty()
-        sdk.tribeRepository.save(tribe)
+        sdk.partyRepository.save(tribe)
 
-        SdkTribeContext(sdk, sdk.playerRepository, tribe.id, MagicClock())
+        SdkPartyContext(sdk, sdk.playerRepository, tribe.id, MagicClock())
     }, sharedTeardown = {
-        it.sdk.tribeRepository.delete(it.tribeId)
+        it.sdk.partyRepository.delete(it.tribeId)
     })
 
     override fun whenPlayerIdIsUsedInTwoDifferentTribesTheyRemainDistinct() =
-        repositorySetup.with({ parent: SdkTribeContext<SdkPlayerRepository> ->
+        repositorySetup.with({ parent: SdkPartyContext<SdkPlayerRepository> ->
             object {
                 val sdk = parent.sdk
                 val repository = parent.repository
@@ -46,7 +46,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                 val player2 = player1.copy(id = player1.id)
             }
         }) {
-            sdk.tribeRepository.save(stubParty().copy(id = tribeId2))
+            sdk.partyRepository.save(stubParty().copy(id = tribeId2))
             repository.save(tribeId.with(player1))
             repository.save(tribeId2.with(player2))
         } exercise {
@@ -55,7 +55,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             result.map { it.data.player }
                 .assertIsEqualTo(listOf(player1))
         } teardown {
-            sdk.tribeRepository.delete(tribeId2)
+            sdk.partyRepository.delete(tribeId2)
         }
 
     override fun deletedPlayersIncludeModificationDateAndUsername() =
@@ -100,14 +100,14 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                 asyncSetup(object {
                     val tribe = stubParty()
                 }) {
-                    otherSdk.tribeRepository.save(tribe)
+                    otherSdk.partyRepository.save(tribe)
                     otherSdk.playerRepository.save(tribe.id.with(stubPlayer()))
                 } exercise {
                     sdk.playerRepository.getPlayers(tribe.id)
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.tribeRepository.delete(tribe.id)
+                    otherSdk.partyRepository.delete(tribe.id)
                 }
             }
         }
@@ -126,14 +126,14 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                         callSignNoun = "Sauce"
                     )
                 }) {
-                    otherSdk.tribeRepository.save(tribe)
+                    otherSdk.partyRepository.save(tribe)
                 } exercise {
                     sdk.playerRepository.save(tribe.id.with(player))
                     otherSdk.playerRepository.getPlayers(tribe.id)
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.tribeRepository.delete(tribe.id)
+                    otherSdk.partyRepository.delete(tribe.id)
                 }
             }
         }

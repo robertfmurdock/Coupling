@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -13,11 +13,11 @@ import kotlinx.coroutines.coroutineScope
 typealias TribePinData = Triple<Party, List<Pin>, Pin>
 
 data class TribePinQuery(val tribeId: PartyId, val pinId: String?) :
-    SimpleSuspendAction<TribePinQueryDispatcher, TribePinData?> {
-    override val performFunc = link(TribePinQueryDispatcher::perform)
+    SimpleSuspendAction<PartyPinQueryDispatcher, TribePinData?> {
+    override val performFunc = link(PartyPinQueryDispatcher::perform)
 }
 
-interface TribePinQueryDispatcher : TribeIdGetSyntax, TribeIdPinsSyntax {
+interface PartyPinQueryDispatcher : PartyIdGetSyntax, PartyPinsSyntax {
     suspend fun perform(query: TribePinQuery) = query.getData()
 
     private suspend fun TribePinQuery.getData() = tribeId.getData()

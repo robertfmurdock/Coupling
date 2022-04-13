@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.coupling.server.action.tribe.UserAuthenticatedPartyIdSyntax
 import com.zegreatrob.coupling.server.action.tribe.UserPlayerIdsSyntax
 import kotlinx.coroutines.async
@@ -20,7 +20,7 @@ data class UserIsAuthorizedWithDataAction(val tribeId: PartyId) :
 }
 
 interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax,
-    TribeIdGetSyntax, TribeIdPlayersSyntax {
+    PartyIdGetSyntax, PartyPlayersSyntax {
     override val playerRepository: PlayerEmailRepository
 
     suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.skdjflskdjf().successResult()

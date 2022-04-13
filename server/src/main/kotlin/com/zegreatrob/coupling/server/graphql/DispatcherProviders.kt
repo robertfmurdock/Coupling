@@ -5,14 +5,14 @@ import com.zegreatrob.coupling.json.TribeInput
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
 import com.zegreatrob.coupling.server.CommandDispatcher
-import com.zegreatrob.coupling.server.CurrentPartyIdDispatcher
+import com.zegreatrob.coupling.server.CurrentPartyDispatcher
 import com.zegreatrob.coupling.server.ICommandDispatcher
 import com.zegreatrob.coupling.server.PrereleaseDispatcher
 import com.zegreatrob.coupling.server.express.Config
 
 object DispatcherProviders {
     val command: GraphQLDispatcherProvider<CommandDispatcher> = { r, _, _ -> r.commandDispatcher }
-    val tribeCommand: GraphQLDispatcherProvider<CurrentPartyIdDispatcher> = { request, entity, args ->
+    val tribeCommand: GraphQLDispatcherProvider<CurrentPartyDispatcher> = { request, entity, args ->
         val tribeId = entity?.get("id").unsafeCast<String?>()
             ?: (args as? TribeInput)?.tribeId?.value
             ?: ""

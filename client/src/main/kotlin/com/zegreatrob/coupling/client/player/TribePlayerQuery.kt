@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
@@ -17,12 +17,12 @@ import kotlinx.coroutines.coroutineScope
 typealias TribePlayerData = Triple<Party, List<Player>, Player>
 
 data class TribePlayerQuery(val tribeId: PartyId, val playerId: String?) :
-    SimpleSuspendAction<TribePlayerQueryDispatcher, TribePlayerData?> {
-    override val performFunc = link(TribePlayerQueryDispatcher::perform)
+    SimpleSuspendAction<PartyPlayerQueryDispatcher, TribePlayerData?> {
+    override val performFunc = link(PartyPlayerQueryDispatcher::perform)
 }
 
-interface TribePlayerQueryDispatcher : TribeIdGetSyntax,
-    TribeIdPlayersSyntax,
+interface PartyPlayerQueryDispatcher : PartyIdGetSyntax,
+    PartyPlayersSyntax,
     FindCallSignActionDispatcher,
     ExecutableActionExecuteSyntax {
     suspend fun perform(query: TribePlayerQuery) = query.get()

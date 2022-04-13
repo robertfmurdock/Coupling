@@ -4,14 +4,14 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 
-interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R, SharedContext<R>> {
+interface TribeRepositoryValidator<R : PartyRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
     fun saveMultipleThenGetListWillReturnSavedTribes() = repositorySetup.with(object : ContextMint<R>() {
@@ -19,7 +19,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
     }.bind()) {
         tribes.forEach { repository.save(it) }
     } exercise {
-        repository.getTribes()
+        repository.getParties()
     } verify { result ->
         result.tribes().assertContainsAll(tribes)
     }
@@ -35,7 +35,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
     }.bind()) {
         tribes.forEach { repository.save(it) }
     } exercise {
-        tribes.map { repository.getTribeRecord(it.id)?.data }
+        tribes.map { repository.getPartyRecord(it.id)?.data }
     } verify { result ->
         result.assertIsEqualTo(tribes)
     }
@@ -47,7 +47,7 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
         clock.currentTime = DateTime.now().minus(3.days)
         repository.save(tribe)
     } exercise {
-        repository.getTribes()
+        repository.getParties()
     } verifyAnd { result ->
         result.first { it.data.id == tribe.id }.apply {
             modifyingUserId.assertIsEqualTo(user.email)
@@ -65,8 +65,8 @@ interface TribeRepositoryValidator<R : TribeRepository> : RepositoryValidator<R,
     } exercise {
         repository.delete(tribe.id)
         Pair(
-            repository.getTribes(),
-            repository.getTribeRecord(tribe.id)?.data
+            repository.getParties(),
+            repository.getPartyRecord(tribe.id)?.data
         )
     } verifyAnd { (listResult, getResult) ->
         listResult.find { it.data.id == tribe.id }

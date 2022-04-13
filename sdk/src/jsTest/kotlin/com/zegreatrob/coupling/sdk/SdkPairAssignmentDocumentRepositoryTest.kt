@@ -20,13 +20,13 @@ import kotlin.time.ExperimentalTime
 class SdkPairAssignmentDocumentRepositoryTest :
     PairAssignmentDocumentRepositoryValidator<SdkPairAssignmentsRepository> {
 
-    override val repositorySetup = asyncTestTemplate<SdkTribeContext<SdkPairAssignmentsRepository>>(sharedSetup = {
+    override val repositorySetup = asyncTestTemplate<SdkPartyContext<SdkPairAssignmentsRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
         val tribe = stubParty()
-        sdk.tribeRepository.save(tribe)
-        SdkTribeContext(sdk, sdk.pairAssignmentDocumentRepository, tribe.id, MagicClock())
+        sdk.partyRepository.save(tribe)
+        SdkPartyContext(sdk, sdk.pairAssignmentDocumentRepository, tribe.id, MagicClock())
     }, sharedTeardown = {
-        it.sdk.tribeRepository.delete(it.tribeId)
+        it.sdk.partyRepository.delete(it.tribeId)
     })
 
     @Test
@@ -39,14 +39,14 @@ class SdkPairAssignmentDocumentRepositoryTest :
             val otherSdk = otherSdk
         }
     }) {
-        otherSdk.tribeRepository.save(otherTribe)
+        otherSdk.partyRepository.save(otherTribe)
         otherSdk.pairAssignmentDocumentRepository.save(otherTribe.id.with(stubPairAssignmentDoc()))
     } exercise {
         sdk.pairAssignmentDocumentRepository.getPairAssignments(PartyId("someoneElseTribe"))
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
-        otherSdk.tribeRepository.delete(otherTribe.id)
+        otherSdk.partyRepository.delete(otherTribe.id)
     }
 
     override fun savedWillIncludeModificationDateAndUsername() =

@@ -6,10 +6,10 @@ import com.zegreatrob.coupling.model.party.PartyId
 
 interface BoostRepository : BoostGet, BoostSave, BoostDelete
 
-interface ExtendedBoostRepository : BoostRepository, BoostGetByTribeId
+interface ExtendedBoostRepository : BoostRepository, BoostGetByPartyId
 
-interface BoostGetByTribeId {
-    suspend fun getByPartyId(tribeId: PartyId): Record<Boost>?
+interface BoostGetByPartyId {
+    suspend fun getByPartyId(partyId: PartyId): Record<Boost>?
 }
 
 interface BoostSave {

@@ -59,7 +59,7 @@ class TribeConfigTest {
             email = "email-y",
             pairingRule = PairingRule.PreferDifferentBadge
         )
-        val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
+        val stubDispatchFunc = StubDispatchFunc<PartyConfigDispatcher>()
         val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
     }) exercise {
         wrapper.find(tribeConfigContent)
@@ -79,7 +79,7 @@ class TribeConfigTest {
     @Test
     fun whenTribeIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
         val tribe = Party(PartyId(""))
-        val stubDispatchFunc = StubDispatchFunc<TribeConfigDispatcher>()
+        val stubDispatchFunc = StubDispatchFunc<PartyConfigDispatcher>()
         val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
         val automatedTribeId = wrapper.find(tribeConfigContent)
             .shallow()

@@ -24,7 +24,7 @@ class TribeConfigPageE2ETest {
             val expectedBadgeSelection = "true"
             val page = TribeConfigPage
         }) {
-            sdk.tribeRepository.save(tribe)
+            sdk.partyRepository.save(tribe)
             with(page) {
                 goTo(tribe.id)
 
@@ -61,7 +61,7 @@ class TribeConfigPageE2ETest {
             val tribe = buildParty().copy(email = "${randomInt()}-email")
             val page = TribeConfigPage
         }) {
-            sdk.tribeRepository.save(tribe)
+            sdk.partyRepository.save(tribe)
         } exercise {
             TribeConfigPage.goTo(tribe.id)
         } verify {
@@ -77,7 +77,7 @@ class TribeConfigPageE2ETest {
         fun canDeleteParty() = sdkSetup(object : SdkContext() {
             val tribe = buildParty()
         }) {
-            sdk.tribeRepository.save(tribe)
+            sdk.partyRepository.save(tribe)
             TribeConfigPage.goTo(tribe.id)
         } exercise {
             deleteButton.click()

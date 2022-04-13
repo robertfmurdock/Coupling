@@ -36,6 +36,6 @@ class SavePlayerCommandTest {
     }
 
     class PlayerSaverSpy : PlayerSave, Spy<PartyElement<Player>, Unit> by SpyData() {
-        override suspend fun save(tribeIdPlayer: PartyElement<Player>) = spyFunction(tribeIdPlayer)
+        override suspend fun save(partyPlayer: PartyElement<Player>) = spyFunction(partyPlayer)
     }
 }

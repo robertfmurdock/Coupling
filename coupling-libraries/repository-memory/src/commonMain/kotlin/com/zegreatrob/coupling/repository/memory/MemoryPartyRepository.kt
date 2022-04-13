@@ -3,20 +3,20 @@ package com.zegreatrob.coupling.repository.memory
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.party.PartyRepository
 
-class MemoryTribeRepository(
+class MemoryPartyRepository(
     override val userId: String,
     override val clock: TimeProvider,
     private val recordBackend: RecordBackend<Party> = SimpleRecordBackend()
-) : TribeRepository, TypeRecordSyntax<Party>, RecordBackend<Party> by recordBackend {
+) : PartyRepository, TypeRecordSyntax<Party>, RecordBackend<Party> by recordBackend {
 
     override suspend fun save(party: Party) = party.record().save()
 
-    override suspend fun getTribeRecord(tribeId: PartyId) = tribeId.findParty()
+    override suspend fun getPartyRecord(tribeId: PartyId) = tribeId.findParty()
         ?.takeUnless { it.isDeleted }
 
-    override suspend fun getTribes() = recordList()
+    override suspend fun getParties() = recordList()
         .filterNot { it.isDeleted }
 
     private fun recordList() = records.groupBy { (tribe) -> tribe.id }

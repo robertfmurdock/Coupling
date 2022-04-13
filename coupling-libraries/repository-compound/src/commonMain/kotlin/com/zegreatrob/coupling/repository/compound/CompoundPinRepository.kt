@@ -8,11 +8,11 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 class CompoundPinRepository(val repository1: PinRepository, val repository2: PinRepository) :
     PinRepository by repository1 {
 
-    override suspend fun save(tribeIdPin: PartyElement<Pin>) = arrayOf(repository1, repository2).forEach {
-        it.save(tribeIdPin)
+    override suspend fun save(partyPin: PartyElement<Pin>) = arrayOf(repository1, repository2).forEach {
+        it.save(partyPin)
     }
 
-    override suspend fun deletePin(tribeId: PartyId, pinId: String) = repository1.deletePin(tribeId, pinId).also {
-        repository2.deletePin(tribeId, pinId)
+    override suspend fun deletePin(partyId: PartyId, pinId: String) = repository1.deletePin(partyId, pinId).also {
+        repository2.deletePin(partyId, pinId)
     }
 }

@@ -1,16 +1,16 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
-import com.zegreatrob.coupling.repository.pin.TribeIdPinSaveSyntax
+import com.zegreatrob.coupling.repository.pin.PartyPinSaveSyntax
 import com.zegreatrob.coupling.repository.player.PlayerRepository
-import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
-import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeIdDeleteSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeListSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
-import com.zegreatrob.coupling.repository.tribe.TribeSaveSyntax
+import com.zegreatrob.coupling.repository.player.PartyPlayerSaveSyntax
+import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdDeleteSyntax
+import com.zegreatrob.coupling.repository.party.PartyListSyntax
+import com.zegreatrob.coupling.repository.party.PartyRepository
+import com.zegreatrob.coupling.repository.party.PartySaveSyntax
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
@@ -19,14 +19,14 @@ import com.zegreatrob.coupling.sdk.user.SdkUserQueryDispatcher
 import io.ktor.client.*
 
 interface RepositoryCatalog {
-    val tribeRepository: TribeRepository
+    val partyRepository: PartyRepository
     val playerRepository: PlayerRepository
     val pinRepository: PinRepository
     val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
 
-class SdkTribeRepository(gqlQueryComponent: GqlQueryComponent) : SdkTribeGet, SdkTribeListGet,
-    SdkTribeSave, SdkTribeDelete, TribeRepository,
+class SdkPartyRepository(gqlQueryComponent: GqlQueryComponent) : SdkPartyGet, SdkPartyListGet,
+    SdkPartySave, SdkPartyDelete, PartyRepository,
     GqlQueryComponent by gqlQueryComponent
 
 class SdkPlayerRepository(gqlQueryComponent: GqlQueryComponent) : SdkPlayerListGet,
@@ -50,7 +50,7 @@ interface Sdk : BarebonesSdk, RepositoryCatalog, SdkBoostRepository, SdkSpin, Sd
     override val pinRepository get() = SdkPinRepository(this)
     override val pairAssignmentDocumentRepository get() = SdkPairAssignmentsRepository(this)
     override val playerRepository get() = SdkPlayerRepository(this)
-    override val tribeRepository get() = SdkTribeRepository(this)
+    override val partyRepository get() = SdkPartyRepository(this)
     override val mutations get() = Mutations(this)
     override val queries get() = Queries(this)
 }
@@ -69,9 +69,9 @@ interface SdkProviderSyntax {
     val sdk: BarebonesSdk
 }
 
-interface SdkSyntax : SdkProviderSyntax, TribeListSyntax, TribeSaveSyntax, TribeIdDeleteSyntax, TribeIdPinsSyntax,
-    TribeIdPinSaveSyntax, TribeIdPlayerSaveSyntax, TribeIdPlayersSyntax {
-    override val tribeRepository: TribeRepository
+interface SdkSyntax : SdkProviderSyntax, PartyListSyntax, PartySaveSyntax, PartyIdDeleteSyntax, PartyPinsSyntax,
+    PartyPinSaveSyntax, PartyPlayerSaveSyntax, PartyPlayersSyntax {
+    override val partyRepository: PartyRepository
     override val pinRepository: PinRepository
     override val playerRepository: PlayerRepository
 }

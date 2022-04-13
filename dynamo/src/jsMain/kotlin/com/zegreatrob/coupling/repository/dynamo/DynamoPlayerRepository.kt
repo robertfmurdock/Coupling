@@ -100,9 +100,9 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
     private fun Json.PartyId() = PartyId(this["tribeId"].unsafeCast<String>())
 
-    override suspend fun save(tribeIdPlayer: PartyElement<Player>) =
+    override suspend fun save(partyPlayer: PartyElement<Player>) =
         saveRawRecord(
-            tribeIdPlayer.copyWithIdCorrection().toRecord()
+            partyPlayer.copyWithIdCorrection().toRecord()
         )
 
     private fun PartyElement<Player>.copyWithIdCorrection() =

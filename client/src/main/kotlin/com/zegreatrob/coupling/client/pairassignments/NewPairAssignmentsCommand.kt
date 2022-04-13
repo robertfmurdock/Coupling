@@ -7,10 +7,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPairAssignmentDocumentSaveSyntax
-import com.zegreatrob.coupling.repository.pairassignmentdocument.TribeIdPinsSyntax
-import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
+import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
@@ -21,12 +21,12 @@ data class NewPairAssignmentsCommand(val tribeId: PartyId, val playerIds: List<S
     override val performFunc = link(NewPairAssignmentsCommandDispatcher::perform)
 }
 
-interface NewPairAssignmentsCommandDispatcher : TribeIdGetSyntax,
-    TribeIdPinsSyntax,
-    TribeIdPlayersSyntax,
+interface NewPairAssignmentsCommandDispatcher : PartyIdGetSyntax,
+    PartyPinsSyntax,
+    PartyPlayersSyntax,
     SuspendActionExecuteSyntax,
     RequestSpinActionDispatcher,
-    TribeIdPairAssignmentDocumentSaveSyntax {
+    PartyIdPairAssignmentDocumentSaveSyntax {
 
     suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {
         val (tribe, players, pins) = getData()

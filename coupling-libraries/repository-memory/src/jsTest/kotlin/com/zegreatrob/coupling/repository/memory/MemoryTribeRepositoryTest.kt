@@ -8,11 +8,11 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
 @Suppress("unused")
-class MemoryTribeRepositoryTest : TribeRepositoryValidator<MemoryTribeRepository> {
-    override val repositorySetup = asyncTestTemplate<SharedContext<MemoryTribeRepository>>(sharedSetup = {
+class MemoryTribeRepositoryTest : TribeRepositoryValidator<MemoryPartyRepository> {
+    override val repositorySetup = asyncTestTemplate<SharedContext<MemoryPartyRepository>>(sharedSetup = {
         val clock = MagicClock()
         val user = stubUser()
-        val repo = MemoryTribeRepository(user.email, clock)
+        val repo = MemoryPartyRepository(user.email, clock)
         SharedContextData(repo, clock, user)
     })
 }

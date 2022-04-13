@@ -17,12 +17,12 @@ class MemoryPlayerRepository(
 ) : PlayerEmailRepository,
     TypeRecordSyntax<PartyElement<Player>>, RecordBackend<PartyElement<Player>> by recordBackend {
 
-    override suspend fun save(tribeIdPlayer: PartyElement<Player>) {
-        tribeIdPlayer.copy(element = with(tribeIdPlayer.element) { copy(id = id) })
+    override suspend fun save(partyPlayer: PartyElement<Player>) {
+        partyPlayer.copy(element = with(partyPlayer.element) { copy(id = id) })
             .record().save()
     }
 
-    override suspend fun getPlayers(tribeId: PartyId) = tribeId.players()
+    override suspend fun getPlayers(partyId: PartyId) = partyId.players()
         .filterNot { it.isDeleted }
 
     private fun PartyId.players() = records.asSequence()
@@ -30,8 +30,8 @@ class MemoryPlayerRepository(
         .groupBy { (data) -> data.player.id }
         .map { it.value.last() }
 
-    override suspend fun deletePlayer(tribeId: PartyId, playerId: String): Boolean {
-        val tribeIdPlayer = tribeId.players().find { (data) -> data.player.id == playerId }?.data
+    override suspend fun deletePlayer(partyId: PartyId, playerId: String): Boolean {
+        val tribeIdPlayer = partyId.players().find { (data) -> data.player.id == playerId }?.data
 
         return if (tribeIdPlayer == null) {
             false
@@ -41,7 +41,7 @@ class MemoryPlayerRepository(
         }
     }
 
-    override suspend fun getDeleted(tribeId: PartyId): List<Record<PartyElement<Player>>> = tribeId.players()
+    override suspend fun getDeleted(partyId: PartyId): List<Record<PartyElement<Player>>> = partyId.players()
         .filter { it.isDeleted }
 
     override suspend fun getPlayerIdsByEmail(email: String) = records

@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.pin
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
 
-interface TribeIdPinSaveSyntax {
+interface PartyPinSaveSyntax {
 
     val pinRepository: PinSave
 

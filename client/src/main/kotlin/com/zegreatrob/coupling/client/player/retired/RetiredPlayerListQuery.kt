@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.player.TribeIdRetiredPlayersSyntax
-import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
+import com.zegreatrob.coupling.repository.player.PartyRetiredPlayersSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -17,7 +17,7 @@ data class RetiredPlayerListQuery(val tribeId: PartyId) :
     override val performFunc = link(RetiredPlayerListQueryDispatcher::perform)
 }
 
-interface RetiredPlayerListQueryDispatcher : TribeIdGetSyntax, TribeIdRetiredPlayersSyntax {
+interface RetiredPlayerListQueryDispatcher : PartyIdGetSyntax, PartyRetiredPlayersSyntax {
     suspend fun perform(query: RetiredPlayerListQuery) = getData(query.tribeId)
 
     private suspend fun getData(tribeId: PartyId) = coroutineScope {

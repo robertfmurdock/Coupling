@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.repository.compound
 
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.repository.tribe.TribeRepository
+import com.zegreatrob.coupling.repository.party.PartyRepository
 
-class CompoundTribeRepository(private val repository1: TribeRepository, private val repository2: TribeRepository) :
-    TribeRepository by repository1 {
+class CompoundPartyRepository(private val repository1: PartyRepository, private val repository2: PartyRepository) :
+    PartyRepository by repository1 {
 
     override suspend fun save(party: Party) = arrayOf(repository1, repository2).forEach { it.save(party) }
 

@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.TribeContext
 import com.zegreatrob.coupling.stubmodel.stubUser
 
-class SdkTribeContext<T> (
+class SdkPartyContext<T> (
     override val sdk: Sdk,
     override val repository: T,
     override val tribeId: PartyId,

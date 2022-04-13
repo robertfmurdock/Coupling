@@ -98,7 +98,7 @@ private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepositor
 class DynamoRepositoryCatalog private constructor(
     override val userId: String,
     override val clock: TimeProvider,
-    val tribeRepository: DynamoTribeRepository,
+    val tribeRepository: DynamoPartyRepository,
     val playerRepository: DynamoPlayerRepository,
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
     val pinRepository: DynamoPinRepository,
@@ -107,7 +107,7 @@ class DynamoRepositoryCatalog private constructor(
 
     companion object {
         suspend operator fun invoke(userEmail: String, clock: TimeProvider): DynamoRepositoryCatalog {
-            val tribeRepository = DynamoTribeRepository(userEmail, clock)
+            val tribeRepository = DynamoPartyRepository(userEmail, clock)
             val playerRepository = DynamoPlayerRepository(userEmail, clock)
             val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userEmail, clock)
             val pinRepository = DynamoPinRepository(userEmail, clock)

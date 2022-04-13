@@ -1,7 +1,7 @@
-package com.zegreatrob.coupling.repository.tribe
+package com.zegreatrob.coupling.repository.party
 
 import com.zegreatrob.coupling.model.party.PartyId
 
-interface TribeIdGetSyntax : TribeIdGetRecordSyntax {
+interface PartyIdGetSyntax : PartyIdGetRecordSyntax {
     suspend fun PartyId.get() = loadRecord()?.data
 }

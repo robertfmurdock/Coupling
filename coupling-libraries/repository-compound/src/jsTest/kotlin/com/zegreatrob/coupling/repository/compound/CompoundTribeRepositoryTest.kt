@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.repository.memory.MemoryTribeRepository
+import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
@@ -15,17 +15,17 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 
 import kotlin.test.Test
 
-class CompoundTribeRepositoryTest : TribeRepositoryValidator<CompoundTribeRepository> {
+class CompoundTribeRepositoryTest : TribeRepositoryValidator<CompoundPartyRepository> {
 
-    override val repositorySetup: TestTemplate<SharedContext<CompoundTribeRepository>>
+    override val repositorySetup: TestTemplate<SharedContext<CompoundPartyRepository>>
         get() = asyncTestTemplate(sharedSetup = {
             val stubUser = stubUser()
             val clock = MagicClock()
 
-            val repository1 = MemoryTribeRepository(stubUser.email, clock)
-            val repository2 = MemoryTribeRepository(stubUser.email, clock)
+            val repository1 = MemoryPartyRepository(stubUser.email, clock)
+            val repository2 = MemoryPartyRepository(stubUser.email, clock)
 
-            val compoundRepo = CompoundTribeRepository(repository1, repository2)
+            val compoundRepo = CompoundPartyRepository(repository1, repository2)
             SharedContextData(compoundRepo, clock, stubUser)
         })
 
@@ -33,16 +33,16 @@ class CompoundTribeRepositoryTest : TribeRepositoryValidator<CompoundTribeReposi
     fun saveWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
         val stubUser = stubUser()
 
-        val repository1 = MemoryTribeRepository(stubUser.email, TimeProvider)
-        val repository2 = MemoryTribeRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPartyRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryPartyRepository(stubUser.email, TimeProvider)
 
-        val compoundRepo = CompoundTribeRepository(repository1, repository2)
+        val compoundRepo = CompoundPartyRepository(repository1, repository2)
 
         val tribe = stubParty()
     }) exercise {
         compoundRepo.save(tribe)
     } verify {
-        repository2.getTribeRecord(tribe.id)
+        repository2.getPartyRecord(tribe.id)
             ?.data
             .assertIsEqualTo(tribe)
     }
@@ -51,17 +51,17 @@ class CompoundTribeRepositoryTest : TribeRepositoryValidator<CompoundTribeReposi
     fun deleteWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
         val stubUser = stubUser()
 
-        val repository1 = MemoryTribeRepository(stubUser.email, TimeProvider)
-        val repository2 = MemoryTribeRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPartyRepository(stubUser.email, TimeProvider)
+        val repository2 = MemoryPartyRepository(stubUser.email, TimeProvider)
 
-        val compoundRepo = CompoundTribeRepository(repository1, repository2)
+        val compoundRepo = CompoundPartyRepository(repository1, repository2)
 
         val tribe = stubParty()
     }) exercise {
         compoundRepo.save(tribe)
         compoundRepo.delete(tribe.id)
     } verify {
-        repository2.getTribeRecord(tribe.id)
+        repository2.getPartyRecord(tribe.id)
             .assertIsEqualTo(null)
     }
 }

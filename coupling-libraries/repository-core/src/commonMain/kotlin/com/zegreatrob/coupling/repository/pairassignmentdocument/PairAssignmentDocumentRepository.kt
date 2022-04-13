@@ -12,17 +12,17 @@ interface PairAssignmentDocumentRepository : PairAssignmentDocumentSave,
     PairAssignmentDocumentDelete
 
 interface PairAssignmentDocumentDelete {
-    suspend fun delete(tribeId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean
+    suspend fun delete(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean
 }
 
 interface PairAssignmentDocumentGet {
-    suspend fun getPairAssignments(tribeId: PartyId): List<PartyRecord<PairAssignmentDocument>>
+    suspend fun getPairAssignments(partyId: PartyId): List<PartyRecord<PairAssignmentDocument>>
 }
 
 interface PairAssignmentDocumentGetCurrent {
-    suspend fun getCurrentPairAssignments(tribeId: PartyId): PartyRecord<PairAssignmentDocument>?
+    suspend fun getCurrentPairAssignments(partyId: PartyId): PartyRecord<PairAssignmentDocument>?
 }
 
 interface PairAssignmentDocumentSave {
-    suspend fun save(tribeIdPairAssignmentDocument: PartyElement<PairAssignmentDocument>)
+    suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>)
 }

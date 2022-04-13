@@ -10,13 +10,13 @@ interface PinRepository : PinSave,
     PinDelete
 
 interface PinGet {
-    suspend fun getPins(tribeId: PartyId): List<PartyRecord<Pin>>
+    suspend fun getPins(partyId: PartyId): List<PartyRecord<Pin>>
 }
 
 interface PinSave {
-    suspend fun save(tribeIdPin: PartyElement<Pin>)
+    suspend fun save(partyPin: PartyElement<Pin>)
 }
 
 interface PinDelete {
-    suspend fun deletePin(tribeId: PartyId, pinId: String): Boolean
+    suspend fun deletePin(partyId: PartyId, pinId: String): Boolean
 }

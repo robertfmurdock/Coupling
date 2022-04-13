@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
-import com.zegreatrob.coupling.repository.pin.TribeIdPinSaveSyntax
+import com.zegreatrob.coupling.repository.pin.PartyPinSaveSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
 data class SavePinCommand(val id: PartyId, val updatedPin: Pin) :
@@ -11,7 +11,7 @@ data class SavePinCommand(val id: PartyId, val updatedPin: Pin) :
     override val performFunc = link(SavePinCommandDispatcher::perform)
 }
 
-interface SavePinCommandDispatcher : TribeIdPinSaveSyntax {
+interface SavePinCommandDispatcher : PartyPinSaveSyntax {
 
     suspend fun perform(command: SavePinCommand) = command.tribePin()
         .save()

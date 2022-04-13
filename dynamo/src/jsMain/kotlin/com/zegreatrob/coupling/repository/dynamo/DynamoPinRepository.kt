@@ -28,8 +28,8 @@ class DynamoPinRepository private constructor(override val userId: String, overr
         override val tableName = "PIN"
     }
 
-    override suspend fun save(tribeIdPin: PartyElement<Pin>) = performPutItem(
-        tribeIdPin.copy(element = with(tribeIdPin.element) { copy(id = id ?: "${uuid4()}") })
+    override suspend fun save(partyPin: PartyElement<Pin>) = performPutItem(
+        partyPin.copy(element = with(partyPin.element) { copy(id = id ?: "${uuid4()}") })
             .toRecord()
             .asDynamoJson()
     )

@@ -16,11 +16,11 @@ class MemoryPinRepository(
     TypeRecordSyntax<PartyElement<Pin>>,
     RecordBackend<PartyElement<Pin>> by recordBackend {
 
-    override suspend fun save(tribeIdPin: PartyElement<Pin>) =
-        tribeIdPin.copy(element = with(tribeIdPin.element) { copy(id = id ?: "${com.benasher44.uuid.uuid4()}") })
+    override suspend fun save(partyPin: PartyElement<Pin>) =
+        partyPin.copy(element = with(partyPin.element) { copy(id = id ?: "${com.benasher44.uuid.uuid4()}") })
             .record().save()
 
-    override suspend fun getPins(tribeId: PartyId) = tribeId.recordList()
+    override suspend fun getPins(partyId: PartyId) = partyId.recordList()
         .filterNot { it.isDeleted }
 
     private fun PartyId.recordList() = records.asSequence()
@@ -28,7 +28,7 @@ class MemoryPinRepository(
         .groupBy { (data) -> data.pin.id }
         .map { it.value.last() }
 
-    override suspend fun deletePin(tribeId: PartyId, pinId: String) = recordWithId(tribeId, pinId)?.data
+    override suspend fun deletePin(partyId: PartyId, pinId: String) = recordWithId(partyId, pinId)?.data
         .deleteRecord()
 
     private fun PartyElement<Pin>?.deleteRecord() =
