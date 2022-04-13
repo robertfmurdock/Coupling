@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.repository.dynamo.player
 
 import com.soywiz.klock.*
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.tribeRecord
+import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
@@ -71,8 +71,8 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         object : Context by context {
             val tribeId = stubPartyId()
             val records = listOf(
-                tribeRecord(tribeId, stubPlayer(), uuidString(), false, DateTime.now().minus(3.months)),
-                tribeRecord(tribeId, stubPlayer(), uuidString(), true, DateTime.now().minus(2.years))
+                partyRecord(tribeId, stubPlayer(), uuidString(), false, DateTime.now().minus(3.months)),
+                partyRecord(tribeId, stubPlayer(), uuidString(), true, DateTime.now().minus(2.years))
             )
         }
     }) exercise {

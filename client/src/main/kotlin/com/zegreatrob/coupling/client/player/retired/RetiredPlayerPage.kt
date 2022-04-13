@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.player.PlayerConfig
 import com.zegreatrob.coupling.client.routing.*
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.child
 import react.ChildrenBuilder
 import react.FC

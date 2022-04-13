@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.SaveTribeInput
-import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.party.PairingRule
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.tribe.TribeSave
 
 interface SdkTribeSave : TribeSave, GqlSyntax, GraphQueries {

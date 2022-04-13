@@ -3,17 +3,17 @@ package com.zegreatrob.coupling.server.action.tribe
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyElement
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.repository.tribe.TribeRecordSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-object TribeListQuery : SimpleSuspendResultAction<TribeListQueryDispatcher, List<Record<Party>>> {
-    override val performFunc = link(TribeListQueryDispatcher::perform)
+object TribeListQuery : SimpleSuspendResultAction<PartyListQueryDispatcher, List<Record<Party>>> {
+    override val performFunc = link(PartyListQueryDispatcher::perform)
 }
 
-interface TribeListQueryDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax, TribeRecordSyntax {
+interface PartyListQueryDispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax, TribeRecordSyntax {
 
     suspend fun perform(query: TribeListQuery) = getTribesAndUserPlayerIds()
         .onlyAuthenticatedTribes()

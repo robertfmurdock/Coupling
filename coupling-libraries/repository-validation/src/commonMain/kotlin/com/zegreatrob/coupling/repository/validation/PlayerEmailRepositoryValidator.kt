@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer

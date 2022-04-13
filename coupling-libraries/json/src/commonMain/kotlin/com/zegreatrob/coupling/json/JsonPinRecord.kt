@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -51,7 +51,7 @@ fun Pin.toSerializable() = JsonPinData(
     icon = icon,
 )
 
-fun Record<TribeIdPin>.toSerializable() = JsonPinRecord(
+fun Record<PartyElement<Pin>>.toSerializable() = JsonPinRecord(
     id = data.element.id,
     name = data.element.name,
     icon = data.element.icon,
@@ -67,7 +67,7 @@ fun JsonPinData.toModel(): Pin = Pin(
     icon = icon,
 )
 
-fun JsonPinRecord.toModel(): Record<TribeIdPin> = Record(
+fun JsonPinRecord.toModel(): Record<PartyElement<Pin>> = Record(
     data = tribeId.with(Pin(id = id, name = name, icon = icon)),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,

@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
 import com.zegreatrob.coupling.testaction.verifySuccess
@@ -45,7 +45,7 @@ class SavePairAssignmentDocumentCommandTest {
 }
 
 class SpyPairAssignmentDocumentRepository : PairAssignmentDocumentSave,
-    Spy<TribeIdPairAssignmentDocument, Unit> by SpyData() {
-    override suspend fun save(tribeIdPairAssignmentDocument: TribeIdPairAssignmentDocument) =
+    Spy<PartyElement<PairAssignmentDocument>, Unit> by SpyData() {
+    override suspend fun save(tribeIdPairAssignmentDocument: PartyElement<PairAssignmentDocument>) =
         spyFunction(tribeIdPairAssignmentDocument)
 }

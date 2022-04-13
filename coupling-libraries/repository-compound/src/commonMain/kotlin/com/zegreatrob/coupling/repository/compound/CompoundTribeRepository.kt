@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.compound
 
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 
 class CompoundTribeRepository(private val repository1: TribeRepository, private val repository2: TribeRepository) :

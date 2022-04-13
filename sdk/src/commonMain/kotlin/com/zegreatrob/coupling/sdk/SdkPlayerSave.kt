@@ -1,22 +1,25 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.SavePlayerInput
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.player.tribeId
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.partyId
 import com.zegreatrob.coupling.repository.player.PlayerSave
 
 interface SdkPlayerSave : PlayerSave, GqlSyntax, GraphQueries {
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
+    override suspend fun save(tribeIdPlayer: PartyElement<Player>) {
         doQuery(mutations.savePlayer, tribeIdPlayer.input())
     }
-    private fun TribeIdPlayer.input() = SavePlayerInput(
-        tribeId = tribeId,
-        playerId = element.id,
-        name = element.name,
-        email = element.email,
-        badge = "${element.badge}",
-        callSignAdjective = element.callSignAdjective,
-        callSignNoun = element.callSignNoun,
-        imageURL = element.imageURL,
-    )
+
+    private fun PartyElement<Player>.input() =
+        SavePlayerInput(
+            tribeId = partyId,
+            playerId = element.id,
+            name = element.name,
+            email = element.email,
+            badge = "${element.badge}",
+            callSignAdjective = element.callSignAdjective,
+            callSignNoun = element.callSignNoun,
+            imageURL = element.imageURL,
+        )
 }

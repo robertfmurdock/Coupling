@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.sdk
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.seconds
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContextMint

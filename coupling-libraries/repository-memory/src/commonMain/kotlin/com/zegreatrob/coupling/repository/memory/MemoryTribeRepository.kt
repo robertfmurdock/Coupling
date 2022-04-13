@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 
 class MemoryTribeRepository(

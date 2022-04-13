@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.player
 
-import com.zegreatrob.coupling.model.player.TribeIdPlayerId
+import com.zegreatrob.coupling.model.player.PartyIdPlayerId
 
 interface TribeIdPlayerIdDeleteSyntax {
     val playerRepository: PlayerDelete
-    suspend fun TribeIdPlayerId.deletePlayer() = playerRepository.deletePlayer(partyId, playerId)
+    suspend fun PartyIdPlayerId.deletePlayer() = playerRepository.deletePlayer(partyId, playerId)
 }

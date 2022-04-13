@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.CouplingConnection
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import kotlin.js.Json
 import kotlin.js.json

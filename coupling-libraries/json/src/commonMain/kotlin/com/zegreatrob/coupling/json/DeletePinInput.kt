@@ -2,7 +2,7 @@
 
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 

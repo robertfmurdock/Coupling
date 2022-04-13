@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.tribe
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyId
 
 interface TribeRepository : TribeGet,
     TribeListGet,

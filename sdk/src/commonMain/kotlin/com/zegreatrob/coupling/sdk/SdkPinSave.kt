@@ -1,18 +1,20 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.pin.tribeId
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.pin.partyId
 import com.zegreatrob.coupling.repository.pin.PinSave
 
 interface SdkPinSave : PinSave, GqlSyntax, GraphQueries {
-    override suspend fun save(tribeIdPin: TribeIdPin) {
+    override suspend fun save(tribeIdPin: PartyElement<Pin>) {
         doQuery(mutations.savePin, tribeIdPin.savePinInput())
     }
 
-    private fun TribeIdPin.savePinInput() = mapOf(
-        "tribeId" to tribeId.value,
-        "pinId" to element.id,
-        "icon" to element.icon,
-        "name" to element.name
-    )
+    private fun PartyElement<Pin>.savePinInput() =
+        mapOf(
+            "tribeId" to partyId.value,
+            "pinId" to element.id,
+            "icon" to element.icon,
+            "name" to element.name
+        )
 }

@@ -1,10 +1,9 @@
 package com.zegreatrob.coupling.repository.player
 
-import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.PartyElement
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
 
 interface PlayerRepository : PlayerListGet,
     PlayerSave,
@@ -18,15 +17,15 @@ interface PlayerDelete {
 }
 
 interface PlayerSave {
-    suspend fun save(tribeIdPlayer: TribeIdPlayer)
+    suspend fun save(tribeIdPlayer: PartyElement<Player>)
 }
 
 interface PlayerListGet {
-    suspend fun getPlayers(tribeId: PartyId): List<TribeRecord<Player>>
+    suspend fun getPlayers(tribeId: PartyId): List<PartyRecord<Player>>
 }
 
 interface PlayerListGetDeleted {
-    suspend fun getDeleted(tribeId: PartyId): List<TribeRecord<Player>>
+    suspend fun getDeleted(tribeId: PartyId): List<PartyRecord<Player>>
 }
 
 interface PlayerListGetByEmail {

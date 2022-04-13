@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.player
 
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.deletionResult
-import com.zegreatrob.coupling.model.player.TribeIdPlayerId
+import com.zegreatrob.coupling.model.player.PartyIdPlayerId
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerIdDeleteSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 
@@ -16,5 +16,5 @@ interface DeletePlayerCommandDispatcher : TribeIdPlayerIdDeleteSyntax, CurrentTr
         .run { deletePlayer() }
         .deletionResult("Player")
 
-    private fun DeletePlayerCommand.tribeIdPlayerId() = TribeIdPlayerId(currentPartyId, playerId)
+    private fun DeletePlayerCommand.tribeIdPlayerId() = PartyIdPlayerId(currentPartyId, playerId)
 }

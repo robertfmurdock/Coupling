@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import kotlinext.js.clone
 import kotlinx.coroutines.coroutineScope

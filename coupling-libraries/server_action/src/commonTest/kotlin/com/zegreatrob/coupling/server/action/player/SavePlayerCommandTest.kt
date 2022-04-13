@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.server.action.player
 
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -35,7 +35,7 @@ class SavePlayerCommandTest {
         result.assertIsEqualTo(player)
     }
 
-    class PlayerSaverSpy : PlayerSave, Spy<TribeIdPlayer, Unit> by SpyData() {
-        override suspend fun save(tribeIdPlayer: TribeIdPlayer) = spyFunction(tribeIdPlayer)
+    class PlayerSaverSpy : PlayerSave, Spy<PartyElement<Player>, Unit> by SpyData() {
+        override suspend fun save(tribeIdPlayer: PartyElement<Player>) = spyFunction(tribeIdPlayer)
     }
 }

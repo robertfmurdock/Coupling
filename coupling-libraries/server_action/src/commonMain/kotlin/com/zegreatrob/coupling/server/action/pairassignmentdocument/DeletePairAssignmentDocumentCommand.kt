@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PartyIdPairAssignmentDocumentId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentIdDeleteSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 
@@ -18,7 +18,7 @@ interface DeletePairAssignmentDocumentCommandDispatcher : PairAssignmentDocument
         .delete()
         .deletionResult("Pair Assignment Document")
 
-    private fun DeletePairAssignmentDocumentCommand.tribeIdPairAssignmentId() = TribeIdPairAssignmentDocumentId(
+    private fun DeletePairAssignmentDocumentCommand.tribeIdPairAssignmentId() = PartyIdPairAssignmentDocumentId(
         currentPartyId, pairAssignmentDocumentId
     )
 

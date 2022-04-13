@@ -4,8 +4,8 @@ import com.soywiz.klock.*
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.tribeRecord
+import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.repository.dynamo.DynamoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext.Companion.buildRepository
@@ -64,8 +64,8 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         object : Context by context {
             val tribeId = stubPartyId()
             val records = listOf(
-                tribeRecord(tribeId, stubPairAssignmentDoc(), uuidString(), false, DateTime.now().minus(3.months)),
-                tribeRecord(tribeId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years))
+                partyRecord(tribeId, stubPairAssignmentDoc(), uuidString(), false, DateTime.now().minus(3.months)),
+                partyRecord(tribeId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years))
             )
         }
     }) exercise {

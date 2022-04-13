@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.repository.dynamo.pin
 
 import com.soywiz.klock.*
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.with
-import com.zegreatrob.coupling.model.tribeRecord
+import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.repository.validation.*
@@ -58,8 +58,8 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
         object : Context by context {
             val tribeId = stubPartyId()
             val records = listOf(
-                tribeRecord(tribeId, stubPin(), uuidString(), false, DateTime.now().minus(3.months)),
-                tribeRecord(tribeId, stubPin(), uuidString(), true, DateTime.now().minus(2.years))
+                partyRecord(tribeId, stubPin(), uuidString(), false, DateTime.now().minus(3.months)),
+                partyRecord(tribeId, stubPin(), uuidString(), true, DateTime.now().minus(2.years))
             )
         }
     }) exercise {

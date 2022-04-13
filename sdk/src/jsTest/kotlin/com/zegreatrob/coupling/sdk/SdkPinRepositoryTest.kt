@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.TribeContextMint

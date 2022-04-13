@@ -4,7 +4,7 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotlin.math.floor
 

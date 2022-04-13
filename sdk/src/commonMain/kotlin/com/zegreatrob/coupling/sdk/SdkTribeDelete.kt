@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.tribe.TribeDelete
 
 interface SdkTribeDelete : TribeDelete, GqlSyntax, GraphQueries {

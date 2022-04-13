@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository
 
 import com.zegreatrob.coupling.model.CouplingConnection
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 
 interface LiveInfoRepository {
     suspend fun connectionList(tribeId: PartyId): List<CouplingConnection>

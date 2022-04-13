@@ -2,11 +2,11 @@
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -69,7 +69,7 @@ fun Player.toSerializable() = JsonPlayerData(
     imageURL = imageURL
 )
 
-fun TribeRecord<Player>.toSerializable() = JsonPlayerRecord(
+fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
     id = data.element.id,
     name = data.element.name,
     email = data.element.email,
@@ -103,7 +103,7 @@ fun JsonPlayer.toModel(): Player = Player(
     imageURL = imageURL
 )
 
-fun JsonPlayerRecord.toModel(): TribeRecord<Player> = TribeRecord(
+fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(
     tribeId.with(
         Player(
             id = id,

@@ -5,7 +5,7 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.hours
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains

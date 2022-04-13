@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.compound
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator

@@ -12,6 +12,6 @@ interface AuthenticatedUserEmailSyntax : AuthenticatedUserSyntax, UserIdSyntax {
     override val userId get() = user.email
 }
 
-interface UserAuthorizedTribeIdsSyntax : AuthenticatedUserSyntax {
-    fun userAuthorizedTribeIds() = user.authorizedPartyIds
+interface UserAuthorizedPartyIdsSyntax : AuthenticatedUserSyntax {
+    fun userAuthorizedPartyIds() = user.authorizedPartyIds
 }

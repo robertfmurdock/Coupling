@@ -1,8 +1,10 @@
 package com.zegreatrob.coupling.repository.pairassignmentdocument
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.party.PartyElement
 
 interface TribeIdPairAssignmentDocumentSaveSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentSave
-    suspend fun TribeIdPairAssignmentDocument.save() = pairAssignmentDocumentRepository.save(this)
+    suspend fun PartyElement<PairAssignmentDocument>.save() =
+        pairAssignmentDocumentRepository.save(this)
 }

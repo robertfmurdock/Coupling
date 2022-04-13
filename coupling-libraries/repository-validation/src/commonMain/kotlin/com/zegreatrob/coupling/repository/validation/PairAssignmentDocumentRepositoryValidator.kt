@@ -4,13 +4,13 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.hours
-import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -47,7 +47,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             .forEach { repository.save(it) }
     } exercise {
         repository.getCurrentPairAssignments(tribeId)
-    } verify { result: TribeRecord<PairAssignmentDocument>? ->
+    } verify { result: PartyRecord<PairAssignmentDocument>? ->
         result?.element.assertIsEqualTo(newest)
     }
 

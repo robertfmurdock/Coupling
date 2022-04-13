@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.repository.validation
 
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 
 abstract class TribeContextMint<R : Any> : TribeContext<R> {

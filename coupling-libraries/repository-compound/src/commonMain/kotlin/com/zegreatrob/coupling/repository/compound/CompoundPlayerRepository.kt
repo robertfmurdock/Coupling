@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.repository.compound
 
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 
 class CompoundPlayerRepository(
@@ -9,7 +10,7 @@ class CompoundPlayerRepository(
     private val repository2: PlayerEmailRepository
 ) : PlayerEmailRepository by repository1 {
 
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) = arrayOf(repository1, repository2).forEach {
+    override suspend fun save(tribeIdPlayer: PartyElement<Player>) = arrayOf(repository1, repository2).forEach {
         it.save(tribeIdPlayer)
     }
 

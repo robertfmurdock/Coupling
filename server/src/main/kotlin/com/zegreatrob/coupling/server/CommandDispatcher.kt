@@ -6,7 +6,7 @@ import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.model.Message
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
@@ -23,7 +23,7 @@ import com.zegreatrob.coupling.server.action.player.*
 import com.zegreatrob.coupling.server.action.user.UserQueryDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
 import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
-import com.zegreatrob.coupling.server.entity.tribe.TribeDispatcher
+import com.zegreatrob.coupling.server.entity.tribe.PartyDispatcher
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import com.zegreatrob.coupling.server.express.Config
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +35,7 @@ import kotlin.js.json
 interface ICommandDispatcher :
     LoggingActionExecuteSyntax,
     ScopeSyntax,
-    TribeDispatcher,
+    PartyDispatcher,
     PairAssignmentDispatcher,
     UserDispatcher,
     UserQueryDispatcher,
@@ -59,13 +59,13 @@ class CommandDispatcher(
     override val execute = this
     override val actionDispatcher = this
 
-    private var authorizedTribeIdDispatcherJob: Deferred<CurrentTribeIdDispatcher>? = null
+    private var authorizedTribeIdDispatcherJob: Deferred<CurrentPartyIdDispatcher>? = null
 
-    suspend fun authorizedTribeIdDispatcher(tribeId: String): CurrentTribeIdDispatcher {
+    suspend fun authorizedTribeIdDispatcher(tribeId: String): CurrentPartyIdDispatcher {
         val preexistingJob = authorizedTribeIdDispatcherJob
         return preexistingJob?.await()
             ?: scope.async {
-                CurrentTribeIdDispatcher(PartyId(tribeId), this@CommandDispatcher)
+                CurrentPartyIdDispatcher(PartyId(tribeId), this@CommandDispatcher)
             }.also {
                 authorizedTribeIdDispatcherJob = it
             }.await()
@@ -73,7 +73,7 @@ class CommandDispatcher(
 
 }
 
-interface ICurrentTribeIdDispatcher :
+interface ICurrentPartyIdDispatcher :
     ICommandDispatcher,
     PinsQueryDispatcher,
     PlayersQueryDispatcher,
@@ -89,7 +89,7 @@ interface ICurrentTribeIdDispatcher :
     ProposeNewPairsCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher
 
-class CurrentTribeIdDispatcher(
+class CurrentPartyIdDispatcher(
     override val currentPartyId: PartyId,
     private val commandDispatcher: CommandDispatcher
 ) :
@@ -107,7 +107,7 @@ class CurrentTribeIdDispatcher(
     CurrentPairAssignmentDocumentQueryDispatcher,
     ProposeNewPairsCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher,
-    ICurrentTribeIdDispatcher {
+    ICurrentPartyIdDispatcher {
     override val userId: String get() = commandDispatcher.userId
 
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null

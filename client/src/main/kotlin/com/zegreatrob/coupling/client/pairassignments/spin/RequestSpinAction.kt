@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.SdkSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 

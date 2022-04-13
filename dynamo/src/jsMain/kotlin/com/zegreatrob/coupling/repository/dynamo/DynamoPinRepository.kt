@@ -3,12 +3,11 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.PartyElement
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import kotlin.js.Json
@@ -29,13 +28,13 @@ class DynamoPinRepository private constructor(override val userId: String, overr
         override val tableName = "PIN"
     }
 
-    override suspend fun save(tribeIdPin: TribeIdPin) = performPutItem(
+    override suspend fun save(tribeIdPin: PartyElement<Pin>) = performPutItem(
         tribeIdPin.copy(element = with(tribeIdPin.element) { copy(id = id ?: "${uuid4()}") })
             .toRecord()
             .asDynamoJson()
     )
 
-    suspend fun saveRawRecord(record: TribeRecord<Pin>) = performPutItem(
+    suspend fun saveRawRecord(record: PartyRecord<Pin>) = performPutItem(
         record.asDynamoJson()
     )
 

@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Boost
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.BoostDelete
 import com.zegreatrob.coupling.repository.BoostGet

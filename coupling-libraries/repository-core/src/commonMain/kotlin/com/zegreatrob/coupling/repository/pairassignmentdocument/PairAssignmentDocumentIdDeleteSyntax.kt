@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.repository.pairassignmentdocument
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PartyIdPairAssignmentDocumentId
 
 interface PairAssignmentDocumentIdDeleteSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentDelete
 
-    suspend fun TribeIdPairAssignmentDocumentId.delete() = pairAssignmentDocumentRepository.delete(
+    suspend fun PartyIdPairAssignmentDocumentId.delete() = pairAssignmentDocumentRepository.delete(
         partyId,
         pairAssignmentDocumentId
     )

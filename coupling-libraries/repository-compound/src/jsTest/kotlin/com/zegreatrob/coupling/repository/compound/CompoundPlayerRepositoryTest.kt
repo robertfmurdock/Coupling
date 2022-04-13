@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.compound
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator

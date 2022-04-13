@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PairingRule
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 

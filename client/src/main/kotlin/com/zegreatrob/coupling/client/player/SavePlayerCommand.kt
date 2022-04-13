@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.player.TribeIdPlayerSaveSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 

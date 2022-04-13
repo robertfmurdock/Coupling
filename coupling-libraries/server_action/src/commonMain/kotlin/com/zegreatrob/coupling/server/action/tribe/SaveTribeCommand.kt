@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.UnauthorizedResult
 import com.zegreatrob.coupling.action.successResult
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyElement
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.await
@@ -21,11 +21,11 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
 data class SaveTribeCommand(val tribe: Party) :
-    SimpleSuspendResultAction<SaveTribeCommandDispatcher, Unit> {
-    override val performFunc = link(SaveTribeCommandDispatcher::perform)
+    SimpleSuspendResultAction<SavePartyCommandDispatcher, Unit> {
+    override val performFunc = link(SavePartyCommandDispatcher::perform)
 }
 
-interface SaveTribeCommandDispatcher : UserAuthenticatedTribeIdSyntax, TribeIdGetSyntax, TribeSaveSyntax,
+interface SavePartyCommandDispatcher : UserAuthenticatedPartyIdSyntax, TribeIdGetSyntax, TribeSaveSyntax,
     UserPlayerIdsSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
 
     override val tribeRepository: TribeRepository

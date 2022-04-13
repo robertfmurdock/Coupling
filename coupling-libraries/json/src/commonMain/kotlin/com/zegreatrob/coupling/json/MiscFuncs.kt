@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonElement
@@ -36,7 +36,7 @@ val playerJsonKeys = Player(
     .toJsonElement()
     .jsonObject.keys
 
-val playerRecordJsonKeys = TribeRecord(
+val playerRecordJsonKeys = PartyRecord(
     PartyId("").with(
         Player(
             id = "1",

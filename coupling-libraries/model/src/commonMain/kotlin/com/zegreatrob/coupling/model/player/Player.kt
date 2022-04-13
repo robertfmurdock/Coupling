@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.model.player
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.model.tribe.PartyElement
+import com.zegreatrob.coupling.model.party.PartyElement
 
 data class Player(
     val id: String = "${uuid4()}",
@@ -15,7 +15,5 @@ data class Player(
 
 val defaultPlayer = Player(id = "DEFAULT")
 
-typealias TribeIdPlayer = PartyElement<Player>
-
-val TribeIdPlayer.tribeId get() = id
-val TribeIdPlayer.player get() = element
+val PartyElement<Player>.partyId get() = id
+val PartyElement<Player>.player get() = element

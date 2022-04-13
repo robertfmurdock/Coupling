@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.PairingRule
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.defaultParty
+import com.zegreatrob.coupling.model.party.PairingRule
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.defaultParty
 import kotlin.js.Json
 import kotlin.js.json
 

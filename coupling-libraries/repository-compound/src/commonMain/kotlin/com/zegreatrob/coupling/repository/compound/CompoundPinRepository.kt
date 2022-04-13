@@ -1,13 +1,14 @@
 package com.zegreatrob.coupling.repository.compound
 
-import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pin.PinRepository
 
 class CompoundPinRepository(val repository1: PinRepository, val repository2: PinRepository) :
     PinRepository by repository1 {
 
-    override suspend fun save(tribeIdPin: TribeIdPin) = arrayOf(repository1, repository2).forEach {
+    override suspend fun save(tribeIdPin: PartyElement<Pin>) = arrayOf(repository1, repository2).forEach {
         it.save(tribeIdPin)
     }
 

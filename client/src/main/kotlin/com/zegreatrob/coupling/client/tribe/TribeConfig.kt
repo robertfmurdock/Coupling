@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths
 import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.json.*
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child

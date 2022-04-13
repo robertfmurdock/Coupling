@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.repository.player
 
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 
 interface TribeIdRetiredPlayerRecordsSyntax {
     val playerRepository: PlayerListGetDeleted

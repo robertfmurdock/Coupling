@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.tribePageFunction
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.child
 
 private val LoadedPairAssignments by lazy { couplingDataLoader<SocketedPairAssignments>() }

@@ -2,21 +2,22 @@ package com.zegreatrob.coupling.repository.memory
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.player.tribeId
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.player.partyId
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 
 class MemoryPlayerRepository(
     override val userId: String,
     override val clock: TimeProvider,
-    private val recordBackend: RecordBackend<TribeIdPlayer> = SimpleRecordBackend()
+    private val recordBackend: RecordBackend<PartyElement<Player>> = SimpleRecordBackend()
 ) : PlayerEmailRepository,
-    TypeRecordSyntax<TribeIdPlayer>, RecordBackend<TribeIdPlayer> by recordBackend {
+    TypeRecordSyntax<PartyElement<Player>>, RecordBackend<PartyElement<Player>> by recordBackend {
 
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) {
+    override suspend fun save(tribeIdPlayer: PartyElement<Player>) {
         tribeIdPlayer.copy(element = with(tribeIdPlayer.element) { copy(id = id) })
             .record().save()
     }
@@ -25,7 +26,7 @@ class MemoryPlayerRepository(
         .filterNot { it.isDeleted }
 
     private fun PartyId.players() = records.asSequence()
-        .filter { (data) -> data.tribeId == this }
+        .filter { (data) -> data.partyId == this }
         .groupBy { (data) -> data.player.id }
         .map { it.value.last() }
 
@@ -40,7 +41,7 @@ class MemoryPlayerRepository(
         }
     }
 
-    override suspend fun getDeleted(tribeId: PartyId): List<Record<TribeIdPlayer>> = tribeId.players()
+    override suspend fun getDeleted(tribeId: PartyId): List<Record<PartyElement<Player>>> = tribeId.players()
         .filter { it.isDeleted }
 
     override suspend fun getPlayerIdsByEmail(email: String) = records

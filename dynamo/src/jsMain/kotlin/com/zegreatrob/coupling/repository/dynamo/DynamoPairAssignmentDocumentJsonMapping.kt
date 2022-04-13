@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.party.PartyElement
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -16,10 +17,10 @@ interface DynamoPairAssignmentDocumentJsonMapping : TribeIdDynamoRecordJsonMappi
             .toTypedArray()
     )
 
-    fun Record<TribeIdPairAssignmentDocument>.asDynamoJson() = recordJson()
+    fun Record<PartyElement<PairAssignmentDocument>>.asDynamoJson() = recordJson()
         .add(
             json(
-                "tribeId" to data.tribeId.value,
+                "tribeId" to data.partyId.value,
                 "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id.value}"
             )
         )

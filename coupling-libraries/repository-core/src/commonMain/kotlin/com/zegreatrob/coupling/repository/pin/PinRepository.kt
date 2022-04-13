@@ -1,20 +1,20 @@
 package com.zegreatrob.coupling.repository.pin
 
-import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 
 interface PinRepository : PinSave,
     PinGet,
     PinDelete
 
 interface PinGet {
-    suspend fun getPins(tribeId: PartyId): List<TribeRecord<Pin>>
+    suspend fun getPins(tribeId: PartyId): List<PartyRecord<Pin>>
 }
 
 interface PinSave {
-    suspend fun save(tribeIdPin: TribeIdPin)
+    suspend fun save(tribeIdPin: PartyElement<Pin>)
 }
 
 interface PinDelete {

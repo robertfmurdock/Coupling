@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.action.pin
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pin.TribeIdPinSaveSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentTribeIdSyntax
 

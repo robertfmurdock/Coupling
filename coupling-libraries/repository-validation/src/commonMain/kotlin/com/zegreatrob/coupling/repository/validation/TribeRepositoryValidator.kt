@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.validation
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.tribe.TribeRepository
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubTribes

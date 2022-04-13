@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.tribe
 
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.server.action.tribe.TribeListQuery
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.command
 import com.zegreatrob.coupling.server.graphql.dispatch

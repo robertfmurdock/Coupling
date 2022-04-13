@@ -5,13 +5,13 @@ import com.zegreatrob.coupling.repository.dynamo.*
 import com.zegreatrob.coupling.json.*
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyElement
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -54,7 +54,7 @@ private suspend fun tribeDataSerializable(
     playerRecords = repositoryCatalog.playerRepository.getPlayerRecords(partyId)
         .map(Record<PartyElement<Player>>::toSerializable),
     pairAssignmentRecords = repositoryCatalog.pairAssignmentDocumentRepository.getRecords(partyId)
-        .map(TribeRecord<PairAssignmentDocument>::toSerializable),
+        .map(PartyRecord<PairAssignmentDocument>::toSerializable),
     pinRecords = repositoryCatalog.pinRepository.getPinRecords(partyId)
         .map(Record<PartyElement<Pin>>::toSerializable),
 )

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import kotlin.js.json
 
 interface DynamoItemGetSyntax : DynamoScanSyntax,

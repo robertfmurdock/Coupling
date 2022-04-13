@@ -2,12 +2,11 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.TribeRecord
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.PartyElement
-import com.zegreatrob.coupling.model.tribe.PartyId
-import com.zegreatrob.coupling.model.tribe.with
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlin.js.Json
@@ -101,21 +100,23 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
     private fun Json.PartyId() = PartyId(this["tribeId"].unsafeCast<String>())
 
-    override suspend fun save(tribeIdPlayer: TribeIdPlayer) = saveRawRecord(
-        tribeIdPlayer.copyWithIdCorrection().toRecord()
-    )
+    override suspend fun save(tribeIdPlayer: PartyElement<Player>) =
+        saveRawRecord(
+            tribeIdPlayer.copyWithIdCorrection().toRecord()
+        )
 
-    private fun TribeIdPlayer.copyWithIdCorrection() = copy(element = with(element) {
-        copy(id = id)
-    })
+    private fun PartyElement<Player>.copyWithIdCorrection() =
+        copy(element = with(element) {
+            copy(id = id)
+        })
 
-    suspend fun saveRawRecord(record: TribeRecord<Player>) = performPutItem(record.asDynamoJson())
+    suspend fun saveRawRecord(record: PartyRecord<Player>) = performPutItem(record.asDynamoJson())
 
     override suspend fun deletePlayer(partyId: PartyId, playerId: String) = performDelete(
         playerId, partyId, now(), { toPlayerRecord() }, { asDynamoJson() }
     )
 
-    override suspend fun getDeleted(partyId: PartyId): List<Record<TribeIdPlayer>> = partyId.queryForDeletedItemList()
+    override suspend fun getDeleted(partyId: PartyId): List<Record<PartyElement<Player>>> = partyId.queryForDeletedItemList()
         .mapNotNull { it.toPlayerRecord() }
 
     override suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<String>> =

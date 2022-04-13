@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.tribe
 
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.deletionResult
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.tribe.TribeIdDeleteSyntax
 
 data class DeleteTribeCommand(val tribeId: PartyId) :

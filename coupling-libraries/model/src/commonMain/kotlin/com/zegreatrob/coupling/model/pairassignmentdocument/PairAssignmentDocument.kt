@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.model.pairassignmentdocument
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.tribe.PartyElement
+import com.zegreatrob.coupling.model.party.PartyElement
 
 data class PairAssignmentDocument(
     val id: PairAssignmentDocumentId,
@@ -14,7 +14,5 @@ fun PairAssignmentDocument.orderedPairedPlayers() = pairs
     .flatMap { it.players.asSequence() }
     .map { it.player }
 
-typealias TribeIdPairAssignmentDocument = PartyElement<PairAssignmentDocument>
-
-val TribeIdPairAssignmentDocument.tribeId get() = id
-val TribeIdPairAssignmentDocument.document get() = element
+val PartyElement<PairAssignmentDocument>.partyId get() = id
+val PartyElement<PairAssignmentDocument>.document get() = element

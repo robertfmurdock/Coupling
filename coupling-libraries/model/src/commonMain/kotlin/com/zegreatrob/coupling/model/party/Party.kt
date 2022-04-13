@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.model.tribe
+package com.zegreatrob.coupling.model.party
 
 data class Party(
     val id: PartyId,

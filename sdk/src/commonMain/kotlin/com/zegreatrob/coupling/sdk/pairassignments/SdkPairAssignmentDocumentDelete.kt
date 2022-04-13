@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk.pairassignments
 
 import com.zegreatrob.coupling.json.at
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.GqlSyntax
 import com.zegreatrob.coupling.sdk.GraphQueries

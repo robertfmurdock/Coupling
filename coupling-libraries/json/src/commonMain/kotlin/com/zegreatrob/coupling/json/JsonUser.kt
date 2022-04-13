@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers

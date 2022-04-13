@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.repository.tribe
 
-import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.party.Party
 
 interface TribeSaveSyntax {
     val tribeRepository: TribeSave

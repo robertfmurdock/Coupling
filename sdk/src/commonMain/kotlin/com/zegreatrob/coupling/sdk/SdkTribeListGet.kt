@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.json.JsonTribeRecord
 import com.zegreatrob.coupling.json.fromJsonElement
 import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.tribe.TribeListGet
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject

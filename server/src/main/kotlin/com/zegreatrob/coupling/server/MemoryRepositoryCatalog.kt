@@ -2,10 +2,11 @@ package com.zegreatrob.coupling.server
 
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.ClockSyntax
-import com.zegreatrob.coupling.model.pairassignmentdocument.TribeIdPairAssignmentDocument
-import com.zegreatrob.coupling.model.pin.TribeIdPin
-import com.zegreatrob.coupling.model.player.TribeIdPlayer
-import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.LiveInfoRepository
@@ -51,8 +52,8 @@ class MemoryRepositoryCatalog private constructor(
 
 class MemoryRepositoryBackend {
     val tribe = SimpleRecordBackend<Party>()
-    val player = SimpleRecordBackend<TribeIdPlayer>()
-    val pairAssignments = SimpleRecordBackend<TribeIdPairAssignmentDocument>()
-    val pin = SimpleRecordBackend<TribeIdPin>()
+    val player = SimpleRecordBackend<PartyElement<Player>>()
+    val pairAssignments = SimpleRecordBackend<PartyElement<PairAssignmentDocument>>()
+    val pin = SimpleRecordBackend<PartyElement<Pin>>()
     val user = SimpleRecordBackend<User>()
 }

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.model.CouplingConnection
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 
 val infoMap = mutableListOf<CouplingConnection>()

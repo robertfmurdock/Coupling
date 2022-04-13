@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.tribe
 
-import com.zegreatrob.coupling.model.tribe.Party
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.tribe.TribeListSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 

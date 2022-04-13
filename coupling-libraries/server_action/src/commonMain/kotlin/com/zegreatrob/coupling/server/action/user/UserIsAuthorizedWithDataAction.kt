@@ -3,13 +3,13 @@ package com.zegreatrob.coupling.server.action.user
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.tribe.Party
-import com.zegreatrob.coupling.model.tribe.PartyId
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.player.TribeIdPlayersSyntax
 import com.zegreatrob.coupling.repository.tribe.TribeIdGetSyntax
-import com.zegreatrob.coupling.server.action.tribe.UserAuthenticatedTribeIdSyntax
+import com.zegreatrob.coupling.server.action.tribe.UserAuthenticatedPartyIdSyntax
 import com.zegreatrob.coupling.server.action.tribe.UserPlayerIdsSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -19,7 +19,7 @@ data class UserIsAuthorizedWithDataAction(val tribeId: PartyId) :
     override val performFunc = link(UserIsAuthorizedWithDataActionDispatcher::perform)
 }
 
-interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedTribeIdSyntax, UserPlayerIdsSyntax,
+interface UserIsAuthorizedWithDataActionDispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax,
     TribeIdGetSyntax, TribeIdPlayersSyntax {
     override val playerRepository: PlayerEmailRepository
 
