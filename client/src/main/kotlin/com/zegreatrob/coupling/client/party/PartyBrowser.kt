@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -7,15 +7,15 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import react.dom.html.ReactHTML.div
 
-data class TribeBrowser(val tribe: Party) : DataPropsBind<TribeBrowser>(tribeBrowser)
+data class PartyBrowser(val tribe: Party) : DataPropsBind<PartyBrowser>(partyBrowser)
 
-private val styles = useStyles("tribe/TribeBrowser")
+private val styles = useStyles("party/TribeBrowser")
 
-val tribeBrowser = tmFC<TribeBrowser> { (tribe) ->
+val partyBrowser = tmFC<PartyBrowser> { (tribe) ->
     div {
         className = styles.className
         ConfigHeader {
-            this.tribe = tribe
+            this.party = tribe
             +(tribe.name ?: "")
         }
     }

@@ -5,7 +5,7 @@ import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 
 object TribeListPage : StyleSyntax {
-    override val styles = loadStyles("tribe/TribeList")
+    override val styles = loadStyles("party/TribeList")
 
     val newTribeButton by getting()
 

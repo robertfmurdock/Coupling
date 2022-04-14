@@ -16,7 +16,7 @@ import react.useState
 import kotlin.js.Json
 
 data class PlayerConfig(
-    val tribe: Party,
+    val party: Party,
     val player: Player,
     val players: List<Player>,
     val reload: () -> Unit,
@@ -26,19 +26,19 @@ data class PlayerConfig(
 val playerConfig by lazy { playerConfigFunc(WindowFunctions) }
 
 val playerConfigFunc = windowTmFC<PlayerConfig> { props, windowFuncs ->
-    val (tribe, player, players, reload, dispatchFunc) = props
+    val (party, player, players, reload, dispatchFunc) = props
     val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
 
     val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
-    val onSubmit = dispatchFunc({ SavePlayerCommand(tribe.id, updatedPlayer) }, { reload() })
-    val onRemove = dispatchFunc({ DeletePlayerCommand(tribe.id, player.id) },
-        { setRedirectUrl(tribe.id.currentPairsPage()) })
+    val onSubmit = dispatchFunc({ SavePlayerCommand(party.id, updatedPlayer) }, { reload() })
+    val onRemove = dispatchFunc({ DeletePlayerCommand(party.id, player.id) },
+        { setRedirectUrl(party.id.currentPairsPage()) })
         .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
 
     if (redirectUrl != null)
         Navigate { to = redirectUrl }
     else
-        child(PlayerConfigContent(tribe, updatedPlayer, players, onChange, onSubmit, onRemove))
+        child(PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove))
 }

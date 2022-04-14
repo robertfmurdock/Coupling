@@ -26,29 +26,29 @@ interface PartyLoadMostSyntax : PartyIdGetSyntax, PartyPlayersSyntax, PartyPinsS
     }
 
     private suspend fun await(
-        tribeDeferred: Deferred<Party?>,
+        partyDeferred: Deferred<Party?>,
         playerListDeferred: Deferred<List<Player>>,
         currentPairsDeferred: Deferred<PairAssignmentDocument?>,
         pinListDeferred: Deferred<List<Pin>>
-    ) = tribeDeferred.await()?.let { tribe ->
-        awaitTribeData(tribe, playerListDeferred, currentPairsDeferred, pinListDeferred)
+    ) = partyDeferred.await()?.let { party ->
+        awaitPartyData(party, playerListDeferred, currentPairsDeferred, pinListDeferred)
     }
 
-    suspend fun awaitTribeData(
-        tribe: Party,
+    suspend fun awaitPartyData(
+        party: Party,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<PairAssignmentDocument?>,
         pinListDeferred: Deferred<List<Pin>>
-    ) = TribeDataMost(
-        tribe,
+    ) = PartyDataMost(
+        party,
         playerListDeferred.await(),
         historyDeferred.await(),
         pinListDeferred.await()
     )
 }
 
-data class TribeDataMost(
-    val tribe: Party,
+data class PartyDataMost(
+    val party: Party,
     val playerList: List<Player>,
     val currentPairDocument: PairAssignmentDocument?,
     val pinList: List<Pin>

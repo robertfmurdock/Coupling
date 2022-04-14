@@ -21,7 +21,7 @@ import react.router.Navigate
 import react.useState
 
 data class CurrentPairAssignmentsPanel(
-    val tribe: Party,
+    val party: Party,
     val pairAssignments: PairAssignmentDocument,
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
@@ -31,11 +31,11 @@ data class CurrentPairAssignmentsPanel(
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
 val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
-    val (tribe, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
+    val (party, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val redirectToCurrentFunc = { setRedirectUrl(tribe.id.currentPairsPage()) }
+    val redirectToCurrentFunc = { setRedirectUrl(party.id.currentPairsPage()) }
     val onCancel = dispatchFunc(
-        { DeletePairAssignmentsCommand(tribe.id, pairAssignments.id) }, { redirectToCurrentFunc() }
+        { DeletePairAssignmentsCommand(party.id, pairAssignments.id) }, { redirectToCurrentFunc() }
     )
     if (redirectUrl != null)
         Navigate { to = redirectUrl }
@@ -43,7 +43,7 @@ val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
         div {
             className = styles.className
             dateHeader(pairAssignments)
-            pairAssignmentList(tribe, pairAssignments, setPairAssignments, allowSave)
+            pairAssignmentList(party, pairAssignments, setPairAssignments, allowSave)
             if (allowSave) {
                 div {
 //                    prompt(`when` = true, message = "Press OK to save these pairs.")
@@ -61,7 +61,7 @@ private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) 
 }
 
 private fun ChildrenBuilder.pairAssignmentList(
-    tribe: Party,
+    party: Party,
     pairAssignments: PairAssignmentDocument,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean
@@ -71,7 +71,7 @@ private fun ChildrenBuilder.pairAssignmentList(
         child(
             key = "$index",
             dataProps = AssignedPair(
-                tribe,
+                party,
                 pair,
                 canDrag = allowSave,
                 swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->

@@ -14,15 +14,15 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import react.router.dom.Link
 
-data class PinList(val tribe: Party, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
+data class PinList(val party: Party, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
 
 private val styles = useStyles("pin/PinList")
 
-val pinList = tmFC<PinList> { (tribe, pins) ->
+val pinList = tmFC<PinList> { (party, pins) ->
     div {
         className = styles.className
         ConfigHeader {
-            this.tribe = tribe
+            this.party = party
             +"These are your pins."
         }
         h2 { +"There are many like them, but these are yours." }
@@ -32,11 +32,11 @@ val pinList = tmFC<PinList> { (tribe, pins) ->
         }
 
         div {
-            pins.map { child(PinCard(tribeId = tribe.id, pin = it, shouldLink = true), key = it.id) }
+            pins.map { child(PinCard(partyId = party.id, pin = it, shouldLink = true), key = it.id) }
         }
         div {
             Link {
-                to = "/${tribe.id.value}/pin/new"
+                to = "/${party.id.value}/pin/new"
                 tabIndex = -1
                 draggable = false
                 child(CouplingButton(large, orange)) {

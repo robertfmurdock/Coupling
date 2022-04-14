@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
@@ -21,7 +21,7 @@ class TribeConfigTest {
         val tribe = Party(PartyId("1"), name = "1")
     }) exercise {
         shallow(TribeConfig(tribe, StubDispatchFunc()))
-            .find(tribeConfigContent)
+            .find(partyConfigContent)
             .shallow()
     } verify { wrapper ->
         wrapper.assertHasStandardPairingRule()
@@ -62,7 +62,7 @@ class TribeConfigTest {
         val stubDispatchFunc = StubDispatchFunc<PartyConfigDispatcher>()
         val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
     }) exercise {
-        wrapper.find(tribeConfigContent)
+        wrapper.find(partyConfigContent)
             .shallow()
             .find(ConfigForm)
             .props()
@@ -81,12 +81,12 @@ class TribeConfigTest {
         val tribe = Party(PartyId(""))
         val stubDispatchFunc = StubDispatchFunc<PartyConfigDispatcher>()
         val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
-        val automatedTribeId = wrapper.find(tribeConfigContent)
+        val automatedTribeId = wrapper.find(partyConfigContent)
             .shallow()
             .find<Any>("#tribe-id")
             .prop("value")
     }) exercise {
-        wrapper.find(tribeConfigContent)
+        wrapper.find(partyConfigContent)
             .shallow()
             .find(ConfigForm)
             .props()
@@ -98,7 +98,7 @@ class TribeConfigTest {
                 assertIsNotEqualTo("")
                 assertIsEqualTo(automatedTribeId)
             }
-        wrapper.find(tribeConfigContent)
+        wrapper.find(partyConfigContent)
             .shallow()
             .find<Any>("#tribe-id")
             .prop("value")

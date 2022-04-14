@@ -14,10 +14,10 @@ import com.zegreatrob.coupling.client.player.PartyPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.stats.StatisticsQueryDispatcher
-import com.zegreatrob.coupling.client.tribe.NewTribeCommandDispatcher
-import com.zegreatrob.coupling.client.tribe.PartyConfigDispatcher
-import com.zegreatrob.coupling.client.tribe.PartyListQueryDispatcher
-import com.zegreatrob.coupling.client.tribe.PartyQueryDispatcher
+import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
+import com.zegreatrob.coupling.client.party.PartyConfigDispatcher
+import com.zegreatrob.coupling.client.party.PartyListQueryDispatcher
+import com.zegreatrob.coupling.client.party.PartyQueryDispatcher
 import com.zegreatrob.coupling.sdk.BarebonesSdk
 
 class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesSdk) :
@@ -35,7 +35,7 @@ class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesS
     PartyPlayerQueryDispatcher,
     PartyPinQueryDispatcher,
     PartyPinListQueryDispatcher,
-    NewTribeCommandDispatcher,
+    NewPartyCommandDispatcher,
     StatisticsQueryDispatcher,
     LoggingActionExecuteSyntax,
     BarebonesSdk by sdk

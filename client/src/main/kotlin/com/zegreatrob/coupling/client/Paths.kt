@@ -7,10 +7,9 @@ import com.zegreatrob.coupling.model.party.PartyId
 
 object Paths {
     fun welcome() = "/welcome"
-    fun tribeList() = "/tribes/"
+    fun partyList() = "/tribes/"
     fun PartyId.pinListPath() = "/$value/pins"
     fun PartyId.currentPairsPage() = "/$value/pairAssignments/current/"
-    fun Party.tribeConfigPath() = "/${id.value}/edit/"
     fun Party.newPairAssignmentsPath() = "/${id.value}/pairAssignments/new"
     fun PartyElement<Player>.playerConfigPage() = "/${id.value}/player/${element.id}/"
 }

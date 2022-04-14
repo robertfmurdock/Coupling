@@ -21,7 +21,7 @@ external interface PageProps : Props {
     var search: URLSearchParams
 }
 
-val PageProps.tribeId: PartyId? get() = pathParams["tribeId"]?.let(::PartyId)
+val PageProps.partyId: PartyId? get() = pathParams["tribeId"]?.let(::PartyId)
 val PageProps.playerId: String? get() = pathParams["playerId"]
 val PageProps.pinId: String? get() = pathParams["pinId"]
 

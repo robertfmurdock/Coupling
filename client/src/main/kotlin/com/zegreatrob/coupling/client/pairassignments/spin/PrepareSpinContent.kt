@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.tribe.TribeBrowser
+import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.Party
@@ -54,7 +54,7 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
     div {
         className = styles.className
         child(PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2"))) {
-            div { child(TribeBrowser(tribe)) }
+            div { child(PartyBrowser(tribe)) }
             div {
                 div {
                     spinButton(onSpin, enabled = enabled)

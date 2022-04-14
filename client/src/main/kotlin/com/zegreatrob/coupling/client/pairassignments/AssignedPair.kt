@@ -34,7 +34,7 @@ import react.key
 import react.useRef
 
 data class AssignedPair(
-    val tribe: Party,
+    val party: Party,
     val pair: PinnedCouplingPair,
     val canDrag: Boolean,
     val swapPlayersFunc: (PinnedPlayer, String) -> Unit = { _, _ -> },
@@ -48,7 +48,7 @@ private val styles = useStyles("pairassignments/AssignedPair")
 val tiltLeft = (-8).deg
 val tiltRight = 8.deg
 
-val assignedPair = tmFC<AssignedPair> { (tribe, pair, canDrag, swapCallback, pinMoveCallback) ->
+val assignedPair = tmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
@@ -61,7 +61,7 @@ val assignedPair = tmFC<AssignedPair> { (tribe, pair, canDrag, swapCallback, pin
         className = styles.className
         ref = pinDroppableRef
         if (isOver) className = ClassName("$className ${styles["pairPinOver"]}")
-        callSign(tribe, callSign, styles["callSign"])
+        callSign(party, callSign, styles["callSign"])
         pair.players.mapIndexed { index, player ->
             playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
         }
@@ -124,8 +124,8 @@ private fun swappablePlayer(
     pinnedPlayer: PinnedPlayer, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
 ) = DraggablePlayer(pinnedPlayer, zoomOnHover, tilt, onDropSwap)
 
-private fun ChildrenBuilder.callSign(tribe: Party, callSign: CallSign?, classes: ClassName) = div {
-    if (tribe.callSignsEnabled && callSign != null) {
+private fun ChildrenBuilder.callSign(party: Party, callSign: CallSign?, classes: ClassName) = div {
+    if (party.callSignsEnabled && callSign != null) {
         span {
             className = classes
             +"${callSign.adjective} ${callSign.noun}"

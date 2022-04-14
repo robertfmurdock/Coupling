@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.player.TinyPlayerList
-import com.zegreatrob.coupling.client.tribe.TribeBrowser
+import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -45,7 +45,7 @@ interface PairAssignmentsCommandDispatcher : SavePairAssignmentsCommandDispatche
 }
 
 data class PairAssignments(
-    val tribe: Party,
+    val party: Party,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
@@ -57,7 +57,7 @@ data class PairAssignments(
 private val styles = useStyles("pairassignments/PairAssignments")
 
 val pairAssignments = tmFC<PairAssignments> { props ->
-    val (tribe, players, pairAssignments, setPairs, controls, message, allowSave) = props
+    val (party, players, pairAssignments, setPairs, controls, message, allowSave) = props
 
     val pairSectionNode = useRef<Node>(null)
 
@@ -66,11 +66,11 @@ val pairAssignments = tmFC<PairAssignments> { props ->
         div {
             className = styles.className
             div {
-                child(TribeBrowser(tribe))
-                topPairSection(tribe, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
+                child(PartyBrowser(party))
+                topPairSection(party, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
             }
-            controlPanel(tribe)
-            unpairedPlayerSection(tribe, notPairedPlayers(players, pairAssignments))
+            controlPanel(party)
+            unpairedPlayerSection(party, notPairedPlayers(players, pairAssignments))
 
             child(ServerMessage(message), key = "${message.text} ${message.players.size}")
         }
@@ -78,7 +78,7 @@ val pairAssignments = tmFC<PairAssignments> { props ->
 }
 
 private fun ChildrenBuilder.topPairSection(
-    tribe: Party,
+    party: Party,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
     setPairs: (PairAssignmentDocument) -> Unit,
@@ -87,7 +87,7 @@ private fun ChildrenBuilder.topPairSection(
     pairSectionNode: MutableRefObject<Node>
 ) = cssDiv(css = { verticalAlign = VerticalAlign.top }) {
     currentPairSection(
-        tribe,
+        party,
         players,
         pairAssignments?.overlayUpdatedPlayers(players),
         setPairs,
@@ -98,7 +98,7 @@ private fun ChildrenBuilder.topPairSection(
     cssDiv(css = { float = Float.right; width = 0.px }) {
         div { copyToClipboardButton(pairSectionNode) }
 
-        child(TinyPlayerList(tribe, players))
+        child(TinyPlayerList(party, players))
     }
 }
 
@@ -110,7 +110,7 @@ private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) 
 })
 
 private fun ChildrenBuilder.currentPairSection(
-    tribe: Party,
+    party: Party,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument?,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
@@ -130,19 +130,19 @@ private fun ChildrenBuilder.currentPairSection(
     if (pairAssignments == null) {
         noPairsHeader()
     } else {
-        child(pairAssignmentsAnimator(tribe, players, pairAssignments, allowSave, setPairAssignments, controls))
+        child(pairAssignmentsAnimator(party, players, pairAssignments, allowSave, setPairAssignments, controls))
     }
 }
 
 private fun pairAssignmentsAnimator(
-    tribe: Party,
+    party: Party,
     players: List<Player>,
     pairAssignments: PairAssignmentDocument,
     allowSave: Boolean,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>
-) = PairAssignmentsAnimator(tribe, players, pairAssignments, enabled = tribe.animationEnabled && allowSave) {
-    child(CurrentPairAssignmentsPanel(tribe, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
+) = PairAssignmentsAnimator(party, players, pairAssignments, enabled = party.animationEnabled && allowSave) {
+    child(CurrentPairAssignmentsPanel(party, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
 }
 
 private fun ChildrenBuilder.noPairsHeader() = cssDiv(css = {
@@ -160,10 +160,10 @@ private fun ChildrenBuilder.noPairsHeader() = cssDiv(css = {
     +"No pair assignments yet!"
 }
 
-private fun ChildrenBuilder.controlPanel(tribe: Party) = div {
+private fun ChildrenBuilder.controlPanel(party: Party) = div {
     div {
         className = styles["controlPanel"]
-        div { prepareToSpinButton(tribe, styles["newPairsButton"]) }
+        div { prepareToSpinButton(party, styles["newPairsButton"]) }
     }
 }
 
@@ -202,8 +202,8 @@ private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it
 
 external class ClipboardItem(params: Json)
 
-private fun ChildrenBuilder.unpairedPlayerSection(tribe: Party, players: List<Player>) =
-    child(PlayerRoster(label = "Unpaired players", players = players, tribeId = tribe.id))
+private fun ChildrenBuilder.unpairedPlayerSection(party: Party, players: List<Player>) =
+    child(PlayerRoster(label = "Unpaired players", players = players, partyId = party.id))
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
     if (pairAssignments == null) {
@@ -215,8 +215,8 @@ private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignm
 
 private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-private fun ChildrenBuilder.prepareToSpinButton(tribe: Party, className: ClassName) = Link {
-    to = "/${tribe.id.value}/prepare/"
+private fun ChildrenBuilder.prepareToSpinButton(party: Party, className: ClassName) = Link {
+    to = "/${party.id.value}/prepare/"
     tabIndex = -1
     draggable = false
     child(CouplingButton(supersize, pink, className)) {

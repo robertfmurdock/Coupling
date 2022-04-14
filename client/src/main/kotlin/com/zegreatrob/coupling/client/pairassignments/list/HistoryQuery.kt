@@ -13,12 +13,12 @@ import kotlinx.coroutines.withContext
 
 typealias HistoryData = Pair<Party, List<PairAssignmentDocument>>
 
-data class HistoryQuery(val tribeId: PartyId) : SimpleSuspendAction<HistoryQueryDispatcher, HistoryData?> {
+data class HistoryQuery(val partyId: PartyId) : SimpleSuspendAction<HistoryQueryDispatcher, HistoryData?> {
     override val performFunc = link(HistoryQueryDispatcher::perform)
 }
 
 interface HistoryQueryDispatcher : PartyIdGetSyntax, PartyIdHistorySyntax {
-    suspend fun perform(query: HistoryQuery) = query.tribeId.getData()
+    suspend fun perform(query: HistoryQuery) = query.partyId.getData()
 
     private suspend fun PartyId.getData() = withContext(Dispatchers.Default) {
         await(

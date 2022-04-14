@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.dom.CouplingButton
@@ -19,7 +19,7 @@ import react.router.dom.Link
 
 data class TribeList(val tribes: List<Party>) : DataPropsBind<TribeList>(tribeList)
 
-private val styles = useStyles("tribe/TribeList")
+private val styles = useStyles("party/TribeList")
 
 val tribeList = tmFC<TribeList> { (tribes) ->
     child(
@@ -43,7 +43,7 @@ val tribeList = tmFC<TribeList> { (tribes) ->
         }
         div {
             tribes.forEach { tribe ->
-                child(TribeCard(tribe), key = tribe.id.value)
+                child(PartyCard(tribe), key = tribe.id.value)
             }
         }
         div { newTribeButton(styles["newTribeButton"]) }

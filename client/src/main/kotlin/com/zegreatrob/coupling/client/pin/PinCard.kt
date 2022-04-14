@@ -11,12 +11,12 @@ import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 
-data class PinCard(val tribeId: PartyId, val pin: Pin, val shouldLink: Boolean = true) : DataPropsBind<PinCard>(pinCard)
+data class PinCard(val partyId: PartyId, val pin: Pin, val shouldLink: Boolean = true) : DataPropsBind<PinCard>(pinCard)
 
 private val styles = useStyles("pin/PinCard")
 
-val pinCard = tmFC<PinCard> { (tribeId, pin, shouldLink) ->
-    optionalLink(shouldLink, tribeId, pin) {
+val pinCard = tmFC<PinCard> { (partyId, pin, shouldLink) ->
+    optionalLink(shouldLink, partyId, pin) {
         div {
             className = styles.className
             child(PinButton(pin, PinButtonScale.Small, showTooltip = false))
@@ -30,13 +30,13 @@ val pinCard = tmFC<PinCard> { (tribeId, pin, shouldLink) ->
 
 private fun ChildrenBuilder.optionalLink(
     shouldLink: Boolean,
-    tribeId: PartyId,
+    partyId: PartyId,
     pin: Pin,
     handler: ChildrenBuilder.() -> Unit
 ) {
     if (shouldLink) {
         Link {
-            to = "/${tribeId.value}/pin/${pin.id}"
+            to = "/${partyId.value}/pin/${pin.id}"
             handler()
         }
     } else {

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.party
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.DispatchFunc
@@ -18,7 +18,7 @@ import kotlin.js.Json
 data class TribeConfig(val tribe: Party, val dispatchFunc: DispatchFunc<out PartyConfigDispatcher>) :
     DataPropsBind<TribeConfig>(tribeConfig)
 
-interface PartyConfigDispatcher : SavePartyCommandDispatcher, DeleteTribeCommandDispatcher {
+interface PartyConfigDispatcher : SavePartyCommandDispatcher, DeletePartyCommandDispatcher {
     override val partyRepository: PartyRepository
 }
 
@@ -27,14 +27,14 @@ val tribeConfig = tmFC { (tribe, commandFunc): TribeConfig ->
     val (values, onChange) = useForm(tribe.withDefaultPartyId().toSerializable().toJsonDynamic().unsafeCast<Json>())
     val updatedTribe = values.correctTypes().fromJsonDynamic<JsonParty>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val redirectToTribeList = { setRedirectUrl(Paths.tribeList()) }
+    val redirectToTribeList = { setRedirectUrl(Paths.partyList()) }
     val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }, { redirectToTribeList() })
-    val onDelete = if (isNew) null else commandFunc({ DeleteTribeCommand(tribe.id) }, { redirectToTribeList() })
+    val onDelete = if (isNew) null else commandFunc({ DeletePartyCommand(tribe.id) }, { redirectToTribeList() })
 
     if (redirectUrl != null)
         Navigate { to = redirectUrl }
     else {
-        child(TribeConfigContent(updatedTribe, isNew, onChange, onSave, onDelete))
+        child(PartyConfigContent(updatedTribe, isNew, onChange, onSave, onDelete))
     }
 }
 

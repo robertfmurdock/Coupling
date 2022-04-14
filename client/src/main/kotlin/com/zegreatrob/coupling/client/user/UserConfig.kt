@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.tribe.AboutButton
-import com.zegreatrob.coupling.client.tribe.GeneralControlBar
+import com.zegreatrob.coupling.client.party.AboutButton
+import com.zegreatrob.coupling.client.party.GeneralControlBar
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.child

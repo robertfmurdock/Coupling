@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.cssH1

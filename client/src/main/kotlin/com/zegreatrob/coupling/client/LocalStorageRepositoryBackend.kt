@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.user.User
 
 class LocalStorageRepositoryBackend {
-    val tribe by localBackend(List<Record<Party>>::toSerializableString, String::toTribeRecords)
+    val party by localBackend(List<Record<Party>>::toSerializableString, String::toPartyRecords)
     val player by localBackend(List<PartyRecord<Player>>::toSerializableString, String::toPlayerRecords)
     val pairAssignments by localBackend(
         List<PartyRecord<PairAssignmentDocument>>::toSerializableString,
@@ -21,7 +21,7 @@ class LocalStorageRepositoryBackend {
 }
 
 fun List<Record<Party>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
-fun String.toTribeRecords(): List<Record<Party>> = fromJsonString<List<JsonTribeRecord>>().map { it.toModelRecord() }
+fun String.toPartyRecords(): List<Record<Party>> = fromJsonString<List<JsonTribeRecord>>().map { it.toModelRecord() }
 
 fun List<PartyRecord<Player>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPlayerRecords(): List<PartyRecord<Player>> = fromJsonString<List<JsonPlayerRecord>>().map { it.toModel() }

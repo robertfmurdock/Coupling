@@ -34,7 +34,7 @@ class MemoryRepositoryCatalog private constructor(
     constructor(userEmail: String, backend: LocalStorageRepositoryBackend, clock: TimeProvider) : this(
         userEmail,
         clock,
-        MemoryPartyRepository(userEmail, clock, backend.tribe),
+        MemoryPartyRepository(userEmail, clock, backend.party),
         MemoryPlayerRepository(userEmail, clock, backend.player),
         MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
         MemoryPinRepository(userEmail, clock, backend.pin)
@@ -42,7 +42,7 @@ class MemoryRepositoryCatalog private constructor(
 
     override suspend fun perform(query: UserQuery) = User(userId, "???", setOf(PartyId("Kind of fake")))
 
-    override suspend fun requestSpin(tribeId: PartyId, players: List<Player>, pins: List<Pin>): PairAssignmentDocument {
+    override suspend fun requestSpin(partyId: PartyId, players: List<Player>, pins: List<Pin>): PairAssignmentDocument {
         TODO("Not yet implemented")
     }
 

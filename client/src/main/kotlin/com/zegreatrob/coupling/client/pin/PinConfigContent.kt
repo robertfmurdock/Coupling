@@ -29,7 +29,7 @@ import react.key
 private val styles = useStyles("pin/PinConfigEditor")
 
 data class PinConfigContent(
-    val tribe: Party,
+    val party: Party,
     val pin: Pin,
     val pinList: List<Pin>,
     val onChange: (ChangeEvent<*>) -> Unit,
@@ -39,13 +39,13 @@ data class PinConfigContent(
 
 private val pinConfigStyles = useStyles("pin/PinConfig")
 
-val pinConfigContent = tmFC<PinConfigContent> { (tribe, pin, pinList, onChange, onSubmit, onRemove) ->
+val pinConfigContent = tmFC<PinConfigContent> { (party, pin, pinList, onChange, onSubmit, onRemove) ->
     ConfigFrame {
         className = pinConfigStyles.className
         span {
             className = styles.className
             ConfigHeader {
-                this.tribe = tribe
+                this.party = party
                 +"Pin Configuration"
             }
             span {
@@ -58,13 +58,13 @@ val pinConfigContent = tmFC<PinConfigContent> { (tribe, pin, pinList, onChange, 
                 child(PinButton(pin, PinButtonScale.Large, showTooltip = false))
             }
         }
-        pinBag(tribe, pinList, pinConfigStyles["pinBag"])
+        pinBag(party, pinList, pinConfigStyles["pinBag"])
     }
 }
 
-private fun ChildrenBuilder.pinBag(tribe: Party, pinList: List<Pin>, className: ClassName) = div {
+private fun ChildrenBuilder.pinBag(party: Party, pinList: List<Pin>, className: ClassName) = div {
     this.className = className
-    pinList.map { pin -> child(PinCard(tribe.id, pin), key = pin.id) }
+    pinList.map { pin -> child(PinCard(party.id, pin), key = pin.id) }
 }
 
 private fun ChildrenBuilder.pinConfigForm(

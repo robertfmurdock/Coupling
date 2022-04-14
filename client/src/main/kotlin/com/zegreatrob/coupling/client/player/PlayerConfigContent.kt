@@ -26,7 +26,7 @@ import react.dom.html.ReactHTML.span
 import react.key
 
 data class PlayerConfigContent(
-    val tribe: Party,
+    val party: Party,
     val player: Player,
     val players: List<Player>,
     val onChange: (ChangeEvent<*>) -> Unit,
@@ -37,26 +37,26 @@ data class PlayerConfigContent(
 private val styles = useStyles("player/PlayerConfigEditor")
 private val playerConfigStyles = useStyles("player/PlayerConfig")
 
-val playerConfigContent = tmFC<PlayerConfigContent> { (tribe, player, players, onChange, onSubmit, onRemove) ->
+val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, onChange, onSubmit, onRemove) ->
     ConfigFrame {
         className = playerConfigStyles.className
         span {
             className = styles.className
             ConfigHeader {
-                this.tribe = tribe
+                this.party = party
                 +"Player Configuration"
             }
             div {
                 div {
                     className = styles["player"]
-                    playerConfigForm(player, tribe, onChange, onSubmit, onRemove)
+                    playerConfigForm(player, party, onChange, onSubmit, onRemove)
 //                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
                 }
                 child(PlayerCard(player, size = 250))
             }
         }
         div {
-            child(PlayerRoster(players = players, tribeId = tribe.id) {
+            child(PlayerRoster(players = players, partyId = party.id) {
                 display = Display.inlineBlock
                 borderRadius = 20.px
                 padding = "10px"
@@ -75,25 +75,25 @@ private fun ChildrenBuilder.promptOnExit(shouldShowPrompt: Boolean) = PromptComp
 
 private fun ChildrenBuilder.playerConfigForm(
     player: Player,
-    tribe: Party,
+    party: Party,
     onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
     onRemoveFunc: (() -> Unit)?
 ) = ConfigForm {
     this.onSubmit = onSubmit
     this.onRemove = onRemoveFunc
-    editorDiv(tribe, player, onChange)
+    editorDiv(party, player, onChange)
 }
 
-private fun ChildrenBuilder.editorDiv(tribe: Party, player: Player, onChange: (ChangeEvent<*>) -> Unit) = div {
+private fun ChildrenBuilder.editorDiv(party: Party, player: Player, onChange: (ChangeEvent<*>) -> Unit) = div {
     Editor {
         li { nameInput(player, onChange) }
         li { emailInput(player, onChange) }
-        if (tribe.callSignsEnabled) {
+        if (party.callSignsEnabled) {
             callSignConfig(player, onChange)
         }
-        if (tribe.badgesEnabled) {
-            badgeConfig(tribe, player, onChange, styles["badgeConfig"])
+        if (party.badgesEnabled) {
+            badgeConfig(party, player, onChange, styles["badgeConfig"])
         }
     }
 }
@@ -124,7 +124,7 @@ private fun ChildrenBuilder.emailInput(player: Player, onChange: (ChangeEvent<*>
     )
     span {
         div { +"Email provides access privileges;" }
-        div { +"That means if someone with that email logs into Coupling, they can see their tribe!" }
+        div { +"That means if someone with that email logs into Coupling, they can see their party!" }
         div {
             +"To change your player picture, assign a"
             gravatarLink()
@@ -164,7 +164,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
 }
 
 private fun ChildrenBuilder.badgeConfig(
-    tribe: Party,
+    party: Party,
     player: Player,
     onChange: (ChangeEvent<*>) -> Unit,
     className: ClassName
@@ -176,8 +176,8 @@ private fun ChildrenBuilder.badgeConfig(
         name = "badge"
         this.value = "${player.badge}"
         this.onChange = onChange
-        defaultBadgeOption(tribe)
-        altBadgeOption(tribe)
+        defaultBadgeOption(party)
+        altBadgeOption(party)
     }
     span { +"Your badge makes you feel... different than the others." }
 }

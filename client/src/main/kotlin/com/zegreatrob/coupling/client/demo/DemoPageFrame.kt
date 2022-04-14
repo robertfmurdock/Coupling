@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinContent
 import com.zegreatrob.coupling.client.pin.PinConfigContent
 import com.zegreatrob.coupling.client.player.PlayerConfigContent
-import com.zegreatrob.coupling.client.tribe.TribeConfigContent
+import com.zegreatrob.coupling.client.party.PartyConfigContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
@@ -64,7 +64,7 @@ private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
             when (state) {
                 is Start -> aboutPageContent { Markdown { +state.text } }
                 is ShowIntro -> aboutPageContent { Markdown { +state.text } }
-                is MakeParty -> tribeConfigFrame(state)
+                is MakeParty -> partyConfigFrame(state)
                 is AddPlayer -> playerConfigFrame(state)
                 is AddPin -> pinConfigFrame(state)
                 is CurrentPairs -> pairAssignmentsFrame(state)
@@ -115,24 +115,24 @@ private fun ChildrenBuilder.popperDiv(
     }
 }
 
-private fun ChildrenBuilder.tribeConfigFrame(state: MakeParty) {
-    child(TribeConfigContent(state.tribe, true, {}, {}, {}))
+private fun ChildrenBuilder.partyConfigFrame(state: MakeParty) {
+    child(PartyConfigContent(state.party, true, {}, {}, {}))
 }
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
-    val (tribe, players, pins) = state
-    child(PrepareSpinContent(tribe, players, pins, pins.map { it.id }, {}, {}, {}))
+    val (party, players, pins) = state
+    child(PrepareSpinContent(party, players, pins, pins.map { it.id }, {}, {}, {}))
 }
 
 private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) =
-    child(PlayerConfigContent(state.tribe, state.newPlayer, state.players, {}, {}, {}))
+    child(PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {}))
 
 private fun ChildrenBuilder.pinConfigFrame(state: AddPin) =
-    child(PinConfigContent(state.tribe, state.newPin, state.pins, {}, {}, {}))
+    child(PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {}))
 
 private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = child(
     PairAssignments(
-        state.tribe,
+        state.party,
         state.players,
         state.pairAssignments,
         { },

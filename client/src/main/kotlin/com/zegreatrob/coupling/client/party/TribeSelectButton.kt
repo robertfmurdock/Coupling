@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
@@ -10,7 +10,7 @@ import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
 
-val TribeSelectButton = FC<Props> {
+val PartySelectButton = FC<Props> {
     Link {
         to = "/tribes/"
         tabIndex = -1

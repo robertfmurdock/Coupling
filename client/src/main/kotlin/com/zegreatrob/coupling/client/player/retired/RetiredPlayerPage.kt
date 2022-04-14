@@ -11,7 +11,7 @@ import react.dom.html.ReactHTML.div
 private val LoadedRetiredPlayer = couplingDataLoader<PlayerConfig>()
 
 val RetiredPlayerPage = FC<PageProps> { props ->
-    val tribeId = props.tribeId
+    val tribeId = props.partyId
     val playerId = props.playerId
 
     if (tribeId != null && playerId != null)

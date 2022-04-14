@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.cssDiv
@@ -20,11 +20,11 @@ import react.dom.html.ReactHTML
 import react.router.dom.Link
 import kotlin.collections.set
 
-data class TribeCard(val tribe: Party, val size: Int = 150) : DataPropsBind<TribeCard>(tribeCard)
+data class PartyCard(val tribe: Party, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
 
-private val styles = useStyles("tribe/TribeCard")
+private val styles = useStyles("party/TribeCard")
 
-val tribeCard = tmFC<TribeCard> { (tribe, size) ->
+val partyCard = tmFC<PartyCard> { (tribe, size) ->
     Link {
         to = tribe.id.currentPairsPage()
         visuallyHidden { +"Tribe Home Page" }

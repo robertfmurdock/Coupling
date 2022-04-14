@@ -21,7 +21,7 @@ val disconnectedMessage = CouplingSocketMessage(
 )
 
 val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
-    val (tribeId, useSsl, onMessageFunc, token) = props
+    val (partyId, useSsl, onMessageFunc, token) = props
 
     var connected by useState(false)
     val ref = useRef<WebsocketComponent>(null)
@@ -30,7 +30,7 @@ val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
 
     div {
         websocket {
-            url = buildSocketUrl(tribeId, useSsl, token).href
+            url = buildSocketUrl(partyId, useSsl, token).href
             onMessage = { onMessageFunc(it.fromJsonString<JsonMessage>().toModel()) }
             onOpen = { connected = true }
             onClose = { onMessageFunc(disconnectedMessage) }
@@ -42,7 +42,7 @@ val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
 }
 
 data class CouplingWebsocket(
-    val tribeId: PartyId,
+    val partyId: PartyId,
     val useSsl: Boolean = "https:" == window.location.protocol,
     val onMessage: (Message) -> Unit,
     val token: String,
@@ -58,8 +58,8 @@ private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { me
 }
 
 
-private fun buildSocketUrl(tribeId: PartyId, useSsl: Boolean, token: String) = URL(
-    "?tribeId=${encodeURIComponent(tribeId.value)}&token=${encodeURIComponent(token)}",
+private fun buildSocketUrl(partyId: PartyId, useSsl: Boolean, token: String) = URL(
+    "?tribeId=${encodeURIComponent(partyId.value)}&token=${encodeURIComponent(token)}",
     "${useSsl.protocol}://$host"
 )
 

@@ -12,15 +12,15 @@ import kotlinx.coroutines.coroutineScope
 
 typealias TribePinData = Triple<Party, List<Pin>, Pin>
 
-data class TribePinQuery(val tribeId: PartyId, val pinId: String?) :
+data class PartyPinQuery(val tribeId: PartyId, val pinId: String?) :
     SimpleSuspendAction<PartyPinQueryDispatcher, TribePinData?> {
     override val performFunc = link(PartyPinQueryDispatcher::perform)
 }
 
 interface PartyPinQueryDispatcher : PartyIdGetSyntax, PartyPinsSyntax {
-    suspend fun perform(query: TribePinQuery) = query.getData()
+    suspend fun perform(query: PartyPinQuery) = query.getData()
 
-    private suspend fun TribePinQuery.getData() = tribeId.getData()
+    private suspend fun PartyPinQuery.getData() = tribeId.getData()
         ?.let { (tribe, pins) -> TribePinData(tribe, pins, pins.findOrDefaultNew(pinId)) }
 
     private suspend fun PartyId.getData() = coroutineScope {

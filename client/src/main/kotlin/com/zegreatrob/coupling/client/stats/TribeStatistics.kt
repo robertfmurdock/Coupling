@@ -28,7 +28,7 @@ val tribeStatistics = tmFC<TribeStatistics> { props ->
         className = styles.className
         child(PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9"))) {
             ConfigHeader {
-                this.tribe = tribe
+                this.party = tribe
                 +"Statistics"
             }
             cssDiv(css = {

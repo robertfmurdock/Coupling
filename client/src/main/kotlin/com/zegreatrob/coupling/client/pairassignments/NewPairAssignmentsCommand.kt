@@ -16,7 +16,7 @@ import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-data class NewPairAssignmentsCommand(val tribeId: PartyId, val playerIds: List<String>, val pinIds: List<String>) :
+data class NewPairAssignmentsCommand(val partyId: PartyId, val playerIds: List<String>, val pinIds: List<String>) :
     SimpleSuspendAction<NewPairAssignmentsCommandDispatcher, Unit?> {
     override val performFunc = link(NewPairAssignmentsCommandDispatcher::perform)
 }
@@ -29,19 +29,19 @@ interface NewPairAssignmentsCommandDispatcher : PartyIdGetSyntax,
     PartyIdPairAssignmentDocumentSaveSyntax {
 
     suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {
-        val (tribe, players, pins) = getData()
-        if (tribe == null)
+        val (party, players, pins) = getData()
+        if (party == null)
             null
         else {
             execute(requestSpinAction(players, pins))
-                .let { tribe.id.with(it).save() }
+                .let { party.id.with(it).save() }
         }
     }
 
     private fun NewPairAssignmentsCommand.requestSpinAction(players: List<Player>, pins: List<Pin>): RequestSpinAction {
         val selectedPlayers = filterSelectedPlayers(players, playerIds)
         val selectedPins = filterSelectedPins(pins, pinIds)
-        return RequestSpinAction(tribeId, selectedPlayers, selectedPins)
+        return RequestSpinAction(partyId, selectedPlayers, selectedPins)
     }
 
     private fun filterSelectedPlayers(players: List<Player>, playerIds: List<String>) = players.filter {
@@ -52,9 +52,9 @@ interface NewPairAssignmentsCommandDispatcher : PartyIdGetSyntax,
 
     private suspend fun NewPairAssignmentsCommand.getData() = coroutineScope {
         await(
-            async { tribeId.get() },
-            async { tribeId.getPlayerList() },
-            async { tribeId.getPins() }
+            async { partyId.get() },
+            async { partyId.getPlayerList() },
+            async { partyId.getPins() }
         )
     }
 

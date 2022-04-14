@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.tribe
+package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.*
 import com.zegreatrob.coupling.client.external.react.configInput
@@ -25,29 +25,29 @@ import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
 import react.key
 
-data class TribeConfigContent(
+data class PartyConfigContent(
     var tribe: Party,
     var isNew: Boolean?,
     var onChange: (ChangeEvent<*>) -> Unit,
     var onSave: () -> Unit,
     var onDelete: (() -> Unit)?,
-) : DataPropsBind<TribeConfigContent>(tribeConfigContent)
+) : DataPropsBind<PartyConfigContent>(partyConfigContent)
 
-private val styles = useStyles("tribe/TribeConfig")
+private val styles = useStyles("party/TribeConfig")
 
-val tribeConfigContent = tmFC<TribeConfigContent> { (tribe, isNew, onChange, onSave, onDelete) ->
+val partyConfigContent = tmFC<PartyConfigContent> { (tribe, isNew, onChange, onSave, onDelete) ->
     ConfigFrame {
         className = styles.className
         backgroundColor = Color("hsla(45, 80%, 96%, 1)")
         borderColor = Color("#ff8c00")
 
         ConfigHeader {
-            this.tribe = tribe
+            this.party = tribe
             +"Party Configuration"
         }
         cssDiv(css = { display = Display.flex }) {
             tribeConfigEditor(tribe, isNew ?: false, onChange, onSave, onDelete)
-            child(TribeCard(tribe))
+            child(PartyCard(tribe))
         }
     }
 }

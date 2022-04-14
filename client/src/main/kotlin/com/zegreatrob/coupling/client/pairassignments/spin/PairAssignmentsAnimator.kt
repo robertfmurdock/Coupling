@@ -16,7 +16,7 @@ import react.create
 import react.dom.html.ReactHTML.div
 
 data class PairAssignmentsAnimator(
-    val tribe: Party,
+    val party: Party,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument,
     val enabled: Boolean,
@@ -26,12 +26,12 @@ data class PairAssignmentsAnimator(
 private val animationContextConsumer: Consumer<Boolean> = animationsDisabledContext.Consumer
 
 val pairAssignmentsAnimator = tmFC<PairAssignmentsAnimator> { props ->
-    val (tribe, players, pairAssignments, enabled) = props
+    val (party, players, pairAssignments, enabled) = props
     animationContextConsumer {
         children = { animationsDisabled ->
             div.create {
                 if (!animationsDisabled && enabled) {
-                    spinFrameRunner(pairAssignments, tribe, players, props)
+                    spinFrameRunner(pairAssignments, party, players, props)
                 } else {
                     props.children(this)
                 }
@@ -42,25 +42,25 @@ val pairAssignmentsAnimator = tmFC<PairAssignmentsAnimator> { props ->
 
 private fun ChildrenBuilder.spinFrameRunner(
     pairAssignments: PairAssignmentDocument,
-    tribe: Party,
+    party: Party,
     players: List<Player>,
     props: PairAssignmentsAnimator
 ) {
-    child(FrameRunner(SpinAnimationState.sequence(pairAssignments), speed = tribe.animationSpeed) { state ->
+    child(FrameRunner(SpinAnimationState.sequence(pairAssignments), speed = party.animationSpeed) { state ->
         val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
-        flipperSpinAnimation(state, props, tribe, rosteredPairAssignments)
+        flipperSpinAnimation(state, props, party, rosteredPairAssignments)
     })
 }
 
 private fun ChildrenBuilder.flipperSpinAnimation(
     state: SpinAnimationState,
     props: PairAssignmentsAnimator,
-    tribe: Party,
+    party: Party,
     rosteredPairAssignments: RosteredPairAssignments
 ) = Flipper {
     flipKey = state.toString()
     if (state == End)
         props.children(this)
     else
-        child(SpinAnimationPanel(tribe, rosteredPairAssignments, state))
+        child(SpinAnimationPanel(party, rosteredPairAssignments, state))
 }

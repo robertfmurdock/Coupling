@@ -27,23 +27,23 @@ import react.key
 private val styles = useStyles("pairassignments/History")
 
 data class History(
-    val tribe: Party,
+    val party: Party,
     val history: List<PairAssignmentDocument>,
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) : DataPropsBind<History>(com.zegreatrob.coupling.client.pairassignments.list.history)
 
 val history by lazy { historyFunc(WindowFunctions) }
 
-val historyFunc = windowReactFunc<History> { (tribe, history, controls), windowFuncs ->
+val historyFunc = windowReactFunc<History> { (party, history, controls), windowFuncs ->
     val (dispatchFunc, reload) = controls
     val onDeleteFactory = { documentId: PairAssignmentDocumentId ->
-        val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(tribe.id, documentId) }, { reload() })
+        val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(party.id, documentId) }, { reload() })
         onDeleteClick(windowFuncs, deleteFunc)
     }
     div {
         className = styles.className
         ConfigHeader {
-            this.tribe = tribe
+            this.party = party
             +"History!"
         }
         span {

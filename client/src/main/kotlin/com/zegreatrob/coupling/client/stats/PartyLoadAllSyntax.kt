@@ -24,34 +24,34 @@ interface PartyLoadAllSyntax : PartyIdGetSyntax, PartyPlayersSyntax, PartyIdHist
     }
 
     private suspend fun await(
-        tribeDeferred: Deferred<Party?>,
+        partyDeferred: Deferred<Party?>,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<List<PairAssignmentDocument>>,
         pinListDeferred: Deferred<List<Pin>>
-    ): TribeData? {
-        return awaitTribeData(
-            (tribeDeferred.await() ?: return null),
+    ): PartyData? {
+        return awaitPartyData(
+            (partyDeferred.await() ?: return null),
             playerListDeferred,
             historyDeferred,
             pinListDeferred
         )
     }
 
-    suspend fun awaitTribeData(
-        tribe: Party,
+    suspend fun awaitPartyData(
+        party: Party,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<List<PairAssignmentDocument>>,
         pinListDeferred: Deferred<List<Pin>>
-    ) = TribeData(
-        tribe,
+    ) = PartyData(
+        party,
         playerListDeferred.await(),
         historyDeferred.await(),
         pinListDeferred.await()
     )
 }
 
-data class TribeData(
-    val tribe: Party,
+data class PartyData(
+    val party: Party,
     val playerList: List<Player>,
     val history: List<PairAssignmentDocument>,
     val pinList: List<Pin>

@@ -15,9 +15,9 @@ import com.zegreatrob.coupling.client.player.PlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayersPage
 import com.zegreatrob.coupling.client.stats.StatisticsPage
-import com.zegreatrob.coupling.client.tribe.GraphIQLPage
-import com.zegreatrob.coupling.client.tribe.TribeConfigPage
-import com.zegreatrob.coupling.client.tribe.TribeListPage
+import com.zegreatrob.coupling.client.party.GraphIQLPage
+import com.zegreatrob.coupling.client.party.TribeConfigPage
+import com.zegreatrob.coupling.client.party.TribeListPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
@@ -69,7 +69,7 @@ val lostRoute = FC<Props> {
 }
 
 private fun ChildrenBuilder.authenticatedRoutes(config: ClientConfig) {
-    Route { path = "/"; element = redirectToTribes() }
+    Route { path = "/"; element = redirectToParties() }
     if (config.prereleaseMode) couplingRoute("/user", UserPage)
     couplingRoute("/tribes/", TribeListPage)
     couplingRoute("/logout/", Logout)
@@ -91,7 +91,7 @@ private fun ChildrenBuilder.authenticatedRoutes(config: ClientConfig) {
     couplingRoute("/:tribeId/statistics", StatisticsPage)
 }
 
-private fun redirectToTribes() = Navigate.create { to = "/tribes/" }
+private fun redirectToParties() = Navigate.create { to = "/tribes/" }
 
 private fun redirectToCurrentPairs() = Navigate.create {
     val params = useParams()

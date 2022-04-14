@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignments
 import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.client.tribe.PartyConfigDispatcher
+import com.zegreatrob.coupling.client.party.PartyConfigDispatcher
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.child
 import react.FC

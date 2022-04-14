@@ -27,7 +27,7 @@ import kotlin.random.Random
 data class PlayerRoster(
     val label: String? = null,
     val players: List<Player>,
-    val tribeId: PartyId,
+    val partyId: PartyId,
     val className: String? = null,
     val cssOverrides: RuleSet = {}
 ) : DataPropsBind<PlayerRoster>(playerRoster)
