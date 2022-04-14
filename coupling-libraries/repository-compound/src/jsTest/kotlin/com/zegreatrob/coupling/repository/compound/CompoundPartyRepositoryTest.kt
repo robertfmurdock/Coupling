@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
-import com.zegreatrob.coupling.repository.validation.TribeRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.PartyRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -15,7 +15,7 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 
 import kotlin.test.Test
 
-class CompoundTribeRepositoryTest : TribeRepositoryValidator<CompoundPartyRepository> {
+class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyRepository> {
 
     override val repositorySetup: TestTemplate<SharedContext<CompoundPartyRepository>>
         get() = asyncTestTemplate(sharedSetup = {

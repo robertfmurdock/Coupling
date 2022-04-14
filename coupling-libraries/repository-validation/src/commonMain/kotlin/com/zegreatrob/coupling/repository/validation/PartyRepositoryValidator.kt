@@ -13,7 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
 @ExperimentalCoroutinesApi
-interface TribeRepositoryValidator<R : PartyRepository> : RepositoryValidator<R, SharedContext<R>> {
+interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
     fun saveMultipleThenGetListWillReturnSavedParties() = repositorySetup.with(object : ContextMint<R>() {

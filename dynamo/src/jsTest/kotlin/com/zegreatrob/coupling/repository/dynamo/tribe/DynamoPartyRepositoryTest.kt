@@ -16,7 +16,7 @@ typealias TribeMint = ContextMint<DynamoPartyRepository>
 
 @ExperimentalTime
 @Suppress("unused")
-class DynamoTribeRepositoryTest : TribeRepositoryValidator<DynamoPartyRepository> {
+class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoPartyRepository>>(sharedSetup = {
         val user = stubUser()

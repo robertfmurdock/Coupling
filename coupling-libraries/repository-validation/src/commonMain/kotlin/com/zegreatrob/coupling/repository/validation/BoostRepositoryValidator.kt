@@ -79,7 +79,7 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
     BoostRepositoryValidator<R, SC> {
 
     @Test
-    fun saveBoostRepeatedlyGetByTribeGetsLatest() = repositorySetup.with({ sharedContext ->
+    fun saveBoostRepeatedlyGetByPartyGetsLatest() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
             val partyId = PartyId("${uuid4()}")
             val boost = Boost(user.id, setOf(partyId, PartyId("${uuid4()}")))

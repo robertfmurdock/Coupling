@@ -22,7 +22,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/client" />
             <option value="$PROJECT_DIR$/coupling-libraries" />
             <option value="$PROJECT_DIR$/coupling-libraries/action" />

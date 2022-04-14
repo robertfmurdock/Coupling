@@ -36,6 +36,37 @@ configurations {
     }
 }
 
+
+fun Project.relatedResources() = relatedProjects()
+    .asSequence()
+    .map { it.projectDir }
+    .flatMap {
+        listOf(
+            "src/commonMain/resources",
+            "src/clientCommonMain/resources",
+            "src/jsMain/resources",
+
+            "src/main/resources"
+        ).asSequence().map(it::resolve)
+    }
+    .filter { it.exists() }
+    .filter { it.isDirectory }
+    .toList()
+
+fun Project.relatedProjects(): Set<Project> {
+    val configuration = configurations.findByName("e2eTestImplementation")
+        ?: return emptySet()
+
+    return configuration
+        .allDependencies
+        .asSequence()
+        .filterIsInstance<org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency>()
+        .map { it.dependencyProject }
+        .flatMap { sequenceOf(it) + it.relatedProjects() }
+        .plus(this)
+        .toSet()
+}
+
 kotlin {
     sourceSets {
         val e2eTest by getting {
@@ -75,7 +106,7 @@ tasks {
     val compileE2eTestProductionExecutableKotlinJs = named("compileE2eTestProductionExecutableKotlinJs")
     val productionExecutableCompileSync = named("productionExecutableCompileSync")
 
-    val e2eTestProcessResources = named("e2eTestProcessResources", ProcessResources::class) {
+    val e2eTestProcessResources = named<ProcessResources>("e2eTestProcessResources") {
         dependsOn("dependencyResources")
     }
 
@@ -124,7 +155,8 @@ tasks {
                     "${project.rootProject.projectDir.path}/coupling-libraries/build/js/node_modules",
                     "${project.rootProject.buildDir.path}/js/node_modules",
                     e2eTestProcessResources.get().destinationDir,
-                ).joinToString(":"),
+                ).plus(project.relatedResources())
+                    .joinToString(":"),
                 "BUILD_DIR" to project.buildDir.absolutePath,
                 "WEBPACK_CONFIG" to webpackConfig,
                 "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,

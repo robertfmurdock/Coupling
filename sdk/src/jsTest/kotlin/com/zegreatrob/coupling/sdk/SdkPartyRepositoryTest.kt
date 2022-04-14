@@ -16,7 +16,7 @@ import kotlin.test.Test
 
 private typealias SdkMint = ContextMint<SdkPartyRepository>
 
-class SdkTribeRepositoryTest : TribeRepositoryValidator<SdkPartyRepository> {
+class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<SdkPartyRepository>>(sharedSetup = {
         val clock = MagicClock()
