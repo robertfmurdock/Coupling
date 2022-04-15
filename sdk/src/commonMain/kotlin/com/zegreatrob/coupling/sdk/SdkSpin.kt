@@ -11,12 +11,12 @@ import com.zegreatrob.coupling.model.party.PartyId
 
 interface SdkSpin : SpinDispatcher, GqlSyntax, GraphQueries {
 
-    override suspend fun requestSpin(tribeId: PartyId, players: List<Player>, pins: List<Pin>) = doQuery(
+    override suspend fun requestSpin(partyId: PartyId, players: List<Player>, pins: List<Pin>) = doQuery(
         mutations.spin,
         SpinInput(
             players = players.map(Player::toSerializable),
             pins = pins.map(Pin::toSerializable),
-            tribeId = tribeId
+            tribeId = partyId
         ),
         "spin",
         ::toOutput

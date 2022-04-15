@@ -15,7 +15,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
 
 class RequestCombineEndpointTest {
-
     @Test
     fun postPlayersAndPinsThenGet() = asyncSetup.with({
         val sdk = authorizedSdk()

@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.user.UserQuery
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.validation.BoostRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
@@ -13,7 +15,7 @@ class SdkBoostRepositoryTest : BoostRepositoryValidator<Sdk, SharedContextData<S
     override val repositorySetup = asyncTestTemplate<SharedContextData<Sdk>>(sharedSetup = {
         val clock = MagicClock()
         val sdk = authorizedSdk()
-        val user = sdk.getUser()!!.data
+        val user = sdk.perform(UserQuery())?.let { Record(it, "") }!!.data
         SharedContextData(sdk, clock, user)
     })
 

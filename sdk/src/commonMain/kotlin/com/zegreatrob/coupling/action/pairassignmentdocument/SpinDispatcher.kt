@@ -6,5 +6,5 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PartyId
 
 interface SpinDispatcher {
-    suspend fun requestSpin(tribeId: PartyId, players: List<Player>, pins: List<Pin>): PairAssignmentDocument
+    suspend fun requestSpin(partyId: PartyId, players: List<Player>, pins: List<Pin>): PairAssignmentDocument
 }

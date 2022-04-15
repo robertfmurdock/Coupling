@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -17,13 +18,15 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 import kotlin.test.Test
 
+@ExperimentalCoroutinesApi
 class SavePairAssignmentDocumentCommandTest {
 
     @Test
-    fun willSendToRepository() = asyncSetup(object : SavePairAssignmentDocumentCommandDispatcher {
+    fun willSendToRepository() = asyncSetup(object : ServerSavePairAssignmentDocumentCommandDispatcher {
         override val currentPartyId: PartyId get() = PartyId("party-239")
         override val liveInfoRepository: LiveInfoRepository get() = TODO("Not yet implemented")
         override suspend fun PartyId.loadConnections(): List<CouplingConnection> = emptyList()

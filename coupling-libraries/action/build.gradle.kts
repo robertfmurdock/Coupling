@@ -24,8 +24,8 @@ kotlin {
             dependencies {
                 implementation(project(":coupling-libraries:model"))
                 implementation(project(":coupling-libraries:logging"))
-                implementation("com.zegreatrob.testmints:action")
-                implementation("com.zegreatrob.testmints:action-async")
+                api("com.zegreatrob.testmints:action")
+                api("com.zegreatrob.testmints:action-async")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("com.benasher44:uuid:0.4.0")

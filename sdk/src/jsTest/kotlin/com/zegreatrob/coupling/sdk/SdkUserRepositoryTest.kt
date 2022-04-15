@@ -18,25 +18,14 @@ class SdkUserRepositoryTest {
     })
 
     @Test
-    fun willReturnTheUser() = repositorySetup() exercise {
-        repository.getUser()
-    } verify { result ->
-        result!!.data.let {
-            it.email.assertIsEqualTo(primaryAuthorizedUsername)
-            it.id.assertIsNotEqualTo(null)
-            it.authorizedPartyIds.assertIsNotEqualTo(null)
-        }
-    }
-
-    @Test
     fun canPerformUserQuery() = repositorySetup {
     } exercise {
         repository.perform(UserQuery())
     } verify { result ->
-        result!!.let {
-            it.email.assertIsEqualTo(primaryAuthorizedUsername)
-            it.id.assertIsNotEqualTo(null)
-            it.authorizedPartyIds.assertIsNotEqualTo(null)
+        result.let {
+            it?.email.assertIsEqualTo(primaryAuthorizedUsername)
+            it?.id.assertIsNotEqualTo(null)
+            it?.authorizedPartyIds.assertIsNotEqualTo(null)
         }
     }
 

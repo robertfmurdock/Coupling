@@ -1,10 +1,9 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
 import com.zegreatrob.coupling.server.action.BroadcastAction
@@ -13,14 +12,11 @@ import com.zegreatrob.coupling.server.action.connection.CouplingConnectionGetSyn
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
-data class SavePairAssignmentDocumentCommand(val pairAssignmentDocument: PairAssignmentDocument) :
-    SimpleSuspendResultAction<SavePairAssignmentDocumentCommandDispatcher, PartyElement<PairAssignmentDocument>> {
-    override val performFunc = link(SavePairAssignmentDocumentCommandDispatcher::perform)
-}
+interface ServerSavePairAssignmentDocumentCommandDispatcher : SavePairAssignmentDocumentCommandDispatcher,
+    PartyIdPairAssignmentDocumentSaveSyntax, CurrentPartyIdSyntax, CouplingConnectionGetSyntax,
+    SuspendActionExecuteSyntax, BroadcastActionDispatcher {
 
-interface SavePairAssignmentDocumentCommandDispatcher : PartyIdPairAssignmentDocumentSaveSyntax, CurrentPartyIdSyntax,
-    CouplingConnectionGetSyntax, SuspendActionExecuteSyntax, BroadcastActionDispatcher {
-    suspend fun perform(command: SavePairAssignmentDocumentCommand) = with(command) {
+    override suspend fun perform(command: SavePairAssignmentDocumentCommand) = with(command) {
         currentPartyId.with(pairAssignmentDocument)
             .apply { save() }
             .apply { execute(broadcastAction()) }

@@ -11,11 +11,13 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 import kotlin.test.Test
 
 private typealias SdkMint = ContextMint<SdkPartyRepository>
 
+@ExperimentalCoroutinesApi
 class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<SdkPartyRepository>>(sharedSetup = {

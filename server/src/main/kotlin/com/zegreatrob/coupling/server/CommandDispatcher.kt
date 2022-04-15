@@ -80,13 +80,13 @@ interface ICurrentPartyDispatcher :
     SavePlayerCommandDispatcher,
     DeletePlayerCommandDispatcher,
     RetiredPlayersQueryDispatcher,
-    SavePairAssignmentDocumentCommandDispatcher,
+    ServerSavePairAssignmentDocumentCommandDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher,
     DeletePartyCommandDispatcher,
     DeletePinCommandDispatcher,
     SavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQueryDispatcher,
-    ProposeNewPairsCommandDispatcher,
+    ServerProposeNewPairsCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher
 
 class CurrentPartyDispatcher(
@@ -99,13 +99,13 @@ class CurrentPartyDispatcher(
     SavePlayerCommandDispatcher,
     DeletePlayerCommandDispatcher,
     RetiredPlayersQueryDispatcher,
-    SavePairAssignmentDocumentCommandDispatcher,
+    ServerSavePairAssignmentDocumentCommandDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher,
     DeletePartyCommandDispatcher,
     DeletePinCommandDispatcher,
     SavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQueryDispatcher,
-    ProposeNewPairsCommandDispatcher,
+    ServerProposeNewPairsCommandDispatcher,
     PairAssignmentDocumentListQueryDispatcher,
     ICurrentPartyDispatcher {
     override val userId: String get() = commandDispatcher.userId

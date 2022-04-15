@@ -16,17 +16,19 @@ import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.waitForTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
+@ExperimentalCoroutinesApi
 class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
     override val repositorySetup = asyncTestTemplate<SdkPartyContext<SdkPlayerRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
-        val tribe = stubParty()
-        sdk.partyRepository.save(tribe)
+        val party = stubParty()
+        sdk.partyRepository.save(party)
 
-        SdkPartyContext(sdk, sdk.playerRepository, tribe.id, MagicClock())
+        SdkPartyContext(sdk, sdk.playerRepository, party.id, MagicClock())
     }, sharedTeardown = {
         it.sdk.partyRepository.delete(it.partyId)
     })
@@ -36,8 +38,6 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             object {
                 val sdk = parent.sdk
                 val repository = parent.repository
-                val clock = parent.clock
-                val user = parent.user
                 val partyId = parent.partyId
 
                 val player1 = stubPlayer()
