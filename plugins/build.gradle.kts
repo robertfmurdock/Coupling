@@ -27,7 +27,7 @@ dependencies {
 }
 
 tasks {
-    withType<DependencyUpdatesTask> {
+    withType<DependencyUpdatesTask>().configureEach {
         checkForGradleUpdate = true
         outputFormatter = "json"
         outputDir = "build/dependencyUpdates"

@@ -122,6 +122,7 @@ tasks {
     val webpackedWdioConfigOutput = "config"
 
     val nodeRun = named("nodeRun", NodeJsExec::class) {
+        outputs.cacheIf { true }
         dependsOn(
             compileProductionExecutableKotlinJs,
             productionExecutableCompileSync,

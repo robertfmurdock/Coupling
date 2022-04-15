@@ -138,4 +138,8 @@ tasks {
     named("processResources") {
         dependsOn(dependencyResources)
     }
+
+    named("browserTest") {
+        outputs.cacheIf { true }
+    }
 }

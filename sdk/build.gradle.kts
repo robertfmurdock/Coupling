@@ -59,5 +59,6 @@ kotlin {
 tasks {
     "jsNodeTest" {
         dependsOn(":composeUp")
+        outputs.cacheIf { true }
     }
 }
