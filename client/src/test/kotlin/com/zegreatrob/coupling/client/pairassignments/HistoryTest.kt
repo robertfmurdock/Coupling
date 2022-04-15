@@ -32,13 +32,13 @@ class HistoryTest {
     @Test
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = setup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
-        val tribe = Party(PartyId("me"))
+        val party = Party(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val history = listOf(PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList()))
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
 
         val wrapper = shallow(
-            History(tribe, history, Controls(stubDispatchFunc, reloadSpy::spyFunction)),
+            History(party, history, Controls(stubDispatchFunc, reloadSpy::spyFunction)),
             historyFunc(this),
         )
     }) exercise {
@@ -48,14 +48,14 @@ class HistoryTest {
         stubDispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
         stubDispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
-            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(tribe.id, history[0].id)))
+            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, history[0].id)))
         reloadSpy.callCount.assertIsEqualTo(1)
     }
 
     @Test
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = setup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
-        val tribe = Party(PartyId("me"))
+        val party = Party(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val history = listOf(
             PairAssignmentDocument(
@@ -66,7 +66,7 @@ class HistoryTest {
         )
         val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
-            History(tribe, history, Controls(stubDispatchFunc, reloadSpy::spyFunction)),
+            History(party, history, Controls(stubDispatchFunc, reloadSpy::spyFunction)),
             historyFunc(this),
         )
     }) exercise {

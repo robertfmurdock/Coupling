@@ -29,14 +29,14 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()
         )
         val dispatchFunc = StubDispatchFunc<PairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
-                tribe,
+                party,
                 pairAssignments,
                 setPairAssignments = { },
                 allowSave = true,
@@ -51,17 +51,17 @@ class CurrentPairAssignmentsPanelTest {
         dispatchFunc.commandsDispatched<SavePairAssignmentsCommand>().size
             .assertIsEqualTo(0)
         wrapper.find(Navigate)
-            .props().to.assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
+            .props().to.assertIsEqualTo("/${party.id.value}/pairAssignments/current/")
     }
 
     @Test
     fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val pairAssignments = stubPairAssignmentDoc()
         val dispatchFunc = StubDispatchFunc<PairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
-                tribe,
+                party,
                 pairAssignments,
                 setPairAssignments = { },
                 allowSave = true,
@@ -75,14 +75,14 @@ class CurrentPairAssignmentsPanelTest {
         dispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
         dispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
-            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(tribe.id, pairAssignments.id)))
+            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, pairAssignments.id)))
         wrapper.find(Navigate)
-            .props().to.assertIsEqualTo("/${tribe.id.value}/pairAssignments/current/")
+            .props().to.assertIsEqualTo("/${party.id.value}/pairAssignments/current/")
     }
 
     @Test
     fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -98,7 +98,7 @@ class CurrentPairAssignmentsPanelTest {
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
-                tribe,
+                party,
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
@@ -118,7 +118,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPinDropWillTakeMovePinFromOnePairToAnother() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val pin1 = stubPin()
         val pin2 = stubPin()
         val pair1 = pairOf(Player("1", name = "1"), Player("2", name = "2")).withPins(listOf(pin1))
@@ -130,7 +130,7 @@ class CurrentPairAssignmentsPanelTest {
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
-                tribe,
+                party,
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
@@ -150,7 +150,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPlayerDropTheSwapWillNotLosePinAssignments() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -169,7 +169,7 @@ class CurrentPairAssignmentsPanelTest {
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
-                tribe,
+                party,
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
@@ -189,7 +189,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val player1 = Player("1", name = "1")
         val player2 = Player("2", name = "2")
         val player3 = Player("3", name = "3")
@@ -205,7 +205,7 @@ class CurrentPairAssignmentsPanelTest {
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
-                tribe,
+                party,
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),

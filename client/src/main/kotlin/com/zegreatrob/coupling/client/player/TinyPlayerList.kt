@@ -14,15 +14,15 @@ import react.useState
 import kotlin.js.Date
 import kotlin.random.Random
 
-data class TinyPlayerList(val tribe: Party, val players: List<Player>) : DataPropsBind<TinyPlayerList>(tinyPlayerList)
+data class TinyPlayerList(val party: Party, val players: List<Player>) : DataPropsBind<TinyPlayerList>(tinyPlayerList)
 
-val tinyPlayerList = tmFC<TinyPlayerList> { (tribe, players) ->
+val tinyPlayerList = tmFC<TinyPlayerList> { (party, players) ->
     val ref by useState { Date.now().toLong() }
     val random = Random(ref)
     players.forEach { player ->
         Link {
             key = player.id
-            to = tribe.id.with(player).playerConfigPage()
+            to = party.id.with(player).playerConfigPage()
             draggable = false
             val tilt = random.nextInt(7) - 3
             child(PlayerCard(player, size = 40, tilt = tilt.deg))

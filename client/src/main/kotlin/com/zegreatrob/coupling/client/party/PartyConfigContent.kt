@@ -26,7 +26,7 @@ import react.dom.html.ReactHTML.span
 import react.key
 
 data class PartyConfigContent(
-    var tribe: Party,
+    var party: Party,
     var isNew: Boolean?,
     var onChange: (ChangeEvent<*>) -> Unit,
     var onSave: () -> Unit,
@@ -35,92 +35,92 @@ data class PartyConfigContent(
 
 private val styles = useStyles("party/TribeConfig")
 
-val partyConfigContent = tmFC<PartyConfigContent> { (tribe, isNew, onChange, onSave, onDelete) ->
+val partyConfigContent = tmFC<PartyConfigContent> { (party, isNew, onChange, onSave, onDelete) ->
     ConfigFrame {
         className = styles.className
         backgroundColor = Color("hsla(45, 80%, 96%, 1)")
         borderColor = Color("#ff8c00")
 
         ConfigHeader {
-            this.party = tribe
+            this.party = party
             +"Party Configuration"
         }
         cssDiv(css = { display = Display.flex }) {
-            tribeConfigEditor(tribe, isNew ?: false, onChange, onSave, onDelete)
-            child(PartyCard(tribe))
+            partyConfigEditor(party, isNew ?: false, onChange, onSave, onDelete)
+            child(PartyCard(party))
         }
     }
 }
 
-private fun ChildrenBuilder.tribeConfigEditor(
-    updatedTribe: Party,
+private fun ChildrenBuilder.partyConfigEditor(
+    updatedParty: Party,
     isNew: Boolean,
     onChange: (ChangeEvent<*>) -> Unit,
     onSave: () -> Unit,
     onDelete: (() -> Unit)?
 ) = span {
-    className = styles["tribeConfigEditor"]
+    className = styles["partyConfigEditor"]
     ConfigForm {
         this.onSubmit = onSave
         this.onRemove = onDelete
-        editorDiv(updatedTribe, onChange, isNew)
+        editorDiv(updatedParty, onChange, isNew)
     }
 }
 
-private fun ChildrenBuilder.editorDiv(tribe: Party, onChange: (ChangeEvent<*>) -> Unit, isNew: Boolean) =
+private fun ChildrenBuilder.editorDiv(party: Party, onChange: (ChangeEvent<*>) -> Unit, isNew: Boolean) =
     div {
         Editor {
             li {
-                nameInput(tribe, onChange)
-                span { +"The full tribe name!" }
+                nameInput(party, onChange)
+                span { +"The full party name!" }
             }
             li {
-                emailInput(tribe, onChange)
+                emailInput(party, onChange)
                 span {
-                    +"The tribe email address - Attach a"
+                    +"The party email address - Attach a"
                     gravatarLink {}
-                    +"to this to cheese your tribe icon."
+                    +"to this to cheese your party icon."
                 }
             }
 
             if (isNew) {
                 li {
-                    uniqueIdInput(tribe, onChange)
-                    span { +"This affects your tribe's URL. This is permanently assigned." }
+                    uniqueIdInput(party, onChange)
+                    span { +"This affects your party's URL. This is permanently assigned." }
                 }
             }
             li {
-                enableAnimationsInput(tribe, onChange)
+                enableAnimationsInput(party, onChange)
                 span { +"Keep things wacky and springy, or still and deadly serious." }
             }
             li {
-                animationSpeedSelect(tribe, onChange)
+                animationSpeedSelect(party, onChange)
                 span { +"In case you want things to move a little... faster." }
             }
             li {
-                enableCallSignsInput(tribe, onChange)
+                enableCallSignsInput(party, onChange)
                 span { +"Every Couple needs a Call Sign. Makes things more fun!" }
             }
             li {
-                enableBadgesInput(tribe, onChange)
-                span { +"Advanced users only: this lets you divide your tribe into two groups." }
+                enableBadgesInput(party, onChange)
+                span { +"Advanced users only: this lets you divide your party into two groups." }
             }
             li {
-                defaultBadgeInput(tribe, onChange)
+                defaultBadgeInput(party, onChange)
                 span { +"The first badge a player can be given. When badges are enabled, existing players default to having this badge." }
             }
             li {
-                altBadgeInput(tribe, onChange)
+                altBadgeInput(party, onChange)
                 span { +"The other badge a player can be given. A player can only have one badge at a time." }
             }
             li {
-                pairingRuleSelect(tribe, onChange)
+                pairingRuleSelect(party, onChange)
                 span { +"Advanced users only: This rule affects how players are assigned." }
             }
         }
     }
 
-private fun ChildrenBuilder.animationSpeedSelect(tribe: Party, onChange: ChangeEventHandler<HTMLSelectElement>) {
+private fun ChildrenBuilder.animationSpeedSelect(party: Party, onChange: ChangeEventHandler<HTMLSelectElement>) {
     label {
         htmlFor = "animation-speed"
         +"Animation Speed"
@@ -128,7 +128,7 @@ private fun ChildrenBuilder.animationSpeedSelect(tribe: Party, onChange: ChangeE
     select {
         id = "animation-speed"
         name = "animationSpeed"
-        this.value = "${tribe.animationSpeed}"
+        this.value = "${party.animationSpeed}"
         this.onChange = onChange
         listOf(0.25, 0.5, 1.0, 1.25, 1.5, 2, 3, 4)
             .map { speed ->
@@ -141,7 +141,7 @@ private fun ChildrenBuilder.animationSpeedSelect(tribe: Party, onChange: ChangeE
     }
 }
 
-private fun ChildrenBuilder.pairingRuleSelect(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) {
+private fun ChildrenBuilder.pairingRuleSelect(party: Party, onChange: (ChangeEvent<*>) -> Unit) {
     label {
         htmlFor = "pairing-rule"
         +"Pairing Rule"
@@ -149,7 +149,7 @@ private fun ChildrenBuilder.pairingRuleSelect(tribe: Party, onChange: (ChangeEve
     select {
         id = "pairing-rule"
         name = "pairingRule"
-        this.value = "${PairingRule.toValue(tribe.pairingRule)}"
+        this.value = "${PairingRule.toValue(party.pairingRule)}"
         this.onChange = { event -> onChange(event) }
         pairingRuleDescriptions
             .map { (rule, description) ->
@@ -162,81 +162,81 @@ private fun ChildrenBuilder.pairingRuleSelect(tribe: Party, onChange: (ChangeEve
     }
 }
 
-private fun ChildrenBuilder.altBadgeInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.altBadgeInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Alt Badge Name",
     id = "alt-badge-name",
     name = "alternateBadgeName",
-    value = tribe.alternateBadgeName,
+    value = party.alternateBadgeName,
     type = InputType.text,
     onChange = onChange,
 )
 
-private fun ChildrenBuilder.defaultBadgeInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.defaultBadgeInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Default Badge Name",
     id = "default-badge-name",
     name = "defaultBadgeName",
-    value = tribe.defaultBadgeName,
+    value = party.defaultBadgeName,
     type = InputType.text,
     onChange = onChange,
 )
 
-private fun ChildrenBuilder.enableBadgesInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.enableBadgesInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Badges",
     id = "badge-checkbox",
     name = "badgesEnabled",
-    value = tribe.id.value,
+    value = party.id.value,
     type = InputType.checkbox,
     onChange = onChange,
-    checked = tribe.badgesEnabled,
+    checked = party.badgesEnabled,
 )
 
-private fun ChildrenBuilder.enableAnimationsInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.enableAnimationsInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Animations",
     id = "animations-checkbox",
     name = "animationsEnabled",
-    value = tribe.id.value,
+    value = party.id.value,
     type = InputType.checkbox,
     onChange = onChange,
-    checked = tribe.animationEnabled,
+    checked = party.animationEnabled,
 )
 
-private fun ChildrenBuilder.enableCallSignsInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.enableCallSignsInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Call Signs",
     id = "call-sign-checkbox",
     name = "callSignsEnabled",
-    value = tribe.id.value,
+    value = party.id.value,
     type = InputType.checkbox,
     onChange = onChange,
-    checked = tribe.callSignsEnabled,
+    checked = party.callSignsEnabled,
 )
 
-private fun ChildrenBuilder.uniqueIdInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.uniqueIdInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Unique Id",
     id = "tribe-id",
     name = "id",
-    value = tribe.id.value,
+    value = party.id.value,
     type = InputType.text,
     onChange = onChange,
 )
 
-private fun ChildrenBuilder.emailInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.emailInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Email",
     id = "tribe-email",
     name = "email",
-    value = tribe.email ?: "",
+    value = party.email ?: "",
     type = InputType.text,
     onChange = onChange,
-    placeholder = "Enter the tribe email here",
+    placeholder = "Enter the party email here",
 )
 
-private fun ChildrenBuilder.nameInput(tribe: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
+private fun ChildrenBuilder.nameInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Name",
     id = "tribe-name",
     name = "name",
-    value = tribe.name ?: "",
+    value = party.name ?: "",
     type = InputType.text,
     onChange = onChange,
-    placeholder = "Enter the tribe name here",
+    placeholder = "Enter the party name here",
     autoFocus = true
 )
 

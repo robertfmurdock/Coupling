@@ -8,13 +8,13 @@ import com.zegreatrob.minreact.child
 
 private val LoadedPairAssignments by lazy { couplingDataLoader<PrepareSpin>() }
 
-val PrepareSpinPage = partyPageFunction { props, tribeId ->
+val PrepareSpinPage = partyPageFunction { props, partyId ->
     child(dataLoadProps(
         component = LoadedPairAssignments,
         commander = props.commander,
-        query = PartyCurrentDataQuery(tribeId),
-        toProps = { _, dispatcher, (tribe, players, currentPairsDoc, pins) ->
-            PrepareSpin(tribe, players, currentPairsDoc, pins, dispatcher)
+        query = PartyCurrentDataQuery(partyId),
+        toProps = { _, dispatcher, (party, players, currentPairsDoc, pins) ->
+            PrepareSpin(party, players, currentPairsDoc, pins, dispatcher)
         }
-    ), key = tribeId.value)
+    ), key = partyId.value)
 }

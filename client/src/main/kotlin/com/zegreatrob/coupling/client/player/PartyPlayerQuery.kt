@@ -14,10 +14,10 @@ import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-typealias TribePlayerData = Triple<Party, List<Player>, Player>
+typealias PartyPlayerData = Triple<Party, List<Player>, Player>
 
-data class TribePlayerQuery(val tribeId: PartyId, val playerId: String?) :
-    SimpleSuspendAction<PartyPlayerQueryDispatcher, TribePlayerData?> {
+data class PartyPlayerQuery(val partyId: PartyId, val playerId: String?) :
+    SimpleSuspendAction<PartyPlayerQueryDispatcher, PartyPlayerData?> {
     override val performFunc = link(PartyPlayerQueryDispatcher::perform)
 }
 
@@ -25,15 +25,15 @@ interface PartyPlayerQueryDispatcher : PartyIdGetSyntax,
     PartyPlayersSyntax,
     FindCallSignActionDispatcher,
     ExecutableActionExecuteSyntax {
-    suspend fun perform(query: TribePlayerQuery) = query.get()
+    suspend fun perform(query: PartyPlayerQuery) = query.get()
 
-    private suspend fun TribePlayerQuery.get() = tribeId.getData()
-        .let { (tribe, players) ->
-            if (tribe == null)
+    private suspend fun PartyPlayerQuery.get() = partyId.getData()
+        .let { (party, players) ->
+            if (party == null)
                 null
             else
                 Triple(
-                    tribe,
+                    party,
                     players,
                     players.findOrDefaultNew(playerId)
                 )

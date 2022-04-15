@@ -16,8 +16,8 @@ import com.zegreatrob.coupling.client.player.retired.RetiredPlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayersPage
 import com.zegreatrob.coupling.client.stats.StatisticsPage
 import com.zegreatrob.coupling.client.party.GraphIQLPage
-import com.zegreatrob.coupling.client.party.TribeConfigPage
-import com.zegreatrob.coupling.client.party.TribeListPage
+import com.zegreatrob.coupling.client.party.PartyConfigPage
+import com.zegreatrob.coupling.client.party.PartyListPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
@@ -71,13 +71,13 @@ val lostRoute = FC<Props> {
 private fun ChildrenBuilder.authenticatedRoutes(config: ClientConfig) {
     Route { path = "/"; element = redirectToParties() }
     if (config.prereleaseMode) couplingRoute("/user", UserPage)
-    couplingRoute("/tribes/", TribeListPage)
+    couplingRoute("/tribes/", PartyListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/graphiql/", GraphIQLPage)
-    couplingRoute("/new-tribe/", TribeConfigPage)
+    couplingRoute("/new-tribe/", PartyConfigPage)
     Route { path = "/:tribeId"; element = redirectToCurrentPairs() }
     couplingRoute("/:tribeId/prepare/", PrepareSpinPage)
-    couplingRoute("/:tribeId/edit/", TribeConfigPage)
+    couplingRoute("/:tribeId/edit/", PartyConfigPage)
     couplingRoute("/:tribeId/history", HistoryPage)
     couplingRoute("/:tribeId/pins", PinListPage)
     couplingRoute("/:tribeId/pin/new", PinPage)

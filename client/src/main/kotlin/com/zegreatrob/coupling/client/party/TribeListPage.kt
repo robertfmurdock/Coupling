@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.minreact.child
 import react.FC
 
-private val LoadedTribeList = couplingDataLoader<TribeList>()
+private val LoadedPartyList = couplingDataLoader<PartyList>()
 
-val TribeListPage = FC<PageProps> { props ->
+val PartyListPage = FC<PageProps> { props ->
     child(dataLoadProps(
-        LoadedTribeList,
+        LoadedPartyList,
         commander = props.commander,
-        query = TribeListQuery,
-        toProps = { _, _, tribes -> TribeList(tribes) }
+        query = PartyListQuery,
+        toProps = { _, _, parties -> PartyList(parties) }
     ))
 }

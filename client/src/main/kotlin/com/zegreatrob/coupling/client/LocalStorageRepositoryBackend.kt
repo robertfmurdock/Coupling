@@ -21,7 +21,7 @@ class LocalStorageRepositoryBackend {
 }
 
 fun List<Record<Party>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
-fun String.toPartyRecords(): List<Record<Party>> = fromJsonString<List<JsonTribeRecord>>().map { it.toModelRecord() }
+fun String.toPartyRecords(): List<Record<Party>> = fromJsonString<List<JsonPartyRecord>>().map { it.toModelRecord() }
 
 fun List<PartyRecord<Player>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPlayerRecords(): List<PartyRecord<Player>> = fromJsonString<List<JsonPlayerRecord>>().map { it.toModel() }

@@ -10,13 +10,13 @@ import com.zegreatrob.minreact.child
 
 private val LoadedPlayer = couplingDataLoader<PlayerConfig>()
 
-val PlayerPage = partyPageFunction { props: PageProps, tribeId: PartyId ->
+val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
     child(dataLoadProps(
         LoadedPlayer,
         commander = props.commander,
-        query = TribePlayerQuery(tribeId, props.playerId),
-        toProps = { reload, commandFunc, (tribe, players, player) ->
-            PlayerConfig(tribe, player, players, reload, commandFunc)
+        query = PartyPlayerQuery(partyId, props.playerId),
+        toProps = { reload, commandFunc, (party, players, player) ->
+            PlayerConfig(party, player, players, reload, commandFunc)
         }
-    ), key = "${tribeId.value}-${props.playerId}")
+    ), key = "${partyId.value}-${props.playerId}")
 }

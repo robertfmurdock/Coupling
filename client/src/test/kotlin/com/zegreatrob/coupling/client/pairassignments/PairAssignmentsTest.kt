@@ -21,7 +21,7 @@ import kotlin.test.Test
 
 class PairAssignmentsTest {
 
-    val tribe = Party(PartyId("Party"))
+    val party = Party(PartyId("Party"))
 
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs(): Unit = setup(object {
@@ -45,7 +45,7 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments(
-                tribe,
+                party,
                 players,
                 pairAssignments,
                 { pairAssignments = it },
@@ -75,7 +75,7 @@ class PairAssignmentsTest {
     }) exercise {
         shallow(
             PairAssignments(
-                tribe,
+                party,
                 players,
                 null,
                 {},

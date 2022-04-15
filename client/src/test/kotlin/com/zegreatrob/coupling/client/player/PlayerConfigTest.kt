@@ -21,10 +21,10 @@ class PlayerConfigTest {
 
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
-        val tribe = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
+        val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
         val player = Player(id = "blarg")
     }) exercise {
-        shallow(PlayerConfig(tribe, player, emptyList(), {}, StubDispatchFunc()))
+        shallow(PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
             .shallow()
     } verify { wrapper ->
@@ -35,10 +35,10 @@ class PlayerConfigTest {
 
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
-        val tribe = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
+        val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
         val player = Player(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfig(tribe, player, emptyList(), {}, StubDispatchFunc()))
+        shallow(PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
             .shallow()
     } verify { wrapper ->
@@ -49,13 +49,13 @@ class PlayerConfigTest {
 
     @Test
     fun submitWillSaveAndReload() = setup(object {
-        val tribe = Party(PartyId("party"))
+        val party = Party(PartyId("party"))
         val player = Player(id = "blarg", badge = Badge.Default.value)
         val reloaderSpy = SpyData<Unit, Unit>()
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper =
-            shallow(PlayerConfig(tribe, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatchFunc))
+            shallow(PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatchFunc))
     }) exercise {
         wrapper.find(playerConfigContent)
             .shallow()
@@ -68,7 +68,7 @@ class PlayerConfigTest {
     } verify {
         stubDispatchFunc.commandsDispatched<SavePlayerCommand>()
             .assertIsEqualTo(
-                listOf(SavePlayerCommand(tribe.id, player.copy(name = "nonsense")))
+                listOf(SavePlayerCommand(party.id, player.copy(name = "nonsense")))
             )
         reloaderSpy.callCount.assertIsEqualTo(1)
     }
@@ -79,12 +79,12 @@ class PlayerConfigTest {
             override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         }
         val pathSetterSpy = SpyData<String, Unit>()
-        val tribe = Party(PartyId("party"))
+        val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
-            PlayerConfig(tribe, player, emptyList(), {}, stubDispatchFunc),
+            PlayerConfig(party, player, emptyList(), {}, stubDispatchFunc),
             playerConfigFunc(windowFuncs)
         ).find(playerConfigContent)
             .shallow()
@@ -95,10 +95,10 @@ class PlayerConfigTest {
     } verify {
         stubDispatchFunc.commandsDispatched<DeletePlayerCommand>()
             .assertIsEqualTo(
-                listOf(DeletePlayerCommand(tribe.id, player.id))
+                listOf(DeletePlayerCommand(party.id, player.id))
             )
         pathSetterSpy.spyReceivedValues.contains(
-            "/${tribe.id.value}/pairAssignments/current/"
+            "/${party.id.value}/pairAssignments/current/"
         )
     }
 
@@ -107,12 +107,12 @@ class PlayerConfigTest {
         val windowFunctions = object : WindowFunctions {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         }
-        val tribe = Party(PartyId("party"))
+        val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
-            PlayerConfig(tribe, player, emptyList(), {}, stubDispatchFunc),
+            PlayerConfig(party, player, emptyList(), {}, stubDispatchFunc),
             playerConfigFunc(windowFunctions)
         ).find(playerConfigContent)
             .shallow()
@@ -125,9 +125,9 @@ class PlayerConfigTest {
 
     @Test
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = setup(object {
-        val tribe = Party(PartyId("party"))
+        val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
-        val wrapper = shallow(PlayerConfig(tribe, player, emptyList(), {}, StubDispatchFunc()))
+        val wrapper = shallow(PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
             .shallow()
     }) exercise {
@@ -140,10 +140,10 @@ class PlayerConfigTest {
 
     @Test
     fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = setup(object {
-        val tribe = Party(PartyId("party"))
+        val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
     }) exercise {
-        shallow(PlayerConfig(tribe, player, emptyList(), {}, StubDispatchFunc()))
+        shallow(PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
             .shallow()
     } verify { wrapper ->

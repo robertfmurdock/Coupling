@@ -14,13 +14,13 @@ import com.zegreatrob.testmints.setup
 import react.router.Navigate
 import kotlin.test.Test
 
-class TribeConfigTest {
+class PartyConfigTest {
 
     @Test
-    fun willDefaultTribeThatIsMissingData(): Unit = setup(object {
-        val tribe = Party(PartyId("1"), name = "1")
+    fun willDefaultPartyThatIsMissingData(): Unit = setup(object {
+        val party = Party(PartyId("1"), name = "1")
     }) exercise {
-        shallow(TribeConfig(tribe, StubDispatchFunc()))
+        shallow(PartyConfig(party, StubDispatchFunc()))
             .find(partyConfigContent)
             .shallow()
     } verify { wrapper ->
@@ -51,7 +51,7 @@ class TribeConfigTest {
 
     @Test
     fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheParty() = setup(object {
-        val tribe = Party(
+        val party = Party(
             PartyId("1"),
             name = "1",
             alternateBadgeName = "alt",
@@ -60,28 +60,28 @@ class TribeConfigTest {
             pairingRule = PairingRule.PreferDifferentBadge
         )
         val stubDispatchFunc = StubDispatchFunc<PartyConfigDispatcher>()
-        val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
+        val wrapper = shallow(PartyConfig(party, stubDispatchFunc))
     }) exercise {
         wrapper.find(partyConfigContent)
             .shallow()
             .find(ConfigForm)
             .props()
             .onSubmit()
-        stubDispatchFunc.simulateSuccess<SaveTribeCommand>()
+        stubDispatchFunc.simulateSuccess<SavePartyCommand>()
     } verify {
-        stubDispatchFunc.commandsDispatched<SaveTribeCommand>()
-            .assertIsEqualTo(listOf(SaveTribeCommand(tribe)))
+        stubDispatchFunc.commandsDispatched<SavePartyCommand>()
+            .assertIsEqualTo(listOf(SavePartyCommand(party)))
         wrapper
             .find(Navigate).props().to
             .assertIsEqualTo("/tribes/")
     }
 
     @Test
-    fun whenTribeIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
-        val tribe = Party(PartyId(""))
+    fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
+        val party = Party(PartyId(""))
         val stubDispatchFunc = StubDispatchFunc<PartyConfigDispatcher>()
-        val wrapper = shallow(TribeConfig(tribe, stubDispatchFunc))
-        val automatedTribeId = wrapper.find(partyConfigContent)
+        val wrapper = shallow(PartyConfig(party, stubDispatchFunc))
+        val automatedPartyId = wrapper.find(partyConfigContent)
             .shallow()
             .find<Any>("#tribe-id")
             .prop("value")
@@ -92,17 +92,17 @@ class TribeConfigTest {
             .props()
             .onSubmit()
     } verify {
-        stubDispatchFunc.commandsDispatched<SaveTribeCommand>()
+        stubDispatchFunc.commandsDispatched<SavePartyCommand>()
             .first()
-            .tribe.id.value.run {
+            .party.id.value.run {
                 assertIsNotEqualTo("")
-                assertIsEqualTo(automatedTribeId)
+                assertIsEqualTo(automatedPartyId)
             }
         wrapper.find(partyConfigContent)
             .shallow()
             .find<Any>("#tribe-id")
             .prop("value")
-            .assertIsEqualTo(automatedTribeId)
+            .assertIsEqualTo(automatedPartyId)
     }
 
 }

@@ -7,16 +7,16 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import react.dom.html.ReactHTML.div
 
-data class PartyBrowser(val tribe: Party) : DataPropsBind<PartyBrowser>(partyBrowser)
+data class PartyBrowser(val party: Party) : DataPropsBind<PartyBrowser>(partyBrowser)
 
 private val styles = useStyles("party/TribeBrowser")
 
-val partyBrowser = tmFC<PartyBrowser> { (tribe) ->
+val partyBrowser = tmFC<PartyBrowser> { (party) ->
     div {
         className = styles.className
         ConfigHeader {
-            this.party = tribe
-            +(tribe.name ?: "")
+            this.party = party
+            +(party.name ?: "")
         }
     }
 }

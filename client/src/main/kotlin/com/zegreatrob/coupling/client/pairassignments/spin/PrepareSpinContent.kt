@@ -37,7 +37,7 @@ import react.key
 private val styles = useStyles("PrepareSpin")
 
 data class PrepareSpinContent(
-    var tribe: Party,
+    var party: Party,
     var playerSelections: List<Pair<Player, Boolean>>,
     var pins: List<Pin>,
     var pinSelections: List<String?>,
@@ -47,14 +47,14 @@ data class PrepareSpinContent(
 ) : DataPropsBind<PrepareSpinContent>(prepareSpinContent)
 
 val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
-    val (tribe, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props
+    val (party, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props
 
     val enabled = playerSelections.any { it.second }
 
     div {
         className = styles.className
         child(PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2"))) {
-            div { child(PartyBrowser(tribe)) }
+            div { child(PartyBrowser(party)) }
             div {
                 div {
                     spinButton(onSpin, enabled = enabled)

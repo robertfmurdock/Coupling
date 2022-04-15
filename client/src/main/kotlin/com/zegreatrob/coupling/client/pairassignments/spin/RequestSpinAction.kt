@@ -7,11 +7,11 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.SdkSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class RequestSpinAction(val tribeId: PartyId, val players: List<Player>, val pins: List<Pin>) :
+data class RequestSpinAction(val partyId: PartyId, val players: List<Player>, val pins: List<Pin>) :
     SimpleSuspendAction<RequestSpinActionDispatcher, PairAssignmentDocument> {
     override val performFunc = link(RequestSpinActionDispatcher::perform)
 }
 
 interface RequestSpinActionDispatcher : SdkSyntax {
-    suspend fun perform(action: RequestSpinAction) = with(action) { sdk.requestSpin(tribeId, players, pins) }
+    suspend fun perform(action: RequestSpinAction) = with(action) { sdk.requestSpin(partyId, players, pins) }
 }

@@ -12,17 +12,17 @@ import kotlinx.coroutines.coroutineScope
 
 typealias PlayerListData = Pair<Party, List<Player>>
 
-data class RetiredPlayerListQuery(val tribeId: PartyId) :
+data class RetiredPlayerListQuery(val partyId: PartyId) :
     SimpleSuspendAction<RetiredPlayerListQueryDispatcher, PlayerListData?> {
     override val performFunc = link(RetiredPlayerListQueryDispatcher::perform)
 }
 
 interface RetiredPlayerListQueryDispatcher : PartyIdGetSyntax, PartyRetiredPlayersSyntax {
-    suspend fun perform(query: RetiredPlayerListQuery) = getData(query.tribeId)
+    suspend fun perform(query: RetiredPlayerListQuery) = getData(query.partyId)
 
-    private suspend fun getData(tribeId: PartyId) = coroutineScope {
+    private suspend fun getData(partyId: PartyId) = coroutineScope {
         await(
-            async { tribeId.get() },
-            async { tribeId.loadRetiredPlayers() })
-    }.let { (tribe, players) -> if (tribe == null) null else tribe to players }
+            async { partyId.get() },
+            async { partyId.loadRetiredPlayers() })
+    }.let { (party, players) -> if (party == null) null else party to players }
 }

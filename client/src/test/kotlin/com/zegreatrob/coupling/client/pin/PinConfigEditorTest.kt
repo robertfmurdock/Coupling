@@ -16,10 +16,10 @@ class PinConfigEditorTest {
 
     @Test
     fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
-        val tribe = Party(PartyId(""))
+        val party = Party(PartyId(""))
         val pin = Pin(id = null)
     }) exercise {
-        shallow(PinConfig(tribe, pin, emptyList(), {}, StubDispatchFunc()))
+        shallow(PinConfig(party, pin, emptyList(), {}, StubDispatchFunc()))
             .find(pinConfigContent)
             .shallow()
     } verify { wrapper ->
@@ -31,10 +31,10 @@ class PinConfigEditorTest {
 
     @Test
     fun whenGivenPinHasIdWillShowDeleteButton() = setup(object {
-        val tribe = Party(PartyId(""))
+        val party = Party(PartyId(""))
         val pin = Pin(id = "excellent id")
     }) exercise {
-        shallow(PinConfig(tribe, pin, emptyList(), {}, StubDispatchFunc()))
+        shallow(PinConfig(party, pin, emptyList(), {}, StubDispatchFunc()))
             .find(pinConfigContent)
             .shallow()
     } verify { wrapper ->
@@ -46,14 +46,14 @@ class PinConfigEditorTest {
 
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = setup(object {
-        val tribe = Party(PartyId("dumb tribe"))
+        val party = Party(PartyId("dumb tribe"))
         val pin = Pin(id = null, name = "")
         val newName = "pin new name"
         val newIcon = "pin new icon"
 
         val dispatchFunc = StubDispatchFunc<PinCommandDispatcher>()
 
-        val wrapper = shallow(PinConfig(tribe, pin, emptyList(), {}, dispatchFunc))
+        val wrapper = shallow(PinConfig(party, pin, emptyList(), {}, dispatchFunc))
     }) {
         wrapper.find(pinConfigContent).shallow().apply {
             simulateInputChange("name", newName)
@@ -68,7 +68,7 @@ class PinConfigEditorTest {
             .onSubmit()
     } verify {
         dispatchFunc.commandsDispatched<SavePinCommand>()
-            .assertIsEqualTo(listOf(SavePinCommand(tribe.id, Pin(name = newName, icon = newIcon))))
+            .assertIsEqualTo(listOf(SavePinCommand(party.id, Pin(name = newName, icon = newIcon))))
     }
 
 }

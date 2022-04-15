@@ -24,14 +24,14 @@ import react.useMemo
 import react.useState
 
 data class SocketedPairAssignments(
-    val tribe: Party,
+    val party: Party,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val controls: Controls<PairAssignmentsCommandDispatcher>,
     val allowSave: Boolean
 ) : DataPropsBind<SocketedPairAssignments>(socketedPairAssignments)
 
-val socketedPairAssignments = tmFC<SocketedPairAssignments> { (tribe, players, originalPairs, controls, allowSave) ->
+val socketedPairAssignments = tmFC<SocketedPairAssignments> { (party, players, originalPairs, controls, allowSave) ->
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
 
     val (message, setMessage) = useState(disconnectedMessage)
@@ -46,11 +46,11 @@ val socketedPairAssignments = tmFC<SocketedPairAssignments> { (tribe, players, o
     }
 
     if (token.isNotBlank()) {
-        child(CouplingWebsocket(tribe.id, onMessage = onMessageFunc, token = token) {
+        child(CouplingWebsocket(party.id, onMessage = onMessageFunc, token = token) {
             val updatePairAssignments = useMemo(controls.dispatchFunc) {
-                updatePairAssignmentsFunc(setPairAssignments, controls.dispatchFunc, tribe.id)
+                updatePairAssignmentsFunc(setPairAssignments, controls.dispatchFunc, party.id)
             }
-            child(PairAssignments(tribe, players, pairAssignments, updatePairAssignments, controls, message, allowSave))
+            child(PairAssignments(party, players, pairAssignments, updatePairAssignments, controls, message, allowSave))
         })
     } else {
         div()
@@ -72,8 +72,8 @@ private fun handleMessage(
 private fun updatePairAssignmentsFunc(
     setPairAssignments: StateSetter<PairAssignmentDocument?>,
     dispatchFunc: DispatchFunc<out PairAssignmentsCommandDispatcher>,
-    tribeId: PartyId
+    partyId: PartyId
 ) = { new: PairAssignmentDocument ->
     setPairAssignments(new)
-    dispatchFunc({ SavePairAssignmentsCommand(tribeId, new) }, {}).invoke()
+    dispatchFunc({ SavePairAssignmentsCommand(partyId, new) }, {}).invoke()
 }

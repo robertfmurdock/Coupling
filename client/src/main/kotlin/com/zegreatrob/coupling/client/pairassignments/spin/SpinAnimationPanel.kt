@@ -22,7 +22,7 @@ import react.dom.html.ReactHTML.div
 import react.key
 
 data class SpinAnimationPanel(
-    val tribe: Party,
+    val party: Party,
     val rosteredPairAssignments: RosteredPairAssignments,
     val state: SpinAnimationState
 ) : DataPropsBind<SpinAnimationPanel>(spinAnimationPanel)
@@ -37,21 +37,21 @@ data class SpinStateData(
 
 private val styles = useStyles("pairassignments/SpinAnimation")
 
-val spinAnimationPanel = tmFC<SpinAnimationPanel> { (tribe, rosteredPairAssignments, state) ->
+val spinAnimationPanel = tmFC<SpinAnimationPanel> { (party, rosteredPairAssignments, state) ->
     val pairAssignments = rosteredPairAssignments.pairAssignments
     val players = rosteredPairAssignments.selectedPlayers
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
     div {
         child(PairAssignmentsHeader(pairAssignments))
-        assignedPairs(tribe, revealedPairs)
+        assignedPairs(party, revealedPairs)
         playerSpotlight(shownPlayer)
         playerRoster(rosterPlayers)
     }
 }
 
-private fun ChildrenBuilder.assignedPairs(tribe: Party, revealedPairs: List<PinnedCouplingPair>) = div {
+private fun ChildrenBuilder.assignedPairs(party: Party, revealedPairs: List<PinnedCouplingPair>) = div {
     className = styles["pairAssignments"]
-    revealedPairs.forEachIndexed { index, it -> child(AssignedPair(tribe, it, false), key = "$index") }
+    revealedPairs.forEachIndexed { index, it -> child(AssignedPair(party, it, false), key = "$index") }
 }
 
 private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {

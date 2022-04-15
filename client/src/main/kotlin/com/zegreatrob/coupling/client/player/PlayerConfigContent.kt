@@ -182,16 +182,16 @@ private fun ChildrenBuilder.badgeConfig(
     span { +"Your badge makes you feel... different than the others." }
 }
 
-private fun ChildrenBuilder.altBadgeOption(tribe: Party) = option {
+private fun ChildrenBuilder.altBadgeOption(party: Party) = option {
     id = "alt-badge-option"
     key = "${Badge.Alternate.value}"
     value = "${Badge.Alternate.value}"
-    label = tribe.alternateBadgeName
+    label = party.alternateBadgeName
 }
 
-private fun ChildrenBuilder.defaultBadgeOption(tribe: Party) = option {
+private fun ChildrenBuilder.defaultBadgeOption(party: Party) = option {
     id = "default-badge-option"
     key = "${Badge.Default.value}"
     value = "${Badge.Default.value}"
-    label = tribe.defaultBadgeName
+    label = party.defaultBadgeName
 }

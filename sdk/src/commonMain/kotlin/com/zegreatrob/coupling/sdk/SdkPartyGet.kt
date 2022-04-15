@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.JsonTribeRecord
+import com.zegreatrob.coupling.json.JsonPartyRecord
 import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.party.PartyGet
@@ -10,6 +10,6 @@ interface SdkPartyGet : PartyGet, GqlQueryComponent {
     override suspend fun getPartyRecord(tribeId: PartyId) = performQueryGetComponent(
         tribeId,
         TribeData,
-        JsonTribeRecord::toModelRecord
+        JsonPartyRecord::toModelRecord
     )
 }

@@ -17,11 +17,11 @@ import react.create
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 
-data class TribeList(val tribes: List<Party>) : DataPropsBind<TribeList>(tribeList)
+data class PartyList(val parties: List<Party>) : DataPropsBind<PartyList>(partyList)
 
 private val styles = useStyles("party/TribeList")
 
-val tribeList = tmFC<TribeList> { (tribes) ->
+val partyList = tmFC<PartyList> { (parties) ->
     child(
         PageFrame(
             borderColor = Color("rgb(94, 84, 102)"),
@@ -42,15 +42,15 @@ val tribeList = tmFC<TribeList> { (tribes) ->
             NotificationButton()
         }
         div {
-            tribes.forEach { tribe ->
-                child(PartyCard(tribe), key = tribe.id.value)
+            parties.forEach { party ->
+                child(PartyCard(party), key = party.id.value)
             }
         }
-        div { newTribeButton(styles["newTribeButton"]) }
+        div { newPartyButton(styles["newTribeButton"]) }
     }
 }
 
-private fun ChildrenBuilder.newTribeButton(className: ClassName) = Link {
+private fun ChildrenBuilder.newPartyButton(className: ClassName) = Link {
     to = "/new-tribe/"
     draggable = false
     tabIndex = -1

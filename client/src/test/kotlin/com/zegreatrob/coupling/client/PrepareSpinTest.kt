@@ -49,11 +49,11 @@ class PrepareSpinTest {
 
     @Test
     fun whenSelectedPinIsClickedWillDeselectPin() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
-        val wrapper = shallow(PrepareSpin(tribe, players, null, pins, StubDispatchFunc()))
+        val wrapper = shallow(PrepareSpin(party, players, null, pins, StubDispatchFunc()))
     }) exercise {
         wrapper.find(prepareSpinContent)
             .shallow()
@@ -70,12 +70,12 @@ class PrepareSpinTest {
 
     @Test
     fun whenDeselectedPinIsClickedWillSelectPin() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin(tribe, players, null, pins, StubDispatchFunc()))
+        val wrapper = shallow(PrepareSpin(party, players, null, pins, StubDispatchFunc()))
     }) {
         wrapper.find(prepareSpinContent)
             .shallow()
@@ -100,11 +100,11 @@ class PrepareSpinTest {
 
     @Test
     fun whenThereIsNoHistoryAllPlayersWillDefaultToDeselected() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val players = stubPlayers(3)
         val currentPairs = null
     }) exercise {
-        shallow(PrepareSpin(tribe, players, currentPairs, emptyList(), StubDispatchFunc()))
+        shallow(PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()))
     } verify { wrapper ->
         wrapper.find(prepareSpinContent)
             .shallow()
@@ -113,7 +113,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenAllPlayersAreDeselectedSpinButtonWillBeDisabled() = asyncSetup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(
             PairAssignmentDocumentId(""),
@@ -123,7 +123,7 @@ class PrepareSpinTest {
             )
         )
         val result = render(
-            PrepareSpin(tribe, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
+            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
             json("wrapper" to MemoryRouter)
         )
     }) exercise {
@@ -141,10 +141,10 @@ class PrepareSpinTest {
 
     @Test
     fun whenTheAllButtonIsClickedAllPlayersBecomeSelected() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val players = stubPlayers(3)
         val currentPairs = null
-        val wrapper = shallow(PrepareSpin(tribe, players, currentPairs, emptyList(), StubDispatchFunc()))
+        val wrapper = shallow(PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()))
     }) exercise {
         wrapper.find(prepareSpinContent)
             .shallow()
@@ -158,14 +158,14 @@ class PrepareSpinTest {
 
     @Test
     fun whenTheNoneButtonIsClickedAllPlayersBecomeDeselected() = setup(object {
-        val tribe = stubParty()
+        val party = stubParty()
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),
             pairs = players.map { pairOf(it).withPins(emptyList()) }
         )
-        val wrapper = shallow(PrepareSpin(tribe, players, currentPairs, emptyList(), StubDispatchFunc()))
+        val wrapper = shallow(PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()))
     }) exercise {
         wrapper.find(prepareSpinContent)
             .shallow()

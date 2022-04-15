@@ -10,22 +10,22 @@ import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-typealias TribePinData = Triple<Party, List<Pin>, Pin>
+typealias PartyPinData = Triple<Party, List<Pin>, Pin>
 
-data class PartyPinQuery(val tribeId: PartyId, val pinId: String?) :
-    SimpleSuspendAction<PartyPinQueryDispatcher, TribePinData?> {
+data class PartyPinQuery(val partyId: PartyId, val pinId: String?) :
+    SimpleSuspendAction<PartyPinQueryDispatcher, PartyPinData?> {
     override val performFunc = link(PartyPinQueryDispatcher::perform)
 }
 
 interface PartyPinQueryDispatcher : PartyIdGetSyntax, PartyPinsSyntax {
     suspend fun perform(query: PartyPinQuery) = query.getData()
 
-    private suspend fun PartyPinQuery.getData() = tribeId.getData()
-        ?.let { (tribe, pins) -> TribePinData(tribe, pins, pins.findOrDefaultNew(pinId)) }
+    private suspend fun PartyPinQuery.getData() = partyId.getData()
+        ?.let { (party, pins) -> PartyPinData(party, pins, pins.findOrDefaultNew(pinId)) }
 
     private suspend fun PartyId.getData() = coroutineScope {
         await(async { get() }, async { getPins() })
-    }.let { (tribe, pins) -> if (tribe == null) null else Pair(tribe, pins) }
+    }.let { (party, pins) -> if (party == null) null else Pair(party, pins) }
 }
 
 private fun List<Pin>.findOrDefaultNew(pinId: String?) = find { it.id == pinId } ?: Pin()

@@ -18,26 +18,26 @@ class CouplingWebsocketTest {
 
     @Test
     fun connectsToTheWebsocketUsingParty(): Unit = setup(object {
-        val tribeId = PartyId("bwahahahaha")
+        val partyId = PartyId("bwahahahaha")
         val useSsl = false
         val token = "${uuid4()}"
     }) exercise {
-        shallow { child(CouplingWebsocket(tribeId, useSsl, { }, token) { div {} }) }
+        shallow { child(CouplingWebsocket(partyId, useSsl, { }, token) { div {} }) }
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
             .assertIsEqualTo(
-                "ws://${window.location.host}/?tribeId=${tribeId.value}&token=$token"
+                "ws://${window.location.host}/?tribeId=${partyId.value}&token=$token"
             )
     }
 
     @Test
     fun whenSslIsOnWillUseHttps() = setup(object {
-        val tribeId = PartyId("LOL")
+        val partyId = PartyId("LOL")
         val useSsl = true
         val token = "${uuid4()}"
     }) exercise {
-        shallow { child(CouplingWebsocket(tribeId, useSsl, { }, token) { div {} }) }
+        shallow { child(CouplingWebsocket(partyId, useSsl, { }, token) { div {} }) }
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
@@ -48,9 +48,9 @@ class CouplingWebsocketTest {
 
     @Test
     fun whenSocketIsClosedUsesNotConnectedMessage(): Unit = setup(object {
-        val tribeId = PartyId("Woo")
+        val partyId = PartyId("Woo")
         var lastMessage: Message? = null
-        val wrapper = shallow { child(CouplingWebsocket(tribeId, false, { lastMessage = it }, "") { div {} }) }
+        val wrapper = shallow { child(CouplingWebsocket(partyId, false, { lastMessage = it }, "") { div {} }) }
         val websocketProps = wrapper.find(reactWebsocket).props()
         val expectedMessage = "Not connected"
     }) exercise {

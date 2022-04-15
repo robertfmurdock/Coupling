@@ -15,15 +15,15 @@ import react.dom.html.ReactHTML.div
 import react.key
 import react.router.dom.Link
 
-data class RetiredPlayers(val tribe: Party, val retiredPlayers: List<Player>) :
+data class RetiredPlayers(val party: Party, val retiredPlayers: List<Player>) :
     DataPropsBind<RetiredPlayers>(com.zegreatrob.coupling.client.player.retired.retiredPlayers)
 
 private val styles = useStyles("player/RetiredPlayers")
 
-val retiredPlayers = tmFC<RetiredPlayers> { (tribe, players) ->
+val retiredPlayers = tmFC<RetiredPlayers> { (party, players) ->
     div {
         className = styles.className
-        child(PartyBrowser(tribe))
+        child(PartyBrowser(party))
         div {
             className = styles["header"]
             +"Retired Players"
@@ -31,7 +31,7 @@ val retiredPlayers = tmFC<RetiredPlayers> { (tribe, players) ->
         div {
             players.forEach { player ->
                 Link {
-                    to = tribe.id.with(player).playerConfigPage()
+                    to = party.id.with(player).playerConfigPage()
                     draggable = false
                     key = player.id
                     child(PlayerCard(player, deselected = true))

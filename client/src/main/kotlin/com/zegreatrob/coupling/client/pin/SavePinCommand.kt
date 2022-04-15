@@ -13,8 +13,8 @@ data class SavePinCommand(val id: PartyId, val updatedPin: Pin) :
 
 interface SavePinCommandDispatcher : PartyPinSaveSyntax {
 
-    suspend fun perform(command: SavePinCommand) = command.tribePin()
+    suspend fun perform(command: SavePinCommand) = command.partyPin()
         .save()
 
-    private fun SavePinCommand.tribePin() = id.with(updatedPin)
+    private fun SavePinCommand.partyPin() = id.with(updatedPin)
 }

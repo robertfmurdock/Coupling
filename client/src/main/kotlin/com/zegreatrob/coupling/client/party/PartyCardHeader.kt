@@ -9,12 +9,12 @@ import com.zegreatrob.minreact.tmFC
 
 private val styles = useStyles("party/TribeCard")
 
-data class TribeCardHeader(val tribe: Party, val size: Int) : DataPropsBind<TribeCardHeader>(tribeCardHeader)
+data class PartyCardHeader(val tribe: Party, val size: Int) : DataPropsBind<PartyCardHeader>(partyCardHeader)
 
-val tribeCardHeader = tmFC<TribeCardHeader> { (tribe, size) ->
+val partyCardHeader = tmFC<PartyCardHeader> { (party, size) ->
     CardHeader {
         this.size = size
         this.className = styles["header"]
-        this.headerContent = tribe.name ?: ""
+        this.headerContent = party.name ?: ""
     }
 }

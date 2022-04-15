@@ -15,26 +15,26 @@ import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class TribeConfig(val tribe: Party, val dispatchFunc: DispatchFunc<out PartyConfigDispatcher>) :
-    DataPropsBind<TribeConfig>(tribeConfig)
+data class PartyConfig(val tribe: Party, val dispatchFunc: DispatchFunc<out PartyConfigDispatcher>) :
+    DataPropsBind<PartyConfig>(partyConfig)
 
 interface PartyConfigDispatcher : SavePartyCommandDispatcher, DeletePartyCommandDispatcher {
     override val partyRepository: PartyRepository
 }
 
-val tribeConfig = tmFC { (tribe, commandFunc): TribeConfig ->
-    val isNew = tribe.id.value == ""
-    val (values, onChange) = useForm(tribe.withDefaultPartyId().toSerializable().toJsonDynamic().unsafeCast<Json>())
-    val updatedTribe = values.correctTypes().fromJsonDynamic<JsonParty>().toModel()
+val partyConfig = tmFC { (party, commandFunc): PartyConfig ->
+    val isNew = party.id.value == ""
+    val (values, onChange) = useForm(party.withDefaultPartyId().toSerializable().toJsonDynamic().unsafeCast<Json>())
+    val updatedParty = values.correctTypes().fromJsonDynamic<JsonParty>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val redirectToTribeList = { setRedirectUrl(Paths.partyList()) }
-    val onSave = commandFunc({ SaveTribeCommand(updatedTribe) }, { redirectToTribeList() })
-    val onDelete = if (isNew) null else commandFunc({ DeletePartyCommand(tribe.id) }, { redirectToTribeList() })
+    val redirectToPartyList = { setRedirectUrl(Paths.partyList()) }
+    val onSave = commandFunc({ SavePartyCommand(updatedParty) }, { redirectToPartyList() })
+    val onDelete = if (isNew) null else commandFunc({ DeletePartyCommand(party.id) }, { redirectToPartyList() })
 
     if (redirectUrl != null)
         Navigate { to = redirectUrl }
     else {
-        child(PartyConfigContent(updatedTribe, isNew, onChange, onSave, onDelete))
+        child(PartyConfigContent(updatedParty, isNew, onChange, onSave, onDelete))
     }
 }
 

@@ -20,31 +20,31 @@ import react.dom.html.ReactHTML
 import react.router.dom.Link
 import kotlin.collections.set
 
-data class PartyCard(val tribe: Party, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
+data class PartyCard(val party: Party, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
 
 private val styles = useStyles("party/TribeCard")
 
-val partyCard = tmFC<PartyCard> { (tribe, size) ->
+val partyCard = tmFC<PartyCard> { (party, size) ->
     Link {
-        to = tribe.id.currentPairsPage()
+        to = party.id.currentPairsPage()
         visuallyHidden { +"Tribe Home Page" }
         cssSpan(
             attrs = {
                 classes = classes + styles.className.toString()
-                attributes["data-tribe-id"] = tribe.id.value
+                attributes["data-tribe-id"] = party.id.value
                 ariaHidden = true
             },
-            css = tribeCardCss(size)
+            css = partyCardCss(size)
         ) {
             cssDiv(css = { margin((size * 0.02).px) }) {
-                child(TribeCardHeader(tribe, size))
-                tribeGravatar(tribe, size)
+                child(PartyCardHeader(party, size))
+                partyGravatar(party, size)
             }
         }
     }
 }
 
-private fun tribeCardCss(size: Int): RuleSet = {
+private fun partyCardCss(size: Int): RuleSet = {
     val totalExtraMarginNeededForImage = 2 * (size * 0.02)
     width = (size + totalExtraMarginNeededForImage).px
     height = (size * 1.4).px
@@ -53,20 +53,20 @@ private fun tribeCardCss(size: Int): RuleSet = {
     flex(0.0, 0.0)
 }
 
-val noTribeImagePath = pngPath("tribes/no-tribe")
+val noPartyImagePath = pngPath("tribes/no-tribe")
 
-private fun ChildrenBuilder.tribeGravatar(tribe: Party, size: Int) = if (tribe.imageURL != null) {
+private fun ChildrenBuilder.partyGravatar(party: Party, size: Int) = if (party.imageURL != null) {
     ReactHTML.img {
-        this.src = tribe.imageURL
+        this.src = party.imageURL
         alt = "icon"
         this.width = size.toDouble()
         this.height = size.toDouble()
     }
 } else {
     gravatarImage(
-        email = tribe.email,
-        alt = "tribe-img",
-        fallback = noTribeImagePath,
+        email = party.email,
+        alt = "party-img",
+        fallback = noPartyImagePath,
         options = object : GravatarOptions {
             override val size = size
             override val default = "identicon"

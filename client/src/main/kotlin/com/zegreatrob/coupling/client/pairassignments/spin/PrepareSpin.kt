@@ -15,25 +15,25 @@ import react.router.Navigate
 import react.useState
 
 data class PrepareSpin(
-    val tribe: Party,
+    val party: Party,
     val players: List<Player>,
     val currentPairsDoc: PairAssignmentDocument?,
     val pins: List<Pin>,
     val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>
 ) : DataPropsBind<PrepareSpin>(prepareSpin)
 
-val prepareSpin = tmFC<PrepareSpin> { (tribe, players, currentPairsDoc, pins, dispatchFunc) ->
+val prepareSpin = tmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, dispatchFunc) ->
     var playerSelections by useState(defaultSelections(players, currentPairsDoc))
     var pinSelections by useState(pins.map { it.id })
     var redirectUrl by useState<String?>(null)
-    val onSpin = onSpin(dispatchFunc, tribe, playerSelections, pinSelections) { redirectUrl = it }
+    val onSpin = onSpin(dispatchFunc, party, playerSelections, pinSelections) { redirectUrl = it }
 
     if (redirectUrl != null)
         Navigate { to = redirectUrl ?: "" }
     else {
         child(
             PrepareSpinContent(
-                tribe,
+                party,
                 playerSelections,
                 pins,
                 pinSelections,
@@ -61,11 +61,11 @@ private fun List<Pair<Player, Boolean>>.playerIds() = filter { (_, isSelected) -
 
 private fun onSpin(
     dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>,
-    tribe: Party,
+    party: Party,
     playerSelections: List<Pair<Player, Boolean>>,
     pinSelections: List<String?>,
     setRedirectUrl: (String) -> Unit
 ) = dispatchFunc(
-    { NewPairAssignmentsCommand(tribe.id, playerSelections.playerIds(), pinSelections.filterNotNull()) },
-    { setRedirectUrl(tribe.newPairAssignmentsPath()) }
+    { NewPairAssignmentsCommand(party.id, playerSelections.playerIds(), pinSelections.filterNotNull()) },
+    { setRedirectUrl(party.newPairAssignmentsPath()) }
 )

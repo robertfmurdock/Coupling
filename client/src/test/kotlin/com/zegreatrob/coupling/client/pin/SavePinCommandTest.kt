@@ -21,14 +21,14 @@ class SavePinCommandTest {
         val saveSpy = SpyData<PartyElement<Pin>, Unit>()
         override suspend fun save(partyPin: PartyElement<Pin>) = saveSpy.spyFunction(partyPin)
 
-        val tribe = Party(PartyId("thing"))
+        val party = Party(PartyId("thing"))
         val pin = Pin("1", "one", "icon 1")
 
     }) exercise {
-        perform(SavePinCommand(tribe.id, pin))
+        perform(SavePinCommand(party.id, pin))
     } verify {
         saveSpy.spyReceivedValues
-            .assertIsEqualTo(listOf(tribe.id.with(pin)))
+            .assertIsEqualTo(listOf(party.id.with(pin)))
     }
 
 }

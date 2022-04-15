@@ -34,7 +34,7 @@ data class PlayerRoster(
 
 private val styles = useStyles("player/PlayerRoster")
 
-val playerRoster = tmFC { (label, players, tribeId, className, overrides): PlayerRoster ->
+val playerRoster = tmFC { (label, players, partyId, className, overrides): PlayerRoster ->
     val ref by useState { Date.now().toLong() }
     val random = Random(ref)
 
@@ -53,7 +53,7 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
                 }
                 players.map { player ->
                     Link {
-                        to = tribeId.with(player).playerConfigPage()
+                        to = partyId.with(player).playerConfigPage()
                         draggable = false
                         key = player.id
                         val tilt = random.nextInt(7) - 3
@@ -62,12 +62,12 @@ val playerRoster = tmFC { (label, players, tribeId, className, overrides): Playe
                 }
             }
         }
-        addPlayerButton(tribeId)
+        addPlayerButton(partyId)
     }
 }
 
-private fun ChildrenBuilder.addPlayerButton(tribeId: PartyId) = Link {
-    to = "/${tribeId.value}/player/new/"
+private fun ChildrenBuilder.addPlayerButton(partyId: PartyId) = Link {
+    to = "/${partyId.value}/player/new/"
     tabIndex = -1
     draggable = false
     child(CouplingButton(large, orange, styles["addPlayerButton"])) {

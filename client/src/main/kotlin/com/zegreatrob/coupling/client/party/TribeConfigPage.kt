@@ -8,22 +8,22 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.child
 import react.FC
 
-private val LoadedTribeConfig by lazy { couplingDataLoader<TribeConfig>() }
+private val LoadedPartyConfig by lazy { couplingDataLoader<PartyConfig>() }
 
-val TribeConfigPage = FC<PageProps> { props ->
-    child(props.partyId?.tribeQueryProps(props) ?: newTribeProps(props), key = props.partyId?.value)
+val PartyConfigPage = FC<PageProps> { props ->
+    child(props.partyId?.partyQueryProps(props) ?: newPartyProps(props), key = props.partyId?.value)
 }
 
-private fun PartyId.tribeQueryProps(pageProps: PageProps) = dataLoadProps(
-    component = LoadedTribeConfig,
+private fun PartyId.partyQueryProps(pageProps: PageProps) = dataLoadProps(
+    component = LoadedPartyConfig,
     commander = pageProps.commander,
-    query = TribeQuery(this),
-    toProps = { _, commandFunc, data -> TribeConfig(data, commandFunc) }
+    query = PartyQuery(this),
+    toProps = { _, commandFunc, data -> PartyConfig(data, commandFunc) }
 )
 
-private fun newTribeProps(pageProps: PageProps) = dataLoadProps(
-    component = LoadedTribeConfig,
+private fun newPartyProps(pageProps: PageProps) = dataLoadProps(
+    component = LoadedPartyConfig,
     commander = pageProps.commander,
     query = NewPartyCommand(),
-    toProps = { _, commandFunc, data -> TribeConfig(data, commandFunc) }
+    toProps = { _, commandFunc, data -> PartyConfig(data, commandFunc) }
 )

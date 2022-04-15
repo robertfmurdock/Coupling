@@ -5,13 +5,13 @@ import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.minreact.child
 
-private val LoadedPairAssignments by lazy { couplingDataLoader<TribeStatistics>() }
+private val LoadedPairAssignments by lazy { couplingDataLoader<PartyStatistics>() }
 
-val StatisticsPage = partyPageFunction { props, tribeId ->
+val StatisticsPage = partyPageFunction { props, partyId ->
     child(dataLoadProps(
         LoadedPairAssignments,
         commander = props.commander,
-        query = StatisticsQuery(tribeId),
-        toProps = { _, _, queryResult -> TribeStatistics(queryResult) }
-    ), key = tribeId.value)
+        query = StatisticsQuery(partyId),
+        toProps = { _, _, queryResult -> PartyStatistics(queryResult) }
+    ), key = partyId.value)
 }

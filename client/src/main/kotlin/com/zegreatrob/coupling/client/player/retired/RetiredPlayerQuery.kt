@@ -12,7 +12,7 @@ import kotlinx.coroutines.coroutineScope
 
 typealias RetiredPlayerData = Triple<Party, List<Player>, Player>
 
-data class RetiredPlayerQuery(val tribeId: PartyId, val playerId: String) :
+data class RetiredPlayerQuery(val partyId: PartyId, val playerId: String) :
     SimpleSuspendAction<RetiredPlayerQueryDispatcher, RetiredPlayerData?> {
     override val performFunc = link(RetiredPlayerQueryDispatcher::perform)
 }
@@ -20,11 +20,11 @@ data class RetiredPlayerQuery(val tribeId: PartyId, val playerId: String) :
 interface RetiredPlayerQueryDispatcher : PartyIdGetSyntax, PartyRetiredPlayersSyntax {
     suspend fun perform(query: RetiredPlayerQuery) = query.getData()
 
-    private suspend fun RetiredPlayerQuery.getData() = tribeId.getData().let { (tribe, players) ->
-        if (tribe == null)
+    private suspend fun RetiredPlayerQuery.getData() = partyId.getData().let { (party, players) ->
+        if (party == null)
             null
         else
-            Triple(tribe, players, players.first { it.id == playerId })
+            Triple(party, players, players.first { it.id == playerId })
     }
 
     private suspend fun PartyId.getData() = coroutineScope {

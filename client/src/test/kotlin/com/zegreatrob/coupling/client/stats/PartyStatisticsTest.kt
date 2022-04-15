@@ -17,7 +17,7 @@ import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
-class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
+class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
 
     @Test
     fun willShowPairings() = setup(object {
@@ -27,7 +27,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = Party(PartyId("1"), name = "Mathematica")
+        val party = Party(PartyId("1"), name = "Mathematica")
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
@@ -38,9 +38,9 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             )
         )
-        val report = perform(ComposeStatisticsAction(tribe, players, history))
+        val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
-        shallow(TribeStatistics(StatisticQueryResults(tribe, players, history, report, emptyList())))
+        shallow(PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())))
     } verify { wrapper ->
         wrapper.find(pairReportTable)
             .dataprops()
@@ -95,11 +95,11 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             )
         )
-        val tribe = Party(PartyId("2"), name = "Mathematica")
-        val report = perform(ComposeStatisticsAction(tribe, players, history))
+        val party = Party(PartyId("2"), name = "Mathematica")
+        val report = perform(ComposeStatisticsAction(party, players, history))
         val heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation))
     }) exercise {
-        shallow(TribeStatistics(StatisticQueryResults(tribe, players, history, report, heatmapData)))
+        shallow(PartyStatistics(StatisticQueryResults(party, players, history, report, heatmapData)))
     } verify { wrapper ->
         wrapper.find(playerHeatmap)
             .dataprops()
@@ -122,13 +122,13 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = Party(
+        val party = Party(
             PartyId("2"),
             name = "Mathematica"
         )
-        val report = perform(ComposeStatisticsAction(tribe, players, emptyList()))
+        val report = perform(ComposeStatisticsAction(party, players, emptyList()))
     }) exercise {
-        shallow(TribeStatistics(StatisticQueryResults(tribe, players, emptyList(), report, emptyList())))
+        shallow(PartyStatistics(StatisticQueryResults(party, players, emptyList(), report, emptyList())))
     } verify { wrapper ->
         wrapper.find(teamStatistics)
             .dataprops()
@@ -148,7 +148,7 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val tribe = Party(
+        val party = Party(
             PartyId("2"),
             name = "Mathematica"
         )
@@ -170,9 +170,9 @@ class TribeStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 ).withNoPins()
             )
         )
-        val report = perform(ComposeStatisticsAction(tribe, players, history))
+        val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
-        shallow(TribeStatistics(StatisticQueryResults(tribe, players, history, report, emptyList())))
+        shallow(PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())))
     } verify { wrapper ->
         wrapper.find(teamStatistics)
             .dataprops()

@@ -7,11 +7,11 @@ import com.zegreatrob.minreact.child
 
 private val LoadedRetiredPlayers by lazy { couplingDataLoader<RetiredPlayers>() }
 
-val RetiredPlayersPage = partyPageFunction { props, tribeId ->
+val RetiredPlayersPage = partyPageFunction { props, partyId ->
     child(dataLoadProps(
         LoadedRetiredPlayers,
         commander = props.commander,
-        query = RetiredPlayerListQuery(tribeId),
-        toProps = { _, _, (tribe, retiredPlayers) -> RetiredPlayers(tribe, retiredPlayers) }
-    ), key = tribeId.value)
+        query = RetiredPlayerListQuery(partyId),
+        toProps = { _, _, (party, retiredPlayers) -> RetiredPlayers(party, retiredPlayers) }
+    ), key = partyId.value)
 }

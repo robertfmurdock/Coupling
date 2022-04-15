@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.JsonTribeRecord
+import com.zegreatrob.coupling.json.JsonPartyRecord
 import com.zegreatrob.coupling.json.fromJsonElement
 import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.Record
@@ -19,7 +19,7 @@ interface SdkPartyListGet : PartyListGet, GqlSyntax, GraphQueries {
 
     private fun tribeListQuery() = buildJsonObject { put("query", queries.listTribes) }
 
-    private fun JsonElement?.toTribeRecordList(): List<Record<Party>> = this?.fromJsonElement<List<JsonTribeRecord>>()
-        ?.map(JsonTribeRecord::toModelRecord)
+    private fun JsonElement?.toTribeRecordList(): List<Record<Party>> = this?.fromJsonElement<List<JsonPartyRecord>>()
+        ?.map(JsonPartyRecord::toModelRecord)
         ?: emptyList()
 }

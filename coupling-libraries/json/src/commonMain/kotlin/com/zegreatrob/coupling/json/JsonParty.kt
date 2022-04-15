@@ -24,7 +24,7 @@ data class JsonParty(
 )
 
 @Serializable
-data class JsonTribeRecord(
+data class JsonPartyRecord(
     val id: PartyId,
     val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
     val badgesEnabled: Boolean = false,
@@ -53,7 +53,7 @@ fun Party.toSerializable() = JsonParty(
     animationSpeed = animationSpeed,
 )
 
-fun Record<Party>.toSerializable() = JsonTribeRecord(
+fun Record<Party>.toSerializable() = JsonPartyRecord(
     id = data.id,
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
@@ -82,7 +82,7 @@ fun JsonParty.toModel(): Party = Party(
     animationSpeed = animationSpeed,
 )
 
-fun JsonTribeRecord.toModelRecord(): Record<Party> = Record(
+fun JsonPartyRecord.toModelRecord(): Record<Party> = Record(
     data = Party(
         id = id,
         pairingRule = PairingRule.fromValue(pairingRule),

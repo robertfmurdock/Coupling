@@ -19,16 +19,16 @@ val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> Stri
 
 private val styles = useStyles("stats/TribeStatistics")
 
-data class TribeStatistics(val queryResults: StatisticQueryResults) : DataPropsBind<TribeStatistics>(tribeStatistics)
+data class PartyStatistics(val queryResults: StatisticQueryResults) : DataPropsBind<PartyStatistics>(partyStatistics)
 
-val tribeStatistics = tmFC<TribeStatistics> { props ->
-    val (tribe, players, _, allStats, heatmapData) = props.queryResults
+val partyStatistics = tmFC<PartyStatistics> { props ->
+    val (party, players, _, allStats, heatmapData) = props.queryResults
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div {
         className = styles.className
         child(PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9"))) {
             ConfigHeader {
-                this.party = tribe
+                this.party = party
                 +"Statistics"
             }
             cssDiv(css = {

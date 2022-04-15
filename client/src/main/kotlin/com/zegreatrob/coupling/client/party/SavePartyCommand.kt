@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.party.PartySaveSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class SaveTribeCommand(val tribe: Party) : SimpleSuspendAction<SavePartyCommandDispatcher, Unit> {
+data class SavePartyCommand(val party: Party) : SimpleSuspendAction<SavePartyCommandDispatcher, Unit> {
     override val performFunc = link(SavePartyCommandDispatcher::perform)
 }
 
 interface SavePartyCommandDispatcher : PartySaveSyntax {
-    suspend fun perform(command: SaveTribeCommand) = command.tribe.save()
+    suspend fun perform(command: SavePartyCommand) = command.party.save()
 }

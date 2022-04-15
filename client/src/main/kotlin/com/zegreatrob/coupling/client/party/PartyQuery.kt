@@ -5,10 +5,10 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class TribeQuery(val tribeId: PartyId) : SimpleSuspendAction<PartyQueryDispatcher, Party?> {
+data class PartyQuery(val partyId: PartyId) : SimpleSuspendAction<PartyQueryDispatcher, Party?> {
     override val performFunc = link(PartyQueryDispatcher::perform)
 }
 
 interface PartyQueryDispatcher : PartyIdGetSyntax {
-    suspend fun perform(query: TribeQuery) = query.tribeId.get()
+    suspend fun perform(query: PartyQuery) = query.partyId.get()
 }

@@ -11,21 +11,21 @@ import react.dom.html.ReactHTML.div
 private val LoadedRetiredPlayer = couplingDataLoader<PlayerConfig>()
 
 val RetiredPlayerPage = FC<PageProps> { props ->
-    val tribeId = props.partyId
+    val partyId = props.partyId
     val playerId = props.playerId
 
-    if (tribeId != null && playerId != null)
-        loadedRetiredPlayer(props, tribeId, playerId)
+    if (partyId != null && playerId != null)
+        loadedRetiredPlayer(props, partyId, playerId)
     else
-        div { +"Hey, we're missing the tribe id or the player id. Things have gone terribly, terribly wrong." }
+        div { +"Hey, we're missing the party id or the player id. Things have gone terribly, terribly wrong." }
 }
 
-private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, tribeId: PartyId, playerId: String) =
+private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: PartyId, playerId: String) =
     child(dataLoadProps(
         component = LoadedRetiredPlayer,
         commander = props.commander,
-        query = RetiredPlayerQuery(tribeId, playerId),
-        toProps = { reload, commandFunc, (tribe, players, player) ->
-            PlayerConfig(tribe, player, players, reload, commandFunc)
+        query = RetiredPlayerQuery(partyId, playerId),
+        toProps = { reload, commandFunc, (party, players, player) ->
+            PlayerConfig(party, player, players, reload, commandFunc)
         }
     ), key = playerId)

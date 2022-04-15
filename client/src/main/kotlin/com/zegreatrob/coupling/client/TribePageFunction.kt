@@ -8,9 +8,9 @@ import react.FC
 import react.dom.html.ReactHTML.div
 
 fun partyPageFunction(handler: ChildrenBuilder.(PageProps, PartyId) -> Unit) = FC<PageProps> { props ->
-    val tribeId = props.partyId
-    if (tribeId != null)
-        handler(props, tribeId)
+    val partyId = props.partyId
+    if (partyId != null)
+        handler(props, partyId)
     else
-        div { +"Hey, we're missing the tribe id. Things have gone terribly, terribly wrong." }
+        div { +"Hey, we're missing the party id. Things have gone terribly, terribly wrong." }
 }
