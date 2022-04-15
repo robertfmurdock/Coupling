@@ -83,7 +83,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
         repository.save(partyId.with(document))
     } exercise {
         repository.delete(partyId, document.id)
-    } verify { result ->
+    } verifyWithWait { result ->
         result.assertIsEqualTo(true)
         repository.getPairAssignments(partyId)
             .data().map { it.document }
