@@ -14,10 +14,8 @@ jobs:
       - uses: c-hive/gha-yarn-cache@v2
         with:
           directory: kotlin-js-store
-      - uses: burrunan/gradle-cache-action@v1
-        name: Update Deps
-        with:
-          arguments: useLatestVersions :plugins:useLatestVersions
+      - name: Update Deps
+        run: ./gradlew useLatestVersions :plugins:useLatestVersions
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
