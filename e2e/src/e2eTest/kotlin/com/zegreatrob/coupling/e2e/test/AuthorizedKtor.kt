@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.defaultClient
-import com.zegreatrob.coupling.server.Process
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
