@@ -23,13 +23,13 @@ afterEvaluate {
 
     System.setProperty("testRunIdentifier", testRunIdentifier)
 
-    tasks.withType(KotlinJsTest::class) {
+    tasks.withType(KotlinJsTest::class).configureEach {
         val jsonLoggingListener = JsonLoggingTestListener(path, testRunIdentifier)
         addTestListener(jsonLoggingListener)
         addTestOutputListener(jsonLoggingListener)
     }
 
-    tasks.withType(NodeJsExec::class) {
+    tasks.withType(NodeJsExec::class).configureEach {
         val processLine = { line: String ->
             val json = findJsonNode(line)
             val level = json["level"]?.textValue()?.let { Level.getLevel(it) } ?: Level.TRACE

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
-import com.zegreatrob.coupling.server.Process
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import io.ktor.client.*
 import io.ktor.client.call.*

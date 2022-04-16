@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
+
 plugins {
     kotlin("js")
     id("com.zegreatrob.coupling.plugins.versioning")
@@ -29,4 +31,11 @@ dependencies {
     implementation(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.1.3"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.2"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.1"))
+}
+
+tasks.withType(KotlinJsTest::class).configureEach {
+    outputs.cacheIf { true }
+}
+tasks.withType(ProcessResources::class).configureEach {
+    outputs.cacheIf { true }
 }
