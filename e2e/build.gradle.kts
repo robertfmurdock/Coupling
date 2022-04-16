@@ -173,11 +173,11 @@ tasks {
         standardOutput = FileOutputStream(logFile, true)
     }
 
-    val check by getting {
+    named("check") {
         dependsOn(nodeRun)
     }
 
-    val test by getting {
+    named("test") {
         dependsOn(nodeRun)
     }
 }
