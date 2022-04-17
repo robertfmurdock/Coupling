@@ -34,9 +34,6 @@ jobs:
       - uses: testspace-com/setup-testspace@v1
         with:
           domain: robertfmurdock
-      - uses: c-hive/gha-yarn-cache@v2
-        with:
-          directory: kotlin-js-store
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

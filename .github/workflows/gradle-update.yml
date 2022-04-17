@@ -11,9 +11,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '25'
-      - uses: c-hive/gha-yarn-cache@v2
-        with:
-          directory: kotlin-js-store
       - name: Update Deps
         run: ./gradlew useLatestVersions :plugins:useLatestVersions
       - name: Create Pull Request

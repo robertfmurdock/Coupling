@@ -27,3 +27,6 @@ tasks.withType(KotlinJvmTest::class).configureEach {
 tasks.withType(org.gradle.api.tasks.bundling.Jar::class).configureEach {
     outputs.cacheIf { true }
 }
+tasks.withType(org.gradle.jvm.tasks.Jar::class).configureEach {
+    outputs.cacheIf { true }
+}
