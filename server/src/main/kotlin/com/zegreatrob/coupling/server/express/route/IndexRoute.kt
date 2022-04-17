@@ -66,7 +66,7 @@ private fun Express.injectVariablesForClient() = """<script>
     window.auth0Domain = "${Config.AUTH0_DOMAIN}";
     window.basename = "${Config.clientBasename}";
     window.expressEnv = "$env";
-    window.webpackPublicPath = "${Config.clientUrl}";
+    window.webpackPublicPath = "${Config.clientUrl}/";
     window.websocketHost = "${Config.websocketHost}/";
     </script>
 """.trimIndent()
