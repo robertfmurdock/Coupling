@@ -21,7 +21,7 @@
     "express-jwt": "6.1.1",
     "jwks-rsa": "2.0.5",
     "express-statsd": "^0.3.0",
-    "fs-extra": "^10.0.1",
+    "fs-extra": "^10.1.0",
     "graphql": "^16.3.0",
     "method-override": "^3.0.0",
     "minimist": "^1.2.6",
