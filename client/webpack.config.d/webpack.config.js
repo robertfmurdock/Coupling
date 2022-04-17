@@ -95,7 +95,7 @@ function lookupFileName(libName, version) {
 
 config.plugins.push(
     new HtmlWebpackPlugin({
-        alwaysWriteToDisk: true,
+        alwaysWriteToDisk: !!config.devServer,
         title: 'Coupling Dev Server',
         file: "index.html",
         template: path.resolve(resourcesPath, 'template.html'),

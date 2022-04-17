@@ -36,6 +36,6 @@ dependencies {
 tasks.withType(KotlinJsTest::class).configureEach {
     outputs.cacheIf { true }
 }
-tasks.withType(ProcessResources::class).configureEach {
+tasks.withType(org.gradle.api.tasks.bundling.Jar::class).configureEach {
     outputs.cacheIf { true }
 }

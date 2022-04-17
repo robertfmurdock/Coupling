@@ -78,6 +78,8 @@ tasks {
     }
     val browserDistribution = named("browserDistribution")
     val browserProductionWebpack = named("browserProductionWebpack", KotlinWebpack::class) {
+        outputs.dir(destinationDirectory)
+        outputs.cacheIf { true }
         artifacts {
             add(clientConfiguration.name, destinationDirectory) {
                 builtBy(this@named, browserDistribution)
@@ -95,15 +97,10 @@ tasks {
     }
     findByPath(":release")!!.finalizedBy(uploadToS3)
 
-    named("browserProductionWebpack") {
-        outputs.cacheIf { true }
-    }
-
-    val dependencyResources by registering(Copy::class) {
+    named("processResources", ProcessResources::class) {
         val javascriptConfig = configurations["runtimeClasspath"]
         dependsOn(javascriptConfig)
         duplicatesStrategy = DuplicatesStrategy.WARN
-        into("$buildDir/processedResources/js/main")
         from({
             javascriptConfig.files.map {
                 if (!it.isFile || !it.name.endsWith(".klib")) {
@@ -133,10 +130,6 @@ tasks {
                 }
             }
         })
-    }
-
-    named("processResources") {
-        dependsOn(dependencyResources)
     }
 
     named("browserTest") {

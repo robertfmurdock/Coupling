@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
+import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 plugins {
     kotlin("multiplatform")
@@ -20,6 +21,9 @@ dependencies {
 tasks.withType(KotlinJsTest::class).configureEach {
     outputs.cacheIf { true }
 }
-tasks.withType(ProcessResources::class).configureEach {
+tasks.withType(KotlinJvmTest::class).configureEach {
+    outputs.cacheIf { true }
+}
+tasks.withType(org.gradle.api.tasks.bundling.Jar::class).configureEach {
     outputs.cacheIf { true }
 }
