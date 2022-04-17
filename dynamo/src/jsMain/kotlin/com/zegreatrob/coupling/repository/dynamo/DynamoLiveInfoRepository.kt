@@ -4,6 +4,8 @@ import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -80,8 +82,13 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         DynamoScanSyntax {
         override val tableName = "LIVE_CONNECTION"
         const val ENTITY_TYPE = "USER_CONNECTION"
+
+        private val ensure by lazy {
+            MainScope().async { ensureTableExists() }
+        }
+
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoLiveInfoRepository(userId, clock)
-            .also { ensureTableExists() }
+            .also { ensure.await() }
 
         override val createTableParams: Json
             get() = json(

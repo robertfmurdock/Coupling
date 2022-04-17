@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.testaction
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.testmints.async.Exercise
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.DefaultAsserter
 
 fun <V> Result<V>.assertSuccess(successfulAssertions: V.() -> Unit = {}) = when (this) {
@@ -10,6 +11,7 @@ fun <V> Result<V>.assertSuccess(successfulAssertions: V.() -> Unit = {}) = when 
     else -> DefaultAsserter.fail("Result $this was not successful")
 }
 
+@ExperimentalCoroutinesApi
 infix fun <C : Any, R : Result<V>, V> Exercise<C, R>.verifySuccess(validations: C.(V) -> Unit) =
     verify { result ->
         result.assertSuccess { validations(this) }

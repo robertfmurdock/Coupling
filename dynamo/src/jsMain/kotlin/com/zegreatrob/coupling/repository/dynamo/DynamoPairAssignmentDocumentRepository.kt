@@ -18,7 +18,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
     override val clock: TimeProvider
 ) : PairAssignmentDocumentRepository, UserIdSyntax, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
 
-    companion object : DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>,
+    companion object : DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>(),
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoItemPutDeleteRecordSyntax,

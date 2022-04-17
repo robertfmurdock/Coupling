@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
 import kotlinext.js.clone
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.js.Json
@@ -24,8 +26,13 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
         DynamoScanSyntax,
         DynamoLoggingSyntax {
         override val tableName = "BOOST"
+
+        private val ensure by lazy {
+            MainScope().async { ensureTableExists() }
+        }
+
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoBoostRepository(userId, clock)
-            .also { ensureTableExists() }
+            .also { ensure.await() }
 
         override val createTableParams = json(
             "TableName" to prefixedTableName,

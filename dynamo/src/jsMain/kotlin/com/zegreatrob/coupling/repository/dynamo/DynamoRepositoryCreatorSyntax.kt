@@ -1,12 +1,18 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.soywiz.klock.TimeProvider
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 
-interface DynamoRepositoryCreatorSyntax<T> : DynamoCreateTableSyntax {
+abstract class DynamoRepositoryCreatorSyntax<T>() : DynamoCreateTableSyntax {
 
-    val construct: (String, TimeProvider) -> T
+    abstract val construct: (String, TimeProvider) -> T
+
+    val ensure by lazy {
+        MainScope().async { ensureTableExists() }
+    }
 
     suspend operator fun invoke(userEmail: String, clock: TimeProvider): T = construct(userEmail, clock)
-        .also { ensureTableExists() }
+        .also { ensure.await() }
 
 }

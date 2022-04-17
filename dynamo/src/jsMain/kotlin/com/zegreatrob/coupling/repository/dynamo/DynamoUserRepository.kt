@@ -5,6 +5,8 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.user.UserRepository
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -22,8 +24,11 @@ class DynamoUserRepository private constructor(override val userId: String, over
         DynamoScanSyntax {
         override val tableName = "USER"
         const val userEmailIndex = "USER_EMAIL_INDEX"
+        private val ensure by lazy {
+            MainScope().async { ensureTableExists() }
+        }
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoUserRepository(userId, clock)
-            .also { ensureTableExists() }
+            .also { ensure.await() }
 
         override val createTableParams: Json
             get() = json(

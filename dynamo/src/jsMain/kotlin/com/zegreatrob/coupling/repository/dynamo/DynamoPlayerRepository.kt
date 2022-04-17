@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlin.js.Json
@@ -18,7 +18,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     DynamoPlayerJsonMapping,
     RecordSyntax {
 
-    companion object : DynamoRepositoryCreatorSyntax<DynamoPlayerRepository>, DynamoDBSyntax by DynamoDbProvider,
+    companion object : DynamoRepositoryCreatorSyntax<DynamoPlayerRepository>(), DynamoDBSyntax by DynamoDbProvider,
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
         TribeIdDynamoItemListGetSyntax,
@@ -28,7 +28,6 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         override val construct = ::DynamoPlayerRepository
         override val tableName: String = "PLAYER"
         const val playerEmailIndex = "PlayerEmailIndex"
-
         override val createTableParams: Json
             get() = json(
                 "TableName" to prefixedTableName,

@@ -24,7 +24,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
         DynamoQueryItemListGetSyntax,
         DynamoItemPutDeleteRecordSyntax,
         ListLatestRecordSyntax,
-        DynamoRepositoryCreatorSyntax<DynamoPartyRepository>,
+        DynamoRepositoryCreatorSyntax<DynamoPartyRepository>(),
         DynamoDBSyntax by DynamoDbProvider {
         override val tableName = "TRIBE"
         override val construct = ::DynamoPartyRepository

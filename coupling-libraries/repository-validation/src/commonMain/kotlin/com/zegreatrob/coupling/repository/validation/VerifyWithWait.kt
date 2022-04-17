@@ -2,11 +2,13 @@ package com.zegreatrob.coupling.repository.validation
 
 import com.zegreatrob.testmints.async.Exercise
 import com.zegreatrob.testmints.async.Verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.TestResult
 import kotlin.time.ExperimentalTime
 import kotlin.time.TimeSource
 
+@ExperimentalCoroutinesApi
 @ExperimentalTime
 infix fun <C : Any, R> Exercise<C, R>.verifyWithWait(assertionFunctions: suspend C.(R) -> Unit): TestResult =
     this.verify { result -> vWW(assertionFunctions, result) }
