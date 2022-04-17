@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.Tag
 import com.zegreatrob.coupling.server.external.stream.Readable
 import kotlin.js.Promise
 
-val indexHtmlPromise get() = fetch("${Config.clientUrl}/index.html")
+val indexHtmlPromise get() = fetch("${Config.clientUrl}/html/index.html")
         .then(FetchResult::text)
         .unsafeCast<Promise<String>>()
 
@@ -66,7 +66,7 @@ private fun Express.injectVariablesForClient() = """<script>
     window.auth0Domain = "${Config.AUTH0_DOMAIN}";
     window.basename = "${Config.clientBasename}";
     window.expressEnv = "$env";
-    window.webpackPublicPath = "${Config.clientUrl}/";
+    window.webpackPublicPath = "${Config.clientUrl}";
     window.websocketHost = "${Config.websocketHost}/";
     </script>
 """.trimIndent()

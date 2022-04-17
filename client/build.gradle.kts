@@ -78,7 +78,7 @@ tasks {
     }
     val browserDistribution = named("browserDistribution")
     val browserProductionWebpack = named("browserProductionWebpack", KotlinWebpack::class) {
-        outputs.dir(destinationDirectory)
+        outputs.dir(destinationDirectory.absolutePath + "/html")
         outputs.cacheIf { true }
         artifacts {
             add(clientConfiguration.name, destinationDirectory) {

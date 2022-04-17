@@ -97,7 +97,7 @@ config.plugins.push(
     new HtmlWebpackPlugin({
         alwaysWriteToDisk: !!config.devServer,
         title: 'Coupling Dev Server',
-        file: "index.html",
+        filename: "html/index.html",
         template: path.resolve(resourcesPath, 'template.html'),
         devServer: config.devServer ? config.devServer.port : undefined,
         appMountClass: 'view-container',
