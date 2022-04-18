@@ -24,6 +24,9 @@ tasks.withType(KotlinJsTest::class).configureEach {
 tasks.withType(KotlinJvmTest::class).configureEach {
     outputs.cacheIf { true }
 }
+tasks.withType(org.jetbrains.kotlin.gradle.plugin.mpp.TransformKotlinGranularMetadata::class).configureEach {
+    outputs.cacheIf { true }
+}
 tasks.withType(org.gradle.api.tasks.bundling.Jar::class).configureEach {
     outputs.cacheIf { true }
 }
