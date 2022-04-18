@@ -1,4 +1,5 @@
 .gradle
+.cache-proxy
 test-output
 **/sandbox/*.json
 node_modules
