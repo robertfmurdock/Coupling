@@ -48,7 +48,10 @@ config.module.rules.push(
     }, {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
         include: [resourcesPath, nodeModules],
-        type: 'asset'
+        type: 'asset',
+        generator: {
+            filename: 'html/[hash][ext][query]'
+        }
     }
 );
 config.externals = {"cheerio": "window", "fs": "empty"}
@@ -114,16 +117,18 @@ config.plugins.push(
     new HtmlWebpackHarddiskPlugin(),
     new FaviconsWebpackPlugin({
         logo: path.resolve(resourcesPath, 'images/logo.png'),
-        cache: true
+        cache: true,
+        prefix: 'html/assets/',
     }),
     new MiniCssExtractPlugin({
-        filename: 'styles.css',
+        filename: 'html/styles.css',
     }),
     new DynamicCdnWebpackPlugin({
         resolver: function (libName, version) {
             if (cdnVars[libName]) {
                 return lookupFileName(libName, version)
-                    .then(filename => filename ? `https://cdnjs.cloudflare.com/ajax/libs/${libName}/${version}/${filename}`
+                    .then(filename => filename
+                        ? `https://cdnjs.cloudflare.com/ajax/libs/${libName}/${version}/${filename}`
                         : null)
                     .then(url => url ? {name: libName, var: cdnVars[libName] ?? libName, url, version} : null)
                     .catch(() => null)
