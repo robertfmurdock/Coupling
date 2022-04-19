@@ -13,7 +13,7 @@ kotlin {
                 val profile: String? by project
                 if (!profile.isNullOrBlank()) {
                     this.args.add("--profile")
-                    this.args.add("--json=${buildDir}/reports/stats.json")
+                    this.args.add("--json=$buildDir/reports/stats.json")
                 }
             }
         }
@@ -26,7 +26,6 @@ kotlin {
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
         }
     }
-
 }
 
 val clientConfiguration: Configuration by configurations.creating
@@ -93,7 +92,7 @@ tasks {
             enabled = false
         }
         val absolutePath = browserProductionWebpack.get().destinationDirectory.absolutePath
-        commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${version}".split(" ")
+        commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/$version".split(" ")
     }
     findByPath(":release")!!.finalizedBy(uploadToS3)
 

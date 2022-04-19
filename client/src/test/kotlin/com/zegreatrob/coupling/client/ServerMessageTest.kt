@@ -21,5 +21,4 @@ class ServerMessageTest {
         wrapper.find<Any>("span").text()
             .assertIsEqualTo(expectedMessage)
     }
-
 }

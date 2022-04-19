@@ -9,5 +9,4 @@ interface JsonSendToResponseSyntax {
         response.statusCode = statusCode
         response.send(this)
     }
-
 }

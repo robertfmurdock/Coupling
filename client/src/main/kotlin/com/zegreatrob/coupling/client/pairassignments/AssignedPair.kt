@@ -12,9 +12,9 @@ import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -113,7 +113,8 @@ private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNo
             if (player == placeholderPlayer) {
                 visibility = Visibility.hidden
             }
-        }) {
+        }
+    ) {
         +handler()
     }
 }
@@ -121,7 +122,10 @@ private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNo
 private fun notSwappablePlayer(player: Player, tilt: Angle) = PlayerCard(player, tilt = tilt)
 
 private fun swappablePlayer(
-    pinnedPlayer: PinnedPlayer, zoomOnHover: Boolean, tilt: Angle, onDropSwap: (String) -> Unit
+    pinnedPlayer: PinnedPlayer,
+    zoomOnHover: Boolean,
+    tilt: Angle,
+    onDropSwap: (String) -> Unit
 ) = DraggablePlayer(pinnedPlayer, zoomOnHover, tilt, onDropSwap)
 
 private fun ChildrenBuilder.callSign(party: Party, callSign: CallSign?, classes: ClassName) = div {

@@ -6,14 +6,13 @@ import com.zegreatrob.coupling.e2e.test.CurrentPairAssignmentsPanel.saveButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.selectAllButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.selectNoneButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.spinButton
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
-
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlin.test.Test
 
@@ -46,10 +45,9 @@ class PrepareToSpinPageE2ETest {
         )
 
         private fun buildPlayer(it: Int) = Player(
-            id = "${randomInt()}-PairAssignmentsPageE2ETest-${it}",
+            id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
             name = "Player$it"
         )
-
     }
 
     @Test
@@ -141,5 +139,4 @@ class PrepareToSpinPageE2ETest {
         PinButton.pinElements.count()
             .assertIsEqualTo(0)
     }
-
 }

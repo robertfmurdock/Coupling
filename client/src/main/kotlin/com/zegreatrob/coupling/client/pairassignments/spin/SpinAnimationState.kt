@@ -111,9 +111,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
             shownPlayer = null
         )
-
     }
-
 }
 
 data class AssignedPlayer(val player: Player) : SpinAnimationState() {
@@ -132,7 +130,6 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
             shownPlayer = null
         )
     }
-
 }
 
 private fun PairAssignmentDocument.previouslyPresentedPlayers(player: Player) = orderedPairedPlayers()

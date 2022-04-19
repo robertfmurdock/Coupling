@@ -15,7 +15,7 @@ object Config {
     val publicUrl = Process.getEnv("PUBLIC_URL") ?: "http://localhost:3000"
     val websocketHost = Process.getEnv("WEBSOCKET_HOST") ?: "${URL(publicUrl).host}/api/websocket"
     val apiGatewayManagementApiHost =
-        Process.getEnv("API_GATEWAY_MANAGEMENT_API_HOST") ?: "${URL(publicUrl).protocol}//${websocketHost}"
+        Process.getEnv("API_GATEWAY_MANAGEMENT_API_HOST") ?: "${URL(publicUrl).protocol}//$websocketHost"
     val AUTH0_CLIENT_ID get() = Process.getEnv("AUTH0_CLIENT_ID") ?: "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg"
     const val AUTH0_DOMAIN = "zegreatrob.us.auth0.com"
 }

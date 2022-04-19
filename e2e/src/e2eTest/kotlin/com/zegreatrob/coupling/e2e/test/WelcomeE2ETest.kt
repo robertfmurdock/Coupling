@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.e2e.test
 
-
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlin.test.Test
 
@@ -18,5 +17,4 @@ class WelcomeE2ETest {
     }
 
     private suspend fun purgeBrowserLogsBecauseGoogleIsCreatingWarning() = WebdriverBrowser.getLogs()
-
 }

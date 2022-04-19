@@ -9,10 +9,12 @@ import react.FC
 private val LoadedPartyList = couplingDataLoader<PartyList>()
 
 val PartyListPage = FC<PageProps> { props ->
-    child(dataLoadProps(
-        LoadedPartyList,
-        commander = props.commander,
-        query = PartyListQuery,
-        toProps = { _, _, parties -> PartyList(parties) }
-    ))
+    child(
+        dataLoadProps(
+            LoadedPartyList,
+            commander = props.commander,
+            query = PartyListQuery,
+            toProps = { _, _, parties -> PartyList(parties) }
+        )
+    )
 }

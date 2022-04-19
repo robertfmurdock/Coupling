@@ -42,5 +42,4 @@ object PinListPage : StyleSyntax {
     suspend fun waitForLoad() {
         WebdriverBrowser.waitUntil({ element().isPresent() }, waitToBePresentDuration, "PinListPage.waitForLoad")
     }
-
 }

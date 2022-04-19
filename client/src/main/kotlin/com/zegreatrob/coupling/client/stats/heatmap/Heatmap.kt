@@ -5,7 +5,11 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.*
+import kotlinx.css.WhiteSpace
+import kotlinx.css.height
+import kotlinx.css.px
+import kotlinx.css.whiteSpace
+import kotlinx.css.width
 import kotlinx.html.classes
 import org.w3c.dom.Node
 import react.ref

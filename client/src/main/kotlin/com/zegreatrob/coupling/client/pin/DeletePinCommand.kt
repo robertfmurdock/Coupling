@@ -15,5 +15,4 @@ interface DeletePinCommandDispatcher {
 
     suspend fun perform(command: DeletePinCommand) = with(command) { pinRepository.deletePin(id, pinId) }
         .deletionResult("Pin")
-
 }

@@ -12,7 +12,6 @@ external interface WebsocketProps : Props {
     var onOpen: () -> Unit
     var onClose: () -> Unit
     var ref: (WebsocketComponent) -> Unit
-
 }
 
 external interface WebsocketComponent {

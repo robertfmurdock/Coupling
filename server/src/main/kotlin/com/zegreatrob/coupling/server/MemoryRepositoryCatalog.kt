@@ -10,11 +10,17 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.LiveInfoRepository
-import com.zegreatrob.coupling.repository.memory.*
+import com.zegreatrob.coupling.repository.memory.MemoryLiveInfoRepository
+import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
+import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
+import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
+import com.zegreatrob.coupling.repository.memory.MemoryUserRepository
+import com.zegreatrob.coupling.repository.memory.SimpleRecordBackend
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 
 class MemoryRepositoryCatalog private constructor(

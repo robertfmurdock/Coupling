@@ -10,22 +10,42 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
+import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.party.PartyBrowser
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.*
+import kotlinx.css.BorderCollapse
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.FlexDirection
+import kotlinx.css.Position
+import kotlinx.css.backgroundColor
+import kotlinx.css.borderCollapse
+import kotlinx.css.borderRadius
+import kotlinx.css.borderSpacing
+import kotlinx.css.display
+import kotlinx.css.em
+import kotlinx.css.flex
+import kotlinx.css.flexDirection
+import kotlinx.css.margin
+import kotlinx.css.marginBottom
+import kotlinx.css.padding
+import kotlinx.css.paddingBottom
+import kotlinx.css.position
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
 import kotlinx.css.properties.boxShadow
 import kotlinx.css.properties.s
+import kotlinx.css.px
+import kotlinx.css.rgba
+import kotlinx.css.width
 import kotlinx.html.classes
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.br
@@ -144,10 +164,12 @@ private fun ChildrenBuilder.batchSelectButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
-) = child(CouplingButton(
-    className = className,
-    onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
-)) { +text }
+) = child(
+    CouplingButton(
+        className = className,
+        onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
+    )
+) { +text }
 
 private fun ChildrenBuilder.pinSelector(
     pinSelections: List<String?>,
@@ -169,7 +191,6 @@ private fun ChildrenBuilder.pinSelector(
             }
     }
 }
-
 
 private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
     attrs = { classes = classes + "${styles["selectedPins"]}" },

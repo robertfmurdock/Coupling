@@ -23,7 +23,6 @@ private fun <I> ((I) -> Unit).curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { i
 
 data class Frame<T>(val data: T, val delay: Int)
 
-
 val frameRunnerCached = tmFC<FrameRunner<Any>> { props ->
     val (sequence, speed) = props
     var state by useState(sequence.first().data)
@@ -57,4 +56,3 @@ private fun <I, O, K> pairTransformSecondFunc(transform: (I) -> O): (Pair<K, I>)
 }
 
 private fun setTimeout(timedFunc: () -> Unit, time: Int) = window.setTimeout(timedFunc, time)
-

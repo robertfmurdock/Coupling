@@ -4,7 +4,6 @@ package com.zegreatrob.coupling.e2e.external.childprocess
 
 import kotlin.js.Json
 
-
 external fun fork(module: String, args: Array<String>, options: Json): ChildProcess
 
 external interface ChildProcess {
@@ -14,7 +13,6 @@ external interface ChildProcess {
 
     fun on(event: String, function: (String) -> Unit)
     fun kill()
-
 }
 
 external interface Writable {

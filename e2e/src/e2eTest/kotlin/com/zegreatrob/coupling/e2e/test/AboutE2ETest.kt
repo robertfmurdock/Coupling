@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.minassert.assertIsEqualTo
-
 import kotlin.test.Test
 
 class AboutE2ETest {

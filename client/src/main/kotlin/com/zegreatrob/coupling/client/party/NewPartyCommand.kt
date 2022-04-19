@@ -17,5 +17,4 @@ interface NewPartyCommandDispatcher {
         defaultBadgeName = "Default",
         alternateBadgeName = "Alternate"
     )
-
 }

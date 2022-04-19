@@ -54,7 +54,6 @@ kotlin {
 }
 
 val testLoggingLib: Configuration by configurations.creating {
-
 }
 
 tasks {

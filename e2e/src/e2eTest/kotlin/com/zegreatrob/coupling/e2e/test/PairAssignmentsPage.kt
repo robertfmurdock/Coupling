@@ -46,7 +46,6 @@ object CurrentPairAssignmentsPanel : StyleSyntax {
         )
         element().waitToExist()
     }
-
 }
 
 object AssignedPair : StyleSyntax {

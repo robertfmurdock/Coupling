@@ -104,5 +104,4 @@ class PartyConfigTest {
             .prop("value")
             .assertIsEqualTo(automatedPartyId)
     }
-
 }

@@ -19,7 +19,8 @@ fun ChildrenBuilder.configSaveButton(isSaving: Boolean, className: ClassName) = 
             tabIndex = "0"
             value = "Save"
             disabled = isSaving
-        })
+        }
+    )
 ) {
     +"Save"
 }

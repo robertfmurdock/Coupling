@@ -18,9 +18,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
-import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
@@ -117,7 +117,8 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(
             PairAssignmentDocumentId(""),
-            DateTime.now(), listOf(
+            DateTime.now(),
+            listOf(
                 pairOf(players[0], players[1]).withPins(emptyList()),
                 pairOf(players[2]).withPins(emptyList())
             )
@@ -182,5 +183,4 @@ class PrepareSpinTest {
     private fun ShallowWrapper<*>.findPinButtonPropsFor(targetPin: Pin) = find(pinButton)
         .map { it.dataprops() }
         .first { it.pin == targetPin }
-
 }

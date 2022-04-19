@@ -2,7 +2,11 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.cssDiv
-import com.zegreatrob.coupling.client.dom.*
+import com.zegreatrob.coupling.client.dom.CouplingButton
+import com.zegreatrob.coupling.client.dom.large
+import com.zegreatrob.coupling.client.dom.pink
+import com.zegreatrob.coupling.client.dom.supersize
+import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.domtoimage.domToImage
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -10,22 +14,42 @@ import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator
+import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.player.TinyPlayerList
-import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import kotlinx.browser.window
-import kotlinx.css.*
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.Float
+import kotlinx.css.FontWeight
+import kotlinx.css.LinearDimension
+import kotlinx.css.VerticalAlign
+import kotlinx.css.backgroundColor
+import kotlinx.css.border
+import kotlinx.css.borderRadius
+import kotlinx.css.display
+import kotlinx.css.float
+import kotlinx.css.fontSize
+import kotlinx.css.fontWeight
+import kotlinx.css.height
+import kotlinx.css.hsla
+import kotlinx.css.margin
+import kotlinx.css.padding
 import kotlinx.css.properties.boxShadow
+import kotlinx.css.px
+import kotlinx.css.rgba
+import kotlinx.css.verticalAlign
+import kotlinx.css.width
 import kotlinx.html.tabIndex
 import org.w3c.dom.DataTransfer
 import org.w3c.dom.Node
@@ -39,7 +63,8 @@ import react.useRef
 import kotlin.js.Json
 import kotlin.js.json
 
-interface PairAssignmentsCommandDispatcher : SavePairAssignmentsCommandDispatcher,
+interface PairAssignmentsCommandDispatcher :
+    SavePairAssignmentsCommandDispatcher,
     DeletePairAssignmentsCommandDispatcher {
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
@@ -102,12 +127,18 @@ private fun ChildrenBuilder.topPairSection(
     }
 }
 
-private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) = copy(pairs = pairs.map { pair ->
-    pair.copy(players = pair.players.map { pinnedPlayer ->
-        pinnedPlayer.copy(player = players.firstOrNull { p -> p.id == pinnedPlayer.player.id }
-            ?: pinnedPlayer.player)
-    })
-})
+private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) = copy(
+    pairs = pairs.map { pair ->
+        pair.copy(
+            players = pair.players.map { pinnedPlayer ->
+                pinnedPlayer.copy(
+                    player = players.firstOrNull { p -> p.id == pinnedPlayer.player.id }
+                        ?: pinnedPlayer.player
+                )
+            }
+        )
+    }
+)
 
 private fun ChildrenBuilder.currentPairSection(
     party: Party,
@@ -126,7 +157,8 @@ private fun ChildrenBuilder.currentPairSection(
         margin(5.px, 0.px)
         backgroundColor = hsla(146, 17, 80, 1.0)
         boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
-    }) {
+    }
+) {
     if (pairAssignments == null) {
         noPairsHeader()
     } else {
@@ -175,7 +207,8 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
                 white,
                 styles["copyToClipboardButton"],
                 onClick = ref.current?.copyToClipboardOnClick() ?: {},
-                attrs = { tabIndex = "-1" })
+                attrs = { tabIndex = "-1" }
+            )
         ) {
             i { className = ClassName("fa fa-clipboard") }
         }
@@ -196,7 +229,7 @@ private fun Node.writeImageToClipboardAsPromise(): () -> Unit = {
 }
 
 private fun isReallyTrulySafari() = window.navigator.userAgent.indexOf("Safari") != -1 &&
-        window.navigator.userAgent.indexOf("Chrome") == -1
+    window.navigator.userAgent.indexOf("Chrome") == -1
 
 private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it))).unsafeCast<DataTransfer>()
 

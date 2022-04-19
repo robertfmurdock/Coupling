@@ -36,7 +36,6 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js")
-
             }
         }
     }

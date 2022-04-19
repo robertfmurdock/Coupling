@@ -14,5 +14,4 @@ external interface Process {
 
     fun exit()
     fun exit(code: Int)
-
 }

@@ -1,6 +1,12 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.dom.*
+import com.zegreatrob.coupling.client.dom.CouplingButton
+import com.zegreatrob.coupling.client.dom.black
+import com.zegreatrob.coupling.client.dom.blue
+import com.zegreatrob.coupling.client.dom.large
+import com.zegreatrob.coupling.client.dom.lightGreen
+import com.zegreatrob.coupling.client.dom.white
+import com.zegreatrob.coupling.client.dom.yellow
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.party.PartyCard
@@ -8,10 +14,31 @@ import com.zegreatrob.coupling.client.party.PartySelectButton
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.child
 import csstype.ClassName
-import kotlinx.css.*
+import kotlinx.css.Align
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.FlexDirection
+import kotlinx.css.VerticalAlign
+import kotlinx.css.WhiteSpace
+import kotlinx.css.alignItems
+import kotlinx.css.alignSelf
+import kotlinx.css.backgroundColor
+import kotlinx.css.borderRadius
+import kotlinx.css.display
+import kotlinx.css.flexDirection
+import kotlinx.css.flexGrow
+import kotlinx.css.fontSize
+import kotlinx.css.margin
+import kotlinx.css.marginLeft
+import kotlinx.css.padding
 import kotlinx.css.properties.TextDecorationLine
 import kotlinx.css.properties.boxShadow
 import kotlinx.css.properties.textDecoration
+import kotlinx.css.pt
+import kotlinx.css.px
+import kotlinx.css.rgba
+import kotlinx.css.verticalAlign
+import kotlinx.css.whiteSpace
 import react.ChildrenBuilder
 import react.FC
 import react.PropsWithChildren
@@ -142,10 +169,12 @@ fun ChildrenBuilder.settingsButton(party: Party, className: ClassName = ClassNam
     to = "/${party.id.value}/edit"
     tabIndex = -1
     draggable = false
-    child(CouplingButton(large, black, className) {
-        fontSize = 24.px
-        padding(1.px, 4.px, 2.px)
-    }) {
+    child(
+        CouplingButton(large, black, className) {
+            fontSize = 24.px
+            padding(1.px, 4.px, 2.px)
+        }
+    ) {
         i { this.className = ClassName("fa fa-cog") }
     }
 }

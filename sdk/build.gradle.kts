@@ -52,7 +52,6 @@ kotlin {
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
             }
         }
-
     }
 }
 

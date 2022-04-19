@@ -9,5 +9,4 @@ object UserPage : StyleSyntax {
         WebdriverBrowser.setLocation("/user")
         element().waitToExist()
     }
-
 }

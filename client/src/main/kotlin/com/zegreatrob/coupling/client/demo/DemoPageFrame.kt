@@ -8,16 +8,28 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinContent
+import com.zegreatrob.coupling.client.party.PartyConfigContent
 import com.zegreatrob.coupling.client.pin.PinConfigContent
 import com.zegreatrob.coupling.client.player.PlayerConfigContent
-import com.zegreatrob.coupling.client.party.PartyConfigContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.testmints.action.async.SuspendAction
 import kotlinx.browser.document
-import kotlinx.css.*
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.LinearDimension
+import kotlinx.css.PointerEvents
+import kotlinx.css.Position
+import kotlinx.css.backgroundColor
+import kotlinx.css.display
+import kotlinx.css.marginLeft
+import kotlinx.css.marginRight
+import kotlinx.css.pointerEvents
+import kotlinx.css.position
+import kotlinx.css.vw
+import kotlinx.css.width
 import kotlinx.js.jso
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
@@ -25,11 +37,15 @@ import popper.core.Popper
 import popper.core.modifier
 import popper.core.modifiers.Arrow
 import popper.core.modifiers.Offset
-import react.*
+import react.ChildrenBuilder
+import react.MutableRefObject
 import react.dom.html.ReactHTML.div
 import react.popper.PopperInstance
 import react.popper.UsePopperOptions
 import react.popper.usePopper
+import react.useLayoutEffect
+import react.useRef
+import react.useState
 
 data class DemoPageFrame(val state: DemoAnimationState) : DataPropsBind<DemoPageFrame>(demoPageFrame)
 
@@ -144,6 +160,7 @@ private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = child(
 
 private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
     override fun <C : SuspendAction<NoOpDispatcher, R>, R> invoke(
-        commandFunc: () -> C, response: (R) -> Unit
+        commandFunc: () -> C,
+        response: (R) -> Unit
     ): () -> Unit = {}
 }

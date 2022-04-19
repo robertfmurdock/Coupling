@@ -8,7 +8,12 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.*
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.WhiteSpace
+import kotlinx.css.display
+import kotlinx.css.flexGrow
+import kotlinx.css.whiteSpace
 import kotlinx.html.classes
 import react.dom.html.ReactHTML.div
 
@@ -37,11 +42,13 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
             }) {
                 cssDiv(css = { flexGrow = 0.0 }, attrs = { classes = setOf("${styles["leftSection"]}") }) {
                     div {
-                        child(TeamStatistics(
-                            spinsUntilFullRotation = spinsUntilFullRotation,
-                            activePlayerCount = players.size,
-                            medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
-                        ))
+                        child(
+                            TeamStatistics(
+                                spinsUntilFullRotation = spinsUntilFullRotation,
+                                activePlayerCount = players.size,
+                                medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
+                            )
+                        )
                     }
                     child(PairReportTable(pairReports))
                 }

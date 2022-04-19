@@ -27,8 +27,8 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
                 tribe.save()
             }
     }, sharedTeardown = {
-            it.sdk.partyRepository.delete(it.partyId)
-        })
+        it.sdk.partyRepository.delete(it.partyId)
+    })
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({

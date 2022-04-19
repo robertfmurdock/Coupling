@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pin.PartyPinSaveSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 

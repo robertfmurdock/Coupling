@@ -6,8 +6,8 @@ import react.Props
 import react.dom.svg.ReactSVG
 
 external interface CouplingLogoProps : Props {
-  var width: Double
-  var height: Double
+    var width: Double
+    var height: Double
 }
 
 val CouplingLogo = FC<CouplingLogoProps> { props ->

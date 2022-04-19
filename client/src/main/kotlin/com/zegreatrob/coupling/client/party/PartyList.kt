@@ -1,6 +1,10 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.DemoButton
+import com.zegreatrob.coupling.client.GqlButton
+import com.zegreatrob.coupling.client.LogoutButton
+import com.zegreatrob.coupling.client.NotificationButton
+import com.zegreatrob.coupling.client.PageFrame
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.green
 import com.zegreatrob.coupling.client.dom.supersize

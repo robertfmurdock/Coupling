@@ -14,7 +14,6 @@ external fun useDragFunc(options: Json): dynamic
 @JsName("useDrop")
 external fun useDropFunc(options: Json): dynamic
 
-
 @JsName("DndProvider")
 external val DndProvider: ElementType<DnDProvideProps>
 

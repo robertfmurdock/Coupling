@@ -7,8 +7,15 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.*
+import kotlinx.css.CssBuilder
+import kotlinx.css.borderRadius
+import kotlinx.css.borderWidth
+import kotlinx.css.height
+import kotlinx.css.lineHeight
+import kotlinx.css.padding
 import kotlinx.css.properties.LineHeight
+import kotlinx.css.px
+import kotlinx.css.width
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.dom.html.ReactHTML.i
@@ -18,7 +25,6 @@ enum class PinButtonScale(val faTag: String, val factor: Double) {
     Normal("fa-3x", 3.0), Large("fa-10x", 10.0), Small("fa-1x", 1.0), ExtraSmall("fa-xs", 0.75);
 
     fun diameterInPixels() = 14 * factor
-
 }
 
 data class PinButton(

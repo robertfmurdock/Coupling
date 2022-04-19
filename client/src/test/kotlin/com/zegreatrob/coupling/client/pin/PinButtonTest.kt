@@ -42,5 +42,4 @@ class PinButtonTest {
             hasClass(prefixClass).assertIsEqualTo(true, "Did not have class $prefixClass")
             hasClass(iconClass).assertIsEqualTo(true, "Did not have class $iconClass")
         }
-
 }

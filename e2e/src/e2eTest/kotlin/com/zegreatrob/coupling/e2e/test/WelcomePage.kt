@@ -13,5 +13,4 @@ object WelcomePage : StyleSyntax {
         WebdriverBrowser.setLocation("welcome")
         element().waitToExist()
     }
-
 }

@@ -22,5 +22,4 @@ class StubDispatchFunc<D> : DispatchFunc<D> {
     fun <C> simulateSuccess() = commandFunctionsDispatched<C, Unit>().map {
         it.responseFunc(Unit)
     }
-
 }

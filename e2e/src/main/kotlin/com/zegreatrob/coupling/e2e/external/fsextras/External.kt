@@ -10,5 +10,4 @@ external interface FilesystemExtra {
     fun mkdirSync(path: String, options: Json)
     fun createWriteStream(filePath: String): Writable
     fun removeSync(path: String)
-
 }

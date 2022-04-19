@@ -10,9 +10,9 @@ import kotlin.js.Promise
 external val userEvent: UserEventLib
 
 external interface UserEventLib {
-    fun setup(json: Json = definedExternally) : UserEvent
+    fun setup(json: Json = definedExternally): UserEvent
 }
 
 external class UserEvent {
-    fun click(element: HTMLElement) : Promise<Unit>
+    fun click(element: HTMLElement): Promise<Unit>
 }

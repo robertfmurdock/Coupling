@@ -19,7 +19,6 @@ object App {
     }
 
     private val Document.viewContainerNode get() = getElementsByClassName("view-container")[0]!!
-
 }
 
 private fun windowClientConfig() = ClientConfig(

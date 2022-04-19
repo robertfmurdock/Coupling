@@ -1,6 +1,17 @@
 package com.zegreatrob.coupling.client
 
-import kotlinx.css.*
+import kotlinx.css.Overflow
+import kotlinx.css.Position
+import kotlinx.css.WhiteSpace
+import kotlinx.css.border
+import kotlinx.css.height
+import kotlinx.css.margin
+import kotlinx.css.overflow
+import kotlinx.css.padding
+import kotlinx.css.position
+import kotlinx.css.px
+import kotlinx.css.whiteSpace
+import kotlinx.css.width
 import react.FC
 import react.PropsWithChildren
 

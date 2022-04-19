@@ -2,7 +2,11 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
-import com.zegreatrob.coupling.client.dom.*
+import com.zegreatrob.coupling.client.dom.CouplingButton
+import com.zegreatrob.coupling.client.dom.green
+import com.zegreatrob.coupling.client.dom.red
+import com.zegreatrob.coupling.client.dom.small
+import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
@@ -10,8 +14,8 @@ import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -128,18 +132,19 @@ private fun PairAssignmentDocument.copyWithSwappedPlayers(
 }
 
 private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
-    copy(players = players.map { pinnedPlayer ->
-        if (pinnedPlayer == playerToReplace) {
-            replacement
-        } else {
-            pinnedPlayer
+    copy(
+        players = players.map { pinnedPlayer ->
+            if (pinnedPlayer == playerToReplace) {
+                replacement
+            } else {
+                pinnedPlayer
+            }
         }
-    })
+    )
 
 private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = firstOrNull { pair ->
     pair.players.any { player -> player.player.id == droppedPlayerId }
 }
-
 
 private fun ChildrenBuilder.saveButton(onSave: () -> Unit) =
     child(CouplingButton(supersize, green, styles["saveButton"], onSave)) {

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.minassert.assertIsEqualTo
-
 import kotlin.test.Test
 
 class UserConfigE2ETest {
@@ -17,5 +16,4 @@ class UserConfigE2ETest {
             .contains(primaryAuthorizedUsername)
             .assertIsEqualTo(true)
     }
-
 }

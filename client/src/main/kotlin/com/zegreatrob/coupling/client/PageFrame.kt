@@ -4,9 +4,24 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.*
+import kotlinx.css.BorderStyle
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.backgroundColor
+import kotlinx.css.borderBottomWidth
+import kotlinx.css.borderColor
+import kotlinx.css.borderLeftWidth
+import kotlinx.css.borderRadius
+import kotlinx.css.borderRightWidth
+import kotlinx.css.borderStyle
+import kotlinx.css.borderTopWidth
+import kotlinx.css.display
+import kotlinx.css.margin
+import kotlinx.css.minHeight
+import kotlinx.css.padding
+import kotlinx.css.px
+import kotlinx.css.vh
 import kotlinx.html.classes
-
 
 data class PageFrame(val borderColor: Color, val backgroundColor: Color, val className: ClassName? = null) :
     DataPropsBind<PageFrame>(pageFrame)

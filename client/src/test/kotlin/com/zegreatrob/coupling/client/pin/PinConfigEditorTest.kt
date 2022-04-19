@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.pairassignments.assertNotNull
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minenzyme.simulateInputChange
@@ -70,5 +70,4 @@ class PinConfigEditorTest {
         dispatchFunc.commandsDispatched<SavePinCommand>()
             .assertIsEqualTo(listOf(SavePinCommand(party.id, Pin(name = newName, icon = newIcon))))
     }
-
 }

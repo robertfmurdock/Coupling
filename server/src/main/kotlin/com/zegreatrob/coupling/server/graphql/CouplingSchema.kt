@@ -3,7 +3,11 @@ package com.zegreatrob.coupling.server.graphql
 import com.zegreatrob.coupling.server.entity.boost.boostResolver
 import com.zegreatrob.coupling.server.entity.boost.deleteBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.saveBoostResolver
-import com.zegreatrob.coupling.server.entity.pairassignment.*
+import com.zegreatrob.coupling.server.entity.pairassignment.currentPairAssignmentResolve
+import com.zegreatrob.coupling.server.entity.pairassignment.deletePairsResolver
+import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListResolve
+import com.zegreatrob.coupling.server.entity.pairassignment.savePairsResolver
+import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.pin.savePinResolver
@@ -56,7 +60,7 @@ private fun addPrereleaseSchema(standardSchema: GraphQLSchema) = if (!Config.pre
         mergeSchemas(json("schemas" to arrayOf(standardSchema, prereleaseSchema())))
     } catch (anything: Throwable) {
         println("error $anything")
-        throw  anything
+        throw anything
     }
 }
 

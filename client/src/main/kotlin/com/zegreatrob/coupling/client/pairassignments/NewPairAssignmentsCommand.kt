@@ -2,15 +2,15 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
-import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
+import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
@@ -21,7 +21,8 @@ data class NewPairAssignmentsCommand(val partyId: PartyId, val playerIds: List<S
     override val performFunc = link(NewPairAssignmentsCommandDispatcher::perform)
 }
 
-interface NewPairAssignmentsCommandDispatcher : PartyIdGetSyntax,
+interface NewPairAssignmentsCommandDispatcher :
+    PartyIdGetSyntax,
     PartyPinsSyntax,
     PartyPlayersSyntax,
     SuspendActionExecuteSyntax,
@@ -57,5 +58,4 @@ interface NewPairAssignmentsCommandDispatcher : PartyIdGetSyntax,
             async { partyId.getPins() }
         )
     }
-
 }

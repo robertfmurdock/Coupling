@@ -6,12 +6,31 @@ import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.tmFC
 import kotlinx.css.CssBuilder
 import kotlinx.css.RuleSet
-import kotlinx.html.*
+import kotlinx.html.BUTTON
+import kotlinx.html.DIV
+import kotlinx.html.H1
+import kotlinx.html.SPAN
+import kotlinx.html.Tag
 import org.w3c.dom.Node
-import react.*
+import react.ChildrenBuilder
+import react.ElementType
+import react.Fragment
+import react.Props
+import react.RBuilder
+import react.RHandler
+import react.Ref
+import react.buildElement
+import react.create
 import react.dom.DOMProps
 import react.dom.attrs
-import styled.*
+import react.key
+import react.ref
+import styled.StyledDOMBuilder
+import styled.css
+import styled.styledButton
+import styled.styledDiv
+import styled.styledH1
+import styled.styledSpan
 
 inline fun <reified P : DataProps<P>> reactFunction(crossinline function: RBuilder.(P) -> Unit): TMFC<P> =
     tmFC { props ->
@@ -95,7 +114,6 @@ fun ChildrenBuilder.cssH1(
     css: CssBuilder.() -> Unit,
     builder: (ChildrenBuilder).() -> Unit = {}
 ) = +bridge(RBuilder::styledH1, attrs, props, css = css, builder = builder)
-
 
 fun ChildrenBuilder.cssButton(
     attrs: BUTTON.() -> Unit = {},

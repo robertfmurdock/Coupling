@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
-
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -116,5 +115,4 @@ class TribeConfigPageE2ETest {
                 .assertIsEqualTo("Prefer Longest Time")
         }
     }
-
 }

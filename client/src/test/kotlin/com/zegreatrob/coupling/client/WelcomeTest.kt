@@ -82,8 +82,6 @@ class WelcomeTest {
     private fun ShallowWrapper<dynamic>.leftCard() = find(playerCard).map { it.dataprops() }
         .find { it.className?.toString()?.contains("left") ?: false }
 
-
-    private fun ShallowWrapper<dynamic>.rightCard() =  find(playerCard).map { it.dataprops() }
+    private fun ShallowWrapper<dynamic>.rightCard() = find(playerCard).map { it.dataprops() }
         .find { it.className?.toString()?.contains("right") ?: false }
-
 }

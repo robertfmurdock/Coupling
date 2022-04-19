@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
-import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.dataprops
@@ -233,7 +233,6 @@ class SpinAnimationTest {
         } verify { result ->
             result.assertIsEqualTo(Shuffle(pairAssignments.pairs[1].players[0].player, 0))
         }
-
     }
 
     companion object {
@@ -254,5 +253,4 @@ class SpinAnimationTest {
             .map { it.dataprops().pair }
             .toList()
     }
-
 }

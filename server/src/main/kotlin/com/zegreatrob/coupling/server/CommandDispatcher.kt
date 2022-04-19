@@ -14,16 +14,29 @@ import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
 import com.zegreatrob.coupling.server.action.boost.BoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.DeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.SaveBoostCommandDispatcher
-import com.zegreatrob.coupling.server.action.connection.*
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
+import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommandDispatcher
+import com.zegreatrob.coupling.server.action.connection.ConnectionsQueryDispatcher
+import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
+import com.zegreatrob.coupling.server.action.connection.DeletePartyCommandDispatcher
+import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommandDispatcher
+import com.zegreatrob.coupling.server.action.connection.ReportDocCommandDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQueryDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommandDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerProposeNewPairsCommandDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
 import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
-import com.zegreatrob.coupling.server.action.player.*
+import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
+import com.zegreatrob.coupling.server.action.player.PlayersQuery
+import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
+import com.zegreatrob.coupling.server.action.player.RetiredPlayersQueryDispatcher
+import com.zegreatrob.coupling.server.action.player.SavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.user.UserQueryDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
-import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.tribe.PartyDispatcher
+import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import com.zegreatrob.coupling.server.express.Config
 import kotlinx.coroutines.CoroutineScope
@@ -70,7 +83,6 @@ class CommandDispatcher(
                 authorizedTribeIdDispatcherJob = it
             }.await()
     }
-
 }
 
 interface ICurrentPartyDispatcher :
@@ -114,7 +126,8 @@ class CurrentPartyDispatcher(
 
     private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
 
-    private fun nonCachingPlayerQueryDispatcher() = object : PlayersQueryDispatcher,
+    private fun nonCachingPlayerQueryDispatcher() = object :
+        PlayersQueryDispatcher,
         LoggingActionExecuteSyntax by this,
         CurrentPartyIdSyntax by this,
         RepositoryCatalog by this {}
@@ -127,8 +140,8 @@ class CurrentPartyDispatcher(
 
     override suspend fun perform(query: PlayersQuery) = playerDeferred.await()
 
-    private suspend fun userIsAuthorized(tribeId: PartyId) = user.authorizedPartyIds.contains(tribeId)
-            || userIsAlsoPlayer()
+    private suspend fun userIsAuthorized(tribeId: PartyId) = user.authorizedPartyIds.contains(tribeId) ||
+        userIsAlsoPlayer()
 
     private suspend fun userIsAlsoPlayer() = players()
         .map { it.email }
@@ -137,7 +150,6 @@ class CurrentPartyDispatcher(
     private suspend fun players() = playerDeferred.await().value.map { it.data.element }
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? =
         commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
-
 }
 
 fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(
@@ -158,7 +170,10 @@ fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(
     )
 )
 
-interface PrereleaseDispatcher : ICommandDispatcher, SaveBoostCommandDispatcher, BoostQueryDispatcher,
+interface PrereleaseDispatcher :
+    ICommandDispatcher,
+    SaveBoostCommandDispatcher,
+    BoostQueryDispatcher,
     DeleteBoostCommandDispatcher {
     override val boostRepository: BoostRepository
 }

@@ -8,7 +8,12 @@ import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import com.zegreatrob.react.dataloader.*
+import com.zegreatrob.react.dataloader.DataLoadFunc
+import com.zegreatrob.react.dataloader.DataLoadState
+import com.zegreatrob.react.dataloader.DataLoader
+import com.zegreatrob.react.dataloader.DataLoaderTools
+import com.zegreatrob.react.dataloader.ReloadFunc
+import com.zegreatrob.react.dataloader.ResolvedState
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.execute
 import react.ChildrenBuilder
@@ -39,9 +44,11 @@ fun <R, P : DataProps<P>> dataLoadProps(
 }
 
 fun <P : DataProps<P>> couplingDataLoader() = tmFC { (_, getDataAsync): CouplingLoaderProps<P> ->
-    child(DataLoader(getDataAsync, { null }) { state: DataLoadState<P?> ->
-        animationFrame(state)
-    })
+    child(
+        DataLoader(getDataAsync, { null }) { state: DataLoadState<P?> ->
+            animationFrame(state)
+        }
+    )
 }
 
 private fun <P : DataProps<P>> ChildrenBuilder.animationFrame(state: DataLoadState<P?>) =

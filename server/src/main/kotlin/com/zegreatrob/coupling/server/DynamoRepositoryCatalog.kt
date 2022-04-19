@@ -4,11 +4,16 @@ import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.LiveInfoRepository
-import com.zegreatrob.coupling.repository.dynamo.*
+import com.zegreatrob.coupling.repository.dynamo.DynamoLiveInfoRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoPairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 
 class DynamoRepositoryCatalog private constructor(

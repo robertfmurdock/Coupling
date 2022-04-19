@@ -36,7 +36,6 @@ configurations {
     }
 }
 
-
 fun Project.relatedResources() = relatedProjects()
     .asSequence()
     .map { it.projectDir }
@@ -168,7 +167,7 @@ tasks {
                 "STRICT_SSL" to "false",
             )
         )
-        val logFile = file("${logsDir}/run.log")
+        val logFile = file("$logsDir/run.log")
         logFile.parentFile.mkdirs()
         standardOutput = FileOutputStream(logFile, true)
     }

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 
 object Paths {
     fun welcome() = "/welcome"

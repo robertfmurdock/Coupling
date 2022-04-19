@@ -16,15 +16,18 @@ fun <T : Props> ChildrenBuilder.waitForAsyncReactComponent(
     getComponent: () -> ElementType<T>?,
     useComponent: ChildrenBuilder.(ElementType<T>) -> Unit
 ) {
-    child(DataLoader({ waitForComponent(getComponent) }, { null }) { state ->
-        when (state) {
-            is EmptyState -> div { +"Preparing component" }
-            is PendingState -> div { +"Pending component" }
-            is ResolvedState -> state.result
-                ?.let { useComponent(it) }
-                ?: div { +"Error finding component." }
+    child(
+        DataLoader({ waitForComponent(getComponent) }, { null }) { state ->
+            when (state) {
+                is EmptyState -> div { +"Preparing component" }
+                is PendingState -> div { +"Pending component" }
+                is ResolvedState ->
+                    state.result
+                        ?.let { useComponent(it) }
+                        ?: div { +"Error finding component." }
+            }
         }
-    })
+    )
 }
 
 private suspend fun <T : Props> waitForComponent(getComponent: () -> ElementType<T>?): ElementType<T>? =

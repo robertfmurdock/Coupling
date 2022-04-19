@@ -4,13 +4,12 @@ import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.PlayerCard.header
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import kotlin.test.Test
@@ -46,9 +45,11 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenNothingHasChangedWillNotAlertOnLeaving() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-        }.attachPlayer()) {
+        fun whenNothingHasChangedWillNotAlertOnLeaving() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+            }.attachPlayer()
+        ) {
             PlayerConfigPage.goTo(tribe.id, player.id)
         } exercise {
             TribeCard.element().click()
@@ -59,9 +60,11 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenNameIsChangedWillGetAlertOnLeaving() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-        }.attachPlayer()) {
+        fun whenNameIsChangedWillGetAlertOnLeaving() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+            }.attachPlayer()
+        ) {
             PlayerConfigPage.goTo(tribe.id, player.id)
             PlayerConfigPage.playerNameTextField().setValue("completely different name")
         } exercise {
@@ -76,10 +79,12 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenNameIsChangedThenSaveWillNotGetAlertOnLeaving() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-            val newName = "completely different name"
-        }.attachPlayer()) {
+        fun whenNameIsChangedThenSaveWillNotGetAlertOnLeaving() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+                val newName = "completely different name"
+            }.attachPlayer()
+        ) {
             with(page) {
                 goTo(tribe.id, player.id)
                 playerNameTextField().setValue(newName)
@@ -98,9 +103,11 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun savingWithNoNameWillShowDefaultName() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-        }.attachPlayer()) {
+        fun savingWithNoNameWillShowDefaultName() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+            }.attachPlayer()
+        ) {
             PlayerConfigPage.goTo(tribe.id, player.id)
             PlayerConfigPage.playerNameTextField().clearSetValue(" ")
             PlayerConfigPage.playerNameTextField().clearSetValue("")
@@ -119,9 +126,11 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenRetireIsClickedWillAlertAndOnAcceptRedirect() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-        }.attachPlayer()) {
+        fun whenRetireIsClickedWillAlertAndOnAcceptRedirect() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+            }.attachPlayer()
+        ) {
             PlayerConfigPage.goTo(tribe.id, player.id)
         } exercise {
             deleteButton.click()
@@ -131,9 +140,11 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-        }.attachPlayer()) {
+        fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+            }.attachPlayer()
+        ) {
             sdk.partyRepository.save(tribe.copy(badgesEnabled = false))
         } exercise {
             PlayerConfigPage.goTo(tribe.id, player.id)
@@ -168,7 +179,6 @@ class PlayerConfigPageE2ETest {
         } verify { result ->
             result.assertIsEqualTo(players.map { it.name })
         }
-
     }
 
     class WhenTribeHasBadgingEnabled {
@@ -193,9 +203,11 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun willShowBadgeSelector() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-        }.attachPlayer()) exercise {
+        fun willShowBadgeSelector() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+            }.attachPlayer()
+        ) exercise {
             PlayerConfigPage.goTo(tribe.id, player.id)
         } verify {
             PlayerConfigPage.defaultBadgeOption().isDisplayed()
@@ -211,9 +223,11 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun willSelectTheDefaultBadge() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-        }.attachPlayer()) exercise {
+        fun willSelectTheDefaultBadge() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+            }.attachPlayer()
+        ) exercise {
             PlayerConfigPage.goTo(tribe.id, player.id)
         } verify {
             PlayerConfigPage.defaultBadgeOption().isSelected()
@@ -221,9 +235,11 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun willRememberBadgeSelection() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-        }.attachPlayer()) {
+        fun willRememberBadgeSelection() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+            }.attachPlayer()
+        ) {
             PlayerConfigPage.goTo(tribe.id, player.id)
         } exercise {
             PlayerConfigPage.altBadgeOption().click()
@@ -234,7 +250,6 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.altBadgeOption().isSelected()
                 .assertIsEqualTo(true)
         }
-
     }
 
     class WhenTribeHasCallSignsEnabled {
@@ -257,9 +272,11 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun adjectiveAndNounCanBeSaved() = playerSetup.with(object : PlayerContext() {
-            val page = PlayerConfigPage
-        }.attachPlayer()) {
+        fun adjectiveAndNounCanBeSaved() = playerSetup.with(
+            object : PlayerContext() {
+                val page = PlayerConfigPage
+            }.attachPlayer()
+        ) {
             PlayerConfigPage.goTo(tribe.id, player.id)
         } exercise {
             PlayerConfigPage.adjectiveTextInput().clearSetValue("Superior")
@@ -273,7 +290,6 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.nounTextInput().attribute("value")
                 .assertIsEqualTo("Spider-Man")
         }
-
     }
 
     class WithOneTribeNoPlayers {

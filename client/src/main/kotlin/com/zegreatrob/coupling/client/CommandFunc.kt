@@ -29,5 +29,4 @@ class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
             { handler: Throwable -> throw handler },
             onResponse
         )
-
 }

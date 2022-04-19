@@ -14,4 +14,3 @@ inline fun <reified P : DataProps<P>> windowTmFC(crossinline handler: ChildrenBu
     { windowFunctions: WindowFunctions ->
         tmFC<P> { handler(it, windowFunctions) }
     }
-

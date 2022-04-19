@@ -9,10 +9,9 @@ object RetiredPlayerConfig : BrowserSyntax {
     val playerNameTextField get() = PlayerConfigPage.playerNameTextField()
 
     suspend fun goTo(tribeId: PartyId, id: String?) {
-        WebdriverBrowser.setLocation("/${tribeId.value}/retired-player/${id}")
+        WebdriverBrowser.setLocation("/${tribeId.value}/retired-player/$id")
         waitForPage()
     }
 
     suspend fun waitForPage() = PlayerConfigPage.waitForPage()
-
 }

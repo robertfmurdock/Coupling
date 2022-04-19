@@ -12,7 +12,6 @@ import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
 
-
 private val styles = useStyles("LoginChooser")
 
 val LoginChooser = FC<Props> {

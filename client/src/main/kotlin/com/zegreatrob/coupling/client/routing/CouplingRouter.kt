@@ -9,15 +9,15 @@ import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinPage
+import com.zegreatrob.coupling.client.party.GraphIQLPage
+import com.zegreatrob.coupling.client.party.PartyConfigPage
+import com.zegreatrob.coupling.client.party.PartyListPage
 import com.zegreatrob.coupling.client.pin.PinListPage
 import com.zegreatrob.coupling.client.pin.PinPage
 import com.zegreatrob.coupling.client.player.PlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayersPage
 import com.zegreatrob.coupling.client.stats.StatisticsPage
-import com.zegreatrob.coupling.client.party.GraphIQLPage
-import com.zegreatrob.coupling.client.party.PartyConfigPage
-import com.zegreatrob.coupling.client.party.PartyListPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
@@ -29,8 +29,12 @@ import react.FC
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
-import react.router.*
+import react.router.Navigate
+import react.router.Route
+import react.router.Routes
 import react.router.dom.BrowserRouter
+import react.router.useLocation
+import react.router.useParams
 
 data class CouplingRouter(val animationsDisabled: Boolean, val config: ClientConfig) :
     DataPropsBind<CouplingRouter>(couplingRouter)

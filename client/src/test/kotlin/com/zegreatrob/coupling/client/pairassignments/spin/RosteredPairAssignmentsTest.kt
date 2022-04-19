@@ -32,5 +32,4 @@ class RosteredPairAssignmentsTest {
             it.selectedPlayers.assertIsEqualTo(listOf(players[0], players[2]))
         }
     }
-
 }

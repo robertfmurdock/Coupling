@@ -10,8 +10,22 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.*
-import kotlinx.css.properties.*
+import kotlinx.css.Color
+import kotlinx.css.RuleSet
+import kotlinx.css.borderRadius
+import kotlinx.css.borderWidth
+import kotlinx.css.flex
+import kotlinx.css.height
+import kotlinx.css.margin
+import kotlinx.css.properties.Angle
+import kotlinx.css.properties.boxShadow
+import kotlinx.css.properties.deg
+import kotlinx.css.properties.rotate
+import kotlinx.css.properties.s
+import kotlinx.css.properties.transform
+import kotlinx.css.properties.transition
+import kotlinx.css.px
+import kotlinx.css.width
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.events.Event
@@ -41,7 +55,8 @@ val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselecte
                 rotate(tilt)
             }
             playerCardRuleSet(size)()
-        }) {
+        }
+    ) {
         cssDiv(css = { margin((size * 0.02).px) }) {
             playerGravatarImage(player, size)
             child(PlayerCardHeader(player, size))
@@ -93,4 +108,3 @@ private fun Player.emailWithFallback() = when {
     name != "" -> name
     else -> "name"
 }
-

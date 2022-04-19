@@ -6,9 +6,13 @@ import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.react.windowTmFC
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
-import com.zegreatrob.coupling.json.*
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.json.JsonPlayerData
+import com.zegreatrob.coupling.json.fromJsonDynamic
+import com.zegreatrob.coupling.json.toJsonDynamic
+import com.zegreatrob.coupling.json.toModel
+import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import react.router.Navigate
@@ -33,8 +37,10 @@ val playerConfigFunc = windowTmFC<PlayerConfig> { props, windowFuncs ->
 
     val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
     val onSubmit = dispatchFunc({ SavePlayerCommand(party.id, updatedPlayer) }, { reload() })
-    val onRemove = dispatchFunc({ DeletePlayerCommand(party.id, player.id) },
-        { setRedirectUrl(party.id.currentPairsPage()) })
+    val onRemove = dispatchFunc(
+        { DeletePlayerCommand(party.id, player.id) },
+        { setRedirectUrl(party.id.currentPairsPage()) }
+    )
         .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
 
     if (redirectUrl != null)

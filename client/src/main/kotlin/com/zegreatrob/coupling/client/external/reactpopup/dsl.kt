@@ -1,6 +1,10 @@
 package com.zegreatrob.coupling.client.external.reactpopup
 
-import react.*
+import react.ChildrenBuilder
+import react.Fragment
+import react.ReactNode
+import react.buildElement
+import react.create
 import styled.styled
 import kotlin.js.Json
 

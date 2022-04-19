@@ -5,11 +5,39 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.*
+import kotlinx.css.Color
+import kotlinx.css.CssBuilder
+import kotlinx.css.Cursor
+import kotlinx.css.Display
+import kotlinx.css.FontWeight
+import kotlinx.css.Position
+import kotlinx.css.RuleSet
+import kotlinx.css.VerticalAlign
+import kotlinx.css.animationPlayState
+import kotlinx.css.background
+import kotlinx.css.backgroundColor
+import kotlinx.css.border
+import kotlinx.css.borderBottom
+import kotlinx.css.borderRadius
+import kotlinx.css.color
+import kotlinx.css.cursor
+import kotlinx.css.display
+import kotlinx.css.fontSize
+import kotlinx.css.fontWeight
+import kotlinx.css.lineHeight
+import kotlinx.css.margin
+import kotlinx.css.outlineColor
+import kotlinx.css.outlineOffset
+import kotlinx.css.outlineWidth
+import kotlinx.css.padding
+import kotlinx.css.position
 import kotlinx.css.properties.LineHeight
 import kotlinx.css.properties.PlayState
 import kotlinx.css.properties.TextDecoration
 import kotlinx.css.properties.boxShadow
+import kotlinx.css.px
+import kotlinx.css.textDecoration
+import kotlinx.css.verticalAlign
 import kotlinx.html.BUTTON
 import kotlinx.html.ButtonType
 import kotlinx.html.classes
@@ -42,7 +70,6 @@ val buttonRuleset: RuleSet = {
         animationPlayState = PlayState.paused
     }
 }
-
 
 val small: RuleSet = {
     fontSize = 11.px

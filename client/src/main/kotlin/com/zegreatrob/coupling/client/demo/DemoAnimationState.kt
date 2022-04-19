@@ -11,10 +11,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 import csstype.ClassName
 import popper.core.Placement
 
@@ -71,17 +71,16 @@ sealed class DemoAnimationState {
             }.asSequence()
 
         private fun listOfPairs(): List<Pair<DemoAnimationState, Int>> = listOf(Pair(ShowIntro, 3000)) +
-                makePartySequence().pairWithDurations(800, 100) +
-                makePlayerSequence() +
-                makePinSequence().pairWithDurations(800, 100) +
-                (CurrentPairs(demoParty, players, pins, null, false) to 3000) +
-                (PrepareToSpin(demoParty, players.map { it to false }, pins) to 4000) +
-                (PrepareToSpin(demoParty, players.map { it to true }, pins) to 1500) +
-                (PrepareToSpin(demoParty, players.map { it to (it != player3) }, pins) to 1500) +
-                (CurrentPairs(demoParty, players, pins, pairAssignments, true) to 1500) +
-                (CurrentPairs(demoParty, players, pins, pairAssignments, false) to 12000)
+            makePartySequence().pairWithDurations(800, 100) +
+            makePlayerSequence() +
+            makePinSequence().pairWithDurations(800, 100) +
+            (CurrentPairs(demoParty, players, pins, null, false) to 3000) +
+            (PrepareToSpin(demoParty, players.map { it to false }, pins) to 4000) +
+            (PrepareToSpin(demoParty, players.map { it to true }, pins) to 1500) +
+            (PrepareToSpin(demoParty, players.map { it to (it != player3) }, pins) to 1500) +
+            (CurrentPairs(demoParty, players, pins, pairAssignments, true) to 1500) +
+            (CurrentPairs(demoParty, players, pins, pairAssignments, false) to 12000)
     }
-
 }
 
 private fun <T> List<T>.pairWithDurations(firstDuration: Int, duration: Int) = mapIndexed { index, it ->
@@ -96,7 +95,7 @@ object Start : DemoAnimationState() {
         
         ---
         
-""".trimIndent()
+    """.trimIndent()
 }
 
 object ShowIntro : DemoAnimationState() {
@@ -108,7 +107,7 @@ object ShowIntro : DemoAnimationState() {
         ---
         
         #### See you on the other side!
-""".trimIndent()
+    """.trimIndent()
 }
 
 fun makePartySequence() = demoParty.name.rangeOfStringLength().map { index ->

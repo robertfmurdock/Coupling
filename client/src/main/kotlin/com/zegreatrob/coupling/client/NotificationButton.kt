@@ -5,10 +5,39 @@ import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.external.reactpopup.popup
 import csstype.ClassName
 import kotlinx.browser.localStorage
-import kotlinx.css.*
+import kotlinx.css.Align
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.Float
+import kotlinx.css.FontWeight
+import kotlinx.css.JustifyContent
+import kotlinx.css.Position
+import kotlinx.css.TextAlign
+import kotlinx.css.VerticalAlign
+import kotlinx.css.alignItems
+import kotlinx.css.backgroundColor
+import kotlinx.css.borderColor
+import kotlinx.css.borderRadius
+import kotlinx.css.color
+import kotlinx.css.display
+import kotlinx.css.float
+import kotlinx.css.fontSize
+import kotlinx.css.fontWeight
+import kotlinx.css.height
+import kotlinx.css.justifyContent
+import kotlinx.css.marginBottom
+import kotlinx.css.marginLeft
+import kotlinx.css.marginRight
+import kotlinx.css.position
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
 import kotlinx.css.properties.s
+import kotlinx.css.px
+import kotlinx.css.right
+import kotlinx.css.textAlign
+import kotlinx.css.top
+import kotlinx.css.verticalAlign
+import kotlinx.css.width
 import react.FC
 import react.Props
 import react.RBuilder
@@ -97,6 +126,7 @@ private fun notificationButton(open: Boolean, seenNotification: Boolean) = bridg
         verticalAlign = VerticalAlign.middle
         justifyContent = JustifyContent.center
         alignItems = Align.center
-    }) {
+    }
+) {
     i { className = ClassName("fa fa-exclamation-circle ${if (seenNotification) "" else "fa-2x"}") }
 }

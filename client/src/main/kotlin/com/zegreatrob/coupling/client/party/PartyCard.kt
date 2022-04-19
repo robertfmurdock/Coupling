@@ -12,7 +12,14 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.*
+import kotlinx.css.RuleSet
+import kotlinx.css.borderRadius
+import kotlinx.css.borderWidth
+import kotlinx.css.flex
+import kotlinx.css.height
+import kotlinx.css.margin
+import kotlinx.css.px
+import kotlinx.css.width
 import kotlinx.html.classes
 import react.ChildrenBuilder
 import react.dom.aria.ariaHidden

@@ -49,5 +49,4 @@ class PlayerHeatmapBuilderTest {
             .toList()
             .assertIsEqualTo(players)
     }
-
 }

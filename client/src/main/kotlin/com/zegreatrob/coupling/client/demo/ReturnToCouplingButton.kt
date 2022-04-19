@@ -6,11 +6,23 @@ import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.svgPath
 import com.zegreatrob.minreact.child
-import kotlinx.css.*
+import kotlinx.css.Align
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.Position
+import kotlinx.css.alignItems
+import kotlinx.css.backgroundImage
+import kotlinx.css.borderRadius
+import kotlinx.css.display
+import kotlinx.css.height
+import kotlinx.css.position
 import kotlinx.css.properties.IterationCount
 import kotlinx.css.properties.animation
 import kotlinx.css.properties.radialGradient
 import kotlinx.css.properties.s
+import kotlinx.css.px
+import kotlinx.css.width
+import kotlinx.css.zIndex
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML
@@ -21,9 +33,11 @@ val returnToCouplingButton = FC<Props> {
         to = "/tribes"
         tabIndex = -1
         draggable = false
-        child(CouplingButton(sizeRuleSet = supersize, colorRuleSet = pink) {
-            animation("pulsate", 0.75.s, iterationCount = IterationCount.infinite)
-        }) {
+        child(
+            CouplingButton(sizeRuleSet = supersize, colorRuleSet = pink) {
+                animation("pulsate", 0.75.s, iterationCount = IterationCount.infinite)
+            }
+        ) {
             couplingLogo()
         }
     }

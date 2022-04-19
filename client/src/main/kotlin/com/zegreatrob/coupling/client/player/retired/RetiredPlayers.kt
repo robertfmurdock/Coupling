@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.client.player.retired
 import com.zegreatrob.coupling.client.Paths.playerConfigPage
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.party.PartyBrowser
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC

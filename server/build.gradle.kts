@@ -117,7 +117,7 @@ tasks {
             "--packageFile",
             "${System.getenv("PWD")}/$packageJson",
             "--configFilePath",
-            "${rootDir}/.ncurc.json"
+            "$rootDir/.ncurc.json"
         )
     }
 
@@ -159,7 +159,7 @@ tasks {
     }
 
     fun NodeExec.configureBuild(stage: String) {
-        val serverlessBuildDir = "${project.buildDir.absolutePath}/${stage}/lambda-dist"
+        val serverlessBuildDir = "${project.buildDir.absolutePath}/$stage/lambda-dist"
         dependsOn(assemble, test, compileKotlinJs)
         environment(
             "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),

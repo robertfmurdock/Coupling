@@ -12,8 +12,8 @@ import com.zegreatrob.coupling.server.external.stream.Readable
 import kotlin.js.Promise
 
 val indexHtmlPromise get() = fetch("${Config.clientUrl}/html/index.html")
-        .then(FetchResult::text)
-        .unsafeCast<Promise<String>>()
+    .then(FetchResult::text)
+    .unsafeCast<Promise<String>>()
 
 fun Express.indexRoute(): Handler = { _, response, _ ->
     indexHtmlPromise.then { indexHtml ->

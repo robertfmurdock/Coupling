@@ -1,9 +1,26 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.fitty.fitty
-import kotlinx.css.*
+import kotlinx.css.Align
+import kotlinx.css.Display
+import kotlinx.css.FlexDirection
+import kotlinx.css.Overflow
+import kotlinx.css.VerticalAlign
+import kotlinx.css.alignItems
+import kotlinx.css.borderRadius
+import kotlinx.css.display
+import kotlinx.css.flexDirection
+import kotlinx.css.height
+import kotlinx.css.margin
+import kotlinx.css.overflow
+import kotlinx.css.px
+import kotlinx.css.verticalAlign
 import org.w3c.dom.Node
-import react.*
+import react.FC
+import react.PropsWithClassName
+import react.ref
+import react.useLayoutEffect
+import react.useRef
 
 external interface CardHeaderProps : PropsWithClassName {
     var size: Int

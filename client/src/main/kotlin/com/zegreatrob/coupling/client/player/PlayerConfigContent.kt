@@ -1,18 +1,29 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.*
+import com.zegreatrob.coupling.client.ConfigForm
+import com.zegreatrob.coupling.client.ConfigFrame
+import com.zegreatrob.coupling.client.ConfigHeader
+import com.zegreatrob.coupling.client.Editor
 import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
+import com.zegreatrob.coupling.client.gravatarLink
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.*
+import kotlinx.css.Color
+import kotlinx.css.Display
+import kotlinx.css.backgroundColor
+import kotlinx.css.border
+import kotlinx.css.borderRadius
+import kotlinx.css.display
+import kotlinx.css.padding
+import kotlinx.css.px
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
 import react.dom.html.InputType
@@ -56,16 +67,17 @@ val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, o
             }
         }
         div {
-            child(PlayerRoster(players = players, partyId = party.id) {
-                display = Display.inlineBlock
-                borderRadius = 20.px
-                padding = "10px"
-                border = "11px outset tan"
-                backgroundColor = Color.wheat
-            })
+            child(
+                PlayerRoster(players = players, partyId = party.id) {
+                    display = Display.inlineBlock
+                    borderRadius = 20.px
+                    padding = "10px"
+                    border = "11px outset tan"
+                    backgroundColor = Color.wheat
+                }
+            )
         }
     }
-
 }
 
 private fun ChildrenBuilder.promptOnExit(shouldShowPrompt: Boolean) = PromptComponent {
@@ -160,7 +172,6 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
         datalist { id = "callSignNounOptions" }
         span { +"... the need for speed!" }
     }
-
 }
 
 private fun ChildrenBuilder.badgeConfig(

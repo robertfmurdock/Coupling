@@ -21,5 +21,4 @@ object HistoryPage : StyleSyntax {
     suspend fun waitForPage() {
         historyView.waitToExist()
     }
-
 }

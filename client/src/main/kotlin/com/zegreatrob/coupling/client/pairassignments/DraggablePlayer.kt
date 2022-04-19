@@ -22,16 +22,18 @@ const val playerDragItemType = "PLAYER"
 private val styles = useStyles("pairassignments/DraggablePlayer")
 
 val draggablePlayer = tmFC<DraggablePlayer> { (pinnedPlayer, zoomOnHover, tilt, onPlayerDrop) ->
-    child(DraggableThing(playerDragItemType, pinnedPlayer.player.id, onPlayerDrop) { isOver ->
-        child(
-            PlayerCard(
-                pinnedPlayer.player,
-                className = playerCardClassName(isOver, zoomOnHover),
-                tilt = tilt
-            ),
-            key = pinnedPlayer.player.id
-        )
-    })
+    child(
+        DraggableThing(playerDragItemType, pinnedPlayer.player.id, onPlayerDrop) { isOver ->
+            child(
+                PlayerCard(
+                    pinnedPlayer.player,
+                    className = playerCardClassName(isOver, zoomOnHover),
+                    tilt = tilt
+                ),
+                key = pinnedPlayer.player.id
+            )
+        }
+    )
 }
 
 private fun playerCardClassName(isOver: Boolean, zoomOnHover: Boolean) = mapOf(
@@ -43,4 +45,3 @@ private fun playerCardClassName(isOver: Boolean, zoomOnHover: Boolean) = mapOf(
     .plus(styles.className)
     .joinToString(" ")
     .let { ClassName(it) }
-

@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
+import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
@@ -21,7 +21,8 @@ data class PartyPlayerQuery(val partyId: PartyId, val playerId: String?) :
     override val performFunc = link(PartyPlayerQueryDispatcher::perform)
 }
 
-interface PartyPlayerQueryDispatcher : PartyIdGetSyntax,
+interface PartyPlayerQueryDispatcher :
+    PartyIdGetSyntax,
     PartyPlayersSyntax,
     FindCallSignActionDispatcher,
     ExecutableActionExecuteSyntax {

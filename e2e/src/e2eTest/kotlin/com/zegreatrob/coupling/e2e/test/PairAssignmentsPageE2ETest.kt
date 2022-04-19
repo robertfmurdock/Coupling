@@ -9,14 +9,17 @@ import com.zegreatrob.coupling.e2e.test.ConfigHeader.statisticsButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.viewHistoryButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.TribeCard.header
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
-
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
@@ -63,7 +66,6 @@ class PairAssignmentsPageE2ETest {
 
             private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) =
                 template(PairAssignmentsPage, additionalSetup)
-
         }
 
         @Test
@@ -242,9 +244,7 @@ class PairAssignmentsPageE2ETest {
 
         private suspend fun WebdriverElement.getPairPlayerNames() = all(PlayerCard.playerLocator).map { it.text() }
     }
-
 }
-
 
 fun resolve(base: String, path: String) = if (base == "")
     "/$path"

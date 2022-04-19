@@ -12,7 +12,16 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.child
 import csstype.ClassName
-import kotlinx.css.*
+import kotlinx.css.Color
+import kotlinx.css.Float
+import kotlinx.css.Position
+import kotlinx.css.em
+import kotlinx.css.float
+import kotlinx.css.position
+import kotlinx.css.px
+import kotlinx.css.right
+import kotlinx.css.top
+import kotlinx.css.width
 import react.FC
 import react.Props
 import react.PropsWithChildren
@@ -76,7 +85,9 @@ private val playerHeader = FC<Props> {
     }
 }
 
-private fun playerCardStyles(sideClassName: String) = ClassName(listOf(
-    styles["player"],
-    styles[sideClassName]
-).joinToString(" "))
+private fun playerCardStyles(sideClassName: String) = ClassName(
+    listOf(
+        styles["player"],
+        styles[sideClassName]
+    ).joinToString(" ")
+)

@@ -18,7 +18,7 @@ object PlayerConfigPage : StyleSyntax {
     fun nounTextInput() = WebdriverElement(By.id("noun-input"))
 
     suspend fun goTo(tribeId: PartyId, playerId: String?) {
-        WebdriverBrowser.setLocation("/${tribeId.value}/player/${playerId}")
+        WebdriverBrowser.setLocation("/${tribeId.value}/player/$playerId")
         waitForPage()
     }
 
@@ -46,7 +46,6 @@ object PlayerConfigPage : StyleSyntax {
             (playerName == expectedName)
         }, 100, "PlayerConfig.waitForSave.nameIncluded")
     }
-
 }
 
 object PlayerCard : StyleSyntax {

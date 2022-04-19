@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlin.test.Test
 
@@ -54,5 +53,4 @@ class TribeListPageE2ETest {
         WebdriverBrowser.currentUrl().pathname
             .assertIsEqualTo(resolve(clientBasename, "new-tribe/"))
     }
-
 }

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.Paths.playerConfigPage
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC

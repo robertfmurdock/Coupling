@@ -8,7 +8,6 @@ import org.w3c.dom.HTMLElement
 import react.ReactNode
 import kotlin.js.Json
 
-
 external val screen: Screen
 
 external fun render(node: ReactNode, options: Json = definedExternally): Result

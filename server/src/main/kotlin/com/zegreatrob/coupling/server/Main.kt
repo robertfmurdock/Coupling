@@ -7,7 +7,14 @@ import com.zegreatrob.coupling.server.express.port
 import com.zegreatrob.coupling.server.express.route.routes
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.express
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.asPromise
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 
 val serverScope = MainScope() + CoroutineName("Server")
 
@@ -36,8 +43,8 @@ private suspend fun Express.startListening() = CompletableDeferred<Unit>()
     }.await()
 
 fun main() {
-    if (Process.getEnv("IS_OFFLINE") != "true"
-        && Process.getEnv("AWS_LAMBDA_FUNCTION_NAME").unsafeCast<String?>() == null
+    if (Process.getEnv("IS_OFFLINE") != "true" &&
+        Process.getEnv("AWS_LAMBDA_FUNCTION_NAME").unsafeCast<String?>() == null
     ) {
         serverScope.launch { startDeferred.await() }
     }

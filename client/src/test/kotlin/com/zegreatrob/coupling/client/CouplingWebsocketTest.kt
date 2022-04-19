@@ -65,5 +65,4 @@ class CouplingWebsocketTest {
     private fun socketMessage(expectedMessage: String) = CouplingSocketMessage(expectedMessage, emptySet(), null)
         .toSerializable()
         .toJsonString()
-
 }

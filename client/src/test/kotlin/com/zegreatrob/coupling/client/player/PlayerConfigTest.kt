@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.model.player.Badge
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Badge
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minenzyme.simulateInputChange
@@ -150,5 +150,4 @@ class PlayerConfigTest {
 //        wrapper.find(PromptComponent).props().`when`
 //            .assertIsEqualTo(false)
     }
-
 }

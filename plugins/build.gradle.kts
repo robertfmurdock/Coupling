@@ -23,7 +23,7 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-core:2.17.2")
     implementation("org.apache.logging.log4j:log4j-iostreams:2.17.2")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
-    implementation("org.jmailen.gradle:kotlinter-gradle:3.9.0")
+    implementation("org.jlleitschuh.gradle:ktlint-gradle:10.2.1")
     api("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
 }
 

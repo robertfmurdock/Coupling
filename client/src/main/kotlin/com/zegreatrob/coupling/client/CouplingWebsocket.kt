@@ -2,7 +2,11 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketComponent
 import com.zegreatrob.coupling.client.external.reactwebsocket.websocket
-import com.zegreatrob.coupling.json.*
+import com.zegreatrob.coupling.json.JsonMessage
+import com.zegreatrob.coupling.json.fromJsonString
+import com.zegreatrob.coupling.json.toJsonString
+import com.zegreatrob.coupling.json.toModel
+import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.party.PartyId
@@ -11,8 +15,12 @@ import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
-import react.*
+import react.ChildrenBuilder
+import react.RefObject
 import react.dom.html.ReactHTML.div
+import react.useMemo
+import react.useRef
+import react.useState
 
 val disconnectedMessage = CouplingSocketMessage(
     text = "Not connected",
@@ -56,7 +64,6 @@ private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { me
     else
         console.error("Message not sent, websocket not initialized", message)
 }
-
 
 private fun buildSocketUrl(partyId: PartyId, useSsl: Boolean, token: String) = URL(
     "?tribeId=${encodeURIComponent(partyId.value)}&token=${encodeURIComponent(token)}",

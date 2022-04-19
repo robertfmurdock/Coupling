@@ -13,4 +13,3 @@ external interface Filesystem {
 external interface Stream {
     fun pipe(stream: Any): Stream
 }
-

@@ -7,9 +7,9 @@ import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
@@ -74,4 +74,3 @@ private fun ChildrenBuilder.addPlayerButton(partyId: PartyId) = Link {
         +"Add a new player!"
     }
 }
-
