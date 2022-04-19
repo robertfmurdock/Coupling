@@ -14,7 +14,6 @@ interface DeleteBoostCommandDispatcher : BoostDeleteSyntax {
         delete()
         return SuccessfulResult(Unit)
     }
-
 }
 
 interface BoostDeleteSyntax {

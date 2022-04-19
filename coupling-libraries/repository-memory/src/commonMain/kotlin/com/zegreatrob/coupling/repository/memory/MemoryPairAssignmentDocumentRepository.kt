@@ -51,5 +51,4 @@ class MemoryPairAssignmentDocumentRepository(
 
     private fun record(tribeId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = tribeId.records()
         .find { (data) -> data.document.id == pairAssignmentDocumentId }
-
 }

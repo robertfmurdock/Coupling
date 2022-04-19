@@ -1,6 +1,10 @@
 package com.zegreatrob.coupling.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.Player

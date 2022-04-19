@@ -3,7 +3,8 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlin.js.json
 
-interface DynamoItemGetSyntax : DynamoScanSyntax,
+interface DynamoItemGetSyntax :
+    DynamoScanSyntax,
     DynamoQuerySyntax,
     DynamoDatatypeSyntax,
     DynamoItemSyntax,
@@ -49,5 +50,4 @@ interface DynamoItemGetSyntax : DynamoScanSyntax,
         ),
         "FilterExpression" to "id = :id AND tribeId = :tribeId"
     )
-
 }

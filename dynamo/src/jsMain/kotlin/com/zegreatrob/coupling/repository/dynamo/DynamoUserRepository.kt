@@ -16,7 +16,8 @@ class DynamoUserRepository private constructor(override val userId: String, over
     DynamoUserJsonMapping,
     RecordSyntax {
 
-    companion object : DynamoDBSyntax by DynamoDbProvider,
+    companion object :
+        DynamoDBSyntax by DynamoDbProvider,
         com.zegreatrob.coupling.repository.dynamo.CreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoQuerySyntax,
@@ -83,7 +84,6 @@ class DynamoUserRepository private constructor(override val userId: String, over
                     )
                 )
             )
-
     }
 
     override suspend fun save(user: User) = logAsync("saveUser") { performPutItem(user.toRecord().asDynamoJson()) }
@@ -127,5 +127,4 @@ class DynamoUserRepository private constructor(override val userId: String, over
     suspend fun getUserRecords() = scanAllRecords()
         .sortByRecordTimestamp()
         .map { it.toUserRecord() }
-
 }

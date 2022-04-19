@@ -17,7 +17,6 @@ interface SaveBoostCommandDispatcher : BoostSaveSyntax, AuthenticatedUserSyntax 
     suspend fun perform(command: SaveBoostCommand) = command.save().successResult()
 
     private suspend fun SaveBoostCommand.save() = Boost(user.id, partyIds).apply { save() }
-
 }
 
 interface BoostSaveSyntax {

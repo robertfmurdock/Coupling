@@ -1,6 +1,10 @@
 package com.zegreatrob.coupling.repository.dynamo.player
 
-import com.soywiz.klock.*
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.days
+import com.soywiz.klock.hours
+import com.soywiz.klock.months
+import com.soywiz.klock.years
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
@@ -8,10 +12,10 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
 import com.zegreatrob.coupling.repository.validation.MagicClock
-import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.PartyContext
-import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubPartyId
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
@@ -41,23 +45,26 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     })
 
     @Test
-    fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(buildRepository { context ->
-        object : Context by context {
-            val tribeId = stubPartyId()
-            val player = stubPlayer()
-            val initialSaveTime = DateTime.now().minus(3.days)
-            val updatedPlayer = player.copy(name = "CLONE")
-            val updatedSaveTime = initialSaveTime.plus(2.hours)
-            val updatedSaveTime2 = initialSaveTime.plus(4.hours)
+    fun getPlayerRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(
+        buildRepository { context ->
+            object : Context by context {
+                val tribeId = stubPartyId()
+                val player = stubPlayer()
+                val initialSaveTime = DateTime.now().minus(3.days)
+                val updatedPlayer = player.copy(name = "CLONE")
+                val updatedSaveTime = initialSaveTime.plus(2.hours)
+                val updatedSaveTime2 = initialSaveTime.plus(4.hours)
+            }
+        },
+        additionalActions = {
+            clock.currentTime = initialSaveTime
+            repository.save(tribeId.with(player))
+            clock.currentTime = updatedSaveTime
+            repository.save(tribeId.with(updatedPlayer))
+            clock.currentTime = updatedSaveTime2
+            repository.deletePlayer(tribeId, player.id)
         }
-    }, additionalActions = {
-        clock.currentTime = initialSaveTime
-        repository.save(tribeId.with(player))
-        clock.currentTime = updatedSaveTime
-        repository.save(tribeId.with(updatedPlayer))
-        clock.currentTime = updatedSaveTime2
-        repository.deletePlayer(tribeId, player.id)
-    }) exercise {
+    ) exercise {
         repository.getPlayerRecords(tribeId)
     } verify { result ->
         result
@@ -67,15 +74,17 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     }
 
     @Test
-    fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
-        object : Context by context {
-            val tribeId = stubPartyId()
-            val records = listOf(
-                partyRecord(tribeId, stubPlayer(), uuidString(), false, DateTime.now().minus(3.months)),
-                partyRecord(tribeId, stubPlayer(), uuidString(), true, DateTime.now().minus(2.years))
-            )
+    fun canSaveRawRecord() = asyncSetup.with(
+        buildRepository { context ->
+            object : Context by context {
+                val tribeId = stubPartyId()
+                val records = listOf(
+                    partyRecord(tribeId, stubPlayer(), uuidString(), false, DateTime.now().minus(3.months)),
+                    partyRecord(tribeId, stubPlayer(), uuidString(), true, DateTime.now().minus(2.years))
+                )
+            }
         }
-    }) exercise {
+    ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verify {
         with(repository.getPlayerRecords(tribeId)) {
@@ -84,12 +93,14 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     }
 
     @Test
-    fun getPlayerRecordsWillIgnorePlayerRecordsWithoutId() = asyncSetup.with(buildRepository { context ->
-        object : Context by context, DynamoRecordJsonMapping {
-            val tribeId = stubPartyId()
-            override val userId: String = "test user"
+    fun getPlayerRecordsWillIgnorePlayerRecordsWithoutId() = asyncSetup.with(
+        buildRepository { context ->
+            object : Context by context, DynamoRecordJsonMapping {
+                val tribeId = stubPartyId()
+                override val userId: String = "test user"
+            }
         }
-    }) {
+    ) {
         DynamoPlayerRepository.performPutItem(
             recordJson(DateTime.now())
                 .add(
@@ -107,12 +118,14 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     }
 
     @Test
-    fun getPlayersWillIgnorePlayerRecordsWithout() = asyncSetup.with(buildRepository { context ->
-        object : Context by context, DynamoRecordJsonMapping {
-            val tribeId = stubPartyId()
-            override val userId: String = "test user"
+    fun getPlayersWillIgnorePlayerRecordsWithout() = asyncSetup.with(
+        buildRepository { context ->
+            object : Context by context, DynamoRecordJsonMapping {
+                val tribeId = stubPartyId()
+                override val userId: String = "test user"
+            }
         }
-    }) {
+    ) {
         DynamoPlayerRepository.performPutItem(
             recordJson(DateTime.now())
                 .add(
@@ -128,7 +141,6 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
-
 }
 
 private typealias Context = RepositoryContext<DynamoPlayerRepository>

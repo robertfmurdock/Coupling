@@ -25,5 +25,4 @@ interface SdkPairAssignmentDocumentSave : PairAssignmentDocumentSave, GqlSyntax,
 
     private fun PartyElement<PairAssignmentDocument>.savePairAssignmentsInput() =
         toSavePairAssignmentsInput().toJsonElement()
-
 }

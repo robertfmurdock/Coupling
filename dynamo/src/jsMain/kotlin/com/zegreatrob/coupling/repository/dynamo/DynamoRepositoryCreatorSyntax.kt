@@ -4,7 +4,7 @@ import com.soywiz.klock.TimeProvider
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 
-abstract class DynamoRepositoryCreatorSyntax<T>() : DynamoCreateTableSyntax {
+abstract class DynamoRepositoryCreatorSyntax<T> : DynamoCreateTableSyntax {
 
     abstract val construct: (String, TimeProvider) -> T
 
@@ -14,5 +14,4 @@ abstract class DynamoRepositoryCreatorSyntax<T>() : DynamoCreateTableSyntax {
 
     suspend operator fun invoke(userEmail: String, clock: TimeProvider): T = construct(userEmail, clock)
         .also { ensure.await() }
-
 }

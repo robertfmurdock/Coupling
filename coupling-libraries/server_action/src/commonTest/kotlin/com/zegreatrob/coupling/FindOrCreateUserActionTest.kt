@@ -15,7 +15,6 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -59,20 +58,19 @@ class FindOrCreateUserActionTest {
 
     @Test
     fun whenUserWithEmailAndDifferentIdExistsWillUseExistingUser() = asyncSetup(object :
-        FindOrCreateUserActionDispatcher, UserRepository {
-        override val userRepository = this
-        override val userId = "test@test.tes"
+            FindOrCreateUserActionDispatcher, UserRepository {
+            override val userRepository = this
+            override val userId = "test@test.tes"
 
-        val expectedUser = User("${uuid4()}", userId, setOf(PartyId("Best party")))
-        override suspend fun getUser(): Nothing? = null
-        override suspend fun getUsersWithEmail(email: String): List<Record<User>> =
-            listOf(Record(expectedUser, "", false, DateTime.now()))
+            val expectedUser = User("${uuid4()}", userId, setOf(PartyId("Best party")))
+            override suspend fun getUser(): Nothing? = null
+            override suspend fun getUsersWithEmail(email: String): List<Record<User>> =
+                listOf(Record(expectedUser, "", false, DateTime.now()))
 
-        override suspend fun save(user: User) = fail("Should not save")
-    }) exercise {
+            override suspend fun save(user: User) = fail("Should not save")
+        }) exercise {
         perform(FindOrCreateUserAction)
     } verifySuccess { result ->
         result.assertIsEqualTo(expectedUser)
     }
-
 }

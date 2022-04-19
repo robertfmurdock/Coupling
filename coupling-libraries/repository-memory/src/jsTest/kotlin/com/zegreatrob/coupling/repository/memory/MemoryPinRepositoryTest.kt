@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.repository.validation.MagicClock
-import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PartyContextData
+import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.testmints.async.asyncTestTemplate

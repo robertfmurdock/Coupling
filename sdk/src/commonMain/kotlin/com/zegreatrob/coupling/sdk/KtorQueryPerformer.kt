@@ -1,8 +1,12 @@
 package com.zegreatrob.coupling.sdk
 
-import io.ktor.client.call.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.serialization.json.JsonElement
@@ -32,7 +36,7 @@ interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
         }.body<JsonObject>()
         val errors = result["errors"]
         if (errors != null && errors.jsonArray.isNotEmpty()) {
-            throw Error("Failed with errors: ${errors}. Full body is $result")
+            throw Error("Failed with errors: $errors. Full body is $result")
         }
         return result
     }

@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.repository.memory
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.player.partyId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.partyId
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 
 class MemoryPlayerRepository(
@@ -15,7 +15,8 @@ class MemoryPlayerRepository(
     override val clock: TimeProvider,
     private val recordBackend: RecordBackend<PartyElement<Player>> = SimpleRecordBackend()
 ) : PlayerEmailRepository,
-    TypeRecordSyntax<PartyElement<Player>>, RecordBackend<PartyElement<Player>> by recordBackend {
+    TypeRecordSyntax<PartyElement<Player>>,
+    RecordBackend<PartyElement<Player>> by recordBackend {
 
     override suspend fun save(partyPlayer: PartyElement<Player>) {
         partyPlayer.copy(element = with(partyPlayer.element) { copy(id = id) })
@@ -52,5 +53,4 @@ class MemoryPlayerRepository(
         .filter { it.data.element.email == email }
         .map { it.data.id.with(it.data.player.id) }
         .toList()
-
 }

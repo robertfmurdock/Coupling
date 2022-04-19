@@ -12,13 +12,13 @@ import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import kotlin.js.Json
 
-
 class DynamoPairAssignmentDocumentRepository private constructor(
     override val userId: String,
     override val clock: TimeProvider
 ) : PairAssignmentDocumentRepository, UserIdSyntax, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
 
-    companion object : DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>(),
+    companion object :
+        DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>(),
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoItemPutDeleteRecordSyntax,
@@ -63,6 +63,4 @@ class DynamoPairAssignmentDocumentRepository private constructor(
     )
 
     private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::PartyId)
-
-
 }

@@ -1,6 +1,10 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.*
+import com.zegreatrob.coupling.json.JsonBoostRecord
+import com.zegreatrob.coupling.json.SaveBoostInput
+import com.zegreatrob.coupling.json.at
+import com.zegreatrob.coupling.json.fromJsonElement
+import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.repository.BoostRepository
 import kotlinx.serialization.json.JsonElement
@@ -27,5 +31,4 @@ interface SdkBoostRepository : BoostRepository, GqlSyntax, GraphQueries {
     }
 
     private fun Boost.saveBoostInput() = SaveBoostInput(partyIds)
-
 }

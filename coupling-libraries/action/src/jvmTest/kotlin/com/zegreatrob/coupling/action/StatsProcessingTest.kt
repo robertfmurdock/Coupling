@@ -32,7 +32,6 @@ class StatsProcessingTest {
         println("found ${users.size} users")
         println("found ${parties.size} tribes")
 
-
         val totalPairAssignmentRecords = parties.sumOf { tribeNode ->
             tribeNode["pairAssignmentRecords"]
                 .groupBy { pairAssignmentRecord -> pairAssignmentRecord["id"].textValue() }
@@ -53,9 +52,7 @@ class StatsProcessingTest {
                 if (count > 0)
                     println("found $count parties with more than $filter in $year")
             }
-
         }
-
     }
 
     private fun JsonNode.countPairAssignmentsFor(year: Int) = pairAssignmentRecordGroups(year)
@@ -67,11 +64,11 @@ class StatsProcessingTest {
                 val sortedDates = pairRecordGroups.map { group -> group.value.first().dateRecord() }
                     .sorted()
 
-                val playerCount = pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair-> pair["players"].size() } }
+                val playerCount = pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair -> pair["players"].size() } }
                     .average()
                     .roundToInt()
 
-                val pinCount = pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair-> pair["pins"].size() } }
+                val pinCount = pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair -> pair["pins"].size() } }
                     .average()
 
                 println("started in ${sortedDates.first().month} and last spin in ${sortedDates.last().month}. average of $playerCount players, average of $pinCount pins")
@@ -86,5 +83,4 @@ class StatsProcessingTest {
         }
 
     private fun JsonNode.dateRecord() = DateTime.parse(this["date"].textValue())
-
 }

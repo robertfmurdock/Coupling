@@ -7,16 +7,19 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import io.ktor.client.plugins.websocket.*
-import io.ktor.client.request.*
-import io.ktor.websocket.*
+import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
+import io.ktor.client.plugins.websocket.webSocketSession
+import io.ktor.client.request.url
+import io.ktor.websocket.Frame
+import io.ktor.websocket.close
+import io.ktor.websocket.readText
 import kotlinx.coroutines.withTimeout
 import kotlin.test.Test
 
@@ -165,8 +168,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup(
-    ) exercise {
+    fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup() exercise {
         val url = "wss://$socketHost/api/${PartyId("whoops").value}/pairAssignments/current"
         generalPurposeClient.webSocketSession { url(url) }
     } verify { socket ->
@@ -177,8 +179,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = sdkSetup(
-    ) exercise {
+    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = sdkSetup() exercise {
         couplingSocketSession(stubParty().id)
     } verify { socket ->
         withTimeout(400) {
@@ -188,8 +189,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun willNotCrashWhenGoingToNonExistingSocketLocation() = sdkSetup(
-    ) exercise {
+    fun willNotCrashWhenGoingToNonExistingSocketLocation() = sdkSetup() exercise {
         val url = "wss://$socketHost/api/404WTF"
         generalPurposeClient.webSocketSession { url(url) }
     } verify { socket ->
@@ -217,7 +217,6 @@ class WebsocketTest {
     } teardown {
         sdk.partyRepository.delete(tribe.id)
     }
-
 }
 
 private fun String.toCouplingServerMessage(): CouplingSocketMessage =

@@ -12,7 +12,9 @@ data class BroadcastAction(val connections: List<CouplingConnection>, val messag
     override val performFunc = link(BroadcastActionDispatcher::perform)
 }
 
-interface BroadcastActionDispatcher : SocketCommunicator, SuspendActionExecuteSyntax,
+interface BroadcastActionDispatcher :
+    SocketCommunicator,
+    SuspendActionExecuteSyntax,
     DisconnectPartyUserCommandDispatcher {
     suspend fun perform(action: BroadcastAction) = with(action) {
         println("Broadcasting to ${connections.size} connections")

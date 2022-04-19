@@ -1,7 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.party.PartyId
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.plus
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 
@@ -37,7 +41,6 @@ interface TribeGQLPerformer : GqlSyntax {
     private fun PartyId.tribeQueryArgs() = "tribeData(id: \"$value\")"
 
     private fun List<TribeGQLComponent>.tribeComponentString() = joinToString(",") { it.value }
-
 }
 
 class BatchingTribeGQLPerformer(override val performer: QueryPerformer) : TribeGQLPerformer {
@@ -67,5 +70,4 @@ class BatchingTribeGQLPerformer(override val performer: QueryPerformer) : TribeG
             }
         }.await()
     }
-
 }

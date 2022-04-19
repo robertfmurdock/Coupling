@@ -21,4 +21,3 @@ interface DisconnectPartyUserCommandDispatcher : CouplingConnectionGetSyntax, Co
 
     private suspend fun CouplingConnection.delete() = deleteConnection(partyId, connectionId)
 }
-

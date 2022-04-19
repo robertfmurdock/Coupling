@@ -1,16 +1,27 @@
 package com.zegreatrob.coupling.import
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.repository.dynamo.*
 import com.zegreatrob.coupling.import.external.readline.ReadLine
 import com.zegreatrob.coupling.import.external.readline.inputReader
 import com.zegreatrob.coupling.import.external.readline.onEnd
 import com.zegreatrob.coupling.import.external.readline.onNewLine
-import com.zegreatrob.coupling.json.*
+import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
+import com.zegreatrob.coupling.json.JsonPartyRecord
+import com.zegreatrob.coupling.json.JsonPinRecord
+import com.zegreatrob.coupling.json.JsonPlayerRecord
+import com.zegreatrob.coupling.json.JsonUserRecord
+import com.zegreatrob.coupling.json.couplingJsonFormat
+import com.zegreatrob.coupling.json.toModel
+import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.repository.dynamo.DynamoPairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -92,7 +103,6 @@ private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepositor
     userJson["userRecords"].unsafeCast<Array<Json>>().forEach { recordJson ->
         userRepository.saveRawRecord(format.decodeFromDynamic<JsonUserRecord>(recordJson.asDynamic()).toModel())
     }
-
 }
 
 class DynamoRepositoryCatalog private constructor(
@@ -123,5 +133,4 @@ class DynamoRepositoryCatalog private constructor(
             )
         }
     }
-
 }

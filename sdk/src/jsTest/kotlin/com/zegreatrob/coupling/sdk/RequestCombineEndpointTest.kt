@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.model.party.Party
-import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.async
@@ -41,5 +41,4 @@ class RequestCombineEndpointTest {
         players.assertIsEqualTo(playersToSave)
         pins.assertIsEqualTo(pinsToSave)
     }
-
 }

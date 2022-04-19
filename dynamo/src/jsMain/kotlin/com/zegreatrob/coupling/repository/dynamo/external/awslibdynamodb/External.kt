@@ -6,7 +6,7 @@ import kotlin.js.Json
 import kotlin.js.Promise
 
 external object DynamoDBDocumentClient {
-    fun from(also: DynamoDBClient) : DynamoDBDocumentClient
+    fun from(also: DynamoDBClient): DynamoDBDocumentClient
     fun <T> send(command: dynamic, options: Json = definedExternally): Promise<T>
 }
 

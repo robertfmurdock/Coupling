@@ -7,7 +7,8 @@ import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecutor
 
-interface DispatchingActionExecutor<out D> : ExecutableActionExecutor<D>,
+interface DispatchingActionExecutor<out D> :
+    ExecutableActionExecutor<D>,
     SuspendActionExecutor<D>,
     ExecutableActionExecuteSyntax,
     SuspendActionExecuteSyntax {
@@ -16,5 +17,4 @@ interface DispatchingActionExecutor<out D> : ExecutableActionExecutor<D>,
 
     override fun <R> invoke(action: ExecutableAction<D, R>): R = actionDispatcher.execute(action)
     override suspend fun <R> invoke(action: SuspendAction<D, R>): R = actionDispatcher.execute(action)
-
 }

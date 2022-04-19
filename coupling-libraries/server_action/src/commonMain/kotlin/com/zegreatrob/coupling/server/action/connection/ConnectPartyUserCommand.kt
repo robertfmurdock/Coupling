@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.server.action.connection
 import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataActionDispatcher
@@ -16,12 +16,16 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
     override val performFunc = link(ConnectPartyUserCommandDispatcher::perform)
 }
 
-interface ConnectPartyUserCommandDispatcher : UserIsAuthorizedWithDataActionDispatcher, SuspendActionExecuteSyntax,
-    CouplingConnectionSaveSyntax, CouplingConnectionGetSyntax, AuthenticatedUserSyntax {
+interface ConnectPartyUserCommandDispatcher :
+    UserIsAuthorizedWithDataActionDispatcher,
+    SuspendActionExecuteSyntax,
+    CouplingConnectionSaveSyntax,
+    CouplingConnectionGetSyntax,
+    AuthenticatedUserSyntax {
 
     suspend fun perform(command: ConnectPartyUserCommand) = with(command) {
         partyId.getAuthorizationData()?.let { (_, players) ->
-        CouplingConnection(connectionId, partyId, userPlayer(players, user.email))
+            CouplingConnection(connectionId, partyId, userPlayer(players, user.email))
                 .also { it.save() }
                 .let { partyId.loadConnections() }
                 .let { it to couplingSocketMessage(it, null) }
@@ -40,5 +44,4 @@ interface ConnectPartyUserCommandDispatcher : UserIsAuthorizedWithDataActionDisp
             Player("-1", name = email.substring(0, atIndex), email = email)
         }
     }
-
 }

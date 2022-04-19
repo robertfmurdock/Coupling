@@ -6,4 +6,3 @@ import com.zegreatrob.coupling.model.party.PartyId
 interface PartyPinsSyntax : PartyIdPinRecordsSyntax {
     suspend fun PartyId.getPins() = getPinRecords().elements
 }
-

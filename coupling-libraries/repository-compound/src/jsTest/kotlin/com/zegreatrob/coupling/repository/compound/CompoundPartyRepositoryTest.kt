@@ -3,16 +3,15 @@ package com.zegreatrob.coupling.repository.compound
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
+import com.zegreatrob.coupling.repository.validation.PartyRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
-import com.zegreatrob.coupling.repository.validation.PartyRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-
 import kotlin.test.Test
 
 class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyRepository> {

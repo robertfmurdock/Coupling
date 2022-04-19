@@ -15,5 +15,4 @@ interface TribeIdDynamoItemListGetSyntax : DynamoQueryItemListGetSyntax, DynamoL
         "ExpressionAttributeValues" to json(":tribeId" to value),
         "KeyConditionExpression" to "tribeId = :tribeId"
     )
-
 }

@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import kotlin.js.Json
 
-actual fun loadGqlFile(path: String) : String = kotlinext.js.require("fs")
+actual fun loadGqlFile(path: String): String = kotlinext.js.require("fs")
     ?.readFileSync.unsafeCast<((String, String) -> dynamic)?>()
     ?.let { readFileSync ->
         val nodePaths = js("process.env").unsafeCast<Json>()["NODE_PATH"].unsafeCast<String?>()

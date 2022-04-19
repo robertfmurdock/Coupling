@@ -1,6 +1,10 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.*
+import com.zegreatrob.coupling.json.pinJsonKeys
+import com.zegreatrob.coupling.json.pinRecordJsonKeys
+import com.zegreatrob.coupling.json.playerJsonKeys
+import com.zegreatrob.coupling.json.playerRecordJsonKeys
+import com.zegreatrob.coupling.json.tribeRecordJsonKeys
 
 enum class TribeGQLComponent(val value: String, val jsonPath: String) {
     TribeData(queryAllFields("tribe", tribeRecordJsonKeys), "/tribeData/tribe"),
@@ -9,25 +13,27 @@ enum class TribeGQLComponent(val value: String, val jsonPath: String) {
     PinList(queryAllFields("pinList", pinRecordJsonKeys), "/tribeData/pinList"),
     PairAssignmentDocumentList(
         "pairAssignmentDocumentList {id,date,tribeId,isDeleted,modifyingUserEmail,timestamp," +
-                "pairs { " +
-                "players {" +
-                "${playerJsonKeys.joinToString(",")}, " +
-                "pins {${pinJsonKeys.joinToString(",")}}" +
-                "}" +
-                "pins {${pinJsonKeys.joinToString(",")}}" +
-                "}" +
-                "}", "/tribeData/pairAssignmentDocumentList"
+            "pairs { " +
+            "players {" +
+            "${playerJsonKeys.joinToString(",")}, " +
+            "pins {${pinJsonKeys.joinToString(",")}}" +
+            "}" +
+            "pins {${pinJsonKeys.joinToString(",")}}" +
+            "}" +
+            "}",
+        "/tribeData/pairAssignmentDocumentList"
     ),
     CurrentPairAssignmentDocument(
         "currentPairAssignmentDocument {id,date,tribeId,isDeleted,modifyingUserEmail,timestamp," +
-                "pairs { " +
-                "players {" +
-                "${playerJsonKeys.joinToString(",")}, " +
-                "pins {${pinJsonKeys.joinToString(",")}}" +
-                "}" +
-                "pins {${pinJsonKeys.joinToString(",")}}" +
-                "}" +
-                "}", "/tribeData/currentPairAssignmentDocument"
+            "pairs { " +
+            "players {" +
+            "${playerJsonKeys.joinToString(",")}, " +
+            "pins {${pinJsonKeys.joinToString(",")}}" +
+            "}" +
+            "pins {${pinJsonKeys.joinToString(",")}}" +
+            "}" +
+            "}",
+        "/tribeData/currentPairAssignmentDocument"
     );
 }
 

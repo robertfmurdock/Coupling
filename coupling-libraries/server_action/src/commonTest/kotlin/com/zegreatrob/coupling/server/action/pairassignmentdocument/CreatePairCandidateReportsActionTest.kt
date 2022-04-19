@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PairingRule
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.StubActionExecutor
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -86,7 +86,6 @@ class CreatePairCandidateReportsActionTest {
         } verify {
             it.assertIsEqualTo(listOf(billReport))
         }
-
     }
 
     @Test
@@ -120,9 +119,9 @@ class CreatePairCandidateReportsActionTest {
     companion object {
 
         private fun StubActionExecutor<
-                CreatePairCandidateReportActionDispatcher,
-                CreatePairCandidateReportAction,
-                PairCandidateReport>.givenPlayerReturnReport(
+            CreatePairCandidateReportActionDispatcher,
+            CreatePairCandidateReportAction,
+            PairCandidateReport>.givenPlayerReturnReport(
             pairCandidateReport: PairCandidateReport,
             players: List<Player>,
             history: List<PairAssignmentDocument>
@@ -133,5 +132,4 @@ class CreatePairCandidateReportsActionTest {
 
         private fun List<Player>.without(player: Player) = filterNot { it == player }
     }
-
 }

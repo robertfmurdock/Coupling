@@ -15,14 +15,16 @@ import kotlin.time.ExperimentalTime
 interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
-    fun connectionListWillReturnLastSaved() = repositorySetup.with(object : ContextMint<R>() {
-        val partyId = stubPartyId()
-        val connections = listOf(
-            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
-            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
-            CouplingConnection(uuid4().toString(), partyId, stubPlayer())
-        ).sortedBy { it.connectionId }
-    }.bind()).exercise {
+    fun connectionListWillReturnLastSaved() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val partyId = stubPartyId()
+            val connections = listOf(
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer())
+            ).sortedBy { it.connectionId }
+        }.bind()
+    ).exercise {
         connections.forEach { repository.save(it) }
     } verifyWithWait {
         repository.connectionList(partyId)
@@ -30,15 +32,17 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
     }
 
     @Test
-    fun getWillReturnConnection() = repositorySetup.with(object : ContextMint<R>() {
-        val partyId = stubPartyId()
-        val expectedConnection = CouplingConnection(uuid4().toString(), partyId, stubPlayer())
-        val connections = listOf(
-            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
-            expectedConnection,
-            CouplingConnection(uuid4().toString(), partyId, stubPlayer())
-        )
-    }.bind()) exercise {
+    fun getWillReturnConnection() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val partyId = stubPartyId()
+            val expectedConnection = CouplingConnection(uuid4().toString(), partyId, stubPlayer())
+            val connections = listOf(
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
+                expectedConnection,
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer())
+            )
+        }.bind()
+    ) exercise {
         connections.forEach { repository.save(it) }
     } verifyWithWait {
         repository.get(expectedConnection.connectionId)
@@ -46,14 +50,16 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
     }
 
     @Test
-    fun deleteWillMakeGetNoLongerReturnValue() = repositorySetup.with(object : ContextMint<R>() {
-        val partyId = stubPartyId()
-        val connections = listOf(
-            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
-            CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
-            CouplingConnection(uuid4().toString(), partyId, stubPlayer())
-        )
-    }.bind()) {
+    fun deleteWillMakeGetNoLongerReturnValue() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val partyId = stubPartyId()
+            val connections = listOf(
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer())
+            )
+        }.bind()
+    ) {
         connections.forEach { repository.save(it) }
     } exercise {
         repository.delete(partyId, connections[1].connectionId)
@@ -61,5 +67,4 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
         repository.connectionList(partyId)
             .assertIsEqualTo(listOf(connections[0], connections[2]).sortedBy { it.connectionId })
     }
-
 }

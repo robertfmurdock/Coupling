@@ -18,7 +18,8 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
     DynamoBoostJsonMapping,
     RecordSyntax {
 
-    companion object : DynamoDBSyntax by DynamoDbProvider,
+    companion object :
+        DynamoDBSyntax by DynamoDbProvider,
         CreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoQuerySyntax,
@@ -119,5 +120,4 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
         "ExpressionAttributeValues" to json(":pk" to id),
         "KeyConditionExpression" to "pk = :pk"
     )
-
 }

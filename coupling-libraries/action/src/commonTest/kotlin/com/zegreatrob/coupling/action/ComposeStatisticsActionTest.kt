@@ -3,11 +3,18 @@ package com.zegreatrob.coupling.action
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.hours
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -176,7 +183,8 @@ class ComposeStatisticsActionTest {
                             listOf(
                                 player1.withPins(
                                     emptyList()
-                                ), player3.withPins(emptyList())
+                                ),
+                                player3.withPins(emptyList())
                             ),
                             emptyList()
                         ),
@@ -184,7 +192,8 @@ class ComposeStatisticsActionTest {
                             listOf(
                                 player2.withPins(
                                     emptyList()
-                                ), player4.withPins(emptyList())
+                                ),
+                                player4.withPins(emptyList())
                             ),
                             emptyList()
                         )
@@ -196,7 +205,8 @@ class ComposeStatisticsActionTest {
                             listOf(
                                 player1.withPins(
                                     emptyList()
-                                ), player2.withPins(emptyList())
+                                ),
+                                player2.withPins(emptyList())
                             ),
                             emptyList()
                         ),
@@ -204,7 +214,8 @@ class ComposeStatisticsActionTest {
                             listOf(
                                 player3.withPins(
                                     emptyList()
-                                ), player4.withPins(emptyList())
+                                ),
+                                player4.withPins(emptyList())
                             ),
                             emptyList()
                         )
@@ -252,7 +263,6 @@ class ComposeStatisticsActionTest {
                 result.pairReports.map { it.timeSinceLastPair }
                     .assertIsEqualTo(expectedTimesResults)
             }
-
     }
 
     class WillCalculateTheMedianSpinTime {
@@ -368,15 +378,12 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 13, 12)),
                 pairAssignmentDocument(DateTime(2017, 2, 10, 9))
             )
-
         }) exercise {
             perform(ComposeStatisticsAction(party, players, history))
         } verify { result ->
             result.medianSpinDuration.assertIsEqualTo(2.5.days, "Got ${result.medianSpinDuration?.days} days")
         }
-
     }
-
 }
 
 expect fun loadJsonPartySetup(fileResource: String): PartySetup

@@ -171,7 +171,7 @@ class PairAssignmentsPageE2ETest {
 
             private fun PinnedCouplingPair.players() = toPair().asArray().toList()
 
-            private val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() })
+            private val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() }).toSet()
 
             private val setup = e2eSetup.extend(beforeAll = {
                 sdkProvider.await().apply {

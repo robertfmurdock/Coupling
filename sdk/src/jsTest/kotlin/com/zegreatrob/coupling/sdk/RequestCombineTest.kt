@@ -3,12 +3,16 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.putJsonArray
+import kotlinx.serialization.json.putJsonObject
 import kotlin.test.Test
 
 class RequestCombineTest {
@@ -30,7 +34,6 @@ class RequestCombineTest {
     } verify {
         performer.allPostCalls.size.assertIsEqualTo(1)
     }
-
 }
 
 class StubQueryPerformer1 : QueryPerformer {

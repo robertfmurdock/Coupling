@@ -30,8 +30,8 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
         SdkPartyContext(sdk, sdk.playerRepository, party.id, MagicClock())
     }, sharedTeardown = {
-        it.sdk.partyRepository.delete(it.partyId)
-    })
+            it.sdk.partyRepository.delete(it.partyId)
+        })
 
     override fun whenPlayerIdIsUsedInTwoDifferentPartiesTheyRemainDistinct() =
         repositorySetup.with({ parent: SdkPartyContext<SdkPlayerRepository> ->
@@ -58,9 +58,11 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         }
 
     override fun deletedPlayersIncludeModificationDateAndUsername() =
-        repositorySetup.with(object : PartyContextMint<SdkPlayerRepository>() {
-            val player = stubPlayer()
-        }.bind()) {
+        repositorySetup.with(
+            object : PartyContextMint<SdkPlayerRepository>() {
+                val player = stubPlayer()
+            }.bind()
+        ) {
         } exercise {
             repository.save(partyId.with(player))
             repository.deletePlayer(partyId, player.id)
@@ -75,9 +77,11 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         }
 
     override fun savedPlayersIncludeModificationDateAndUsername() =
-        repositorySetup.with(object : PartyContextMint<SdkPlayerRepository>() {
-            val player = stubPlayer()
-        }.bind()) {
+        repositorySetup.with(
+            object : PartyContextMint<SdkPlayerRepository>() {
+                val player = stubPlayer()
+            }.bind()
+        ) {
         } exercise {
             repository.save(partyId.with(player))
             repository.getPlayers(partyId)
@@ -151,5 +155,4 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             }
         }
     }
-
 }

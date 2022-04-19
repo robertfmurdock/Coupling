@@ -25,8 +25,13 @@ data class SavePartyCommand(val party: Party) :
     override val performFunc = link(SavePartyCommandDispatcher::perform)
 }
 
-interface SavePartyCommandDispatcher : UserAuthenticatedPartyIdSyntax, PartyIdGetSyntax, PartySaveSyntax,
-    UserPlayerIdsSyntax, UserSaveSyntax, AuthenticatedUserSyntax {
+interface SavePartyCommandDispatcher :
+    UserAuthenticatedPartyIdSyntax,
+    PartyIdGetSyntax,
+    PartySaveSyntax,
+    UserPlayerIdsSyntax,
+    UserSaveSyntax,
+    AuthenticatedUserSyntax {
 
     override val partyRepository: PartyRepository
 
@@ -49,12 +54,13 @@ interface SavePartyCommandDispatcher : UserAuthenticatedPartyIdSyntax, PartyIdGe
     private suspend fun SavePartyCommand.getPartyAndUserPlayerIds() = coroutineScope {
         await(
             async { party.id.get() },
-            async { getUserPlayerIds() })
+            async { getUserPlayerIds() }
+        )
     }
 
     private fun shouldSave(partyId: PartyId, loadedParty: Party?, playerList: List<PartyElement<String>>) =
-        loadedParty.partyIsNew()
-                || playerList.authenticatedPartyIds().contains(partyId)
+        loadedParty.partyIsNew() ||
+            playerList.authenticatedPartyIds().contains(partyId)
 
     private fun Party?.partyIsNew() = this == null
 

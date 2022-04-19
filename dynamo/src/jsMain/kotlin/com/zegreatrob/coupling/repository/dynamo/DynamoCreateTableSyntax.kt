@@ -5,7 +5,6 @@ import kotlinx.coroutines.yield
 import kotlin.js.Json
 import kotlin.js.json
 
-
 val validatedTableList = mutableListOf<String>()
 
 interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax, DynamoLoggingSyntax {
@@ -49,5 +48,4 @@ interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax, Dynam
 
     private suspend fun describeTribeTable(): Json = dynamoDB.describeTable(json("TableName" to prefixedTableName))
         .await()
-
 }

@@ -19,7 +19,6 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 import kotlin.test.Test
 
 @ExperimentalCoroutinesApi
@@ -44,10 +43,10 @@ class SavePairAssignmentDocumentCommandTest {
         result.assertIsEqualTo(pairAssignmentDocument)
         pairAssignmentDocumentRepository.spyReceivedValues.assertIsEqualTo(listOf(pairAssignmentDocument))
     }
-
 }
 
-class SpyPairAssignmentDocumentRepository : PairAssignmentDocumentSave,
+class SpyPairAssignmentDocumentRepository :
+    PairAssignmentDocumentSave,
     Spy<PartyElement<PairAssignmentDocument>, Unit> by SpyData() {
     override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) =
         spyFunction(partyPairDocument)

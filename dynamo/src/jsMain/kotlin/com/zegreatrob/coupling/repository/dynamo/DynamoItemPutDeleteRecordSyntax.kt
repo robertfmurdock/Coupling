@@ -5,8 +5,13 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlin.js.Json
 
-interface DynamoItemPutDeleteRecordSyntax : DynamoDatatypeSyntax, DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemGetSyntax,
-    DynamoLoggingSyntax, DynamoItemPutSyntax {
+interface DynamoItemPutDeleteRecordSyntax :
+    DynamoDatatypeSyntax,
+    DynamoDBSyntax,
+    DynamoTableNameSyntax,
+    DynamoItemGetSyntax,
+    DynamoLoggingSyntax,
+    DynamoItemPutSyntax {
     suspend fun <T> performDelete(
         id: String,
         partyId: PartyId? = null,
@@ -32,5 +37,4 @@ interface DynamoItemPutDeleteRecordSyntax : DynamoDatatypeSyntax, DynamoDBSyntax
             false
         }
     }
-
 }

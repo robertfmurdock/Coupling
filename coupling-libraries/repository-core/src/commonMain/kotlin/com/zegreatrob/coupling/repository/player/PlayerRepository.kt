@@ -1,11 +1,12 @@
 package com.zegreatrob.coupling.repository.player
 
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 
-interface PlayerRepository : PlayerListGet,
+interface PlayerRepository :
+    PlayerListGet,
     PlayerSave,
     PlayerDelete,
     PlayerListGetDeleted

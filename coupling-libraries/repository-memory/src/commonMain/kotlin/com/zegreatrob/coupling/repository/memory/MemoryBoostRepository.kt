@@ -26,5 +26,4 @@ class MemoryBoostRepository(
     }
 
     private fun allLatestRecords() = records.groupBy { it.data.userId }.map { it.value.last() }
-
 }

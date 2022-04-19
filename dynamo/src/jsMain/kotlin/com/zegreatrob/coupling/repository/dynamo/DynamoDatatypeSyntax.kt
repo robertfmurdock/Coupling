@@ -6,7 +6,6 @@ import com.soywiz.klock.parse
 import kotlin.js.Json
 import kotlin.js.json
 
-
 private val dateFormat = PatternDateFormat("YYYYMMddHHmmss.SSS")
 
 interface DynamoDatatypeSyntax {
@@ -32,5 +31,4 @@ interface DynamoDatatypeSyntax {
             .toList()
             .toTypedArray()
     )
-
 }

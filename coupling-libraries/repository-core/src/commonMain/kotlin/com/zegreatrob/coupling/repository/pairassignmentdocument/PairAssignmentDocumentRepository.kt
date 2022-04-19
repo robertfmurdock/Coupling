@@ -6,7 +6,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 
-interface PairAssignmentDocumentRepository : PairAssignmentDocumentSave,
+interface PairAssignmentDocumentRepository :
+    PairAssignmentDocumentSave,
     PairAssignmentDocumentGet,
     PairAssignmentDocumentGetCurrent,
     PairAssignmentDocumentDelete

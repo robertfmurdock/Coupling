@@ -18,7 +18,7 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
 @ExperimentalTime
-interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet, R : BoostSave, R : BoostDelete {
+interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet, R : BoostSave, R : BoostDelete {
 
     val repositorySetup: TestTemplate<SC>
     suspend fun buildRepository(user: User, clock: MagicClock): R
@@ -71,7 +71,6 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where  R : BoostGet
         repository.get()?.data
             .assertIsEqualTo(updatedBoost2)
     }
-
 }
 
 @ExperimentalCoroutinesApi
@@ -107,7 +106,6 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
             val boost = Boost(user.id, setOf(PartyId("${uuid4()}"), partyId, PartyId("${uuid4()}")))
         }
     }) {
-
     } exercise {
         repository.save(boost)
     } verifyWithWait {
@@ -128,5 +126,4 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
         repository.getByPartyId(partyId)?.data
             .assertIsEqualTo(null)
     }
-
 }

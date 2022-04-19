@@ -8,6 +8,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
+    id("org.jmailen.kotlinter")
 }
 
 dependencies {

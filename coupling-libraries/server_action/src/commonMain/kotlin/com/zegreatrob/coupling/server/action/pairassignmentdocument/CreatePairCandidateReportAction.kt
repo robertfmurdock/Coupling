@@ -1,6 +1,11 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingTimeCalculationSyntax
+import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
+import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 

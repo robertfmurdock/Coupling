@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
 
 interface SdkPairAssignmentDocumentGetCurrent : PairAssignmentDocumentGetCurrent, GqlQueryComponent {
-    override suspend fun getCurrentPairAssignments(tribeId: PartyId) = performQueryGetComponent(
-        tribeId,
+    override suspend fun getCurrentPairAssignments(partyId: PartyId) = performQueryGetComponent(
+        partyId,
         TribeGQLComponent.CurrentPairAssignmentDocument,
         JsonPairAssignmentDocumentRecord::toModel
     )

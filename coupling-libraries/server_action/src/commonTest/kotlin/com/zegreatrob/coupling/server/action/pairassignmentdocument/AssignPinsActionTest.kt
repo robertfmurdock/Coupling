@@ -17,7 +17,7 @@ import kotlin.test.Test
 
 class AssignPinsActionTest {
 
-    companion object : AssignPinsActionDispatcher;
+    companion object : AssignPinsActionDispatcher
 
     @Test
     fun givenOnePinForAssigningToPairHasNeverBeenUsedWillAssignToFirstPair() = setup(object {

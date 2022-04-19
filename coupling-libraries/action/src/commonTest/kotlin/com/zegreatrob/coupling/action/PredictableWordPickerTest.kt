@@ -10,7 +10,7 @@ class PredictableWordPickerTest {
 
     class ChoosesTheNameUsingTheValueOfGivenString {
 
-        companion object : PredictableWordPicker;
+        companion object : PredictableWordPicker
 
         @Test
         fun consistently() = setup(object {
@@ -96,6 +96,4 @@ class PredictableWordPickerTest {
             result2.assertIsEqualTo(option0)
         }
     }
-
 }
-

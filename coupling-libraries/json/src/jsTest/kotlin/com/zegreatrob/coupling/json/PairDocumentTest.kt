@@ -20,5 +20,4 @@ class PairDocumentTest {
     } verify { result ->
         result.assertIsEqualTo(pairs)
     }
-
 }

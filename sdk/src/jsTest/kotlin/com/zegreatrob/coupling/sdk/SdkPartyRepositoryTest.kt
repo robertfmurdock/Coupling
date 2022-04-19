@@ -4,15 +4,19 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
-import com.zegreatrob.coupling.repository.validation.*
-import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.repository.validation.ContextMint
+import com.zegreatrob.coupling.repository.validation.MagicClock
+import com.zegreatrob.coupling.repository.validation.PartyRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.SharedContext
+import com.zegreatrob.coupling.repository.validation.SharedContextData
+import com.zegreatrob.coupling.repository.validation.bind
 import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 import kotlin.test.Test
 
 private typealias SdkMint = ContextMint<SdkPartyRepository>
@@ -35,8 +39,8 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
             val playerMatchingSdkUser = stubPlayer().copy(email = context.user.email)
         }
     }, sharedTeardown = {
-        it.repository.delete(it.party.id)
-    })
+            it.repository.delete(it.party.id)
+        })
 
     @Test
     fun getWillReturnAnyTribeThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
@@ -83,9 +87,11 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
         result?.data.assertIsEqualTo(party)
     }
 
-    override fun saveWillIncludeModificationInformation() = repositorySetup.with(object : SdkMint() {
-        val tribe = stubParty()
-    }.bind()) {
+    override fun saveWillIncludeModificationInformation() = repositorySetup.with(
+        object : SdkMint() {
+            val tribe = stubParty()
+        }.bind()
+    ) {
         repository.save(tribe)
     } exercise {
         repository.getParties()
@@ -97,5 +103,4 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
     } teardown {
         repository.delete(tribe.id)
     }
-
 }

@@ -1,13 +1,16 @@
 package com.zegreatrob.coupling.sdk
 
-import io.ktor.client.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.cookies.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
+import io.ktor.client.plugins.cookies.HttpCookies
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders.UserAgent
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.http.URLProtocol
+import io.ktor.http.Url
+import io.ktor.http.encodedPath
+import io.ktor.serialization.kotlinx.json.json
 
 fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
     install(ContentNegotiation) {

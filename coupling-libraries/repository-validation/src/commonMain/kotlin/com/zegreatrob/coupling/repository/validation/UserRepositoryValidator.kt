@@ -23,9 +23,11 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     }
 
     @Test
-    fun getUsersWithEmailWillShowAllUsersWithEmail() = repositorySetup.with(object : ContextMint<R>() {
-        val userWithEmail = stubUser()
-    }.bind()) exercise {
+    fun getUsersWithEmailWillShowAllUsersWithEmail() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val userWithEmail = stubUser()
+        }.bind()
+    ) exercise {
         repository.save(userWithEmail)
     } verifyWithWait {
         repository.getUsersWithEmail(userWithEmail.email)
@@ -34,9 +36,11 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     }
 
     @Test
-    fun saveUserThenGetWillContainAllSavedValues() = repositorySetup.with(object : ContextMint<R>() {
-        val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
-    }.bind()) exercise {
+    fun saveUserThenGetWillContainAllSavedValues() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
+        }.bind()
+    ) exercise {
         repository.save(updatedUser)
     } verifyWithWait {
         repository.getUser()!!
@@ -45,9 +49,11 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     }
 
     @Test
-    fun saveUserThenGetWillIncludeMarkingInformation() = repositorySetup.with(object : ContextMint<R>() {
-        val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
-    }.bind()) exercise {
+    fun saveUserThenGetWillIncludeMarkingInformation() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
+        }.bind()
+    ) exercise {
         clock.currentTime = DateTime.now().plus(10.days)
         repository.save(updatedUser)
     } verifyWithWait {
@@ -71,5 +77,4 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
         repository.getUser()?.data
             .assertIsEqualTo(updatedUser2)
     }
-
 }

@@ -66,7 +66,7 @@ data class ShowPlayer(val player: Player) : SpinAnimationState() {
         val presentedPlayers = pairAssignments.previouslyPresentedPlayers(player)
 
         return SpinStateData(
-            rosterPlayers = (players - presentedPlayers - player).let(::ifEmptyAddPlaceholder),
+            rosterPlayers = (players - presentedPlayers.toSet() - player).let(::ifEmptyAddPlaceholder),
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
             shownPlayer = player
         )
@@ -107,7 +107,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
 
         val presentedPlayers = pairAssignments.previouslyPresentedPlayers(target)
         return SpinStateData(
-            rosterPlayers = (players - presentedPlayers).let(::rotateList),
+            rosterPlayers = (players - presentedPlayers.toSet()).let(::rotateList),
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
             shownPlayer = null
         )
@@ -127,7 +127,7 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
         val presentedPlayers = pairAssignments.previouslyPresentedPlayers(player) + player
         return SpinStateData(
-            rosterPlayers = players - presentedPlayers,
+            rosterPlayers = players - presentedPlayers.toSet(),
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
             shownPlayer = null
         )

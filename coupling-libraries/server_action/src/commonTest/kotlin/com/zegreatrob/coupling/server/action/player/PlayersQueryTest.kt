@@ -4,10 +4,10 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -15,7 +15,6 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
-
 import kotlin.test.Test
 
 class PlayersQueryTest {
@@ -81,4 +80,3 @@ class PlayersQueryTest {
         override suspend fun getPlayers(partyId: PartyId) = spyFunction(partyId)
     }
 }
-

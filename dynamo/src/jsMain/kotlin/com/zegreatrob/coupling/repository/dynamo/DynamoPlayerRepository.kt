@@ -18,7 +18,9 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     DynamoPlayerJsonMapping,
     RecordSyntax {
 
-    companion object : DynamoRepositoryCreatorSyntax<DynamoPlayerRepository>(), DynamoDBSyntax by DynamoDbProvider,
+    companion object :
+        DynamoRepositoryCreatorSyntax<DynamoPlayerRepository>(),
+        DynamoDBSyntax by DynamoDbProvider,
         TribeCreateTableParamProvider,
         DynamoItemPutSyntax,
         TribeIdDynamoItemListGetSyntax,
@@ -105,9 +107,11 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         )
 
     private fun PartyElement<Player>.copyWithIdCorrection() =
-        copy(element = with(element) {
-            copy(id = id)
-        })
+        copy(
+            element = with(element) {
+                copy(id = id)
+            }
+        )
 
     suspend fun saveRawRecord(record: PartyRecord<Player>) = performPutItem(record.asDynamoJson())
 
@@ -153,5 +157,4 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         "ExpressionAttributeValues" to json(":email" to email),
         "KeyConditionExpression" to "email = :email"
     )
-
 }

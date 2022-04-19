@@ -12,8 +12,13 @@ import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-interface ServerProposeNewPairsCommandDispatcher : ProposeNewPairsCommandDispatcher, ExecutableActionExecuteSyntax,
-    RunGameActionDispatcher, PartyIdGetSyntax, PartyIdHistorySyntax, CurrentPartyIdSyntax {
+interface ServerProposeNewPairsCommandDispatcher :
+    ProposeNewPairsCommandDispatcher,
+    ExecutableActionExecuteSyntax,
+    RunGameActionDispatcher,
+    PartyIdGetSyntax,
+    PartyIdHistorySyntax,
+    CurrentPartyIdSyntax {
 
     override suspend fun perform(command: ProposeNewPairsCommand): Result<PairAssignmentDocument> = command.runGame()
         ?.successResult()
@@ -28,5 +33,4 @@ interface ServerProposeNewPairsCommandDispatcher : ProposeNewPairsCommandDispatc
             async { currentPartyId.get() }
         )
     }.let { (history, party) -> if (party == null) null else history to party }
-
 }

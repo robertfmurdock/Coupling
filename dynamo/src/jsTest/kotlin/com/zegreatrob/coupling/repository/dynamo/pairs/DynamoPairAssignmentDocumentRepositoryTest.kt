@@ -1,6 +1,10 @@
 package com.zegreatrob.coupling.repository.dynamo.pairs
 
-import com.soywiz.klock.*
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.days
+import com.soywiz.klock.hours
+import com.soywiz.klock.months
+import com.soywiz.klock.years
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -13,7 +17,11 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PartyContextData
-import com.zegreatrob.coupling.stubmodel.*
+import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
+import com.zegreatrob.coupling.stubmodel.stubPartyId
+import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
@@ -45,7 +53,8 @@ class DynamoPairAssignmentDocumentRepositoryTest :
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val updatedSaveTime2 = initialSaveTime.plus(4.hours)
             }
-        }) exercise {
+        }
+    ) exercise {
         clock.currentTime = initialSaveTime
         repository.save(tribeId.with(pairAssignmentDocument))
         clock.currentTime = updatedSaveTime
@@ -60,15 +69,17 @@ class DynamoPairAssignmentDocumentRepositoryTest :
     }
 
     @Test
-    fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
-        object : Context by context {
-            val tribeId = stubPartyId()
-            val records = listOf(
-                partyRecord(tribeId, stubPairAssignmentDoc(), uuidString(), false, DateTime.now().minus(3.months)),
-                partyRecord(tribeId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years))
-            )
+    fun canSaveRawRecord() = asyncSetup.with(
+        buildRepository { context ->
+            object : Context by context {
+                val tribeId = stubPartyId()
+                val records = listOf(
+                    partyRecord(tribeId, stubPairAssignmentDoc(), uuidString(), false, DateTime.now().minus(3.months)),
+                    partyRecord(tribeId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years))
+                )
+            }
         }
-    }) exercise {
+    ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verify {
         with(repository.getRecords(tribeId)) {
@@ -81,7 +92,6 @@ class DynamoPairAssignmentDocumentRepositoryTest :
             DynamoPairAssignmentDocumentRepository(user.email, clock)
         }.invoke()
     }
-
 }
 
 private typealias Context = RepositoryContext<DynamoPairAssignmentDocumentRepository>

@@ -6,26 +6,30 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.GqlSyntax
 import com.zegreatrob.coupling.sdk.GraphQueries
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonObject
 
 interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, GqlSyntax, GraphQueries {
     override suspend fun delete(
-        tribeId: PartyId,
+        partyId: PartyId,
         pairAssignmentDocumentId: PairAssignmentDocumentId
-    ): Boolean = performQuery(options(tribeId, pairAssignmentDocumentId))
+    ): Boolean = performQuery(options(partyId, pairAssignmentDocumentId))
         .at("/data/deletePairAssignments")
         ?.jsonPrimitive
         ?.booleanOrNull
         ?: false
 
-    private fun options(tribeId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = buildJsonObject {
+    private fun options(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = buildJsonObject {
         put("query", JsonPrimitive(mutations.deletePairAssignments))
         putJsonObject("variables") {
             putJsonObject("input") {
-                put("tribeId", tribeId.value)
+                put("tribeId", partyId.value)
                 put("pairAssignmentsId", pairAssignmentDocumentId.value)
             }
         }
     }
-
 }

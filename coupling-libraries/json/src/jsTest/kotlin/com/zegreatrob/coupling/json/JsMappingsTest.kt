@@ -44,7 +44,6 @@ class JsMappingsTest {
         private fun Json.assertIsEquivalentTo(expected: Json) = toComparableMap()
             .assertIsEqualTo(expected.toComparableMap())
 
-
         private fun Json.toComparableMap() = (js("Object").keys(this) as Array<String>)
             .map { key ->
                 key to this[key].let {

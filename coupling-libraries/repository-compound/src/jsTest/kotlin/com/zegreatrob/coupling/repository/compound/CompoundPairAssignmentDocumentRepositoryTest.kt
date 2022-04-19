@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
-
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 
@@ -39,7 +38,8 @@ class CompoundPairAssignmentDocumentRepositoryTest :
         compoundRepositorySetup.extend<PartyContext<CompoundPairAssignmentDocumentRepository>>(
             sharedSetup = {
                 PartyContextData(it.compoundRepo, it.tribeId, it.clock, it.stubUser)
-            })
+            }
+        )
 
     @Test
     fun saveWillWriteToSecondRepository() = compoundRepositorySetup() exercise {

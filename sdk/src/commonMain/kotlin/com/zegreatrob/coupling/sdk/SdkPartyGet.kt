@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.repository.party.PartyGet
 import com.zegreatrob.coupling.sdk.TribeGQLComponent.TribeData
 
 interface SdkPartyGet : PartyGet, GqlQueryComponent {
-    override suspend fun getPartyRecord(tribeId: PartyId) = performQueryGetComponent(
-        tribeId,
+    override suspend fun getPartyRecord(partyId: PartyId) = performQueryGetComponent(
+        partyId,
         TribeData,
         JsonPartyRecord::toModelRecord
     )

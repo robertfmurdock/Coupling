@@ -30,6 +30,4 @@ class WheelTest : Wheel {
         val expected = this[expectedIndex]
         actual.assertIsEqualTo(expected)
     }
-
 }
-

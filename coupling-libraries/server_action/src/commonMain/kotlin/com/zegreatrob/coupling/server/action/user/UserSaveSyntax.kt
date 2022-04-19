@@ -10,5 +10,4 @@ interface UserSaveSyntax {
     suspend fun User.save() {
         userRepository.save(this)
     }
-
 }

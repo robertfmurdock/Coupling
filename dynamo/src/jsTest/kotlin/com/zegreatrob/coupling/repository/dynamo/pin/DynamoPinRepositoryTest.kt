@@ -1,14 +1,22 @@
 package com.zegreatrob.coupling.repository.dynamo.pin
 
-import com.soywiz.klock.*
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.days
+import com.soywiz.klock.hours
+import com.soywiz.klock.months
+import com.soywiz.klock.years
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
-import com.zegreatrob.coupling.repository.validation.*
-import com.zegreatrob.coupling.stubmodel.stubPin
+import com.zegreatrob.coupling.repository.validation.MagicClock
+import com.zegreatrob.coupling.repository.validation.PartyContext
+import com.zegreatrob.coupling.repository.validation.PartyContextData
+import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.stubmodel.stubPartyId
+import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
@@ -30,16 +38,18 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
     })
 
     @Test
-    fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(buildRepository { context ->
-        object : Context by context {
-            val tribeId = stubPartyId()
-            val pin = stubPin()
-            val initialSaveTime = DateTime.now().minus(3.days)
-            val updatedPin = pin.copy(name = "CLONE")
-            val updatedSaveTime = initialSaveTime.plus(2.hours)
-            val updatedSaveTime2 = initialSaveTime.plus(4.hours)
+    fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(
+        buildRepository { context ->
+            object : Context by context {
+                val tribeId = stubPartyId()
+                val pin = stubPin()
+                val initialSaveTime = DateTime.now().minus(3.days)
+                val updatedPin = pin.copy(name = "CLONE")
+                val updatedSaveTime = initialSaveTime.plus(2.hours)
+                val updatedSaveTime2 = initialSaveTime.plus(4.hours)
+            }
         }
-    }) exercise {
+    ) exercise {
         clock.currentTime = initialSaveTime
         repository.save(tribeId.with(pin))
         clock.currentTime = updatedSaveTime
@@ -54,15 +64,17 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
     }
 
     @Test
-    fun canSaveRawRecord() = asyncSetup.with(buildRepository { context ->
-        object : Context by context {
-            val tribeId = stubPartyId()
-            val records = listOf(
-                partyRecord(tribeId, stubPin(), uuidString(), false, DateTime.now().minus(3.months)),
-                partyRecord(tribeId, stubPin(), uuidString(), true, DateTime.now().minus(2.years))
-            )
+    fun canSaveRawRecord() = asyncSetup.with(
+        buildRepository { context ->
+            object : Context by context {
+                val tribeId = stubPartyId()
+                val records = listOf(
+                    partyRecord(tribeId, stubPin(), uuidString(), false, DateTime.now().minus(3.months)),
+                    partyRecord(tribeId, stubPin(), uuidString(), true, DateTime.now().minus(2.years))
+                )
+            }
         }
-    }) exercise {
+    ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verifyWithWait {
         val loadedRecords = repository.getPinRecords(tribeId)

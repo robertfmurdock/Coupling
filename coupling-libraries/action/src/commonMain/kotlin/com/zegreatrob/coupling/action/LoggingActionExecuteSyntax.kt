@@ -5,8 +5,10 @@ import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
-interface LoggingActionExecuteSyntax : ExecutableActionExecuteSyntax,
-    SuspendActionExecuteSyntax, ActionLoggingSyntax {
+interface LoggingActionExecuteSyntax :
+    ExecutableActionExecuteSyntax,
+    SuspendActionExecuteSyntax,
+    ActionLoggingSyntax {
 
     override fun <D, R> D.execute(action: ExecutableAction<D, R>): R = log(action) { action.execute(this) }
 
@@ -22,5 +24,4 @@ interface LoggingActionExecuteSyntax : ExecutableActionExecuteSyntax,
         logger.error(bad) { "Error executing ${action::class.simpleName}" }
         throw bad
     }
-
 }

@@ -16,5 +16,4 @@ class CompoundPlayerRepository(
 
     override suspend fun deletePlayer(partyId: PartyId, playerId: String) = repository1.deletePlayer(partyId, playerId)
         .also { repository2.deletePlayer(partyId, playerId) }
-
 }

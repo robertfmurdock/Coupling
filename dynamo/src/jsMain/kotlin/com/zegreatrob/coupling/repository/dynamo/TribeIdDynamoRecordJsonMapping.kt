@@ -13,4 +13,3 @@ interface TribeIdDynamoRecordJsonMapping : DynamoRecordJsonMapping {
         ).add(super.recordJson(timestamp))
     }
 }
-

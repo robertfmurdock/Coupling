@@ -20,5 +20,4 @@ interface DynamoScanSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemSy
             .continueScan(params)
     } else
         itemsNode()
-
 }

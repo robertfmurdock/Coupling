@@ -73,7 +73,8 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         "FilterExpression" to "id = :id"
     )
 
-    companion object : DynamoDBSyntax by DynamoDbProvider,
+    companion object :
+        DynamoDBSyntax by DynamoDbProvider,
         com.zegreatrob.coupling.repository.dynamo.CreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoQuerySyntax,
@@ -124,5 +125,4 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         "tribeId+id" to "${partyId.value}+$connectionId",
         "userPlayer" to userPlayer.toDynamoJson()
     )
-
 }

@@ -19,5 +19,4 @@ interface DynamoItemDeleteSyntax : DynamoDBSyntax, DynamoTableNameSyntax, Dynamo
         "TableName" to prefixedTableName,
         "Key" to keyJson
     )
-
 }

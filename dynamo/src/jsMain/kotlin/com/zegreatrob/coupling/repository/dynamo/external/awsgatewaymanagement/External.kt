@@ -7,10 +7,9 @@ import kotlin.js.Promise
 
 external class ApiGatewayManagementApiClient(options: Json) {
 
-    fun send(command: Any) : Promise<Json>
-
+    fun send(command: Any): Promise<Json>
 }
 
-external class PostToConnectionCommand(input: Json) {}
+external class PostToConnectionCommand(input: Json)
 
-external class DeleteConnectionCommand(input: Json) {}
+external class DeleteConnectionCommand(input: Json)

@@ -8,5 +8,4 @@ interface ListLatestRecordSyntax : DynamoItemSyntax {
         .sortByRecordTimestamp()
         .groupBy { it.getDynamoStringValue("id") }
         .map { it.value.last() }
-
 }

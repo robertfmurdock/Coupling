@@ -26,7 +26,7 @@ val primaryAuthorizedSdkDeferred: Deferred<Sdk> by lazyDeferred {
 }
 
 private suspend fun authorizedKtorSdk(username: String, password: String) =
-    AuthorizedSdk(
+    authorizedSdk(
         generateAccessToken(username, password)
     )
 
@@ -80,4 +80,4 @@ private suspend fun generateAccessToken(username: String, password: String): Str
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
-fun AuthorizedSdk(token: String) = SdkSingleton({ token }, buildClientWithToken())
+fun authorizedSdk(token: String) = SdkSingleton({ token }, buildClientWithToken())

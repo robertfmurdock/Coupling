@@ -56,6 +56,4 @@ interface ActionLoggingSyntax : LoggingSyntax, TraceIdSyntax {
             "traceId" to traceId
         )
     }
-
 }
-

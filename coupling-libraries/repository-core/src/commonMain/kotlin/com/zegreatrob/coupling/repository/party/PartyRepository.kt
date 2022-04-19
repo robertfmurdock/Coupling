@@ -4,7 +4,8 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 
-interface PartyRepository : PartyGet,
+interface PartyRepository :
+    PartyGet,
     PartyListGet,
     PartySave,
     PartyDelete

@@ -11,5 +11,4 @@ class CompoundPartyRepository(private val repository1: PartyRepository, private 
 
     override suspend fun delete(tribeId: PartyId) = repository1.delete(tribeId)
         .also { repository2.delete(tribeId) }
-
 }

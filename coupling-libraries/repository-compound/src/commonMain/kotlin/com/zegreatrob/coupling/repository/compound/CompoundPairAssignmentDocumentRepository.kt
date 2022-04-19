@@ -19,5 +19,4 @@ class CompoundPairAssignmentDocumentRepository(
         repository1.delete(partyId, pairAssignmentDocumentId).also {
             repository2.delete(partyId, pairAssignmentDocumentId)
         }
-
 }

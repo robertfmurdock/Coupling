@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.serialization.json.jsonObject
 
 val pinJsonKeys

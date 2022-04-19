@@ -38,8 +38,8 @@ interface NextPlayerActionDispatcher {
         report: PairCandidateReport,
         reportWithLongestTime: PairCandidateReport
     ) = if (
-        report.timeResult is TimeResultValue
-        && reportWithLongestTime.timeResult is TimeResultValue
+        report.timeResult is TimeResultValue &&
+        reportWithLongestTime.timeResult is TimeResultValue
     ) {
         report.timeResult.time > reportWithLongestTime.timeResult.time
     } else {

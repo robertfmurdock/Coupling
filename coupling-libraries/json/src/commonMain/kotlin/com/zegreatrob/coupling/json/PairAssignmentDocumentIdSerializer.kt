@@ -9,7 +9,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 @Serializer(forClass = PairAssignmentDocumentId::class)
-class PairAssignmentDocumentIdSerializer: KSerializer<PairAssignmentDocumentId> {
+class PairAssignmentDocumentIdSerializer : KSerializer<PairAssignmentDocumentId> {
     override val descriptor = PrimitiveSerialDescriptor("PairAssignmentDocumentId", PrimitiveKind.STRING)
     override fun deserialize(decoder: Decoder) = PairAssignmentDocumentId(decoder.decodeString())
     override fun serialize(encoder: Encoder, value: PairAssignmentDocumentId) = encoder.encodeString(value.value)

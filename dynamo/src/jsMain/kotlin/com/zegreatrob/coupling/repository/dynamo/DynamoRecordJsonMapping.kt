@@ -26,5 +26,4 @@ interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserIdSyntax, ClockSyn
         getDynamoBoolValue("isDeleted") ?: false,
         getDynamoDateTimeValue("timestamp")?.utc!!
     )
-
 }

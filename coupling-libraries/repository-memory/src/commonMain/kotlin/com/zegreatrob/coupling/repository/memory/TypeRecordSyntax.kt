@@ -19,5 +19,4 @@ interface TypeRecordSyntax<T> : UserIdSyntax, ClockSyntax {
         isDeleted = true,
         timestamp = now()
     )
-
 }

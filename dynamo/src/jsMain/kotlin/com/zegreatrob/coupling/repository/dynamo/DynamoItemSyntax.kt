@@ -9,5 +9,4 @@ interface DynamoItemSyntax : DynamoDatatypeSyntax {
     fun isDeleted(it: Json) = it.getDynamoBoolValue("isDeleted") == true
 
     fun Array<Json>.sortByRecordTimestamp() = sortedBy { it.getDynamoStringValue("timestamp") }
-
 }

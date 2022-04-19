@@ -28,5 +28,4 @@ class SdkUserRepositoryTest {
             it?.authorizedPartyIds.assertIsNotEqualTo(null)
         }
     }
-
 }

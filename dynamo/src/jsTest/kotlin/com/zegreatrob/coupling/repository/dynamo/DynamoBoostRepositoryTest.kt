@@ -19,5 +19,4 @@ class DynamoBoostRepositoryTest :
     })
 
     override suspend fun buildRepository(user: User, clock: MagicClock) = DynamoBoostRepository(user.id, clock)
-
 }

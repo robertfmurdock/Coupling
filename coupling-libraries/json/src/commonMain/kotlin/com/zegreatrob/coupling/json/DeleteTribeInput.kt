@@ -6,4 +6,4 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class DeleteTribeInput(override val tribeId: PartyId): TribeInput
+data class DeleteTribeInput(override val tribeId: PartyId) : TribeInput

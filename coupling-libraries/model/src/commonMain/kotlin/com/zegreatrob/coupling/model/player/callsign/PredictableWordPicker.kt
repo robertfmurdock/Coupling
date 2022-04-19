@@ -6,5 +6,4 @@ interface PredictableWordPicker {
         .sum()
         .let { sumOfCharacterValues -> sumOfCharacterValues % size }
         .let { index -> this[index] }
-
 }

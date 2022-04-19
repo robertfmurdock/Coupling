@@ -28,6 +28,4 @@ interface TribeCreateTableParamProvider : DynamoCreateTableSyntax, DynamoTableNa
             ),
             "BillingMode" to "PAY_PER_REQUEST"
         )
-
 }
-

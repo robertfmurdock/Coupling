@@ -5,9 +5,9 @@ import com.zegreatrob.coupling.json.SpinInput
 import com.zegreatrob.coupling.json.SpinOutput
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.party.PartyId
 
 interface SdkSpin : SpinDispatcher, GqlSyntax, GraphQueries {
 
@@ -23,5 +23,4 @@ interface SdkSpin : SpinDispatcher, GqlSyntax, GraphQueries {
     )!!
 
     private fun toOutput(at: SpinOutput) = at.result.toModel()
-
 }

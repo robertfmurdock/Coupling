@@ -17,5 +17,4 @@ interface UserIsAuthorizedActionDispatcher : UserAuthenticatedPartyIdSyntax, Use
         .authenticatedPartyIds()
         .contains(action.partyId)
         .successResult()
-
 }

@@ -18,5 +18,4 @@ interface FindCallSignActionDispatcher : GenerateCallSignActionDispatcher, Execu
 
     private fun FindCallSignAction.generateCallSign(adjectives: Set<String>, nouns: Set<String>) =
         execute(GenerateCallSignAction(adjectives, nouns, email, players))
-
 }

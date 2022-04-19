@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.action.successResult
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign

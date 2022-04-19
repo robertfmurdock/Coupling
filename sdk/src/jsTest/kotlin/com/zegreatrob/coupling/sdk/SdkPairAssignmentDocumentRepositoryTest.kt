@@ -28,8 +28,8 @@ class SdkPairAssignmentDocumentRepositoryTest :
         sdk.partyRepository.save(tribe)
         SdkPartyContext(sdk, sdk.pairAssignmentDocumentRepository, tribe.id, MagicClock())
     }, sharedTeardown = {
-        it.sdk.partyRepository.delete(it.partyId)
-    })
+            it.sdk.partyRepository.delete(it.partyId)
+        })
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({
@@ -52,9 +52,11 @@ class SdkPairAssignmentDocumentRepositoryTest :
     }
 
     override fun savedWillIncludeModificationDateAndUsername() =
-        repositorySetup.with(object : PartyContextMint<SdkPairAssignmentsRepository>() {
-            val pairAssignmentDoc = stubPairAssignmentDoc()
-        }.bind()) {
+        repositorySetup.with(
+            object : PartyContextMint<SdkPairAssignmentsRepository>() {
+                val pairAssignmentDoc = stubPairAssignmentDoc()
+            }.bind()
+        ) {
             repository.save(partyId.with(pairAssignmentDoc))
         } exercise {
             repository.getPairAssignments(partyId)
@@ -69,5 +71,4 @@ class SdkPairAssignmentDocumentRepositoryTest :
     private fun DateTime.assertIsRecentDateTime() = (DateTime.now() - this)
         .compareTo(2.seconds)
         .assertIsEqualTo(-1)
-
 }

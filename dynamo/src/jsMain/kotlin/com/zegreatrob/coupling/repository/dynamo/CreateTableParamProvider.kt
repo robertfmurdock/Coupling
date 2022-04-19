@@ -2,7 +2,8 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import kotlin.js.json
 
-interface CreateTableParamProvider : com.zegreatrob.coupling.repository.dynamo.DynamoCreateTableSyntax,
+interface CreateTableParamProvider :
+    com.zegreatrob.coupling.repository.dynamo.DynamoCreateTableSyntax,
     com.zegreatrob.coupling.repository.dynamo.DynamoTableNameSyntax {
     override val createTableParams
         get() = json(
@@ -29,5 +30,4 @@ interface CreateTableParamProvider : com.zegreatrob.coupling.repository.dynamo.D
             ),
             "BillingMode" to "PAY_PER_REQUEST"
         )
-
 }

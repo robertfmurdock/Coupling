@@ -13,7 +13,8 @@ import kotlin.reflect.KClass
 fun <D, C : DispatchableAction<D, R>, R> stubActionExecutor(@Suppress("UNUSED_PARAMETER") kClass: KClass<C>) =
     StubActionExecutor<D, C, R>()
 
-class StubActionExecutor<D, C : DispatchableAction<D, R>, R> : ExecutableActionExecutor<D>,
+class StubActionExecutor<D, C : DispatchableAction<D, R>, R> :
+    ExecutableActionExecutor<D>,
     SuspendActionExecutor<D>,
     Spy<C, R> by SpyData() {
 
@@ -26,5 +27,4 @@ class StubActionExecutor<D, C : DispatchableAction<D, R>, R> : ExecutableActionE
     override suspend fun <R> invoke(action: SuspendAction<D, R>): R = (action as? C)
         ?.let { spyFunction(action) as? R }
         ?: throw Exception("Stub not prepared for $action")
-
 }

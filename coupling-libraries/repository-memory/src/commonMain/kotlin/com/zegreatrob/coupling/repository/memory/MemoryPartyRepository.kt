@@ -33,5 +33,4 @@ class MemoryPartyRepository(
 
     private fun PartyId.findParty() = recordList()
         .firstOrNull { it.data.id == this }
-
 }

@@ -25,11 +25,13 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
 
     @Test
     fun saveMultipleThenGetListWillReturnSavedDocumentsNewestToOldest() =
-        repositorySetup.with(object : PartyContextMint<R>() {
-            val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
-            val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
-            val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
-        }.bind()) {
+        repositorySetup.with(
+            object : PartyContextMint<R>() {
+                val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
+                val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
+                val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
+            }.bind()
+        ) {
             partyId.with(listOf(middle, oldest, newest))
                 .forEach { repository.save(it) }
         } exercise {
@@ -40,11 +42,13 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
         }
 
     @Test
-    fun getCurrentPairAssignmentsOnlyReturnsTheNewest() = repositorySetup.with(object : PartyContextMint<R>() {
-        val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
-        val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
-        val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
-    }.bind()) {
+    fun getCurrentPairAssignmentsOnlyReturnsTheNewest() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
+            val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
+            val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
+        }.bind()
+    ) {
         partyId.with(listOf(middle, oldest, newest))
             .forEach { repository.save(it) }
     } exercise {
@@ -61,9 +65,11 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     }
 
     @Test
-    fun savedWillIncludeModificationDateAndUsername() = repositorySetup.with(object : PartyContextMint<R>() {
-        val pairAssignmentDoc = stubPairAssignmentDoc()
-    }.bind()) {
+    fun savedWillIncludeModificationDateAndUsername() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val pairAssignmentDoc = stubPairAssignmentDoc()
+        }.bind()
+    ) {
         clock.currentTime = DateTime.now().plus(4.hours)
         repository.save(partyId.with(pairAssignmentDoc))
     } exercise {
@@ -77,9 +83,11 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     }
 
     @Test
-    fun saveAndDeleteThenGetWillReturnNothing() = repositorySetup.with(object : PartyContextMint<R>() {
-        val document = stubPairAssignmentDoc()
-    }.bind()) {
+    fun saveAndDeleteThenGetWillReturnNothing() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val document = stubPairAssignmentDoc()
+        }.bind()
+    ) {
         repository.save(partyId.with(document))
     } exercise {
         repository.delete(partyId, document.id)
@@ -91,9 +99,11 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     }
 
     @Test
-    fun deleteWhenDocumentDoesNotExistWillReturnFalse() = repositorySetup.with(object : PartyContextMint<R>() {
-        val id = PairAssignmentDocumentId("${uuid4()}")
-    }.bind()) exercise {
+    fun deleteWhenDocumentDoesNotExistWillReturnFalse() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val id = PairAssignmentDocumentId("${uuid4()}")
+        }.bind()
+    ) exercise {
         repository.delete(partyId, id)
     } verify { result ->
         result.assertIsEqualTo(false)
@@ -101,12 +111,14 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
 
     @Test
     fun afterSavingUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() =
-        repositorySetup.with(object : PartyContextMint<R>() {
-            val originalDateTime = DateTime.now()
-            val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
-            val updatedDateTime = originalDateTime.plus(3.days)
-            val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
-        }.bind()) {
+        repositorySetup.with(
+            object : PartyContextMint<R>() {
+                val originalDateTime = DateTime.now()
+                val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
+                val updatedDateTime = originalDateTime.plus(3.days)
+                val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
+            }.bind()
+        ) {
             repository.save(partyId.with(pairAssignmentDocument))
         } exercise {
             repository.save(partyId.with(updatedDocument))
@@ -114,5 +126,4 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             repository.getPairAssignments(partyId).data().map { it.document }
                 .assertIsEqualTo(listOf(updatedDocument))
         }
-
 }

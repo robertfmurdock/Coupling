@@ -42,5 +42,4 @@ interface DynamoLoggingSyntax {
 
     private fun logException(exception: Exception, className: String?) =
         logger.info(exception) { mapOf("func" to className, "type" to "End") }
-
 }

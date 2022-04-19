@@ -16,7 +16,8 @@ import kotlin.test.Test
 
 class CalculatePairHeatActionTest {
 
-    companion object : CalculatePairHeatActionDispatcher,
+    companion object :
+        CalculatePairHeatActionDispatcher,
         AssignPinsActionDispatcher {
         private fun List<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
             .map { pairAssignmentDocument() }

@@ -25,5 +25,4 @@ class MemoryBoostRepositoryTest :
 
     override suspend fun buildRepository(user: User, clock: MagicClock) =
         MemoryBoostRepository(user.id, clock, recordBackend)
-
 }

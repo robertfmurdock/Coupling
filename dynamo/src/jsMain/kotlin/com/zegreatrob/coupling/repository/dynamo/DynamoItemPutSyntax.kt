@@ -19,5 +19,4 @@ interface DynamoItemPutSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoLog
         "TableName" to prefixedTableName,
         "Item" to itemJson
     )
-
 }

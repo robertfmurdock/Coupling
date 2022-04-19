@@ -32,5 +32,4 @@ class CouplingPairTest {
     } verify { result ->
         result.assertIsEqualTo(false)
     }
-
 }

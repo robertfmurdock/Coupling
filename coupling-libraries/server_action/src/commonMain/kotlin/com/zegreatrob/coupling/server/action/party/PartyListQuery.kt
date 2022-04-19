@@ -32,5 +32,4 @@ interface PartyListQueryDispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerI
                 players.authenticatedFilter()(it)
             }
         }
-
 }

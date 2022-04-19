@@ -37,5 +37,4 @@ interface DynamoTribeJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping
         "animationEnabled" to animationEnabled,
         "animationSpeed" to animationSpeed
     )
-
 }

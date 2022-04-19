@@ -5,8 +5,8 @@ import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.party.PartyRepository
-import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubParties
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,9 +16,11 @@ import kotlin.test.Test
 interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R, SharedContext<R>> {
 
     @Test
-    fun saveMultipleThenGetListWillReturnSavedParties() = repositorySetup.with(object : ContextMint<R>() {
-        val parties = stubParties(3)
-    }.bind()) {
+    fun saveMultipleThenGetListWillReturnSavedParties() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val parties = stubParties(3)
+        }.bind()
+    ) {
         parties.forEach { repository.save(it) }
     } exercise {
         repository.getParties()
@@ -32,9 +34,11 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     private fun List<Record<Party>>.parties() = map(Record<Party>::data)
 
     @Test
-    fun saveMultipleThenGetEachByIdWillReturnSavedParties() = repositorySetup.with(object : ContextMint<R>() {
-        val parties = stubParties(3)
-    }.bind()) {
+    fun saveMultipleThenGetEachByIdWillReturnSavedParties() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val parties = stubParties(3)
+        }.bind()
+    ) {
         parties.forEach { repository.save(it) }
     } exercise {
         parties.map { repository.getPartyRecord(it.id)?.data }
@@ -43,9 +47,11 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     }
 
     @Test
-    fun saveWillIncludeModificationInformation() = repositorySetup.with(object : ContextMint<R>() {
-        val party = stubParty()
-    }.bind()) {
+    fun saveWillIncludeModificationInformation() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val party = stubParty()
+        }.bind()
+    ) {
         clock.currentTime = DateTime.now().minus(3.days)
         repository.save(party)
     } exercise {
@@ -60,9 +66,11 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     }
 
     @Test
-    fun deleteWillMakePartyInaccessible() = repositorySetup.with(object : ContextMint<R>() {
-        val party = stubParty()
-    }.bind()) {
+    fun deleteWillMakePartyInaccessible() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val party = stubParty()
+        }.bind()
+    ) {
         repository.save(party)
     } exercise {
         repository.delete(party.id)
@@ -77,5 +85,4 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     } teardown {
         repository.delete(party.id)
     }
-
 }

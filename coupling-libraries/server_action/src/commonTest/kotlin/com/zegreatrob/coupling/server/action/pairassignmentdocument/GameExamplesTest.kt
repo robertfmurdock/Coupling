@@ -3,18 +3,24 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 class GameExamplesTest {
 
-    companion object : RunGameActionDispatcher,
+    companion object :
+        RunGameActionDispatcher,
         FindNewPairsActionDispatcher,
         NextPlayerActionDispatcher,
         CreatePairCandidateReportActionDispatcher,
@@ -79,7 +85,6 @@ class GameExamplesTest {
         } verify { result ->
             result.pairs.size.assertIsEqualTo(2)
         }
-
 
         @Test
         fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = setup(object {
@@ -158,7 +163,6 @@ class GameExamplesTest {
         } verify { result ->
             result.pairs.contains(pairOf(bruce, john).toPinnedPair())
         }
-
     }
 
     @Test

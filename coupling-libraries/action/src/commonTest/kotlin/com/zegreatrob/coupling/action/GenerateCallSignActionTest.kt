@@ -11,7 +11,7 @@ import kotlin.test.Test
 
 class GenerateCallSignActionTest {
 
-    companion object : GenerateCallSignActionDispatcher;
+    companion object : GenerateCallSignActionDispatcher
 
     @Test
     fun whenGivenOnlyOneAdjectiveAndOneNounWillSelectThem() = setup(object {
@@ -96,5 +96,4 @@ class GenerateCallSignActionTest {
     } verify { result ->
         result.assertIsEqualTo(CallSign("Blank", "Blank"))
     }
-
 }

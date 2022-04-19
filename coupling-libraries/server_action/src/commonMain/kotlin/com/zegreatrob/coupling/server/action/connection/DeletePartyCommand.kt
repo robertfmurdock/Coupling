@@ -12,7 +12,10 @@ object DeletePartyCommand : SimpleSuspendResultAction<DeletePartyCommandDispatch
     override val performFunc = link(DeletePartyCommandDispatcher::perform)
 }
 
-interface DeletePartyCommandDispatcher : PartyIdDeleteSyntax, CurrentPartyIdSyntax, AuthenticatedUserSyntax,
+interface DeletePartyCommandDispatcher :
+    PartyIdDeleteSyntax,
+    CurrentPartyIdSyntax,
+    AuthenticatedUserSyntax,
     UserSaveSyntax {
     suspend fun perform(command: DeletePartyCommand) = currentPartyId.delete().deletionResult("Tribe")
         .also {

@@ -8,11 +8,11 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 
 val mapper = ObjectMapper()
 
@@ -51,9 +51,11 @@ private fun JsonNode.toPinnedCouplingPair(): PinnedCouplingPair {
 
     val players = playerArray.map { playerNode ->
         playerNode.toPlayer()
-            .withPins(playerNode["pins"].map { pinNode ->
-                pinNode.toPin()
-            })
+            .withPins(
+                playerNode["pins"].map { pinNode ->
+                    pinNode.toPin()
+                }
+            )
     }
     return PinnedCouplingPair(
         players = players

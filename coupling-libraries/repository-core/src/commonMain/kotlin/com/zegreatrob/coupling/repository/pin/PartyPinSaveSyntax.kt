@@ -9,5 +9,4 @@ interface PartyPinSaveSyntax {
 
     suspend fun PartyElement<Pin>.save() =
         pinRepository.save(this)
-
 }

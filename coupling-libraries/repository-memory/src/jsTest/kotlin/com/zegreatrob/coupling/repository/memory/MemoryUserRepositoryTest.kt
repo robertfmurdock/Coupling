@@ -23,5 +23,4 @@ class MemoryUserRepositoryTest : UserRepositoryValidator<MemoryUserRepository> {
             val repository = MemoryUserRepository(id, clock)
             SharedContextData(repository, clock, user)
         })
-
 }

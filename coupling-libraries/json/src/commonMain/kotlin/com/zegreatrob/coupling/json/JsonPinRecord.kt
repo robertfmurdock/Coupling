@@ -4,9 +4,9 @@ package com.zegreatrob.coupling.json
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.pin.Pin
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -43,7 +43,7 @@ data class SavePinInput(
     val pinId: String?,
     val name: String,
     val icon: String,
-): TribeInput
+) : TribeInput
 
 fun Pin.toSerializable() = JsonPinData(
     id = id,

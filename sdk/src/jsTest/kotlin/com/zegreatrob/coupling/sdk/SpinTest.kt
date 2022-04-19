@@ -2,21 +2,24 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Badge
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Badge
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.ScopeMint
-
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -52,12 +55,15 @@ class SpinTest {
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 1, 10), pairs = listOf(
+                    id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 1, 10),
+                    pairs = listOf(
                         pairOf(players[0], players[2]).withPins(),
                         pairOf(players[1], players[3]).withPins()
                     )
-                ), PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 1, 9), pairs = listOf(
+                ),
+                PairAssignmentDocument(
+                    id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 1, 9),
+                    pairs = listOf(
                         pairOf(players[0], players[3]).withPins(),
                         pairOf(players[1], players[2]).withPins()
                     )
@@ -86,12 +92,15 @@ class SpinTest {
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 2, 10), pairs = listOf(
+                id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 2, 10),
+                pairs = listOf(
                     pairOf(players[0], players[3]).withPins(),
                     pairOf(players[1], players[2]).withPins()
                 )
-            ), PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 2, 9), pairs = listOf(
+            ),
+            PairAssignmentDocument(
+                id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 2, 9),
+                pairs = listOf(
                     pairOf(players[0], players[2]).withPins(),
                     pairOf(players[1], players[3]).withPins()
                 )
@@ -170,5 +179,4 @@ class SpinTest {
             party.id.with(pins).forEach { launch { sdk.pinRepository.save(it) } }
         }
     }
-
 }

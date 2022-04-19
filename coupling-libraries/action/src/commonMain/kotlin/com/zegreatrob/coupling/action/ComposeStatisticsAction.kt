@@ -2,9 +2,15 @@ package com.zegreatrob.coupling.action
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
-import com.zegreatrob.coupling.model.pairassignmentdocument.*
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairingTimeCalculationSyntax
+import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
+import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotlin.math.floor
 
@@ -63,7 +69,6 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
     private fun List<DateTime>.toDeltas() = zipWithNext { a, b -> a - b }
 
     private fun List<PairAssignmentDocument>.asDateTimes() = map { it.date }
-
 }
 
 data class StatisticsReport(

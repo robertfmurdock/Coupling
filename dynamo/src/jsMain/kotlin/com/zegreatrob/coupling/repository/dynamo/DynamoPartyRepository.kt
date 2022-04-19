@@ -17,7 +17,8 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
     RecordSyntax,
     DynamoTribeJsonMapping {
 
-    companion object : DynamoTableNameSyntax,
+    companion object :
+        DynamoTableNameSyntax,
         com.zegreatrob.coupling.repository.dynamo.CreateTableParamProvider,
         DynamoItemGetSyntax,
         DynamoItemPutSyntax,
@@ -57,5 +58,4 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
     private fun Json.asTribeRecord() = toRecord(toParty())
 
     suspend fun saveRawRecord(record: Record<Party>) = performPutItem(record.asDynamoJson())
-
 }

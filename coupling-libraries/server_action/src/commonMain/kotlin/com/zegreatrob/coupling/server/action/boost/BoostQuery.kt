@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.server.action.boost
 
 import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
-import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record

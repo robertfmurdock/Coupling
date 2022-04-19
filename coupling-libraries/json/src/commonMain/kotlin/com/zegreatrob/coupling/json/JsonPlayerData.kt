@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -41,7 +41,7 @@ data class SavePlayerInput(
     val callSignAdjective: String = defaultPlayer.callSignAdjective,
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
-): TribeInput
+) : TribeInput
 
 @Serializable
 data class JsonPlayerRecord(

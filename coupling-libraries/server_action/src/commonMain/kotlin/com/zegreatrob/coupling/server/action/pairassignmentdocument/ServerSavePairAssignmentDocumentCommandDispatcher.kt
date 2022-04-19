@@ -12,9 +12,13 @@ import com.zegreatrob.coupling.server.action.connection.CouplingConnectionGetSyn
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
-interface ServerSavePairAssignmentDocumentCommandDispatcher : SavePairAssignmentDocumentCommandDispatcher,
-    PartyIdPairAssignmentDocumentSaveSyntax, CurrentPartyIdSyntax, CouplingConnectionGetSyntax,
-    SuspendActionExecuteSyntax, BroadcastActionDispatcher {
+interface ServerSavePairAssignmentDocumentCommandDispatcher :
+    SavePairAssignmentDocumentCommandDispatcher,
+    PartyIdPairAssignmentDocumentSaveSyntax,
+    CurrentPartyIdSyntax,
+    CouplingConnectionGetSyntax,
+    SuspendActionExecuteSyntax,
+    BroadcastActionDispatcher {
 
     override suspend fun perform(command: SavePairAssignmentDocumentCommand) = with(command) {
         currentPartyId.with(pairAssignmentDocument)

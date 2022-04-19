@@ -2,9 +2,13 @@ package com.zegreatrob.coupling.server.action.player
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.*
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportsAction
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.GameSpin
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerActionDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairCandidateReport
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
@@ -56,7 +60,6 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(5))
 
         val pairCandidates = listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-
     }) {
         execute.spyWillReturn(pairCandidates)
     } exercise {
@@ -100,5 +103,4 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
     private fun longestTimeSpin(players: List<Player>) = GameSpin(emptyList(), players, PairingRule.LongestTime)
-
 }
