@@ -1,8 +1,9 @@
+@file:JsModule("parse5-html-rewriting-stream")
 package com.zegreatrob.coupling.server.external.parse5htmlrewritingstream
 
 import com.zegreatrob.coupling.server.external.fs.Stream
 
-@JsModule("parse5-html-rewriting-stream")
+@JsName("RewritingStream")
 external class RewritingStream : Stream {
     fun on(event: String, callback: (tag: Tag) -> Unit)
     fun on(event: String, callback: (tag: Tag, String) -> Unit)
