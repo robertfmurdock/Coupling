@@ -20,7 +20,6 @@ fun Express.indexRoute(): Handler = { _, response, _ ->
         response.type("html")
         val indexStream = Readable.from(arrayOf(indexHtml))
 
-        console.log("rewriting stream is ",)
         val rewritingStream = RewritingStream()
         var replaceNextText: String? = null
         rewritingStream.on("startTag") { tag ->
