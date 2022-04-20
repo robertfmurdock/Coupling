@@ -19,7 +19,9 @@ import com.zegreatrob.testmints.async.waitForTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 @ExperimentalCoroutinesApi
 class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 

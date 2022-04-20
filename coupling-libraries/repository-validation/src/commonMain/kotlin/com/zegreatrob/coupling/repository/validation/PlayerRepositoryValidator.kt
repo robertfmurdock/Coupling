@@ -14,7 +14,9 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 @ExperimentalCoroutinesApi
 interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, PartyContext<R>> {
 
@@ -183,13 +185,14 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     } exercise {
         repository.save(partyId.with(player))
         repository.deletePlayer(partyId, player.id)
-        repository.getDeleted(partyId)
-    } verify { result ->
-        result.size.assertIsEqualTo(1)
-        result.first().apply {
-            isDeleted.assertIsEqualTo(true)
-            timestamp.assertIsCloseToNow()
-            modifyingUserId.assertIsEqualTo(user.email)
+    } verifyWithWait {
+        repository.getDeleted(partyId).let { result ->
+            result.size.assertIsEqualTo(1)
+            result.first().apply {
+                isDeleted.assertIsEqualTo(true)
+                timestamp.assertIsCloseToNow()
+                modifyingUserId.assertIsEqualTo(user.email)
+            }
         }
     }
 }
