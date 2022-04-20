@@ -29,6 +29,7 @@
     "on-finished": "^2.4.1",
     "parse5": "^7.0.0",
     "parse5-html-rewriting-stream": "^7.0.0",
+    "entities": "^4.3.0",
     "raw-loader": "^4.0.2",
     "serverless-http": "^3.0.1",
     "source-map-loader": "^3.0.1",

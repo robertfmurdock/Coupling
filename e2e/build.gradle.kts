@@ -88,7 +88,6 @@ kotlin {
 }
 
 dependencies {
-    appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
     clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
     implementation(kotlin("stdlib-js"))
     implementation("com.benasher44:uuid:0.4.0")
