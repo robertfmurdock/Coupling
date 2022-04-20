@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PartyContextData
+import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -25,9 +26,11 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 
+@ExperimentalCoroutinesApi
 @ExperimentalTime
 @Suppress("unused")
 class DynamoPairAssignmentDocumentRepositoryTest :
@@ -61,7 +64,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         repository.save(tribeId.with(updatedPairAssignmentDocument))
         clock.currentTime = updatedSaveTime2
         repository.delete(tribeId, pairAssignmentDocument.id)
-    } verify {
+    } verifyWithWait {
         repository.getRecords(tribeId)
             .assertContains(Record(tribeId.with(pairAssignmentDocument), user.email, false, initialSaveTime))
             .assertContains(Record(tribeId.with(updatedPairAssignmentDocument), user.email, false, updatedSaveTime))
