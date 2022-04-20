@@ -11,8 +11,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '25'
+      - name: Update Plugin Deps
+        run: ./gradlew :plugins:useLatestVersions
       - name: Update Deps
-        run: ./gradlew useLatestVersions :plugins:useLatestVersions
+        run: ./gradlew useLatestVersions
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
