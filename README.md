@@ -21,12 +21,14 @@ Have fun!
 
 What is Pairing?
 ----------------
+
   Pairing is the act of two specialists in one profession working together on the same task concurrently. This allows for constant collaboration when brainstorming for solutions, reinforcement of standards and cultural norms, and immediate peer-review of all work being produced. This helps build trust that all the content created by the pair is valuable and safe.
 
   For more, check out this article: [Pairing for Outsiders](https://medium.com/@robert.f.murdock/pairing-for-outsiders-f3bb68086de1)
 
 Why Should Pairs Be Rotated?
 ----------------------------
+
   For better or for worse, teams are made up of people, and people have different skill levels, opinions, temperments and philosophies. Rotating pairs is intended to help make sure that senior people will get to synchronize with other senior people periodically. Similarly, junior team members should get the opportunity to work with other junior team members - this gives them the opportunity to test their growth. Regular rotation of pairs also helps discourage project knowledge from being reserved for a few 'smart' individuals... at the very least, many team members should see and participate in decisions regularly.
 
 What Makes For Good Pairing? What Doesn't?
