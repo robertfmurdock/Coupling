@@ -33,8 +33,8 @@ jobs:
           fetch-depth: 0
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-#        with:
-#          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
       - uses: testspace-com/setup-testspace@v1
         with:
           domain: robertfmurdock
