@@ -130,15 +130,14 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
                 val player = stubPlayer()
                 val playerId = player.id
             }.bind()
-        ) {
+        ) exercise {
             repository.save(partyId.with(player))
             repository.deletePlayer(partyId, playerId)
             repository.save(partyId.with(player))
             repository.deletePlayer(partyId, playerId)
-        } exercise {
+        } verifyWithWait {
             repository.getDeleted(partyId)
-        } verify { result ->
-            result.map { it.data.player }
+                .map { it.data.player }
                 .assertIsEqualTo(listOf(player))
         }
 
