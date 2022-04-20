@@ -29,20 +29,15 @@ include("coupling-libraries:server_action")
 include("coupling-libraries:export")
 include("coupling-libraries:import")
 
-val isCiServer = System.getenv().containsKey("CI")
-
-if (isCiServer) {
-    gradleEnterprise {
-        buildScan {
-            termsOfServiceUrl = "https://gradle.com/terms-of-service"
-            termsOfServiceAgree = "yes"
-            tag("CI")
-        }
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
     }
 }
 
 buildCache {
     local {
-        isEnabled = !isCiServer
+        isEnabled = true
     }
 }
