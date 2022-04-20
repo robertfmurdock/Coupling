@@ -144,7 +144,9 @@ tasks {
         outputs.dir(reportDir)
         val testResultsDir = "${project.buildDir.absolutePath}/test-results/"
         outputs.dir(testResultsDir)
-        val logsDir = "${project.buildDir.absolutePath}/reports/logs/e2e-serverless/"
+        val logsDir = "${project.buildDir.absolutePath}/reports/logs"
+        val logFile = file("$logsDir/run.log")
+        logFile.parentFile.mkdirs()
 
         environment("BASEURL" to "https://localhost/local/")
         environment(
@@ -167,8 +169,7 @@ tasks {
                 "STRICT_SSL" to "false",
             )
         )
-        val logFile = file("$logsDir/run.log")
-        logFile.parentFile.mkdirs()
+
         standardOutput = FileOutputStream(logFile, true)
     }
 
