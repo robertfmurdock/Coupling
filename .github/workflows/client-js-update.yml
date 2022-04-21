@@ -11,10 +11,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: '25'
-      - uses: burrunan/gradle-cache-action@v1
-        name: Update Deps
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
         with:
-          arguments: updateDependencies -PpackageJson=client/package.json
+          cache-read-only: true
+      - name: Update Deps
+        run: ./gradlew updateDependencies -PpackageJson=client/package.json
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
