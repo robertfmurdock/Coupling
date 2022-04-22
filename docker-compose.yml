@@ -1,7 +1,7 @@
 version: '2.4'
 services:
   serverless:
-    image: zegreatrob/coupling-serverless:latest
+    image: ghcr.io/robertfmurdock/coupling-serverless:latest
     ports:
       - "3000:3000"
     environment:

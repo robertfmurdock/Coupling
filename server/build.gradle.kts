@@ -142,7 +142,7 @@ tasks {
     val buildImage by registering(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
         dependsOn(prepareDockerData)
         inputDir.set(file("build/docker-data"))
-        images.add("zegreatrob/coupling-serverless:latest")
+        images.add("ghcr.io/robertfmurdock/coupling-serverless:latest")
     }
 
     register<NodeExec>("serverlessStart") {
