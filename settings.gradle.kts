@@ -7,6 +7,7 @@ rootProject.name = "Coupling"
 includeBuild("plugins")
 include("client")
 include("server")
+include("server-base")
 include("sdk")
 include("e2e")
 include("deploy:prerelease")
