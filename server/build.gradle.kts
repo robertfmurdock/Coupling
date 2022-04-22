@@ -140,7 +140,7 @@ tasks {
     }
 
     val buildImage by registering(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
-        dependsOn(prepareDockerData, ":server-base:buildImage")
+        dependsOn(prepareDockerData, ":server-base:pullImage")
         inputDir.set(file("build/docker-data"))
         images.add("ghcr.io/robertfmurdock/coupling-serverless:latest")
     }
