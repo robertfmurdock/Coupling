@@ -53,7 +53,7 @@ jobs:
       - name: Build Coupling
         run: ./gradlew check --scan
       - name: Release Coupling
-        run: ./gradlew release assemble --scan
+        run: ./gradlew release --info --scan
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew composeLogs collectResults
