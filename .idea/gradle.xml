@@ -46,6 +46,7 @@
             <option value="$PROJECT_DIR$/plugins" />
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
+            <option value="$PROJECT_DIR$/server-base" />
           </set>
         </option>
       </GradleProjectSettings>
