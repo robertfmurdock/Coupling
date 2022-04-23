@@ -11,6 +11,10 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
 }
 
+ktlint {
+    version.set("0.45.2")
+}
+
 dependencies {
     "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:7.3.1"))
     "commonMainImplementation"(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.1.4"))
@@ -34,3 +38,5 @@ tasks.withType(org.gradle.api.tasks.bundling.Jar::class).configureEach {
 tasks.withType(org.gradle.jvm.tasks.Jar::class).configureEach {
     outputs.cacheIf { true }
 }
+
+

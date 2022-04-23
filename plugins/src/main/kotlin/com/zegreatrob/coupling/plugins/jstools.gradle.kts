@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.plugins
 
+import gradle.kotlin.dsl.accessors._f558a6a67bbbb6b71407511a9bbb2119.ktlint
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -17,6 +18,10 @@ kotlin {
         useCommonJs()
         binaries.executable()
     }
+}
+
+ktlint {
+    version.set("0.45.2")
 }
 
 dependencies {

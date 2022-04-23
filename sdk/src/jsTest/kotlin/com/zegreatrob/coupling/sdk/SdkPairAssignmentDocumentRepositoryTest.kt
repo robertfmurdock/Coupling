@@ -28,8 +28,8 @@ class SdkPairAssignmentDocumentRepositoryTest :
         sdk.partyRepository.save(tribe)
         SdkPartyContext(sdk, sdk.pairAssignmentDocumentRepository, tribe.id, MagicClock())
     }, sharedTeardown = {
-        it.sdk.partyRepository.delete(it.partyId)
-    })
+            it.sdk.partyRepository.delete(it.partyId)
+        })
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({

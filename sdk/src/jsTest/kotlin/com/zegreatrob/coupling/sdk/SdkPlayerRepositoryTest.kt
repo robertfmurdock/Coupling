@@ -32,8 +32,8 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
         SdkPartyContext(sdk, sdk.playerRepository, party.id, MagicClock())
     }, sharedTeardown = {
-        it.sdk.partyRepository.delete(it.partyId)
-    })
+            it.sdk.partyRepository.delete(it.partyId)
+        })
 
     override fun whenPlayerIdIsUsedInTwoDifferentPartiesTheyRemainDistinct() =
         repositorySetup.with({ parent: SdkPartyContext<SdkPlayerRepository> ->

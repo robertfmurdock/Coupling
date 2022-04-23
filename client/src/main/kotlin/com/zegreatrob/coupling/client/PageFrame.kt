@@ -41,8 +41,8 @@ val pageFrame = tmFC<PageFrame> { props ->
         this.borderColor = props.borderColor
         this.backgroundColor = props.backgroundColor
     }, attrs = {
-        props.className?.let { classes = classes + "$it" }
-    }) {
+            props.className?.let { classes = classes + "$it" }
+        }) {
         props.children?.let { child(it) }
     }
 }
