@@ -53,6 +53,7 @@ jobs:
       - name: Build Coupling
         run: ./gradlew check --scan
       - run: git add .
+      - run: git config user.name "Committing loose changes"
       - run: git commit -m "extra"
       - run: git push
       - name: Release Coupling
