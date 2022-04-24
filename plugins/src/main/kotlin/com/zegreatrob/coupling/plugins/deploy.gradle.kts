@@ -17,7 +17,7 @@ tasks {
     val deploy by registering(NodeExec::class) {
         configureDeploy(project.name)
     }
-    findByPath(":release")!!.finalizedBy(deploy)
+    // findByPath(":release")!!.finalizedBy(deploy)
 }
 
 fun NodeExec.configureDeploy(stage: String) {
