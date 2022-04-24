@@ -36,6 +36,9 @@ tasks {
     named("composeUp") {
         dependsOn(":server:buildImage")
     }
+    named("describe", com.zegreatrob.coupling.plugins.Tagger_gradle.DescribeTask::class) {
+        releaseBranch = "grgit-alt"
+    }
 }
 
 yarn.ignoreScripts = false

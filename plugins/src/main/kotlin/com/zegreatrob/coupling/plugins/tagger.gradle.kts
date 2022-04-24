@@ -21,11 +21,24 @@ open class DescribeTask : DefaultTask() {
     @Input
     var extension: GrgitServiceExtension? = null
 
+    @Input
+    var releaseBranch: String? = null
+
+
     @TaskAction
     fun execute() {
         val grgit = extension!!.service.get().grgit
+
+        val branch = grgit.branch.current()
+
+        println("branch is $branch")
+        val status = grgit.branch.status()
+
+        println("status is ${status.aheadCount} ${status.behindCount}")
+
         val description = grgit.describe {}
         println(description)
+        println("is on release branch ${ branch.name == releaseBranch }")
 
         val (previousVersionNumber, commitDistanceFromTag, dirty) = description.split("-")
 
