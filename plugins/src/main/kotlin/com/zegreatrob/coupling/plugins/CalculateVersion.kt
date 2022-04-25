@@ -9,14 +9,14 @@ import org.gradle.api.tasks.TaskAction
 open class CalculateVersion : DefaultTask() {
 
     @Input
-    var extension: GrgitServiceExtension? = null
+    lateinit var extension: GrgitServiceExtension
 
     @Input
     var releaseBranch: String? = null
 
     @TaskAction
     fun execute() {
-        val grgit = extension!!.service.get().grgit
+        val grgit = extension.service.get().grgit
 
         project.version = grgit.calculateNextVersion() + if (grgit.canRelease())
             ""
@@ -39,8 +39,8 @@ open class CalculateVersion : DefaultTask() {
     private fun Grgit.canRelease(): Boolean {
         val currentBranch = branch.current()
         val currentBranchStatus = branch.status { this.name = currentBranch.name }
-
-        return currentBranchStatus.aheadCount == 0
+        return status().isClean
+            && currentBranchStatus.aheadCount == 0
             && currentBranchStatus.behindCount == 0
             && currentBranch.name == releaseBranch
     }
