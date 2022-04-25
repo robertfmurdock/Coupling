@@ -26,7 +26,7 @@ tasks {
         dependsOn(":server:buildImage")
     }
     named("calculateVersion", CalculateVersion::class) {
-        releaseBranch = "grgit-alt"
+        releaseBranch = "master"
     }
 }
 

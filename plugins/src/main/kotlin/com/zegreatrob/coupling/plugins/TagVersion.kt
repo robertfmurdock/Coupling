@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.plugins
 
 import org.ajoberstar.grgit.gradle.GrgitServiceExtension
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 
@@ -17,6 +18,15 @@ open class TagVersion : DefaultTask() {
             grgit.tag.add {
                 name = "${project.version}"
             }
+        }
+    }
+}
+
+open class Release : DefaultTask() {
+    @TaskAction
+    fun execute() {
+        if (project.version.toString().contains("SNAPSHOT")) {
+            throw GradleException("Cannot release a snapshot")
         }
     }
 }
