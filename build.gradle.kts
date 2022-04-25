@@ -1,5 +1,6 @@
 // import de.gliderpilot.gradle.semanticrelease.SemanticReleaseChangeLogService
 // import org.ajoberstar.gradle.git.release.semver.ChangeScope
+import com.zegreatrob.coupling.plugins.CalculateVersion
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
@@ -36,7 +37,7 @@ tasks {
     named("composeUp") {
         dependsOn(":server:buildImage")
     }
-    named("describe", com.zegreatrob.coupling.plugins.Tagger_gradle.DescribeTask::class) {
+    named("calculateVersion", CalculateVersion::class) {
         releaseBranch = "grgit-alt"
     }
 }
