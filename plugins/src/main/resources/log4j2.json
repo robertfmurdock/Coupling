@@ -36,26 +36,6 @@
         "fileName": "build/test-output/test.jsonl",
         "createOnDemand": true
       },
-      "Socket": {
-        "JsonLayout": {
-          "keyValuePair": [{
-            "key": "timestamp",
-            "value": "$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"
-          },{
-            "key": "testRunIdentifier",
-            "value": "$${sys:testRunIdentifier}"
-          }],
-          "includeTimeMillis": true,
-          "eventEol": true,
-          "compact": true,
-          "objectMessageAsJsonObject": true
-        },
-        "name": "Socket",
-        "host": "localhost",
-        "port": 5555,
-        "immediateFail": true,
-        "ignoreExceptions": true
-      }
     },
     "Loggers": {
       "Root": {
@@ -63,9 +43,6 @@
           {
             "ref": "File"
           },
-          {
-            "ref": "Socket"
-          }
         ],
         "level": "trace"
       }
