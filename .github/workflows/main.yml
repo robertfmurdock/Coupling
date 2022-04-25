@@ -53,7 +53,7 @@ jobs:
       - name: Collect Version
         run: echo PROJECT_VERSION=$(./gradlew calculateVersion -q) >> $GITHUB_ENV
       - name: Build Coupling
-        run: ./gradlew release check --scan -Pversion=$PROJECT_VERSION
+        run: ./gradlew release check --scan -Pversion="$PROJECT_VERSION"
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew composeLogs collectResults
