@@ -17,7 +17,7 @@ tasks {
         extension = grgitService
     }
 
-    val release by registering {
+    val release by registering(Release::class) {
         dependsOn(assemble, calculateVersion)
         mustRunAfter(check)
         finalizedBy(tag)

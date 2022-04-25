@@ -15,9 +15,8 @@ open class TagVersion : DefaultTask() {
     fun execute() {
         val grgit = extension.service.get().grgit
         if (!project.version.toString().contains("SNAPSHOT")) {
-            grgit.tag.add {
-                name = "${project.version}"
-            }
+            grgit.tag.add { name = "${project.version}" }
+            grgit.push { tags = true }
         }
     }
 }
