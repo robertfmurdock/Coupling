@@ -160,7 +160,7 @@ tasks {
 
     fun NodeExec.configureBuild(stage: String) {
         val serverlessBuildDir = "${project.buildDir.absolutePath}/$stage/lambda-dist"
-        dependsOn(assemble, test, compileKotlinJs)
+        dependsOn(assemble, test, compileKotlinJs, ":calculateVersion")
         environment(
             "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
             "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),

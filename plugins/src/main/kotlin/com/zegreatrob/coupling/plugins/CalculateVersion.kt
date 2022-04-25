@@ -18,12 +18,12 @@ open class CalculateVersion : DefaultTask() {
     fun execute() {
         val grgit = extension.service.get().grgit
 
-        project.version = grgit.calculateNextVersion() + if (grgit.canRelease())
+        val version = grgit.calculateNextVersion() + if (grgit.canRelease())
             ""
         else
             "-SNAPSHOT"
 
-        logger.quiet("Version has been set to ${project.version}")
+        logger.quiet(version)
     }
 
     private fun Grgit.calculateNextVersion(): String {
