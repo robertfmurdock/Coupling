@@ -51,10 +51,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build Coupling
-        run: ./gradlew check --scan
-      - run: git clean -f
-      - name: Release Coupling
-        run: ./gradlew release --info --scan
+        run: ./gradlew release check --scan
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew composeLogs collectResults
