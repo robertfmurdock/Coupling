@@ -35,14 +35,14 @@
         "name": "File",
         "fileName": "build/test-output/test.jsonl",
         "createOnDemand": true
-      },
+      }
     },
     "Loggers": {
       "Root": {
         "AppenderRef": [
           {
             "ref": "File"
-          },
+          }
         ],
         "level": "trace"
       }
