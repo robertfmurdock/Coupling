@@ -95,7 +95,7 @@ tasks {
         commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/$version".split(" ")
     }
     val release by registering {
-        dependsOn(":release")
+        dependsOn(":release", uploadToS3)
     }
 
     named("processResources", ProcessResources::class) {

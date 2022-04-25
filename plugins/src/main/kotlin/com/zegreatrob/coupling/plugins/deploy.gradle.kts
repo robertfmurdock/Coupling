@@ -19,7 +19,7 @@ tasks {
         dependsOn(":release")
     }
     val release by registering {
-        dependsOn(":release")
+        dependsOn(":release", deploy)
     }
 }
 
