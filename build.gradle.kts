@@ -1,5 +1,3 @@
-// import de.gliderpilot.gradle.semanticrelease.SemanticReleaseChangeLogService
-// import org.ajoberstar.gradle.git.release.semver.ChangeScope
 import com.zegreatrob.coupling.plugins.CalculateVersion
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
@@ -9,22 +7,12 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 plugins {
     id("com.bmuschko.docker-remote-api") version "7.3.0"
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
-    // id("de.gliderpilot.semantic-release") version "1.4.2"
     id("com.avast.gradle.docker-compose") version "0.15.2"
     id("com.github.sghill.distribution-sha") version "0.4.0"
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.tagger")
     base
 }
-
-// semanticRelease {
-//     changeLog(closureOf<SemanticReleaseChangeLogService> {
-//         changeScope = KotlinClosure1<Commit, ChangeScope>({ ChangeScope.PATCH })
-//     })
-//     repo(closureOf<de.gliderpilot.gradle.semanticrelease.GithubRepo> {
-//         setGhToken(System.getenv("GITHUB_TOKEN"))
-//     })
-// }
 
 dockerCompose {
     projectName = "Coupling-root"

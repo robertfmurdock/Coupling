@@ -28,12 +28,9 @@ open class CalculateVersion : DefaultTask() {
 
     private fun Grgit.calculateNextVersion(): String {
         val description = describe {}
-
         val (previousVersionNumber) = description.split("-")
         val (major, minor, patch) = previousVersionNumber.substring(1).split(".")
-
-        val nextVersion = "Z${major}.${minor}.${patch.toInt() + 1}"
-        return nextVersion
+        return "Z${major}.${minor}.${patch.toInt() + 1}"
     }
 
     private fun Grgit.canRelease(): Boolean {
