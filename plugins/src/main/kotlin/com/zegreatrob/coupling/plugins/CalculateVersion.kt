@@ -30,7 +30,7 @@ open class CalculateVersion : DefaultTask() {
         val description = describe {}
         val (previousVersionNumber) = description.split("-")
         val (major, minor, patch) = previousVersionNumber.substring(1).split(".")
-        return "Z${major}.${minor}.${patch.toInt() + 1}"
+        return "v${major}.${minor}.${patch.toInt() + 1}"
     }
 
     private fun Grgit.canRelease(): Boolean {
