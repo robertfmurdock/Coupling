@@ -50,8 +50,10 @@ jobs:
           aws-region: us-east-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Calculate Version
+        run: ./gradlew calculateVersion -q --configuration-cache
       - name: Build Coupling
-        run: ./gradlew release check --scan
+        run: ./gradlew release check --scan -Pversion=$(./gradlew calculateVersion --configuration-cache -q)
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew composeLogs collectResults

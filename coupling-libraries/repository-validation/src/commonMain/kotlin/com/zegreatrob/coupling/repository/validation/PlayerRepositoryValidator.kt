@@ -102,7 +102,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     } exercise {
         repository.deletePlayer(partyId, player.id)
         repository.getPlayers(partyId)
-    } verify { result ->
+    } verifyWithWait { result ->
         result.map { it.data.player }
             .contains(player)
             .assertIsEqualTo(false)

@@ -24,6 +24,7 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-iostreams:2.17.2")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
     implementation("org.jlleitschuh.gradle:ktlint-gradle:10.2.1")
+    implementation("org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0")
     api("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
 }
 
@@ -40,16 +41,5 @@ tasks {
                 .toRegex()
                 .matches(candidate.version)
         }
-    }
-}
-
-dependencyLocking {
-    lockAllConfigurations()
-    lockMode.set(LockMode.STRICT)
-}
-
-buildscript {
-    configurations.classpath {
-        resolutionStrategy.activateDependencyLocking()
     }
 }

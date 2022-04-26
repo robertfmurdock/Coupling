@@ -36,7 +36,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
                 .forEach { repository.save(it) }
         } exercise {
             repository.getPairAssignments(partyId)
-        } verify { result ->
+        } verifyWithWait { result ->
             result.data().map { it.document }
                 .assertIsEqualTo(listOf(newest, middle, oldest))
         }

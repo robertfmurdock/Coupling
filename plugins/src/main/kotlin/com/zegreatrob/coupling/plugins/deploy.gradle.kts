@@ -16,14 +16,16 @@ val serverlessYmlPath = "${serverProject.projectDir.absolutePath}/serverless.yml
 tasks {
     val deploy by registering(NodeExec::class) {
         configureDeploy(project.name)
+        dependsOn(":release")
     }
-    findByPath(":release")!!.finalizedBy(deploy)
+    val release by registering {
+        dependsOn(":release", deploy)
+    }
 }
 
 fun NodeExec.configureDeploy(stage: String) {
     mustRunAfter(
         ":release",
-        ":updateGithubRelease",
         ":client:uploadToS3",
     )
     if (version.toString().contains("SNAPSHOT")) {
