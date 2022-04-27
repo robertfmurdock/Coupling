@@ -2555,10 +2555,10 @@
     yargs "^17.0.0"
     yarn-install "^1.0.0"
 
-"@wdio/cli@7.19.5":
-  version "7.19.5"
-  resolved "https://registry.yarnpkg.com/@wdio/cli/-/cli-7.19.5.tgz#864809960ab6026d67aa070f79f0aea962db53e0"
-  integrity sha512-oy0OJOCd2Ksj7KmCtg9hFUgAUKzvHoDi8NJv3eEq7o//clAkDN5zQh+NqNe9nRtCfpoKNHRlZ4VBNzu8v5r9oA==
+"@wdio/cli@7.19.6":
+  version "7.19.6"
+  resolved "https://registry.yarnpkg.com/@wdio/cli/-/cli-7.19.6.tgz#0b9054fba7f4161185ef80f20f259c9a45c3493a"
+  integrity sha512-lcHos0zyIQumdt+uzCbzVwJuzMyCI/Tv7nt6CcaJtIkpuut5WZ9H7V6IM3j1UYV0SEqz58KU+VPB82qazEP+YQ==
   dependencies:
     "@types/ejs" "^3.0.5"
     "@types/fs-extra" "^9.0.4"
@@ -3349,7 +3349,7 @@ async@^2.6.1, async@^2.6.2:
   dependencies:
     lodash "^4.17.14"
 
-async@^3.2.3:
+async@^3.2.2, async@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/async/-/async-3.2.3.tgz#ac53dafd3f4720ee9e8a160628f18ea91df196c9"
   integrity sha512-spZRyzKL5l5BZQrr/6m/SqFdBN0q3OCI0f9rjfBzCMBIP4p75P620rR3gTmaksNOhmzgdxcaxdNfMy6anrbM0g==
@@ -6018,13 +6018,15 @@ express-graphql@^0.12.0:
     http-errors "1.8.0"
     raw-body "^2.4.1"
 
-express-jwt@7.5.0:
-  version "7.5.0"
-  resolved "https://registry.yarnpkg.com/express-jwt/-/express-jwt-7.5.0.tgz#d157f6439fd1d993e020e6e978ba1f86de9bdec0"
-  integrity sha512-q0Cruib3rnZQWDSkYhjdk9Sax3XhgHZQ7h6nR2dOWtLfGMMRvxtQqYFkqIbZJrE6nPPDrUluRptFtWg2wrscOg==
+express-jwt@6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/express-jwt/-/express-jwt-6.1.2.tgz#4a6cc11d1dcff6f23126dd79ec5b2b441333e78b"
+  integrity sha512-l5dlf5lNM/1EODMsJGfHn1VnrhhsUYEetzrKFStJZLjFQXtR+HGdBiW+jUNZ+ISsFe+h7Wl/hQKjLrY2TX0Qkg==
   dependencies:
+    async "^3.2.2"
     express-unless "^1.0.0"
-    jsonwebtoken "^8.5.1"
+    jsonwebtoken "^8.1.0"
+    lodash "^4.17.21"
 
 express-statsd@^0.3.0:
   version "0.3.0"
@@ -8179,7 +8181,7 @@ jsontoxml@^1.0.1:
   resolved "https://registry.yarnpkg.com/jsontoxml/-/jsontoxml-1.0.1.tgz#07fff7f6bfbfa1097d779aec7f041b5046075e70"
   integrity sha512-dtKGq0K8EWQBRqcAaePSgKR4Hyjfsz/LkurHSV3Cxk4H+h2fWDeaN2jzABz+ZmOJylgXS7FGeWmbZ6jgYUMdJQ==
 
-jsonwebtoken@^8.5.1:
+jsonwebtoken@^8.1.0, jsonwebtoken@^8.5.1:
   version "8.5.1"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
   integrity sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w==
