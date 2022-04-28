@@ -1,4 +1,3 @@
-import com.zegreatrob.coupling.plugins.CalculateVersion
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
@@ -20,12 +19,13 @@ dockerCompose {
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
 }
 
+tagger {
+    releaseBranch = "master"
+}
+
 tasks {
     named("composeUp") {
         dependsOn(":server:buildImage")
-    }
-    named("calculateVersion", CalculateVersion::class) {
-        releaseBranch = "master"
     }
 }
 
