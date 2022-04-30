@@ -79,7 +79,7 @@ private fun buildClient(): HttpClient {
         followRedirects = false
         expectSuccess = false
         defaultRequest {
-            url(baseUrl.toString())
+            url("$baseUrl")
         }
         install(Logging) {
             logger = object : Logger {
