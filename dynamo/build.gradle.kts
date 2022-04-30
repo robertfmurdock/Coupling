@@ -1,6 +1,6 @@
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
-    id("com.avast.gradle.docker-compose") version "0.15.2"
+    id("com.avast.gradle.docker-compose")
 }
 
 kotlin {

@@ -9,7 +9,6 @@ import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders.UserAgent
 import io.ktor.http.URLProtocol
 import io.ktor.http.Url
-import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 
 fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
@@ -29,7 +28,7 @@ fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
                     val locationUrl = Url(location)
                     host = locationUrl.host
                     port = locationUrl.port
-                    encodedPath = "${basename}$encodedPath"
+                    pathSegments = listOf("$basename/")
                 }
             }
     }
