@@ -20,7 +20,7 @@ dependencies {
     "commonMainImplementation"(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.1.5"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.2"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.1"))
-    "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.332-kotlin-1.6.21"))
+    "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.333"))
 }
 
 tasks.withType(KotlinJsTest::class).configureEach {
