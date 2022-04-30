@@ -10,10 +10,10 @@
     d "1"
     es5-ext "^0.10.47"
 
-"@auth0/auth0-react@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-1.10.0.tgz#2f680abda61784908256299fb3cd211a4922c83a"
-  integrity sha512-bYiCaguJL0pkAX9U0xiC0979JIuATVLe7vAvW5Qsagh031JVXy5wNaIOobVrqVzH1WERuGenYUF21owv8R7q4w==
+"@auth0/auth0-react@1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-1.10.1.tgz#bb8b2917fe86d080c5375e2e04e7b8acd0182d6a"
+  integrity sha512-aBCRQ3PPqy+bcieD1/QQhv7ahbv7enegwhbApBPSKn7xPMzXYKQAfRRm7mkCwMGNNaYMFuejKgxbiTMD+gz5fA==
   dependencies:
     "@auth0/auth0-spa-js" "^1.21.0"
 
