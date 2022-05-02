@@ -58,7 +58,7 @@ class DynamoPinRepository private constructor(override val userId: String, overr
     )
 
     suspend fun getPinRecords(partyId: PartyId) = partyId.logAsync("itemList") {
-        performQuery(partyId.itemListQueryParams()).itemsNode()
+        queryAllRecords(partyId.itemListQueryParams())
     }.map {
         val pin = it.toPin()
         it.toRecord(partyId.with(pin))

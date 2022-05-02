@@ -4,8 +4,7 @@ import kotlin.js.Json
 
 interface ListLatestRecordSyntax : DynamoItemSyntax {
 
-    fun Json.fullList() = itemsNode()
-        .sortByRecordTimestamp()
+    fun Array<Json>.fullList() = sortByRecordTimestamp()
         .groupBy { it.getDynamoStringValue("id") }
         .map { it.value.last() }
 }

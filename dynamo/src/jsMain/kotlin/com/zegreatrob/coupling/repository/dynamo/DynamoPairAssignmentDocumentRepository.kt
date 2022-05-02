@@ -53,7 +53,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
 
     suspend fun getRecords(partyId: PartyId): List<PartyRecord<PairAssignmentDocument>> =
         partyId.logAsync("getPairAssignmentRecords") {
-            performQuery(partyId.itemListQueryParams()).itemsNode()
+            queryAllRecords(partyId.itemListQueryParams())
         }
             .map { toRecord(it) }
             .sortedByDescending { it.timestamp }

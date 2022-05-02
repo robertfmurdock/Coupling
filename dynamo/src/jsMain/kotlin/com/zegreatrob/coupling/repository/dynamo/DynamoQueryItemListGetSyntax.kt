@@ -8,6 +8,6 @@ interface DynamoQueryItemListGetSyntax :
     DynamoQuerySyntax,
     ListLatestRecordSyntax {
 
-    suspend fun queryForItemList(queryParams: Json) = performQuery(queryParams).fullList().filterNot(::isDeleted)
-    suspend fun queryForDeletedItemList(queryParams: Json) = performQuery(queryParams).fullList().filter(::isDeleted)
+    suspend fun queryForItemList(queryParams: Json) = queryAllRecords(queryParams).fullList().filterNot(::isDeleted)
+    suspend fun queryForDeletedItemList(queryParams: Json) = queryAllRecords(queryParams).fullList().filter(::isDeleted)
 }

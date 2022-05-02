@@ -13,8 +13,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
     LiveInfoRepository, DynamoPlayerJsonMapping {
 
     override suspend fun connectionList(partyId: PartyId) = partyId.logAsync("connectionList") {
-        performQuery(queryParams(partyId))
-            .itemsNode()
+        queryAllRecords(queryParams(partyId))
             .mapNotNull {
                 it["userPlayer"].unsafeCast<Json>().toPlayer()
                     ?.let { player -> CouplingConnection(it["id"].toString(), partyId, player) }
@@ -22,18 +21,16 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
     }
 
     override suspend fun get(connectionId: String) = connectionId.logAsync("getConnection") {
-        performQuery(queryParams(connectionId))
-            .itemsNode()
-            .mapNotNull {
-                it["userPlayer"].unsafeCast<Json>().toPlayer()
-                    ?.let { player ->
-                        CouplingConnection(
-                            it["id"].toString(),
-                            it["tribeId"].toString().let(::PartyId),
-                            player
-                        )
-                    }
-            }.firstOrNull()
+        queryAllRecords(queryParams(connectionId)).firstNotNullOfOrNull {
+            it["userPlayer"].unsafeCast<Json>().toPlayer()
+                ?.let { player ->
+                    CouplingConnection(
+                        it["id"].toString(),
+                        it["tribeId"].toString().let(::PartyId),
+                        player
+                    )
+                }
+        }
     }
 
     override suspend fun save(connection: CouplingConnection) = connection.connectionId.logAsync("saveConnection") {

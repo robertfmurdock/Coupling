@@ -12,8 +12,7 @@ interface DynamoItemGetSyntax :
     DynamoLoggingSyntax {
 
     suspend fun performGetSingleItemQuery(id: String, partyId: PartyId? = null) = logAsync("getSingleItem") {
-        performQuery(queryParams(partyId, id))
-            .itemsNode()
+        queryAllRecords(queryParams(partyId, id))
             .sortByRecordTimestamp()
             .lastOrNull()
             ?.let(::excludeDeleted)

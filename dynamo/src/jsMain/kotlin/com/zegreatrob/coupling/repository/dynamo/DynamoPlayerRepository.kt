@@ -94,7 +94,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     override suspend fun getPlayers(partyId: PartyId) = partyId.queryForItemList().mapNotNull { it.toPlayerRecord() }
 
     suspend fun getPlayerRecords(partyId: PartyId) = partyId.logAsync("itemList") {
-        performQuery(partyId.itemListQueryParams()).itemsNode()
+        queryAllRecords(partyId.itemListQueryParams())
     }.mapNotNull { it.toPlayerRecord() }
 
     private fun Json.toPlayerRecord() = toPlayer()?.let { toRecord(PartyId().with(it)) }
@@ -125,8 +125,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     override suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<String>> =
         logAsync("getPlayerIdsByEmail") {
             val playerIdsWithEmail = logAsync("playerIdsWithEmail") {
-                performQuery(emailQueryParams(email))
-                    .itemsNode()
+                queryAllRecords(emailQueryParams(email))
                     .mapNotNull { it.getDynamoStringValue("id") }
                     .toSet()
             }

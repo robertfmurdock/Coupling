@@ -64,8 +64,7 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
     override suspend fun get(): Record<Boost>? = getByPk(userKey(userId))
 
     private suspend fun getByPk(pk: String) = logAsync("get boost for pk") {
-        performQuery(queryParams(pk))
-            .itemsNode()
+        queryAllRecords(queryParams(pk))
             .sortByRecordTimestamp()
             .lastOrNull()
             ?.toBoostRecord()
