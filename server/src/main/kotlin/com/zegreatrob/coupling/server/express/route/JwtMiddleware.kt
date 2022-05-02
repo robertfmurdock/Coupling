@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.server.express.route
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.express.Request
-import com.zegreatrob.coupling.server.external.express.jwt.jwt
+import com.zegreatrob.coupling.server.external.express.jwt.expressjwt
 import com.zegreatrob.coupling.server.external.jwksrsa.expressJwtSecret
 import kotlin.js.json
 
-fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler = jwt(
+fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler = expressjwt(
     json(
         "secret" to expressJwtSecret(
             json(
