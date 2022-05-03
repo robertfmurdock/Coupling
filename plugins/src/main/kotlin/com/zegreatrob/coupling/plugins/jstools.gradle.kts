@@ -33,7 +33,7 @@ dependencies {
         testImplementation(npm(it.first, it.second.asText()))
     }
     implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:0.0.1-pre.333"))
-    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:7.3.2"))
+    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:7.3.3"))
     implementation(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.1.5"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.2"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.1"))
