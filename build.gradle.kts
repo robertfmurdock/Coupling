@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 
 plugins {
     id("com.bmuschko.docker-remote-api") version "7.3.0"
-    id("com.avast.gradle.docker-compose") version "0.15.2"
+    id("com.avast.gradle.docker-compose") version "0.16.3"
     id("com.github.sghill.distribution-sha") version "0.4.0"
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.tagger")
@@ -13,7 +13,7 @@ plugins {
 }
 
 dockerCompose {
-    projectName = "Coupling-root"
+    setProjectName("Coupling-root")
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
     startedServices.set(listOf("serverless", "caddy", "dynamo"))
     containerLogToDir.set(project.file("build/test-output/containers-logs"))

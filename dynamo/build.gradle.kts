@@ -61,7 +61,7 @@ tasks {
 
 dockerCompose {
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
-    projectName = "Coupling-root"
+    setProjectName("Coupling-root")
     startedServices.set(listOf("dynamo"))
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
 }
