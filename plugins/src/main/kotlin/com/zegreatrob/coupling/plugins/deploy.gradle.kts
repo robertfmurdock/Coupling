@@ -17,6 +17,8 @@ tasks {
     val deploy by registering(NodeExec::class) {
         configureDeploy(project.name)
         dependsOn(":release")
+        mustRunAfter(":server:check")
+        mustRunAfter(":e2e:check")
     }
     val release by registering {
         dependsOn(":release", deploy)

@@ -88,6 +88,7 @@ tasks {
 
     val uploadToS3 by registering(Exec::class) {
         dependsOn(browserProductionWebpack, ":release")
+        mustRunAfter(check, ":e2e:check")
         if (version.toString().contains("SNAPSHOT")) {
             enabled = false
         }
