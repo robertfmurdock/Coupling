@@ -93,7 +93,14 @@ function lookupFileName(libName, version) {
         ? Promise.resolve(cdnFilenameCorrections[libName])
         : fetch(`https://api.cdnjs.com/libraries/${libName}`)
             .then((result) => result.json())
-            .then(body => body.versions.includes(version) ? body.filename : null);
+            .then(body => {
+                    if (body.versions.includes(version)) {
+                        return body.filename
+                    } else {
+                        throw Error(`Could not find ${libName} ${version}`)
+                    }
+                }
+            );
 }
 
 config.plugins.push(
