@@ -25,7 +25,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
     implementation("org.jlleitschuh.gradle:ktlint-gradle:10.3.0")
     implementation("org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0")
-    api("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
+    api("com.fasterxml.jackson.core:jackson-databind:2.13.3")
 }
 
 tasks {
