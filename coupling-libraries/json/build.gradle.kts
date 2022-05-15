@@ -23,7 +23,12 @@ kotlin {
                 implementation(kotlin("stdlib"))
                 implementation(kotlin("stdlib-common"))
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+                implementation("io.ktor:ktor-client-core:2.0.1")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
+                implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
+                implementation("io.ktor:ktor-client-logging:2.0.1")
             }
         }
         val commonTest by getting {

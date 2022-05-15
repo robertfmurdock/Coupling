@@ -15,6 +15,17 @@ ktlint {
     version.set("0.45.2")
 }
 
+kotlin {
+    sourceSets {
+        all {
+            languageSettings {
+                optIn("kotlinx.serialization.ExperimentalSerializationApi")
+                optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            }
+        }
+    }
+}
+
 dependencies {
     "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:7.3.3"))
     "commonMainImplementation"(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.2.0"))

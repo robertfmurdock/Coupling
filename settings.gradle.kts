@@ -27,6 +27,7 @@ include("coupling-libraries:repository-compound")
 include("coupling-libraries:repository-memory")
 include("coupling-libraries:repository-validation")
 include("coupling-libraries:server_action")
+include("coupling-libraries:cdnLookup")
 include("coupling-libraries:export")
 include("coupling-libraries:import")
 
