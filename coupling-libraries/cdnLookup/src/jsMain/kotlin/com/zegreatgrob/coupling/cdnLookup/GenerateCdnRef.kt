@@ -4,7 +4,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.await
@@ -18,11 +17,11 @@ import kotlin.js.json
 val readPkgUp = js("require('read-pkg-up')")
 val resolvePkg = js("require('resolve-pkg')")
 
-val contextPath = js("__dirname")
+val contextPath = js("__dirname").unsafeCast<String>()
+
 val httpClient = HttpClient {
     install(ContentNegotiation) { json() }
     install(ContentEncoding) { gzip() }
-    install(Logging) {}
 }
 
 suspend fun generateCdnRef(cdnLibs: List<String>): List<String> = cdnLibs.map { lib ->

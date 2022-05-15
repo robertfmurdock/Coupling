@@ -1,3 +1,4 @@
+import com.zegreatrob.coupling.plugins.NodeExec
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
@@ -68,6 +69,25 @@ dependencies {
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
+    val lookupCdnUrls by registering(NodeExec::class) {
+        dependsOn(":coupling-libraries:cdnLookup:compileProductionExecutableKotlinJs")
+        val cdnLookupFile = project.rootDir.absolutePath +
+            "/coupling-libraries/cdnLookup/build/compileSync/main/productionExecutable/kotlin/Coupling-cdnLookup.js"
+
+        val cdnLibraries = listOf(
+            "react",
+            "react-dom",
+            "react-router",
+            "react-router-dom",
+            "history",
+            "blueimp-md5",
+            "dom-to-image",
+        )
+
+        arguments = listOf(cdnLookupFile) + cdnLibraries
+        val file = file("${project.buildDir.absolutePath}/cdn.json")
+        standardOutput = file.outputStream()
+    }
     compileProductionExecutableKotlinJs {
         artifacts {
             add(clientConfiguration.name, outputFileProperty) {

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
+
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
@@ -6,7 +8,7 @@ plugins {
 group = "com.zegreatrob.coupling.libraries"
 
 kotlin {
-    targets { js { nodejs() } }
+    targets { js { nodejs { binaries.executable() } } }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -29,6 +31,17 @@ kotlin {
                 implementation("com.zegreatrob.testmints:async")
                 implementation("com.zegreatrob.testmints:minassert")
             }
+        }
+    }
+}
+
+val outputFile: String? by project
+
+tasks {
+    named("jsNodeRun", NodeJsExec::class) {
+        this.args("react")
+        outputFile?.let {
+            standardOutput = file("${System.getProperty("user.dir")}/$it").outputStream()
         }
     }
 }
