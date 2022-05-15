@@ -8,6 +8,10 @@ const fetch = require("node-fetch/lib/index.js")
 
 const resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
 
+const fs = require('fs')
+
+const cdnResources = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json')))
+
 if (config.entry && config.entry.main) {
     config.entry.main = [path.resolve(resourcesPath, "com/zegreatrob/coupling/client/app.js")].concat(config.entry.main);
 }
@@ -132,13 +136,8 @@ config.plugins.push(
     }),
     new DynamicCdnWebpackPlugin({
         resolver: function (libName, version) {
-            if (cdnVars[libName]) {
-                return lookupFileName(libName, version)
-                    .then(filename => filename
-                        ? `https://cdnjs.cloudflare.com/ajax/libs/${libName}/${version}/${filename}`
-                        : null)
-                    .then(url => url ? {name: libName, var: cdnVars[libName] ?? libName, url, version} : null)
-                    .catch(() => null)
+            if (cdnResources[libName]) {
+                return {name: libName, var: cdnVars[libName] ?? libName, url: cdnResources[libName], version}
             } else {
                 return null
             }

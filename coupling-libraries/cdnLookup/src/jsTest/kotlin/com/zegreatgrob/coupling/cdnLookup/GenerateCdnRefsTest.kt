@@ -8,11 +8,12 @@ class GenerateCdnRefsTest {
 
     @Test
     fun sdf() = asyncSetup(object {
-        val cdnLibs = listOf("react")
+        val lib = "react"
+        val cdnLibs = listOf(lib)
         val expected = "https://cdnjs.cloudflare.com/ajax/libs/react/18.1.0/umd/react.production.min.js"
     }) exercise {
         generateCdnRef(cdnLibs)
     } verify { result ->
-        result.assertIsEqualTo(listOf(expected))
+        result.assertIsEqualTo(listOf(Pair(lib, expected)))
     }
 }

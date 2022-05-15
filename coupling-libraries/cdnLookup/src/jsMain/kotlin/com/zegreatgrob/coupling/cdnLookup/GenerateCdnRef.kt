@@ -2,6 +2,7 @@ package com.zegreatgrob.coupling.cdnLookup
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
@@ -22,12 +23,13 @@ val contextPath = js("__dirname").unsafeCast<String>()
 val httpClient = HttpClient {
     install(ContentNegotiation) { json() }
     install(ContentEncoding) { gzip() }
+    install(HttpRequestRetry)
 }
 
-suspend fun generateCdnRef(cdnLibs: List<String>): List<String> = cdnLibs.map { lib ->
+suspend fun generateCdnRef(cdnLibs: List<String>): List<Pair<String, String>> = cdnLibs.map { lib ->
     val version = getVersionForLibrary(lib)
     val filename = lookupCdnFilename(lib, version)
-    "https://cdnjs.cloudflare.com/ajax/libs/$lib/$version/$filename"
+    lib to "https://cdnjs.cloudflare.com/ajax/libs/$lib/$version/$filename"
 }
 
 private suspend fun lookupCdnFilename(lib: String, version: String): String? {

@@ -69,6 +69,7 @@ dependencies {
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
+    val cdnBuildOutput = "${project.buildDir.absolutePath}/cdn.json"
     val lookupCdnUrls by registering(NodeExec::class) {
         dependsOn(":coupling-libraries:cdnLookup:compileProductionExecutableKotlinJs")
         val cdnLookupFile = project.rootDir.absolutePath +
@@ -85,7 +86,8 @@ tasks {
         )
 
         arguments = listOf(cdnLookupFile) + cdnLibraries
-        val file = file("${project.buildDir.absolutePath}/cdn.json")
+        val file = file(cdnBuildOutput)
+        file.parentFile.mkdirs()
         standardOutput = file.outputStream()
     }
     compileProductionExecutableKotlinJs {
@@ -97,6 +99,8 @@ tasks {
     }
     val browserDistribution = named("browserDistribution")
     val browserProductionWebpack = named("browserProductionWebpack", KotlinWebpack::class) {
+        dependsOn(lookupCdnUrls)
+        inputs.file(cdnBuildOutput)
         outputs.dir(destinationDirectory.absolutePath + "/html")
         outputs.cacheIf { true }
         artifacts {

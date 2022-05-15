@@ -13,6 +13,6 @@ fun main() {
     }
 }
 
-private fun List<String>.toJson() = Json.encodeToJsonElement(this)
+private fun List<Pair<String, String>>.toJson() = Json.encodeToJsonElement(toMap())
 
 private fun processArguments() = js("process.argv.splice(2)").unsafeCast<Array<String>>()

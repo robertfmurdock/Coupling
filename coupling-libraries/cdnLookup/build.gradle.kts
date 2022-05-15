@@ -8,7 +8,14 @@ plugins {
 group = "com.zegreatrob.coupling.libraries"
 
 kotlin {
-    targets { js { nodejs { binaries.executable() } } }
+    targets {
+        js {
+            nodejs {
+                binaries.executable()
+                testTask { useMocha { timeout = "10s" } }
+            }
+        }
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {
