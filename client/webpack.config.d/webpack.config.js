@@ -11,6 +11,7 @@ const resourcesPath = path.resolve(__dirname, '../../../../client/build/processe
 const fs = require('fs')
 
 const cdnResources = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json')))
+const cdnSettings = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/cdn.settings.json')))
 
 if (config.entry && config.entry.main) {
     config.entry.main = [path.resolve(resourcesPath, "com/zegreatrob/coupling/client/app.js")].concat(config.entry.main);
@@ -137,7 +138,8 @@ config.plugins.push(
     new DynamicCdnWebpackPlugin({
         resolver: function (libName, version) {
             if (cdnResources[libName]) {
-                return {name: libName, var: cdnVars[libName] ?? libName, url: cdnResources[libName], version}
+                const varValue = cdnSettings[libName].var
+                return {name: libName, var: varValue, url: cdnResources[libName], version}
             } else {
                 return null
             }

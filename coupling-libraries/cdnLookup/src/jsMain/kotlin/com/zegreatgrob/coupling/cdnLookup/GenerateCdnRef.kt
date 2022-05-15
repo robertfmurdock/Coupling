@@ -32,7 +32,16 @@ suspend fun generateCdnRef(cdnLibs: List<String>): List<Pair<String, String>> = 
     lib to "https://cdnjs.cloudflare.com/ajax/libs/$lib/$version/$filename"
 }
 
+private val corrections = mapOf(
+    "react-router" to "react-router.production.min.js",
+    "react-router-dom" to "react-router-dom.production.min.js"
+)
+
 private suspend fun lookupCdnFilename(lib: String, version: String): String? {
+    if (corrections.containsKey(lib)) {
+        return corrections[lib]
+    }
+
     val cdnLibraryDescription = httpClient.get("https://api.cdnjs.com/libraries/$lib").body<JsonObject>()
 
     return if (cdnLibraryDescription["versions"]?.jsonArray?.map { it.jsonPrimitive.content }
