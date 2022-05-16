@@ -9,7 +9,7 @@ fun main() {
     MainScope().launch {
         generateCdnRef(libs)
             .toJson()
-            .let { println(it) }
+            .let(::println)
     }
 }
 

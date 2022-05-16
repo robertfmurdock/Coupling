@@ -1,5 +1,7 @@
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+import java.io.ByteArrayOutputStream
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -74,21 +76,18 @@ tasks {
         dependsOn(":coupling-libraries:cdnLookup:compileProductionExecutableKotlinJs")
         val cdnLookupFile = project.rootDir.absolutePath +
             "/coupling-libraries/cdnLookup/build/compileSync/main/productionExecutable/kotlin/Coupling-cdnLookup.js"
+        inputs.file(cdnLookupFile)
+        val settingsFile = File(project.projectDir, "cdn.settings.json")
+        inputs.file(settingsFile)
+        val settings = ObjectMapper().readTree(settingsFile)
+        val cdnLibraries = settings.fieldNames()
 
-        val cdnLibraries = listOf(
-            "react",
-            "react-dom",
-            "react-router",
-            "react-router-dom",
-            "history",
-            "blueimp-md5",
-            "dom-to-image",
-        )
-
-        arguments = listOf(cdnLookupFile) + cdnLibraries
-        val file = file(cdnBuildOutput)
-        file.parentFile.mkdirs()
-        standardOutput = file.outputStream()
+        arguments = listOf(cdnLookupFile) + cdnLibraries.asSequence().toList()
+        val cdnOutputFile = file(cdnBuildOutput)
+        outputs.file(cdnBuildOutput)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        standardOutput = byteArrayOutputStream
+        doLast { cdnOutputFile.writeText(byteArrayOutputStream.toString("UTF-8")) }
     }
     compileProductionExecutableKotlinJs {
         artifacts {

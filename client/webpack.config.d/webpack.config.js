@@ -78,36 +78,6 @@ if (config.devServer) {
 
 config.cache = true
 
-const cdnVars = {
-    "react": "React",
-    "react-dom": "ReactDOM",
-    "react-router": "ReactRouter",
-    "react-router-dom": "ReactRouterDOM",
-    "history": "HistoryLibrary",
-    "blueimp-md5": "md5",
-    "dom-to-image": "domtoimage"
-}
-
-const cdnFilenameCorrections = {
-    "react-router": "react-router.production.min.js",
-    "react-router-dom": "react-router-dom.production.min.js"
-}
-
-function lookupFileName(libName, version) {
-    return cdnFilenameCorrections[libName]
-        ? Promise.resolve(cdnFilenameCorrections[libName])
-        : fetch(`https://api.cdnjs.com/libraries/${libName}`)
-            .then((result) => result.json())
-            .then(body => {
-                    if (body.versions.includes(version)) {
-                        return body.filename
-                    } else {
-                        throw Error(`Could not find ${libName} ${version}`)
-                    }
-                }
-            );
-}
-
 config.plugins.push(
     new HtmlWebpackPlugin({
         alwaysWriteToDisk: !!config.devServer,
