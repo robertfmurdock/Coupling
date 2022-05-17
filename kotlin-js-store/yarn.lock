@@ -93,14 +93,14 @@
     "@aws-sdk/types" "3.78.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.87.0":
-  version "3.87.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.87.0.tgz#a0464fadaf7b67a01f0307302cb2d3cf169bb4f0"
-  integrity sha512-LpjsLI2Y0VAEmaQu46Ilr3uMCVcG2yDdMIR5IUTaKeAJqqnmx5Xfr2BYer262jzsPwXv0QgMXXxy+7JItAtzNg==
+"@aws-sdk/client-apigatewaymanagementapi@~3.92.0":
+  version "3.92.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.92.0.tgz#598ef22c4215141a7d49dd2addee02772cbd8761"
+  integrity sha512-4fqnW8GqXicmvgj4D+BNiPO4AFLoXCnTYdnRPgDPFQd3apFF0phUVnbPlSQ2quZlH5LX6Viq9xtBrxHqDrfehA==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.87.0"
+    "@aws-sdk/client-sts" "3.92.0"
     "@aws-sdk/config-resolver" "3.80.0"
     "@aws-sdk/credential-provider-node" "3.87.0"
     "@aws-sdk/fetch-http-handler" "3.78.0"
@@ -132,14 +132,14 @@
     "@aws-sdk/util-utf8-node" "3.55.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-dynamodb@~3.87.0":
-  version "3.87.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.87.0.tgz#9358fef700b623ccfb016a67a0acc6f3519725ff"
-  integrity sha512-BvyHQ0cigzGzSUUYsf8ckTU7wc/n3My3lu/iQHWZhVecu7huBa01qExRBNNhC/n2KmNjRxImP3ek8ccnR0HNzQ==
+"@aws-sdk/client-dynamodb@~3.92.0":
+  version "3.92.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.92.0.tgz#0a58fd9bf808ce079eaee2d639f558cd4c47eed6"
+  integrity sha512-IknNC9G2pfXjdCTZWUeFsoD444pj3uUEtlYUa/h3wkXFkcOuNdNh3u9ZWp4DY5WiyNQglrkm4qRkmyVZBBmtoA==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.87.0"
+    "@aws-sdk/client-sts" "3.92.0"
     "@aws-sdk/config-resolver" "3.80.0"
     "@aws-sdk/credential-provider-node" "3.87.0"
     "@aws-sdk/fetch-http-handler" "3.78.0"
@@ -174,14 +174,14 @@
     tslib "^2.3.1"
     uuid "^8.3.2"
 
-"@aws-sdk/client-lambda@~3.90.0":
-  version "3.90.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.90.0.tgz#ff57df33046d88ee489bead21a151dc628fece8f"
-  integrity sha512-GNoVYROUOv0s1/bsGGuH5PaSAdMmyIUEfZhxM3EOO8IL7BGGuS9ndF5yae0PJcFBdGJ9p854oTqaoC000ccHaQ==
+"@aws-sdk/client-lambda@~3.92.0":
+  version "3.92.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.92.0.tgz#63a426321a4bfc07dfceac4d299bc733a9a27681"
+  integrity sha512-TvkJqzPfDbJlvSIfw4P+VorWRrvm2GGe9jMQW2K1b1lvE0trDY0BPyOTl8AFXgN53Ju2cO+LmIvsPJOVGnzbYg==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.87.0"
+    "@aws-sdk/client-sts" "3.92.0"
     "@aws-sdk/config-resolver" "3.80.0"
     "@aws-sdk/credential-provider-node" "3.87.0"
     "@aws-sdk/fetch-http-handler" "3.78.0"
@@ -250,10 +250,10 @@
     "@aws-sdk/util-utf8-node" "3.55.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-sts@3.87.0":
-  version "3.87.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.87.0.tgz#65c18dce2ba8312a8cb4289b29bc1f507db97e92"
-  integrity sha512-JGI5rzSq8T7IVlfDJ8ltGl8nyVEtwvqXrYR87DwTjeE4HP+/oBdWdbO0oBL1TJMGjzZcENyVYvmaSAkobenkTg==
+"@aws-sdk/client-sts@3.92.0":
+  version "3.92.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.92.0.tgz#717bfb5b723e1d25516e1f8c9cee1f78746b0f70"
+  integrity sha512-ux9lg3tKVZasaD43WKTSep8bNsf4fBs2MsryxLHwPcxQc28ANKWsVbDFSz7clvorO3a0kKasg7d3HG9N7S+Xlg==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
@@ -425,12 +425,12 @@
   dependencies:
     tslib "^2.3.1"
 
-"@aws-sdk/lib-dynamodb@~3.87.0":
-  version "3.87.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.87.0.tgz#e45fb1801ab74c3df3e4685f1979edd411e17aaa"
-  integrity sha512-yOTj0AeS7QunCYbwEwLRuxyqxSpN7TsuuUETkWJnq3xcbQL2/RchW//ZOtt0mB+3sAJJDaXlkYn4tpI8hgEB4g==
+"@aws-sdk/lib-dynamodb@~3.92.0":
+  version "3.92.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.92.0.tgz#c20009bf1758058459d83b99b69c1ec7efa967fa"
+  integrity sha512-2srcul4EcsH6q7aeVM76VFouPZlU7IQ8Z3Oibig897GO/2EMSA1rWM3QnrvqDRfZwH7xJUuaghvajO+zT5EVJQ==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.87.0"
+    "@aws-sdk/util-dynamodb" "3.92.0"
     tslib "^2.3.1"
 
 "@aws-sdk/middleware-content-length@3.78.0":
@@ -696,10 +696,10 @@
     "@aws-sdk/types" "3.78.0"
     tslib "^2.3.1"
 
-"@aws-sdk/util-dynamodb@3.87.0":
-  version "3.87.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.87.0.tgz#d1f2e05ecbefd762cb31315ad61228f56e7cd87c"
-  integrity sha512-Qh6bHZdVd8+y2h2eJmfYPa5BwNaY65Q135ZbHypQCjiR87Xy50qdVlfWvVmn0EedLqvDVZMPpBrrrcPXMaqvAg==
+"@aws-sdk/util-dynamodb@3.92.0":
+  version "3.92.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.92.0.tgz#3358f4061a4b0dfea749399c9facf468909efa7b"
+  integrity sha512-MsrcL5UoANjtgUN5Gp4OE0r4s4QbLZ/5CnQVsngC+WHb1cT+AHP0Mfot+UKClL5BxfIrbtkjFi8YucIofzKp1w==
   dependencies:
     tslib "^2.3.1"
 
