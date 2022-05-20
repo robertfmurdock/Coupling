@@ -10,6 +10,10 @@ fun main() {
         generateCdnRef(libs)
             .toJson()
             .let(::println)
+    }.invokeOnCompletion { cause: Throwable? ->
+        if (cause != null) {
+            js("process.exit(-1)")
+        }
     }
 }
 

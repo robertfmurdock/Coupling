@@ -23,7 +23,10 @@ val contextPath = js("__dirname").unsafeCast<String>()
 val httpClient = HttpClient {
     install(ContentNegotiation) { json() }
     install(ContentEncoding) { gzip() }
-    install(HttpRequestRetry)
+    install(HttpRequestRetry) {
+        retryOnServerErrors(maxRetries = 5)
+        exponentialDelay()
+    }
 }
 
 suspend fun generateCdnRef(cdnLibs: List<String>): List<Pair<String, String>> = cdnLibs.map { lib ->

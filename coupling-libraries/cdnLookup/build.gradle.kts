@@ -12,7 +12,7 @@ kotlin {
         js {
             nodejs {
                 binaries.executable()
-                testTask { useMocha { timeout = "10s" } }
+                testTask { useMocha { timeout = "400s" } }
             }
         }
     }
