@@ -7,7 +7,10 @@ import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.async
 import kotlinx.coroutines.await
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
@@ -29,10 +32,14 @@ val httpClient = HttpClient {
     }
 }
 
-suspend fun generateCdnRef(cdnLibs: List<String>): List<Pair<String, String>> = cdnLibs.map { lib ->
+suspend fun generateCdnRef(cdnLibs: List<String>): List<Pair<String, String>> = coroutineScope {
+    cdnLibs.map { lib -> async { lookupCdnUrl(lib) } }.awaitAll()
+}
+
+private suspend fun lookupCdnUrl(lib: String): Pair<String, String> {
     val version = getVersionForLibrary(lib)
     val filename = lookupCdnFilename(lib, version)
-    lib to "https://cdnjs.cloudflare.com/ajax/libs/$lib/$version/$filename"
+    return lib to "https://cdnjs.cloudflare.com/ajax/libs/$lib/$version/$filename"
 }
 
 private val corrections = mapOf(
