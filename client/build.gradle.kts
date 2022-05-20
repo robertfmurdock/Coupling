@@ -89,6 +89,10 @@ tasks {
         standardOutput = byteArrayOutputStream
         doLast { cdnOutputFile.writeText(byteArrayOutputStream.toString("UTF-8")) }
     }
+
+    named("compileTestDevelopmentExecutableKotlinJs") {
+        dependsOn(lookupCdnUrls)
+    }
     compileProductionExecutableKotlinJs {
         artifacts {
             add(clientConfiguration.name, outputFileProperty) {
