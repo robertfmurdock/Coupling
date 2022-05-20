@@ -65,7 +65,7 @@ class PairAssignmentsPageE2ETest {
             })
 
             private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) =
-                template(PairAssignmentsPage, additionalSetup)
+                template(context = PairAssignmentsPage, additionalActions = additionalSetup)
         }
 
         @Test
@@ -186,7 +186,7 @@ class PairAssignmentsPageE2ETest {
             })
 
             private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) =
-                setup(PairAssignmentsPage, additionalSetup)
+                setup(context = PairAssignmentsPage, additionalActions = additionalSetup)
         }
 
         @Test

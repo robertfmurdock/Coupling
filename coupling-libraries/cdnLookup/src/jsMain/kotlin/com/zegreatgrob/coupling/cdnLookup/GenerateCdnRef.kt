@@ -2,9 +2,9 @@ package com.zegreatgrob.coupling.cdnLookup
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.await
@@ -22,7 +22,7 @@ val contextPath = js("__dirname")
 val httpClient = HttpClient {
     install(ContentNegotiation) { json() }
     install(ContentEncoding) { gzip() }
-    install(Logging) {}
+    install(HttpRequestRetry)
 }
 
 suspend fun generateCdnRef(cdnLibs: List<String>): List<String> = cdnLibs.map { lib ->
