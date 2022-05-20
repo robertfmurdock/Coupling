@@ -93,16 +93,16 @@
     "@aws-sdk/types" "3.78.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.94.0.tgz#2ce9c2eed7bd210766089a7adfc7acf7be857723"
-  integrity sha512-38FHLhE1xd1bsPjoPiCfeQpvi9wVKabHo7Lmjr+ca8QoW++cXflmOEGP99S6Q/rc0cFodoH57qkL8xenZBSk6Q==
+"@aws-sdk/client-apigatewaymanagementapi@~3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.95.0.tgz#99be9e2795dcbf05c74e4ef3a5d9155d6fbddde6"
+  integrity sha512-DveyAri48gDOqOFE1E7alWhkxqaRg/jZwEgGrpAjRDXCCgVrTVE+zYfz07lmfBL9YgrDnBk8aPfs/fMs4qsAsA==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.94.0"
+    "@aws-sdk/client-sts" "3.95.0"
     "@aws-sdk/config-resolver" "3.80.0"
-    "@aws-sdk/credential-provider-node" "3.94.0"
+    "@aws-sdk/credential-provider-node" "3.95.0"
     "@aws-sdk/fetch-http-handler" "3.78.0"
     "@aws-sdk/hash-node" "3.78.0"
     "@aws-sdk/invalid-dependency" "3.78.0"
@@ -132,16 +132,16 @@
     "@aws-sdk/util-utf8-node" "3.55.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-dynamodb@~3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.94.0.tgz#aec5e89ea3f064de3d9bf6d72138170e53444268"
-  integrity sha512-sVbsdKdYb6depMDTsW++wfiMNFz3ptc7lz2ftLlF3z/ywbpybhQoNYPL7hwA0jxZPdZ4l8HS9CG0tqW1sQvfjA==
+"@aws-sdk/client-dynamodb@~3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.95.0.tgz#4b83bf35587c0d34317fd86d4deede58ae5ef1f8"
+  integrity sha512-SF3LQbDwGtKmfGTfvgBUAk9x5Jl9Uj7Vso3grr1Xi3OzYq4Dfmdp6hXyUjNEzS9Myu71Hxy4KHRtuJvEl1/1og==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.94.0"
+    "@aws-sdk/client-sts" "3.95.0"
     "@aws-sdk/config-resolver" "3.80.0"
-    "@aws-sdk/credential-provider-node" "3.94.0"
+    "@aws-sdk/credential-provider-node" "3.95.0"
     "@aws-sdk/fetch-http-handler" "3.78.0"
     "@aws-sdk/hash-node" "3.78.0"
     "@aws-sdk/invalid-dependency" "3.78.0"
@@ -174,16 +174,16 @@
     tslib "^2.3.1"
     uuid "^8.3.2"
 
-"@aws-sdk/client-lambda@~3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.94.0.tgz#066fa3d25d87008ef0676a9b8759490666bb16f9"
-  integrity sha512-YWa6fulBZNs28hQWNq5rkTRQzWrQYXjlnxEFNhWXu/o4791YTdxS0k73TvCpZwxu2LfrhktHqRbiOQK0cHkLSw==
+"@aws-sdk/client-lambda@~3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.95.0.tgz#53a2efc08d61e6bda07fcdd5c891a2c6d6af5b59"
+  integrity sha512-L7++2o4+WjGL+Ymh4mZ6K9TGP5FcBrnI87mZpY57mZKroTteezxTtVS7g0Od3xUGtcd+xeiTb0njXV7Tdp6t1A==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.94.0"
+    "@aws-sdk/client-sts" "3.95.0"
     "@aws-sdk/config-resolver" "3.80.0"
-    "@aws-sdk/credential-provider-node" "3.94.0"
+    "@aws-sdk/credential-provider-node" "3.95.0"
     "@aws-sdk/fetch-http-handler" "3.78.0"
     "@aws-sdk/hash-node" "3.78.0"
     "@aws-sdk/invalid-dependency" "3.78.0"
@@ -214,10 +214,10 @@
     "@aws-sdk/util-waiter" "3.78.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-sso@3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sso/-/client-sso-3.94.0.tgz#1364901adb3a9ec58771cd2e6d924d6d3041c8a0"
-  integrity sha512-BYNoGoXWTgFlJC6X9J03sUSUcWq/o5im9eoiFDw3RgTgpBNPHpHRlxoZRcvYrZRjIu4wHcnRXf2rCOhrmlRbhA==
+"@aws-sdk/client-sso@3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sso/-/client-sso-3.95.0.tgz#0226f9feb8896a90d4ee1627a5ddbd7a3adab163"
+  integrity sha512-yxiVyRG5ULTVzOTmlrsy1krjpBQo20+ZfQ9p++A7cA8dIsytzjlPLvtY+Pzz0pTa3h2B6tlVBmumgEQzh5Y8Ug==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
@@ -250,15 +250,15 @@
     "@aws-sdk/util-utf8-node" "3.55.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-sts@3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.94.0.tgz#3816d26c498f27f44a47fffbe621c0854d0b29a2"
-  integrity sha512-7PoXg1WBP05kxQ3ya5kgIm04KG4tzTZLupc4xsJ6sZv/+fqZdJD/q0pX5saNvWEXMxCXXlk9GOki0ZSYRZI/7Q==
+"@aws-sdk/client-sts@3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.95.0.tgz#a5168f72de0d2125a01ca84d067e2a0502977fc2"
+  integrity sha512-qeoiEyBB5IQyjgjkCCBiQnISar7OJgjuTf2alM6ehjq8H4/T5VeMCeohEs5FR0/O60sJn40ZpL3YY/OmMh55UA==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
     "@aws-sdk/config-resolver" "3.80.0"
-    "@aws-sdk/credential-provider-node" "3.94.0"
+    "@aws-sdk/credential-provider-node" "3.95.0"
     "@aws-sdk/fetch-http-handler" "3.78.0"
     "@aws-sdk/hash-node" "3.78.0"
     "@aws-sdk/invalid-dependency" "3.78.0"
@@ -322,30 +322,30 @@
     "@aws-sdk/url-parser" "3.78.0"
     tslib "^2.3.1"
 
-"@aws-sdk/credential-provider-ini@3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-ini/-/credential-provider-ini-3.94.0.tgz#694d59fadbd57f35fc8c944d20a20c9633506d2d"
-  integrity sha512-6G3uaNWOdANCAyNp9/EKfNiS62Lwdf7cdYchw9R6ZhL5Rj+8WD24WGllug2hpPOfV4ShER0pYaAUG3l2pzxkZQ==
+"@aws-sdk/credential-provider-ini@3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-ini/-/credential-provider-ini-3.95.0.tgz#c4d1d64b8ad5e89d450966b254bd796bd320a2d1"
+  integrity sha512-Ditfnmo8/F79Zj8HmaRZZTDsthhvKcdgGFus+pF3kxZxyR3YU/k7/eGUISZeCQhA0/9nwxXMFDUmAIsa0AMfyg==
   dependencies:
     "@aws-sdk/credential-provider-env" "3.78.0"
     "@aws-sdk/credential-provider-imds" "3.81.0"
-    "@aws-sdk/credential-provider-sso" "3.94.0"
+    "@aws-sdk/credential-provider-sso" "3.95.0"
     "@aws-sdk/credential-provider-web-identity" "3.78.0"
     "@aws-sdk/property-provider" "3.78.0"
     "@aws-sdk/shared-ini-file-loader" "3.80.0"
     "@aws-sdk/types" "3.78.0"
     tslib "^2.3.1"
 
-"@aws-sdk/credential-provider-node@3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-node/-/credential-provider-node-3.94.0.tgz#ac6091938b1edeade036724520a753267ef3d66f"
-  integrity sha512-xAUhREqil0K2GbEkztVOpX2AvaDSMAdSPaRaa785AbxIyAQPIkSel01audTlGrm1T6vL+vP9kkJqNw3XGmaLkA==
+"@aws-sdk/credential-provider-node@3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-node/-/credential-provider-node-3.95.0.tgz#5ec6bf233b22689bf873f7039fae5cee33991e14"
+  integrity sha512-NCXejOQg5p+oJPaUPa+jIrU7pStm8zZtOn6lXVnubZrQClv2+ZQrgxVt6otN464SWqMQbmLFYNyYf4bsLJaEhA==
   dependencies:
     "@aws-sdk/credential-provider-env" "3.78.0"
     "@aws-sdk/credential-provider-imds" "3.81.0"
-    "@aws-sdk/credential-provider-ini" "3.94.0"
+    "@aws-sdk/credential-provider-ini" "3.95.0"
     "@aws-sdk/credential-provider-process" "3.80.0"
-    "@aws-sdk/credential-provider-sso" "3.94.0"
+    "@aws-sdk/credential-provider-sso" "3.95.0"
     "@aws-sdk/credential-provider-web-identity" "3.78.0"
     "@aws-sdk/property-provider" "3.78.0"
     "@aws-sdk/shared-ini-file-loader" "3.80.0"
@@ -362,12 +362,12 @@
     "@aws-sdk/types" "3.78.0"
     tslib "^2.3.1"
 
-"@aws-sdk/credential-provider-sso@3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-sso/-/credential-provider-sso-3.94.0.tgz#f0173def3da01d8f4dd7d062790c07fc8664de4a"
-  integrity sha512-wLtfgtTJ6AazJs+e640PEpdNmrbpUY6ghVi18yhnXV5Jb3U5le122X9T1NGqRwbOPqXCMNdrdRHpxF3a8gnqGw==
+"@aws-sdk/credential-provider-sso@3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-sso/-/credential-provider-sso-3.95.0.tgz#326f7788fabb6814bd67a3b357eb9492c9e46acf"
+  integrity sha512-YIzBBWUKkazvoM8CsCbf4YIs5ENtOr5KXUd6e993c3oRMNsUykOtf/AUBN6G3HItuyxoA8vW/8M6tKX44cRCAg==
   dependencies:
-    "@aws-sdk/client-sso" "3.94.0"
+    "@aws-sdk/client-sso" "3.95.0"
     "@aws-sdk/property-provider" "3.78.0"
     "@aws-sdk/shared-ini-file-loader" "3.80.0"
     "@aws-sdk/types" "3.78.0"
@@ -425,12 +425,12 @@
   dependencies:
     tslib "^2.3.1"
 
-"@aws-sdk/lib-dynamodb@~3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.94.0.tgz#e365de08cc28c5d7f42241f335094a65e7e606b3"
-  integrity sha512-uziZlHKPpVK9Wdwc9NdAUCpE7FLkviirWV516l5S600oqbvgde7P6n5mnoceMhYv2wK8kUAeRHyy+4Po0raK6Q==
+"@aws-sdk/lib-dynamodb@~3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.95.0.tgz#9bee1c2520f4a713d7a975e083d1d3820d476615"
+  integrity sha512-Vn7T7rABP+qF7c0hQzaY/syIQxkhbo/Iav6q4dOcZSa15R+NgcTFR5+X8r0D621B0gX8tT91HZRKnI4wcvKHUw==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.94.0"
+    "@aws-sdk/util-dynamodb" "3.95.0"
     tslib "^2.3.1"
 
 "@aws-sdk/middleware-content-length@3.78.0":
@@ -696,10 +696,10 @@
     "@aws-sdk/types" "3.78.0"
     tslib "^2.3.1"
 
-"@aws-sdk/util-dynamodb@3.94.0":
-  version "3.94.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.94.0.tgz#f910cb8ea8491966dce14065292f82bb4c65210e"
-  integrity sha512-2SAq87lnFs22kHHMrf8Plu+ZfixtFhKxxatircDLgThL18z+UG5+4ZI/YKdnOAbANm5aTCox5N4Gv5OZwcm0RA==
+"@aws-sdk/util-dynamodb@3.95.0":
+  version "3.95.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.95.0.tgz#37826789276aa876df9157bb7327040c545ae2ba"
+  integrity sha512-JJt7naMlkHIHJjcBLH6pcohR0PkcuaFWbjevBoX+iMQr4yRL5iLUR2lREwURI6AuVjBwtwZBK3azZqyX5fGl9g==
   dependencies:
     tslib "^2.3.1"
 
@@ -945,86 +945,86 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
 
-"@graphql-tools/batch-delegate@8.2.17":
-  version "8.2.17"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-8.2.17.tgz#4367a8146d50515cdaaf6548ed14157f32e0dc85"
-  integrity sha512-pEvUPkIIi5Zv0GJGfyJEWGWQlEj/DZjDRhs8q18jCpfaVoTbNQfBsGsetk9Moiv+M4f/3WoDR+uYUFK7f85YFg==
+"@graphql-tools/batch-delegate@8.2.18":
+  version "8.2.18"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-8.2.18.tgz#0b4b9606538bc281850e10460c6df5fff1c95f85"
+  integrity sha512-gYF54h2BhVLi5cdZZU2DYEQd9dleSsvzDqJqCb+TMUi95QnbuNcc+6ztaLsb+QB10Q28lu854StESjg29ZBNqQ==
   dependencies:
-    "@graphql-tools/delegate" "8.7.8"
-    "@graphql-tools/utils" "8.6.10"
+    "@graphql-tools/delegate" "8.7.9"
+    "@graphql-tools/utils" "8.6.11"
     dataloader "2.1.0"
     tslib "~2.4.0"
 
-"@graphql-tools/batch-execute@8.4.7":
-  version "8.4.7"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-execute/-/batch-execute-8.4.7.tgz#199d0ec7fbe6539056fdfd28e015c612926a7932"
-  integrity sha512-+ZXikTo8kJ1hJAQrT94sUrwmdL8EcvoDz4HULbb4B8hIFw0PPBaGkEaN8u5ylsCLOEoWIQNe1SwHx9yDhlvnJg==
+"@graphql-tools/batch-execute@8.4.8":
+  version "8.4.8"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-execute/-/batch-execute-8.4.8.tgz#24b49e17f8599b9af46333af8f2d6bca7069a46f"
+  integrity sha512-eiAnfdQ7XMbpuD6viRldN42ILwnoihrtykHJbG4elM6i4INBz4zIo9vDMFB+Qe5hLDn9QpZRLdTlolGtNw6StA==
   dependencies:
-    "@graphql-tools/utils" "8.6.10"
+    "@graphql-tools/utils" "8.6.11"
     dataloader "2.1.0"
     tslib "~2.4.0"
     value-or-promise "1.0.11"
 
-"@graphql-tools/delegate@8.7.8":
-  version "8.7.8"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-8.7.8.tgz#c7e94d66825286615f738367665aa3036d79eff0"
-  integrity sha512-QRpk0B0VD+23mC3ePBLM542TvCXbQhdr0V/AmcnpxQLsV27/NA6fDxxN/zjjjs15M5v9/M2DaBT4rwY9NMMlQA==
+"@graphql-tools/delegate@8.7.9":
+  version "8.7.9"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-8.7.9.tgz#be2fa36214dbc0caf36a444cc1b1cc29ea097606"
+  integrity sha512-kHOfCozPykvAmMciexmnNpswioeHO6+fbGebUAF4Y28OeZWAQ53Xq1hq7XcmzoLjdcy88FQj8SVlLir+6tgOUQ==
   dependencies:
-    "@graphql-tools/batch-execute" "8.4.7"
-    "@graphql-tools/schema" "8.3.11"
-    "@graphql-tools/utils" "8.6.10"
+    "@graphql-tools/batch-execute" "8.4.8"
+    "@graphql-tools/schema" "8.3.12"
+    "@graphql-tools/utils" "8.6.11"
     dataloader "2.1.0"
     graphql-executor "0.0.23"
     tslib "~2.4.0"
     value-or-promise "1.0.11"
 
-"@graphql-tools/merge@8.2.11":
-  version "8.2.11"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.2.11.tgz#0cdc6c9feb32e3392bf0c633881a78ccc1d24368"
-  integrity sha512-fsjJVdsk9GV1jj1Ed2AKLlHYlsf0ZadTK8X5KxFRE1ZSnKqh56BLVX93JrtOIAnsiHkwOK2TC43HGhApF1swpQ==
+"@graphql-tools/merge@8.2.12":
+  version "8.2.12"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.2.12.tgz#6d2ae5a7cfca7241e8462d7f4d9cf0fb05acaec5"
+  integrity sha512-0b07QoAfINuuoJ59gupOBe5gWy+WVjEO9ZbbpPD98nuLn5aNxI12wj1SvQlACFE8cVAPiRxrO+03QjyXXPDu8A==
   dependencies:
-    "@graphql-tools/utils" "8.6.10"
+    "@graphql-tools/utils" "8.6.11"
     tslib "~2.4.0"
 
-"@graphql-tools/schema@8.3.11", "@graphql-tools/schema@^8.3.11":
-  version "8.3.11"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-8.3.11.tgz#c0606b301852820a46042ebb888fd09cc402518a"
-  integrity sha512-esMEnbyXbp8B5VEI4o395+x0G7Qmz3JSX5onFBF8HeLYcqWJasY5vBuWkO18VxrZpEnvnryodP6Y00bVag9O3Q==
+"@graphql-tools/schema@8.3.12", "@graphql-tools/schema@^8.3.12":
+  version "8.3.12"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-8.3.12.tgz#5317147ac62b97355605622f70d4ddcee2bce973"
+  integrity sha512-X8tjAIhf7svAXAH1RRlm6J1mqG2YxCGYffp8RytbKobXqZDgj5VL50Lm5xSzvv/uzkFO4iNTpV5cm5nARN7odQ==
   dependencies:
-    "@graphql-tools/merge" "8.2.11"
-    "@graphql-tools/utils" "8.6.10"
+    "@graphql-tools/merge" "8.2.12"
+    "@graphql-tools/utils" "8.6.11"
     tslib "~2.4.0"
     value-or-promise "1.0.11"
 
-"@graphql-tools/stitch@^8.6.10":
-  version "8.6.10"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-8.6.10.tgz#be6da4c6e144a11a2e53698d25425b55f513bac6"
-  integrity sha512-U1hzYzE76jLqeygMCEaBM7p1/r8C/MasLZ8SU+8sznKJfzk8BHbYAZUQPqgov+yQYArHJKcgN02L9FMqojHE3Q==
+"@graphql-tools/stitch@^8.6.11":
+  version "8.6.11"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-8.6.11.tgz#35fa317c88561f636d9b74a6a6ca37ff35b02051"
+  integrity sha512-bj9rSbGouhTl/35rP10eEZZxtNV+co37CaGC3LzsQCpEF8Go47geo8l2TFzwWpk78fAdKwyucIpx3LCGwyIZDA==
   dependencies:
-    "@graphql-tools/batch-delegate" "8.2.17"
-    "@graphql-tools/delegate" "8.7.8"
-    "@graphql-tools/merge" "8.2.11"
-    "@graphql-tools/schema" "8.3.11"
-    "@graphql-tools/utils" "8.6.10"
-    "@graphql-tools/wrap" "8.4.17"
+    "@graphql-tools/batch-delegate" "8.2.18"
+    "@graphql-tools/delegate" "8.7.9"
+    "@graphql-tools/merge" "8.2.12"
+    "@graphql-tools/schema" "8.3.12"
+    "@graphql-tools/utils" "8.6.11"
+    "@graphql-tools/wrap" "8.4.18"
     tslib "~2.4.0"
     value-or-promise "^1.0.11"
 
-"@graphql-tools/utils@8.6.10":
-  version "8.6.10"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-8.6.10.tgz#38e42a97a74ffcf5a21e816401e2ca1647194f6a"
-  integrity sha512-bJH9qwuyM3BP0PTU6/lvBDkk6jdEIOn+dbyk4pHMVNnvbJ1gZQwo62To8SHxxaUTus8OMhhVPSh9ApWXREURcg==
+"@graphql-tools/utils@8.6.11":
+  version "8.6.11"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-8.6.11.tgz#2b9148082efedab361b9394c15544b0272d39217"
+  integrity sha512-Ebr2r9uzp+FwiH0oCKXrsi36ON9jNRGDN4krAhoJZgtM2iJredX2NaIJTtPIPwzqiizC0K2NdmI6VfTkGBPGjA==
   dependencies:
     tslib "~2.4.0"
 
-"@graphql-tools/wrap@8.4.17":
-  version "8.4.17"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-8.4.17.tgz#7c8906a0a7d463aeff8d3c01e94095e93af42ee4"
-  integrity sha512-oXTNXuUsty2smv3wm9M0W3Pon+fofy9ItIgGT3xfHnJITCNC2GC1s29lhcr0pIZL4Tjp7oTlqMx+sPjLHETSzw==
+"@graphql-tools/wrap@8.4.18":
+  version "8.4.18"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-8.4.18.tgz#c26595deec864161262dae1d5c76b2825f87c133"
+  integrity sha512-3JaN6KqpypuL1k80DV0SEWE40Mvx/K3pDwgSHj+VL7EnaK4glDyTrWRyXS6vLrOHJGkKhoeLMgWQRS14Itd6fw==
   dependencies:
-    "@graphql-tools/delegate" "8.7.8"
-    "@graphql-tools/schema" "8.3.11"
-    "@graphql-tools/utils" "8.6.10"
+    "@graphql-tools/delegate" "8.7.9"
+    "@graphql-tools/schema" "8.3.12"
+    "@graphql-tools/utils" "8.6.11"
     tslib "~2.4.0"
     value-or-promise "1.0.11"
 
@@ -6033,10 +6033,10 @@ express-graphql@^0.12.0:
     http-errors "1.8.0"
     raw-body "^2.4.1"
 
-express-jwt@7.7.1:
-  version "7.7.1"
-  resolved "https://registry.yarnpkg.com/express-jwt/-/express-jwt-7.7.1.tgz#c27b3b96fa3dce575377385d484c17964ac669ce"
-  integrity sha512-3x1Wv5ENeBLcBP5p3t42pFGxKCj8eyAdFiUSrvDExYtsXqYxh75dw5crpyXLXrDTDMPx50Uv9ODMQOl+ced57w==
+express-jwt@7.7.2:
+  version "7.7.2"
+  resolved "https://registry.yarnpkg.com/express-jwt/-/express-jwt-7.7.2.tgz#5f4bc1ec9c4d23dd77ba30974adeb463288f3ab6"
+  integrity sha512-NTNciChI54hnfzOh0XNjfsF6zY4W6t1BE4MfrylYrdlzTipMFzCmUaI4ebUac7e4ZBpai5CwrID661o+TwYsRQ==
   dependencies:
     "@types/express-unless" "^0.5.3"
     "@types/jsonwebtoken" "^8.5.8"
@@ -8228,10 +8228,10 @@ jwa@^1.4.1:
     ecdsa-sig-formatter "1.0.11"
     safe-buffer "^5.0.1"
 
-jwks-rsa@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/jwks-rsa/-/jwks-rsa-2.1.2.tgz#9ab21b5f4874e2c00a6e1353a6fb364b3a089084"
-  integrity sha512-QW2SNEUVvMqULiBJVsIJXSuX73Qj9il/DMCsJZsmCI8AQFZ6BjXgQW6h9wOlPr1LswQBNDdyFT2LPogwMRr1ew==
+jwks-rsa@2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/jwks-rsa/-/jwks-rsa-2.1.3.tgz#12ffbec22defa7e6c70f47574d992d2e7d71801d"
+  integrity sha512-+zSFnZYHckwxEIgjEu81AAWDyqx8z5/OVtmhuXPbchUA9Y4bipVDqvL/5Z5Qhe088e/uxPvp8QDpIDOmI2cEBg==
   dependencies:
     "@types/express" "^4.17.13"
     debug "^4.3.4"
