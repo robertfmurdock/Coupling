@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 
 plugins {
-    id("com.bmuschko.docker-remote-api") version "7.3.0"
+    id("com.bmuschko.docker-remote-api") version "7.4.0"
     id("com.avast.gradle.docker-compose") version "0.16.4"
     id("com.github.sghill.distribution-sha") version "0.4.0"
     id("com.zegreatrob.coupling.plugins.versioning")
