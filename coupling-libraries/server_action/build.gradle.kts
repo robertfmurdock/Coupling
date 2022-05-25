@@ -22,7 +22,7 @@ kotlin {
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("io.github.microutils:kotlin-logging:2.1.21")
+                implementation("io.github.microutils:kotlin-logging:2.1.23")
             }
         }
         getByName("commonTest") {

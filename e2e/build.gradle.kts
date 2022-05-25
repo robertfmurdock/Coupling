@@ -73,7 +73,7 @@ kotlin {
                 implementation(project(":sdk"))
                 implementation(project(":coupling-libraries:test-logging"))
                 implementation(kotlin("test-js"))
-                implementation("io.github.microutils:kotlin-logging:2.1.21")
+                implementation("io.github.microutils:kotlin-logging:2.1.23")
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("com.zegreatrob.testmints:async")
