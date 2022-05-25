@@ -29,7 +29,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-logging:2.0.1")
                 implementation("io.ktor:ktor-client-websockets:2.0.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
-                implementation("io.github.microutils:kotlin-logging:2.1.21")
+                implementation("io.github.microutils:kotlin-logging:2.1.23")
             }
         }
         named("commonTest") {
