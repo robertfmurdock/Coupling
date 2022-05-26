@@ -1,23 +1,9 @@
 {
-  "react": {
-    "var": "React"
-  },
-  "react-dom": {
-    "var": "ReactDOM"
-  },
-  "react-router": {
-    "var": "ReactRouter"
-  },
-  "react-router-dom": {
-    "var": "ReactRouterDOM"
-  },
-  "history": {
-    "var": "HistoryLibrary"
-  },
-  "blueimp-md5": {
-    "var": "md5"
-  },
-  "dom-to-image": {
-    "var": "domtoimage"
-  }
+  "history": "HistoryLibrary",
+  "react": "React",
+  "react-dom": "ReactDOM",
+  "react-router": "ReactRouter",
+  "react-router-dom": "ReactRouterDOM",
+  "blueimp-md5": "md5",
+  "dom-to-image": "domtoimage"
 }

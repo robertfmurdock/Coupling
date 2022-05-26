@@ -16,7 +16,10 @@
       <% } %>
     </script>
     <% } %>
-    <%= htmlWebpackPlugin.tags.headTags %>
+
+    <% htmlWebpackPlugin.options.cdnContent.forEach( cdnEntry => { %>
+    <script defer="defer" src="<%=cdnEntry%>"></script>
+    <% }) %>
 
     <link href="https://unpkg.com/graphiql/graphiql.min.css" rel="stylesheet" />
     <script crossorigin defer src="https://unpkg.com/graphiql/graphiql.min.js"></script>
@@ -24,6 +27,8 @@
         import ReactMarkdown from 'https://cdn.skypack.dev/react-markdown@7?min'
         window.ReactMarkdown = ReactMarkdown
     </script>
+
+    <%= htmlWebpackPlugin.tags.headTags %>
 </head>
 <body>
 

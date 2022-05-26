@@ -3,8 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const DynamicCdnWebpackPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin');
-const fetch = require("node-fetch/lib/index.js")
 
 const resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
 
@@ -59,7 +57,9 @@ config.module.rules.push(
         }
     }
 );
-config.externals = {"cheerio": "window", "fs": "empty"}
+
+
+config.externals = {"cheerio": "window", "fs": "empty", ...cdnSettings}
 
 if (config.devServer) {
     config.devServer.port = 3001
@@ -87,6 +87,7 @@ config.plugins.push(
         devServer: config.devServer ? config.devServer.port : undefined,
         appMountClass: 'view-container',
         inject: false,
+        cdnContent: Object.values(cdnResources),
         window: config.devServer ? {
             expressEnv: "dev",
             inMemory: true,
@@ -105,14 +106,4 @@ config.plugins.push(
     new MiniCssExtractPlugin({
         filename: 'html/styles.css',
     }),
-    new DynamicCdnWebpackPlugin({
-        resolver: function (libName, version) {
-            if (cdnResources[libName]) {
-                const varValue = cdnSettings[libName].var
-                return {name: libName, var: varValue, url: cdnResources[libName], version}
-            } else {
-                return null
-            }
-        }
-    })
 );

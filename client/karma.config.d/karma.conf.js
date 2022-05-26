@@ -1,5 +1,4 @@
 const url = require('url');
-const DynamicCdnWebpackPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin');
 
 const seleniumAddress = url.parse(process.env.SELENIUM_ADDRESS || '');
 
@@ -25,4 +24,4 @@ if (process.env.SELENIUM_ADDRESS) {
     config.browsers = ['remote-chrome'];
 }
 
-config.webpack.plugins = config.webpack.plugins.filter(plugin => !(plugin instanceof DynamicCdnWebpackPlugin))
+config.webpack.externals = ["fs"]
