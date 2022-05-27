@@ -1,4 +1,4 @@
-type TribeRecord {
+type PartyRecord {
     id: String!
     name: String
     email: String
@@ -17,7 +17,7 @@ type TribeRecord {
 type UserRecord {
     id: String!
     email: String!
-    authorizedTribeIds: [String]!
+    authorizedPartyIds: [String]!
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
@@ -81,7 +81,7 @@ type PairAssignmentDocumentRecord {
 
 type TribeData {
     id: String!
-    tribe: TribeRecord
+    tribe: PartyRecord
     pinList: [PinRecord]
     playerList: [PlayerRecord]
     retiredPlayers: [PlayerRecord]
@@ -191,7 +191,7 @@ input PinnedPlayerInput {
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
 type Query {
-    tribeList: [TribeRecord]
+    tribeList: [PartyRecord]
     tribeData(id: String!): TribeData
     user: UserRecord
 }

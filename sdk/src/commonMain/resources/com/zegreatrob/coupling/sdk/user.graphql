@@ -2,7 +2,7 @@ query user {
     user {
         id
         email
-        authorizedTribeIds
+        authorizedPartyIds
         modifyingUserEmail
         timestamp
         isDeleted
