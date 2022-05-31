@@ -22,7 +22,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:2.0.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
                 implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
                 implementation("io.ktor:ktor-client-logging:2.0.1")
                 implementation("io.ktor:ktor-client-encoding:2.0.1")
                 implementation(npm("resolve-pkg", "^1.0.0"))
