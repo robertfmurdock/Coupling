@@ -16,7 +16,7 @@
     "@wdio/junit-reporter": "^7.19.7",
     "chromedriver": "101.0.0",
     "fs-extra": "10.1.0",
-    "webpack": "5.72.1",
+    "webpack": "5.73.0",
     "webpack-node-externals": "3.0.0",
     "wdio-chromedriver-service": "7.3.2",
     "css-loader": "6.7.1",
