@@ -4332,10 +4332,10 @@ commander@^8.3.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-8.3.0.tgz#4837ea1b2da67b9c616a67afbb0fafee567bca66"
   integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
 
-commander@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-9.2.0.tgz#6e21014b2ed90d8b7c9647230d8b7a94a4a419a9"
-  integrity sha512-e2i4wANQiSXgnrBlIatyHtP1odfUp0BbV5Y5nEGbxtIrStkEOAAzCUirvLBNXHLr7kwLvJl6V+4V3XV9x7Wd9w==
+commander@^9.3.0:
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.3.0.tgz#f619114a5a2d2054e0d9ff1b31d5ccf89255e26b"
+  integrity sha512-hv95iU5uXPbK83mjrJKuZyFM/LBAoCV/XhVGkS5Je6tl7sxr6A0ITMw5WoRV46/UaJ46Nllm3Xt7IaJhXTIkzw==
 
 commander@~4.1.1:
   version "4.1.1"
@@ -4500,10 +4500,10 @@ core-js@^3.22.0, core-js@^3.6.5:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.22.5.tgz#a5f5a58e663d5c0ebb4e680cd7be37536fb2a9cf"
   integrity sha512-VP/xYuvJ0MJWRAobcmQ8F2H6Bsn+s7zqAAjFaHGBMc5AQm7zaelhD1LGduFn2EehEcQcU+br6t+fwbpQ5d1ZWA==
 
-core-js@^3.22.7:
-  version "3.22.7"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.22.7.tgz#8d6c37f630f6139b8732d10f2c114c3f1d00024f"
-  integrity sha512-Jt8SReuDKVNZnZEzyEQT5eK6T2RRCXkfTq7Lo09kpm+fHjgGewSbNjV+Wt4yZMhPDdzz2x1ulI5z/w4nxpBseg==
+core-js@^3.22.8:
+  version "3.22.8"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.22.8.tgz#23f860b1fe60797cc4f704d76c93fea8a2f60631"
+  integrity sha512-UoGQ/cfzGYIuiq6Z7vWL1HfkE9U9IZ4Ub+0XSiJTCzvbZzgPA69oDF2f+lgJ6dFFLEdjW5O6svvoKzXX23xFkA==
 
 core-util-is@1.0.2:
   version "1.0.2"
@@ -8968,6 +8968,13 @@ minimatch@^5.0.0, minimatch@^5.0.1:
   dependencies:
     brace-expansion "^2.0.1"
 
+minimatch@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.1.0.tgz#1717b464f4971b144f6aabe8f2d0b8e4511e09c7"
+  integrity sha512-9TPBGGak4nHfGZsPBohm9AWg6NoT7QTCehS3BIJABslyZbzxfV78QM2Y6+i741OPZIafFAaiiEMh5OyIrJPgtg==
+  dependencies:
+    brace-expansion "^2.0.1"
+
 minimatch@~3.0.2:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.8.tgz#5e6a59bd11e2ab0de1cfb843eb2d82e546c321c1"
@@ -9341,10 +9348,10 @@ node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.7:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-fetch@^3.2.4:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-3.2.4.tgz#3fbca2d8838111048232de54cb532bd3cf134947"
-  integrity sha512-WvYJRN7mMyOLurFR2YpysQGuwYrJN+qrrpHjJDuKMcSPdfFccRUla/kng2mz6HWSBxJcqPbvatS6Gb4RhOzCJw==
+node-fetch@^3.2.5:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-3.2.5.tgz#7d31da657804db5185540ddac7ddd516a9a2bd26"
+  integrity sha512-u7zCHdJp8JXBwF09mMfo2CL6kp37TslDl1KP3hRGTlCInBtag+UO3LGVy+NF0VzvnL3PVMpA2hXh1EtECFnyhQ==
   dependencies:
     data-uri-to-buffer "^4.0.0"
     fetch-blob "^3.1.4"
@@ -9447,15 +9454,15 @@ npm-bundled@^1.1.1, npm-bundled@^1.1.2:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-npm-check-updates@^13.0.4:
-  version "13.0.4"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-13.0.4.tgz#3c59abc116bf3ad161f2980f684e63e9c2ac1b3a"
-  integrity sha512-f9xzzSMNsVCXvHAECBU4qloLUKSLRQ3a4sDU0F/b6CnzDAC+NE6obqb4Q2KpO1coQwK6FPQ+UReHZ+iXBTN6bw==
+npm-check-updates@^13.1.1:
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-13.1.1.tgz#65b1ff77c7e1e8ce2b59de04aae7b0761bd1f1f0"
+  integrity sha512-f4gLbUJJh5qvkNvrSG3b05y3ZvyZ4Sl3Uk95DSyCjIWwpwmAwzU9dMCA/Gg2AmIKqkH4ml6X9kxcZsu+tAd94g==
   dependencies:
     chalk "^4.1.2"
     cint "^8.2.1"
     cli-table "^0.3.11"
-    commander "^9.2.0"
+    commander "^9.3.0"
     fast-memoize "^2.5.2"
     find-up "5.0.0"
     fp-and-or "^0.1.3"
@@ -9465,9 +9472,9 @@ npm-check-updates@^13.0.4:
     json-parse-helpfulerror "^1.0.3"
     jsonlines "^0.1.1"
     lodash "^4.17.21"
-    minimatch "^5.0.1"
+    minimatch "^5.1.0"
     p-map "^4.0.0"
-    pacote "^13.3.0"
+    pacote "^13.5.0"
     parse-github-url "^1.0.2"
     progress "^2.0.3"
     prompts "^2.4.2"
@@ -9479,7 +9486,7 @@ npm-check-updates@^13.0.4:
     source-map-support "^0.5.21"
     spawn-please "^1.0.0"
     update-notifier "^5.1.0"
-    yaml "^2.1.0"
+    yaml "^2.1.1"
 
 npm-install-checks@^5.0.0:
   version "5.0.0"
@@ -9502,10 +9509,10 @@ npm-package-arg@^9.0.0, npm-package-arg@^9.0.1:
     semver "^7.3.5"
     validate-npm-package-name "^4.0.0"
 
-npm-packlist@^5.0.0:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-5.0.3.tgz#0aec03bc2d6d488ca71396d7afb463563c3274f7"
-  integrity sha512-KuSbzgejxdsAWbNNyEs8EsyDHsO+nJF6k+9WuWzFbSNh5tFHs4lDApXw7kntKpuehfp8lKRzJkMtz0+WmGvTIw==
+npm-packlist@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-5.1.0.tgz#f3fd52903a021009913a133732022132eb355ce7"
+  integrity sha512-a04sqF6FbkyOAFA19AA0e94gS7Et5T2/IMj3VOT9nOF2RaRdVPQ1Q17Fb/HaDRFs+gbC7HOmhVZ29adpWgmDZg==
   dependencies:
     glob "^8.0.1"
     ignore-walk "^5.0.1"
@@ -9904,10 +9911,10 @@ package-json@^6.3.0:
     registry-url "^5.0.0"
     semver "^6.2.0"
 
-pacote@^13.3.0:
-  version "13.3.0"
-  resolved "https://registry.yarnpkg.com/pacote/-/pacote-13.3.0.tgz#e221febc17ce2435ce9f31de411832327a34c5ad"
-  integrity sha512-auhJAUlfC2TALo6I0s1vFoPvVFgWGx+uz/PnIojTTgkGwlK3Np8sGJ0ghfFhiuzJXTZoTycMLk8uLskdntPbDw==
+pacote@^13.5.0:
+  version "13.6.0"
+  resolved "https://registry.yarnpkg.com/pacote/-/pacote-13.6.0.tgz#79ea3d3ae5a2b29e2994dcf18d75494e8d888032"
+  integrity sha512-zHmuCwG4+QKnj47LFlW3LmArwKoglx2k5xtADiMCivVWPgNRP5QyLDGOIjGjwOe61lhl1rO63m/VxT16pEHLWg==
   dependencies:
     "@npmcli/git" "^3.0.0"
     "@npmcli/installed-package-contents" "^1.0.7"
@@ -9920,7 +9927,7 @@ pacote@^13.3.0:
     minipass "^3.1.6"
     mkdirp "^1.0.4"
     npm-package-arg "^9.0.0"
-    npm-packlist "^5.0.0"
+    npm-packlist "^5.1.0"
     npm-pick-manifest "^7.0.0"
     npm-registry-fetch "^13.0.1"
     proc-log "^2.0.0"
@@ -13171,10 +13178,40 @@ webpack@5.57.1:
     watchpack "^2.2.0"
     webpack-sources "^3.2.0"
 
-webpack@5.72.1, webpack@~5.72.1:
+webpack@5.72.1:
   version "5.72.1"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.72.1.tgz#3500fc834b4e9ba573b9f430b2c0a61e1bb57d13"
   integrity sha512-dXG5zXCLspQR4krZVR6QgajnZOjW2K/djHvdcRaDQvsjV9z9vaW6+ja5dZOYbqBBjF6kGXka/2ZyxNdc+8Jung==
+  dependencies:
+    "@types/eslint-scope" "^3.7.3"
+    "@types/estree" "^0.0.51"
+    "@webassemblyjs/ast" "1.11.1"
+    "@webassemblyjs/wasm-edit" "1.11.1"
+    "@webassemblyjs/wasm-parser" "1.11.1"
+    acorn "^8.4.1"
+    acorn-import-assertions "^1.7.6"
+    browserslist "^4.14.5"
+    chrome-trace-event "^1.0.2"
+    enhanced-resolve "^5.9.3"
+    es-module-lexer "^0.9.0"
+    eslint-scope "5.1.1"
+    events "^3.2.0"
+    glob-to-regexp "^0.4.1"
+    graceful-fs "^4.2.9"
+    json-parse-even-better-errors "^2.3.1"
+    loader-runner "^4.2.0"
+    mime-types "^2.1.27"
+    neo-async "^2.6.2"
+    schema-utils "^3.1.0"
+    tapable "^2.1.1"
+    terser-webpack-plugin "^5.1.3"
+    watchpack "^2.3.1"
+    webpack-sources "^3.2.3"
+
+webpack@~5.73.0:
+  version "5.73.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.73.0.tgz#bbd17738f8a53ee5760ea2f59dce7f3431d35d38"
+  integrity sha512-svjudQRPPa0YiOYa2lM/Gacw0r6PvxptHj4FuEKQ2kX05ZLkjbVc5MnPs6its5j7IZljnIqSVo/OsY2X0IpHGA==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
     "@types/estree" "^0.0.51"
@@ -13475,10 +13512,10 @@ yaml-ast-parser@0.0.43:
   resolved "https://registry.yarnpkg.com/yaml-ast-parser/-/yaml-ast-parser-0.0.43.tgz#e8a23e6fb4c38076ab92995c5dca33f3d3d7c9bb"
   integrity sha512-2PTINUwsRqSd+s8XxKaJWQlUuEMHJQyEuh2edBbW8KNJz0SJPwUSD2zRWqezFEdN7IzAgeuYHFUCF7o8zRdZ0A==
 
-yaml@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.1.0.tgz#96ba62ff4dd990c0eb16bd96c6254a085d288b80"
-  integrity sha512-OuAINfTsoJrY5H7CBWnKZhX6nZciXBydrMtTHr1dC4nP40X5jyTIVlogZHxSlVZM8zSgXRfgZGsaHF4+pV+JRw==
+yaml@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.1.1.tgz#1e06fb4ca46e60d9da07e4f786ea370ed3c3cfec"
+  integrity sha512-o96x3OPo8GjWeSLF+wOAbrPfhFOGY0W00GNaxCDv+9hkcDJEnev1yh8S7pgHF0ik6zc8sQLuL8hjHjJULZp8bw==
 
 yamljs@^0.3.0:
   version "0.3.0"
