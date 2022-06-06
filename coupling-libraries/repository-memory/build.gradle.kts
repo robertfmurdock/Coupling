@@ -17,7 +17,7 @@ kotlin {
                 implementation(project(":coupling-libraries:model"))
                 implementation(project(":coupling-libraries:repository-core"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("com.benasher44:uuid:0.4.0")
+                implementation("com.benasher44:uuid:0.4.1")
             }
         }
         val commonTest by getting {

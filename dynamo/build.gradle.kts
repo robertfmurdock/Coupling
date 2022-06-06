@@ -26,7 +26,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 api("org.jetbrains.kotlin-wrappers:kotlin-extensions")
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
-                implementation("com.benasher44:uuid:0.4.0")
+                implementation("com.benasher44:uuid:0.4.1")
                 implementation("io.github.microutils:kotlin-logging:2.1.23")
             }
         }

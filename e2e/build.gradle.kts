@@ -90,7 +90,7 @@ kotlin {
 dependencies {
     clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
     implementation(kotlin("stdlib-js"))
-    implementation("com.benasher44:uuid:0.4.0")
+    implementation("com.benasher44:uuid:0.4.1")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("com.zegreatrob.jsmints:wdio")
