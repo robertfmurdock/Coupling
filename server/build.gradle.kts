@@ -36,7 +36,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     implementation("com.soywiz.korlibs.klock:klock:2.7.0")
-    implementation("com.benasher44:uuid:0.4.0")
+    implementation("com.benasher44:uuid:0.4.1")
 }
 
 tasks {

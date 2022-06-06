@@ -40,7 +40,7 @@ kotlin {
                 implementation(project(":coupling-libraries:test-logging"))
                 implementation(project(":coupling-libraries:stub-model"))
                 implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.benasher44:uuid:0.4.0")
+                implementation("com.benasher44:uuid:0.4.1")
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:async")
                 implementation("com.zegreatrob.testmints:minassert")
