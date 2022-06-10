@@ -7869,10 +7869,10 @@ jake@^10.8.5:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-jasmine-core@^4.1.0, jasmine-core@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-4.1.1.tgz#1045091e16f4f19e1d72416eef5db01e64d5fbeb"
-  integrity sha512-lmUfT5XcK9KKvt3lLYzn93hc4MGzlUBowExFVgzbSW0ZCrdeyS574dfsyfRhxbg81Wj4gk+RxUiTnj7KBfDA1g==
+jasmine-core@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-4.2.0.tgz#0605bea284d6d78276f43c47de2532ecd4a73b00"
+  integrity sha512-OcFpBrIhnbmb9wfI8cqPSJ50pv3Wg4/NSgoZIqHzIwO/2a9qivJWzv8hUvaREIMYYJBas6AvfXATFdVuzzCqVw==
 
 jasmine-core@~3.10.0:
   version "3.10.1"
@@ -7895,13 +7895,13 @@ jasmine@3.10.0:
     glob "^7.1.6"
     jasmine-core "~3.10.0"
 
-jasmine@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-4.1.0.tgz#0de347ca8bb6cc764b0ed186ae4cfc45bd64bdc4"
-  integrity sha512-4VhjbUgwfNS9CBnUMoSWr9tdNgOoOhNIjAD8YRxTn+PmOf4qTSC0Uqhk66dWGnz2vJxtNIU0uBjiwnsp4Ud9VA==
+jasmine@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-4.2.0.tgz#a5e9e2af25813da3517f5dafa9e46b2d896d996a"
+  integrity sha512-6SQRXHs5O++mp52PkoJoi9zuLYqp1IaqepRNmAQn5rUBo9VUnckpkkXQQD5PAuCCVVB1ULDImvWYCPV/ZVnaGQ==
   dependencies:
     glob "^7.1.6"
-    jasmine-core "^4.1.0"
+    jasmine-core "^4.2.0"
 
 java-invoke-local@0.0.6:
   version "0.0.6"
@@ -9485,10 +9485,10 @@ npm-bundled@^1.1.1, npm-bundled@^1.1.2:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-npm-check-updates@^13.1.2:
-  version "13.1.2"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-13.1.2.tgz#24618c8bad2d8418d442692306fe23903c457572"
-  integrity sha512-ZXfXEoqqMnDNuR2LNLXBsNPTRCvo5JcH+Wo6YoSAh5EYcPqKzTkRSPB82ujPTbIEU7BtrwXbx3p2Y+IXK3dmdA==
+npm-check-updates@^13.1.3:
+  version "13.1.3"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-13.1.3.tgz#bbbae5004aa608624c3eaf603c79fd1d5ac32c79"
+  integrity sha512-wyxcDctV5/gsVAhtmvQWZttI61evj6E5XrAviElnXAdXPKGG/rqYIAcKS2EZUgVoKJnCkjQmXgONzybim8SmfQ==
   dependencies:
     chalk "^4.1.2"
     cint "^8.2.1"
