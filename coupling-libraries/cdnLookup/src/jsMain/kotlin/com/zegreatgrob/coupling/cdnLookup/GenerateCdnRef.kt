@@ -11,8 +11,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.js.Json
 import kotlin.js.Promise
@@ -39,28 +41,25 @@ suspend fun generateCdnRef(cdnLibs: List<String>): List<Pair<String, String>> = 
 private suspend fun lookupCdnUrl(lib: String): Pair<String, String> {
     val version = getVersionForLibrary(lib)
     val filename = lookupCdnFilename(lib, version)
-    return lib to "https://cdnjs.cloudflare.com/ajax/libs/$lib/$version/$filename"
+    return lib to "https://cdn.jsdelivr.net/npm/$lib@$version/$filename"
 }
 
-private val corrections = mapOf(
-    "react-router" to "react-router.production.min.js",
-    "react-router-dom" to "react-router-dom.production.min.js"
-)
+private suspend fun lookupCdnFilename(lib: String, version: String): String {
+    val cdnLibraryDescription =
+        httpClient.get("https://data.jsdelivr.com/v1/package/npm/$lib@$version").body<JsonObject>()
 
-private suspend fun lookupCdnFilename(lib: String, version: String): String? {
-    if (corrections.containsKey(lib)) {
-        return corrections[lib]
-    }
+    val files = cdnLibraryDescription.getFiles()
+    return files.firstOrNull { fileName -> fileName.contains("umd") && fileName.endsWith(".production.min.js") }
+        ?: files.firstOrNull { fileName -> fileName.endsWith(".min.js") }
+        ?: files.first()
+}
 
-    val cdnLibraryDescription = httpClient.get("https://api.cdnjs.com/libraries/$lib").body<JsonObject>()
-
-    return if (cdnLibraryDescription["versions"]?.jsonArray?.map { it.jsonPrimitive.content }
-        ?.contains(version) == true
-    ) {
-        cdnLibraryDescription["filename"]?.jsonPrimitive?.content
-    } else {
-        ""
-    }
+private fun JsonObject.getFiles(): List<String> {
+    return this["files"]?.jsonArray?.flatMap { thing: JsonElement ->
+        val jsonObject = thing.jsonObject
+        val name = jsonObject["name"]?.jsonPrimitive?.content ?: ""
+        return@flatMap listOf(name) + jsonObject.getFiles().map { "$name/$it" }
+    } ?: emptyList()
 }
 
 private suspend fun getVersionForLibrary(lib: String): String {
