@@ -14,8 +14,8 @@ plugins {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-    implementation(kotlin("gradle-plugin"))
+    implementation(kotlin("stdlib", "1.7.0"))
+    implementation(kotlin("gradle-plugin", "1.7.0"))
     implementation("org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.7.0")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     implementation("se.patrikerdes:gradle-use-latest-versions-plugin:0.2.18")
