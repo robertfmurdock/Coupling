@@ -17,7 +17,7 @@ kotlin {
                 api(kotlin("stdlib"))
                 api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock:2.7.0")
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
                 implementation("com.benasher44:uuid:0.4.1")
             }
         }
@@ -46,9 +46,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-js"))
             }
-        }
-        all {
-            languageSettings.enableLanguageFeature("InlineClasses")
         }
     }
 }

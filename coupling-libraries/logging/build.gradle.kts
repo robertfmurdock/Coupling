@@ -27,14 +27,12 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
                 api("io.github.microutils:kotlin-logging:2.1.23")
-                api("org.jetbrains.kotlinx:kotlinx-serialization-core")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation(kotlin("serialization"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
             }
         }

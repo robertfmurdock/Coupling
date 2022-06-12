@@ -93,6 +93,8 @@ dependencies {
     implementation("com.benasher44:uuid:0.4.1")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:atomicfu:0.17.3")
+    implementation("org.jetbrains.kotlin:atomicfu:1.6.21")
     implementation("com.zegreatrob.jsmints:wdio")
 
     jstools.packageJson.devDependencies()?.forEach {

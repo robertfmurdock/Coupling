@@ -94,11 +94,6 @@ tasks {
         dependsOn(lookupCdnUrls)
     }
     compileProductionExecutableKotlinJs {
-        artifacts {
-            add(clientConfiguration.name, outputFileProperty) {
-                builtBy(compileProductionExecutableKotlinJs)
-            }
-        }
     }
     val browserDistribution = named("browserDistribution")
     val browserProductionWebpack = named("browserProductionWebpack", KotlinWebpack::class) {
@@ -163,5 +158,11 @@ tasks {
 
     named("browserTest") {
         outputs.cacheIf { true }
+    }
+
+    artifacts {
+        add(clientConfiguration.name, compileProductionExecutableKotlinJs.get().outputFileProperty) {
+            builtBy(compileProductionExecutableKotlinJs)
+        }
     }
 }
