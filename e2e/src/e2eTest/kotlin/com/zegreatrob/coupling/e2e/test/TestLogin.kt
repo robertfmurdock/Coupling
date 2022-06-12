@@ -68,24 +68,28 @@ object TestLogin : BrowserSyntax {
             "expiresAt" to (floor(Date.now() / 1000) + expiresIn)
         )
 
+        setAuth0CacheInLocalStorage(key, auth0Cache)
+        WebdriverBrowser.setUrl("")
+        TribeListPage.waitForPage()
+
+        clearLogs()
+    }
+
+    private suspend fun setAuth0CacheInLocalStorage(key: String, auth0Cache: Json) {
         @Suppress("UNUSED_VARIABLE") val storageStuff = JSON.stringify(
             json("key" to key, "auth0Cache" to auth0Cache)
         )
 
         js(
             """
-            browser.executeAsync(function(nothing, done) {
-                var result = JSON.parse(nothing)
-                window.localStorage.setItem(result.key, JSON.stringify(result.auth0Cache));
-                done()
-                }, storageStuff);
-"""
+                browser.executeAsync(function(nothing, done) {
+                    var result = JSON.parse(nothing)
+                    window.localStorage.setItem(result.key, JSON.stringify(result.auth0Cache));
+                    done()
+                    }, storageStuff);
+    """
         ).unsafeCast<Promise<Unit>>()
             .await()
-        WebdriverBrowser.setUrl("")
-        TribeListPage.waitForPage()
-
-        clearLogs()
     }
 }
 
