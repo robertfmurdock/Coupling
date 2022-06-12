@@ -7,7 +7,7 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.kotlin.jvm").version("1.6.21")
+    id("org.jetbrains.kotlin.jvm").version("1.7.0")
     `kotlin-dsl`
     id("com.github.ben-manes.versions") version ("0.42.0")
     id("se.patrikerdes.use-latest-versions") version ("0.2.18")
