@@ -28,7 +28,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
         sdk.partyRepository.save(tribe)
         SdkPartyContext(sdk, sdk.pairAssignmentDocumentRepository, tribe.id, MagicClock())
     }, sharedTeardown = {
-            it.sdk.partyRepository.delete(it.partyId)
+            it.sdk.partyRepository.deleteIt(it.partyId)
         })
 
     @Test
@@ -48,7 +48,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
-        otherSdk.partyRepository.delete(otherTribe.id)
+        otherSdk.partyRepository.deleteIt(otherTribe.id)
     }
 
     override fun savedWillIncludeModificationDateAndUsername() =

@@ -63,7 +63,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         clock.currentTime = updatedSaveTime
         repository.save(tribeId.with(updatedPairAssignmentDocument))
         clock.currentTime = updatedSaveTime2
-        repository.delete(tribeId, pairAssignmentDocument.id)
+        repository.deleteIt(tribeId, pairAssignmentDocument.id)
     } verifyWithWait {
         repository.getRecords(tribeId)
             .assertContains(Record(tribeId.with(pairAssignmentDocument), user.email, false, initialSaveTime))

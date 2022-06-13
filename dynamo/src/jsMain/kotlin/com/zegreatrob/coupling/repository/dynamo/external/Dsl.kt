@@ -17,4 +17,4 @@ fun DynamoDBDocumentClient.query(params: Json): Promise<Json> = send(QueryComman
 
 fun DynamoDBDocumentClient.batchGet(params: Json): Promise<Json> = send(BatchGetCommand(params))
 
-fun DynamoDBDocumentClient.delete(params: Json): Promise<Json> = send(DeleteCommand(params))
+fun DynamoDBDocumentClient.deleteIt(params: Json): Promise<Json> = send(DeleteCommand(params))

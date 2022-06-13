@@ -13,7 +13,7 @@ interface PairAssignmentDocumentRepository :
     PairAssignmentDocumentDelete
 
 interface PairAssignmentDocumentDelete {
-    suspend fun delete(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean
+    suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean
 }
 
 interface PairAssignmentDocumentGet {

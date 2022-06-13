@@ -15,7 +15,7 @@ interface PartySave {
 }
 
 interface PartyDelete {
-    suspend fun delete(partyId: PartyId): Boolean
+    suspend fun deleteIt(partyId: PartyId): Boolean
 }
 
 interface PartyGet {

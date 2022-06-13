@@ -53,7 +53,7 @@ class CompoundPairAssignmentDocumentRepositoryTest :
     @Test
     fun deleteWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
         compoundRepo.save(tribeId.with(pairAssignmentDocument))
-        compoundRepo.delete(tribeId, pairAssignmentDocument.id)
+        compoundRepo.deleteIt(tribeId, pairAssignmentDocument.id)
     } verify {
         repository2.getPairAssignments(tribeId).map { it.data.document }
             .find { it.id == pairAssignmentDocument.id }

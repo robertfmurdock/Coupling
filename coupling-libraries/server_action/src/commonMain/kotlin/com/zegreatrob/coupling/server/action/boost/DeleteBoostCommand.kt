@@ -11,7 +11,7 @@ class DeleteBoostCommand : SimpleSuspendResultAction<DeleteBoostCommandDispatche
 interface DeleteBoostCommandDispatcher : BoostDeleteSyntax {
 
     suspend fun perform(command: DeleteBoostCommand): SuccessfulResult<Unit> {
-        delete()
+        deleteIt()
         return SuccessfulResult(Unit)
     }
 }
@@ -20,7 +20,7 @@ interface BoostDeleteSyntax {
 
     val boostRepository: BoostDelete
 
-    suspend fun delete() {
-        boostRepository.delete()
+    suspend fun deleteIt() {
+        boostRepository.deleteIt()
     }
 }

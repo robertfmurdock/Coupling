@@ -39,7 +39,7 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
             val playerMatchingSdkUser = stubPlayer().copy(email = context.user.email)
         }
     }, sharedTeardown = {
-            it.repository.delete(it.party.id)
+            it.repository.deleteIt(it.party.id)
         })
 
     @Test
@@ -101,6 +101,6 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
             timestamp.isWithinOneSecondOfNow()
         }
     } teardown {
-        repository.delete(tribe.id)
+        repository.deleteIt(tribe.id)
     }
 }

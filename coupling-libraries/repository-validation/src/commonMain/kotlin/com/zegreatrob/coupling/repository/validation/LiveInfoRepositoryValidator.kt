@@ -62,7 +62,7 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
     ) {
         connections.forEach { repository.save(it) }
     } exercise {
-        repository.delete(partyId, connections[1].connectionId)
+        repository.deleteIt(partyId, connections[1].connectionId)
     } verifyWithWait {
         repository.connectionList(partyId)
             .assertIsEqualTo(listOf(connections[0], connections[2]).sortedBy { it.connectionId })

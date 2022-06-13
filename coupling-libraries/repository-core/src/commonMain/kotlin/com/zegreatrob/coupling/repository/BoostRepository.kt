@@ -21,5 +21,5 @@ interface BoostGet {
 }
 
 interface BoostDelete {
-    suspend fun delete()
+    suspend fun deleteIt()
 }

@@ -90,7 +90,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     ) {
         repository.save(partyId.with(document))
     } exercise {
-        repository.delete(partyId, document.id)
+        repository.deleteIt(partyId, document.id)
     } verifyWithWait { result ->
         result.assertIsEqualTo(true)
         repository.getPairAssignments(partyId)
@@ -104,7 +104,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             val id = PairAssignmentDocumentId("${uuid4()}")
         }.bind()
     ) exercise {
-        repository.delete(partyId, id)
+        repository.deleteIt(partyId, id)
     } verify { result ->
         result.assertIsEqualTo(false)
     }

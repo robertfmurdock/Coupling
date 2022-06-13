@@ -17,7 +17,7 @@ class MemoryBoostRepository(
 
     override suspend fun save(boost: Boost) = boost.record().save()
 
-    override suspend fun delete() {
+    override suspend fun deleteIt() {
         get()?.data?.deletionRecord()?.save()
     }
 

@@ -39,7 +39,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         )
     }
 
-    override suspend fun delete(partyId: PartyId, connectionId: String) = connectionId.logAsync("deleteConnection") {
+    override suspend fun deleteIt(partyId: PartyId, connectionId: String) = connectionId.logAsync("deleteConnection") {
         performDeleteItem(
             json(
                 "entityType" to ENTITY_TYPE,

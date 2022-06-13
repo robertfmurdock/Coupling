@@ -43,7 +43,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
 
     override suspend fun save(party: Party) = performPutItem(party.toRecord().asDynamoJson())
 
-    override suspend fun delete(partyId: PartyId) = performDelete(
+    override suspend fun deleteIt(partyId: PartyId) = performDelete(
         partyId.value,
         null,
         now(),

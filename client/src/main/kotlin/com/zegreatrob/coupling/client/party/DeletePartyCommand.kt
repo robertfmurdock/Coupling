@@ -11,5 +11,5 @@ data class DeletePartyCommand(val partyId: PartyId) :
 }
 
 interface DeletePartyCommandDispatcher : PartyIdDeleteSyntax {
-    suspend fun perform(command: DeletePartyCommand) = command.partyId.delete().deletionResult("tribe")
+    suspend fun perform(command: DeletePartyCommand) = command.partyId.deleteIt().deletionResult("tribe")
 }

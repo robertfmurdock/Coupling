@@ -14,7 +14,7 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 
 interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, GqlSyntax, GraphQueries {
-    override suspend fun delete(
+    override suspend fun deleteIt(
         partyId: PartyId,
         pairAssignmentDocumentId: PairAssignmentDocumentId
     ): Boolean = performQuery(options(partyId, pairAssignmentDocumentId))

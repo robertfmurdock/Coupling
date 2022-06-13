@@ -101,7 +101,7 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
 
     private fun Record<Boost>?.previousRecordTribeIds() = (this?.data?.partyIds ?: emptySet())
 
-    override suspend fun delete() {
+    override suspend fun deleteIt() {
         get()
             ?.copy(isDeleted = true)
             ?.putRecordWithClones()

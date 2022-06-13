@@ -15,9 +15,9 @@ interface DisconnectPartyUserCommandDispatcher : CouplingConnectionGetSyntax, Co
             ?.deleteAndLoadRemainingConnections()
     }
 
-    private suspend fun CouplingConnection.deleteAndLoadRemainingConnections() = delete()
+    private suspend fun CouplingConnection.deleteAndLoadRemainingConnections() = deleteIt()
         .let { partyId.loadConnections() }
         .let { it to couplingSocketMessage(it, null) }
 
-    private suspend fun CouplingConnection.delete() = deleteConnection(partyId, connectionId)
+    private suspend fun CouplingConnection.deleteIt() = deleteConnection(partyId, connectionId)
 }

@@ -27,7 +27,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
                 tribe.save()
             }
     }, sharedTeardown = {
-            it.sdk.partyRepository.delete(it.partyId)
+            it.sdk.partyRepository.deleteIt(it.partyId)
         })
 
     @Test
@@ -47,7 +47,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
-        otherSdk.partyRepository.delete(otherTribe.id)
+        otherSdk.partyRepository.deleteIt(otherTribe.id)
     }
 
     override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(

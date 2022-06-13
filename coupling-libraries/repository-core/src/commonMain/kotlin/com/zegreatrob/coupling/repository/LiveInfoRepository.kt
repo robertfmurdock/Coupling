@@ -7,5 +7,5 @@ interface LiveInfoRepository {
     suspend fun connectionList(partyId: PartyId): List<CouplingConnection>
     suspend fun get(connectionId: String): CouplingConnection?
     suspend fun save(connection: CouplingConnection)
-    suspend fun delete(partyId: PartyId, connectionId: String)
+    suspend fun deleteIt(partyId: PartyId, connectionId: String)
 }

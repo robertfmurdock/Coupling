@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PartyIdPairAssignmen
 interface PairAssignmentDocumentIdDeleteSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentDelete
 
-    suspend fun PartyIdPairAssignmentDocumentId.delete() = pairAssignmentDocumentRepository.delete(
+    suspend fun PartyIdPairAssignmentDocumentId.deleteIt() = pairAssignmentDocumentRepository.deleteIt(
         partyId,
         pairAssignmentDocumentId
     )

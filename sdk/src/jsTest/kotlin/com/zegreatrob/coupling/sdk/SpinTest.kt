@@ -45,7 +45,7 @@ class SpinTest {
             listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
         )
     } teardown {
-        sdk.partyRepository.delete(party.id)
+        sdk.partyRepository.deleteIt(party.id)
     }
 
     @Test
@@ -82,7 +82,7 @@ class SpinTest {
             )
         )
     } teardown {
-        sdk.partyRepository.delete(party.id)
+        sdk.partyRepository.deleteIt(party.id)
     }
 
     @Test
@@ -118,7 +118,7 @@ class SpinTest {
             )
         )
     } teardown {
-        sdk.await().partyRepository.delete(party.id)
+        sdk.await().partyRepository.deleteIt(party.id)
     }
 
     class WhenPinExists {
@@ -142,7 +142,7 @@ class SpinTest {
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
             )
         } teardown {
-            sdk.partyRepository.delete(tribe.id)
+            sdk.partyRepository.deleteIt(tribe.id)
         }
         @Test
         fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup.with({ pinExistsSetup(it) }) {
@@ -154,7 +154,7 @@ class SpinTest {
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptyList()))
             )
         } teardown {
-            sdk.partyRepository.delete(tribe.id)
+            sdk.partyRepository.deleteIt(tribe.id)
         }
     }
 

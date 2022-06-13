@@ -58,7 +58,7 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
         val tribe = stubParty()
     }) exercise {
         compoundRepo.save(tribe)
-        compoundRepo.delete(tribe.id)
+        compoundRepo.deleteIt(tribe.id)
     } verify {
         repository2.getPartyRecord(tribe.id)
             .assertIsEqualTo(null)

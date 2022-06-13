@@ -62,7 +62,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
             timestamp.assertIsEqualTo(clock.currentTime)
         }
     } teardown {
-        repository.delete(party.id)
+        repository.deleteIt(party.id)
     }
 
     @Test
@@ -73,7 +73,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     ) {
         repository.save(party)
     } exercise {
-        repository.delete(party.id)
+        repository.deleteIt(party.id)
         Pair(
             repository.getParties(),
             repository.getPartyRecord(party.id)?.data
@@ -83,6 +83,6 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
             .assertIsEqualTo(null)
         getResult.assertIsEqualTo(null)
     } teardown {
-        repository.delete(party.id)
+        repository.deleteIt(party.id)
     }
 }

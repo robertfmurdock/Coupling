@@ -32,7 +32,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
         SdkPartyContext(sdk, sdk.playerRepository, party.id, MagicClock())
     }, sharedTeardown = {
-            it.sdk.partyRepository.delete(it.partyId)
+            it.sdk.partyRepository.deleteIt(it.partyId)
         })
 
     override fun whenPlayerIdIsUsedInTwoDifferentPartiesTheyRemainDistinct() =
@@ -56,7 +56,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             result.map { it.data.player }
                 .assertIsEqualTo(listOf(player1))
         } teardown {
-            sdk.partyRepository.delete(tribeId2)
+            sdk.partyRepository.deleteIt(tribeId2)
         }
 
     override fun deletedPlayersIncludeModificationDateAndUsername() =
@@ -112,7 +112,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.partyRepository.delete(tribe.id)
+                    otherSdk.partyRepository.deleteIt(tribe.id)
                 }
             }
         }
@@ -138,7 +138,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.partyRepository.delete(tribe.id)
+                    otherSdk.partyRepository.deleteIt(tribe.id)
                 }
             }
         }

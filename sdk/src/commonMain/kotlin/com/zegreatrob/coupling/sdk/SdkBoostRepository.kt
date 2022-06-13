@@ -22,7 +22,7 @@ interface SdkBoostRepository : BoostRepository, GqlSyntax, GraphQueries {
     private fun JsonElement.toBoostRecord() = fromJsonElement<JsonBoostRecord?>()
         ?.toModelRecord()
 
-    override suspend fun delete() {
+    override suspend fun deleteIt() {
         performQuery(buildJsonObject { put("query", mutations.deleteBoost) })
     }
 

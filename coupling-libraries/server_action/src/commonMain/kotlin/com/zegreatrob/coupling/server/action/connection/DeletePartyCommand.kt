@@ -17,7 +17,7 @@ interface DeletePartyCommandDispatcher :
     CurrentPartyIdSyntax,
     AuthenticatedUserSyntax,
     UserSaveSyntax {
-    suspend fun perform(command: DeletePartyCommand) = currentPartyId.delete().deletionResult("Tribe")
+    suspend fun perform(command: DeletePartyCommand) = currentPartyId.deleteIt().deletionResult("Tribe")
         .also {
             if (it is SuccessfulResult) {
                 user

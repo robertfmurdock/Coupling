@@ -15,7 +15,7 @@ data class DeletePairAssignmentDocumentCommand(val pairAssignmentDocumentId: Pai
 interface DeletePairAssignmentDocumentCommandDispatcher : PairAssignmentDocumentIdDeleteSyntax, CurrentPartyIdSyntax {
 
     suspend fun perform(command: DeletePairAssignmentDocumentCommand) = command.partyIdPairAssignmentId()
-        .delete()
+        .deleteIt()
         .deletionResult("Pair Assignment Document")
 
     private fun DeletePairAssignmentDocumentCommand.partyIdPairAssignmentId() = PartyIdPairAssignmentDocumentId(

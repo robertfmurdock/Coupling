@@ -26,7 +26,7 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
     @Test
     fun getBoostWhenThereIsNoneReturnsNull() = repositorySetup {
     } exercise {
-        repository.delete()
+        repository.deleteIt()
     } verifyWithWait {
         repository.get()
             .assertIsEqualTo(null)
@@ -48,7 +48,7 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
     fun deleteWillMakeBoostNotRecoverableThroughGet() = repositorySetup {
     } exercise {
         repository.save(Boost(user.id, setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))))
-        repository.delete()
+        repository.deleteIt()
     } verifyWithWait {
         repository.get()
             .assertIsEqualTo(null)

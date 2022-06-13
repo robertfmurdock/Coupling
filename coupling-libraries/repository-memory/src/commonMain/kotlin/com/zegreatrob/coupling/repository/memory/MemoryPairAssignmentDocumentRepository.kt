@@ -38,7 +38,7 @@ class MemoryPairAssignmentDocumentRepository(
         .groupBy { (data) -> data.document.id }
         .map { it.value.last() }
 
-    override suspend fun delete(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
+    override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
         val tribeIdPairAssignmentDocument = record(partyId, pairAssignmentDocumentId)?.data
 
         return if (tribeIdPairAssignmentDocument == null) {

@@ -46,7 +46,7 @@ class WebsocketTest {
     } teardown { result ->
         result?.let { (session) ->
             session.close()
-            sdk.partyRepository.delete(tribe.id)
+            sdk.partyRepository.deleteIt(tribe.id)
         }
     }
 
@@ -86,7 +86,7 @@ class WebsocketTest {
     } teardown { result ->
         result?.let { (session) ->
             session.forEach { it.close() }
-            sdk.partyRepository.delete(tribe.id)
+            sdk.partyRepository.deleteIt(tribe.id)
         }
     }
 
@@ -110,7 +110,7 @@ class WebsocketTest {
             )
     } teardown { result ->
         result?.forEach { it.close() }
-        sdk.partyRepository.delete(tribe.id)
+        sdk.partyRepository.deleteIt(tribe.id)
     }
 
     private suspend fun DefaultClientWebSocketSession.readTextFrame() = (incoming.receive() as? Frame.Text)?.readText()
@@ -134,7 +134,7 @@ class WebsocketTest {
             .assertIsEqualTo(PairAssignmentAdjustmentMessage(expectedPairDoc))
     } teardown {
         sockets.forEach { it.close() }
-        sdk.partyRepository.delete(tribe.id)
+        sdk.partyRepository.deleteIt(tribe.id)
     }
 
     private suspend fun DefaultClientWebSocketSession.alsoWaitForFirstFrame() = also {
@@ -164,7 +164,7 @@ class WebsocketTest {
             )
     } teardown { openSocket ->
         openSocket?.close()
-        sdk.partyRepository.delete(tribe.id)
+        sdk.partyRepository.deleteIt(tribe.id)
     }
 
     @Test
@@ -215,7 +215,7 @@ class WebsocketTest {
                 .assertIsNotEqualTo(null)
         }
     } teardown {
-        sdk.partyRepository.delete(tribe.id)
+        sdk.partyRepository.deleteIt(tribe.id)
     }
 }
 

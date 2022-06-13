@@ -9,6 +9,6 @@ class CompoundPartyRepository(private val repository1: PartyRepository, private 
 
     override suspend fun save(party: Party) = arrayOf(repository1, repository2).forEach { it.save(party) }
 
-    override suspend fun delete(tribeId: PartyId) = repository1.delete(tribeId)
-        .also { repository2.delete(tribeId) }
+    override suspend fun deleteIt(tribeId: PartyId) = repository1.deleteIt(tribeId)
+        .also { repository2.deleteIt(tribeId) }
 }

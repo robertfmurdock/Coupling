@@ -6,5 +6,5 @@ interface PartyIdDeleteSyntax {
 
     val partyRepository: PartyDelete
 
-    suspend fun PartyId.delete() = partyRepository.delete(this)
+    suspend fun PartyId.deleteIt() = partyRepository.deleteIt(this)
 }

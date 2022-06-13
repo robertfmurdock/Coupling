@@ -7,6 +7,6 @@ interface CouplingConnectionDeleteSyntax {
     val liveInfoRepository: LiveInfoRepository
 
     suspend fun deleteConnection(partyId: PartyId, connectionId: String) {
-        liveInfoRepository.delete(partyId, connectionId)
+        liveInfoRepository.deleteIt(partyId, connectionId)
     }
 }

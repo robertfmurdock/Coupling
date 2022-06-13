@@ -52,7 +52,7 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
         repository.save(altTribe)
         clock.currentTime = updatedSaveTime
         repository.save(updatedTribe)
-        repository.delete(altTribe.id)
+        repository.deleteIt(altTribe.id)
     } verifyWithWaitAnd {
         repository.getTribeRecords()
             .assertContains(Record(tribe, user.email, false, initialSaveTime))
@@ -60,8 +60,8 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
             .assertContains(Record(updatedTribe, user.email, false, updatedSaveTime))
             .assertContains(Record(altTribe, user.email, true, updatedSaveTime))
     } teardown {
-        repository.delete(tribe.id)
-        repository.delete(altTribe.id)
+        repository.deleteIt(tribe.id)
+        repository.deleteIt(altTribe.id)
     }
 
     @Test
@@ -80,7 +80,7 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
         }
     } teardown {
         records.forEach {
-            repository.delete(it.data.id)
+            repository.deleteIt(it.data.id)
         }
     }
 }

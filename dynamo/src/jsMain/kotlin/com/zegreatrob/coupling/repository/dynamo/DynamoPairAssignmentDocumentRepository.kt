@@ -46,7 +46,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         .map { toRecord(it) }
         .maxByOrNull { it.data.document.date }
 
-    override suspend fun delete(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
+    override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
         performDelete(
             pairAssignmentDocumentId.value, partyId, now(), ::toRecord
         ) { asDynamoJson() }
