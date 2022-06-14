@@ -28,10 +28,10 @@ kotlin {
 
 dependencies {
     "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:8.0.0"))
-    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.4.1"))
+    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.4.2"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.3"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.2"))
-    "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.344"))
+    "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.345"))
 }
 
 tasks.withType(KotlinJsTest::class).configureEach {
