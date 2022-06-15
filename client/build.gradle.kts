@@ -1,11 +1,20 @@
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import java.io.ByteArrayOutputStream
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.coupling.plugins.serialization")
+}
+
+rootProject.extensions.configure<NodeJsRootExtension> {
+    val libs = jstools.packageJson.dependencies()?.toMap()!!
+    versions.webpack.version = libs["webpack"]!!.asText()
+    versions.webpackCli.version = libs["webpack-cli"]!!.asText()
+    versions.karma.version = libs["karma"]!!.asText()
 }
 
 kotlin {
