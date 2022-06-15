@@ -70,7 +70,7 @@ object TestLogin : BrowserSyntax {
 
         setAuth0CacheInLocalStorage(key, auth0Cache)
         WebdriverBrowser.setUrl("")
-        TribeListPage.waitForPage()
+        PartyListPage.waitForPage()
 
         clearLogs()
     }

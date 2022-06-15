@@ -50,13 +50,13 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer()
         ) {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
-            TribeCard.element().click()
+            PartyCard.element().click()
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/pairAssignments/current/"))
+                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
         }
 
         @Test
@@ -65,10 +65,10 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer()
         ) {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().setValue("completely different name")
         } exercise {
-            TribeCard.element().click()
+            PartyCard.element().click()
 //            WebdriverBrowser.waitForAlert()
 //            WebdriverBrowser.alertText().also {
 //                WebdriverBrowser.acceptAlert()
@@ -86,18 +86,18 @@ class PlayerConfigPageE2ETest {
             }.attachPlayer()
         ) {
             with(page) {
-                goTo(tribe.id, player.id)
+                goTo(party.id, player.id)
                 playerNameTextField().setValue(newName)
                 saveButton.click()
                 waitForSaveToComplete(newName)
             }
         } exercise {
-            TribeCard.element().click()
+            PartyCard.element().click()
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/pairAssignments/current/"))
-            PlayerConfigPage.goTo(tribe.id, player.id)
+                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
+            PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().attribute("value")
                 .assertIsEqualTo(newName)
         }
@@ -108,19 +108,19 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer()
         ) {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().clearSetValue(" ")
             PlayerConfigPage.playerNameTextField().clearSetValue("")
             saveButton.click()
             PlayerConfigPage.waitForSaveToComplete("Unknown")
             PlayerConfigPage.waitForPage()
         } exercise {
-            TribeCard.element().click()
+            PartyCard.element().click()
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/pairAssignments/current/"))
-            PlayerConfigPage.goTo(tribe.id, player.id)
+                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
+            PlayerConfigPage.goTo(party.id, player.id)
             header.text()
                 .assertIsEqualTo("Unknown")
         }
@@ -131,12 +131,12 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer()
         ) {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
             deleteButton.click()
             WebdriverBrowser.acceptAlert()
         } verify {
-            page.waitToArriveAt(resolve(clientBasename, "${tribe.id.value}/pairAssignments/current/"))
+            page.waitToArriveAt(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
         }
 
         @Test
@@ -145,9 +145,9 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer()
         ) {
-            sdk.partyRepository.save(tribe.copy(badgesEnabled = false))
+            sdk.partyRepository.save(party.copy(badgesEnabled = false))
         } exercise {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
         } verify {
             PlayerConfigPage.defaultBadgeOption().isPresent()
                 .assertIsEqualTo(false)
@@ -208,7 +208,7 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer()
         ) exercise {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
         } verify {
             PlayerConfigPage.defaultBadgeOption().isDisplayed()
                 .assertIsEqualTo(true)
@@ -228,7 +228,7 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer()
         ) exercise {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
         } verify {
             PlayerConfigPage.defaultBadgeOption().isSelected()
                 .assertIsEqualTo(true)
@@ -240,13 +240,13 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer()
         ) {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
             PlayerConfigPage.altBadgeOption().click()
             saveButton.click()
             PlayerConfigPage.waitForSaveToComplete(player.name)
         } verify {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.altBadgeOption().isSelected()
                 .assertIsEqualTo(true)
         }
@@ -277,14 +277,14 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer()
         ) {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
             PlayerConfigPage.adjectiveTextInput().clearSetValue("Superior")
             PlayerConfigPage.nounTextInput().clearSetValue("Spider-Man")
             saveButton.click()
             PlayerConfigPage.waitForSaveToComplete(player.name)
         } verify {
-            PlayerConfigPage.goTo(tribe.id, player.id)
+            PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.adjectiveTextInput().attribute("value")
                 .assertIsEqualTo("Superior")
             PlayerConfigPage.nounTextInput().attribute("value")
@@ -296,16 +296,16 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun willSuggestCallSign() = e2eSetup(object {
-            val tribe = Party(
+            val party = Party(
                 id = PartyId("${randomInt()}-WithOneTribeNoPlayers"),
                 callSignsEnabled = true
             )
         }) {
             sdkProvider.await().apply {
-                tribe.save()
+                party.save()
             }
         } exercise {
-            PlayerConfigPage.goToNew(tribe.id)
+            PlayerConfigPage.goToNew(party.id)
         } verify {
             PlayerConfigPage.adjectiveTextInput().attribute("value")
                 .assertIsNotEqualTo("")

@@ -20,7 +20,7 @@ interface PartyListQueryDispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerI
         .successResult()
 
     private suspend fun getPartiesAndUserPlayerIds() = getPartiesAndPlayersDeferred()
-        .let { (tribeDeferred, playerDeferred) -> tribeDeferred.await() to playerDeferred.await() }
+        .let { (partyDeferred, playerDeferred) -> partyDeferred.await() to playerDeferred.await() }
 
     private suspend fun getPartiesAndPlayersDeferred() = coroutineScope {
         async { getPartyRecords() } to async { getUserPlayerIds() }

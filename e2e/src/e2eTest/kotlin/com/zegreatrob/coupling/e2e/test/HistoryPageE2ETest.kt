@@ -17,6 +17,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlin.test.Test
 
+@Suppress("unused")
 class HistoryPageE2ETest {
 
     class Context(val pairAssignments: List<PairAssignmentDocument>) {
@@ -26,14 +27,14 @@ class HistoryPageE2ETest {
     class WithTwoAssignments {
         companion object {
             private val historyPageSetup = e2eSetup.extend(beforeAll = {
-                val tribe = buildParty()
+                val party = buildParty()
                 val sdk = sdkProvider.await().apply {
-                    tribe.save()
+                    party.save()
                 }
 
-                val pairAssignments = setupTwoPairAssignments(tribe, sdk)
+                val pairAssignments = setupTwoPairAssignments(party, sdk)
 
-                HistoryPage.goTo(tribe.id)
+                HistoryPage.goTo(party.id)
                 Context(pairAssignments)
             })
 

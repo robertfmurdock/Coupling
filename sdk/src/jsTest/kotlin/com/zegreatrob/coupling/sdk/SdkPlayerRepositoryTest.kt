@@ -43,20 +43,20 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                 val partyId = parent.partyId
 
                 val player1 = stubPlayer()
-                val tribeId2 = stubPartyId()
+                val partyId2 = stubPartyId()
                 val player2 = player1.copy(id = player1.id)
             }
         }) {
-            sdk.partyRepository.save(stubParty().copy(id = tribeId2))
+            sdk.partyRepository.save(stubParty().copy(id = partyId2))
             repository.save(partyId.with(player1))
-            repository.save(tribeId2.with(player2))
+            repository.save(partyId2.with(player2))
         } exercise {
             repository.getPlayers(partyId)
         } verifyAnd { result ->
             result.map { it.data.player }
                 .assertIsEqualTo(listOf(player1))
         } teardown {
-            sdk.partyRepository.deleteIt(tribeId2)
+            sdk.partyRepository.deleteIt(partyId2)
         }
 
     override fun deletedPlayersIncludeModificationDateAndUsername() =

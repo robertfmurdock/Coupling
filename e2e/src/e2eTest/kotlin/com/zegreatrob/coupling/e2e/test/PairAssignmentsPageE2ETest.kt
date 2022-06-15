@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.e2e.test.ConfigHeader.retiredPlayersButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.statisticsButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.viewHistoryButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.e2e.test.TribeCard.header
+import com.zegreatrob.coupling.e2e.test.PartyCard.header
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair

@@ -39,7 +39,7 @@ class RetiredPlayerPageE2ETest {
     } verify {
         PlayerCard.playerElements.map { it.text() }.toList()
             .assertIsEqualTo(retiredPlayers.map { it.name })
-        TribeCard.element().text()
+        PartyCard.element().text()
             .assertIsEqualTo(tribe.name)
     }
 }

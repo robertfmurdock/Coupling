@@ -155,10 +155,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("curry", name = "Curly"),
             Player("moe", name = "Moe")
         )
-        val party = Party(
-            PartyId("2"),
-            name = "Mathematica"
-        )
+        val party = Party(PartyId("2"), name = "Mathematica")
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),

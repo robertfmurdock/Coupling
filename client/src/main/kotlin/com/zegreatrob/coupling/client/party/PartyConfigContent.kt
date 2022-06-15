@@ -38,7 +38,7 @@ data class PartyConfigContent(
     var onDelete: (() -> Unit)?,
 ) : DataPropsBind<PartyConfigContent>(partyConfigContent)
 
-private val styles = useStyles("party/TribeConfig")
+private val styles = useStyles("party/PartyConfig")
 
 val partyConfigContent = tmFC<PartyConfigContent> { (party, isNew, onChange, onSave, onDelete) ->
     ConfigFrame {

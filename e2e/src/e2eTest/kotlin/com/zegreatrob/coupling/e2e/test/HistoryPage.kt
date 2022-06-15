@@ -13,8 +13,8 @@ object HistoryPage : StyleSyntax {
     val pairAssignments = WebdriverElementArray(By.className(styles["pairAssignments"]))
     val deleteButtons = WebdriverElementArray(By.className(styles["deleteButton"]))
 
-    suspend fun goTo(tribeId: PartyId) {
-        WebdriverBrowser.setLocation("/${tribeId.value}/history")
+    suspend fun goTo(partyId: PartyId) {
+        WebdriverBrowser.setLocation("/${partyId.value}/history")
         waitForPage()
     }
 

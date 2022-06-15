@@ -6,8 +6,8 @@ import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 object RetiredPlayersPage : StyleSyntax {
     override val styles = loadStyles("player/RetiredPlayers")
 
-    suspend fun goTo(tribeId: PartyId) {
-        WebdriverBrowser.setLocation("/${tribeId.value}/players/retired")
+    suspend fun goTo(partyId: PartyId) {
+        WebdriverBrowser.setLocation("/${partyId.value}/players/retired")
         waitForPage()
     }
 

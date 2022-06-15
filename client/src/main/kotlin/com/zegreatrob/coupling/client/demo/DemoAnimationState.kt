@@ -135,7 +135,7 @@ fun makePinSequence() = pins.flatMapIndexed { pinIndex, pin ->
 private fun String?.rangeOfStringLength() = (0..(this ?: "").length)
 
 data class MakeParty(val party: Party) : DemoAnimationState() {
-    override val descriptionSelector = ".${useStyles("party/TribeConfig").className} input[name=name]"
+    override val descriptionSelector = ".${useStyles("party/PartyConfig").className} input[name=name]"
     override val placement = Placement.bottomStart
     override val description = """
 

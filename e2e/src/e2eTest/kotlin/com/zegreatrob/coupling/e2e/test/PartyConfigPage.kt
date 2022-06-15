@@ -5,8 +5,8 @@ import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 
-object TribeConfigPage : StyleSyntax {
-    override val styles = loadStyles("party/TribeConfig")
+object PartyConfigPage : StyleSyntax {
+    override val styles = loadStyles("party/PartyConfig")
 
     fun getTribeNameInput() = WebdriverElement(By.id("tribe-name"))
     fun getTribeEmailInput() = WebdriverElement(By.id("tribe-email"))

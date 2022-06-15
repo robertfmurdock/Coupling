@@ -13,8 +13,8 @@ object PrepareToSpinPage : StyleSyntax {
 
     val selectedPinElements get() = selectedPins.all(PinButton.pinButtonLocator)
 
-    suspend fun goTo(tribeId: PartyId) {
-        WebdriverBrowser.setLocation("/${tribeId.value}/prepare/")
+    suspend fun goTo(partyId: PartyId) {
+        WebdriverBrowser.setLocation("/${partyId.value}/prepare/")
         waitForPage()
     }
 

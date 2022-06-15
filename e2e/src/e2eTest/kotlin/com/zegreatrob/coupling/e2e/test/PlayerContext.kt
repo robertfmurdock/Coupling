@@ -7,11 +7,11 @@ import com.zegreatrob.coupling.sdk.Sdk
 fun <C1 : PlayerContext> C1.attachPlayer(): suspend (Triple<Player, Party, Sdk>) -> C1 = { triple ->
     also {
         player = triple.first
-        tribe = triple.second
+        party = triple.second
         sdk = triple.third
     }
 }
 
-abstract class PlayerContext : TribeContext() {
+abstract class PlayerContext : PartyContext() {
     lateinit var player: Player
 }

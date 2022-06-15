@@ -23,7 +23,7 @@ import react.router.dom.Link
 
 data class PartyList(val parties: List<Party>) : DataPropsBind<PartyList>(partyList)
 
-private val styles = useStyles("party/TribeList")
+private val styles = useStyles("party/PartyList")
 
 val partyList = tmFC<PartyList> { (parties) ->
     child(
@@ -50,7 +50,7 @@ val partyList = tmFC<PartyList> { (parties) ->
                 child(PartyCard(party), key = party.id.value)
             }
         }
-        div { newPartyButton(styles["newTribeButton"]) }
+        div { newPartyButton(styles["newPartyButton"]) }
     }
 }
 

@@ -9,23 +9,23 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 
 @Suppress("unused")
-class TribeConfigPageE2ETest {
+class PartyConfigPageE2ETest {
 
-    class GivenExistingTribe {
+    class GivenExistingParty {
 
         @Test
         fun canSaveEditsCorrectly() = sdkSetup(object : BrowserSyntax, SdkContext() {
-            val tribe = buildParty()
+            val party = buildParty()
             val expectedNewName = "Different name"
             val expectedDefaultBadgeName = "New Default Badge Name"
             val expectedAltBadgeName = "New Alt Badge Name"
             val expectedCallSignSelection = "true"
             val expectedBadgeSelection = "true"
-            val page = TribeConfigPage
+            val page = PartyConfigPage
         }) {
-            sdk.partyRepository.save(tribe)
+            sdk.partyRepository.save(party)
             with(page) {
-                goTo(tribe.id)
+                goTo(party.id)
 
                 getTribeNameInput().clearSetValue(expectedNewName)
                 getCallSignCheckbox().click()
@@ -36,8 +36,8 @@ class TribeConfigPageE2ETest {
             }
         } exercise {
             saveButton.click()
-            TribeListPage.waitForPage()
-            TribeConfigPage.goTo(tribe.id)
+            PartyListPage.waitForPage()
+            PartyConfigPage.goTo(party.id)
         } verify {
             with(page) {
                 getTribeNameInput().attribute("value")
@@ -57,34 +57,34 @@ class TribeConfigPageE2ETest {
 
         @Test
         fun showsBasicInformation() = sdkSetup(object : SdkContext() {
-            val tribe = buildParty().copy(email = "${randomInt()}-email")
-            val page = TribeConfigPage
+            val party = buildParty().copy(email = "${randomInt()}-email")
+            val page = PartyConfigPage
         }) {
-            sdk.partyRepository.save(tribe)
+            sdk.partyRepository.save(party)
         } exercise {
-            TribeConfigPage.goTo(tribe.id)
+            PartyConfigPage.goTo(party.id)
         } verify {
             with(page) {
                 getTribeNameInput().attribute("value")
-                    .assertIsEqualTo(tribe.name)
+                    .assertIsEqualTo(party.name)
                 getTribeEmailInput().attribute("value")
-                    .assertIsEqualTo(tribe.email)
+                    .assertIsEqualTo(party.email)
             }
         }
 
         @Test
         fun canDeleteParty() = sdkSetup(object : SdkContext() {
-            val tribe = buildParty()
+            val party = buildParty()
         }) {
-            sdk.partyRepository.save(tribe)
-            TribeConfigPage.goTo(tribe.id)
+            sdk.partyRepository.save(party)
+            PartyConfigPage.goTo(party.id)
         } exercise {
             deleteButton.click()
-            TribeListPage.waitForPage()
+            PartyListPage.waitForPage()
         } verify {
-            TribeListPage.tribeCardElements
+            PartyListPage.partyCardElements
                 .map { it.text() }
-                .contains(tribe.name)
+                .contains(party.name)
                 .assertIsEqualTo(false)
         }
 
@@ -98,7 +98,7 @@ class TribeConfigPageE2ETest {
 
     class NewTribe {
         @Test
-        fun idFieldShowsAndPersistsAsTextIsAdded() = e2eSetup(TribeConfigPage) {
+        fun idFieldShowsAndPersistsAsTextIsAdded() = e2eSetup(PartyConfigPage) {
             goToNew()
         } exercise {
             getTribeIdInput().clearSetValue("oopsie")
@@ -108,7 +108,7 @@ class TribeConfigPageE2ETest {
         }
 
         @Test
-        fun willDefaultPairingRuleToLongestTime() = e2eSetup(TribeConfigPage) exercise {
+        fun willDefaultPairingRuleToLongestTime() = e2eSetup(PartyConfigPage) exercise {
             goToNew()
         } verify {
             getCheckedOption().attribute("label")

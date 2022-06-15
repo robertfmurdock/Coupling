@@ -10,18 +10,18 @@ import kotlin.test.Test
 class StatisticsE2ETest {
     @Test
     fun pageShowsImportantElements() = sdkSetup(object : SdkContext() {
-        val tribe = Party(PartyId("${randomInt()}-statsE2E"), name = "Funkytown")
+        val party = Party(PartyId("${randomInt()}-statsE2E"), name = "Funkytown")
         val players = generateSequence { Player(id = "${randomInt()}-statsE2E") }
             .take(6).toList()
     }) {
-        sdk.partyRepository.save(tribe)
-        players.forEach { player -> sdk.playerRepository.save(tribe.id.with(player)) }
+        sdk.partyRepository.save(party)
+        players.forEach { player -> sdk.playerRepository.save(party.id.with(player)) }
     } exercise {
-        StatisticsPage.goTo(tribe.id)
+        StatisticsPage.goTo(party.id)
     } verify {
         with(StatisticsPage) {
-            TribeCard.element().text()
-                .assertIsEqualTo(tribe.name)
+            PartyCard.element().text()
+                .assertIsEqualTo(party.name)
             rotationNumber.text()
                 .assertIsEqualTo("5")
             pairReport.count()

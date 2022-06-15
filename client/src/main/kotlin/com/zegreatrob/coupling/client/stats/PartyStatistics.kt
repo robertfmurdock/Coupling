@@ -22,7 +22,7 @@ external val formatDistanceModule: dynamic
 
 val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> String>()
 
-private val styles = useStyles("stats/TribeStatistics")
+private val styles = useStyles("stats/PartyStatistics")
 
 data class PartyStatistics(val queryResults: StatisticQueryResults) : DataPropsBind<PartyStatistics>(partyStatistics)
 

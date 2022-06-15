@@ -37,19 +37,19 @@ class PinConfigE2ETest {
 
     @Test
     fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = tribeSetup.with(
-        object : TribeContext() {
+        object : PartyContext() {
             val newPinName = "Excellent pin name${randomInt()}"
         }.attachParty()
     ) {
         with(PinConfigPage) {
-            tribe.id.goToNew()
+            party.id.goToNew()
             getNameTextField().setValue(newPinName)
         }
     } exercise {
         saveButton.click()
     } verify {
         with(PinConfigPage) {
-            waitForPinNameToAppear(newPinName, tribe.id)
+            waitForPinNameToAppear(newPinName, party.id)
             pinBagPinNames()
                 .assertContains(newPinName)
         }
@@ -68,13 +68,13 @@ class PinConfigE2ETest {
 
         @Test
         fun attributesAreShownOnConfig() = tribeSetup.with(
-            object : TribeContext() {
+            object : PartyContext() {
                 val pin = randomPin()
             }.attachParty()
         ) {
-            sdk.pinRepository.save(tribe.id.with(pin))
+            sdk.pinRepository.save(party.id.with(pin))
         } exercise {
-            PinConfigPage.goTo(tribe.id, pin.id)
+            PinConfigPage.goTo(party.id, pin.id)
         } verify {
             with(PinConfigPage) {
                 getNameTextField().attribute("value")
@@ -86,12 +86,12 @@ class PinConfigE2ETest {
 
         @Test
         fun clickingDeleteWillRemovePinFromPinList() = tribeSetup.with(
-            object : TribeContext() {
+            object : PartyContext() {
                 val pin = randomPin()
             }.attachParty()
         ) {
-            sdk.pinRepository.save(tribe.id.with(pin))
-            PinConfigPage.goTo(tribe.id, pin.id)
+            sdk.pinRepository.save(party.id.with(pin))
+            PinConfigPage.goTo(party.id, pin.id)
         } exercise {
             deleteButton.click()
             WebdriverBrowser.acceptAlert()
