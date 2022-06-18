@@ -24,7 +24,7 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("org.jetbrains.kotlinx:atomicfu:0.17.3")
+                implementation("org.jetbrains.kotlinx:atomicfu:0.18.0")
                 implementation("org.jetbrains.kotlin:atomicfu:1.6.21")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
                 implementation("io.ktor:ktor-client-core:2.0.2")
