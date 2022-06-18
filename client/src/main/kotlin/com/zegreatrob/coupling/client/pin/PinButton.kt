@@ -1,23 +1,15 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.CssBuilder
-import kotlinx.css.borderRadius
-import kotlinx.css.borderWidth
-import kotlinx.css.height
-import kotlinx.css.lineHeight
-import kotlinx.css.padding
-import kotlinx.css.properties.LineHeight
-import kotlinx.css.px
-import kotlinx.css.width
-import kotlinx.html.classes
-import kotlinx.html.js.onClickFunction
+import csstype.PropertiesBuilder
+import csstype.px
+import emotion.css.ClassName
+import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
 
@@ -38,13 +30,12 @@ data class PinButton(
 private val styles = useStyles("pin/PinButton")
 
 val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClick) ->
-    cssDiv(
-        attrs = {
-            classes = (classes + setOf(className, styles.className).map(Any::toString))
-            onClickFunction = { onClick() }
-        },
-        css = { scaledStyles(scale) }
-    ) {
+    div {
+        this.className = ClassName(ClassName(className), styles.className) {
+            scaledStyles(scale)
+        }
+        this.onClick = { onClick() }
+
         if (showTooltip) {
             span {
                 this.className = styles["tooltip"]
@@ -55,11 +46,11 @@ val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClick) 
     }
 }
 
-private fun CssBuilder.scaledStyles(scale: PinButtonScale) {
-    padding((3.2 * scale.factor).px)
+private fun PropertiesBuilder.scaledStyles(scale: PinButtonScale) {
+    padding = ((3.2 * scale.factor).px)
     borderWidth = (2 * scale.factor).px
     borderRadius = (12 * scale.factor).px
-    lineHeight = LineHeight((4.6 * scale.factor).px.value)
+    lineHeight = (4.6 * scale.factor).px
     height = scale.diameterInPixels().px
     width = scale.diameterInPixels().px
 }

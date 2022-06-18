@@ -2,13 +2,9 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.DataPropsBridge
-import com.zegreatrob.minreact.TMFC
-import com.zegreatrob.minreact.tmFC
 import kotlinx.css.CssBuilder
 import kotlinx.css.RuleSet
 import kotlinx.html.BUTTON
-import kotlinx.html.DIV
-import kotlinx.html.H1
 import kotlinx.html.SPAN
 import kotlinx.html.Tag
 import org.w3c.dom.Node
@@ -28,17 +24,7 @@ import react.ref
 import styled.StyledDOMBuilder
 import styled.css
 import styled.styledButton
-import styled.styledDiv
-import styled.styledH1
 import styled.styledSpan
-
-inline fun <reified P : DataProps<P>> reactFunction(crossinline function: RBuilder.(P) -> Unit): TMFC<P> =
-    tmFC { props ->
-        RBuilder()
-            .apply { function(props) }
-            .childList
-            .forEach { child(it) }
-    }
 
 fun <P : Props> RBuilder.child(
     clazz: ElementType<P>,
@@ -100,20 +86,6 @@ fun ChildrenBuilder.cssSpan(
     css: CssBuilder.() -> Unit,
     builder: (ChildrenBuilder).() -> Unit = {}
 ) = +bridge(RBuilder::styledSpan, attrs, props, css = css, builder = builder)
-
-fun ChildrenBuilder.cssDiv(
-    attrs: DIV.() -> Unit = {},
-    props: DOMProps.() -> Unit = {},
-    css: CssBuilder.() -> Unit,
-    builder: ChildrenBuilder.() -> Unit = {}
-) = +bridge(RBuilder::styledDiv, attrs, props, css = css, builder = builder)
-
-fun ChildrenBuilder.cssH1(
-    attrs: H1.() -> Unit = {},
-    props: DOMProps.() -> Unit = {},
-    css: CssBuilder.() -> Unit,
-    builder: (ChildrenBuilder).() -> Unit = {}
-) = +bridge(RBuilder::styledH1, attrs, props, css = css, builder = builder)
 
 fun ChildrenBuilder.cssButton(
     attrs: BUTTON.() -> Unit = {},

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCard
@@ -9,11 +8,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.WhiteSpace
-import kotlinx.css.flexShrink
-import kotlinx.css.whiteSpace
-import kotlinx.html.classes
+import csstype.number
+import emotion.css.ClassName
 import react.ChildrenBuilder
+import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.key
 
@@ -23,10 +21,11 @@ data class PlayerHeatmap(val players: List<Player>, val heatmapData: List<List<D
 private val styles = useStyles("stats/PlayerHeatmap")
 
 val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
-    cssDiv(css = {
-        whiteSpace = WhiteSpace.nowrap
-        flexShrink = 0.0
-    }, attrs = { classes = setOf("${styles["rightSection"]}") }) {
+    ReactHTML.div {
+        className = ClassName(styles["rightSection"]) {
+            whiteSpace = csstype.WhiteSpace.nowrap
+            flexShrink = number(0.0)
+        }
         div {
             className = styles["heatmapPlayersTopRow"]
             div { className = styles["spacer"] }

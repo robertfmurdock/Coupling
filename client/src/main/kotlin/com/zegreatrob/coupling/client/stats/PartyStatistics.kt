@@ -2,19 +2,14 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.PageFrame
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.Color
-import kotlinx.css.Display
-import kotlinx.css.WhiteSpace
-import kotlinx.css.display
-import kotlinx.css.flexGrow
-import kotlinx.css.whiteSpace
-import kotlinx.html.classes
+import csstype.number
+import emotion.css.ClassName
+import emotion.react.css
 import react.dom.html.ReactHTML.div
 
 @JsModule("date-fns/formatDistance")
@@ -31,22 +26,27 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div {
         className = styles.className
-        child(PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9"))) {
+        child(PageFrame(borderColor = csstype.Color("#e8e8e8"), backgroundColor = csstype.Color("#dcd9d9"))) {
             ConfigHeader {
                 this.party = party
                 +"Statistics"
             }
-            cssDiv(css = {
-                whiteSpace = WhiteSpace.nowrap
-                display = Display.inlineFlex
-            }) {
-                cssDiv(css = { flexGrow = 0.0 }, attrs = { classes = setOf("${styles["leftSection"]}") }) {
+            div {
+                css {
+                    whiteSpace = csstype.WhiteSpace.nowrap
+                    display = csstype.Display.inlineFlex
+                }
+                div {
+                    className = ClassName(styles["leftSection"]) {
+                        flexGrow = number(0.0)
+                    }
                     div {
                         child(
                             TeamStatistics(
                                 spinsUntilFullRotation = spinsUntilFullRotation,
                                 activePlayerCount = players.size,
-                                medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) } ?: ""
+                                medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) }
+                                    ?: ""
                             )
                         )
                     }

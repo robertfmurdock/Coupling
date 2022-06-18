@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.demo
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.aboutPageContent
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.pairassignments.PairAssignments
@@ -16,20 +15,13 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.testmints.action.async.SuspendAction
+import csstype.Auto
+import csstype.Color
+import csstype.None
+import csstype.Position
+import csstype.vw
+import emotion.react.css
 import kotlinx.browser.document
-import kotlinx.css.Color
-import kotlinx.css.Display
-import kotlinx.css.LinearDimension
-import kotlinx.css.PointerEvents
-import kotlinx.css.Position
-import kotlinx.css.backgroundColor
-import kotlinx.css.display
-import kotlinx.css.marginLeft
-import kotlinx.css.marginRight
-import kotlinx.css.pointerEvents
-import kotlinx.css.position
-import kotlinx.css.vw
-import kotlinx.css.width
 import kotlinx.js.jso
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
@@ -66,17 +58,19 @@ private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
 
     div {
         popperDiv(popperRef, arrowRef, state, popperInstance)
-        cssDiv(css = {
-            position = Position.absolute
-            backgroundColor = Color("#e3002b61")
-            width = 100.vw
-            marginLeft = LinearDimension.auto
-            marginRight = LinearDimension.auto
-        }) {
+        div {
+            css {
+                position = Position.absolute
+                backgroundColor = Color("#e3002b61")
+                width = 100.vw
+                marginLeft = Auto.auto
+                marginRight = Auto.auto
+            }
             +"-- DEMO MODE -- ALL BUTTONS WILL NOT WORK -- DON'T GET IT TWISTED --"
         }
 
-        cssDiv(css = { pointerEvents = PointerEvents.none }) {
+        div {
+            css { pointerEvents = None.none }
             when (state) {
                 is Start -> aboutPageContent { Markdown { +state.text } }
                 is ShowIntro -> aboutPageContent { Markdown { +state.text } }
@@ -109,9 +103,10 @@ private fun ChildrenBuilder.popperDiv(
     arrowRef: MutableRefObject<HTMLElement>,
     state: DemoAnimationState,
     popperInstance: PopperInstance
-) = cssDiv(css = {
-    if (state.description.isBlank()) display = Display.none
-}) {
+) = div {
+    css {
+        if (state.description.isBlank()) display = None.none
+    }
     div {
         className = styles["popper"]
         ref = popperRef

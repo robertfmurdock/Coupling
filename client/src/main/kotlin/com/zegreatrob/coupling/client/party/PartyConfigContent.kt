@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.Editor
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -14,9 +13,8 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.Color
-import kotlinx.css.Display
-import kotlinx.css.display
+import csstype.Color
+import emotion.react.css
 import org.w3c.dom.HTMLSelectElement
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
@@ -50,7 +48,8 @@ val partyConfigContent = tmFC<PartyConfigContent> { (party, isNew, onChange, onS
             this.party = party
             +"Party Configuration"
         }
-        cssDiv(css = { display = Display.flex }) {
+        div {
+            css { display = csstype.Display.flex }
             partyConfigEditor(party, isNew ?: false, onChange, onSave, onDelete)
             child(PartyCard(party))
         }

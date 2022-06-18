@@ -1,24 +1,21 @@
 package com.zegreatrob.coupling.client
 
-import kotlinx.css.em
-import kotlinx.css.marginLeft
-import kotlinx.css.marginRight
-import kotlinx.html.tabIndex
+import csstype.em
+import emotion.react.css
+import react.FC
 import react.Props
-import react.dom.attrs
-import react.fc
-import styled.css
-import styled.styledA
+import react.dom.html.AnchorTarget
+import react.dom.html.ReactHTML.a
 
-val gravatarLink = fc<Props> {
-    styledA(href = "https://en.gravatar.com/", target = "_blank") {
+val gravatarLink = FC<Props> {
+    a {
         css {
             marginLeft = 0.4.em
             marginRight = 0.4.em
         }
-        attrs {
-            tabIndex = "-1"
-        }
+        href = "https://en.gravatar.com/"
+        target = AnchorTarget._blank
+        tabIndex = -1
         +"Gravatar"
     }
 }

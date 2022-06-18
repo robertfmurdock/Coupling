@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
@@ -13,10 +12,9 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.Display
-import kotlinx.css.Visibility
-import kotlinx.css.display
-import kotlinx.css.visibility
+import csstype.Display
+import csstype.Visibility
+import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.key
@@ -63,13 +61,16 @@ private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
 }
 
 private fun ChildrenBuilder.placeholderPlayerCard() =
-    cssDiv(css = { visibility = Visibility.hidden; display = Display.inlineBlock }) {
+    div {
+        css { visibility = Visibility.hidden; display = Display.inlineBlock }
         flippedPlayer(placeholderPlayer)
     }
 
 private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) = Flipped {
     flipId = player.id
-    cssDiv(props = { this.key = key ?: "" }, css = { display = Display.inlineBlock }) {
+    div {
+        this.key = key ?: ""
+        css { display = Display.inlineBlock }
         child(PlayerCard(player))
     }
 }

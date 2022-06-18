@@ -6,16 +6,14 @@ import kotlinx.browser.window
 import org.w3c.dom.Document
 import org.w3c.dom.get
 import react.create
-import react.dom.render
+import react.dom.client.createRoot
 
 object App {
 
     fun bootstrapApp() {
         initializeLogging(developmentMode = false)
-        render(
-            element = RootComponent.create { this.clientConfig = windowClientConfig() },
-            container = document.viewContainerNode
-        )
+        createRoot(document.viewContainerNode)
+            .render(RootComponent.create { this.clientConfig = windowClientConfig() })
     }
 
     private val Document.viewContainerNode get() = getElementsByClassName("view-container")[0]!!

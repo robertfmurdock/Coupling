@@ -8,12 +8,11 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.properties.Angle
 
 data class DraggablePlayer(
     val pinnedPlayer: PinnedPlayer,
     val zoomOnHover: Boolean,
-    val tilt: Angle,
+    val tilt: csstype.Angle,
     val onPlayerDrop: (String) -> Unit
 ) : DataPropsBind<DraggablePlayer> (draggablePlayer)
 

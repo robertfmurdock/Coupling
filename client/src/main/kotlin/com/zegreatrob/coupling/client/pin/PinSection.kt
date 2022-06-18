@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.marginLeft
-import kotlinx.css.px
-import kotlinx.html.classes
+import csstype.px
+import csstype.unaryMinus
+import emotion.css.ClassName
+import react.dom.html.ReactHTML.div
 
 data class PinSection(
     val pinList: List<Pin>,
@@ -21,10 +21,10 @@ data class PinSection(
 private val styles = useStyles("pin/PinSection")
 
 val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
-    cssDiv(
-        attrs = { classes = classes + styles.className.toString() + className.toString() },
-        css = { marginLeft = -(pinList.size * 12 * scale.factor).px }
-    ) {
+    div {
+        this.className = ClassName(styles.className, className) {
+            marginLeft = -(pinList.size * 12 * scale.factor).px
+        }
         pinList.map { pin ->
             if (canDrag)
                 child(DraggablePinButton(pin, scale))

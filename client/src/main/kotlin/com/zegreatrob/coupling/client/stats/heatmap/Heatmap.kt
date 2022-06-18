@@ -1,18 +1,14 @@
 package com.zegreatrob.coupling.client.stats.heatmap
 
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.WhiteSpace
-import kotlinx.css.height
-import kotlinx.css.px
-import kotlinx.css.whiteSpace
-import kotlinx.css.width
-import kotlinx.html.classes
+import csstype.WhiteSpace
+import csstype.px
+import emotion.css.ClassName
 import org.w3c.dom.Node
-import react.ref
+import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
 import react.useRef
 
@@ -28,15 +24,14 @@ val heatmap = tmFC<Heatmap> { (data, className) ->
     val rootRef = useRef<Node>(null)
     useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }
 
-    cssDiv(
-        attrs = { classes = classes + styles.className.toString() + className },
-        props = { ref = rootRef },
-        css = {
+    div {
+        this.className = ClassName(styles.className, csstype.ClassName(className)) {
             width = rowSize.px
             height = rowSize.px
             whiteSpace = WhiteSpace.normal
         }
-    )
+        ref = rootRef
+    }
 }
 
 private fun Node.renderD3Heatmap(flatten: List<Double?>) {

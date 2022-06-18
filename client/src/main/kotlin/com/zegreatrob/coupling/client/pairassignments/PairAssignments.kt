@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.pink
@@ -26,38 +25,28 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.Border
+import csstype.BoxShadow
 import csstype.ClassName
+import csstype.Display
+import csstype.FontSize
+import csstype.FontWeight
+import csstype.LineStyle
+import csstype.Margin
+import csstype.NamedColor
+import csstype.Padding
+import csstype.VerticalAlign
+import csstype.px
+import csstype.rgb
+import csstype.rgba
+import emotion.react.css
 import kotlinx.browser.window
-import kotlinx.css.Color
-import kotlinx.css.Display
-import kotlinx.css.Float
-import kotlinx.css.FontWeight
-import kotlinx.css.LinearDimension
-import kotlinx.css.VerticalAlign
-import kotlinx.css.backgroundColor
-import kotlinx.css.border
-import kotlinx.css.borderRadius
-import kotlinx.css.display
-import kotlinx.css.float
-import kotlinx.css.fontSize
-import kotlinx.css.fontWeight
-import kotlinx.css.height
-import kotlinx.css.hsla
-import kotlinx.css.margin
-import kotlinx.css.padding
-import kotlinx.css.properties.boxShadow
-import kotlinx.css.px
-import kotlinx.css.rgba
-import kotlinx.css.verticalAlign
-import kotlinx.css.width
-import kotlinx.html.tabIndex
 import org.w3c.dom.DataTransfer
 import org.w3c.dom.Node
 import react.ChildrenBuilder
 import react.MutableRefObject
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
-import react.ref
 import react.router.dom.Link
 import react.useRef
 import kotlin.js.Json
@@ -110,7 +99,8 @@ private fun ChildrenBuilder.topPairSection(
     allowSave: Boolean,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     pairSectionNode: MutableRefObject<Node>
-) = cssDiv(css = { verticalAlign = VerticalAlign.top }) {
+) = div {
+    css { verticalAlign = VerticalAlign.top }
     currentPairSection(
         party,
         players,
@@ -120,7 +110,8 @@ private fun ChildrenBuilder.topPairSection(
         controls,
         pairSectionNode
     )
-    cssDiv(css = { float = Float.right; width = 0.px }) {
+    div {
+        css { float = csstype.Float.right; width = 0.px }
         div { copyToClipboardButton(pairSectionNode) }
 
         child(TinyPlayerList(party, players))
@@ -148,17 +139,16 @@ private fun ChildrenBuilder.currentPairSection(
     allowSave: Boolean,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     pairSectionNode: MutableRefObject<Node>
-) = cssDiv(
-    props = { ref = pairSectionNode },
-    css = {
+) = div {
+    ref = pairSectionNode
+    css {
         display = Display.inlineBlock
         borderRadius = 20.px
-        padding(5.px)
-        margin(5.px, 0.px)
-        backgroundColor = hsla(146, 17, 80, 1.0)
-        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
+        padding = 5.px
+        margin = Margin(5.px, 0.px)
+        backgroundColor = rgb(195, 213, 203)
+        boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
     }
-) {
     if (pairAssignments == null) {
         noPairsHeader()
     } else {
@@ -177,18 +167,19 @@ private fun pairAssignmentsAnimator(
     child(CurrentPairAssignmentsPanel(party, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
 }
 
-private fun ChildrenBuilder.noPairsHeader() = cssDiv(css = {
-    border = "8px outset dimgray"
-    backgroundColor = Color.aliceBlue
-    display = Display.inlineBlock
-    borderRadius = 40.px
-    fontSize = LinearDimension("xx-large")
-    fontWeight = FontWeight.bold
-    width = 500.px
-    height = 150.px
-    padding(100.px, 5.px, 5.px)
-    margin(0.px, 2.px, 5.px)
-}) {
+private fun ChildrenBuilder.noPairsHeader() = div {
+    css {
+        border = Border(8.px, LineStyle.outset, NamedColor.dimgray)
+        backgroundColor = NamedColor.aliceblue
+        display = Display.inlineBlock
+        borderRadius = 40.px
+        fontSize = FontSize.xxLarge
+        fontWeight = FontWeight.bold
+        width = 500.px
+        height = 150.px
+        padding = Padding(100.px, 5.px, 5.px)
+        margin = Margin(0.px, 2.px, 5.px)
+    }
     +"No pair assignments yet!"
 }
 
@@ -207,7 +198,7 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
                 white,
                 styles["copyToClipboardButton"],
                 onClick = ref.current?.copyToClipboardOnClick() ?: {},
-                attrs = { tabIndex = "-1" }
+                attrs = { tabIndex = -1 }
             )
         ) {
             i { className = ClassName("fa fa-clipboard") }

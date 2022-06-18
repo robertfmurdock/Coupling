@@ -15,15 +15,11 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.Border
 import csstype.ClassName
-import kotlinx.css.Color
-import kotlinx.css.Display
-import kotlinx.css.backgroundColor
-import kotlinx.css.border
-import kotlinx.css.borderRadius
-import kotlinx.css.display
-import kotlinx.css.padding
-import kotlinx.css.px
+import csstype.LineStyle.Companion.outset
+import csstype.NamedColor
+import csstype.px
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
 import react.dom.html.InputType
@@ -69,11 +65,11 @@ val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, o
         div {
             child(
                 PlayerRoster(players = players, partyId = party.id) {
-                    display = Display.inlineBlock
+                    display = csstype.Display.inlineBlock
                     borderRadius = 20.px
-                    padding = "10px"
-                    border = "11px outset tan"
-                    backgroundColor = Color.wheat
+                    padding = 10.px
+                    border = Border(11.px, outset, NamedColor.tan)
+                    backgroundColor = NamedColor.wheat
                 }
             )
         }

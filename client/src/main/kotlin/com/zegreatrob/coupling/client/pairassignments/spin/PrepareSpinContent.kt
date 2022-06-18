@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.PageFrame
-import com.zegreatrob.coupling.client.cssDiv
-import com.zegreatrob.coupling.client.cssSpan
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
@@ -20,38 +18,28 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.AnimationIterationCount
+import csstype.BorderCollapse
+import csstype.BoxShadow
 import csstype.ClassName
-import kotlinx.css.BorderCollapse
-import kotlinx.css.Color
-import kotlinx.css.Display
-import kotlinx.css.FlexDirection
-import kotlinx.css.Position
-import kotlinx.css.backgroundColor
-import kotlinx.css.borderCollapse
-import kotlinx.css.borderRadius
-import kotlinx.css.borderSpacing
-import kotlinx.css.display
-import kotlinx.css.em
-import kotlinx.css.flex
-import kotlinx.css.flexDirection
-import kotlinx.css.margin
-import kotlinx.css.marginBottom
-import kotlinx.css.padding
-import kotlinx.css.paddingBottom
-import kotlinx.css.position
-import kotlinx.css.properties.IterationCount
-import kotlinx.css.properties.animation
-import kotlinx.css.properties.boxShadow
-import kotlinx.css.properties.s
-import kotlinx.css.px
-import kotlinx.css.rgba
-import kotlinx.css.width
-import kotlinx.html.classes
+import csstype.Color
+import csstype.Display
+import csstype.FlexDirection
+import csstype.Position
+import csstype.em
+import csstype.ident
+import csstype.number
+import csstype.px
+import csstype.rgba
+import csstype.s
+import emotion.css.ClassName
+import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.br
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.h2
+import react.dom.html.ReactHTML.span
 import react.key
 
 private val styles = useStyles("PrepareSpin")
@@ -79,10 +67,13 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
                 div {
                     spinButton(onSpin, enabled = enabled)
                     if (!enabled) {
-                        cssSpan(css = {
-                            position = Position.absolute
-                            width = 12.em
-                        }) { +"Please tap a player to include them before spinning." }
+                        span {
+                            css {
+                                position = Position.absolute
+                                width = 12.em
+                            }
+                            +"Please tap a player to include them before spinning."
+                        }
                     }
                 }
                 selectorAreaDiv {
@@ -90,7 +81,8 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
                         h1 { +"Please select players to spin." }
                         h2 { +"Tap a player to include or exclude them." }
                         +"When you're done with your selections, hit the spin button above!"
-                        cssDiv(css = { margin(10.px, null) }) {
+                        div {
+                            css { margin = 10.px }
                             selectAllButton(playerSelections, setPlayerSelections)
                             selectNoneButton(playerSelections, setPlayerSelections)
                         }
@@ -110,41 +102,39 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
     }
 }
 
-private fun ChildrenBuilder.selectorAreaDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
-    css = {
+private fun ChildrenBuilder.selectorAreaDiv(children: ChildrenBuilder.() -> Unit) = div {
+    css {
         display = Display.flex
         borderSpacing = 5.px
         borderCollapse = BorderCollapse.separate
     }
-) {
     children()
 }
 
-private fun ChildrenBuilder.playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
-    css = {
-        classes.add("${styles["playerSelector"]}")
+private fun ChildrenBuilder.playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = div {
+    className = ClassName(styles["playerSelector"]) {
         display = Display.inlineBlock
-        flex(1.0)
-        margin(5.px)
+        flex = number(1.0)
+        margin = 5.px
         borderRadius = 20.px
-        padding(5.px)
+        padding = 5.px
         backgroundColor = Color("#fffbed")
-        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
+        boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
     }
-) { children() }
+    children()
+}
 
-private fun ChildrenBuilder.pinSelectorDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
-    css = {
+private fun ChildrenBuilder.pinSelectorDiv(children: ChildrenBuilder.() -> Unit) = div {
+    css {
         display = Display.inlineFlex
         flexDirection = FlexDirection.column
-        margin(5.px)
+        margin = (5.px)
         borderRadius = 20.px
-        padding(5.px)
+        padding = (5.px)
         backgroundColor = Color("#fffbed")
-        boxShadow(rgba(0, 0, 0, 0.6), 1.px, 1.px, 3.px)
+        boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
         width = 125.px
     }
-) {
     children()
 }
 
@@ -192,25 +182,21 @@ private fun ChildrenBuilder.pinSelector(
     }
 }
 
-private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
-    attrs = { classes = classes + "${styles["selectedPins"]}" },
-    css = {
-        margin(5.px)
-        flex(1.0)
+private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = div {
+    className = ClassName(styles["selectedPins"]) {
+        margin = (5.px)
+        flex = number(1.0)
     }
-) {
     children()
 }
 
-private fun ChildrenBuilder.deselectedPinsDiv(children: ChildrenBuilder.() -> Unit) = cssDiv(
-    attrs = { classes = classes + "${styles["deselectedPins"]}" },
-    css = {
-        flex(1.0)
-        margin(5.px)
+private fun ChildrenBuilder.deselectedPinsDiv(children: ChildrenBuilder.() -> Unit) = div {
+    className = ClassName(styles["deselectedPins"]) {
+        flex = number(1.0)
+        margin = (5.px)
         backgroundColor = Color("#de8286")
         borderRadius = 15.px
     }
-) {
     children()
 }
 
@@ -220,7 +206,9 @@ private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pi
 
 private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = Flipped {
     flipId = pin.id
-    cssDiv(attrs = { key = pin.id ?: "" }, css = { display = Display.inlineBlock }) {
+    div {
+        key = pin.id ?: ""
+        css { display = Display.inlineBlock }
         child(PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick))
     }
 }
@@ -236,7 +224,9 @@ private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit, enabled
         attrs = { disabled = !enabled }
     ) {
         marginBottom = 10.px
-        animation("pulsate", 2.s, iterationCount = IterationCount.infinite)
+        animationName = ident("pulsate")
+        animationDuration = 2.s
+        animationIterationCount = AnimationIterationCount.infinite
     }
 ) {
     +"Spin!"
@@ -246,7 +236,8 @@ private fun ChildrenBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit
 ) = playerSelections.map { (player, isSelected) ->
-    cssDiv(css = { paddingBottom = 30.px; display = Display.inlineBlock }) {
+    div {
+        css { paddingBottom = 30.px; display = Display.inlineBlock }
         child(playerCard(player, isSelected, setPlayerSelections, playerSelections))
     }
 }

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
@@ -9,34 +8,28 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
+import csstype.Angle
+import csstype.Auto
+import csstype.BoxShadow
 import csstype.ClassName
-import kotlinx.css.Color
-import kotlinx.css.RuleSet
-import kotlinx.css.borderRadius
-import kotlinx.css.borderWidth
-import kotlinx.css.flex
-import kotlinx.css.height
-import kotlinx.css.margin
-import kotlinx.css.properties.Angle
-import kotlinx.css.properties.boxShadow
-import kotlinx.css.properties.deg
-import kotlinx.css.properties.rotate
-import kotlinx.css.properties.s
-import kotlinx.css.properties.transform
-import kotlinx.css.properties.transition
-import kotlinx.css.px
-import kotlinx.css.width
-import kotlinx.html.classes
-import kotlinx.html.js.onClickFunction
-import org.w3c.dom.events.Event
+import csstype.Color
+import csstype.Flex
+import csstype.PropertiesBuilder
+import csstype.deg
+import csstype.number
+import csstype.px
+import csstype.rotate
+import csstype.s
+import emotion.react.css
 import react.ChildrenBuilder
+import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.img
 
 data class PlayerCard(
     val player: Player,
     val className: ClassName? = null,
     val size: Int = 100,
-    val onClick: (Event) -> Unit = {},
+    val onClick: () -> Unit = {},
     val deselected: Boolean = false,
     val tilt: Angle = 0.deg
 ) : DataPropsBind<PlayerCard>(playerCard)
@@ -44,20 +37,15 @@ data class PlayerCard(
 private val styles = useStyles("player/PlayerCard")
 
 val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselected, tilt) ->
-    cssDiv(
-        attrs = {
-            classes = classes + additionalClasses(className, deselected)
-            onClickFunction = onClick
-        },
-        css = {
-            transition(duration = 0.25.s)
-            transform {
-                rotate(tilt)
-            }
+    div {
+        this.className = emotion.css.ClassName(classNames = additionalClasses(className, deselected)) {
+            transitionDuration = 0.25.s
+            transform = rotate(tilt)
             playerCardRuleSet(size)()
         }
-    ) {
-        cssDiv(css = { margin((size * 0.02).px) }) {
+        this.onClick = { onClick() }
+        div {
+            css { margin = ((size * 0.02).px) }
             playerGravatarImage(player, size)
             child(PlayerCardHeader(player, size))
         }
@@ -71,16 +59,17 @@ private fun additionalClasses(className: ClassName?, deselected: Boolean) = setO
             deselected -> it + "${styles["deselected"]}"
             else -> it
         }
-    }
+    }.map(::ClassName)
+    .toTypedArray()
 
-private fun playerCardRuleSet(size: Int): RuleSet = {
+private fun playerCardRuleSet(size: Int): PropertiesBuilder.() -> Unit = {
     val totalExtraMarginNeededForImage = 2 * (size * 0.02)
     width = (size + totalExtraMarginNeededForImage).px
     height = (size * 1.4).px
     borderWidth = (size * 0.04).px
     borderRadius = (size * 0.08).px
-    boxShadow(Color("rgba(0, 0, 0, 0.6)"), (size * 0.02).px, (size * 0.04).px, (size * 0.04).px)
-    flex(0.0, 0.0)
+    boxShadow = BoxShadow((size * 0.02).px, (size * 0.04).px, (size * 0.04).px, Color("rgba(0, 0, 0, 0.6)"))
+    flex = Flex(number(0.0), number(0.0), Auto.auto)
 }
 
 private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {

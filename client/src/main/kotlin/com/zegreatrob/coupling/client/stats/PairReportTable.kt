@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.action.PairReport
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCard
@@ -13,9 +12,6 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.WhiteSpace
-import kotlinx.css.whiteSpace
-import kotlinx.html.classes
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
@@ -28,7 +24,11 @@ data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<Pa
 )
 
 val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
-    cssDiv(css = { whiteSpace = WhiteSpace.normal }, attrs = { classes = setOf(styles.className.toString()) }) {
+    div {
+        this.className = emotion.css.ClassName(styles.className) {
+            whiteSpace = csstype.WhiteSpace.normal
+        }
+
         pairReports.mapIndexed { index, pairReport ->
             pairReport(index, pairReport)
         }

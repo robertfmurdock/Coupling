@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -10,11 +9,10 @@ import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
+import csstype.TextAlign
+import csstype.vh
+import emotion.react.css
 import kotlinx.browser.window
-import kotlinx.css.TextAlign
-import kotlinx.css.height
-import kotlinx.css.textAlign
-import kotlinx.css.vh
 import org.w3c.dom.get
 import react.FC
 import react.dom.html.ReactHTML.div
@@ -25,10 +23,11 @@ val GraphIQLPage = FC<PageProps> {
 
     val auth0Data = useAuth0Data()
 
-    cssDiv(css = {
-        textAlign = TextAlign.left
-        height = 100.vh
-    }) {
+    div {
+        css {
+            textAlign = TextAlign.left
+            height = 100.vh
+        }
         child(
             DataLoader({ auth0Data.getAccessTokenSilently() }, { "" }) { state: DataLoadState<String> ->
                 when (state) {

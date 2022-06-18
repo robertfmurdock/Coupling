@@ -12,16 +12,16 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.child
 import csstype.ClassName
-import kotlinx.css.Color
+import csstype.Color
+import csstype.em
+import emotion.react.css
 import kotlinx.css.Float
 import kotlinx.css.Position
-import kotlinx.css.em
 import kotlinx.css.float
 import kotlinx.css.position
 import kotlinx.css.px
 import kotlinx.css.right
 import kotlinx.css.top
-import kotlinx.css.width
 import react.FC
 import react.Props
 import react.PropsWithChildren
@@ -42,7 +42,8 @@ val aboutPageContent = FC<PropsWithChildren> { props ->
     div {
         className = styles.className
         child(PageFrame(borderColor = Color("rgb(94, 84, 102)"), backgroundColor = Color("floralwhite"))) {
-            cssDiv(css = { width = 40.em }) {
+            div {
+                css { width = 40.em }
                 backButtonSection()
                 +props.children
                 playerHeader()
@@ -52,7 +53,8 @@ val aboutPageContent = FC<PropsWithChildren> { props ->
 }
 
 private val backButtonSection = FC<Props> {
-    cssDiv(css = { position = Position.relative }) {
+    div {
+        css { position = csstype.Position.relative }
         cssSpan(css = { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }) {
             backButton()
         }

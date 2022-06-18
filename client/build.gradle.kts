@@ -58,6 +58,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-legacy")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom-legacy")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")

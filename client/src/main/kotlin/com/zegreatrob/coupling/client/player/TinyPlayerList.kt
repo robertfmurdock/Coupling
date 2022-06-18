@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.properties.deg
+import csstype.deg
 import react.key
 import react.router.dom.Link
 import react.useState

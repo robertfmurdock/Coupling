@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.Color
+import csstype.Color
 import react.dom.html.ReactHTML.div
 
 private val styles = useStyles("user/UserConfig")

@@ -15,7 +15,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
-import kotlinx.css.Color
+import csstype.Color
 import react.ChildrenBuilder
 import react.create
 import react.dom.html.ReactHTML.div

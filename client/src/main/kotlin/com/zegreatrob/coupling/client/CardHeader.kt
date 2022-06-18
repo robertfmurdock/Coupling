@@ -1,24 +1,15 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.fitty.fitty
-import kotlinx.css.Align
-import kotlinx.css.Display
-import kotlinx.css.FlexDirection
-import kotlinx.css.Overflow
-import kotlinx.css.VerticalAlign
-import kotlinx.css.alignItems
-import kotlinx.css.borderRadius
-import kotlinx.css.display
-import kotlinx.css.flexDirection
-import kotlinx.css.height
-import kotlinx.css.margin
-import kotlinx.css.overflow
-import kotlinx.css.px
-import kotlinx.css.verticalAlign
+import csstype.AlignItems
+import csstype.Margin
+import csstype.px
+import emotion.css.ClassName
+import emotion.react.css
 import org.w3c.dom.Node
 import react.FC
 import react.PropsWithClassName
-import react.ref
+import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
 import react.useRef
 
@@ -31,28 +22,26 @@ val CardHeader = FC<CardHeaderProps> { props ->
     val size = props.size
     val headerContainerRef = useRef<Node>(null)
     useLayoutEffect { headerContainerRef.current?.fitContent(size) }
-    cssDiv(
-        props = { className = props.className },
-        css = {
-            margin((size * 0.02).px, 0.px)
+    div {
+        className = ClassName(props.className) {
+            margin = Margin((size * 0.02).px, 0.px)
             height = (size * 0.33).px
             borderRadius = (size / 10).px
-            overflow = Overflow.hidden
-            verticalAlign = VerticalAlign.top
-            display = Display.flex
-            alignItems = Align.center
-            flexDirection = FlexDirection.column
+            overflow = csstype.Overflow.hidden
+            verticalAlign = csstype.VerticalAlign.top
+            display = csstype.Display.flex
+            alignItems = AlignItems.center
+            flexDirection = csstype.FlexDirection.column
         }
-    ) {
-        cssDiv(
-            props = { ref = headerContainerRef },
-            css = { height = (size * 0.33).px }
-        ) {
-            cssDiv(css = {
-                display = Display.flex
-                alignItems = Align.center
-                height = (size * 0.33).px
-            }) {
+        div {
+            css { height = (size * 0.33).px }
+            ref = headerContainerRef
+            div {
+                css {
+                    display = csstype.Display.flex
+                    alignItems = AlignItems.center
+                    height = (size * 0.33).px
+                }
                 +props.headerContent.ifBlank { "Unknown" }
             }
         }

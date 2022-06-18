@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.Paths.playerConfigPage
-import com.zegreatrob.coupling.client.cssDiv
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
@@ -13,9 +12,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
-import kotlinx.css.RuleSet
-import kotlinx.css.properties.deg
-import kotlinx.html.classes
+import csstype.ClassName
+import csstype.PropertiesBuilder
+import csstype.deg
+import emotion.css.ClassName
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.key
@@ -29,7 +29,7 @@ data class PlayerRoster(
     val players: List<Player>,
     val partyId: PartyId,
     val className: String? = null,
-    val cssOverrides: RuleSet = {}
+    val cssOverrides: PropertiesBuilder.() -> Unit = {}
 ) : DataPropsBind<PlayerRoster>(playerRoster)
 
 private val styles = useStyles("player/PlayerRoster")
@@ -38,13 +38,10 @@ val playerRoster = tmFC { (label, players, partyId, className, overrides): Playe
     val ref by useState { Date.now().toLong() }
     val random = Random(ref)
 
-    cssDiv(
-        attrs = {
-            if (className != null) classes = classes + className
-            classes = classes + styles.className.toString()
-        },
-        css = { overrides() }
-    ) {
+    div {
+        this.className = ClassName(className?.let(::ClassName), styles.className) {
+            overrides()
+        }
         div {
             if (players.isNotEmpty()) {
                 div {
