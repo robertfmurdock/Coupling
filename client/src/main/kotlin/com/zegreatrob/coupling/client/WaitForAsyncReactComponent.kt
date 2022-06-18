@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
@@ -16,18 +16,16 @@ fun <T : Props> ChildrenBuilder.waitForAsyncReactComponent(
     getComponent: () -> ElementType<T>?,
     useComponent: ChildrenBuilder.(ElementType<T>) -> Unit
 ) {
-    child(
-        DataLoader({ waitForComponent(getComponent) }, { null }) { state ->
-            when (state) {
-                is EmptyState -> div { +"Preparing component" }
-                is PendingState -> div { +"Pending component" }
-                is ResolvedState ->
-                    state.result
-                        ?.let { useComponent(it) }
-                        ?: div { +"Error finding component." }
-            }
+    +DataLoader({ waitForComponent(getComponent) }, { null }) { state ->
+        when (state) {
+            is EmptyState -> div { +"Preparing component" }
+            is PendingState -> div { +"Pending component" }
+            is ResolvedState ->
+                state.result
+                    ?.let { useComponent(it) }
+                    ?: div { +"Error finding component." }
         }
-    )
+    }.create()
 }
 
 private suspend fun <T : Props> waitForComponent(getComponent: () -> ElementType<T>?): ElementType<T>? =

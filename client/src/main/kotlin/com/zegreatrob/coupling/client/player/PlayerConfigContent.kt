@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.Border
 import csstype.ClassName
@@ -59,19 +59,17 @@ val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, o
                     playerConfigForm(player, party, onChange, onSubmit, onRemove)
 //                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
                 }
-                child(PlayerCard(player, size = 250))
+                +PlayerCard(player, size = 250).create()
             }
         }
         div {
-            child(
-                PlayerRoster(players = players, partyId = party.id) {
-                    display = csstype.Display.inlineBlock
-                    borderRadius = 20.px
-                    padding = 10.px
-                    border = Border(11.px, outset, NamedColor.tan)
-                    backgroundColor = NamedColor.wheat
-                }
-            )
+            +PlayerRoster(players = players, partyId = party.id) {
+                display = csstype.Display.inlineBlock
+                borderRadius = 20.px
+                padding = 10.px
+                border = Border(11.px, outset, NamedColor.tan)
+                backgroundColor = NamedColor.wheat
+            }.create()
         }
     }
 }

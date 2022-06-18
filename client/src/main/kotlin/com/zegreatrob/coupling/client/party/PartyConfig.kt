@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import react.router.Navigate
 import react.useState
@@ -38,7 +38,7 @@ val partyConfig = tmFC { (party, commandFunc): PartyConfig ->
     if (redirectUrl != null)
         Navigate { to = redirectUrl }
     else {
-        child(PartyConfigContent(updatedParty, isNew, onChange, onSave, onDelete))
+        +PartyConfigContent(updatedParty, isNew, onChange, onSave, onDelete).create()
     }
 }
 

@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.Display
 import csstype.Visibility
@@ -40,7 +40,7 @@ val spinAnimationPanel = tmFC<SpinAnimationPanel> { (party, rosteredPairAssignme
     val players = rosteredPairAssignments.selectedPlayers
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
     div {
-        child(PairAssignmentsHeader(pairAssignments))
+        +PairAssignmentsHeader(pairAssignments).create()
         assignedPairs(party, revealedPairs)
         playerSpotlight(shownPlayer)
         playerRoster(rosterPlayers)
@@ -49,7 +49,7 @@ val spinAnimationPanel = tmFC<SpinAnimationPanel> { (party, rosteredPairAssignme
 
 private fun ChildrenBuilder.assignedPairs(party: Party, revealedPairs: List<PinnedCouplingPair>) = div {
     className = styles["pairAssignments"]
-    revealedPairs.forEachIndexed { index, it -> child(AssignedPair(party, it, false), key = "$index") }
+    revealedPairs.forEachIndexed { index, it -> +AssignedPair(party, it, false).create { key = "$index" } }
 }
 
 private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
@@ -71,7 +71,7 @@ private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) =
     div {
         this.key = key ?: ""
         css { display = Display.inlineBlock }
-        child(PlayerCard(player))
+        +PlayerCard(player).create()
     }
 }
 

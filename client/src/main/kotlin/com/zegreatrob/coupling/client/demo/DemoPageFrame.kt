@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.client.pin.PinConfigContent
 import com.zegreatrob.coupling.client.player.PlayerConfigContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.testmints.action.async.SuspendAction
 import csstype.Auto
@@ -127,31 +127,29 @@ private fun ChildrenBuilder.popperDiv(
 }
 
 private fun ChildrenBuilder.partyConfigFrame(state: MakeParty) {
-    child(PartyConfigContent(state.party, true, {}, {}, {}))
+    +(PartyConfigContent(state.party, true, {}, {}, {}).create())
 }
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     val (party, players, pins) = state
-    child(PrepareSpinContent(party, players, pins, pins.map { it.id }, {}, {}, {}))
+    +PrepareSpinContent(party, players, pins, pins.map { it.id }, {}, {}, {}).create()
 }
 
 private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) =
-    child(PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {}))
+    +PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {}).create()
 
 private fun ChildrenBuilder.pinConfigFrame(state: AddPin) =
-    child(PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {}))
+    +PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {}).create()
 
-private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = child(
-    PairAssignments(
-        state.party,
-        state.players,
-        state.pairAssignments,
-        { },
-        Controls(noOpDispatchFunc) {},
-        CouplingSocketMessage("", emptySet()),
-        state.allowSave
-    )
-)
+private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = +PairAssignments(
+    state.party,
+    state.players,
+    state.pairAssignments,
+    { },
+    Controls(noOpDispatchFunc) {},
+    CouplingSocketMessage("", emptySet()),
+    state.allowSave
+).create()
 
 private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
     override fun <C : SuspendAction<NoOpDispatcher, R>, R> invoke(

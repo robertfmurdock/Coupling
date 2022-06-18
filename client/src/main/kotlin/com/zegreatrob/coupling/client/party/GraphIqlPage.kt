@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.party
 import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
@@ -28,17 +28,15 @@ val GraphIQLPage = FC<PageProps> {
             textAlign = TextAlign.left
             height = 100.vh
         }
-        child(
-            DataLoader({ auth0Data.getAccessTokenSilently() }, { "" }) { state: DataLoadState<String> ->
-                when (state) {
-                    is EmptyState -> div()
-                    is PendingState -> +"Loading authorization..."
-                    is ResolvedState -> GraphiQL {
-                        this.editorTheme = "dracula"
-                        this.fetcher = createGraphiQLFetcher(graphQlUrl, state.result)
-                    }
+        +DataLoader({ auth0Data.getAccessTokenSilently() }, { "" }) { state: DataLoadState<String> ->
+            when (state) {
+                is EmptyState -> div()
+                is PendingState -> +"Loading authorization..."
+                is ResolvedState -> GraphiQL {
+                    this.editorTheme = "dracula"
+                    this.fetcher = createGraphiQLFetcher(graphQlUrl, state.result)
                 }
             }
-        )
+        }.create()
     }
 }

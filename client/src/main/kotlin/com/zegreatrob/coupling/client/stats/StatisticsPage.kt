@@ -3,18 +3,18 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
+import react.key
 
 private val LoadedPairAssignments by lazy { couplingDataLoader<PartyStatistics>() }
 
 val StatisticsPage = partyPageFunction { props, partyId ->
-    child(
-        dataLoadProps(
-            LoadedPairAssignments,
-            commander = props.commander,
-            query = StatisticsQuery(partyId),
-            toProps = { _, _, queryResult -> PartyStatistics(queryResult) }
-        ),
+    +dataLoadProps(
+        LoadedPairAssignments,
+        commander = props.commander,
+        query = StatisticsQuery(partyId),
+        toProps = { _, _, queryResult -> PartyStatistics(queryResult) }
+    ).create {
         key = partyId.value
-    )
+    }
 }

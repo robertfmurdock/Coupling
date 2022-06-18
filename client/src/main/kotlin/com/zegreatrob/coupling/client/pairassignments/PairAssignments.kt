@@ -23,7 +23,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.Border
 import csstype.BoxShadow
@@ -47,6 +47,7 @@ import react.ChildrenBuilder
 import react.MutableRefObject
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
+import react.key
 import react.router.dom.Link
 import react.useRef
 import kotlin.js.Json
@@ -80,13 +81,15 @@ val pairAssignments = tmFC<PairAssignments> { props ->
         div {
             className = styles.className
             div {
-                child(PartyBrowser(party))
+                +PartyBrowser(party).create()
                 topPairSection(party, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
             }
             controlPanel(party)
             unpairedPlayerSection(party, notPairedPlayers(players, pairAssignments))
 
-            child(ServerMessage(message), key = "${message.text} ${message.players.size}")
+            +ServerMessage(message).create {
+                key = "${message.text} ${message.players.size}"
+            }
         }
     }
 }
@@ -113,8 +116,7 @@ private fun ChildrenBuilder.topPairSection(
     div {
         css { float = csstype.Float.right; width = 0.px }
         div { copyToClipboardButton(pairSectionNode) }
-
-        child(TinyPlayerList(party, players))
+        +TinyPlayerList(party, players).create()
     }
 }
 
@@ -152,7 +154,7 @@ private fun ChildrenBuilder.currentPairSection(
     if (pairAssignments == null) {
         noPairsHeader()
     } else {
-        child(pairAssignmentsAnimator(party, players, pairAssignments, allowSave, setPairAssignments, controls))
+        +pairAssignmentsAnimator(party, players, pairAssignments, allowSave, setPairAssignments, controls).create()
     }
 }
 
@@ -164,7 +166,7 @@ private fun pairAssignmentsAnimator(
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) = PairAssignmentsAnimator(party, players, pairAssignments, enabled = party.animationEnabled && allowSave) {
-    child(CurrentPairAssignmentsPanel(party, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
+    +CurrentPairAssignmentsPanel(party, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc).create()
 }
 
 private fun ChildrenBuilder.noPairsHeader() = div {
@@ -192,15 +194,13 @@ private fun ChildrenBuilder.controlPanel(party: Party) = div {
 
 private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
     if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
-        child(
-            CouplingButton(
-                large,
-                white,
-                styles["copyToClipboardButton"],
-                onClick = ref.current?.copyToClipboardOnClick() ?: {},
-                attrs = { tabIndex = -1 }
-            )
-        ) {
+        +CouplingButton(
+            large,
+            white,
+            styles["copyToClipboardButton"],
+            onClick = ref.current?.copyToClipboardOnClick() ?: {},
+            attrs = { tabIndex = -1 }
+        ).create {
             i { className = ClassName("fa fa-clipboard") }
         }
     }
@@ -227,7 +227,7 @@ private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it
 external class ClipboardItem(params: Json)
 
 private fun ChildrenBuilder.unpairedPlayerSection(party: Party, players: List<Player>) =
-    child(PlayerRoster(label = "Unpaired players", players = players, partyId = party.id))
+    +PlayerRoster(label = "Unpaired players", players = players, partyId = party.id).create()
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
     if (pairAssignments == null) {
@@ -243,7 +243,7 @@ private fun ChildrenBuilder.prepareToSpinButton(party: Party, className: ClassNa
     to = "/${party.id.value}/prepare/"
     tabIndex = -1
     draggable = false
-    child(CouplingButton(supersize, pink, className)) {
+    +CouplingButton(supersize, pink, className).create {
         +"Prepare to spin!"
     }
 }

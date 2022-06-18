@@ -17,10 +17,11 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
+import react.key
 import react.router.Navigate
 import react.useState
 
@@ -30,7 +31,7 @@ data class CurrentPairAssignmentsPanel(
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
     val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
-) : DataPropsBind<CurrentPairAssignmentsPanel> (currentPairAssignmentsPanel)
+) : DataPropsBind<CurrentPairAssignmentsPanel>(currentPairAssignmentsPanel)
 
 private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
 
@@ -60,7 +61,7 @@ val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
 
 private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
     div {
-        child(PairAssignmentsHeader(pairAssignments))
+        +PairAssignmentsHeader(pairAssignments).create()
     }
 }
 
@@ -72,18 +73,17 @@ private fun ChildrenBuilder.pairAssignmentList(
 ) = div {
     className = styles["pairAssignmentsContent"]
     pairAssignments.pairs.mapIndexed { index, pair ->
-        child(
-            key = "$index",
-            dataProps = AssignedPair(
-                party,
-                pair,
-                canDrag = allowSave,
-                swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
-                    setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
-                },
-                pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) }
-            )
-        )
+        +AssignedPair(
+            party,
+            pair,
+            canDrag = allowSave,
+            swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
+                setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
+            },
+            pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) }
+        ).create {
+            key = "$index"
+        }
     }
 }
 
@@ -147,11 +147,11 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 }
 
 private fun ChildrenBuilder.saveButton(onSave: () -> Unit) =
-    child(CouplingButton(supersize, green, styles["saveButton"], onSave)) {
+    +CouplingButton(supersize, green, styles["saveButton"], onSave).create {
         +"Save!"
     }
 
 private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) =
-    child(CouplingButton(small, red, styles["deleteButton"], onCancel)) {
+    +CouplingButton(small, red, styles["deleteButton"], onCancel).create {
         +"Cancel"
     }

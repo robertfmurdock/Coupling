@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.party
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.orange
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import csstype.ClassName
 import csstype.px
 import emotion.react.css
@@ -17,7 +17,7 @@ val AboutButton = FC<Props> {
         to = "/about"
         tabIndex = -1
         draggable = false
-        child(CouplingButton(large, orange, ClassName(""))) {
+        +CouplingButton(large, orange, ClassName("")).create {
             span { +"About" }
             span {
                 css { margin = 2.px }

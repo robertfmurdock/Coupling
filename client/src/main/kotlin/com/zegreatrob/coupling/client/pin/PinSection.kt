@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import csstype.px
@@ -27,9 +27,9 @@ val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
         }
         pinList.map { pin ->
             if (canDrag)
-                child(DraggablePinButton(pin, scale))
+                +DraggablePinButton(pin, scale).create()
             else
-                child(PinButton(pin, scale, showTooltip = true), key = null)
+                +PinButton(pin, scale, showTooltip = true).create()
         }
     }
 }

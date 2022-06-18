@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.client.gravatarLink
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.Color
 import emotion.react.css
@@ -51,7 +51,7 @@ val partyConfigContent = tmFC<PartyConfigContent> { (party, isNew, onChange, onS
         div {
             css { display = csstype.Display.flex }
             partyConfigEditor(party, isNew ?: false, onChange, onSave, onDelete)
-            child(PartyCard(party))
+            +PartyCard(party).create()
         }
     }
 }

@@ -5,13 +5,16 @@ import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import react.FC
+import react.key
 
 private val LoadedPartyConfig by lazy { couplingDataLoader<PartyConfig>() }
 
 val PartyConfigPage = FC<PageProps> { props ->
-    child(props.partyId?.partyQueryProps(props) ?: newPartyProps(props), key = props.partyId?.value)
+    +(props.partyId?.partyQueryProps(props) ?: newPartyProps(props)).create {
+        key = props.partyId?.value
+    }
 }
 
 private fun PartyId.partyQueryProps(pageProps: PageProps) = dataLoadProps(

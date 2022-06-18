@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
@@ -73,7 +73,7 @@ private fun ChildrenBuilder.pairAssignmentRow(document: PairAssignmentDocument, 
 }
 
 private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) =
-    child(CouplingButton(small, red, styles["deleteButton"], onClickFunc)) {
+    +CouplingButton(small, red, styles["deleteButton"], onClickFunc).create {
         +"DELETE"
     }
 
@@ -85,7 +85,8 @@ private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
             pair.players.map { pinnedPlayer: PinnedPlayer ->
                 showPlayer(pinnedPlayer)
             }
-            child(PinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"]))
+            +PinSection(pinList = pair.pins, scale = PinButtonScale.ExtraSmall, className = styles["pinSection"])
+                .create()
         }
     }
 }

@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import csstype.PropertiesBuilder
@@ -54,7 +54,7 @@ val playerRoster = tmFC { (label, players, partyId, className, overrides): Playe
                         draggable = false
                         key = player.id
                         val tilt = random.nextInt(7) - 3
-                        child(PlayerCard(player, tilt = tilt.deg))
+                        +PlayerCard(player, tilt = tilt.deg).create()
                     }
                 }
             }
@@ -67,7 +67,7 @@ private fun ChildrenBuilder.addPlayerButton(partyId: PartyId) = Link {
     to = "/${partyId.value}/player/new/"
     tabIndex = -1
     draggable = false
-    child(CouplingButton(large, orange, styles["addPlayerButton"])) {
+    +CouplingButton(large, orange, styles["addPlayerButton"]).create {
         +"Add a new player!"
     }
 }

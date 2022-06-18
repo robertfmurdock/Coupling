@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import csstype.ClassName
 import react.FC
 import react.Props
@@ -15,7 +15,7 @@ val PartySelectButton = FC<Props> {
         to = "/tribes/"
         tabIndex = -1
         draggable = false
-        child(CouplingButton(large)) {
+        +CouplingButton(large).create {
             i { className = ClassName("fa fa-arrow-circle-up") }
             span { +"Party select" }
         }

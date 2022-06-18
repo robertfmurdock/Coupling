@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import csstype.ClassName
 import csstype.Color
 import csstype.Position
@@ -24,6 +24,7 @@ import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
+import react.key
 import react.router.dom.Link
 
 private val styles = useStyles("About")
@@ -37,7 +38,7 @@ val AboutPage = FC<PageProps> {
 val aboutPageContent = FC<PropsWithChildren> { props ->
     div {
         className = styles.className
-        child(PageFrame(borderColor = Color("rgb(94, 84, 102)"), backgroundColor = Color("floralwhite"))) {
+        +PageFrame(borderColor = Color("rgb(94, 84, 102)"), backgroundColor = Color("floralwhite")).create {
             div {
                 css { width = 40.em }
                 backButtonSection()
@@ -63,7 +64,7 @@ private val backButton = FC<Props> {
         to = "/tribes"
         tabIndex = -1
         draggable = false
-        child(CouplingButton(large, blue, ClassName(""), {})) {
+        +CouplingButton(large, blue, ClassName(""), {}).create {
             i { className = ClassName("fa fa-step-backward") }
             span { +"Back to Coupling!" }
         }
@@ -79,7 +80,9 @@ private val playerHeader = FC<Props> {
             "left" to Player("1", name = "RoB", imageURL = rob),
             "right" to Player("2", name = "Autumn", imageURL = autumn)
         ).forEach { (side, player) ->
-            child(PlayerCard(player, className = playerCardStyles(side)), key = player.id)
+            +PlayerCard(player, className = playerCardStyles(side)).create {
+                key = player.id
+            }
         }
     }
 }

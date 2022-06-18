@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
@@ -40,11 +40,10 @@ val playerConfigFunc = windowTmFC<PlayerConfig> { props, windowFuncs ->
     val onRemove = dispatchFunc(
         { DeletePlayerCommand(party.id, player.id) },
         { setRedirectUrl(party.id.currentPairsPage()) }
-    )
-        .requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
+    ).requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
 
     if (redirectUrl != null)
         Navigate { to = redirectUrl }
     else
-        child(PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove))
+        +PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove).create()
 }

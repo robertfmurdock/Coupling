@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.SessionConfig.animationsDisabled
 import com.zegreatrob.coupling.client.external.auth0.react.Auth0Provider
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions.Companion.window
 import com.zegreatrob.coupling.client.routing.CouplingRouter
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import react.FC
 import react.Props
 
@@ -23,6 +23,6 @@ val RootComponent = FC<RootProps> { props ->
         scope = "email"
         useRefreshTokens = true
 
-        child(CouplingRouter(animationsDisabled, config))
+        +(CouplingRouter(animationsDisabled, config)).create()
     }
 }

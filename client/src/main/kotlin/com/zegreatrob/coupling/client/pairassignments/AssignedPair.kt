@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
@@ -15,7 +14,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import csstype.Display
@@ -63,7 +62,7 @@ val assignedPair = tmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pin
             playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
         }
 
-        child(PinSection(pinList = pair.pins, canDrag = canDrag))
+        +PinSection(pinList = pair.pins, canDrag = canDrag).create()
     }
 }
 

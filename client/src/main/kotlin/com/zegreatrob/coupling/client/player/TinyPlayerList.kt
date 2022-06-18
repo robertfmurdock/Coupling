@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.deg
 import react.key
@@ -25,7 +25,7 @@ val tinyPlayerList = tmFC<TinyPlayerList> { (party, players) ->
             to = party.id.with(player).playerConfigPage()
             draggable = false
             val tilt = random.nextInt(7) - 3
-            child(PlayerCard(player, size = 40, tilt = tilt.deg))
+            +PlayerCard(player, size = 40, tilt = tilt.deg).create()
         }
     }
 }

@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
 import react.Consumer
@@ -46,12 +46,10 @@ private fun ChildrenBuilder.spinFrameRunner(
     players: List<Player>,
     props: PairAssignmentsAnimator
 ) {
-    child(
-        FrameRunner(SpinAnimationState.sequence(pairAssignments), speed = party.animationSpeed) { state ->
-            val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
-            flipperSpinAnimation(state, props, party, rosteredPairAssignments)
-        }
-    )
+    +FrameRunner(SpinAnimationState.sequence(pairAssignments), speed = party.animationSpeed) { state ->
+        val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
+        flipperSpinAnimation(state, props, party, rosteredPairAssignments)
+    }.create()
 }
 
 private fun ChildrenBuilder.flipperSpinAnimation(
@@ -64,5 +62,5 @@ private fun ChildrenBuilder.flipperSpinAnimation(
     if (state == End)
         props.children(this)
     else
-        child(SpinAnimationPanel(party, rosteredPairAssignments, state))
+        +SpinAnimationPanel(party, rosteredPairAssignments, state).create()
 }

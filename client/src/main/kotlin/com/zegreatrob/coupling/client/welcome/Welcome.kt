@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.welcome
 
+import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
@@ -12,7 +13,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import org.w3c.dom.Node
@@ -106,8 +107,8 @@ private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>
 
 private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
     className = styles["welcomePair"]
-    child(PlayerCard(pair.player1, className = ClassName("left ${styles["playerCard"]}"), size = 100))
-    child(PlayerCard(pair.player2, className = ClassName("right ${styles["playerCard"]}"), size = 100))
+    +PlayerCard(pair.player1, className = ClassName("left ${styles["playerCard"]}"), size = 100).create()
+    +PlayerCard(pair.player2, className = ClassName("right ${styles["playerCard"]}"), size = 100).create()
 }
 
 private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) = div {
@@ -115,6 +116,6 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
     if (showLoginChooser) {
         LoginChooser()
     } else {
-        child(CouplingButton(supersize, pink, styles["enterButton"], onEnterClick)) { +"Come on in!" }
+        +CouplingButton(supersize, pink, styles["enterButton"], onEnterClick).create { +"Come on in!" }
     }
 }

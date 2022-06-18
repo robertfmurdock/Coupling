@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.pink
 import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.svgPath
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import csstype.AlignItems
 import csstype.AnimationIterationCount
 import csstype.Color
@@ -29,13 +29,11 @@ val returnToCouplingButton = FC<Props> {
         to = "/tribes"
         tabIndex = -1
         draggable = false
-        child(
-            CouplingButton(sizeRuleSet = supersize, colorRuleSet = pink) {
-                animationName = ident("pulsate")
-                animationDuration = 0.75.s
-                animationIterationCount = AnimationIterationCount.infinite
-            }
-        ) {
+        +CouplingButton(sizeRuleSet = supersize, colorRuleSet = pink) {
+            animationName = ident("pulsate")
+            animationDuration = 0.75.s
+            animationIterationCount = AnimationIterationCount.infinite
+        }.create {
             couplingLogo()
         }
     }

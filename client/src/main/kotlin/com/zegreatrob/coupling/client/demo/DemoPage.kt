@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
 import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import react.FC
 
 interface NoOpDispatcher :
@@ -29,12 +29,10 @@ val DemoPage = FC<PageProps> { props ->
     val frameIndex = props.search.get("frame")
     val currentFrame = frameIndex?.toIntOrNull()?.let { demoSequence.toList()[it] }
     if (currentFrame != null) {
-        child(DemoPageFrame(currentFrame.data))
+        +DemoPageFrame(currentFrame.data).create()
     } else {
-        child(
-            FrameRunner(demoSequence, 1.0) { state: DemoAnimationState ->
-                child(DemoPageFrame(state))
-            }
-        )
+        +FrameRunner(demoSequence, 1.0) { state: DemoAnimationState ->
+            +DemoPageFrame(state).create()
+        }.create()
     }
 }

@@ -12,13 +12,14 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import csstype.Color
 import react.ChildrenBuilder
 import react.create
 import react.dom.html.ReactHTML.div
+import react.key
 import react.router.dom.Link
 
 data class PartyList(val parties: List<Party>) : DataPropsBind<PartyList>(partyList)
@@ -26,13 +27,11 @@ data class PartyList(val parties: List<Party>) : DataPropsBind<PartyList>(partyL
 private val styles = useStyles("party/PartyList")
 
 val partyList = tmFC<PartyList> { (parties) ->
-    child(
-        PageFrame(
-            borderColor = Color("rgb(94, 84, 102)"),
-            backgroundColor = Color("hsla(0, 0%, 80%, 1)"),
-            styles.className
-        )
-    ) {
+    +PageFrame(
+        borderColor = Color("rgb(94, 84, 102)"),
+        backgroundColor = Color("hsla(0, 0%, 80%, 1)"),
+        styles.className
+    ).create {
         GeneralControlBar {
             title = "Party List"
             splashComponent = CouplingLogo.create {
@@ -47,7 +46,7 @@ val partyList = tmFC<PartyList> { (parties) ->
         }
         div {
             parties.forEach { party ->
-                child(PartyCard(party), key = party.id.value)
+                +PartyCard(party).create { key = party.id.value }
             }
         }
         div { newPartyButton(styles["newPartyButton"]) }
@@ -58,5 +57,5 @@ private fun ChildrenBuilder.newPartyButton(className: ClassName) = Link {
     to = "/new-tribe/"
     draggable = false
     tabIndex = -1
-    child(CouplingButton(supersize, green, className)) { +"Form a new party!" }
+    +CouplingButton(supersize, green, className).create { +"Form a new party!" }
 }

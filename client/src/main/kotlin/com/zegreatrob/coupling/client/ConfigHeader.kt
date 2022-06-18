@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.party.PartyCard
 import com.zegreatrob.coupling.client.party.PartySelectButton
 import com.zegreatrob.coupling.model.party.Party
-import com.zegreatrob.minreact.child
+import com.zegreatrob.minreact.create
 import csstype.AlignItems
 import csstype.AlignSelf
 import csstype.BoxShadow
@@ -55,7 +55,7 @@ val ConfigHeader = FC<ConfigHeaderProps> { props ->
                 alignItems = AlignItems.center
                 whiteSpace = WhiteSpace.nowrap
             }
-            child(PartyCard(party, 75))
+            +PartyCard(party, 75).create()
             partyControls(props, party)
         }
     }
@@ -130,7 +130,7 @@ fun ChildrenBuilder.viewHistoryButton(party: Party, className: ClassName = Class
     to = "/${party.id.value}/history/"
     tabIndex = -1
     draggable = false
-    child(CouplingButton(large, lightGreen, className)) {
+    +CouplingButton(large, lightGreen, className).create {
         i { this.className = ClassName("fa fa-history") }
         +" History!"
     }
@@ -140,7 +140,7 @@ fun ChildrenBuilder.pinListButton(party: Party, className: ClassName = ClassName
     to = "/${party.id.value}/pins/"
     tabIndex = -1
     draggable = false
-    child(CouplingButton(large, white, className)) {
+    +CouplingButton(large, white, className).create {
         i { this.className = ClassName("fa fa-peace") }
         +" Pin Bag!"
     }
@@ -150,7 +150,7 @@ fun ChildrenBuilder.statisticsButton(party: Party, className: ClassName = ClassN
     to = "/${party.id.value}/statistics"
     tabIndex = -1
     draggable = false
-    child(CouplingButton(large, blue, className = className)) {
+    +CouplingButton(large, blue, className = className).create {
         i { this.className = ClassName("fa fa-database") }
         +" Statistics!"
     }
@@ -160,7 +160,7 @@ fun ChildrenBuilder.viewRetireesButton(party: Party, className: ClassName = Clas
     to = "/${party.id.value}/players/retired"
     tabIndex = -1
     draggable = false
-    child(CouplingButton(large, yellow, className)) {
+    +CouplingButton(large, yellow, className).create {
         i { this.className = ClassName("fa fa-user-slash") }
         +" Retirees!"
     }
