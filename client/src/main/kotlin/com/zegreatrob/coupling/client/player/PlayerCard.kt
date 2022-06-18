@@ -38,7 +38,7 @@ private val styles = useStyles("player/PlayerCard")
 
 val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselected, tilt) ->
     div {
-        this.className = emotion.css.ClassName(classNames = additionalClasses(className, deselected)) {
+        css(classNames = additionalClasses(className, deselected)) {
             transitionDuration = 0.25.s
             transform = rotate(tilt)
             playerCardRuleSet(size)()

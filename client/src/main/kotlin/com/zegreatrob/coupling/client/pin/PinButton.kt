@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import csstype.PropertiesBuilder
 import csstype.px
-import emotion.css.ClassName
+import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
@@ -31,7 +31,7 @@ private val styles = useStyles("pin/PinButton")
 
 val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClick) ->
     div {
-        this.className = ClassName(ClassName(className), styles.className) {
+        css(ClassName(className), styles.className) {
             scaledStyles(scale)
         }
         this.onClick = { onClick() }

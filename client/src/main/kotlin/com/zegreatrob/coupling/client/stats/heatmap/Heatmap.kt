@@ -6,7 +6,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import csstype.WhiteSpace
 import csstype.px
-import emotion.css.ClassName
+import emotion.react.css
 import org.w3c.dom.Node
 import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
@@ -25,7 +25,7 @@ val heatmap = tmFC<Heatmap> { (data, className) ->
     useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }
 
     div {
-        this.className = ClassName(styles.className, csstype.ClassName(className)) {
+        css(styles.className, csstype.ClassName(className)) {
             width = rowSize.px
             height = rowSize.px
             whiteSpace = WhiteSpace.normal

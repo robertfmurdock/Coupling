@@ -11,6 +11,7 @@ import csstype.Margin
 import csstype.Padding
 import csstype.px
 import csstype.vh
+import emotion.react.css
 import react.dom.html.ReactHTML.div
 
 data class PageFrame(val borderColor: Color, val backgroundColor: Color, val className: ClassName? = null) :
@@ -18,7 +19,7 @@ data class PageFrame(val borderColor: Color, val backgroundColor: Color, val cla
 
 val pageFrame = tmFC<PageFrame> { props ->
     div {
-        className = emotion.css.ClassName(props.className) {
+        css(props.className) {
             padding = Padding(0.px, 25.px, 25.px, 25.px)
             borderStyle = LineStyle.solid
             borderTopWidth = 2.px

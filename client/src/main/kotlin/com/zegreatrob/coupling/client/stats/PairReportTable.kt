@@ -12,6 +12,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
+import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
@@ -25,7 +26,7 @@ data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<Pa
 
 val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
     div {
-        this.className = emotion.css.ClassName(styles.className) {
+        css(styles.className) {
             whiteSpace = csstype.WhiteSpace.normal
         }
 

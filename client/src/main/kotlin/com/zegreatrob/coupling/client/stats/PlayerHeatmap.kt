@@ -9,7 +9,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.number
-import emotion.css.ClassName
+import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
@@ -22,7 +22,7 @@ private val styles = useStyles("stats/PlayerHeatmap")
 
 val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
     ReactHTML.div {
-        className = ClassName(styles["rightSection"]) {
+        css(styles["rightSection"]) {
             whiteSpace = csstype.WhiteSpace.nowrap
             flexShrink = number(0.0)
         }

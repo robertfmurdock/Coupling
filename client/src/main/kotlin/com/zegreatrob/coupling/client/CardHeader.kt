@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.fitty.fitty
 import csstype.AlignItems
 import csstype.Margin
 import csstype.px
-import emotion.css.ClassName
 import emotion.react.css
 import org.w3c.dom.Node
 import react.FC
@@ -23,7 +22,7 @@ val CardHeader = FC<CardHeaderProps> { props ->
     val headerContainerRef = useRef<Node>(null)
     useLayoutEffect { headerContainerRef.current?.fitContent(size) }
     div {
-        className = ClassName(props.className) {
+        css(props.className) {
             margin = Margin((size * 0.02).px, 0.px)
             height = (size * 0.33).px
             borderRadius = (size / 10).px

@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import csstype.px
 import csstype.unaryMinus
-import emotion.css.ClassName
+import emotion.react.css
 import react.dom.html.ReactHTML.div
 
 data class PinSection(
@@ -22,7 +22,7 @@ private val styles = useStyles("pin/PinSection")
 
 val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
     div {
-        this.className = ClassName(styles.className, className) {
+        css(styles.className, className) {
             marginLeft = -(pinList.size * 12 * scale.factor).px
         }
         pinList.map { pin ->

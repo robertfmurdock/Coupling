@@ -15,7 +15,7 @@ import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import csstype.PropertiesBuilder
 import csstype.deg
-import emotion.css.ClassName
+import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.key
@@ -39,7 +39,7 @@ val playerRoster = tmFC { (label, players, partyId, className, overrides): Playe
     val random = Random(ref)
 
     div {
-        this.className = ClassName(className?.let(::ClassName), styles.className) {
+        css(className?.let(::ClassName), styles.className) {
             overrides()
         }
         div {

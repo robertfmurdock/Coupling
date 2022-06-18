@@ -23,6 +23,7 @@ import csstype.number
 import csstype.px
 import csstype.rgba
 import csstype.url
+import emotion.react.css
 import org.w3c.dom.HTMLButtonElement
 import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.button
@@ -169,7 +170,7 @@ val couplingButton = tmFC<CouplingButton> { props ->
         this.onClick = { onClick() }
         block()
 
-        this.className = emotion.css.ClassName(className, ClassName("button")) {
+        css(className, ClassName("button")) {
             "*" {
                 verticalAlign = csstype.VerticalAlign.middle
             }

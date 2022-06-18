@@ -8,7 +8,6 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.child
 import com.zegreatrob.minreact.tmFC
 import csstype.number
-import emotion.css.ClassName
 import emotion.react.css
 import react.dom.html.ReactHTML.div
 
@@ -37,7 +36,7 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
                     display = csstype.Display.inlineFlex
                 }
                 div {
-                    className = ClassName(styles["leftSection"]) {
+                    css(styles["leftSection"]) {
                         flexGrow = number(0.0)
                     }
                     div {

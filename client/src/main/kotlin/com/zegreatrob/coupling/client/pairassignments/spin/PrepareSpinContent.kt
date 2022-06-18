@@ -32,7 +32,6 @@ import csstype.number
 import csstype.px
 import csstype.rgba
 import csstype.s
-import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.br
@@ -112,7 +111,7 @@ private fun ChildrenBuilder.selectorAreaDiv(children: ChildrenBuilder.() -> Unit
 }
 
 private fun ChildrenBuilder.playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = div {
-    className = ClassName(styles["playerSelector"]) {
+    css(styles["playerSelector"]) {
         display = Display.inlineBlock
         flex = number(1.0)
         margin = 5.px
@@ -183,7 +182,7 @@ private fun ChildrenBuilder.pinSelector(
 }
 
 private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = div {
-    className = ClassName(styles["selectedPins"]) {
+    css(styles["selectedPins"]) {
         margin = (5.px)
         flex = number(1.0)
     }
@@ -191,7 +190,7 @@ private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit
 }
 
 private fun ChildrenBuilder.deselectedPinsDiv(children: ChildrenBuilder.() -> Unit) = div {
-    className = ClassName(styles["deselectedPins"]) {
+    css(styles["deselectedPins"]) {
         flex = number(1.0)
         margin = (5.px)
         backgroundColor = Color("#de8286")

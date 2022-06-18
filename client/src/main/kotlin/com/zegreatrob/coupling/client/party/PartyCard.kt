@@ -15,7 +15,6 @@ import csstype.Flex
 import csstype.PropertiesBuilder
 import csstype.number
 import csstype.px
-import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.aria.ariaHidden
@@ -33,7 +32,7 @@ val partyCard = tmFC<PartyCard> { (party, size) ->
         to = party.id.currentPairsPage()
         visuallyHidden { +"Tribe Home Page" }
         span {
-            className = ClassName(styles.className, block = partyCardCss(size))
+            css(styles.className, block = partyCardCss(size))
             asDynamic()["data-tribe-id"] = party.id.value
             ariaHidden = true
 
