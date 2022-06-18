@@ -48,21 +48,23 @@ fun <R, P : DataProps<P>> dataLoadProps(
 
 interface Stub : DataProps<Stub>
 
-private val stublet: ElementType<DataPropsBridge<DLP<Any, Stub>>> = tmFC { props ->
+private val stublet: ElementType<DataPropsBridge<CouplingDataLoader<Any, Stub>>> = tmFC { props ->
     val (query, toProps, commander) = props
-    CouplingLoaderProps(couplingDataLoader()) { tools ->
-        val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, tools)
-        commander.tracingDispatcher().execute(query)?.let { value ->
-            toProps(tools.reloadData, dispatchFunc, value)
+    add(
+        CouplingLoaderProps(couplingDataLoader()) { tools ->
+            val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, tools)
+            commander.tracingDispatcher().execute(query)?.let { value ->
+                toProps(tools.reloadData, dispatchFunc, value)
+            }
         }
-    }
+    )
 }
 
-data class DLP<R, P : DataProps<P>>(
+data class CouplingDataLoader<R, P : DataProps<P>>(
     val query: SuspendAction<CommandDispatcher, R?>,
     val toProps: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P,
     val commander: Commander,
-) : DataPropsBind<DLP<R, P>>(stublet.unsafeCast<TMFC<DLP<R, P>>>())
+) : DataPropsBind<CouplingDataLoader<R, P>>(stublet.unsafeCast<TMFC<CouplingDataLoader<R, P>>>())
 
 private val loaderStub = tmFC { (_, getDataAsync): CouplingLoaderProps<Stub> ->
     add(
