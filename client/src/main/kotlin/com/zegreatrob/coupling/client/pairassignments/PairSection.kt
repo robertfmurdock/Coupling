@@ -1,30 +1,34 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
+import com.zegreatrob.coupling.client.dom.CouplingButton
+import com.zegreatrob.coupling.client.dom.large
+import com.zegreatrob.coupling.client.dom.white
+import com.zegreatrob.coupling.client.external.domtoimage.domToImage
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator
+import com.zegreatrob.coupling.client.player.TinyPlayerList
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
-import csstype.Border
-import csstype.BoxShadow
-import csstype.Display
-import csstype.FontSize
-import csstype.FontWeight
-import csstype.LineStyle
-import csstype.Margin
-import csstype.NamedColor
-import csstype.Padding
-import csstype.PropertiesBuilder
+import csstype.ClassName
+import csstype.Float
+import csstype.VerticalAlign
 import csstype.px
-import csstype.rgb
-import csstype.rgba
 import emotion.react.css
+import kotlinx.browser.window
+import org.w3c.dom.DataTransfer
+import org.w3c.dom.Node
 import react.ChildrenBuilder
+import react.MutableRefObject
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.i
+import react.ref
+import react.useRef
+import kotlin.js.Json
+import kotlin.js.json
 
 data class PairSection(
     val party: Party,
@@ -32,58 +36,56 @@ data class PairSection(
     val pairAssignments: PairAssignmentDocument?,
     val allowSave: Boolean,
     val setPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<DeletePairAssignmentsCommandDispatcher>
+    val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
 ) : DataPropsBind<PairSection>(pairSection)
 
-val pairSection = tmFC<PairSection> { (party, players, pairAssignments, allowSave, setPairs, controls) ->
+private val pairSection = tmFC<PairSection> { (party, players, pairs, allowSave, setPairs, controls) ->
+    val pairSectionNode = useRef<Node>(null)
+
     div {
-        css { pairSectionCss() }
-        if (pairAssignments == null) {
-            noPairsHeader()
-        } else {
-            add(
-                PairAssignmentsAnimator(
-                    party = party,
-                    players = players,
-                    pairAssignments = pairAssignments,
-                    enabled = party.animationEnabled && allowSave
-                ) {
-                    add(
-                        CurrentPairAssignmentsPanel(
-                            party = party,
-                            pairAssignments = pairAssignments,
-                            setPairAssignments = setPairs,
-                            allowSave = allowSave,
-                            dispatchFunc = controls.dispatchFunc
-                        )
-                    )
-                }
-            )
+        css { verticalAlign = VerticalAlign.top }
+        add(PairSectionPanel(party, players, pairs, allowSave, setPairs, controls)) {
+            ref = pairSectionNode
+        }
+        div {
+            css { float = Float.right; width = 0.px }
+            div { copyToClipboardButton(pairSectionNode) }
+            add(TinyPlayerList(party, players))
         }
     }
 }
 
-private fun PropertiesBuilder.pairSectionCss() {
-    display = Display.inlineBlock
-    borderRadius = 20.px
-    padding = 5.px
-    margin = Margin(5.px, 0.px)
-    backgroundColor = rgb(195, 213, 203)
-    boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
+    if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
+        add(
+            CouplingButton(
+                sizeRuleSet = large,
+                colorRuleSet = white,
+                onClick = ref.current?.copyToClipboardOnClick() ?: {},
+                attrs = { tabIndex = -1 }
+            )
+        ) {
+            i { className = ClassName("fa fa-clipboard") }
+        }
+    }
 }
 
-private fun ChildrenBuilder.noPairsHeader() = div {
-    css {
-        border = Border(8.px, LineStyle.outset, NamedColor.dimgray)
-        backgroundColor = NamedColor.aliceblue
-        display = Display.inlineBlock
-        borderRadius = 40.px
-        fontSize = FontSize.xxLarge
-        fontWeight = FontWeight.bold
-        width = 500.px
-        height = 150.px
-        padding = Padding(100.px, 5.px, 5.px)
-        margin = Margin(0.px, 2.px, 5.px)
-    }
-    +"No pair assignments yet!"
+private fun Node.copyToClipboardOnClick(): () -> Unit = if (isReallyTrulySafari())
+    writeImageToClipboardAsPromise()
+else
+    collectImageThenWriteToClipboard()
+
+private fun Node.collectImageThenWriteToClipboard(): () -> Unit = {
+    domToImage.toBlob(this).then { window.navigator.clipboard.write(dataTransfer(it)) }
 }
+
+private fun Node.writeImageToClipboardAsPromise(): () -> Unit = {
+    window.navigator.clipboard.write(dataTransfer(domToImage.toBlob(this)))
+}
+
+private fun isReallyTrulySafari() = window.navigator.userAgent.indexOf("Safari") != -1 &&
+    window.navigator.userAgent.indexOf("Chrome") == -1
+
+private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it))).unsafeCast<DataTransfer>()
+
+external class ClipboardItem(params: Json)

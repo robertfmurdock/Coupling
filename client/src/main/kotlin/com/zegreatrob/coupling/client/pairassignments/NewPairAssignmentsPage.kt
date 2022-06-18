@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.Commander
@@ -9,7 +10,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.add
 import react.key
 
-private val LoadedPairAssignments by lazy { couplingDataLoader<SocketedPairAssignments>() }
+private val LoadedPairAssignments by lazy { couplingDataLoader<SocketedPairAssignments<CommandDispatcher>>() }
 
 val NewPairAssignmentsPage = partyPageFunction { props, partyId ->
     add(dataLoadProps(partyId, props.commander)) {

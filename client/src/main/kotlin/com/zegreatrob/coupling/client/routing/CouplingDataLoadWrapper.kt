@@ -5,6 +5,8 @@ import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.DataPropsBridge
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
@@ -17,6 +19,7 @@ import com.zegreatrob.react.dataloader.ResolvedState
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.execute
 import react.ChildrenBuilder
+import react.ElementType
 import react.FC
 import react.Props
 import react.router.dom.Link
@@ -43,13 +46,34 @@ fun <R, P : DataProps<P>> dataLoadProps(
     }
 }
 
-fun <P : DataProps<P>> couplingDataLoader() = tmFC { (_, getDataAsync): CouplingLoaderProps<P> ->
+interface Stub : DataProps<Stub>
+
+private val stublet: ElementType<DataPropsBridge<DLP<Any, Stub>>> = tmFC { props ->
+    val (query, toProps, commander) = props
+    CouplingLoaderProps(couplingDataLoader()) { tools ->
+        val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, tools)
+        commander.tracingDispatcher().execute(query)?.let { value ->
+            toProps(tools.reloadData, dispatchFunc, value)
+        }
+    }
+}
+
+data class DLP<R, P : DataProps<P>>(
+    val query: SuspendAction<CommandDispatcher, R?>,
+    val toProps: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P,
+    val commander: Commander,
+) : DataPropsBind<DLP<R, P>>(stublet.unsafeCast<TMFC<DLP<R, P>>>())
+
+private val loaderStub = tmFC { (_, getDataAsync): CouplingLoaderProps<Stub> ->
     add(
-        DataLoader(getDataAsync, { null }) { state: DataLoadState<P?> ->
+        DataLoader(getDataAsync, { null }) { state: DataLoadState<Stub?> ->
             animationFrame(state)
         }
     )
 }
+
+fun <P : DataProps<P>> couplingDataLoader() = loaderStub
+    .unsafeCast<ElementType<DataPropsBridge<CouplingLoaderProps<P>>>>()
 
 private fun <P : DataProps<P>> ChildrenBuilder.animationFrame(state: DataLoadState<P?>) =
     animationFrame {

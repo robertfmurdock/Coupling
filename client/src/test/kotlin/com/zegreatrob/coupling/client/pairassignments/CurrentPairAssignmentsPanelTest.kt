@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -37,7 +38,7 @@ class CurrentPairAssignmentsPanelTest {
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()
         )
-        val dispatchFunc = StubDispatchFunc<PairAssignmentsCommandDispatcher>()
+        val dispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
                 party,
@@ -62,7 +63,7 @@ class CurrentPairAssignmentsPanelTest {
     fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = setup(object {
         val party = stubParty()
         val pairAssignments = stubPairAssignmentDoc()
-        val dispatchFunc = StubDispatchFunc<PairAssignmentsCommandDispatcher>()
+        val dispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
                 party,
