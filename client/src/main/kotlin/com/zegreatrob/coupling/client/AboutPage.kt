@@ -13,18 +13,14 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.child
 import csstype.ClassName
 import csstype.Color
+import csstype.Position
 import csstype.em
+import csstype.px
 import emotion.react.css
-import kotlinx.css.Float
-import kotlinx.css.Position
-import kotlinx.css.float
-import kotlinx.css.position
-import kotlinx.css.px
-import kotlinx.css.right
-import kotlinx.css.top
 import react.FC
 import react.Props
 import react.PropsWithChildren
+import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
@@ -54,8 +50,9 @@ val aboutPageContent = FC<PropsWithChildren> { props ->
 
 private val backButtonSection = FC<Props> {
     div {
-        css { position = csstype.Position.relative }
-        cssSpan(css = { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }) {
+        css { position = Position.relative }
+        ReactHTML.span {
+            css { float = csstype.Float.left; position = Position.absolute; right = (-15).px; top = 20.px }
             backButton()
         }
     }

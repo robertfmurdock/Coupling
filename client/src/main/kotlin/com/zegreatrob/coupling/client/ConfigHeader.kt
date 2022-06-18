@@ -29,7 +29,6 @@ import csstype.pt
 import csstype.px
 import csstype.rgba
 import emotion.react.css
-import kotlinx.css.flexGrow
 import react.ChildrenBuilder
 import react.FC
 import react.PropsWithChildren
@@ -113,7 +112,8 @@ private fun ChildrenBuilder.topControlRow(props: ConfigHeaderProps) = div {
             display = Display.flex
             alignItems = AlignItems.baseline
         }
-        cssSpan(css = { flexGrow = 2.0 }) {
+        span {
+            css { flexGrow = number(2.0) }
             +props.children
         }
         span {

@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.minenzyme.enzyme
 import com.zegreatrob.testmints.setup
 import kotlinx.browser.window
 import react.dom.html.ReactHTML.div
@@ -21,8 +21,8 @@ class CouplingWebsocketTest {
         val partyId = PartyId("bwahahahaha")
         val useSsl = false
         val token = "${uuid4()}"
-    }) exercise {
-        shallow { child(CouplingWebsocket(partyId, useSsl, { }, token) { div {} }) }
+    }) { com.zegreatrob.minenzyme.setup } exercise {
+        enzyme.shallow(CouplingWebsocket(partyId, useSsl, { }, token) { div {} }.create())
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
@@ -36,8 +36,8 @@ class CouplingWebsocketTest {
         val partyId = PartyId("LOL")
         val useSsl = true
         val token = "${uuid4()}"
-    }) exercise {
-        shallow { child(CouplingWebsocket(partyId, useSsl, { }, token) { div {} }) }
+    }) { com.zegreatrob.minenzyme.setup } exercise {
+        enzyme.shallow(CouplingWebsocket(partyId, useSsl, { }, token) { div {} }.create())
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
@@ -50,10 +50,10 @@ class CouplingWebsocketTest {
     fun whenSocketIsClosedUsesNotConnectedMessage(): Unit = setup(object {
         val partyId = PartyId("Woo")
         var lastMessage: Message? = null
-        val wrapper = shallow { child(CouplingWebsocket(partyId, false, { lastMessage = it }, "") { div {} }) }
+        val wrapper = enzyme.shallow(CouplingWebsocket(partyId, false, { lastMessage = it }, "") { div {} }.create())
         val websocketProps = wrapper.find(reactWebsocket).props()
         val expectedMessage = "Not connected"
-    }) exercise {
+    }) { com.zegreatrob.minenzyme.setup } exercise {
         websocketProps.onMessage(socketMessage("lol"))
         wrapper.update()
         websocketProps.onClose()
