@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.PageFrame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.number
 import emotion.react.css
@@ -25,7 +25,7 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div {
         className = styles.className
-        +PageFrame(borderColor = csstype.Color("#e8e8e8"), backgroundColor = csstype.Color("#dcd9d9")).create {
+        add(PageFrame(borderColor = csstype.Color("#e8e8e8"), backgroundColor = csstype.Color("#dcd9d9"))) {
             ConfigHeader {
                 this.party = party
                 +"Statistics"
@@ -40,16 +40,18 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
                         flexGrow = number(0.0)
                     }
                     div {
-                        +TeamStatistics(
-                            spinsUntilFullRotation = spinsUntilFullRotation,
-                            activePlayerCount = players.size,
-                            medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) }
-                                ?: ""
-                        ).create()
+                        add(
+                            TeamStatistics(
+                                spinsUntilFullRotation = spinsUntilFullRotation,
+                                activePlayerCount = players.size,
+                                medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) }
+                                    ?: ""
+                            )
+                        )
                     }
-                    +PairReportTable(pairReports).create()
+                    add(PairReportTable(pairReports))
                 }
-                +PlayerHeatmap(players, heatmapData).create()
+                add(PlayerHeatmap(players, heatmapData))
             }
         }
     }

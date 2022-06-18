@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import org.w3c.dom.Node
@@ -28,6 +28,6 @@ val draggablePinButton = tmFC<DraggablePinButton> { (pin, scale) ->
     span {
         ref = draggableRef
         className = ClassName("${styles.className} ${styles["hoverZoom"]}")
-        +PinButton(pin, scale, showTooltip = true).create()
+        add(PinButton(pin, scale, showTooltip = true))
     }
 }

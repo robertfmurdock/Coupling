@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.party.AboutButton
 import com.zegreatrob.coupling.client.party.GeneralControlBar
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.Color
 import react.dom.html.ReactHTML.div
@@ -22,11 +22,13 @@ data class UserConfig(val user: User) : DataProps<UserConfig> {
 }
 
 private val userConfig = tmFC<UserConfig> { (user) ->
-    +PageFrame(
-        borderColor = Color("rgb(94, 84, 102)"),
-        backgroundColor = Color("floralwhite"),
-        className = styles.className
-    ).create {
+    add(
+        PageFrame(
+            borderColor = Color("rgb(94, 84, 102)"),
+            backgroundColor = Color("floralwhite"),
+            className = styles.className
+        )
+    ) {
         GeneralControlBar {
             title = "User Config"
             AboutButton()

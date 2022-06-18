@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import react.key
@@ -22,15 +22,23 @@ const val playerDragItemType = "PLAYER"
 private val styles = useStyles("pairassignments/DraggablePlayer")
 
 val draggablePlayer = tmFC<DraggablePlayer> { (pinnedPlayer, zoomOnHover, tilt, onPlayerDrop) ->
-    +DraggableThing(playerDragItemType, pinnedPlayer.player.id, onPlayerDrop) { isOver ->
-        +PlayerCard(
-            pinnedPlayer.player,
-            className = playerCardClassName(isOver, zoomOnHover),
-            tilt = tilt
-        ).create {
-            key = pinnedPlayer.player.id
+    add(
+        DraggableThing(
+            itemType = playerDragItemType,
+            itemId = pinnedPlayer.player.id,
+            dropCallback = onPlayerDrop
+        ) { isOver ->
+            add(
+                PlayerCard(
+                    player = pinnedPlayer.player,
+                    className = playerCardClassName(isOver, zoomOnHover),
+                    tilt = tilt
+                )
+            ) {
+                key = pinnedPlayer.player.id
+            }
         }
-    }.create()
+    )
 }
 
 private fun playerCardClassName(isOver: Boolean, zoomOnHover: Boolean) = mapOf(

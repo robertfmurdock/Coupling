@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import react.ChildrenBuilder
@@ -55,7 +55,7 @@ val pinConfigContent = tmFC<PinConfigContent> { (party, pin, pinList, onChange, 
             }
             span {
                 className = styles["icon"]
-                +PinButton(pin, PinButtonScale.Large, showTooltip = false).create()
+                add(PinButton(pin, PinButtonScale.Large, showTooltip = false))
             }
         }
         pinBag(party, pinList, pinConfigStyles["pinBag"])
@@ -64,7 +64,9 @@ val pinConfigContent = tmFC<PinConfigContent> { (party, pin, pinList, onChange, 
 
 private fun ChildrenBuilder.pinBag(party: Party, pinList: List<Pin>, className: ClassName) = div {
     this.className = className
-    pinList.map { pin -> +PinCard(party.id, pin).create { key = pin.id } }
+    pinList.map { pin ->
+        add(PinCard(party.id, pin)) { key = pin.id }
+    }
 }
 
 private fun ChildrenBuilder.pinConfigForm(

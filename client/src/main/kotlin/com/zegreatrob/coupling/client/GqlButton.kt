@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.client.dom.white
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.img
@@ -14,7 +14,7 @@ val GqlButton = FC<Props> {
         to = "/graphiql"
         tabIndex = -1
         draggable = false
-        +CouplingButton(large, white).create {
+        add(CouplingButton(large, white)) {
             img {
                 src = svgPath("graphql")
                 height = 18.0

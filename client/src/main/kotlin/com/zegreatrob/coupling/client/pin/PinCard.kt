@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import react.ChildrenBuilder
@@ -19,7 +19,7 @@ val pinCard = tmFC<PinCard> { (partyId, pin, shouldLink) ->
     optionalLink(shouldLink, partyId, pin) {
         div {
             className = styles.className
-            +PinButton(pin, PinButtonScale.Small, showTooltip = false).create()
+            add(PinButton(pin, PinButtonScale.Small, showTooltip = false))
             div {
                 className = ClassName("pin-name")
                 +pin.name

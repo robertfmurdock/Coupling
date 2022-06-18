@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.number
 import emotion.react.css
@@ -39,12 +39,12 @@ val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
                 keyedPlayerCard(player)
             }
         }
-        +Heatmap(heatmapData, "${styles["heatmap"]}").create()
+        add(Heatmap(heatmapData, "${styles["heatmap"]}"))
     }
 }
 
 private fun ChildrenBuilder.keyedPlayerCard(player: Player) = div {
     className = styles["playerCard"]
     key = player.id
-    +PlayerCard(player, size = 50).create()
+    add(PlayerCard(player, size = 50))
 }

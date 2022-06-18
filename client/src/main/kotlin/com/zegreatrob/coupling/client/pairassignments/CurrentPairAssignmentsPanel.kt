@@ -17,7 +17,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
@@ -61,7 +61,7 @@ val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
 
 private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
     div {
-        +PairAssignmentsHeader(pairAssignments).create()
+        add(PairAssignmentsHeader(pairAssignments))
     }
 }
 
@@ -73,15 +73,17 @@ private fun ChildrenBuilder.pairAssignmentList(
 ) = div {
     className = styles["pairAssignmentsContent"]
     pairAssignments.pairs.mapIndexed { index, pair ->
-        +AssignedPair(
-            party,
-            pair,
-            canDrag = allowSave,
-            swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
-                setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
-            },
-            pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) }
-        ).create {
+        add(
+            AssignedPair(
+                party,
+                pair,
+                canDrag = allowSave,
+                swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
+                    setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
+                },
+                pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) }
+            )
+        ) {
             key = "$index"
         }
     }
@@ -146,12 +148,14 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
     pair.players.any { player -> player.player.id == droppedPlayerId }
 }
 
-private fun ChildrenBuilder.saveButton(onSave: () -> Unit) =
-    +CouplingButton(supersize, green, styles["saveButton"], onSave).create {
-        +"Save!"
-    }
+private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = add(
+    CouplingButton(supersize, green, styles["saveButton"], onSave)
+) {
+    +"Save!"
+}
 
-private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) =
-    +CouplingButton(small, red, styles["deleteButton"], onCancel).create {
-        +"Cancel"
-    }
+private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) = add(
+    CouplingButton(small, red, styles["deleteButton"], onCancel)
+) {
+    +"Cancel"
+}

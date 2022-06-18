@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.black
 import com.zegreatrob.coupling.client.dom.large
 import com.zegreatrob.coupling.model.party.Party
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import csstype.ClassName
 import csstype.Padding
 import csstype.px
@@ -16,10 +16,12 @@ fun ChildrenBuilder.settingsButton(party: Party, className: ClassName = ClassNam
     to = "/${party.id.value}/edit"
     tabIndex = -1
     draggable = false
-    +CouplingButton(large, black, className) {
-        fontSize = 24.px
-        padding = Padding(1.px, 4.px, 2.px)
-    }.create {
+    add(
+        CouplingButton(large, black, className) {
+            fontSize = 24.px
+            padding = Padding(1.px, 4.px, 2.px)
+        }
+    ) {
         i { this.className = ClassName("fa fa-cog") }
     }
 }

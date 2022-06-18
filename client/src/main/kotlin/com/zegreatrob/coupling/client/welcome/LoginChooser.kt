@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
@@ -20,7 +20,7 @@ val LoginChooser = FC<Props> {
     div {
         className = styles.className
         div {
-            +CouplingButton(supersize, white, styles["loginButton"], signInFunc).create {
+            add(CouplingButton(supersize, white, styles["loginButton"], signInFunc)) {
                 +"Login"
             }
         }

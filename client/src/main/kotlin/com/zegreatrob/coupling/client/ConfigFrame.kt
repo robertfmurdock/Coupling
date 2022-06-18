@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import csstype.Color
 import csstype.NamedColor
 import react.FC
@@ -13,11 +13,13 @@ external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren {
 }
 
 val ConfigFrame = FC<ConfigFrameProps> { props ->
-    +PageFrame(
-        className = props.className,
-        borderColor = props.borderColor ?: NamedColor.black,
-        backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)")
-    ).create {
+    add(
+        PageFrame(
+            className = props.className,
+            borderColor = props.borderColor ?: NamedColor.black,
+            backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)")
+        )
+    ) {
         +props.children
     }
 }

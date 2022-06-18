@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import react.router.Navigate
 import react.useState
@@ -40,5 +40,5 @@ val pinConfig = tmFC { (party, pin, pinList, reload, dispatchFunc): PinConfig ->
     if (redirectUrl != null)
         Navigate { to = redirectUrl }
     else
-        +PinConfigContent(party, updatedPin, pinList, onChange, onSubmit, onRemove).create()
+        add(PinConfigContent(party, updatedPin, pinList, onChange, onSubmit, onRemove))
 }

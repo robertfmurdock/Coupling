@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.coupling.client.visuallyHidden
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.Auto
 import csstype.Flex
@@ -38,7 +38,7 @@ val partyCard = tmFC<PartyCard> { (party, size) ->
 
             div {
                 css { margin = ((size * 0.02).px) }
-                +PartyCardHeader(party, size).create()
+                add(PartyCardHeader(party, size))
                 partyGravatar(party, size)
             }
         }

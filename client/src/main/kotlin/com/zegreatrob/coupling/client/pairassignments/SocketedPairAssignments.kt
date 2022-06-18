@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -46,13 +46,14 @@ val socketedPairAssignments = tmFC<SocketedPairAssignments> { (party, players, o
     }
 
     if (token.isNotBlank()) {
-        +CouplingWebsocket(party.id, onMessage = onMessageFunc, token = token) {
-            val updatePairAssignments = useMemo(controls.dispatchFunc) {
-                updatePairAssignmentsFunc(setPairAssignments, controls.dispatchFunc, party.id)
+        add(
+            CouplingWebsocket(party.id, onMessage = onMessageFunc, token = token) {
+                val updatePairAssignments = useMemo(controls.dispatchFunc) {
+                    updatePairAssignmentsFunc(setPairAssignments, controls.dispatchFunc, party.id)
+                }
+                add(PairAssignments(party, players, pairAssignments, updatePairAssignments, controls, message, allowSave))
             }
-            +PairAssignments(party, players, pairAssignments, updatePairAssignments, controls, message, allowSave)
-                .create()
-        }.create()
+        )
     } else {
         div()
     }

@@ -23,7 +23,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.Border
 import csstype.BoxShadow
@@ -81,13 +81,13 @@ val pairAssignments = tmFC<PairAssignments> { props ->
         div {
             className = styles.className
             div {
-                +PartyBrowser(party).create()
+                add(PartyBrowser(party))
                 topPairSection(party, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
             }
             controlPanel(party)
             unpairedPlayerSection(party, notPairedPlayers(players, pairAssignments))
 
-            +ServerMessage(message).create {
+            add(ServerMessage(message)) {
                 key = "${message.text} ${message.players.size}"
             }
         }
@@ -116,7 +116,7 @@ private fun ChildrenBuilder.topPairSection(
     div {
         css { float = csstype.Float.right; width = 0.px }
         div { copyToClipboardButton(pairSectionNode) }
-        +TinyPlayerList(party, players).create()
+        add(TinyPlayerList(party, players))
     }
 }
 
@@ -154,7 +154,7 @@ private fun ChildrenBuilder.currentPairSection(
     if (pairAssignments == null) {
         noPairsHeader()
     } else {
-        +pairAssignmentsAnimator(party, players, pairAssignments, allowSave, setPairAssignments, controls).create()
+        add(pairAssignmentsAnimator(party, players, pairAssignments, allowSave, setPairAssignments, controls))
     }
 }
 
@@ -166,7 +166,7 @@ private fun pairAssignmentsAnimator(
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) = PairAssignmentsAnimator(party, players, pairAssignments, enabled = party.animationEnabled && allowSave) {
-    +CurrentPairAssignmentsPanel(party, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc).create()
+    add(CurrentPairAssignmentsPanel(party, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
 }
 
 private fun ChildrenBuilder.noPairsHeader() = div {
@@ -194,13 +194,15 @@ private fun ChildrenBuilder.controlPanel(party: Party) = div {
 
 private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
     if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
-        +CouplingButton(
-            large,
-            white,
-            styles["copyToClipboardButton"],
-            onClick = ref.current?.copyToClipboardOnClick() ?: {},
-            attrs = { tabIndex = -1 }
-        ).create {
+        add(
+            CouplingButton(
+                sizeRuleSet = large,
+                colorRuleSet = white,
+                className = styles["copyToClipboardButton"],
+                onClick = ref.current?.copyToClipboardOnClick() ?: {},
+                attrs = { tabIndex = -1 }
+            )
+        ) {
             i { className = ClassName("fa fa-clipboard") }
         }
     }
@@ -227,7 +229,7 @@ private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it
 external class ClipboardItem(params: Json)
 
 private fun ChildrenBuilder.unpairedPlayerSection(party: Party, players: List<Player>) =
-    +PlayerRoster(label = "Unpaired players", players = players, partyId = party.id).create()
+    add(PlayerRoster(label = "Unpaired players", players = players, partyId = party.id))
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =
     if (pairAssignments == null) {
@@ -243,7 +245,7 @@ private fun ChildrenBuilder.prepareToSpinButton(party: Party, className: ClassNa
     to = "/${party.id.value}/prepare/"
     tabIndex = -1
     draggable = false
-    +CouplingButton(supersize, pink, className).create {
+    add(CouplingButton(supersize, pink, className)) {
         +"Prepare to spin!"
     }
 }

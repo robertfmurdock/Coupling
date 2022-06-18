@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import react.router.Navigate
 import react.useState
@@ -31,15 +31,17 @@ val prepareSpin = tmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, di
     if (redirectUrl != null)
         Navigate { to = redirectUrl ?: "" }
     else {
-        +PrepareSpinContent(
-            party,
-            playerSelections,
-            pins,
-            pinSelections,
-            { playerSelections = it },
-            { pinSelections = it },
-            onSpin
-        ).create()
+        add(
+            PrepareSpinContent(
+                party,
+                playerSelections,
+                pins,
+                pinSelections,
+                { playerSelections = it },
+                { pinSelections = it },
+                onSpin
+            )
+        )
     }
 }
 

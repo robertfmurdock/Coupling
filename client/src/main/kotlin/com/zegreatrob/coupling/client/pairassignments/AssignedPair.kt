@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
@@ -62,7 +63,7 @@ val assignedPair = tmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pin
             playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
         }
 
-        +PinSection(pinList = pair.pins, canDrag = canDrag).create()
+        add(PinSection(pinList = pair.pins, canDrag = canDrag))
     }
 }
 

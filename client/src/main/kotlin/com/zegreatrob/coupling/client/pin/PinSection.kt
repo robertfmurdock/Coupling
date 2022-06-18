@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pin
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import csstype.px
@@ -26,10 +26,12 @@ val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
             marginLeft = -(pinList.size * 12 * scale.factor).px
         }
         pinList.map { pin ->
-            if (canDrag)
-                +DraggablePinButton(pin, scale).create()
-            else
-                +PinButton(pin, scale, showTooltip = true).create()
+            add(
+                if (canDrag)
+                    DraggablePinButton(pin, scale)
+                else
+                    PinButton(pin, scale, showTooltip = true)
+            )
         }
     }
 }

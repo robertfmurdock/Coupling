@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
@@ -34,11 +34,13 @@ val pinList = tmFC<PinList> { (party, pins) ->
 
         div {
             pins.map {
-                +PinCard(
-                    partyId = party.id,
-                    pin = it,
-                    shouldLink = true
-                ).create { key = it.id }
+                add(
+                    PinCard(
+                        partyId = party.id,
+                        pin = it,
+                        shouldLink = true
+                    )
+                ) { key = it.id }
             }
         }
         div {
@@ -46,7 +48,7 @@ val pinList = tmFC<PinList> { (party, pins) ->
                 to = "/${party.id.value}/pin/new"
                 tabIndex = -1
                 draggable = false
-                +CouplingButton(large, orange).create {
+                add(CouplingButton(large, orange)) {
                     +"Add a new pin."
                 }
             }

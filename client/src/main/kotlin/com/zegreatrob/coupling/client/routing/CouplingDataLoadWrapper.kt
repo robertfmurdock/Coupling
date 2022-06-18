@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.TMFC
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.react.dataloader.DataLoadFunc
 import com.zegreatrob.react.dataloader.DataLoadState
@@ -44,9 +44,11 @@ fun <R, P : DataProps<P>> dataLoadProps(
 }
 
 fun <P : DataProps<P>> couplingDataLoader() = tmFC { (_, getDataAsync): CouplingLoaderProps<P> ->
-    +DataLoader(getDataAsync, { null }) { state: DataLoadState<P?> ->
-        animationFrame(state)
-    }.create()
+    add(
+        DataLoader(getDataAsync, { null }) { state: DataLoadState<P?> ->
+            animationFrame(state)
+        }
+    )
 }
 
 private fun <P : DataProps<P>> ChildrenBuilder.animationFrame(state: DataLoadState<P?>) =
@@ -60,14 +62,14 @@ private fun <P : DataProps<P>> ChildrenBuilder.animationFrame(state: DataLoadSta
 private fun <P : DataProps<P>> ChildrenBuilder.resolvedComponent(state: ResolvedState<P?>) {
     when (val result = state.result) {
         null -> notFoundContent()
-        else -> +result.create()
+        else -> add(result)
     }
 }
 
 val notFoundContent = FC<Props> {
     Link {
         this.to = "/"
-        +CouplingButton().create {
+        add(CouplingButton()) {
             +"Looks like an error happened. Click this to go back home."
         }
     }

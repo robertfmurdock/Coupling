@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.couplingDataLoader
 import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import react.key
 
 private val LoadedPairAssignments by lazy { couplingDataLoader<SocketedPairAssignments>() }
 
 val CurrentPairsPage = partyPageFunction { props, partyId ->
-    +dataLoadProps(partyId, props.commander).create {
+    add(dataLoadProps(partyId, props.commander)) {
         key = partyId.value
     }
 }

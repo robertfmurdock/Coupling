@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import react.dom.html.ReactHTML.div
 import react.key
@@ -23,7 +23,7 @@ private val styles = useStyles("player/RetiredPlayers")
 val retiredPlayers = tmFC<RetiredPlayers> { (party, players) ->
     div {
         className = styles.className
-        +PartyBrowser(party).create()
+        add(PartyBrowser(party))
         div {
             className = styles["header"]
             +"Retired Players"
@@ -34,7 +34,7 @@ val retiredPlayers = tmFC<RetiredPlayers> { (party, players) ->
                     to = party.id.with(player).playerConfigPage()
                     draggable = false
                     key = player.id
-                    +PlayerCard(player, deselected = true).create()
+                    add(PlayerCard(player, deselected = true))
                 }
             }
         }

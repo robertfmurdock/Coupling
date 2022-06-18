@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.client.pin.PinConfigContent
 import com.zegreatrob.coupling.client.player.PlayerConfigContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.testmints.action.async.SuspendAction
 import csstype.Auto
@@ -127,29 +127,33 @@ private fun ChildrenBuilder.popperDiv(
 }
 
 private fun ChildrenBuilder.partyConfigFrame(state: MakeParty) {
-    +(PartyConfigContent(state.party, true, {}, {}, {}).create())
+    add(PartyConfigContent(state.party, true, {}, {}, {}))
 }
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     val (party, players, pins) = state
-    +PrepareSpinContent(party, players, pins, pins.map { it.id }, {}, {}, {}).create()
+    add(PrepareSpinContent(party, players, pins, pins.map { it.id }, {}, {}, {}))
 }
 
-private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) =
-    +PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {}).create()
+private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = add(
+    PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {})
+)
 
-private fun ChildrenBuilder.pinConfigFrame(state: AddPin) =
-    +PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {}).create()
+private fun ChildrenBuilder.pinConfigFrame(state: AddPin) = add(
+    PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {})
+)
 
-private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = +PairAssignments(
-    state.party,
-    state.players,
-    state.pairAssignments,
-    { },
-    Controls(noOpDispatchFunc) {},
-    CouplingSocketMessage("", emptySet()),
-    state.allowSave
-).create()
+private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = add(
+    PairAssignments(
+        state.party,
+        state.players,
+        state.pairAssignments,
+        { },
+        Controls(noOpDispatchFunc) {},
+        CouplingSocketMessage("", emptySet()),
+        state.allowSave
+    )
+)
 
 private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
     override fun <C : SuspendAction<NoOpDispatcher, R>, R> invoke(

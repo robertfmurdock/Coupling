@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
@@ -45,5 +45,5 @@ val playerConfigFunc = windowTmFC<PlayerConfig> { props, windowFuncs ->
     if (redirectUrl != null)
         Navigate { to = redirectUrl }
     else
-        +PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove).create()
+        add(PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove))
 }

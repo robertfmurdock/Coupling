@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.Angle
 import csstype.Auto
@@ -47,7 +47,7 @@ val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselecte
         div {
             css { margin = ((size * 0.02).px) }
             playerGravatarImage(player, size)
-            +PlayerCardHeader(player, size).create()
+            add(PlayerCardHeader(player, size))
         }
     }
 }

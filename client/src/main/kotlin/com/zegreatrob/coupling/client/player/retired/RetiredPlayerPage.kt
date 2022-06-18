@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.routing.dataLoadProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.client.routing.playerId
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import react.ChildrenBuilder
 import react.FC
 import react.dom.html.ReactHTML.div
@@ -26,11 +26,13 @@ val RetiredPlayerPage = FC<PageProps> { props ->
 }
 
 private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: PartyId, playerId: String) =
-    +dataLoadProps(
-        component = LoadedRetiredPlayer,
-        commander = props.commander,
-        query = RetiredPlayerQuery(partyId, playerId),
-        toProps = { reload, commandFunc, (party, players, player) ->
-            PlayerConfig(party, player, players, reload, commandFunc)
-        }
-    ).create { key = playerId }
+    add(
+        dataLoadProps(
+            component = LoadedRetiredPlayer,
+            commander = props.commander,
+            query = RetiredPlayerQuery(partyId, playerId),
+            toProps = { reload, commandFunc, (party, players, player) ->
+                PlayerConfig(party, player, players, reload, commandFunc)
+            }
+        )
+    ) { key = playerId }

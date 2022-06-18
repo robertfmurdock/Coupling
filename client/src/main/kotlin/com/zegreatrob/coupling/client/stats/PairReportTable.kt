@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import emotion.react.css
@@ -60,5 +60,5 @@ private fun TimeResult.presentationString() = when (this) {
 private fun ChildrenBuilder.reportPlayerCard(player: Player) = div {
     className = styles["playerCard"]
     key = player.id
-    +PlayerCard(player, size = 50).create()
+    add(PlayerCard(player, size = 50))
 }
