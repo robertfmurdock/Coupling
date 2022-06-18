@@ -18,7 +18,7 @@ val CurrentPairsPage = partyPageFunction { props, partyId ->
 }
 
 private fun dataLoadProps(partyId: PartyId, commander: Commander) = dataLoadProps(
-    LoadedPairAssignments,
+    component = LoadedPairAssignments,
     commander = commander,
     query = PartyCurrentDataQuery(partyId),
     toProps = { reload, dispatchFunc, (party, players, history) ->

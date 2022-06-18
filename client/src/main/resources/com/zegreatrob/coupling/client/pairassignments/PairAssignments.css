@@ -10,15 +10,6 @@
     background: #faf0d2;
 }
 
-:local(.controlPanel) {
-    display: inline-block;
-    border-radius: 20px;
-    padding: 5px;
-    margin: 5px 0;
-    background-color: #d5cdc3;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-}
-
 :local(.unpairedPlayerRoster) {
     display: inline-block;
     border-radius: 20px;
@@ -28,12 +19,7 @@
 }
 
 :local(.newPairsButton) {
-    animation: 2s pulsate;
-    animation-iteration-count: infinite;
-}
-
-:local(.newPairsButton):hover {
-    animation-duration: 0.75s;
+    /*! Do not remove */
 }
 
 :local(.copyToClipboardButton) {

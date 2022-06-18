@@ -11,6 +11,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.enzyme
 import com.zegreatrob.testmints.setup
 import kotlinx.browser.window
+import react.create
 import react.dom.html.ReactHTML.div
 import kotlin.test.Test
 
@@ -22,7 +23,7 @@ class CouplingWebsocketTest {
         val useSsl = false
         val token = "${uuid4()}"
     }) { com.zegreatrob.minenzyme.setup } exercise {
-        enzyme.shallow(CouplingWebsocket(partyId, useSsl, { }, token) { div {} }.create())
+        enzyme.shallow(CouplingWebsocket(partyId, useSsl, { }, { div.create {} }, token).create())
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
@@ -37,7 +38,7 @@ class CouplingWebsocketTest {
         val useSsl = true
         val token = "${uuid4()}"
     }) { com.zegreatrob.minenzyme.setup } exercise {
-        enzyme.shallow(CouplingWebsocket(partyId, useSsl, { }, token) { div {} }.create())
+        enzyme.shallow(CouplingWebsocket(partyId, useSsl, { }, { div.create {} }, token).create())
     } verify { wrapper ->
         wrapper.find(reactWebsocket).props()
             .url
@@ -50,7 +51,10 @@ class CouplingWebsocketTest {
     fun whenSocketIsClosedUsesNotConnectedMessage(): Unit = setup(object {
         val partyId = PartyId("Woo")
         var lastMessage: Message? = null
-        val wrapper = enzyme.shallow(CouplingWebsocket(partyId, false, { lastMessage = it }, "") { div {} }.create())
+        val wrapper = enzyme.shallow(
+            CouplingWebsocket(partyId, false, { lastMessage = it }, { div.create {} }, "")
+                .create()
+        )
         val websocketProps = wrapper.find(reactWebsocket).props()
         val expectedMessage = "Not connected"
     }) { com.zegreatrob.minenzyme.setup } exercise {

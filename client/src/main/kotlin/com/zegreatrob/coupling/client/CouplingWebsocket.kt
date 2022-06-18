@@ -15,7 +15,7 @@ import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
-import react.ChildrenBuilder
+import react.ReactNode
 import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.useMemo
@@ -29,7 +29,7 @@ val disconnectedMessage = CouplingSocketMessage(
 )
 
 val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
-    val (partyId, useSsl, onMessageFunc, token) = props
+    val (partyId, useSsl, onMessageFunc, buildChild, token) = props
 
     var connected by useState(false)
     val ref = useRef<WebsocketComponent>(null)
@@ -45,7 +45,7 @@ val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
             this.ref = { ref.current = it }
         }
 
-        props.children(this, if (connected) sendMessageFunc else null)
+        +props.buildChild(if (connected) sendMessageFunc else null)
     }
 }
 
@@ -53,8 +53,8 @@ data class CouplingWebsocket(
     val partyId: PartyId,
     val useSsl: Boolean = "https:" == window.location.protocol,
     val onMessage: (Message) -> Unit,
-    val token: String,
-    val children: ChildrenBuilder.(value: ((Message) -> Unit)?) -> Unit
+    val buildChild: (value: ((Message) -> Unit)?) -> ReactNode,
+    val token: String
 ) : DataPropsBind<CouplingWebsocket> (couplingWebsocket)
 
 private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->

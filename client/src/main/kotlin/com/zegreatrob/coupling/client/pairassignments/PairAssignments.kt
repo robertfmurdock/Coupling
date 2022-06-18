@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator
 import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.player.TinyPlayerList
@@ -25,20 +24,18 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
-import csstype.Border
+import csstype.AnimationIterationCount
 import csstype.BoxShadow
 import csstype.ClassName
+import csstype.Color
 import csstype.Display
-import csstype.FontSize
-import csstype.FontWeight
-import csstype.LineStyle
+import csstype.Float
 import csstype.Margin
-import csstype.NamedColor
-import csstype.Padding
 import csstype.VerticalAlign
+import csstype.ident
 import csstype.px
-import csstype.rgb
 import csstype.rgba
+import csstype.s
 import emotion.react.css
 import kotlinx.browser.window
 import org.w3c.dom.DataTransfer
@@ -48,6 +45,7 @@ import react.MutableRefObject
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.key
+import react.ref
 import react.router.dom.Link
 import react.useRef
 import kotlin.js.Json
@@ -72,8 +70,9 @@ data class PairAssignments(
 private val styles = useStyles("pairassignments/PairAssignments")
 
 val pairAssignments = tmFC<PairAssignments> { props ->
-    val (party, players, pairAssignments, setPairs, controls, message, allowSave) = props
+    val (party, players, pairs, setPairs, controls, message, allowSave) = props
 
+    val pairAssignments = pairs?.overlayUpdatedPlayers(players)
     val pairSectionNode = useRef<Node>(null)
 
     DndProvider {
@@ -82,41 +81,25 @@ val pairAssignments = tmFC<PairAssignments> { props ->
             className = styles.className
             div {
                 add(PartyBrowser(party))
-                topPairSection(party, players, pairAssignments, setPairs, allowSave, controls, pairSectionNode)
+                div {
+                    css { verticalAlign = VerticalAlign.top }
+                    add(PairSection(party, players, pairAssignments, allowSave, setPairs, controls)) {
+                        ref = pairSectionNode
+                    }
+                    div {
+                        css { float = Float.right; width = 0.px }
+                        div { copyToClipboardButton(pairSectionNode) }
+                        add(TinyPlayerList(party, players))
+                    }
+                }
             }
-            controlPanel(party)
-            unpairedPlayerSection(party, notPairedPlayers(players, pairAssignments))
+            add(ControlPanel(party))
+            unpairedPlayerSection(party, notPairedPlayers(players, pairs))
 
             add(ServerMessage(message)) {
                 key = "${message.text} ${message.players.size}"
             }
         }
-    }
-}
-
-private fun ChildrenBuilder.topPairSection(
-    party: Party,
-    players: List<Player>,
-    pairAssignments: PairAssignmentDocument?,
-    setPairs: (PairAssignmentDocument) -> Unit,
-    allowSave: Boolean,
-    controls: Controls<DeletePairAssignmentsCommandDispatcher>,
-    pairSectionNode: MutableRefObject<Node>
-) = div {
-    css { verticalAlign = VerticalAlign.top }
-    currentPairSection(
-        party,
-        players,
-        pairAssignments?.overlayUpdatedPlayers(players),
-        setPairs,
-        allowSave,
-        controls,
-        pairSectionNode
-    )
-    div {
-        css { float = csstype.Float.right; width = 0.px }
-        div { copyToClipboardButton(pairSectionNode) }
-        add(TinyPlayerList(party, players))
     }
 }
 
@@ -133,62 +116,21 @@ private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) 
     }
 )
 
-private fun ChildrenBuilder.currentPairSection(
-    party: Party,
-    players: List<Player>,
-    pairAssignments: PairAssignmentDocument?,
-    setPairAssignments: (PairAssignmentDocument) -> Unit,
-    allowSave: Boolean,
-    controls: Controls<DeletePairAssignmentsCommandDispatcher>,
-    pairSectionNode: MutableRefObject<Node>
-) = div {
-    ref = pairSectionNode
-    css {
-        display = Display.inlineBlock
-        borderRadius = 20.px
-        padding = 5.px
-        margin = Margin(5.px, 0.px)
-        backgroundColor = rgb(195, 213, 203)
-        boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
-    }
-    if (pairAssignments == null) {
-        noPairsHeader()
-    } else {
-        add(pairAssignmentsAnimator(party, players, pairAssignments, allowSave, setPairAssignments, controls))
-    }
-}
+data class ControlPanel(val party: Party) : DataPropsBind<ControlPanel>(controlPanel)
 
-private fun pairAssignmentsAnimator(
-    party: Party,
-    players: List<Player>,
-    pairAssignments: PairAssignmentDocument,
-    allowSave: Boolean,
-    setPairAssignments: (PairAssignmentDocument) -> Unit,
-    controls: Controls<DeletePairAssignmentsCommandDispatcher>
-) = PairAssignmentsAnimator(party, players, pairAssignments, enabled = party.animationEnabled && allowSave) {
-    add(CurrentPairAssignmentsPanel(party, pairAssignments, setPairAssignments, allowSave, controls.dispatchFunc))
-}
-
-private fun ChildrenBuilder.noPairsHeader() = div {
-    css {
-        border = Border(8.px, LineStyle.outset, NamedColor.dimgray)
-        backgroundColor = NamedColor.aliceblue
-        display = Display.inlineBlock
-        borderRadius = 40.px
-        fontSize = FontSize.xxLarge
-        fontWeight = FontWeight.bold
-        width = 500.px
-        height = 150.px
-        padding = Padding(100.px, 5.px, 5.px)
-        margin = Margin(0.px, 2.px, 5.px)
-    }
-    +"No pair assignments yet!"
-}
-
-private fun ChildrenBuilder.controlPanel(party: Party) = div {
+val controlPanel = tmFC<ControlPanel> { (party) ->
     div {
-        className = styles["controlPanel"]
-        div { prepareToSpinButton(party, styles["newPairsButton"]) }
+        div {
+            css {
+                display = Display.inlineBlock
+                borderRadius = 20.px
+                padding = 5.px
+                margin = Margin(5.px, 0.px)
+                backgroundColor = Color("#d5cdc3")
+                boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+            }
+            div { add(PrepareToSpinButton(party)) }
+        }
     }
 }
 
@@ -241,11 +183,29 @@ private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignm
 
 private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
 
-private fun ChildrenBuilder.prepareToSpinButton(party: Party, className: ClassName) = Link {
-    to = "/${party.id.value}/prepare/"
-    tabIndex = -1
-    draggable = false
-    add(CouplingButton(supersize, pink, className)) {
-        +"Prepare to spin!"
+data class PrepareToSpinButton(val party: Party) : DataPropsBind<PrepareToSpinButton>(prepareToSpinButton)
+
+private val prepareToSpinButton = tmFC<PrepareToSpinButton> { (party) ->
+    Link {
+        to = "/${party.id.value}/prepare/"
+        tabIndex = -1
+        draggable = false
+        add(
+            CouplingButton(
+                sizeRuleSet = supersize,
+                colorRuleSet = pink,
+                className = styles["newPairsButton"],
+                css = {
+                    animationName = ident("pulsate")
+                    animationDuration = 2.s
+                    animationIterationCount = AnimationIterationCount.infinite
+                    hover {
+                        animationDuration = 0.75.s
+                    }
+                }
+            )
+        ) {
+            +"Prepare to spin!"
+        }
     }
 }
