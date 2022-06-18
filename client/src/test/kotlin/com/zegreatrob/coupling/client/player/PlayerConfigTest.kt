@@ -85,7 +85,7 @@ class PlayerConfigTest {
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
             PlayerConfig(party, player, emptyList(), {}, stubDispatchFunc),
-            playerConfigFunc(windowFuncs)
+            playerConfigFunc<PlayerConfigDispatcher>()(windowFuncs)
         ).find(playerConfigContent)
             .shallow()
     }) exercise {
@@ -113,7 +113,7 @@ class PlayerConfigTest {
         val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
         val wrapper = shallow(
             PlayerConfig(party, player, emptyList(), {}, stubDispatchFunc),
-            playerConfigFunc(windowFunctions)
+            playerConfigFunc<PlayerConfigDispatcher>()(windowFunctions)
         ).find(playerConfigContent)
             .shallow()
     }) exercise {

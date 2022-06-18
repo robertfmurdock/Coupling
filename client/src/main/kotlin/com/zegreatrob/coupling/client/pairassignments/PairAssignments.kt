@@ -12,18 +12,11 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import react.dom.html.ReactHTML.div
 import react.key
-
-interface PairAssignmentsCommandDispatcher :
-    SavePairAssignmentsCommandDispatcher,
-    DeletePairAssignmentsCommandDispatcher {
-    override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
-}
 
 data class PairAssignments(
     val party: Party,
