@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.client.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -51,9 +52,9 @@ class PinConfigEditorTest {
         val newName = "pin new name"
         val newIcon = "pin new icon"
 
-        val dispatchFunc = StubDispatchFunc<PinCommandDispatcher>()
+        val stubDispatcher = StubDispatcher()
 
-        val wrapper = shallow(PinConfig(party, pin, emptyList(), {}, dispatchFunc))
+        val wrapper = shallow(PinConfig(party, pin, emptyList(), {}, stubDispatcher.func()))
     }) {
         wrapper.find(pinConfigContent).shallow().apply {
             simulateInputChange("name", newName)
@@ -67,7 +68,7 @@ class PinConfigEditorTest {
             .props()
             .onSubmit()
     } verify {
-        dispatchFunc.commandsDispatched<SavePinCommand>()
+        stubDispatcher.commandsDispatched<SavePinCommand>()
             .assertIsEqualTo(listOf(SavePinCommand(party.id, Pin(name = newName, icon = newIcon))))
     }
 }

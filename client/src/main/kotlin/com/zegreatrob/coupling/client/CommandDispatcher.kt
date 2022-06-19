@@ -7,27 +7,33 @@ import com.zegreatrob.coupling.client.pairassignments.PartyCurrentDataQueryDispa
 import com.zegreatrob.coupling.client.pairassignments.SavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryQueryDispatcher
+import com.zegreatrob.coupling.client.party.DeletePartyCommandDispatcher
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
-import com.zegreatrob.coupling.client.party.PartyConfigDispatcher
 import com.zegreatrob.coupling.client.party.PartyListQueryDispatcher
 import com.zegreatrob.coupling.client.party.PartyQueryDispatcher
+import com.zegreatrob.coupling.client.party.SavePartyCommandDispatcher
+import com.zegreatrob.coupling.client.pin.DeletePinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PartyPinListQueryDispatcher
 import com.zegreatrob.coupling.client.pin.PartyPinQueryDispatcher
-import com.zegreatrob.coupling.client.pin.PinCommandDispatcher
+import com.zegreatrob.coupling.client.pin.SavePinCommandDispatcher
+import com.zegreatrob.coupling.client.player.DeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.client.player.PartyPlayerQueryDispatcher
-import com.zegreatrob.coupling.client.player.PlayerConfigDispatcher
+import com.zegreatrob.coupling.client.player.SavePlayerCommandDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.stats.StatisticsQueryDispatcher
 import com.zegreatrob.coupling.sdk.BarebonesSdk
 
 class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesSdk) :
-    PinCommandDispatcher,
+    SavePinCommandDispatcher,
+    DeletePinCommandDispatcher,
     NewPairAssignmentsCommandDispatcher,
     SavePairAssignmentsCommandDispatcher,
     DeletePairAssignmentsCommandDispatcher,
-    PlayerConfigDispatcher,
-    PartyConfigDispatcher,
+    SavePlayerCommandDispatcher,
+    DeletePlayerCommandDispatcher,
+    SavePartyCommandDispatcher,
+    DeletePartyCommandDispatcher,
     PartyCurrentDataQueryDispatcher,
     HistoryQueryDispatcher,
     RetiredPlayerQueryDispatcher,

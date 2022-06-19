@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.party.Party
@@ -59,17 +60,17 @@ class PartyConfigTest {
             email = "email-y",
             pairingRule = PairingRule.PreferDifferentBadge
         )
-        val stubDispatchFunc = StubDispatchFunc<PartyConfigDispatcher>()
-        val wrapper = shallow(PartyConfig(party, stubDispatchFunc))
+        val stubDispatcher = StubDispatcher()
+        val wrapper = shallow(PartyConfig(party, stubDispatcher.func()))
     }) exercise {
         wrapper.find(partyConfigContent)
             .shallow()
             .find(ConfigForm)
             .props()
             .onSubmit()
-        stubDispatchFunc.simulateSuccess<SavePartyCommand>()
+        stubDispatcher.simulateSuccess<SavePartyCommand>()
     } verify {
-        stubDispatchFunc.commandsDispatched<SavePartyCommand>()
+        stubDispatcher.commandsDispatched<SavePartyCommand>()
             .assertIsEqualTo(listOf(SavePartyCommand(party)))
         wrapper
             .find(Navigate).props().to
@@ -79,8 +80,8 @@ class PartyConfigTest {
     @Test
     fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
         val party = Party(PartyId(""))
-        val stubDispatchFunc = StubDispatchFunc<PartyConfigDispatcher>()
-        val wrapper = shallow(PartyConfig(party, stubDispatchFunc))
+        val stubDispatcher = StubDispatcher()
+        val wrapper = shallow(PartyConfig(party, stubDispatcher.func()))
         val automatedPartyId = wrapper.find(partyConfigContent)
             .shallow()
             .find<Any>("#tribe-id")
@@ -92,7 +93,7 @@ class PartyConfigTest {
             .props()
             .onSubmit()
     } verify {
-        stubDispatchFunc.commandsDispatched<SavePartyCommand>()
+        stubDispatcher.commandsDispatched<SavePartyCommand>()
             .first()
             .party.id.value.run {
                 assertIsNotEqualTo("")

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -53,9 +54,9 @@ class PlayerConfigTest {
         val player = Player(id = "blarg", badge = Badge.Default.value)
         val reloaderSpy = SpyData<Unit, Unit>()
 
-        val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
+        val stubDispatcher = StubDispatcher()
         val wrapper =
-            shallow(PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatchFunc))
+            shallow(PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatcher.func()))
     }) exercise {
         wrapper.find(playerConfigContent)
             .shallow()
@@ -64,9 +65,9 @@ class PlayerConfigTest {
             .shallow()
             .find(ConfigForm).props()
             .onSubmit()
-        stubDispatchFunc.simulateSuccess<SavePlayerCommand>()
+        stubDispatcher.simulateSuccess<SavePlayerCommand>()
     } verify {
-        stubDispatchFunc.commandsDispatched<SavePlayerCommand>()
+        stubDispatcher.commandsDispatched<SavePlayerCommand>()
             .assertIsEqualTo(
                 listOf(SavePlayerCommand(party.id, player.copy(name = "nonsense")))
             )
@@ -82,18 +83,16 @@ class PlayerConfigTest {
         val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
-        val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
-        val wrapper = shallow(
-            PlayerConfig(party, player, emptyList(), {}, stubDispatchFunc),
-            playerConfigFunc<PlayerConfigDispatcher>()(windowFuncs)
-        ).find(playerConfigContent)
+        val stubDispatcher = StubDispatcher()
+        val wrapper = shallow(PlayerConfig(party, player, emptyList(), {}, stubDispatcher.func(), windowFuncs))
+            .find(playerConfigContent)
             .shallow()
     }) exercise {
         wrapper.find(ConfigForm).props()
             .onRemove?.invoke()
-        stubDispatchFunc.simulateSuccess<DeletePlayerCommand>()
+        stubDispatcher.simulateSuccess<DeletePlayerCommand>()
     } verify {
-        stubDispatchFunc.commandsDispatched<DeletePlayerCommand>()
+        stubDispatcher.commandsDispatched<DeletePlayerCommand>()
             .assertIsEqualTo(
                 listOf(DeletePlayerCommand(party.id, player.id))
             )
@@ -110,17 +109,16 @@ class PlayerConfigTest {
         val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
 
-        val stubDispatchFunc = StubDispatchFunc<PlayerConfigDispatcher>()
+        val stubDispatcher = StubDispatcher()
         val wrapper = shallow(
-            PlayerConfig(party, player, emptyList(), {}, stubDispatchFunc),
-            playerConfigFunc<PlayerConfigDispatcher>()(windowFunctions)
+            PlayerConfig(party, player, emptyList(), {}, stubDispatcher.func(), windowFunctions)
         ).find(playerConfigContent)
             .shallow()
     }) exercise {
         wrapper.find(ConfigForm).props()
             .onRemove?.invoke()
     } verify {
-        stubDispatchFunc.dispatchList.isEmpty().assertIsEqualTo(true)
+        stubDispatcher.dispatchList.isEmpty().assertIsEqualTo(true)
     }
 
     @Test

@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.external.react.useForm
-import com.zegreatrob.coupling.client.external.react.windowTmFC
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.JsonPlayerData
@@ -17,6 +16,7 @@ import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.tmFC
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
@@ -26,25 +26,22 @@ data class PlayerConfig<P>(
     val player: Player,
     val players: List<Player>,
     val reload: () -> Unit,
-    val dispatchFunc: DispatchFunc<out P>
-) : DataPropsBind<PlayerConfig<P>>(thing.unsafeCast<TMFC<PlayerConfig<P>>>())
-    where P : SavePlayerCommandDispatcher, P : DeletePlayerCommandDispatcher
+    val dispatchFunc: DispatchFunc<out P>,
+    val windowFuncs: WindowFunctions = WindowFunctions
+) : DataPropsBind<PlayerConfig<P>>(component.unsafeCast<TMFC<PlayerConfig<P>>>())
+    where P : SavePlayerCommandDispatcher, P : DeletePlayerCommandDispatcher {
+    companion object {
+        private val component = playerConfig<Dispatcho>()
+    }
+}
 
-private interface Dispatcho :
-    SavePlayerCommandDispatcher,
-    DeletePlayerCommandDispatcher {
+private interface Dispatcho : SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
     override val playerRepository: PlayerRepository
 }
 
-private val thing = playerConfig<Dispatcho>()
-
-private fun <P> playerConfig()
-    where P : SavePlayerCommandDispatcher, P : DeletePlayerCommandDispatcher = playerConfigFunc<P>()(WindowFunctions)
-
-fun <P> playerConfigFunc()
-    where P : SavePlayerCommandDispatcher, P : DeletePlayerCommandDispatcher =
-    windowTmFC<PlayerConfig<P>> { props, windowFuncs ->
-        val (party, player, players, reload, dispatchFunc) = props
+private fun <P> playerConfig() where P : SavePlayerCommandDispatcher, P : DeletePlayerCommandDispatcher =
+    tmFC<PlayerConfig<P>> { props ->
+        val (party, player, players, reload, dispatchFunc, windowFuncs) = props
         val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
         val (redirectUrl, setRedirectUrl) = useState<String?>(null)

@@ -13,20 +13,22 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class PartyConfig(val tribe: Party, val dispatchFunc: DispatchFunc<out PartyConfigDispatcher>) :
-    DataPropsBind<PartyConfig>(partyConfig)
+data class PartyConfig<D>(val tribe: Party, val dispatchFunc: DispatchFunc<out D>) :
+    DataPropsBind<PartyConfig<D>>(partyConfig.unsafeCast<TMFC<PartyConfig<D>>>())
+    where D : SavePartyCommandDispatcher, D : DeletePartyCommandDispatcher
 
-interface PartyConfigDispatcher : SavePartyCommandDispatcher, DeletePartyCommandDispatcher {
+private interface PartyConfigDispatcher : SavePartyCommandDispatcher, DeletePartyCommandDispatcher {
     override val partyRepository: PartyRepository
 }
 
-val partyConfig = tmFC { (party, commandFunc): PartyConfig ->
+private val partyConfig = tmFC { (party, commandFunc): PartyConfig<PartyConfigDispatcher> ->
     val isNew = party.id.value == ""
     val (values, onChange) = useForm(party.withDefaultPartyId().toSerializable().toJsonDynamic().unsafeCast<Json>())
     val updatedParty = values.correctTypes().fromJsonDynamic<JsonParty>().toModel()

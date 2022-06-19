@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -38,22 +38,22 @@ class CurrentPairAssignmentsPanelTest {
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()
         )
-        val dispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
+        val stubDispatcher = StubDispatcher()
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
                 party,
                 pairAssignments,
                 setPairAssignments = { },
                 allowSave = true,
-                dispatchFunc = dispatchFunc
+                dispatchFunc = stubDispatcher.func()
             )
         )
     }) exercise {
         wrapper.find(couplingButton).map { it.dataprops() }.find { it.className == styles["saveButton"] }
             ?.onClick?.invoke()
-        dispatchFunc.simulateSuccess<SavePairAssignmentsCommand>()
+        stubDispatcher.simulateSuccess<SavePairAssignmentsCommand>()
     } verify {
-        dispatchFunc.commandsDispatched<SavePairAssignmentsCommand>().size
+        stubDispatcher.commandsDispatched<SavePairAssignmentsCommand>().size
             .assertIsEqualTo(0)
         wrapper.find(Navigate)
             .props().to.assertIsEqualTo("/${party.id.value}/pairAssignments/current/")
@@ -63,23 +63,23 @@ class CurrentPairAssignmentsPanelTest {
     fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = setup(object {
         val party = stubParty()
         val pairAssignments = stubPairAssignmentDoc()
-        val dispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
+        val stubDispatcher = StubDispatcher()
         val wrapper = shallow(
             CurrentPairAssignmentsPanel(
                 party,
                 pairAssignments,
                 setPairAssignments = { },
                 allowSave = true,
-                dispatchFunc = dispatchFunc
+                dispatchFunc = stubDispatcher.func()
             )
         )
     }) exercise {
         wrapper.find(couplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
             ?.onClick?.invoke()
 
-        dispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
+        stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
-        dispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
+        stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
             .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, pairAssignments.id)))
         wrapper.find(Navigate)
             .props().to.assertIsEqualTo("/${party.id.value}/pairAssignments/current/")

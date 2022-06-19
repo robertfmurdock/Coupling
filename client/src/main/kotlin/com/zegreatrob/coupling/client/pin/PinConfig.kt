@@ -11,22 +11,29 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class PinConfig(
+data class PinConfig<D>(
     val party: Party,
     val pin: Pin,
     val pinList: List<Pin>,
     val reload: () -> Unit,
-    val dispatchFunc: DispatchFunc<out PinCommandDispatcher>
-) : DataPropsBind<PinConfig>(pinConfig)
+    val dispatchFunc: DispatchFunc<out D>
+) : DataPropsBind<PinConfig<D>>(pinConfig.unsafeCast<TMFC<PinConfig<D>>>())
+    where D : SavePinCommandDispatcher, D : DeletePinCommandDispatcher
 
-val pinConfig = tmFC { (party, pin, pinList, reload, dispatchFunc): PinConfig ->
+private interface DD : SavePinCommandDispatcher, DeletePinCommandDispatcher {
+    override val pinRepository: PinRepository
+}
+
+private val pinConfig = tmFC<PinConfig<DD>> { (party, pin, pinList, reload, dispatchFunc) ->
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()

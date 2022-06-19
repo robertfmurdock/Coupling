@@ -2,13 +2,12 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.History
 import com.zegreatrob.coupling.client.pairassignments.list.historyFunc
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -35,19 +34,19 @@ class HistoryTest {
         val party = Party(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val history = listOf(PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList()))
-        val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
+        val stubDispatcher = StubDispatcher()
 
         val wrapper = shallow(
-            History(party, history, Controls(stubDispatchFunc, reloadSpy::spyFunction)),
+            History(party, history, Controls(stubDispatcher.func(), reloadSpy::spyFunction)),
             historyFunc(this),
         )
     }) exercise {
         wrapper.find(couplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
             ?.onClick?.invoke()
 
-        stubDispatchFunc.simulateSuccess<DeletePairAssignmentsCommand>()
+        stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
-        stubDispatchFunc.commandsDispatched<DeletePairAssignmentsCommand>()
+        stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
             .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, history[0].id)))
         reloadSpy.callCount.assertIsEqualTo(1)
     }
@@ -64,16 +63,16 @@ class HistoryTest {
                 emptyList()
             )
         )
-        val stubDispatchFunc = StubDispatchFunc<DeletePairAssignmentsCommandDispatcher>()
+        val stubDispatcher = StubDispatcher()
         val wrapper = shallow(
-            History(party, history, Controls(stubDispatchFunc, reloadSpy::spyFunction)),
+            History(party, history, Controls(stubDispatcher.func(), reloadSpy::spyFunction)),
             historyFunc(this),
         )
     }) exercise {
         wrapper.find(couplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
             ?.onClick?.invoke()
     } verify {
-        stubDispatchFunc.dispatchList.isEmpty()
+        stubDispatcher.dispatchList.isEmpty()
             .assertIsEqualTo(true)
         reloadSpy.callCount.assertIsEqualTo(0)
     }

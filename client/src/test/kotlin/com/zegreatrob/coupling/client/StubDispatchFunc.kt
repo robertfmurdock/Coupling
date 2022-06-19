@@ -2,18 +2,10 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.testmints.action.async.SuspendAction
 
-class StubDispatchFunc<D> : DispatchFunc<D> {
-
+class StubDispatcher {
     val dispatchList = mutableListOf<DispatchedFunc<*, *>>()
 
-    override fun <C : SuspendAction<D, R>, R> invoke(
-        commandFunc: () -> C,
-        response: (R) -> Unit
-    ): () -> Unit = {
-        dispatchList.add(DispatchedFunc(commandFunc(), response))
-    }
-
-    class DispatchedFunc<C, R>(val command: C, val responseFunc: (R) -> Unit)
+    fun <D> func() = StubDispatchFunc<D>(this)
 
     private fun <C, R> commandFunctionsDispatched() = dispatchList.filterIsInstance<DispatchedFunc<C, R>>()
 
@@ -21,5 +13,17 @@ class StubDispatchFunc<D> : DispatchFunc<D> {
 
     fun <C> simulateSuccess() = commandFunctionsDispatched<C, Unit>().map {
         it.responseFunc(Unit)
+    }
+}
+
+class DispatchedFunc<C, R>(val command: C, val responseFunc: (R) -> Unit)
+
+class StubDispatchFunc<D>(private val stubber: StubDispatcher = StubDispatcher()) : DispatchFunc<D> {
+
+    override fun <C : SuspendAction<D, R>, R> invoke(
+        commandFunc: () -> C,
+        response: (R) -> Unit
+    ): () -> Unit = {
+        stubber.dispatchList.add(DispatchedFunc(commandFunc(), response))
     }
 }

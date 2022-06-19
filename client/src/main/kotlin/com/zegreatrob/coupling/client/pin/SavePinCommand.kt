@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pin.PartyPinSaveSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class SavePinCommand(val id: PartyId, val updatedPin: Pin) :
-    SimpleSuspendAction<SavePinCommandDispatcher, Unit> {
+data class SavePinCommand(val id: PartyId, val updatedPin: Pin) : SimpleSuspendAction<SavePinCommandDispatcher, Unit> {
     override val performFunc = link(SavePinCommandDispatcher::perform)
 }
 

@@ -45,7 +45,7 @@ val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
             this.ref = { ref.current = it }
         }
 
-        +props.buildChild(if (connected) sendMessageFunc else null)
+        +buildChild(if (connected) sendMessageFunc else null)
     }
 }
 
