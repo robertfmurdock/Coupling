@@ -39,7 +39,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
-    "jasmine": "^4.2.0",
+    "jasmine": "^4.2.1",
     "jasmine-core": "^4.2.0",
     "jasmine-reporters": "^2.5.0",
     "npm-check-updates": "^14.0.1",
