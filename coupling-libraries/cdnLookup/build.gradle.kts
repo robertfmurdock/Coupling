@@ -21,7 +21,7 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-core:2.0.2")
                 implementation("org.jetbrains.kotlinx:atomicfu:0.18.0")
-                implementation("org.jetbrains.kotlin:atomicfu:1.6.21")
+                implementation("org.jetbrains.kotlin:atomicfu:1.7.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
                 implementation("io.ktor:ktor-client-content-negotiation:2.0.2")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")

@@ -17,7 +17,7 @@ kotlin {
                 api(project(":coupling-libraries:model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 api("org.jetbrains.kotlinx:atomicfu:0.18.0")
-                api("org.jetbrains.kotlin:atomicfu:1.6.21")
+                api("org.jetbrains.kotlin:atomicfu:1.7.0")
             }
         }
         val commonTest by getting {
