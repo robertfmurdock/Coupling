@@ -19,6 +19,9 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
+import csstype.WhiteSpace
+import csstype.px
+import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.key
@@ -71,7 +74,9 @@ private fun ChildrenBuilder.pairAssignmentList(
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean
 ) = div {
-    className = styles["pairAssignmentsContent"]
+    css {
+        whiteSpace = WhiteSpace.preLine
+    }
     pairAssignments.pairs.mapIndexed { index, pair ->
         add(
             AssignedPair(
@@ -149,7 +154,9 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 }
 
 private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = add(
-    CouplingButton(supersize, green, styles["saveButton"], onSave)
+    CouplingButton(supersize, green, styles["saveButton"], onSave, css = {
+        margin = 4.px
+    })
 ) {
     +"Save!"
 }

@@ -2,13 +2,10 @@
     /* do not remove */
 }
 
-:local(.pairAssignmentsContent) {
-    white-space: pre-line;
+:local(.saveButton) {
+    /* do not remove */
 }
 
-:local(.saveButton) {
-    margin: 4px;
-}
 :local(.deleteButton) {
     /* do not remove */
 }

@@ -1,86 +1,11 @@
 :local(.className) {
-    display: inline-block;
-    background: #dae8e0;
-    padding: 0 25px 25px 25px;
-    min-height: 100vh;
-    border: 12px solid #4f5853;
-    border-top: 2px;
-    border-bottom: 2px;
-    border-radius: 82px;
 }
 
 :local(.historyView) {
-    display: inline-block;
-}
-
-:local(.historyView) :local(.player) {
-    width: auto;
-    height: auto;
-}
-
-:local(.historyView) :local(.header) {
-    border-radius: 25px;
-    padding: 10px;
-    margin: 10px;
-    font-size: xx-large;
-}
-
-:local(.player) {
-    position: relative;
-    clear: both;
-    display: inline-block;
-    overflow: hidden;
-    border: 3px outset gold;
-    background: darkseagreen url(../overlay.png) repeat-x;
-    padding: 6px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    color: black;
-    margin: 0 2px 0 2px;
-}
-
-:local(.player) :local(.playerHeader) {
-    background: darkcyan url(../overlay.png) repeat-x;
-    margin-before: 6px;
-    margin-after: 6px;
-    border-radius: 15px;
-    font-weight: bold;
 }
 
 :local(.deleteButton) {
-    /*! Do not remove */
 }
 
 :local(.pairAssignments) {
-    border-radius: 20px;
-    padding: 5px;
-    margin: 5px 0;
-    background-color: hsla(146, 17%, 80%, 1);
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-:local(.pair) {
-    border: 3px double dimgray;
-    background-color: aliceblue;
-    padding: 5px;
-    display: inline-block;
-    border-radius: 40px;
-    margin: 0 2px 0 2px;
-    position: relative;
-}
-
-:local(.pairAssignmentsHeader) {
-    display: inline-block;
-    font-size: 28px;
-    font-weight: bold;
-    border-radius: 15px;
-    padding-left: 40px;
-    padding-right: 5px;
-    padding-bottom: 6px;
-}
-
-:local(.pinSection) {
-    bottom: 2px;
 }
