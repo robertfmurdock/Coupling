@@ -1,16 +1,2 @@
 :local(.className) {
-    position: relative;
-    clear: both;
-    display: inline-block;
-    overflow: hidden;
-    border: 3px outset black;
-    background: hsl(43, 18%, 85%) url(../overlay.png) repeat-x;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 6px;
-    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.6);
-    color: black;
-    margin: 0 2px 0 2px;
-    top: 0;
-    padding: 2px;
 }
