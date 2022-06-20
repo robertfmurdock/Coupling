@@ -16,6 +16,8 @@ import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
 import csstype.Color
+import csstype.VerticalAlign
+import csstype.px
 import react.ChildrenBuilder
 import react.create
 import react.dom.html.ReactHTML.div
@@ -31,14 +33,17 @@ val partyList = tmFC<PartyList> { (parties) ->
         PageFrame(
             borderColor = Color("rgb(94, 84, 102)"),
             backgroundColor = Color("hsla(0, 0%, 80%, 1)"),
-            className = styles.className
+            className = emotion.css.ClassName(styles.className) {
+                "> div" { padding = 7.px }
+                "*" { verticalAlign = VerticalAlign.middle }
+            }
         )
     ) {
         GeneralControlBar {
             title = "Party List"
             splashComponent = CouplingLogo.create {
-                this.width = 72.0
-                this.height = 48.0
+                width = 72.0
+                height = 48.0
             }
             AboutButton()
             DemoButton()

@@ -64,7 +64,7 @@ config.externals = {"cheerio": "window", "fs": "empty", ...cdnSettings}
 if (config.devServer) {
     config.devServer.port = 3001
     config.devServer.hot = true
-    config.devServer.historyApiFallback = {index: 'index.html'}
+    config.devServer.historyApiFallback = {index: 'html/index.html'}
     let distributionPath = path.resolve(__dirname, '../../../../client/build/distributions');
     config.devServer.static.push({
         directory: distributionPath,

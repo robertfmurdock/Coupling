@@ -1,12 +1,5 @@
 :local(.className) {
-}
-
-:local(.className) > div {
-    padding: 7px;
-}
-
-:local(.className) * {
-    vertical-align: middle;
+    /*! Do not remove */
 }
 
 :local(.newPartyButton) {

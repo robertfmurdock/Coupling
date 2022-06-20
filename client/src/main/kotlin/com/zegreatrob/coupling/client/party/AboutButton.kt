@@ -22,8 +22,8 @@ val AboutButton = FC<Props> {
             span {
                 css { margin = 2.px }
                 CouplingLogo {
-                    this.width = 27.0
-                    this.height = 18.0
+                    width = 27.0
+                    height = 18.0
                 }
             }
         }
