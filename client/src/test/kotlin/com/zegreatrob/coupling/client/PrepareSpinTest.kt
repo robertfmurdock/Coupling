@@ -119,8 +119,8 @@ class PrepareSpinTest {
             PairAssignmentDocumentId(""),
             DateTime.now(),
             listOf(
-                pairOf(players[0], players[1]).withPins(emptyList()),
-                pairOf(players[2]).withPins(emptyList())
+                pairOf(players[0], players[1]).withPins(emptySet()),
+                pairOf(players[2]).withPins(emptySet())
             )
         )
         val result = render(
@@ -164,7 +164,7 @@ class PrepareSpinTest {
         val currentPairs = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),
-            pairs = players.map { pairOf(it).withPins(emptyList()) }
+            pairs = players.map { pairOf(it).withPins(emptySet()) }
         )
         val wrapper = shallow(PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()))
     }) exercise {

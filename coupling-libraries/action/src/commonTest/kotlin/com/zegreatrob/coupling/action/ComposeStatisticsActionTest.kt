@@ -186,7 +186,7 @@ class ComposeStatisticsActionTest {
                                 ),
                                 player3.withPins(emptyList())
                             ),
-                            emptyList()
+                            emptySet()
                         ),
                         PinnedCouplingPair(
                             listOf(
@@ -195,7 +195,7 @@ class ComposeStatisticsActionTest {
                                 ),
                                 player4.withPins(emptyList())
                             ),
-                            emptyList()
+                            emptySet()
                         )
                     )
                 ),
@@ -208,7 +208,7 @@ class ComposeStatisticsActionTest {
                                 ),
                                 player2.withPins(emptyList())
                             ),
-                            emptyList()
+                            emptySet()
                         ),
                         PinnedCouplingPair(
                             listOf(
@@ -217,7 +217,7 @@ class ComposeStatisticsActionTest {
                                 ),
                                 player4.withPins(emptyList())
                             ),
-                            emptyList()
+                            emptySet()
                         )
                     )
                 )

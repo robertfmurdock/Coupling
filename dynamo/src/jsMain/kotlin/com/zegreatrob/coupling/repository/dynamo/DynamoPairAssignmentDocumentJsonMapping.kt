@@ -52,7 +52,9 @@ interface DynamoPairAssignmentDocumentJsonMapping :
         players = pair.getDynamoListValue("players")
             ?.mapNotNull { pinnedPlayerJson -> pinnedPlayerJson.toPinnedPlayer() } ?: emptyList(),
         pins = pair.getDynamoListValue("pins")
-            ?.map { pinJson -> pinJson.toPin() } ?: emptyList()
+            ?.map { pinJson -> pinJson.toPin() }
+            ?.toSet()
+            ?: emptySet()
     )
 
     private fun Json.toPinnedPlayer() = this["player"].unsafeCast<Json>().toPlayer()?.let {

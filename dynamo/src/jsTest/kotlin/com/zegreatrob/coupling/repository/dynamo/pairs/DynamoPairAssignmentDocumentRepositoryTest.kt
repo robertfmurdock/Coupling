@@ -51,7 +51,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
                 val pairAssignmentDocument = stubPairAssignmentDoc()
                 val initialSaveTime = DateTime.now().minus(3.days)
                 val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
-                    pairs = listOf(pairOf(stubPlayer()).withPins(emptyList()))
+                    pairs = listOf(pairOf(stubPlayer()).withPins(emptySet()))
                 )
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val updatedSaveTime2 = initialSaveTime.plus(4.hours)

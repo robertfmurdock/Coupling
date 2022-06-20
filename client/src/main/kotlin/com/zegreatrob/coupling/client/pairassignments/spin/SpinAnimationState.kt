@@ -152,7 +152,7 @@ private fun List<Player>.toSimulatedPairs() = chunked(2)
             it[1]
         ) else pairOf(it[0])
     }
-    .map { it.withPins(emptyList()) }
+    .map { it.withPins(emptySet()) }
 
 private fun makePlaceholderPlayers(it: List<Player>, document: PairAssignmentDocument) = infinitePlaceholders()
     .take(document.orderedPairedPlayers().count() - it.size)

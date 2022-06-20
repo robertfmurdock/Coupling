@@ -126,8 +126,8 @@ class CurrentPairAssignmentsPanelTest {
         val party = stubParty()
         val pin1 = stubPin()
         val pin2 = stubPin()
-        val pair1 = pairOf(Player("1", name = "1"), Player("2", name = "2")).withPins(listOf(pin1))
-        val pair2 = pairOf(Player("3", name = "3"), Player("4", name = "4")).withPins(listOf(pin2))
+        val pair1 = pairOf(Player("1", name = "1"), Player("2", name = "2")).withPins(setOf(pin1))
+        val pair2 = pairOf(Player("3", name = "3"), Player("4", name = "4")).withPins(setOf(pin2))
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
             pairs = listOf(pair1, pair2)
@@ -147,9 +147,9 @@ class CurrentPairAssignmentsPanelTest {
     } verify {
         lastSetPairAssignments.assertNotNull { pairs ->
             pairs.pairs[0]
-                .assertIsEqualTo(pair1.copy(pins = emptyList()))
+                .assertIsEqualTo(pair1.copy(pins = emptySet()))
             pairs.pairs[1]
-                .assertIsEqualTo(pair2.copy(pins = listOf(pin2, pin1)))
+                .assertIsEqualTo(pair2.copy(pins = setOf(pin2, pin1)))
         }
     }
 
@@ -167,8 +167,8 @@ class CurrentPairAssignmentsPanelTest {
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
             pairs = listOf(
-                pairOf(player1, player2).withPins(listOf(pin1)),
-                pairOf(player3, player4).withPins(listOf(pin2))
+                pairOf(player1, player2).withPins(setOf(pin1)),
+                pairOf(player3, player4).withPins(setOf(pin2))
             )
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
@@ -186,9 +186,9 @@ class CurrentPairAssignmentsPanelTest {
     } verify {
         lastSetPairAssignments.assertNotNull {
             it.pairs[0].pins
-                .assertIsEqualTo(listOf(pin1))
+                .assertIsEqualTo(setOf(pin1))
             it.pairs[1].pins
-                .assertIsEqualTo(listOf(pin2))
+                .assertIsEqualTo(setOf(pin2))
         }
     }
 

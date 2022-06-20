@@ -1,32 +1,6 @@
 :local(.className) {
-    border: 3px double dimgray;
-    background-color: aliceblue;
-    padding: 5px;
-    display: inline-block;
-    border-radius: 40px;
-    margin: 0 2px 0 2px;
-    position: relative;
-}
-
-:local(.className):local(.pairPinOver) {
-    border: 3px double dimgray;
-    background-color: #cff8ff;
-    padding: 5px;
-    display: inline-block;
-    border-radius: 40px;
-    margin: 0 2px 0 2px;
-    position: relative;
 }
 
 :local(.callSign) {
-    position: relative;
-    font-size: large;
-    padding: 8px;
-    background: #c9d6bab8 url(../overlay.png) repeat-x;
-    border-radius: 15px;
-    border-width: 1px;
-    border-style: dotted;
-    border-color: black;
-    font-weight: bold;
-    z-index: 10;
+
 }

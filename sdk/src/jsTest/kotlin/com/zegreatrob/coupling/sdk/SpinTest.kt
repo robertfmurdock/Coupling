@@ -139,7 +139,7 @@ class SpinTest {
             sdk.requestSpin(tribe.id, players, listOf(pin))
         } verifyAnd { result ->
             result.pairs.assertIsEqualTo(
-                listOf(PinnedCouplingPair(listOf(players[0].withPins()), listOf(pin)))
+                listOf(PinnedCouplingPair(listOf(players[0].withPins()), setOf(pin)))
             )
         } teardown {
             sdk.partyRepository.deleteIt(tribe.id)
@@ -151,7 +151,7 @@ class SpinTest {
             sdk.requestSpin(tribe.id, players, emptyList())
         } verifyAnd { result ->
             result.pairs.assertIsEqualTo(
-                listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptyList()))
+                listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptySet()))
             )
         } teardown {
             sdk.partyRepository.deleteIt(tribe.id)

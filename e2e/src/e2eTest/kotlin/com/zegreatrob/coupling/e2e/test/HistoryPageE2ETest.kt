@@ -46,7 +46,7 @@ class HistoryPageE2ETest {
             private fun buildPairAssignmentDocument(number: Int, pairs: List<CouplingPair>) = PairAssignmentDocument(
                 PairAssignmentDocumentId("${DateTime.now().milliseconds}-HistoryPageE2ETest-$number"),
                 DateTime.now(),
-                pairs.map { it.withPins(emptyList()) }
+                pairs.map { it.withPins(emptySet()) }
             )
 
             private fun buildParty() = "${randomInt()}-HistoryPageE2ETest".let {

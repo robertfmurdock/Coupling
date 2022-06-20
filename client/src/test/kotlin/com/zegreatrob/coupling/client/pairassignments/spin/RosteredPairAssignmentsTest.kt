@@ -21,7 +21,7 @@ class RosteredPairAssignmentsTest {
         )
         val pairAssignments = stubPairAssignmentDoc().copy(
             pairs = listOf(
-                pairOf(players[0], players[2]).withPins(emptyList())
+                pairOf(players[0], players[2]).withPins(emptySet())
             )
         )
     }) exercise {

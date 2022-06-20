@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.player.PlayerCard
+import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.Party
@@ -17,10 +18,20 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.tmFC
-import csstype.ClassName
+import csstype.BackgroundRepeat
+import csstype.Color
 import csstype.Display
+import csstype.FontSize
+import csstype.FontWeight
+import csstype.LineStyle
+import csstype.Margin
+import csstype.NamedColor
+import csstype.Position
 import csstype.Visibility
 import csstype.deg
+import csstype.integer
+import csstype.px
+import csstype.url
 import emotion.react.css
 import org.w3c.dom.Node
 import react.ChildrenBuilder
@@ -55,15 +66,52 @@ val assignedPair = tmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pin
     val playerCard = playerCardComponent(canDrag, swapCallback)
 
     span {
-        className = styles.className
+        css(styles.className) {
+            borderWidth = 3.px
+            borderStyle = LineStyle.double
+            borderColor = NamedColor.dimgray
+            padding = 5.px
+            display = Display.inlineBlock
+            borderRadius = 40.px
+            margin = Margin(0.px, 2.px, 0.px, 2.px)
+            position = Position.relative
+            backgroundColor = if (isOver) {
+                Color("#cff8ff")
+            } else {
+                NamedColor.aliceblue
+            }
+        }
         ref = pinDroppableRef
-        if (isOver) className = ClassName("$className ${styles["pairPinOver"]}")
-        callSign(party, callSign, styles["callSign"])
+        div {
+            if (party.callSignsEnabled && callSign != null) {
+                callSign(callSign)
+            }
+        }
         pair.players.mapIndexed { index, player ->
             playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
         }
 
-        add(PinSection(pinList = pair.pins, canDrag = canDrag))
+        add(PinSection(pinList = pair.pins.toList(), canDrag = canDrag))
+    }
+}
+
+private fun ChildrenBuilder.callSign(callSign: CallSign) {
+    span {
+        css(styles["callSign"]) {
+            position = Position.relative
+            fontSize = FontSize.large
+            padding = 8.px
+            backgroundColor = Color("#c9d6bab8")
+            backgroundImage = url(pngPath("overlay"))
+            backgroundRepeat = BackgroundRepeat.repeatX
+            borderRadius = 15.px
+            borderWidth = 1.px
+            borderStyle = LineStyle.dotted
+            borderColor = NamedColor.black
+            fontWeight = FontWeight.bold
+            zIndex = integer(10)
+        }
+        +"${callSign.adjective} ${callSign.noun}"
     }
 }
 
@@ -123,12 +171,3 @@ private fun swappablePlayer(
     tilt: csstype.Angle,
     onDropSwap: (String) -> Unit
 ) = DraggablePlayer(pinnedPlayer, zoomOnHover, tilt, onDropSwap)
-
-private fun ChildrenBuilder.callSign(party: Party, callSign: CallSign?, classes: ClassName) = div {
-    if (party.callSignsEnabled && callSign != null) {
-        span {
-            className = classes
-            +"${callSign.adjective} ${callSign.noun}"
-        }
-    }
-}

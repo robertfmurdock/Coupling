@@ -71,12 +71,8 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
     date = DateTime.now().plus(pairAssignmentDocumentCounter.minutes),
     pairs = listOf(
         PinnedCouplingPair(
-            listOf(
-                stubPlayer().withPins()
-            ),
-            listOf(
-                stubPin()
-            )
+            listOf(stubPlayer().withPins()),
+            setOf(stubPin())
         )
     )
 ).also { pairAssignmentDocumentCounter++ }

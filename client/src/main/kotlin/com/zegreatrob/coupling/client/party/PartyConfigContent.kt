@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.Editor
 import com.zegreatrob.coupling.client.external.react.configInput
-import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatarLink
 import com.zegreatrob.coupling.model.party.PairingRule
@@ -14,6 +13,8 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.Color
+import csstype.Display
+import csstype.number
 import emotion.react.css
 import org.w3c.dom.HTMLSelectElement
 import react.ChildrenBuilder
@@ -63,7 +64,10 @@ private fun ChildrenBuilder.partyConfigEditor(
     onSave: () -> Unit,
     onDelete: (() -> Unit)?
 ) = span {
-    className = styles["partyConfigEditor"]
+    css {
+        display = Display.inlineBlock
+        flexGrow = number(2.0)
+    }
     ConfigForm {
         this.onSubmit = onSave
         this.onRemove = onDelete

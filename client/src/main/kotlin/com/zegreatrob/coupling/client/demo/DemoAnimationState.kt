@@ -51,9 +51,9 @@ private val pairAssignments = PairAssignmentDocument(
     PairAssignmentDocumentId(""),
     DateTime.now(),
     listOf(
-        pairOf(player1, player4).withPins(emptyList()),
-        pairOf(player2, player5).withPins(pins),
-        pairOf(player6).withPins(emptyList()),
+        pairOf(player1, player4).withPins(emptySet()),
+        pairOf(player2, player5).withPins(pins.toSet()),
+        pairOf(player6).withPins(emptySet()),
     )
 )
 

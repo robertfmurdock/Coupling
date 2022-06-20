@@ -93,7 +93,7 @@ private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
             }
             add(
                 PinSection(
-                    pinList = pair.pins,
+                    pinList = pair.pins.toList(),
                     scale = PinButtonScale.ExtraSmall,
                     className = styles["pinSection"]
                 )

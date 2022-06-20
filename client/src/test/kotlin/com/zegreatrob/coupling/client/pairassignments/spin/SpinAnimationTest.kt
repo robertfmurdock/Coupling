@@ -26,7 +26,7 @@ class SpinAnimationTest {
             val player = stubPlayer()
             val pairAssignments = stubPairAssignmentDoc().copy(
                 pairs = listOf(
-                    pairOf(player).withPins(emptyList())
+                    pairOf(player).withPins(emptySet())
                 )
             )
         }
@@ -52,7 +52,7 @@ class SpinAnimationTest {
             )
             private val pairAssignments = stubPairAssignmentDoc().copy(
                 pairs = listOf(
-                    pairOf(players[0], players[2]).withPins(emptyList())
+                    pairOf(players[0], players[2]).withPins(emptySet())
                 )
             )
             val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
@@ -81,8 +81,8 @@ class SpinAnimationTest {
             )
             val pairAssignments = stubPairAssignmentDoc().copy(
                 pairs = listOf(
-                    pairOf(players[1], players[3]).withPins(emptyList()),
-                    pairOf(players[0], players[2]).withPins(emptyList())
+                    pairOf(players[1], players[3]).withPins(emptySet()),
+                    pairOf(players[0], players[2]).withPins(emptySet())
                 )
             )
 
@@ -99,8 +99,8 @@ class SpinAnimationTest {
                 playersInRoster().assertIsEqualTo(players)
                 shownPairAssignments().assertIsEqualTo(
                     listOf(
-                        pairOf(placeholderPlayer, placeholderPlayer).withPins(emptyList()),
-                        pairOf(placeholderPlayer, placeholderPlayer).withPins(emptyList())
+                        pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet()),
+                        pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet())
                     )
                 )
             }
@@ -146,8 +146,8 @@ class SpinAnimationTest {
             result.playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
             result.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptyList()),
-                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptyList())
+                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet()),
+                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet())
                 )
             )
         }
@@ -166,7 +166,7 @@ class SpinAnimationTest {
             it.shownPairAssignments().assertIsEqualTo(
                 listOf(
                     pairAssignments.pairs[0],
-                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptyList())
+                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet())
                 )
             )
         }
@@ -191,8 +191,8 @@ class SpinAnimationTest {
             result.playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
             result.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairOf(firstAssignedPlayer, placeholderPlayer).withPins(emptyList()),
-                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptyList())
+                    pairOf(firstAssignedPlayer, placeholderPlayer).withPins(emptySet()),
+                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet())
                 )
             )
         }
@@ -211,7 +211,7 @@ class SpinAnimationTest {
             result.shownPairAssignments().assertIsEqualTo(
                 listOf(
                     pairAssignments.pairs[0],
-                    pairOf(midwayAssignedPlayer, placeholderPlayer).withPins(emptyList())
+                    pairOf(midwayAssignedPlayer, placeholderPlayer).withPins(emptySet())
                 )
             )
         }

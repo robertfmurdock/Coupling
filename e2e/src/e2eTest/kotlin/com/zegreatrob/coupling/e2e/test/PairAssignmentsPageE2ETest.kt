@@ -165,8 +165,8 @@ class PairAssignmentsPageE2ETest {
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(year = 2015, month = 5, day = 30),
                     pairs = listOf(
-                        pairOf(players[0], players[2]).withPins(emptyList()),
-                        pairOf(players[4]).withPins(emptyList())
+                        pairOf(players[0], players[2]).withPins(emptySet()),
+                        pairOf(players[4]).withPins(emptySet())
                     )
                 )
             }

@@ -48,7 +48,7 @@ data class SavePairAssignmentsInput(
 ) : TribeInput
 
 @Serializable
-data class JsonPinnedCouplingPair(val players: List<JsonPinnedPlayer>, val pins: List<JsonPinData> = emptyList())
+data class JsonPinnedCouplingPair(val players: List<JsonPinnedPlayer>, val pins: Set<JsonPinData> = emptySet())
 
 @Serializable
 data class JsonPinnedPlayer(
@@ -87,7 +87,7 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDoc
 
 fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
     players = players.map(PinnedPlayer::toSerializable),
-    pins = pins.map(Pin::toSerializable)
+    pins = pins.map(Pin::toSerializable).toSet()
 )
 
 private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
@@ -136,7 +136,7 @@ fun JsonPairAssignmentDocumentRecord.toModel() = PartyRecord(
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
     players = players.map(JsonPinnedPlayer::toModel),
-    pins = pins.map(JsonPinData::toModel)
+    pins = pins.map(JsonPinData::toModel).toSet()
 )
 
 private fun JsonPinnedPlayer.toModel() = PinnedPlayer(

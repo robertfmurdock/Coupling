@@ -36,7 +36,7 @@ class AssignPinsActionTest {
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
-                expectedPair.withPins(listOf(pin)),
+                expectedPair.withPins(setOf(pin)),
                 alternatePair.withPins()
             )
         )
@@ -63,8 +63,8 @@ class AssignPinsActionTest {
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
-                expectedPair.withPins(listOf(pins[0])),
-                alternatePair.withPins(listOf(pins[1]))
+                expectedPair.withPins(setOf(pins[0])),
+                alternatePair.withPins(setOf(pins[1]))
             )
         )
     }
@@ -88,7 +88,7 @@ class AssignPinsActionTest {
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
-                expectedPair.withPins(listOf(pins[0], pins[1]))
+                expectedPair.withPins(setOf(pins[0], pins[1]))
             )
         )
     }
@@ -105,7 +105,7 @@ class AssignPinsActionTest {
         val pairs = listOf(alternatePair, expectedPair)
 
         val history = listOf(
-            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1).withPins(listOf(pin))))
+            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1).withPins(setOf(pin))))
         )
     }) exercise {
         perform(
@@ -119,7 +119,7 @@ class AssignPinsActionTest {
         result.assertIsEqualTo(
             listOf(
                 alternatePair.withPins(),
-                expectedPair.withPins(listOf(pin))
+                expectedPair.withPins(setOf(pin))
             )
         )
     }
@@ -136,7 +136,7 @@ class AssignPinsActionTest {
         val pairs = listOf(expectedPair, alternatePair)
 
         val history = listOf(
-            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1, player3).withPins(listOf(pin))))
+            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1, player3).withPins(setOf(pin))))
         )
     }) exercise {
         perform(
@@ -149,7 +149,7 @@ class AssignPinsActionTest {
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
-                expectedPair.withPins(listOf(pin)),
+                expectedPair.withPins(setOf(pin)),
                 alternatePair.withPins()
             )
         )
@@ -179,8 +179,8 @@ class AssignPinsActionTest {
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
-                expectedPair.withPins(listOf(pin1)),
-                alternatePair.withPins(listOf(pin2))
+                expectedPair.withPins(setOf(pin1)),
+                alternatePair.withPins(setOf(pin2))
             )
         )
     }
