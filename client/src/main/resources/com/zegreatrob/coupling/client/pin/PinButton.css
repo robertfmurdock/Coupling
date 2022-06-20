@@ -1,41 +1,5 @@
 :local(.className) {
-    display: inline-block;
-    background-color: white;
-    border: double black;
-    text-align: center;
-    position: relative;
 }
 
 :local(.className) :local(.tooltip) {
-    visibility: hidden;
-    position: absolute;
-    padding: 5px 8px;
-    border-radius: 15px;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #222222 url(../overlay.png) repeat-x;
-    color: #fff;
-    display: inline-block;
-    line-height: normal;
-    font-size: larger;
-    white-space: nowrap;
-}
-
-:local(.className):hover :local(.tooltip) {
-    visibility: visible;
-    position: absolute;
-    z-index: 1;
-}
-
-:local(.tooltip)::after {
-    content: "";
-    position: absolute;
-    top: 96%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #222222 transparent transparent transparent;
 }

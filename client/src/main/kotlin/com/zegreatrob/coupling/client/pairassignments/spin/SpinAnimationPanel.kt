@@ -13,7 +13,11 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.Display
+import csstype.Position
 import csstype.Visibility
+import csstype.integer
+import csstype.pct
+import csstype.translate
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
@@ -53,7 +57,14 @@ private fun ChildrenBuilder.assignedPairs(party: Party, revealedPairs: List<Pinn
 }
 
 private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
-    className = styles["playerSpotlight"]
+    css(styles["playerSpotlight"]) {
+        position = Position.relative
+        "> div" {
+            position = Position.absolute
+            zIndex = integer(1)
+            transform = translate((-50).pct, (-50).pct)
+        }
+    }
     if (shownPlayer != null)
         flippedPlayer(shownPlayer)
     else

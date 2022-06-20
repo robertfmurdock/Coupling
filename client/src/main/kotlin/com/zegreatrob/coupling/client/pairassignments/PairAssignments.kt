@@ -15,6 +15,14 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
+import csstype.Color
+import csstype.Display
+import csstype.LineStyle
+import csstype.Padding
+import csstype.PropertiesBuilder
+import csstype.px
+import csstype.vh
+import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.key
 
@@ -39,7 +47,7 @@ private val pairAssignments = tmFC<PairAssignments> { props ->
     DndProvider {
         backend = HTML5Backend
         div {
-            className = styles.className
+            css(styles.className) { pairAssignmentStyles() }
             div {
                 add(PartyBrowser(party))
                 add(PairSection(party, players, pairAssignments, allowSave, setPairs, controls))
@@ -49,6 +57,20 @@ private val pairAssignments = tmFC<PairAssignments> { props ->
             add(ServerMessage(message)) { key = "${message.text} ${message.players.size}" }
         }
     }
+}
+
+private fun PropertiesBuilder.pairAssignmentStyles() {
+    display = Display.inlineBlock
+    minHeight = 100.vh
+    padding = Padding(0.px, 25.px, 25.px, 25.px)
+    borderStyle = LineStyle.solid
+    borderTopWidth = 2.px
+    borderBottomWidth = 2.px
+    borderLeftWidth = 12.px
+    borderRightWidth = 12.px
+    borderRadius = 82.px
+    borderColor = Color("#ff8c00")
+    backgroundColor = Color("#faf0d2")
 }
 
 private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) = copy(

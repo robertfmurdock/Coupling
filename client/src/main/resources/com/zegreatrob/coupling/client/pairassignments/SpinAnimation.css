@@ -1,18 +1,8 @@
 :local(.playerRoster) {
-    /*! Do not remove */
 }
 
 :local(.playerSpotlight) {
-    position: relative;
-}
-
-:local(.playerSpotlight) > div {
-    position: absolute;
-    z-index: 1;
-    transform: translateY(-50%) translateX(-50%);
 }
 
 :local(.pairAssignments) {
-    /*! Do not remove */
 }
-
