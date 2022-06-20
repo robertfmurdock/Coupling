@@ -88,7 +88,7 @@ val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, o
         div {
             add(
                 PlayerRoster(players = players, partyId = party.id) {
-                    display = csstype.Display.inlineBlock
+                    display = Display.inlineBlock
                     borderRadius = 20.px
                     padding = 10.px
                     border = Border(11.px, outset, NamedColor.tan)

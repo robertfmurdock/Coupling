@@ -12,6 +12,12 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
+import csstype.Color
+import csstype.Display
+import csstype.LineStyle
+import csstype.TextAlign
+import csstype.VerticalAlign
+import csstype.px
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
@@ -27,6 +33,8 @@ data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<Pa
 val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
     div {
         css(styles.className) {
+            display = Display.inlineBlock
+            textAlign = TextAlign.left
             whiteSpace = csstype.WhiteSpace.normal
         }
 
@@ -37,12 +45,23 @@ val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
 }
 
 private fun ChildrenBuilder.pairReport(index: Int, pairReport: PairReport) = div {
-    className = styles["pairReport"]
+    css(styles["pairReport"]) {
+        borderWidth = 2.px
+        borderStyle = LineStyle.solid
+        borderColor = Color("#8e8e8e")
+        borderRadius = 5.px
+        backgroundColor = Color("#ffffff")
+        margin = 2.px
+    }
     key = "$index"
     pairReport.pair.asArray().map { player -> reportPlayerCard(player) }
 
     div {
-        className = styles["pairStatistics"]
+        css {
+            display = Display.inlineBlock
+            verticalAlign = VerticalAlign.top
+            margin = 8.px
+        }
         StatsHeader { +"Stats" }
         StatLabel { +"Spins since last paired:" }
         span {
@@ -58,7 +77,9 @@ private fun TimeResult.presentationString() = when (this) {
 }
 
 private fun ChildrenBuilder.reportPlayerCard(player: Player) = div {
-    className = styles["playerCard"]
+    css {
+        display = Display.inlineBlock
+    }
     key = player.id
     add(PlayerCard(player, size = 50))
 }

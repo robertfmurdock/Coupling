@@ -1,9 +1,0 @@
-:local(.className) {
-    line-height: 0;
-}
-
-:local(.cell) {
-    height: 90px;
-    width: 90px;
-    display: inline-block;
-}

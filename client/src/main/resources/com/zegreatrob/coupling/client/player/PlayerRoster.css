@@ -5,10 +5,3 @@
 :local(.addPlayerButton) {
     /*! Do not remove */
 }
-
-:local(.header) {
-    font-size: 1.5em;
-    margin-before: 0.2em;
-    margin-after: 0.58em;
-    font-weight: bold;
-}

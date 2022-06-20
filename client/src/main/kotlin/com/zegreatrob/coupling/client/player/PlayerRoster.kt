@@ -13,8 +13,10 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
+import csstype.FontWeight
 import csstype.PropertiesBuilder
 import csstype.deg
+import csstype.em
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
@@ -28,7 +30,7 @@ data class PlayerRoster(
     val label: String? = null,
     val players: List<Player>,
     val partyId: PartyId,
-    val className: String? = null,
+    val className: ClassName? = null,
     val cssOverrides: PropertiesBuilder.() -> Unit = {}
 ) : DataPropsBind<PlayerRoster>(playerRoster)
 
@@ -39,13 +41,18 @@ val playerRoster = tmFC { (label, players, partyId, className, overrides): Playe
     val random = Random(ref)
 
     div {
-        css(className?.let(::ClassName), styles.className) {
+        css(className, styles.className) {
             overrides()
         }
         div {
             if (players.isNotEmpty()) {
                 div {
-                    this.className = styles["header"]
+                    css {
+                        fontSize = 1.5.em
+                        fontWeight = FontWeight.bold
+                        asDynamic()["margin-before"] = "0.2em"
+                        asDynamic()["margin-after"] = "0.58em"
+                    }
                     +(label ?: "Players")
                 }
                 players.map { player ->

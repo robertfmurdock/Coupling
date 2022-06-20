@@ -39,7 +39,7 @@ val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
                 keyedPlayerCard(player)
             }
         }
-        add(Heatmap(heatmapData, "${styles["heatmap"]}"))
+        add(Heatmap(heatmapData, styles["heatmap"]))
     }
 }
 

@@ -1,15 +1,3 @@
 :local(.className) {
     /*! Do not remove */
 }
-
-:local(.header) {
-    display: inline-block;
-    border-radius: 25px;
-    padding: 10px;
-    margin: 10px;
-    text-fill-color: white;
-    text-stroke-width: 1.5px;
-    text-stroke-color: darkred;
-    font-size: xx-large;
-    background: steelblue url(../overlay.png) repeat-x;
-}

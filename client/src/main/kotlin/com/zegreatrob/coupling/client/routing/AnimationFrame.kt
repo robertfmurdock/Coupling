@@ -5,7 +5,10 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.EmptyState
-import csstype.ClassName
+import csstype.ident
+import csstype.integer
+import csstype.s
+import emotion.react.css
 import react.FC
 import react.PropsWithChildren
 import react.create
@@ -29,9 +32,12 @@ val animationFrame = FC<AnimationFrameProps> { props ->
     animationsDisabledContext.Consumer {
         children = { animationsDisabled: Boolean ->
             div.create {
-                className = styles["viewFrame"]
-                if (shouldStartAnimation && !animationsDisabled) {
-                    className = ClassName(listOf(className, "ng-enter").joinToString(" "))
+                css(styles["viewFrame"]) {
+                    if (shouldStartAnimation && !animationsDisabled) {
+                        zIndex = integer(100)
+                        animationDuration = 0.25.s
+                        animationName = ident("spin-in")
+                    }
                 }
                 onAnimationEnd = { animationState = AnimationState.Stop }
                 +props.children
