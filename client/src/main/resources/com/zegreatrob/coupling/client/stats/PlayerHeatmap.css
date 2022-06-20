@@ -1,38 +1,11 @@
 :local(.rightSection) {
-    display: inline-block;
-    vertical-align: top;
-    margin-left: 20px;
 }
 
 :local(.heatmapPlayersTopRow) :local(.playerCard) {
-    width: 90px;
-    display: inline-block;
-    text-align: center;
-}
-
-:local(.spacer) {
-    display: inline-block;
-    width: 62px;
-}
-
-:local(.playerCard) {
-    display: inline-block;
 }
 
 :local(.heatmapPlayersSideRow) {
-    display: inline-block;
-}
-
-:local(.heatmapPlayersSideRow) :local(.playerCard) {
-    height: 90px;
-    display: block;
-}
-
-:local(.heatmapPlayersSideRow) :local(.playerCard) > div {
-    vertical-align: middle;
 }
 
 :local(.heatmap) {
-    display: inline-block;
-    vertical-align: top;
 }

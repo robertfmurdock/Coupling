@@ -2,11 +2,12 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.PageFrame
-import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
+import csstype.Display
+import csstype.VerticalAlign
 import csstype.number
 import emotion.react.css
 import react.dom.html.ReactHTML.div
@@ -24,7 +25,8 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
     val (party, players, _, allStats, heatmapData) = props.queryResults
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div {
-        className = styles.className
+        css(styles.className) {}
+
         add(PageFrame(borderColor = csstype.Color("#e8e8e8"), backgroundColor = csstype.Color("#dcd9d9"))) {
             ConfigHeader {
                 this.party = party
@@ -33,10 +35,12 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
             div {
                 css {
                     whiteSpace = csstype.WhiteSpace.nowrap
-                    display = csstype.Display.inlineFlex
+                    display = Display.inlineFlex
                 }
                 div {
-                    css(styles["leftSection"]) {
+                    css {
+                        display = Display.inlineBlock
+                        verticalAlign = VerticalAlign.top
                         flexGrow = number(0.0)
                     }
                     div {

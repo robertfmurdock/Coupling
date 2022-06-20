@@ -1,7 +1,2 @@
 :local(.className) {
 }
-
-:local(.leftSection) {
-    display: inline-block;
-    vertical-align: top;
-}
