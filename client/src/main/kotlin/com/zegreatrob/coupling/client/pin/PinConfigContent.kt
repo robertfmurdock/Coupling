@@ -15,6 +15,15 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
+import csstype.Clear
+import csstype.Display
+import csstype.NamedColor
+import csstype.None
+import csstype.Position
+import csstype.TextAlign
+import csstype.VerticalAlign
+import csstype.px
+import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.a
@@ -25,8 +34,6 @@ import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
 import react.key
-
-private val styles = useStyles("pin/PinConfigEditor")
 
 data class PinConfigContent(
     val party: Party,
@@ -43,18 +50,32 @@ val pinConfigContent = tmFC<PinConfigContent> { (party, pin, pinList, onChange, 
     ConfigFrame {
         className = pinConfigStyles.className
         span {
-            className = styles.className
+            css {
+                display = Display.inlineBlock
+            }
             ConfigHeader {
                 this.party = party
                 +"Pin Configuration"
             }
             span {
-                className = styles["pin"]
+                css {
+                    position = Position.relative
+                    clear = Clear.both
+                    display = Display.inlineBlock
+                    textAlign = TextAlign.center
+                    textDecoration = None.none
+                    verticalAlign = VerticalAlign.top
+                    borderWidth = 11.px
+                    color = NamedColor.black
+                }
                 pinConfigForm(pin, onChange, onSubmit, onRemove)
 //                promptOnExit(shouldShowPrompt = updatedPin != pin)
             }
             span {
-                className = styles["icon"]
+                css {
+                    marginLeft = 15.px
+                    marginBottom = 15.px
+                }
                 add(PinButton(pin, PinButtonScale.Large, showTooltip = false))
             }
         }

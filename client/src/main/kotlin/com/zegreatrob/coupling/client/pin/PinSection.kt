@@ -1,11 +1,12 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
+import csstype.Position
+import csstype.pct
 import csstype.px
 import csstype.unaryMinus
 import emotion.react.css
@@ -18,12 +19,13 @@ data class PinSection(
     val className: ClassName = ClassName("")
 ) : DataPropsBind<PinSection>(pinSection)
 
-private val styles = useStyles("pin/PinSection")
-
 val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
     div {
-        css(styles.className, className) {
+        css(className) {
             marginLeft = -(pinList.size * 12 * scale.factor).px
+            position = Position.absolute
+            bottom = 10.px
+            left = 50.pct
         }
         pinList.map { pin ->
             add(

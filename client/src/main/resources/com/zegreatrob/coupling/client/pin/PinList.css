@@ -1,11 +1,2 @@
 :local(.className) {
-    display: inline-block;
-    background: hsla(45, 80%, 96%, 1);
-    padding: 25px 25px 25px 25px;
-    min-height: 100vh;
-    border: 12px solid black;
-    border-top: 2px;
-    border-bottom: 2px;
-    border-radius: 82px;
-    text-align: left;
 }

@@ -10,6 +10,16 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
+import csstype.Border
+import csstype.Color
+import csstype.Display
+import csstype.LineStyle
+import csstype.NamedColor
+import csstype.PropertiesBuilder
+import csstype.TextAlign
+import csstype.px
+import csstype.vh
+import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import react.key
@@ -21,7 +31,7 @@ private val styles = useStyles("pin/PinList")
 
 val pinList = tmFC<PinList> { (party, pins) ->
     div {
-        className = styles.className
+        css(styles.className) { pinListStyles() }
         ConfigHeader {
             this.party = party
             +"These are your pins."
@@ -54,4 +64,16 @@ val pinList = tmFC<PinList> { (party, pins) ->
             }
         }
     }
+}
+
+private fun PropertiesBuilder.pinListStyles() {
+    display = Display.inlineBlock
+    backgroundColor = Color("#FDF9EDFF")
+    padding = 25.px
+    minHeight = 100.vh
+    border = Border(12.px, LineStyle.solid, NamedColor.black)
+    borderTop = 2.px
+    borderBottom = 2.px
+    borderRadius = 82.px
+    textAlign = TextAlign.left
 }
