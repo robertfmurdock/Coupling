@@ -1,11 +1,8 @@
 :local(.rightSection) {
 }
 
-:local(.heatmapPlayersTopRow) :local(.playerCard) {
+:local(.heatmapPlayersTopRow) {
 }
 
 :local(.heatmapPlayersSideRow) {
-}
-
-:local(.heatmap) {
 }

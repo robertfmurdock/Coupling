@@ -1,15 +1,20 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.useStyles
+import csstype.FontSize
+import csstype.FontWeight
+import csstype.px
+import emotion.react.css
 import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 
-private val styles = useStyles("stats/StatsHeader")
-
 val StatsHeader = FC<PropsWithChildren> { props ->
     div {
-        className = styles.className
+        css {
+            fontWeight = FontWeight.bold
+            fontSize = FontSize.large
+            marginBottom = 5.px
+        }
         +props.children
     }
 }

@@ -1,15 +1,16 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.useStyles
+import csstype.px
+import emotion.react.css
 import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.span
 
-private val styles = useStyles("stats/StatLabel")
-
 val StatLabel = FC<PropsWithChildren> { props ->
     span {
-        className = styles.className
+        css {
+            marginRight = 5.px
+        }
         +props.children
     }
 }

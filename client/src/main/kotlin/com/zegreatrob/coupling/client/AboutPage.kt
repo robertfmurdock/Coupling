@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client
 import com.zegreatrob.coupling.client.dom.CouplingButton
 import com.zegreatrob.coupling.client.dom.blue
 import com.zegreatrob.coupling.client.dom.large
-import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
@@ -14,6 +13,7 @@ import com.zegreatrob.minreact.add
 import csstype.ClassName
 import csstype.Color
 import csstype.Position
+import csstype.deg
 import csstype.em
 import csstype.px
 import emotion.react.css
@@ -74,22 +74,12 @@ private val backButton = FC<Props> {
 private val playerHeader = FC<Props> {
     div {
         val rob by playerImage()
+        add(PlayerCard(Player("1", name = "RoB", imageURL = rob), tilt = (-8).deg)) {
+            key = player.id
+        }
         val autumn by playerImage()
-
-        listOf(
-            "left" to Player("1", name = "RoB", imageURL = rob),
-            "right" to Player("2", name = "Autumn", imageURL = autumn)
-        ).forEach { (side, player) ->
-            add(PlayerCard(player, className = playerCardStyles(side))) {
-                key = player.id
-            }
+        add(PlayerCard(Player("2", name = "Autumn", imageURL = autumn), tilt = 8.deg)) {
+            key = player.id
         }
     }
 }
-
-private fun playerCardStyles(sideClassName: String) = ClassName(
-    listOf(
-        styles["player"],
-        styles[sideClassName]
-    ).joinToString(" ")
-)

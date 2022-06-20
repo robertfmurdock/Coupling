@@ -4,6 +4,12 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
+import csstype.Color
+import csstype.Display
+import csstype.LineStyle
+import csstype.VerticalAlign
+import csstype.px
+import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 
@@ -17,7 +23,17 @@ private val styles = useStyles("stats/TeamStatistics")
 
 val teamStatistics = tmFC<TeamStatistics> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
     div {
-        className = styles.className
+        css(styles.className) {
+            display = Display.inlineBlock
+            verticalAlign = VerticalAlign.top
+            margin = 8.px
+            padding = 10.px
+            borderWidth = 2.px
+            borderStyle = LineStyle.solid
+            borderColor = Color("#8e8e8e")
+            borderRadius = 5.px
+            backgroundColor = Color("#ffffff")
+        }
         StatsHeader { +"Team Stats" }
         div {
             StatLabel { +"Spins Until Full Rotation:" }
@@ -25,11 +41,11 @@ val teamStatistics = tmFC<TeamStatistics> { (spinsUntilFullRotation, activePlaye
         }
         div {
             StatLabel { +"Number of Active Players:" }
-            span { className = styles["activePlayerCount"]; +"$activePlayerCount" }
+            span { +"$activePlayerCount" }
         }
         div {
             StatLabel { +"Median Spin Duration:" }
-            span { className = styles["medianSpinDuration"]; +medianSpinDuration }
+            span { +medianSpinDuration }
         }
     }
 }
