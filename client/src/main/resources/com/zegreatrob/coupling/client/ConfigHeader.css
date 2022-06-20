@@ -1,19 +1,7 @@
 :local(.className) {
-    text-align: left;
-    margin: 5px;
-}
-
-:local(.className) h1 {
-    margin-left: 15px;
-    text-decoration: underline;
-    flex-grow: 2;
 }
 
 :local(.statisticsButton) {
-    /*! Do not remove */
-}
-
-:local(.pinListButton) {
     /*! Do not remove */
 }
 

@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.demo
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.aboutPageContent
-import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignments
@@ -20,8 +19,19 @@ import com.zegreatrob.minreact.tmFC
 import com.zegreatrob.testmints.action.async.SuspendAction
 import csstype.Auto
 import csstype.Color
+import csstype.Display
+import csstype.FontWeight
+import csstype.Globals
+import csstype.NamedColor
 import csstype.None
+import csstype.Padding
 import csstype.Position
+import csstype.Visibility
+import csstype.deg
+import csstype.integer
+import csstype.px
+import csstype.rotate
+import csstype.string
 import csstype.vw
 import emotion.react.css
 import kotlinx.browser.document
@@ -41,6 +51,7 @@ import react.popper.usePopper
 import react.useLayoutEffect
 import react.useRef
 import react.useState
+import kotlin.js.Json
 
 data class DemoPageFrame(val state: DemoAnimationState) : DataPropsBind<DemoPageFrame>(demoPageFrame)
 
@@ -111,7 +122,21 @@ private fun ChildrenBuilder.popperDiv(
         if (state.description.isBlank()) display = None.none
     }
     div {
-        className = styles["popper"]
+        css {
+            background = Color("#333333eb")
+            color = NamedColor.white
+            fontWeight = FontWeight.bold
+            padding = Padding(4.px, 8.px)
+            fontSize = 24.px
+            borderRadius = 20.px
+            width = 400.px
+            zIndex = integer(200)
+            display = Display.inlineBlock
+
+            "h2" {
+                fontSize = 30.px
+            }
+        }
         ref = popperRef
         style = popperInstance.styles[Popper]
 
@@ -121,7 +146,34 @@ private fun ChildrenBuilder.popperDiv(
             returnToCouplingButton()
         }
         div {
-            className = styles["arrow"]
+            css {
+                visibility = Visibility.hidden
+                position = Position.absolute
+                width = 8.px
+                height = 8.px
+                background = Globals.inherit
+                when (
+                    popperInstance.attributes[Popper]
+                        ?.unsafeCast<Json>()
+                        ?.get("data-popper-placement")
+                ) {
+                    "top" -> bottom = (-4).px
+                    "bottom", "bottom-start" -> top = (-4).px
+                    "left" -> right = (-4).px
+                    "right" -> left = (-4).px
+                }
+                before {
+                    position = Position.absolute
+                    width = 8.px
+                    height = 8.px
+                    background = Globals.inherit
+                    visibility = Visibility.visible
+                    content = string("''")
+                    transform = rotate(45.deg)
+                    top = 0.px
+                    left = 0.px
+                }
+            }
             ref = arrowRef
             style = popperInstance.styles[Arrow]
             +popperInstance.attributes[Arrow]

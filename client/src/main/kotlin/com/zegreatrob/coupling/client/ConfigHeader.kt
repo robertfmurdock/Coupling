@@ -21,6 +21,7 @@ import csstype.Display
 import csstype.FlexDirection
 import csstype.Margin
 import csstype.Padding
+import csstype.TextAlign
 import csstype.TextDecoration
 import csstype.VerticalAlign
 import csstype.WhiteSpace
@@ -47,7 +48,10 @@ private val styles = useStyles("ConfigHeader")
 val ConfigHeader = FC<ConfigHeaderProps> { props ->
     val party = props.party
     div {
-        className = styles.className
+        css(styles.className) {
+            textAlign = TextAlign.left
+            margin = 5.px
+        }
         div {
             css {
                 display = Display.flex
@@ -70,6 +74,9 @@ private fun ChildrenBuilder.partyControls(props: ConfigHeaderProps, party: Party
             display = Display.flex
             flexDirection = FlexDirection.column
             alignItems = AlignItems.center
+            marginLeft = 15.px
+            textDecoration = TextDecoration.underline
+            flexGrow = number(2.0)
         }
         topControlRow(props)
         div {

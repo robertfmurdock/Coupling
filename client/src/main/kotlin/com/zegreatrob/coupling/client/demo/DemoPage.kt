@@ -1,12 +1,9 @@
 package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.FrameRunner
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.minreact.add
 import react.FC
-
-val styles = useStyles("DemoPage")
 
 val demoSequence by lazy { DemoAnimationState.generateSequence() }
 
