@@ -7,6 +7,7 @@ import org.w3c.dom.HTMLCollection
 import org.w3c.dom.HTMLElement
 import react.ReactNode
 import kotlin.js.Json
+import kotlin.js.Promise
 
 external val screen: Screen
 
@@ -33,3 +34,5 @@ external class Container {
 external class Screen {
     fun getByText(s: String): HTMLElement
 }
+
+external fun waitFor(callback: () -> Any): Promise<Unit>

@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.Editor
 import com.zegreatrob.coupling.client.external.react.configInput
-import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.client.gravatarLink
@@ -16,10 +15,18 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.Border
-import csstype.ClassName
+import csstype.Clear
+import csstype.Display
+import csstype.FontSize
 import csstype.LineStyle.Companion.outset
 import csstype.NamedColor
+import csstype.None
+import csstype.Position
+import csstype.TextAlign
+import csstype.VerticalAlign
+import csstype.number
 import csstype.px
+import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
 import react.dom.html.InputType
@@ -46,7 +53,14 @@ private val playerConfigStyles = useStyles("player/PlayerConfig")
 
 val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, onChange, onSubmit, onRemove) ->
     ConfigFrame {
-        className = playerConfigStyles.className
+        css(playerConfigStyles.className) {
+            "input[type=text]" {
+                fontSize = FontSize.large
+                borderRadius = 20.px
+                borderWidth = 4.px
+                padding = 4.px
+            }
+        }
         span {
             className = styles.className
             ConfigHeader {
@@ -55,7 +69,16 @@ val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, o
             }
             div {
                 div {
-                    className = styles["player"]
+                    css {
+                        verticalAlign = VerticalAlign.top
+                        flexGrow = number(2.0)
+                        position = Position.relative
+                        clear = Clear.both
+                        display = Display.inlineBlock
+                        textAlign = TextAlign.center
+                        textDecoration = None.none
+                        color = NamedColor.black
+                    }
                     playerConfigForm(player, party, onChange, onSubmit, onRemove)
 //                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
                 }
@@ -101,7 +124,7 @@ private fun ChildrenBuilder.editorDiv(party: Party, player: Player, onChange: (C
             callSignConfig(player, onChange)
         }
         if (party.badgesEnabled) {
-            badgeConfig(party, player, onChange, styles["badgeConfig"])
+            badgeConfig(party, player, onChange)
         }
     }
 }
@@ -173,10 +196,13 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
 private fun ChildrenBuilder.badgeConfig(
     party: Party,
     player: Player,
-    onChange: (ChangeEvent<*>) -> Unit,
-    className: ClassName
+    onChange: (ChangeEvent<*>) -> Unit
 ) = li {
-    this.className = className
+    css {
+        "> div" {
+            display = Display.inlineBlock
+        }
+    }
     label { htmlFor = "badge"; +"Badge" }
     select {
         id = "badge"

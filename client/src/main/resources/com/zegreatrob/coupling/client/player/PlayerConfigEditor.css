@@ -1,28 +1,5 @@
 :local(.className) {
-    /*! Do not remove */
-}
-
-:local(.className) :local(.player) {
-    vertical-align: top;
-    flex-grow: 2;
 }
 
 :local(.player) {
-    position: relative;
-    clear: both;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    color: black;
-}
-
-:local(.className) input[type=text] {
-    font-size: large;
-    border-radius: 20px;
-    border-width: 4px;
-    padding: 4px;
-}
-
-:local(.className) :local(.badgeConfig) > div {
-    display: inline-block;
 }

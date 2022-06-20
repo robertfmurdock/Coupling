@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.testinglibrary.react.render
+import com.zegreatrob.coupling.client.external.testinglibrary.react.waitFor
 import com.zegreatrob.coupling.client.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
 import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpinContent
@@ -30,7 +31,6 @@ import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import kotlinx.coroutines.await
-import kotlinx.dom.hasClass
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
@@ -128,16 +128,20 @@ class PrepareSpinTest {
             json("wrapper" to MemoryRouter)
         )
     }) exercise {
-        val playerCards = result.container.querySelectorAll(".${playerCardStyles["player"]}").asList()
-        playerCards.forEach {
-            if ((it as? HTMLElement)?.hasClass("${playerCardStyles["deselected"]}") == false) {
-                user.click(it).await()
+        result.container.querySelectorAll(".${playerCardStyles["player"]}")
+            .asList()
+            .map { it as? HTMLElement }
+            .forEach { htmlElement ->
+                if (htmlElement?.attributes?.get("data-selected")?.value == "true") {
+                    user.click(htmlElement).await()
+                }
             }
-        }
     } verify {
-        result.getByText("Spin!")
-            .attributes["disabled"]
-            .assertIsNotEqualTo(null)
+        waitFor {
+            result.getByText("Spin!")
+                .attributes["disabled"]
+                .assertIsNotEqualTo(null)
+        }
     }
 
     @Test

@@ -1,45 +1,8 @@
 :local(.player) {
-    position: relative;
-    clear: both;
-    display: inline-block;
-    overflow: hidden;
-    border: 3px outset #dab8018f;
-    background: darkseagreen url(../overlay.png) repeat-x;
-    text-align: center;
-    text-decoration: none;
-    color: black;
-    margin: 0 2px 0 2px;
-    top: 0
-}
-
-:local(.player) img {
-    display: block;
 }
 
 :local(.header) {
-    background: rgba(255, 255, 255, 0.4) url(../overlay.png) repeat-x;
-    border-style: solid;
-    border-color: #00000054;
-    border-width: 1px;
-    font-weight: bold;
-}
-
-:local(.header) a {
-    color:inherit;
-    text-decoration:none;
-    display: block;
-}
-
-:local(.player):local(.deselected) {
-    top: 30px;
-    background-color: #ca6363;
-    margin-bottom: 0;
-}
-
-:local(.header) {
-    transition: all ease-out 0.4s;
 }
 
 :local(.playerIcon) {
-    /*! Do not remove */
 }
