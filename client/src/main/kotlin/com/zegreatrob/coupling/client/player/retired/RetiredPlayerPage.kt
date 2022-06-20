@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.player.PlayerConfig
-import com.zegreatrob.coupling.client.routing.CouplingDataLoader
+import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.client.routing.playerId
@@ -23,10 +23,10 @@ val RetiredPlayerPage = FC<PageProps> { props ->
 }
 
 private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: PartyId, playerId: String) =
-    +CouplingDataLoader(
+    +CouplingQuery(
         commander = props.commander,
         query = RetiredPlayerQuery(partyId, playerId),
-        toProps = { reload, commandFunc, (party, players, player) ->
+        toDataprops = { reload, commandFunc, (party, players, player) ->
             PlayerConfig(party, player, players, reload, commandFunc)
         }
     ).create { key = playerId }

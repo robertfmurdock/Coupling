@@ -20,9 +20,7 @@ import react.dom.html.ReactHTML.div
 private val graphQlUrl = "${WindowFunctions.window.location.origin}${window["basename"]?.toString()}/api/graphql"
 
 val GraphIQLPage = FC<PageProps> {
-
     val auth0Data = useAuth0Data()
-
     div {
         css {
             textAlign = TextAlign.left

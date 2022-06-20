@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.routing.CouplingDataLoader
+import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.model.party.PartyId
@@ -14,14 +14,14 @@ val PartyConfigPage = FC<PageProps> { props ->
     }
 }
 
-private fun PartyId.partyQueryProps(pageProps: PageProps) = CouplingDataLoader(
+private fun PartyId.partyQueryProps(pageProps: PageProps) = CouplingQuery(
     commander = pageProps.commander,
     query = PartyQuery(this),
-    toProps = { _, commandFunc, data -> PartyConfig(data, commandFunc) }
+    toDataprops = { _, commandFunc, data -> PartyConfig(data, commandFunc) }
 )
 
-private fun newPartyProps(pageProps: PageProps) = CouplingDataLoader(
+private fun newPartyProps(pageProps: PageProps) = CouplingQuery(
     commander = pageProps.commander,
     query = NewPartyCommand(),
-    toProps = { _, commandFunc, data -> PartyConfig(data, commandFunc) }
+    toDataprops = { _, commandFunc, data -> PartyConfig(data, commandFunc) }
 )
