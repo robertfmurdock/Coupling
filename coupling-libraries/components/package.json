@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.2.1"
+  },
+  "author": "Robert F Murdock",
+  "license": "ISC",
+  "homepage": "https://github.com/robertfmurdock/Coupling",
+  "dependencies": {
+    "react-websocket": "^2.1.0"
+  }
+}

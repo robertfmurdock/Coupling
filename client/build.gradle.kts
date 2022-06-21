@@ -45,6 +45,7 @@ val clientConfiguration: Configuration by configurations.creating
 dependencies {
     implementation(kotlin("stdlib-js"))
     implementation(project(":sdk"))
+    implementation(project(":coupling-libraries:components"))
     implementation(project(":coupling-libraries:model"))
     implementation(project(":coupling-libraries:action"))
     implementation(project(":coupling-libraries:logging"))
@@ -65,6 +66,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.5")
 
     testImplementation(project(":coupling-libraries:stub-model"))
+    testImplementation(project(":coupling-libraries:test-react"))
     testImplementation(project(":coupling-libraries:test-logging"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")

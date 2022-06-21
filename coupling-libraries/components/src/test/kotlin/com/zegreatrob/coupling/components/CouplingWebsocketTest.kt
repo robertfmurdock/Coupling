@@ -1,7 +1,7 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.client.external.reactwebsocket.reactWebsocket
+import com.zegreatrob.coupling.components.external.reactwebsocket.reactWebsocket
 import com.zegreatrob.coupling.json.toJsonString
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.CouplingSocketMessage
@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.enzyme
+import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.setup
 import kotlinx.browser.window
 import react.create

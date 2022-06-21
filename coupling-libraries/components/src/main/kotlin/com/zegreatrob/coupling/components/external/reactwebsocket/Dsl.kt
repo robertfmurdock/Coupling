@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.external.reactwebsocket
+package com.zegreatrob.coupling.components.external.reactwebsocket
 
 import react.ElementType
 import react.Props

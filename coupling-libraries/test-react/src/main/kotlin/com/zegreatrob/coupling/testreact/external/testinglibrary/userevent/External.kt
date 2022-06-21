@@ -1,6 +1,6 @@
 @file:JsModule("@testing-library/user-event")
 
-package com.zegreatrob.coupling.client.external.testinglibrary.userevent
+package com.zegreatrob.coupling.testreact.external.testinglibrary.userevent
 
 import org.w3c.dom.HTMLElement
 import kotlin.js.Json

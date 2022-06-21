@@ -1,13 +1,12 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.client.external.reactwebsocket.WebsocketComponent
-import com.zegreatrob.coupling.client.external.reactwebsocket.websocket
+import com.zegreatrob.coupling.components.external.reactwebsocket.WebsocketComponent
+import com.zegreatrob.coupling.components.external.reactwebsocket.websocket
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString
 import com.zegreatrob.coupling.json.toJsonString
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
-import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.DataPropsBind
@@ -22,12 +21,11 @@ import react.useMemo
 import react.useRef
 import react.useState
 
-val disconnectedMessage = CouplingSocketMessage(
+val disconnectedMessage = com.zegreatrob.coupling.model.CouplingSocketMessage(
     text = "Not connected",
     players = emptySet(),
     currentPairAssignments = null
 )
-
 val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
     val (partyId, useSsl, onMessageFunc, buildChild, token) = props
 
@@ -55,7 +53,7 @@ data class CouplingWebsocket(
     val onMessage: (Message) -> Unit,
     val buildChild: (value: ((Message) -> Unit)?) -> ReactNode,
     val token: String
-) : DataPropsBind<CouplingWebsocket> (couplingWebsocket)
+) : DataPropsBind<CouplingWebsocket>(couplingWebsocket)
 
 private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->
     val websocket = ref.current
@@ -71,6 +69,5 @@ private fun buildSocketUrl(partyId: PartyId, useSsl: Boolean, token: String) = U
 )
 
 external fun encodeURIComponent(value: String): String
-
 private val host get() = window["websocketHost"].unsafeCast<String?>() ?: window.location.host
 private val Boolean.protocol get() = if (this) "wss" else "ws"

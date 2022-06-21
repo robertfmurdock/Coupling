@@ -6,9 +6,6 @@ import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.external.testinglibrary.react.render
-import com.zegreatrob.coupling.client.external.testinglibrary.react.waitFor
-import com.zegreatrob.coupling.client.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
 import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpinContent
 import com.zegreatrob.coupling.client.pin.pinButton
@@ -22,6 +19,9 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
+import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper

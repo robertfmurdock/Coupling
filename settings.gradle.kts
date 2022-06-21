@@ -16,6 +16,8 @@ include("deploy:prod")
 
 include("dynamo")
 include("coupling-libraries:logging")
+include("coupling-libraries:components")
+include("coupling-libraries:test-react")
 include("coupling-libraries:model")
 include("coupling-libraries:stub-model")
 include("coupling-libraries:test-logging")

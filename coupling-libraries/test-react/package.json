@@ -1,0 +1,11 @@
+{
+  "author": "Robert F Murdock",
+  "license": "ISC",
+  "homepage": "https://github.com/robertfmurdock/Coupling",
+  "dependencies": {
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.2.1",
+    "jsdom": "19.0.0",
+    "global-jsdom": "8.4.0"
+  }
+}

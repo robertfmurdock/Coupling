@@ -1,6 +1,6 @@
 @file:JsModule("@testing-library/react")
 
-package com.zegreatrob.coupling.client.external.testinglibrary.react
+package com.zegreatrob.coupling.testreact.external.testinglibrary.react
 
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLCollection
