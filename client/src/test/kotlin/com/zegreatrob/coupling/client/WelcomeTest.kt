@@ -25,11 +25,11 @@ class WelcomeTest {
     }) exercise {
         shallow(Welcome(randomProvider))
     } verify { wrapper ->
-        wrapper.leftCard()?.player
+        wrapper.leftCard().player
             .assertIsEqualTo(
                 Player(id = "Frodo", name = "Frodo", imageURL = pngPath("players/frodo"))
             )
-        wrapper.rightCard()?.player
+        wrapper.rightCard().player
             .assertIsEqualTo(
                 Player(id = "Sam", name = "Sam", imageURL = pngPath("players/samwise"))
             )
@@ -45,11 +45,11 @@ class WelcomeTest {
     }) exercise {
         shallow(Welcome(randomProvider))
     } verify { wrapper ->
-        wrapper.leftCard()?.player
+        wrapper.leftCard().player
             .assertIsEqualTo(
                 Player(id = "Batman", name = "Batman", imageURL = pngPath("players/grayson"))
             )
-        wrapper.rightCard()?.player
+        wrapper.rightCard().player
             .assertIsEqualTo(
                 Player(id = "Robin", name = "Robin", imageURL = pngPath("players/wayne"))
             )
@@ -65,11 +65,11 @@ class WelcomeTest {
     }) exercise {
         shallow(Welcome(randomProvider))
     } verify { wrapper ->
-        wrapper.leftCard()?.player
+        wrapper.leftCard().player
             .assertIsEqualTo(
                 Player(id = "Rosie", name = "Rosie", imageURL = pngPath("players/rosie"))
             )
-        wrapper.rightCard()?.player
+        wrapper.rightCard().player
             .assertIsEqualTo(
                 Player(id = "Wendy", name = "Wendy", imageURL = pngPath("players/wendy"))
             )
@@ -79,9 +79,7 @@ class WelcomeTest {
 
     private fun ShallowWrapper<dynamic>.welcomeProverb() = find<Any>(".${styles["welcomeProverb"]}")
 
-    private fun ShallowWrapper<dynamic>.leftCard() = find(playerCard).map { it.dataprops() }
-        .find { it.className?.toString()?.contains("left") ?: false }
+    private fun ShallowWrapper<dynamic>.leftCard() = find(playerCard).map { it.dataprops() }[0]
 
-    private fun ShallowWrapper<dynamic>.rightCard() = find(playerCard).map { it.dataprops() }
-        .find { it.className?.toString()?.contains("right") ?: false }
+    private fun ShallowWrapper<dynamic>.rightCard() = find(playerCard).map { it.dataprops() }[1]
 }

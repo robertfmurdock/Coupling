@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.SimpleStyle
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
+import csstype.Display
+import emotion.react.css
 import org.w3c.dom.Node
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
@@ -17,8 +17,6 @@ data class DraggableThing(
     val dropCallback: (String) -> Unit,
     val handler: ChildrenBuilder.(isOver: Boolean) -> Unit
 ) : DataPropsBind<DraggableThing>(draggableThing)
-
-private val styles = useStyles<SimpleStyle>("DraggableThing")
 
 val draggableThing = tmFC<DraggableThing> { (itemType, itemId, dropCallback, handler) ->
     val draggableRef = useRef<Node>(null)
@@ -32,7 +30,7 @@ val draggableThing = tmFC<DraggableThing> { (itemType, itemId, dropCallback, han
     drag(drop(draggableRef))
 
     div {
-        className = styles.className
+        css { display = Display.inlineBlock }
         ref = draggableRef
         handler(isOver)
     }

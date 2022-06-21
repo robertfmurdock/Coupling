@@ -26,6 +26,8 @@ import csstype.Color
 import csstype.Display
 import csstype.FlexDirection
 import csstype.Position
+import csstype.TransitionProperty
+import csstype.TransitionTimingFunction
 import csstype.em
 import csstype.ident
 import csstype.number
@@ -166,7 +168,11 @@ private fun ChildrenBuilder.pinSelector(
     pins: List<Pin>
 ) = Flipper {
     flipKey = pinSelections.generateFlipKey()
-    className = styles["pinSelector"]
+    css(styles["pinSelector"]) {
+        display = Display.flex
+        flexDirection = FlexDirection.column
+        flex = number(1.0)
+    }
     selectedPinsDiv {
         pins.selectByIds(pinSelections)
             .map { pin ->
@@ -248,7 +254,11 @@ private fun playerCard(
     playerSelections: List<Pair<Player, Boolean>>
 ) = PlayerCard(
     player,
-    className = styles["playerCard"],
+    className = emotion.css.ClassName(styles["playerCard"]) {
+        transitionProperty = TransitionProperty.all
+        transitionDuration = 0.25.s
+        transitionTimingFunction = TransitionTimingFunction.easeOut
+    },
     onClick = {
         setPlayerSelections(
             flipSelectionForPlayer(player, isSelected, playerSelections)

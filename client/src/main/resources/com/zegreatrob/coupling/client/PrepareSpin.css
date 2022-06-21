@@ -1,49 +1,26 @@
 :local(.className) {
-    /*! Do not remove */
 }
 
 :local(.playerCard) {
-    transition: all 0.25s ease-out;
-    transition-property: top, background-color, margin-bottom;
-}
-
-:local(.playerCard).ng-leave {
-    transition: none;
-    animation: none;
-}
-
-:local(.playerCard).ng-hide-add,
-:local(.playerCard).ng-hide-remove {
-    display: inline-block !important;
-    transition: all ease-in .2s;
 }
 
 :local(.playerSelector) {
-
 }
 
 :local(.spinButton) {
-    /*! Do not remove */
 }
 
 :local(.selectAllButton) {
-    /*! Do not remove */
 }
 
 :local(.selectNoneButton) {
-    /*! Do not remove */
 }
 
 :local(.selectedPins) {
-    /*! Do not remove */
 }
 
 :local(.deselectedPins) {
-    /*! Do not remove */
 }
 
 :local(.pinSelector) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
 }
