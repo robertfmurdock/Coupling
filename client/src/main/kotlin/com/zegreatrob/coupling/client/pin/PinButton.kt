@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
@@ -80,7 +81,7 @@ private fun PropertiesBuilder.tooltipStyles() {
     left = 50.pct
     transform = translatex((-50).pct)
     backgroundRepeat = BackgroundRepeat.repeatX
-    backgroundImage = url("overlay")
+    backgroundImage = url(pngPath("overlay"))
     backgroundColor = Color("#222222")
     color = Color("#fff")
     display = Display.inlineBlock

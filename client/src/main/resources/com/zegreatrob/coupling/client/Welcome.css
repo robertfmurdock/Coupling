@@ -1,62 +1,11 @@
 :local(.className) {
 }
 
-:local(.welcome) {
-}
-
 :local(.playerCard) {
 }
 
-:local(.className) {
-}
-
-:local(.welcomeTitle) {
-}
-
-:local(.welcomePair) {
-}
-
 :local(.welcomeProverb) {
 }
 
-:local(.enterButtonContainer) {
-}
-
-:local(.enterButtonContainer) :local(.enterButton) {
-}
-
-:local(.enterButton):local(.hidden) {
-}
-
-:local(.enterButtonContainer) {
-}
-
-:local(.enterButtonContainer) .button {
-}
-
-:local(.enterButtonContainer):hover {
-}
-
-:local(.enterButtonContainer) .button:hover {
-}
-
-:local(.welcome) :local(.playerCard).left {
-}
-
-:local(.welcome) :local(.playerCard).left {
-}
-
-:local(.welcome) :local(.playerCard).left:hover {
-}
-
-:local(.welcome) :local(.playerCard).right {
-}
-
-:local(.welcome) :local(.playerCard).right {
-}
-
-:local(.welcome) :local(.playerCard).right:hover {
-}
-
-:local(.welcomeProverb) {
+:local(.enterButton) {
 }

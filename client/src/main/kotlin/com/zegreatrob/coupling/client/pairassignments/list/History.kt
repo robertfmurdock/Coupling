@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.PinSection
+import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -169,7 +170,7 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
         overflow = Overflow.hidden
         border = Border(3.px, LineStyle.outset, NamedColor.gold)
         backgroundColor = NamedColor.darkseagreen
-        backgroundImage = url("overlay")
+        backgroundImage = url(pngPath("overlay"))
         backgroundRepeat = BackgroundRepeat.repeatX
         padding = 6.px
         textAlign = TextAlign.center
@@ -183,7 +184,7 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
     div {
         css {
             backgroundColor = NamedColor.darkcyan
-            backgroundImage = url("overlay")
+            backgroundImage = url(pngPath("overlay"))
             backgroundRepeat = BackgroundRepeat.repeatX
             asDynamic()["margin-before"] = "6px"
             asDynamic()["margin-after"] = "6px"

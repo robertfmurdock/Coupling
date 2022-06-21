@@ -87,7 +87,7 @@ val wayne by playerImage()
 val rosie by playerImage()
 val wendy by playerImage()
 
-private val candidates: List<WelcomeCardSet> = listOf(
+private val candidates = listOf(
     WelcomeCardSet(
         left = Card(name = "Frodo", imagePath = frodo),
         right = Card(name = "Sam", imagePath = samwise),
@@ -114,7 +114,7 @@ private fun ChildrenBuilder.welcomeSplash(
     pair: CouplingPair.Double,
     proverb: String
 ) = span {
-    css(styles["welcome"]) {
+    css {
         display = Display.inlineBlock
         verticalAlign = VerticalAlign.top
         borderRadius = 82.px
@@ -156,7 +156,7 @@ private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath)
 
 private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>) = div {
-    css(styles["welcomeTitle"]) {
+    css {
         marginTop = 0.5.em
         marginBottom = 0.4.em
         fontSize = 72.px
@@ -168,7 +168,7 @@ private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>
 
 private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
     div {
-        css(styles["welcomePair"]) {
+        css {
             display = Display.inlineFlex
         }
         val leftCardStyles = ClassName(styles["playerCard"]) {

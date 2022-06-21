@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.dom
 
+import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.tmFC
@@ -28,10 +29,8 @@ import org.w3c.dom.HTMLButtonElement
 import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.button
 
-val overlay = kotlinext.js.require("overlay.png").default.unsafeCast<String>()
-
 val buttonRuleset: PropertiesBuilder.() -> Unit = {
-    backgroundImage = url(overlay)
+    backgroundImage = url(pngPath("overlay"))
     backgroundRepeat = BackgroundRepeat.repeatX
 
     display = Display.inlineBlock

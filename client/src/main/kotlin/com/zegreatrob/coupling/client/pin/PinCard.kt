@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
@@ -39,7 +40,7 @@ val pinCard = tmFC<PinCard> { (partyId, pin, shouldLink) ->
                 overflow = Overflow.hidden
                 border = Border(3.px, LineStyle.outset, NamedColor.black)
                 backgroundColor = Color("#E0DCD2FF")
-                backgroundImage = url("overlay")
+                backgroundImage = url(pngPath("overlay"))
                 backgroundRepeat = BackgroundRepeat.repeatX
                 textAlign = TextAlign.center
                 textDecoration = None.none
