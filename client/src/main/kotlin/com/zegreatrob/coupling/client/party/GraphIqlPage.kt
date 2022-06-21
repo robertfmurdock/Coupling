@@ -17,7 +17,7 @@ import org.w3c.dom.get
 import react.FC
 import react.dom.html.ReactHTML.div
 
-private val graphQlUrl = "${WindowFunctions.window.location.origin}${window["basename"]?.toString()}/api/graphql"
+private val graphQlUrl = "${WindowFunctions.window.location.origin}${window["basename"]}/api/graphql"
 
 val GraphIQLPage = FC<PageProps> {
     val auth0Data = useAuth0Data()
