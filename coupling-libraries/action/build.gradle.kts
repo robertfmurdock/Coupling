@@ -28,8 +28,6 @@ kotlin {
                 api("com.zegreatrob.testmints:action-async")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                api("org.jetbrains.kotlinx:atomicfu:0.18.0")
-                api("org.jetbrains.kotlin:atomicfu:1.6.21")
                 implementation("com.benasher44:uuid:0.4.1")
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
                 implementation("io.github.microutils:kotlin-logging:2.1.23")
