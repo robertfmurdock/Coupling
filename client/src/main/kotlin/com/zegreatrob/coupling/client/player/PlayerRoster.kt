@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.Paths.playerConfigPage
-import com.zegreatrob.coupling.client.dom.CouplingButton
-import com.zegreatrob.coupling.client.dom.large
-import com.zegreatrob.coupling.client.dom.orange
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.large
+import com.zegreatrob.coupling.components.orange
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player

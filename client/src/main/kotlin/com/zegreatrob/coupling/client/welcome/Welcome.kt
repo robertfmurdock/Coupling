@@ -1,13 +1,10 @@
 package com.zegreatrob.coupling.client.welcome
 
-import com.zegreatrob.coupling.client.dom.CouplingButton
-import com.zegreatrob.coupling.client.dom.pink
-import com.zegreatrob.coupling.client.dom.supersize
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.fitty.fitty
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.playerImage
+import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.pink
+import com.zegreatrob.coupling.components.supersize
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
@@ -48,8 +45,6 @@ import react.useLayoutEffect
 import react.useRef
 import react.useState
 
-private val styles = useStyles("Welcome")
-
 data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataPropsBind<Welcome>(welcome)
 
 val welcome = tmFC { (randomProvider): Welcome ->
@@ -62,7 +57,7 @@ val welcome = tmFC { (randomProvider): Welcome ->
     val (pair, proverb) = pairAndProverb
 
     div {
-        css(styles.className) { welcomeStyles() }
+        css { welcomeStyles() }
         div { welcomeSplash(welcomeTitleRef, pair, proverb) }
         div { comeOnIn(showLoginChooser) { showLoginChooser = true } }
     }
@@ -129,7 +124,7 @@ private fun ChildrenBuilder.welcomeSplash(
 
 private fun ChildrenBuilder.welcomeProverb(proverb: String) {
     div {
-        css(styles["welcomeProverb"]) {
+        css {
             display = Display.inlineBlock
             borderRadius = 15.px
             transform = rotate(0.deg)
@@ -171,7 +166,7 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
         css {
             display = Display.inlineFlex
         }
-        val leftCardStyles = ClassName(styles["playerCard"]) {
+        val leftCardStyles = ClassName {
             transitionProperty = TransitionProperty.all
             transitionDuration = 0.25.s
             transitionTimingFunction = TransitionTimingFunction.easeOut
@@ -181,7 +176,7 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
             hover { cardZoom() }
         }
         add(PlayerCard(pair.player1, leftCardStyles, 100, tilt = (-8).deg))
-        val rightCardStyles = ClassName(styles["playerCard"]) {
+        val rightCardStyles = ClassName {
             transitionProperty = TransitionProperty.all
             transitionDuration = 0.25.s
             transitionTimingFunction = TransitionTimingFunction.easeOut
@@ -203,7 +198,7 @@ private fun PropertiesBuilder.cardZoom() {
 }
 
 private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: () -> Unit) = div {
-    css(styles["enterButtonContainer"]) {
+    css {
         paddingTop = 15.px
         paddingBottom = 50.px
         display = Display.inlineBlock
@@ -221,7 +216,7 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
         add(
             CouplingButton(
                 supersize, pink,
-                ClassName(styles["enterButton"]) {
+                ClassName {
                     marginTop = 20.px
                     animationName = ident("pulsate")
                     animationDuration = 0.5.s

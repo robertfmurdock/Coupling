@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.player
 import com.zegreatrob.coupling.client.CardHeader
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.pngPath
+import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC

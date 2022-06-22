@@ -2,6 +2,10 @@ plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
 }
 
+repositories {
+    mavenCentral()
+}
+
 kotlin {
     js {
         nodejs()

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.pngPath
+import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind

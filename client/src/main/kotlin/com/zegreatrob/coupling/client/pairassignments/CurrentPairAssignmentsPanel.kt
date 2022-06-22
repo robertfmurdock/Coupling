@@ -2,15 +2,15 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
-import com.zegreatrob.coupling.client.dom.CouplingButton
-import com.zegreatrob.coupling.client.dom.green
-import com.zegreatrob.coupling.client.dom.red
-import com.zegreatrob.coupling.client.dom.small
-import com.zegreatrob.coupling.client.dom.supersize
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.green
+import com.zegreatrob.coupling.components.red
+import com.zegreatrob.coupling.components.small
+import com.zegreatrob.coupling.components.supersize
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer

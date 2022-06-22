@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DemoButton
-import com.zegreatrob.coupling.client.dom.CouplingButton
-import com.zegreatrob.coupling.client.dom.supersize
-import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.pngPath
+import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.pngPath
+import com.zegreatrob.coupling.components.supersize
+import com.zegreatrob.coupling.components.white
 import com.zegreatrob.minreact.add
 import csstype.BackgroundRepeat
 import csstype.Border

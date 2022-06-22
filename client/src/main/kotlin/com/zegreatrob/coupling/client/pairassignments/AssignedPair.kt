@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.client.pin.pinDragItemType
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.pngPath
+import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.Party

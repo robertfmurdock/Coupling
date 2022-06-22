@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.dom.CouplingButton
-import com.zegreatrob.coupling.client.dom.large
-import com.zegreatrob.coupling.client.dom.red
+import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.large
+import com.zegreatrob.coupling.components.red
 import com.zegreatrob.minreact.add
 import csstype.ClassName
 import react.FC

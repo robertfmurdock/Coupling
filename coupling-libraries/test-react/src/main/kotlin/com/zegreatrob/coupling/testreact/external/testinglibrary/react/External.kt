@@ -33,6 +33,8 @@ external class Container {
 
 external class Screen {
     fun getByText(s: String): HTMLElement
+    fun queryByText(s: String): HTMLElement?
+    fun queryAllByAltText(s: String): Array<HTMLElement>
 }
 
 external fun waitFor(callback: () -> Any): Promise<Unit>

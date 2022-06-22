@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.dom.CouplingButton
-import com.zegreatrob.coupling.client.dom.blue
-import com.zegreatrob.coupling.client.dom.large
-import com.zegreatrob.coupling.client.dom.lightGreen
-import com.zegreatrob.coupling.client.dom.white
-import com.zegreatrob.coupling.client.dom.yellow
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.party.PartyCard
 import com.zegreatrob.coupling.client.party.PartySelectButton
+import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.blue
+import com.zegreatrob.coupling.components.large
+import com.zegreatrob.coupling.components.lightGreen
+import com.zegreatrob.coupling.components.white
+import com.zegreatrob.coupling.components.yellow
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.add
 import csstype.AlignItems

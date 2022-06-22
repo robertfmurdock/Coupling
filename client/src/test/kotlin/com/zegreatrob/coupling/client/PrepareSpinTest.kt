@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.dom.couplingButton
 import com.zegreatrob.coupling.client.external.react.SimpleStyle
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -10,6 +9,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
 import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpinContent
 import com.zegreatrob.coupling.client.pin.pinButton
 import com.zegreatrob.coupling.client.player.playerCard
+import com.zegreatrob.coupling.components.couplingButton
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf

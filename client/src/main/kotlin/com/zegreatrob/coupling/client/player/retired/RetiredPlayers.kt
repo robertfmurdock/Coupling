@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.Paths.playerConfigPage
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.client.player.PlayerCard
-import com.zegreatrob.coupling.client.pngPath
+import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player

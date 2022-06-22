@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.client.dom
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.client.pngPath
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.tmFC

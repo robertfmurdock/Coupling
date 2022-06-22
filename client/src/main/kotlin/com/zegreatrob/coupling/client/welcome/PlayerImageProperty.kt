@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.welcome
 
+import com.zegreatrob.coupling.components.pngPath
 import kotlin.reflect.KProperty
 
 fun playerImage() = PlayerImageProperty()

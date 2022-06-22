@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.client.dom.CouplingButton
+import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.minreact.add
 import react.FC
 import react.Props

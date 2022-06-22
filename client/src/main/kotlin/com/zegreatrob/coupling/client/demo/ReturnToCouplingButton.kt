@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.demo
 
-import com.zegreatrob.coupling.client.dom.CouplingButton
-import com.zegreatrob.coupling.client.dom.pink
-import com.zegreatrob.coupling.client.dom.supersize
-import com.zegreatrob.coupling.client.svgPath
+import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.pink
+import com.zegreatrob.coupling.components.supersize
+import com.zegreatrob.coupling.components.svgPath
 import com.zegreatrob.minreact.add
 import csstype.AlignItems
 import csstype.AnimationIterationCount

@@ -13,6 +13,7 @@ import csstype.deg
 import csstype.ident
 import csstype.rotate
 import csstype.s
+import emotion.css.ClassName
 import react.key
 
 data class DraggablePlayer(
@@ -35,7 +36,7 @@ val draggablePlayer = tmFC<DraggablePlayer> { (pinnedPlayer, zoomOnHover, tilt, 
                 PlayerCard(
                     player = pinnedPlayer.player,
                     tilt = tilt,
-                    className = emotion.css.ClassName {
+                    className = ClassName {
                         if (zoomOnHover) {
                             hover {
                                 transitionProperty = TransitionProperty.all

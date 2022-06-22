@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.dom.CouplingButton
-import com.zegreatrob.coupling.client.dom.large
-import com.zegreatrob.coupling.client.dom.white
 import com.zegreatrob.coupling.client.external.domtoimage.domToImage
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.player.TinyPlayerList
+import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.large
+import com.zegreatrob.coupling.components.white
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
