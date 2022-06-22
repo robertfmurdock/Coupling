@@ -1,13 +1,13 @@
-package com.zegreatrob.coupling.client.fitty
+package com.zegreatrob.coupling.components.external.fitty
 
 import org.w3c.dom.Node
 import kotlin.js.json
 
-@JsModule("fitty")
-
-private external val fitty: dynamic
-
 fun Node.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: Boolean) {
+    if (js("global.IS_JSDOM") == true) {
+        return
+    }
+    val fitty = kotlinext.js.require("fitty")
     fitty.default(
         this,
         json(

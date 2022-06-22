@@ -1,6 +1,6 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.client.fitty.fitty
+import com.zegreatrob.coupling.components.external.fitty.fitty
 import csstype.AlignItems
 import csstype.Margin
 import csstype.px

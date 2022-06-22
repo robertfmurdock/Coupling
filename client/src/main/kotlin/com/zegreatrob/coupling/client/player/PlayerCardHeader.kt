@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.CardHeader
+import com.zegreatrob.coupling.components.CardHeader
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind

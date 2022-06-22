@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.CardHeader
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.components.CardHeader
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind

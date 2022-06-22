@@ -7,6 +7,7 @@
   "license": "ISC",
   "homepage": "https://github.com/robertfmurdock/Coupling",
   "dependencies": {
-    "react-websocket": "^2.1.0"
+    "react-websocket": "^2.1.0",
+    "fitty": "^2.3.6"
   }
 }
