@@ -14,9 +14,10 @@ kotlin {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     implementation("com.zegreatrob.jsmints:minreact")
     implementation(project(":coupling-libraries:model"))
     implementation(project(":coupling-libraries:json"))

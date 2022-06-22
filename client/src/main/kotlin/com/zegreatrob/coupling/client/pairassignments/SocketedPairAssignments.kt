@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.create
-import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.components.CouplingWebsocket
 import com.zegreatrob.coupling.components.disconnectedMessage
+import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage

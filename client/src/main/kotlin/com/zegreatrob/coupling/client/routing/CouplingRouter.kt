@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.demo.DemoPage
-import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
@@ -21,6 +20,7 @@ import com.zegreatrob.coupling.client.stats.StatisticsPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
+import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window

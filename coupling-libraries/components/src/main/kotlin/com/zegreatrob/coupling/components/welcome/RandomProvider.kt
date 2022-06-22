@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.welcome
+package com.zegreatrob.coupling.components.welcome
 
 import kotlin.random.Random
 

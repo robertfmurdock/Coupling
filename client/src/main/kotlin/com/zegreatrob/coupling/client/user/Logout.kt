@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.FC

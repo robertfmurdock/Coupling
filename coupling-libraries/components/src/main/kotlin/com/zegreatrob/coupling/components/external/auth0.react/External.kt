@@ -1,6 +1,6 @@
 @file:JsModule("@auth0/auth0-react")
 
-package com.zegreatrob.coupling.client.external.auth0.react
+package com.zegreatrob.coupling.components.external.auth0.react
 
 import react.ElementType
 import react.Props

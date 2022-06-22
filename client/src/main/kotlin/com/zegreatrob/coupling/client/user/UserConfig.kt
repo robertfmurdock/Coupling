@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.DemoButton
 import com.zegreatrob.coupling.client.GqlButton
 import com.zegreatrob.coupling.client.LogoutButton
 import com.zegreatrob.coupling.client.NotificationButton
@@ -8,6 +7,7 @@ import com.zegreatrob.coupling.client.PageFrame
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.party.AboutButton
 import com.zegreatrob.coupling.client.party.GeneralControlBar
+import com.zegreatrob.coupling.components.DemoButton
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.add

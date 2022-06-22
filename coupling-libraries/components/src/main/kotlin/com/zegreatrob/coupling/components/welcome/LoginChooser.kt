@@ -1,8 +1,8 @@
-package com.zegreatrob.coupling.client.welcome
+package com.zegreatrob.coupling.components.welcome
 
-import com.zegreatrob.coupling.client.DemoButton
-import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.DemoButton
+import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.components.supersize
 import com.zegreatrob.coupling.components.white

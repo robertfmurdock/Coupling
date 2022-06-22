@@ -1,6 +1,6 @@
-package com.zegreatrob.coupling.client.external.auth0.react
+package com.zegreatrob.coupling.components.external.auth0.react
 
-import com.zegreatrob.coupling.client.external.w3c.WindowFunctions.Companion.window
+import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.Promise

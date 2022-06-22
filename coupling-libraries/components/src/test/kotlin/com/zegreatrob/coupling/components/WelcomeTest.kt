@@ -1,12 +1,12 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.client.pairassignments.assertNotNull
-import com.zegreatrob.coupling.client.welcome.RandomProvider
-import com.zegreatrob.coupling.client.welcome.Welcome
-import com.zegreatrob.coupling.components.pngPath
+import com.zegreatrob.coupling.components.welcome.RandomProvider
+import com.zegreatrob.coupling.components.welcome.Welcome
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minassert.assertIsNotEqualTo
+import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
@@ -21,14 +21,14 @@ class WelcomeTest {
         render(Welcome(randomProvider).create())
     } verify {
         screen.queryByText("Frodo")
-            .assertNotNull()
+            .assertIsNotEqualTo(null)
         screen.queryByText("Sam")
-            .assertNotNull()
+            .assertIsNotEqualTo(null)
         screen.queryAllByAltText("icon")
             .map { it.getAttribute("src") }
             .assertIsEqualTo(listOf(pngPath("players/frodo"), pngPath("players/samwise")))
         screen.queryByText("Together, climb mountains.")
-            .assertNotNull()
+            .assertIsNotEqualTo(null)
     }
 
     @Test
@@ -37,17 +37,17 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 1
         }
     }) exercise {
-        render(Welcome(randomProvider).create())
+        render(Welcome(randomProvider).create {})
     } verify {
         screen.queryByText("Batman")
-            .assertNotNull()
+            .assertIsNotEqualTo(null)
         screen.queryByText("Robin")
-            .assertNotNull()
+            .assertIsNotEqualTo(null)
         screen.queryAllByAltText("icon")
             .map { it.getAttribute("src") }
             .assertIsEqualTo(listOf(pngPath("players/grayson"), pngPath("players/wayne")))
         screen.queryByText("Clean up the city, together.")
-            .assertNotNull()
+            .assertIsNotEqualTo(null)
     }
 
     @Test
@@ -59,13 +59,13 @@ class WelcomeTest {
         render(Welcome(randomProvider).create())
     } verify {
         screen.queryByText("Rosie")
-            .assertNotNull()
+            .assertIsNotEqualTo(null)
         screen.queryByText("Wendy")
-            .assertNotNull()
+            .assertIsNotEqualTo(null)
         screen.queryAllByAltText("icon")
             .map { it.getAttribute("src") }
             .assertIsEqualTo(listOf(pngPath("players/rosie"), pngPath("players/wendy")))
         screen.queryByText("Team up. Get things done.")
-            .assertNotNull()
+            .assertIsNotEqualTo(null)
     }
 }

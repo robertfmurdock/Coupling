@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.welcome
+package com.zegreatrob.coupling.components.welcome
 
 import com.zegreatrob.coupling.components.pngPath
 import kotlin.reflect.KProperty

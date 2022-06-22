@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.welcome
+package com.zegreatrob.coupling.components.welcome
 
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.PlayerCard
@@ -82,23 +82,25 @@ val wayne by playerImage()
 val rosie by playerImage()
 val wendy by playerImage()
 
-private val candidates = listOf(
-    WelcomeCardSet(
-        left = Card(name = "Frodo", imagePath = frodo),
-        right = Card(name = "Sam", imagePath = samwise),
-        proverb = "Together, climb mountains."
-    ),
-    WelcomeCardSet(
-        left = Card(name = "Batman", imagePath = grayson),
-        right = Card(name = "Robin", imagePath = wayne),
-        proverb = "Clean up the city, together."
-    ),
-    WelcomeCardSet(
-        left = Card(name = "Rosie", imagePath = rosie),
-        right = Card(name = "Wendy", imagePath = wendy),
-        proverb = "Team up. Get things done."
+private val candidates by lazy {
+    listOf(
+        WelcomeCardSet(
+            left = Card(name = "Frodo", imagePath = frodo),
+            right = Card(name = "Sam", imagePath = samwise),
+            proverb = "Together, climb mountains."
+        ),
+        WelcomeCardSet(
+            left = Card(name = "Batman", imagePath = grayson),
+            right = Card(name = "Robin", imagePath = wayne),
+            proverb = "Clean up the city, together."
+        ),
+        WelcomeCardSet(
+            left = Card(name = "Rosie", imagePath = rosie),
+            right = Card(name = "Wendy", imagePath = wendy),
+            proverb = "Team up. Get things done."
+        )
     )
-)
+}
 
 private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: String)
 

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.SessionConfig.animationsDisabled
-import com.zegreatrob.coupling.client.external.auth0.react.Auth0Provider
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions.Companion.window
 import com.zegreatrob.coupling.client.routing.CouplingRouter
+import com.zegreatrob.coupling.components.external.auth0.react.Auth0Provider
 import com.zegreatrob.minreact.add
 import react.FC
 import react.Props
