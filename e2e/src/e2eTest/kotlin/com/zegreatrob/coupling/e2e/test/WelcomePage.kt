@@ -3,13 +3,14 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.e2e.external.setupBrowser
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.browser
 import kotlinx.coroutines.await
 
-val testingBrowser = setupBrowser(browser)
+private val testingBrowser = setupBrowser(browser)
 
 object WelcomePage : BrowserSyntax {
-    val enterButton get() = testingBrowser.findByText("Come on in!")
+    val enterButton get() = WebdriverElement(finder = { testingBrowser.findByText("Come on in!").await() })
 
     private val loginChooserStyles = loadStyles("LoginChooser")
     val loginButton by loginChooserStyles.getting()
@@ -17,7 +18,7 @@ object WelcomePage : BrowserSyntax {
     suspend fun goTo() {
         WebdriverBrowser.setLocation("welcome")
         WebdriverBrowser.waitUntil(
-            { enterButton.await().isDisplayed().await() },
+            { enterButton.isDisplayed() },
             timeoutMessage = "Never found enter button."
         )
     }

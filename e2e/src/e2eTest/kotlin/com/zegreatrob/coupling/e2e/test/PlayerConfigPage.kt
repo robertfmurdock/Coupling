@@ -1,12 +1,15 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.e2e.external.setupBrowser
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
+import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
+import com.zegreatrob.wrapper.wdio.browser
 
 object PlayerConfigPage : StyleSyntax {
     override val styles = loadStyles("player/PlayerConfig")
@@ -39,21 +42,20 @@ object PlayerConfigPage : StyleSyntax {
         )
 
         WebdriverBrowser.waitUntil({
-            val playerName = PlayerRoster.element().all(PlayerCard.header.selector)
+            val playerName = PlayerRoster.element().all(PlayerCard.playerLocator)
                 .first()
                 .text()
-
             (playerName == expectedName)
         }, 100, "PlayerConfig.waitForSave.nameIncluded")
     }
 }
 
-object PlayerCard : StyleSyntax {
-    override val styles = loadStyles("player/PlayerCard")
-    val playerLocator = By.className(styles["player"])
-    val header by getting()
-    val playerElements = WebdriverElementArray(playerLocator)
-    val iconLocator = By.className(styles["playerIcon"])
+private val testingBrowser = setupBrowser(browser)
+
+object PlayerCard : BrowserSyntax {
+    val playerLocator = "[data-player-id]"
+    val playerElements get() = WebdriverElementArray(playerLocator)
+    val iconLocator = "[alt=player-icon]"
 }
 
 object PlayerRoster : StyleSyntax {

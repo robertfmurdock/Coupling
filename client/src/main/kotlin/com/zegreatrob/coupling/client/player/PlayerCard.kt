@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.components.pngPath
@@ -50,16 +48,15 @@ data class PlayerCard(
     val tilt: Angle = 0.deg
 ) : DataPropsBind<PlayerCard>(playerCard)
 
-private val styles = useStyles("player/PlayerCard")
-
 val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselected, tilt) ->
     val onClickFunc: (MouseEvent<HTMLDivElement, *>) -> Unit = useCallback(onClick) { onClick() }
     div {
-        css(className, styles["player"]) {
+        css(className) {
             playerCardStyles(tilt, deselected)
             "img" { display = Display.block }
             playerCardRuleSet(size)
         }
+        asDynamic()["data-player-id"] = player.id
         asDynamic()["data-selected"] = "${!deselected}"
         this.onClick = onClickFunc
         div {
@@ -107,7 +104,6 @@ private fun PropertiesBuilder.playerCardRuleSet(size: Int) {
 private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
     img {
         this.src = player.imageURL
-        className = styles["playerIcon"]
         alt = "icon"
         this.width = size.toDouble()
         this.height = size.toDouble()
@@ -115,8 +111,7 @@ private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = if 
 } else {
     gravatarImage(
         email = player.emailWithFallback(),
-        className = styles["playerIcon"],
-        alt = "icon",
+        alt = "player-icon",
         options = object : GravatarOptions {
             override val size = size
             override val default = "retro"

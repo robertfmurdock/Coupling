@@ -17,6 +17,7 @@ external interface TestingLibraryBrowser {
     fun findByDisplayValue(value: String): Promise<Element>
     fun findAllByText(text: String): Promise<Array<Element>>
     fun queryByText(text: String): Promise<Element?>
+    fun findAllByAltText(s: String): Promise<Array<Element>>
 }
 
 external fun within(element: Element): TestingLibraryBrowser

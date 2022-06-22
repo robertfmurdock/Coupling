@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.e2e.test.PlayerCard.header
+import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
@@ -121,7 +121,8 @@ class PlayerConfigPageE2ETest {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
             PlayerConfigPage.goTo(party.id, player.id)
-            header.text()
+            playerElements.first()
+                .text()
                 .assertIsEqualTo("Unknown")
         }
 
