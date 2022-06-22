@@ -1,8 +1,7 @@
-package com.zegreatrob.coupling.client.player
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.client.gravatar.GravatarOptions
-import com.zegreatrob.coupling.client.gravatar.gravatarImage
-import com.zegreatrob.coupling.components.pngPath
+import com.zegreatrob.coupling.components.gravatar.GravatarOptions
+import com.zegreatrob.coupling.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add

@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.Paths.playerConfigPage
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.large
 import com.zegreatrob.coupling.components.orange
 import com.zegreatrob.coupling.model.party.PartyId

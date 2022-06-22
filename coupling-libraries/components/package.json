@@ -8,6 +8,7 @@
   "homepage": "https://github.com/robertfmurdock/Coupling",
   "dependencies": {
     "react-websocket": "^2.1.0",
-    "fitty": "^2.3.6"
+    "fitty": "^2.3.6",
+    "blueimp-md5": "^2.19.0"
   }
 }

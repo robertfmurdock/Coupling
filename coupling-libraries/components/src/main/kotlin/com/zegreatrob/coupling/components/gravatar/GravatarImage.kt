@@ -1,6 +1,6 @@
-package com.zegreatrob.coupling.client.gravatar
+package com.zegreatrob.coupling.components.gravatar
 
-import com.zegreatrob.coupling.client.external.blueimpMd5.md5
+import com.zegreatrob.coupling.components.external.blueimpMd5.md5
 import csstype.ClassName
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.img

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.user
 
-import com.zegreatrob.coupling.client.player.PlayerCard
+import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add

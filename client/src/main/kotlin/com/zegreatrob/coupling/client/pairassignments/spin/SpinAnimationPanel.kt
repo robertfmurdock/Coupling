@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader
-import com.zegreatrob.coupling.client.player.PlayerCard
+import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player

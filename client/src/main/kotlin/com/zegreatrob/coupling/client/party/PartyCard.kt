@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.gravatar.GravatarOptions
-import com.zegreatrob.coupling.client.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.visuallyHidden
+import com.zegreatrob.coupling.components.gravatar.GravatarOptions
+import com.zegreatrob.coupling.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind

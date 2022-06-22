@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
 import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpinContent
 import com.zegreatrob.coupling.client.pin.pinButton
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.components.couplingButton
+import com.zegreatrob.coupling.components.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf

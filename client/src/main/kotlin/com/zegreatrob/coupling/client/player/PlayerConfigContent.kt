@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.client.external.react.configInput
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.client.gravatarLink
+import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player

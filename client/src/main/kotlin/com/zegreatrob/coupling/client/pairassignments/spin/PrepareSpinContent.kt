@@ -8,8 +8,8 @@ import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonScale
-import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.pink
 import com.zegreatrob.coupling.components.supersize
 import com.zegreatrob.coupling.model.party.Party

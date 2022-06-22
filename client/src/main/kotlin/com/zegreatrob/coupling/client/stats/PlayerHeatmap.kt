@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.player.PlayerCard
 import com.zegreatrob.coupling.client.stats.heatmap.Heatmap
+import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add

@@ -2,8 +2,6 @@ package com.zegreatrob.coupling.client.welcome
 
 import com.zegreatrob.coupling.client.DemoButton
 import com.zegreatrob.coupling.client.external.auth0.react.useAuth0Data
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.components.supersize
@@ -31,13 +29,11 @@ import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
 
-private val styles = useStyles("LoginChooser")
-
 val LoginChooser = FC<Props> {
     val auth0Data = useAuth0Data()
     val signInFunc = { auth0Data.loginWithRedirect() }
     div {
-        css(styles.className) {
+        css {
             borderRadius = 82.px
             padding = Padding(18.px, 42.px)
             border = Border(24.px, LineStyle.solid, Color("#e22092"))
@@ -56,7 +52,7 @@ val LoginChooser = FC<Props> {
             top = 0.px
         }
         div {
-            add(CouplingButton(supersize, white, styles["loginButton"], signInFunc)) {
+            add(CouplingButton(supersize, white, onClick = signInFunc)) {
                 +"Login"
             }
         }

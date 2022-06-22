@@ -11,10 +11,7 @@ private val testingBrowser = setupBrowser(browser)
 
 object WelcomePage : BrowserSyntax {
     val enterButton get() = WebdriverElement(finder = { testingBrowser.findByText("Come on in!").await() })
-
-    private val loginChooserStyles = loadStyles("LoginChooser")
-    val loginButton by loginChooserStyles.getting()
-
+    val loginButton get() = WebdriverElement(finder = { testingBrowser.findByText("Login").await() })
     suspend fun goTo() {
         WebdriverBrowser.setLocation("welcome")
         WebdriverBrowser.waitUntil(

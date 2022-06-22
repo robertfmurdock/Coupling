@@ -7,7 +7,7 @@
     "NESTED_CLASS_IN_EXTERNAL_INTERFACE"
 )
 
-package com.zegreatrob.coupling.client.external.blueimpMd5
+package com.zegreatrob.coupling.components.external.blueimpMd5
 
 @JsModule("blueimp-md5")
 

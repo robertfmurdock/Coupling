@@ -1,23 +1,16 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.assertNotNull
-import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.client.welcome.RandomProvider
 import com.zegreatrob.coupling.client.welcome.Welcome
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minenzyme.ShallowWrapper
-import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
 class WelcomeTest {
-
-    private val styles = useStyles("Welcome")
 
     @Test
     fun whenZeroIsRolledWillShowHobbits() = setup(object {
@@ -75,10 +68,4 @@ class WelcomeTest {
         screen.queryByText("Team up. Get things done.")
             .assertNotNull()
     }
-
-    private fun ShallowWrapper<dynamic>.welcomeProverb() = find<Any>(".${styles["welcomeProverb"]}")
-
-    private fun ShallowWrapper<dynamic>.leftCard() = find(playerCard).map { it.dataprops() }[0]
-
-    private fun ShallowWrapper<dynamic>.rightCard() = find(playerCard).map { it.dataprops() }[1]
 }
