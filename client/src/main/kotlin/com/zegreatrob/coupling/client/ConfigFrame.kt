@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.components.PageFrame
 import com.zegreatrob.minreact.add
 import csstype.Color
 import csstype.NamedColor

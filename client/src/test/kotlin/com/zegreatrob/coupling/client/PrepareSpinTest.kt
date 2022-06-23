@@ -2,13 +2,11 @@ package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.external.react.SimpleStyle
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
+import com.zegreatrob.coupling.client.pairassignments.spin.deselectedPinsClass
 import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpinContent
+import com.zegreatrob.coupling.client.pairassignments.spin.selectedPinsClass
 import com.zegreatrob.coupling.client.pin.pinButton
-import com.zegreatrob.coupling.components.couplingButton
 import com.zegreatrob.coupling.components.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -20,6 +18,7 @@ import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
 import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -42,11 +41,6 @@ class PrepareSpinTest {
 
     val user = userEvent.setup()
 
-    companion object {
-        val styles: SimpleStyle = useStyles("PrepareSpin")
-        val playerCardStyles = useStyles("player/PlayerCard")
-    }
-
     @Test
     fun whenSelectedPinIsClickedWillDeselectPin() = setup(object {
         val party = stubParty()
@@ -57,13 +51,13 @@ class PrepareSpinTest {
     }) exercise {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass("${styles["selectedPins"]}")
+            .findByClass("$selectedPinsClass")
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } verify {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass("${styles["deselectedPins"]}").find(pinButton)
+            .findByClass("$deselectedPinsClass").find(pinButton)
             .dataprops().pin
             .assertIsEqualTo(firstPin)
     }
@@ -79,19 +73,19 @@ class PrepareSpinTest {
     }) {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass("${styles["selectedPins"]}")
+            .findByClass("$selectedPinsClass")
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } exercise {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass("${styles["deselectedPins"]}")
+            .findByClass("$deselectedPinsClass")
             .findPinButtonPropsFor(firstPin)
             .onClick()
     } verify {
         wrapper.find(prepareSpinContent)
             .shallow()
-            .findByClass("${styles["selectedPins"]}").find(pinButton)
+            .findByClass("$selectedPinsClass").find(pinButton)
             .at(0)
             .dataprops()
             .pin
@@ -128,7 +122,7 @@ class PrepareSpinTest {
             json("wrapper" to MemoryRouter)
         )
     }) exercise {
-        result.container.querySelectorAll(".${playerCardStyles["player"]}")
+        result.container.querySelectorAll("[data-player-id]")
             .asList()
             .map { it as? HTMLElement }
             .forEach { htmlElement ->
@@ -145,24 +139,28 @@ class PrepareSpinTest {
     }
 
     @Test
-    fun whenTheAllButtonIsClickedAllPlayersBecomeSelected() = setup(object {
+    fun whenTheAllButtonIsClickedAllPlayersBecomeSelected() = asyncSetup(object {
         val party = stubParty()
         val players = stubPlayers(3)
         val currentPairs = null
-        val wrapper = shallow(PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()))
+        val context = render(
+            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
+            json("wrapper" to MemoryRouter)
+        )
     }) exercise {
-        wrapper.find(prepareSpinContent)
-            .shallow()
-            .find(couplingButton)
-            .map { it.dataprops() }
-            .find { it.className == styles["selectAllButton"] }
-            ?.onClick?.invoke()
+        user.click(screen.getByText("All in!"))
     } verify {
-        wrapper.find(playerCard).map { it.dataprops().deselected.assertIsEqualTo(false) }
+        waitFor {
+            context.baseElement.querySelectorAll("[data-player-id]")
+                .asList()
+                .mapNotNull { it as? HTMLElement }
+                .map { it.getAttribute("data-selected") }
+                .assertIsEqualTo(listOf("true", "true", "true"))
+        }.await()
     }
 
     @Test
-    fun whenTheNoneButtonIsClickedAllPlayersBecomeDeselected() = setup(object {
+    fun whenTheNoneButtonIsClickedAllPlayersBecomeDeselected() = asyncSetup(object {
         val party = stubParty()
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(
@@ -170,18 +168,21 @@ class PrepareSpinTest {
             date = DateTime.now(),
             pairs = players.map { pairOf(it).withPins(emptySet()) }
         )
-        val wrapper = shallow(PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()))
-    }) exercise {
-        wrapper.find(prepareSpinContent)
-            .shallow()
-            .find(couplingButton)
-            .map { it.dataprops() }
-            .find { it.className == styles["selectNoneButton"] }
-            ?.onClick?.invoke()
+        val context = render(
+            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
+            json("wrapper" to MemoryRouter)
+        )
+    }) {
+    } exercise {
+        user.click(screen.getByText("All out!"))
     } verify {
-        wrapper.find(prepareSpinContent)
-            .shallow()
-            .find(playerCard).map { it.dataprops().deselected.assertIsEqualTo(true) }
+        waitFor {
+            context.baseElement.querySelectorAll("[data-player-id]")
+                .asList()
+                .mapNotNull { it as? HTMLElement }
+                .map { it.getAttribute("data-selected") }
+                .assertIsEqualTo(listOf("false", "false", "false"))
+        }.await()
     }
 
     private fun ShallowWrapper<*>.findPinButtonPropsFor(targetPin: Pin) = find(pinButton)

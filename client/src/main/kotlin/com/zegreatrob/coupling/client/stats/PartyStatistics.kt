@@ -1,11 +1,12 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.ConfigHeader
-import com.zegreatrob.coupling.client.PageFrame
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.components.PageFrame
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
+import csstype.Color
 import csstype.Display
 import csstype.VerticalAlign
 import csstype.number
@@ -27,7 +28,7 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
     div {
         css(styles.className) {}
 
-        add(PageFrame(borderColor = csstype.Color("#e8e8e8"), backgroundColor = csstype.Color("#dcd9d9"))) {
+        add(PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9"))) {
             ConfigHeader {
                 this.party = party
                 +"Statistics"

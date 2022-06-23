@@ -1,14 +1,12 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.PageFrame
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.client.pin.PinButton
 import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.PageFrame
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.pink
 import com.zegreatrob.coupling.components.supersize
@@ -21,7 +19,6 @@ import com.zegreatrob.minreact.tmFC
 import csstype.AnimationIterationCount
 import csstype.BorderCollapse
 import csstype.BoxShadow
-import csstype.ClassName
 import csstype.Color
 import csstype.Display
 import csstype.FlexDirection
@@ -43,8 +40,6 @@ import react.dom.html.ReactHTML.h2
 import react.dom.html.ReactHTML.span
 import react.key
 
-private val styles = useStyles("PrepareSpin")
-
 data class PrepareSpinContent(
     var party: Party,
     var playerSelections: List<Pair<Player, Boolean>>,
@@ -61,7 +56,6 @@ val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
     val enabled = playerSelections.any { it.second }
 
     div {
-        className = styles.className
         add(PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2"))) {
             div { add(PartyBrowser(party)) }
             div {
@@ -112,16 +106,18 @@ private fun ChildrenBuilder.selectorAreaDiv(children: ChildrenBuilder.() -> Unit
     children()
 }
 
+val playerSelectorClass = emotion.css.ClassName {
+    display = Display.inlineBlock
+    flex = number(1.0)
+    margin = 5.px
+    borderRadius = 20.px
+    padding = 5.px
+    backgroundColor = Color("#fffbed")
+    boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+}
+
 private fun ChildrenBuilder.playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = div {
-    css(styles["playerSelector"]) {
-        display = Display.inlineBlock
-        flex = number(1.0)
-        margin = 5.px
-        borderRadius = 20.px
-        padding = 5.px
-        backgroundColor = Color("#fffbed")
-        boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
-    }
+    className = playerSelectorClass
     children()
 }
 
@@ -142,24 +138,20 @@ private fun ChildrenBuilder.pinSelectorDiv(children: ChildrenBuilder.() -> Unit)
 private fun ChildrenBuilder.selectAllButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
-) = batchSelectButton(styles["selectAllButton"], "All in!", playerSelections, setPlayerSelections, true)
+) = batchSelectButton("All in!", playerSelections, setPlayerSelections, true)
 
 private fun ChildrenBuilder.selectNoneButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
-) = batchSelectButton(styles["selectNoneButton"], "All out!", playerSelections, setPlayerSelections, false)
+) = batchSelectButton("All out!", playerSelections, setPlayerSelections, false)
 
 private fun ChildrenBuilder.batchSelectButton(
-    className: ClassName,
     text: String,
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean
 ) = add(
-    CouplingButton(
-        className = className,
-        onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
-    )
+    CouplingButton(onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) })
 ) { +text }
 
 private fun ChildrenBuilder.pinSelector(
@@ -168,7 +160,7 @@ private fun ChildrenBuilder.pinSelector(
     pins: List<Pin>
 ) = Flipper {
     flipKey = pinSelections.generateFlipKey()
-    css(styles["pinSelector"]) {
+    css {
         display = Display.flex
         flexDirection = FlexDirection.column
         flex = number(1.0)
@@ -187,21 +179,26 @@ private fun ChildrenBuilder.pinSelector(
     }
 }
 
+val selectedPinsClass = emotion.css.ClassName {
+    margin = (5.px)
+    flex = number(1.0)
+}
+
 private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit) = div {
-    css(styles["selectedPins"]) {
-        margin = (5.px)
-        flex = number(1.0)
-    }
+    className = selectedPinsClass
+    asDynamic()["data-selected-pins"] = ""
     children()
 }
 
+val deselectedPinsClass = emotion.css.ClassName {
+    flex = number(1.0)
+    margin = (5.px)
+    backgroundColor = Color("#de8286")
+    borderRadius = 15.px
+}
+
 private fun ChildrenBuilder.deselectedPinsDiv(children: ChildrenBuilder.() -> Unit) = div {
-    css(styles["deselectedPins"]) {
-        flex = number(1.0)
-        margin = (5.px)
-        backgroundColor = Color("#de8286")
-        borderRadius = 15.px
-    }
+    className = deselectedPinsClass
     children()
 }
 
@@ -224,7 +221,6 @@ private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit, enabled
     CouplingButton(
         supersize,
         pink,
-        styles["spinButton"],
         onClick = generateNewPairsFunc,
         attrs = { disabled = !enabled }
     ) {
@@ -254,7 +250,7 @@ private fun playerCard(
     playerSelections: List<Pair<Player, Boolean>>
 ) = PlayerCard(
     player,
-    className = emotion.css.ClassName(styles["playerCard"]) {
+    className = emotion.css.ClassName {
         transitionProperty = TransitionProperty.all
         transitionDuration = 0.25.s
         transitionTimingFunction = TransitionTimingFunction.easeOut

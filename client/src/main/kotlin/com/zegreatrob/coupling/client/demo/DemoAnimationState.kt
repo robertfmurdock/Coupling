@@ -5,6 +5,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.pairassignments.spin.playerSelectorClass
 import com.zegreatrob.coupling.components.svgPath
 import com.zegreatrob.coupling.components.welcome.playerImage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -229,8 +230,7 @@ private fun classSelector(className: ClassName) = ".$className"
 
 data class PrepareToSpin(val party: Party, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
     DemoAnimationState() {
-    private val prepareSpinStyles = useStyles("PrepareSpin")
-    override val descriptionSelector = ".${prepareSpinStyles["playerSelector"]}"
+    override val descriptionSelector = ".$playerSelectorClass"
     override val placement: Placement = Placement.right
     override val description: String = """
         ## Time to choose today's players!
