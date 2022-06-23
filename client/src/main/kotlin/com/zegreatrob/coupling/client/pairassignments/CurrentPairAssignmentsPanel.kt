@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.Paths.currentPairsPage
 import com.zegreatrob.coupling.components.green
 import com.zegreatrob.coupling.components.red
 import com.zegreatrob.coupling.components.small

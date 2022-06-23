@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
@@ -39,7 +40,7 @@ class RetiredPlayerPageE2ETest {
     } verify {
         PlayerCard.playerElements.map { it.text() }.toList()
             .assertIsEqualTo(retiredPlayers.map { it.name })
-        PartyCard.element().text()
+        element.text()
             .assertIsEqualTo(tribe.name)
     }
 }

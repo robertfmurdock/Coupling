@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.ConfigHeader
+import com.zegreatrob.coupling.components.ConfigHeader
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC

@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.e2e.test
 
-object PartyCard : StyleSyntax {
-    override val styles = loadStyles("party/PartyCard")
-    val header by getting()
+import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
+import com.zegreatrob.wrapper.wdio.WebdriverElement
+
+object PartyCard : BrowserSyntax {
+    val element = WebdriverElement("[data-tribe-id]")
 }

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -52,7 +53,7 @@ class PlayerConfigPageE2ETest {
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
-            PartyCard.element().click()
+            element.click()
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
@@ -68,7 +69,7 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().setValue("completely different name")
         } exercise {
-            PartyCard.element().click()
+            element.click()
 //            WebdriverBrowser.waitForAlert()
 //            WebdriverBrowser.alertText().also {
 //                WebdriverBrowser.acceptAlert()
@@ -92,7 +93,7 @@ class PlayerConfigPageE2ETest {
                 waitForSaveToComplete(newName)
             }
         } exercise {
-            PartyCard.element().click()
+            element.click()
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
@@ -115,7 +116,7 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.waitForSaveToComplete("Unknown")
             PlayerConfigPage.waitForPage()
         } exercise {
-            PartyCard.element().click()
+            element.click()
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname

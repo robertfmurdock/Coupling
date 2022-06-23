@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
 import csstype.ClipPath.Companion.borderBox
 import csstype.Overflow

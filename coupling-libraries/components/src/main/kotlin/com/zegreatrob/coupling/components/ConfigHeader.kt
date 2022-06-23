@@ -1,9 +1,6 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.client.party.PartyCard
-import com.zegreatrob.coupling.components.GqlButton
-import com.zegreatrob.coupling.components.LogoutButton
-import com.zegreatrob.coupling.components.PartySelectButton
+import com.zegreatrob.coupling.components.party.PartyCard
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.add
 import csstype.AlignItems

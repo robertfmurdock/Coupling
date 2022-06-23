@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
@@ -9,10 +10,10 @@ object PartyListPage : StyleSyntax {
 
     val newPartyButton by getting()
 
-    val partyCardElements get() = PartyCard.element().all()
+    val partyCardElements get() = element.all()
 
     fun partyCardElement(tribeId: PartyId) = WebdriverElement(
-        ".${PartyCard.styles.className}[data-tribe-id=\"${tribeId.value}\"]"
+        "[data-tribe-id=\"${tribeId.value}\"]"
     )
 
     suspend fun goTo() {

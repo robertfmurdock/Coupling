@@ -1,11 +1,10 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.components.party
 
-import com.zegreatrob.coupling.client.Paths.currentPairsPage
-import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.visuallyHidden
+import com.zegreatrob.coupling.components.Paths.currentPairsPage
 import com.zegreatrob.coupling.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.components.pngPath
+import com.zegreatrob.coupling.components.visuallyHidden
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -35,14 +34,12 @@ import react.router.dom.Link
 
 data class PartyCard(val party: Party, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
 
-private val styles = useStyles("party/PartyCard")
-
 val partyCard = tmFC<PartyCard> { (party, size) ->
     Link {
         to = party.id.currentPairsPage()
         visuallyHidden { +"Tribe Home Page" }
         span {
-            css(styles.className) {
+            css {
                 staticCardStyles()
                 partyCardCss(size)
             }

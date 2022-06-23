@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.client.pairassignments.list
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
-import com.zegreatrob.coupling.client.ConfigHeader
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinSection
+import com.zegreatrob.coupling.components.ConfigHeader
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.PinButtonScale
 import com.zegreatrob.coupling.components.pngPath

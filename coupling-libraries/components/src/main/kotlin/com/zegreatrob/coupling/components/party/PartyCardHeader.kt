@@ -1,7 +1,5 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.components.party
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.components.CardHeader
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.party.Party
@@ -20,14 +18,12 @@ import csstype.s
 import csstype.url
 import emotion.react.css
 
-private val styles = useStyles("party/PartyCard")
-
 data class PartyCardHeader(val tribe: Party, val size: Int) : DataPropsBind<PartyCardHeader>(partyCardHeader)
 
 val partyCardHeader = tmFC<PartyCardHeader> { (party, size) ->
     CardHeader {
         this.size = size
-        css(styles["header"]) {
+        css {
             backgroundColor = Color("#EEF2F7D8")
             backgroundRepeat = BackgroundRepeat.repeatX
             backgroundImage = url(pngPath("overlay"))

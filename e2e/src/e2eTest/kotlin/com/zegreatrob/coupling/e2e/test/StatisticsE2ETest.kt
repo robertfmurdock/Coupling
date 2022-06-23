@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
@@ -20,7 +21,7 @@ class StatisticsE2ETest {
         StatisticsPage.goTo(party.id)
     } verify {
         with(StatisticsPage) {
-            PartyCard.element().text()
+            element.text()
                 .assertIsEqualTo(party.name)
             rotationNumber.text()
                 .assertIsEqualTo("5")

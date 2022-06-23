@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.DispatchFunc
-import com.zegreatrob.coupling.client.Paths.newPairAssignmentsPath
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.components.Paths.newPairAssignmentsPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin

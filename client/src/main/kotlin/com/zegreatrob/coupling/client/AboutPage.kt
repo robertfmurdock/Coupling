@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.loadMarkdownString
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.components.CouplingButton
@@ -9,6 +8,7 @@ import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.blue
 import com.zegreatrob.coupling.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.components.large
+import com.zegreatrob.coupling.components.loadMarkdownString
 import com.zegreatrob.coupling.components.welcome.playerImage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.add
