@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.external.react.loadMarkdownString
-import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
-import com.zegreatrob.coupling.client.external.reactpopup.popup
+import com.zegreatrob.coupling.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.components.external.reactpopup.popup
 import csstype.AlignItems
 import csstype.AnimationIterationCount
 import csstype.ClassName

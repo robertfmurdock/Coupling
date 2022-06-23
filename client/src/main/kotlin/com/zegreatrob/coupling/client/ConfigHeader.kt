@@ -1,21 +1,14 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.party.PartyCard
-import com.zegreatrob.coupling.client.party.PartySelectButton
-import com.zegreatrob.coupling.components.CouplingButton
-import com.zegreatrob.coupling.components.blue
-import com.zegreatrob.coupling.components.large
-import com.zegreatrob.coupling.components.lightGreen
-import com.zegreatrob.coupling.components.white
-import com.zegreatrob.coupling.components.yellow
+import com.zegreatrob.coupling.components.GqlButton
+import com.zegreatrob.coupling.components.LogoutButton
+import com.zegreatrob.coupling.components.PartySelectButton
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.add
 import csstype.AlignItems
 import csstype.AlignSelf
 import csstype.BoxShadow
-import csstype.ClassName
 import csstype.Color
 import csstype.Display
 import csstype.FlexDirection
@@ -35,20 +28,16 @@ import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
-import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
-import react.router.dom.Link
 
 external interface ConfigHeaderProps : PropsWithChildren {
     var party: Party
 }
 
-private val styles = useStyles("ConfigHeader")
-
 val ConfigHeader = FC<ConfigHeaderProps> { props ->
     val party = props.party
     div {
-        css(styles.className) {
+        css {
             textAlign = TextAlign.left
             margin = 5.px
         }
@@ -96,10 +85,10 @@ private fun ChildrenBuilder.partyControls(props: ConfigHeaderProps, party: Party
                     boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
                 }
                 settingsButton(party)
-                viewHistoryButton(party, styles["viewHistoryButton"])
-                pinListButton(party, styles["pinListButton"])
-                statisticsButton(party, styles["statisticsButton"])
-                viewRetireesButton(party, styles["retiredPlayersButton"])
+                viewHistoryButton(party)
+                pinListButton(party)
+                statisticsButton(party)
+                viewRetireesButton(party)
             }
         }
     }
@@ -130,45 +119,5 @@ private fun ChildrenBuilder.topControlRow(props: ConfigHeaderProps) = div {
             GqlButton()
             NotificationButton()
         }
-    }
-}
-
-fun ChildrenBuilder.viewHistoryButton(party: Party, className: ClassName = ClassName("")) = Link {
-    to = "/${party.id.value}/history/"
-    tabIndex = -1
-    draggable = false
-    add(CouplingButton(large, lightGreen, className)) {
-        i { this.className = ClassName("fa fa-history") }
-        +" History!"
-    }
-}
-
-fun ChildrenBuilder.pinListButton(party: Party, className: ClassName = ClassName("")) = Link {
-    to = "/${party.id.value}/pins/"
-    tabIndex = -1
-    draggable = false
-    add(CouplingButton(large, white, className)) {
-        i { this.className = ClassName("fa fa-peace") }
-        +" Pin Bag!"
-    }
-}
-
-fun ChildrenBuilder.statisticsButton(party: Party, className: ClassName = ClassName("")) = Link {
-    to = "/${party.id.value}/statistics"
-    tabIndex = -1
-    draggable = false
-    add(CouplingButton(large, blue, className = className)) {
-        i { this.className = ClassName("fa fa-database") }
-        +" Statistics!"
-    }
-}
-
-fun ChildrenBuilder.viewRetireesButton(party: Party, className: ClassName = ClassName("")) = Link {
-    to = "/${party.id.value}/players/retired"
-    tabIndex = -1
-    draggable = false
-    add(CouplingButton(large, yellow, className)) {
-        i { this.className = ClassName("fa fa-user-slash") }
-        +" Retirees!"
     }
 }

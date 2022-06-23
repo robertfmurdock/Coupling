@@ -1,9 +1,5 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.components.CouplingButton
-import com.zegreatrob.coupling.components.large
-import com.zegreatrob.coupling.components.svgPath
-import com.zegreatrob.coupling.components.white
 import com.zegreatrob.minreact.add
 import react.FC
 import react.Props

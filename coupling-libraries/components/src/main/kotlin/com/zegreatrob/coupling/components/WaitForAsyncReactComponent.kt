@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
 import com.zegreatrob.minreact.create
 import com.zegreatrob.react.dataloader.DataLoader

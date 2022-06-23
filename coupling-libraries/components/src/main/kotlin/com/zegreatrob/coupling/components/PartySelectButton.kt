@@ -1,7 +1,5 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.components.CouplingButton
-import com.zegreatrob.coupling.components.large
 import com.zegreatrob.minreact.add
 import csstype.ClassName
 import react.FC

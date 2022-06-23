@@ -1,6 +1,6 @@
 @file:JsModule("reactjs-popup")
 
-package com.zegreatrob.coupling.client.external.reactpopup
+package com.zegreatrob.coupling.components.external.reactpopup
 
 import react.ElementType
 import react.PropsWithClassName

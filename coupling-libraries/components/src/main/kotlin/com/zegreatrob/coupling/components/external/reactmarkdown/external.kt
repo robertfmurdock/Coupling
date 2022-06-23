@@ -1,6 +1,6 @@
-package com.zegreatrob.coupling.client.external.reactmarkdown
+package com.zegreatrob.coupling.components.external.reactmarkdown
 
-import com.zegreatrob.coupling.client.waitForAsyncReactComponent
+import com.zegreatrob.coupling.components.waitForAsyncReactComponent
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.ElementType

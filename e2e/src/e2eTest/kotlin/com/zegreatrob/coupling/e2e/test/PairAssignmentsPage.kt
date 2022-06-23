@@ -1,9 +1,14 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.e2e.external.setupBrowser
+import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
+import com.zegreatrob.wrapper.wdio.browser
+import kotlinx.coroutines.await
 
 object PairAssignmentsPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/PairAssignments")
@@ -17,11 +22,12 @@ object PairAssignmentsPage : StyleSyntax {
     }
 }
 
-object ConfigHeader : StyleSyntax {
-    override val styles = loadStyles("ConfigHeader")
-    val viewHistoryButton by getting()
-    val statisticsButton by getting()
-    val retiredPlayersButton by getting()
+private val testingBrowser = setupBrowser(browser)
+
+object ConfigHeader : BrowserSyntax {
+    val viewHistoryButton get() = WebdriverElement(finder = { testingBrowser.findByText("History!").await() })
+    val statisticsButton get() = WebdriverElement(finder = { testingBrowser.findByText("Statistics!").await() })
+    val retiredPlayersButton get() = WebdriverElement(finder = { testingBrowser.findByText("Retirees!").await() })
 }
 
 object CurrentPairAssignmentsPanel : StyleSyntax {

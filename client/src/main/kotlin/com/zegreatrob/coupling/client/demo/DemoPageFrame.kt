@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.demo
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.aboutPageContent
-import com.zegreatrob.coupling.client.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
@@ -11,6 +10,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinContent
 import com.zegreatrob.coupling.client.party.PartyConfigContent
 import com.zegreatrob.coupling.client.pin.PinConfigContent
 import com.zegreatrob.coupling.client.player.PlayerConfigContent
+import com.zegreatrob.coupling.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.minreact.DataPropsBind

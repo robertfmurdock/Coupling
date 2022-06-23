@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.external.reactpopup
+package com.zegreatrob.coupling.components.external.reactpopup
 
 import react.ChildrenBuilder
 import react.Fragment

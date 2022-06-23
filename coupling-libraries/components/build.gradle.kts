@@ -19,6 +19,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     implementation("com.zegreatrob.jsmints:minreact")
+    implementation("com.zegreatrob.jsmints:react-data-loader")
     implementation(project(":coupling-libraries:model"))
     implementation(project(":coupling-libraries:json"))
 
