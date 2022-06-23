@@ -8,9 +8,9 @@ import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.PinButtonScale
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.components.red
 import com.zegreatrob.coupling.components.small

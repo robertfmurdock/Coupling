@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.components.PinButton
+import com.zegreatrob.coupling.components.PinButtonScale
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin

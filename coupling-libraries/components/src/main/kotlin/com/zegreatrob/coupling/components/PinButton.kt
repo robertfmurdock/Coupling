@@ -1,8 +1,5 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
@@ -48,12 +45,11 @@ data class PinButton(
     val onClick: () -> Unit = {}
 ) : DataPropsBind<PinButton>(pinButton)
 
-private val styles = useStyles("pin/PinButton")
-
 val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClickFunc) ->
     val onClickCallback: (MouseEvent<HTMLDivElement, *>) -> Unit = useCallback { onClickFunc() }
     div {
-        css(ClassName(className), styles.className) {
+        asDynamic()["data-pin-button"] = ""
+        css(ClassName(className)) {
             pinButtonStyles()
             scaledStyles(scale)
         }
@@ -61,9 +57,7 @@ val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClickFu
 
         if (showTooltip) {
             span {
-                css(styles["tooltip"]) {
-                    tooltipStyles()
-                }
+                this.className = tooltipStyles
                 +pin.name
             }
         }
@@ -71,7 +65,7 @@ val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClickFu
     }
 }
 
-private fun PropertiesBuilder.tooltipStyles() {
+private val tooltipStyles = emotion.css.ClassName {
     visibility = Visibility.hidden
     position = Position.absolute
     padding = Padding(5.px, 8.px)
@@ -111,7 +105,7 @@ private fun PropertiesBuilder.pinButtonStyles() {
     textAlign = TextAlign.center
     position = Position.relative
     hover {
-        styles["tooltip"] {
+        tooltipStyles {
             visibility = Visibility.visible
             position = Position.absolute
             zIndex = integer(1)

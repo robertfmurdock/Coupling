@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
 import com.zegreatrob.coupling.client.pairassignments.spin.deselectedPinsClass
 import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpinContent
 import com.zegreatrob.coupling.client.pairassignments.spin.selectedPinsClass
-import com.zegreatrob.coupling.client.pin.pinButton
+import com.zegreatrob.coupling.components.pinButton
 import com.zegreatrob.coupling.components.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId

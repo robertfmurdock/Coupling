@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.party.PartyBrowser
-import com.zegreatrob.coupling.client.pin.PinButton
-import com.zegreatrob.coupling.client.pin.PinButtonScale
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.PageFrame
+import com.zegreatrob.coupling.components.PinButton
+import com.zegreatrob.coupling.components.PinButtonScale
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.pink
 import com.zegreatrob.coupling.components.supersize

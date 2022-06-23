@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.client.pin
 
+import com.zegreatrob.coupling.components.PinButton
+import com.zegreatrob.coupling.components.PinButtonScale
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
