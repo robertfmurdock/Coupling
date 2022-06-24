@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.components
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.components.spin.PrepareSpin
 import com.zegreatrob.coupling.components.spin.deselectedPinsClass
 import com.zegreatrob.coupling.components.spin.selectedPinsClass
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

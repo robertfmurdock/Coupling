@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.player.PlayerRoster
-import com.zegreatrob.coupling.client.user.ServerMessage
+import com.zegreatrob.coupling.components.ServerMessage
 import com.zegreatrob.coupling.components.party.PartyBrowser
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

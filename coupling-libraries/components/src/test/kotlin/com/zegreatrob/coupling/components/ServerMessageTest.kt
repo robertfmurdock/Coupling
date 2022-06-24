@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.client.user.ServerMessage
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.shallow

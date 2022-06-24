@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 import com.zegreatrob.coupling.client.pairassignments.PartyCurrentDataQuery
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.components.PrepareSpin
+import com.zegreatrob.coupling.components.spin.PrepareSpin
 import com.zegreatrob.minreact.create
 import react.key
 

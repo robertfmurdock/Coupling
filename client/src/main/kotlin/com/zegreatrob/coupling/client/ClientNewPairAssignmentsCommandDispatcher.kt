@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.components.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.components.NewPairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.components.RequestSpinAction
-import com.zegreatrob.coupling.components.RequestSpinActionDispatcher
+import com.zegreatrob.coupling.components.spin.RequestSpinAction
+import com.zegreatrob.coupling.components.spin.RequestSpinActionDispatcher
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
