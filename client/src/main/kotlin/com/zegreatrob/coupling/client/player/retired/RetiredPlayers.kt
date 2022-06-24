@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.party.PartyBrowser
 import com.zegreatrob.coupling.components.Paths.playerConfigPage
 import com.zegreatrob.coupling.components.PlayerCard
+import com.zegreatrob.coupling.components.party.PartyBrowser
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.with

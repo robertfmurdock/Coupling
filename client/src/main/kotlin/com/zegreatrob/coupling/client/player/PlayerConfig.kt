@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
+import com.zegreatrob.coupling.components.DispatchFunc
 import com.zegreatrob.coupling.components.Paths.currentPairsPage
 import com.zegreatrob.coupling.json.JsonPlayerData
 import com.zegreatrob.coupling.json.fromJsonDynamic

@@ -14,14 +14,17 @@ kotlin {
 }
 
 dependencies {
+    implementation(project(":coupling-libraries:model"))
+    implementation(project(":coupling-libraries:json"))
+    implementation(project(":coupling-libraries:repository-core"))
     implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
+    implementation("com.zegreatrob.testmints:action")
+    implementation("com.zegreatrob.testmints:action-async")
     implementation("com.zegreatrob.jsmints:minreact")
     implementation("com.zegreatrob.jsmints:react-data-loader")
-    implementation(project(":coupling-libraries:model"))
-    implementation(project(":coupling-libraries:json"))
 
     testImplementation(project(":coupling-libraries:test-react"))
     testImplementation("com.zegreatrob.jsmints:minenzyme")

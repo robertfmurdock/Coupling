@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.components.DispatchFunc
 import com.zegreatrob.testmints.action.async.SuspendAction
 
 class StubDispatcher {

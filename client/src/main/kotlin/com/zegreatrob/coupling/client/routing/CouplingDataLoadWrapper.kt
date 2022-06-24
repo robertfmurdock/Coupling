@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
-import com.zegreatrob.coupling.client.DispatchFunc
+import com.zegreatrob.coupling.components.DispatchFunc
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC

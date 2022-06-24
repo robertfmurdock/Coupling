@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.DispatchFunc
 import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
+import com.zegreatrob.coupling.components.DispatchFunc
 import com.zegreatrob.coupling.components.Paths.pinListPath
 import com.zegreatrob.coupling.json.JsonPinData
 import com.zegreatrob.coupling.json.fromJsonDynamic

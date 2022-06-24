@@ -1,10 +1,9 @@
-package com.zegreatrob.coupling.client.pairassignments.spin
+package com.zegreatrob.coupling.components
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.SdkSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
 data class RequestSpinAction(val partyId: PartyId, val players: List<Player>, val pins: List<Pin>) :
@@ -12,6 +11,6 @@ data class RequestSpinAction(val partyId: PartyId, val players: List<Player>, va
     override val performFunc = link(RequestSpinActionDispatcher::perform)
 }
 
-interface RequestSpinActionDispatcher : SdkSyntax {
-    suspend fun perform(action: RequestSpinAction) = with(action) { sdk.requestSpin(partyId, players, pins) }
+interface RequestSpinActionDispatcher {
+    suspend fun perform(action: RequestSpinAction): PairAssignmentDocument
 }

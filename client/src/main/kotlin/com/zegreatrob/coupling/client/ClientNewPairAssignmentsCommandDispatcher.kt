@@ -1,8 +1,9 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinAction
-import com.zegreatrob.coupling.client.pairassignments.spin.RequestSpinActionDispatcher
-import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.components.NewPairAssignmentsCommand
+import com.zegreatrob.coupling.components.NewPairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.components.RequestSpinAction
+import com.zegreatrob.coupling.components.RequestSpinActionDispatcher
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -11,17 +12,12 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssi
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-data class NewPairAssignmentsCommand(val partyId: PartyId, val playerIds: List<String>, val pinIds: List<String>) :
-    SimpleSuspendAction<NewPairAssignmentsCommandDispatcher, Unit?> {
-    override val performFunc = link(NewPairAssignmentsCommandDispatcher::perform)
-}
-
-interface NewPairAssignmentsCommandDispatcher :
+interface ClientNewPairAssignmentsCommandDispatcher :
+    NewPairAssignmentsCommandDispatcher,
     PartyIdGetSyntax,
     PartyPinsSyntax,
     PartyPlayersSyntax,
@@ -29,7 +25,7 @@ interface NewPairAssignmentsCommandDispatcher :
     RequestSpinActionDispatcher,
     PartyIdPairAssignmentDocumentSaveSyntax {
 
-    suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {
+    override suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {
         val (party, players, pins) = getData()
         if (party == null)
             null

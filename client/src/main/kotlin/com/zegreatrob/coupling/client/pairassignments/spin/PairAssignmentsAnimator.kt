@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.pairassignments.spin
 
 import com.zegreatrob.coupling.client.FrameRunner
 import com.zegreatrob.coupling.client.animationsDisabledContext
-import com.zegreatrob.coupling.client.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
+import com.zegreatrob.coupling.components.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player

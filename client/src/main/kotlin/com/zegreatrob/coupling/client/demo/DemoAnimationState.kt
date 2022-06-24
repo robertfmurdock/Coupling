@@ -5,7 +5,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.pairassignments.spin.playerSelectorClass
+import com.zegreatrob.coupling.components.spin.playerSelectorClass
 import com.zegreatrob.coupling.components.svgPath
 import com.zegreatrob.coupling.components.welcome.playerImage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

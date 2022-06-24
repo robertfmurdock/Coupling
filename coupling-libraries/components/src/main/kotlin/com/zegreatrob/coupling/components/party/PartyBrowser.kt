@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.components.party
 
 import com.zegreatrob.coupling.components.ConfigHeader
 import com.zegreatrob.coupling.model.party.Party

@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.client
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
-import com.zegreatrob.coupling.client.pairassignments.spin.deselectedPinsClass
-import com.zegreatrob.coupling.client.pairassignments.spin.prepareSpinContent
-import com.zegreatrob.coupling.client.pairassignments.spin.selectedPinsClass
 import com.zegreatrob.coupling.components.pinButton
 import com.zegreatrob.coupling.components.playerCard
+import com.zegreatrob.coupling.components.spin.deselectedPinsClass
+import com.zegreatrob.coupling.components.spin.prepareSpinContent
+import com.zegreatrob.coupling.components.spin.selectedPinsClass
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -39,7 +39,7 @@ import kotlin.test.Test
 
 class PrepareSpinTest {
 
-    val user = userEvent.setup()
+    private val user = userEvent.setup()
 
     @Test
     fun whenSelectedPinIsClickedWillDeselectPin() = setup(object {

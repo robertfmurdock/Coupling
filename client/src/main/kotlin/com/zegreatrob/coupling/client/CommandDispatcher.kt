@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
-import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PartyCurrentDataQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.SavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
@@ -22,6 +21,7 @@ import com.zegreatrob.coupling.client.player.SavePlayerCommandDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.stats.StatisticsQueryDispatcher
+import com.zegreatrob.coupling.components.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.BarebonesSdk
 
 class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesSdk) :
@@ -44,6 +44,8 @@ class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesS
     PartyPinQueryDispatcher,
     PartyPinListQueryDispatcher,
     NewPartyCommandDispatcher,
+    SdkRequestSpinActionDispatcher,
+    ClientNewPairAssignmentsCommandDispatcher,
     StatisticsQueryDispatcher,
     LoggingActionExecuteSyntax,
     BarebonesSdk by sdk

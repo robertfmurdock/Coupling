@@ -1,6 +1,6 @@
 @file:JsModule("react-flip-toolkit")
 
-package com.zegreatrob.coupling.client.external.reactfliptoolkit
+package com.zegreatrob.coupling.components.external.reactfliptoolkit
 
 import react.ElementType
 import react.Props
