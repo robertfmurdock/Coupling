@@ -14,5 +14,5 @@ external interface UserEventLib {
 }
 
 external class UserEvent {
-    fun click(element: HTMLElement): Promise<Unit>
+    fun click(element: HTMLElement?): Promise<Unit>
 }

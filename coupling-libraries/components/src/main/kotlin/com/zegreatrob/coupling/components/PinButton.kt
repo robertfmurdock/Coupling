@@ -48,7 +48,7 @@ data class PinButton(
 val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClickFunc) ->
     val onClickCallback: (MouseEvent<HTMLDivElement, *>) -> Unit = useCallback { onClickFunc() }
     div {
-        asDynamic()["data-pin-button"] = ""
+        asDynamic()["data-pin-button"] = "${pin.id}"
         css(ClassName(className)) {
             pinButtonStyles()
             scaledStyles(scale)

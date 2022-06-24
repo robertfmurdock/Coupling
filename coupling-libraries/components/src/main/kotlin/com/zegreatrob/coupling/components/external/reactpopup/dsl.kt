@@ -29,5 +29,7 @@ fun popup(
 }
 
 private fun loadDefaultCss() {
-    js("require('reactjs-popup/dist/index.css')")
+    if (js("global.IS_JSDOM") != true) {
+        js("require('reactjs-popup/dist/index.css')")
+    }
 }

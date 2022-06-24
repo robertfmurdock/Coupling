@@ -37,4 +37,4 @@ external class Screen {
     fun queryAllByAltText(s: String): Array<HTMLElement>
 }
 
-external fun waitFor(callback: () -> Any): Promise<Unit>
+external fun waitFor(callback: () -> Any?): Promise<Unit>

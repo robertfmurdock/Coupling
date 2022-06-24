@@ -27,5 +27,7 @@ dependencies {
     implementation("com.zegreatrob.jsmints:react-data-loader")
 
     testImplementation(project(":coupling-libraries:test-react"))
+    testImplementation(project(":coupling-libraries:stub-model"))
+    testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.jsmints:minenzyme")
 }

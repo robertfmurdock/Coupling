@@ -1,8 +1,5 @@
-package com.zegreatrob.coupling.client.pairassignments.spin
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.components.DispatchFunc
-import com.zegreatrob.coupling.components.NewPairAssignmentsCommand
-import com.zegreatrob.coupling.components.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.components.Paths.newPairAssignmentsPath
 import com.zegreatrob.coupling.components.spin.PrepareSpinContent
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

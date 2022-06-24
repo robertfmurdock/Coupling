@@ -1,18 +1,13 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpin
-import com.zegreatrob.coupling.components.pinButton
-import com.zegreatrob.coupling.components.playerCard
 import com.zegreatrob.coupling.components.spin.deselectedPinsClass
-import com.zegreatrob.coupling.components.spin.prepareSpinContent
 import com.zegreatrob.coupling.components.spin.selectedPinsClass
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
@@ -23,10 +18,7 @@ import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
 import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.minenzyme.ShallowWrapper
-import com.zegreatrob.minenzyme.dataprops
-import com.zegreatrob.minenzyme.findByClass
-import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import kotlinx.coroutines.await
@@ -38,58 +30,79 @@ import kotlin.js.json
 import kotlin.test.Test
 
 class PrepareSpinTest {
-
-    private val user = userEvent.setup()
+    val user = userEvent.setup()
 
     @Test
-    fun whenSelectedPinIsClickedWillDeselectPin() = setup(object {
+    fun whenSelectedPinIsClickedWillDeselectPin() = asyncSetup(object {
         val party = stubParty()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
-        val wrapper = shallow(PrepareSpin(party, players, null, pins, StubDispatchFunc()))
+        val wrapper = render(
+            PrepareSpin(party, players, null, pins, StubDispatchFunc()).create(),
+            json("wrapper" to MemoryRouter)
+        )
     }) exercise {
-        wrapper.find(prepareSpinContent)
-            .shallow()
-            .findByClass("$selectedPinsClass")
-            .findPinButtonPropsFor(firstPin)
-            .onClick()
+        user.click(
+            wrapper.container.querySelector(".$selectedPinsClass")
+                ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
+                ?.asList()
+                ?.map { it as? HTMLElement }
+                ?.firstOrNull()
+        ).await()
     } verify {
-        wrapper.find(prepareSpinContent)
-            .shallow()
-            .findByClass("$deselectedPinsClass").find(pinButton)
-            .dataprops().pin
-            .assertIsEqualTo(firstPin)
+        waitFor {
+            wrapper.container.querySelector(".$deselectedPinsClass")
+                ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+                ?.asList()
+                ?.map { it as? HTMLElement }
+                ?.firstOrNull()
+                .assertIsNotEqualTo(null)
+        }.await()
     }
 
     @Test
-    fun whenDeselectedPinIsClickedWillSelectPin() = setup(object {
+    fun whenDeselectedPinIsClickedWillSelectPin() = asyncSetup(object {
         val party = stubParty()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val wrapper = shallow(PrepareSpin(party, players, null, pins, StubDispatchFunc()))
+        val render = render(
+            PrepareSpin(party, players, null, pins, StubDispatchFunc()).create(),
+            json("wrapper" to MemoryRouter)
+        )
     }) {
-        wrapper.find(prepareSpinContent)
-            .shallow()
-            .findByClass("$selectedPinsClass")
-            .findPinButtonPropsFor(firstPin)
-            .onClick()
+        user.click(
+            render.container.querySelector(".$selectedPinsClass")
+                ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
+                ?.asList()
+                ?.map { it as? HTMLElement }
+                ?.firstOrNull()
+        ).await()
+        waitFor {
+            render.container.querySelector(".$deselectedPinsClass")
+                ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+                ?.asList()
+                ?.firstOrNull()
+        }.await()
     } exercise {
-        wrapper.find(prepareSpinContent)
-            .shallow()
-            .findByClass("$deselectedPinsClass")
-            .findPinButtonPropsFor(firstPin)
-            .onClick()
+        user.click(
+            render.container.querySelector(".$deselectedPinsClass")
+                ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+                ?.asList()
+                ?.map { it as? HTMLElement }
+                ?.firstOrNull()
+        ).await()
     } verify {
-        wrapper.find(prepareSpinContent)
-            .shallow()
-            .findByClass("$selectedPinsClass").find(pinButton)
-            .at(0)
-            .dataprops()
-            .pin
-            .assertIsEqualTo(firstPin)
+        waitFor {
+            render.container.querySelector(".$selectedPinsClass")
+                ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+                ?.asList()
+                ?.map { it as? HTMLElement }
+                ?.firstOrNull()
+                .assertIsNotEqualTo(null)
+        }.await()
     }
 
     @Test
@@ -98,11 +111,21 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val currentPairs = null
     }) exercise {
-        shallow(PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()))
-    } verify { wrapper ->
-        wrapper.find(prepareSpinContent)
-            .shallow()
-            .find(playerCard).map { it.dataprops().deselected.assertIsEqualTo(true) }
+        render(
+            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
+            json("wrapper" to MemoryRouter)
+        )
+    } verify { result ->
+        result.container.querySelectorAll("[data-player-id]")
+            .asList()
+            .map { it as? HTMLElement }
+            .forEach { htmlElement ->
+                htmlElement
+                    ?.attributes
+                    ?.get("data-selected")
+                    ?.value
+                    .assertIsEqualTo("false")
+            }
     }
 
     @Test
@@ -135,7 +158,7 @@ class PrepareSpinTest {
             result.getByText("Spin!")
                 .attributes["disabled"]
                 .assertIsNotEqualTo(null)
-        }
+        }.await()
     }
 
     @Test
@@ -184,8 +207,4 @@ class PrepareSpinTest {
                 .assertIsEqualTo(listOf("false", "false", "false"))
         }.await()
     }
-
-    private fun ShallowWrapper<*>.findPinButtonPropsFor(targetPin: Pin) = find(pinButton)
-        .map { it.dataprops() }
-        .first { it.pin == targetPin }
 }
