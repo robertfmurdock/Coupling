@@ -9,8 +9,11 @@ import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.logging.log4j.message.ObjectMessage
-import org.gradle.api.tasks.testing.*
-
+import org.gradle.api.tasks.testing.TestDescriptor
+import org.gradle.api.tasks.testing.TestListener
+import org.gradle.api.tasks.testing.TestOutputEvent
+import org.gradle.api.tasks.testing.TestOutputListener
+import org.gradle.api.tasks.testing.TestResult
 
 class JsonLoggingTestListener(private val taskName: String, val testRunIdentifier: String) : TestListener,
     TestOutputListener {
@@ -61,7 +64,7 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
         if (outputEvent != null) {
             try {
                 val tree = mapper.readTree(outputEvent.message)
-                val level = Level.getLevel(tree["level"].textValue())
+                val level = Level.getLevel(tree["level"].level())
                 logger.log(level) {
                     ObjectMessage(mapper.createObjectNode().apply {
                         set<JsonNode>("type", TextNode("forward"))
@@ -84,5 +87,12 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
                 }
             }
         }
+    }
+
+    private fun JsonNode?.level(): String? {
+        return if (this?.isTextual == true)
+            textValue()
+        else
+            "Info"
     }
 }
