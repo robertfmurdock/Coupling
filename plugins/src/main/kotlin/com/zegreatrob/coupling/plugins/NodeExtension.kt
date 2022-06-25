@@ -4,17 +4,19 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.AbstractExecTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
+import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.kotlin.gradle.dsl.KotlinJsProjectExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 import java.io.File
 
 abstract class NodeExtension
 
 open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
 
-    init {
-        environment("NODE_PATH", project.nodeModulesDir)
-        environment("PATH", "$nodeBinDir")
-    }
+    @Input
+    @Optional
+    var compilationName: String? = null
 
     @Input
     @Optional
@@ -24,6 +26,18 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
     var arguments: List<String> = emptyList()
 
     override fun exec() {
+        val jsProject: KotlinJsProjectExtension = project.extensions.getByType()
+        val compilation = compilationName?.let { jsProject.js().compilations.named(it).get() }
+        environment(
+            "NODE_PATH",
+            listOf(compilation?.npmProject?.nodeModulesDir, project.nodeModulesDir)
+                .filterNotNull()
+                .joinToString(":")
+        )
+        environment("PATH", "$nodeBinDir")
+        compilation?.let {
+            workingDir = compilation.npmProject.dir
+        }
         val commandFromBin = nodeCommand?.let { listOf("${project.nodeModulesDir}/.bin/$nodeCommand") } ?: emptyList()
         commandLine = listOf(nodeExecPath) + commandFromBin + arguments
         super.exec()
@@ -82,5 +96,4 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
     private val nodeExecPath get() = "${nodeBinDir}/node"
 
     private val nodeBinDir get() = project.rootProject.getNodeBinDir()
-
 }

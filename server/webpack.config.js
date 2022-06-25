@@ -18,7 +18,7 @@ const config = {
     resolve: {
         extensions: ['.js'],
         modules: [
-            process.env.NODE_PATH,
+            ...(`${process.env.NODE_PATH}`.split(":")),
             resourcesPath,
             path.resolve(__dirname, 'node_modules')
         ],

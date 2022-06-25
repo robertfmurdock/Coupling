@@ -1,52 +1,51 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.components.playerCard
+import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minenzyme.dataprops
-import com.zegreatrob.minenzyme.shallow
-import com.zegreatrob.testmints.setup
+import com.zegreatrob.testmints.async.ScopeMint
+import com.zegreatrob.testmints.async.asyncSetup
+import org.w3c.dom.asList
 import kotlin.test.Test
 
 class PlayerHeatmapBuilderTest {
 
-    private val styles = useStyles("stats/PlayerHeatmap")
-
     @Test
-    fun hasRowOfPlayersToTheSide() = setup(object {
+    fun hasRowOfPlayersToTheSide() = asyncSetup(object : ScopeMint() {
         val players = listOf(
-            Player("harry"),
-            Player("larry"),
-            Player("curly"),
-            Player("moe")
+            Player(name = "harry"),
+            Player(name = "larry"),
+            Player(name = "curly"),
+            Player(name = "moe")
         )
     }) exercise {
-        shallow(PlayerHeatmap(players = players, heatmapData = emptyList()))
+        render(PlayerHeatmap(players = players, heatmapData = emptyList()).create())
     } verify { wrapper ->
-        wrapper.find<Any>(".${styles["heatmapPlayersSideRow"]}")
-            .find(playerCard)
-            .map { it.dataprops().player }
-            .toList()
-            .assertIsEqualTo(players)
+        wrapper.baseElement
+            .querySelector(".$heatmapSideRow")!!
+            .querySelectorAll("[data-player-id]")
+            .asList()
+            .map { it.textContent }
+            .assertIsEqualTo(players.map { it.name })
     }
 
     @Test
-    fun hasRowOfPlayersAboveHeatmap() = setup(object {
+    fun hasRowOfPlayersAboveHeatmap() = asyncSetup(object : ScopeMint() {
         val players = listOf(
-            Player("harry"),
-            Player("larry"),
-            Player("curly"),
-            Player("moe")
+            Player(name = "harry"),
+            Player(name = "larry"),
+            Player(name = "curly"),
+            Player(name = "moe")
         )
     }) exercise {
-        shallow(PlayerHeatmap(players = players, heatmapData = emptyList()))
+        render(PlayerHeatmap(players = players, heatmapData = emptyList()).create())
     } verify { wrapper ->
-        wrapper.find<Any>(".${styles["heatmapPlayersTopRow"]}")
-            .find(playerCard)
-            .map { it.dataprops().player }
-            .toList()
-            .assertIsEqualTo(players)
+        wrapper.baseElement
+            .querySelector(".$heatmapTopRowClass")!!
+            .querySelectorAll("[data-player-id]")
+            .asList()
+            .map { it.textContent }
+            .assertIsEqualTo(players.map { it.name })
     }
 }

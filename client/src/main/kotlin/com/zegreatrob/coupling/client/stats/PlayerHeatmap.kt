@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.model.player.Player
@@ -13,16 +11,25 @@ import csstype.TextAlign
 import csstype.VerticalAlign
 import csstype.number
 import csstype.px
+import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.key
 
-data class PlayerHeatmap(val players: List<Player>, val heatmapData: List<List<Double?>>) :
+data class PlayerHeatmap(
+    val players: List<Player>,
+    val heatmapData: List<List<Double?>>,
+) :
     DataPropsBind<PlayerHeatmap>(playerHeatmap)
 
-private val styles = useStyles("stats/PlayerHeatmap")
+val heatmapTopRowClass = ClassName {
+}
+
+val heatmapSideRow = ClassName {
+    display = Display.inlineBlock
+}
 
 val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
     ReactHTML.div {
@@ -34,7 +41,7 @@ val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
             flexShrink = number(0.0)
         }
         div {
-            className = styles["heatmapPlayersTopRow"]
+            className = heatmapTopRowClass
             div {
                 css {
                     display = Display.inlineBlock
@@ -46,9 +53,7 @@ val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
             }
         }
         div {
-            css(styles["heatmapPlayersSideRow"]) {
-                display = Display.inlineBlock
-            }
+            className = heatmapSideRow
             players.map { player ->
                 keyedPlayerCard(player, false)
             }
@@ -56,7 +61,7 @@ val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
         add(
             Heatmap(
                 heatmapData,
-                emotion.css.ClassName(styles["heatmap"]) {
+                ClassName {
                     display = Display.inlineBlock
                     verticalAlign = VerticalAlign.top
                 }

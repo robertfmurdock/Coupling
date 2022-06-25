@@ -28,6 +28,7 @@ dependencies {
 
     testImplementation(project(":coupling-libraries:test-react"))
     testImplementation(project(":coupling-libraries:stub-model"))
+    testImplementation(project(":coupling-libraries:test-logging"))
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.jsmints:minenzyme")
 }

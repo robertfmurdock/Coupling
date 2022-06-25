@@ -8,6 +8,7 @@ plugins {
 }
 
 kotlin.js().nodejs()
+
 kotlin.sourceSets {
     getByName("main") {
         resources.srcDir("src/main/javascript")
@@ -57,7 +58,8 @@ tasks {
         inputs.dir("public")
         outputs.dir(file("build/webpack-output"))
         outputs.cacheIf { true }
-
+        val main = kotlin.js().compilations.named("main")
+        compilationName = "main"
         nodeCommand = "webpack"
         arguments = listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
         environment("NODE_ENV" to "production")
