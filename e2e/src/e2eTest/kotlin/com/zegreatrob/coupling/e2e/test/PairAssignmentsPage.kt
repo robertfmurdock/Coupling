@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.e2e.external.setupBrowser
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
@@ -54,8 +53,7 @@ object CurrentPairAssignmentsPanel : StyleSyntax {
     }
 }
 
-object AssignedPair : StyleSyntax {
-    override val styles: SimpleStyle = loadStyles("pairassignments/AssignedPair")
-    val assignedPairElements = WebdriverElementArray(By.className(styles.className))
-    val assignedPairCallSigns = WebdriverElementArray(By.className(styles["callSign"]))
+object AssignedPair : BrowserSyntax {
+    val assignedPairElements = WebdriverElementArray("[data-assigned-pair]")
+    val assignedPairCallSigns = WebdriverElementArray("[data-call-sign]")
 }

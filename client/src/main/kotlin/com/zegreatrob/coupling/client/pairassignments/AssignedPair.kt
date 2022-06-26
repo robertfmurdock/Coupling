@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.client.pin.PinSection
@@ -51,8 +49,6 @@ data class AssignedPair(
 
 typealias PinMoveCallback = (String) -> Unit
 
-private val styles = useStyles("pairassignments/AssignedPair")
-
 val tiltLeft = (-8).deg
 val tiltRight = 8.deg
 
@@ -66,7 +62,8 @@ val assignedPair = tmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pin
     val playerCard = playerCardComponent(canDrag, swapCallback)
 
     span {
-        css(styles.className) {
+        asDynamic()["data-assigned-pair"] = pair.toPair().asArray().joinToString("-") { it.id }
+        css {
             borderWidth = 3.px
             borderStyle = LineStyle.double
             borderColor = NamedColor.dimgray
@@ -97,7 +94,8 @@ val assignedPair = tmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pin
 
 private fun ChildrenBuilder.callSign(callSign: CallSign) {
     span {
-        css(styles["callSign"]) {
+        asDynamic()["data-call-sign"] = ""
+        css {
             position = Position.relative
             fontSize = FontSize.large
             padding = 8.px
