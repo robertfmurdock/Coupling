@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.client.pairassignments.spin
+package com.zegreatrob.coupling.components.spin
 
-import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -25,7 +24,7 @@ class RosteredPairAssignmentsTest {
             )
         )
     }) exercise {
-        rosteredPairAssignments(pairAssignments, players)
+        RosteredPairAssignments.rosteredPairAssignments(pairAssignments, players)
     } verify { rosteredPairAssignmentResult ->
         rosteredPairAssignmentResult.let {
             it.pairAssignments.assertIsEqualTo(pairAssignments)

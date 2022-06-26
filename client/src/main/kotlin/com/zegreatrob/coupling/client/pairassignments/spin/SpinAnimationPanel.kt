@@ -1,11 +1,10 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.external.reactfliptoolkit.Flipped
+import com.zegreatrob.coupling.components.spin.RosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
@@ -18,6 +17,7 @@ import csstype.Visibility
 import csstype.integer
 import csstype.pct
 import csstype.translate
+import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
@@ -37,8 +37,6 @@ data class SpinStateData(
     val shownPlayer: Player?
 )
 
-private val styles = useStyles("pairassignments/SpinAnimation")
-
 val spinAnimationPanel = tmFC<SpinAnimationPanel> { (party, rosteredPairAssignments, state) ->
     val pairAssignments = rosteredPairAssignments.pairAssignments
     val players = rosteredPairAssignments.selectedPlayers
@@ -51,20 +49,26 @@ val spinAnimationPanel = tmFC<SpinAnimationPanel> { (party, rosteredPairAssignme
     }
 }
 
+val pairAssignmentStyles = ClassName {
+}
+
 private fun ChildrenBuilder.assignedPairs(party: Party, revealedPairs: List<PinnedCouplingPair>) = div {
-    className = styles["pairAssignments"]
+    className = pairAssignmentStyles
     revealedPairs.forEachIndexed { index, it -> add(AssignedPair(party, it, false)) { key = "$index" } }
 }
 
-private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
-    css(styles["playerSpotlight"]) {
-        position = Position.relative
-        "> div" {
-            position = Position.absolute
-            zIndex = integer(1)
-            transform = translate((-50).pct, (-50).pct)
-        }
+val playerSpotlightStyles = ClassName {
+    position = Position.relative
+    "> div" {
+        position = Position.absolute
+        zIndex = integer(1)
+        transform = translate((-50).pct, (-50).pct)
     }
+}
+
+private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
+    className = playerSpotlightStyles
+
     if (shownPlayer != null)
         flippedPlayer(shownPlayer)
     else
@@ -85,9 +89,11 @@ private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) =
         add(PlayerCard(player))
     }
 }
+val playerRosterStyles = ClassName {
+}
 
 private fun ChildrenBuilder.playerRoster(players: List<Player>) = div {
-    className = styles["playerRoster"]
+    className = playerRosterStyles
     players.forEach { player ->
         if (player == placeholderPlayer) {
             placeholderPlayerCard()

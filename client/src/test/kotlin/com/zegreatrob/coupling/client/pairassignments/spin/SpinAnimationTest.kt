@@ -1,10 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.assignedPair
-import com.zegreatrob.coupling.client.pairassignments.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.components.playerCard
+import com.zegreatrob.coupling.components.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -236,19 +234,18 @@ class SpinAnimationTest {
     }
 
     companion object {
-        private val styles = useStyles("pairassignments/SpinAnimation")
 
-        private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass("${styles["playerRoster"]}")
+        private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass(playerRosterStyles.toString())
             .find(playerCard)
             .map { it.dataprops().player }
             .toList()
 
-        private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass("${styles["playerSpotlight"]}")
+        private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass("$playerSpotlightStyles")
             .find(playerCard).run {
                 if (length == 1) dataprops().player else null
             }
 
-        private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass("${styles["pairAssignments"]}")
+        private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass("$pairAssignmentStyles")
             .find(assignedPair)
             .map { it.dataprops().pair }
             .toList()

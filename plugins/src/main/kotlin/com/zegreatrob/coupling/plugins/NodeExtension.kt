@@ -30,8 +30,7 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
         val compilation = compilationName?.let { jsProject.js().compilations.named(it).get() }
         environment(
             "NODE_PATH",
-            listOf(compilation?.npmProject?.nodeModulesDir, project.nodeModulesDir)
-                .filterNotNull()
+            listOfNotNull(compilation?.npmProject?.nodeModulesDir, project.nodeModulesDir)
                 .joinToString(":")
         )
         environment("PATH", "$nodeBinDir")
