@@ -7,10 +7,10 @@
     "../test": "test"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "~3.118.0",
-    "@aws-sdk/lib-dynamodb": "~3.118.0",
-    "@aws-sdk/client-lambda": "~3.118.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.118.0",
+    "@aws-sdk/client-dynamodb": "~3.118.1",
+    "@aws-sdk/lib-dynamodb": "~3.118.1",
+    "@aws-sdk/client-lambda": "~3.118.1",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.118.1",
     "@graphql-tools/schema": "^8.5.0",
     "@graphql-tools/stitch": "^8.7.0",
     "body-parser": "^1.20.0",
