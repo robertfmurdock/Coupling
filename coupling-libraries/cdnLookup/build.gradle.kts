@@ -19,12 +19,12 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-core:2.0.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-                implementation("io.ktor:ktor-client-content-negotiation:2.0.2")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
-                implementation("io.ktor:ktor-client-logging:2.0.3")
-                implementation("io.ktor:ktor-client-encoding:2.0.2")
+                implementation("io.ktor:ktor-client-core")
+                implementation("io.ktor:ktor-client-content-negotiation")
+                implementation("io.ktor:ktor-serialization-kotlinx-json")
+                implementation("io.ktor:ktor-client-logging")
+                implementation("io.ktor:ktor-client-encoding")
                 implementation(npm("resolve-pkg", "^1.0.0"))
                 implementation(npm("read-pkg-up", "^4.0.0"))
             }

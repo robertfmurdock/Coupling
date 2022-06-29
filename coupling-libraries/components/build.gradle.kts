@@ -18,6 +18,7 @@ dependencies {
     implementation(project(":coupling-libraries:json"))
     implementation(project(":coupling-libraries:repository-core"))
     implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")

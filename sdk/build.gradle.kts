@@ -23,13 +23,13 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-                implementation("io.ktor:ktor-client-core:2.0.2")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
-                implementation("io.ktor:ktor-client-content-negotiation:2.0.2")
-                implementation("io.ktor:ktor-client-logging:2.0.3")
-                implementation("io.ktor:ktor-client-websockets:2.0.2")
-                implementation("com.soywiz.korlibs.klock:klock:2.7.0")
-                implementation("io.github.microutils:kotlin-logging:2.1.23")
+                implementation("io.ktor:ktor-client-core")
+                implementation("io.ktor:ktor-serialization-kotlinx-json")
+                implementation("io.ktor:ktor-client-content-negotiation")
+                implementation("io.ktor:ktor-client-logging")
+                implementation("io.ktor:ktor-client-websockets")
+                implementation("com.soywiz.korlibs.klock:klock")
+                implementation("io.github.microutils:kotlin-logging")
             }
         }
         named("commonTest") {
