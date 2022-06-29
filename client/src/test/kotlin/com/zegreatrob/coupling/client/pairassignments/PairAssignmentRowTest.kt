@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.pairassignments.list.History
+import com.zegreatrob.coupling.client.pairassignments.list.PairAssignmentRow
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.Party
@@ -24,19 +24,19 @@ import react.router.MemoryRouter
 import kotlin.js.json
 import kotlin.test.Test
 
-class HistoryTest {
+class PairAssignmentRowTest {
 
     @Test
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = asyncSetup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         val party = Party(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
-        val history = listOf(PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList()))
+        val document = PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList())
         val stubDispatcher = StubDispatcher()
         val actor = userEvent.setup()
     }) {
         render(
-            History(party, history, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
+            PairAssignmentRow(party, document, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
             json("wrapper" to MemoryRouter)
         )
     } exercise {
@@ -45,7 +45,7 @@ class HistoryTest {
         stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
         stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
-            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, history[0].id)))
+            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, document.id)))
         reloadSpy.callCount.assertIsEqualTo(1)
     }
 
@@ -54,18 +54,16 @@ class HistoryTest {
         override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         val party = Party(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
-        val history = listOf(
-            PairAssignmentDocument(
-                PairAssignmentDocumentId("RealId"),
-                DateTime.now(),
-                emptyList()
-            )
+        val document = PairAssignmentDocument(
+            PairAssignmentDocumentId("RealId"),
+            DateTime.now(),
+            emptyList()
         )
         val stubDispatcher = StubDispatcher()
         val actor = userEvent.setup()
     }) {
         render(
-            History(party, history, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
+            PairAssignmentRow(party, document, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
             json("wrapper" to MemoryRouter),
         )
     } exercise {
