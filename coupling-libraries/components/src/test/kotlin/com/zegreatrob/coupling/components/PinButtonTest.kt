@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.components.PinButton
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper

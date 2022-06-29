@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.components.pin
 
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with

@@ -1,5 +1,7 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.components
 
+import com.zegreatrob.coupling.components.pin.SavePinCommand
+import com.zegreatrob.coupling.components.pin.SavePinCommandDispatcher
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
