@@ -3,9 +3,6 @@ package com.zegreatrob.coupling.client.pairassignments.list
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
-import com.zegreatrob.coupling.client.external.react.windowReactFunc
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.components.ConfigHeader
@@ -20,6 +17,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.tmFC
 import csstype.Auto
 import csstype.BackgroundRepeat
 import csstype.Border
@@ -47,24 +45,21 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.key
 
-private val styles = useStyles("pairassignments/History")
-
 data class History(
     val party: Party,
     val history: List<PairAssignmentDocument>,
-    val controls: Controls<DeletePairAssignmentsCommandDispatcher>
+    val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
+    val windowFunctions: WindowFunctions = WindowFunctions,
 ) : DataPropsBind<History>(com.zegreatrob.coupling.client.pairassignments.list.history)
 
-val history by lazy { historyFunc(WindowFunctions) }
-
-val historyFunc = windowReactFunc<History> { (party, history, controls), windowFuncs ->
+private val history = tmFC<History> { (party, history, controls, windowFuncs) ->
     val (dispatchFunc, reload) = controls
     val onDeleteFactory = { documentId: PairAssignmentDocumentId ->
         val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(party.id, documentId) }, { reload() })
         onDeleteClick(windowFuncs, deleteFunc)
     }
     div {
-        css(styles.className) {
+        css {
             display = Display.inlineBlock
             backgroundColor = Color("#dae8e0")
             padding = Padding(0.px, 25.px, 25.px, 25.px)
@@ -79,7 +74,7 @@ val historyFunc = windowReactFunc<History> { (party, history, controls), windowF
             +"History!"
         }
         span {
-            css(styles["historyView"]) {
+            css {
                 display = Display.inlineBlock
             }
             history.forEach {
@@ -96,13 +91,14 @@ private fun onDeleteClick(windowFunctions: WindowFunctions, deleteFunc: () -> Un
 }
 
 private fun ChildrenBuilder.pairAssignmentRow(document: PairAssignmentDocument, onDeleteClick: () -> Unit) = div {
-    css(styles["pairAssignments"]) {
+    css {
         borderRadius = 20.px
         padding = 5.px
         margin = Margin(5.px, 0.px)
         backgroundColor = Color("#C3D5CBFF")
         boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
     }
+    asDynamic()["data-pair-assignments-id"] = document.id.value
     key = document.id.value
     span {
         css {
@@ -124,7 +120,6 @@ private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = add(
     CouplingButton(
         sizeRuleSet = small,
         colorRuleSet = red,
-        className = styles["deleteButton"],
         onClick = onClickFunc
     )
 ) {

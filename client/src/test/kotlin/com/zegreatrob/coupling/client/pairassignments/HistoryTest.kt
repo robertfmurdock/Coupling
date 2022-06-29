@@ -3,46 +3,44 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatcher
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.History
-import com.zegreatrob.coupling.client.pairassignments.list.historyFunc
-import com.zegreatrob.coupling.components.couplingButton
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
+import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minenzyme.dataprops
-import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
-import com.zegreatrob.testmints.setup
+import com.zegreatrob.testmints.async.asyncSetup
+import kotlinx.coroutines.await
 import org.w3c.dom.Window
+import react.router.MemoryRouter
 import kotlin.js.json
 import kotlin.test.Test
 
 class HistoryTest {
 
-    private val styles = useStyles("pairassignments/History")
-
     @Test
-    fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = setup(object : WindowFunctions {
+    fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = asyncSetup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         val party = Party(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val history = listOf(PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList()))
         val stubDispatcher = StubDispatcher()
-
-        val wrapper = shallow(
-            History(party, history, Controls(stubDispatcher.func(), reloadSpy::spyFunction)),
-            historyFunc(this),
+        val actor = userEvent.setup()
+    }) {
+        render(
+            History(party, history, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
+            json("wrapper" to MemoryRouter)
         )
-    }) exercise {
-        wrapper.find(couplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
-            ?.onClick?.invoke()
+    } exercise {
+        actor.click(screen.getByText("DELETE")).await()
 
         stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
@@ -52,7 +50,7 @@ class HistoryTest {
     }
 
     @Test
-    fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = setup(object : WindowFunctions {
+    fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = asyncSetup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         val party = Party(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
@@ -64,13 +62,14 @@ class HistoryTest {
             )
         )
         val stubDispatcher = StubDispatcher()
-        val wrapper = shallow(
-            History(party, history, Controls(stubDispatcher.func(), reloadSpy::spyFunction)),
-            historyFunc(this),
+        val actor = userEvent.setup()
+    }) {
+        render(
+            History(party, history, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
+            json("wrapper" to MemoryRouter),
         )
-    }) exercise {
-        wrapper.find(couplingButton).map { it.dataprops() }.find { it.className == styles["deleteButton"] }
-            ?.onClick?.invoke()
+    } exercise {
+        actor.click(screen.getByText("DELETE")).await()
     } verify {
         stubDispatcher.dispatchList.isEmpty()
             .assertIsEqualTo(true)
