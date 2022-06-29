@@ -23,7 +23,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-                implementation("io.ktor:ktor-client-core:2.0.2")
+                implementation("io.ktor:ktor-client-core:2.0.3")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
                 implementation("io.ktor:ktor-client-content-negotiation:2.0.2")
                 implementation("io.ktor:ktor-client-logging:2.0.2")
