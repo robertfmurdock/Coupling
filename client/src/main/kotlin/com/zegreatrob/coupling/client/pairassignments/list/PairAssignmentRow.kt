@@ -4,9 +4,9 @@ import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.pairassignments.PairAssignmentBlock
 import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.components.CouplingButton
+import com.zegreatrob.coupling.components.PairAssignmentBlock
 import com.zegreatrob.coupling.components.PinButtonScale
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.components.red

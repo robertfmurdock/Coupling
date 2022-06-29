@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.components
 
 import csstype.Display
 import csstype.FontWeight
