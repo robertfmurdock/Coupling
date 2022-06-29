@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.party
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.client.external.react.useForm
 import com.zegreatrob.coupling.components.DispatchFunc
 import com.zegreatrob.coupling.components.Paths
+import com.zegreatrob.coupling.components.useForm
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic

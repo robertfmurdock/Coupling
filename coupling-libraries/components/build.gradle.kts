@@ -23,6 +23,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     implementation("com.zegreatrob.testmints:action")
     implementation("com.zegreatrob.testmints:action-async")
+    implementation("com.zegreatrob.testmints:minspy")
     implementation("com.zegreatrob.jsmints:minreact")
     implementation("com.zegreatrob.jsmints:react-data-loader")
 

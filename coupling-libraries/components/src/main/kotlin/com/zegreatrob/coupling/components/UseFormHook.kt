@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.external.react
+package com.zegreatrob.coupling.components
 
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent

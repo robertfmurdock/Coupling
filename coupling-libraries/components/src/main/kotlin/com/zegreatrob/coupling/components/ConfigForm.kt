@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
 import org.w3c.dom.HTMLFormElement
 import react.FC

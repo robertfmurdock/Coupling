@@ -1,8 +1,5 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
-import com.zegreatrob.coupling.components.CouplingButton
-import com.zegreatrob.coupling.components.red
-import com.zegreatrob.coupling.components.small
 import com.zegreatrob.minreact.add
 import react.ChildrenBuilder
 

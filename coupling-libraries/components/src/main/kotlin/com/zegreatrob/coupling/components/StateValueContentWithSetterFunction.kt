@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.external.react
+package com.zegreatrob.coupling.components
 
 @JsModule("react")
 private external val React: dynamic

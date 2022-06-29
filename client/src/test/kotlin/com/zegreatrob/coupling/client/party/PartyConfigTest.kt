@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.ConfigForm
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.StubDispatcher
+import com.zegreatrob.coupling.components.ConfigForm
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.party.Party
