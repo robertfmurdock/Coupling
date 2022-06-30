@@ -19,6 +19,7 @@ dependencies {
     implementation("org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.7.0")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     implementation("se.patrikerdes:gradle-use-latest-versions-plugin:0.2.18")
+    implementation("com.zegreatrob.jsmints.plugins.jspackage:com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin:1.5.16")
     implementation("com.soywiz.korlibs.klock:klock:2.7.0")
     implementation("org.apache.logging.log4j:log4j-core:2.17.2")
     implementation("org.apache.logging.log4j:log4j-iostreams:2.17.2")
