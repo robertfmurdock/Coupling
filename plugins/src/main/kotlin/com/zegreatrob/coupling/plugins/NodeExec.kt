@@ -10,8 +10,6 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 import java.io.File
 
-abstract class NodeExtension
-
 open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
 
     @Input
