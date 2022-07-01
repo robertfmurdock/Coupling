@@ -133,7 +133,7 @@
     "@aws-sdk/util-utf8-node" "3.109.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-dynamodb@~3.121.0":
+"@aws-sdk/client-dynamodb@3.121.0":
   version "3.121.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.121.0.tgz#72e06b036bf02a2521e1a443a9f8b1be8dcd655d"
   integrity sha512-j5JgFagsyAoE7HxRD4Iis7IFmIV1W1fXeRZiQ6f5OwMlvhcnpacXPsVoxZfag4wz58WTuaJXbRiD5k5xxqTYvQ==
@@ -430,7 +430,7 @@
   dependencies:
     tslib "^2.3.1"
 
-"@aws-sdk/lib-dynamodb@~3.121.0":
+"@aws-sdk/lib-dynamodb@3.121.0":
   version "3.121.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.121.0.tgz#3096bcbecc438f75a8fa5cc91a5c3df57650250e"
   integrity sha512-DKW6RkfV0IR7i5cAhSbYf4JGLYCHZyuKa2O3RUUnm4ZMZm1y6ktPeydSxQQn0nMH4glsNHTiZ/EmLT0cnY7ZsQ==
@@ -6065,6 +6065,11 @@ entities@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/entities/-/entities-4.3.0.tgz#62915f08d67353bb4eb67e3d62641a4059aec656"
   integrity sha512-/iP1rZrSEJ0DTlPiX+jbzlA3eVkY/e8L8SozroF395fIqE3TYF/Nz7YOMAawta+vLmyJ/hkGNNPcSbMADCCXbg==
+
+entities@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-4.3.1.tgz#c34062a94c865c322f9d67b4384e4169bcede6a4"
+  integrity sha512-o4q/dYJlmyjP2zfnaWDUC6A3BQFmVTX+tZPezK7k0GLSU9QYCauscf5Y+qcEPzKL+EixVouYDgLQK5H9GrLpkg==
 
 env-paths@^2.2.0:
   version "2.2.1"
