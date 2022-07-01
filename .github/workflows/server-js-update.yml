@@ -16,9 +16,9 @@ jobs:
         with:
           cache-read-only: true
       - name: Update Server Deps
-        run: ./gradlew updateDependencies -PpackageJson=server/package.json
+        run: ./gradlew :server:ncuUpgrade
       - name: Update e2e Deps
-        run: ./gradlew updateDependencies -PpackageJson=e2e/package.json
+        run: ./gradlew :e2e:ncuUpgrade
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3

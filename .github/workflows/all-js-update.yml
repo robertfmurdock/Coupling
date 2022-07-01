@@ -1,7 +1,7 @@
-name: Client Javascript Update
+name: All NPM Update
 on:
   schedule:
-    - cron: "0 16 * * *"
+    - cron: "0 8 * * *"
   workflow_dispatch:
 jobs:
   create-update-branch:
@@ -15,8 +15,8 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: true
-      - name: Update Deps
-        run: ./gradlew :client:ncuUpgrade
+      - name: Update All NPM Deps
+        run: ./gradlew ncuUpgrade
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3

@@ -58,7 +58,6 @@ tasks {
         inputs.dir("public")
         outputs.dir(file("build/webpack-output"))
         outputs.cacheIf { true }
-        val main = kotlin.js().compilations.named("main")
         compilationName = "main"
         nodeCommand = "webpack"
         arguments = listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
@@ -107,20 +106,6 @@ tasks {
 
     assemble {
         dependsOn(serverAssemble)
-    }
-
-    val packageJson: String? by rootProject
-
-    register<NodeExec>("updateDependencies") {
-        dependsOn(test, compileKotlinJs)
-        nodeCommand = "ncu"
-        arguments = listOf(
-            "-u",
-            "--packageFile",
-            "${System.getenv("PWD")}/$packageJson",
-            "--configFilePath",
-            "$rootDir/.ncurc.json"
-        )
     }
 
     register<NodeExec>("start") {
