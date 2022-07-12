@@ -7,8 +7,8 @@
     "../test": "test"
   },
   "dependencies": {
-    "@aws-sdk/client-lambda": "~3.121.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.121.0",
+    "@aws-sdk/client-lambda": "~3.127.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.127.0",
     "@graphql-tools/schema": "^8.5.0",
     "@graphql-tools/stitch": "^8.7.0",
     "body-parser": "^1.20.0",
@@ -23,7 +23,7 @@
     "graphql": "^16.5.0",
     "method-override": "^3.0.0",
     "minimist": "^1.2.6",
-    "node-fetch": "^3.2.6",
+    "node-fetch": "^3.2.7",
     "on-finished": "^2.4.1",
     "parse5": "^7.0.0",
     "parse5-html-rewriting-stream": "^7.0.0",
