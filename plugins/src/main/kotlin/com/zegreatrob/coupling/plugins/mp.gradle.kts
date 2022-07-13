@@ -50,5 +50,6 @@ tasks.withType(org.gradle.api.tasks.bundling.Jar::class).configureEach {
 tasks.withType(org.gradle.jvm.tasks.Jar::class).configureEach {
     outputs.cacheIf { true }
 }
-
-
+tasks.withType(org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinPackageJsonTask::class).configureEach {
+    outputs.cacheIf { true }
+}
