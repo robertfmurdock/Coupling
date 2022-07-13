@@ -46,3 +46,9 @@ gradleEnterprise {
         termsOfServiceAgree = "yes"
     }
 }
+
+buildCache {
+    local {
+        isEnabled = true
+    }
+}
