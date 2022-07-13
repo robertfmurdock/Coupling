@@ -36,9 +36,9 @@ import csstype.vw
 import emotion.react.css
 import kotlinx.browser.document
 import kotlinx.js.jso
-import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import popper.core.Popper
+import popper.core.ReferenceElement
 import popper.core.modifier
 import popper.core.modifiers.Arrow
 import popper.core.modifiers.Offset
@@ -59,13 +59,16 @@ private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
     val popperRef = useRef<HTMLElement>()
     val arrowRef = useRef<HTMLElement>()
 
-    val (referenceElement, setReferenceElement) = useState<Element?>(null)
+    val (referenceElement, setReferenceElement) = useState<ReferenceElement?>(null)
 
     val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef, state))
 
     useLayoutEffect(state) {
         val className = state.descriptionSelector
-        val element: Element? = if (className.isNotBlank()) document.querySelector(className) else null
+        val element: ReferenceElement? = if (className.isNotBlank())
+            document.querySelector(className).unsafeCast<ReferenceElement>()
+        else
+            null
         setReferenceElement(element)
         popperInstance.forceUpdate?.invoke()
     }
