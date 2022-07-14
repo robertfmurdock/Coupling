@@ -44,3 +44,6 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile::class).config
 tasks.withType(org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinPackageJsonTask::class).configureEach {
     outputs.cacheIf { true }
 }
+tasks.withType(org.jetbrains.kotlin.gradle.targets.js.npm.PublicPackageJsonTask::class).configureEach {
+    outputs.cacheIf { true }
+}
