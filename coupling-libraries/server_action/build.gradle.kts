@@ -18,7 +18,7 @@ kotlin {
                 api(project(":coupling-libraries:action"))
                 api("com.zegreatrob.testmints:action")
                 api("com.zegreatrob.testmints:action-async")
-                implementation("com.benasher44:uuid:0.4.1")
+                implementation("com.benasher44:uuid:0.5.0")
                 implementation("com.soywiz.korlibs.klock:klock:2.7.0")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")

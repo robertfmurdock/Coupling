@@ -27,7 +27,7 @@ kotlin {
                 api(kotlin("stdlib"))
                 api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock:2.7.0")
-                api("com.benasher44:uuid:0.4.1")
+                api("com.benasher44:uuid:0.5.0")
             }
         }
         val jsMain by getting {
