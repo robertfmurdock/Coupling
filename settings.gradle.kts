@@ -52,3 +52,5 @@ buildCache {
         isEnabled = true
     }
 }
+
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
