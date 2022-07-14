@@ -124,6 +124,41 @@ tasks {
         dependsOn(":release", uploadToS3)
     }
 
+    named("processResources", ProcessResources::class) {
+        val javascriptConfig = configurations["runtimeClasspath"]
+        dependsOn(javascriptConfig)
+        duplicatesStrategy = DuplicatesStrategy.WARN
+        from({
+            javascriptConfig.files.map {
+                if (!it.isFile || !it.name.endsWith(".klib")) {
+                    null
+                } else {
+                    zipTree(it).matching {
+                        exclude(
+                            "default",
+                            "default/**/*",
+                            "kotlin",
+                            "kotlin/**/*",
+                            "kotlin-test",
+                            "kotlin-test/**/*",
+                            "META-INF",
+                            "META-INF/**/*",
+                            "org",
+                            "org/**/*",
+                            "kotlin.js",
+                            "kotlin.js.map",
+                            "kotlin.meta.js",
+                            "kotlin-test.js",
+                            "kotlin-test.js.map",
+                            "kotlin-test.meta.js",
+                            "package.json",
+                        )
+                    }
+                }
+            }
+        })
+    }
+
     named("browserTest") {
         outputs.cacheIf { true }
     }
