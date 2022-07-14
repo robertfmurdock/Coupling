@@ -10037,12 +10037,12 @@ npm-bundled@^1.1.1, npm-bundled@^1.1.2:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-"npm-check-updates@>=15.2.6 <16.0.0":
-  version "15.2.6"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-15.2.6.tgz#d460d586c383afbffc2006b461d05ad2207bc965"
-  integrity sha512-lXihP+6EjHW74ENE6YYW2feUmdsfK4evus2ZTCyTd0QSnmHdx0bcHpiHsjgqjPtIqgHPJXLCrV6gd3JGYZg3xg==
+"npm-check-updates@>=15.3.0 <16.0.0":
+  version "15.3.3"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-15.3.3.tgz#35de2235b78fafd08d9a43e864f29c559dc112da"
+  integrity sha512-kdZte9jeJ3n8tS8wxAjrvQz5owi4AEY9pxt5OaEzw094k/ymg0HYR6b89W2OJaFn7xK4tCrkOFp9PUWKlydA8Q==
   dependencies:
-    chalk "^4.1.2"
+    chalk "^5.0.1"
     cli-table "^0.3.11"
     commander "^9.3.0"
     fast-memoize "^2.5.2"
