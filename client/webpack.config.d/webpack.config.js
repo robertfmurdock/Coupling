@@ -5,6 +5,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
+const additionalResourcesPath = path.resolve(__dirname, '../../../../client/build/additionalResources');
 
 const fs = require('fs')
 
@@ -21,15 +22,14 @@ if (config.output) {
 if (!config.resolve.modules) {
     config.resolve.modules = []
 }
-config.resolve.modules.push(resourcesPath);
 const nodeModules = path.resolve(__dirname, '../../../../build/js/node_modules');
-config.resolve.modules.push(nodeModules);
+config.resolve.modules.push(resourcesPath, additionalResourcesPath, nodeModules);
 config.resolve.fallback = {"assert": false};
 config.module.rules.push(
     {
         test: /\.(md|graphql)$/,
         use: 'raw-loader',
-        include: resourcesPath,
+        include: [resourcesPath, additionalResourcesPath],
     },
     {
         test: /\.(sa|sc|c)ss$/,

@@ -13,6 +13,7 @@ kotlin {
     js {
         browser {
             webpackTask {
+                dependsOn("additionalResources")
                 inputs.files("${project.projectDir}/src/main/resources")
                 val profile: String? by project
                 if (!profile.isNullOrBlank()) {
@@ -124,10 +125,12 @@ tasks {
         dependsOn(":release", uploadToS3)
     }
 
-    named("processResources", ProcessResources::class) {
+    val additionalResources by registering(Copy::class) {
         val javascriptConfig = configurations["runtimeClasspath"]
         dependsOn(javascriptConfig)
         duplicatesStrategy = DuplicatesStrategy.WARN
+        val additionalResourcesPath = "${project.buildDir.absolutePath}/additionalResources"
+        into(additionalResourcesPath)
         from({
             javascriptConfig.files.map {
                 if (!it.isFile || !it.name.endsWith(".klib")) {
