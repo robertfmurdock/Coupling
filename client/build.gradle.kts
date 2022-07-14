@@ -126,6 +126,7 @@ tasks {
     }
 
     val additionalResources by registering(Copy::class) {
+        outputs.cacheIf { true }
         val javascriptConfig = configurations["runtimeClasspath"]
         dependsOn(javascriptConfig)
         duplicatesStrategy = DuplicatesStrategy.WARN
