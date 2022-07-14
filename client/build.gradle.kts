@@ -90,6 +90,7 @@ tasks {
         val byteArrayOutputStream = ByteArrayOutputStream()
         standardOutput = byteArrayOutputStream
         doLast { cdnOutputFile.writeText(byteArrayOutputStream.toString("UTF-8")) }
+        outputs.cacheIf { true }
     }
 
     named("compileTestDevelopmentExecutableKotlinJs") {
