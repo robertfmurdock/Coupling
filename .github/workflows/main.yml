@@ -53,7 +53,7 @@ jobs:
       - name: Calculate Version
         run: ./gradlew calculateVersion -q --configuration-cache
       - name: Build Coupling
-        run: ./gradlew release check --scan -Pversion=$(./gradlew calculateVersion --configuration-cache -q)
+        run: ./gradlew release check --scan --info -Pversion=$(./gradlew calculateVersion --configuration-cache -q)
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew composeLogs collectResults
