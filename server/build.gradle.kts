@@ -148,6 +148,7 @@ tasks {
 
     register<NodeExec>("serverlessStart") {
         dependsOn(assemble, clientConfiguration, test, compileKotlinJs)
+        setup(project)
         val serverlessConfigFile = project.relativePath("serverless.yml")
         nodeCommand = "serverless"
         arguments = listOf("offline", "--config", serverlessConfigFile, "start")
@@ -161,6 +162,7 @@ tasks {
 
     fun NodeExec.configureBuild(stage: String) {
         val serverlessBuildDir = "${project.buildDir.absolutePath}/$stage/lambda-dist"
+        setup(project)
         dependsOn(assemble, test, compileKotlinJs, ":calculateVersion")
         environment(
             "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
