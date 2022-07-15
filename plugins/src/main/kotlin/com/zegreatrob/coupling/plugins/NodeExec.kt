@@ -7,21 +7,27 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
-import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 
 open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
 
     @InputDirectory
     lateinit var projectNodeModulesDir: File
+
     @InputDirectory
     lateinit var nodeBinDir: File
+
     @Input
     lateinit var nodeExecPath: String
 
     @InputDirectory
     @Optional
     var nodeModulesDir: File? = null
+
+    @Input
+    @Optional
+    var moreNodeDirs: String? = null
 
     @InputDirectory
     @Optional
@@ -41,7 +47,7 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
     override fun exec() {
         environment(
             "NODE_PATH",
-            listOfNotNull(nodeModulesDir, projectNodeModulesDir)
+            listOfNotNull(nodeModulesDir, projectNodeModulesDir, moreNodeDirs)
                 .joinToString(":")
         )
         environment("PATH", "$nodeBinDir")
@@ -49,18 +55,15 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
         val commandFromBin = nodeCommand?.let { listOf("${projectNodeModulesDir}/.bin/$nodeCommand") } ?: emptyList()
         commandLine = listOf(nodeExecPath) + commandFromBin + arguments
 
-        if (outputFile != null) {
-            standardOutput = ByteArrayOutputStream()
+        outputFile?.let {
+            standardOutput = FileOutputStream(it)
         }
 
         super.exec()
-
-        outputFile?.writeText(standardOutput.toString())
     }
-
 }
 
-fun NodeExec.setup( project: Project) {
+fun NodeExec.setup(project: Project) {
     projectNodeModulesDir = project.nodeModulesDir
     nodeBinDir = project.nodeBinDir
     nodeExecPath = project.nodeExecPath

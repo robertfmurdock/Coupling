@@ -26,6 +26,7 @@ tasks {
 }
 
 fun NodeExec.configureDeploy(stage: String) {
+    setup(project)
     mustRunAfter(
         ":release",
         ":client:uploadToS3",
