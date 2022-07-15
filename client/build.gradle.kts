@@ -1,6 +1,7 @@
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
+import com.zegreatrob.coupling.plugins.setup
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
@@ -87,6 +88,7 @@ tasks {
         arguments = listOf(cdnLookupFile) + cdnLibraries.asSequence().toList()
         val cdnOutputFile = file(cdnBuildOutput)
         outputs.file(cdnBuildOutput)
+        setup(project)
         outputFile = cdnOutputFile
         outputs.cacheIf { true }
     }

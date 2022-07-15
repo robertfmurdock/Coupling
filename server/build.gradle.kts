@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.plugins.NodeExec
+import com.zegreatrob.coupling.plugins.setup
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
@@ -48,7 +49,12 @@ tasks {
     }
 
     val serverCompile by registering(NodeExec::class) {
-        dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
+        dependsOn(
+            compileKotlinJs,
+            processResources,
+            compileProductionExecutableKotlinJs,
+            "productionExecutableCompileSync"
+        )
         mustRunAfter(clean)
         inputs.dir(compileKotlinJs.get().outputFileProperty)
         inputs.dir(processResources.get().destinationDir.path)
@@ -61,6 +67,7 @@ tasks {
         val compilationName = "main"
         val jsProject: org.jetbrains.kotlin.gradle.dsl.KotlinJsProjectExtension = project.extensions.getByType()
         val compilation = jsProject.js().compilations.named(compilationName).get()
+        setup(project)
         nodeModulesDir = compilation?.npmProject?.nodeModulesDir
         npmProjectDir = compilation?.npmProject?.dir
 
