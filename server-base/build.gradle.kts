@@ -1,18 +1,25 @@
 plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
-    id("com.bmuschko.docker-remote-api")
 }
 
 tasks {
-    val buildImage by registering(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
-        inputDir.set(project.projectDir)
-        images.add("ghcr.io/robertfmurdock/coupling-serverless-base:latest")
+    val buildImage by registering(Exec::class) {
+        commandLine(
+            "docker build --tag ghcr.io/robertfmurdock/coupling-serverless-base:latest ."
+                .split(" ")
+        )
     }
-    val pushImage by registering(com.bmuschko.gradle.docker.tasks.image.DockerPushImage::class) {
+    register("pushImage", Exec::class) {
         mustRunAfter(buildImage)
-        images.add("ghcr.io/robertfmurdock/coupling-serverless-base:latest")
+        commandLine(
+            "docker push ghcr.io/robertfmurdock/coupling-serverless-base:latest"
+                .split(" ")
+        )
     }
-    val pullImage by registering(com.bmuschko.gradle.docker.tasks.image.DockerPullImage::class) {
-        image.set("ghcr.io/robertfmurdock/coupling-serverless-base:latest")
+    register("pullImage", Exec::class) {
+        commandLine(
+            "docker pull ghcr.io/robertfmurdock/coupling-serverless-base:latest"
+                .split(" ")
+        )
     }
 }

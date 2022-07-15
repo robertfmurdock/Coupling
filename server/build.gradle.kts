@@ -4,7 +4,6 @@ plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.coupling.plugins.node")
     id("com.zegreatrob.coupling.plugins.serialization")
-    id("com.bmuschko.docker-remote-api")
 }
 
 kotlin.js().nodejs()
@@ -126,10 +125,12 @@ tasks {
         destinationDir = file("build/docker-data")
     }
 
-    val buildImage by registering(com.bmuschko.gradle.docker.tasks.image.DockerBuildImage::class) {
+    val buildImage by registering(Exec::class) {
         dependsOn(prepareDockerData, ":server-base:pullImage")
-        inputDir.set(file("build/docker-data"))
-        images.add("ghcr.io/robertfmurdock/coupling-serverless:latest")
+        commandLine(
+            "docker build --tag ghcr.io/robertfmurdock/coupling-serverless:latest build/docker-data"
+                .split(" ")
+        )
     }
 
     register<NodeExec>("serverlessStart") {
