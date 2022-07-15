@@ -2,7 +2,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
-import java.io.ByteArrayOutputStream
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -88,9 +87,7 @@ tasks {
         arguments = listOf(cdnLookupFile) + cdnLibraries.asSequence().toList()
         val cdnOutputFile = file(cdnBuildOutput)
         outputs.file(cdnBuildOutput)
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        standardOutput = byteArrayOutputStream
-        doLast { cdnOutputFile.writeText(byteArrayOutputStream.toString("UTF-8")) }
+        outputFile = cdnOutputFile
         outputs.cacheIf { true }
     }
 

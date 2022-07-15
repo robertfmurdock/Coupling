@@ -1,8 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
-import java.io.FileOutputStream
+import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -119,64 +118,77 @@ tasks {
     val webpackConfig = project.projectDir.resolve("webpack.config.js")
     val webpackedWdioConfigOutput = "config"
 
-    val nodeRun = named("nodeRun", NodeJsExec::class) {
-        outputs.cacheIf { true }
-        dependsOn(
-            compileProductionExecutableKotlinJs,
-            productionExecutableCompileSync,
-            compileE2eTestProductionExecutableKotlinJs,
-            appConfiguration,
-            clientConfiguration,
-            testLoggingLib,
-            ":composeUp"
-        )
-        inputs.files(
-            appConfiguration,
-            clientConfiguration,
-            testLoggingLib
-        )
-        inputs.files(compileProductionExecutableKotlinJs.get().outputs.files)
-        inputs.files(compileE2eTestProductionExecutableKotlinJs.get().outputs.files)
-        inputs.files(wdioConfig)
+    val e2eRun = register(
+        "e2eRun",
+        com.zegreatrob.coupling.plugins.FileWrappedNodeJsExec::class,
+        kotlin.js().compilations.named("main").get()
+    ).apply {
+        configure {
+            val npmProject = compilation.npmProject
+            this.nodeJs = org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin.apply(project.rootProject)
+            executable = nodeJs.requireConfigured().nodeExecutable
+            workingDir = npmProject.dir
+            dependsOn(nodeJs.npmInstallTaskProvider)
+            dependsOn(nodeJs.npmInstallTaskProvider, compilation.compileKotlinTaskProvider)
 
-        val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
-        outputs.dir(reportDir)
-        val testResultsDir = "${project.buildDir.absolutePath}/test-results/"
-        outputs.dir(testResultsDir)
-        val logsDir = "${project.buildDir.absolutePath}/reports/logs"
-        val logFile = file("$logsDir/run.log")
-        logFile.parentFile.mkdirs()
-
-        environment("BASEURL" to "https://localhost/local/")
-        environment(
-            mapOf(
-                "CLIENT_BASENAME" to "local",
-                "SERVER_DIR" to project(":server").projectDir.absolutePath,
-                "NODE_PATH" to listOf(
-                    "${project.rootProject.projectDir.path}/coupling-libraries/build/js/node_modules",
-                    "${project.rootProject.buildDir.path}/js/node_modules",
-                    e2eTestProcessResources.get().destinationDir,
-                ).plus(project.relatedResources())
-                    .joinToString(":"),
-                "BUILD_DIR" to project.buildDir.absolutePath,
-                "WEBPACK_CONFIG" to webpackConfig,
-                "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
-                "REPORT_DIR" to reportDir,
-                "TEST_RESULTS_DIR" to testResultsDir,
-                "LOGS_DIR" to logsDir,
-                "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
-                "STRICT_SSL" to "false",
+            outputs.cacheIf { true }
+            dependsOn(
+                compileProductionExecutableKotlinJs,
+                productionExecutableCompileSync,
+                compileE2eTestProductionExecutableKotlinJs,
+                appConfiguration,
+                clientConfiguration,
+                testLoggingLib,
+                ":composeUp"
             )
-        )
+            inputs.files(
+                appConfiguration,
+                clientConfiguration,
+                testLoggingLib
+            )
+            inputs.files(compileProductionExecutableKotlinJs.get().outputs.files)
+            inputs.files(compileE2eTestProductionExecutableKotlinJs.get().outputs.files)
+            inputs.files(wdioConfig)
 
-        standardOutput = FileOutputStream(logFile, true)
+            val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
+            outputs.dir(reportDir)
+            val testResultsDir = "${project.buildDir.absolutePath}/test-results/"
+            outputs.dir(testResultsDir)
+            val logsDir = "${project.buildDir.absolutePath}/reports/logs"
+            val logFile = file("$logsDir/run.log")
+            logFile.parentFile.mkdirs()
+
+            environment("BASEURL" to "https://localhost/local/")
+            environment(
+                mapOf(
+                    "CLIENT_BASENAME" to "local",
+                    "SERVER_DIR" to project(":server").projectDir.absolutePath,
+                    "NODE_PATH" to listOf(
+                        "${project.rootProject.projectDir.path}/coupling-libraries/build/js/node_modules",
+                        "${project.rootProject.buildDir.path}/js/node_modules",
+                        e2eTestProcessResources.get().destinationDir,
+                    ).plus(project.relatedResources())
+                        .joinToString(":"),
+                    "BUILD_DIR" to project.buildDir.absolutePath,
+                    "WEBPACK_CONFIG" to webpackConfig,
+                    "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
+                    "REPORT_DIR" to reportDir,
+                    "TEST_RESULTS_DIR" to testResultsDir,
+                    "LOGS_DIR" to logsDir,
+                    "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
+                    "STRICT_SSL" to "false",
+                )
+            )
+
+            outputFile = logFile
+        }
     }
 
     named("check") {
-        dependsOn(nodeRun)
+        dependsOn(e2eRun)
     }
 
     named("test") {
-        dependsOn(nodeRun)
+        dependsOn(e2eRun)
     }
 }

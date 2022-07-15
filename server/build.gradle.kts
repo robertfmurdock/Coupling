@@ -1,4 +1,5 @@
 import com.zegreatrob.coupling.plugins.NodeExec
+import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -57,7 +58,12 @@ tasks {
         inputs.dir("public")
         outputs.dir(file("build/webpack-output"))
         outputs.cacheIf { true }
-        compilationName = "main"
+        val compilationName = "main"
+        val jsProject: org.jetbrains.kotlin.gradle.dsl.KotlinJsProjectExtension = project.extensions.getByType()
+        val compilation = jsProject.js().compilations.named(compilationName).get()
+        nodeModulesDir = compilation?.npmProject?.nodeModulesDir
+        npmProjectDir = compilation?.npmProject?.dir
+
         nodeCommand = "webpack"
         arguments = listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
         environment("NODE_ENV" to "production")
