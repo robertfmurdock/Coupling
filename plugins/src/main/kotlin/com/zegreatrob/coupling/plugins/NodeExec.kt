@@ -4,6 +4,7 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.AbstractExecTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
@@ -12,13 +13,11 @@ import java.io.FileOutputStream
 
 open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
 
-    @InputDirectory
+    @Internal
     lateinit var projectNodeModulesDir: File
-
-    @InputDirectory
+    @Internal
     lateinit var nodeBinDir: File
-
-    @Input
+    @Internal
     lateinit var nodeExecPath: String
 
     @InputDirectory

@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 
 plugins {
@@ -42,6 +43,8 @@ kotlin {
     }
 }
 
+val cdnLookupConfiguration: Configuration by configurations.creating
+
 val outputFile: String? by project
 
 tasks {
@@ -50,5 +53,12 @@ tasks {
         outputFile?.let {
             standardOutput = file("${System.getProperty("user.dir")}/$it").outputStream()
         }
+    }
+}
+
+artifacts {
+    val task = tasks.named("compileProductionExecutableKotlinJs", KotlinJsIrLink::class).get()
+    add(cdnLookupConfiguration.name, task.outputFileProperty.get()) {
+        builtBy(task, "compileProductionExecutableKotlinJs")
     }
 }

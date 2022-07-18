@@ -1,4 +1,3 @@
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
@@ -34,8 +33,13 @@ kotlin {
 }
 
 val clientConfiguration: Configuration by configurations.creating
+val cdnLookupConfiguration: Configuration by configurations.creating
 
 dependencies {
+    cdnLookupConfiguration(
+        project(mapOf("path" to ":coupling-libraries:cdnLookup", "configuration" to "cdnLookupConfiguration"))
+    )
+
     implementation(kotlin("stdlib-js"))
     implementation(project(":sdk"))
     implementation(project(":coupling-libraries:components"))
@@ -76,19 +80,17 @@ val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 tasks {
     val cdnBuildOutput = "${project.buildDir.absolutePath}/cdn.json"
     val lookupCdnUrls by registering(NodeExec::class) {
-        dependsOn(":coupling-libraries:cdnLookup:compileProductionExecutableKotlinJs")
-        val cdnLookupFile = project.rootDir.absolutePath +
-            "/coupling-libraries/cdnLookup/build/compileSync/main/productionExecutable/kotlin/Coupling-cdnLookup.js"
-        inputs.file(cdnLookupFile)
+        setup(project)
+        dependsOn(cdnLookupConfiguration, "publicPackageJson")
+        inputs.files(cdnLookupConfiguration)
         val settingsFile = File(project.projectDir, "cdn.settings.json")
         inputs.file(settingsFile)
         val settings = ObjectMapper().readTree(settingsFile)
-        val cdnLibraries = settings.fieldNames()
 
-        arguments = listOf(cdnLookupFile) + cdnLibraries.asSequence().toList()
+        val cdnLookupFile = cdnLookupConfiguration.resolve().first()
+
+        arguments = listOf(cdnLookupFile.absolutePath) + settings.fieldNames().asSequence().toList()
         val cdnOutputFile = file(cdnBuildOutput)
-        outputs.file(cdnBuildOutput)
-        setup(project)
         outputFile = cdnOutputFile
         outputs.cacheIf { true }
     }
