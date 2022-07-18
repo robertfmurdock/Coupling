@@ -118,7 +118,7 @@ tasks {
             enabled = false
         }
         val absolutePath = browserProductionWebpack.get().destinationDirectory.absolutePath
-        commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/$rootProject.version".split(" ")
+        commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${rootProject.version}".split(" ")
     }
     val release by registering {
         dependsOn(":release", uploadToS3)
