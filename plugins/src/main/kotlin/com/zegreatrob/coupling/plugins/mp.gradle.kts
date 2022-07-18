@@ -11,6 +11,8 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
 }
 
+version = "0.0.0"
+
 ktlint {
     version.set("0.45.2")
 }
