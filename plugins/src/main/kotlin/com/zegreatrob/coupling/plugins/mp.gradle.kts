@@ -29,8 +29,8 @@ kotlin {
 }
 
 dependencies {
-    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:8.0.5"))
-    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.6.7"))
+    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:8.1.0"))
+    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.6.9"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.3"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
     "commonMainImplementation"(enforcedPlatform("io.ktor:ktor-bom:2.0.3"))

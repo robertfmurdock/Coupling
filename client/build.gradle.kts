@@ -114,11 +114,11 @@ tasks {
     val uploadToS3 by registering(Exec::class) {
         dependsOn(browserProductionWebpack, ":release")
         mustRunAfter(check, ":e2e:check")
-        if (version.toString().contains("SNAPSHOT")) {
+        if (rootProject.version.toString().contains("SNAPSHOT")) {
             enabled = false
         }
         val absolutePath = browserProductionWebpack.get().destinationDirectory.absolutePath
-        commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/$version".split(" ")
+        commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/$rootProject.version".split(" ")
     }
     val release by registering {
         dependsOn(":release", uploadToS3)

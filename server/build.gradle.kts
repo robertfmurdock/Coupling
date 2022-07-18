@@ -167,7 +167,7 @@ tasks {
         environment(
             "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
             "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${project.version}",
+            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${rootProject.version}",
         )
         nodeCommand = "serverless"
         arguments = listOf(
