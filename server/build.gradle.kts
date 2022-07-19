@@ -189,15 +189,13 @@ tasks {
     register("serverlessBuildPrerelease", NodeExec::class) {
         configureBuild("prerelease")
     }
-    artifacts {
-        add(appConfiguration.name, file("build/executable")) {
-            builtBy(serverAssemble)
-        }
-    }
 }
 
 artifacts {
     add(appConfiguration.name, tasks.compileKotlinJs.get().outputFileProperty) {
         builtBy(tasks.compileKotlinJs)
+    }
+    add(appConfiguration.name, file("build/executable")) {
+        builtBy("serverAssemble")
     }
 }

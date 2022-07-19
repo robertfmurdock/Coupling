@@ -1,6 +1,7 @@
 
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
+import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
@@ -60,7 +61,7 @@ fun Project.relatedProjects(): Set<Project> {
     return configuration
         .allDependencies
         .asSequence()
-        .filterIsInstance<org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency>()
+        .filterIsInstance<DefaultProjectDependency>()
         .map { it.dependencyProject }
         .flatMap { sequenceOf(it) + it.relatedProjects() }
         .plus(this)

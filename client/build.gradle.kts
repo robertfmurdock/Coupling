@@ -102,23 +102,17 @@ tasks {
     }
     compileProductionExecutableKotlinJs {
     }
-    val browserDistribution = named("browserDistribution")
+
     val browserProductionWebpack = named("browserProductionWebpack", KotlinWebpack::class) {
         dependsOn(lookupCdnUrls)
         inputs.file(cdnBuildOutput)
-        outputs.dir(destinationDirectory.absolutePath + "/html")
+        outputs.dir("${destinationDirectory.absolutePath}/html")
         outputs.cacheIf { true }
-        artifacts {
-            add(clientConfiguration.name, destinationDirectory) {
-                builtBy(this@named, browserDistribution)
-            }
-        }
     }
 
     val uploadToS3 by registering(Exec::class) {
         dependsOn(browserProductionWebpack)
-        mustRunAfter(check, ":e2e:check")
-        if (rootProject.version.toString().contains("SNAPSHOT")) {
+        if (("${rootProject.version}").contains("SNAPSHOT")) {
             enabled = false
         }
         val absolutePath = browserProductionWebpack.get().destinationDirectory.absolutePath
@@ -169,10 +163,15 @@ tasks {
     named("browserTest") {
         outputs.cacheIf { true }
     }
+}
 
-    artifacts {
-        add(clientConfiguration.name, compileProductionExecutableKotlinJs.get().outputFileProperty) {
-            builtBy(compileProductionExecutableKotlinJs)
-        }
+artifacts {
+    add(clientConfiguration.name, tasks.compileProductionExecutableKotlinJs.get().outputFileProperty) {
+        builtBy(tasks.compileProductionExecutableKotlinJs)
+    }
+    val browserProductionWebpack = tasks.named("browserProductionWebpack", KotlinWebpack::class).get()
+    val browserDistribution = tasks.named("browserDistribution")
+    add(clientConfiguration.name, browserProductionWebpack.destinationDirectory) {
+        builtBy(browserProductionWebpack, browserDistribution)
     }
 }
