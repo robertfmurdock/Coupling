@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
+import java.time.Duration
 
 plugins {
     id("com.avast.gradle.docker-compose") version "0.16.8"
@@ -17,6 +18,8 @@ dockerCompose {
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
     startedServices.set(listOf("serverless", "caddy", "dynamo"))
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
+    waitForTcpPorts.set(false)
+    waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
 }
 
 tagger {

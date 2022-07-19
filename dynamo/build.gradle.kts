@@ -1,3 +1,5 @@
+import java.time.Duration
+
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.avast.gradle.docker-compose")
@@ -26,6 +28,8 @@ dockerCompose {
     setProjectName("Coupling-root")
     startedServices.set(listOf("dynamo"))
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
+    waitForTcpPorts.set(false)
+    waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
 }
 
 dependencies {
