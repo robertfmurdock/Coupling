@@ -75,6 +75,8 @@ dependencies {
     testImplementation("com.zegreatrob.jsmints:minenzyme")
 }
 
+val taggerExtension = com.zegreatrob.coupling.plugins.tagger.TaggerExtension.apply(rootProject)
+
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
@@ -114,7 +116,7 @@ tasks {
     }
 
     val uploadToS3 by registering(Exec::class) {
-        dependsOn(browserProductionWebpack, ":release")
+        dependsOn(browserProductionWebpack)
         mustRunAfter(check, ":e2e:check")
         if (rootProject.version.toString().contains("SNAPSHOT")) {
             enabled = false
@@ -122,8 +124,8 @@ tasks {
         val absolutePath = browserProductionWebpack.get().destinationDirectory.absolutePath
         commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${rootProject.version}".split(" ")
     }
-    val release by registering {
-        dependsOn(":release", uploadToS3)
+    taggerExtension.releaseProvider.configure {
+        finalizedBy(uploadToS3)
     }
 
     val additionalResources by registering(Copy::class) {

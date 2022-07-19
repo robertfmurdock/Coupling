@@ -10,7 +10,7 @@ plugins {
     base
 }
 
-val tagger = project.extensions.create("tagger", TaggerExtension::class, grgitService)
+val tagger = project.extensions.create("tagger", TaggerExtension::class, grgitService, project)
 
 tasks {
     val calculateVersion by registering(CalculateVersion::class) {
@@ -24,7 +24,7 @@ tasks {
         taggerExtension = tagger
     }
 
-    val release by registering(ReleaseVersion::class) {
+    register("release", ReleaseVersion::class) {
         taggerExtension = tagger
         dependsOn(assemble)
         mustRunAfter(check)

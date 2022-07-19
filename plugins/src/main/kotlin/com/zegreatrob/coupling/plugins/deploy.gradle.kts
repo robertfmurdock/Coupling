@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
+import com.zegreatrob.coupling.plugins.tagger.TaggerExtension
+
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.coupling.plugins.node")
@@ -13,6 +15,8 @@ val serverProject: Project = project.project(":server")
 fun serverlessBuildDir(stage: String) = "${serverProject.buildDir.absolutePath}/${stage}/lambda-dist"
 val serverlessYmlPath = "${serverProject.projectDir.absolutePath}/serverless.yml"
 
+val taggerExtension = TaggerExtension.apply(rootProject)
+
 tasks {
     val deploy by registering(NodeExec::class) {
         configureDeploy(project.name)
@@ -20,8 +24,8 @@ tasks {
         mustRunAfter(":server:check")
         mustRunAfter(":e2e:check")
     }
-    val release by registering {
-        dependsOn(":release", deploy)
+    taggerExtension.releaseProvider.configure {
+        finalizedBy(deploy)
     }
 }
 

@@ -8,7 +8,6 @@ plugins {
     id("com.avast.gradle.docker-compose") version "0.16.8"
     id("com.github.sghill.distribution-sha") version "0.4.0"
     id("com.zegreatrob.coupling.plugins.versioning")
-    id("com.zegreatrob.coupling.plugins.tagger")
     id("com.zegreatrob.coupling.plugins.linter")
     base
 }
