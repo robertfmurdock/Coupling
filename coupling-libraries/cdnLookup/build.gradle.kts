@@ -57,8 +57,8 @@ tasks {
 }
 
 artifacts {
-    val task = tasks.named("compileProductionExecutableKotlinJs", KotlinJsIrLink::class).get()
-    add(cdnLookupConfiguration.name, task.outputFileProperty.get()) {
-        builtBy(task, "compileProductionExecutableKotlinJs")
+    val task = tasks.named("compileProductionExecutableKotlinJs", KotlinJsIrLink::class)
+    add(cdnLookupConfiguration.name, task.map { it.outputFileProperty }) {
+        builtBy(task)
     }
 }

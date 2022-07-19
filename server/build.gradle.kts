@@ -56,9 +56,9 @@ tasks {
             "productionExecutableCompileSync"
         )
         mustRunAfter(clean)
-        inputs.dir(compileKotlinJs.get().outputFileProperty)
-        inputs.dir(processResources.get().destinationDir.path)
-        inputs.file(compileProductionExecutableKotlinJs.get().outputFileProperty)
+        inputs.dir(compileKotlinJs.map { it.outputFileProperty })
+        inputs.dir(processResources.map { it.destinationDir.path })
+        inputs.file(compileProductionExecutableKotlinJs.map { it.outputFileProperty })
         inputs.file(file("package.json"))
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")
@@ -192,7 +192,7 @@ tasks {
 }
 
 artifacts {
-    add(appConfiguration.name, tasks.compileKotlinJs.get().outputFileProperty) {
+    add(appConfiguration.name, tasks.compileKotlinJs.map { it.outputFileProperty }) {
         builtBy(tasks.compileKotlinJs)
     }
     add(appConfiguration.name, file("build/executable")) {

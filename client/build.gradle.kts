@@ -166,12 +166,12 @@ tasks {
 }
 
 artifacts {
-    add(clientConfiguration.name, tasks.compileProductionExecutableKotlinJs.get().outputFileProperty) {
+    add(clientConfiguration.name, tasks.compileProductionExecutableKotlinJs.map { it.outputFileProperty }) {
         builtBy(tasks.compileProductionExecutableKotlinJs)
     }
-    val browserProductionWebpack = tasks.named("browserProductionWebpack", KotlinWebpack::class).get()
+    val browserProductionWebpack = tasks.named("browserProductionWebpack", KotlinWebpack::class)
     val browserDistribution = tasks.named("browserDistribution")
-    add(clientConfiguration.name, browserProductionWebpack.destinationDirectory) {
+    add(clientConfiguration.name, browserProductionWebpack.map { it.destinationDirectory }) {
         builtBy(browserProductionWebpack, browserDistribution)
     }
 }

@@ -53,8 +53,7 @@ kotlin {
     }
 }
 
-val testLoggingLib: Configuration by configurations.creating {
-}
+val testLoggingLib: Configuration by configurations.creating {}
 
 tasks {
     named("jsJar") {
@@ -63,10 +62,9 @@ tasks {
 }
 
 artifacts {
-    val compileProductionExecutableKotlinJs = tasks.named(
-        "compileProductionExecutableKotlinJs", Kotlin2JsCompile::class
-    ).get()
-    add(testLoggingLib.name, compileProductionExecutableKotlinJs.outputFileProperty) {
+    val compileProductionExecutableKotlinJs =
+        tasks.named("compileProductionExecutableKotlinJs", Kotlin2JsCompile::class)
+    add(testLoggingLib.name, compileProductionExecutableKotlinJs.map { it.outputFileProperty }) {
         builtBy(compileProductionExecutableKotlinJs)
     }
 }

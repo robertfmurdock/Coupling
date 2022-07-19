@@ -113,7 +113,7 @@ tasks {
     val dependencyResources by registering(Copy::class) {
         dependsOn(":client:processResources")
         duplicatesStrategy = DuplicatesStrategy.WARN
-        into(e2eTestProcessResources.get().destinationDir)
+        into(e2eTestProcessResources.map { it.destinationDir })
         from("$rootDir/client/build/processedResources/js/main")
     }
 
@@ -145,8 +145,8 @@ tasks {
             clientConfiguration,
             testLoggingLib
         )
-        inputs.files(compileProductionExecutableKotlinJs.get().outputs.files)
-        inputs.files(compileE2eTestProductionExecutableKotlinJs.get().outputs.files)
+        inputs.files(compileProductionExecutableKotlinJs.map { it.outputs.files })
+        inputs.files(compileE2eTestProductionExecutableKotlinJs.map { it.outputs.files })
         inputs.files(wdioConfig)
 
         val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
