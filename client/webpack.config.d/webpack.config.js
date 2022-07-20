@@ -22,6 +22,26 @@ if (config.output) {
 if (!config.resolve.modules) {
     config.resolve.modules = []
 }
+
+config.optimization = {
+    splitChunks: {
+        cacheGroups: {
+            vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                chunks: 'all',
+            },
+            kotlin: {
+                test: /[\\/]kotlin[\\/](kotlin|korlibs)/,
+                chunks: 'all',
+            },
+            ktor: {
+                test: /[\\/]kotlin[\\/]ktor/,
+                chunks: 'all',
+            },
+        },
+    },
+}
+
 const nodeModules = path.resolve(__dirname, '../../../../build/js/node_modules');
 config.resolve.modules.push(resourcesPath, additionalResourcesPath, nodeModules);
 config.resolve.fallback = {"assert": false};
@@ -57,7 +77,11 @@ config.module.rules.push(
         }
     }
 );
-
+config.performance = {
+    assetFilter: function (assetFilename) {
+        return assetFilename.endsWith('.js') || assetFilename.endsWith('.css');
+    },
+}
 
 config.externals = {"cheerio": "window", "fs": "empty", ...cdnSettings}
 

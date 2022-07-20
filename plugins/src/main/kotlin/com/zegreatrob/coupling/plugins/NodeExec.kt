@@ -55,6 +55,7 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
 
         outputFile?.let {
             standardOutput = FileOutputStream(it)
+            errorOutput = standardOutput
         }
 
         super.exec()
