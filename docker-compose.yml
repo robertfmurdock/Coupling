@@ -14,6 +14,12 @@ services:
       - API_GATEWAY_MANAGEMENT_API_HOST=http://127.0.0.1:3001
       - NODE_ENV=production
       - ENABLE_PRERELEASE_FEATURES=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/local"]
+      interval: 2s
+      timeout: 1s
+      retries: 20
+      start_period: 0s
   caddy:
     image: caddy:2.4.6-alpine
     restart: unless-stopped
