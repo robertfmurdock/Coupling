@@ -12,10 +12,6 @@ object DynamoDbProvider : DynamoDBSyntax {
         DynamoDB(dynamoConfig())
     }
 
-    val dynamoClient: com.zegreatrob.coupling.repository.dynamo.external.awsdynamoclient.DynamoDBClient by lazy {
-        com.zegreatrob.coupling.repository.dynamo.external.awsdynamoclient.DynamoDBClient(dynamoConfig())
-    }
-
     val logger = KotlinLogging.logger("DYNAMODB")
 
     private fun dynamoConfig(): Json {

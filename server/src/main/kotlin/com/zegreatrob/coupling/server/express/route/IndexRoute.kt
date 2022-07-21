@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.express.route
 
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.env
 import com.zegreatrob.coupling.server.external.express.Express
@@ -9,11 +10,13 @@ import com.zegreatrob.coupling.server.external.node_fetch.fetch
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.RewritingStream
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.Tag
 import com.zegreatrob.coupling.server.external.stream.Readable
+import kotlinx.coroutines.launch
 import kotlin.js.Promise
 
-val indexHtmlPromise get() = fetch("${Config.clientUrl}/html/index.html")
-    .then(FetchResult::text)
-    .unsafeCast<Promise<String>>()
+val indexHtmlPromise
+    get() = fetch("${Config.clientUrl}/html/index.html")
+        .then(FetchResult::text)
+        .unsafeCast<Promise<String>>()
 
 fun Express.indexRoute(): Handler = { _, response, _ ->
     indexHtmlPromise.then { indexHtml ->
@@ -70,3 +73,13 @@ private fun Express.injectVariablesForClient() = """<script>
     window.websocketHost = "${Config.websocketHost}/";
     </script>
 """.trimIndent()
+
+fun healthRoute(): Handler = { request, response, _ ->
+    request.setUser(User("HealthCheck", "", emptySet()))
+    request.scope.launch {
+        request.commandDispatcher()
+    }.invokeOnCompletion { error ->
+        response.sendStatus(if (error == null) 200 else 500)
+            .also { println("exception ${error?.message}") }
+    }
+}

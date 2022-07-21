@@ -7,6 +7,7 @@ import kotlin.js.json
 
 fun Express.routes() {
     get("/", indexRoute())
+    get("/api/health", healthRoute())
     use(userLoadingMiddleware())
     all("/api/*", apiGuard())
     use("/api/graphql", graphqlHTTP(json("schema" to unifiedSchema())))

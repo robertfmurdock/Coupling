@@ -32,12 +32,6 @@ val testLoggingLib: Configuration by configurations.creating { }
 
 val clientConfiguration: Configuration by configurations.creating
 
-configurations {
-    "e2eTestImplementation" {
-        extendsFrom(appConfiguration)
-    }
-}
-
 fun Project.relatedResources() = relatedProjects()
     .asSequence()
     .map { it.projectDir }
@@ -46,7 +40,6 @@ fun Project.relatedResources() = relatedProjects()
             "src/commonMain/resources",
             "src/clientCommonMain/resources",
             "src/jsMain/resources",
-
             "src/main/resources"
         ).asSequence().map(it::resolve)
     }
@@ -91,6 +84,7 @@ kotlin {
 
 dependencies {
     clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
+    appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
     implementation(kotlin("stdlib-js"))
     implementation("com.benasher44:uuid:0.5.0")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")

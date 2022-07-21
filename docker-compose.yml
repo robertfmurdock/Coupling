@@ -15,7 +15,7 @@ services:
       - NODE_ENV=production
       - ENABLE_PRERELEASE_FEATURES=true
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/local"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/local/api/health"]
       interval: 2s
       timeout: 1s
       retries: 20
