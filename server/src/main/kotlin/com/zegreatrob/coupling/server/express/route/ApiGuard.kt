@@ -22,5 +22,4 @@ private fun setupDispatcher(request: Request, next: Next): suspend CoroutineScop
     next()
 }
 
-private suspend fun Request.commandDispatcher() =
-    com.zegreatrob.coupling.server.commandDispatcher(user, scope, traceId)
+suspend fun Request.commandDispatcher() = com.zegreatrob.coupling.server.commandDispatcher(user, scope, traceId)

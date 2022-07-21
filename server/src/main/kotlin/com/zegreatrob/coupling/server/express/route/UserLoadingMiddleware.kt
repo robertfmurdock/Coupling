@@ -24,7 +24,7 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
     }
 }
 
-private fun Request.setUser(user: User?) {
+fun Request.setUser(user: User?) {
     with(asDynamic()) {
         this.user = user
         this.isAuthenticated = user != null
