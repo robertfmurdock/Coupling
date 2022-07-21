@@ -47,12 +47,13 @@ private suspend fun lookupCdnUrl(lib: String): Pair<String, String> {
 private suspend fun lookupCdnFilename(lib: String, version: String): String {
     val cdnLibraryDescription =
         httpClient.get("https://data.jsdelivr.com/v1/package/npm/$lib@$version").body<JsonObject>()
-
-    val files = cdnLibraryDescription.getFiles()
+    val files = cdnLibraryDescription.defaultFile() + cdnLibraryDescription.getFiles()
     return files.firstOrNull { fileName -> fileName.contains("umd") && fileName.endsWith(".production.min.js") }
-        ?: files.firstOrNull { fileName -> fileName.endsWith(".min.js") }
+        ?: files.firstOrNull { fileName -> fileName.endsWith(".min.js") && !fileName.contains("cjs") }
         ?: files.first()
 }
+
+private fun JsonObject.defaultFile() = listOfNotNull(this["default"]?.jsonPrimitive?.content?.substring(1))
 
 private fun JsonObject.getFiles(): List<String> {
     return this["files"]?.jsonArray?.flatMap { thing: JsonElement ->
