@@ -31,9 +31,19 @@ config.optimization = {
                 name: 'vendor',
                 chunks: 'all',
             },
+            couplingCore: {
+                test: /[\\/]kotlin[\\/](Coupling-client|Coupling-components)/,
+                name: 'coupling-core',
+                chunks: 'all',
+            },
             kotlin: {
-                test: /[\\/]kotlin[\\/](kotlin|korlibs)/,
+                test: /[\\/]kotlin[\\/](kotlin-kotlin|korlibs)/,
                 name: 'kotlin',
+                chunks: 'all',
+            },
+            kotlinx: {
+                test: /[\\/]kotlin[\\/](kotlinx)/,
+                name: 'kotlinx',
                 chunks: 'all',
             },
             ktor: {

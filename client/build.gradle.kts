@@ -100,17 +100,18 @@ tasks {
     named("compileTestDevelopmentExecutableKotlinJs") {
         dependsOn(lookupCdnUrls)
     }
-    compileProductionExecutableKotlinJs {
-    }
+    compileProductionExecutableKotlinJs {}
 
     val browserProductionWebpack = named("browserProductionWebpack", KotlinWebpack::class) {
         dependsOn(lookupCdnUrls)
         inputs.file(cdnBuildOutput)
-        outputs.dir("${destinationDirectory.absolutePath}/html")
-        val distributionsDirectory = outputFile.parentFile.absolutePath
-        outputs.file("$distributionsDirectory/vendor.js")
-        outputs.file("$distributionsDirectory/kotlin.js")
-        outputs.file("$distributionsDirectory/ktor.js")
+        inputs.file(File(project.projectDir, "cdn.settings.json"))
+        outputs.dir(File(destinationDirectory, "html"))
+        outputs.file(File(destinationDirectory, "client-vendor.js"))
+        outputs.file(File(destinationDirectory, "client-kotlin.js"))
+        outputs.file(File(destinationDirectory, "client-coupling-core.js"))
+        outputs.file(File(destinationDirectory, "client-kotlinx.js"))
+        outputs.file(File(destinationDirectory, "client-ktor.js"))
         outputs.cacheIf { true }
     }
 
