@@ -8,16 +8,18 @@ import kotlin.js.json
 suspend fun checkLogs() {
     WebdriverBrowser.getLogs()
         .let { browserLog ->
-            browserLog.forEach {
-                try {
-                    console.log(JSON.stringify(parseForForwarding(it)))
-                } catch (_: Throwable) {
-                    console.log(it["message"])
-                }
-            }
+            browserLog.forwardLogs()
             errorsWarnings(browserLog)
                 .assertIsEqualTo(emptyList(), JSON.stringify(errorsWarnings(browserLog)))
         }
+}
+
+fun List<Json>.forwardLogs() = forEach {
+    try {
+        console.log(JSON.stringify(parseForForwarding(it)))
+    } catch (_: Throwable) {
+        console.log(it["message"])
+    }
 }
 
 private fun parseForForwarding(it: Json): Json {

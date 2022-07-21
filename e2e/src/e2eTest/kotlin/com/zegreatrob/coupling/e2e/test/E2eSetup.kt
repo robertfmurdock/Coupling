@@ -25,6 +25,7 @@ val e2eSetup: TestTemplate<Sdk> by lazy {
 
             TestLogin.login()
             WebdriverBrowser.getLogs()
+                .forwardLogs()
         }
     }).extend(
         sharedTeardown = { checkLogs() }
