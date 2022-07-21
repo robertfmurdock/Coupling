@@ -107,6 +107,10 @@ tasks {
         dependsOn(lookupCdnUrls)
         inputs.file(cdnBuildOutput)
         outputs.dir("${destinationDirectory.absolutePath}/html")
+        val distributionsDirectory = outputFile.parentFile.absolutePath
+        outputs.file("$distributionsDirectory/vendor.js")
+        outputs.file("$distributionsDirectory/kotlin.js")
+        outputs.file("$distributionsDirectory/ktor.js")
         outputs.cacheIf { true }
     }
 

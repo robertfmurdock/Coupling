@@ -28,14 +28,17 @@ config.optimization = {
         cacheGroups: {
             vendor: {
                 test: /[\\/]node_modules[\\/]/,
+                name: 'vendor',
                 chunks: 'all',
             },
             kotlin: {
                 test: /[\\/]kotlin[\\/](kotlin|korlibs)/,
+                name: 'kotlin',
                 chunks: 'all',
             },
             ktor: {
                 test: /[\\/]kotlin[\\/]ktor/,
+                name: 'ktor',
                 chunks: 'all',
             },
         },
