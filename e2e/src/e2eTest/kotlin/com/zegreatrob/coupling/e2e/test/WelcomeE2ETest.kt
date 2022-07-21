@@ -16,5 +16,5 @@ class WelcomeE2ETest {
         purgeBrowserLogsBecauseGoogleIsCreatingWarning()
     }
 
-    private suspend fun purgeBrowserLogsBecauseGoogleIsCreatingWarning() = WebdriverBrowser.getLogs()
+    private suspend fun purgeBrowserLogsBecauseGoogleIsCreatingWarning() = WebdriverBrowser.getLogs().forwardLogs()
 }

@@ -22,6 +22,7 @@ object TestLogin : BrowserSyntax {
 
     private suspend fun clearLogs() {
         WebdriverBrowser.getLogs()
+            .forwardLogs()
     }
 
     suspend fun login() {
