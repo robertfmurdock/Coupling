@@ -5340,10 +5340,10 @@ dataloader@2.1.0:
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-2.1.0.tgz#c69c538235e85e7ac6c6c444bae8ecabf5de9df7"
   integrity sha512-qTcEYLen3r7ojZNgVUaRggOI+KM7jrKxXeSHhogh/TWxYMeONEMqY+hmkobiYQozsGIyg9OYVzO4ZIfoB4I0pQ==
 
-date-fns@^2.28.0:
-  version "2.28.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
-  integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
+date-fns@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.1.tgz#9667c2615525e552b5135a3116b95b1961456e60"
+  integrity sha512-dlLD5rKaKxpFdnjrs+5azHDFOPEu4ANy/LTh04A1DTzMM7qoajmKCBc8pkKRFT41CNzw+4gQh79X5C+Jq27HAw==
 
 date-format@0.0.2:
   version "0.0.2"
@@ -7530,10 +7530,10 @@ hosted-git-info@^5.0.0:
   dependencies:
     lru-cache "^7.5.1"
 
-hotkeys-js@3.9.3:
-  version "3.9.3"
-  resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-3.9.3.tgz#4b755cc695b388d7f93a83aff4b0c2a45719996c"
-  integrity sha512-s+f0xyvDmf6+DyrFQ2SY+eA7lbvMbjqkqi0I0SpMgnN5tZx7DeH8nsWhkJR4KEq3pxDPHJppDUhdt1rZFW5LeQ==
+hotkeys-js@3.9.4:
+  version "3.9.4"
+  resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-3.9.4.tgz#ce1aa4c3a132b6a63a9dd5644fc92b8a9b9cbfb9"
+  integrity sha512-2zuLt85Ta+gIyvs4N88pCYskNrxf1TFv3LR9t5mdAZIX8BcgQQ48F2opUptvHa6m8zsy5v/a0i9mWzTrlNWU0Q==
 
 hpack.js@^2.1.6:
   version "2.1.6"
@@ -11450,12 +11450,12 @@ react-flip-toolkit@^7.0.14:
     flip-toolkit "7.0.14"
     prop-types "^15.5.7"
 
-react-hotkeys-hook@^3.4.6:
-  version "3.4.6"
-  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-3.4.6.tgz#21eda8e97121583a14056479e3eea9e51d2e2a69"
-  integrity sha512-SiGKHnauaAQglRA7qeiW5LTa0KoT2ssv8YGYKZQoM3P9v5JFEHJdXOSFml1N6K86oKQ8dLCLlxqBqGlSJWGmxQ==
+react-hotkeys-hook@^3.4.7:
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-3.4.7.tgz#e16a0a85f59feed9f48d12cfaf166d7df4c96b7a"
+  integrity sha512-+bbPmhPAl6ns9VkXkNNyxlmCAIyDAcWbB76O4I0ntr3uWCRuIQf/aRLartUahe9chVMPj+OEzzfk3CQSjclUEQ==
   dependencies:
-    hotkeys-js "3.9.3"
+    hotkeys-js "3.9.4"
 
 react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.6:
   version "16.13.1"
