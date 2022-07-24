@@ -4,5 +4,8 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.131.0",
     "@aws-sdk/lib-dynamodb": "3.131.0"
+  },
+  "devDependencies": {
+    "npm-check-updates": "^16.0.0"
   }
 }
