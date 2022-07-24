@@ -6,6 +6,7 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.3.0",
     "jsdom": "20.0.0",
-    "global-jsdom": "8.5.0"
+    "global-jsdom": "8.5.0",
+    "npm-check-updates": "^16.0.0"
   }
 }
