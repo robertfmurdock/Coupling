@@ -39,7 +39,7 @@ kotlin {
             dependencies {
                 implementation("io.github.microutils:kotlin-logging:2.1.23")
                 implementation(kotlin("reflect"))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
                 implementation("org.slf4j:slf4j-simple:2.0.0-alpha7")
             }
