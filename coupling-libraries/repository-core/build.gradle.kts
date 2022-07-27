@@ -37,8 +37,8 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("reflect"))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
             }
         }
 

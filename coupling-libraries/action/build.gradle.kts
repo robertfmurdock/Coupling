@@ -55,8 +55,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("reflect"))
                 implementation("org.slf4j:slf4j-simple:2.0.0-alpha7")
-                implementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
             }
         }
     }
