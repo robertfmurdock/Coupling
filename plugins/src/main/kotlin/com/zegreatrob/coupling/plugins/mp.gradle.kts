@@ -18,11 +18,19 @@ ktlint {
 }
 
 kotlin {
+    targets.all {
+        compilations.all {
+            kotlinOptions {
+                allWarningsAsErrors = true
+            }
+        }
+    }
     sourceSets {
         all {
             languageSettings {
                 optIn("kotlinx.serialization.ExperimentalSerializationApi")
                 optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+                optIn("kotlin.js.ExperimentalJsExport")
             }
         }
     }
@@ -35,6 +43,8 @@ dependencies {
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
     "commonMainImplementation"(enforcedPlatform("io.ktor:ktor-bom:2.0.3"))
     "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.360"))
+    "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-core")
+    "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 }
 
 tasks.withType(KotlinJsTest::class).configureEach {

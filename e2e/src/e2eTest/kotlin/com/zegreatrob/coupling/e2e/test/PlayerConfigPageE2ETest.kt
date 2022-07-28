@@ -75,7 +75,7 @@ class PlayerConfigPageE2ETest {
 //                WebdriverBrowser.acceptAlert()
 //                PairAssignmentsPage.waitForPage()
 //            }
-        } verify { alertText ->
+        } verify { _ ->
 //            alertText.assertIsEqualTo("You have unsaved data. Press OK to leave without saving.")
         }
 

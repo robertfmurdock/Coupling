@@ -83,7 +83,7 @@ class PrepareToSpinPageE2ETest {
 //        WebdriverBrowser.alertText().also {
 //            WebdriverBrowser.dismissAlert()
 //        }
-    } verify { alertText ->
+    } verify { _ ->
 //        alertText.assertIsEqualTo("Press OK to save these pairs.")
 //        assignedPairElements.count().assertIsEqualTo(1)
 //        saveButton.isDisplayed().assertIsEqualTo(true)

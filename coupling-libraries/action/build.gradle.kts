@@ -2,24 +2,17 @@ plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.coupling.plugins.serialization")
 }
-group = "com.zegreatrob.coupling.libraries"
+
 kotlin {
 
     targets {
         js {
             nodejs { testTask { useMocha { timeout = "10s" } } }
-            useCommonJs()
         }
         jvm()
     }
 
     sourceSets {
-        all {
-            languageSettings {
-                optIn("kotlinx.serialization.ExperimentalSerializationApi")
-            }
-        }
-
         getByName("commonMain") {
             dependencies {
                 implementation(project(":coupling-libraries:model"))
@@ -36,7 +29,6 @@ kotlin {
         getByName("commonTest") {
             dependencies {
                 implementation(project(":coupling-libraries:json"))
-                implementation(project(":coupling-libraries:test-action"))
                 implementation(project(":coupling-libraries:test-logging"))
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
                 implementation("org.jetbrains.kotlin:kotlin-test")
