@@ -8,10 +8,8 @@ import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
-@ExperimentalTime
 class MemoryLiveInfoRepositoryTest : LiveInfoRepositoryValidator<MemoryLiveInfoRepository> {
 
     override val repositorySetup: TestTemplate<SharedContext<MemoryLiveInfoRepository>>

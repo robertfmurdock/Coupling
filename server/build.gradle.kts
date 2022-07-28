@@ -14,7 +14,6 @@ kotlin.sourceSets {
     getByName("main") {
         resources.srcDir("src/main/javascript")
     }
-    all { languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi") }
 }
 
 val appConfiguration: Configuration by configurations.creating {

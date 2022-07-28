@@ -28,9 +28,10 @@ kotlin {
     sourceSets {
         all {
             languageSettings {
+                optIn("kotlin.js.ExperimentalJsExport")
+                optIn("kotlin.time.ExperimentalTime")
                 optIn("kotlinx.serialization.ExperimentalSerializationApi")
                 optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-                optIn("kotlin.js.ExperimentalJsExport")
             }
         }
     }

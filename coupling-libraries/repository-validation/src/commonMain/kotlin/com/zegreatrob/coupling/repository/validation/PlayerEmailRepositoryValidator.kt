@@ -6,12 +6,8 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetByEmail
 import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
-import kotlin.time.ExperimentalTime
 
-@ExperimentalCoroutinesApi
-@ExperimentalTime
 interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
         where R : PlayerRepository, R : PlayerListGetByEmail {
 

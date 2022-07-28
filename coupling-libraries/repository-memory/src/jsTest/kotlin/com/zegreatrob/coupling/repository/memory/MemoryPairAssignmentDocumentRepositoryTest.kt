@@ -7,10 +7,8 @@ import com.zegreatrob.coupling.repository.validation.PartyContextData
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
-@ExperimentalTime
 class MemoryPairAssignmentDocumentRepositoryTest :
     PairAssignmentDocumentRepositoryValidator<MemoryPairAssignmentDocumentRepository> {
 

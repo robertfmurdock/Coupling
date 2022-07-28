@@ -13,9 +13,7 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> {
 
     private val compoundRepositorySetup = asyncTestTemplate(sharedSetup = {

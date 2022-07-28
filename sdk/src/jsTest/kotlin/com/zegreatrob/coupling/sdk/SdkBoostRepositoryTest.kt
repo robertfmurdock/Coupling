@@ -7,9 +7,7 @@ import com.zegreatrob.coupling.repository.validation.BoostRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 class SdkBoostRepositoryTest : BoostRepositoryValidator<Sdk, SharedContextData<Sdk>> {
 
     override val repositorySetup = asyncTestTemplate<SharedContextData<Sdk>>(sharedSetup = {

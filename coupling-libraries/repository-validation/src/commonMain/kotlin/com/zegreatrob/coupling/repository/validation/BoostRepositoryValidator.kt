@@ -73,8 +73,6 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
     }
 }
 
-@ExperimentalCoroutinesApi
-@ExperimentalTime
 interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : SharedContext<R>> :
     BoostRepositoryValidator<R, SC> {
 

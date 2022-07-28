@@ -33,7 +33,6 @@ import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.express
 import com.zegreatrob.minjson.at
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await
@@ -46,7 +45,6 @@ private val app by lazy {
     buildApp()
 }
 
-@ExperimentalJsExport
 @JsExport
 @JsName("serverless")
 fun serverless(event: dynamic, context: dynamic): dynamic {
@@ -54,7 +52,6 @@ fun serverless(event: dynamic, context: dynamic): dynamic {
     return js("require('serverless-http')")(app)(event, context)
 }
 
-@ExperimentalCoroutinesApi
 private val websocketApp by lazy {
     express().apply {
         middleware()
@@ -86,8 +83,6 @@ private val websocketApp by lazy {
     }
 }
 
-@ExperimentalJsExport
-@ExperimentalCoroutinesApi
 @Suppress("unused")
 @JsExport
 @JsName("serverlessSocketConnect")
@@ -142,7 +137,6 @@ private fun notifyLambdaOptions() = if (Process.getEnv("IS_OFFLINE") == "true")
 else
     json()
 
-@ExperimentalJsExport
 @JsExport
 @JsName("serverlessSocketMessage")
 fun serverlessSocketMessage(event: Json): dynamic {
@@ -164,7 +158,6 @@ fun serverlessSocketMessage(event: Json): dynamic {
     }
 }
 
-@ExperimentalJsExport
 @JsExport
 @JsName("notifyConnect")
 fun notifyConnect(event: Json) = MainScope().promise {
@@ -186,7 +179,6 @@ fun notifyConnect(event: Json) = MainScope().promise {
     json("statusCode" to 500)
 }
 
-@ExperimentalJsExport
 @JsExport
 @JsName("serverlessSocketDisconnect")
 fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {

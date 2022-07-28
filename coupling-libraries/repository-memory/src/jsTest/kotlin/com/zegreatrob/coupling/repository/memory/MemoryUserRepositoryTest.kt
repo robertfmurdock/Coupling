@@ -8,10 +8,8 @@ import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
-@ExperimentalTime
 class MemoryUserRepositoryTest : UserRepositoryValidator<MemoryUserRepository> {
 
     override val repositorySetup: TestTemplate<SharedContext<MemoryUserRepository>>

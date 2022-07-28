@@ -19,14 +19,10 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
-import kotlin.time.ExperimentalTime
 
 typealias TribeMint = ContextMint<DynamoPartyRepository>
 
-@ExperimentalCoroutinesApi
-@ExperimentalTime
 @Suppress("unused")
 class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository> {
 

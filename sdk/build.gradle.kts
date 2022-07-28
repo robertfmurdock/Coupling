@@ -11,8 +11,6 @@ kotlin {
     }
 
     sourceSets {
-        all { languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi") }
-
         val commonMain = named("commonMain") {
             dependencies {
                 implementation(project(":coupling-libraries:model"))

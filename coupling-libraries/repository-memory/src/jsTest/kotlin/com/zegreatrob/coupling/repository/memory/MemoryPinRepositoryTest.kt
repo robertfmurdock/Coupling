@@ -7,10 +7,8 @@ import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
-@ExperimentalTime
 class MemoryPinRepositoryTest : PinRepositoryValidator<MemoryPinRepository> {
 
     override val repositorySetup = asyncTestTemplate<PartyContext<MemoryPinRepository>>(sharedSetup = {

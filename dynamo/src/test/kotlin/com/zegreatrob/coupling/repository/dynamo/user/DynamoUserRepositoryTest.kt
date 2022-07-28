@@ -21,14 +21,10 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.js.json
 import kotlin.test.Test
-import kotlin.time.ExperimentalTime
 
-@ExperimentalCoroutinesApi
 @Suppress("unused")
-@ExperimentalTime
 class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoUserRepository>>(sharedSetup = {
