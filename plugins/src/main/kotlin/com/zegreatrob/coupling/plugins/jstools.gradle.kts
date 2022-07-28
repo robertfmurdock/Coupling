@@ -16,6 +16,20 @@ kotlin {
     js {
         useCommonJs()
         binaries.executable()
+        compilations.all {
+            kotlinOptions {
+                allWarningsAsErrors = true
+            }
+        }
+        sourceSets {
+            all {
+                languageSettings {
+                    optIn("kotlinx.serialization.ExperimentalSerializationApi")
+                    optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+                    optIn("kotlin.js.ExperimentalJsExport")
+                }
+            }
+        }
     }
 }
 
@@ -32,6 +46,8 @@ dependencies {
     implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.360"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.3"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 }
 
 tasks.withType(KotlinJsTest::class).configureEach {

@@ -144,7 +144,7 @@ class PlayerConfigTest {
         shallow(PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()))
             .find(playerConfigContent)
             .shallow()
-    } verify { wrapper ->
+    } verify { _ ->
 //        wrapper.find(PromptComponent).props().`when`
 //            .assertIsEqualTo(false)
     }
