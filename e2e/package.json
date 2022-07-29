@@ -10,10 +10,10 @@
     "@log4js-node/log4js-api": "1.0.2",
     "@rpii/wdio-html-reporter": "6.3.3",
     "@testing-library/webdriverio": "3.0.5",
-    "@wdio/cli": "7.20.8",
+    "@wdio/cli": "7.20.9",
     "@wdio/dot-reporter": "7.20.7",
     "@wdio/jasmine-framework": "7.20.7",
-    "@wdio/local-runner": "7.20.8",
+    "@wdio/local-runner": "7.20.9",
     "@wdio/junit-reporter": "^7.20.7",
     "chromedriver": "103.0.0",
     "fs-extra": "10.1.0",
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "uuid": "^8.3.2",
-    "npm-check-updates": "^16.0.1"
+    "npm-check-updates": "^16.0.3"
   },
   "scripts": {},
   "repository": {
