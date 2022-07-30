@@ -6,6 +6,6 @@
     "@aws-sdk/lib-dynamodb": "3.137.0"
   },
   "devDependencies": {
-    "npm-check-updates": "^16.0.1"
+    "npm-check-updates": "^16.0.3"
   }
 }
