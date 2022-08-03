@@ -21,7 +21,7 @@ dependencies {
     implementation("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     implementation("se.patrikerdes:gradle-use-latest-versions-plugin:0.2.18")
     implementation("com.zegreatrob.jsmints.plugins.jspackage:com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin:1.6.17")
-    implementation("com.soywiz.korlibs.klock:klock:2.7.0")
+    implementation("com.soywiz.korlibs.klock:klock:3.0.0")
     implementation("org.apache.logging.log4j:log4j-core:2.18.0")
     implementation("org.apache.logging.log4j:log4j-iostreams:2.18.0")
     implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
