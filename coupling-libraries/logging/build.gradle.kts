@@ -20,7 +20,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-                implementation("com.soywiz.korlibs.klock:klock:2.7.0")
+                implementation("com.soywiz.korlibs.klock:klock:3.0.0")
                 api("io.github.microutils:kotlin-logging:2.1.23")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
