@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.plugins.tagger
 import org.ajoberstar.grgit.Grgit
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import java.io.FileOutputStream
 
