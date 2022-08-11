@@ -13,14 +13,13 @@ open class CalculateVersion : DefaultTask(), TaggerExtensionSyntax {
     override lateinit var taggerExtension: TaggerExtension
 
     @Input
-    @Optional
-    var appendToFile: String? = null
+    var exportToGithubEnv: Boolean = false
 
     @TaskAction
     fun execute() {
         logger.quiet(taggerExtension.version)
-        appendToFile?.let { file ->
-            FileOutputStream(file, true)
+        if (exportToGithubEnv) {
+            FileOutputStream(System.getenv("GITHUB_ENV"), true)
                 .write("COUPLING_VERSION=${taggerExtension.version}".toByteArray())
         }
     }
