@@ -49,12 +49,14 @@ jobs:
       - name: Generate Version
         uses: burrunan/gradle-cache-action@v1
         with:
-          arguments: calculateVersion --configuration-cache -PenvironmentFile=$GITHUB_ENV
-      - run: echo $COUPLING_VERSION $GITHUB_ENV
+          arguments: calculateVersion --configuration-cache
+          properties: environmentFile=${{ env.GITHUB_ENV }}
+      - run: echo "${COUPLING_VERSION} ${GITHUB_ENV}"
       - name: Build Coupling
         uses: burrunan/gradle-cache-action@v1
         with:
           arguments: release check --scan -Pversion=${{ env.COUPLING_VERSION }}
+          properties: version=${{ env.COUPLING_VERSION }}
       - name: Collect Results
         if: ${{ always() }}
         uses: burrunan/gradle-cache-action@v1
