@@ -13,8 +13,12 @@ plugins {
 val tagger = project.extensions.create("tagger", TaggerExtension::class, grgitService, project)
 
 tasks {
+    val environmentFile = project.findProperty("environmentFile")
     val calculateVersion by registering(CalculateVersion::class) {
         taggerExtension = tagger
+        environmentFile?.let {
+            appendToFile = "$environmentFile"
+        }
     }
     check {
         dependsOn(calculateVersion)
