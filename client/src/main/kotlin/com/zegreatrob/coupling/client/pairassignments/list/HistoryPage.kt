@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.minreact.create
-import react.key
 
 val HistoryPage = partyPageFunction { props, partyId ->
     +CouplingQuery(

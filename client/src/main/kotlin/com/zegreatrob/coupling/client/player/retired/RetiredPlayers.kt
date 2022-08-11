@@ -20,7 +20,6 @@ import csstype.url
 import emotion.react.css
 import kotlinx.css.Color
 import react.dom.html.ReactHTML.div
-import react.key
 import react.router.dom.Link
 
 data class RetiredPlayers(val party: Party, val retiredPlayers: List<Player>) :

@@ -9,7 +9,6 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.deg
-import react.key
 import react.router.dom.Link
 import react.useState
 import kotlin.js.Date

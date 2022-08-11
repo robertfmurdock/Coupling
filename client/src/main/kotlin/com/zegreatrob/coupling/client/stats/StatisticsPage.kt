@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.minreact.create
-import react.key
 
 val StatisticsPage = partyPageFunction { props, partyId ->
     +CouplingQuery(

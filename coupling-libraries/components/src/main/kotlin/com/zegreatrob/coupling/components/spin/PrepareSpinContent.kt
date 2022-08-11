@@ -38,7 +38,6 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.h2
 import react.dom.html.ReactHTML.span
-import react.key
 
 data class PrepareSpinContent(
     var party: Party,

@@ -22,7 +22,6 @@ import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
-import react.key
 
 private val styles = useStyles("stats/PairReportTable")
 

@@ -26,7 +26,6 @@ import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
-import react.key
 import react.router.dom.Link
 
 private val styles = useStyles("About")
