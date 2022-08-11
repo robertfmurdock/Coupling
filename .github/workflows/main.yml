@@ -53,7 +53,7 @@ jobs:
       - name: Build Coupling
         uses: burrunan/gradle-cache-action@v1
         with:
-          arguments: release check --scan -Pversion=$COUPLING_VERSION
+          arguments: release check --scan -Pversion=${{ env.COUPLING_VERSION }}
       - name: Collect Results
         if: ${{ always() }}
         uses: burrunan/gradle-cache-action@v1
