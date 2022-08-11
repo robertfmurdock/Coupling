@@ -50,6 +50,7 @@ jobs:
         uses: burrunan/gradle-cache-action@v1
         with:
           arguments: calculateVersion --configuration-cache -PenvironmentFile=$GITHUB_ENV
+      - run: echo $COUPLING_VERSION $GITHUB_ENV
       - name: Build Coupling
         uses: burrunan/gradle-cache-action@v1
         with:
