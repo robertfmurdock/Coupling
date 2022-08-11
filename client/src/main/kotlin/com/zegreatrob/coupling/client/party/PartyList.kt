@@ -22,7 +22,6 @@ import csstype.px
 import react.ChildrenBuilder
 import react.create
 import react.dom.html.ReactHTML.div
-import react.key
 import react.router.dom.Link
 
 data class PartyList(val parties: List<Party>) : DataPropsBind<PartyList>(partyList)

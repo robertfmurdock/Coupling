@@ -22,7 +22,6 @@ import csstype.vh
 import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
-import react.key
 import react.router.dom.Link
 
 data class PinList(val party: Party, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)

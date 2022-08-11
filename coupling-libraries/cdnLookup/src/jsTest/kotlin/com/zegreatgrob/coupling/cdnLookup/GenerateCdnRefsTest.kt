@@ -21,7 +21,7 @@ class GenerateCdnRefsTest {
     fun generateRefWorksForKotlin() = asyncSetup(object {
         val lib = "kotlin"
         val cdnLibs = listOf(lib)
-        val expected = "https://cdn.jsdelivr.net/npm/kotlin@1.7.10/kotlin.min.js"
+        val expected = "https://cdn.jsdelivr.net/npm/kotlin@1.7.20-Beta/kotlin.min.js"
     }) exercise {
         generateCdnRef(cdnLibs)
     } verify { result ->

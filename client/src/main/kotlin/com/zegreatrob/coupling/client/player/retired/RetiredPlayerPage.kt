@@ -10,7 +10,6 @@ import com.zegreatrob.minreact.create
 import react.ChildrenBuilder
 import react.FC
 import react.dom.html.ReactHTML.div
-import react.key
 
 val RetiredPlayerPage = FC<PageProps> { props ->
     val partyId = props.partyId

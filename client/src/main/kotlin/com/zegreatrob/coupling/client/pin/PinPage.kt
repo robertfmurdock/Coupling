@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.pinId
 import com.zegreatrob.minreact.create
-import react.key
 
 val PinPage = partyPageFunction { props, partyId ->
     val pinId = props.pinId

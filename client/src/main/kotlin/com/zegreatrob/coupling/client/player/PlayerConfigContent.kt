@@ -38,7 +38,6 @@ import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
-import react.key
 
 data class PlayerConfigContent(
     val party: Party,

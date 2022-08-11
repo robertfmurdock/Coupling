@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.add
 import react.FC
-import react.key
 
 val PartyConfigPage = FC<PageProps> { props ->
     add((props.partyId?.partyQueryProps(props) ?: newPartyProps(props))) {

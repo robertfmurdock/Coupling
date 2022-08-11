@@ -24,7 +24,6 @@ import csstype.px
 import csstype.vh
 import emotion.react.css
 import react.dom.html.ReactHTML.div
-import react.key
 
 data class PairAssignments(
     val party: Party,
