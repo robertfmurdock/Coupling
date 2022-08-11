@@ -56,12 +56,14 @@ jobs:
       - name: Build Coupling
         uses: burrunan/gradle-cache-action@v1
         with:
+          execution-only-caches: true
           arguments: release check --scan -Pversion=${{ env.COUPLING_VERSION }}
           properties: version=${{ env.COUPLING_VERSION }}
       - name: Collect Results
         if: ${{ always() }}
         uses: burrunan/gradle-cache-action@v1
         with:
+          execution-only-caches: true
           arguments: composeLogs collectResults --configuration-cache
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}
