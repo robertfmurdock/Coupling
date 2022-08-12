@@ -7,10 +7,10 @@
     "../test": "test"
   },
   "dependencies": {
-    "@aws-sdk/client-lambda": "~3.145.0",
+    "@aws-sdk/client-lambda": "~3.148.0",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.145.0",
     "@graphql-tools/schema": "^9.0.1",
-    "@graphql-tools/stitch": "^8.7.3",
+    "@graphql-tools/stitch": "^8.7.5",
     "body-parser": "^1.20.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -29,7 +29,7 @@
     "parse5-html-rewriting-stream": "^7.0.0",
     "entities": "^4.3.1",
     "raw-loader": "^4.0.2",
-    "serverless-http": "^3.0.1",
+    "serverless-http": "^3.0.2",
     "source-map-loader": "^4.0.0",
     "uuid": "^8.3.2",
     "webpack": "~5.74.0",
