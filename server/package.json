@@ -10,7 +10,7 @@
     "@aws-sdk/client-lambda": "~3.148.0",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.145.0",
     "@graphql-tools/schema": "^9.0.1",
-    "@graphql-tools/stitch": "^8.7.5",
+    "@graphql-tools/stitch": "^8.7.6",
     "body-parser": "^1.20.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
