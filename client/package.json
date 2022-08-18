@@ -37,7 +37,7 @@
     "d3": "^7.6.1",
     "d3-color": "^3.1.0",
     "d3-selection": "^3.0.0",
-    "date-fns": "^2.29.1",
+    "date-fns": "^2.29.2",
     "dom-to-image": "^2.6.0",
     "drag-drop-webkit-mobile": "^1.4.1",
     "favicons": "~6.2.2",
