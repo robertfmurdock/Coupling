@@ -27,7 +27,6 @@ kotlin {
                 implementation("io.ktor:ktor-client-logging")
                 implementation("io.ktor:ktor-client-websockets")
                 implementation("com.soywiz.korlibs.klock:klock")
-                implementation("io.github.microutils:kotlin-logging")
             }
         }
         named("commonTest") {
