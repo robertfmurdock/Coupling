@@ -24,6 +24,7 @@ import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import kotlinx.browser.window
+import kotlinx.js.get
 import react.ChildrenBuilder
 import react.FC
 import react.Props

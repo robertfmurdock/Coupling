@@ -35,6 +35,7 @@ import csstype.string
 import csstype.vw
 import emotion.react.css
 import kotlinx.browser.document
+import kotlinx.js.get
 import kotlinx.js.jso
 import org.w3c.dom.HTMLElement
 import popper.core.Popper
