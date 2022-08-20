@@ -32,7 +32,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("reflect"))
-                implementation("org.slf4j:slf4j-simple:2.0.0-alpha7")
+                implementation("org.slf4j:slf4j-simple:2.0.0-beta1")
 
                 implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
