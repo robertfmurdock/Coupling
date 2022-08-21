@@ -24,7 +24,7 @@ dependencies {
     implementation("com.soywiz.korlibs.klock:klock:3.0.0")
     implementation("org.apache.logging.log4j:log4j-core:2.18.0")
     implementation("org.apache.logging.log4j:log4j-iostreams:2.18.0")
-    implementation("org.slf4j:slf4j-api:2.0.0-alpha7")
+    implementation("org.slf4j:slf4j-api:2.0.0")
     implementation("org.jlleitschuh.gradle:ktlint-gradle:10.3.0")
     implementation("org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0")
     api("com.fasterxml.jackson.core:jackson-databind:2.13.3")
