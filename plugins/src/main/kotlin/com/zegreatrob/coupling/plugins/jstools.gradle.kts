@@ -42,9 +42,9 @@ ktlint {
 
 dependencies {
     implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:8.1.4"))
-    implementation(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.6.27"))
+    implementation(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.6.28"))
     implementation(enforcedPlatform("io.ktor:ktor-bom:2.1.0"))
-    implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.374"))
+    implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.376"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.4.0"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
