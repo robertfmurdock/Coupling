@@ -11,7 +11,7 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^14.4.3",
-    "npm-check-updates": "^16.0.5"
+    "npm-check-updates": "^16.0.6"
   },
   "scripts": {
     "webpack": "webpack",
