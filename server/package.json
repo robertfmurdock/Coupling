@@ -7,10 +7,10 @@
     "../test": "test"
   },
   "dependencies": {
-    "@aws-sdk/client-lambda": "~3.154.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.154.0",
-    "@graphql-tools/schema": "^9.0.1",
-    "@graphql-tools/stitch": "^8.7.6",
+    "@aws-sdk/client-lambda": "~3.159.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.159.0",
+    "@graphql-tools/schema": "^9.0.2",
+    "@graphql-tools/stitch": "^8.7.7",
     "body-parser": "^1.20.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
