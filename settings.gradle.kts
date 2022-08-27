@@ -7,6 +7,7 @@ pluginManagement {
 
 plugins {
     `gradle-enterprise`
+    id("com.github.burrunan.s3-build-cache") version "1.3"
 }
 
 rootProject.name = "Coupling"
@@ -47,9 +48,18 @@ gradleEnterprise {
     }
 }
 
+val isCiServer = System.getenv().containsKey("CI")
+
 buildCache {
     local {
         isEnabled = true
+        removeUnusedEntriesAfterDays = 3
+    }
+    remote<com.github.burrunan.s3cache.AwsS3BuildCache> {
+        region = "us-east-1"
+        bucket = "build.cache.zegreatrob.com"
+        isPush = isCiServer
+        lookupDefaultAwsCredentials = true
     }
 }
 

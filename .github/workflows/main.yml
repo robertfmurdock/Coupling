@@ -19,6 +19,8 @@ jobs:
       COUPLING_PRIMARY_TEST_PASSWORD: ${{ secrets.COUPLING_PRIMARY_TEST_PASSWORD }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GRGIT_USER: ${{ secrets.COUPLING_PAT }}
+      S3_BUILD_CACHE_ACCESS_KEY_ID: ${{ secrets.S3_BUILD_CACHE_ACCESS_KEY_ID }}
+      S3_BUILD_CACHE_SECRET_KEY: ${{ secrets.S3_BUILD_CACHE_SECRET_KEY }}
     steps:
       - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
       - uses: browser-actions/setup-chrome@latest
@@ -31,6 +33,16 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+          cache-dependency-path: |
+            kotlin-js-store/yarn.lock
       - name: Log in to the Container registry
         uses: docker/login-action@v1
         with:
@@ -47,24 +59,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Generate Version
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          arguments: calculateVersion --configuration-cache
-          properties: |
-            exportToGithub=true
+        run: ./gradlew calculateVersion --configuration-cache -PexportToGithub=true
       - run: echo "${COUPLING_VERSION} ${GITHUB_ENV}"
       - name: Build Coupling
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          execution-only-caches: true
-          arguments: release check --scan -Pversion=${{ env.COUPLING_VERSION }}
-          properties: version=${{ env.COUPLING_VERSION }}
+        run: ./gradlew release check --scan -Pversion=${{ env.COUPLING_VERSION }}
       - name: Collect Results
         if: ${{ always() }}
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          execution-only-caches: true
-          arguments: composeLogs collectResults --configuration-cache
+        run: ./gradlew composeLogs collectResults --configuration-cache
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:
