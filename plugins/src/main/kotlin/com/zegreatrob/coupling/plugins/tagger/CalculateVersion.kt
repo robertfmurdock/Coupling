@@ -17,8 +17,9 @@ open class CalculateVersion : DefaultTask(), TaggerExtensionSyntax {
     @TaskAction
     fun execute() {
         logger.quiet(taggerExtension.version)
-        if (exportToGithubEnv) {
-            FileOutputStream(System.getenv("GITHUB_ENV"), true)
+        val githubEnvFile = System.getenv("GITHUB_ENV")
+        if (exportToGithubEnv && githubEnvFile != null) {
+            FileOutputStream(githubEnvFile, true)
                 .write("COUPLING_VERSION=${taggerExtension.version}".toByteArray())
         }
     }
