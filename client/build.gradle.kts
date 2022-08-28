@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
-    id("com.zegreatrob.coupling.plugins.serialization")
+    kotlin("plugin.serialization")
 }
 
 kotlin {

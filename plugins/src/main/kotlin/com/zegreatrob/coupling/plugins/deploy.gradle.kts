@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.plugins.tagger.TaggerExtension
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
-    id("com.zegreatrob.coupling.plugins.node")
 }
 
 kotlin {

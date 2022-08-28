@@ -4,11 +4,11 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
     kotlin("js")
+    id("com.zegreatrob.jsmints.plugins.jspackage")
+    id("com.zegreatrob.jsmints.plugins.ncu")
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
-    id("com.zegreatrob.jsmints.plugins.jspackage")
-    id("com.zegreatrob.jsmints.plugins.ncu")
     id("org.jlleitschuh.gradle.ktlint")
 }
 

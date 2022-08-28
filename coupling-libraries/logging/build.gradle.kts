@@ -4,7 +4,7 @@ repositories {
 
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
-    id("com.zegreatrob.coupling.plugins.serialization")
+    kotlin("plugin.serialization")
 }
 
 kotlin {
