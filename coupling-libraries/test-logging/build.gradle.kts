@@ -26,14 +26,12 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
-
-        val commonTest by getting {
+        getByName("commonTest") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
-
-        val jvmMain by getting {
+        getByName("jvmMain") {
             dependencies {
                 implementation("io.github.microutils:kotlin-logging:2.1.23")
                 implementation(kotlin("reflect"))
@@ -42,8 +40,7 @@ kotlin {
                 implementation("org.slf4j:slf4j-simple:2.0.0")
             }
         }
-
-        val jsMain by getting {
+        getByName("jsMain") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
             }

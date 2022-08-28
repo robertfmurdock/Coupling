@@ -38,7 +38,7 @@ kotlin {
             }
         }
 
-        val jsTest by getting {
+        getByName("jsTest") {
             dependencies {
                 api(project(":coupling-libraries:logging"))
             }

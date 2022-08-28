@@ -11,7 +11,7 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        getByName("commonMain") {
             dependencies {
                 api(project(":coupling-libraries:repository-core"))
                 api(project(":coupling-libraries:test-logging"))
@@ -24,15 +24,14 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
+        getByName("jvmMain") {
             dependencies {
                 api(kotlin("reflect"))
                 implementation(kotlin("reflect"))
                 implementation("org.jetbrains.kotlin:kotlin-test-junit")
             }
         }
-
-        val jsMain by getting {
+        getByName("jsMain") {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js")
             }

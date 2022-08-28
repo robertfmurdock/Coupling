@@ -23,7 +23,7 @@ kotlin {
         }
     }
     sourceSets {
-        val main by getting {
+        getByName("main") {
             resources.srcDir("src/main/javascript")
         }
     }
@@ -124,7 +124,7 @@ tasks {
         finalizedBy(uploadToS3)
     }
 
-    val additionalResources by registering(Copy::class) {
+    register<Copy>("additionalResources") {
         outputs.cacheIf { true }
         val javascriptConfig = configurations["runtimeClasspath"]
         dependsOn(javascriptConfig)

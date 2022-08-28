@@ -11,7 +11,7 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        getByName("commonMain") {
             dependencies {
                 implementation(project(":coupling-libraries:model"))
                 implementation(project(":coupling-libraries:repository-core"))
@@ -19,7 +19,7 @@ kotlin {
                 implementation("com.benasher44:uuid:0.5.0")
             }
         }
-        val commonTest by getting {
+        getByName("commonTest") {
             dependencies {
                 implementation(project(":coupling-libraries:test-logging"))
                 implementation(project(":coupling-libraries:repository-validation"))
@@ -28,14 +28,12 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
-
-        val jvmMain by getting {
+        getByName("jvmMain") {
             dependencies {
                 api(kotlin("reflect"))
             }
         }
-
-        val jvmTest by getting {
+        getByName("jvmTest") {
             dependencies {
                 implementation(kotlin("reflect"))
                 implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
@@ -43,12 +41,12 @@ kotlin {
             }
         }
 
-        val jsMain by getting {
+        getByName("jsMain") {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js")
             }
         }
-        val jsTest by getting {
+        getByName("jsTest") {
             dependencies {
                 implementation("com.zegreatrob.testmints:async")
             }

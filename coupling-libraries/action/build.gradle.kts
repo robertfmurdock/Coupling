@@ -36,14 +36,14 @@ kotlin {
                 implementation("com.zegreatrob.testmints:minassert")
             }
         }
-        val jvmMain by getting {
+        getByName("jvmMain") {
             dependencies {
                 implementation(kotlin("reflect"))
                 implementation("io.github.microutils:kotlin-logging:2.1.23")
                 implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
             }
         }
-        val jvmTest by getting {
+        getByName("jvmTest") {
             dependencies {
                 implementation(kotlin("reflect"))
                 implementation("org.slf4j:slf4j-simple:2.0.0")

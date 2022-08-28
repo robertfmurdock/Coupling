@@ -16,7 +16,7 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting {
+        getByName("commonMain") {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
                 implementation("io.ktor:ktor-client-core")
@@ -28,8 +28,7 @@ kotlin {
                 implementation(npm("read-pkg-up", "^4.0.0"))
             }
         }
-
-        val commonTest by getting {
+        getByName("commonTest") {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(npm("react", "18.1.0"))

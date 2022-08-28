@@ -11,13 +11,13 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        getByName("commonMain") {
             dependencies {
                 api(project(":coupling-libraries:model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
-        val commonTest by getting {
+        getByName("commonTest") {
             dependencies {
                 implementation(project(":coupling-libraries:test-logging"))
                 implementation("com.zegreatrob.testmints:standard")
@@ -25,23 +25,20 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
-
-        val jvmMain by getting {
+        getByName("jvmMain") {
             dependencies {
                 api(kotlin("reflect"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
-
-        val jvmTest by getting {
+        getByName("jvmTest") {
             dependencies {
                 implementation(kotlin("reflect"))
                 implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
             }
         }
-
-        val jsMain by getting {
+        getByName("jsMain") {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js")
             }

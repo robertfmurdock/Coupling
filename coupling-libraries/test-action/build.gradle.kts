@@ -28,8 +28,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
             }
         }
-
-        val jvmMain by getting {
+        getByName("jvmMain") {
             dependencies {
                 implementation(kotlin("reflect"))
                 implementation("org.slf4j:slf4j-simple:2.0.0")
@@ -42,8 +41,7 @@ kotlin {
                 implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
             }
         }
-
-        val jsMain by getting {
+        getByName("jsMain") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")

@@ -11,7 +11,7 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        getByName("commonMain") {
             dependencies {
                 api(kotlin("stdlib"))
                 api(kotlin("stdlib-common"))
@@ -20,7 +20,7 @@ kotlin {
                 implementation("com.benasher44:uuid:0.5.0")
             }
         }
-        val commonTest by getting {
+        getByName("commonTest") {
             dependencies {
                 implementation(project(":coupling-libraries:test-logging"))
                 implementation(kotlin("test"))
@@ -28,26 +28,21 @@ kotlin {
                 implementation("com.zegreatrob.testmints:minassert")
             }
         }
-
-        val jvmTest by getting {
+        getByName("jvmTest") {
             dependencies {
                 implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
                 implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
             }
         }
-
-        val jsMain by getting {
+        getByName("jsMain") {
             dependencies {
                 api(kotlin("stdlib-js"))
             }
         }
-        val jsTest by getting {
+        getByName("jsTest") {
             dependencies {
                 implementation(kotlin("test-js"))
             }
         }
     }
-}
-
-tasks {
 }

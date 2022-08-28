@@ -1,3 +1,4 @@
+@file:Suppress("UnstableApiUsage")
 
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
@@ -63,7 +64,7 @@ fun Project.relatedProjects(): Set<Project> {
 
 kotlin {
     sourceSets {
-        val e2eTest by getting {
+        getByName("e2eTest") {
             dependencies {
                 implementation(project(":sdk"))
                 implementation(project(":coupling-libraries:test-logging"))

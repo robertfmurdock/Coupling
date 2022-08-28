@@ -11,7 +11,7 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        getByName("commonMain") {
             dependencies {
                 api(project(":coupling-libraries:model"))
                 api(kotlin("stdlib"))
@@ -20,7 +20,7 @@ kotlin {
                 api("com.benasher44:uuid:0.5.0")
             }
         }
-        val jsMain by getting {
+        getByName("jsMain") {
             dependencies {
                 api(kotlin("stdlib-js"))
             }

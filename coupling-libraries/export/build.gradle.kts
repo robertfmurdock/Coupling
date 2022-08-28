@@ -21,8 +21,7 @@ kotlin {
                 optIn("kotlinx.serialization.ExperimentalSerializationApi")
             }
         }
-
-        val commonMain by getting {
+        getByName("commonMain") {
             dependencies {
                 api(project(":coupling-libraries:model"))
                 api(kotlin("stdlib"))
@@ -31,7 +30,7 @@ kotlin {
                 api("com.benasher44:uuid:0.5.0")
             }
         }
-        val jsMain by getting {
+        getByName("jsMain") {
             dependencies {
                 api(project(":dynamo"))
                 api(project(":coupling-libraries:json"))

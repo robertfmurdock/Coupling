@@ -137,7 +137,7 @@ tasks {
         destinationDir = file("build/docker-data")
     }
 
-    val buildImage by registering(Exec::class) {
+    register<Exec>("buildImage") {
         dependsOn(prepareDockerData, ":server-base:pullImage")
         commandLine(
             "docker build --tag ghcr.io/robertfmurdock/coupling-serverless:latest build/docker-data"

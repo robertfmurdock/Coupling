@@ -25,14 +25,10 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
         }
-
-        val jsMain by getting {
+        getByName("jsMain") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
             }
         }
     }
-}
-
-tasks {
 }
