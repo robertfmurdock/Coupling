@@ -11,14 +11,14 @@ class RetiredPlayerConfigE2ETest {
 
     @Test
     fun willShowThePlayerData() = sdkSetup(object : SdkContext() {
-        val tribe = Party(PartyId("${randomInt()}-RetiredPlayerConfigE2E"))
+        val party = Party(PartyId("${randomInt()}-RetiredPlayerConfigE2E"))
         val player = Player("${randomInt()}-RetiredPlayerConfigE2E", name = "${randomInt()}-RetiredPlayerConfigE2E")
     }) {
-        sdk.partyRepository.save(tribe)
-        sdk.playerRepository.save(tribe.id.with(player))
-        sdk.playerRepository.deletePlayer(tribe.id, player.id)
+        sdk.partyRepository.save(party)
+        sdk.playerRepository.save(party.id.with(player))
+        sdk.playerRepository.deletePlayer(party.id, player.id)
     } exercise {
-        RetiredPlayerConfig.goTo(tribe.id, player.id)
+        RetiredPlayerConfig.goTo(party.id, player.id)
     } verify {
         RetiredPlayerConfig.playerNameTextField.attribute("value")
             .assertIsEqualTo(player.name)

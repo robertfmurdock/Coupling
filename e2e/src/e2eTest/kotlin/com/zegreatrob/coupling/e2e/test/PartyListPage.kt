@@ -12,12 +12,12 @@ object PartyListPage : StyleSyntax {
 
     val partyCardElements get() = element.all()
 
-    fun partyCardElement(tribeId: PartyId) = WebdriverElement(
-        "[data-tribe-id=\"${tribeId.value}\"]"
+    fun partyCardElement(partyId: PartyId) = WebdriverElement(
+        "[data-party-id=\"${partyId.value}\"]"
     )
 
     suspend fun goTo() {
-        WebdriverBrowser.setLocation("/tribes/")
+        WebdriverBrowser.setLocation("/parties/")
         waitForPage()
     }
 

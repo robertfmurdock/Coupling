@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
-import com.zegreatrob.coupling.sdk.TribeGQLComponent.RetiredPlayerList
+import com.zegreatrob.coupling.sdk.PartyGQLComponent.RetiredPlayerList
 
 interface SdkPlayerGetDeleted : PlayerListGetDeleted, GqlQueryComponent {
     override suspend fun getDeleted(partyId: PartyId) = performQueryGetComponent(partyId, RetiredPlayerList, ::toModel)

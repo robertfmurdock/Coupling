@@ -62,7 +62,7 @@ private val backButtonSection = FC<Props> {
 
 private val backButton = FC<Props> {
     Link {
-        to = "/tribes"
+        to = "/parties"
         tabIndex = -1
         draggable = false
         add(CouplingButton(large, blue, ClassName(""), {})) {

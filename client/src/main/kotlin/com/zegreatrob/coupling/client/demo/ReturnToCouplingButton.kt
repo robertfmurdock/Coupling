@@ -26,7 +26,7 @@ import react.router.dom.Link
 
 val returnToCouplingButton = FC<Props> {
     Link {
-        to = "/tribes"
+        to = "/parties"
         tabIndex = -1
         draggable = false
         add(

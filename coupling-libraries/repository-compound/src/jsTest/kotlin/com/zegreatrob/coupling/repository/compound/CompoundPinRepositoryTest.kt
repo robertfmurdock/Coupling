@@ -26,7 +26,7 @@ class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> 
 
             val compoundRepo = CompoundPinRepository(repository1, repository2)
 
-            val tribeId = stubPartyId()
+            val partyId = stubPartyId()
             val pin = stubPin()
         }
     })
@@ -34,24 +34,24 @@ class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> 
     override val repositorySetup = compoundRepositorySetup
         .extend<PartyContext<CompoundPinRepository>>(sharedSetup = { parent ->
             with(parent) {
-                PartyContextData(compoundRepo, tribeId, clock, stubUser)
+                PartyContextData(compoundRepo, partyId, clock, stubUser)
             }
         })
 
     @Test
     fun saveWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
-        compoundRepo.save(tribeId.with(pin))
+        compoundRepo.save(partyId.with(pin))
     } verify {
-        repository2.getPins(tribeId).map { it.data.pin }.find { it.id == pin.id }
+        repository2.getPins(partyId).map { it.data.pin }.find { it.id == pin.id }
             .assertIsEqualTo(pin)
     }
 
     @Test
     fun deleteWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
-        compoundRepo.save(tribeId.with(pin))
-        compoundRepo.deletePin(tribeId, pin.id!!)
+        compoundRepo.save(partyId.with(pin))
+        compoundRepo.deletePin(partyId, pin.id!!)
     } verify {
-        repository2.getPins(tribeId).map { it.data.pin }.find { it.id == pin.id }
+        repository2.getPins(partyId).map { it.data.pin }.find { it.id == pin.id }
             .assertIsEqualTo(null)
     }
 }

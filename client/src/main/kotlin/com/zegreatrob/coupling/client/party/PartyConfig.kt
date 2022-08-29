@@ -20,7 +20,7 @@ import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class PartyConfig<D>(val tribe: Party, val dispatchFunc: DispatchFunc<out D>) :
+data class PartyConfig<D>(val party: Party, val dispatchFunc: DispatchFunc<out D>) :
     DataPropsBind<PartyConfig<D>>(partyConfig.unsafeCast<TMFC<PartyConfig<D>>>())
     where D : SavePartyCommandDispatcher, D : DeletePartyCommandDispatcher
 

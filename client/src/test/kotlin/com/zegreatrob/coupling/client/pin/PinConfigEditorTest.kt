@@ -48,7 +48,7 @@ class PinConfigEditorTest {
 
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = setup(object {
-        val party = Party(PartyId("dumb tribe"))
+        val party = Party(PartyId("dumb party"))
         val pin = Pin(id = null, name = "")
         val newName = "pin new name"
         val newIcon = "pin new icon"

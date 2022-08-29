@@ -30,12 +30,12 @@ class WebsocketTest {
     @Test
     fun whenOnlyOneConnectionWillReturnCountOfOne() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubParty()
+            val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(tribe)
+        sdk.partyRepository.save(party)
     } exercise {
-        val webSocketSession = couplingSocketSession(tribe.id)
+        val webSocketSession = couplingSocketSession(party.id)
         val message = (webSocketSession.incoming.receive() as? Frame.Text)
         webSocketSession to message
     } verifyAnd { (_, message) ->
@@ -46,32 +46,32 @@ class WebsocketTest {
     } teardown { result ->
         result?.let { (session) ->
             session.close()
-            sdk.partyRepository.deleteIt(tribe.id)
+            sdk.partyRepository.deleteIt(party.id)
         }
     }
 
     private suspend fun SdkContext.couplingSocketSession(partyId: PartyId): DefaultClientWebSocketSession {
         val token = sdk.getToken()
         return generalPurposeClient.webSocketSession {
-            url("wss://$socketHost/api/websocket?tribeId=${partyId.value}&token=$token")
+            url("wss://$socketHost/api/websocket?partyId=${partyId.value}&token=$token")
         }
     }
 
     @Test
     fun whenMultipleConnectionsWillReturnTheTotalCount() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubParty()
+            val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(tribe)
+        sdk.partyRepository.save(party)
     } exercise {
         val twoSessions = listOf(
-            couplingSocketSession(tribe.id),
-            couplingSocketSession(tribe.id),
+            couplingSocketSession(party.id),
+            couplingSocketSession(party.id),
         )
         twoSessions.forEach { it.incoming.receive() }
 
-        val thirdSocket = couplingSocketSession(tribe.id)
+        val thirdSocket = couplingSocketSession(party.id)
         val thirdSocketMessage = thirdSocket.incoming.receive() as? Frame.Text
         (twoSessions + thirdSocket) to thirdSocketMessage
     } verifyAnd { (_, thirdSocketMessage) ->
@@ -86,20 +86,20 @@ class WebsocketTest {
     } teardown { result ->
         result?.let { (session) ->
             session.forEach { it.close() }
-            sdk.partyRepository.deleteIt(tribe.id)
+            sdk.partyRepository.deleteIt(party.id)
         }
     }
 
     @Test
     fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubParty()
+            val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(tribe)
+        sdk.partyRepository.save(party)
     } exercise {
-        val socket1 = couplingSocketSession(tribe.id).alsoWaitForFirstFrame()
-        val socket2 = couplingSocketSession(tribe.id).alsoWaitForFirstFrame()
+        val socket1 = couplingSocketSession(party.id).alsoWaitForFirstFrame()
+        val socket2 = couplingSocketSession(party.id).alsoWaitForFirstFrame()
         listOf(socket1, socket2)
     } verifyAnd { (socket1) ->
         socket1
@@ -110,7 +110,7 @@ class WebsocketTest {
             )
     } teardown { result ->
         result?.forEach { it.close() }
-        sdk.partyRepository.deleteIt(tribe.id)
+        sdk.partyRepository.deleteIt(party.id)
     }
 
     private suspend fun DefaultClientWebSocketSession.readTextFrame() = (incoming.receive() as? Frame.Text)?.readText()
@@ -118,15 +118,15 @@ class WebsocketTest {
     @Test
     fun whenPairsAreSavedWillSendMessageToClients() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubParty()
+            val party = stubParty()
             val sockets = mutableListOf<DefaultClientWebSocketSession>()
             val expectedPairDoc = stubPairAssignmentDoc()
         }
     }) {
-        sdk.partyRepository.save(tribe)
-        sockets.add(couplingSocketSession(tribe.id).alsoWaitForFirstFrame())
+        sdk.partyRepository.save(party)
+        sockets.add(couplingSocketSession(party.id).alsoWaitForFirstFrame())
     } exercise {
-        sdk.pairAssignmentDocumentRepository.save(tribe.id.with(expectedPairDoc))
+        sdk.pairAssignmentDocumentRepository.save(party.id.with(expectedPairDoc))
     } verifyAnd {
         sockets.first()
             .readTextFrame()
@@ -134,7 +134,7 @@ class WebsocketTest {
             .assertIsEqualTo(PairAssignmentAdjustmentMessage(expectedPairDoc))
     } teardown {
         sockets.forEach { it.close() }
-        sdk.partyRepository.deleteIt(tribe.id)
+        sdk.partyRepository.deleteIt(party.id)
     }
 
     private suspend fun DefaultClientWebSocketSession.alsoWaitForFirstFrame() = also {
@@ -144,15 +144,15 @@ class WebsocketTest {
     @Test
     fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubParty()
+            val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(tribe)
+        sdk.partyRepository.save(party)
     } exercise {
-        val socketToClose = couplingSocketSession(tribe.id)
+        val socketToClose = couplingSocketSession(party.id)
             .alsoWaitForFirstFrame()
 
-        couplingSocketSession(tribe.id)
+        couplingSocketSession(party.id)
             .alsoWaitForFirstFrame()
             .also { socketToClose.close() }
     } verifyAnd { openSocket ->
@@ -164,7 +164,7 @@ class WebsocketTest {
             )
     } teardown { openSocket ->
         openSocket?.close()
-        sdk.partyRepository.deleteIt(tribe.id)
+        sdk.partyRepository.deleteIt(party.id)
     }
 
     @Test
@@ -202,12 +202,12 @@ class WebsocketTest {
     @Test
     fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = sdkSetup.with({
         object : SdkContext by it {
-            val tribe = stubParty()
+            val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(tribe)
+        sdk.partyRepository.save(party)
     } exercise {
-        couplingSocketSession(tribe.id)
+        couplingSocketSession(party.id)
             .apply { close() }
     } verifyAnd { socket ->
         withTimeout(400) {
@@ -215,7 +215,7 @@ class WebsocketTest {
                 .assertIsNotEqualTo(null)
         }
     } teardown {
-        sdk.partyRepository.deleteIt(tribe.id)
+        sdk.partyRepository.deleteIt(party.id)
     }
 }
 

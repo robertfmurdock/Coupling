@@ -18,7 +18,7 @@ import csstype.s
 import csstype.url
 import emotion.react.css
 
-data class PartyCardHeader(val tribe: Party, val size: Int) : DataPropsBind<PartyCardHeader>(partyCardHeader)
+data class PartyCardHeader(val party: Party, val size: Int) : DataPropsBind<PartyCardHeader>(partyCardHeader)
 
 val partyCardHeader = tmFC<PartyCardHeader> { (party, size) ->
     CardHeader {

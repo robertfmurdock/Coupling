@@ -33,7 +33,7 @@ type PinRecord {
     id: String!
     icon: String
     name: String
-    tribeId: String
+    partyId: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
@@ -47,7 +47,7 @@ type PlayerRecord {
     callSignAdjective: String
     callSignNoun: String
     imageURL: String
-    tribeId: String
+    partyId: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
@@ -73,15 +73,15 @@ type PairAssignmentDocumentRecord {
     id: String!
     date: String!
     pairs: [PinnedPair]!
-    tribeId: String
+    partyId: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
 }
 
-type TribeData {
+type PartyData {
     id: String!
-    tribe: PartyRecord
+    party: PartyRecord
     pinList: [PinRecord]
     playerList: [PlayerRecord]
     retiredPlayers: [PlayerRecord]
@@ -106,7 +106,7 @@ input PinInput {
 }
 
 input SpinInput {
-    tribeId: String!
+    partyId: String!
     players: [PlayerInput]!
     pins: [PinInput]!
 }
@@ -115,33 +115,33 @@ type SpinOutput {
     result: PairAssignmentDocumentRecord!
 }
 
-input DeleteTribeInput {
-    tribeId: String!
+input DeletePartyInput {
+    partyId: String!
 }
 input DeletePinInput {
-    tribeId: String!
+    partyId: String!
     pinId: String!
 }
 
 input DeletePlayerInput {
-    tribeId: String!
+    partyId: String!
     playerId: String!
 }
 
 input DeletePairAssignmentsInput {
-    tribeId: String!
+    partyId: String!
     pairAssignmentsId: String!
 }
 
 input SavePinInput {
-    tribeId: String!
+    partyId: String!
     pinId: String
     icon: String
     name: String
 }
 
-input SaveTribeInput {
-    tribeId: String!
+input SavePartyInput {
+    partyId: String!
     name: String
     email: String
     pairingRule: Int
@@ -154,7 +154,7 @@ input SaveTribeInput {
 }
 
 input SavePlayerInput {
-    tribeId: String!
+    partyId: String!
     playerId: String!
     name: String
     email: String
@@ -165,7 +165,7 @@ input SavePlayerInput {
 }
 
 input SavePairAssignmentsInput {
-    tribeId: String
+    partyId: String
     pairAssignmentsId: String!
     date: String!
     pairs: [PinnedPairInput]!
@@ -191,8 +191,8 @@ input PinnedPlayerInput {
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
 type Query {
-    tribeList: [PartyRecord]
-    tribeData(id: String!): TribeData
+    partyList: [PartyRecord]
+    partyData(id: String!): PartyData
     user: UserRecord
 }
 
@@ -201,8 +201,8 @@ All Queries and Mutations are subject to change. If you want to program an integ
 """
 type Mutation {
     spin(input: SpinInput!): SpinOutput!
-    saveTribe(input: SaveTribeInput!): Boolean
-    deleteTribe(input: DeleteTribeInput!): Boolean
+    saveParty(input: SavePartyInput!): Boolean
+    deleteParty(input: DeletePartyInput!): Boolean
     savePin(input: SavePinInput!): Boolean
     deletePin(input: DeletePinInput!): Boolean
     savePlayer(input: SavePlayerInput!): Boolean

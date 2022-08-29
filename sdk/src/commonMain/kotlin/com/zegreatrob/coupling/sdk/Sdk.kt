@@ -78,11 +78,11 @@ interface Sdk :
 
 class SdkSingleton(val getIdTokenFunc: suspend () -> String, private val httpClient: HttpClient) :
     Sdk,
-    TribeGQLPerformer by BatchingTribeGQLPerformer(StandardTribeGQLPerformer(getIdTokenFunc, httpClient)) {
+    PartyGQLPerformer by BatchingPartyGQLPerformer(StandardPartyGQLPerformer(getIdTokenFunc, httpClient)) {
     override suspend fun getToken(): String = getIdTokenFunc()
 }
 
-class StandardTribeGQLPerformer(private val getIdTokenFunc: suspend () -> String, httpClient: HttpClient) :
+class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String, httpClient: HttpClient) :
     KtorQueryPerformer {
     override val client = httpClient
     override suspend fun getIdToken() = getIdTokenFunc.invoke()

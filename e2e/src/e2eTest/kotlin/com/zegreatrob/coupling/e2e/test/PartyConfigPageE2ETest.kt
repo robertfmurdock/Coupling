@@ -27,7 +27,7 @@ class PartyConfigPageE2ETest {
             with(page) {
                 goTo(party.id)
 
-                getTribeNameInput().clearSetValue(expectedNewName)
+                getPartyNameInput().clearSetValue(expectedNewName)
                 getCallSignCheckbox().click()
                 getBadgeCheckbox().click()
                 getDefaultBadgeNameInput().clearSetValue(expectedDefaultBadgeName)
@@ -40,7 +40,7 @@ class PartyConfigPageE2ETest {
             PartyConfigPage.goTo(party.id)
         } verify {
             with(page) {
-                getTribeNameInput().attribute("value")
+                getPartyNameInput().attribute("value")
                     .assertIsEqualTo(expectedNewName)
                 getCallSignCheckbox().attribute("checked")
                     .assertIsEqualTo(expectedCallSignSelection)
@@ -65,9 +65,9 @@ class PartyConfigPageE2ETest {
             PartyConfigPage.goTo(party.id)
         } verify {
             with(page) {
-                getTribeNameInput().attribute("value")
+                getPartyNameInput().attribute("value")
                     .assertIsEqualTo(party.name)
-                getTribeEmailInput().attribute("value")
+                getPartyEmailInput().attribute("value")
                     .assertIsEqualTo(party.email)
             }
         }
@@ -90,20 +90,20 @@ class PartyConfigPageE2ETest {
 
         companion object {
             private fun buildParty() = Party(
-                id = "${randomInt()}-TribeConfigPageE2ETest-tribeId".let(::PartyId),
-                name = "${randomInt()}-TribeConfigPageE2ETest-name"
+                id = "${randomInt()}-PartyConfigPageE2ETest-partyId".let(::PartyId),
+                name = "${randomInt()}-PartyConfigPageE2ETest-name"
             )
         }
     }
 
-    class NewTribe {
+    class NewParty {
         @Test
         fun idFieldShowsAndPersistsAsTextIsAdded() = e2eSetup(PartyConfigPage) {
             goToNew()
         } exercise {
-            getTribeIdInput().clearSetValue("oopsie")
+            getPartyIdInput().clearSetValue("oopsie")
         } verify {
-            getTribeIdInput().isDisplayed()
+            getPartyIdInput().isDisplayed()
                 .assertIsEqualTo(true)
         }
 

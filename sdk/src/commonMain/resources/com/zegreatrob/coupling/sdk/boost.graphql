@@ -2,7 +2,7 @@ query boost {
     user {
         boost {
             userId
-            tribeIds
+            partyIds
             isDeleted
             modifyingUserEmail
             timestamp

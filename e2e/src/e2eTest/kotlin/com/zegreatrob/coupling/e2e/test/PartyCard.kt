@@ -4,5 +4,5 @@ import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 
 object PartyCard : BrowserSyntax {
-    val element = WebdriverElement("[data-tribe-id]")
+    val element = WebdriverElement("[data-party-id]")
 }

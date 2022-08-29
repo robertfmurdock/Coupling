@@ -27,7 +27,7 @@ class CompoundPairAssignmentDocumentRepositoryTest :
 
             val compoundRepo = CompoundPairAssignmentDocumentRepository(repository1, repository2)
 
-            val tribeId = stubPartyId()
+            val partyId = stubPartyId()
             val pairAssignmentDocument = stubPairAssignmentDoc()
         }
     })
@@ -35,25 +35,25 @@ class CompoundPairAssignmentDocumentRepositoryTest :
     override val repositorySetup =
         compoundRepositorySetup.extend<PartyContext<CompoundPairAssignmentDocumentRepository>>(
             sharedSetup = {
-                PartyContextData(it.compoundRepo, it.tribeId, it.clock, it.stubUser)
+                PartyContextData(it.compoundRepo, it.partyId, it.clock, it.stubUser)
             }
         )
 
     @Test
     fun saveWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
-        compoundRepo.save(tribeId.with(pairAssignmentDocument))
+        compoundRepo.save(partyId.with(pairAssignmentDocument))
     } verify {
-        repository2.getPairAssignments(tribeId).map { it.data.document }
+        repository2.getPairAssignments(partyId).map { it.data.document }
             .find { it.id == pairAssignmentDocument.id }
             .assertIsEqualTo(pairAssignmentDocument)
     }
 
     @Test
     fun deleteWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
-        compoundRepo.save(tribeId.with(pairAssignmentDocument))
-        compoundRepo.deleteIt(tribeId, pairAssignmentDocument.id)
+        compoundRepo.save(partyId.with(pairAssignmentDocument))
+        compoundRepo.deleteIt(partyId, pairAssignmentDocument.id)
     } verify {
-        repository2.getPairAssignments(tribeId).map { it.data.document }
+        repository2.getPairAssignments(partyId).map { it.data.document }
             .find { it.id == pairAssignmentDocument.id }
             .assertIsEqualTo(null)
     }

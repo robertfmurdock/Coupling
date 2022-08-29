@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.graphql
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.json.TribeInput
+import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
 import com.zegreatrob.coupling.server.CommandDispatcher
@@ -12,12 +12,12 @@ import com.zegreatrob.coupling.server.express.Config
 
 object DispatcherProviders {
     val command: GraphQLDispatcherProvider<CommandDispatcher> = { r, _, _ -> r.commandDispatcher }
-    val tribeCommand: GraphQLDispatcherProvider<CurrentPartyDispatcher> = { request, entity, args ->
-        val tribeId = entity?.get("id").unsafeCast<String?>()
-            ?: (args as? TribeInput)?.tribeId?.value
+    val partyCommand: GraphQLDispatcherProvider<CurrentPartyDispatcher> = { request, entity, args ->
+        val partyId = entity?.get("id").unsafeCast<String?>()
+            ?: (args as? PartyInput)?.partyId?.value
             ?: ""
         request.commandDispatcher
-            .authorizedTribeIdDispatcher(tribeId)
+            .authorizedPartyIdDispatcher(partyId)
             .let { if (it.isAuthorized()) it else null }
     }
 

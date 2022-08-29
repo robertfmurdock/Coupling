@@ -26,17 +26,17 @@ class PinConfigE2ETest {
             name = "name-${randomInt()}-$nameExt"
         )
 
-        private val tribeSetup = e2eSetup.extend(beforeAll = {
-            val tribe = Party(PartyId("${randomInt()}-PinConfigE2ETest-test"))
+        private val partySetup = e2eSetup.extend(beforeAll = {
+            val party = Party(PartyId("${randomInt()}-PinConfigE2ETest-test"))
             val sdk = sdkProvider.await().apply {
-                tribe.save()
+                party.save()
             }
-            sdk to tribe
+            sdk to party
         })
     }
 
     @Test
-    fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = tribeSetup.with(
+    fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = partySetup.with(
         object : PartyContext() {
             val newPinName = "Excellent pin name${randomInt()}"
         }.attachParty()
@@ -61,13 +61,13 @@ class PinConfigE2ETest {
     ) = WebdriverBrowser.waitUntil(
         { pinBagPinNames().contains(newPinName) },
         waitToBePresentDuration,
-        "PinConfigPage.waitForPinNameToAppear in tribe ${id.value}"
+        "PinConfigPage.waitForPinNameToAppear in party ${id.value}"
     )
 
     class WhenThePinExists {
 
         @Test
-        fun attributesAreShownOnConfig() = tribeSetup.with(
+        fun attributesAreShownOnConfig() = partySetup.with(
             object : PartyContext() {
                 val pin = randomPin()
             }.attachParty()
@@ -85,7 +85,7 @@ class PinConfigE2ETest {
         }
 
         @Test
-        fun clickingDeleteWillRemovePinFromPinList() = tribeSetup.with(
+        fun clickingDeleteWillRemovePinFromPinList() = partySetup.with(
             object : PartyContext() {
                 val pin = randomPin()
             }.attachParty()

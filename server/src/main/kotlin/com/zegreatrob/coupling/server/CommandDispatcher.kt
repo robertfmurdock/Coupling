@@ -35,8 +35,8 @@ import com.zegreatrob.coupling.server.action.player.RetiredPlayersQueryDispatche
 import com.zegreatrob.coupling.server.action.player.SavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.user.UserQueryDispatcher
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
-import com.zegreatrob.coupling.server.entity.tribe.PartyDispatcher
-import com.zegreatrob.coupling.server.entity.tribe.ScopeSyntax
+import com.zegreatrob.coupling.server.entity.party.PartyDispatcher
+import com.zegreatrob.coupling.server.entity.party.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import com.zegreatrob.coupling.server.express.Config
 import kotlinx.coroutines.CoroutineScope
@@ -72,15 +72,15 @@ class CommandDispatcher(
     override val execute = this
     override val actionDispatcher = this
 
-    private var authorizedTribeIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
+    private var authorizedPartyIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
 
-    suspend fun authorizedTribeIdDispatcher(tribeId: String): CurrentPartyDispatcher {
-        val preexistingJob = authorizedTribeIdDispatcherJob
+    suspend fun authorizedPartyIdDispatcher(partyId: String): CurrentPartyDispatcher {
+        val preexistingJob = authorizedPartyIdDispatcherJob
         return preexistingJob?.await()
             ?: scope.async {
-                CurrentPartyDispatcher(PartyId(tribeId), this@CommandDispatcher)
+                CurrentPartyDispatcher(PartyId(partyId), this@CommandDispatcher)
             }.also {
-                authorizedTribeIdDispatcherJob = it
+                authorizedPartyIdDispatcherJob = it
             }.await()
     }
 }
@@ -140,7 +140,7 @@ class CurrentPartyDispatcher(
 
     override suspend fun perform(query: PlayersQuery) = playerDeferred.await()
 
-    private suspend fun userIsAuthorized(tribeId: PartyId) = user.authorizedPartyIds.contains(tribeId) ||
+    private suspend fun userIsAuthorized(partyId: PartyId) = user.authorizedPartyIds.contains(partyId) ||
         userIsAlsoPlayer()
 
     private suspend fun userIsAlsoPlayer() = players()

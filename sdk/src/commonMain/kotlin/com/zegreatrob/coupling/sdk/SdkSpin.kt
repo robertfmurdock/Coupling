@@ -16,7 +16,7 @@ interface SdkSpin : SpinDispatcher, GqlSyntax, GraphQueries {
         SpinInput(
             players = players.map(Player::toSerializable),
             pins = pins.map(Pin::toSerializable),
-            tribeId = partyId
+            partyId = partyId
         ),
         "spin",
         ::toOutput

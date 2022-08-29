@@ -1,0 +1,3 @@
+mutation saveParty($input: SavePartyInput!) {
+    saveParty(input: $input)
+}

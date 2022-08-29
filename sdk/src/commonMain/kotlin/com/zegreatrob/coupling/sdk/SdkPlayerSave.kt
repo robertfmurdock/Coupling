@@ -13,7 +13,7 @@ interface SdkPlayerSave : PlayerSave, GqlSyntax, GraphQueries {
 
     private fun PartyElement<Player>.input() =
         SavePlayerInput(
-            tribeId = partyId,
+            partyId = partyId,
             playerId = element.id,
             name = element.name,
             email = element.email,

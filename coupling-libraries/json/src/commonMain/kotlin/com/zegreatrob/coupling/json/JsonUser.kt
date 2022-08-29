@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -19,7 +19,7 @@ data class JsonUser(
 data class JsonUserRecord(
     val id: String,
     val email: String,
-    val authorizedTribeIds: Set<PartyId>,
+    val authorizedPartyIds: Set<PartyId>,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
     val timestamp: DateTime,
@@ -34,7 +34,7 @@ fun User.toSerializable() = JsonUser(
 fun Record<User>.toSerializable() = JsonUserRecord(
     id = data.id,
     email = data.email,
-    authorizedTribeIds = data.authorizedPartyIds,
+    authorizedPartyIds = data.authorizedPartyIds,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -50,7 +50,7 @@ fun JsonUserRecord.toModel() = Record(
     data = User(
         id = id,
         email = email,
-        authorizedPartyIds = authorizedTribeIds,
+        authorizedPartyIds = authorizedPartyIds,
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,

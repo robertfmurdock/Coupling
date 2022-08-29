@@ -37,13 +37,13 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
 
         val compoundRepo = CompoundPartyRepository(repository1, repository2)
 
-        val tribe = stubParty()
+        val party = stubParty()
     }) exercise {
-        compoundRepo.save(tribe)
+        compoundRepo.save(party)
     } verify {
-        repository2.getPartyRecord(tribe.id)
+        repository2.getPartyRecord(party.id)
             ?.data
-            .assertIsEqualTo(tribe)
+            .assertIsEqualTo(party)
     }
 
     @Test
@@ -55,12 +55,12 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
 
         val compoundRepo = CompoundPartyRepository(repository1, repository2)
 
-        val tribe = stubParty()
+        val party = stubParty()
     }) exercise {
-        compoundRepo.save(tribe)
-        compoundRepo.deleteIt(tribe.id)
+        compoundRepo.save(party)
+        compoundRepo.deleteIt(party.id)
     } verify {
-        repository2.getPartyRecord(tribe.id)
+        repository2.getPartyRecord(party.id)
             .assertIsEqualTo(null)
     }
 }

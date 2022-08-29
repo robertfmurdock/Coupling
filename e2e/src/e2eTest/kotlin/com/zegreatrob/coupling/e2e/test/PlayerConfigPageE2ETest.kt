@@ -21,17 +21,17 @@ class PlayerConfigPageE2ETest {
     companion object {
         private fun playerConfigOnePlayerSetup(buildParty: () -> Party, buildPlayer: () -> Player) =
             e2eSetup.extend(beforeAll = {
-                val tribe = buildParty()
+                val party = buildParty()
                 val player = buildPlayer()
                 sdkProvider.await().apply {
-                    tribe.save()
-                    tribe.id.with(player).save()
+                    party.save()
+                    party.id.with(player).save()
                 }
-                Triple(player, tribe, sdkProvider.await())
+                Triple(player, party, sdkProvider.await())
             })
     }
 
-    class WithOneTribeOnePlayer {
+    class WithOnePartyOnePlayer {
 
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
@@ -142,7 +142,7 @@ class PlayerConfigPageE2ETest {
         }
 
         @Test
-        fun whenTribeDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = playerSetup.with(
+        fun whenPartyDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
             }.attachPlayer()
@@ -158,11 +158,11 @@ class PlayerConfigPageE2ETest {
         }
     }
 
-    class WithTribeWithManyPlayers {
+    class WithPartyWithManyPlayers {
 
         @Test
         fun willShowAllPlayers() = e2eSetup(object {
-            val tribe = Party(PartyId("${randomInt()}-PlayerConfigPageE2E"))
+            val party = Party(PartyId("${randomInt()}-PlayerConfigPageE2E"))
             val players = generateSequence {
                 Player(
                     id = "${randomInt()}-PlayerConfigPageE2E",
@@ -172,10 +172,10 @@ class PlayerConfigPageE2ETest {
             val page = PlayerConfigPage
         }) {
             sdkProvider.await().apply {
-                tribe.save()
-                players.forEach { player -> tribe.id.with(player).save() }
+                party.save()
+                players.forEach { player -> party.id.with(player).save() }
             }
-            PlayerConfigPage.goTo(tribe.id, players[0].id)
+            PlayerConfigPage.goTo(party.id, players[0].id)
         } exercise {
             PlayerRoster.playerElements.map { element -> element.text() }.toList()
         } verify { result ->
@@ -183,7 +183,7 @@ class PlayerConfigPageE2ETest {
         }
     }
 
-    class WhenTribeHasBadgingEnabled {
+    class WhenPartyHasBadgingEnabled {
 
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
@@ -254,7 +254,7 @@ class PlayerConfigPageE2ETest {
         }
     }
 
-    class WhenTribeHasCallSignsEnabled {
+    class WhenPartyHasCallSignsEnabled {
 
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
@@ -294,12 +294,12 @@ class PlayerConfigPageE2ETest {
         }
     }
 
-    class WithOneTribeNoPlayers {
+    class WithOnePartyNoPlayers {
 
         @Test
         fun willSuggestCallSign() = e2eSetup(object {
             val party = Party(
-                id = PartyId("${randomInt()}-WithOneTribeNoPlayers"),
+                id = PartyId("${randomInt()}-WithOnePartyNoPlayers"),
                 callSignsEnabled = true
             )
         }) {

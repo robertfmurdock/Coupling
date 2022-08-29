@@ -61,7 +61,7 @@ val partyList = tmFC<PartyList> { (parties) ->
 }
 
 private fun ChildrenBuilder.newPartyButton(className: ClassName) = Link {
-    to = "/new-tribe/"
+    to = "/new-party/"
     draggable = false
     tabIndex = -1
     add(CouplingButton(supersize, green, className)) { +"Form a new party!" }

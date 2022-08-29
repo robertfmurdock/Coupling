@@ -32,12 +32,12 @@ class MemoryPlayerRepository(
         .map { it.value.last() }
 
     override suspend fun deletePlayer(partyId: PartyId, playerId: String): Boolean {
-        val tribeIdPlayer = partyId.players().find { (data) -> data.player.id == playerId }?.data
+        val partyIdPlayer = partyId.players().find { (data) -> data.player.id == playerId }?.data
 
-        return if (tribeIdPlayer == null) {
+        return if (partyIdPlayer == null) {
             false
         } else {
-            tribeIdPlayer.deletionRecord().save()
+            partyIdPlayer.deletionRecord().save()
             true
         }
     }

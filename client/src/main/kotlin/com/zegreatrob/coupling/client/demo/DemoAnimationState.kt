@@ -19,7 +19,7 @@ import com.zegreatrob.coupling.model.player.Player
 import csstype.ClassName
 import popper.core.Placement
 
-private val demoParty = Party(id = PartyId("${uuid4()}"), name = "The Simpsons", imageURL = svgPath("tribes/simpsons"))
+private val demoParty = Party(id = PartyId("${uuid4()}"), name = "The Simpsons", imageURL = svgPath("parties/simpsons"))
 
 private val homer by playerImage()
 private val marge by playerImage()

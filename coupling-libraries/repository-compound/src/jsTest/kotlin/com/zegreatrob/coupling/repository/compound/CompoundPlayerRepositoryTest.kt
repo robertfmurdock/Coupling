@@ -45,12 +45,12 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
 
         val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
-        val tribeId = stubPartyId()
+        val partyId = stubPartyId()
         val player = stubPlayer()
     }) exercise {
-        compoundRepo.save(tribeId.with(player))
+        compoundRepo.save(partyId.with(player))
     } verify {
-        repository2.getPlayers(tribeId).map { it.data.player }.find { it.id == player.id }
+        repository2.getPlayers(partyId).map { it.data.player }.find { it.id == player.id }
             .assertIsEqualTo(player)
     }
 
@@ -63,13 +63,13 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
 
         val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
-        val tribeId = stubPartyId()
+        val partyId = stubPartyId()
         val player = stubPlayer()
     }) exercise {
-        compoundRepo.save(tribeId.with(player))
-        compoundRepo.deletePlayer(tribeId, player.id)
+        compoundRepo.save(partyId.with(player))
+        compoundRepo.deletePlayer(partyId, player.id)
     } verify {
-        repository2.getPlayers(tribeId).map { it.data.player }.find { it.id == player.id }
+        repository2.getPlayers(partyId).map { it.data.player }.find { it.id == player.id }
             .assertIsEqualTo(null)
     }
 }

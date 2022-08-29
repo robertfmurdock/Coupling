@@ -20,7 +20,7 @@ class RequestCombineTest {
     @Test
     fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = asyncSetup(object {
         val performer = StubQueryPerformer1()
-        val sdk = object : Sdk, TribeGQLPerformer by BatchingTribeGQLPerformer(performer) {
+        val sdk = object : Sdk, PartyGQLPerformer by BatchingPartyGQLPerformer(performer) {
             override suspend fun getToken() = ""
         }
         val partyId = PartyId("Random")
@@ -54,7 +54,7 @@ class StubQueryPerformer1 : QueryPerformer {
 private fun stubResponseData() = buildJsonObject {
     putJsonObject("data") {
         putJsonObject("data") {
-            putJsonObject("tribe") {
+            putJsonObject("party") {
                 putJsonArray("playerList") {}
                 putJsonArray("pinList") {}
             }

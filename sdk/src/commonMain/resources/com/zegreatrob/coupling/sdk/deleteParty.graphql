@@ -1,0 +1,3 @@
+mutation deleteParty($input: DeletePartyInput!) {
+    deleteParty(input: $input)
+}

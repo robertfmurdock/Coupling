@@ -1,4 +1,4 @@
-@file:UseSerializers(TribeIdSerializer::class)
+@file:UseSerializers(PartyIdSerializer::class)
 
 package com.zegreatrob.coupling.json
 
@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class DeletePinInput(override val tribeId: PartyId, val pinId: String) : TribeInput
+data class DeletePinInput(override val partyId: PartyId, val pinId: String) : PartyInput

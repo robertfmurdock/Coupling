@@ -43,7 +43,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
     fun getPairAssignmentDocumentRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(
         buildRepository { context ->
             object : Context by context {
-                val tribeId = stubPartyId()
+                val partyId = stubPartyId()
                 val pairAssignmentDocument = stubPairAssignmentDoc()
                 val initialSaveTime = DateTime.now().minus(3.days)
                 val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
@@ -55,33 +55,33 @@ class DynamoPairAssignmentDocumentRepositoryTest :
         }
     ) exercise {
         clock.currentTime = initialSaveTime
-        repository.save(tribeId.with(pairAssignmentDocument))
+        repository.save(partyId.with(pairAssignmentDocument))
         clock.currentTime = updatedSaveTime
-        repository.save(tribeId.with(updatedPairAssignmentDocument))
+        repository.save(partyId.with(updatedPairAssignmentDocument))
         clock.currentTime = updatedSaveTime2
-        repository.deleteIt(tribeId, pairAssignmentDocument.id)
+        repository.deleteIt(partyId, pairAssignmentDocument.id)
     } verifyWithWait {
-        repository.getRecords(tribeId)
-            .assertContains(Record(tribeId.with(pairAssignmentDocument), user.email, false, initialSaveTime))
-            .assertContains(Record(tribeId.with(updatedPairAssignmentDocument), user.email, false, updatedSaveTime))
-            .assertContains(Record(tribeId.with(updatedPairAssignmentDocument), user.email, true, updatedSaveTime2))
+        repository.getRecords(partyId)
+            .assertContains(Record(partyId.with(pairAssignmentDocument), user.email, false, initialSaveTime))
+            .assertContains(Record(partyId.with(updatedPairAssignmentDocument), user.email, false, updatedSaveTime))
+            .assertContains(Record(partyId.with(updatedPairAssignmentDocument), user.email, true, updatedSaveTime2))
     }
 
     @Test
     fun canSaveRawRecord() = asyncSetup.with(
         buildRepository { context ->
             object : Context by context {
-                val tribeId = stubPartyId()
+                val partyId = stubPartyId()
                 val records = listOf(
-                    partyRecord(tribeId, stubPairAssignmentDoc(), uuidString(), false, DateTime.now().minus(3.months)),
-                    partyRecord(tribeId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years))
+                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString(), false, DateTime.now().minus(3.months)),
+                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years))
                 )
             }
         }
     ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verify {
-        with(repository.getRecords(tribeId)) {
+        with(repository.getRecords(partyId)) {
             records.forEach { assertContains(it) }
         }
     }

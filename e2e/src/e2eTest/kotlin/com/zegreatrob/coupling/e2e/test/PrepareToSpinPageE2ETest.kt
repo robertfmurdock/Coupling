@@ -20,17 +20,17 @@ class PrepareToSpinPageE2ETest {
 
     companion object {
 
-        private val pinTribeSetup: TestTemplate<FullTribeData> = e2eSetup.extend(beforeAll = {
-            val tribe = buildFunkyParty()
+        private val pinPartySetup: TestTemplate<FullPartyData> = e2eSetup.extend(beforeAll = {
+            val party = buildFunkyParty()
             val players = (1..5).map(Companion::buildPlayer)
             val pin = Pin("${randomInt()}-PairAssignmentsPageE2ETest", name = "e2e-pin")
             val sdk = sdkProvider.await().apply {
-                tribe.save()
-                players.forEach { tribe.id.with(it).save() }
-                tribe.id.with(pin).save()
+                party.save()
+                players.forEach { party.id.with(it).save() }
+                party.id.with(pin).save()
             }
 
-            FullTribeData(players, listOf(pin), tribe, sdk)
+            FullPartyData(players, listOf(pin), party, sdk)
         }).extend(sharedTeardown = {
             if (saveButton.isDisplayed()) {
                 saveButton.click()
@@ -51,16 +51,16 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun withNoHistory() = pinTribeSetup() exercise {
-        PrepareToSpinPage.goTo(tribe.id)
+    fun withNoHistory() = pinPartySetup() exercise {
+        PrepareToSpinPage.goTo(party.id)
     } verify {
         PlayerCard.playerElements.map { it.text() }.toList()
             .assertIsEqualTo(players.map(Player::name))
     }
 
     @Test
-    fun spinningWithAllPlayersOnWillGetAllPlayersBack() = pinTribeSetup {
-        PrepareToSpinPage.goTo(tribe.id)
+    fun spinningWithAllPlayersOnWillGetAllPlayersBack() = pinPartySetup {
+        PrepareToSpinPage.goTo(party.id)
         selectAllButton.click()
     } exercise {
         spinButton.click()
@@ -71,8 +71,8 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun spinningWillAlertOnExitIfNotSavedAndIfAcceptedPairsAreNotSaved() = pinTribeSetup {
-        PrepareToSpinPage.goTo(tribe.id)
+    fun spinningWillAlertOnExitIfNotSavedAndIfAcceptedPairsAreNotSaved() = pinPartySetup {
+        PrepareToSpinPage.goTo(party.id)
         selectNoneButton.click()
         PlayerCard.playerElements.get(0).element(PlayerCard.iconLocator).click()
         spinButton.click()
@@ -90,8 +90,8 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun whenTwoPlayersAreEnabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinTribeSetup {
-        PrepareToSpinPage.goTo(tribe.id)
+    fun whenTwoPlayersAreEnabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinPartySetup {
+        PrepareToSpinPage.goTo(party.id)
         with(PlayerCard) {
             selectNoneButton.click()
             playerElements.get(1).element(iconLocator).click()
@@ -116,8 +116,8 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun whenPinIsEnabledSpinWillIncludePinInAssignment() = pinTribeSetup {
-        PrepareToSpinPage.goTo(tribe.id)
+    fun whenPinIsEnabledSpinWillIncludePinInAssignment() = pinPartySetup {
+        PrepareToSpinPage.goTo(party.id)
         PrepareToSpinPage.selectedPinElements.count()
             .assertIsEqualTo(1)
     } exercise {
@@ -129,8 +129,8 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = pinTribeSetup {
-        PrepareToSpinPage.goTo(tribe.id)
+    fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = pinPartySetup {
+        PrepareToSpinPage.goTo(party.id)
         PrepareToSpinPage.selectedPinElements.get(0).click()
     } exercise {
         spinButton.click()

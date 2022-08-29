@@ -12,14 +12,14 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.put
 
 interface SdkPartyListGet : PartyListGet, GqlSyntax, GraphQueries {
-    override suspend fun getParties() = performer.postAsync(tribeListQuery()).await()
+    override suspend fun getParties() = performer.postAsync(partyListQuery()).await()
         .jsonObject["data"]
-        ?.jsonObject?.get("tribeList")
-        .toTribeRecordList()
+        ?.jsonObject?.get("partyList")
+        .toPartyRecordList()
 
-    private fun tribeListQuery() = buildJsonObject { put("query", queries.listTribes) }
+    private fun partyListQuery() = buildJsonObject { put("query", queries.listParties) }
 
-    private fun JsonElement?.toTribeRecordList(): List<Record<Party>> = this?.fromJsonElement<List<JsonPartyRecord>>()
+    private fun JsonElement?.toPartyRecordList(): List<Record<Party>> = this?.fromJsonElement<List<JsonPartyRecord>>()
         ?.map(JsonPartyRecord::toModelRecord)
         ?: emptyList()
 }

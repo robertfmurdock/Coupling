@@ -45,7 +45,7 @@ fun main() {
             val jsonLine = JSON.parse<Json>(line)
             when {
                 jsonLine["userEmail"] != null -> launch { loadUser(jsonLine, catalog.userRepository) }
-                jsonLine["tribeId"] != null -> launch { loadTribeData(jsonLine, catalog) }
+                jsonLine["partyId"] != null -> launch { loadPartyData(jsonLine, catalog) }
             }
         }
         reader.inputStreamEnd().await()
@@ -58,30 +58,30 @@ private fun ReadLine.inputStreamEnd() = CompletableDeferred<Unit>().also { endDe
 
 private val format = couplingJsonFormat
 
-suspend fun loadTribeData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
-    val partyId = jsonLine["tribeId"].unsafeCast<String>().let(::PartyId)
-    jsonLine.getArray("tribeRecords").forEach { recordJson ->
-        tryToImport({ "Failed to save tribe $partyId" }) {
-            catalog.tribeRepository.saveRawRecord(
+suspend fun loadPartyData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
+    val partyId = jsonLine["partyId"].unsafeCast<String>().let(::PartyId)
+    jsonLine.getArray("partyRecords").forEach { recordJson ->
+        tryToImport({ "Failed to save party $partyId" }) {
+            catalog.partyRepository.saveRawRecord(
                 format.decodeFromDynamic<JsonPartyRecord>(recordJson).toModelRecord()
             )
         }
     }
     jsonLine.getArray("playerRecords").forEach { recordJson ->
         val record = format.decodeFromDynamic<JsonPlayerRecord>(recordJson).toModel()
-        tryToImport({ "Failed to save player ${record.data.id} in tribe $partyId" }) {
+        tryToImport({ "Failed to save player ${record.data.id} in party $partyId" }) {
             catalog.playerRepository.saveRawRecord(record)
         }
     }
     jsonLine.getArray("pinRecords").forEach { recordJson ->
         val record = format.decodeFromDynamic<JsonPinRecord>(recordJson).toModel()
-        tryToImport({ "Failed to save pin ${record.data.id} in tribe $partyId" }) {
+        tryToImport({ "Failed to save pin ${record.data.id} in party $partyId" }) {
             catalog.pinRepository.saveRawRecord(record)
         }
     }
     jsonLine.getArray("pairAssignmentRecords").forEach { recordJson ->
         val record = format.decodeFromDynamic<JsonPairAssignmentDocumentRecord>(recordJson).toModel()
-        tryToImport({ "Failed to save player ${record.data.id} in tribe $partyId" }) {
+        tryToImport({ "Failed to save player ${record.data.id} in party $partyId" }) {
             catalog.pairAssignmentDocumentRepository.saveRawRecord(record)
         }
     }
@@ -108,7 +108,7 @@ private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepositor
 class DynamoRepositoryCatalog private constructor(
     override val userId: String,
     override val clock: TimeProvider,
-    val tribeRepository: DynamoPartyRepository,
+    val partyRepository: DynamoPartyRepository,
     val playerRepository: DynamoPlayerRepository,
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
     val pinRepository: DynamoPinRepository,
@@ -117,7 +117,7 @@ class DynamoRepositoryCatalog private constructor(
 
     companion object {
         suspend operator fun invoke(userEmail: String, clock: TimeProvider): DynamoRepositoryCatalog {
-            val tribeRepository = DynamoPartyRepository(userEmail, clock)
+            val partyRepository = DynamoPartyRepository(userEmail, clock)
             val playerRepository = DynamoPlayerRepository(userEmail, clock)
             val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userEmail, clock)
             val pinRepository = DynamoPinRepository(userEmail, clock)
@@ -125,7 +125,7 @@ class DynamoRepositoryCatalog private constructor(
             return DynamoRepositoryCatalog(
                 userEmail,
                 clock,
-                tribeRepository,
+                partyRepository,
                 playerRepository,
                 pairAssignmentDocumentRepository,
                 pinRepository,

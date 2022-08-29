@@ -99,8 +99,8 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic) = js("require('ser
 
 private suspend fun handleConnect(request: Request, connectionId: String, event: Any?): Int {
     val commandDispatcher = with(request) { commandDispatcher(user, scope, traceId) }
-    val tribeId = request.query["tribeId"].toString().let(::PartyId)
-    val result = commandDispatcher.execute(ConnectPartyUserCommand(tribeId, connectionId))
+    val partyId = request.query["partyId"].toString().let(::PartyId)
+    val result = commandDispatcher.execute(ConnectPartyUserCommand(partyId, connectionId))
     return if (result == null) {
         delete(connectionId, commandDispatcher.managementApiClient).await()
         403

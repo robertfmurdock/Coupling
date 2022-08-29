@@ -37,7 +37,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
     fun getPinRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup.with(
         buildRepository { context ->
             object : Context by context {
-                val tribeId = stubPartyId()
+                val partyId = stubPartyId()
                 val pin = stubPin()
                 val initialSaveTime = DateTime.now().minus(3.days)
                 val updatedPin = pin.copy(name = "CLONE")
@@ -47,33 +47,33 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
         }
     ) exercise {
         clock.currentTime = initialSaveTime
-        repository.save(tribeId.with(pin))
+        repository.save(partyId.with(pin))
         clock.currentTime = updatedSaveTime
-        repository.save(tribeId.with(updatedPin))
+        repository.save(partyId.with(updatedPin))
         clock.currentTime = updatedSaveTime2
-        repository.deletePin(tribeId, pin.id!!)
+        repository.deletePin(partyId, pin.id!!)
     } verifyWithWait {
-        repository.getPinRecords(tribeId)
-            .assertContains(Record(tribeId.with(pin), user.email, false, initialSaveTime))
-            .assertContains(Record(tribeId.with(updatedPin), user.email, false, updatedSaveTime))
-            .assertContains(Record(tribeId.with(updatedPin), user.email, true, updatedSaveTime2))
+        repository.getPinRecords(partyId)
+            .assertContains(Record(partyId.with(pin), user.email, false, initialSaveTime))
+            .assertContains(Record(partyId.with(updatedPin), user.email, false, updatedSaveTime))
+            .assertContains(Record(partyId.with(updatedPin), user.email, true, updatedSaveTime2))
     }
 
     @Test
     fun canSaveRawRecord() = asyncSetup.with(
         buildRepository { context ->
             object : Context by context {
-                val tribeId = stubPartyId()
+                val partyId = stubPartyId()
                 val records = listOf(
-                    partyRecord(tribeId, stubPin(), uuidString(), false, DateTime.now().minus(3.months)),
-                    partyRecord(tribeId, stubPin(), uuidString(), true, DateTime.now().minus(2.years))
+                    partyRecord(partyId, stubPin(), uuidString(), false, DateTime.now().minus(3.months)),
+                    partyRecord(partyId, stubPin(), uuidString(), true, DateTime.now().minus(2.years))
                 )
             }
         }
     ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verifyWithWait {
-        val loadedRecords = repository.getPinRecords(tribeId)
+        val loadedRecords = repository.getPinRecords(partyId)
         records.forEach { loadedRecords.assertContains(it) }
     }
 }

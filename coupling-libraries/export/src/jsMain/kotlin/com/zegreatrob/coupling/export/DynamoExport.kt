@@ -34,33 +34,33 @@ fun exportWithDynamo() {
     MainScope().launch {
         val repositoryCatalog = DynamoRepositoryCatalog(user.email, TimeProvider)
         outputUsers(repositoryCatalog)
-        repositoryCatalog.outputTribes()
+        repositoryCatalog.outputParties()
     }
 }
 
-private suspend fun DynamoRepositoryCatalog.outputTribes() = tribeRepository.getTribeRecords()
+private suspend fun DynamoRepositoryCatalog.outputParties() = partyRepository.getTribeRecords()
     .groupBy { it.data.id }
     .entries.sortedBy { it.key.value }
-    .forEach { tribeGroup ->
-        collectTribeData(this, tribeGroup.key, tribeGroup.value)
+    .forEach { partyGroup ->
+        collectPartyData(this, partyGroup.key, partyGroup.value)
             .print()
     }
 
-private suspend fun collectTribeData(
+private suspend fun collectPartyData(
     repositoryCatalog: DynamoRepositoryCatalog,
     partyId: PartyId,
     partyRecords: List<Record<Party>>
 ): Json = couplingJsonFormat.encodeToDynamic(
-    tribeDataSerializable(partyId, partyRecords, repositoryCatalog)
+    partyDataSerializable(partyId, partyRecords, repositoryCatalog)
 ).unsafeCast<Json>()
 
-private suspend fun tribeDataSerializable(
+private suspend fun partyDataSerializable(
     partyId: PartyId,
     partyRecords: List<Record<Party>>,
     repositoryCatalog: DynamoRepositoryCatalog
-) = TribeData(
-    tribeId = partyId.value,
-    tribeRecords = partyRecords.map(Record<Party>::toSerializable),
+) = PartyData(
+    partyId = partyId.value,
+    partyRecords = partyRecords.map(Record<Party>::toSerializable),
     playerRecords = repositoryCatalog.playerRepository.getPlayerRecords(partyId)
         .map(Record<PartyElement<Player>>::toSerializable),
     pairAssignmentRecords = repositoryCatalog.pairAssignmentDocumentRepository.getRecords(partyId)
@@ -70,9 +70,9 @@ private suspend fun tribeDataSerializable(
 )
 
 @Serializable
-data class TribeData(
-    val tribeId: String,
-    val tribeRecords: List<JsonPartyRecord>,
+data class PartyData(
+    val partyId: String,
+    val partyRecords: List<JsonPartyRecord>,
     val playerRecords: List<JsonPlayerRecord>,
     val pairAssignmentRecords: List<JsonPairAssignmentDocumentRecord>,
     val pinRecords: List<JsonPinRecord>,
@@ -92,7 +92,7 @@ private suspend fun outputUsers(repositoryCatalog: DynamoRepositoryCatalog) {
 class DynamoRepositoryCatalog private constructor(
     override val userId: String,
     override val clock: TimeProvider,
-    val tribeRepository: DynamoPartyRepository,
+    val partyRepository: DynamoPartyRepository,
     val playerRepository: DynamoPlayerRepository,
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
     val pinRepository: DynamoPinRepository,
@@ -103,7 +103,7 @@ class DynamoRepositoryCatalog private constructor(
 
     companion object {
         suspend operator fun invoke(userEmail: String, clock: TimeProvider): DynamoRepositoryCatalog {
-            val tribeRepository = DynamoPartyRepository(userEmail, clock)
+            val partyRepository = DynamoPartyRepository(userEmail, clock)
             val playerRepository = DynamoPlayerRepository(userEmail, clock)
             val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userEmail, clock)
             val pinRepository = DynamoPinRepository(userEmail, clock)
@@ -111,7 +111,7 @@ class DynamoRepositoryCatalog private constructor(
             return DynamoRepositoryCatalog(
                 userEmail,
                 clock,
-                tribeRepository,
+                partyRepository,
                 playerRepository,
                 pairAssignmentDocumentRepository,
                 pinRepository,

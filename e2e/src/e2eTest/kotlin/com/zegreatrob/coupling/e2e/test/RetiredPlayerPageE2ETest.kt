@@ -14,16 +14,16 @@ import kotlin.test.Test
 class RetiredPlayerPageE2ETest {
 
     companion object {
-        private suspend fun delete(players: List<Player>, sdk: Sdk, tribe: Party) {
+        private suspend fun delete(players: List<Player>, sdk: Sdk, party: Party) {
             coroutineScope {
-                players.forEach { launch { sdk.playerRepository.deletePlayer(tribe.id, it.id) } }
+                players.forEach { launch { sdk.playerRepository.deletePlayer(party.id, it.id) } }
             }
         }
     }
 
     @Test
     fun showsTheRetiredPlayers() = sdkSetup(object : SdkContext() {
-        val tribe = "${randomInt()}-RetiredPlayerPageE2ETest"
+        val party = "${randomInt()}-RetiredPlayerPageE2ETest"
             .let { Party(it.let(::PartyId), name = "$it-name") }
         val players = (1..4)
             .map { "${randomInt()}-RetiredPlayerPageE2ETest-$it" }
@@ -32,15 +32,15 @@ class RetiredPlayerPageE2ETest {
         val notDeletedPlayer = players[2]
         val retiredPlayers = players - notDeletedPlayer
     }) {
-        sdk.partyRepository.save(tribe)
-        players.forEach { sdk.playerRepository.save(tribe.id.with(it)) }
-        delete(retiredPlayers, sdk, tribe)
+        sdk.partyRepository.save(party)
+        players.forEach { sdk.playerRepository.save(party.id.with(it)) }
+        delete(retiredPlayers, sdk, party)
     } exercise {
-        RetiredPlayersPage.goTo(tribe.id)
+        RetiredPlayersPage.goTo(party.id)
     } verify {
         PlayerCard.playerElements.map { it.text() }.toList()
             .assertIsEqualTo(retiredPlayers.map { it.name })
         element.text()
-            .assertIsEqualTo(tribe.name)
+            .assertIsEqualTo(party.name)
     }
 }

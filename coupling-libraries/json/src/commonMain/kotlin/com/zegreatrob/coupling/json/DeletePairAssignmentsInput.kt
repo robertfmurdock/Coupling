@@ -1,4 +1,4 @@
-@file:UseSerializers(TribeIdSerializer::class, PairAssignmentDocumentIdSerializer::class)
+@file:UseSerializers(PartyIdSerializer::class, PairAssignmentDocumentIdSerializer::class)
 
 package com.zegreatrob.coupling.json
 
@@ -8,5 +8,5 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class DeletePairAssignmentsInput(val pairAssignmentsId: PairAssignmentDocumentId, override val tribeId: PartyId) :
-    TribeInput
+data class DeletePairAssignmentsInput(val pairAssignmentsId: PairAssignmentDocumentId, override val partyId: PartyId) :
+    PartyInput

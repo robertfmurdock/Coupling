@@ -44,11 +44,11 @@ class PartyListPageE2ETest {
     }
 
     @Test
-    fun canNavigateToTheNewTribePage() = twoPartySetup() exercise {
+    fun canNavigateToTheNewPartyPage() = twoPartySetup() exercise {
         newPartyButton.click()
         PartyConfigPage.waitForPage()
     } verify {
         WebdriverBrowser.currentUrl().pathname
-            .assertIsEqualTo(resolve(clientBasename, "new-tribe/"))
+            .assertIsEqualTo(resolve(clientBasename, "new-party/"))
     }
 }

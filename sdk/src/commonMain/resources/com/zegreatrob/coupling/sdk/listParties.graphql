@@ -1,5 +1,5 @@
-query listTribes {
-    tribeList {
+query listParties {
+    partyList {
         id
         name
         email

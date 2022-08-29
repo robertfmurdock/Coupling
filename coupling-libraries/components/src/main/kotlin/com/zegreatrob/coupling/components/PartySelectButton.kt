@@ -10,7 +10,7 @@ import react.router.dom.Link
 
 val PartySelectButton = FC<Props> {
     Link {
-        to = "/tribes/"
+        to = "/parties/"
         tabIndex = -1
         draggable = false
         add(CouplingButton(large)) {

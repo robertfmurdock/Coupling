@@ -12,7 +12,7 @@ interface SdkPinSave : PinSave, GqlSyntax, GraphQueries {
 
     private fun PartyElement<Pin>.savePinInput() =
         mapOf(
-            "tribeId" to partyId.value,
+            "partyId" to partyId.value,
             "pinId" to element.id,
             "icon" to element.icon,
             "name" to element.name

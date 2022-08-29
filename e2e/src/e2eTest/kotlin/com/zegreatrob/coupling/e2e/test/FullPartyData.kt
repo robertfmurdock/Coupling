@@ -5,4 +5,4 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.Sdk
 
-data class FullTribeData(val players: List<Player>, val pins: List<Pin>, val tribe: Party, val sdk: Sdk)
+data class FullPartyData(val players: List<Player>, val pins: List<Pin>, val party: Party, val sdk: Sdk)

@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -15,14 +15,14 @@ data class JsonPinRecord(
     val id: String? = null,
     val name: String = "",
     val icon: String = "",
-    override val tribeId: PartyId,
+    override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: DateTime,
-) : JsonTribeRecordInfo
+) : JsonPartyRecordInfo
 
-interface JsonTribeRecordInfo {
-    val tribeId: PartyId?
+interface JsonPartyRecordInfo {
+    val partyId: PartyId?
     val modifyingUserEmail: String?
     val isDeleted: Boolean?
     val timestamp: DateTime?
@@ -39,11 +39,11 @@ data class JsonPinData(override val id: String?, override val name: String, over
 
 @Serializable
 data class SavePinInput(
-    override val tribeId: PartyId,
+    override val partyId: PartyId,
     val pinId: String?,
     val name: String,
     val icon: String,
-) : TribeInput
+) : PartyInput
 
 fun Pin.toSerializable() = JsonPinData(
     id = id,
@@ -55,7 +55,7 @@ fun Record<PartyElement<Pin>>.toSerializable() = JsonPinRecord(
     id = data.element.id,
     name = data.element.name,
     icon = data.element.icon,
-    tribeId = data.id,
+    partyId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -68,7 +68,7 @@ fun JsonPinData.toModel(): Pin = Pin(
 )
 
 fun JsonPinRecord.toModel(): Record<PartyElement<Pin>> = Record(
-    data = tribeId.with(Pin(id = id, name = name, icon = icon)),
+    data = partyId.with(Pin(id = id, name = name, icon = icon)),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
     timestamp = timestamp

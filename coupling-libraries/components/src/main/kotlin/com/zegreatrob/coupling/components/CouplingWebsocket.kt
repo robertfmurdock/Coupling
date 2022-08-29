@@ -64,7 +64,7 @@ private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { me
 }
 
 private fun buildSocketUrl(partyId: PartyId, useSsl: Boolean, token: String) = URL(
-    "?tribeId=${encodeURIComponent(partyId.value)}&token=${encodeURIComponent(token)}",
+    "?partyId=${encodeURIComponent(partyId.value)}&token=${encodeURIComponent(token)}",
     "${useSsl.protocol}://$host"
 )
 

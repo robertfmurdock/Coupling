@@ -1,13 +1,13 @@
 type BoostRecord {
     userId: String!
-    tribeIds: [String]!
+    partyIds: [String]!
     expirationDate: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
 }
 
-type TribeData {
+type PartyData {
     id: String!
     boost: BoostRecord
 }
@@ -18,7 +18,7 @@ type UserRecord {
 }
 
 input SaveBoostInput {
-    tribeIds: [String]!
+    partyIds: [String]!
 }
 
 type Mutation {

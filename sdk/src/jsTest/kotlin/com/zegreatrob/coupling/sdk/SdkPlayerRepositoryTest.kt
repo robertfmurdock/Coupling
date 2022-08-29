@@ -99,16 +99,16 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
-                    val tribe = stubParty()
+                    val party = stubParty()
                 }) {
-                    otherSdk.partyRepository.save(tribe)
-                    otherSdk.playerRepository.save(tribe.id.with(stubPlayer()))
+                    otherSdk.partyRepository.save(party)
+                    otherSdk.playerRepository.save(party.id.with(stubPlayer()))
                 } exercise {
-                    sdk.playerRepository.getPlayers(tribe.id)
+                    sdk.playerRepository.getPlayers(party.id)
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.partyRepository.deleteIt(tribe.id)
+                    otherSdk.partyRepository.deleteIt(party.id)
                 }
             }
         }
@@ -119,7 +119,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
-                    val tribe = stubParty()
+                    val party = stubParty()
                     val player = Player(
                         id = "${uuid4()}",
                         name = "Awesome-O",
@@ -127,14 +127,14 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                         callSignNoun = "Sauce"
                     )
                 }) {
-                    otherSdk.partyRepository.save(tribe)
+                    otherSdk.partyRepository.save(party)
                 } exercise {
-                    sdk.playerRepository.save(tribe.id.with(player))
-                    otherSdk.playerRepository.getPlayers(tribe.id)
+                    sdk.playerRepository.save(party.id.with(player))
+                    otherSdk.playerRepository.getPlayers(party.id)
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.partyRepository.deleteIt(tribe.id)
+                    otherSdk.partyRepository.deleteIt(party.id)
                 }
             }
         }
@@ -144,9 +144,9 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             val sdk = authorizedSdk()
             waitForTest {
                 asyncSetup(object {
-                    val tribe = stubParty()
+                    val party = stubParty()
                 }) exercise {
-                    sdk.playerRepository.deletePlayer(tribe.id, "player id")
+                    sdk.playerRepository.deletePlayer(party.id, "player id")
                 } verify { result ->
                     result.assertIsEqualTo(false)
                 }

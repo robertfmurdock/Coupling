@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime

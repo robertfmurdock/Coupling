@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.entity.tribe
+package com.zegreatrob.coupling.server.entity.party
 
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Record
@@ -8,6 +8,6 @@ import com.zegreatrob.coupling.server.graphql.DispatcherProviders.command
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonElement
 
-val tribeListResolve = dispatch(command, { _, _: JsonElement -> PartyListQuery }, ::toJson)
+val partyListResolve = dispatch(command, { _, _: JsonElement -> PartyListQuery }, ::toJson)
 
 private fun toJson(records: List<Record<Party>>) = records.map(Record<Party>::toSerializable)

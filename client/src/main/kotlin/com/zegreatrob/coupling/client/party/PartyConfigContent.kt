@@ -220,7 +220,7 @@ private fun ChildrenBuilder.enableCallSignsInput(party: Party, onChange: (Change
 
 private fun ChildrenBuilder.uniqueIdInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Unique Id",
-    id = "tribe-id",
+    id = "party-id",
     name = "id",
     value = party.id.value,
     type = InputType.text,
@@ -229,7 +229,7 @@ private fun ChildrenBuilder.uniqueIdInput(party: Party, onChange: (ChangeEvent<*
 
 private fun ChildrenBuilder.emailInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Email",
-    id = "tribe-email",
+    id = "party-email",
     name = "email",
     value = party.email ?: "",
     type = InputType.text,
@@ -239,7 +239,7 @@ private fun ChildrenBuilder.emailInput(party: Party, onChange: (ChangeEvent<*>) 
 
 private fun ChildrenBuilder.nameInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Name",
-    id = "tribe-name",
+    id = "party-name",
     name = "name",
     value = party.name ?: "",
     type = InputType.text,

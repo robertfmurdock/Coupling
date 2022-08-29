@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.entity.tribe
+package com.zegreatrob.coupling.server.entity.party
 
 import kotlinx.coroutines.CoroutineScope
 

@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.defaultParty
 
-fun SaveTribeInput.toModel() = Party(
-    id = tribeId,
+fun SavePartyInput.toModel() = Party(
+    id = partyId,
     name = name,
     email = email,
     pairingRule = PairingRule.fromValue(pairingRule),

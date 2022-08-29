@@ -20,13 +20,13 @@ object PlayerConfigPage : StyleSyntax {
     fun adjectiveTextInput() = WebdriverElement(By.id("adjective-input"))
     fun nounTextInput() = WebdriverElement(By.id("noun-input"))
 
-    suspend fun goTo(tribeId: PartyId, playerId: String?) {
-        WebdriverBrowser.setLocation("/${tribeId.value}/player/$playerId")
+    suspend fun goTo(partyId: PartyId, playerId: String?) {
+        WebdriverBrowser.setLocation("/${partyId.value}/player/$playerId")
         waitForPage()
     }
 
-    suspend fun goToNew(tribeId: PartyId) {
-        WebdriverBrowser.setLocation("/${tribeId.value}/player/new")
+    suspend fun goToNew(partyId: PartyId) {
+        WebdriverBrowser.setLocation("/${partyId.value}/player/new")
         waitForPage()
     }
 

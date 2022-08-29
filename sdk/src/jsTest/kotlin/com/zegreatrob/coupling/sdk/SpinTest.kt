@@ -126,7 +126,7 @@ class SpinTest {
         private val pinExistsSetup
             get() = { context: SdkContext ->
                 object : SdkContext by context {
-                    val tribe = stubParty()
+                    val party = stubParty()
                     val players = listOf(stubPlayer())
                     val pin = stubPin()
                 }
@@ -134,27 +134,27 @@ class SpinTest {
 
         @Test
         fun whenAPinExistsWillAssignOnePinToPair() = sdkSetup.with({ pinExistsSetup(it) }) {
-            setupScenario(sdk, tribe, players, pins = listOf(pin))
+            setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            sdk.requestSpin(tribe.id, players, listOf(pin))
+            sdk.requestSpin(party.id, players, listOf(pin))
         } verifyAnd { result ->
             result.pairs.assertIsEqualTo(
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), setOf(pin)))
             )
         } teardown {
-            sdk.partyRepository.deleteIt(tribe.id)
+            sdk.partyRepository.deleteIt(party.id)
         }
         @Test
         fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup.with({ pinExistsSetup(it) }) {
-            setupScenario(sdk, tribe, players, pins = listOf(pin))
+            setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            sdk.requestSpin(tribe.id, players, emptyList())
+            sdk.requestSpin(party.id, players, emptyList())
         } verifyAnd { result ->
             result.pairs.assertIsEqualTo(
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptySet()))
             )
         } teardown {
-            sdk.partyRepository.deleteIt(tribe.id)
+            sdk.partyRepository.deleteIt(party.id)
         }
     }
 

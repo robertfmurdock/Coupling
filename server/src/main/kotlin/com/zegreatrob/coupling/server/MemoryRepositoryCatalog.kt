@@ -46,7 +46,7 @@ class MemoryRepositoryCatalog private constructor(
             MemoryRepositoryCatalog(
                 userEmail,
                 clock,
-                MemoryPartyRepository(userEmail, clock, backend.tribe),
+                MemoryPartyRepository(userEmail, clock, backend.party),
                 MemoryPlayerRepository(userEmail, clock, backend.player),
                 MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
                 MemoryPinRepository(userEmail, clock, backend.pin),
@@ -57,7 +57,7 @@ class MemoryRepositoryCatalog private constructor(
 }
 
 class MemoryRepositoryBackend {
-    val tribe = SimpleRecordBackend<Party>()
+    val party = SimpleRecordBackend<Party>()
     val player = SimpleRecordBackend<PartyElement<Player>>()
     val pairAssignments = SimpleRecordBackend<PartyElement<PairAssignmentDocument>>()
     val pin = SimpleRecordBackend<PartyElement<Pin>>()

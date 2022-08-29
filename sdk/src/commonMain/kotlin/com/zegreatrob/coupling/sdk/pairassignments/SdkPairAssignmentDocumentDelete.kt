@@ -27,7 +27,7 @@ interface SdkPairAssignmentDocumentDelete : PairAssignmentDocumentDelete, GqlSyn
         put("query", JsonPrimitive(mutations.deletePairAssignments))
         putJsonObject("variables") {
             putJsonObject("input") {
-                put("tribeId", partyId.value)
+                put("partyId", partyId.value)
                 put("pairAssignmentsId", pairAssignmentDocumentId.value)
             }
         }

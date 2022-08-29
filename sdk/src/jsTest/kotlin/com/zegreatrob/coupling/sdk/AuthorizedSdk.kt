@@ -26,7 +26,7 @@ expect fun getEnv(name: String): String?
 val primaryAuthorizedSdkDeferred by lazy {
     MainScope().async {
         authorizedSdk(primaryAuthorizedUsername, primaryTestPassword)
-            .apply { deleteAnyDisplayedTribes() }
+            .apply { deleteAnyDisplayedParties() }
     }
 }
 
@@ -36,11 +36,11 @@ val altTestPassword = getEnv("COUPLING_ALT_TEST_PASSWORD") ?: ""
 val altAuthorizedSdkDeferred by lazy {
     MainScope().async {
         authorizedSdk(altAuthorizedUsername, altTestPassword)
-            .apply { deleteAnyDisplayedTribes() }
+            .apply { deleteAnyDisplayedParties() }
     }
 }
 
-private suspend fun Sdk.deleteAnyDisplayedTribes() = with(partyRepository) {
+private suspend fun Sdk.deleteAnyDisplayedParties() = with(partyRepository) {
     getParties().forEach {
         deleteIt(it.data.id)
     }

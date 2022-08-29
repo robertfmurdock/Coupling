@@ -25,8 +25,8 @@ object PinConfigPage : StyleSyntax {
         waitForLoad()
     }
 
-    suspend fun goTo(tribeId: PartyId, pinId: String?) {
-        WebdriverBrowser.setLocation("/${tribeId.value}/pin/$pinId")
+    suspend fun goTo(partyId: PartyId, pinId: String?) {
+        WebdriverBrowser.setLocation("/${partyId.value}/pin/$pinId")
         waitForLoad()
     }
 

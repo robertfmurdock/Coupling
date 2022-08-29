@@ -30,10 +30,10 @@ import kotlin.test.Test
 class PairAssignmentsPageE2ETest {
 
     companion object {
-        private suspend fun Sdk.save(tribe: Party, players: List<Player>) {
-            partyRepository.save(tribe)
+        private suspend fun Sdk.save(party: Party, players: List<Player>) {
+            partyRepository.save(party)
             with(playerRepository) {
-                players.forEach { save(tribe.id.with(it)) }
+                players.forEach { save(party.id.with(it)) }
             }
         }
     }
@@ -41,7 +41,7 @@ class PairAssignmentsPageE2ETest {
     class GivenNoCurrentSetOfPairs {
 
         companion object {
-            val tribe by lazy {
+            val party by lazy {
                 Party(
                     PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
                     name = "${randomInt()}-PairAssignmentsPageE2ETest"
@@ -60,7 +60,7 @@ class PairAssignmentsPageE2ETest {
             }
 
             private val template = e2eSetup.extend(sharedSetup = { sdk ->
-                sdk.save(tribe, players)
+                sdk.save(party, players)
             })
 
             private fun currentPairAssignmentPageSetup(additionalSetup: suspend PairAssignmentsPage.() -> Unit) =
@@ -68,81 +68,81 @@ class PairAssignmentsPageE2ETest {
         }
 
         @Test
-        fun showsTheTribeAndRoster() = currentPairAssignmentPageSetup {
+        fun showsThePartyAndRoster() = currentPairAssignmentPageSetup {
         } exercise {
-            goTo(tribe.id)
+            goTo(party.id)
         } verify {
             PartyCard.element.text()
-                .assertIsEqualTo(tribe.name)
+                .assertIsEqualTo(party.name)
             PlayerRoster.playerElements.map { it.text() }.toList()
                 .assertIsEqualTo(players.map { it.name })
         }
 
         @Test
         fun willLetYouAddPlayers() = currentPairAssignmentPageSetup {
-            goTo(tribe.id)
+            goTo(party.id)
         } exercise {
             PlayerRoster.getAddPlayerButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/player/new/"))
+                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/player/new/"))
         }
 
         @Test
         fun willLetYouEditAnExistingPlayer() = currentPairAssignmentPageSetup {
-            goTo(tribe.id)
+            goTo(party.id)
         } exercise {
             PlayerRoster.playerElements.first().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/player/${players[0].id}/"))
+                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/player/${players[0].id}/"))
         }
 
         @Test
         fun willLetYouViewHistory() = currentPairAssignmentPageSetup {
-            goTo(tribe.id)
+            goTo(party.id)
         } exercise {
             viewHistoryButton.click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/history/"))
+                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/history/"))
         }
 
         @Test
         fun willLetYouPrepareNewPairs() = currentPairAssignmentPageSetup {
-            goTo(tribe.id)
+            goTo(party.id)
         } exercise {
             newPairsButton.click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/prepare/"))
+                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/prepare/"))
         }
 
         @Test
         fun willLetYouGoToTheStatsPage() = currentPairAssignmentPageSetup {
-            goTo(tribe.id)
+            goTo(party.id)
         } exercise {
             statisticsButton.click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/statistics"))
+                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/statistics"))
         }
 
         @Test
         fun willLetYouGoToTheRetiredPlayersPage() = currentPairAssignmentPageSetup {
-            goTo(tribe.id)
+            goTo(party.id)
         } exercise {
             retiredPlayersButton.click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${tribe.id.value}/players/retired"))
+                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/players/retired"))
         }
     }
 
     class GivenCurrentSetOfPairsExists {
 
         companion object {
-            val tribe by lazy {
+            val party by lazy {
                 Party(
                     PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
                     name = "${randomInt()}-PairAssignmentsPageE2ETest"
@@ -176,10 +176,10 @@ class PairAssignmentsPageE2ETest {
 
             private val setup = e2eSetup.extend(beforeAll = {
                 sdkProvider.await().apply {
-                    tribe.save()
+                    party.save()
                     coroutineScope {
-                        launch { players.forEach { tribe.id.with(it).save() } }
-                        launch { sdk.pairAssignmentDocumentRepository.save(tribe.id.with(pairAssignmentDocument)) }
+                        launch { players.forEach { party.id.with(it).save() } }
+                        launch { sdk.pairAssignmentDocumentRepository.save(party.id.with(pairAssignmentDocument)) }
                     }
                 }
             })
@@ -191,7 +191,7 @@ class PairAssignmentsPageE2ETest {
         @Test
         fun willShowPlayersInCorrectPlaces() = currentPairAssignmentPageSetup {
         } exercise {
-            goTo(tribe.id)
+            goTo(party.id)
         } verify {
             assignedPairElements.assertTheMostRecentPairsAreShown()
             PlayerRoster.playerElements.assertOnlyUnpairedPlayersAreShown()
@@ -210,26 +210,26 @@ class PairAssignmentsPageE2ETest {
         }
 
         @Test
-        fun whenTheTribeHasCallSignsTurnedOffTheyDoNotDisplay() = currentPairAssignmentPageSetup {
+        fun whenThePartyHasCallSignsTurnedOffTheyDoNotDisplay() = currentPairAssignmentPageSetup {
             sdkProvider.await().apply {
-                tribe.copy(callSignsEnabled = false)
+                party.copy(callSignsEnabled = false)
                     .save()
             }
         } exercise {
-            goTo(tribe.id)
+            goTo(party.id)
         } verify {
             assignedPairCallSigns.count()
                 .assertIsEqualTo(0)
         }
 
         @Test
-        fun whenTheTribeHasCallSignsTurnedOnTheyDisplay() = currentPairAssignmentPageSetup {
+        fun whenThePartyHasCallSignsTurnedOnTheyDisplay() = currentPairAssignmentPageSetup {
             sdkProvider.await().apply {
-                tribe.copy(callSignsEnabled = true).save()
+                party.copy(callSignsEnabled = true).save()
             }
             WelcomePage.goTo()
         } exercise {
-            goTo(tribe.id)
+            goTo(party.id)
         } verify {
             val callSigns = assignedPairCallSigns.map { it.text() }
             with(callSigns) {

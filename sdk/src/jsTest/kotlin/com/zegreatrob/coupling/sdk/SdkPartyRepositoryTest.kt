@@ -87,18 +87,18 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
 
     override fun saveWillIncludeModificationInformation() = repositorySetup.with(
         object : SdkMint() {
-            val tribe = stubParty()
+            val party = stubParty()
         }.bind()
     ) {
-        repository.save(tribe)
+        repository.save(party)
     } exercise {
         repository.getParties()
     } verifyAnd { result ->
-        result.first { it.data.id == tribe.id }.apply {
+        result.first { it.data.id == party.id }.apply {
             modifyingUserId.assertIsEqualTo(user.email)
             timestamp.isWithinOneSecondOfNow()
         }
     } teardown {
-        repository.deleteIt(tribe.id)
+        repository.deleteIt(party.id)
     }
 }

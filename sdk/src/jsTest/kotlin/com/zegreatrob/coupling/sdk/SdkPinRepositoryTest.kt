@@ -17,10 +17,10 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
 
     override val repositorySetup = asyncTestTemplate<SdkPartyContext<SdkPinRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
-        val tribe = stubParty()
-        SdkPartyContext(sdk, sdk.pinRepository, tribe.id, MagicClock())
+        val party = stubParty()
+        SdkPartyContext(sdk, sdk.pinRepository, party.id, MagicClock())
             .apply {
-                tribe.save()
+                party.save()
             }
     }, sharedTeardown = {
             it.sdk.partyRepository.deleteIt(it.partyId)
@@ -31,19 +31,19 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
         val sdk = authorizedSdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
-            val otherTribe = stubParty()
+            val otherParty = stubParty()
             val sdk = sdk
             val otherSdk = otherSdk
         }
     }) {
-        otherSdk.partyRepository.save(otherTribe)
-        otherSdk.pinRepository.save(otherTribe.id.with(stubPin()))
+        otherSdk.partyRepository.save(otherParty)
+        otherSdk.pinRepository.save(otherParty.id.with(stubPin()))
     } exercise {
-        sdk.pinRepository.getPins(otherTribe.id)
+        sdk.pinRepository.getPins(otherParty.id)
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
-        otherSdk.partyRepository.deleteIt(otherTribe.id)
+        otherSdk.partyRepository.deleteIt(otherParty.id)
     }
 
     override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(

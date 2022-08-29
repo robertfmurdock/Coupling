@@ -39,16 +39,16 @@ class MemoryPairAssignmentDocumentRepository(
         .map { it.value.last() }
 
     override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean {
-        val tribeIdPairAssignmentDocument = record(partyId, pairAssignmentDocumentId)?.data
+        val partyIdPairAssignmentDocument = record(partyId, pairAssignmentDocumentId)?.data
 
-        return if (tribeIdPairAssignmentDocument == null) {
+        return if (partyIdPairAssignmentDocument == null) {
             false
         } else {
-            tribeIdPairAssignmentDocument.deletionRecord().save()
+            partyIdPairAssignmentDocument.deletionRecord().save()
             true
         }
     }
 
-    private fun record(tribeId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = tribeId.records()
+    private fun record(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) = partyId.records()
         .find { (data) -> data.document.id == pairAssignmentDocumentId }
 }

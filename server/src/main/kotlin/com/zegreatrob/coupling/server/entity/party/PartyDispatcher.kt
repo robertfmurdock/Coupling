@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.entity.tribe
+package com.zegreatrob.coupling.server.entity.party
 
 import com.zegreatrob.coupling.server.action.party.PartyListQueryDispatcher
 import com.zegreatrob.coupling.server.action.party.PartyQueryDispatcher

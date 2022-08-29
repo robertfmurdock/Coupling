@@ -39,6 +39,6 @@ class MemoryPinRepository(
             true
         }
 
-    private fun recordWithId(tribeId: PartyId, pinId: String) = tribeId.recordList()
+    private fun recordWithId(partyId: PartyId, pinId: String) = partyId.recordList()
         .find { (data) -> data.pin.id == pinId }
 }

@@ -38,10 +38,10 @@ class HistoryPageE2ETest {
                 Context(pairAssignments)
             })
 
-            private suspend fun setupTwoPairAssignments(tribe: Party, sdk: Sdk) = listOf(
+            private suspend fun setupTwoPairAssignments(party: Party, sdk: Sdk) = listOf(
                 buildPairAssignmentDocument(1, listOf(pairOf(Player(name = "Ollie"), Player(name = "Speedy")))),
                 buildPairAssignmentDocument(2, listOf(pairOf(Player(name = "Arthur"), Player(name = "Garth"))))
-            ).onEach { sdk.pairAssignmentDocumentRepository.save(tribe.id.with(it)) }
+            ).onEach { sdk.pairAssignmentDocumentRepository.save(party.id.with(it)) }
 
             private fun buildPairAssignmentDocument(number: Int, pairs: List<CouplingPair>) = PairAssignmentDocument(
                 PairAssignmentDocumentId("${DateTime.now().milliseconds}-HistoryPageE2ETest-$number"),

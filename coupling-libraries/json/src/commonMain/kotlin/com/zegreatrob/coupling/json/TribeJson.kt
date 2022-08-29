@@ -5,11 +5,11 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.serialization.json.jsonObject
 
-val tribeJsonKeys
+val partyJsonKeys
     get() = Record(Party(PartyId("")), "")
         .toSerializable()
         .toJsonElement()
         .jsonObject
         .keys
 
-val tribeRecordJsonKeys get() = tribeJsonKeys
+val partyRecordJsonKeys get() = partyJsonKeys

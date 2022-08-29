@@ -8,6 +8,10 @@ import com.zegreatrob.coupling.server.entity.pairassignment.deletePairsResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListResolve
 import com.zegreatrob.coupling.server.entity.pairassignment.savePairsResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
+import com.zegreatrob.coupling.server.entity.party.deletePartyResolver
+import com.zegreatrob.coupling.server.entity.party.partyListResolve
+import com.zegreatrob.coupling.server.entity.party.partyResolve
+import com.zegreatrob.coupling.server.entity.party.savePartyResolver
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.pin.savePinResolver
@@ -15,10 +19,6 @@ import com.zegreatrob.coupling.server.entity.player.deletePlayerResolver
 import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
 import com.zegreatrob.coupling.server.entity.player.savePlayerResolver
-import com.zegreatrob.coupling.server.entity.tribe.deleteTribeResolver
-import com.zegreatrob.coupling.server.entity.tribe.saveTribeResolver
-import com.zegreatrob.coupling.server.entity.tribe.tribeListResolve
-import com.zegreatrob.coupling.server.entity.tribe.tribeResolve
 import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.graphql.GraphQLSchema
@@ -67,13 +67,13 @@ private fun addPrereleaseSchema(standardSchema: GraphQLSchema) = if (!Config.pre
 fun couplingResolvers() = json(
     "Query" to json(
         "user" to userResolve,
-        "tribeList" to tribeListResolve,
-        "tribeData" to entityWithId,
+        "partyList" to partyListResolve,
+        "partyData" to entityWithId,
     ),
     "Mutation" to json(
         "spin" to spinResolver,
-        "saveTribe" to saveTribeResolver,
-        "deleteTribe" to deleteTribeResolver,
+        "saveParty" to savePartyResolver,
+        "deleteParty" to deletePartyResolver,
         "savePin" to savePinResolver,
         "deletePin" to deletePinResolver,
         "savePlayer" to savePlayerResolver,
@@ -81,8 +81,8 @@ fun couplingResolvers() = json(
         "savePairAssignments" to savePairsResolver,
         "deletePairAssignments" to deletePairsResolver,
     ),
-    "TribeData" to json(
-        "tribe" to tribeResolve,
+    "PartyData" to json(
+        "party" to partyResolve,
         "pinList" to pinListResolve,
         "playerList" to playerListResolve,
         "retiredPlayers" to retiredPlayerListResolve,

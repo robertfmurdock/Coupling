@@ -76,29 +76,29 @@ val lostRoute = FC<Props> {
 private fun ChildrenBuilder.authenticatedRoutes(config: ClientConfig) {
     Route { path = "/"; element = redirectToParties() }
     if (config.prereleaseMode) couplingRoute("/user", UserPage)
-    couplingRoute("/tribes/", PartyListPage)
+    couplingRoute("/parties/", PartyListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/graphiql/", GraphIQLPage)
-    couplingRoute("/new-tribe/", PartyConfigPage)
-    Route { path = "/:tribeId"; element = redirectToCurrentPairs() }
-    couplingRoute("/:tribeId/prepare/", PrepareSpinPage)
-    couplingRoute("/:tribeId/edit/", PartyConfigPage)
-    couplingRoute("/:tribeId/history", HistoryPage)
-    couplingRoute("/:tribeId/pins", PinListPage)
-    couplingRoute("/:tribeId/pin/new", PinPage)
-    couplingRoute("/:tribeId/pin/:pinId/", PinPage)
-    couplingRoute("/:tribeId/pairAssignments/current/", CurrentPairsPage)
-    couplingRoute("/:tribeId/pairAssignments/new", NewPairAssignmentsPage)
-    couplingRoute("/:tribeId/player/new", PlayerPage)
-    couplingRoute("/:tribeId/player/:playerId/", PlayerPage)
-    couplingRoute("/:tribeId/retired-player/:playerId/", RetiredPlayerPage)
-    couplingRoute("/:tribeId/players/retired", RetiredPlayersPage)
-    couplingRoute("/:tribeId/statistics", StatisticsPage)
+    couplingRoute("/new-party/", PartyConfigPage)
+    Route { path = "/:partyId"; element = redirectToCurrentPairs() }
+    couplingRoute("/:partyId/prepare/", PrepareSpinPage)
+    couplingRoute("/:partyId/edit/", PartyConfigPage)
+    couplingRoute("/:partyId/history", HistoryPage)
+    couplingRoute("/:partyId/pins", PinListPage)
+    couplingRoute("/:partyId/pin/new", PinPage)
+    couplingRoute("/:partyId/pin/:pinId/", PinPage)
+    couplingRoute("/:partyId/pairAssignments/current/", CurrentPairsPage)
+    couplingRoute("/:partyId/pairAssignments/new", NewPairAssignmentsPage)
+    couplingRoute("/:partyId/player/new", PlayerPage)
+    couplingRoute("/:partyId/player/:playerId/", PlayerPage)
+    couplingRoute("/:partyId/retired-player/:playerId/", RetiredPlayerPage)
+    couplingRoute("/:partyId/players/retired", RetiredPlayersPage)
+    couplingRoute("/:partyId/statistics", StatisticsPage)
 }
 
-private fun redirectToParties() = Navigate.create { to = "/tribes/" }
+private fun redirectToParties() = Navigate.create { to = "/parties/" }
 
 private fun redirectToCurrentPairs() = Navigate.create {
     val params = useParams()
-    to = "/${params["tribeId"]}/pairAssignments/current/"
+    to = "/${params["partyId"]}/pairAssignments/current/"
 }

@@ -37,13 +37,13 @@ data class PartyCard(val party: Party, val size: Int = 150) : DataPropsBind<Part
 val partyCard = tmFC<PartyCard> { (party, size) ->
     Link {
         to = party.id.currentPairsPage()
-        visuallyHidden { +"Tribe Home Page" }
+        visuallyHidden { +"Party Home Page" }
         span {
             css {
                 staticCardStyles()
                 partyCardCss(size)
             }
-            asDynamic()["data-tribe-id"] = party.id.value
+            asDynamic()["data-party-id"] = party.id.value
             ariaHidden = true
 
             div {
@@ -81,7 +81,7 @@ private fun PropertiesBuilder.partyCardCss(size: Int) {
     flex = Flex(number(0.0), number(0.0), Auto.auto)
 }
 
-val noPartyImagePath = pngPath("tribes/no-tribe")
+val noPartyImagePath = pngPath("parties/no-party")
 
 private fun ChildrenBuilder.partyGravatar(party: Party, size: Int) = if (party.imageURL != null) {
     ReactHTML.img {

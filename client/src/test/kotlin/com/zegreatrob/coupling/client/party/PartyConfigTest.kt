@@ -74,7 +74,7 @@ class PartyConfigTest {
             .assertIsEqualTo(listOf(SavePartyCommand(party)))
         wrapper
             .find(Navigate).props().to
-            .assertIsEqualTo("/tribes/")
+            .assertIsEqualTo("/parties/")
     }
 
     @Test
@@ -84,7 +84,7 @@ class PartyConfigTest {
         val wrapper = shallow(PartyConfig(party, stubDispatcher.func()))
         val automatedPartyId = wrapper.find(partyConfigContent)
             .shallow()
-            .find<Any>("#tribe-id")
+            .find<Any>("#party-id")
             .prop("value")
     }) exercise {
         wrapper.find(partyConfigContent)
@@ -101,7 +101,7 @@ class PartyConfigTest {
             }
         wrapper.find(partyConfigContent)
             .shallow()
-            .find<Any>("#tribe-id")
+            .find<Any>("#party-id")
             .prop("value")
             .assertIsEqualTo(automatedPartyId)
     }

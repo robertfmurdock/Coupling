@@ -19,7 +19,7 @@ class MemoryPartyRepository(
     override suspend fun getParties() = recordList()
         .filterNot { it.isDeleted }
 
-    private fun recordList() = records.groupBy { (tribe) -> tribe.id }
+    private fun recordList() = records.groupBy { (party) -> party.id }
         .map { it.value.last() }
 
     override suspend fun deleteIt(partyId: PartyId) = partyId.findParty()?.data.deleteRecord()

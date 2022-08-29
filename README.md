@@ -54,16 +54,16 @@ Fret not! Coupling is prepared to deal with your problem. When you know someone 
 
 If someone is only available for part of a pairing cycle, Coupling recommends that you pair them anyway, possibly using the drag-and-drop manual override to pair them with someone similarly partially available. Part-time pairing with someone is better then not pairing with them at all!
 
-How Does my Tribe or Player Card Get One of Those Fancy Pictures?
+How Does my Party or Player Card Get One of Those Fancy Pictures?
 --------------------------------------------------------
 
-There are multiple options! If you already have the images you want hosted somewhere, you can enter the URL to the image in the 'Image URL' field for your tribe or player. If you don't have hosting, you can associate a tribe or player with an email address and connect it to [Gravatar](http://www.gravatar.com), and [Gravatar](http://www.gravatar.com) will provide your icon.
+There are multiple options! If you already have the images you want hosted somewhere, you can enter the URL to the image in the 'Image URL' field for your party or player. If you don't have hosting, you can associate a tribe or player with an email address and connect it to [Gravatar](http://www.gravatar.com), and [Gravatar](http://www.gravatar.com) will provide your icon.
 
 
 I Don't Have a Real Team, But I Still Want To Try Coupling!
 -----------------------------------------------------------
 
-For people who just want to play with the program and understand its features, try making a tribe, adding a few players, and just giving it a shot. :-). https://coupling.zegreatrob.com if you need the link again.
+For people who just want to play with the program and understand its features, try making a party, adding a few players, and just giving it a shot. :-). https://coupling.zegreatrob.com if you need the link again.
 
 Is This Really Just For Work?
 -----------------------------

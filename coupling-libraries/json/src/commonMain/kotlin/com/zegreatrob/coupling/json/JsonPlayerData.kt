@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class, TribeIdSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class)
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -34,14 +34,14 @@ data class JsonPlayerData(
 @Serializable
 data class SavePlayerInput(
     val playerId: String,
-    override val tribeId: PartyId,
+    override val partyId: PartyId,
     val name: String = defaultPlayer.name,
     val email: String = defaultPlayer.email,
     val badge: String = "${defaultPlayer.badge}",
     val callSignAdjective: String = defaultPlayer.callSignAdjective,
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
-) : TribeInput
+) : PartyInput
 
 @Serializable
 data class JsonPlayerRecord(
@@ -53,11 +53,11 @@ data class JsonPlayerRecord(
     override val callSignNoun: String = defaultPlayer.callSignNoun,
     override val imageURL: String? = defaultPlayer.imageURL,
 
-    override val tribeId: PartyId,
+    override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: DateTime,
-) : JsonTribeRecordInfo, JsonPlayer
+) : JsonPartyRecordInfo, JsonPlayer
 
 fun Player.toSerializable() = JsonPlayerData(
     id = id,
@@ -77,7 +77,7 @@ fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
     callSignAdjective = data.element.callSignAdjective,
     callSignNoun = data.element.callSignNoun,
     imageURL = data.element.imageURL,
-    tribeId = data.id,
+    partyId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -104,7 +104,7 @@ fun JsonPlayer.toModel(): Player = Player(
 )
 
 fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(
-    tribeId.with(
+    partyId.with(
         Player(
             id = id,
             badge = badge.toIntOrNull() ?: defaultPlayer.badge,
