@@ -22,9 +22,6 @@ const config = {
             resourcesPath,
             path.resolve(__dirname, 'node_modules')
         ],
-        alias: {
-            "uuid/v4": path.resolve(__dirname, 'uuidShim')
-        }
     },
     module: {
         rules: [
