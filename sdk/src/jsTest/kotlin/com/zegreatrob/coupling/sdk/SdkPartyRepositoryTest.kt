@@ -33,7 +33,7 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
         object {
             val repository = context.repository
             val sdkForOtherUser = sdkForOtherUser
-            val party = Party(PartyId(uuid4().toString()), name = "tribe-from-endpoint-tests")
+            val party = Party(PartyId(uuid4().toString()), name = "party-from-endpoint-tests")
             val playerMatchingSdkUser = stubPlayer().copy(email = context.user.email)
         }
     }, sharedTeardown = {
@@ -41,7 +41,7 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
         })
 
     @Test
-    fun getWillReturnAnyTribeThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
+    fun getWillReturnAnyPartyThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
         sdkForOtherUser.partyRepository.save(party)
         sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
     } exercise {
@@ -52,7 +52,7 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
     }
 
     @Test
-    fun getWillNotReturnTribeIfPlayerHadEmailButThenHadItRemoved() = setupWithPlayerMatchingUserTwoSdks {
+    fun getWillNotReturnPartyIfPlayerHadEmailButThenHadItRemoved() = setupWithPlayerMatchingUserTwoSdks {
         sdkForOtherUser.partyRepository.save(party)
         sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
         sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser.copy(email = "something else")))
@@ -64,7 +64,7 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
     }
 
     @Test
-    fun getWillNotReturnTribeIfPlayerHadEmailButPlayerWasRemoved() = setupWithPlayerMatchingUserTwoSdks {
+    fun getWillNotReturnPartyIfPlayerHadEmailButPlayerWasRemoved() = setupWithPlayerMatchingUserTwoSdks {
         sdkForOtherUser.partyRepository.save(party)
         sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
         sdkForOtherUser.playerRepository.deletePlayer(party.id, playerMatchingSdkUser.id)
@@ -76,7 +76,7 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
     }
 
     @Test
-    fun saveWillNotSaveWhenTribeAlreadyExistsForSomeoneElse() = setupWithPlayerMatchingUserTwoSdks {
+    fun saveWillNotSaveWhenPartyAlreadyExistsForSomeoneElse() = setupWithPlayerMatchingUserTwoSdks {
         sdkForOtherUser.partyRepository.save(party)
     } exercise {
         repository.save(party.copy(name = "changed name"))

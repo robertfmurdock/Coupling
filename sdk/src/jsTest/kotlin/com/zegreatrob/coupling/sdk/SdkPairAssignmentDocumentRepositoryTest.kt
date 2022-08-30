@@ -40,7 +40,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
         otherSdk.partyRepository.save(otherParty)
         otherSdk.pairAssignmentDocumentRepository.save(otherParty.id.with(stubPairAssignmentDoc()))
     } exercise {
-        sdk.pairAssignmentDocumentRepository.getPairAssignments(PartyId("someoneElseTribe"))
+        sdk.pairAssignmentDocumentRepository.getPairAssignments(PartyId("someoneElseParty"))
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {

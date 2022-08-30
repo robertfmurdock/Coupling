@@ -179,7 +179,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthorizedForTheTribeWillNotTalkToYou() = sdkSetup() exercise {
+    fun whenNotAuthorizedForThePartyWillNotTalkToYou() = sdkSetup() exercise {
         couplingSocketSession(stubParty().id)
     } verify { socket ->
         withTimeout(400) {

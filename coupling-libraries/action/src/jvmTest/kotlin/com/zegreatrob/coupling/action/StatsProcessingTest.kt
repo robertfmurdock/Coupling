@@ -30,10 +30,10 @@ class StatsProcessingTest {
         }
 
         println("found ${users.size} users")
-        println("found ${parties.size} tribes")
+        println("found ${parties.size} parties")
 
-        val totalPairAssignmentRecords = parties.sumOf { tribeNode ->
-            tribeNode["pairAssignmentRecords"]
+        val totalPairAssignmentRecords = parties.sumOf { partyNode ->
+            partyNode["pairAssignmentRecords"]
                 .groupBy { pairAssignmentRecord -> pairAssignmentRecord["id"].textValue() }
                 .size
         }
@@ -58,9 +58,9 @@ class StatsProcessingTest {
     private fun JsonNode.countPairAssignmentsFor(year: Int) = pairAssignmentRecordGroups(year)
         .also { pairRecordGroups ->
             if (pairRecordGroups.size > 20) {
-                val tribeName = this["tribeRecords"][0]["name"].textValue()
-                val tribeId = this["tribeRecords"][0]["id"].textValue()
-                println("notable party in $year: $tribeName, $tribeId")
+                val partyName = this["tribeRecords"][0]["name"].textValue()
+                val partyId = this["tribeRecords"][0]["id"].textValue()
+                println("notable party in $year: $partyName, $partyId")
                 val sortedDates = pairRecordGroups.map { group -> group.value.first().dateRecord() }
                     .sorted()
 

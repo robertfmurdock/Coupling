@@ -49,7 +49,7 @@ class SpinTest {
     }
 
     @Test
-    fun givenTheTribeRuleIsPreferDifferentBadgeThenPairsWillComply() = sdkSetup.with({
+    fun givenThePartyRuleIsPreferDifferentBadgeThenPairsWillComply() = sdkSetup.with({
         object : SdkContext by it {
             val party = Party(id = PartyId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
             val players = fourPlayersTwoDefaultTwoAlternate()
