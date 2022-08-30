@@ -1,4 +1,5 @@
 import {HtmlReporter, ReportAggregator} from '@rpii/wdio-html-reporter';
+import allure from 'allure-commandline';
 
 import WDIOReporter from '@wdio/reporter'
 
@@ -29,6 +30,8 @@ const logger = log4js.getLogger('default');
 const path = require('path');
 
 const reportDirectory = path.relative('./', process.env.REPORT_DIR) + "/"
+const allureDataDirectory = path.relative('./', process.env.REPORT_DIR) + "/allure-data"
+const allureReportDirectory = path.relative('./', process.env.REPORT_DIR) + "/allure-report"
 const testResultsDir = path.relative('./', process.env.TEST_RESULTS_DIR) + "/"
 
 const config = {
@@ -63,6 +66,9 @@ const config = {
     services: ['chromedriver'],
     framework: 'jasmine',
     reporters: [
+        ['allure', {
+            outputDir: allureDataDirectory,
+        }],
         'dot',
         ['junit', {
             outputDir: testResultsDir,
@@ -110,8 +116,25 @@ const config = {
 
     onComplete: async function (exitCode, config, capabilities, results) {
         await global.reportAggregator.createReport();
-    },
+        const reportError = new Error('Could not generate Allure report')
+        const generation = allure(['generate', allureDataDirectory, '--clean', '-o', allureReportDirectory])
+        return new Promise((resolve, reject) => {
+            const generationTimeout = setTimeout(
+                () => reject(reportError),
+                5000)
 
+            generation.on('exit', function (exitCode) {
+                clearTimeout(generationTimeout)
+
+                if (exitCode !== 0) {
+                    return reject(reportError)
+                }
+
+                console.log('Allure report successfully generated')
+                resolve()
+            })
+        })
+    }
 };
 
 if (process.env.SELENIUM_ADDRESS) {
