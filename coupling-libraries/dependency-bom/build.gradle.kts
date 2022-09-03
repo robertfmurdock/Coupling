@@ -20,7 +20,7 @@ javaPlatform {
 
 dependencies {
     api(platform("com.zegreatrob.jsmints:jsmints-bom:1.6.36"))
-    api(platform("com.zegreatrob.testmints:testmints-bom:8.1.6"))
+    api(platform("com.zegreatrob.testmints:testmints-bom:8.1.10"))
     api(platform("io.ktor:ktor-bom:2.1.0"))
     api(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.4.0"))
     api(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
