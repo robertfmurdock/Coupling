@@ -66,9 +66,6 @@ const config = {
     services: ['chromedriver'],
     framework: 'jasmine',
     reporters: [
-        ['allure', {
-            outputDir: allureDataDirectory,
-        }],
         'dot',
         ['junit', {
             outputDir: testResultsDir,
@@ -113,28 +110,30 @@ const config = {
 
         global.reportAggregator = reportAggregator;
     },
-
     onComplete: async function (exitCode, config, capabilities, results) {
         await global.reportAggregator.createReport();
-        const reportError = new Error('Could not generate Allure report')
-        const generation = allure(['generate', allureDataDirectory, '--clean', '-o', allureReportDirectory])
-        return new Promise((resolve, reject) => {
-            const generationTimeout = setTimeout(
-                () => reject(reportError),
-                5000)
-
-            generation.on('exit', function (exitCode) {
-                clearTimeout(generationTimeout)
-
-                if (exitCode !== 0) {
-                    return reject(reportError)
-                }
-
-                console.log('Allure report successfully generated')
-                resolve()
-            })
-        })
-    }
+    },
+    // onComplete: async function (exitCode, config, capabilities, results) {
+    //     await global.reportAggregator.createReport();
+    //     const reportError = new Error('Could not generate Allure report')
+    //     const generation = allure(['generate', allureDataDirectory, '--clean', '-o', allureReportDirectory])
+    //     return new Promise((resolve, reject) => {
+    //         const generationTimeout = setTimeout(
+    //             () => reject(reportError),
+    //             5000)
+    //
+    //         generation.on('exit', function (exitCode) {
+    //             clearTimeout(generationTimeout)
+    //
+    //             if (exitCode !== 0) {
+    //                 return reject(reportError)
+    //             }
+    //
+    //             console.log('Allure report successfully generated')
+    //             resolve()
+    //         })
+    //     })
+    // }
 };
 
 if (process.env.SELENIUM_ADDRESS) {
