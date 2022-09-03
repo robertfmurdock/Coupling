@@ -39,7 +39,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     api("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-    implementation("com.soywiz.korlibs.klock:klock:3.0.0")
+    implementation("com.soywiz.korlibs.klock:klock:3.0.1")
     implementation("com.benasher44:uuid:0.5.0")
     implementation("io.github.microutils:kotlin-logging:2.1.23")
 

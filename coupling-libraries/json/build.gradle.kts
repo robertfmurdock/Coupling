@@ -16,7 +16,7 @@ kotlin {
                 implementation(project(":coupling-libraries:model"))
                 implementation(kotlin("stdlib"))
                 implementation(kotlin("stdlib-common"))
-                implementation("com.soywiz.korlibs.klock:klock:3.0.0")
+                implementation("com.soywiz.korlibs.klock:klock:3.0.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
                 implementation("io.ktor:ktor-client-core")

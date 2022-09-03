@@ -22,7 +22,7 @@ kotlin {
                 api("com.zegreatrob.testmints:report")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("io.github.microutils:kotlin-logging:2.1.23")
-                implementation("com.soywiz.korlibs.klock:klock:3.0.0")
+                implementation("com.soywiz.korlibs.klock:klock:3.0.1")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
