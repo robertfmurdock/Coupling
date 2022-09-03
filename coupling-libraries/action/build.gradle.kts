@@ -21,9 +21,9 @@ kotlin {
                 api("com.zegreatrob.testmints:action-async")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("com.benasher44:uuid:0.5.0")
-                implementation("com.soywiz.korlibs.klock:klock:3.0.0")
-                implementation("io.github.microutils:kotlin-logging:2.1.23")
+                implementation("com.benasher44:uuid")
+                implementation("com.soywiz.korlibs.klock:klock")
+                implementation("io.github.microutils:kotlin-logging")
             }
         }
         getByName("commonTest") {
@@ -39,16 +39,16 @@ kotlin {
         getByName("jvmMain") {
             dependencies {
                 implementation(kotlin("reflect"))
-                implementation("io.github.microutils:kotlin-logging:2.1.23")
-                implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
+                implementation("io.github.microutils:kotlin-logging")
+                implementation("com.fasterxml.jackson.core:jackson-databind")
             }
         }
         getByName("jvmTest") {
             dependencies {
                 implementation(kotlin("reflect"))
-                implementation("org.slf4j:slf4j-simple:2.0.0")
-                implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+                implementation("org.slf4j:slf4j-simple")
+                implementation("org.junit.jupiter:junit-jupiter-api")
+                implementation("org.junit.jupiter:junit-jupiter-engine")
             }
         }
     }

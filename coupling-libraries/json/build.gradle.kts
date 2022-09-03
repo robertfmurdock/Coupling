@@ -16,7 +16,7 @@ kotlin {
                 implementation(project(":coupling-libraries:model"))
                 implementation(kotlin("stdlib"))
                 implementation(kotlin("stdlib-common"))
-                implementation("com.soywiz.korlibs.klock:klock:3.0.0")
+                implementation("com.soywiz.korlibs.klock:klock")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
                 implementation("io.ktor:ktor-client-core")
@@ -42,8 +42,8 @@ kotlin {
         getByName("jvmTest") {
             dependencies {
                 implementation(kotlin("reflect"))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+                implementation("org.junit.jupiter:junit-jupiter-api")
+                implementation("org.junit.jupiter:junit-jupiter-engine")
             }
         }
         getByName("jsMain") {

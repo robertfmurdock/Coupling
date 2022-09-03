@@ -16,7 +16,7 @@ kotlin {
                 implementation(project(":coupling-libraries:model"))
                 implementation(project(":coupling-libraries:repository-core"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("com.benasher44:uuid:0.5.0")
+                implementation("com.benasher44:uuid")
             }
         }
         getByName("commonTest") {
@@ -36,8 +36,8 @@ kotlin {
         getByName("jvmTest") {
             dependencies {
                 implementation(kotlin("reflect"))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+                implementation("org.junit.jupiter:junit-jupiter-api")
+                implementation("org.junit.jupiter:junit-jupiter-engine")
             }
         }
 

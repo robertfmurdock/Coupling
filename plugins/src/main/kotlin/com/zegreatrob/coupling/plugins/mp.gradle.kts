@@ -38,15 +38,9 @@ kotlin {
 }
 
 dependencies {
-    "commonMainImplementation"(enforcedPlatform(project(":coupling-libraries:dependency-bom")))
-    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:8.1.6"))
-    "commonMainImplementation"(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.6.31"))
-    "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.4.0"))
-    "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
-    "commonMainImplementation"(enforcedPlatform("io.ktor:ktor-bom:2.1.0"))
-    "commonMainImplementation"(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.378"))
-    "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-core")
-    "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    "commonMainApi"(enforcedPlatform(project(":coupling-libraries:dependency-bom")))
+    "commonMainApi"("org.jetbrains.kotlinx:kotlinx-serialization-core")
+    "commonMainApi"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 }
 
 tasks.withType(KotlinJsTest::class).configureEach {

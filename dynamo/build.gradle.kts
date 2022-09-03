@@ -39,9 +39,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     api("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-    implementation("com.soywiz.korlibs.klock:klock:3.0.0")
-    implementation("com.benasher44:uuid:0.5.0")
-    implementation("io.github.microutils:kotlin-logging:2.1.23")
+    implementation("com.soywiz.korlibs.klock:klock")
+    implementation("com.benasher44:uuid")
+    implementation("io.github.microutils:kotlin-logging")
 
     testImplementation(project(":coupling-libraries:repository-validation"))
     testImplementation(project(":coupling-libraries:stub-model"))

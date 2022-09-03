@@ -33,8 +33,8 @@ kotlin {
         getByName("jvmTest") {
             dependencies {
                 implementation(kotlin("reflect"))
-                implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+                implementation("org.junit.jupiter:junit-jupiter-api")
+                implementation("org.junit.jupiter:junit-jupiter-engine")
             }
         }
         getByName("jsMain") {

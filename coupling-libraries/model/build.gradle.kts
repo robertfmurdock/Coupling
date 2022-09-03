@@ -15,9 +15,9 @@ kotlin {
             dependencies {
                 api(kotlin("stdlib"))
                 api(kotlin("stdlib-common"))
-                api("com.soywiz.korlibs.klock:klock:3.0.0")
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
-                implementation("com.benasher44:uuid:0.5.0")
+                api("com.soywiz.korlibs.klock:klock")
+                api("org.jetbrains.kotlinx:kotlinx-datetime")
+                implementation("com.benasher44:uuid")
             }
         }
         getByName("commonTest") {
@@ -30,8 +30,8 @@ kotlin {
         }
         getByName("jvmTest") {
             dependencies {
-                implementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+                implementation("org.junit.jupiter:junit-jupiter-api")
+                implementation("org.junit.jupiter:junit-jupiter-engine")
             }
         }
         getByName("jsMain") {
