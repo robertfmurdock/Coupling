@@ -9,6 +9,8 @@ plugins {
     id("com.github.sghill.distribution-sha") version "0.4.0"
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.linter")
+    id("com.github.ben-manes.versions") version "0.42.0"
+    id("nl.littlerobots.version-catalog-update") version "0.6.1"
     base
 }
 
