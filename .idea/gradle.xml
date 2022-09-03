@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/coupling-libraries/action" />
             <option value="$PROJECT_DIR$/coupling-libraries/cdnLookup" />
             <option value="$PROJECT_DIR$/coupling-libraries/components" />
+            <option value="$PROJECT_DIR$/coupling-libraries/dependency-bom" />
             <option value="$PROJECT_DIR$/coupling-libraries/export" />
             <option value="$PROJECT_DIR$/coupling-libraries/import" />
             <option value="$PROJECT_DIR$/coupling-libraries/json" />

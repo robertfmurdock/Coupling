@@ -23,6 +23,7 @@ include("deploy:sandbox")
 include("deploy:prod")
 
 include("dynamo")
+include("coupling-libraries:dependency-bom")
 include("coupling-libraries:logging")
 include("coupling-libraries:components")
 include("coupling-libraries:test-react")

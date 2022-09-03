@@ -55,9 +55,9 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
-    implementation("com.soywiz.korlibs.klock:klock:3.0.0")
-    implementation("com.benasher44:uuid:0.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.8.0")
+    implementation("com.soywiz.korlibs.klock:klock")
+    implementation("com.benasher44:uuid")
+    implementation("org.jetbrains.kotlinx:kotlinx-html-js")
 
     testImplementation(project(":coupling-libraries:stub-model"))
     testImplementation(project(":coupling-libraries:test-react"))
