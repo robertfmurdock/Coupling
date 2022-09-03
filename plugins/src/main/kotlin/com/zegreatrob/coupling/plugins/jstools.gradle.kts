@@ -42,10 +42,10 @@ ktlint {
 
 dependencies {
     implementation(enforcedPlatform(project(":coupling-libraries:dependency-bom")))
-    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:8.1.6"))
-    implementation(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.6.31"))
+    implementation(enforcedPlatform("com.zegreatrob.testmints:testmints-bom:8.1.8"))
+    implementation(enforcedPlatform("com.zegreatrob.jsmints:jsmints-bom:1.6.36"))
     implementation(enforcedPlatform("io.ktor:ktor-bom:2.1.0"))
-    implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.378"))
+    implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.382"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.4.0"))
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
