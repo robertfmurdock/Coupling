@@ -22,8 +22,8 @@ dependencies {
     api(platform(libs.com.zegreatrob.jsmints.jsmints.bom))
     api(platform(libs.com.zegreatrob.testmints.testmints.bom))
     api(platform(libs.io.ktor.ktor.bom))
-    api(platform(libs.org.jetbrains.kotlinx.kotlinx.serialization.bom))
     api(platform(libs.org.jetbrains.kotlinx.kotlinx.coroutines.bom))
+    api(platform(libs.org.jetbrains.kotlinx.kotlinx.serialization.bom))
     api(platform(libs.org.jetbrains.kotlin.wrappers.kotlin.wrappers.bom))
     api(platform(libs.org.junit.junit.bom))
     constraints {
