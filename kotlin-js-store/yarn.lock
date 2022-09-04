@@ -6960,10 +6960,10 @@ flatted@^3.2.5:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.6.tgz#022e9218c637f9f3fc9c35ab9c9193f05add60b2"
   integrity sha512-0sQoMh9s0BYsm+12Huy/rkKxVu4R1+r96YX5cG44rHV0pQ6iC3Q+mkoMFaGWObMFYQxCVT+ssG1ksneA2MI9KQ==
 
-flip-toolkit@7.0.14:
-  version "7.0.14"
-  resolved "https://registry.yarnpkg.com/flip-toolkit/-/flip-toolkit-7.0.14.tgz#7767de06f1df004e0ca2ba18367841c74fb2ab73"
-  integrity sha512-mV3fwJuFxXU0tSiUL79NEfykwjEABV7I4gdx7S83GrQ0eJC/TIS1R8TW0u2qdDAtd5yhTcrm9IVfqyjJdGqrqQ==
+flip-toolkit@7.0.16:
+  version "7.0.16"
+  resolved "https://registry.yarnpkg.com/flip-toolkit/-/flip-toolkit-7.0.16.tgz#9d83ca1ddeb3098571f1d7074c801f30fb03f3a9"
+  integrity sha512-MeoLilutfKSGtN8kdUsIU3x0y+84RnnK2rgUcQ6CgVTeIsWxmEAmLBq+p3YGT0lNIZf6bqqUyyKLo0jkBTgRvg==
   dependencies:
     rematrix "0.2.2"
 
@@ -8462,10 +8462,10 @@ jake@^10.8.5:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-jasmine-core@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-4.3.0.tgz#aee841fbe7373c2586ed8d8d48f5cc4a88be8390"
-  integrity sha512-qybtBUesniQdW6n+QIHMng2vDOHscIC/dEXjW+JzO9+LoAZMb03RCUC5xFOv/btSKPm1xL42fn+RjlU4oB42Lg==
+jasmine-core@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-4.4.0.tgz#848fe45c1839cacaf1f2429d400d1d4f85d2856a"
+  integrity sha512-+l482uImx5BVd6brJYlaHe2UwfKoZBqQfNp20ZmdNfsjGFTemGfqHLsXjKEW23w9R/m8WYeFc9JmIgjj6dUtAA==
 
 jasmine-core@~3.10.0:
   version "3.10.1"
@@ -8488,13 +8488,13 @@ jasmine@3.10.0:
     glob "^7.1.6"
     jasmine-core "~3.10.0"
 
-jasmine@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-4.3.0.tgz#f99e9bc2a94e8281d2490482d53a3406760bd7f4"
-  integrity sha512-ieBmwkd8L1DXnvSnxx7tecXgA0JDgMXPAwBcqM4lLPedJeI9hTHuWifPynTC+dLe4Y+GkSPSlbqqrmYIgGzYUw==
+jasmine@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-4.4.0.tgz#e3e359723d9679993b70de3e0441517c154b9647"
+  integrity sha512-xrbOyYkkCvgduNw7CKktDtNb+BwwBv/zvQeHpTkbxqQ37AJL5V4sY3jHoMIJPP/hTc3QxLVwOyxc87AqA+kw5g==
   dependencies:
     glob "^7.1.6"
-    jasmine-core "^4.3.0"
+    jasmine-core "^4.4.0"
 
 java-invoke-local@0.0.6:
   version "0.0.6"
@@ -10143,10 +10143,10 @@ npm-bundled@^1.1.1, npm-bundled@^1.1.2:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-npm-check-updates@^16.0.6:
-  version "16.0.6"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.0.6.tgz#f3d2ffdca9ca8f45d57a9360cb94728a1fd8d29b"
-  integrity sha512-lASxdKqOGAkxriOLuscNM93V3L92tU/9uWepyqeKN7UPtd6oPKM/J/CYg0ll4Mxm2YvqzB21IaGHJq0vsHm3Ag==
+npm-check-updates@^16.1.0:
+  version "16.1.0"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.1.0.tgz#dfcfa7a5b03c5f7e241707127d79082d8fb03aef"
+  integrity sha512-0oEuD//2DVCjewNq4u0oJyciT5WRSPAz3B0IDnh8rGunrSXy0vXX17DFeI0XOT28mvUWrBtPbjz2Zptd2wvpNQ==
   dependencies:
     chalk "^5.0.1"
     cli-table "^0.3.11"
@@ -11491,12 +11491,12 @@ react-fast-compare@^3.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
 
-react-flip-toolkit@^7.0.14:
-  version "7.0.14"
-  resolved "https://registry.yarnpkg.com/react-flip-toolkit/-/react-flip-toolkit-7.0.14.tgz#aa72bdcbe9fd5901fd559226e69647d6e2988017"
-  integrity sha512-4ezk9g9yPMDbePCTW81ZIG1dMXa3qCIlYhGnWjJb0fIJJOazSOwV2TXp0lB/kn4R8QK5N3AdwYKPwFQQY8TW3A==
+react-flip-toolkit@^7.0.16:
+  version "7.0.16"
+  resolved "https://registry.yarnpkg.com/react-flip-toolkit/-/react-flip-toolkit-7.0.16.tgz#4ca1fc69b3e0b7e4544d5e2f4dcda3347b2bf3b0"
+  integrity sha512-ZLnXYJfYhZZ5lKP+FiUjX0lHKe8ZZoAd2HMuOAW3w5ZESNgNTyzu0pRu/bDBqlIox5UkeSlTDBt3dVBcTqv1gg==
   dependencies:
-    flip-toolkit "7.0.14"
+    flip-toolkit "7.0.16"
     prop-types "^15.5.7"
 
 react-hotkeys-hook@^3.4.7:
