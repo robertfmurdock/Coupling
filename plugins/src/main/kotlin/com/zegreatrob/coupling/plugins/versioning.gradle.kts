@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.plugins.tagger.TaggerExtension
 
 plugins {
     base
-    id("se.patrikerdes.use-latest-versions")
     id("com.github.ben-manes.versions")
 }
 
