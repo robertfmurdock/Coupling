@@ -1,4 +1,4 @@
-rootProject.name="coupling-plugins"
+rootProject.name = "coupling-plugins"
 
 buildCache {
     local {

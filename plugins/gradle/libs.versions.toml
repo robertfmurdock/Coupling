@@ -1,0 +1,70 @@
+[versions]
+jsmints = "1.6.36"
+kotlin = "1.7.10"
+ktlint = "0.45.2"
+org-apache-logging-log4j = "2.18.0"
+org-jlleitschuh-gradle-ktlint = "11.0.0"
+
+[libraries]
+com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.13.3"
+com-github-ben-manes-gradle-versions-plugin = "com.github.ben-manes:gradle-versions-plugin:0.42.0"
+com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:3.0.1"
+com-zegreatrob-jsmints-plugins-jspackage-gradle-plugin = { module = "com.zegreatrob.jsmints.plugins.jspackage:com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin", version.ref = "jsmints" }
+org-ajoberstar-grgit-gradle-plugin = "org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0"
+org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
+org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "org-apache-logging-log4j" }
+org-jetbrains-annotations = "org.jetbrains:annotations:13.0"
+org-jetbrains-kotlin-kotlin-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+org-jetbrains-kotlin-kotlin-gradle-plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
+org-jetbrains-kotlin-kotlin-klib-commonizer-embeddable = { module = "org.jetbrains.kotlin:kotlin-klib-commonizer-embeddable", version.ref = "kotlin" }
+org-jetbrains-kotlin-kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:1.6.21"
+org-jetbrains-kotlin-kotlin-sam-with-receiver = "org.jetbrains.kotlin:kotlin-sam-with-receiver:1.6.21"
+org-jetbrains-kotlin-kotlin-scripting-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable", version.ref = "kotlin" }
+org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+org-jetbrains-kotlin-kotlin-stdlib-common = "org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21"
+org-jetbrains-kotlin-kotlin-stdlib-jdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
+org-jetbrains-kotlin-kotlin-stdlib-jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21"
+org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.7.10"
+org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
+org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.0"
+se-patrikerdes-gradle-use-latest-versions-plugin = "se.patrikerdes:gradle-use-latest-versions-plugin:0.2.18"
+
+[plugins]
+com-github-ben-manes-versions = "com.github.ben-manes.versions:0.42.0"
+com-zegreatrob-jsmints-plugins-jspackage = { id = "com.zegreatrob.jsmints.plugins.jspackage", version.ref = "jsmints" }
+kotlin = "kotlin:1.7.10"
+kotlin-android = "kotlin-android:1.7.10"
+kotlin-android-extensions = "kotlin-android-extensions:1.7.10"
+kotlin-kapt = "kotlin-kapt:1.7.10"
+kotlin-multiplatform = "kotlin-multiplatform:1.7.10"
+kotlin-native-cocoapods = "kotlin-native-cocoapods:1.7.10"
+kotlin-native-performance = "kotlin-native-performance:1.7.10"
+kotlin-parcelize = "kotlin-parcelize:1.7.10"
+kotlin-platform-android = "kotlin-platform-android:1.7.10"
+kotlin-platform-common = "kotlin-platform-common:1.7.10"
+kotlin-platform-js = "kotlin-platform-js:1.7.10"
+kotlin-platform-jvm = "kotlin-platform-jvm:1.7.10"
+kotlin-sam-with-receiver = "kotlin-sam-with-receiver:1.6.21"
+kotlin-scripting = "kotlin-scripting:1.7.10"
+nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.6.1"
+org-ajoberstar-grgit = "org.ajoberstar.grgit:5.0.0"
+org-gradle-kotlin-kotlin-dsl = "org.gradle.kotlin.kotlin-dsl:3.0.0"
+org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.7.10"
+org-jetbrains-kotlin-android-extensions = "org.jetbrains.kotlin.android.extensions:1.7.10"
+org-jetbrains-kotlin-js = "org.jetbrains.kotlin.js:1.7.10"
+org-jetbrains-kotlin-jvm = "org.jetbrains.kotlin.jvm:1.7.10"
+org-jetbrains-kotlin-kapt = "org.jetbrains.kotlin.kapt:1.7.10"
+org-jetbrains-kotlin-multiplatform = "org.jetbrains.kotlin.multiplatform:1.7.10"
+org-jetbrains-kotlin-multiplatform-pm20 = "org.jetbrains.kotlin.multiplatform.pm20:1.7.10"
+org-jetbrains-kotlin-native-cocoapods = "org.jetbrains.kotlin.native.cocoapods:1.7.10"
+org-jetbrains-kotlin-native-performance = "org.jetbrains.kotlin.native.performance:1.7.10"
+org-jetbrains-kotlin-platform-android = "org.jetbrains.kotlin.platform.android:1.7.10"
+org-jetbrains-kotlin-platform-common = "org.jetbrains.kotlin.platform.common:1.7.10"
+org-jetbrains-kotlin-platform-js = "org.jetbrains.kotlin.platform.js:1.7.10"
+org-jetbrains-kotlin-platform-jvm = "org.jetbrains.kotlin.platform.jvm:1.7.10"
+org-jetbrains-kotlin-plugin-parcelize = "org.jetbrains.kotlin.plugin.parcelize:1.7.10"
+org-jetbrains-kotlin-plugin-sam-with-receiver = "org.jetbrains.kotlin.plugin.sam.with.receiver:1.6.21"
+org-jetbrains-kotlin-plugin-scripting = "org.jetbrains.kotlin.plugin.scripting:1.7.10"
+org-jetbrains-kotlin-plugin-serialization = "org.jetbrains.kotlin.plugin.serialization:1.7.10"
+org-jlleitschuh-gradle-ktlint = "org.jlleitschuh.gradle.ktlint:11.0.0"
+se-patrikerdes-use-latest-versions = "se.patrikerdes.use-latest-versions:0.2.18"

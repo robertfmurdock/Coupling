@@ -15,7 +15,8 @@ import org.gradle.api.tasks.testing.TestOutputEvent
 import org.gradle.api.tasks.testing.TestOutputListener
 import org.gradle.api.tasks.testing.TestResult
 
-class JsonLoggingTestListener(private val taskName: String, val testRunIdentifier: String) : TestListener,
+class JsonLoggingTestListener(private val taskName: String, val testRunIdentifier: String) :
+    TestListener,
     TestOutputListener {
 
     companion object {
@@ -66,24 +67,28 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
                 val tree = mapper.readTree(outputEvent.message)
                 val level = Level.getLevel(tree["level"].level())
                 logger.log(level) {
-                    ObjectMessage(mapper.createObjectNode().apply {
-                        set<JsonNode>("type", TextNode("forward"))
-                        set<JsonNode>("taskName", TextNode(taskName))
-                        set<JsonNode>("testParent", TextNode(testDescriptor?.parent?.name ?: ""))
-                        set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
-                        set<JsonNode>("originalLogger", tree["name"])
-                        set<JsonNode>("originalMessage", tree["message"])
-                    })
+                    ObjectMessage(
+                        mapper.createObjectNode().apply {
+                            set<JsonNode>("type", TextNode("forward"))
+                            set<JsonNode>("taskName", TextNode(taskName))
+                            set<JsonNode>("testParent", TextNode(testDescriptor?.parent?.name ?: ""))
+                            set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
+                            set<JsonNode>("originalLogger", tree["name"])
+                            set<JsonNode>("originalMessage", tree["message"])
+                        }
+                    )
                 }
             } catch (problem: JsonParseException) {
                 logger.info {
-                    ObjectMessage(mapper.createObjectNode().apply {
-                        set<JsonNode>("type", TextNode("forward"))
-                        set<JsonNode>("taskName", TextNode(taskName))
-                        set<JsonNode>("testParent", TextNode(testDescriptor?.parent?.name ?: ""))
-                        set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
-                        set<JsonNode>("originalMessage", TextNode(outputEvent.message))
-                    })
+                    ObjectMessage(
+                        mapper.createObjectNode().apply {
+                            set<JsonNode>("type", TextNode("forward"))
+                            set<JsonNode>("taskName", TextNode(taskName))
+                            set<JsonNode>("testParent", TextNode(testDescriptor?.parent?.name ?: ""))
+                            set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
+                            set<JsonNode>("originalMessage", TextNode(outputEvent.message))
+                        }
+                    )
                 }
             }
         }

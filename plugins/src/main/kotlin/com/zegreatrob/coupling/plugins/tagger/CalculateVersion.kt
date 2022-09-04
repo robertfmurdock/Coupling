@@ -29,14 +29,14 @@ fun Grgit.calculateNextVersion(): String {
     val description = describe {}
     val (previousVersionNumber) = description.split("-")
     val (major, minor, patch) = previousVersionNumber.substring(1).split(".")
-    return "v${major}.${minor}.${patch.toInt() + 1}"
+    return "v$major.$minor.${patch.toInt() + 1}"
 }
 
 fun Grgit.canRelease(releaseBranch: String?): Boolean {
     val currentBranch = branch.current()
     val currentBranchStatus = branch.status { this.name = currentBranch.name }
-    return status().isClean
-        && currentBranchStatus.aheadCount == 0
-        && currentBranchStatus.behindCount == 0
-        && currentBranch.name == releaseBranch
+    return status().isClean &&
+        currentBranchStatus.aheadCount == 0 &&
+        currentBranchStatus.behindCount == 0 &&
+        currentBranch.name == releaseBranch
 }

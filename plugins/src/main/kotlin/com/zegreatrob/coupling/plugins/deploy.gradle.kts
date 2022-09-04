@@ -11,7 +11,7 @@ kotlin {
 }
 
 val serverProject: Project = project.project(":server")
-fun serverlessBuildDir(stage: String) = "${serverProject.buildDir.absolutePath}/${stage}/lambda-dist"
+fun serverlessBuildDir(stage: String) = "${serverProject.buildDir.absolutePath}/$stage/lambda-dist"
 val serverlessYmlPath = "${serverProject.projectDir.absolutePath}/serverless.yml"
 
 val taggerExtension = TaggerExtension.apply(rootProject)
@@ -48,4 +48,3 @@ fun NodeExec.configureDeploy(stage: String) {
         stage
     )
 }
-

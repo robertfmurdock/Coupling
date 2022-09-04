@@ -7,27 +7,36 @@ repositories {
 }
 
 plugins {
-    id("org.jetbrains.kotlin.jvm").version("1.7.10")
     `kotlin-dsl`
-    id("com.github.ben-manes.versions") version ("0.42.0")
-    id("se.patrikerdes.use-latest-versions") version ("0.2.18")
+    id("java-gradle-plugin")
+    id("org.jlleitschuh.gradle.ktlint") version libs.versions.org.jlleitschuh.gradle.ktlint.get()
+    alias(libs.plugins.com.github.ben.manes.versions)
+    alias(libs.plugins.se.patrikerdes.use.latest.versions)
+    alias(libs.plugins.nl.littlerobots.version.catalog.update)
 }
-val kotlinVersion = "1.7.10"
+
+ktlint {
+    version.set(libs.versions.ktlint.get())
+
+    filter {
+        exclude { element -> element.file.name != "build.gradle.kts" }
+    }
+}
 
 dependencies {
-    implementation(kotlin("stdlib", kotlinVersion))
-    implementation(kotlin("gradle-plugin", kotlinVersion))
-    implementation("org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.7.10")
-    implementation("com.github.ben-manes:gradle-versions-plugin:0.42.0")
-    implementation("se.patrikerdes:gradle-use-latest-versions-plugin:0.2.18")
-    implementation("com.zegreatrob.jsmints.plugins.jspackage:com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin:1.6.35")
-    implementation("com.soywiz.korlibs.klock:klock:3.0.1")
-    implementation("org.apache.logging.log4j:log4j-core:2.18.0")
-    implementation("org.apache.logging.log4j:log4j-iostreams:2.18.0")
-    implementation("org.slf4j:slf4j-api:2.0.0")
-    implementation("org.jlleitschuh.gradle:ktlint-gradle:11.0.0")
-    implementation("org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0")
-    api("com.fasterxml.jackson.core:jackson-databind:2.13.3")
+    implementation(libs.org.jetbrains.kotlin.kotlin.stdlib)
+    implementation(kotlin("gradle-plugin", libs.versions.kotlin.get()))
+    implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
+    implementation(libs.com.github.ben.manes.gradle.versions.plugin)
+    implementation(libs.se.patrikerdes.gradle.use.latest.versions.plugin)
+    implementation(libs.com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin)
+    implementation(libs.com.soywiz.korlibs.klock)
+    implementation(libs.org.apache.logging.log4j.log4j.core)
+    implementation(libs.org.apache.logging.log4j.log4j.iostreams)
+    implementation(libs.org.slf4j.slf4j.api)
+    implementation(libs.org.jlleitschuh.gradle.ktlint.gradle)
+    implementation(libs.org.ajoberstar.grgit.gradle.plugin)
+    implementation(libs.com.fasterxml.jackson.core.jackson.databind)
 }
 
 tasks {
@@ -43,5 +52,13 @@ tasks {
                 .toRegex(RegexOption.IGNORE_CASE)
                 .matches(candidate.version)
         }
+    }
+}
+
+versionCatalogUpdate {
+    sortByKey.set(true)
+    keep {
+        keepUnusedVersions.set(true)
+        keepUnusedLibraries.set(true)
     }
 }

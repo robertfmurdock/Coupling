@@ -50,7 +50,7 @@ open class NodeExec : AbstractExecTask<NodeExec>(NodeExec::class.java) {
         )
         environment("PATH", "$nodeBinDir")
         npmProjectDir?.let { workingDir = it }
-        val commandFromBin = nodeCommand?.let { listOf("${projectNodeModulesDir}/.bin/$nodeCommand") } ?: emptyList()
+        val commandFromBin = nodeCommand?.let { listOf("$projectNodeModulesDir/.bin/$nodeCommand") } ?: emptyList()
         commandLine = listOf(nodeExecPath) + commandFromBin + arguments
 
         outputFile?.let {
@@ -118,6 +118,6 @@ private fun Project.goGetNodeBinDir(): File {
 
 val Project.nodeModulesDir get() = rootProject.buildDir.resolve("js/node_modules")
 
-private val Project.nodeExecPath get() = "${nodeBinDir}/node"
+private val Project.nodeExecPath get() = "$nodeBinDir/node"
 
 private val Project.nodeBinDir get() = project.rootProject.goGetNodeBinDir()
