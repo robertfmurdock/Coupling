@@ -5,12 +5,12 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 import java.time.Duration
 
 plugins {
-    id("com.avast.gradle.docker-compose") version "0.16.9"
-    id("com.github.sghill.distribution-sha") version "0.4.0"
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.linter")
-    id("com.github.ben-manes.versions") version "0.42.0"
-    id("nl.littlerobots.version-catalog-update") version "0.6.1"
+    alias(libs.plugins.com.avast.gradle.docker.compose)
+    alias(libs.plugins.com.github.sghill.distribution.sha)
+    alias(libs.plugins.com.github.ben.manes.versions)
+    alias(libs.plugins.nl.littlerobots.version.catalog.update)
     base
 }
 

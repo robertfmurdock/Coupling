@@ -1,6 +1,5 @@
 plugins {
     base
-
 }
 
 tasks {
