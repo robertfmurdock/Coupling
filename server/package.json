@@ -9,8 +9,8 @@
   "dependencies": {
     "@aws-sdk/client-lambda": "~3.163.0",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.163.0",
-    "@graphql-tools/schema": "^9.0.2",
-    "@graphql-tools/stitch": "^8.7.7",
+    "@graphql-tools/schema": "^9.0.3",
+    "@graphql-tools/stitch": "^8.7.8",
     "body-parser": "^1.20.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
