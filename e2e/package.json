@@ -27,7 +27,7 @@
     "jwt-decode": "3.1.2"
   },
   "devDependencies": {
-    "uuid": "^8.3.2",
+    "uuid": "^9.0.0",
     "npm-check-updates": "^16.1.0"
   },
   "scripts": {},

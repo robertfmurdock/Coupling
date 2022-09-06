@@ -31,7 +31,7 @@
     "raw-loader": "^4.0.2",
     "serverless-http": "^3.0.2",
     "source-map-loader": "^4.0.0",
-    "uuid": "^8.3.2",
+    "uuid": "^9.0.0",
     "webpack": "~5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-node-externals": "^3.0.0"
