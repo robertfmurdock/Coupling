@@ -1,7 +1,7 @@
 [libraries]
 com-benasher44-uuid = "com.benasher44:uuid:0.5.0"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.13.4"
-com-pinterest-ktlint = "com.pinterest:ktlint:0.47.0"
+com-pinterest-ktlint = "com.pinterest:ktlint:0.47.1"
 com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:3.0.1"
 com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:1.6.45"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:8.1.17"
@@ -16,7 +16,7 @@ org-jetbrains-kotlin-kotlin-stdlib-common = "org.jetbrains.kotlin:kotlin-stdlib-
 org-jetbrains-kotlin-kotlin-stdlib-jdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
 org-jetbrains-kotlin-kotlin-stdlib-jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10"
 org-jetbrains-kotlin-kotlin-stdlib-js = "org.jetbrains.kotlin:kotlin-stdlib-js:1.7.10"
-org-jetbrains-kotlin-kotlin-test = "org.jetbrains.kotlin:kotlin-test:1.7.10"
+org-jetbrains-kotlin-kotlin-test = "org.jetbrains.kotlin:kotlin-test:1.7.20-Beta"
 org-jetbrains-kotlin-kotlin-test-annotations-common = "org.jetbrains.kotlin:kotlin-test-annotations-common:1.7.10"
 org-jetbrains-kotlin-kotlin-test-common = "org.jetbrains.kotlin:kotlin-test-common:1.7.10"
 org-jetbrains-kotlin-kotlin-test-js = "org.jetbrains.kotlin:kotlin-test-js:1.7.10"

@@ -18,7 +18,7 @@ kotlin {
         binaries.executable()
         compilations.all {
             kotlinOptions {
-                allWarningsAsErrors = true
+                // allWarningsAsErrors = true
             }
         }
         sourceSets {
