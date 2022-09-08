@@ -51,17 +51,17 @@ gradleEnterprise {
 
 val isCiServer = System.getenv().containsKey("CI")
 
-buildCache {
-    local {
-        isEnabled = true
-        removeUnusedEntriesAfterDays = 3
-    }
-    remote<com.github.burrunan.s3cache.AwsS3BuildCache> {
-        region = "us-east-1"
-        bucket = "build.cache.zegreatrob.com"
-        isPush = isCiServer
-        lookupDefaultAwsCredentials = true
-    }
-}
+// buildCache {
+//     local {
+//         isEnabled = true
+//         removeUnusedEntriesAfterDays = 3
+//     }
+//     remote<com.github.burrunan.s3cache.AwsS3BuildCache> {
+//         region = "us-east-1"
+//         bucket = "build.cache.zegreatrob.com"
+//         isPush = isCiServer
+//         lookupDefaultAwsCredentials = true
+//     }
+// }
 
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
