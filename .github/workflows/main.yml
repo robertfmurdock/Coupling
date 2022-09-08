@@ -26,10 +26,7 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: stable
-      - run: chrome --version
       - run: sudo rm /usr/bin/google-chrome && sudo ln -s $(which chrome) /usr/bin/google-chrome
-      - run: which chrome
-      - run: which google-chrome
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
