@@ -40,10 +40,11 @@ dependencies {
 }
 
 tasks {
+    val cleanBuild by registering(Delete::class) {
+        setDelete(file("build"))
+    }
     clean {
-        doLast {
-            delete(file("build"))
-        }
+        dependsOn(cleanBuild)
     }
 
     val serverCompile by registering(NodeExec::class) {
