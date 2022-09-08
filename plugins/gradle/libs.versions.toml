@@ -1,6 +1,7 @@
 [versions]
-jsmints = "1.6.46"
-kotlin = "1.7.10"
+jsmints = "1.6.47"
+# @pin
+kotlin = "1.7.20-Beta"
 ktlint = "0.45.2"
 org-apache-logging-log4j = "2.18.0"
 org-jlleitschuh-gradle-ktlint = "11.0.0"
