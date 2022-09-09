@@ -75,9 +75,24 @@ kotlin {
                 implementation("com.zegreatrob.testmints:async")
                 implementation("com.zegreatrob.jsmints:wdio")
 
-                jspackage.devDependencies()?.forEach {
-                    implementation(npm(it.first, it.second.asText()))
-                }
+                implementation(npmConstrained("@log4js-node/log4js-api"))
+                implementation(npmConstrained("@rpii/wdio-html-reporter"))
+                implementation(npmConstrained("@testing-library/webdriverio"))
+                implementation(npmConstrained("@wdio/allure-reporter"))
+                implementation(npmConstrained("@wdio/cli"))
+                implementation(npmConstrained("@wdio/dot-reporter"))
+                implementation(npmConstrained("@wdio/jasmine-framework"))
+                implementation(npmConstrained("@wdio/local-runner"))
+                implementation(npmConstrained("@wdio/junit-reporter"))
+                implementation(npmConstrained("allure-commandline"))
+                implementation(npmConstrained("chromedriver"))
+                implementation(npmConstrained("fs-extra"))
+                implementation(npmConstrained("webpack"))
+                implementation(npmConstrained("webpack-node-externals"))
+                implementation(npmConstrained("wdio-chromedriver-service"))
+                implementation(npmConstrained("css-loader"))
+                implementation(npmConstrained("url-loader"))
+                implementation(npmConstrained("jwt-decode"))
             }
         }
     }
@@ -91,10 +106,6 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("com.zegreatrob.jsmints:wdio")
-
-    jspackage.devDependencies()?.forEach {
-        implementation(npm(it.first, it.second.asText()))
-    }
 }
 
 tasks {

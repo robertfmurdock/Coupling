@@ -42,6 +42,8 @@ dependencies {
     implementation("com.soywiz.korlibs.klock:klock")
     implementation("com.benasher44:uuid")
     implementation("io.github.microutils:kotlin-logging")
+    implementation(npmConstrained("@aws-sdk/client-dynamodb"))
+    implementation(npmConstrained("@aws-sdk/lib-dynamodb"))
 
     testImplementation(project(":coupling-libraries:repository-validation"))
     testImplementation(project(":coupling-libraries:stub-model"))
