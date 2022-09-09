@@ -27,10 +27,15 @@ dependencies {
     implementation("com.zegreatrob.testmints:minspy")
     implementation("com.zegreatrob.jsmints:minreact")
     implementation("com.zegreatrob.jsmints:react-data-loader")
+    implementation(npmConstrained("react-websocket"))
+    implementation(npmConstrained("fitty"))
+    implementation(npmConstrained("blueimp-md5"))
 
     testImplementation(project(":coupling-libraries:test-react"))
     testImplementation(project(":coupling-libraries:stub-model"))
     testImplementation(project(":coupling-libraries:test-logging"))
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.jsmints:minenzyme")
+    testImplementation(npmConstrained("@testing-library/react"))
+    testImplementation(npmConstrained("@testing-library/user-event"))
 }

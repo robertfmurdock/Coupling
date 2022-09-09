@@ -2,6 +2,7 @@ plugins {
     `java-platform`
     id("com.zegreatrob.coupling.plugins.versioning")
     id("org.jlleitschuh.gradle.ktlint")
+    id("com.zegreatrob.jsmints.plugins.ncu")
 }
 
 repositories {
@@ -9,6 +10,7 @@ repositories {
     maven { url = uri("https://plugins.gradle.org/m2/") }
     gradlePluginPortal()
 }
+kotlin { js { nodejs() } }
 
 ktlint {
     version.set("0.45.2")

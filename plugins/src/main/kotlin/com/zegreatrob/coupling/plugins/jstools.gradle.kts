@@ -40,6 +40,11 @@ ktlint {
     version.set("0.45.2")
 }
 
+project.extensions.create<JsConstraintExtension>("npmConstrained")
+configure<JsConstraintExtension> {
+    json = File(project(":coupling-libraries:dependency-bom").projectDir, "package.json")
+}
+
 dependencies {
     implementation(enforcedPlatform(project(":coupling-libraries:dependency-bom")))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")

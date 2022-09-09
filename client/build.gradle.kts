@@ -1,3 +1,4 @@
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
@@ -58,6 +59,37 @@ dependencies {
     implementation("com.soywiz.korlibs.klock:klock")
     implementation("com.benasher44:uuid")
     implementation("org.jetbrains.kotlinx:kotlinx-html-js")
+    implementation(npmConstrained("@auth0/auth0-react"))
+    implementation(npmConstrained("blueimp-md5"))
+    implementation(npmConstrained("core-js"))
+    implementation(npmConstrained("css-loader"))
+    implementation(npmConstrained("d3"))
+    implementation(npmConstrained("d3-color"))
+    implementation(npmConstrained("d3-selection"))
+    implementation(npmConstrained("date-fns"))
+    implementation(npmConstrained("dom-to-image"))
+    implementation(npmConstrained("drag-drop-webkit-mobile"))
+    implementation(npmConstrained("favicons"))
+    implementation(npmConstrained("favicons-webpack-plugin"))
+    implementation(npmConstrained("file-loader"))
+    implementation(npmConstrained("fitty"))
+    implementation(npmConstrained("html-webpack-harddisk-plugin"))
+    implementation(npmConstrained("html-webpack-plugin"))
+    implementation(npmConstrained("karma"))
+    implementation(npmConstrained("mini-css-extract-plugin"))
+    implementation(npmConstrained("raw-loader"))
+    implementation(npmConstrained("react-dnd"))
+    implementation(npmConstrained("react-dnd-html5-backend"))
+    implementation(npmConstrained("react-flip-toolkit"))
+    implementation(npmConstrained("react-hotkeys-hook"))
+    implementation(npmConstrained("react-websocket"))
+    implementation(npmConstrained("reactjs-popup"))
+    implementation(npmConstrained("style-loader"))
+    implementation(npmConstrained("styled-components"))
+    implementation(npmConstrained("text-loader"))
+    implementation(npmConstrained("url-loader"))
+    implementation(npmConstrained("webpack"))
+    implementation(npmConstrained("webpack-cli"))
 
     testImplementation(project(":coupling-libraries:stub-model"))
     testImplementation(project(":coupling-libraries:test-react"))
@@ -70,6 +102,10 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:minassert")
     testImplementation("com.zegreatrob.testmints:minspy")
     testImplementation("com.zegreatrob.jsmints:minenzyme")
+    testImplementation(npmConstrained("enzyme"))
+    testImplementation(npmConstrained("enzyme-adapter-react-16"))
+    testImplementation(npmConstrained("@testing-library/react"))
+    testImplementation(npmConstrained("@testing-library/user-event"))
 }
 
 val taggerExtension = com.zegreatrob.coupling.plugins.tagger.TaggerExtension.apply(rootProject)

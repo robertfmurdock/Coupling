@@ -6,13 +6,6 @@
   "directories": {
     "test": "test"
   },
-  "devDependencies": {
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.4.3",
-    "npm-check-updates": "^16.1.0"
-  },
   "scripts": {
     "webpack": "webpack",
     "test": "karma start test/karma.conf.js --single-run",
@@ -28,38 +21,5 @@
   "bugs": {
     "url": "https://github.com/robertfmurdock/Coupling/issues"
   },
-  "homepage": "https://github.com/robertfmurdock/Coupling",
-  "dependencies": {
-    "@auth0/auth0-react": "1.10.2",
-    "blueimp-md5": "^2.19.0",
-    "core-js": "^3.25.1",
-    "css-loader": "^6.7.1",
-    "d3": "^7.6.1",
-    "d3-color": "^3.1.0",
-    "d3-selection": "^3.0.0",
-    "date-fns": "^2.29.2",
-    "dom-to-image": "^2.6.0",
-    "drag-drop-webkit-mobile": "^1.4.1",
-    "favicons": "~6.2.2",
-    "favicons-webpack-plugin": "~5.0.2",
-    "file-loader": "^6.2.0",
-    "fitty": "^2.3.6",
-    "html-webpack-harddisk-plugin": "^2.0.0",
-    "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.6.1",
-    "raw-loader": "^4.0.2",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "react-flip-toolkit": "^7.0.16",
-    "react-hotkeys-hook": "^3.4.7",
-    "react-websocket": "^2.1.0",
-    "reactjs-popup": "^2.0.5",
-    "style-loader": "^3.3.1",
-    "styled-components": "^5.3.5",
-    "text-loader": "0.0.1",
-    "url-loader": "^4.1.1",
-    "webpack": "5.74.0",
-    "webpack-cli": "4.10.0",
-    "karma": "^6.4.0"
-  }
+  "homepage": "https://github.com/robertfmurdock/Coupling"
 }
