@@ -25,7 +25,6 @@ import react.ChildrenBuilder
 import react.MutableRefObject
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
-import react.ref
 import react.useRef
 import kotlin.js.Json
 import kotlin.js.json
@@ -44,9 +43,7 @@ private val pairSection = tmFC<PairSection> { (party, players, pairs, allowSave,
 
     div {
         css { verticalAlign = VerticalAlign.top }
-        add(PairSectionPanel(party, players, pairs, allowSave, setPairs, controls)) {
-            ref = pairSectionNode
-        }
+        add(PairSectionPanel(party, players, pairs, allowSave, setPairs, controls), ref = pairSectionNode)
         div {
             css { float = Float.right; width = 0.px }
             div { copyToClipboardButton(pairSectionNode) }

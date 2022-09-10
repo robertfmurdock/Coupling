@@ -9,7 +9,5 @@ val PinListPage = partyPageFunction { props, partyId ->
         commander = props.commander,
         query = PartyPinListQuery(partyId),
         toDataprops = { _, _, (party, pins) -> PinList(party, pins) }
-    ).create {
-        key = partyId.value
-    }
+    ).create(key = partyId.value)
 }

@@ -13,7 +13,5 @@ val PinPage = partyPageFunction { props, partyId ->
         toDataprops = { reload, commandFunc, (party, pins, pin) ->
             PinConfig(party, pin, pins, reload, commandFunc)
         }
-    ).create {
-        key = pinId
-    }
+    ).create(key = pinId)
 }

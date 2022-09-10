@@ -28,7 +28,7 @@ data class PlayerConfig<P>(
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out P>,
     val windowFuncs: WindowFunctions = WindowFunctions
-) : DataPropsBind<PlayerConfig<P>>(component.unsafeCast<TMFC<PlayerConfig<P>>>())
+) : DataPropsBind<PlayerConfig<P>>(component.unsafeCast<TMFC>())
     where P : SavePlayerCommandDispatcher, P : DeletePlayerCommandDispatcher {
     companion object {
         private val component = playerConfig<Dispatcho>()

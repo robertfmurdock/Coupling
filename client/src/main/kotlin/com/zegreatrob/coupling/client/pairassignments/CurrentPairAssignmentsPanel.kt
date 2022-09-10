@@ -86,10 +86,9 @@ private fun ChildrenBuilder.pairAssignmentList(
                     setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
                 },
                 pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) }
-            )
-        ) {
+            ),
             key = "$index"
-        }
+        )
     }
 }
 

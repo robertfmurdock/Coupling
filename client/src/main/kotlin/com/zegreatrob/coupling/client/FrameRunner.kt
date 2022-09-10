@@ -32,7 +32,7 @@ val frameRunnerCached = tmFC<FrameRunner<Any>> { props ->
     props.children(this, state)
 }
 
-private fun <S> fR(): TMFC<FrameRunner<S>> = frameRunnerCached.unsafeCast<TMFC<FrameRunner<S>>>()
+private fun fR(): TMFC = frameRunnerCached.unsafeCast<TMFC>()
 
 private fun scheduleStateFunc(setState: (Any) -> Unit, speed: Double) = setState.statePairToTimeoutArgsFunc()
     .join(pairTransformSecondFunc { it.applySpeed(speed) })

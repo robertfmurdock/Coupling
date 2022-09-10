@@ -4,6 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Controls
 import com.zegreatrob.coupling.client.StubDispatchFunc
+import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.client.player.playerRoster
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -56,7 +57,7 @@ class PairAssignmentsTest {
         )
     } verify { wrapper ->
         wrapper.find(playerRoster)
-            .dataprops()
+            .dataprops<PlayerRoster>()
             .players
             .assertIsEqualTo(
                 listOf(rigby, nerd, pantsmaster)
@@ -86,7 +87,7 @@ class PairAssignmentsTest {
         )
     } verify { wrapper ->
         wrapper.find(playerRoster)
-            .dataprops()
+            .dataprops<PlayerRoster>()
             .players
             .assertIsEqualTo(players)
     }

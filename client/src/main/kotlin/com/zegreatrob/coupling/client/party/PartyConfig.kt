@@ -21,7 +21,7 @@ import react.useState
 import kotlin.js.Json
 
 data class PartyConfig<D>(val party: Party, val dispatchFunc: DispatchFunc<out D>) :
-    DataPropsBind<PartyConfig<D>>(partyConfig.unsafeCast<TMFC<PartyConfig<D>>>())
+    DataPropsBind<PartyConfig<D>>(partyConfig.unsafeCast<TMFC>())
     where D : SavePartyCommandDispatcher, D : DeletePartyCommandDispatcher
 
 private interface PartyConfigDispatcher : SavePartyCommandDispatcher, DeletePartyCommandDispatcher {

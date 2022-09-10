@@ -48,8 +48,9 @@ val pinList = tmFC<PinList> { (party, pins) ->
                         partyId = party.id,
                         pin = it,
                         shouldLink = true
-                    )
-                ) { key = it.id }
+                    ),
+                    key = it.id
+                )
             }
         }
         div {

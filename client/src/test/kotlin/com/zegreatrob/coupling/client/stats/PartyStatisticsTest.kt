@@ -50,7 +50,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         shallow(PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())))
     } verify { wrapper ->
         wrapper.find(pairReportTable)
-            .dataprops()
+            .dataprops<PairReportTable>()
             .pairReports
             .assertIsOrderedByLongestTimeSinceLastPairing()
             .assertHasTheTimeSincePairLastOccurred()
@@ -109,7 +109,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         shallow(PartyStatistics(StatisticQueryResults(party, players, history, report, heatmapData)))
     } verify { wrapper ->
         wrapper.find(playerHeatmap)
-            .dataprops()
+            .dataprops<PlayerHeatmap>()
             .heatmapData
             .assertIsEqualTo(
                 listOf(
@@ -138,7 +138,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         shallow(PartyStatistics(StatisticQueryResults(party, players, emptyList(), report, emptyList())))
     } verify { wrapper ->
         wrapper.find(teamStatistics)
-            .dataprops()
+            .dataprops<TeamStatistics>()
             .apply {
                 activePlayerCount
                     .assertIsEqualTo(4)
@@ -179,7 +179,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         shallow(PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())))
     } verify { wrapper ->
         wrapper.find(teamStatistics)
-            .dataprops()
+            .dataprops<TeamStatistics>()
             .medianSpinDuration
             .assertIsEqualTo("2 days")
     }

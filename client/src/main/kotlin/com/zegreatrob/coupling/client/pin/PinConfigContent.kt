@@ -87,7 +87,7 @@ val pinConfigContent = tmFC<PinConfigContent> { (party, pin, pinList, onChange, 
 private fun ChildrenBuilder.pinBag(party: Party, pinList: List<Pin>, className: ClassName) = div {
     this.className = className
     pinList.map { pin ->
-        add(PinCard(party.id, pin)) { key = pin.id }
+        add(PinCard(party.id, pin), key = pin.id)
     }
 }
 

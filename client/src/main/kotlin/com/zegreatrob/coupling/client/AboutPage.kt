@@ -75,12 +75,14 @@ private val backButton = FC<Props> {
 private val playerHeader = FC<Props> {
     div {
         val rob by playerImage()
-        add(PlayerCard(Player("1", name = "RoB", imageURL = rob), tilt = (-8).deg)) {
-            key = player.id
-        }
+        add(
+            PlayerCard(Player("1", name = "RoB", imageURL = rob), tilt = (-8).deg),
+            key = "1"
+        )
         val autumn by playerImage()
-        add(PlayerCard(Player("2", name = "Autumn", imageURL = autumn), tilt = 8.deg)) {
-            key = player.id
-        }
+        add(
+            PlayerCard(Player("2", name = "Autumn", imageURL = autumn), tilt = 8.deg),
+            key = "2"
+        )
     }
 }

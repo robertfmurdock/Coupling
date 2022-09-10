@@ -29,7 +29,7 @@ data class SocketedPairAssignments<D>(
     val pairAssignments: PairAssignmentDocument?,
     val controls: Controls<D>,
     val allowSave: Boolean
-) : DataPropsBind<SocketedPairAssignments<D>>(socketedPairAssignments())
+) : DataPropsBind<SocketedPairAssignments<D>>(socketedPairAssignments<D>())
     where D : SavePairAssignmentsCommandDispatcher, D : DeletePairAssignmentsCommandDispatcher
 
 private fun <D> socketedPairAssignments()

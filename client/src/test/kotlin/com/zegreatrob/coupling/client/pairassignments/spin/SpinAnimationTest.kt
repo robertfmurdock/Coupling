@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments.spin
 
+import com.zegreatrob.coupling.client.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.pairassignments.assignedPair
+import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.playerCard
 import com.zegreatrob.coupling.components.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -237,17 +239,17 @@ class SpinAnimationTest {
 
         private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass(playerRosterStyles.toString())
             .find(playerCard)
-            .map { it.dataprops().player }
+            .map { it.dataprops<PlayerCard>().player }
             .toList()
 
         private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass("$playerSpotlightStyles")
             .find(playerCard).run {
-                if (length == 1) dataprops().player else null
+                if (length == 1) dataprops<PlayerCard>().player else null
             }
 
         private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass("$pairAssignmentStyles")
             .find(assignedPair)
-            .map { it.dataprops().pair }
+            .map { it.dataprops<AssignedPair>().pair }
             .toList()
     }
 }

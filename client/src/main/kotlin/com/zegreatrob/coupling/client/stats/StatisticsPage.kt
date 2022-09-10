@@ -9,7 +9,5 @@ val StatisticsPage = partyPageFunction { props, partyId ->
         commander = props.commander,
         query = StatisticsQuery(partyId),
         toDataprops = { _, _, queryResult -> PartyStatistics(queryResult) }
-    ).create {
-        key = partyId.value
-    }
+    ).create(key = partyId.value)
 }

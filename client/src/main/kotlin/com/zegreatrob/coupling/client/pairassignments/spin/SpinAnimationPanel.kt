@@ -53,7 +53,7 @@ val pairAssignmentStyles = ClassName {
 
 private fun ChildrenBuilder.assignedPairs(party: Party, revealedPairs: List<PinnedCouplingPair>) = div {
     className = pairAssignmentStyles
-    revealedPairs.forEachIndexed { index, it -> add(AssignedPair(party, it, false)) { key = "$index" } }
+    revealedPairs.forEachIndexed { index, it -> add(AssignedPair(party, it, false), key = "$index") }
 }
 
 val playerSpotlightStyles = ClassName {
@@ -88,6 +88,7 @@ private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) =
         add(PlayerCard(player))
     }
 }
+
 val playerRosterStyles = ClassName {
 }
 

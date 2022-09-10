@@ -13,7 +13,5 @@ val PrepareSpinPage = partyPageFunction { props, partyId ->
         toDataprops = { _, dispatcher, (party, players, currentPairsDoc, pins) ->
             PrepareSpin(party, players, currentPairsDoc, pins, dispatcher)
         }
-    ).create {
-        key = partyId.value
-    }
+    ).create(key = partyId.value)
 }

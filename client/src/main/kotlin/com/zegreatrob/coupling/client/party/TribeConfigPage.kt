@@ -8,9 +8,7 @@ import com.zegreatrob.minreact.add
 import react.FC
 
 val PartyConfigPage = FC<PageProps> { props ->
-    add((props.partyId?.partyQueryProps(props) ?: newPartyProps(props))) {
-        key = props.partyId?.value
-    }
+    add((props.partyId?.partyQueryProps(props) ?: newPartyProps(props)), key = props.partyId?.value)
 }
 
 private fun PartyId.partyQueryProps(pageProps: PageProps) = CouplingQuery(

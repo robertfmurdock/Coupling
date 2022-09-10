@@ -53,7 +53,7 @@ private val pairAssignments = tmFC<PairAssignments> { props ->
             }
             add(ControlPanel(party))
             add(PlayerRoster(label = "Unpaired players", partyId = party.id, players = notPairedPlayers))
-            add(ServerMessage(message)) { key = "${message.text} ${message.players.size}" }
+            add(ServerMessage(message), key = "${message.text} ${message.players.size}")
         }
     }
 }

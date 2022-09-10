@@ -53,7 +53,7 @@ val partyList = tmFC<PartyList> { (parties) ->
         }
         div {
             parties.forEach { party ->
-                add(PartyCard(party)) { key = party.id.value }
+                add(PartyCard(party), key = party.id.value)
             }
         }
         div { newPartyButton(styles["newPartyButton"]) }

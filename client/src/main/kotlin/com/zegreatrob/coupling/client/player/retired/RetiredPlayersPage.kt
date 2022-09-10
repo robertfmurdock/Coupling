@@ -9,7 +9,5 @@ val RetiredPlayersPage = partyPageFunction { props, partyId ->
         commander = props.commander,
         query = RetiredPlayerListQuery(partyId),
         toDataprops = { _, _, (party, retiredPlayers) -> RetiredPlayers(party, retiredPlayers) }
-    ).create {
-        key = partyId.value
-    }
+    ).create(key = partyId.value)
 }

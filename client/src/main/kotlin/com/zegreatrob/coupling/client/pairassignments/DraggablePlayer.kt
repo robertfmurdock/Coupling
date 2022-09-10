@@ -56,10 +56,9 @@ val draggablePlayer = tmFC<DraggablePlayer> { (pinnedPlayer, zoomOnHover, tilt, 
                             animationIterationCount = AnimationIterationCount.infinite
                         }
                     }
-                )
-            ) {
+                ),
                 key = pinnedPlayer.player.id
-            }
+            )
         }
     )
 }

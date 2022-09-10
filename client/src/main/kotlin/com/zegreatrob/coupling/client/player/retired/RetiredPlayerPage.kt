@@ -28,4 +28,4 @@ private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: Party
         toDataprops = { reload, commandFunc, (party, players, player) ->
             PlayerConfig(party, player, players, reload, commandFunc)
         }
-    ).create { key = playerId }
+    ).create(key = playerId)
