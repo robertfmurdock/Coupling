@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.demo.DemoPage
+import com.zegreatrob.coupling.client.graphql.GraphIQLPage
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinPage
-import com.zegreatrob.coupling.client.party.GraphIQLPage
 import com.zegreatrob.coupling.client.party.PartyConfigPage
 import com.zegreatrob.coupling.client.party.PartyListPage
 import com.zegreatrob.coupling.client.pin.PinListPage

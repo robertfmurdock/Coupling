@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.client.graphql
 
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.client.graphql
 
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.routing.PageProps
