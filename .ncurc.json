@@ -1,3 +1,8 @@
 {
-  "reject": ["serverless", "serverless-offline-ssm", "serverless-offline"]
+  "reject": [
+    "mime",
+    "serverless",
+    "serverless-offline-ssm",
+    "serverless-offline"
+  ]
 }

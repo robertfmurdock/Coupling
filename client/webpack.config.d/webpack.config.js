@@ -1,7 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const WebpackFavicons = require('webpack-favicons');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const resourcesPath = path.resolve(__dirname, '../../../../client/build/processedResources/js/main');
@@ -135,10 +135,12 @@ config.plugins.push(
         } : {}
     }),
     new HtmlWebpackHarddiskPlugin(),
-    new FaviconsWebpackPlugin({
-        logo: path.resolve(resourcesPath, 'images/logo.png'),
-        cache: true,
-        prefix: 'html/assets/',
+    new WebpackFavicons({
+        src: path.resolve(resourcesPath, 'images/logo.png'),
+        path: 'html/assets/',
+        icons: {
+            favicons: true
+        }
     }),
     new MiniCssExtractPlugin({
         filename: 'html/styles.css',

@@ -70,7 +70,6 @@ dependencies {
     implementation(npmConstrained("dom-to-image"))
     implementation(npmConstrained("drag-drop-webkit-mobile"))
     implementation(npmConstrained("favicons"))
-    implementation(npmConstrained("favicons-webpack-plugin"))
     implementation(npmConstrained("file-loader"))
     implementation(npmConstrained("fitty"))
     implementation(npmConstrained("html-webpack-harddisk-plugin"))
@@ -90,6 +89,7 @@ dependencies {
     implementation(npmConstrained("url-loader"))
     implementation(npmConstrained("webpack"))
     implementation(npmConstrained("webpack-cli"))
+    implementation(npmConstrained("webpack-favicons"))
 
     testImplementation(project(":coupling-libraries:stub-model"))
     testImplementation(project(":coupling-libraries:test-react"))

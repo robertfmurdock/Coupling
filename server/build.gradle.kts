@@ -51,6 +51,7 @@ dependencies {
     implementation(npmConstrained("express-statsd"))
     implementation(npmConstrained("fs-extra"))
     implementation(npmConstrained("graphql"))
+    implementation(npmConstrained("mime"))
     implementation(npmConstrained("method-override"))
     implementation(npmConstrained("minimist"))
     implementation(npmConstrained("node-fetch"))
