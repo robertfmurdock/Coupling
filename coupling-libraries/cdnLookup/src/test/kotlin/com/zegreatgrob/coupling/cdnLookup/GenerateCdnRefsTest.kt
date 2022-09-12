@@ -10,7 +10,7 @@ class GenerateCdnRefsTest {
     fun generateRefWorks() = asyncSetup(object {
         val lib = "react"
         val cdnLibs = listOf(lib)
-        val expected = "https://cdn.jsdelivr.net/npm/react@18.1.0/umd/react.production.min.js"
+        val expected = "https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"
     }) exercise {
         generateCdnRef(cdnLibs)
     } verify { result ->

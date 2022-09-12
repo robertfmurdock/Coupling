@@ -3,6 +3,7 @@
     "mime",
     "serverless",
     "serverless-offline-ssm",
-    "serverless-offline"
+    "serverless-offline",
+    "read-pkg-up"
   ]
 }
