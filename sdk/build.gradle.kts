@@ -30,7 +30,7 @@ kotlin {
             }
         }
         named("commonTest") {
-            resources.srcDirs(commonMain.get().resources.srcDirs)
+            resources.srcDirs(commonMain.map { it.resources.srcDirs })
 
             dependencies {
                 implementation(project(":coupling-libraries:repository-validation"))

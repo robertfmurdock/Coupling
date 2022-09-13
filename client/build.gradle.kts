@@ -1,4 +1,3 @@
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
@@ -165,36 +164,11 @@ tasks {
         val javascriptConfig = configurations["runtimeClasspath"]
         dependsOn(javascriptConfig)
         duplicatesStrategy = DuplicatesStrategy.WARN
-        val additionalResourcesPath = "${project.buildDir.absolutePath}/additionalResources"
-        into(additionalResourcesPath)
+        into("${project.buildDir.absolutePath}/additionalResources")
         from({
-            javascriptConfig.files.map {
-                if (!it.isFile || !it.name.endsWith(".klib")) {
-                    null
-                } else {
-                    zipTree(it).matching {
-                        exclude(
-                            "default",
-                            "default/**/*",
-                            "kotlin",
-                            "kotlin/**/*",
-                            "kotlin-test",
-                            "kotlin-test/**/*",
-                            "META-INF",
-                            "META-INF/**/*",
-                            "org",
-                            "org/**/*",
-                            "kotlin.js",
-                            "kotlin.js.map",
-                            "kotlin.meta.js",
-                            "kotlin-test.js",
-                            "kotlin-test.js.map",
-                            "kotlin-test.meta.js",
-                            "package.json",
-                        )
-                    }
-                }
-            }
+            javascriptConfig.files
+                .filter { it.isFile && it.name.endsWith(".klib") }
+                .map { zipTree(it).matching { include("com/**/*") } }
         })
     }
 
