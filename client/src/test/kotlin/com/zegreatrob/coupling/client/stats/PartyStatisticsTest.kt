@@ -18,10 +18,16 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.setup
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.asList
+import react.router.MemoryRouter
+import kotlin.js.json
 import kotlin.test.Test
 
 class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
@@ -47,13 +53,39 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         )
         val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
-        shallow(PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())))
-    } verify { wrapper ->
-        wrapper.find(pairReportTable)
-            .dataprops<PairReportTable>()
-            .pairReports
-            .assertIsOrderedByLongestTimeSinceLastPairing()
-            .assertHasTheTimeSincePairLastOccurred()
+        render(
+            PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())).create(),
+            json("wrapper" to MemoryRouter)
+        )
+    } verify { result ->
+        result.baseElement.querySelectorAll("[data-pair-report]")
+            .asList()
+            .map { it as HTMLElement }
+            .map { it.getAttribute("data-pair-report") }
+            .assertIsEqualTo(
+                listOf(
+                    "Harry-Curly",
+                    "Harry-Moe",
+                    "Larry-Curly",
+                    "Larry-Moe",
+                    "Harry-Larry",
+                    "Curly-Moe",
+                )
+            )
+        result.baseElement.querySelectorAll("[data-time-since-last-pair]")
+            .asList()
+            .map { it as HTMLElement }
+            .map { it.textContent }
+            .assertIsEqualTo(
+                listOf(
+                    "Never Paired",
+                    "Never Paired",
+                    "Never Paired",
+                    "Never Paired",
+                    "0",
+                    "0",
+                )
+            )
     }
 
     private fun List<PairReport>.assertIsOrderedByLongestTimeSinceLastPairing() = also {

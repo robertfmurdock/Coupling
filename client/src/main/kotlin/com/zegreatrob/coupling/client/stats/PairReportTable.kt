@@ -53,6 +53,7 @@ private fun ChildrenBuilder.pairReport(index: Int, pairReport: PairReport) = div
         margin = 2.px
     }
     key = "$index"
+    asDynamic()["data-pair-report"] = pairReport.pair.asArray().joinToString("-") { it.name }
     pairReport.pair.asArray().map { player -> reportPlayerCard(player) }
 
     div {
@@ -65,6 +66,7 @@ private fun ChildrenBuilder.pairReport(index: Int, pairReport: PairReport) = div
         StatLabel { +"Spins since last paired:" }
         span {
             className = ClassName("time-since-last-pairing")
+            asDynamic()["data-time-since-last-pair"] = ""
             +pairReport.timeSinceLastPair.presentationString()
         }
     }
