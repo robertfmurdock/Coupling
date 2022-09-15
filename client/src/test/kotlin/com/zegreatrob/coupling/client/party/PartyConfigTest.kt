@@ -84,9 +84,9 @@ class PartyConfigTest {
         waitFor {
             stubDispatcher.commandsDispatched<SavePartyCommand>()
                 .assertIsEqualTo(listOf(SavePartyCommand(party)))
+            screen.getByText("Parties!")
+                .assertNotNull()
         }.await()
-        screen.getByText("Parties!")
-            .assertNotNull()
     }
 
     @Test
