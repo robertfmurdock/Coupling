@@ -24,6 +24,7 @@ val heatmap = tmFC<Heatmap> { (data, className) ->
     useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }
 
     div {
+        asDynamic()["data-heatmap"] = data.joinToString(",") { "[${it.joinToString(",")}]" }
         css(className) {
             lineHeight = 0.px
             width = rowSize.px
