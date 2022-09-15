@@ -33,7 +33,9 @@ external class Container {
 
 external class Screen {
     fun getByText(s: String): HTMLElement
+    fun getByLabelText(s: String): HTMLElement
     fun queryByText(s: String): HTMLElement?
+    fun queryByLabelText(s: String): HTMLElement?
     fun queryAllByAltText(s: String): Array<HTMLElement>
 }
 
