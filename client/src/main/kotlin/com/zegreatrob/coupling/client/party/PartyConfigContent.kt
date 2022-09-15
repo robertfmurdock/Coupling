@@ -50,7 +50,7 @@ val partyConfigContent = tmFC<PartyConfigContent> { (party, isNew, onChange, onS
             +"Party Configuration"
         }
         div {
-            css { display = csstype.Display.flex }
+            css { display = Display.flex }
             partyConfigEditor(party, isNew ?: false, onChange, onSave, onDelete)
             add(PartyCard(party))
         }

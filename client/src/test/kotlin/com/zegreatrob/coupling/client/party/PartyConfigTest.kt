@@ -2,17 +2,29 @@ package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.StubDispatcher
-import com.zegreatrob.coupling.components.ConfigForm
+import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.model.party.PairingRule.Companion.toValue
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.within
+import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.minenzyme.ShallowWrapper
-import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
-import react.router.Navigate
+import kotlinx.coroutines.await
+import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLOptionElement
+import react.ReactNode
+import react.create
+import react.router.MemoryRouter
+import react.router.Route
+import react.router.Routes
+import kotlin.js.json
 import kotlin.test.Test
 
 class PartyConfigTest {
@@ -21,37 +33,25 @@ class PartyConfigTest {
     fun willDefaultPartyThatIsMissingData(): Unit = setup(object {
         val party = Party(PartyId("1"), name = "1")
     }) exercise {
-        shallow(PartyConfig(party, StubDispatchFunc()))
-            .find(partyConfigContent)
-            .shallow()
-    } verify { wrapper ->
-        wrapper.assertHasStandardPairingRule()
-            .assertHasDefaultBadgeName()
-            .assertHasAlternateBadgeName()
-    }
-
-    private fun ShallowWrapper<dynamic>.assertHasAlternateBadgeName() = also {
-        find<Any>("#alt-badge-name")
-            .prop("value")
+        render(PartyConfig(party, StubDispatchFunc()).create(), json("wrapper" to MemoryRouter))
+    } verify {
+        within(screen.getByLabelText("Pairing Rule"))
+            .getByRole("option", json("selected" to true))
+            .let { it as? HTMLOptionElement }
+            ?.label
+            .assertIsEqualTo("Prefer Longest Time")
+        screen.getByLabelText("Default Badge Name")
+            .let { it as? HTMLInputElement }
+            ?.value
+            .assertIsEqualTo("Default")
+        screen.getByLabelText("Alt Badge Name")
+            .let { it as? HTMLInputElement }
+            ?.value
             .assertIsEqualTo("Alternate")
     }
 
-    private fun ShallowWrapper<dynamic>.assertHasStandardPairingRule() = also {
-        find<Any>("#pairing-rule")
-            .prop("value")
-            .unsafeCast<Array<String>>()
-            .joinToString("")
-            .assertIsEqualTo("${toValue(PairingRule.LongestTime)}")
-    }
-
-    private fun ShallowWrapper<dynamic>.assertHasDefaultBadgeName() = also {
-        find<Any>("#default-badge-name")
-            .prop("value")
-            .assertIsEqualTo("Default")
-    }
-
     @Test
-    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheParty() = setup(object {
+    fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheParty() = asyncSetup(object {
         val party = Party(
             PartyId("1"),
             name = "1",
@@ -60,49 +60,57 @@ class PartyConfigTest {
             email = "email-y",
             pairingRule = PairingRule.PreferDifferentBadge
         )
+        val actor = userEvent.setup()
         val stubDispatcher = StubDispatcher()
-        val wrapper = shallow(PartyConfig(party, stubDispatcher.func()))
-    }) exercise {
-        wrapper.find(partyConfigContent)
-            .shallow()
-            .find(ConfigForm)
-            .props()
-            .onSubmit()
+    }) {
+        render(
+            MemoryRouter.create {
+                Routes {
+                    Route {
+                        path = "/parties/"
+                        element = ReactNode("Parties!")
+                    }
+                    Route {
+                        path = "*"
+                        element = PartyConfig(party, stubDispatcher.func()).create()
+                    }
+                }
+            }
+        )
+    } exercise {
+        actor.click(screen.getByText("Save")).await()
         stubDispatcher.simulateSuccess<SavePartyCommand>()
     } verify {
-        stubDispatcher.commandsDispatched<SavePartyCommand>()
-            .assertIsEqualTo(listOf(SavePartyCommand(party)))
-        wrapper
-            .find(Navigate).props().to
-            .assertIsEqualTo("/parties/")
+        waitFor {
+            stubDispatcher.commandsDispatched<SavePartyCommand>()
+                .assertIsEqualTo(listOf(SavePartyCommand(party)))
+        }.await()
+        screen.getByText("Parties!")
+            .assertNotNull()
     }
 
     @Test
-    fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = setup(object {
+    fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = asyncSetup(object {
         val party = Party(PartyId(""))
         val stubDispatcher = StubDispatcher()
-        val wrapper = shallow(PartyConfig(party, stubDispatcher.func()))
-        val automatedPartyId = wrapper.find(partyConfigContent)
-            .shallow()
-            .find<Any>("#party-id")
-            .prop("value")
-    }) exercise {
-        wrapper.find(partyConfigContent)
-            .shallow()
-            .find(ConfigForm)
-            .props()
-            .onSubmit()
-    } verify {
-        stubDispatcher.commandsDispatched<SavePartyCommand>()
-            .first()
-            .party.id.value.run {
-                assertIsNotEqualTo("")
-                assertIsEqualTo(automatedPartyId)
+        val actor = userEvent.setup()
+    }) {
+        render(PartyConfig(party, stubDispatcher.func()).create(), json("wrapper" to MemoryRouter))
+    } exercise {
+        screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value
+            .also {
+                actor.click(screen.getByText("Save")).await()
             }
-        wrapper.find(partyConfigContent)
-            .shallow()
-            .find<Any>("#party-id")
-            .prop("value")
+    } verify { automatedPartyId ->
+        waitFor {
+            stubDispatcher.commandsDispatched<SavePartyCommand>()
+                .first()
+                .party.id.value.run {
+                    assertIsNotEqualTo("")
+                    assertIsEqualTo(automatedPartyId)
+                }
+        }
+        screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value
             .assertIsEqualTo(automatedPartyId)
     }
 }
