@@ -1,5 +1,5 @@
 [versions]
-jsmints = "1.7.2"
+jsmints = "1.7.3"
 # @pin
 kotlin = "1.7.20-RC"
 ktlint = "0.45.2"
@@ -27,7 +27,7 @@ org-jetbrains-kotlin-kotlin-stdlib-jdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jd
 org-jetbrains-kotlin-kotlin-stdlib-jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21"
 org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.7.20-Beta"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
-org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.0"
+org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.1"
 
 [plugins]
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.42.0"
