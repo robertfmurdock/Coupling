@@ -9,12 +9,12 @@ import com.zegreatrob.minreact.tmFC
 import csstype.Display
 import csstype.TextAlign
 import csstype.VerticalAlign
+import csstype.WhiteSpace
 import csstype.number
 import csstype.px
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
-import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 
 data class PlayerHeatmap(
@@ -31,12 +31,12 @@ val heatmapSideRow = ClassName {
 }
 
 val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
-    ReactHTML.div {
+    div {
         css {
             display = Display.inlineBlock
             verticalAlign = VerticalAlign.top
             marginLeft = 20.px
-            whiteSpace = csstype.WhiteSpace.nowrap
+            whiteSpace = WhiteSpace.nowrap
             flexShrink = number(0.0)
         }
         div {
