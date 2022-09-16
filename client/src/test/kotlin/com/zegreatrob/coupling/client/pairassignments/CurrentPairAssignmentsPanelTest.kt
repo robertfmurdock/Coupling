@@ -4,11 +4,10 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.StubDispatcher
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
+import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.components.CouplingButton
-import com.zegreatrob.coupling.components.couplingButton
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -19,75 +18,107 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
+import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
-import react.router.Navigate
+import kotlinx.coroutines.await
+import react.ReactNode
+import react.create
+import react.router.MemoryRouter
+import react.router.Route
+import react.router.Routes
 import kotlin.test.Test
 
 class CurrentPairAssignmentsPanelTest {
 
-    private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
-
     @Test
-    fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = setup(object {
+    fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = asyncSetup(object {
         val party = stubParty()
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()
         )
         val stubDispatcher = StubDispatcher()
-        val wrapper = shallow(
-            CurrentPairAssignmentsPanel(
-                party,
-                pairAssignments,
-                setPairAssignments = { },
-                allowSave = true,
-                dispatchFunc = stubDispatcher.func()
-            )
+        val actor = userEvent.setup()
+    }) {
+        render(
+            MemoryRouter.create {
+                Routes {
+                    Route {
+                        path = "/${party.id.value}/pairAssignments/current/"
+                        element = ReactNode("current pairs")
+                    }
+                    Route {
+                        path = "*"
+                        element = CurrentPairAssignmentsPanel(
+                            party,
+                            pairAssignments,
+                            setPairAssignments = { },
+                            allowSave = true,
+                            dispatchFunc = stubDispatcher.func()
+                        ).create()
+                    }
+                }
+            }
         )
-    }) exercise {
-        wrapper.find(couplingButton)
-            .map { it.dataprops<CouplingButton>() }
-            .find { it.className == styles["saveButton"] }
-            ?.onClick?.invoke()
+    } exercise {
+        actor.click(screen.getByText("Save!")).await()
         stubDispatcher.simulateSuccess<SavePairAssignmentsCommand>()
     } verify {
-        stubDispatcher.commandsDispatched<SavePairAssignmentsCommand>().size
-            .assertIsEqualTo(0)
-        wrapper.find(Navigate)
-            .props().to.assertIsEqualTo("/${party.id.value}/pairAssignments/current/")
+        waitFor {
+            stubDispatcher.commandsDispatched<SavePairAssignmentsCommand>().size
+                .assertIsEqualTo(0)
+            screen.getByText("current pairs")
+        }.await()
     }
 
     @Test
-    fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = setup(object {
+    fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = asyncSetup(object {
         val party = stubParty()
         val pairAssignments = stubPairAssignmentDoc()
         val stubDispatcher = StubDispatcher()
-        val wrapper = shallow(
-            CurrentPairAssignmentsPanel(
-                party,
-                pairAssignments,
-                setPairAssignments = { },
-                allowSave = true,
-                dispatchFunc = stubDispatcher.func()
-            )
+        val actor = userEvent.setup()
+    }) {
+        render(
+            DndProvider.create {
+                backend = HTML5Backend
+                MemoryRouter {
+                    Routes {
+                        Route {
+                            path = "/${party.id.value}/pairAssignments/current/"
+                            element = ReactNode("current pairs")
+                        }
+                        Route {
+                            path = "*"
+                            element = CurrentPairAssignmentsPanel(
+                                party,
+                                pairAssignments,
+                                setPairAssignments = { },
+                                allowSave = true,
+                                dispatchFunc = stubDispatcher.func()
+                            ).create()
+                        }
+                    }
+                }
+            }
         )
-    }) exercise {
-        wrapper.find(couplingButton)
-            .map { it.dataprops<CouplingButton>() }
-            .find { it.className == styles["deleteButton"] }
-            ?.onClick?.invoke()
-
+    } exercise {
+        actor.click(screen.getByText("Cancel")).await()
         stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
-        stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
-            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, pairAssignments.id)))
-        wrapper.find(Navigate)
-            .props().to.assertIsEqualTo("/${party.id.value}/pairAssignments/current/")
+        waitFor {
+            stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
+                .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, pairAssignments.id)))
+            screen.getByText("current pairs")
+        }.await()
     }
 
     @Test
