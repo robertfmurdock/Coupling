@@ -159,7 +159,7 @@ tasks {
         finalizedBy(uploadToS3)
     }
 
-    register<Copy>("additionalResources") {
+    val additionalResources by registering(Copy::class) {
         outputs.cacheIf { true }
         val javascriptConfig = configurations["runtimeClasspath"]
         dependsOn(javascriptConfig)
@@ -170,6 +170,9 @@ tasks {
                 .filter { it.isFile && it.name.endsWith(".klib") }
                 .map { zipTree(it).matching { include("com/**/*") } }
         })
+    }
+    named("processResources") {
+        dependsOn(additionalResources)
     }
 
     named("browserTest") {
