@@ -1,9 +1,9 @@
 [versions]
-jsmints = "1.7.4"
+jsmints = "1.7.6"
 # @pin
 kotlin = "1.7.20-RC"
 ktlint = "0.45.2"
-org-apache-logging-log4j = "2.18.0"
+org-apache-logging-log4j = "2.19.0"
 org-jlleitschuh-gradle-ktlint = "11.0.0"
 
 [libraries]
