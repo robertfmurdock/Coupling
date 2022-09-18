@@ -11,45 +11,38 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain = named("commonMain") {
-            dependencies {
-                implementation(project(":coupling-libraries:model"))
-                implementation(project(":coupling-libraries:action"))
-                implementation(project(":coupling-libraries:repository-core"))
-                implementation(project(":coupling-libraries:json"))
-                implementation("org.jetbrains.kotlin:kotlin-stdlib")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-                implementation("io.ktor:ktor-client-core")
-                implementation("io.ktor:ktor-serialization-kotlinx-json")
-                implementation("io.ktor:ktor-client-content-negotiation")
-                implementation("io.ktor:ktor-client-logging")
-                implementation("io.ktor:ktor-client-websockets")
-                implementation("com.soywiz.korlibs.klock:klock")
-            }
-        }
         named("commonTest") {
             resources.srcDirs(commonMain.map { it.resources.srcDirs })
-
-            dependencies {
-                implementation(project(":coupling-libraries:repository-validation"))
-                implementation(project(":coupling-libraries:test-logging"))
-                implementation(project(":coupling-libraries:stub-model"))
-                implementation("org.jetbrains.kotlin:kotlin-test")
-                implementation("com.benasher44:uuid")
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("com.zegreatrob.testmints:async")
-                implementation("com.zegreatrob.testmints:minassert")
-            }
-        }
-
-        named("jsMain") {
-            dependencies {
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-            }
         }
     }
+}
+
+dependencies {
+    "commonMainImplementation"(project(":coupling-libraries:model"))
+    "commonMainImplementation"(project(":coupling-libraries:action"))
+    "commonMainImplementation"(project(":coupling-libraries:repository-core"))
+    "commonMainImplementation"(project(":coupling-libraries:json"))
+    "commonMainImplementation"("org.jetbrains.kotlin:kotlin-stdlib")
+    "commonMainImplementation"("org.jetbrains.kotlin:kotlin-stdlib-common")
+    "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    "commonMainImplementation"("io.ktor:ktor-client-core")
+    "commonMainImplementation"("io.ktor:ktor-serialization-kotlinx-json")
+    "commonMainImplementation"("io.ktor:ktor-client-content-negotiation")
+    "commonMainImplementation"("io.ktor:ktor-client-logging")
+    "commonMainImplementation"("io.ktor:ktor-client-websockets")
+    "commonMainImplementation"("com.soywiz.korlibs.klock:klock")
+
+    "commonTestImplementation"(project(":coupling-libraries:repository-validation"))
+    "commonTestImplementation"(project(":coupling-libraries:test-logging"))
+    "commonTestImplementation"(project(":coupling-libraries:stub-model"))
+    "commonTestImplementation"("org.jetbrains.kotlin:kotlin-test")
+    "commonTestImplementation"("com.benasher44:uuid")
+    "commonTestImplementation"("com.zegreatrob.testmints:standard")
+    "commonTestImplementation"("com.zegreatrob.testmints:async")
+    "commonTestImplementation"("com.zegreatrob.testmints:minassert")
+
+    "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")
 }
 
 tasks {
