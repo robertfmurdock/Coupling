@@ -112,7 +112,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouPrepareNewPairs() = currentPairAssignmentPageSetup {
             goTo(party.id)
         } exercise {
-            newPairsButton.click()
+            getNewPairsButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/prepare/"))

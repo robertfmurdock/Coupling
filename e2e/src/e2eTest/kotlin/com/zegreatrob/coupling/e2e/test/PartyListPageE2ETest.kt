@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.e2e.test.PartyListPage.newPartyButton
+import com.zegreatrob.coupling.e2e.test.PartyListPage.getNewPartyButton
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertContains
@@ -45,7 +45,7 @@ class PartyListPageE2ETest {
 
     @Test
     fun canNavigateToTheNewPartyPage() = twoPartySetup() exercise {
-        newPartyButton.click()
+        getNewPartyButton().click()
         PartyConfigPage.waitForPage()
     } verify {
         WebdriverBrowser.currentUrl().pathname

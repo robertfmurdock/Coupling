@@ -3,13 +3,14 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
 import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object PairAssignmentsPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/PairAssignments")
-    val newPairsButton by getting()
+    suspend fun getNewPairsButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Prepare to spin!"))
     suspend fun goTo(id: PartyId) {
         WebdriverBrowser.setLocation("/${id.value}/pairAssignments/current/")
         waitForPage()
@@ -28,15 +29,15 @@ object ConfigHeader : BrowserSyntax {
 
 object CurrentPairAssignmentsPanel : StyleSyntax {
     override val styles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
-    val saveButton by getting()
+    suspend fun getSaveButton(): WebdriverElement = TestingLibraryBrowser.getByRole("button", RoleOptions("Save!"))
+    suspend fun querySaveButton(): WebdriverElement = TestingLibraryBrowser.queryByRole("button", RoleOptions("Save!"))
 
     suspend fun waitForSaveButtonToNotBeDisplayed() {
         element().waitToExist()
         WebdriverBrowser.waitUntil(
             {
-
                 try {
-                    val b = !saveButton.isPresent()
+                    val b = !querySaveButton().isPresent()
                     b
                 } catch (e: Error) {
                     console.log("error $e")

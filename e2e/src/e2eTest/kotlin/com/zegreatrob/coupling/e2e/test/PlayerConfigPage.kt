@@ -8,6 +8,8 @@ import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
+import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
+import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object PlayerConfigPage : StyleSyntax {
     override val styles = loadStyles("player/PlayerConfig")
@@ -57,5 +59,5 @@ object PlayerCard : BrowserSyntax {
 object PlayerRoster : StyleSyntax {
     override val styles = loadStyles("player/PlayerRoster")
     val playerElements = styles.element.all(PlayerCard.playerElements.selector)
-    suspend fun getAddPlayerButton() = getting("addPlayerButton")
+    suspend fun getAddPlayerButton() = TestingLibraryBrowser.queryByRole("button", RoleOptions("Add a new player!"))
 }

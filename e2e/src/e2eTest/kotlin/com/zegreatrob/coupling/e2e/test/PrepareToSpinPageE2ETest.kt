@@ -2,7 +2,8 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairElements
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.e2e.test.CurrentPairAssignmentsPanel.saveButton
+import com.zegreatrob.coupling.e2e.test.CurrentPairAssignmentsPanel.getSaveButton
+import com.zegreatrob.coupling.e2e.test.CurrentPairAssignmentsPanel.querySaveButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSelectAllButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSelectNoneButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSpinButton
@@ -32,6 +33,7 @@ class PrepareToSpinPageE2ETest {
 
             FullPartyData(players, listOf(pin), party, sdk)
         }).extend(sharedTeardown = {
+            val saveButton = querySaveButton()
             if (saveButton.isDisplayed()) {
                 saveButton.click()
             }
@@ -106,7 +108,7 @@ class PrepareToSpinPageE2ETest {
         PlayerRoster.playerElements.count()
             .assertIsEqualTo(3)
 
-        saveButton.click()
+        getSaveButton().click()
         CurrentPairAssignmentsPanel.waitForSaveButtonToNotBeDisplayed()
 
         assignedPairElements.count()
