@@ -10,7 +10,7 @@ class AboutE2ETest {
     }).exercise {
         page.goTo()
     } verify {
-        page.element().text().apply {
+        page.header().text().apply {
             contains("About This App")
                 .assertIsEqualTo(true, "About page did not contain title. See $it")
         }

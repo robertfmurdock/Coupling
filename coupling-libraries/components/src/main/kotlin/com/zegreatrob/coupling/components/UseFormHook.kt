@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.components
 
 import react.ChildrenBuilder
+import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.html.InputType
 import react.dom.html.ReactHTML.input
@@ -47,6 +48,7 @@ fun ChildrenBuilder.configInput(
 ) {
     label { htmlFor = id; +labelText }
     input {
+        this.ariaLabel = labelText
         this.name = name
         this.id = id
         this.type = type

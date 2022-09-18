@@ -1,11 +1,13 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
-object AboutPage : StyleSyntax {
-    override val styles = loadStyles("About")
+object AboutPage {
     suspend fun goTo() {
         WebdriverBrowser.setLocation("about")
-        element().waitToExist()
+        header().waitToExist()
     }
+
+    suspend fun header() = TestingLibraryBrowser.findByText("About This App")
 }

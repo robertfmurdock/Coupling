@@ -1,22 +1,24 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
+import com.zegreatrob.wrapper.wdio.testing.library.ByRole
+import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
+import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
-object PartyConfigPage : StyleSyntax {
+object PartyConfigPage : StyleSyntax, ByRole by TestingLibraryBrowser {
     override val styles = loadStyles("party/PartyConfig")
 
-    fun getPartyNameInput() = WebdriverElement(By.id("party-name"))
-    fun getPartyEmailInput() = WebdriverElement(By.id("party-email"))
-    fun getPartyIdInput() = WebdriverElement(By.id("party-id"))
-    fun getCallSignCheckbox() = WebdriverElement(By.id("call-sign-checkbox"))
-    fun getBadgeCheckbox() = WebdriverElement(By.id("badge-checkbox"))
-    fun getDefaultBadgeNameInput() = WebdriverElement(By.id("default-badge-name"))
-    fun getAltBadgeNameInput() = WebdriverElement(By.id("alt-badge-name"))
-    fun getDifferentBadgesOption() = WebdriverElement("#pairing-rule option[label=\"Prefer Different Badges (Beta)\"]")
-    fun getCheckedOption() = WebdriverElement("#pairing-rule option:checked")
+    suspend fun getPartyNameInput() = getByRole("combobox", RoleOptions(name = "Name"))
+    suspend fun getPartyEmailInput() = getByRole("combobox", RoleOptions(name = "Email"))
+    suspend fun getPartyIdInput() = getByRole("combobox", RoleOptions(name = "Unique Id"))
+    suspend fun getCallSignCheckbox() = getByRole("checkbox", RoleOptions(name = "Enable Call Signs"))
+    suspend fun getBadgeCheckbox() = getByRole("checkbox", RoleOptions(name = "Enable Badges"))
+    suspend fun getDefaultBadgeNameInput() = getByRole("combobox", RoleOptions(name = "Default Badge Name"))
+    suspend fun getAltBadgeNameInput() = getByRole("combobox", RoleOptions(name = "Alt Badge Name"))
+    suspend fun getDifferentBadgesOption() = getByRole("option", RoleOptions(name = "Prefer Different Badges (Beta)"))
+    suspend fun getCheckedOption() = WebdriverElement("#pairing-rule option:checked")
 
     suspend fun goTo(partyId: PartyId) {
         WebdriverBrowser.setLocation("/${partyId.value}/edit/")

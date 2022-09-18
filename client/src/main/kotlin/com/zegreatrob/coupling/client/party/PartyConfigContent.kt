@@ -19,6 +19,7 @@ import csstype.number
 import emotion.react.css
 import org.w3c.dom.HTMLSelectElement
 import react.ChildrenBuilder
+import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.events.ChangeEventHandler
 import react.dom.html.InputType
@@ -164,6 +165,7 @@ private fun ChildrenBuilder.pairingRuleSelect(party: Party, onChange: (ChangeEve
                 option {
                     key = "${PairingRule.toValue(rule)}"
                     value = "${PairingRule.toValue(rule)}"
+                    ariaLabel = description
                     label = description
                 }
             }
