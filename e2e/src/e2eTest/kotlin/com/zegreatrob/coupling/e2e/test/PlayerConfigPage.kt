@@ -4,21 +4,20 @@ import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
-import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
+import com.zegreatrob.wrapper.wdio.testing.library.ByRole
 import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
-object PlayerConfigPage : StyleSyntax {
+object PlayerConfigPage : StyleSyntax, ByRole by TestingLibraryBrowser {
     override val styles = loadStyles("player/PlayerConfig")
 
-    fun playerNameTextField() = WebdriverElement(By.id("player-name"))
-    fun defaultBadgeOption() = WebdriverElement(By.id("default-badge-option"))
-    fun altBadgeOption() = WebdriverElement(By.id("alt-badge-option"))
-    fun adjectiveTextInput() = WebdriverElement(By.id("adjective-input"))
-    fun nounTextInput() = WebdriverElement(By.id("noun-input"))
+    suspend fun playerNameTextField() = getByRole("combobox", RoleOptions(name = "Name"))
+    suspend fun defaultBadgeOption() = queryByRole("option", RoleOptions(name = "Default Badge Option"))
+    suspend fun altBadgeOption() = queryByRole("option", RoleOptions(name = "Alt Badge Option"))
+    suspend fun adjectiveTextInput() = queryByRole("combobox", RoleOptions(name = "Call-Sign Adjective"))
+    suspend fun nounTextInput() = queryByRole("combobox", RoleOptions(name = "Call-Sign Noun"))
 
     suspend fun goTo(partyId: PartyId, playerId: String?) {
         WebdriverBrowser.setLocation("/${partyId.value}/player/$playerId")

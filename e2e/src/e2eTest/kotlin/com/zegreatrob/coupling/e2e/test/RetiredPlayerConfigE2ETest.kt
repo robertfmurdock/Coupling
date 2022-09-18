@@ -20,7 +20,7 @@ class RetiredPlayerConfigE2ETest {
     } exercise {
         RetiredPlayerConfig.goTo(party.id, player.id)
     } verify {
-        RetiredPlayerConfig.playerNameTextField.attribute("value")
+        RetiredPlayerConfig.getPlayerNameTextField().attribute("value")
             .assertIsEqualTo(player.name)
     }
 }

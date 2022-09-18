@@ -29,6 +29,7 @@ import csstype.number
 import csstype.px
 import emotion.react.css
 import react.ChildrenBuilder
+import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.html.InputType
 import react.dom.html.ReactHTML.datalist
@@ -220,6 +221,7 @@ private fun ChildrenBuilder.altBadgeOption(party: Party) = option {
     key = "${Badge.Alternate.value}"
     value = "${Badge.Alternate.value}"
     label = party.alternateBadgeName
+    ariaLabel = "Alt Badge Option"
 }
 
 private fun ChildrenBuilder.defaultBadgeOption(party: Party) = option {
@@ -227,4 +229,5 @@ private fun ChildrenBuilder.defaultBadgeOption(party: Party) = option {
     key = "${Badge.Default.value}"
     value = "${Badge.Default.value}"
     label = party.defaultBadgeName
+    ariaLabel = "Default Badge Option"
 }

@@ -6,7 +6,7 @@ import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 
 object RetiredPlayerConfig : BrowserSyntax {
 
-    val playerNameTextField get() = PlayerConfigPage.playerNameTextField()
+    suspend fun getPlayerNameTextField() = PlayerConfigPage.playerNameTextField()
 
     suspend fun goTo(partyId: PartyId, id: String?) {
         WebdriverBrowser.setLocation("/${partyId.value}/retired-player/$id")

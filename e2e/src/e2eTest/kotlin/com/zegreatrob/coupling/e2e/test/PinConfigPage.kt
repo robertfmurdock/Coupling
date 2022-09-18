@@ -4,15 +4,17 @@ import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
-import com.zegreatrob.wrapper.wdio.WebdriverElement
+import com.zegreatrob.wrapper.wdio.testing.library.ByRole
+import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
+import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
-object PinConfigPage : StyleSyntax {
+object PinConfigPage : StyleSyntax, ByRole by TestingLibraryBrowser {
     override val styles = loadStyles("pin/PinConfig")
 
     private val pinBag by getting()
 
-    fun getNameTextField() = WebdriverElement(By.id("pin-name"))
-    fun getIconTextField() = WebdriverElement(By.id("pin-icon"))
+    suspend fun getNameTextField() = getByRole("combobox", RoleOptions(name = "Name"))
+    suspend fun getIconTextField() = getByRole("combobox", RoleOptions(name = "Icon"))
 
     suspend fun pinBagPinNames(): List<String> {
         pinBag.waitToExist()
@@ -31,7 +33,10 @@ object PinConfigPage : StyleSyntax {
     }
 
     private suspend fun waitForLoad() {
-        WebdriverBrowser.waitUntil({ element().isPresent() }, waitToBePresentDuration, "PinConfigPage.waitForLoad")
+        WebdriverBrowser.waitUntil({
+            TestingLibraryBrowser.queryByText("Pin Configuration")
+                .isPresent()
+        }, waitToBePresentDuration, "PinConfigPage.waitForLoad")
     }
 }
 

@@ -7,9 +7,7 @@ import com.zegreatrob.wrapper.wdio.testing.library.ByRole
 import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
-object PartyConfigPage : StyleSyntax, ByRole by TestingLibraryBrowser {
-    override val styles = loadStyles("party/PartyConfig")
-
+object PartyConfigPage : ByRole by TestingLibraryBrowser {
     suspend fun getPartyNameInput() = getByRole("combobox", RoleOptions(name = "Name"))
     suspend fun getPartyEmailInput() = getByRole("combobox", RoleOptions(name = "Email"))
     suspend fun getPartyIdInput() = getByRole("combobox", RoleOptions(name = "Unique Id"))
@@ -31,6 +29,9 @@ object PartyConfigPage : StyleSyntax, ByRole by TestingLibraryBrowser {
     }
 
     suspend fun waitForPage() {
-        element().waitToExist()
+        WebdriverBrowser.waitUntil(
+            { TestingLibraryBrowser.getByText("Party Configuration").isDisplayed() },
+            timeoutMessage = "never arrived at party config"
+        )
     }
 }
