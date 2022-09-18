@@ -1,24 +1,18 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.e2e.external.setupBrowser
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
-import com.zegreatrob.wrapper.wdio.browser
-import kotlinx.coroutines.await
-
-private val testingBrowser = setupBrowser(browser)
+import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
+import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object PrepareToSpinPage : BrowserSyntax {
 
-    private val prompt
-        get() = WebdriverElement(finder = {
-            testingBrowser.findByText("Please select players to spin.").await()
-        })
-    val spinButton get() = WebdriverElement(finder = { testingBrowser.findByText("Spin!").await() })
-    val selectAllButton get() = WebdriverElement(finder = { testingBrowser.findByText("All in!").await() })
-    val selectNoneButton get() = WebdriverElement(finder = { testingBrowser.findByText("All out!").await() })
+    private suspend fun getPrompt() = TestingLibraryBrowser.findByText("Please select players to spin.")
+    suspend fun getSpinButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Spin!"))
+    suspend fun getSelectAllButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("All in!"))
+    suspend fun getSelectNoneButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("All out!"))
 
     private val selectedPins = WebdriverElement("[data-selected-pins]")
 
@@ -30,6 +24,6 @@ object PrepareToSpinPage : BrowserSyntax {
     }
 
     suspend fun waitForPage() {
-        WebdriverBrowser.waitUntil({ prompt.isDisplayed() }, timeoutMessage = "never arrived at prepare to spin")
+        WebdriverBrowser.waitUntil({ getPrompt().isDisplayed() }, timeoutMessage = "never arrived at prepare to spin")
     }
 }

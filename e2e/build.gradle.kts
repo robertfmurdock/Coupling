@@ -74,6 +74,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("com.zegreatrob.testmints:async")
                 implementation("com.zegreatrob.jsmints:wdio")
+                implementation("com.zegreatrob.jsmints:wdio-testing-library")
 
                 implementation(npmConstrained("@log4js-node/log4js-api"))
                 implementation(npmConstrained("@rpii/wdio-html-reporter"))

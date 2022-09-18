@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairElements
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.CurrentPairAssignmentsPanel.saveButton
-import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.selectAllButton
-import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.selectNoneButton
-import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.spinButton
+import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSelectAllButton
+import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSelectNoneButton
+import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSpinButton
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
@@ -61,9 +61,9 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun spinningWithAllPlayersOnWillGetAllPlayersBack() = pinPartySetup {
         PrepareToSpinPage.goTo(party.id)
-        selectAllButton.click()
+        getSelectAllButton().click()
     } exercise {
-        spinButton.click()
+        getSpinButton().click()
         PairAssignmentsPage.waitForPage()
     } verify {
         assignedPairElements.count()
@@ -73,9 +73,9 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun spinningWillAlertOnExitIfNotSavedAndIfAcceptedPairsAreNotSaved() = pinPartySetup {
         PrepareToSpinPage.goTo(party.id)
-        selectNoneButton.click()
+        getSelectNoneButton().click()
         PlayerCard.playerElements.get(0).element(PlayerCard.iconLocator).click()
-        spinButton.click()
+        getSpinButton().click()
         PairAssignmentsPage.waitForPage()
     } exercise {
         WebdriverBrowser.setLocation("welcome")
@@ -93,12 +93,12 @@ class PrepareToSpinPageE2ETest {
     fun whenTwoPlayersAreEnabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinPartySetup {
         PrepareToSpinPage.goTo(party.id)
         with(PlayerCard) {
-            selectNoneButton.click()
+            getSelectNoneButton().click()
             playerElements.get(1).element(iconLocator).click()
             playerElements.get(4).element(iconLocator).click()
         }
     } exercise {
-        spinButton.click()
+        getSpinButton().click()
         PairAssignmentsPage.waitForPage()
     } verify {
         assignedPairElements.count()
@@ -121,7 +121,7 @@ class PrepareToSpinPageE2ETest {
         PrepareToSpinPage.selectedPinElements.count()
             .assertIsEqualTo(1)
     } exercise {
-        spinButton.click()
+        getSpinButton().click()
         PairAssignmentsPage.waitForPage()
     } verify {
         PinButton.pinElements.count()
@@ -133,7 +133,7 @@ class PrepareToSpinPageE2ETest {
         PrepareToSpinPage.goTo(party.id)
         PrepareToSpinPage.selectedPinElements.get(0).click()
     } exercise {
-        spinButton.click()
+        getSpinButton().click()
         PairAssignmentsPage.waitForPage()
     } verify {
         PinButton.pinElements.count()

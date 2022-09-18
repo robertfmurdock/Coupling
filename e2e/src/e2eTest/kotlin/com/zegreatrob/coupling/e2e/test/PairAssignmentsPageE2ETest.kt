@@ -4,9 +4,9 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairCallSigns
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairElements
-import com.zegreatrob.coupling.e2e.test.ConfigHeader.retiredPlayersButton
-import com.zegreatrob.coupling.e2e.test.ConfigHeader.statisticsButton
-import com.zegreatrob.coupling.e2e.test.ConfigHeader.viewHistoryButton
+import com.zegreatrob.coupling.e2e.test.ConfigHeader.getRetiredPlayersButton
+import com.zegreatrob.coupling.e2e.test.ConfigHeader.getStatisticsButton
+import com.zegreatrob.coupling.e2e.test.ConfigHeader.getViewHistoryButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -102,7 +102,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouViewHistory() = currentPairAssignmentPageSetup {
             goTo(party.id)
         } exercise {
-            viewHistoryButton.click()
+            getViewHistoryButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/history/"))
@@ -122,7 +122,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouGoToTheStatsPage() = currentPairAssignmentPageSetup {
             goTo(party.id)
         } exercise {
-            statisticsButton.click()
+            getStatisticsButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/statistics"))
@@ -132,7 +132,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouGoToTheRetiredPlayersPage() = currentPairAssignmentPageSetup {
             goTo(party.id)
         } exercise {
-            retiredPlayersButton.click()
+            getRetiredPlayersButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/players/retired"))

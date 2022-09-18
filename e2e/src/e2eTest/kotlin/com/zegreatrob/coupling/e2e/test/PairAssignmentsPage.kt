@@ -1,13 +1,11 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.e2e.external.setupBrowser
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
-import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
-import com.zegreatrob.wrapper.wdio.browser
-import kotlinx.coroutines.await
+import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
+import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object PairAssignmentsPage : StyleSyntax {
     override val styles = loadStyles("pairassignments/PairAssignments")
@@ -16,17 +14,16 @@ object PairAssignmentsPage : StyleSyntax {
         WebdriverBrowser.setLocation("/${id.value}/pairAssignments/current/")
         waitForPage()
     }
+
     suspend fun waitForPage() {
         element().waitToExist()
     }
 }
 
-private val testingBrowser = setupBrowser(browser)
-
 object ConfigHeader : BrowserSyntax {
-    val viewHistoryButton get() = WebdriverElement(finder = { testingBrowser.findByText("History!").await() })
-    val statisticsButton get() = WebdriverElement(finder = { testingBrowser.findByText("Statistics!").await() })
-    val retiredPlayersButton get() = WebdriverElement(finder = { testingBrowser.findByText("Retirees!").await() })
+    suspend fun getViewHistoryButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("History!"))
+    suspend fun getStatisticsButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Statistics!"))
+    suspend fun getRetiredPlayersButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Retirees!"))
 }
 
 object CurrentPairAssignmentsPanel : StyleSyntax {

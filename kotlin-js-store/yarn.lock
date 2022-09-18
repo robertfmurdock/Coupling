@@ -2545,7 +2545,7 @@
     csv-stringify "^6.0.4"
     strip-ansi "^6.0.0"
 
-"@wdio/cli@7.24.0", "@wdio/cli@^7.24.0":
+"@wdio/cli@7.24.0":
   version "7.24.0"
   resolved "https://registry.yarnpkg.com/@wdio/cli/-/cli-7.24.0.tgz#c2049b64396b4b6f7b7a4f77f3cffd346a870192"
   integrity sha512-eP1f6Bw8glrMDMVzeLfb1PU3COSUn7PnMeJE210nuVarBBnfwKIJmu4WrYoYyImOThnmuiYMGpI8pbyBfm23nA==
@@ -2625,7 +2625,7 @@
     junit-report-builder "^3.0.0"
     validator "^13.0.0"
 
-"@wdio/local-runner@7.24.0", "@wdio/local-runner@^7.24.0":
+"@wdio/local-runner@7.24.0":
   version "7.24.0"
   resolved "https://registry.yarnpkg.com/@wdio/local-runner/-/local-runner-7.24.0.tgz#f6903b18ee816ce2a9f0a082ea64e56d6b4c0408"
   integrity sha512-woNmoNNDTouPuom9Hl2l/7J9ZMAxb6cRVI8B0SEJAV32tDcMfm773RQB9qxtpBxZHQf43LHjcq75BWB/zRrI5g==
