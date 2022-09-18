@@ -7,9 +7,9 @@ class WelcomeE2ETest {
     @Test
     fun whenTheEnterButtonIsPressedWillRedirectToAuth0() = e2eSetup(WelcomePage) {
         goTo()
-        enterButton.click()
+        getEnterButton().click()
     } exercise {
-        loginButton.click()
+        getLoginButton().click()
     } verifyAnd {
         waitToArriveAtUrl("https://zegreatrob.us.auth0.com")
     } teardown {

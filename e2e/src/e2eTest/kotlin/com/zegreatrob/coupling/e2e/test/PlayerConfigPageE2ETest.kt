@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
-import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
@@ -89,7 +89,7 @@ class PlayerConfigPageE2ETest {
             with(page) {
                 goTo(party.id, player.id)
                 playerNameTextField().setValue(newName)
-                saveButton.click()
+                getSaveButton().click()
                 waitForSaveToComplete(newName)
             }
         } exercise {
@@ -112,7 +112,7 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().clearSetValue(" ")
             PlayerConfigPage.playerNameTextField().clearSetValue("")
-            saveButton.click()
+            getSaveButton().click()
             PlayerConfigPage.waitForSaveToComplete("Unknown")
             PlayerConfigPage.waitForPage()
         } exercise {
@@ -135,7 +135,7 @@ class PlayerConfigPageE2ETest {
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
-            deleteButton.click()
+            getDeleteButton().click()
             WebdriverBrowser.acceptAlert()
         } verify {
             page.waitToArriveAt(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
@@ -245,7 +245,7 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
             PlayerConfigPage.altBadgeOption().click()
-            saveButton.click()
+            getSaveButton().click()
             PlayerConfigPage.waitForSaveToComplete(player.name)
         } verify {
             PlayerConfigPage.goTo(party.id, player.id)
@@ -283,7 +283,7 @@ class PlayerConfigPageE2ETest {
         } exercise {
             PlayerConfigPage.adjectiveTextInput().clearSetValue("Superior")
             PlayerConfigPage.nounTextInput().clearSetValue("Spider-Man")
-            saveButton.click()
+            getSaveButton().click()
             PlayerConfigPage.waitForSaveToComplete(player.name)
         } verify {
             PlayerConfigPage.goTo(party.id, player.id)

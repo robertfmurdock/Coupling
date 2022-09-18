@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
-import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -35,7 +35,7 @@ class PartyConfigPageE2ETest {
                 getDifferentBadgesOption().click()
             }
         } exercise {
-            saveButton.click()
+            getSaveButton().click()
             PartyListPage.waitForPage()
             PartyConfigPage.goTo(party.id)
         } verify {
@@ -79,7 +79,7 @@ class PartyConfigPageE2ETest {
             sdk.partyRepository.save(party)
             PartyConfigPage.goTo(party.id)
         } exercise {
-            deleteButton.click()
+            getDeleteButton().click()
             PartyListPage.waitForPage()
         } verify {
             PartyListPage.partyCardElements

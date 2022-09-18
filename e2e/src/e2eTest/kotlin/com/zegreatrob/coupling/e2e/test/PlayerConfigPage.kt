@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.e2e.external.setupBrowser
-import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.PartyId
@@ -9,7 +8,6 @@ import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
-import com.zegreatrob.wrapper.wdio.browser
 
 object PlayerConfigPage : StyleSyntax {
     override val styles = loadStyles("player/PlayerConfig")
@@ -36,7 +34,7 @@ object PlayerConfigPage : StyleSyntax {
 
     suspend fun waitForSaveToComplete(expectedName: String?) {
         WebdriverBrowser.waitUntil(
-            { saveButton.isEnabled() },
+            { getSaveButton().isEnabled() },
             waitToBePresentDuration,
             "PlayerConfig.waitForSaveButtonEnable"
         )
@@ -49,8 +47,6 @@ object PlayerConfigPage : StyleSyntax {
         }, 100, "PlayerConfig.waitForSave.nameIncluded")
     }
 }
-
-private val testingBrowser = setupBrowser(browser)
 
 object PlayerCard : BrowserSyntax {
     val playerLocator = "[data-player-id]"
