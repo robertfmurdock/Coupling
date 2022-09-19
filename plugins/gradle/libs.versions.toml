@@ -1,5 +1,5 @@
 [versions]
-jsmints = "1.7.15"
+jsmints = "1.8.3"
 # @pin
 kotlin = "1.7.20-RC"
 ktlint = "0.45.2"
