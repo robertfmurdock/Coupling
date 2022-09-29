@@ -19,7 +19,7 @@ org-jetbrains-kotlin-kotlin-compiler-embeddable = { module = "org.jetbrains.kotl
 org-jetbrains-kotlin-kotlin-gradle-plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20-RC"
 org-jetbrains-kotlin-kotlin-klib-commonizer-embeddable = { module = "org.jetbrains.kotlin:kotlin-klib-commonizer-embeddable", version.ref = "kotlin" }
 org-jetbrains-kotlin-kotlin-reflect = "org.jetbrains.kotlin:kotlin-reflect:1.6.21"
-org-jetbrains-kotlin-kotlin-sam-with-receiver = "org.jetbrains.kotlin:kotlin-sam-with-receiver:1.6.21"
+org-jetbrains-kotlin-kotlin-sam-with-receiver = "org.jetbrains.kotlin:kotlin-sam-with-receiver:1.7.20"
 org-jetbrains-kotlin-kotlin-scripting-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable", version.ref = "kotlin" }
 org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 org-jetbrains-kotlin-kotlin-stdlib-common = "org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21"
@@ -27,7 +27,7 @@ org-jetbrains-kotlin-kotlin-stdlib-jdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jd
 org-jetbrains-kotlin-kotlin-stdlib-jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21"
 org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.7.20-Beta"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
-org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.2"
+org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.3"
 
 [plugins]
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.42.0"
@@ -44,7 +44,7 @@ kotlin-platform-android = "kotlin-platform-android:1.7.20-RC"
 kotlin-platform-common = "kotlin-platform-common:1.7.20-RC"
 kotlin-platform-js = "kotlin-platform-js:1.7.20-RC"
 kotlin-platform-jvm = "kotlin-platform-jvm:1.7.20-RC"
-kotlin-sam-with-receiver = "kotlin-sam-with-receiver:1.6.21"
+kotlin-sam-with-receiver = "kotlin-sam-with-receiver:1.7.20"
 kotlin-scripting = "kotlin-scripting:1.7.20-RC"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.6.1"
 org-ajoberstar-grgit = "org.ajoberstar.grgit:5.0.0"
@@ -63,7 +63,7 @@ org-jetbrains-kotlin-platform-common = "org.jetbrains.kotlin.platform.common:1.7
 org-jetbrains-kotlin-platform-js = "org.jetbrains.kotlin.platform.js:1.7.20-RC"
 org-jetbrains-kotlin-platform-jvm = "org.jetbrains.kotlin.platform.jvm:1.7.20-RC"
 org-jetbrains-kotlin-plugin-parcelize = "org.jetbrains.kotlin.plugin.parcelize:1.7.20-RC"
-org-jetbrains-kotlin-plugin-sam-with-receiver = "org.jetbrains.kotlin.plugin.sam.with.receiver:1.6.21"
+org-jetbrains-kotlin-plugin-sam-with-receiver = "org.jetbrains.kotlin.plugin.sam.with.receiver:1.7.20"
 org-jetbrains-kotlin-plugin-scripting = "org.jetbrains.kotlin.plugin.scripting:1.7.20-RC"
 org-jetbrains-kotlin-plugin-serialization = "org.jetbrains.kotlin.plugin.serialization:1.7.10"
 org-jlleitschuh-gradle-ktlint = "org.jlleitschuh.gradle.ktlint:11.0.0"
