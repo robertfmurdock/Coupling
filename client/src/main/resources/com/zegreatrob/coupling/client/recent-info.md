@@ -1,15 +1,17 @@
 # News
 
-## February 7, 2022
+## Sept 29, 2022
 
-Yo yo yo. Yo.
+Hey ya. Hey-ey ey ya.
 
-I just made a small change, after many long years, to Coupling.
+Couple tweaks recently - it came to my attention that the microsoft social integration wasn't working anymore, so I checked up on it and it appears that the secret expired in June.
 
-We're going to try the word "party" instead of the word "tribe" for the moment. See how it feels. If it vibes with everyone well enough, we'll make the change permanent (at the moment, it is merely surface-level).
+I'm so sorry if this affected you! I've taken a pass at restoring it to some extent, but it looks like some of the Microsoft tenancy rules have changed, which historically is _annoying_.
 
-So if you have feelings about it, let me know! Open an issue on [github](https://www.github.com/robertfmurdock/coupling), or send me a note.
+As an alternative, I've swapped over to "passwordless" authentication from the previous username/password login. If you can't get access to something because of the Microsoft issues, you should be able to get in using the same email address (as long as you still have access to the email, natch). 
 
-Keep on keeping on,
+Can't emphasize enough, if you have a problem, clue me in! Open an issue on [github](https://www.github.com/robertfmurdock/coupling), or send me a note.
+
+Stay cooler than cool,
 
 - RoB
