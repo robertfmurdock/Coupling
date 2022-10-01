@@ -44,8 +44,9 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
                             TeamStatistics(
                                 spinsUntilFullRotation = spinsUntilFullRotation,
                                 activePlayerCount = players.size,
-                                medianSpinDuration = medianSpinDuration?.let { formatDistance(it.millisecondsInt, 0) }
-                                    ?: ""
+                                medianSpinDuration = medianSpinDuration?.let {
+                                    formatDistance(medianSpinDuration.millisecondsInt, 0)
+                                } ?: ""
                             )
                         )
                     }

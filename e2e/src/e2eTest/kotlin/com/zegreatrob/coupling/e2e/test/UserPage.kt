@@ -1,12 +1,11 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
-object UserPage : StyleSyntax {
-    override val styles = loadStyles("user/UserConfig")
-
+object UserPage {
     suspend fun goTo() {
         WebdriverBrowser.setLocation("/user")
-        element().waitToExist()
+        WebdriverBrowser.waitUntil({ TestingLibraryBrowser.getByText("User Config").isDisplayed() })
     }
 }
