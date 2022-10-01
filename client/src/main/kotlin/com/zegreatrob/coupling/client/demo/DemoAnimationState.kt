@@ -5,6 +5,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.pin.pinConfigContentClassName
 import com.zegreatrob.coupling.client.player.playerConfigContentClassName
 import com.zegreatrob.coupling.components.spin.playerSelectorClass
 import com.zegreatrob.coupling.components.svgPath
@@ -163,7 +164,7 @@ In this way, your entire team can operate Coupling.
 }
 
 data class AddPin(val party: Party, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState() {
-    override val descriptionSelector = ".${useStyles("pin/PinConfig").className} li:first-of-type"
+    override val descriptionSelector = ".$pinConfigContentClassName li:first-of-type"
     override val description = """
 ## And now... a pin! 
 

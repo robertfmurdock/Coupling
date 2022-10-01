@@ -2,8 +2,6 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.Editor
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.components.ConfigForm
 import com.zegreatrob.coupling.components.ConfigHeader
@@ -45,11 +43,11 @@ data class PinConfigContent(
     val onRemove: (() -> Unit)?
 ) : DataPropsBind<PinConfigContent>(pinConfigContent)
 
-private val pinConfigStyles = useStyles("pin/PinConfig")
+val pinConfigContentClassName = ClassName("pin-config-content")
 
 val pinConfigContent = tmFC<PinConfigContent> { (party, pin, pinList, onChange, onSubmit, onRemove) ->
     ConfigFrame {
-        className = pinConfigStyles.className
+        className = pinConfigContentClassName
         span {
             css {
                 display = Display.inlineBlock
@@ -80,12 +78,11 @@ val pinConfigContent = tmFC<PinConfigContent> { (party, pin, pinList, onChange, 
                 add(PinButton(pin, PinButtonScale.Large, showTooltip = false))
             }
         }
-        pinBag(party, pinList, pinConfigStyles["pinBag"])
+        pinBag(party, pinList)
     }
 }
 
-private fun ChildrenBuilder.pinBag(party: Party, pinList: List<Pin>, className: ClassName) = div {
-    this.className = className
+private fun ChildrenBuilder.pinBag(party: Party, pinList: List<Pin>) = div {
     pinList.map { pin ->
         add(PinCard(party.id, pin), key = pin.id)
     }
