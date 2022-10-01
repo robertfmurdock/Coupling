@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.components.ConfigHeader
 import com.zegreatrob.coupling.components.PageFrame
 import com.zegreatrob.minreact.DataPropsBind
@@ -18,16 +17,12 @@ external val formatDistanceModule: dynamic
 
 val formatDistance = formatDistanceModule.default.unsafeCast<(Int?, Int) -> String>()
 
-private val styles = useStyles("stats/PartyStatistics")
-
 data class PartyStatistics(val queryResults: StatisticQueryResults) : DataPropsBind<PartyStatistics>(partyStatistics)
 
 val partyStatistics = tmFC<PartyStatistics> { props ->
     val (party, players, _, allStats, heatmapData) = props.queryResults
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div {
-        css(styles.className) {}
-
         add(PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9"))) {
             ConfigHeader {
                 this.party = party

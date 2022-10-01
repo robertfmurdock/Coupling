@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.action.PairReport
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
@@ -23,51 +21,53 @@ import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 
-private val styles = useStyles("stats/PairReportTable")
-
 data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<PairReportTable>(
     pairReportTable
 )
 
 val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
     div {
-        css(styles.className) {
+        css {
             display = Display.inlineBlock
             textAlign = TextAlign.left
             whiteSpace = csstype.WhiteSpace.normal
         }
-
         pairReports.mapIndexed { index, pairReport ->
-            pairReport(index, pairReport)
+            add(PairReportView(pairReport), key = "$index")
         }
     }
 }
 
-private fun ChildrenBuilder.pairReport(index: Int, pairReport: PairReport) = div {
-    css(styles["pairReport"]) {
-        borderWidth = 2.px
-        borderStyle = LineStyle.solid
-        borderColor = Color("#8e8e8e")
-        borderRadius = 5.px
-        backgroundColor = Color("#ffffff")
-        margin = 2.px
-    }
-    key = "$index"
-    asDynamic()["data-pair-report"] = pairReport.pair.asArray().joinToString("-") { it.name }
-    pairReport.pair.asArray().map { player -> reportPlayerCard(player) }
+data class PairReportView(val pairReport: PairReport) : DataPropsBind<PairReportView>(
+    pairReportView
+)
 
+private val pairReportView = tmFC<PairReportView> { (pairReport) ->
     div {
         css {
-            display = Display.inlineBlock
-            verticalAlign = VerticalAlign.top
-            margin = 8.px
+            borderWidth = 2.px
+            borderStyle = LineStyle.solid
+            borderColor = Color("#8e8e8e")
+            borderRadius = 5.px
+            backgroundColor = Color("#ffffff")
+            margin = 2.px
         }
-        StatsHeader { +"Stats" }
-        StatLabel { +"Spins since last paired:" }
-        span {
-            className = ClassName("time-since-last-pairing")
-            asDynamic()["data-time-since-last-pair"] = ""
-            +pairReport.timeSinceLastPair.presentationString()
+        asDynamic()["data-pair-report"] = pairReport.pair.asArray().joinToString("-") { it.name }
+        pairReport.pair.asArray().map { player -> reportPlayerCard(player) }
+
+        div {
+            css {
+                display = Display.inlineBlock
+                verticalAlign = VerticalAlign.top
+                margin = 8.px
+            }
+            StatsHeader { +"Stats" }
+            StatLabel { +"Spins since last paired:" }
+            span {
+                className = ClassName("time-since-last-pairing")
+                asDynamic()["data-time-since-last-pair"] = ""
+                +pairReport.timeSinceLastPair.presentationString()
+            }
         }
     }
 }

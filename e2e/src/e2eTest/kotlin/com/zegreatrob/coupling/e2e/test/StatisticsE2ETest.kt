@@ -23,9 +23,10 @@ class StatisticsE2ETest {
         with(StatisticsPage) {
             element.text()
                 .assertIsEqualTo(party.name)
-            rotationNumber.text()
+            rotationNumber().text()
                 .assertIsEqualTo("5")
-            pairReport.count()
+            pairReports()
+                .count()
                 .assertIsEqualTo(15)
         }
     }

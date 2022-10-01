@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import csstype.Color
@@ -19,11 +17,9 @@ data class TeamStatistics(
     val medianSpinDuration: String
 ) : DataPropsBind<TeamStatistics>(teamStatistics)
 
-private val styles = useStyles("stats/TeamStatistics")
-
 val teamStatistics = tmFC<TeamStatistics> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
     div {
-        css(styles.className) {
+        css {
             display = Display.inlineBlock
             verticalAlign = VerticalAlign.top
             margin = 8.px
@@ -37,7 +33,7 @@ val teamStatistics = tmFC<TeamStatistics> { (spinsUntilFullRotation, activePlaye
         StatsHeader { +"Team Stats" }
         div {
             StatLabel { +"Spins Until Full Rotation:" }
-            span { className = styles["rotationNumber"]; +"$spinsUntilFullRotation" }
+            span { +"$spinsUntilFullRotation" }
         }
         div {
             StatLabel { +"Number of Active Players:" }
