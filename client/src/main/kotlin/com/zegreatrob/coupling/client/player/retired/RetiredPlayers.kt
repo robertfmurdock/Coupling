@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.player.retired
 
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.components.Paths.playerConfigPage
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.party.PartyBrowser
@@ -25,11 +24,8 @@ import react.router.dom.Link
 data class RetiredPlayers(val party: Party, val retiredPlayers: List<Player>) :
     DataPropsBind<RetiredPlayers>(com.zegreatrob.coupling.client.player.retired.retiredPlayers)
 
-private val styles = useStyles("player/RetiredPlayers")
-
 val retiredPlayers = tmFC<RetiredPlayers> { (party, players) ->
     div {
-        className = styles.className
         add(PartyBrowser(party))
         div {
             css {
