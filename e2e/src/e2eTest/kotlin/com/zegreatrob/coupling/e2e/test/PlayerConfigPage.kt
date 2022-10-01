@@ -10,8 +10,7 @@ import com.zegreatrob.wrapper.wdio.testing.library.ByRole
 import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
-object PlayerConfigPage : StyleSyntax, ByRole by TestingLibraryBrowser {
-    override val styles = loadStyles("player/PlayerConfig")
+object PlayerConfigPage : BrowserSyntax, ByRole by TestingLibraryBrowser {
 
     suspend fun playerNameTextField() = getByRole("combobox", RoleOptions(name = "Name"))
     suspend fun defaultBadgeOption() = queryByRole("option", RoleOptions(name = "Default Badge Option"))
@@ -30,7 +29,7 @@ object PlayerConfigPage : StyleSyntax, ByRole by TestingLibraryBrowser {
     }
 
     suspend fun waitForPage() {
-        element().waitToExist()
+        WebdriverBrowser.waitUntil({ TestingLibraryBrowser.getByText("Player Configuration").isDisplayed() })
     }
 
     suspend fun waitForSaveToComplete(expectedName: String?) {
