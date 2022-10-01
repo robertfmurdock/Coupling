@@ -7,12 +7,10 @@ kotlin {
     targets {
         js {
             nodejs { testTask { useMocha { timeout = "10s" } } }
-        }
-    }
 
-    sourceSets {
-        named("commonTest") {
-            resources.srcDirs(commonMain.map { it.resources.srcDirs })
+            val main = compilations.findByName("main")!!
+            val test = compilations.findByName("test")!!
+            test.defaultSourceSet.dependsOn(main.defaultSourceSet)
         }
     }
 }

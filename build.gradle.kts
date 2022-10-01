@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 import java.time.Duration
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.linter")
