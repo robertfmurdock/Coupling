@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.Editor
 import com.zegreatrob.coupling.client.external.react.useStyles
@@ -17,7 +16,6 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.Border
-import csstype.ClassName
 import csstype.Clear
 import csstype.Display
 import csstype.FontSize
@@ -53,11 +51,11 @@ data class PlayerConfigContent(
 
 private val styles = useStyles("player/PlayerConfigEditor")
 
-val playerConfigContentClassName = "${uuid4()}"
+val playerConfigContentClassName = csstype.ClassName("player-config-content")
 
 val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, onChange, onSubmit, onRemove) ->
     ConfigFrame {
-        css(ClassName(playerConfigContentClassName)) {
+        css(playerConfigContentClassName) {
             "input[type=text]" {
                 fontSize = FontSize.large
                 borderRadius = 20.px
