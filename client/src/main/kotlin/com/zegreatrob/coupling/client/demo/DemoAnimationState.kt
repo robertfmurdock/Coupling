@@ -5,6 +5,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
 import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.player.playerConfigContentClassName
 import com.zegreatrob.coupling.components.spin.playerSelectorClass
 import com.zegreatrob.coupling.components.svgPath
 import com.zegreatrob.coupling.components.welcome.playerImage
@@ -148,7 +149,7 @@ We'll enter the name and then save.
 }
 
 data class AddPlayer(val party: Party, val newPlayer: Player, val players: List<Player>) : DemoAnimationState() {
-    override val descriptionSelector = ".${useStyles("player/PlayerConfig").className} li:first-of-type"
+    override val descriptionSelector = ".$playerConfigContentClassName li:first-of-type"
     override val description = """
 ## Now we'll add a few players. 
 
