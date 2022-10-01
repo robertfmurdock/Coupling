@@ -23,18 +23,18 @@ ktlint {
 }
 
 dependencies {
-    implementation(libs.org.jetbrains.kotlin.kotlin.stdlib)
     implementation(kotlin("gradle-plugin", libs.versions.kotlin.get()))
-    implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
+    implementation(libs.com.fasterxml.jackson.core.jackson.databind)
     implementation(libs.com.github.ben.manes.gradle.versions.plugin)
-    implementation(libs.com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin)
     implementation(libs.com.soywiz.korlibs.klock)
+    implementation(libs.com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin)
+    implementation(libs.org.ajoberstar.grgit.gradle.plugin)
     implementation(libs.org.apache.logging.log4j.log4j.core)
     implementation(libs.org.apache.logging.log4j.log4j.iostreams)
-    implementation(libs.org.slf4j.slf4j.api)
+    implementation(libs.org.jetbrains.kotlin.kotlin.stdlib)
+    implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
     implementation(libs.org.jlleitschuh.gradle.ktlint.gradle)
-    implementation(libs.org.ajoberstar.grgit.gradle.plugin)
-    implementation(libs.com.fasterxml.jackson.core.jackson.databind)
+    implementation(libs.org.slf4j.slf4j.api)
 }
 
 tasks {
