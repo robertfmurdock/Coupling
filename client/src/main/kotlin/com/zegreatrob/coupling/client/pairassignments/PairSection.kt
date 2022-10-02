@@ -14,6 +14,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.ClassName
+import csstype.Display
 import csstype.Float
 import csstype.VerticalAlign
 import csstype.px
@@ -43,7 +44,11 @@ private val pairSection = tmFC<PairSection> { (party, players, pairs, allowSave,
 
     div {
         css { verticalAlign = VerticalAlign.top }
-        add(PairSectionPanel(party, players, pairs, allowSave, setPairs, controls), ref = pairSectionNode)
+        div {
+            ref = pairSectionNode
+            css { display = Display.inlineBlock }
+            add(PairSectionPanel(party, players, pairs, allowSave, setPairs, controls))
+        }
         div {
             css { float = Float.right; width = 0.px }
             div { copyToClipboardButton(pairSectionNode) }
@@ -58,7 +63,7 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
             CouplingButton(
                 sizeRuleSet = large,
                 colorRuleSet = white,
-                onClick = ref.current?.copyToClipboardOnClick() ?: {},
+                onClick = { ref.current?.copyToClipboardOnClick()?.invoke() },
                 attrs = { tabIndex = -1 }
             )
         ) {

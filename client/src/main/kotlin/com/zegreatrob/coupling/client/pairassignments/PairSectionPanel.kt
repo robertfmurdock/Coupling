@@ -35,7 +35,8 @@ data class PairSectionPanel(
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) : DataPropsBind<PairSectionPanel>(pairSectionPanel)
 
-val pairSectionPanel = tmFC<PairSectionPanel> { (party, players, pairAssignments, allowSave, setPairs, controls) ->
+val pairSectionPanel = tmFC<PairSectionPanel> { props ->
+    val (party, players, pairAssignments, allowSave, setPairs, controls) = props
     div {
         css { pairSectionCss() }
         if (pairAssignments == null) {
