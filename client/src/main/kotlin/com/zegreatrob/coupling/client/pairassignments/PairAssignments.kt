@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
@@ -22,7 +21,7 @@ import csstype.Padding
 import csstype.PropertiesBuilder
 import csstype.px
 import csstype.vh
-import emotion.react.css
+import emotion.css.ClassName
 import react.dom.html.ReactHTML.div
 
 data class PairAssignments(
@@ -35,7 +34,7 @@ data class PairAssignments(
     val allowSave: Boolean
 ) : DataPropsBind<PairAssignments>(pairAssignments)
 
-private val styles = useStyles("pairassignments/PairAssignments")
+val pairAssignmentsClassName = ClassName { pairAssignmentStyles() }
 
 private val pairAssignments = tmFC<PairAssignments> { props ->
     val (party, players, pairs, setPairs, controls, message, allowSave) = props
@@ -46,7 +45,7 @@ private val pairAssignments = tmFC<PairAssignments> { props ->
     DndProvider {
         backend = HTML5Backend
         div {
-            css(styles.className) { pairAssignmentStyles() }
+            className = pairAssignmentsClassName
             div {
                 add(PartyBrowser(party))
                 add(PairSection(party, players, pairAssignments, allowSave, setPairs, controls))

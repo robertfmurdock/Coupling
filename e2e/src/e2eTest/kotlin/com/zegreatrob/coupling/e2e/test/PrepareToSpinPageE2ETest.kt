@@ -76,7 +76,7 @@ class PrepareToSpinPageE2ETest {
     fun spinningWillAlertOnExitIfNotSavedAndIfAcceptedPairsAreNotSaved() = pinPartySetup {
         PrepareToSpinPage.goTo(party.id)
         getSelectNoneButton().click()
-        PlayerCard.playerElements.get(0).element(PlayerCard.iconLocator).click()
+        PlayerCard.playerElements[0].element(PlayerCard.iconLocator).click()
         getSpinButton().click()
         PairAssignmentsPage.waitForPage()
     } exercise {
@@ -85,7 +85,7 @@ class PrepareToSpinPageE2ETest {
 //        WebdriverBrowser.alertText().also {
 //            WebdriverBrowser.dismissAlert()
 //        }
-    } verify { _ ->
+    } verify { // _ ->
 //        alertText.assertIsEqualTo("Press OK to save these pairs.")
 //        assignedPairElements.count().assertIsEqualTo(1)
 //        saveButton.isDisplayed().assertIsEqualTo(true)
@@ -96,8 +96,8 @@ class PrepareToSpinPageE2ETest {
         PrepareToSpinPage.goTo(party.id)
         with(PlayerCard) {
             getSelectNoneButton().click()
-            playerElements.get(1).element(iconLocator).click()
-            playerElements.get(4).element(iconLocator).click()
+            playerElements[1].element(iconLocator).click()
+            playerElements[4].element(iconLocator).click()
         }
     } exercise {
         getSpinButton().click()
@@ -133,7 +133,7 @@ class PrepareToSpinPageE2ETest {
     @Test
     fun whenPinIsDisabledSpinWillExcludePinFromAssignment() = pinPartySetup {
         PrepareToSpinPage.goTo(party.id)
-        PrepareToSpinPage.selectedPinElements.get(0).click()
+        PrepareToSpinPage.selectedPinElements[0].click()
     } exercise {
         getSpinButton().click()
         PairAssignmentsPage.waitForPage()

@@ -3,8 +3,9 @@ package com.zegreatrob.coupling.client.demo
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
-import com.zegreatrob.coupling.client.external.react.get
 import com.zegreatrob.coupling.client.external.react.useStyles
+import com.zegreatrob.coupling.client.pairassignments.pairAssignmentsClassName
+import com.zegreatrob.coupling.client.pairassignments.prepareToSpinButtonClassName
 import com.zegreatrob.coupling.client.pin.pinConfigContentClassName
 import com.zegreatrob.coupling.client.player.playerConfigContentClassName
 import com.zegreatrob.coupling.components.spin.playerSelectorClass
@@ -183,12 +184,10 @@ data class CurrentPairs(
     val allowSave: Boolean
 ) : DemoAnimationState() {
 
-    private val pairAssignmentStyles = useStyles("pairassignments/PairAssignments")
-
     override val descriptionSelector = if (pairAssignments == null) {
-        classSelector(pairAssignmentStyles["newPairsButton"])
+        classSelector(prepareToSpinButtonClassName)
     } else {
-        ".${pairAssignmentStyles.className} div"
+        ".$pairAssignmentsClassName div"
     }
     override val placement: Placement = if (pairAssignments == null) {
         super.placement

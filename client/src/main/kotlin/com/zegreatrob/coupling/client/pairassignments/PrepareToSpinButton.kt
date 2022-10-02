@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.pink
 import com.zegreatrob.coupling.components.supersize
@@ -10,13 +8,14 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import csstype.AnimationIterationCount
+import csstype.ClassName
 import csstype.ident
 import csstype.s
 import react.router.dom.Link
 
 data class PrepareToSpinButton(val party: Party) : DataPropsBind<PrepareToSpinButton>(prepareToSpinButton)
 
-private val styles = useStyles("pairassignments/PairAssignments")
+val prepareToSpinButtonClassName = ClassName("prepare-to-spin")
 
 private val prepareToSpinButton = tmFC<PrepareToSpinButton> { (party) ->
     Link {
@@ -27,7 +26,7 @@ private val prepareToSpinButton = tmFC<PrepareToSpinButton> { (party) ->
             CouplingButton(
                 sizeRuleSet = supersize,
                 colorRuleSet = pink,
-                className = styles["newPairsButton"],
+                className = prepareToSpinButtonClassName,
                 css = {
                     animationName = ident("pulsate")
                     animationDuration = 2.s

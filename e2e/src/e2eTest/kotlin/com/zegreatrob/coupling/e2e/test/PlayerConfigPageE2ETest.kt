@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
@@ -35,7 +36,7 @@ class PlayerConfigPageE2ETest {
 
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
-                buildParty = { Party(PartyId("${randomInt()}-PlayerConfigPageE2E")) },
+                buildParty = { Party(PartyId("${randomInt()}-PlayerConfigPageE2E"), name = "${uuid4()}") },
                 buildPlayer = {
                     Player(
                         "${randomInt()}-PlayerConfigPageE2E",

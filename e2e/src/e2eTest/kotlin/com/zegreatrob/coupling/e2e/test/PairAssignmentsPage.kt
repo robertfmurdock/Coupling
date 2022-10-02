@@ -8,8 +8,7 @@ import com.zegreatrob.wrapper.wdio.WebdriverElementArray
 import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
-object PairAssignmentsPage : StyleSyntax {
-    override val styles = loadStyles("pairassignments/PairAssignments")
+object PairAssignmentsPage : BrowserSyntax {
     suspend fun getNewPairsButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Prepare to spin!"))
     suspend fun goTo(id: PartyId) {
         WebdriverBrowser.setLocation("/${id.value}/pairAssignments/current/")
@@ -17,7 +16,7 @@ object PairAssignmentsPage : StyleSyntax {
     }
 
     suspend fun waitForPage() {
-        element().waitToExist()
+        WebdriverBrowser.waitUntil({ getNewPairsButton().isDisplayed() })
     }
 }
 
