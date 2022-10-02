@@ -105,7 +105,7 @@ class PrepareToSpinPageE2ETest {
     } verify {
         assignedPairElements.count()
             .assertIsEqualTo(1)
-        PlayerRoster.playerElements.count()
+        PlayerRoster.getPlayerElements("Unpaired players").count()
             .assertIsEqualTo(3)
 
         getSaveButton().click()
@@ -113,7 +113,7 @@ class PrepareToSpinPageE2ETest {
 
         assignedPairElements.count()
             .assertIsEqualTo(1)
-        PlayerRoster.playerElements.count()
+        PlayerRoster.getPlayerElements("Unpaired players").count()
             .assertIsEqualTo(3)
     }
 

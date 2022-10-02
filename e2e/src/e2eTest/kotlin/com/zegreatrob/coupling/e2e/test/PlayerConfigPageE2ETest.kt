@@ -178,7 +178,7 @@ class PlayerConfigPageE2ETest {
             }
             PlayerConfigPage.goTo(party.id, players[0].id)
         } exercise {
-            PlayerRoster.playerElements.map { element -> element.text() }.toList()
+            PlayerRoster.getPlayerElements("Players").map { element -> element.text() }.toList()
         } verify { result ->
             result.assertIsEqualTo(players.map { it.name })
         }

@@ -74,7 +74,7 @@ class PairAssignmentsPageE2ETest {
         } verify {
             PartyCard.element.text()
                 .assertIsEqualTo(party.name)
-            PlayerRoster.playerElements.map { it.text() }.toList()
+            PlayerRoster.getPlayerElements("Unpaired players").map { it.text() }.toList()
                 .assertIsEqualTo(players.map { it.name })
         }
 
@@ -92,7 +92,7 @@ class PairAssignmentsPageE2ETest {
         fun willLetYouEditAnExistingPlayer() = currentPairAssignmentPageSetup {
             goTo(party.id)
         } exercise {
-            PlayerRoster.playerElements.first().click()
+            PlayerRoster.getPlayerElements("Unpaired players").first().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
                 .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/player/${players[0].id}/"))
@@ -194,7 +194,8 @@ class PairAssignmentsPageE2ETest {
             goTo(party.id)
         } verify {
             assignedPairElements.assertTheMostRecentPairsAreShown()
-            PlayerRoster.playerElements.assertOnlyUnpairedPlayersAreShown()
+            PlayerRoster.getPlayerElements("Unpaired players")
+                .assertOnlyUnpairedPlayersAreShown()
         }
 
         private suspend fun WebdriverElementArray.assertTheMostRecentPairsAreShown() {

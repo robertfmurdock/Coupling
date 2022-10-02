@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.Paths.playerConfigPage
 import com.zegreatrob.coupling.components.PlayerCard
@@ -34,14 +32,12 @@ data class PlayerRoster(
     val cssOverrides: PropertiesBuilder.() -> Unit = {}
 ) : DataPropsBind<PlayerRoster>(playerRoster)
 
-private val styles = useStyles("player/PlayerRoster")
-
 val playerRoster = tmFC { (label, players, partyId, className, overrides): PlayerRoster ->
     val ref by useState { Date.now().toLong() }
     val random = Random(ref)
 
     div {
-        css(className, styles.className) {
+        css(className) {
             overrides()
         }
         div {
@@ -74,7 +70,7 @@ private fun ChildrenBuilder.addPlayerButton(partyId: PartyId) = Link {
     to = "/${partyId.value}/player/new/"
     tabIndex = -1
     draggable = false
-    add(CouplingButton(large, orange, styles["addPlayerButton"])) {
+    add(CouplingButton(large, orange)) {
         +"Add a new player!"
     }
 }

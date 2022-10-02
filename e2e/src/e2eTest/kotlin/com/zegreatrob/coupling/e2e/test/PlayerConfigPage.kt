@@ -54,8 +54,12 @@ object PlayerCard : BrowserSyntax {
     const val iconLocator = "[alt=player-icon]"
 }
 
-object PlayerRoster : StyleSyntax {
-    override val styles = loadStyles("player/PlayerRoster")
-    val playerElements = styles.element.all(PlayerCard.playerElements.selector)
+object PlayerRoster {
+    suspend fun element(rosterLabel: String = "Players") = TestingLibraryBrowser.getByText(rosterLabel).parentElement()
+
+    suspend fun getPlayerElements(playerRosterLabel: String) = TestingLibraryBrowser.getByText(playerRosterLabel)
+        .parentElement()
+        .all(PlayerCard.playerElements.selector)
+
     suspend fun getAddPlayerButton() = TestingLibraryBrowser.queryByRole("button", RoleOptions("Add a new player!"))
 }
