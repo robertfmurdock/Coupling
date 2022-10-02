@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.party
 
 import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.Editor
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.gravatarLink
 import com.zegreatrob.coupling.components.ConfigForm
 import com.zegreatrob.coupling.components.ConfigHeader
@@ -13,6 +12,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import csstype.Color
 import csstype.Display
 import csstype.number
@@ -36,13 +36,16 @@ data class PartyConfigContent(
     var onChange: (ChangeEvent<*>) -> Unit,
     var onSave: () -> Unit,
     var onDelete: (() -> Unit)?,
-) : DataPropsBind<PartyConfigContent>(partyConfigContent)
+) : DataPropsBind<PartyConfigContent>(partyConfigContent) {
 
-private val styles = useStyles("party/PartyConfig")
+    companion object {
+        val className get() = ClassName("party-config-content")
+    }
+}
 
 val partyConfigContent = tmFC<PartyConfigContent> { (party, isNew, onChange, onSave, onDelete) ->
     ConfigFrame {
-        className = styles.className
+        className = PartyConfigContent.className
         backgroundColor = Color("hsla(45, 80%, 96%, 1)")
         borderColor = Color("#ff8c00")
 

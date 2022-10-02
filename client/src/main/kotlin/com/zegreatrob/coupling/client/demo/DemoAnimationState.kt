@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.client.demo
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.Frame
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.pairAssignmentsClassName
 import com.zegreatrob.coupling.client.pairassignments.prepareToSpinButtonClassName
+import com.zegreatrob.coupling.client.party.PartyConfigContent
 import com.zegreatrob.coupling.client.pin.pinConfigContentClassName
 import com.zegreatrob.coupling.client.player.playerConfigContentClassName
 import com.zegreatrob.coupling.components.spin.playerSelectorClass
@@ -139,7 +139,7 @@ fun makePinSequence() = pins.flatMapIndexed { pinIndex, pin ->
 private fun String?.rangeOfStringLength() = (0..(this ?: "").length)
 
 data class MakeParty(val party: Party) : DemoAnimationState() {
-    override val descriptionSelector = ".${useStyles("party/PartyConfig").className} input[name=name]"
+    override val descriptionSelector = ".${PartyConfigContent.className} input[name=name]"
     override val placement = Placement.bottomStart
     override val description = """
 
