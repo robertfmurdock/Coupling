@@ -11,6 +11,4 @@ operator fun SimpleStyle.get(propertyName: String): ClassName = let {
     ClassName(js("it[prop]").unsafeCast<String>())
 }
 
-fun <T> useStyles(path: String): T = loadStyles(path)
-
 fun useStyles(path: String): SimpleStyle = loadStyles(path)

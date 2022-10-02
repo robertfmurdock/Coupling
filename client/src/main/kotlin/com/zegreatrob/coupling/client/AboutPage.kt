@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.PageFrame
@@ -28,8 +27,6 @@ import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
 
-private val styles = useStyles("About")
-
 val AboutPage = FC<PageProps> {
     aboutPageContent {
         Markdown { +loadMarkdownString("About") }
@@ -38,7 +35,6 @@ val AboutPage = FC<PageProps> {
 
 val aboutPageContent = FC<PropsWithChildren> { props ->
     div {
-        className = styles.className
         add(PageFrame(borderColor = Color("rgb(94, 84, 102)"), backgroundColor = Color("floralwhite"))) {
             div {
                 css { width = 40.em }

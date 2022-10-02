@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.animationsDisabledContext
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.EmptyState
 import csstype.ident
@@ -14,8 +12,6 @@ import react.PropsWithChildren
 import react.create
 import react.dom.html.ReactHTML.div
 import react.useState
-
-private val styles = useStyles("routing/DataLoadWrapper")
 
 external interface AnimationFrameProps : PropsWithChildren {
     var state: DataLoadState<*>
@@ -32,7 +28,7 @@ val animationFrame = FC<AnimationFrameProps> { props ->
     animationsDisabledContext.Consumer {
         children = { animationsDisabled: Boolean ->
             div.create {
-                css(styles["viewFrame"]) {
+                css {
                     if (shouldStartAnimation && !animationsDisabled) {
                         zIndex = integer(100)
                         animationDuration = 0.25.s

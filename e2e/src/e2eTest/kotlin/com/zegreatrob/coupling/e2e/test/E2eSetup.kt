@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
@@ -21,7 +20,6 @@ val e2eSetup: TestTemplate<Sdk> by lazy {
             js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); done()}, undefined)")
                 .unsafeCast<Promise<Unit>>()
                 .await()
-            DataLoadWrapper.getViewFrame().waitToExist()
 
             TestLogin.login()
             WebdriverBrowser.getLogs()
@@ -30,10 +28,4 @@ val e2eSetup: TestTemplate<Sdk> by lazy {
     }).extend(
         sharedTeardown = { checkLogs() }
     )
-}
-
-object DataLoadWrapper : BrowserSyntax, StyleSyntax {
-    override val styles = loadStyles("routing/DataLoadWrapper")
-
-    suspend fun getViewFrame() = styles.element("viewFrame")
 }
