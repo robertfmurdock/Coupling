@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
@@ -33,11 +34,12 @@ object PinConfigPage : ByRole by TestingLibraryBrowser {
     }
 }
 
-object PinListPage : StyleSyntax {
-
-    override val styles = loadStyles("pin/PinList")
-
+object PinListPage : BrowserSyntax {
     suspend fun waitForLoad() {
-        WebdriverBrowser.waitUntil({ element().isPresent() }, waitToBePresentDuration, "PinListPage.waitForLoad")
+        WebdriverBrowser.waitUntil(
+            condition = { TestingLibraryBrowser.getByText("These are your pins.").isPresent() },
+            timeout = waitToBePresentDuration,
+            timeoutMessage = "PinListPage.waitForLoad"
+        )
     }
 }

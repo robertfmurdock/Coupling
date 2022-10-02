@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
-import com.zegreatrob.coupling.e2e.test.PinListPage.element
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -11,8 +10,8 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.wrapper.wdio.By
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import com.zegreatrob.wrapper.wdio.WebdriverElementArray
 import kotlin.random.Random
 import kotlin.test.Test
 
@@ -98,7 +97,7 @@ class PinConfigE2ETest {
 
             PinListPage.waitForLoad()
         } verify {
-            element().all(By.className("pin-name"))
+            WebdriverElementArray(".pin-name")
                 .map { it.text() }
                 .contains(pin.name)
                 .assertIsEqualTo(false)

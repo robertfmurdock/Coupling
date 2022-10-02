@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.components.ConfigHeader
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.large
@@ -26,11 +25,9 @@ import react.router.dom.Link
 
 data class PinList(val party: Party, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
 
-private val styles = useStyles("pin/PinList")
-
 val pinList = tmFC<PinList> { (party, pins) ->
     div {
-        css(styles.className) { pinListStyles() }
+        css { pinListStyles() }
         ConfigHeader {
             this.party = party
             +"These are your pins."
