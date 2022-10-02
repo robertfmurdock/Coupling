@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.react.get
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.components.CouplingButton
@@ -19,6 +17,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
+import csstype.ClassName
 import csstype.WhiteSpace
 import csstype.px
 import emotion.react.css
@@ -35,8 +34,6 @@ data class CurrentPairAssignmentsPanel(
     val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
 ) : DataPropsBind<CurrentPairAssignmentsPanel>(currentPairAssignmentsPanel)
 
-private val styles = useStyles("pairassignments/CurrentPairAssignmentsPanel")
-
 val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
     val (party, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
@@ -48,7 +45,7 @@ val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
         Navigate { to = redirectUrl }
     else
         div {
-            className = styles.className
+            className = ClassName("current-pair-assignments")
             dateHeader(pairAssignments)
             pairAssignmentList(party, pairAssignments, setPairAssignments, allowSave)
             if (allowSave) {
@@ -152,15 +149,22 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 }
 
 private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = add(
-    CouplingButton(supersize, green, styles["saveButton"], onSave, css = {
-        margin = 4.px
-    })
+    CouplingButton(
+        sizeRuleSet = supersize,
+        colorRuleSet = green,
+        onClick = onSave,
+        css = { margin = 4.px }
+    )
 ) {
     +"Save!"
 }
 
 private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) = add(
-    CouplingButton(small, red, styles["deleteButton"], onCancel)
+    CouplingButton(
+        sizeRuleSet = small,
+        colorRuleSet = red,
+        onClick = onCancel
+    )
 ) {
     +"Cancel"
 }

@@ -8,6 +8,7 @@ fun main() {
     if (isTestRun())
         return
     require("com/zegreatrob/coupling/client/animations.css")
+    require("com/zegreatrob/coupling/client/style.css")
     require("history")
 
     configureDragDropWebkitMobile()

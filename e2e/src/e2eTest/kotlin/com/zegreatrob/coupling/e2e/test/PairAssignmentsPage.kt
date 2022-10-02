@@ -26,13 +26,12 @@ object ConfigHeader : BrowserSyntax {
     suspend fun getRetiredPlayersButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Retirees!"))
 }
 
-object CurrentPairAssignmentsPanel : StyleSyntax {
-    override val styles = loadStyles("pairassignments/CurrentPairAssignmentsPanel")
+object CurrentPairAssignmentsPanel {
     suspend fun getSaveButton(): WebdriverElement = TestingLibraryBrowser.getByRole("button", RoleOptions("Save!"))
     suspend fun querySaveButton(): WebdriverElement = TestingLibraryBrowser.queryByRole("button", RoleOptions("Save!"))
 
     suspend fun waitForSaveButtonToNotBeDisplayed() {
-        element().waitToExist()
+        WebdriverElement(".current-pair-assignments").waitToExist()
         WebdriverBrowser.waitUntil(
             {
                 try {
@@ -46,7 +45,7 @@ object CurrentPairAssignmentsPanel : StyleSyntax {
             2000,
             "CurrentPairAssignmentsPanel.waitForSaveButtonToNotBeDisplayed"
         )
-        element().waitToExist()
+        WebdriverElement(".current-pair-assignments").waitToExist()
     }
 }
 
