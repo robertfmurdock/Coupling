@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.player
 
 import com.zegreatrob.coupling.client.ConfigFrame
 import com.zegreatrob.coupling.client.Editor
-import com.zegreatrob.coupling.client.external.react.useStyles
 import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.client.gravatarLink
 import com.zegreatrob.coupling.components.ConfigForm
@@ -49,8 +48,6 @@ data class PlayerConfigContent(
     val onRemove: () -> Unit
 ) : DataPropsBind<PlayerConfigContent>(playerConfigContent)
 
-private val styles = useStyles("player/PlayerConfigEditor")
-
 val playerConfigContentClassName = csstype.ClassName("player-config-content")
 
 val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, onChange, onSubmit, onRemove) ->
@@ -64,7 +61,6 @@ val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, o
             }
         }
         span {
-            className = styles.className
             ConfigHeader {
                 this.party = party
                 +"Player Configuration"
