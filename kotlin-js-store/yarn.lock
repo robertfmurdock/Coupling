@@ -4336,10 +4336,10 @@ commander@^8.3.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-8.3.0.tgz#4837ea1b2da67b9c616a67afbb0fafee567bca66"
   integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
 
-commander@^9.4.0:
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-9.4.0.tgz#bc4a40918fefe52e22450c111ecd6b7acce6f11c"
-  integrity sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==
+commander@^9.4.1:
+  version "9.4.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.4.1.tgz#d1dd8f2ce6faf93147295c0df13c7c21141cfbdd"
+  integrity sha512-5EEkTNyHNGFPD2H+c/dXXfQZYa/scCKasxWcXJaWnNJ99pnQN9Vnmqow+p+PlFPE63Q6mThaZws1T+HxfpgtPw==
 
 commander@~4.1.1:
   version "4.1.1"
@@ -4523,10 +4523,10 @@ core-js@^3.24.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.25.1.tgz#5818e09de0db8956e16bf10e2a7141e931b7c69c"
   integrity sha512-sr0FY4lnO1hkQ4gLDr24K0DGnweGO1QwSj5BpfQjpSJPdqWalja4cTps29Y/PJVG/P7FYlPDkH3hO+Tr0CvDgQ==
 
-core-js@^3.25.3:
-  version "3.25.3"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.25.3.tgz#cbc2be50b5ddfa7981837bd8c41639f27b166593"
-  integrity sha512-y1hvKXmPHvm5B7w4ln1S4uc9eV/O5+iFExSRUimnvIph11uaizFR8LFMdONN8hG3P2pipUfX4Y/fR8rAEtcHcQ==
+core-js@^3.25.4:
+  version "3.25.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.25.5.tgz#e86f651a2ca8a0237a5f064c2fe56cef89646e27"
+  integrity sha512-nbm6eZSjm+ZuBQxCUPQKQCoUEfFOXjUZ8dTTyikyKaWrTYmAVbykQfwsKE5dBK88u3QCkCrzsx/PPlKfhsvgpw==
 
 core-js@^3.6.5:
   version "3.23.5"
@@ -9506,14 +9506,14 @@ npm-bundled@^1.1.1, npm-bundled@^1.1.2:
   dependencies:
     npm-normalize-package-bin "^1.0.1"
 
-npm-check-updates@^16.3.4:
-  version "16.3.4"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.3.4.tgz#5084530a6e035ab11e83c25ba9d94d3690043d78"
-  integrity sha512-PDkd+KRhgzsB01c9dCo8O/Aad98ODb7aRxPamg+QOUXEdi/CcbItynxdCvHx9r1AXoMm0w1zixHeUZf8ktBwqQ==
+npm-check-updates@^16.3.7:
+  version "16.3.8"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.3.8.tgz#3f128ce8ca658f6af8f1ebfc8c905168a7996dfe"
+  integrity sha512-2CUeCWEs+arWQUJH2IEkiZU/Ak2fLBqGkMyM5JDkfnGhz1VHNe3yyGiXD+0JeVmjbXTEpgZ0t6C9VK52atGuAw==
   dependencies:
     chalk "^5.0.1"
     cli-table "^0.3.11"
-    commander "^9.4.0"
+    commander "^9.4.1"
     fast-memoize "^2.5.2"
     find-up "5.0.0"
     fp-and-or "^0.1.3"
