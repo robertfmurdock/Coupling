@@ -31,7 +31,6 @@ import csstype.rotate
 import csstype.s
 import csstype.url
 import emotion.react.css
-import org.w3c.dom.HTMLDivElement
 import react.ChildrenBuilder
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.div
@@ -48,7 +47,7 @@ data class PlayerCard(
 ) : DataPropsBind<PlayerCard>(playerCard)
 
 val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselected, tilt) ->
-    val onClickFunc: (MouseEvent<HTMLDivElement, *>) -> Unit = useCallback(onClick) { onClick() }
+    val onClickFunc: (MouseEvent<*, *>) -> Unit = useCallback(onClick) { onClick() }
     div {
         css(className) {
             playerCardStyles(tilt, deselected)

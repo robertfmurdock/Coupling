@@ -17,7 +17,6 @@ import csstype.Color
 import csstype.Display
 import csstype.number
 import emotion.react.css
-import org.w3c.dom.HTMLSelectElement
 import react.ChildrenBuilder
 import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
@@ -132,7 +131,7 @@ private fun ChildrenBuilder.editorDiv(party: Party, onChange: (ChangeEvent<*>) -
         }
     }
 
-private fun ChildrenBuilder.animationSpeedSelect(party: Party, onChange: ChangeEventHandler<HTMLSelectElement>) {
+private fun ChildrenBuilder.animationSpeedSelect(party: Party, onChange: ChangeEventHandler<*>) {
     label {
         htmlFor = "animation-speed"
         +"Animation Speed"

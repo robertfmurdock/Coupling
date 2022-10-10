@@ -24,7 +24,6 @@ import csstype.string
 import csstype.translatex
 import csstype.url
 import emotion.react.css
-import org.w3c.dom.HTMLDivElement
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
@@ -46,7 +45,7 @@ data class PinButton(
 ) : DataPropsBind<PinButton>(pinButton)
 
 val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClickFunc) ->
-    val onClickCallback: (MouseEvent<HTMLDivElement, *>) -> Unit = useCallback { onClickFunc() }
+    val onClickCallback: (MouseEvent<*, *>) -> Unit = useCallback { onClickFunc() }
     div {
         asDynamic()["data-pin-button"] = "${pin.id}"
         css(ClassName(className)) {
