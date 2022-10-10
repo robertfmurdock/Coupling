@@ -24,7 +24,6 @@ import csstype.px
 import csstype.rgba
 import csstype.url
 import emotion.react.css
-import org.w3c.dom.HTMLButtonElement
 import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.button
 
@@ -157,7 +156,7 @@ data class CouplingButton(
     @JsName("className")
     val className: ClassName = ClassName(""),
     val onClick: () -> Unit = {},
-    val attrs: ButtonHTMLAttributes<HTMLButtonElement>.() -> Unit = {},
+    val attrs: ButtonHTMLAttributes<*>.() -> Unit = {},
     val css: PropertiesBuilder.() -> Unit = {}
 ) : DataPropsBind<CouplingButton>(couplingButton)
 
@@ -166,7 +165,7 @@ val couplingButton = tmFC<CouplingButton> { props ->
     button {
         type = react.dom.html.ButtonType.button
         this.onClick = { onClick() }
-        block()
+        block(this)
 
         css(className, ClassName("button")) {
             "*" {
