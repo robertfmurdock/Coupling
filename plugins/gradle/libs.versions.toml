@@ -6,7 +6,7 @@ org-apache-logging-log4j = "2.19.0"
 org-jlleitschuh-gradle-ktlint = "11.0.0"
 
 [libraries]
-com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.13.4"
+com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.13.4.2"
 com-github-ben-manes-gradle-versions-plugin = "com.github.ben-manes:gradle-versions-plugin:0.42.0"
 com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:3.2.0"
 com-zegreatrob-jsmints-plugins-jspackage-gradle-plugin = { module = "com.zegreatrob.jsmints.plugins.jspackage:com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin", version.ref = "jsmints" }
@@ -20,5 +20,5 @@ org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.3"
 
 [plugins]
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.42.0"
-nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.6.1"
+nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
 org-jlleitschuh-gradle-ktlint = "org.jlleitschuh.gradle.ktlint:11.0.0"
