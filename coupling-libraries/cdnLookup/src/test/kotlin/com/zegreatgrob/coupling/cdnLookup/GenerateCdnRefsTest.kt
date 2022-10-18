@@ -10,10 +10,11 @@ class GenerateCdnRefsTest {
     fun generateRefWorks() = asyncSetup(object {
         val lib = "react"
         val cdnLibs = listOf(lib)
-        val expected = "https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"
     }) exercise {
         generateCdnRef(cdnLibs)
     } verify { result ->
+        val version = getVersionForLibrary(lib)
+        val expected = "https://cdn.jsdelivr.net/npm/react@$version/umd/react.production.min.js"
         result.assertIsEqualTo(listOf(Pair(lib, expected)))
     }
 
@@ -21,10 +22,11 @@ class GenerateCdnRefsTest {
     fun generateRefWorksForKotlin() = asyncSetup(object {
         val lib = "kotlin"
         val cdnLibs = listOf(lib)
-        val expected = "https://cdn.jsdelivr.net/npm/kotlin@1.7.20/kotlin.min.js"
     }) exercise {
         generateCdnRef(cdnLibs)
     } verify { result ->
+        val version = getVersionForLibrary(lib)
+        val expected = "https://cdn.jsdelivr.net/npm/kotlin@$version/kotlin.min.js"
         result.assertIsEqualTo(listOf(Pair(lib, expected)))
     }
 
@@ -32,10 +34,11 @@ class GenerateCdnRefsTest {
     fun generateRefWorksForAuth0() = asyncSetup(object {
         val lib = "@auth0/auth0-react"
         val cdnLibs = listOf(lib)
-        val expected = "https://cdn.jsdelivr.net/npm/@auth0/auth0-react@1.12.0/dist/auth0-react.min.js"
     }) exercise {
         generateCdnRef(cdnLibs)
     } verify { result ->
+        val version = getVersionForLibrary(lib)
+        val expected = "https://cdn.jsdelivr.net/npm/@auth0/auth0-react@$version/dist/auth0-react.min.js"
         result.assertIsEqualTo(listOf(Pair(lib, expected)))
     }
 }

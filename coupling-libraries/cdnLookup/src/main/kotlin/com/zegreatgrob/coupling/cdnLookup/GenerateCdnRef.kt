@@ -63,7 +63,7 @@ private fun JsonObject.getFiles(): List<String> {
     } ?: emptyList()
 }
 
-private suspend fun getVersionForLibrary(lib: String): String {
+suspend fun getVersionForLibrary(lib: String): String {
     val libPackage = resolvePkg(lib, json("cwd" to contextPath))
     val pkg = readPkgUp(json("cwd" to libPackage)).unsafeCast<Promise<Json>>().await()
     return pkg["pkg"].unsafeCast<Json>()["version"].unsafeCast<String>()
