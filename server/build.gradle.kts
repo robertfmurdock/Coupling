@@ -31,7 +31,7 @@ dependencies {
     implementation(project(":coupling-libraries:json"))
     implementation(project(":coupling-libraries:server_action"))
     implementation(project(":coupling-libraries:repository-memory"))
-    implementation(project(":dynamo"))
+    implementation(project(":coupling-libraries:dynamo"))
     implementation("com.zegreatrob.jsmints:minjson")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")

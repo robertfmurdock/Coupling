@@ -4641,10 +4641,15 @@ core-js-pure@^3.20.2:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.23.5.tgz#23daaa9af9230e50f10b0fa4b8e6b87402be4c33"
   integrity sha512-8t78LdpKSuCq4pJYCYk8hl7XEkAX+BP16yRIwL3AanTksxuEf7CM83vRyctmiEL8NDZ3jpUcv56fk9/zG3aIuw==
 
-core-js@^3.25.1, core-js@^3.25.5:
+core-js@^3.25.1:
   version "3.25.5"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.25.5.tgz#e86f651a2ca8a0237a5f064c2fe56cef89646e27"
   integrity sha512-nbm6eZSjm+ZuBQxCUPQKQCoUEfFOXjUZ8dTTyikyKaWrTYmAVbykQfwsKE5dBK88u3QCkCrzsx/PPlKfhsvgpw==
+
+core-js@^3.26.0:
+  version "3.26.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.26.0.tgz#a516db0ed0811be10eac5d94f3b8463d03faccfe"
+  integrity sha512-+DkDrhoR4Y0PxDz6rurahuB+I45OsEUv8E1maPTB6OuHRohMMcznBq9TMpdpDMm/hUPob/mJJS3PqgbHpMTQgw==
 
 core-js@^3.6.5:
   version "3.23.5"
@@ -6467,13 +6472,13 @@ favicons@7.0.0-beta.1:
     vinyl "^2.2.1"
     xml2js "^0.4.23"
 
-favicons@~7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/favicons/-/favicons-7.0.1.tgz#a68d75a47a38ad1f5567580b50b3d8d6ebc3b4f4"
-  integrity sha512-JPFon4zQL8XfuA2Nzq5ExGNnn9UBEf6yqpQDwtcAcEvLU+chBwKEoFd1EWSOSdRFSM7NilmmnSACXBHN64OEvQ==
+favicons@~7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/favicons/-/favicons-7.0.2.tgz#a4a5b34928d61e007fb8814d2eee283aeb3c9304"
+  integrity sha512-M/qE3ERHOBu0+Op+61jx8CdvOnSKrrl2zxUPpoGgsNyfjuGqRsK80zYoA5Uwdxl8QM4egfhBWZp1j7KK3YnOMg==
   dependencies:
     escape-html "^1.0.3"
-    sharp "^0.30.7"
+    sharp "^0.31.1"
     xml2js "^0.4.23"
 
 faye-websocket@^0.11.3:
@@ -11780,10 +11785,10 @@ sharp@^0.29.1:
     tar-fs "^2.1.1"
     tunnel-agent "^0.6.0"
 
-sharp@^0.30.7:
-  version "0.30.7"
-  resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.30.7.tgz#7862bda98804fdd1f0d5659c85e3324b90d94c7c"
-  integrity sha512-G+MY2YW33jgflKPTXXptVO28HvNOo9G3j0MybYAHeEmby+QuD2U98dT6ueht9cv/XDqZspSpIhoSW+BAKJ7Hig==
+sharp@^0.31.1:
+  version "0.31.1"
+  resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.31.1.tgz#b2f7076d381a120761aa93700cadefcf90a22458"
+  integrity sha512-GR8M1wBwOiFKLkm9JPun27OQnNRZdHfSf9VwcdZX6UrRmM1/XnOrLFTF0GAil+y/YK4E6qcM/ugxs80QirsHxg==
   dependencies:
     color "^4.2.3"
     detect-libc "^2.0.1"
