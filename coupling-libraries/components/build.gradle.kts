@@ -14,8 +14,9 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":coupling-libraries:model"))
+    implementation(project(":coupling-libraries:action"))
     implementation(project(":coupling-libraries:json"))
+    implementation(project(":coupling-libraries:model"))
     implementation(project(":coupling-libraries:repository-core"))
     implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")

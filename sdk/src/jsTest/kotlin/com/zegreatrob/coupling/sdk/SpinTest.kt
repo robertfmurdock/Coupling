@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.action.RequestSpinAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -39,7 +40,7 @@ class SpinTest {
     }) {
         sdk.partyRepository.save(party)
     } exercise {
-        sdk.requestSpin(party.id, players, emptyList())
+        sdk.perform(RequestSpinAction(party.id, players, emptyList()))
     } verifyAnd { result ->
         result.pairs.assertIsEqualTo(
             listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }))
@@ -73,7 +74,7 @@ class SpinTest {
     }) {
         setupScenario(sdk, party, players, history)
     } exercise {
-        sdk.requestSpin(party.id, players, emptyList())
+        sdk.perform(RequestSpinAction(party.id, players, emptyList()))
     } verifyAnd { result ->
         result.pairs.assertIsEqualTo(
             listOf(
@@ -109,7 +110,7 @@ class SpinTest {
     }) {
         setupScenario(sdk.await(), party, players, history)
     } exercise {
-        sdk.await().requestSpin(party.id, players, emptyList())
+        sdk.await().perform(RequestSpinAction(party.id, players, emptyList()))
     } verifyAnd { result ->
         result.pairs.assertIsEqualTo(
             listOf(
@@ -136,7 +137,7 @@ class SpinTest {
         fun whenAPinExistsWillAssignOnePinToPair() = sdkSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            sdk.requestSpin(party.id, players, listOf(pin))
+            sdk.perform(RequestSpinAction(party.id, players, listOf(pin)))
         } verifyAnd { result ->
             result.pairs.assertIsEqualTo(
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), setOf(pin)))
@@ -148,7 +149,7 @@ class SpinTest {
         fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            sdk.requestSpin(party.id, players, emptyList())
+            sdk.perform(RequestSpinAction(party.id, players, emptyList()))
         } verifyAnd { result ->
             result.pairs.assertIsEqualTo(
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptySet()))

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.RequestSpinAction
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -26,8 +27,7 @@ class RequestCombineEndpointTest {
             )
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
             override suspend fun perform(query: UserQuery) = sdk.perform(query)
-            override suspend fun requestSpin(partyId: PartyId, players: List<Player>, pins: List<Pin>) =
-                sdk.requestSpin(partyId, players, pins)
+            override suspend fun perform(action: RequestSpinAction) = sdk.perform(action)
         }
     }) {
         party.save()

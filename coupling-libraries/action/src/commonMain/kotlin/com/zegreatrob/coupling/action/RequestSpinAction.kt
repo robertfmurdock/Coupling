@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.components.spin
+package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyId

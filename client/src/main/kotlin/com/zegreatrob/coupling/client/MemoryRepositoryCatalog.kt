@@ -1,12 +1,11 @@
 package com.zegreatrob.coupling.client
 
 import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.action.RequestSpinAction
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
@@ -42,7 +41,7 @@ class MemoryRepositoryCatalog private constructor(
 
     override suspend fun perform(query: UserQuery) = User(userId, "???", setOf(PartyId("Kind of fake")))
 
-    override suspend fun requestSpin(partyId: PartyId, players: List<Player>, pins: List<Pin>): PairAssignmentDocument {
+    override suspend fun perform(action: RequestSpinAction): PairAssignmentDocument {
         TODO("Not yet implemented")
     }
 }
