@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "1.12.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.194.0",
-    "@aws-sdk/client-dynamodb": "3.195.0",
-    "@aws-sdk/client-lambda": "~3.194.0",
-    "@aws-sdk/lib-dynamodb": "3.195.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.196.0",
+    "@aws-sdk/client-dynamodb": "3.196.0",
+    "@aws-sdk/client-lambda": "~3.196.0",
+    "@aws-sdk/lib-dynamodb": "3.196.0",
     "@graphql-tools/schema": "^9.0.4",
     "@graphql-tools/stitch": "^8.7.13",
     "@log4js-node/log4js-api": "1.0.2",
@@ -21,7 +21,7 @@
     "allure-commandline": "2.18.1",
     "blueimp-md5": "^2.19.0",
     "body-parser": "^1.20.1",
-    "chromedriver": "106.0.1",
+    "chromedriver": "107.0.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "core-js": "^3.26.0",
