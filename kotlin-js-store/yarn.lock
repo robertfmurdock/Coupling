@@ -11041,10 +11041,10 @@ react-flip-toolkit@^7.0.17:
     flip-toolkit "7.0.17"
     prop-types "^15.5.7"
 
-react-hotkeys-hook@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-4.0.2.tgz#f56905a07ae975d297b86d8a7bbc434b597749f4"
-  integrity sha512-4UVC0jpvgfBqfrfbeEJHm/Jh+MKRTqX/z0BZR6kc51wYMf9IXaNUbLna/7z6vphGESmHJbiU/9TvvHJeMZTIOA==
+react-hotkeys-hook@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-4.0.3.tgz#d5158ec6e6831f46145f779feab792257af854fd"
+  integrity sha512-w2wJ6Wf3yUhkMK+ouEbVaxVpWvFaEoUhRci6KMXyGUJRJuqijV8S7crOiH7597fPlg9gHErbYOV2vPou1vsyZg==
   dependencies:
     lodash "4.17.21"
 
