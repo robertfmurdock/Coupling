@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.components.external.fitty
 
-import org.w3c.dom.Node
+import dom.html.HTMLElement
 import kotlin.js.json
 
-fun Node.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: Boolean) {
+fun HTMLElement.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: Boolean) {
     if (js("global.IS_JSDOM") == true) {
         return
     }

@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.components.external.fitty.fitty
 import csstype.AlignItems
 import csstype.Margin
 import csstype.px
+import dom.html.HTMLDivElement
 import emotion.react.css
-import org.w3c.dom.Node
 import react.FC
 import react.PropsWithClassName
 import react.dom.html.ReactHTML.div
@@ -19,7 +19,7 @@ external interface CardHeaderProps : PropsWithClassName {
 
 val CardHeader = FC<CardHeaderProps> { props ->
     val size = props.size
-    val headerContainerRef = useRef<Node>(null)
+    val headerContainerRef = useRef<HTMLDivElement>(null)
     useLayoutEffect { headerContainerRef.current?.fitContent(size) }
     div {
         css(props.className) {
@@ -47,7 +47,7 @@ val CardHeader = FC<CardHeaderProps> { props ->
     }
 }
 
-private fun Node.fitContent(size: Int) = fitty(
+private fun HTMLDivElement.fitContent(size: Int) = fitty(
     maxFontHeight = (size * 0.3),
     minFontHeight = (size * 0.10),
     multiLine = true

@@ -30,8 +30,8 @@ import csstype.deg
 import csstype.integer
 import csstype.px
 import csstype.url
+import dom.html.HTMLElement
 import emotion.react.css
-import org.w3c.dom.Node
 import react.ChildrenBuilder
 import react.ReactNode
 import react.dom.html.ReactHTML.div
@@ -55,7 +55,7 @@ val assignedPair = tmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pin
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
-    val pinDroppableRef = useRef<Node>(null)
+    val pinDroppableRef = useRef<HTMLElement>(null)
     drop(pinDroppableRef)
 
     val playerCard = playerCardComponent(canDrag, swapCallback)

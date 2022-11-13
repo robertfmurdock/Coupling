@@ -6,9 +6,9 @@ import csstype.ClassName
 import csstype.Display
 import csstype.WhiteSpace
 import csstype.px
+import dom.html.HTMLElement
 import emotion.css.ClassName
 import emotion.react.css
-import org.w3c.dom.Node
 import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
 import react.useRef
@@ -20,7 +20,7 @@ data class Heatmap(val data: List<List<Double?>>, val className: ClassName) : Da
 
 val heatmap = tmFC<Heatmap> { (data, className) ->
     val rowSize = data.size * 90
-    val rootRef = useRef<Node>(null)
+    val rootRef = useRef<HTMLElement>(null)
     useLayoutEffect { rootRef.current?.renderD3Heatmap(data.flatten()) }
 
     div {
@@ -35,7 +35,7 @@ val heatmap = tmFC<Heatmap> { (data, className) ->
     }
 }
 
-private fun Node.renderD3Heatmap(flatten: List<Double?>) {
+private fun HTMLElement.renderD3Heatmap(flatten: List<Double?>) {
     d3Heatmap.renderD3Heatmap(
         this, flatten.toTypedArray(),
         ClassName {

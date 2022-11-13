@@ -34,9 +34,9 @@ import csstype.number
 import csstype.px
 import csstype.rotate
 import csstype.s
+import dom.html.HTMLDivElement
 import emotion.css.ClassName
 import emotion.react.css
-import org.w3c.dom.Node
 import react.ChildrenBuilder
 import react.MutableRefObject
 import react.dom.html.ReactHTML.div
@@ -49,7 +49,7 @@ data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataPr
 
 val welcome = tmFC { (randomProvider): Welcome ->
     var showLoginChooser by useState(false)
-    val welcomeTitleRef = useRef<Node>(null)
+    val welcomeTitleRef = useRef<HTMLDivElement>(null)
     useLayoutEffect {
         welcomeTitleRef.current?.fitty(maxFontHeight = 75.0, minFontHeight = 5.0, multiLine = false)
     }
@@ -107,7 +107,7 @@ private data class WelcomeCardSet(val left: Card, val right: Card, val proverb: 
 private data class Card(val name: String, val imagePath: String)
 
 private fun ChildrenBuilder.welcomeSplash(
-    welcomeTitleRef: MutableRefObject<Node>,
+    welcomeTitleRef: MutableRefObject<HTMLDivElement>,
     pair: CouplingPair.Double,
     proverb: String
 ) = span {
@@ -152,7 +152,7 @@ private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
 private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath)
 
-private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<Node>) = div {
+private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<HTMLDivElement>) = div {
     css {
         marginTop = 0.5.em
         marginBottom = 0.4.em

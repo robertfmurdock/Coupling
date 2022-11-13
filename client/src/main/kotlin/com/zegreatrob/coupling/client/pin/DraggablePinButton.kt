@@ -13,8 +13,8 @@ import csstype.TransitionProperty
 import csstype.TransitionTimingFunction
 import csstype.ident
 import csstype.s
+import dom.html.HTMLElement
 import emotion.react.css
-import org.w3c.dom.Node
 import react.dom.html.ReactHTML.span
 import react.useRef
 
@@ -25,7 +25,7 @@ data class DraggablePinButton(val pin: Pin, val scale: PinButtonScale) :
 
 val draggablePinButton = tmFC<DraggablePinButton> { (pin, scale) ->
     val (_, drag) = useDrag<Unit>(itemType = pinDragItemType, itemId = pin.id!!)
-    val draggableRef = useRef<Node>(null)
+    val draggableRef = useRef<HTMLElement>(null)
 
     drag(draggableRef)
 
