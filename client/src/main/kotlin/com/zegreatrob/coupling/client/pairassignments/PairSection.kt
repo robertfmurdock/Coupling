@@ -18,10 +18,10 @@ import csstype.Display
 import csstype.Float
 import csstype.VerticalAlign
 import csstype.px
+import dom.html.HTMLElement
 import emotion.react.css
 import kotlinx.browser.window
 import org.w3c.dom.DataTransfer
-import org.w3c.dom.Node
 import react.ChildrenBuilder
 import react.MutableRefObject
 import react.dom.html.ReactHTML.div
@@ -40,7 +40,7 @@ data class PairSection(
 ) : DataPropsBind<PairSection>(pairSection)
 
 private val pairSection = tmFC<PairSection> { (party, players, pairs, allowSave, setPairs, controls) ->
-    val pairSectionNode = useRef<Node>(null)
+    val pairSectionNode = useRef<HTMLElement>(null)
 
     div {
         css { verticalAlign = VerticalAlign.top }
@@ -57,7 +57,7 @@ private val pairSection = tmFC<PairSection> { (party, players, pairs, allowSave,
     }
 }
 
-private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
+private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<HTMLElement>) {
     if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
         add(
             CouplingButton(
@@ -72,16 +72,16 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<Node>) {
     }
 }
 
-private fun Node.copyToClipboardOnClick(): () -> Unit = if (isReallyTrulySafari())
+private fun HTMLElement.copyToClipboardOnClick(): () -> Unit = if (isReallyTrulySafari())
     writeImageToClipboardAsPromise()
 else
     collectImageThenWriteToClipboard()
 
-private fun Node.collectImageThenWriteToClipboard(): () -> Unit = {
+private fun HTMLElement.collectImageThenWriteToClipboard(): () -> Unit = {
     domToImage.toBlob(this).then { window.navigator.clipboard.write(dataTransfer(it)) }
 }
 
-private fun Node.writeImageToClipboardAsPromise(): () -> Unit = {
+private fun HTMLElement.writeImageToClipboardAsPromise(): () -> Unit = {
     window.navigator.clipboard.write(dataTransfer(domToImage.toBlob(this)))
 }
 

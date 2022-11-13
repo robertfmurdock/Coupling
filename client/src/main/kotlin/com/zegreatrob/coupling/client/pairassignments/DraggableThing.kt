@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.client.external.reactdnd.useDrop
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import csstype.Display
+import dom.html.HTMLElement
 import emotion.react.css
-import org.w3c.dom.Node
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.useRef
@@ -19,7 +19,7 @@ data class DraggableThing(
 ) : DataPropsBind<DraggableThing>(draggableThing)
 
 val draggableThing = tmFC<DraggableThing> { (itemType, itemId, dropCallback, handler) ->
-    val draggableRef = useRef<Node>(null)
+    val draggableRef = useRef<HTMLElement>(null)
 
     val (_, drag) = useDrag<Unit>(itemType = itemType, itemId = itemId)
     val (isOver, drop) = useDrop(

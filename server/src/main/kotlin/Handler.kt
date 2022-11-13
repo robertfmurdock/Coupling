@@ -73,7 +73,9 @@ private val websocketApp by lazy {
             ) {
                 invokeOnCompletion { cause ->
                     if (cause != null) {
-                        response.sendStatus(403).also { println("exception $cause") }
+                        response.sendStatus(403)
+                            .also { println("exception $cause") }
+                            .also { cause.printStackTrace() }
                     } else {
                         response.sendStatus(getCompleted())
                     }
