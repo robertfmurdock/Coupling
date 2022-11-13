@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.client
 
+import browser.document
 import com.zegreatrob.coupling.logging.initializeLogging
-import kotlinx.browser.document
+import dom.Document
+import dom.html.get
 import kotlinx.browser.window
-import org.w3c.dom.Document
 import org.w3c.dom.get
 import react.create
 import react.dom.client.createRoot
