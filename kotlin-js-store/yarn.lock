@@ -93,14 +93,14 @@
     "@aws-sdk/types" "3.212.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.212.0":
-  version "3.212.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.212.0.tgz#b2fbfdc76861b48a617350f4e83a8903ebff34e7"
-  integrity sha512-q8SZ7NihNHlsHVxPFpHpVnnMsyAhXniNLBZ1DtaOxtDR4qZIW6gjX/iYELFzVkgHaJDo28jq7ZoV5NyVn1TI3A==
+"@aws-sdk/client-apigatewaymanagementapi@~3.213.0":
+  version "3.213.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.213.0.tgz#22e7b1f38325791adc85da49974c1a4133774d63"
+  integrity sha512-W8gG56EO80PGcJ8SzSWy+Eoo5YNq6Ky+s2ouwh5vPwMusFyeNudD58+0q8VS8PICecNp5BkDgBNfcNcPEBDJXw==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.212.0"
+    "@aws-sdk/client-sts" "3.213.0"
     "@aws-sdk/config-resolver" "3.212.0"
     "@aws-sdk/credential-provider-node" "3.212.0"
     "@aws-sdk/fetch-http-handler" "3.212.0"
@@ -134,14 +134,14 @@
     "@aws-sdk/util-utf8-node" "3.208.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-dynamodb@3.212.0":
-  version "3.212.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.212.0.tgz#5484886db0e32defa021d766abc22b8337b0066c"
-  integrity sha512-BXS+64t1d505PCS9e6qyjg1fghtTxZwzgZt3cYXGkRZO5E4zBX+9NxlEzayU0Wxp1P52260vJDN5dUP77ZOnEg==
+"@aws-sdk/client-dynamodb@3.213.0":
+  version "3.213.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.213.0.tgz#515a4b5e5d93033c701658cafb6cf7a6fddd1b38"
+  integrity sha512-TTDL8ZLOHE0BpsHiAgANs9f7Td0j3XxGRn7FWzkk3WqzfwF4LyeWrEVc56rHDK0odVwQioY7fSzjop/7kySi/A==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.212.0"
+    "@aws-sdk/client-sts" "3.213.0"
     "@aws-sdk/config-resolver" "3.212.0"
     "@aws-sdk/credential-provider-node" "3.212.0"
     "@aws-sdk/fetch-http-handler" "3.212.0"
@@ -178,14 +178,14 @@
     tslib "^2.3.1"
     uuid "^8.3.2"
 
-"@aws-sdk/client-lambda@~3.212.0":
-  version "3.212.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.212.0.tgz#79eddd9225c25bcdbd3d069b6783be685121554c"
-  integrity sha512-wqtkIn07Btv6S/GdCy4bhjjINSeSQycYPlJXfY3p6WhyhHG88F1o7FHA/iNzS0lixsC+G0XrSjMZsGNzHMOK8g==
+"@aws-sdk/client-lambda@~3.213.0":
+  version "3.213.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.213.0.tgz#27e036614683bd839801ac338843371fcadb2f9e"
+  integrity sha512-NBA+fwdn5AFIhm5iEVElt5452jeo94jp2Au1jAh5g0kUaVhpc2mjvfVYvty8L50tLliNVDJazuVYHRfKOscDFQ==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.212.0"
+    "@aws-sdk/client-sts" "3.213.0"
     "@aws-sdk/config-resolver" "3.212.0"
     "@aws-sdk/credential-provider-node" "3.212.0"
     "@aws-sdk/fetch-http-handler" "3.212.0"
@@ -296,10 +296,10 @@
     "@aws-sdk/util-utf8-node" "3.208.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-sts@3.212.0":
-  version "3.212.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.212.0.tgz#6c18ae5b555443be753504218476a05b0c74d045"
-  integrity sha512-Zl8665HT1Do/yfiFEtqEjLkHSkAo5Isg2QU65Kbknj2W2DFj92a1cRvMlHanDLxlpuoryGP9/u1efYZeWeIdlg==
+"@aws-sdk/client-sts@3.213.0":
+  version "3.213.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.213.0.tgz#cfc097ad1c4a02eec5623010a06f16a408014267"
+  integrity sha512-MCjtLaYVQJLIMeLubDc4yRjSyVVTOebKxhY4ix4cfpSA6X4jMc4gRY2eu4eja3qoISfHq/Ikrkxx9DD1+n1azg==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
@@ -473,12 +473,12 @@
   dependencies:
     tslib "^2.3.1"
 
-"@aws-sdk/lib-dynamodb@3.212.0":
-  version "3.212.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.212.0.tgz#4451a88d7b155c5fa35c87f1c6c698c3557055f4"
-  integrity sha512-/RPfqBpoziE0ebwFbPNeoBBd6mgVolIaVkvTJwuFHpriIIAvR8PXciTx3WCU4QERz6fA1VXNSBmnKkAd4Sf3ow==
+"@aws-sdk/lib-dynamodb@3.213.0":
+  version "3.213.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.213.0.tgz#ca5ca5426b85a4c7dec1c8b56477801edcb7d250"
+  integrity sha512-tb2/+aY06M+gakzcqw2ZrqcjDZ8W69R0ZhStRozZUcVlz609Myh0W97yf4MUJDrqpG5D95aZR2OpFg6XQJ+G8A==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.212.0"
+    "@aws-sdk/util-dynamodb" "3.213.0"
     tslib "^2.3.1"
 
 "@aws-sdk/middleware-content-length@3.212.0":
@@ -778,10 +778,10 @@
     "@aws-sdk/types" "3.212.0"
     tslib "^2.3.1"
 
-"@aws-sdk/util-dynamodb@3.212.0":
-  version "3.212.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.212.0.tgz#9bdeba28407a7151923a84d5fcf119824d72f19a"
-  integrity sha512-7rD2v7FfndDMEx2XaF2XxtFn35Kmz6DwAtdop6zTltnZ6Y3XU5/UHKdZy4MqLi3/hhRb18kKel2GKpuEIpzAMw==
+"@aws-sdk/util-dynamodb@3.213.0":
+  version "3.213.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.213.0.tgz#f384e1af281dd0b65662d38ad99c9dd6a6bc2671"
+  integrity sha512-xLMEce+KcGuXf6Oiy6CbGkRH84RMief/zOvigHy3ePgrb4dIHbrcmB80Dd4iF5I8IuJn3jew+PQpFMjydsYl5Q==
   dependencies:
     tslib "^2.3.1"
 
@@ -1216,7 +1216,7 @@
     tslib "^2.4.0"
     value-or-promise "1.0.11"
 
-"@graphql-tools/stitch@^8.7.24":
+"@graphql-tools/stitch@^8.7.26":
   version "8.7.26"
   resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-8.7.26.tgz#36ce7410392e16abd7df577ef07bd88e4ce3347c"
   integrity sha512-J72xOK5HbbG6A6WXUZijwEQPYVJbirnOfgJywy+3yUqBWLWefBOWF6dlARwJ3B8+pSpPMtjZwHCU9yHcf78uYg==
@@ -8879,7 +8879,7 @@ lodash.zip@^4.2.0:
   resolved "https://registry.yarnpkg.com/lodash.zip/-/lodash.zip-4.2.0.tgz#ec6662e4896408ed4ab6c542a3990b72cc080020"
   integrity sha512-C7IOaBBK/0gMORRBd8OETNx3kmOkgIWIPvyDpZSCTwUrpYmgZwJkjZeOD8ww4xbOUOs4/attY+pciKvadNfFbg==
 
-lodash@4.17.21, lodash@4.17.x, lodash@>=4.17.21, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4:
+lodash@4.17.x, lodash@>=4.17.21, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -11052,12 +11052,10 @@ react-flip-toolkit@^7.0.17:
     flip-toolkit "7.0.17"
     prop-types "^15.5.7"
 
-react-hotkeys-hook@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-4.0.3.tgz#d5158ec6e6831f46145f779feab792257af854fd"
-  integrity sha512-w2wJ6Wf3yUhkMK+ouEbVaxVpWvFaEoUhRci6KMXyGUJRJuqijV8S7crOiH7597fPlg9gHErbYOV2vPou1vsyZg==
-  dependencies:
-    lodash "4.17.21"
+react-hotkeys-hook@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-4.0.4.tgz#41675ce5f82cf1a978e89e16461242f2cd132e81"
+  integrity sha512-3w8Sk3ElOOv8+e8YreXlF4fl57iHcJ7GacocSKvvVRhGZDBzTfOe+DKz31ogtYJx7n9PRW5wMlaw2GDKhvUJeA==
 
 react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.6:
   version "16.13.1"
