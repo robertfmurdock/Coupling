@@ -7,7 +7,7 @@ pluginManagement {
 
 plugins {
     `gradle-enterprise`
-    id("com.github.burrunan.s3-build-cache") version "1.4"
+    id("com.github.burrunan.s3-build-cache") version "1.5"
 }
 
 rootProject.name = "Coupling"
