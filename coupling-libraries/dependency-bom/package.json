@@ -6,7 +6,7 @@
     "@aws-sdk/client-lambda": "~3.216.0",
     "@aws-sdk/lib-dynamodb": "3.216.0",
     "@graphql-tools/schema": "^9.0.10",
-    "@graphql-tools/stitch": "^8.7.26",
+    "@graphql-tools/stitch": "^8.7.27",
     "@log4js-node/log4js-api": "1.0.2",
     "@rpii/wdio-html-reporter": "6.3.3",
     "@testing-library/react": "^13.4.0",
