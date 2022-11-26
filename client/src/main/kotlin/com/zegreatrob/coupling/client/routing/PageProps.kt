@@ -13,8 +13,8 @@ import kotlinx.browser.window
 import kotlinx.js.Record
 import kotlinx.js.get
 import org.w3c.dom.get
-import org.w3c.dom.url.URLSearchParams
 import react.Props
+import web.url.URLSearchParams
 
 external interface PageProps : Props {
     var pathParams: Record<String, String>
