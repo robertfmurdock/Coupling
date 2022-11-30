@@ -178,10 +178,10 @@
     tslib "^2.3.1"
     uuid "^8.3.2"
 
-"@aws-sdk/client-lambda@~3.218.0":
-  version "3.218.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.218.0.tgz#6396f415ead21653563d0e903576ca0ce13e96b0"
-  integrity sha512-owW7NvEWCowwUuGZx3FxJaRpsgtUFeqSZUQSYG6tf6MByk0W4uGrOppq2UsFkE9HJg48koOXxbtvyhiF7YZZ+Q==
+"@aws-sdk/client-lambda@~3.219.0":
+  version "3.219.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.219.0.tgz#9ebce8297e278cfb91517b09b20d51ecc65215fd"
+  integrity sha512-eWekhyytGtFbn/PQN6hZi+0+InMsjh/D4yxjN6QE8j37Tv6tL4cs83+DWyur5twzdCTFaT/j8Ask0eBqOOc73A==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
@@ -6836,6 +6836,15 @@ fs-extra@^10.0.0, fs-extra@^10.1.0:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-10.1.0.tgz#02873cfbc4084dde127eaa5f9905eef2325d1abf"
   integrity sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==
+  dependencies:
+    graceful-fs "^4.2.0"
+    jsonfile "^6.0.1"
+    universalify "^2.0.0"
+
+fs-extra@^11.0.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.1.0.tgz#5784b102104433bb0e090f48bfc4a30742c357ed"
+  integrity sha512-0rcTq621PD5jM/e0a3EJoGC/1TC5ZBCERW82LQuwfGnCa1V8w7dpYH1yNu+SLb6E5dkeCBzKEyLGlFrnr+dUyw==
   dependencies:
     graceful-fs "^4.2.0"
     jsonfile "^6.0.1"
