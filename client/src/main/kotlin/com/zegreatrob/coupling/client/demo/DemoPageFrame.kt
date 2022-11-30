@@ -35,9 +35,9 @@ import csstype.string
 import csstype.vw
 import dom.html.HTMLElement
 import emotion.react.css
+import js.core.get
+import js.core.jso
 import kotlinx.browser.document
-import kotlinx.js.get
-import kotlinx.js.jso
 import popper.core.Popper
 import popper.core.ReferenceElement
 import popper.core.modifier
