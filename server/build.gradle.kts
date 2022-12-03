@@ -79,7 +79,7 @@ tasks {
             compileKotlinJs,
             processResources,
             compileProductionExecutableKotlinJs,
-            "productionExecutableCompileSync"
+            "productionExecutableCompileSync",
         )
         mustRunAfter(clean)
         inputs.dir(compileKotlinJs.map { it.outputFileProperty })
@@ -92,6 +92,9 @@ tasks {
         val compilationName = "main"
         val jsProject: org.jetbrains.kotlin.gradle.dsl.KotlinJsProjectExtension = project.extensions.getByType()
         val compilation = jsProject.js().compilations.named(compilationName).get()
+
+        inputs.file(compilation?.npmProject?.packageJsonFile)
+
         setup(project)
         nodeModulesDir = compilation?.npmProject?.nodeModulesDir
         npmProjectDir = compilation?.npmProject?.dir

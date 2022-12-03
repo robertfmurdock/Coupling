@@ -23,8 +23,8 @@ import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
+import js.core.get
 import kotlinx.browser.window
-import kotlinx.js.get
 import react.ChildrenBuilder
 import react.FC
 import react.Props
@@ -42,7 +42,6 @@ data class CouplingRouter(val animationsDisabled: Boolean, val config: ClientCon
 
 val couplingRouter = tmFC<CouplingRouter> { (animationsDisabled, config) ->
     val (_, isSignedIn, isLoading) = useAuth0Data()
-
     BrowserRouter {
         basename = config.basename
         animationsDisabledContext.Provider(animationsDisabled) {

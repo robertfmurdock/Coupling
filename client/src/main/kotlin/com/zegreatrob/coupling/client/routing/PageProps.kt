@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.defaultClient
+import js.core.Record
+import js.core.get
 import kotlinx.browser.window
-import kotlinx.js.Record
-import kotlinx.js.get
 import org.w3c.dom.get
 import react.Props
 import web.url.URLSearchParams
