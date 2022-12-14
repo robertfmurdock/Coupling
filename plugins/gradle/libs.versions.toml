@@ -16,7 +16,7 @@ org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:
 org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.7.21"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
-org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.5"
+org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.6"
 
 [plugins]
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.44.0"
