@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
-import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 import java.time.Duration
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -33,8 +32,6 @@ tasks {
         dependsOn(":server:buildImage")
     }
 }
-
-yarn.ignoreScripts = false
 
 val appConfiguration: Configuration by configurations.creating {
     attributes {
