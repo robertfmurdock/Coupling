@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class, PairAssignmentDocumentIdSerializer::class)
+@file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class)
 
 package com.zegreatrob.coupling.json
 
@@ -20,7 +20,7 @@ import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class JsonPairAssignmentDocument(
-    val id: PairAssignmentDocumentId,
+    val id: String,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>
 )
@@ -30,7 +30,7 @@ data class SpinOutput(val result: JsonPairAssignmentDocument)
 
 @Serializable
 data class JsonPairAssignmentDocumentRecord(
-    val id: PairAssignmentDocumentId,
+    val id: String,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>,
     override val partyId: PartyId,
@@ -42,7 +42,7 @@ data class JsonPairAssignmentDocumentRecord(
 @Serializable
 data class SavePairAssignmentsInput(
     override val partyId: PartyId,
-    val pairAssignmentsId: PairAssignmentDocumentId,
+    val pairAssignmentsId: String,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>,
 ) : PartyInput
@@ -70,13 +70,13 @@ data class SpinInput(
 ) : PartyInput
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
-    id = id,
+    id = id.value,
     date = date,
     pairs = pairs.map(PinnedCouplingPair::toSerializable)
 )
 
 fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDocumentRecord(
-    id = data.element.id,
+    id = data.element.id.value,
     date = data.element.date,
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable),
     partyId = data.id,
@@ -104,19 +104,19 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
 fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
     SavePairAssignmentsInput(
         partyId = partyId,
-        pairAssignmentsId = element.id,
+        pairAssignmentsId = element.id.value,
         date = element.date,
         pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
     )
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
-    id = id,
+    id = id.let(::PairAssignmentDocumentId),
     date = date,
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
 
 fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
-    id = pairAssignmentsId,
+    id = pairAssignmentsId.let(::PairAssignmentDocumentId),
     date = date,
     pairs = pairs.map(JsonPinnedCouplingPair::toModel)
 )
@@ -124,7 +124,7 @@ fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
 fun JsonPairAssignmentDocumentRecord.toModel() = PartyRecord(
     partyId.with(
         PairAssignmentDocument(
-            id = id,
+            id = id.let(::PairAssignmentDocumentId),
             date = date,
             pairs = pairs.map(JsonPinnedCouplingPair::toModel)
         )
