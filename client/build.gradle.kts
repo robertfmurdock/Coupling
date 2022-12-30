@@ -2,6 +2,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -110,6 +111,8 @@ dependencies {
 val taggerExtension = com.zegreatrob.coupling.plugins.tagger.TaggerExtension.apply(rootProject)
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
+
+rootProject.yarn.ignoreScripts = false
 
 tasks {
     val cdnBuildOutput = "${project.buildDir.absolutePath}/cdn.json"
