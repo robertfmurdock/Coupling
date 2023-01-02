@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.components.external.fitty
 
-import dom.html.HTMLElement
+import web.html.HTMLElement
 import kotlin.js.json
 
 fun HTMLElement.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: Boolean) {

@@ -2,8 +2,8 @@
 
 package com.zegreatrob.coupling.client.external.domtoimage
 
-import dom.html.HTMLElement
 import org.w3c.files.Blob
+import web.html.HTMLElement
 import kotlin.js.Promise
 
 @JsModule("dom-to-image")

@@ -13,10 +13,10 @@ import csstype.TransitionProperty
 import csstype.TransitionTimingFunction
 import csstype.ident
 import csstype.s
-import dom.html.HTMLElement
 import emotion.react.css
 import react.dom.html.ReactHTML.span
 import react.useRef
+import web.html.HTMLElement
 
 const val pinDragItemType = "PAIR_PIN"
 

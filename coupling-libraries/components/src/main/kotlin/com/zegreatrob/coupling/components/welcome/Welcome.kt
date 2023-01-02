@@ -34,7 +34,6 @@ import csstype.number
 import csstype.px
 import csstype.rotate
 import csstype.s
-import dom.html.HTMLDivElement
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
@@ -44,6 +43,7 @@ import react.dom.html.ReactHTML.span
 import react.useLayoutEffect
 import react.useRef
 import react.useState
+import web.html.HTMLDivElement
 
 data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataPropsBind<Welcome>(welcome)
 

@@ -4,13 +4,13 @@ import com.zegreatrob.coupling.components.external.fitty.fitty
 import csstype.AlignItems
 import csstype.Margin
 import csstype.px
-import dom.html.HTMLDivElement
 import emotion.react.css
 import react.FC
 import react.PropsWithClassName
 import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
 import react.useRef
+import web.html.HTMLDivElement
 
 external interface CardHeaderProps : PropsWithClassName {
     var size: Int

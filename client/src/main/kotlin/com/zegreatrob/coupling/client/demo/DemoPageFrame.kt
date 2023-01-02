@@ -33,7 +33,6 @@ import csstype.px
 import csstype.rotate
 import csstype.string
 import csstype.vw
-import dom.html.HTMLElement
 import emotion.react.css
 import js.core.get
 import js.core.jso
@@ -52,6 +51,7 @@ import react.popper.usePopper
 import react.useLayoutEffect
 import react.useRef
 import react.useState
+import web.html.HTMLElement
 import kotlin.js.Json
 
 data class DemoPageFrame(val state: DemoAnimationState) : DataPropsBind<DemoPageFrame>(demoPageFrame)
