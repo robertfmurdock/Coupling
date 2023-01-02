@@ -6,12 +6,12 @@ import csstype.ClassName
 import csstype.Display
 import csstype.WhiteSpace
 import csstype.px
-import dom.html.HTMLElement
 import emotion.css.ClassName
 import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
 import react.useRef
+import web.html.HTMLElement
 
 @JsModule("com/zegreatrob/coupling/client/components/heatmap/D3Heatmap")
 external val d3Heatmap: dynamic

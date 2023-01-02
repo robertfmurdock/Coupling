@@ -30,13 +30,13 @@ import csstype.deg
 import csstype.integer
 import csstype.px
 import csstype.url
-import dom.html.HTMLElement
 import emotion.react.css
 import react.ChildrenBuilder
 import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useRef
+import web.html.HTMLElement
 
 data class AssignedPair(
     val party: Party,

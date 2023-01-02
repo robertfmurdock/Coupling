@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client
 
-import browser.document
-import browser.window
 import com.zegreatrob.coupling.logging.initializeLogging
-import dom.Document
 import react.create
 import react.dom.client.createRoot
+import web.dom.Document
+import web.dom.document
+import web.window.window
 
 object App {
 
