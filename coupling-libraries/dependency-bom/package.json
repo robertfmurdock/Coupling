@@ -37,7 +37,7 @@
     "enzyme-adapter-react-16": "^1.15.7",
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
-    "express-jwt": "8.2.1",
+    "express-jwt": "8.3.0",
     "express-statsd": "^0.3.0",
     "favicons": "~7.0.2",
     "favicons-webpack-plugin": "~6.0.0",
