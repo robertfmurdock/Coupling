@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "1.12.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.241.0",
-    "@aws-sdk/client-dynamodb": "3.241.0",
-    "@aws-sdk/client-lambda": "~3.241.0",
-    "@aws-sdk/lib-dynamodb": "3.241.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.245.0",
+    "@aws-sdk/client-dynamodb": "3.245.0",
+    "@aws-sdk/client-lambda": "~3.245.0",
+    "@aws-sdk/lib-dynamodb": "3.245.0",
     "@graphql-tools/schema": "^9.0.12",
     "@graphql-tools/stitch": "^8.7.34",
     "@log4js-node/log4js-api": "1.0.2",
@@ -75,7 +75,7 @@
     "react-websocket": "^2.1.0",
     "reactjs-popup": "^2.0.5",
     "serverless": "^2.72.2",
-    "serverless-http": "^3.1.0",
+    "serverless-http": "^3.1.1",
     "serverless-offline": "^8.5.0",
     "serverless-offline-ssm": "^5.2.0",
     "react": "18.2.0",
