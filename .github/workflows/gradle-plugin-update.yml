@@ -16,7 +16,7 @@ jobs:
         with:
           cache-read-only: true
       - name: Update Plugin Deps
-        run: ./gradlew :plugins:versionCatalogUpdate
+        run: ./gradlew :coupling-plugins:versionCatalogUpdate
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3

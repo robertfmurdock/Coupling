@@ -12,7 +12,7 @@ plugins {
 
 rootProject.name = "Coupling"
 
-includeBuild("plugins")
+includeBuild("coupling-plugins")
 include("client")
 include("server")
 include("server-base")
