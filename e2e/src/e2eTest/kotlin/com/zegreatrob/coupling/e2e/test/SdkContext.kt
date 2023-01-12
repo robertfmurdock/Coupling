@@ -11,7 +11,8 @@ fun <C : SdkContext> C.attach(sdk: Sdk) = also {
 }
 
 fun <C : SdkContext> sdkSetup(context: C, additionalActions: suspend C.() -> Unit) = e2eSetup.with(
-    { context.attachSdk() }, additionalActions = additionalActions
+    { context.attachSdk() },
+    additionalActions = additionalActions
 )
 
 private suspend fun <C : SdkContext> C.attachSdk() = attach(CouplingLogin.sdkProvider.await())

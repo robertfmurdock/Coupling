@@ -66,7 +66,7 @@ private suspend fun partyDataSerializable(
     pairAssignmentRecords = repositoryCatalog.pairAssignmentDocumentRepository.getRecords(partyId)
         .map(PartyRecord<PairAssignmentDocument>::toSerializable),
     pinRecords = repositoryCatalog.pinRepository.getPinRecords(partyId)
-        .map(Record<PartyElement<Pin>>::toSerializable),
+        .map(Record<PartyElement<Pin>>::toSerializable)
 )
 
 @Serializable
@@ -75,7 +75,7 @@ data class PartyData(
     val partyRecords: List<JsonPartyRecord>,
     val playerRecords: List<JsonPlayerRecord>,
     val pairAssignmentRecords: List<JsonPairAssignmentDocumentRecord>,
-    val pinRecords: List<JsonPinRecord>,
+    val pinRecords: List<JsonPinRecord>
 )
 
 private fun Json.print() = println(JSON.stringify(this))

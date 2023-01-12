@@ -246,9 +246,10 @@ class PairAssignmentsPageE2ETest {
     }
 }
 
-fun resolve(base: String, path: String) = if (base == "")
+fun resolve(base: String, path: String) = if (base == "") {
     "/$path"
-else
+} else {
     "$base/$path"
+}
 
 val clientBasename get() = "${process.env.CLIENT_BASENAME}".let { if (it.isNotEmpty()) "/$it" else "" }

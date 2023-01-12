@@ -57,10 +57,11 @@ data class CouplingWebsocket(
 
 private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->
     val websocket = ref.current
-    if (websocket != null)
+    if (websocket != null) {
         message.toSerializable().toJsonString().let(websocket::sendMessage)
-    else
+    } else {
         console.error("Message not sent, websocket not initialized", message)
+    }
 }
 
 private fun buildSocketUrl(partyId: PartyId, useSsl: Boolean, token: String) = URL(

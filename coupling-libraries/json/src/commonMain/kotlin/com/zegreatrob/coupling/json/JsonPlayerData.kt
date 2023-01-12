@@ -1,4 +1,5 @@
 @file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class)
+
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -28,7 +29,7 @@ data class JsonPlayerData(
     override val badge: String = "${defaultPlayer.badge}",
     override val callSignAdjective: String = defaultPlayer.callSignAdjective,
     override val callSignNoun: String = defaultPlayer.callSignNoun,
-    override val imageURL: String? = defaultPlayer.imageURL,
+    override val imageURL: String? = defaultPlayer.imageURL
 ) : JsonPlayer
 
 @Serializable
@@ -40,7 +41,7 @@ data class SavePlayerInput(
     val badge: String = "${defaultPlayer.badge}",
     val callSignAdjective: String = defaultPlayer.callSignAdjective,
     val callSignNoun: String = defaultPlayer.callSignNoun,
-    val imageURL: String? = defaultPlayer.imageURL,
+    val imageURL: String? = defaultPlayer.imageURL
 ) : PartyInput
 
 @Serializable
@@ -56,7 +57,7 @@ data class JsonPlayerRecord(
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
-    override val timestamp: DateTime,
+    override val timestamp: DateTime
 ) : JsonPartyRecordInfo, JsonPlayer
 
 fun Player.toSerializable() = JsonPlayerData(
@@ -80,7 +81,7 @@ fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
     partyId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp,
+    timestamp = timestamp
 )
 
 fun SavePlayerInput.toModel(): Player = Player(

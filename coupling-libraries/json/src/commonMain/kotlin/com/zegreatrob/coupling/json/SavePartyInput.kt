@@ -1,4 +1,5 @@
 @file:UseSerializers(PartyIdSerializer::class)
+
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.party.PartyId
@@ -16,5 +17,5 @@ data class SavePartyInput(
     val alternateBadgeName: String?,
     val callSignsEnabled: Boolean?,
     val animationsEnabled: Boolean?,
-    val animationSpeed: Double?,
+    val animationSpeed: Double?
 )

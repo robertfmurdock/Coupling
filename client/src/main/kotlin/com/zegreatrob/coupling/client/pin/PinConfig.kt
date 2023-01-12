@@ -46,8 +46,9 @@ private val pinConfig = tmFC<PinConfig<DD>> { (party, pin, pinList, reload, disp
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
 
-    if (redirectUrl != null)
+    if (redirectUrl != null) {
         Navigate { to = redirectUrl }
-    else
+    } else {
         add(PinConfigContent(party, updatedPin, pinList, onChange, onSubmit, onRemove))
+    }
 }

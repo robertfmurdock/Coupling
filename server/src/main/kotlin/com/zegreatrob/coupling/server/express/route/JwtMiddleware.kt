@@ -21,7 +21,7 @@ fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler = expressjw
         "audience" to "${Config.publicUrl}/api",
         "algorithms" to arrayOf("RS256"),
         "requestProperty" to "auth",
-        "credentialsRequired" to false,
+        "credentialsRequired" to false
     ).let {
         if (getToken == null) {
             it

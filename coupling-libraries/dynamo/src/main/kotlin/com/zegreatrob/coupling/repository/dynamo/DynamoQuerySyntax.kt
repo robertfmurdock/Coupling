@@ -17,6 +17,7 @@ interface DynamoQuerySyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemS
             params.add(json("ExclusiveStartKey" to this["LastEvaluatedKey"]))
         )
             .continueQuery(params)
-    } else
+    } else {
         itemsNode()
+    }
 }

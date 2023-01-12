@@ -149,7 +149,7 @@ private fun ChildrenBuilder.emailInput(player: Player, onChange: (ChangeEvent<*>
         value = player.email,
         type = InputType.text,
         onChange = onChange,
-        placeholder = "email",
+        placeholder = "email"
     )
     span {
         div { +"Email provides access privileges;" }
@@ -171,7 +171,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
             value = player.callSignAdjective,
             type = InputType.text,
             onChange = onChange,
-            list = "callSignAdjectiveOptions",
+            list = "callSignAdjectiveOptions"
         )
         datalist { id = "callSignAdjectiveOptions" }
         span { +"I feel the need..." }
@@ -184,7 +184,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
             value = player.callSignNoun,
             type = InputType.text,
             onChange = onChange,
-            list = "callSignNounOptions",
+            list = "callSignNounOptions"
         )
         datalist { id = "callSignNounOptions" }
         span { +"... the need for speed!" }

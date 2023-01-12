@@ -39,11 +39,12 @@ val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToCurrentFunc = { setRedirectUrl(party.id.currentPairsPage()) }
     val onCancel = dispatchFunc(
-        { DeletePairAssignmentsCommand(party.id, pairAssignments.id) }, { redirectToCurrentFunc() }
+        { DeletePairAssignmentsCommand(party.id, pairAssignments.id) },
+        { redirectToCurrentFunc() }
     )
-    if (redirectUrl != null)
+    if (redirectUrl != null) {
         Navigate { to = redirectUrl }
-    else
+    } else {
         div {
             className = ClassName("current-pair-assignments")
             dateHeader(pairAssignments)
@@ -56,6 +57,7 @@ val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
                 }
             }
         }
+    }
 }
 
 private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {

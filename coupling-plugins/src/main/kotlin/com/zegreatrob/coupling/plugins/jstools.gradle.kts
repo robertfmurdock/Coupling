@@ -9,7 +9,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.versioning")
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
-    id("org.jlleitschuh.gradle.ktlint")
+    id("com.zegreatrob.coupling.plugins.linter")
 }
 
 kotlin {
@@ -35,10 +35,6 @@ kotlin {
 }
 
 version = "0.0.0"
-
-ktlint {
-    version.set("0.45.2")
-}
 
 project.extensions.create<JsConstraintExtension>("npmConstrained")
 configure<JsConstraintExtension> {

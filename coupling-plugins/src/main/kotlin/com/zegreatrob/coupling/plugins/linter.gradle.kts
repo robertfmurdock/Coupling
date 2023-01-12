@@ -5,9 +5,5 @@ repositories {
 }
 
 plugins {
-    id("org.jlleitschuh.gradle.ktlint")
-}
-
-ktlint {
-    version.set("0.45.2")
+    id("org.jmailen.kotlinter")
 }

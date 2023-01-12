@@ -17,8 +17,10 @@ org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-std
 org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.8.0"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
 org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.6"
+org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:3.13.0"
 
 [plugins]
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.44.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
 org-jlleitschuh-gradle-ktlint = "org.jlleitschuh.gradle.ktlint:11.0.0"
+org-jmailen-kotlinter = "org.jmailen.kotlinter:3.13.0"

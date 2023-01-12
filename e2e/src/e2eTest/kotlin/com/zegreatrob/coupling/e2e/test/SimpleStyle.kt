@@ -9,6 +9,7 @@ external interface SimpleStyle {
 }
 
 operator fun SimpleStyle.get(propertyName: String): String = let {
-    @Suppress("UNUSED_VARIABLE") val prop = propertyName
+    @Suppress("UNUSED_VARIABLE")
+    val prop = propertyName
     js("it[prop]").unsafeCast<String>()
 }

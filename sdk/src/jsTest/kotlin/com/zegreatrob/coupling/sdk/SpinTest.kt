@@ -56,14 +56,16 @@ class SpinTest {
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 1, 10),
+                    id = PairAssignmentDocumentId("${uuid4()}"),
+                    date = DateTime(2014, 1, 10),
                     pairs = listOf(
                         pairOf(players[0], players[2]).withPins(),
                         pairOf(players[1], players[3]).withPins()
                     )
                 ),
                 PairAssignmentDocument(
-                    id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 1, 9),
+                    id = PairAssignmentDocumentId("${uuid4()}"),
+                    date = DateTime(2014, 1, 9),
                     pairs = listOf(
                         pairOf(players[0], players[3]).withPins(),
                         pairOf(players[1], players[2]).withPins()
@@ -93,14 +95,16 @@ class SpinTest {
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 2, 10),
+                id = PairAssignmentDocumentId("${uuid4()}"),
+                date = DateTime(2014, 2, 10),
                 pairs = listOf(
                     pairOf(players[0], players[3]).withPins(),
                     pairOf(players[1], players[2]).withPins()
                 )
             ),
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime(2014, 2, 9),
+                id = PairAssignmentDocumentId("${uuid4()}"),
+                date = DateTime(2014, 2, 9),
                 pairs = listOf(
                     pairOf(players[0], players[2]).withPins(),
                     pairOf(players[1], players[3]).withPins()
@@ -145,6 +149,7 @@ class SpinTest {
         } teardown {
             sdk.partyRepository.deleteIt(party.id)
         }
+
         @Test
         fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))

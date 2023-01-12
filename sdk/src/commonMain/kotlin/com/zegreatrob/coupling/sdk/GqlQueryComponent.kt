@@ -13,8 +13,9 @@ suspend inline fun <reified T, reified S : Any> GqlQueryComponent.performQueryGe
 ): T? = performPartyGQLQuery(partyId, listOf(gqlComponent))
     .let {
         val content = it[gqlComponent]
-        if (content != null)
+        if (content != null) {
             couplingJsonFormat.decodeFromJsonElement<S?>(content)?.let(transform)
-        else
+        } else {
             null
+        }
     }

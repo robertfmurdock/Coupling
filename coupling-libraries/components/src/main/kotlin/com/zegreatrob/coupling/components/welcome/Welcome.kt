@@ -217,7 +217,8 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
     } else {
         add(
             CouplingButton(
-                supersize, pink,
+                supersize,
+                pink,
                 ClassName {
                     marginTop = 20.px
                     animationName = ident("pulsate")

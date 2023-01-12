@@ -30,7 +30,7 @@ val playerJsonKeys = Player(
     email = "stub",
     callSignAdjective = "stub",
     callSignNoun = "stub",
-    imageURL = "stub",
+    imageURL = "stub"
 )
     .toSerializable()
     .toJsonElement()
@@ -45,7 +45,7 @@ val playerRecordJsonKeys = PartyRecord(
             email = "stub",
             callSignAdjective = "stub",
             callSignNoun = "stub",
-            imageURL = "stub",
+            imageURL = "stub"
         )
     ),
     ""

@@ -126,8 +126,9 @@ class SpinAnimationTest {
                 .let { next ->
                     if (next is Shuffle && tries < maxTries) {
                         next.nextUntilNotShuffle()
-                    } else
+                    } else {
                         next
+                    }
                 }
         }) exercise {
             state.nextUntilNotShuffle()

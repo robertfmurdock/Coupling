@@ -66,10 +66,11 @@ private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
 
     useLayoutEffect(state) {
         val className = state.descriptionSelector
-        val element: ReferenceElement? = if (className.isNotBlank())
+        val element: ReferenceElement? = if (className.isNotBlank()) {
             document.querySelector(className).unsafeCast<ReferenceElement>()
-        else
+        } else {
             null
+        }
         setReferenceElement(element)
         popperInstance.forceUpdate?.invoke()
     }

@@ -41,7 +41,8 @@ interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSynt
     private fun PairTimeMap.longestTimeReport() = timeToPartners.findPartnersWithLongestTime()
         ?.let { (timeResult, partners) -> PairCandidateReport(player, partners, timeResult) }
         ?: PairCandidateReport(
-            player, emptyList(),
+            player,
+            emptyList(),
             NeverPaired
         )
 

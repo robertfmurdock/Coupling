@@ -54,8 +54,9 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
         repository.save(updatedUser)
     } verifyWithWait {
         val result = repository.getUser()
-        if (result == null)
+        if (result == null) {
             fail()
+        }
         result.modifyingUserId.assertIsEqualTo(user.id)
         result.timestamp.assertIsEqualTo(clock.currentTime)
     }

@@ -58,10 +58,11 @@ data class ShowPlayer(val player: Player) : SpinAnimationState() {
         AssignedPlayer(player)
 
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
-        fun ifEmptyAddPlaceholder(rosterPlayers: List<Player>) = if (rosterPlayers.isEmpty())
+        fun ifEmptyAddPlaceholder(rosterPlayers: List<Player>) = if (rosterPlayers.isEmpty()) {
             makePlaceholderPlayers(pairAssignments)
-        else
+        } else {
             rosterPlayers
+        }
 
         val presentedPlayers = pairAssignments.previouslyPresentedPlayers(player)
 
@@ -147,10 +148,14 @@ private fun PairAssignmentDocument.revealedPairs(presentedPlayers: List<Player>)
 
 private fun List<Player>.toSimulatedPairs() = chunked(2)
     .map {
-        if (it.size > 1) pairOf(
-            it[0],
-            it[1]
-        ) else pairOf(it[0])
+        if (it.size > 1) {
+            pairOf(
+                it[0],
+                it[1]
+            )
+        } else {
+            pairOf(it[0])
+        }
     }
     .map { it.withPins(emptySet()) }
 

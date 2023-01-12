@@ -66,7 +66,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                     "Larry-Curly",
                     "Larry-Moe",
                     "Harry-Larry",
-                    "Curly-Moe",
+                    "Curly-Moe"
                 )
             )
         result.baseElement.querySelectorAll("[data-time-since-last-pair]")
@@ -80,7 +80,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                     "Never Paired",
                     "Never Paired",
                     "0",
-                    "0",
+                    "0"
                 )
             )
     }

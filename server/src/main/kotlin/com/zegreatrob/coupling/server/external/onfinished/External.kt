@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.external.on_finished
+package com.zegreatrob.coupling.server.external.onfinished
 
 import com.zegreatrob.coupling.server.external.express.Response
 

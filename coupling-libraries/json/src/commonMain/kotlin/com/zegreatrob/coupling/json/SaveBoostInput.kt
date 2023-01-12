@@ -1,4 +1,5 @@
 @file:UseSerializers(PartyIdSerializer::class)
+
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.party.PartyId

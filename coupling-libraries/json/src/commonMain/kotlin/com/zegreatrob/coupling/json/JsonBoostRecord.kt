@@ -1,4 +1,5 @@
 @file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class)
+
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -14,7 +15,7 @@ data class JsonBoostRecord(
     val partyIds: Set<PartyId>,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
-    val timestamp: DateTime,
+    val timestamp: DateTime
 )
 
 fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(

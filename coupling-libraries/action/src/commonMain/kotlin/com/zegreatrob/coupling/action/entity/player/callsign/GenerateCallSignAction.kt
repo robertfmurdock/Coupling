@@ -58,10 +58,11 @@ interface GenerateCallSignActionDispatcher : PredictableWordPicker, ExecutableAc
         }
     }
 
-    private fun Int?.next() = if (this == null)
+    private fun Int?.next() = if (this == null) {
         1
-    else
+    } else {
         this + 1
+    }
 
     private fun String.with(offset: Int? = null) = if (offset == null) {
         this

@@ -9,8 +9,9 @@ import react.dom.html.ReactHTML.div
 
 fun partyPageFunction(handler: ChildrenBuilder.(PageProps, PartyId) -> Unit) = FC<PageProps> { props ->
     val partyId = props.partyId
-    if (partyId != null)
+    if (partyId != null) {
         handler(props, partyId)
-    else
+    } else {
         div { +"Hey, we're missing the party id. Things have gone terribly, terribly wrong." }
+    }
 }

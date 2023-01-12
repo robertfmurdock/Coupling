@@ -13,10 +13,11 @@ data class ReportDocCommand(val connectionId: String, val doc: PairAssignmentDoc
 interface ReportDocCommandDispatcher : CouplingConnectionGetSyntax {
     suspend fun perform(command: ReportDocCommand) = with(command) {
         val connection = liveInfoRepository.get(connectionId)
-        if (connection == null)
+        if (connection == null) {
             null
-        else
+        } else {
             loadConnectionsAndGenerateMessage(connection, doc)
+        }
     }
 
     private suspend fun loadConnectionsAndGenerateMessage(

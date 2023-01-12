@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.external.cookie_parser
+package com.zegreatrob.coupling.server.external.cookieparser
 
 import com.zegreatrob.coupling.server.external.express.Handler
 

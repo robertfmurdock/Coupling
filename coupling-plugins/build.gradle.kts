@@ -9,17 +9,9 @@ repositories {
 plugins {
     `kotlin-dsl`
     id("java-gradle-plugin")
-    id("org.jlleitschuh.gradle.ktlint") version libs.versions.org.jlleitschuh.gradle.ktlint.get()
     alias(libs.plugins.com.github.ben.manes.versions)
+    alias(libs.plugins.org.jmailen.kotlinter)
     alias(libs.plugins.nl.littlerobots.version.catalog.update)
-}
-
-ktlint {
-    version.set(libs.versions.ktlint.get())
-
-    filter {
-        exclude { element -> element.file.name != "build.gradle.kts" }
-    }
 }
 
 dependencies {
@@ -33,7 +25,7 @@ dependencies {
     implementation(libs.org.apache.logging.log4j.log4j.iostreams)
     implementation(libs.org.jetbrains.kotlin.kotlin.stdlib)
     implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
-    implementation(libs.org.jlleitschuh.gradle.ktlint.gradle)
+    implementation(libs.org.jmailen.gradle.kotlinter.gradle)
     implementation(libs.org.slf4j.slf4j.api)
 }
 

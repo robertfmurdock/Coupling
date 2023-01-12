@@ -5,8 +5,9 @@ import kotlin.js.Json
 import kotlin.js.json
 
 fun main() {
-    if (isTestRun())
+    if (isTestRun()) {
         return
+    }
     require("com/zegreatrob/coupling/client/animations.css")
     require("com/zegreatrob/coupling/client/style.css")
     require("history")

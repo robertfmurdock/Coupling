@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.server.express.route.jwtMiddleware
 import com.zegreatrob.coupling.server.external.bodyparser.bodyParserJson
 import com.zegreatrob.coupling.server.external.bodyparser.urlencoded
 import com.zegreatrob.coupling.server.external.compression.compression
-import com.zegreatrob.coupling.server.external.cookie_parser.cookieParser
+import com.zegreatrob.coupling.server.external.cookieparser.cookieParser
 import com.zegreatrob.coupling.server.external.express.Express
-import com.zegreatrob.coupling.server.external.method_override.methodOverride
+import com.zegreatrob.coupling.server.external.methodoverride.methodOverride
 import kotlin.js.json
 
 fun Express.middleware() {

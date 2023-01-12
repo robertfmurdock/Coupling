@@ -31,10 +31,11 @@ val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
         }
         pinList.map { pin ->
             add(
-                if (canDrag)
+                if (canDrag) {
                     DraggablePinButton(pin, scale)
-                else
+                } else {
                     PinButton(pin, scale, showTooltip = true)
+                }
             )
         }
     }

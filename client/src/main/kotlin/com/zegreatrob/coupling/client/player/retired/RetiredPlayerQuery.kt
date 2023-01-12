@@ -21,10 +21,11 @@ interface RetiredPlayerQueryDispatcher : PartyIdGetSyntax, PartyRetiredPlayersSy
     suspend fun perform(query: RetiredPlayerQuery) = query.getData()
 
     private suspend fun RetiredPlayerQuery.getData() = partyId.getData().let { (party, players) ->
-        if (party == null)
+        if (party == null) {
             null
-        else
+        } else {
             Triple(party, players, players.first { it.id == playerId })
+        }
     }
 
     private suspend fun PartyId.getData() = coroutineScope {

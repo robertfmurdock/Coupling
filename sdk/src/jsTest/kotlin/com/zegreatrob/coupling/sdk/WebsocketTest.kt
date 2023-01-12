@@ -67,7 +67,7 @@ class WebsocketTest {
     } exercise {
         val twoSessions = listOf(
             couplingSocketSession(party.id),
-            couplingSocketSession(party.id),
+            couplingSocketSession(party.id)
         )
         twoSessions.forEach { it.incoming.receive() }
 
@@ -80,7 +80,9 @@ class WebsocketTest {
             ?.toCouplingServerMessage()
             .assertIsEqualTo(
                 CouplingSocketMessage(
-                    "Users viewing this page: 3", expectedOnlinePlayerList(username).toSet(), null
+                    "Users viewing this page: 3",
+                    expectedOnlinePlayerList(username).toSet(),
+                    null
                 )
             )
     } teardown { result ->

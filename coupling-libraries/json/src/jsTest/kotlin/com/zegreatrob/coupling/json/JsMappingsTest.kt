@@ -49,7 +49,9 @@ class JsMappingsTest {
                 key to this[key].let {
                     if (it is Array<*>) {
                         it.asList()
-                    } else it
+                    } else {
+                        it
+                    }
                 }
             }.filterNot { (_, value) -> value == null }
             .toMap()

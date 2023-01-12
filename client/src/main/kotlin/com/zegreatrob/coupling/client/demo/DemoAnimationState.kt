@@ -44,7 +44,7 @@ private val players = listOf(
     player3,
     player4,
     player5,
-    player6,
+    player6
 )
 
 private val pins = listOf(
@@ -57,7 +57,7 @@ private val pairAssignments = PairAssignmentDocument(
     listOf(
         pairOf(player1, player4).withPins(emptySet()),
         pairOf(player2, player5).withPins(pins.toSet()),
-        pairOf(player6).withPins(emptySet()),
+        pairOf(player6).withPins(emptySet())
     )
 )
 

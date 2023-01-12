@@ -38,9 +38,10 @@ val CouplingRoute = FC<CouplingRouteProps> {
 
 private fun newPathSetter(navigate: NavigateFunction) = { path: String ->
     navigate.invoke(
-        if (path.startsWith("/"))
+        if (path.startsWith("/")) {
             path
-        else
+        } else {
             "/$path"
+        }
     )
 }

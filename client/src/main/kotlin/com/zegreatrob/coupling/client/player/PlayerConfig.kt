@@ -53,8 +53,9 @@ private fun <P> playerConfig() where P : SavePlayerCommandDispatcher, P : Delete
             { setRedirectUrl(party.id.currentPairsPage()) }
         ).requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
 
-        if (redirectUrl != null)
+        if (redirectUrl != null) {
             Navigate { to = redirectUrl }
-        else
+        } else {
             add(PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove))
+        }
     }

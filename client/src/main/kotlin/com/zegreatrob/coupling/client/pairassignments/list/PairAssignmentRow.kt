@@ -46,7 +46,7 @@ data class PairAssignmentRow(
     val party: Party,
     val document: PairAssignmentDocument,
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
-    val windowFunctions: WindowFunctions = WindowFunctions,
+    val windowFunctions: WindowFunctions = WindowFunctions
 
 ) :
     DataPropsBind<PairAssignmentRow>(pairAssignmentRow)

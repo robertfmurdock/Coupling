@@ -18,6 +18,7 @@ interface DynamoScanSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemSy
             params.add(json("ExclusiveStartKey" to this["LastEvaluatedKey"]))
         )
             .continueScan(params)
-    } else
+    } else {
         itemsNode()
+    }
 }

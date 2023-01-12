@@ -30,14 +30,15 @@ interface PartyPlayerQueryDispatcher :
 
     private suspend fun PartyPlayerQuery.get() = partyId.getData()
         .let { (party, players) ->
-            if (party == null)
+            if (party == null) {
                 null
-            else
+            } else {
                 Triple(
                     party,
                     players,
                     players.findOrDefaultNew(playerId)
                 )
+            }
         }
 
     private suspend fun PartyId.getData() = coroutineScope {

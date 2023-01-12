@@ -20,7 +20,7 @@ object DynamoDbProvider : DynamoDBSyntax {
             "region" to "us-east-1",
             "retryMode" to "standard",
             "useFipsEndpoint" to false,
-            "useDualstackEndpoint" to false,
+            "useDualstackEndpoint" to false
         )
         val secret = js("process.env.AWS_SECRET_ACCESS_KEY").unsafeCast<String?>()
         val localDynamo = js("process.env.LOCAL_DYNAMO").unsafeCast<String?>() == "true"

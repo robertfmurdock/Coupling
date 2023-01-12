@@ -134,15 +134,19 @@ private fun usePinDrop(pinMoveCallback: PinMoveCallback) = useDrop(
 private fun playerCardComponent(
     canDrag: Boolean,
     swap: (PinnedPlayer, String) -> Unit
-): ChildrenBuilder.(PinnedPlayer, csstype.Angle) -> Unit = if (canDrag) { player, tilt ->
-    playerFlipped(player.player) {
-        swappablePlayer(player, canDrag, tilt) { droppedPlayerId: String -> swap(player, droppedPlayerId) }
-            .create()
+): ChildrenBuilder.(PinnedPlayer, csstype.Angle) -> Unit = if (canDrag) {
+    { player, tilt ->
+        playerFlipped(player.player) {
+            swappablePlayer(player, canDrag, tilt) { droppedPlayerId: String -> swap(player, droppedPlayerId) }
+                .create()
+        }
     }
-} else { player, tilt ->
-    playerFlipped(player.player) {
-        notSwappablePlayer(player.player, tilt)
-            .create()
+} else {
+    { player, tilt ->
+        playerFlipped(player.player) {
+            notSwappablePlayer(player.player, tilt)
+                .create()
+        }
     }
 }
 

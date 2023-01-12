@@ -1,7 +1,7 @@
 plugins {
     `java-platform`
     id("com.zegreatrob.coupling.plugins.versioning")
-    id("org.jlleitschuh.gradle.ktlint")
+    id("org.jmailen.kotlinter")
     id("com.zegreatrob.jsmints.plugins.ncu")
 }
 
@@ -11,10 +11,6 @@ repositories {
     gradlePluginPortal()
 }
 kotlin { js { nodejs() } }
-
-ktlint {
-    version.set("0.45.2")
-}
 
 javaPlatform {
     allowDependencies()

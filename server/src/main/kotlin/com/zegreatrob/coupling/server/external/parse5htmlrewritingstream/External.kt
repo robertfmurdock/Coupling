@@ -1,4 +1,5 @@
 @file:JsModule("parse5-html-rewriting-stream")
+
 package com.zegreatrob.coupling.server.external.parse5htmlrewritingstream
 
 import com.zegreatrob.coupling.server.external.fs.Stream

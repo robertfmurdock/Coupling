@@ -36,7 +36,7 @@ data class PairSection(
     val pairAssignments: PairAssignmentDocument?,
     val allowSave: Boolean,
     val setPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
+    val controls: Controls<DeletePairAssignmentsCommandDispatcher>
 ) : DataPropsBind<PairSection>(pairSection)
 
 private val pairSection = tmFC<PairSection> { (party, players, pairs, allowSave, setPairs, controls) ->
@@ -72,10 +72,11 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<HTMLElem
     }
 }
 
-private fun HTMLElement.copyToClipboardOnClick(): () -> Unit = if (isReallyTrulySafari())
+private fun HTMLElement.copyToClipboardOnClick(): () -> Unit = if (isReallyTrulySafari()) {
     writeImageToClipboardAsPromise()
-else
+} else {
     collectImageThenWriteToClipboard()
+}
 
 private fun HTMLElement.collectImageThenWriteToClipboard(): () -> Unit = {
     domToImage.toBlob(this).then { window.navigator.clipboard.write(dataTransfer(it)) }

@@ -68,10 +68,11 @@ val playerSpotlightStyles = ClassName {
 private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
     className = playerSpotlightStyles
 
-    if (shownPlayer != null)
+    if (shownPlayer != null) {
         flippedPlayer(shownPlayer)
-    else
+    } else {
         placeholderPlayerCard()
+    }
 }
 
 private fun ChildrenBuilder.placeholderPlayerCard() =

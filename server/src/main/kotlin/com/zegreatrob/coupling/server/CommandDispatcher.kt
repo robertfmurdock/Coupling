@@ -157,7 +157,7 @@ fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(
         "apiVersion" to "2018-11-29",
         "endpoint" to Config.apiGatewayManagementApiHost
     ).add(
-        if (Process.getEnv("IS_OFFLINE") == "true")
+        if (Process.getEnv("IS_OFFLINE") == "true") {
             json(
                 "region" to "us-east-1",
                 "credentials" to json(
@@ -165,8 +165,9 @@ fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(
                     "secretAccessKey" to "lol"
                 )
             )
-        else
+        } else {
             json()
+        }
     )
 )
 

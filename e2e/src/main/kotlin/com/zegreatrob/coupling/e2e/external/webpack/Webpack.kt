@@ -9,10 +9,11 @@ suspend fun runWebpack(config: WebpackConfig, statsOutput: String = "minimal") =
 
 private fun WebpackCompiler.runAsync() = CompletableDeferred<WebpackStats>().also {
     run { err: Throwable?, stats ->
-        if (err != null)
+        if (err != null) {
             it.completeExceptionally(err)
-        else
+        } else {
             it.complete(stats)
+        }
     }
 }
 

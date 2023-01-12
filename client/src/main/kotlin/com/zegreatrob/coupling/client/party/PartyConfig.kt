@@ -37,9 +37,9 @@ private val partyConfig = tmFC { (party, commandFunc): PartyConfig<PartyConfigDi
     val onSave = commandFunc({ SavePartyCommand(updatedParty) }, { redirectToPartyList() })
     val onDelete = if (isNew) null else commandFunc({ DeletePartyCommand(party.id) }, { redirectToPartyList() })
 
-    if (redirectUrl != null)
+    if (redirectUrl != null) {
         Navigate { to = redirectUrl }
-    else {
+    } else {
         add(PartyConfigContent(updatedParty, isNew, onChange, onSave, onDelete))
     }
 }
@@ -49,7 +49,8 @@ private fun Json.correctTypes() = also {
     set("pairingRule", this["pairingRule"].toString().toInt())
 }
 
-private fun Party.withDefaultPartyId() = if (id.value.isNotBlank())
+private fun Party.withDefaultPartyId() = if (id.value.isNotBlank()) {
     this
-else
+} else {
     copy(id = PartyId("${uuid4()}"))
+}

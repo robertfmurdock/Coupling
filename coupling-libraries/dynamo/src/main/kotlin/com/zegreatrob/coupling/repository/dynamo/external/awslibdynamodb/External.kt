@@ -1,4 +1,5 @@
 @file:JsModule("@aws-sdk/lib-dynamodb")
+
 package com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb
 
 import com.zegreatrob.coupling.repository.dynamo.external.DynamoDBClient

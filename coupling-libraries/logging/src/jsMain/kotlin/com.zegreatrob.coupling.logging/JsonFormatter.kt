@@ -92,8 +92,9 @@ class JsonFormatter : Formatter {
             val propertyMap = map.filterKeys { it != "message" }
                 .mapValues { entry -> entry.value.toString() }
             propertyGroupName to propertyMap
-        } else
+        } else {
             result.toString() to null
+        }
     }
 
     private fun Throwable?.throwableToString(): List<String> {

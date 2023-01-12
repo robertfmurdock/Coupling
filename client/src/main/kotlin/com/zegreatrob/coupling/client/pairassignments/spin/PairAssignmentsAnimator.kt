@@ -62,8 +62,9 @@ private fun ChildrenBuilder.flipperSpinAnimation(
     rosteredPairAssignments: RosteredPairAssignments
 ) = Flipper {
     flipKey = state.toString()
-    if (state == End)
+    if (state == End) {
         props.children(this)
-    else
+    } else {
         add(SpinAnimationPanel(party, rosteredPairAssignments, state))
+    }
 }

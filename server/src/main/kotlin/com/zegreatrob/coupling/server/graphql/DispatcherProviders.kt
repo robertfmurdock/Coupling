@@ -24,9 +24,9 @@ object DispatcherProviders {
     val prereleaseCommand: GraphQLDispatcherProvider<PrereleaseDispatcher> = { request, entity, args ->
         val dispatcher = command(request, entity, args)
 
-        if (dispatcher == null || !Config.prereleaseMode)
+        if (dispatcher == null || !Config.prereleaseMode) {
             null
-        else {
+        } else {
             val boostRepo = DynamoBoostRepository(dispatcher.user.id, TimeProvider)
             object : PrereleaseDispatcher, ICommandDispatcher by dispatcher {
                 override val boostRepository = boostRepo

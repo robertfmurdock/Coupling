@@ -17,8 +17,9 @@ fun main() {
             .whileRunning { runWebdriverIO(config.wdioConfig()) }
             .let { result -> process.exit(result) }
     }.invokeOnCompletion { huh ->
-        if (huh != null)
+        if (huh != null) {
             process.exit(reportError(huh))
+        }
     }
 }
 

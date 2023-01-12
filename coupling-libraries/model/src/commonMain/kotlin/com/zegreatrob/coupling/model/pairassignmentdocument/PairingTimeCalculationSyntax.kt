@@ -8,10 +8,11 @@ interface PairingTimeCalculationSyntax : CouplingComparisionSyntax {
         val documentsSinceLastPartnership =
             history.indexOfFirst { historyDocument -> pairingExistsInDocument(historyDocument, pair) }
 
-        return if (documentsSinceLastPartnership < 0)
+        return if (documentsSinceLastPartnership < 0) {
             NeverPaired
-        else
+        } else {
             TimeResultValue(documentsSinceLastPartnership)
+        }
     }
 
     private fun pairingExistsInDocument(historyDocument: PairAssignmentDocument, pair: CouplingPair) =

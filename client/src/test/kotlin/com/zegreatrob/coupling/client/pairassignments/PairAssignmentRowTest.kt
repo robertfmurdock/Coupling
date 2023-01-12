@@ -64,7 +64,7 @@ class PairAssignmentRowTest {
     }) {
         render(
             PairAssignmentRow(party, document, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
-            json("wrapper" to MemoryRouter),
+            json("wrapper" to MemoryRouter)
         )
     } exercise {
         actor.click(screen.getByText("DELETE")).await()

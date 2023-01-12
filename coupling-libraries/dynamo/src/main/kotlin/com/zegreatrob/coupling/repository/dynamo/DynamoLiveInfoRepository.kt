@@ -55,7 +55,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
             ":tribeId" to partyId.value
         ),
         "ExpressionAttributeNames" to json(
-            "#sortKey" to "tribeId+id",
+            "#sortKey" to "tribeId+id"
         ),
         "KeyConditionExpression" to "entityType = :entityType and begins_with(#sortKey, :tribeId)"
     )

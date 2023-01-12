@@ -15,10 +15,11 @@ val RetiredPlayerPage = FC<PageProps> { props ->
     val partyId = props.partyId
     val playerId = props.playerId
 
-    if (partyId != null && playerId != null)
+    if (partyId != null && playerId != null) {
         loadedRetiredPlayer(props, partyId, playerId)
-    else
+    } else {
         div { +"Hey, we're missing the party id or the player id. Things have gone terribly, terribly wrong." }
+    }
 }
 
 private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: PartyId, playerId: String) =

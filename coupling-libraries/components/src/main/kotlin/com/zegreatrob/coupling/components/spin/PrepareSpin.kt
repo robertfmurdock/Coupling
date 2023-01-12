@@ -28,9 +28,9 @@ val prepareSpin = tmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, di
     var redirectUrl by useState<String?>(null)
     val onSpin = onSpin(dispatchFunc, party, playerSelections, pinSelections) { redirectUrl = it }
 
-    if (redirectUrl != null)
+    if (redirectUrl != null) {
         Navigate { to = redirectUrl ?: "" }
-    else {
+    } else {
         add(
             PrepareSpinContent(
                 party,

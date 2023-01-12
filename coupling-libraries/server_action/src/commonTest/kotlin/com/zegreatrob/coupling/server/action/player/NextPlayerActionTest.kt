@@ -86,13 +86,19 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val players = listOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(
-            bill, listOf(Player(), Player(), Player()), NeverPaired
+            bill,
+            listOf(Player(), Player(), Player()),
+            NeverPaired
         )
         val amadeusPairCandidates = PairCandidateReport(
-            amadeus, listOf(Player()), NeverPaired
+            amadeus,
+            listOf(Player()),
+            NeverPaired
         )
         val shortyPairCandidates = PairCandidateReport(
-            shorty, listOf(Player(), Player()), NeverPaired
+            shorty,
+            listOf(Player(), Player()),
+            NeverPaired
         )
     }) {
         execute.spyWillReturn(

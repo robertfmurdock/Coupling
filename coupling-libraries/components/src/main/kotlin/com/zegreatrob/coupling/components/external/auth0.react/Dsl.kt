@@ -15,10 +15,11 @@ fun useAuth0Data(): AuthHookData {
         error = hook.error,
         loginWithRedirect = hook::loginWithRedirect,
         getIdTokenClaims = {
-            if (hook.isAuthenticated == true)
+            if (hook.isAuthenticated == true) {
                 hook.getIdTokenClaims().collectRawToken()
-            else
+            } else {
                 ""
+            }
         },
         logout = hook::logout,
         getAccessTokenSilently = {
@@ -34,14 +35,3 @@ fun useAuth0Data(): AuthHookData {
 
 private suspend fun Promise<Json>.collectRawToken() =
     await()["__raw"].toString()
-
-data class AuthHookData(
-    val user: Auth0User?,
-    val authenticated: Boolean,
-    val loading: Boolean,
-    val error: Throwable?,
-    val loginWithRedirect: () -> Unit,
-    val getIdTokenClaims: suspend () -> String,
-    val logout: (Json) -> Unit,
-    val getAccessTokenSilently: suspend () -> String,
-)

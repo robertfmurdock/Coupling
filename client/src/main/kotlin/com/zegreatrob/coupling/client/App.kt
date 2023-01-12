@@ -25,5 +25,5 @@ private fun windowClientConfig() = ClientConfig(
     basename = "${window.asDynamic()["basename"]}",
     expressEnv = "${window.asDynamic()["expressEnv"]}",
     webpackPublicPath = "${window.asDynamic()["webpackPublicPath"]}",
-    websocketHost = "${window.asDynamic()["websocketHost"]}",
+    websocketHost = "${window.asDynamic()["websocketHost"]}"
 )

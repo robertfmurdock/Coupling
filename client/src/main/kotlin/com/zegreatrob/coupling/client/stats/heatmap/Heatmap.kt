@@ -37,7 +37,8 @@ val heatmap = tmFC<Heatmap> { (data, className) ->
 
 private fun HTMLElement.renderD3Heatmap(flatten: List<Double?>) {
     d3Heatmap.renderD3Heatmap(
-        this, flatten.toTypedArray(),
+        this,
+        flatten.toTypedArray(),
         ClassName {
             height = 90.px
             width = 90.px

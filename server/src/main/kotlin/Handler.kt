@@ -127,7 +127,7 @@ private fun notifyConnectLambda(event: dynamic): Promise<Unit> {
     }
 }
 
-private fun notifyLambdaOptions() = if (Process.getEnv("IS_OFFLINE") == "true")
+private fun notifyLambdaOptions() = if (Process.getEnv("IS_OFFLINE") == "true") {
     json(
         "endpoint" to Process.getEnv("LAMBDA_ENDPOINT"),
         "region" to "us-east-1",
@@ -136,8 +136,9 @@ private fun notifyLambdaOptions() = if (Process.getEnv("IS_OFFLINE") == "true")
             "secretAccessKey" to "lol"
         )
     )
-else
+} else {
     json()
+}
 
 @JsExport
 @JsName("serverlessSocketMessage")
@@ -195,7 +196,9 @@ fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
 }
 
 private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
-    User("websocket", "websocket", emptySet()), this, uuid4()
+    User("websocket", "websocket", emptySet()),
+    this,
+    uuid4()
 )
 
 private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(socketDispatcher: CommandDispatcher) =

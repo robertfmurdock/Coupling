@@ -23,8 +23,8 @@ import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.graphql.GraphQLSchema
 import com.zegreatrob.coupling.server.external.graphql.Resolver
-import com.zegreatrob.coupling.server.external.graphql_tools.schema.makeExecutableSchema
-import com.zegreatrob.coupling.server.external.graphql_tools.schema.mergeSchemas
+import com.zegreatrob.coupling.server.external.graphql.tools.schema.makeExecutableSchema
+import com.zegreatrob.coupling.server.external.graphql.tools.schema.mergeSchemas
 import kotlin.js.json
 
 private val entityWithId: Resolver = { _, args, _, _ -> json("id" to args["id"]) }
@@ -46,16 +46,18 @@ fun prereleaseSchema() = makeExecutableSchema(
 private fun prereleaseResolvers() = json(
     "Mutation" to json(
         "saveBoost" to saveBoostResolver,
-        "deleteBoost" to deleteBoostResolver,
+        "deleteBoost" to deleteBoostResolver
     ),
     "UserRecord" to json(
-        "boost" to boostResolver,
+        "boost" to boostResolver
     )
 )
 
 fun unifiedSchema() = addPrereleaseSchema(couplingSchema())
 
-private fun addPrereleaseSchema(standardSchema: GraphQLSchema) = if (!Config.prereleaseMode) standardSchema else {
+private fun addPrereleaseSchema(standardSchema: GraphQLSchema) = if (!Config.prereleaseMode) {
+    standardSchema
+} else {
     try {
         mergeSchemas(json("schemas" to arrayOf(standardSchema, prereleaseSchema())))
     } catch (anything: Throwable) {
@@ -68,7 +70,7 @@ fun couplingResolvers() = json(
     "Query" to json(
         "user" to userResolve,
         "partyList" to partyListResolve,
-        "partyData" to entityWithId,
+        "partyData" to entityWithId
     ),
     "Mutation" to json(
         "spin" to spinResolver,
@@ -79,7 +81,7 @@ fun couplingResolvers() = json(
         "savePlayer" to savePlayerResolver,
         "deletePlayer" to deletePlayerResolver,
         "savePairAssignments" to savePairsResolver,
-        "deletePairAssignments" to deletePairsResolver,
+        "deletePairAssignments" to deletePairsResolver
     ),
     "PartyData" to json(
         "party" to partyResolve,
@@ -87,6 +89,6 @@ fun couplingResolvers() = json(
         "playerList" to playerListResolve,
         "retiredPlayers" to retiredPlayerListResolve,
         "pairAssignmentDocumentList" to pairAssignmentListResolve,
-        "currentPairAssignmentDocument" to currentPairAssignmentResolve,
-    ),
+        "currentPairAssignmentDocument" to currentPairAssignmentResolve
+    )
 )

@@ -44,7 +44,7 @@ data class SavePairAssignmentsInput(
     override val partyId: PartyId,
     val pairAssignmentsId: String,
     val date: DateTime,
-    val pairs: List<JsonPinnedCouplingPair>,
+    val pairs: List<JsonPinnedCouplingPair>
 ) : PartyInput
 
 @Serializable
@@ -59,14 +59,14 @@ data class JsonPinnedPlayer(
     val callSignAdjective: String = defaultPlayer.callSignAdjective,
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
-    val pins: List<JsonPinData>,
+    val pins: List<JsonPinData>
 )
 
 @Serializable
 data class SpinInput(
     override val partyId: PartyId,
     val players: List<JsonPlayerData>,
-    val pins: List<JsonPinData>,
+    val pins: List<JsonPinData>
 ) : PartyInput
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
@@ -82,7 +82,7 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDoc
     partyId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp,
+    timestamp = timestamp
 )
 
 fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
@@ -106,7 +106,7 @@ fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
         partyId = partyId,
         pairAssignmentsId = element.id.value,
         date = element.date,
-        pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
+        pairs = element.pairs.map(PinnedCouplingPair::toSerializable)
     )
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(

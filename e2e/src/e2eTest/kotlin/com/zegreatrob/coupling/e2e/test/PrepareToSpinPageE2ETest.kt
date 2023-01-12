@@ -37,8 +37,9 @@ class PrepareToSpinPageE2ETest {
             if (saveButton.isDisplayed()) {
                 saveButton.click()
             }
-            if (WebdriverBrowser.isAlertOpen())
+            if (WebdriverBrowser.isAlertOpen()) {
                 WebdriverBrowser.dismissAlert()
+            }
         })
 
         private fun buildFunkyParty() = Party(

@@ -27,9 +27,9 @@ interface ClientNewPairAssignmentsCommandDispatcher :
 
     override suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {
         val (party, players, pins) = getData()
-        if (party == null)
+        if (party == null) {
             null
-        else {
+        } else {
             execute(requestSpinAction(players, pins))
                 .let { party.id.with(it).save() }
         }

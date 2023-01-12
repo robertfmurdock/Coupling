@@ -1,4 +1,5 @@
 @file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class)
+
 package com.zegreatrob.coupling.json
 
 import com.soywiz.klock.DateTime
@@ -20,7 +21,7 @@ data class JsonParty(
     val name: String? = null,
     val callSignsEnabled: Boolean = false,
     val animationsEnabled: Boolean = true,
-    val animationSpeed: Double = 1.0,
+    val animationSpeed: Double = 1.0
 )
 
 @Serializable
@@ -37,7 +38,7 @@ data class JsonPartyRecord(
     val animationSpeed: Double = 1.0,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
-    val timestamp: DateTime,
+    val timestamp: DateTime
 )
 
 fun Party.toSerializable() = JsonParty(
@@ -50,7 +51,7 @@ fun Party.toSerializable() = JsonParty(
     name = name,
     callSignsEnabled = callSignsEnabled,
     animationsEnabled = animationEnabled,
-    animationSpeed = animationSpeed,
+    animationSpeed = animationSpeed
 )
 
 fun Record<Party>.toSerializable() = JsonPartyRecord(
@@ -66,7 +67,7 @@ fun Record<Party>.toSerializable() = JsonPartyRecord(
     animationSpeed = data.animationSpeed,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp,
+    timestamp = timestamp
 )
 
 fun JsonParty.toModel(): Party = Party(
@@ -79,7 +80,7 @@ fun JsonParty.toModel(): Party = Party(
     name = name,
     callSignsEnabled = callSignsEnabled,
     animationEnabled = animationsEnabled,
-    animationSpeed = animationSpeed,
+    animationSpeed = animationSpeed
 )
 
 fun JsonPartyRecord.toModelRecord(): Record<Party> = Record(
@@ -93,7 +94,7 @@ fun JsonPartyRecord.toModelRecord(): Record<Party> = Record(
         name = name,
         callSignsEnabled = callSignsEnabled,
         animationEnabled = animationsEnabled,
-        animationSpeed = animationSpeed,
+        animationSpeed = animationSpeed
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,

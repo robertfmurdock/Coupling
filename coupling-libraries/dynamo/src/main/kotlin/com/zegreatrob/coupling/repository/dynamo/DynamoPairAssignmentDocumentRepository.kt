@@ -48,7 +48,10 @@ class DynamoPairAssignmentDocumentRepository private constructor(
 
     override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
         performDelete(
-            pairAssignmentDocumentId.value, partyId, now(), ::toRecord
+            pairAssignmentDocumentId.value,
+            partyId,
+            now(),
+            ::toRecord
         ) { asDynamoJson() }
 
     suspend fun getRecords(partyId: PartyId): List<PartyRecord<PairAssignmentDocument>> =

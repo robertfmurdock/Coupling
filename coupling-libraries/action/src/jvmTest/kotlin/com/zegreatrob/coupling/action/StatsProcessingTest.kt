@@ -49,8 +49,9 @@ class StatsProcessingTest {
             (1..10).forEach { index ->
                 val filter = index * 5
                 val count = pairAssignmentRecordsYear.filter { it > filter }.size
-                if (count > 0)
+                if (count > 0) {
                     println("found $count parties with more than $filter in $year")
+                }
             }
         }
     }

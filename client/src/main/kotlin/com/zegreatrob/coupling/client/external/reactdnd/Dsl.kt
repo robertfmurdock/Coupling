@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.external.reactdnd
 
+import com.zegreatrob.coupling.client.external.reactdnd.dsl.DragDropValueContent
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -7,7 +8,7 @@ fun <T> useDrag(itemType: String, itemId: Any): DragDropValueContent<T> {
     val results = useDragFunc(
         json(
             "type" to itemType,
-            "item" to json("id" to itemId),
+            "item" to json("id" to itemId)
         )
     ).unsafeCast<Array<dynamic>>()
 
@@ -17,14 +18,11 @@ fun <T> useDrag(itemType: String, itemId: Any): DragDropValueContent<T> {
     )
 }
 
-data class DragDropValueContent<T>(val value: T, val dragFunc: (Any) -> Any)
-
 fun <T> useDrop(
     acceptItemType: String,
     drop: (Json) -> Unit,
     collect: (DragSourceMonitor) -> T
 ): DragDropValueContent<T> {
-
     val results = useDropFunc(
         json(
             "accept" to acceptItemType,

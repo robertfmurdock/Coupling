@@ -44,7 +44,9 @@ class CurrentPairAssignmentsPanelTest {
     fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = asyncSetup(object {
         val party = stubParty()
         val pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()
+            id = PairAssignmentDocumentId("${uuid4()}"),
+            date = DateTime.now(),
+            pairs = emptyList()
         )
         val stubDispatcher = StubDispatcher()
         val actor = userEvent.setup()
@@ -130,7 +132,8 @@ class CurrentPairAssignmentsPanelTest {
         val player4 = Player("4", name = "4")
 
         val pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
+            id = PairAssignmentDocumentId("${uuid4()}"),
+            date = DateTime.now(),
             pairs = listOf(
                 pairOf(player1, player2),
                 pairOf(player3, player4)
@@ -165,7 +168,8 @@ class CurrentPairAssignmentsPanelTest {
         val pair1 = pairOf(Player("1", name = "1"), Player("2", name = "2")).withPins(setOf(pin1))
         val pair2 = pairOf(Player("3", name = "3"), Player("4", name = "4")).withPins(setOf(pin2))
         val pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
+            id = PairAssignmentDocumentId("${uuid4()}"),
+            date = DateTime.now(),
             pairs = listOf(pair1, pair2)
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
@@ -201,7 +205,8 @@ class CurrentPairAssignmentsPanelTest {
         val pin2 = stubPin()
 
         val pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
+            id = PairAssignmentDocumentId("${uuid4()}"),
+            date = DateTime.now(),
             pairs = listOf(
                 pairOf(player1, player2).withPins(setOf(pin1)),
                 pairOf(player3, player4).withPins(setOf(pin2))
@@ -237,7 +242,8 @@ class CurrentPairAssignmentsPanelTest {
         val player4 = Player("4", name = "4")
 
         val pairAssignments = PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(),
+            id = PairAssignmentDocumentId("${uuid4()}"),
+            date = DateTime.now(),
             pairs = listOf(
                 pairOf(player1, player2),
                 pairOf(player3, player4)

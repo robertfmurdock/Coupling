@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.env
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.Handler
-import com.zegreatrob.coupling.server.external.node_fetch.FetchResult
-import com.zegreatrob.coupling.server.external.node_fetch.fetch
+import com.zegreatrob.coupling.server.external.nodefetch.FetchResult
+import com.zegreatrob.coupling.server.external.nodefetch.fetch
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.RewritingStream
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.Tag
 import com.zegreatrob.coupling.server.external.stream.Readable
@@ -41,10 +41,11 @@ fun Express.indexRoute(): Handler = { _, response, _ ->
 
         rewritingStream.on("text") { _, raw ->
             val text = replaceNextText
-            if (text != null)
+            if (text != null) {
                 rewritingStream.emitRaw(text).also { replaceNextText = null }
-            else
+            } else {
                 rewritingStream.emitRaw(raw)
+            }
         }
 
         rewritingStream.on("endTag") { tag ->

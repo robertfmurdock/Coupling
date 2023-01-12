@@ -24,18 +24,20 @@ interface RepositoryCatalog {
 suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid) =
     CommandDispatcher(user, repositoryCatalog(user), scope, traceId)
 
-private suspend fun repositoryCatalog(user: User): RepositoryCatalog = if (useInMemory())
+private suspend fun repositoryCatalog(user: User): RepositoryCatalog = if (useInMemory()) {
     memoryRepositoryCatalog(user.id)
-else
+} else {
     DynamoRepositoryCatalog(user.id, TimeProvider)
+}
 
 val memoryBackend by lazy { MemoryRepositoryBackend() }
 
 private fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(userId, memoryBackend, TimeProvider)
 
-suspend fun userRepository(userId: String): UserRepository = if (useInMemory())
+suspend fun userRepository(userId: String): UserRepository = if (useInMemory()) {
     memoryRepositoryCatalog(userId).userRepository
-else
+} else {
     DynamoUserRepository(userId, TimeProvider)
+}
 
 fun useInMemory() = Process.getEnv("COUPLING_IN_MEMORY") == "true"

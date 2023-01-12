@@ -62,7 +62,8 @@ class CreatePairCandidateReportActionTest {
             } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
-                        bruce, availableOtherPlayers,
+                        bruce,
+                        availableOtherPlayers,
                         NeverPaired
                     )
                 )
@@ -76,7 +77,8 @@ class CreatePairCandidateReportActionTest {
             } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
-                        bruce, availableOtherPlayers,
+                        bruce,
+                        availableOtherPlayers,
                         NeverPaired
                     )
                 )
@@ -107,7 +109,8 @@ class CreatePairCandidateReportActionTest {
             } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
-                        bruce, availableOtherPlayers,
+                        bruce,
+                        availableOtherPlayers,
                         NeverPaired
                     )
                 )
@@ -127,7 +130,8 @@ class CreatePairCandidateReportActionTest {
             } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
-                        bruce, listOf(selena),
+                        bruce,
+                        listOf(selena),
                         TimeResultValue(0)
                     )
                 )
@@ -148,7 +152,8 @@ class CreatePairCandidateReportActionTest {
             } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
-                        bruce, listOf(expectedPartner),
+                        bruce,
+                        listOf(expectedPartner),
                         TimeResultValue(2)
                     )
                 )
@@ -164,7 +169,8 @@ class CreatePairCandidateReportActionTest {
             } verify {
                 it.assertIsEqualTo(
                     PairCandidateReport(
-                        bruce, listOf(talia, jezebel),
+                        bruce,
+                        listOf(talia, jezebel),
                         NeverPaired
                     )
                 )

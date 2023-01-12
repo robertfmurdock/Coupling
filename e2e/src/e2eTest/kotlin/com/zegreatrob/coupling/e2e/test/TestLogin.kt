@@ -64,7 +64,7 @@ object TestLogin : BrowserSyntax {
                 "decodedToken" to json(
                     "user" to jwtDecode(idToken),
                     "claims" to json("__raw" to idToken)
-                ),
+                )
             ),
             "expiresAt" to (floor(Date.now() / 1000) + expiresIn)
         )
@@ -77,7 +77,8 @@ object TestLogin : BrowserSyntax {
     }
 
     private suspend fun setAuth0CacheInLocalStorage(key: String, auth0Cache: Json) {
-        @Suppress("UNUSED_VARIABLE") val storageStuff = JSON.stringify(
+        @Suppress("UNUSED_VARIABLE")
+        val storageStuff = JSON.stringify(
             json("key" to key, "auth0Cache" to auth0Cache)
         )
 

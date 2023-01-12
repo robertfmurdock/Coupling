@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.external.method_override
+package com.zegreatrob.coupling.server.external.methodoverride
 
 import com.zegreatrob.coupling.server.external.express.Handler
 
