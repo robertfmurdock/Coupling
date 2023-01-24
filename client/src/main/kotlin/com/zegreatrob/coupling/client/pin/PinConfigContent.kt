@@ -33,6 +33,7 @@ import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
+import web.html.InputType
 
 data class PinConfigContent(
     val party: Party,
@@ -118,7 +119,7 @@ private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
         id = "pin-icon",
         name = "icon",
         value = pin.icon,
-        type = react.dom.html.InputType.text,
+        type = InputType.text,
         onChange = onChange,
         placeholder = "Font-awesome icon codes, without the size class",
         autoFocus = false
@@ -138,7 +139,7 @@ private fun ChildrenBuilder.nameInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
         id = "pin-name",
         name = "name",
         value = pin.name,
-        type = react.dom.html.InputType.text,
+        type = InputType.text,
         onChange = onChange,
         placeholder = "The name of the pin.",
         autoFocus = true

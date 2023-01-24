@@ -21,13 +21,13 @@ import react.ChildrenBuilder
 import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.events.ChangeEventHandler
-import react.dom.html.InputType
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
+import web.html.InputType
 
 data class PartyConfigContent(
     var party: Party,
