@@ -12,11 +12,16 @@ external val Auth0Provider: ElementType<Auth0ProviderProps>
 external interface Auth0ProviderProps : Props {
     var domain: String
     var clientId: String
-    var redirectUri: String
     var cacheLocation: String
+    var useRefreshTokens: Boolean?
+    var authorizationParams: Auth0AuthorizationParams
+}
+
+external interface Auth0AuthorizationParams {
+    @JsName("redirect_uri")
+    var redirectUri: String
     var audience: String
     var scope: String
-    var useRefreshTokens: Boolean?
 }
 
 external fun useAuth0(): Auth0Hook
@@ -29,7 +34,16 @@ external interface Auth0Hook {
     val error: Throwable?
     fun getAccessTokenSilently(options: Json): Promise<String>
     fun getIdTokenClaims(): Promise<Json>
-    fun logout(json: Json = definedExternally)
+    fun logout(json: Auth0LogoutStructure = definedExternally)
+}
+
+external interface Auth0LogoutStructure {
+    var clientId: String
+    var logoutParams: Auth0LogoutParams
+}
+
+external interface Auth0LogoutParams {
+    var returnTo: String
 }
 
 external interface Auth0User {

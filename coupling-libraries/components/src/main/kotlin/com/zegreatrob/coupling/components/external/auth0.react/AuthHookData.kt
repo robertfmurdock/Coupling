@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.components.external.auth0.react
 
-import kotlin.js.Json
-
 data class AuthHookData(
     val user: Auth0User?,
     val authenticated: Boolean,
@@ -9,6 +7,6 @@ data class AuthHookData(
     val error: Throwable?,
     val loginWithRedirect: () -> Unit,
     val getIdTokenClaims: suspend () -> String,
-    val logout: (Json) -> Unit,
+    val logout: (Auth0LogoutStructure) -> Unit,
     val getAccessTokenSilently: suspend () -> String
 )

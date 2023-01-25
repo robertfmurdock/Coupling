@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.external.w3c.WindowFunctions.Companion.win
 import com.zegreatrob.coupling.client.routing.CouplingRouter
 import com.zegreatrob.coupling.components.external.auth0.react.Auth0Provider
 import com.zegreatrob.minreact.add
+import js.core.jso
 import react.FC
 import react.Props
 
@@ -17,10 +18,12 @@ val RootComponent = FC<RootProps> { props ->
     Auth0Provider {
         clientId = config.auth0ClientId
         domain = config.auth0Domain
-        redirectUri = "${window.location.origin}${config.basename}"
         cacheLocation = "localstorage"
-        audience = "https://${window.location.hostname}/api"
-        scope = "email"
+        authorizationParams = jso {
+            redirectUri = "${window.location.origin}${config.basename}"
+            audience = "https://${window.location.hostname}/api"
+            scope = "email"
+        }
         useRefreshTokens = true
 
         add(CouplingRouter(animationsDisabled, config))
