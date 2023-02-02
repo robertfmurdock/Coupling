@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.defaultClient
-import js.core.Record
+import js.core.ReadonlyRecord
 import js.core.get
 import kotlinx.browser.window
 import org.w3c.dom.get
@@ -17,7 +17,7 @@ import react.Props
 import web.url.URLSearchParams
 
 external interface PageProps : Props {
-    var pathParams: Record<String, String>
+    var pathParams: ReadonlyRecord<String, String>
     var commander: Commander
     var search: URLSearchParams
 }
