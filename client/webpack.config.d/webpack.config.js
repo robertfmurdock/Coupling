@@ -9,7 +9,12 @@ const additionalResourcesPath = path.resolve(__dirname, '../../../../client/buil
 
 const fs = require('fs')
 
-const cdnResources = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json')))
+const cdnResources = JSON.parse(
+    fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json'), {encoding: "UTF-8"})
+        .split(/\r?\n/)
+        .filter((line) => !line.includes("TRACE"))
+        .join("\n")
+)
 const cdnSettings = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/cdn.settings.json')))
 
 if (config.entry && config.entry.main) {
