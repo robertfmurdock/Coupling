@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.plugins.tagger
 
 import org.ajoberstar.grgit.Grgit
+import org.ajoberstar.grgit.Tag
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
@@ -39,4 +40,23 @@ fun Grgit.canRelease(releaseBranch: String?): Boolean {
         currentBranchStatus.aheadCount == 0 &&
         currentBranchStatus.behindCount == 0 &&
         currentBranch.name == releaseBranch
+}
+
+fun Grgit.tagReport() = tag.list()
+    .filter { it.dateTime != null }
+    .groupBy { tag ->
+    "${tag.dateTime?.year} Week ${tag.weekNumber()}"
+}.toSortedMap()
+
+    .map {
+        "${it.key} has ${it.value.size} tags [${it.value.joinToString { tag -> tag.name }}]"
+    }
+    .joinToString("\n")
+
+private fun Tag.weekNumber() = "${(dateTime?.dayOfYear ?: 0) / 7}".let {
+    if (it.length == 1) {
+        "0$it"
+    } else {
+        it
+    }
 }

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
 import com.zegreatrob.coupling.plugins.tagger.CalculateVersion
+import com.zegreatrob.coupling.plugins.tagger.CommitReport
 import com.zegreatrob.coupling.plugins.tagger.ReleaseVersion
 import com.zegreatrob.coupling.plugins.tagger.TagVersion
 import com.zegreatrob.coupling.plugins.tagger.TaggerExtension
@@ -25,6 +26,9 @@ tasks {
     }
 
     val tag by registering(TagVersion::class) {
+        taggerExtension = tagger
+    }
+    val commitReport by registering(CommitReport::class) {
         taggerExtension = tagger
     }
 

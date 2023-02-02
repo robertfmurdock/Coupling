@@ -36,6 +36,19 @@ open class TagVersion : DefaultTask(), TaggerExtensionSyntax {
     }
 }
 
+open class CommitReport : DefaultTask(), TaggerExtensionSyntax {
+
+    @Input
+    override lateinit var taggerExtension: TaggerExtension
+
+    @TaskAction
+    fun execute() {
+        println("COMMIT REPORT-------")
+        println("--------------------${taggerExtension.grgitServiceExtension.service.get().grgit.tagReport()}")
+        println("COMMIT REPORT OVAH--")
+    }
+}
+
 open class ReleaseVersion : DefaultTask(), TaggerExtensionSyntax {
 
     @Input
