@@ -2,8 +2,6 @@
   "history": "HistoryLibrary",
   "react": "React",
   "react-dom": "ReactDOM",
-  "react-router": "ReactRouter",
-  "react-router-dom": "ReactRouterDOM",
   "blueimp-md5": "md5",
   "dom-to-image": "domtoimage",
   "@auth0/auth0-react": "reactAuth0"
