@@ -30,7 +30,7 @@ kotlin {
     }
 }
 
-val default: Configuration by configurations.getting
+val runtimeClasspath: Configuration by configurations.getting
 val clientConfiguration: Configuration by configurations.creating
 val cdnLookupConfiguration: Configuration by configurations.creating
 
@@ -121,7 +121,7 @@ tasks {
         setup(project)
         dependsOn(cdnLookupConfiguration, "publicPackageJson")
         inputs.files(cdnLookupConfiguration)
-        inputs.files(default)
+        inputs.files(runtimeClasspath)
         val settingsFile = File(project.projectDir, "cdn.settings.json")
         inputs.file(settingsFile)
         val settings = ObjectMapper().readTree(settingsFile)

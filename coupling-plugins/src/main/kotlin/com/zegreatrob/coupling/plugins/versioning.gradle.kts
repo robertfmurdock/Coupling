@@ -5,10 +5,11 @@ import com.zegreatrob.coupling.plugins.tagger.TaggerExtension
 
 plugins {
     base
+    id("com.zegreatrob.coupling.plugins.tagger")
     id("com.github.ben-manes.versions")
 }
 
-val taggerExtension = TaggerExtension.apply(rootProject)
+val taggerExtension = project.extensions.getByType(TaggerExtension::class.java)
 
 tasks {
     taggerExtension.releaseProvider.configure {

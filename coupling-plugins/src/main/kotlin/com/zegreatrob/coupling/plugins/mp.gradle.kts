@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.plugins
 
+import org.jetbrains.kotlin.gradle.plugin.mpp.MetadataDependencyTransformationTask
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
@@ -45,7 +46,7 @@ tasks.withType(KotlinJsTest::class).configureEach {
 tasks.withType(KotlinJvmTest::class).configureEach {
     outputs.cacheIf { true }
 }
-tasks.withType(org.jetbrains.kotlin.gradle.plugin.mpp.TransformKotlinGranularMetadata::class).configureEach {
+tasks.withType(MetadataDependencyTransformationTask::class).configureEach {
     outputs.cacheIf { true }
 }
 tasks.withType(org.gradle.api.tasks.bundling.Jar::class).configureEach {
