@@ -8,7 +8,9 @@ plugins {
     id("com.github.ben-manes.versions")
 }
 
-val taggerExtension = TaggerExtension.apply(rootProject)
+rootProject.apply<TaggerPlugin>()
+
+val taggerExtension = rootProject.extensions.getByType(TaggerExtension::class.java)
 
 tasks {
     taggerExtension.releaseProvider.configure {

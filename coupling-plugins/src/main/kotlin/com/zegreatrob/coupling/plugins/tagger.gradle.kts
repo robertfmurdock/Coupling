@@ -28,7 +28,7 @@ tasks {
     val tag by registering(TagVersion::class) {
         taggerExtension = tagger
     }
-    val commitReport by registering(CommitReport::class) {
+    register("commitReport", CommitReport::class) {
         taggerExtension = tagger
     }
 
