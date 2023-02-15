@@ -27,7 +27,7 @@ open class CalculateVersion : DefaultTask(), TaggerExtensionSyntax {
 }
 
 fun Grgit.calculateNextVersion(): String {
-    val description = describe {}
+    val description = describe {} ?: "-0.0.0"
     val (previousVersionNumber) = description.split("-")
     val (major, minor, patch) = previousVersionNumber.substring(1).split(".")
     return "v$major.$minor.${patch.toInt() + 1}"
@@ -35,8 +35,13 @@ fun Grgit.calculateNextVersion(): String {
 
 fun Grgit.canRelease(releaseBranch: String?): Boolean {
     val currentBranch = branch.current()
-    val currentBranchStatus = branch.status { this.name = currentBranch.name }
-    return status().isClean &&
+
+    val currentBranchStatus = kotlin.runCatching { branch.status { this.name = currentBranch.name } }
+        .getOrNull()
+    return if (currentBranchStatus == null)
+        false
+    else
+        status().isClean &&
         currentBranchStatus.aheadCount == 0 &&
         currentBranchStatus.behindCount == 0 &&
         currentBranch.name == releaseBranch
