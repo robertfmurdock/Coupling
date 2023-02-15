@@ -10,6 +10,7 @@
     "@wdio/dot-reporter",
     "@wdio/jasmine-framework",
     "@wdio/junit-reporter",
-    "@wdio/local-runner"
+    "@wdio/local-runner",
+    "wdio-chromedriver-service"
   ]
 }
