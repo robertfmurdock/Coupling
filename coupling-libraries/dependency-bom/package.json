@@ -63,7 +63,7 @@
     "mini-css-extract-plugin": "^2.7.2",
     "minimist": "^1.2.8",
     "node-fetch": "^3.3.0",
-    "npm-check-updates": "^16.7.4",
+    "npm-check-updates": "^16.7.5",
     "on-finished": "^2.4.1",
     "parse5": "^7.1.2",
     "parse5-html-rewriting-stream": "^7.0.0",
