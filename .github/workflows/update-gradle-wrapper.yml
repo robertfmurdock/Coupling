@@ -16,6 +16,8 @@ jobs:
         with:
           gradle-version: current
           arguments: wrapper --distribution-type all
+      - name: Update Yarn Lock
+        run: ./gradlew kotlinUpgradeYarnLock --scan
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
