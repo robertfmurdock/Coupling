@@ -6,6 +6,7 @@ import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -191,4 +192,8 @@ tasks {
     named("test") {
         dependsOn(e2eRun)
     }
+}
+
+rootProject.extensions.findByType(NodeJsRootExtension::class.java).let {
+    it?.nodeVersion = "19.6.0"
 }
