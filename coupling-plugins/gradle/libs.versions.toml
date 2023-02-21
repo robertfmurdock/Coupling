@@ -7,7 +7,7 @@ org-jlleitschuh-gradle-ktlint = "11.0.0"
 
 [libraries]
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.14.2"
-com-github-ben-manes-gradle-versions-plugin = "com.github.ben-manes:gradle-versions-plugin:0.45.0"
+com-github-ben-manes-gradle-versions-plugin = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:3.4.0"
 com-zegreatrob-jsmints-plugins-jspackage-gradle-plugin = { module = "com.zegreatrob.jsmints.plugins.jspackage:com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin", version.ref = "jsmints" }
 org-ajoberstar-grgit-gradle-plugin = "org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0"
@@ -20,6 +20,6 @@ org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:3.13.
 org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.6"
 
 [plugins]
-com-github-ben-manes-versions = "com.github.ben-manes.versions:0.45.0"
+com-github-ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
 org-jmailen-kotlinter = "org.jmailen.kotlinter:3.13.0"
