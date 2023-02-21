@@ -14,7 +14,7 @@ fun main() {
 
     MainScope().launch {
         runWebpackAndStartServer(config)
-            .whileRunning { runWebdriverIO(config.wdioConfig()) }
+            .whileRunning { runWebdriverIO(wdioConfig()) }
             .let { result -> process.exit(result) }
     }.invokeOnCompletion { huh ->
         if (huh != null) {
@@ -27,7 +27,7 @@ private fun webpackConfig() = webpackConfig(process.envString("WEBPACK_CONFIG"))
 
 private fun Process.envString(key: String) = env[key].unsafeCast<String>()
 
-private fun WebpackConfig.wdioConfig() = "${output.path}/${process.envString("WEBPACKED_WDIO_CONFIG_OUTPUT")}.js"
+private fun wdioConfig() = process.envString("WDIO_CONFIG")
 
 private suspend fun runWebpackAndStartServer(config: WebpackConfig) = coroutineScope {
     launch { runWebpack(config) }

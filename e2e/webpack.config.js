@@ -52,7 +52,7 @@ const config = {
 };
 
 config.entry = {
-  config: path.resolve(jsPath, './wdio.conf.js'),
+  config: path.resolve(jsPath, './wdio.conf.mjs'),
   test: "Coupling-e2e-e2eTest"
 };
 

@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -78,10 +79,8 @@ kotlin {
                 implementation("com.zegreatrob.jsmints:wdio-testing-library")
 
                 implementation(npmConstrained("@log4js-node/log4js-api"))
-                implementation(npmConstrained("@rpii/wdio-html-reporter"))
                 implementation(npmConstrained("@testing-library/webdriverio"))
                 implementation(npmConstrained("@wdio/allure-reporter"))
-                implementation(npmConstrained("@wdio/cli"))
                 implementation(npmConstrained("@wdio/dot-reporter"))
                 implementation(npmConstrained("@wdio/jasmine-framework"))
                 implementation(npmConstrained("@wdio/local-runner"))
@@ -89,6 +88,7 @@ kotlin {
                 implementation(npmConstrained("allure-commandline"))
                 implementation(npmConstrained("chromedriver"))
                 implementation(npmConstrained("fs-extra"))
+                implementation(npmConstrained("wdio-html-nice-reporter"))
                 implementation(npmConstrained("webpack"))
                 implementation(npmConstrained("webpack-node-externals"))
                 implementation(npmConstrained("wdio-chromedriver-service"))
@@ -111,7 +111,9 @@ dependencies {
 }
 
 tasks {
-    val compileE2eTestProductionExecutableKotlinJs = named("compileE2eTestProductionExecutableKotlinJs")
+    val compileE2eTestProductionExecutableKotlinJs =
+        named("compileE2eTestProductionExecutableKotlinJs", Kotlin2JsCompile::class) {}
+
     val productionExecutableCompileSync = named("productionExecutableCompileSync")
 
     val e2eTestProcessResources = named<ProcessResources>("e2eTestProcessResources") {
@@ -125,7 +127,7 @@ tasks {
         from("$rootDir/client/build/processedResources/js/main")
     }
 
-    val wdioConfig = project.projectDir.resolve("wdio.conf.js")
+    val wdioConfig = project.projectDir.resolve("wdio.conf.mjs")
     val webpackConfig = project.projectDir.resolve("webpack.config.js")
     val webpackedWdioConfigOutput = "config"
 
@@ -171,6 +173,8 @@ tasks {
                 "CLIENT_BASENAME" to "local",
                 "SERVER_DIR" to project(":server").projectDir.absolutePath,
                 "BUILD_DIR" to project.buildDir.absolutePath,
+                "SPEC_FILE" to File(buildDir, ".tmp/test.js"),
+                "WDIO_CONFIG" to wdioConfig,
                 "WEBPACK_CONFIG" to webpackConfig,
                 "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
                 "REPORT_DIR" to reportDir,
