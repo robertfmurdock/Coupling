@@ -2,7 +2,7 @@
 jsmints = "2.1.3"
 kotlin = "1.8.10"
 ktlint = "0.45.2"
-org-apache-logging-log4j = "2.19.0"
+org-apache-logging-log4j = "2.20.0"
 org-jlleitschuh-gradle-ktlint = "11.0.0"
 
 [libraries]
