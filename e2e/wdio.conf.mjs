@@ -1,13 +1,15 @@
-import {HtmlReporter, ReportAggregator} from '@rpii/wdio-html-reporter';
+import {HtmlReporter, ReportAggregator} from 'wdio-html-nice-reporter';
 import allure from 'allure-commandline';
 
 import WDIOReporter from '@wdio/reporter'
 
-
 // noinspection NpmUsedModulesInstalled
-const testLogging = require('Coupling-test-logging');
-
+import testLogging from "Coupling-test-logging";
 // noinspection JSUnresolvedFunction
+import path from "path";
+
+import log4js from "@log4js-node/log4js-api";
+
 const loggingReporter = new testLogging.com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter();
 
 
@@ -25,19 +27,16 @@ class CustomReporter extends WDIOReporter {
     }
 }
 
-const log4js = require('@log4js-node/log4js-api');
 const logger = log4js.getLogger('default');
-const path = require('path');
-
 const reportDirectory = path.relative('./', process.env.REPORT_DIR) + "/"
 const allureDataDirectory = path.relative('./', process.env.REPORT_DIR) + "/allure-data"
 const allureReportDirectory = path.relative('./', process.env.REPORT_DIR) + "/allure-report"
 const testResultsDir = path.relative('./', process.env.TEST_RESULTS_DIR) + "/"
 
-const config = {
+export const config = {
     runner: 'local',
     specs: [
-        __dirname + '/test.js'
+        process.env.SPEC_FILE
     ],
     sync: false,
     exclude: [],
@@ -135,13 +134,3 @@ const config = {
     //     })
     // }
 };
-
-if (process.env.SELENIUM_ADDRESS) {
-    let url = new URL(process.env.SELENIUM_ADDRESS);
-    config.hostname = url.hostname
-    config.port = parseInt(url.port)
-    config.path = url.pathname
-    config.services = []
-}
-
-exports.config = config

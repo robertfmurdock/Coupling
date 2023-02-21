@@ -5,12 +5,5 @@
     "serverless-offline-ssm",
     "serverless-offline",
     "read-pkg-up",
-    "@wdio/allure-reporter",
-    "@wdio/cli",
-    "@wdio/dot-reporter",
-    "@wdio/jasmine-framework",
-    "@wdio/junit-reporter",
-    "@wdio/local-runner",
-    "wdio-chromedriver-service"
   ]
 }
