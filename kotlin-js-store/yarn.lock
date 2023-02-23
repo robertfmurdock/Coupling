@@ -10,17 +10,17 @@
     d "1"
     es5-ext "^0.10.47"
 
-"@auth0/auth0-react@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.0.0.tgz#74e4d3662896e71dd95cca70b395715825da3b4e"
-  integrity sha512-3pf41wU6ksm/6uPYAwjX5bZ7ma/K4LethibagTrKkMPuS8UatBvxLDtl3Aq52ZlJi1I+I42ckEfzWqloNxssIg==
+"@auth0/auth0-react@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-react/-/auth0-react-2.0.1.tgz#581d3d1481fabe6f5b6821a08254344345f1a77c"
+  integrity sha512-7Rla3del7inUloaWMsECs0JvBpDEj9lgfy+BQE/Z75zs9tveNvxab+xFdfrBC0GPN0eoiq1PeHcc++YjLnti+g==
   dependencies:
-    "@auth0/auth0-spa-js" "^2.0.2"
+    "@auth0/auth0-spa-js" "^2.0.4"
 
-"@auth0/auth0-spa-js@^2.0.2":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.0.3.tgz#b8b262bf276736ec3734b6c4737b8362aecf8654"
-  integrity sha512-eC3cBJCGOc+k4ZMxvKTo0KhhJJ4/9siA7C2RhDcWqSbrRcjB04RimM4Jp5ExgXtrwFhx8elk7DLxysrhTQYvjQ==
+"@auth0/auth0-spa-js@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.0.4.tgz#81f6b5d9f72617ed30ee53cdf27dcd7a216bf2da"
+  integrity sha512-NgD6Fkm5Xnbned1VjhEW8irm1/Y8AWtdSLexgLXNwwBVgfnYicCVBu8w75m2t+4QljXkTcI7IXVEFhVmxMuxaA==
 
 "@aws-crypto/ie11-detection@^3.0.0":
   version "3.0.0"
@@ -9432,10 +9432,10 @@ npm-bundled@^3.0.0:
   dependencies:
     npm-normalize-package-bin "^3.0.0"
 
-npm-check-updates@^16.7.5:
-  version "16.7.5"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.7.5.tgz#ef277d88b3df0e13d647c77b3621964d01a2d48e"
-  integrity sha512-g+U/cxA0iTvU/syX0EjXWtV10joEKQlN5s6DCFdvpv6eXSGbSYpOjOtifiyopSekdPnjogVuIDtxNlVdJECR8w==
+npm-check-updates@^16.7.9:
+  version "16.7.9"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.7.9.tgz#b30e21eb27a9b9f590f96ef9eb0f128a09aaf216"
+  integrity sha512-2/T9PB0W1uABB1N11jdnPauqNLXMhPUyC0DBeeGlUktcGl/412f40iqFsnNGCqIAag/C37SjLNiW2/yuD7Salw==
   dependencies:
     chalk "^5.2.0"
     cli-table "^0.3.11"
