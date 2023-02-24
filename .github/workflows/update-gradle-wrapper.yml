@@ -24,11 +24,11 @@ jobs:
         with:
           branch: "create-pull-request/${{github.job}}/${{github.run_id}}"
           commit-message: "[patch] ${{github.workflow}}"
-          token: ${{ secrets.COUPLING_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: peter-evans/enable-pull-request-automerge@v1
         with:
-          token: ${{ secrets.COUPLING_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: rebase
