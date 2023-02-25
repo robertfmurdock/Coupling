@@ -58,7 +58,7 @@ jobs:
       - name: Generate Version
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
       - name: Build Coupling
-        run: ./gradlew release check -Pversion=${{ env.COUPLING_VERSION }} --scan
+        run: ./gradlew release check -Pversion=${{ env.COUPLING_VERSION }} --scan --stacktrace
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew composeLogs collectResults
