@@ -156,7 +156,7 @@ tasks {
 
     val uploadToS3 by registering(Exec::class) {
         dependsOn(browserProductionWebpack)
-        if (("${rootProject.version}").contains("SNAPSHOT")) {
+        if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
         val absolutePath = browserProductionWebpack.get().destinationDirectory.absolutePath

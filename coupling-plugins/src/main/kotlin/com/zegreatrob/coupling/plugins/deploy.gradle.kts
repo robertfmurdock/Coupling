@@ -34,7 +34,7 @@ fun NodeExec.configureDeploy(stage: String) {
         ":release",
         ":client:uploadToS3",
     )
-    if (rootProject.version.toString().contains("SNAPSHOT")) {
+    if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
         enabled = false
     }
     nodeCommand = "serverless"
