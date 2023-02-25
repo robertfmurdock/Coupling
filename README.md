@@ -14,7 +14,6 @@ This is a web application that will automatically assign pairs.
 
 The latest build is currently hosted at https://coupling.zegreatrob.com. Please note that because the app is currently still developing, there's no guarentee that information stored there currently won't be lost during the course of development (though if it is, that will certainly not be intentional).  
 
-
 Intended to make it quick and easy to pair off, and encourage people to pair with people who they haven't paired with in a while.
 
 Have fun!
