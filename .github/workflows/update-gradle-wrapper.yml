@@ -8,8 +8,9 @@ jobs:
   update-gradle-wrapper:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           fetch-depth: '25'
       - uses: burrunan/gradle-cache-action@v1
         name: Update Deps
@@ -20,7 +21,7 @@ jobs:
         run: ./gradlew kotlinUpgradeYarnLock --scan
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v4
         with:
           branch: "create-pull-request/${{github.job}}/${{github.run_id}}"
           commit-message: "[patch] ${{github.workflow}}"
