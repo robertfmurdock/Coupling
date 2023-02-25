@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.com.github.ben.manes.gradle.versions.plugin)
     implementation(libs.com.soywiz.korlibs.klock)
     implementation(libs.com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin)
+    implementation(libs.com.zegreatrob.tools.tagger.com.zegreatrob.tools.tagger.gradle.plugin)
     implementation(libs.org.ajoberstar.grgit.gradle.plugin)
     implementation(libs.org.apache.logging.log4j.log4j.core)
     implementation(libs.org.apache.logging.log4j.log4j.iostreams)

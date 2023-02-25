@@ -1,6 +1,8 @@
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
+import com.zegreatrob.tools.tagger.TaggerExtension
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 
@@ -109,7 +111,7 @@ dependencies {
     testImplementation(npmConstrained("@testing-library/user-event"))
 }
 
-val taggerExtension = com.zegreatrob.coupling.plugins.tagger.TaggerExtension.apply(rootProject)
+val taggerExtension = TaggerExtension.apply(rootProject)
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 

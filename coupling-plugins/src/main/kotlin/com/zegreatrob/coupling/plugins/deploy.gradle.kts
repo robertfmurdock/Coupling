@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.plugins
 
-import com.zegreatrob.coupling.plugins.tagger.TaggerExtension
+import com.zegreatrob.tools.tagger.TaggerExtension
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")

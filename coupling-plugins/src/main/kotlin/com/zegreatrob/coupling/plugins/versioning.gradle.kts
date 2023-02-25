@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.plugins
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import com.zegreatrob.coupling.plugins.tagger.TaggerExtension
+import com.zegreatrob.tools.tagger.TaggerExtension
+import com.zegreatrob.tools.TaggerPlugin
 
 plugins {
     base
