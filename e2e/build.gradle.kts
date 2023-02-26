@@ -1,25 +1,19 @@
 @file:Suppress("UnstableApiUsage")
 
-import com.zegreatrob.coupling.plugins.NodeExec
-import com.zegreatrob.coupling.plugins.setup
 import org.gradle.api.internal.artifacts.dependencies.DefaultProjectDependency
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
 import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
-import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
+    id("com.zegreatrob.jsmints.plugins.wdiotest").version("2.3.3")
 }
 
 kotlin {
     js {
         nodejs { testTask { enabled = false } }
-        compilations {
-            val e2eTest by creating
-            binaries.executable(e2eTest)
-        }
     }
 }
 
@@ -83,7 +77,6 @@ kotlin {
                 implementation(npmConstrained("@wdio/allure-reporter"))
                 implementation(npmConstrained("@wdio/dot-reporter"))
                 implementation(npmConstrained("@wdio/jasmine-framework"))
-                implementation(npmConstrained("@wdio/local-runner"))
                 implementation(npmConstrained("@wdio/junit-reporter"))
                 implementation(npmConstrained("allure-commandline"))
                 implementation(npmConstrained("chromedriver"))
@@ -92,8 +85,6 @@ kotlin {
                 implementation(npmConstrained("webpack"))
                 implementation(npmConstrained("webpack-node-externals"))
                 implementation(npmConstrained("wdio-chromedriver-service"))
-                implementation(npmConstrained("css-loader"))
-                implementation(npmConstrained("url-loader"))
                 implementation(npmConstrained("jwt-decode"))
             }
         }
@@ -111,11 +102,6 @@ dependencies {
 }
 
 tasks {
-    val compileE2eTestProductionExecutableKotlinJs =
-        named("compileE2eTestProductionExecutableKotlinJs", Kotlin2JsCompile::class) {}
-
-    val productionExecutableCompileSync = named("productionExecutableCompileSync")
-
     val e2eTestProcessResources = named<ProcessResources>("e2eTestProcessResources") {
         dependsOn("dependencyResources")
     }
@@ -127,75 +113,20 @@ tasks {
         from("$rootDir/client/build/processedResources/js/main")
     }
 
-    val wdioConfig = project.projectDir.resolve("wdio.conf.mjs")
-    val webpackConfig = project.projectDir.resolve("webpack.config.js")
-    val webpackedWdioConfigOutput = "config"
-
-    val e2eRun = register("e2eRun", NodeExec::class) {
-        setup(project)
-        nodeModulesDir = e2eTestProcessResources.get().destinationDir
-        moreNodeDirs = listOf(
-            "${project.rootProject.buildDir.path}/js/node_modules",
-            e2eTestProcessResources.get().destinationDir,
-        ).plus(project.relatedResources())
-            .joinToString(":")
-        outputs.cacheIf { true }
-        dependsOn(
-            dependencyResources,
-            compileProductionExecutableKotlinJs,
-            productionExecutableCompileSync,
-            compileE2eTestProductionExecutableKotlinJs,
-            appConfiguration,
-            clientConfiguration,
-            testLoggingLib,
-            ":composeUp"
-        )
+    named("e2eRun", com.zegreatrob.jsmints.plugins.NodeExec::class) {
+        dependsOn(dependencyResources, appConfiguration, clientConfiguration, testLoggingLib, ":composeUp")
         inputs.files(
             appConfiguration,
             clientConfiguration,
             testLoggingLib
         )
-        inputs.files(compileProductionExecutableKotlinJs.map { it.outputs.files })
-        inputs.files(compileE2eTestProductionExecutableKotlinJs.map { it.outputs.files })
-        inputs.files(wdioConfig)
-
-        val reportDir = "${project.buildDir.absolutePath}/reports/e2e-serverless/"
-        outputs.dir(reportDir)
-        val testResultsDir = "${project.buildDir.absolutePath}/test-results/"
-        outputs.dir(testResultsDir)
-        val logsDir = "${project.buildDir.absolutePath}/reports/logs"
-        val logFile = file("$logsDir/run.log")
-        logFile.parentFile.mkdirs()
-
-        environment("BASEURL" to "https://localhost/local/")
         environment(
-            mapOf(
-                "CLIENT_BASENAME" to "local",
-                "SERVER_DIR" to project(":server").projectDir.absolutePath,
-                "BUILD_DIR" to project.buildDir.absolutePath,
-                "SPEC_FILE" to File(buildDir, ".tmp/test.js"),
-                "WDIO_CONFIG" to wdioConfig,
-                "WEBPACK_CONFIG" to webpackConfig,
-                "WEBPACKED_WDIO_CONFIG_OUTPUT" to webpackedWdioConfigOutput,
-                "REPORT_DIR" to reportDir,
-                "TEST_RESULTS_DIR" to testResultsDir,
-                "LOGS_DIR" to logsDir,
-                "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
-                "STRICT_SSL" to "false",
-            )
+            "BASEURL" to "https://localhost/local/",
+            "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
+            "CLIENT_BASENAME" to "local",
         )
-
-        arguments = listOf(compileProductionExecutableKotlinJs.get().outputFileProperty.get().absolutePath)
-        outputFile = logFile
     }
 
-    named("check") {
-        dependsOn(e2eRun)
-    }
-
-    named("test") {
-        dependsOn(e2eRun)
-    }
 }
 
 rootProject.extensions.findByType(NodeJsRootExtension::class.java).let {
