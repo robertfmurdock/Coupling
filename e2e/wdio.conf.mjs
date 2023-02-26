@@ -32,6 +32,7 @@ const reportDirectory = path.relative('./', process.env.REPORT_DIR) + "/"
 const allureDataDirectory = path.relative('./', process.env.REPORT_DIR) + "/allure-data"
 const allureReportDirectory = path.relative('./', process.env.REPORT_DIR) + "/allure-report"
 const testResultsDir = path.relative('./', process.env.TEST_RESULTS_DIR) + "/"
+const logDir = path.relative('./', process.env.LOGS_DIR) + "/"
 
 export const config = {
     runner: 'local',
@@ -62,7 +63,7 @@ export const config = {
     waitforInterval: 15, //THIS IS INCREDIBLY IMPORTANT FOR PERFORMANCE
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
-    services: ['chromedriver'],
+    services: [['chromedriver', ]],
     framework: 'jasmine',
     reporters: [
         'dot',
