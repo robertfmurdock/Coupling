@@ -58,7 +58,7 @@ jobs:
       - name: Generate Version 🧮
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
       - name: Build Coupling
-        run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} -Porg.gradle.unsafe.configuration-cache=false --scan --stacktrace
+        run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --no-configuration-cache --scan --stacktrace
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew composeLogs collectResults
