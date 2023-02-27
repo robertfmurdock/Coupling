@@ -17,7 +17,7 @@ jobs:
         with:
           cache-read-only: true
       - name: Update Plugin Deps
-        run: ./gradlew :coupling-plugins:versionCatalogUpdate --scan
+        run: ./gradlew :coupling-plugins:versionCatalogUpdate --no-configuration-cache --scan
       - name: Update Yarn Lock
         run: ./gradlew kotlinUpgradeYarnLock --scan
       - name: Create Pull Request

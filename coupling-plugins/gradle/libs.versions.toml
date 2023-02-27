@@ -1,5 +1,5 @@
 [versions]
-jsmints = "2.3.6"
+jsmints = "2.3.12"
 kotlin = "1.8.10"
 ktlint = "0.45.2"
 org-apache-logging-log4j = "2.20.0"

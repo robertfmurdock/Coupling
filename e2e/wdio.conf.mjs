@@ -1,36 +1,10 @@
-import {HtmlReporter, ReportAggregator} from 'wdio-html-nice-reporter';
-import allure from 'allure-commandline';
-
-import WDIOReporter from '@wdio/reporter'
-
-// noinspection NpmUsedModulesInstalled
-import testLogging from "Coupling-test-logging";
-// noinspection JSUnresolvedFunction
+import {HtmlReporter, ReportAggregator} from "wdio-html-nice-reporter";
+import log4js from "@log4js-node/log4js-api";
 import path from "path";
 
-import log4js from "@log4js-node/log4js-api";
-
-const loggingReporter = new testLogging.com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter();
-
-
-class CustomReporter extends WDIOReporter {
-    constructor(options) {
-        super(options)
-    }
-
-    onTestStart(test) {
-        loggingReporter.startTest(test.fullTitle)
-    }
-
-    onTestEnd(test) {
-        loggingReporter.endTest(test.fullTitle, test.state, test.errors)
-    }
-}
-
 const logger = log4js.getLogger('default');
+logger.level = "info";
 const reportDirectory = path.relative('./', process.env.REPORT_DIR) + "/"
-const allureDataDirectory = path.relative('./', process.env.REPORT_DIR) + "/allure-data"
-const allureReportDirectory = path.relative('./', process.env.REPORT_DIR) + "/allure-report"
 const testResultsDir = path.relative('./', process.env.TEST_RESULTS_DIR) + "/"
 const logDir = path.relative('./', process.env.LOGS_DIR) + "/"
 
@@ -63,21 +37,22 @@ export const config = {
     waitforInterval: 15, //THIS IS INCREDIBLY IMPORTANT FOR PERFORMANCE
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
-    services: [['chromedriver', ]],
-    framework: 'jasmine',
+    services: [
+        ['chromedriver', {outputDir: logDir}],
+    ],
+    framework: 'mocha',
     reporters: [
         'dot',
         ['junit', {
             outputDir: testResultsDir,
             outputFileFormat: (options) => `results.xml`
         }],
-        CustomReporter,
         [HtmlReporter, {
             debug: true,
             outputDir: reportDirectory,
             filename: 'report.html',
             reportTitle: 'Coupling E2E Report',
-            showInBrowser: false,
+            showInBrowser: true,
             useOnAfterCommandForScreenshot: true,
             LOG: logger
         }
@@ -113,25 +88,4 @@ export const config = {
     onComplete: async function (exitCode, config, capabilities, results) {
         await global.reportAggregator.createReport();
     },
-    // onComplete: async function (exitCode, config, capabilities, results) {
-    //     await global.reportAggregator.createReport();
-    //     const reportError = new Error('Could not generate Allure report')
-    //     const generation = allure(['generate', allureDataDirectory, '--clean', '-o', allureReportDirectory])
-    //     return new Promise((resolve, reject) => {
-    //         const generationTimeout = setTimeout(
-    //             () => reject(reportError),
-    //             5000)
-    //
-    //         generation.on('exit', function (exitCode) {
-    //             clearTimeout(generationTimeout)
-    //
-    //             if (exitCode !== 0) {
-    //                 return reject(reportError)
-    //             }
-    //
-    //             console.log('Allure report successfully generated')
-    //             resolve()
-    //         })
-    //     })
-    // }
 };
