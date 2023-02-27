@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
-    id("com.zegreatrob.jsmints.plugins.wdiotest").version("2.3.3")
+    id("com.zegreatrob.jsmints.plugins.wdiotest").version("2.3.12")
 }
 
 kotlin {
@@ -71,6 +71,7 @@ kotlin {
                 implementation("com.zegreatrob.testmints:async")
                 implementation("com.zegreatrob.jsmints:wdio")
                 implementation("com.zegreatrob.jsmints:wdio-testing-library")
+
 
                 implementation(npmConstrained("@log4js-node/log4js-api"))
                 implementation(npmConstrained("@testing-library/webdriverio"))
