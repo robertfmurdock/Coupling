@@ -26,6 +26,7 @@ import csstype.url
 import emotion.react.css
 import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.button
+import web.html.ButtonType
 
 val buttonRuleset: PropertiesBuilder.() -> Unit = {
     backgroundImage = url(pngPath("overlay"))
@@ -163,7 +164,7 @@ data class CouplingButton(
 val couplingButton = tmFC<CouplingButton> { props ->
     val (sizeRuleSet, colorRuleSet, className, onClick, block, css) = props
     button {
-        type = react.dom.html.ButtonType.button
+        type = ButtonType.button
         this.onClick = { onClick() }
         block(this)
 

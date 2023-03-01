@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.components
 
 import com.zegreatrob.minreact.add
 import react.ChildrenBuilder
-import react.dom.html.ButtonType
+import web.html.ButtonType
 
 fun ChildrenBuilder.configSaveButton(isSaving: Boolean) = add(
     CouplingButton(
