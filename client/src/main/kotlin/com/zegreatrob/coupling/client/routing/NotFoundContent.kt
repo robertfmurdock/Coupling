@@ -8,7 +8,7 @@ import react.router.dom.Link
 
 val notFoundContent = FC<Props> {
     Link {
-        this.to = "/"
+        this.to = "/welcome"
         add(CouplingButton()) {
             +"Looks like an error happened. Click this to go back home."
         }
