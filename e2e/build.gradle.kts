@@ -44,7 +44,6 @@ dependencies {
 
 wdioTest {
     baseUrl.set("https://localhost/local/")
-    // wdioConfigFile.set(projectDir.resolve("wdio.conf.mjs"))
 }
 
 tasks {
@@ -54,9 +53,11 @@ tasks {
 
     val dependencyResources by registering(Copy::class) {
         dependsOn(":client:processResources")
+        dependsOn(":sdk:jsProcessResources")
         duplicatesStrategy = DuplicatesStrategy.WARN
         into(e2eTestProcessResources.map { it.destinationDir })
         from("$rootDir/client/build/processedResources/js/main")
+        from("$rootDir/sdk/build/processedResources/js/main")
     }
     e2eRun {
         dependsOn(

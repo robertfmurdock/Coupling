@@ -31,7 +31,7 @@ import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
 import react.router.Navigate
-import react.router.Route
+import react.router.PathRoute
 import react.router.Routes
 import react.router.dom.BrowserRouter
 import react.router.useLocation
@@ -59,10 +59,10 @@ private fun ChildrenBuilder.routes(isSignedIn: Boolean, config: ClientConfig) {
 
     if (isSignedIn) authenticatedRoutes(config) else redirectUnauthenticated()
 
-    Route { element = lostRoute.create() }
+    PathRoute { element = lostRoute.create() }
 }
 
-private fun ChildrenBuilder.redirectUnauthenticated() = Route {
+private fun ChildrenBuilder.redirectUnauthenticated() = PathRoute {
     path = "*"
     element = Navigate.create { to = "/welcome" }
 }.also { console.warn("not signed in!!!!", window.location.pathname) }
@@ -73,13 +73,13 @@ val lostRoute = FC<Props> {
 }
 
 private fun ChildrenBuilder.authenticatedRoutes(config: ClientConfig) {
-    Route { path = "/"; element = redirectToParties() }
+    PathRoute { path = "/"; element = redirectToParties() }
     if (config.prereleaseMode) couplingRoute("/user", UserPage)
     couplingRoute("/parties/", PartyListPage)
     couplingRoute("/logout/", Logout)
     couplingRoute("/graphiql/", GraphIQLPage)
     couplingRoute("/new-party/", PartyConfigPage)
-    Route { path = "/:partyId"; element = redirectToCurrentPairs() }
+    PathRoute { path = "/:partyId"; element = redirectToCurrentPairs() }
     couplingRoute("/:partyId/prepare/", PrepareSpinPage)
     couplingRoute("/:partyId/edit/", PartyConfigPage)
     couplingRoute("/:partyId/history", HistoryPage)

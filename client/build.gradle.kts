@@ -57,7 +57,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom-legacy")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
     implementation("com.soywiz.korlibs.klock:klock")
     implementation("com.benasher44:uuid")

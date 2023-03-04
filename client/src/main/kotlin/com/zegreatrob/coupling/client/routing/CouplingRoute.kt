@@ -7,12 +7,12 @@ import react.FC
 import react.Props
 import react.create
 import react.router.NavigateFunction
-import react.router.Route
+import react.router.PathRoute
 import react.router.dom.useSearchParams
 import react.router.useNavigate
 import react.router.useParams
 
-fun ChildrenBuilder.couplingRoute(path: String, rComponent: FC<PageProps>) = Route {
+fun ChildrenBuilder.couplingRoute(path: String, rComponent: FC<PageProps>) = PathRoute {
     this.path = path
     this.element = CouplingRoute.create { this.rComponent = rComponent }
 }

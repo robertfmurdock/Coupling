@@ -22,7 +22,7 @@ import org.w3c.dom.HTMLOptionElement
 import react.ReactNode
 import react.create
 import react.router.MemoryRouter
-import react.router.Route
+import react.router.PathRoute
 import react.router.Routes
 import kotlin.js.json
 import kotlin.test.Test
@@ -66,11 +66,11 @@ class PartyConfigTest {
         render(
             MemoryRouter.create {
                 Routes {
-                    Route {
+                    PathRoute {
                         path = "/parties/"
                         element = ReactNode("Parties!")
                     }
-                    Route {
+                    PathRoute {
                         path = "*"
                         element = PartyConfig(party, stubDispatcher.func()).create()
                     }

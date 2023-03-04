@@ -34,7 +34,7 @@ import kotlinx.coroutines.await
 import react.ReactNode
 import react.create
 import react.router.MemoryRouter
-import react.router.Route
+import react.router.PathRoute
 import react.router.Routes
 import kotlin.test.Test
 
@@ -54,11 +54,11 @@ class CurrentPairAssignmentsPanelTest {
         render(
             MemoryRouter.create {
                 Routes {
-                    Route {
+                    PathRoute {
                         path = "/${party.id.value}/pairAssignments/current/"
                         element = ReactNode("current pairs")
                     }
-                    Route {
+                    PathRoute {
                         path = "*"
                         element = CurrentPairAssignmentsPanel(
                             party,
@@ -94,11 +94,11 @@ class CurrentPairAssignmentsPanelTest {
                 backend = HTML5Backend
                 MemoryRouter {
                     Routes {
-                        Route {
+                        PathRoute {
                             path = "/${party.id.value}/pairAssignments/current/"
                             element = ReactNode("current pairs")
                         }
-                        Route {
+                        PathRoute {
                             path = "*"
                             element = CurrentPairAssignmentsPanel(
                                 party,
