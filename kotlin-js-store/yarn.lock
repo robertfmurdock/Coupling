@@ -117,10 +117,10 @@
     "@aws-sdk/util-utf8" "3.254.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-dynamodb@3.282.0":
-  version "3.282.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.282.0.tgz#4bc4cb8b76bd50bc646f38a0d8590241fa90e500"
-  integrity sha512-jw4ZK216d/GkoXVNvyiEvWrjD21KP2c0Aj9iR52ewbr3xDNCJcAc91g9urVSAhiJHcfIB6QjlOoWzxDsIuPsgg==
+"@aws-sdk/client-dynamodb@3.284.0":
+  version "3.284.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.284.0.tgz#4146a9fa8a92c523a74bbc9a356b3f82ddfbe211"
+  integrity sha512-1CaAPA3/c+eG5+0IScF6EtS58vxCI23M+jsQC4CwxoPC/5IUAa1ZolS3hx94k4zhnTwU58aEJumPi3R6v0ufUg==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
@@ -458,12 +458,12 @@
   dependencies:
     tslib "^2.3.1"
 
-"@aws-sdk/lib-dynamodb@3.282.0":
-  version "3.282.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.282.0.tgz#f81cdc27c762673df3c5776a4721ec5f5ddf90b2"
-  integrity sha512-et+IIneFm1n7afG3KX9NcxzMm0QeNrfoSqLS/zj8TogsDaVPt6GVqBe0KI2avMMgDJ/W04pgNi7G6Y2+VVh4oQ==
+"@aws-sdk/lib-dynamodb@3.284.0":
+  version "3.284.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.284.0.tgz#01045588d46b3c60799f57d88acadc350f9becff"
+  integrity sha512-cohrnPSenUJlZjfu4sUT7rskUE04oWucT2r3CxAJ3nCeDW0KIHy5ym45/wEwuyYDxRlezCGkToBl7/SAulh3FQ==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.282.0"
+    "@aws-sdk/util-dynamodb" "3.284.0"
     tslib "^2.3.1"
 
 "@aws-sdk/middleware-content-length@3.282.0":
@@ -769,10 +769,10 @@
     "@aws-sdk/types" "3.272.0"
     tslib "^2.3.1"
 
-"@aws-sdk/util-dynamodb@3.282.0":
-  version "3.282.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.282.0.tgz#6cdb8a32e256e2e8f684d04bd52e083a2a05c2da"
-  integrity sha512-pf7KxYuI0GFix0N7iHNjpwGk/iSiDBGRJ5AXYfo8IhNbIXm3edW9LtGvGqhsnPxFgbl+40L56iVDemC3KAbQhw==
+"@aws-sdk/util-dynamodb@3.284.0":
+  version "3.284.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.284.0.tgz#011bea135ff312e9e467947ffe1341ca48d7986c"
+  integrity sha512-vPBgz5/Lg2j5A3h33gGX7YNCnlbxMPrZ3/9aMBUGptTaG0W54r5aO/MjynJkVqPuga1bVM/DTWrAnfRaQmgYVQ==
   dependencies:
     tslib "^2.3.1"
 
@@ -2529,6 +2529,20 @@
     import-meta-resolve "^2.1.0"
     read-pkg-up "^9.1.0"
 
+"@wdio/config@8.5.5":
+  version "8.5.5"
+  resolved "https://registry.yarnpkg.com/@wdio/config/-/config-8.5.5.tgz#6f1b0e07aaf53674cf70ff500ba89c5976cc5219"
+  integrity sha512-9qGQWBrqaGJRWBN+n7KUp7poqAuvHrvxhCRoXtmLUQ6GmnU6k0FLnavWhfWu5b0PX9LIDBIzgglBAMPaz4LPkA==
+  dependencies:
+    "@wdio/logger" "8.1.0"
+    "@wdio/types" "8.4.0"
+    "@wdio/utils" "8.4.0"
+    decamelize "^6.0.0"
+    deepmerge-ts "^4.2.2"
+    glob "^8.0.3"
+    import-meta-resolve "^2.1.0"
+    read-pkg-up "^9.1.0"
+
 "@wdio/dot-reporter@8.4.0":
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/@wdio/dot-reporter/-/dot-reporter-8.4.0.tgz#ca0aa4a4f9996a005421e5a66fe26d0767c21bd1"
@@ -2546,6 +2560,14 @@
     expect-webdriverio "^4.0.1"
     webdriverio "8.5.1"
 
+"@wdio/globals@8.5.5":
+  version "8.5.5"
+  resolved "https://registry.yarnpkg.com/@wdio/globals/-/globals-8.5.5.tgz#ca5a225a49a639262fa0ead5dd6d753a472516ab"
+  integrity sha512-eHPvj67jHOOzkNzgVp5UEZVYGN6vdkG9Hyveqd2iOWqLdbMMVsEdSwGQ4EUglXGSsuIrU+aaxIlQMOEbZXCRtg==
+  optionalDependencies:
+    expect-webdriverio "^4.0.1"
+    webdriverio "8.5.5"
+
 "@wdio/globals@^8.2.4":
   version "8.3.10"
   resolved "https://registry.yarnpkg.com/@wdio/globals/-/globals-8.3.10.tgz#18483e8ef8d2acb6488716b33b7b8eeff702bbbe"
@@ -2554,13 +2576,13 @@
     expect-webdriverio "^4.0.1"
     webdriverio "8.3.10"
 
-"@wdio/jasmine-framework@8.5.1":
-  version "8.5.1"
-  resolved "https://registry.yarnpkg.com/@wdio/jasmine-framework/-/jasmine-framework-8.5.1.tgz#de017534017fb18df2eb68a5f37f2fb55ba57263"
-  integrity sha512-77JxFsx12W5EXcleeuaLcbDXgkAF1W1xY+0/zLexJ2Mad2BHW9qUH8ErBi/EgnlPPfAJuekgLPzxCp7YcFcQgQ==
+"@wdio/jasmine-framework@8.5.5":
+  version "8.5.5"
+  resolved "https://registry.yarnpkg.com/@wdio/jasmine-framework/-/jasmine-framework-8.5.5.tgz#bc724f46dd52cdab2fe24dbe226e8f14e9c11c84"
+  integrity sha512-loAMYwdSdUIBJXnvceaUe4Ds5Nt+OUBvjqSWVAHqvxgUEWuZ/Nd/viy6G3WvTW52WC92VFGS3jTU7qV84XocqQ==
   dependencies:
     "@types/node" "^18.0.0"
-    "@wdio/globals" "8.5.1"
+    "@wdio/globals" "8.5.5"
     "@wdio/logger" "8.1.0"
     "@wdio/types" "8.4.0"
     "@wdio/utils" "8.4.0"
@@ -5237,6 +5259,26 @@ devtools@8.5.1:
   dependencies:
     "@types/node" "^18.0.0"
     "@wdio/config" "8.5.1"
+    "@wdio/logger" "8.1.0"
+    "@wdio/protocols" "8.3.11"
+    "@wdio/types" "8.4.0"
+    "@wdio/utils" "8.4.0"
+    chrome-launcher "^0.15.0"
+    edge-paths "^3.0.5"
+    import-meta-resolve "^2.1.0"
+    puppeteer-core "19.7.2"
+    query-selector-shadow-dom "^1.0.0"
+    ua-parser-js "^1.0.1"
+    uuid "^9.0.0"
+    which "^3.0.0"
+
+devtools@8.5.5:
+  version "8.5.5"
+  resolved "https://registry.yarnpkg.com/devtools/-/devtools-8.5.5.tgz#09ac16244ab65e8be7f6704f7279f8c66b728ed1"
+  integrity sha512-NwHRHOiRX0h0ZQjMvVvjldG7JMV6v3dAo9QKOEujKe/3wqqQzhLKBzlckdu4PyIf5FkEw4LXimT599jlsWSpBg==
+  dependencies:
+    "@types/node" "^18.0.0"
+    "@wdio/config" "8.5.5"
     "@wdio/logger" "8.1.0"
     "@wdio/protocols" "8.3.11"
     "@wdio/types" "8.4.0"
@@ -13158,6 +13200,23 @@ webdriver@8.5.1:
     ky "^0.33.0"
     ws "^8.8.0"
 
+webdriver@8.5.5:
+  version "8.5.5"
+  resolved "https://registry.yarnpkg.com/webdriver/-/webdriver-8.5.5.tgz#728febd3ab26771da1690e4e72c351daae837b4f"
+  integrity sha512-uJuhHqQAAXAoFHGEDL9bR3hq6BD0jKu5xecLBbiqHqp0940aN8hzEXw+abCFreu66lFwtZODGZweC8UUUysfhQ==
+  dependencies:
+    "@types/node" "^18.0.0"
+    "@types/ws" "^8.5.3"
+    "@wdio/config" "8.5.5"
+    "@wdio/logger" "8.1.0"
+    "@wdio/protocols" "8.3.11"
+    "@wdio/types" "8.4.0"
+    "@wdio/utils" "8.4.0"
+    deepmerge-ts "^4.2.2"
+    got "^12.1.0"
+    ky "^0.33.0"
+    ws "^8.8.0"
+
 webdriverio@8.3.10, webdriverio@^8.2.4:
   version "8.3.10"
   resolved "https://registry.yarnpkg.com/webdriverio/-/webdriverio-8.3.10.tgz#9171f414d5b643de15caa78b3668caeb3ef3a8eb"
@@ -13219,6 +13278,37 @@ webdriverio@8.5.1:
     rgb2hex "0.2.5"
     serialize-error "^8.0.0"
     webdriver "8.5.1"
+
+webdriverio@8.5.5:
+  version "8.5.5"
+  resolved "https://registry.yarnpkg.com/webdriverio/-/webdriverio-8.5.5.tgz#2e94a70b1f7ebc9298aea1f3bf6b5e32adf11578"
+  integrity sha512-wPWf8KZmZHks659wI7Rj6oKjpHrlYjy8ySdYf6c872QqpMkmDrkGjr/8rivGiorMOMXRFCrfTUHEkSbpApvUoQ==
+  dependencies:
+    "@types/node" "^18.0.0"
+    "@wdio/config" "8.5.5"
+    "@wdio/logger" "8.1.0"
+    "@wdio/protocols" "8.3.11"
+    "@wdio/repl" "8.1.0"
+    "@wdio/types" "8.4.0"
+    "@wdio/utils" "8.4.0"
+    archiver "^5.0.0"
+    aria-query "^5.0.0"
+    css-shorthand-properties "^1.1.1"
+    css-value "^0.0.1"
+    devtools "8.5.5"
+    devtools-protocol "^0.0.1109433"
+    grapheme-splitter "^1.0.2"
+    import-meta-resolve "^2.1.0"
+    is-plain-obj "^4.1.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.zip "^4.2.0"
+    minimatch "^7.0.0"
+    puppeteer-core "19.7.2"
+    query-selector-shadow-dom "^1.0.0"
+    resq "^1.9.1"
+    rgb2hex "0.2.5"
+    serialize-error "^8.0.0"
+    webdriver "8.5.5"
 
 webidl-conversions@^3.0.0:
   version "3.0.1"
