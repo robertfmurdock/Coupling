@@ -1179,7 +1179,25 @@
     "@graphql-tools/utils" "9.2.1"
     tslib "^2.4.0"
 
-"@graphql-tools/schema@9.0.16", "@graphql-tools/schema@^9.0.16":
+"@graphql-tools/merge@8.4.0":
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.4.0.tgz#47fbe5c4b6764276dc35bd19c4e7d3c46d3dc0fc"
+  integrity sha512-3XYCWe0d3I4F1azNj1CdShlbHfTIfiDgj00R9uvFH8tHKh7i1IWN3F7QQYovcHKhayaR6zPok3YYMESYQcBoaA==
+  dependencies:
+    "@graphql-tools/utils" "9.2.1"
+    tslib "^2.4.0"
+
+"@graphql-tools/schema@9.0.17", "@graphql-tools/schema@^9.0.17":
+  version "9.0.17"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-9.0.17.tgz#d731e9899465f88d5b9bf69e607ec465bb88b062"
+  integrity sha512-HVLq0ecbkuXhJlpZ50IHP5nlISqH2GbNgjBJhhRzHeXhfwlUOT4ISXGquWTmuq61K0xSaO0aCjMpxe4QYbKTng==
+  dependencies:
+    "@graphql-tools/merge" "8.4.0"
+    "@graphql-tools/utils" "9.2.1"
+    tslib "^2.4.0"
+    value-or-promise "1.0.12"
+
+"@graphql-tools/schema@^9.0.16":
   version "9.0.16"
   resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-9.0.16.tgz#7d340d69e6094dc01a2b9e625c7bb4fff89ea521"
   integrity sha512-kF+tbYPPf/6K2aHG3e1SWIbapDLQaqnIHVRG6ow3onkFoowwtKszvUyOASL6Krcv2x9bIMvd1UkvRf9OaoROQQ==
@@ -1189,17 +1207,17 @@
     tslib "^2.4.0"
     value-or-promise "1.0.12"
 
-"@graphql-tools/stitch@^8.7.42":
-  version "8.7.42"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-8.7.42.tgz#25478f518f57d7e2851f2b18174d35a6b6363054"
-  integrity sha512-3GmHcxG2UB+r6qGWe2VzvTyFuCuDuBUquAkvWcx+mESiIDOxNdNTQKN69VGNkie+RavlCWUHE3SmhY8u7Z+7wQ==
+"@graphql-tools/stitch@^8.7.43":
+  version "8.7.43"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-8.7.43.tgz#f779c0fc3b9c6883bb6337be85090cff972ce253"
+  integrity sha512-XfZEtGU/zKUuAvVdRl+ZyZuZra67wwg0BqDvYJJ4gzhm9X2JcV8jALEqrTMVuFn4xK5oxcTe1uLlaLmhxQXHWQ==
   dependencies:
     "@graphql-tools/batch-delegate" "8.4.21"
     "@graphql-tools/delegate" "9.0.28"
-    "@graphql-tools/merge" "8.3.18"
-    "@graphql-tools/schema" "9.0.16"
+    "@graphql-tools/merge" "8.4.0"
+    "@graphql-tools/schema" "9.0.17"
     "@graphql-tools/utils" "9.2.1"
-    "@graphql-tools/wrap" "9.3.7"
+    "@graphql-tools/wrap" "9.3.8"
     tslib "^2.4.0"
     value-or-promise "^1.0.11"
 
@@ -1211,13 +1229,13 @@
     "@graphql-typed-document-node/core" "^3.1.1"
     tslib "^2.4.0"
 
-"@graphql-tools/wrap@9.3.7":
-  version "9.3.7"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-9.3.7.tgz#97d7efdb8dfee41624e154b2de4499397634422e"
-  integrity sha512-gavfiWLKgvmC2VPamnMzml3zmkBoo0yt+EmOLIHY6O92o4uMTR281WGM77tZIfq+jzLtjoIOThUSjC/cN/6XKg==
+"@graphql-tools/wrap@9.3.8":
+  version "9.3.8"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/wrap/-/wrap-9.3.8.tgz#c6f53b7bc98cf3fa3d91e41be3b99254ae99b409"
+  integrity sha512-MGsExYPiILMw4Qff7HcvE9MMSYdjb/tr5IQYJbxJIU4/TrBHox1/smne8HG+Bd7kmDlTTj7nU/Z8sxmoRd0hOQ==
   dependencies:
     "@graphql-tools/delegate" "9.0.28"
-    "@graphql-tools/schema" "9.0.16"
+    "@graphql-tools/schema" "9.0.17"
     "@graphql-tools/utils" "9.2.1"
     tslib "^2.4.0"
     value-or-promise "1.0.12"
