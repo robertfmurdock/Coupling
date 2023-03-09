@@ -28,6 +28,8 @@ dependencies {
     implementation(libs.org.jetbrains.kotlin.plugin.serialization.gradle.plugin)
     implementation(libs.org.jmailen.gradle.kotlinter.gradle)
     implementation(libs.org.slf4j.slf4j.api)
+    implementation(platform(libs.com.zegreatrob.testmints.testmints.bom))
+    implementation("com.zegreatrob.testmints:mint-logs-plugin")
 }
 
 tasks {
