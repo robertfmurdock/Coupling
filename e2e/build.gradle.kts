@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
-    alias(libs.plugins.com.zegreatrob.jsmints.plugins.wdiotest)
+    id("com.zegreatrob.jsmints.plugins.wdiotest")
 }
 
 kotlin {

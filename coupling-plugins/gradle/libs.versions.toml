@@ -1,5 +1,4 @@
 [versions]
-jsmints = "2.4.1"
 kotlin = "1.8.10"
 ktlint = "0.45.2"
 org-apache-logging-log4j = "2.20.0"
@@ -9,9 +8,9 @@ org-jlleitschuh-gradle-ktlint = "11.0.0"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.14.2"
 com-github-ben-manes-gradle-versions-plugin = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:3.4.0"
-com-zegreatrob-jsmints-plugins-jspackage-gradle-plugin = { module = "com.zegreatrob.jsmints.plugins.jspackage:com.zegreatrob.jsmints.plugins.jspackage.gradle.plugin", version.ref = "jsmints" }
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:3.1.0"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:9.2.0"
-com-zegreatrob-tools-tagger-com-zegreatrob-tools-tagger-gradle-plugin = "com.zegreatrob.tools.tagger:com.zegreatrob.tools.tagger.gradle.plugin:0.1.0"
+com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:0.1.9"
 org-ajoberstar-grgit-gradle-plugin = "org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0"
 org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "org-apache-logging-log4j" }
