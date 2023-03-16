@@ -41,7 +41,7 @@ data class PinButton(
     val scale: PinButtonScale = PinButtonScale.Normal,
     val className: String = "",
     val showTooltip: Boolean = true,
-    val onClick: () -> Unit = {}
+    val onClick: () -> Unit = {},
 ) : DataPropsBind<PinButton>(pinButton)
 
 val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClickFunc) ->

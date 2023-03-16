@@ -34,7 +34,7 @@ class JasmineJsonLoggingReporter {
     fun specDone(result: dynamic) = endTest(
         result.fullName.unsafeCast<String>(),
         result.status.unsafeCast<String>(),
-        result.failedExpectations.unsafeCast<Array<dynamic>>()
+        result.failedExpectations.unsafeCast<Array<dynamic>>(),
     )
 
     @JsName("startTest")
@@ -50,7 +50,7 @@ class JasmineJsonLoggingReporter {
                 "test" to testName,
                 "status" to status,
                 "duration" to "$duration",
-                "failures" to failed?.joinToString("\n", "\n") { "message: ${it.message} \nstack: ${it.stack}" }
+                "failures" to failed?.joinToString("\n", "\n") { "message: ${it.message} \nstack: ${it.stack}" },
             )
         }
             .also { lastStart = null }

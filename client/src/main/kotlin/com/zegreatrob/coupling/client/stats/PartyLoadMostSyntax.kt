@@ -21,7 +21,7 @@ interface PartyLoadMostSyntax : PartyIdGetSyntax, PartyPlayersSyntax, PartyPinsS
             async { get() },
             async { getPlayerList() },
             async { pairAssignmentDocumentRepository.getCurrentPairAssignments(this@loadMost)?.data?.element },
-            async { getPins() }
+            async { getPins() },
         )
     }
 
@@ -29,7 +29,7 @@ interface PartyLoadMostSyntax : PartyIdGetSyntax, PartyPlayersSyntax, PartyPinsS
         partyDeferred: Deferred<Party?>,
         playerListDeferred: Deferred<List<Player>>,
         currentPairsDeferred: Deferred<PairAssignmentDocument?>,
-        pinListDeferred: Deferred<List<Pin>>
+        pinListDeferred: Deferred<List<Pin>>,
     ) = partyDeferred.await()?.let { party ->
         awaitPartyData(party, playerListDeferred, currentPairsDeferred, pinListDeferred)
     }
@@ -38,12 +38,12 @@ interface PartyLoadMostSyntax : PartyIdGetSyntax, PartyPlayersSyntax, PartyPinsS
         party: Party,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<PairAssignmentDocument?>,
-        pinListDeferred: Deferred<List<Pin>>
+        pinListDeferred: Deferred<List<Pin>>,
     ) = PartyDataMost(
         party,
         playerListDeferred.await(),
         historyDeferred.await(),
-        pinListDeferred.await()
+        pinListDeferred.await(),
     )
 }
 
@@ -51,5 +51,5 @@ data class PartyDataMost(
     val party: Party,
     val playerList: List<Player>,
     val currentPairDocument: PairAssignmentDocument?,
-    val pinList: List<Pin>
+    val pinList: List<Pin>,
 )

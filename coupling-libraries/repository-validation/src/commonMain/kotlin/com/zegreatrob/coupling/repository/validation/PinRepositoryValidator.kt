@@ -21,9 +21,9 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
             val pins = listOf(
                 stubPin(),
                 stubPin(),
-                stubPin()
+                stubPin(),
             )
-        }.bind()
+        }.bind(),
     ) exercise {
         partyId.with(pins).forEach { repository.save(it) }
     } verifyWithWait {
@@ -38,9 +38,9 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
             val pin = Pin(
                 id = null,
                 name = "",
-                icon = ""
+                icon = "",
             )
-        }.bind()
+        }.bind(),
     ) exercise {
         repository.save(partyId.with(pin))
     } verifyWithWait {
@@ -60,9 +60,9 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
             val pins = listOf(
                 stubPin(),
                 stubPin(),
-                stubPin()
+                stubPin(),
             )
-        }.bind()
+        }.bind(),
     ) exercise {
         partyId.with(pins).forEach {
             repository.save(it)
@@ -79,7 +79,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
     @Test
     fun deleteWillFailWhenPinDoesNotExist() = repositorySetup.with(
         object : PartyContextMint<R>() {
-        }.bind()
+        }.bind(),
     ) {
     } exercise {
         repository.deletePin(partyId, "${uuid4()}")
@@ -99,7 +99,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
     fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val pin = stubPin()
-        }.bind()
+        }.bind(),
     ) exercise {
         clock.currentTime = DateTime.now().plus(4.hours)
         repository.save(partyId.with(pin))

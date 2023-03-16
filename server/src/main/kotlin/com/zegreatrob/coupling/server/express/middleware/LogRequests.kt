@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.server.external.onfinished.onFinished
 fun logRequests(): Handler = { request, response, next ->
     logRequestAsync(
         request,
-        response
+        response,
     ) { callback ->
         onFinished(
             response,
-            callback
+            callback,
         )
     }
         .also { next() }

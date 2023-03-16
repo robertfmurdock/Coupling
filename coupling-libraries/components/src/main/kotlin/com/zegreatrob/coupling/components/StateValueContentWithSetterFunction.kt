@@ -7,7 +7,7 @@ fun <T> useStateWithSetterFunction(default: T): StateValueContentWithSetterFunct
     val stateArray = React.useState(default)
     return StateValueContentWithSetterFunction(
         value = stateArray[0].unsafeCast<T>(),
-        setter = stateArray[1].unsafeCast<((T) -> T) -> Unit>()
+        setter = stateArray[1].unsafeCast<((T) -> T) -> Unit>(),
     )
 }
 

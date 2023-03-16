@@ -24,7 +24,7 @@ class DynamoRepositoryCatalog private constructor(
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
     override val pinRepository: PinRepository,
     override val userRepository: UserRepository,
-    override val liveInfoRepository: LiveInfoRepository
+    override val liveInfoRepository: LiveInfoRepository,
 ) :
     RepositoryCatalog,
     UserIdSyntax,
@@ -38,7 +38,7 @@ class DynamoRepositoryCatalog private constructor(
             DynamoPairAssignmentDocumentRepository(userId, clock),
             DynamoPinRepository(userId, clock),
             DynamoUserRepository(userId, clock),
-            DynamoLiveInfoRepository(userId, clock)
+            DynamoLiveInfoRepository(userId, clock),
         )
     }
 }

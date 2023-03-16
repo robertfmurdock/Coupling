@@ -13,6 +13,6 @@ interface TribeIdDynamoItemListGetSyntax : DynamoQueryItemListGetSyntax, DynamoL
     fun PartyId.itemListQueryParams() = json(
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(":tribeId" to value),
-        "KeyConditionExpression" to "tribeId = :tribeId"
+        "KeyConditionExpression" to "tribeId = :tribeId",
     )
 }

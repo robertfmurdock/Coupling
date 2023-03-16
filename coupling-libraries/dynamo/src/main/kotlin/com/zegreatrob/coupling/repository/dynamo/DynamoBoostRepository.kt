@@ -40,24 +40,24 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
             "KeySchema" to arrayOf(
                 json(
                     "AttributeName" to "pk",
-                    "KeyType" to "HASH"
+                    "KeyType" to "HASH",
                 ),
                 json(
                     "AttributeName" to "timestamp+id",
-                    "KeyType" to "RANGE"
-                )
+                    "KeyType" to "RANGE",
+                ),
             ),
             "AttributeDefinitions" to arrayOf(
                 json(
                     "AttributeName" to "pk",
-                    "AttributeType" to "S"
+                    "AttributeType" to "S",
                 ),
                 json(
                     "AttributeName" to "timestamp+id",
-                    "AttributeType" to "S"
-                )
+                    "AttributeType" to "S",
+                ),
             ),
-            "BillingMode" to "PAY_PER_REQUEST"
+            "BillingMode" to "PAY_PER_REQUEST",
         )
     }
 
@@ -117,6 +117,6 @@ class DynamoBoostRepository private constructor(override val userId: String, ove
     private fun queryParams(id: String) = json(
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(":pk" to id),
-        "KeyConditionExpression" to "pk = :pk"
+        "KeyConditionExpression" to "pk = :pk",
     )
 }

@@ -36,7 +36,7 @@ val GraphIQLPage = FC<PageProps> {
                         this.fetcher = createGraphiQLFetcher(graphQlUrl, state.result)
                     }
                 }
-            }
+            },
         )
     }
 }

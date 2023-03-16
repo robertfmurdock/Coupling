@@ -17,7 +17,7 @@ fun ChildrenBuilder.settingsButton(party: Party, className: ClassName = ClassNam
         CouplingButton(large, black, className) {
             fontSize = 24.px
             padding = Padding(1.px, 4.px, 2.px)
-        }
+        },
     ) {
         i { this.className = ClassName("fa fa-cog") }
     }

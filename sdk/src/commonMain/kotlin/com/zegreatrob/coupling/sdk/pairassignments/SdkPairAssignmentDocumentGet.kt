@@ -12,7 +12,7 @@ interface SdkPairAssignmentDocumentGet : PairAssignmentDocumentGet, GqlQueryComp
     override suspend fun getPairAssignments(partyId: PartyId) = performQueryGetComponent(
         partyId,
         PairAssignmentDocumentList,
-        ::toModel
+        ::toModel,
     ) ?: emptyList()
 
     private fun toModel(list: List<JsonPairAssignmentDocumentRecord>) = list

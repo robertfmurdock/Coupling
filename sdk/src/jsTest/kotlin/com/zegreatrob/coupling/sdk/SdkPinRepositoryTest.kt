@@ -23,8 +23,8 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
                 party.save()
             }
     }, sharedTeardown = {
-            it.sdk.partyRepository.deleteIt(it.partyId)
-        })
+        it.sdk.partyRepository.deleteIt(it.partyId)
+    })
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({
@@ -49,7 +49,7 @@ class SdkPinRepositoryTest : PinRepositoryValidator<SdkPinRepository> {
     override fun savedPinsIncludeModificationDateAndUsername() = repositorySetup.with(
         object : PartyContextMint<SdkPinRepository>() {
             val pin = stubPin()
-        }.bind()
+        }.bind(),
     ) {
         repository.save(partyId.with(pin))
     } exercise {

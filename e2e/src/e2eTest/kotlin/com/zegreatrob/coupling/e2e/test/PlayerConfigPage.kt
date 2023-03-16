@@ -36,7 +36,7 @@ object PlayerConfigPage : BrowserSyntax, ByRole by TestingLibraryBrowser {
         WebdriverBrowser.waitUntil(
             { getSaveButton().isEnabled() },
             waitToBePresentDuration,
-            "PlayerConfig.waitForSaveButtonEnable"
+            "PlayerConfig.waitForSaveButtonEnable",
         )
 
         WebdriverBrowser.waitUntil({

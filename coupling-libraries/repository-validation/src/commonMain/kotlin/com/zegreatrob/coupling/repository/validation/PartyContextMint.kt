@@ -18,7 +18,7 @@ data class PartyContextData<R>(
     override val repository: R,
     override val partyId: PartyId,
     override val clock: MagicClock,
-    override val user: User
+    override val user: User,
 ) : PartyContext<R>
 
 fun <C : PartyContextMint<R>, R> C.bind(): suspend (PartyContext<R>) -> C = { parent: PartyContext<R> ->

@@ -19,7 +19,7 @@ data class JsonPinRecord(
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
-    override val timestamp: DateTime
+    override val timestamp: DateTime,
 ) : JsonPartyRecordInfo
 
 interface JsonPartyRecordInfo {
@@ -43,13 +43,13 @@ data class SavePinInput(
     override val partyId: PartyId,
     val pinId: String?,
     val name: String,
-    val icon: String
+    val icon: String,
 ) : PartyInput
 
 fun Pin.toSerializable() = JsonPinData(
     id = id,
     name = name,
-    icon = icon
+    icon = icon,
 )
 
 fun Record<PartyElement<Pin>>.toSerializable() = JsonPinRecord(
@@ -59,18 +59,18 @@ fun Record<PartyElement<Pin>>.toSerializable() = JsonPinRecord(
     partyId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp
+    timestamp = timestamp,
 )
 
 fun JsonPinData.toModel(): Pin = Pin(
     id = id,
     name = name,
-    icon = icon
+    icon = icon,
 )
 
 fun JsonPinRecord.toModel(): Record<PartyElement<Pin>> = Record(
     data = partyId.with(Pin(id = id, name = name, icon = icon)),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = timestamp
+    timestamp = timestamp,
 )

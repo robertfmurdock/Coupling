@@ -44,12 +44,12 @@ class PrepareToSpinPageE2ETest {
 
         private fun buildFunkyParty() = Party(
             id = PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
-            name = "Funkytown"
+            name = "Funkytown",
         )
 
         private fun buildPlayer(it: Int) = Player(
             id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
-            name = "Player$it"
+            name = "Player$it",
         )
     }
 

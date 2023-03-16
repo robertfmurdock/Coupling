@@ -34,7 +34,7 @@ data class PartyConfigContent(
     var isNew: Boolean?,
     var onChange: (ChangeEvent<*>) -> Unit,
     var onSave: () -> Unit,
-    var onDelete: (() -> Unit)?
+    var onDelete: (() -> Unit)?,
 ) : DataPropsBind<PartyConfigContent>(partyConfigContent) {
 
     companion object {
@@ -65,7 +65,7 @@ private fun ChildrenBuilder.partyConfigEditor(
     isNew: Boolean,
     onChange: (ChangeEvent<*>) -> Unit,
     onSave: () -> Unit,
-    onDelete: (() -> Unit)?
+    onDelete: (() -> Unit)?,
 ) = span {
     css {
         display = Display.inlineBlock
@@ -180,7 +180,7 @@ private fun ChildrenBuilder.altBadgeInput(party: Party, onChange: (ChangeEvent<*
     name = "alternateBadgeName",
     value = party.alternateBadgeName,
     type = InputType.text,
-    onChange = onChange
+    onChange = onChange,
 )
 
 private fun ChildrenBuilder.defaultBadgeInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -189,7 +189,7 @@ private fun ChildrenBuilder.defaultBadgeInput(party: Party, onChange: (ChangeEve
     name = "defaultBadgeName",
     value = party.defaultBadgeName,
     type = InputType.text,
-    onChange = onChange
+    onChange = onChange,
 )
 
 private fun ChildrenBuilder.enableBadgesInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -199,7 +199,7 @@ private fun ChildrenBuilder.enableBadgesInput(party: Party, onChange: (ChangeEve
     value = party.id.value,
     type = InputType.checkbox,
     onChange = onChange,
-    checked = party.badgesEnabled
+    checked = party.badgesEnabled,
 )
 
 private fun ChildrenBuilder.enableAnimationsInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -209,7 +209,7 @@ private fun ChildrenBuilder.enableAnimationsInput(party: Party, onChange: (Chang
     value = party.id.value,
     type = InputType.checkbox,
     onChange = onChange,
-    checked = party.animationEnabled
+    checked = party.animationEnabled,
 )
 
 private fun ChildrenBuilder.enableCallSignsInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -219,7 +219,7 @@ private fun ChildrenBuilder.enableCallSignsInput(party: Party, onChange: (Change
     value = party.id.value,
     type = InputType.checkbox,
     onChange = onChange,
-    checked = party.callSignsEnabled
+    checked = party.callSignsEnabled,
 )
 
 private fun ChildrenBuilder.uniqueIdInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -228,7 +228,7 @@ private fun ChildrenBuilder.uniqueIdInput(party: Party, onChange: (ChangeEvent<*
     name = "id",
     value = party.id.value,
     type = InputType.text,
-    onChange = onChange
+    onChange = onChange,
 )
 
 private fun ChildrenBuilder.emailInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -238,7 +238,7 @@ private fun ChildrenBuilder.emailInput(party: Party, onChange: (ChangeEvent<*>) 
     value = party.email ?: "",
     type = InputType.text,
     onChange = onChange,
-    placeholder = "Enter the party email here"
+    placeholder = "Enter the party email here",
 )
 
 private fun ChildrenBuilder.nameInput(party: Party, onChange: (ChangeEvent<*>) -> Unit) = configInput(
@@ -249,10 +249,10 @@ private fun ChildrenBuilder.nameInput(party: Party, onChange: (ChangeEvent<*>) -
     type = InputType.text,
     onChange = onChange,
     placeholder = "Enter the party name here",
-    autoFocus = true
+    autoFocus = true,
 )
 
 private val pairingRuleDescriptions = mapOf(
     PairingRule.LongestTime to "Prefer Longest Time",
-    PairingRule.PreferDifferentBadge to "Prefer Different Badges (Beta)"
+    PairingRule.PreferDifferentBadge to "Prefer Different Badges (Beta)",
 )

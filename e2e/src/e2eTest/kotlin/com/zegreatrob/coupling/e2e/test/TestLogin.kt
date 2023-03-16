@@ -45,7 +45,7 @@ object TestLogin : BrowserSyntax {
                 append("scope", scope)
                 append("client_id", clientId)
                 append("client_secret", clientSecret)
-            }
+            },
         ).body<JsonObject>()
         val accessToken = result["access_token"]!!.jsonPrimitive.content
         val idToken = result["id_token"]!!.jsonPrimitive.content
@@ -63,10 +63,10 @@ object TestLogin : BrowserSyntax {
                 "expires_in" to expiresIn,
                 "decodedToken" to json(
                     "user" to jwtDecode(idToken),
-                    "claims" to json("__raw" to idToken)
-                )
+                    "claims" to json("__raw" to idToken),
+                ),
             ),
-            "expiresAt" to (floor(Date.now() / 1000) + expiresIn)
+            "expiresAt" to (floor(Date.now() / 1000) + expiresIn),
         )
 
         setAuth0CacheInLocalStorage(key, auth0Cache)
@@ -79,7 +79,7 @@ object TestLogin : BrowserSyntax {
     private suspend fun setAuth0CacheInLocalStorage(key: String, auth0Cache: Json) {
         @Suppress("UNUSED_VARIABLE")
         val storageStuff = JSON.stringify(
-            json("key" to key, "auth0Cache" to auth0Cache)
+            json("key" to key, "auth0Cache" to auth0Cache),
         )
 
         js(
@@ -89,7 +89,7 @@ object TestLogin : BrowserSyntax {
                     window.localStorage.setItem(result.key, JSON.stringify(result.auth0Cache));
                     done()
                     }, storageStuff);
-    """
+    """,
         ).unsafeCast<Promise<Unit>>()
             .await()
     }

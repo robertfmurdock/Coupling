@@ -23,8 +23,8 @@ class CreatePairCandidateReportActionTest {
             PinnedCouplingPair(
                 listOf(
                     player1.withPins(emptyList()),
-                    player2.withPins(emptyList())
-                )
+                    player2.withPins(emptyList()),
+                ),
             )
     }
 
@@ -49,7 +49,7 @@ class CreatePairCandidateReportActionTest {
 
             private fun createPairCandidateReportAction(
                 history: List<PairAssignmentDocument>,
-                availablePlayers: List<Player>
+                availablePlayers: List<Player>,
             ) = CreatePairCandidateReportAction(bruce, history, availablePlayers)
         }
 
@@ -64,8 +64,8 @@ class CreatePairCandidateReportActionTest {
                     PairCandidateReport(
                         bruce,
                         availableOtherPlayers,
-                        NeverPaired
-                    )
+                        NeverPaired,
+                    ),
                 )
             }
 
@@ -79,8 +79,8 @@ class CreatePairCandidateReportActionTest {
                     PairCandidateReport(
                         bruce,
                         availableOtherPlayers,
-                        NeverPaired
-                    )
+                        NeverPaired,
+                    ),
                 )
             }
 
@@ -91,18 +91,18 @@ class CreatePairCandidateReportActionTest {
                         listOf(
                             pinnedPair(
                                 bruce,
-                                Player(id = "Batgirl")
-                            )
-                        )
+                                Player(id = "Batgirl"),
+                            ),
+                        ),
                     ),
                     pairAssignmentDocument(
                         listOf(
                             pinnedPair(
                                 bruce,
-                                Player(id = "Robin")
-                            )
-                        )
-                    )
+                                Player(id = "Robin"),
+                            ),
+                        ),
+                    ),
                 )
             }) exercise {
                 perform(createPairCandidateReportAction(history, availableOtherPlayers))
@@ -111,8 +111,8 @@ class CreatePairCandidateReportActionTest {
                     PairCandidateReport(
                         bruce,
                         availableOtherPlayers,
-                        NeverPaired
-                    )
+                        NeverPaired,
+                    ),
                 )
             }
 
@@ -121,9 +121,9 @@ class CreatePairCandidateReportActionTest {
                 val history = listOf(
                     pairAssignmentDocument(
                         listOf(
-                            pinnedPair(bruce, selena)
-                        )
-                    )
+                            pinnedPair(bruce, selena),
+                        ),
+                    ),
                 )
             }) exercise {
                 perform(CreatePairCandidateReportAction(bruce, history, listOf(selena)))
@@ -132,8 +132,8 @@ class CreatePairCandidateReportActionTest {
                     PairCandidateReport(
                         bruce,
                         listOf(selena),
-                        TimeResultValue(0)
-                    )
+                        TimeResultValue(0),
+                    ),
                 )
             }
         }
@@ -145,7 +145,7 @@ class CreatePairCandidateReportActionTest {
                 val history = listOf(
                     pairAssignmentDocument(listOf(pinnedPair(bruce, selena))),
                     pairAssignmentDocument(listOf(pinnedPair(bruce, talia))),
-                    pairAssignmentDocument(listOf(pinnedPair(expectedPartner, bruce)))
+                    pairAssignmentDocument(listOf(pinnedPair(expectedPartner, bruce))),
                 )
             }) exercise {
                 perform(CreatePairCandidateReportAction(bruce, history, availableOtherPlayers))
@@ -154,15 +154,15 @@ class CreatePairCandidateReportActionTest {
                     PairCandidateReport(
                         bruce,
                         listOf(expectedPartner),
-                        TimeResultValue(2)
-                    )
+                        TimeResultValue(2),
+                    ),
                 )
             }
 
             @Test
             fun whenThereIsOnePersonWhoHasPairedButNoOneElse() = setup(object {
                 val history = listOf(
-                    pairAssignmentDocument(listOf(pinnedPair(bruce, selena)))
+                    pairAssignmentDocument(listOf(pinnedPair(bruce, selena))),
                 )
             }) exercise {
                 perform(CreatePairCandidateReportAction(bruce, history, availableOtherPlayers))
@@ -171,8 +171,8 @@ class CreatePairCandidateReportActionTest {
                     PairCandidateReport(
                         bruce,
                         listOf(talia, jezebel),
-                        NeverPaired
-                    )
+                        NeverPaired,
+                    ),
                 )
             }
         }

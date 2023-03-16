@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 class MemoryPairAssignmentDocumentRepository(
     override val userId: String,
     override val clock: TimeProvider,
-    private val recordBackend: RecordBackend<PartyElement<PairAssignmentDocument>> = SimpleRecordBackend()
+    private val recordBackend: RecordBackend<PartyElement<PairAssignmentDocument>> = SimpleRecordBackend(),
 ) :
     PairAssignmentDocumentRepository,
     TypeRecordSyntax<PartyElement<PairAssignmentDocument>>,

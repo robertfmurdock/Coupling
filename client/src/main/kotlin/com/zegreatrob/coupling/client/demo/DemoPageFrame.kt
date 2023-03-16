@@ -113,7 +113,7 @@ private fun popperOptions(arrowRef: MutableRefObject<HTMLElement>, state: DemoAn
         },
         Offset.modifier {
             this.options = jso { offset = Offset(0.0, 10.0) }
-        }
+        },
     )
 }
 
@@ -121,7 +121,7 @@ private fun ChildrenBuilder.popperDiv(
     popperRef: MutableRefObject<HTMLElement>,
     arrowRef: MutableRefObject<HTMLElement>,
     state: DemoAnimationState,
-    popperInstance: PopperInstance
+    popperInstance: PopperInstance,
 ) = div {
     css {
         if (state.description.isBlank()) display = None.none
@@ -196,11 +196,11 @@ private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
 }
 
 private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = add(
-    PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {})
+    PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {}),
 )
 
 private fun ChildrenBuilder.pinConfigFrame(state: AddPin) = add(
-    PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {})
+    PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {}),
 )
 
 private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = add(
@@ -211,14 +211,14 @@ private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = add(
         { },
         Controls(noOpDispatchFunc) {},
         CouplingSocketMessage("", emptySet()),
-        state.allowSave
-    )
+        state.allowSave,
+    ),
 )
 
 private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
     override fun <C : SuspendAction<NoOpDispatcher, R>, R> invoke(
         commandFunc: () -> C,
-        response: (R) -> Unit
+        response: (R) -> Unit,
     ): () -> Unit = {}
 }
 

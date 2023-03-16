@@ -9,5 +9,5 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 val savePairsResolver = dispatch(
     partyCommand,
     { _, args: SavePairAssignmentsInput -> SavePairAssignmentDocumentCommand(args.toModel()) },
-    { true }
+    { true },
 )

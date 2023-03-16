@@ -23,7 +23,7 @@ object UserDataService {
     suspend fun authActionDispatcher(userId: String, traceId: Uuid) = AuthActionDispatcher(
         userId,
         userRepository(userId),
-        traceId
+        traceId,
     )
 
     suspend fun findOrCreateUser(email: String, traceId: Uuid) =

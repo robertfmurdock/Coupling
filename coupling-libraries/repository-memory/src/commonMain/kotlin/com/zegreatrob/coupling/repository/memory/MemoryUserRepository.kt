@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 class MemoryUserRepository(
     override val userId: String,
     override val clock: TimeProvider,
-    private val recordBackend: RecordBackend<User> = SimpleRecordBackend()
+    private val recordBackend: RecordBackend<User> = SimpleRecordBackend(),
 ) : UserRepository,
     TypeRecordSyntax<User>,
     RecordBackend<User> by recordBackend {

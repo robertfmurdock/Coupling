@@ -8,5 +8,5 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 val deletePlayerResolver = dispatch(
     partyCommand,
     { _, input: DeletePlayerInput -> DeletePlayerCommand(input.playerId) },
-    { true }
+    { true },
 )

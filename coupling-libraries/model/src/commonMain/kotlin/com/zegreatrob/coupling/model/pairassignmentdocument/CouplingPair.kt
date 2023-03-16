@@ -45,5 +45,5 @@ fun List<CouplingPair>.withPins() = map { it.withPins() }
 
 fun CouplingPair.withPins(pins: Set<Pin> = emptySet()) = PinnedCouplingPair(
     asArray().map { player -> player.withPins() },
-    pins
+    pins,
 )

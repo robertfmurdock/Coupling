@@ -17,7 +17,7 @@ import kotlin.math.floor
 data class ComposeStatisticsAction(
     val party: Party,
     val players: List<Player>,
-    val history: List<PairAssignmentDocument>
+    val history: List<PairAssignmentDocument>,
 ) : SimpleExecutableAction<ComposeStatisticsActionDispatcher, StatisticsReport> {
     override val performFunc = link(ComposeStatisticsActionDispatcher::perform)
 }
@@ -27,7 +27,7 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
     fun perform(action: ComposeStatisticsAction) = StatisticsReport(
         spinsUntilFullRotation = action.players.calculateFullRotation(),
         pairReports = action.pairReports(),
-        medianSpinDuration = action.history.medianSpinDuration()
+        medianSpinDuration = action.history.medianSpinDuration(),
     )
 
     private fun ComposeStatisticsAction.pairReports() = players.allPairCombinations()
@@ -74,7 +74,7 @@ interface ComposeStatisticsActionDispatcher : PairingTimeCalculationSyntax {
 data class StatisticsReport(
     val spinsUntilFullRotation: Int,
     val pairReports: List<PairReport>,
-    val medianSpinDuration: TimeSpan?
+    val medianSpinDuration: TimeSpan?,
 )
 
 data class PairReport(val pair: CouplingPair, val timeSinceLastPair: TimeResult)

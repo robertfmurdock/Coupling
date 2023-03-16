@@ -58,7 +58,7 @@ class PartyConfigTest {
             alternateBadgeName = "alt",
             defaultBadgeName = "def",
             email = "email-y",
-            pairingRule = PairingRule.PreferDifferentBadge
+            pairingRule = PairingRule.PreferDifferentBadge,
         )
         val actor = userEvent.setup()
         val stubDispatcher = StubDispatcher()
@@ -75,7 +75,7 @@ class PartyConfigTest {
                         element = PartyConfig(party, stubDispatcher.func()).create()
                     }
                 }
-            }
+            },
         )
     } exercise {
         actor.click(screen.getByText("Save")).await()

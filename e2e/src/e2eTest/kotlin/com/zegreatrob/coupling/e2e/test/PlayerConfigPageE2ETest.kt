@@ -40,9 +40,9 @@ class PlayerConfigPageE2ETest {
                 buildPlayer = {
                     Player(
                         "${randomInt()}-PlayerConfigPageE2E",
-                        name = "${randomInt()}-PlayerConfigPageE2E"
+                        name = "${randomInt()}-PlayerConfigPageE2E",
                     )
-                }
+                },
             )
         }
 
@@ -50,7 +50,7 @@ class PlayerConfigPageE2ETest {
         fun whenNothingHasChangedWillNotAlertOnLeaving() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
-            }.attachPlayer()
+            }.attachPlayer(),
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
@@ -65,7 +65,7 @@ class PlayerConfigPageE2ETest {
         fun whenNameIsChangedWillGetAlertOnLeaving() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
-            }.attachPlayer()
+            }.attachPlayer(),
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().setValue("completely different name")
@@ -85,7 +85,7 @@ class PlayerConfigPageE2ETest {
             object : PlayerContext() {
                 val page = PlayerConfigPage
                 val newName = "completely different name"
-            }.attachPlayer()
+            }.attachPlayer(),
         ) {
             with(page) {
                 goTo(party.id, player.id)
@@ -108,7 +108,7 @@ class PlayerConfigPageE2ETest {
         fun savingWithNoNameWillShowDefaultName() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
-            }.attachPlayer()
+            }.attachPlayer(),
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().clearSetValue(" ")
@@ -132,7 +132,7 @@ class PlayerConfigPageE2ETest {
         fun whenRetireIsClickedWillAlertAndOnAcceptRedirect() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
-            }.attachPlayer()
+            }.attachPlayer(),
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
@@ -146,7 +146,7 @@ class PlayerConfigPageE2ETest {
         fun whenPartyDoesNotHaveBadgingEnabledWillNotShowBadgeSelector() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
-            }.attachPlayer()
+            }.attachPlayer(),
         ) {
             sdk.partyRepository.save(party.copy(badgesEnabled = false))
         } exercise {
@@ -167,7 +167,7 @@ class PlayerConfigPageE2ETest {
             val players = generateSequence {
                 Player(
                     id = "${randomInt()}-PlayerConfigPageE2E",
-                    name = "${randomInt()}-PlayerConfigPageE2E"
+                    name = "${randomInt()}-PlayerConfigPageE2E",
                 )
             }.take(5).toList()
             val page = PlayerConfigPage
@@ -193,15 +193,15 @@ class PlayerConfigPageE2ETest {
                         PartyId("${randomInt()}-PlayerConfigPageE2E"),
                         badgesEnabled = true,
                         defaultBadgeName = "Badge 1",
-                        alternateBadgeName = "Badge 2"
+                        alternateBadgeName = "Badge 2",
                     )
                 },
                 buildPlayer = {
                     Player(
                         "${randomInt()}-PlayerConfigPageE2E",
-                        name = "${randomInt()}-PlayerConfigPageE2E"
+                        name = "${randomInt()}-PlayerConfigPageE2E",
                     )
-                }
+                },
             )
         }
 
@@ -209,7 +209,7 @@ class PlayerConfigPageE2ETest {
         fun willShowBadgeSelector() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
-            }.attachPlayer()
+            }.attachPlayer(),
         ) exercise {
             PlayerConfigPage.goTo(party.id, player.id)
         } verify {
@@ -229,7 +229,7 @@ class PlayerConfigPageE2ETest {
         fun willSelectTheDefaultBadge() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
-            }.attachPlayer()
+            }.attachPlayer(),
         ) exercise {
             PlayerConfigPage.goTo(party.id, player.id)
         } verify {
@@ -241,7 +241,7 @@ class PlayerConfigPageE2ETest {
         fun willRememberBadgeSelection() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
-            }.attachPlayer()
+            }.attachPlayer(),
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
@@ -262,15 +262,15 @@ class PlayerConfigPageE2ETest {
                 buildParty = {
                     Party(
                         PartyId("${randomInt()}-PlayerConfigPageE2E"),
-                        callSignsEnabled = true
+                        callSignsEnabled = true,
                     )
                 },
                 buildPlayer = {
                     Player(
                         "${randomInt()}-PlayerConfigPageE2E",
-                        name = "${randomInt()}-PlayerConfigPageE2E"
+                        name = "${randomInt()}-PlayerConfigPageE2E",
                     )
-                }
+                },
             )
         }
 
@@ -278,7 +278,7 @@ class PlayerConfigPageE2ETest {
         fun adjectiveAndNounCanBeSaved() = playerSetup.with(
             object : PlayerContext() {
                 val page = PlayerConfigPage
-            }.attachPlayer()
+            }.attachPlayer(),
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
@@ -301,7 +301,7 @@ class PlayerConfigPageE2ETest {
         fun willSuggestCallSign() = e2eSetup(object {
             val party = Party(
                 id = PartyId("${randomInt()}-WithOnePartyNoPlayers"),
-                callSignsEnabled = true
+                callSignsEnabled = true,
             )
         }) {
             sdkProvider.await().apply {

@@ -22,7 +22,7 @@ import kotlinx.serialization.UseSerializers
 data class JsonPairAssignmentDocument(
     val id: String,
     val date: DateTime,
-    val pairs: List<JsonPinnedCouplingPair>
+    val pairs: List<JsonPinnedCouplingPair>,
 )
 
 @Serializable
@@ -36,7 +36,7 @@ data class JsonPairAssignmentDocumentRecord(
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
-    override val timestamp: DateTime
+    override val timestamp: DateTime,
 ) : JsonPartyRecordInfo
 
 @Serializable
@@ -44,7 +44,7 @@ data class SavePairAssignmentsInput(
     override val partyId: PartyId,
     val pairAssignmentsId: String,
     val date: DateTime,
-    val pairs: List<JsonPinnedCouplingPair>
+    val pairs: List<JsonPinnedCouplingPair>,
 ) : PartyInput
 
 @Serializable
@@ -59,20 +59,20 @@ data class JsonPinnedPlayer(
     val callSignAdjective: String = defaultPlayer.callSignAdjective,
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
-    val pins: List<JsonPinData>
+    val pins: List<JsonPinData>,
 )
 
 @Serializable
 data class SpinInput(
     override val partyId: PartyId,
     val players: List<JsonPlayerData>,
-    val pins: List<JsonPinData>
+    val pins: List<JsonPinData>,
 ) : PartyInput
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     id = id.value,
     date = date,
-    pairs = pairs.map(PinnedCouplingPair::toSerializable)
+    pairs = pairs.map(PinnedCouplingPair::toSerializable),
 )
 
 fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDocumentRecord(
@@ -82,12 +82,12 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDoc
     partyId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp
+    timestamp = timestamp,
 )
 
 fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
     players = players.map(PinnedPlayer::toSerializable),
-    pins = pins.map(Pin::toSerializable).toSet()
+    pins = pins.map(Pin::toSerializable).toSet(),
 )
 
 private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
@@ -98,7 +98,7 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
     callSignAdjective = player.callSignAdjective,
     callSignNoun = player.callSignNoun,
     imageURL = player.imageURL,
-    pins = pins.map(Pin::toSerializable)
+    pins = pins.map(Pin::toSerializable),
 )
 
 fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
@@ -106,19 +106,19 @@ fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
         partyId = partyId,
         pairAssignmentsId = element.id.value,
         date = element.date,
-        pairs = element.pairs.map(PinnedCouplingPair::toSerializable)
+        pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
     )
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     id = id.let(::PairAssignmentDocumentId),
     date = date,
-    pairs = pairs.map(JsonPinnedCouplingPair::toModel)
+    pairs = pairs.map(JsonPinnedCouplingPair::toModel),
 )
 
 fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
     id = pairAssignmentsId.let(::PairAssignmentDocumentId),
     date = date,
-    pairs = pairs.map(JsonPinnedCouplingPair::toModel)
+    pairs = pairs.map(JsonPinnedCouplingPair::toModel),
 )
 
 fun JsonPairAssignmentDocumentRecord.toModel() = PartyRecord(
@@ -126,17 +126,17 @@ fun JsonPairAssignmentDocumentRecord.toModel() = PartyRecord(
         PairAssignmentDocument(
             id = id.let(::PairAssignmentDocumentId),
             date = date,
-            pairs = pairs.map(JsonPinnedCouplingPair::toModel)
-        )
+            pairs = pairs.map(JsonPinnedCouplingPair::toModel),
+        ),
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = date
+    timestamp = date,
 )
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
     players = players.map(JsonPinnedPlayer::toModel),
-    pins = pins.map(JsonPinData::toModel).toSet()
+    pins = pins.map(JsonPinData::toModel).toSet(),
 )
 
 private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
@@ -147,7 +147,7 @@ private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
         email = email,
         callSignAdjective = callSignAdjective,
         callSignNoun = callSignNoun,
-        imageURL = imageURL
+        imageURL = imageURL,
     ),
-    pins = pins.map(JsonPinData::toModel)
+    pins = pins.map(JsonPinData::toModel),
 )

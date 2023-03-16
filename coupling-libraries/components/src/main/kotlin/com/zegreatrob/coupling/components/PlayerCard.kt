@@ -43,7 +43,7 @@ data class PlayerCard(
     val size: Int = 100,
     val onClick: () -> Unit = {},
     val deselected: Boolean = false,
-    val tilt: Angle = 0.deg
+    val tilt: Angle = 0.deg,
 ) : DataPropsBind<PlayerCard>(playerCard)
 
 val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselected, tilt) ->
@@ -113,7 +113,7 @@ private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = if 
         options = object : GravatarOptions {
             override val size = size
             override val default = "retro"
-        }
+        },
     )
 }
 

@@ -26,7 +26,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
                 val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
                 val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
                 val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
-            }.bind()
+            }.bind(),
         ) {
             partyId.with(listOf(middle, oldest, newest))
                 .forEach { repository.save(it) }
@@ -43,7 +43,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
             val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
             val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
-        }.bind()
+        }.bind(),
     ) {
         partyId.with(listOf(middle, oldest, newest))
             .forEach { repository.save(it) }
@@ -64,7 +64,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     fun savedWillIncludeModificationDateAndUsername() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val pairAssignmentDoc = stubPairAssignmentDoc()
-        }.bind()
+        }.bind(),
     ) {
         clock.currentTime = DateTime.now().plus(4.hours)
         repository.save(partyId.with(pairAssignmentDoc))
@@ -82,7 +82,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     fun saveAndDeleteThenGetWillReturnNothing() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val document = stubPairAssignmentDoc()
-        }.bind()
+        }.bind(),
     ) {
         repository.save(partyId.with(document))
     } exercise {
@@ -98,7 +98,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     fun deleteWhenDocumentDoesNotExistWillReturnFalse() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val id = PairAssignmentDocumentId("${uuid4()}")
-        }.bind()
+        }.bind(),
     ) exercise {
         repository.deleteIt(partyId, id)
     } verify { result ->
@@ -113,7 +113,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
                 val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
                 val updatedDateTime = originalDateTime.plus(3.days)
                 val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
-            }.bind()
+            }.bind(),
         ) {
             repository.save(partyId.with(pairAssignmentDocument))
         } exercise {

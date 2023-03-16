@@ -9,6 +9,6 @@ interface SdkPairAssignmentDocumentGetCurrent : PairAssignmentDocumentGetCurrent
     override suspend fun getCurrentPairAssignments(partyId: PartyId) = performQueryGetComponent(
         partyId,
         PartyGQLComponent.CurrentPairAssignmentDocument,
-        JsonPairAssignmentDocumentRecord::toModel
+        JsonPairAssignmentDocumentRecord::toModel,
     )
 }

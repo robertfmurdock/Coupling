@@ -11,23 +11,23 @@ interface CreateTableParamProvider :
             "KeySchema" to arrayOf(
                 json(
                     "AttributeName" to "id",
-                    "KeyType" to "HASH"
+                    "KeyType" to "HASH",
                 ),
                 json(
                     "AttributeName" to "timestamp",
-                    "KeyType" to "RANGE"
-                )
+                    "KeyType" to "RANGE",
+                ),
             ),
             "AttributeDefinitions" to arrayOf(
                 json(
                     "AttributeName" to "id",
-                    "AttributeType" to "S"
+                    "AttributeType" to "S",
                 ),
                 json(
                     "AttributeName" to "timestamp",
-                    "AttributeType" to "S"
-                )
+                    "AttributeType" to "S",
+                ),
             ),
-            "BillingMode" to "PAY_PER_REQUEST"
+            "BillingMode" to "PAY_PER_REQUEST",
         )
 }

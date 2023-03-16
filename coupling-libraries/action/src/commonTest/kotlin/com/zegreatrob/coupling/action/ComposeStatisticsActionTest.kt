@@ -33,7 +33,7 @@ class ComposeStatisticsActionTest {
         private fun List<CouplingPair>.assertMatch(expected: List<CouplingPair>) {
             assertIsEqualTo(
                 expected,
-                "------WE EXPECT\n${expected.describe()}\n------RESULTS\n${this.describe()}\n-----END\n"
+                "------WE EXPECT\n${expected.describe()}\n------RESULTS\n${this.describe()}\n-----END\n",
             )
         }
 
@@ -137,8 +137,8 @@ class ComposeStatisticsActionTest {
             } verify { (_, pairReports) ->
                 pairReports.assertIsEqualTo(
                     listOf(
-                        PairReport(pairOf(players[0], players[1]), NeverPaired)
-                    )
+                        PairReport(pairOf(players[0], players[1]), NeverPaired),
+                    ),
                 )
             }
 
@@ -162,8 +162,8 @@ class ComposeStatisticsActionTest {
                             pairOf(player2, player5),
                             pairOf(player3, player4),
                             pairOf(player3, player5),
-                            pairOf(player4, player5)
-                        )
+                            pairOf(player4, player5),
+                        ),
                     )
             }
         }
@@ -182,45 +182,45 @@ class ComposeStatisticsActionTest {
                         PinnedCouplingPair(
                             listOf(
                                 player1.withPins(
-                                    emptyList()
+                                    emptyList(),
                                 ),
-                                player3.withPins(emptyList())
+                                player3.withPins(emptyList()),
                             ),
-                            emptySet()
+                            emptySet(),
                         ),
                         PinnedCouplingPair(
                             listOf(
                                 player2.withPins(
-                                    emptyList()
+                                    emptyList(),
                                 ),
-                                player4.withPins(emptyList())
+                                player4.withPins(emptyList()),
                             ),
-                            emptySet()
-                        )
-                    )
+                            emptySet(),
+                        ),
+                    ),
                 ),
                 pairAssignmentDocument(
                     listOf(
                         PinnedCouplingPair(
                             listOf(
                                 player1.withPins(
-                                    emptyList()
+                                    emptyList(),
                                 ),
-                                player2.withPins(emptyList())
+                                player2.withPins(emptyList()),
                             ),
-                            emptySet()
+                            emptySet(),
                         ),
                         PinnedCouplingPair(
                             listOf(
                                 player3.withPins(
-                                    emptyList()
+                                    emptyList(),
                                 ),
-                                player4.withPins(emptyList())
+                                player4.withPins(emptyList()),
                             ),
-                            emptySet()
-                        )
-                    )
-                )
+                            emptySet(),
+                        ),
+                    ),
+                ),
             )
 
             private fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
@@ -236,8 +236,8 @@ class ComposeStatisticsActionTest {
                         TimeResultValue(1),
                         TimeResultValue(1),
                         TimeResultValue(0),
-                        TimeResultValue(0)
-                    )
+                        TimeResultValue(0),
+                    ),
                 )
             pairReports.map { it.pair }
                 .assertMatch(
@@ -247,8 +247,8 @@ class ComposeStatisticsActionTest {
                         pairOf(player1, player2),
                         pairOf(player3, player4),
                         pairOf(player1, player3),
-                        pairOf(player2, player4)
-                    )
+                        pairOf(player2, player4),
+                    ),
                 )
         }
 
@@ -291,7 +291,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 15)),
                 pairAssignmentDocument(DateTime(2017, 2, 14)),
                 pairAssignmentDocument(DateTime(2017, 2, 13)),
-                pairAssignmentDocument(DateTime(2017, 2, 12))
+                pairAssignmentDocument(DateTime(2017, 2, 12)),
             )
         }) exercise {
             perform(ComposeStatisticsAction(party, players, history))
@@ -309,7 +309,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 8)),
                 pairAssignmentDocument(DateTime(2017, 2, 6)),
                 pairAssignmentDocument(DateTime(2017, 2, 4)),
-                pairAssignmentDocument(DateTime(2017, 2, 3))
+                pairAssignmentDocument(DateTime(2017, 2, 3)),
             )
         }) exercise {
             perform(ComposeStatisticsAction(party, players, history))
@@ -326,7 +326,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 15)),
                 pairAssignmentDocument(DateTime(2017, 2, 14)),
                 pairAssignmentDocument(DateTime(2017, 2, 13)),
-                pairAssignmentDocument(DateTime(2017, 2, 10))
+                pairAssignmentDocument(DateTime(2017, 2, 10)),
             )
         }) exercise {
             perform(ComposeStatisticsAction(party, players, history))
@@ -341,8 +341,8 @@ class ComposeStatisticsActionTest {
                 PairAssignmentDocument(
                     date = DateTime(2017, 2, 17),
                     id = PairAssignmentDocumentId(""),
-                    pairs = emptyList()
-                )
+                    pairs = emptyList(),
+                ),
             )
         }) exercise {
             perform(ComposeStatisticsAction(party, players, history))
@@ -359,7 +359,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 20, 18)),
                 pairAssignmentDocument(DateTime(2017, 2, 20, 13)),
                 pairAssignmentDocument(DateTime(2017, 2, 20, 12)),
-                pairAssignmentDocument(DateTime(2017, 2, 20, 9))
+                pairAssignmentDocument(DateTime(2017, 2, 20, 9)),
             )
         }) exercise {
             perform(ComposeStatisticsAction(party, players, history))
@@ -376,7 +376,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(DateTime(2017, 2, 15, 7)),
                 pairAssignmentDocument(DateTime(2017, 2, 14, 13)),
                 pairAssignmentDocument(DateTime(2017, 2, 13, 12)),
-                pairAssignmentDocument(DateTime(2017, 2, 10, 9))
+                pairAssignmentDocument(DateTime(2017, 2, 10, 9)),
             )
         }) exercise {
             perform(ComposeStatisticsAction(party, players, history))

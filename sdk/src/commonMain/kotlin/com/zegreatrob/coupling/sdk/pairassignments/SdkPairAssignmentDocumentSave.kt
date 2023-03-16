@@ -19,7 +19,7 @@ interface SdkPairAssignmentDocumentSave : PairAssignmentDocumentSave, GqlSyntax,
                 putJsonObject("variables") {
                     put("input", partyPairDocument.savePairAssignmentsInput())
                 }
-            }
+            },
         )
     }
 

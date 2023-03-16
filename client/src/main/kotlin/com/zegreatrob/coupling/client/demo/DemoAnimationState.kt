@@ -44,11 +44,11 @@ private val players = listOf(
     player3,
     player4,
     player5,
-    player6
+    player6,
 )
 
 private val pins = listOf(
-    Pin(id = "", name = "watchman", icon = "eye")
+    Pin(id = "", name = "watchman", icon = "eye"),
 )
 
 private val pairAssignments = PairAssignmentDocument(
@@ -57,8 +57,8 @@ private val pairAssignments = PairAssignmentDocument(
     listOf(
         pairOf(player1, player4).withPins(emptySet()),
         pairOf(player2, player5).withPins(pins.toSet()),
-        pairOf(player6).withPins(emptySet())
-    )
+        pairOf(player6).withPins(emptySet()),
+    ),
 )
 
 sealed class DemoAnimationState {
@@ -125,7 +125,7 @@ fun makePlayerSequence() = players.flatMapIndexed { playerIndex, player ->
 
 private fun playerNameSequence(
     player: Player,
-    playersSoFar: List<Player>
+    playersSoFar: List<Player>,
 ) = player.name.rangeOfStringLength().map { index ->
     AddPlayer(demoParty, player.copy(name = player.name.substring(0, index)), playersSoFar)
 }
@@ -181,7 +181,7 @@ data class CurrentPairs(
     val players: List<Player>,
     val pins: List<Pin>,
     val pairAssignments: PairAssignmentDocument?,
-    val allowSave: Boolean
+    val allowSave: Boolean,
 ) : DemoAnimationState() {
 
     override val descriptionSelector = if (pairAssignments == null) {

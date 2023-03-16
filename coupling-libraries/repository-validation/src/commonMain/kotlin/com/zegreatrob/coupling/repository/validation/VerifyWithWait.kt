@@ -27,7 +27,7 @@ private suspend fun <C : Any, R> C.vWW(assertionFunctions: suspend C.(R) -> Unit
 
 private suspend fun <C : Any, R> C.runAssertions(
     assertionFunctions: suspend C.(R) -> Unit,
-    it: R
+    it: R,
 ) = try {
     assertionFunctions(it)
     null

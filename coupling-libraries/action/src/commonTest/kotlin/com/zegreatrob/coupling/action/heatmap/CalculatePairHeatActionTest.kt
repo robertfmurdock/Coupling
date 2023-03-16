@@ -26,7 +26,7 @@ class CalculatePairHeatActionTest {
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId(""),
                 date = DateTime(2016, 3, 1),
-                pairs = perform(AssignPinsAction(this, emptyList(), emptyList()))
+                pairs = perform(AssignPinsAction(this, emptyList(), emptyList())),
             )
     }
 
@@ -48,7 +48,7 @@ class CalculatePairHeatActionTest {
         private val player2 = Player(id = "fred")
         val pair = pairOf(player1, player2)
         val history = listOf(
-            listOf(pairOf(player2, player1)).pairAssignmentDocument()
+            listOf(pairOf(player2, player1)).pairAssignmentDocument(),
         )
         val rotationPeriod = 60
         val action = CalculatePairHeatAction(pair, history, rotationPeriod)
@@ -132,7 +132,7 @@ class CalculatePairHeatActionTest {
             val history = listOf(
                 alternatePairing1,
                 expectedPairing,
-                alternatePairing2
+                alternatePairing2,
             ).map { it.pairAssignmentDocument() }
             val action = CalculatePairHeatAction(pair, history, rotationPeriod)
         }) exercise {
@@ -194,7 +194,7 @@ class CalculatePairHeatActionTest {
             val history = listOf(
                 pairOf(player2, player3),
                 pairOf(player1, player4),
-                pairOf(player5)
+                pairOf(player5),
             )
                 .buildHistoryByRepeating(intervalsUntilCooling - 1)
                 .plus(expectedPairing)
@@ -211,7 +211,7 @@ class CalculatePairHeatActionTest {
             val intervalWithIntendedPair = listOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
             val assignmentsWithoutIntendedPair = listOf(
                 pairOf(player1, player3),
-                pairOf(player3, player4)
+                pairOf(player3, player4),
             )
             val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod - 1)
 
@@ -232,7 +232,7 @@ class CalculatePairHeatActionTest {
             val intervalWithIntendedPair = listOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
             val assignmentsWithoutIntendedPair = listOf(
                 pairOf(player1, player3),
-                pairOf(player3, player4)
+                pairOf(player3, player4),
             )
             val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod - 1)
 

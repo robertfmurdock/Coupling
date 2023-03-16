@@ -36,9 +36,9 @@ object Start : SpinAnimationState() {
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
         rosterPlayers = players,
         revealedPairs = makePlaceholderPlayers(
-            pairAssignments
+            pairAssignments,
         ).toSimulatedPairs(),
-        shownPlayer = null
+        shownPlayer = null,
     )
 }
 
@@ -48,7 +48,7 @@ object End : SpinAnimationState() {
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
         rosterPlayers = emptyList(),
         revealedPairs = emptyList(),
-        shownPlayer = null
+        shownPlayer = null,
     )
 }
 
@@ -69,7 +69,7 @@ data class ShowPlayer(val player: Player) : SpinAnimationState() {
         return SpinStateData(
             rosterPlayers = (players - presentedPlayers.toSet() - player).let(::ifEmptyAddPlaceholder),
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
-            shownPlayer = player
+            shownPlayer = player,
         )
     }
 }
@@ -110,7 +110,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
         return SpinStateData(
             rosterPlayers = (players - presentedPlayers.toSet()).let(::rotateList),
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
-            shownPlayer = null
+            shownPlayer = null,
         )
     }
 }
@@ -128,7 +128,7 @@ data class AssignedPlayer(val player: Player) : SpinAnimationState() {
         return SpinStateData(
             rosterPlayers = players - presentedPlayers.toSet(),
             revealedPairs = pairAssignments.revealedPairs(presentedPlayers),
-            shownPlayer = null
+            shownPlayer = null,
         )
     }
 }
@@ -142,7 +142,7 @@ private fun PairAssignmentDocument.revealedPairs(presentedPlayers: List<Player>)
         .let {
             it + makePlaceholderPlayers(
                 it,
-                this
+                this,
             )
         }.toSimulatedPairs()
 
@@ -151,7 +151,7 @@ private fun List<Player>.toSimulatedPairs() = chunked(2)
         if (it.size > 1) {
             pairOf(
                 it[0],
-                it[1]
+                it[1],
             )
         } else {
             pairOf(it[0])

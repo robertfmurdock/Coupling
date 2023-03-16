@@ -12,7 +12,7 @@ object WelcomePage : BrowserSyntax {
         WebdriverBrowser.setLocation("welcome")
         WebdriverBrowser.waitUntil(
             { getEnterButton().isDisplayed() },
-            timeoutMessage = "Never found enter button."
+            timeoutMessage = "Never found enter button.",
         )
     }
 }

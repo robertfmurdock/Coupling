@@ -14,5 +14,5 @@ fun SavePartyInput.toModel() = Party(
     badgesEnabled = badgesEnabled ?: defaultParty.badgesEnabled,
     callSignsEnabled = callSignsEnabled ?: defaultParty.callSignsEnabled,
     animationEnabled = animationsEnabled ?: defaultParty.animationEnabled,
-    animationSpeed = animationSpeed ?: defaultParty.animationSpeed
+    animationSpeed = animationSpeed ?: defaultParty.animationSpeed,
 )

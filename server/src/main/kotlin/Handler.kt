@@ -69,7 +69,7 @@ private val websocketApp by lazy {
                         println("connect $connectionId")
                         handleConnect(request, connectionId, request.event)
                     }
-                }
+                },
             ) {
                 invokeOnCompletion { cause ->
                     if (cause != null) {
@@ -95,8 +95,8 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic) = js("require('ser
             request.connectionId = e.requestContext.connectionId
             request.domainName = e.requestContext.domainName
             request.event = e
-        }
-    )
+        },
+    ),
 )(event, context)
 
 private suspend fun handleConnect(request: Request, connectionId: String, event: Any?): Int {
@@ -120,7 +120,7 @@ private fun notifyConnectLambda(event: dynamic): Promise<Unit> {
     val commandOptions = json(
         "FunctionName" to "coupling-server-${Process.getEnv("STAGE")}-notifyConnect",
         "InvocationType" to "Event",
-        "Payload" to JSON.stringify(event)
+        "Payload" to JSON.stringify(event),
     )
     return client.send<Unit>(InvokeCommand(commandOptions)).catch {
         console.log("lambda invoke fail", it)
@@ -133,8 +133,8 @@ private fun notifyLambdaOptions() = if (Process.getEnv("IS_OFFLINE") == "true") 
         "region" to "us-east-1",
         "credentials" to json(
             "accessKeyId" to "lol",
-            "secretAccessKey" to "lol"
-        )
+            "secretAccessKey" to "lol",
+        ),
     )
 } else {
     json()
@@ -151,7 +151,7 @@ fun serverlessSocketMessage(event: Json): dynamic {
         when (message) {
             is PairAssignmentAdjustmentMessage -> {
                 socketDispatcher.execute(
-                    ReportDocCommand(connectionId, message.currentPairAssignments)
+                    ReportDocCommand(connectionId, message.currentPairAssignments),
                 )?.broadcast(socketDispatcher)
             }
             else -> {
@@ -171,8 +171,8 @@ fun notifyConnect(event: Json) = MainScope().promise {
         ?.let { results ->
             socketDispatcher.managementApiClient.send(
                 PostToConnectionCommand(
-                    json("ConnectionId" to connectionId, "Data" to results.second.toSerializable().toJsonString())
-                )
+                    json("ConnectionId" to connectionId, "Data" to results.second.toSerializable().toJsonString()),
+                ),
             )
         }
 }.then {
@@ -198,12 +198,12 @@ fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
 private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
     User("websocket", "websocket", emptySet()),
     this,
-    uuid4()
+    uuid4(),
 )
 
 private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(socketDispatcher: CommandDispatcher) =
     socketDispatcher.execute(BroadcastAction(first, second))
 
 private fun delete(connectionId: String, managementApi: ApiGatewayManagementApiClient) = managementApi.send(
-    DeleteConnectionCommand(json("ConnectionId" to connectionId))
+    DeleteConnectionCommand(json("ConnectionId" to connectionId)),
 )

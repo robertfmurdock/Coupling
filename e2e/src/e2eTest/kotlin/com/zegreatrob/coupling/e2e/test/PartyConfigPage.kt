@@ -31,7 +31,7 @@ object PartyConfigPage : ByRole by TestingLibraryBrowser {
     suspend fun waitForPage() {
         WebdriverBrowser.waitUntil(
             { TestingLibraryBrowser.getByText("Party Configuration").isDisplayed() },
-            timeoutMessage = "never arrived at party config"
+            timeoutMessage = "never arrived at party config",
         )
     }
 }

@@ -13,7 +13,7 @@ import com.zegreatrob.testmints.action.SimpleExecutableAction
 data class AssignPinsAction(
     val pairs: List<CouplingPair>,
     val pins: List<Pin>,
-    val history: List<PairAssignmentDocument>
+    val history: List<PairAssignmentDocument>,
 ) : SimpleExecutableAction<AssignPinsActionDispatcher, List<PinnedCouplingPair>> {
     override val performFunc = link(AssignPinsActionDispatcher::perform)
 }
@@ -43,7 +43,7 @@ interface AssignPinsActionDispatcher {
     private fun findPairCandidates(
         pin: Pin,
         pinnedPairs: List<PinnedCouplingPair>,
-        history: List<PairAssignmentDocument>
+        history: List<PairAssignmentDocument>,
     ): List<PinnedCouplingPair> {
         val pairsGroupedByLastTime = pinnedPairs.groupBy { pair ->
             lastTimePlayerInPairHadPin(pin, history, pair.asPlayers())
@@ -65,7 +65,7 @@ interface AssignPinsActionDispatcher {
     private fun lastTimePlayerInPairHadPin(
         pin: Pin,
         history: List<PairAssignmentDocument>,
-        players: List<Player>
+        players: List<Player>,
     ) = history.indexOfFirst { pairAssignmentDocument ->
         val pairWithPinPlayers = pairWithPinPlayers(pairAssignmentDocument, pin)
         players.fold(false) { foundOne, player ->

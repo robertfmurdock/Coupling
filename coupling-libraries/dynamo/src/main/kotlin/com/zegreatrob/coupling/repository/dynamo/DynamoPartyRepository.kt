@@ -48,7 +48,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
         null,
         now(),
         { asTribeRecord() },
-        { asDynamoJson() }
+        { asDynamoJson() },
     )
 
     suspend fun getTribeRecords() = scanAllRecords()

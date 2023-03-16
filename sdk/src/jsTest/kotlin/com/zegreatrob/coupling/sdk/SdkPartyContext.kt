@@ -12,7 +12,7 @@ class SdkPartyContext<T> (
     override val sdk: Sdk,
     override val repository: T,
     override val partyId: PartyId,
-    override val clock: MagicClock
+    override val clock: MagicClock,
 ) : PartyContext<T>, Sdk by sdk {
     override val user = stubUser().copy(email = primaryAuthorizedUsername)
     override suspend fun perform(query: UserQuery): User? = sdk.perform(query)

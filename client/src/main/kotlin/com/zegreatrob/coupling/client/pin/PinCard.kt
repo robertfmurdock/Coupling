@@ -66,7 +66,7 @@ private fun ChildrenBuilder.optionalLink(
     shouldLink: Boolean,
     partyId: PartyId,
     pin: Pin,
-    handler: ChildrenBuilder.() -> Unit
+    handler: ChildrenBuilder.() -> Unit,
 ) {
     if (shouldLink) {
         Link {

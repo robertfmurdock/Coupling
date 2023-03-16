@@ -30,7 +30,7 @@ class SavePairAssignmentDocumentCommandTest {
         override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = null
 
         val pairAssignmentDocument = currentPartyId.with(
-            PairAssignmentDocument(PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList())
+            PairAssignmentDocument(PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()),
         )
 
         override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()

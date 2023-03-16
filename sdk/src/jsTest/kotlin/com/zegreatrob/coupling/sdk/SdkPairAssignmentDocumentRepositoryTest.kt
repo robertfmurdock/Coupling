@@ -24,8 +24,8 @@ class SdkPairAssignmentDocumentRepositoryTest :
         sdk.partyRepository.save(party)
         SdkPartyContext(sdk, sdk.pairAssignmentDocumentRepository, party.id, MagicClock())
     }, sharedTeardown = {
-            it.sdk.partyRepository.deleteIt(it.partyId)
-        })
+        it.sdk.partyRepository.deleteIt(it.partyId)
+    })
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({
@@ -51,7 +51,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
         repositorySetup.with(
             object : PartyContextMint<SdkPairAssignmentsRepository>() {
                 val pairAssignmentDoc = stubPairAssignmentDoc()
-            }.bind()
+            }.bind(),
         ) {
             repository.save(partyId.with(pairAssignmentDoc))
         } exercise {

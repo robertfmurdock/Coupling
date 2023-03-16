@@ -19,7 +19,7 @@ data class DraggablePlayer(
     val pinnedPlayer: PinnedPlayer,
     val zoomOnHover: Boolean,
     val tilt: csstype.Angle,
-    val onPlayerDrop: (String) -> Unit
+    val onPlayerDrop: (String) -> Unit,
 ) : DataPropsBind<DraggablePlayer>(draggablePlayer)
 
 const val playerDragItemType = "PLAYER"
@@ -29,7 +29,7 @@ val draggablePlayer = tmFC<DraggablePlayer> { (pinnedPlayer, zoomOnHover, tilt, 
         DraggableThing(
             itemType = playerDragItemType,
             itemId = pinnedPlayer.player.id,
-            dropCallback = onPlayerDrop
+            dropCallback = onPlayerDrop,
         ) { isOver ->
             add(
                 PlayerCard(
@@ -55,10 +55,10 @@ val draggablePlayer = tmFC<DraggablePlayer> { (pinnedPlayer, zoomOnHover, tilt, 
                             animationName = ident("wiggle")
                             animationIterationCount = AnimationIterationCount.infinite
                         }
-                    }
+                    },
                 ),
-                key = pinnedPlayer.player.id
+                key = pinnedPlayer.player.id,
             )
-        }
+        },
     )
 }

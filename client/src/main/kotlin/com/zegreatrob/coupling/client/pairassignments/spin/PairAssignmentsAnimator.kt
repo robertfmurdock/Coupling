@@ -21,7 +21,7 @@ data class PairAssignmentsAnimator(
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument,
     val enabled: Boolean,
-    val children: ChildrenBuilder.() -> Unit
+    val children: ChildrenBuilder.() -> Unit,
 ) : DataPropsBind<PairAssignmentsAnimator>(pairAssignmentsAnimator)
 
 private val animationContextConsumer: Consumer<Boolean> = animationsDisabledContext.Consumer
@@ -45,13 +45,13 @@ private fun ChildrenBuilder.spinFrameRunner(
     pairAssignments: PairAssignmentDocument,
     party: Party,
     players: List<Player>,
-    props: PairAssignmentsAnimator
+    props: PairAssignmentsAnimator,
 ) {
     add(
         FrameRunner(SpinAnimationState.sequence(pairAssignments), speed = party.animationSpeed) { state ->
             val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
             flipperSpinAnimation(state, props, party, rosteredPairAssignments)
-        }
+        },
     )
 }
 
@@ -59,7 +59,7 @@ private fun ChildrenBuilder.flipperSpinAnimation(
     state: SpinAnimationState,
     props: PairAssignmentsAnimator,
     party: Party,
-    rosteredPairAssignments: RosteredPairAssignments
+    rosteredPairAssignments: RosteredPairAssignments,
 ) = Flipper {
     flipKey = state.toString()
     if (state == End) {

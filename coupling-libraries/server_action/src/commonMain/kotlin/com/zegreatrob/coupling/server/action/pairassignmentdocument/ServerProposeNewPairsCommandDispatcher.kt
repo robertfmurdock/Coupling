@@ -30,7 +30,7 @@ interface ServerProposeNewPairsCommandDispatcher :
     private suspend fun loadData() = coroutineScope {
         await(
             async { currentPartyId.loadHistory() },
-            async { currentPartyId.get() }
+            async { currentPartyId.get() },
         )
     }.let { (history, party) -> if (party == null) null else history to party }
 }

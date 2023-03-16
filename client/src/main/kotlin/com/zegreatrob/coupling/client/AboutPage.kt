@@ -73,12 +73,12 @@ private val playerHeader = FC<Props> {
         val rob by playerImage()
         add(
             PlayerCard(Player("1", name = "RoB", imageURL = rob), tilt = (-8).deg),
-            key = "1"
+            key = "1",
         )
         val autumn by playerImage()
         add(
             PlayerCard(Player("2", name = "Autumn", imageURL = autumn), tilt = 8.deg),
-            key = "2"
+            key = "2",
         )
     }
 }

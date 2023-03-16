@@ -11,6 +11,6 @@ val NewPairAssignmentsPage = partyPageFunction { props, partyId ->
         query = PartyCurrentDataQuery(partyId),
         toDataprops = { reload, commandFunc, (party, players, currentPairsDoc) ->
             SocketedPairAssignments(party, players, currentPairsDoc, Controls(commandFunc, reload), true)
-        }
+        },
     ).create(key = partyId.value)
 }

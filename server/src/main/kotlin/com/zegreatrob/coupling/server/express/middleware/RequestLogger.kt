@@ -29,7 +29,7 @@ fun logRequestAsync(request: Request, response: Response, block: (() -> Unit) ->
             "statusCode" to "${response.statusCode}",
             "contentLength" to response["content-length"]?.toString(),
             "duration" to "$duration",
-            "traceId" to "${request.traceId}"
+            "traceId" to "${request.traceId}",
         )
     }
 }

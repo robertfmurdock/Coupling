@@ -16,12 +16,12 @@ class RosteredPairAssignmentsTest {
         val players = listOf(
             stubPlayer(),
             excludedPlayer,
-            stubPlayer()
+            stubPlayer(),
         )
         val pairAssignments = stubPairAssignmentDoc().copy(
             pairs = listOf(
-                pairOf(players[0], players[2]).withPins(emptySet())
-            )
+                pairOf(players[0], players[2]).withPins(emptySet()),
+            ),
         )
     }) exercise {
         RosteredPairAssignments.rosteredPairAssignments(pairAssignments, players)

@@ -33,7 +33,7 @@ class RunGameActionTest {
         val history = emptyList<PairAssignmentDocument>()
         val expectedPairingAssignments = listOf(
             pairOf(Player()),
-            pairOf(Player())
+            pairOf(Player()),
         )
         val spy = SpyData<FindNewPairsAction, List<CouplingPair>>().apply {
             spyReturnValues.add(expectedPairingAssignments)
@@ -49,8 +49,8 @@ class RunGameActionTest {
                 date = expectedDate,
                 pairs = expectedPairingAssignments.map {
                     PinnedCouplingPair(it.asArray().map { player -> player.withPins() })
-                }
-            )
+                },
+            ),
         )
     }
 }

@@ -22,7 +22,7 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 
 data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<PairReportTable>(
-    pairReportTable
+    pairReportTable,
 )
 
 val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
@@ -39,7 +39,7 @@ val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
 }
 
 data class PairReportView(val pairReport: PairReport) : DataPropsBind<PairReportView>(
-    pairReportView
+    pairReportView,
 )
 
 private val pairReportView = tmFC<PairReportView> { (pairReport) ->

@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 class MemoryPlayerRepository(
     override val userId: String,
     override val clock: TimeProvider,
-    private val recordBackend: RecordBackend<PartyElement<Player>> = SimpleRecordBackend()
+    private val recordBackend: RecordBackend<PartyElement<Player>> = SimpleRecordBackend(),
 ) : PlayerEmailRepository,
     TypeRecordSyntax<PartyElement<Player>>,
     RecordBackend<PartyElement<Player>> by recordBackend {

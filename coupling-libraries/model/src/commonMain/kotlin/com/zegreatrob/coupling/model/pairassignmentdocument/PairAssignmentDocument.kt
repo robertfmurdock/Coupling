@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 data class PairAssignmentDocument(
     val id: PairAssignmentDocumentId,
     val date: DateTime,
-    val pairs: List<PinnedCouplingPair>
+    val pairs: List<PinnedCouplingPair>,
 )
 
 fun PairAssignmentDocument.orderedPairedPlayers() = pairs

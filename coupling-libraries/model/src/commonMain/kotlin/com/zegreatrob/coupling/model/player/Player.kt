@@ -10,7 +10,7 @@ data class Player(
     val email: String = "",
     val callSignAdjective: String = "",
     val callSignNoun: String = "",
-    val imageURL: String? = null
+    val imageURL: String? = null,
 )
 
 val defaultPlayer = Player(id = "DEFAULT")

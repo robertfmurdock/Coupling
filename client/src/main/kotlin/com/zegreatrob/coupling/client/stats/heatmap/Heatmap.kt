@@ -43,6 +43,6 @@ private fun HTMLElement.renderD3Heatmap(flatten: List<Double?>) {
             height = 90.px
             width = 90.px
             display = Display.inlineBlock
-        }
+        },
     )
 }

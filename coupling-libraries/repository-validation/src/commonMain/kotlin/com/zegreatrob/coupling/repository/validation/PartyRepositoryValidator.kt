@@ -17,7 +17,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     fun saveMultipleThenGetListWillReturnSavedParties() = repositorySetup.with(
         object : ContextMint<R>() {
             val parties = stubParties(3)
-        }.bind()
+        }.bind(),
     ) {
         parties.forEach { repository.save(it) }
     } exercise {
@@ -35,7 +35,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     fun saveMultipleThenGetEachByIdWillReturnSavedParties() = repositorySetup.with(
         object : ContextMint<R>() {
             val parties = stubParties(3)
-        }.bind()
+        }.bind(),
     ) {
         parties.forEach { repository.save(it) }
     } exercise {
@@ -48,7 +48,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     fun saveWillIncludeModificationInformation() = repositorySetup.with(
         object : ContextMint<R>() {
             val party = stubParty()
-        }.bind()
+        }.bind(),
     ) {
         clock.currentTime = DateTime.now().minus(3.days)
         repository.save(party)
@@ -67,14 +67,14 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     fun deleteWillMakePartyInaccessible() = repositorySetup.with(
         object : ContextMint<R>() {
             val party = stubParty()
-        }.bind()
+        }.bind(),
     ) {
         repository.save(party)
     } exercise {
         repository.deleteIt(party.id)
         Pair(
             repository.getParties(),
-            repository.getPartyRecord(party.id)?.data
+            repository.getPartyRecord(party.id)?.data,
         )
     } verifyAnd { (listResult, getResult) ->
         listResult.find { it.data.id == party.id }

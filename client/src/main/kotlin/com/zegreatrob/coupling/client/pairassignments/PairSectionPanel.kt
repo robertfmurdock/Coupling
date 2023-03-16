@@ -32,7 +32,7 @@ data class PairSectionPanel(
     val pairAssignments: PairAssignmentDocument?,
     val allowSave: Boolean,
     val setPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<DeletePairAssignmentsCommandDispatcher>
+    val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
 ) : DataPropsBind<PairSectionPanel>(pairSectionPanel)
 
 val pairSectionPanel = tmFC<PairSectionPanel> { props ->
@@ -47,7 +47,7 @@ val pairSectionPanel = tmFC<PairSectionPanel> { props ->
                     party = party,
                     players = players,
                     pairAssignments = pairAssignments,
-                    enabled = party.animationEnabled && allowSave
+                    enabled = party.animationEnabled && allowSave,
                 ) {
                     add(
                         CurrentPairAssignmentsPanel(
@@ -55,10 +55,10 @@ val pairSectionPanel = tmFC<PairSectionPanel> { props ->
                             pairAssignments = pairAssignments,
                             setPairAssignments = setPairs,
                             allowSave = allowSave,
-                            dispatchFunc = controls.dispatchFunc
-                        )
+                            dispatchFunc = controls.dispatchFunc,
+                        ),
                     )
-                }
+                },
             )
         }
     }

@@ -28,8 +28,8 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
 
         SdkPartyContext(sdk, sdk.playerRepository, party.id, MagicClock())
     }, sharedTeardown = {
-            it.sdk.partyRepository.deleteIt(it.partyId)
-        })
+        it.sdk.partyRepository.deleteIt(it.partyId)
+    })
 
     override fun whenPlayerIdIsUsedInTwoDifferentPartiesTheyRemainDistinct() =
         repositorySetup.with({ parent: SdkPartyContext<SdkPlayerRepository> ->
@@ -59,7 +59,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         repositorySetup.with(
             object : PartyContextMint<SdkPlayerRepository>() {
                 val player = stubPlayer()
-            }.bind()
+            }.bind(),
         ) {
         } exercise {
             repository.save(partyId.with(player))
@@ -78,7 +78,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         repositorySetup.with(
             object : PartyContextMint<SdkPlayerRepository>() {
                 val player = stubPlayer()
-            }.bind()
+            }.bind(),
         ) {
         } exercise {
             repository.save(partyId.with(player))
@@ -124,7 +124,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                         id = "${uuid4()}",
                         name = "Awesome-O",
                         callSignAdjective = "Awesome",
-                        callSignNoun = "Sauce"
+                        callSignNoun = "Sauce",
                     )
                 }) {
                     otherSdk.partyRepository.save(party)

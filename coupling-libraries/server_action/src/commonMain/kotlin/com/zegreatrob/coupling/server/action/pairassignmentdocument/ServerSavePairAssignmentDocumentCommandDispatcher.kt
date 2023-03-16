@@ -29,6 +29,6 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher :
 
     suspend fun SavePairAssignmentDocumentCommand.broadcastAction() = BroadcastAction(
         currentPartyId.loadConnections(),
-        PairAssignmentAdjustmentMessage(pairAssignmentDocument)
+        PairAssignmentAdjustmentMessage(pairAssignmentDocument),
     )
 }

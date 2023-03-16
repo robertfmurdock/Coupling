@@ -13,7 +13,7 @@ interface PartyGQLPerformer : GqlSyntax {
 
     suspend fun performPartyGQLQuery(
         partyId: PartyId,
-        components: List<PartyGQLComponent>
+        components: List<PartyGQLComponent>,
     ): Map<PartyGQLComponent, JsonElement?> {
         val result = sendQuery(partyId, components)
         val data = result.jsonObject["data"]
@@ -53,7 +53,7 @@ class BatchingPartyGQLPerformer(override val performer: QueryPerformer) : PartyG
 
     override suspend fun performPartyGQLQuery(
         partyId: PartyId,
-        components: List<PartyGQLComponent>
+        components: List<PartyGQLComponent>,
     ): Map<PartyGQLComponent, JsonElement?> {
         pendingComponents = pendingComponents + components
 

@@ -6,6 +6,6 @@ import kotlin.js.json
 fun statsD() = statsd(
     json(
         "host" to "statsd",
-        "port" to 8125
-    )
+        "port" to 8125,
+    ),
 )

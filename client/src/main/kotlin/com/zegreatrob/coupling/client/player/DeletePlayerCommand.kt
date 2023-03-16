@@ -19,6 +19,6 @@ interface DeletePlayerCommandDispatcher : PartyPlayerIdDeleteSyntax {
 
     private fun DeletePlayerCommand.partyPlayerId(): PartyIdPlayerId = PartyIdPlayerId(
         partyId,
-        playerId
+        playerId,
     )
 }

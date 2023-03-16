@@ -18,10 +18,10 @@ val spinResolver: Resolver = dispatch(
         val (_, players, pins) = args
         ProposeNewPairsCommand(
             players.map(JsonPlayerData::toModel),
-            pins.map(JsonPinData::toModel)
+            pins.map(JsonPinData::toModel),
         )
     },
-    { Return(it.toSerializable()) }
+    { Return(it.toSerializable()) },
 )
 
 @Serializable

@@ -42,6 +42,6 @@ private fun newPathSetter(navigate: NavigateFunction) = { path: String ->
             path
         } else {
             "/$path"
-        }
+        },
     )
 }

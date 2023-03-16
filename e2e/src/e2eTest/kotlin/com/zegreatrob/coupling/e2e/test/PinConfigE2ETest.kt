@@ -22,7 +22,7 @@ class PinConfigE2ETest {
         private fun randomPin(nameExt: String = "") = Pin(
             id = "${randomInt()}-pin",
             icon = "icon-${randomInt()}",
-            name = "name-${randomInt()}-$nameExt"
+            name = "name-${randomInt()}-$nameExt",
         )
 
         private val partySetup = e2eSetup.extend(beforeAll = {
@@ -38,7 +38,7 @@ class PinConfigE2ETest {
     fun whenThePinIsNewAndTheAddButtonIsPressedThePinIsSaved() = partySetup.with(
         object : PartyContext() {
             val newPinName = "Excellent pin name${randomInt()}"
-        }.attachParty()
+        }.attachParty(),
     ) {
         with(PinConfigPage) {
             party.id.goToNew()
@@ -56,11 +56,11 @@ class PinConfigE2ETest {
 
     private suspend fun PinConfigPage.waitForPinNameToAppear(
         newPinName: String,
-        id: PartyId
+        id: PartyId,
     ) = WebdriverBrowser.waitUntil(
         { pinBagPinNames().contains(newPinName) },
         waitToBePresentDuration,
-        "PinConfigPage.waitForPinNameToAppear in party ${id.value}"
+        "PinConfigPage.waitForPinNameToAppear in party ${id.value}",
     )
 
     class WhenThePinExists {
@@ -69,7 +69,7 @@ class PinConfigE2ETest {
         fun attributesAreShownOnConfig() = partySetup.with(
             object : PartyContext() {
                 val pin = randomPin()
-            }.attachParty()
+            }.attachParty(),
         ) {
             sdk.pinRepository.save(party.id.with(pin))
         } exercise {
@@ -87,7 +87,7 @@ class PinConfigE2ETest {
         fun clickingDeleteWillRemovePinFromPinList() = partySetup.with(
             object : PartyContext() {
                 val pin = randomPin()
-            }.attachParty()
+            }.attachParty(),
         ) {
             sdk.pinRepository.save(party.id.with(pin))
             PinConfigPage.goTo(party.id, pin.id)

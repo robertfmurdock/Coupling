@@ -14,19 +14,19 @@ fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler = expressjw
                 "cache" to true,
                 "rateLimit" to true,
                 "jwksRequestsPerMinute" to 5,
-                "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json"
-            )
+                "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json",
+            ),
         ),
         "issuer" to "https://${Config.AUTH0_DOMAIN}/",
         "audience" to "${Config.publicUrl}/api",
         "algorithms" to arrayOf("RS256"),
         "requestProperty" to "auth",
-        "credentialsRequired" to false
+        "credentialsRequired" to false,
     ).let {
         if (getToken == null) {
             it
         } else {
             it.add(json("getToken" to getToken))
         }
-    }
+    },
 )

@@ -17,7 +17,7 @@ interface DynamoItemPutDeleteRecordSyntax :
         partyId: PartyId? = null,
         now: DateTime,
         toRecord: Json.() -> Record<T>?,
-        recordToJson: Record<T>.() -> Json
+        recordToJson: Record<T>.() -> Json,
     ) = logAsync("deleteItem") {
         try {
             val current = performGetSingleItemQuery(id, partyId)

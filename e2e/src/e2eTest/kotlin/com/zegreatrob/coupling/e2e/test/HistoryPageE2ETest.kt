@@ -40,13 +40,13 @@ class HistoryPageE2ETest {
 
             private suspend fun setupTwoPairAssignments(party: Party, sdk: Sdk) = listOf(
                 buildPairAssignmentDocument(1, listOf(pairOf(Player(name = "Ollie"), Player(name = "Speedy")))),
-                buildPairAssignmentDocument(2, listOf(pairOf(Player(name = "Arthur"), Player(name = "Garth"))))
+                buildPairAssignmentDocument(2, listOf(pairOf(Player(name = "Arthur"), Player(name = "Garth")))),
             ).onEach { sdk.pairAssignmentDocumentRepository.save(party.id.with(it)) }
 
             private fun buildPairAssignmentDocument(number: Int, pairs: List<CouplingPair>) = PairAssignmentDocument(
                 PairAssignmentDocumentId("${DateTime.now().milliseconds}-HistoryPageE2ETest-$number"),
                 DateTime.now(),
-                pairs.map { it.withPins(emptySet()) }
+                pairs.map { it.withPins(emptySet()) },
             )
 
             private fun buildParty() = "${randomInt()}-HistoryPageE2ETest".let {
@@ -70,7 +70,7 @@ class HistoryPageE2ETest {
             WebdriverBrowser.waitUntil(
                 { HistoryPage.pairAssignments.count() == pairAssignments.size - 1 },
                 waitToBePresentDuration,
-                "HistoryPageE2ETest.pairingCanBeDeleted"
+                "HistoryPageE2ETest.pairingCanBeDeleted",
             )
             HistoryPage.pairAssignments.count()
                 .assertIsEqualTo(1)

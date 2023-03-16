@@ -11,6 +11,6 @@ val HistoryPage = partyPageFunction { props, partyId ->
         query = HistoryQuery(partyId),
         toDataprops = { reload, commandFunc, (party, history) ->
             History(party, history, Controls(commandFunc, reload))
-        }
+        },
     ).create(key = partyId.value)
 }

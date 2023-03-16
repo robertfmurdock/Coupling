@@ -21,7 +21,7 @@ enum class PartyGQLComponent(val value: String, val jsonPath: String) {
             "pins {${pinJsonKeys.joinToString(",")}}" +
             "}" +
             "}",
-        "/partyData/pairAssignmentDocumentList"
+        "/partyData/pairAssignmentDocumentList",
     ),
     CurrentPairAssignmentDocument(
         "currentPairAssignmentDocument {id,date,partyId,isDeleted,modifyingUserEmail,timestamp," +
@@ -33,8 +33,8 @@ enum class PartyGQLComponent(val value: String, val jsonPath: String) {
             "pins {${pinJsonKeys.joinToString(",")}}" +
             "}" +
             "}",
-        "/partyData/currentPairAssignmentDocument"
-    );
+        "/partyData/currentPairAssignmentDocument",
+    ),
 }
 
 private fun queryAllFields(name: String, keys: Set<String>) = "$name {${keys.joinToString(",")}}"

@@ -44,7 +44,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val updatedSaveTime2 = initialSaveTime.plus(4.hours)
             }
-        }
+        },
     ) exercise {
         clock.currentTime = initialSaveTime
         repository.save(partyId.with(pin))
@@ -66,10 +66,10 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
                 val partyId = stubPartyId()
                 val records = listOf(
                     partyRecord(partyId, stubPin(), uuidString(), false, DateTime.now().minus(3.months)),
-                    partyRecord(partyId, stubPin(), uuidString(), true, DateTime.now().minus(2.years))
+                    partyRecord(partyId, stubPin(), uuidString(), true, DateTime.now().minus(2.years)),
                 )
             }
-        }
+        },
     ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verifyWithWait {

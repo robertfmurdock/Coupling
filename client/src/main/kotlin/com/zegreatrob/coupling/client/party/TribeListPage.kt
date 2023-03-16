@@ -9,6 +9,6 @@ val PartyListPage = FC<PageProps> { props ->
     +CouplingQuery(
         commander = props.commander,
         query = PartyListQuery,
-        toDataprops = { _, _, parties -> PartyList(parties) }
+        toDataprops = { _, _, parties -> PartyList(parties) },
     ).create()
 }

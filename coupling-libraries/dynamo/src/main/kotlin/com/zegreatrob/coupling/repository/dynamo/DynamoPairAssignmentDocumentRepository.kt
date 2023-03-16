@@ -14,7 +14,7 @@ import kotlin.js.Json
 
 class DynamoPairAssignmentDocumentRepository private constructor(
     override val userId: String,
-    override val clock: TimeProvider
+    override val clock: TimeProvider,
 ) : PairAssignmentDocumentRepository, UserIdSyntax, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
 
     companion object :
@@ -31,11 +31,11 @@ class DynamoPairAssignmentDocumentRepository private constructor(
     override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) = performPutItem(
         partyPairDocument
             .toRecord()
-            .asDynamoJson()
+            .asDynamoJson(),
     )
 
     suspend fun saveRawRecord(record: PartyRecord<PairAssignmentDocument>) = performPutItem(
-        record.asDynamoJson()
+        record.asDynamoJson(),
     )
 
     override suspend fun getPairAssignments(partyId: PartyId) = partyId.queryForItemList()
@@ -51,7 +51,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
             pairAssignmentDocumentId.value,
             partyId,
             now(),
-            ::toRecord
+            ::toRecord,
         ) { asDynamoJson() }
 
     suspend fun getRecords(partyId: PartyId): List<PartyRecord<PairAssignmentDocument>> =
@@ -62,7 +62,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
             .sortedByDescending { it.timestamp }
 
     private fun toRecord(json: Json): PartyRecord<PairAssignmentDocument> = json.toRecord(
-        json.tribeId().with(json.toPairAssignmentDocument())
+        json.tribeId().with(json.toPairAssignmentDocument()),
     )
 
     private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::PartyId)

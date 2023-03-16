@@ -17,7 +17,7 @@ class PlayerHeatmapBuilderTest {
             Player(name = "harry"),
             Player(name = "larry"),
             Player(name = "curly"),
-            Player(name = "moe")
+            Player(name = "moe"),
         )
     }) exercise {
         render(PlayerHeatmap(players = players, heatmapData = emptyList()).create())
@@ -36,7 +36,7 @@ class PlayerHeatmapBuilderTest {
             Player(name = "harry"),
             Player(name = "larry"),
             Player(name = "curly"),
-            Player(name = "moe")
+            Player(name = "moe"),
         )
     }) exercise {
         render(PlayerHeatmap(players = players, heatmapData = emptyList()).create())

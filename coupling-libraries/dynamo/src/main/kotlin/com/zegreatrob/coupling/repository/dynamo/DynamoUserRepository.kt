@@ -37,28 +37,28 @@ class DynamoUserRepository private constructor(override val userId: String, over
                 "KeySchema" to arrayOf(
                     json(
                         "AttributeName" to "id",
-                        "KeyType" to "HASH"
+                        "KeyType" to "HASH",
                     ),
                     json(
                         "AttributeName" to "timestamp",
-                        "KeyType" to "RANGE"
-                    )
+                        "KeyType" to "RANGE",
+                    ),
                 ),
                 "AttributeDefinitions" to arrayOf(
                     json(
                         "AttributeName" to "id",
-                        "AttributeType" to "S"
+                        "AttributeType" to "S",
                     ),
                     json(
                         "AttributeName" to "timestamp",
-                        "AttributeType" to "S"
+                        "AttributeType" to "S",
                     ),
                     json(
                         "AttributeName" to "email",
-                        "AttributeType" to "S"
-                    )
+                        "AttributeType" to "S",
+                    ),
                 ),
-                "BillingMode" to "PAY_PER_REQUEST"
+                "BillingMode" to "PAY_PER_REQUEST",
             ).add(
                 json(
                     "GlobalSecondaryIndexes" to arrayOf(
@@ -67,22 +67,22 @@ class DynamoUserRepository private constructor(override val userId: String, over
                             "KeySchema" to arrayOf(
                                 json(
                                     "AttributeName" to "email",
-                                    "KeyType" to "HASH"
+                                    "KeyType" to "HASH",
                                 ),
                                 json(
                                     "AttributeName" to "id",
-                                    "KeyType" to "RANGE"
-                                )
+                                    "KeyType" to "RANGE",
+                                ),
                             ),
                             "Projection" to json(
                                 "NonKeyAttributes" to arrayOf(
-                                    "timestamp"
+                                    "timestamp",
                                 ),
-                                "ProjectionType" to "INCLUDE"
-                            )
-                        )
-                    )
-                )
+                                "ProjectionType" to "INCLUDE",
+                            ),
+                        ),
+                    ),
+                ),
             )
     }
 
@@ -109,14 +109,14 @@ class DynamoUserRepository private constructor(override val userId: String, over
     private fun queryParams(id: String) = json(
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(":id" to id),
-        "KeyConditionExpression" to "id = :id"
+        "KeyConditionExpression" to "id = :id",
     )
 
     private fun emailQueryParams(email: String) = json(
         "TableName" to prefixedTableName,
         "IndexName" to userEmailIndex,
         "ExpressionAttributeValues" to json(":email" to email),
-        "KeyConditionExpression" to "email = :email"
+        "KeyConditionExpression" to "email = :email",
     )
 
     suspend fun saveRawRecord(record: Record<User>) = performPutItem(record.asDynamoJson())

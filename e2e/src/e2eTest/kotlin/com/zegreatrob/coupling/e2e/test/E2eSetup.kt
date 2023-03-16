@@ -26,6 +26,6 @@ val e2eSetup: TestTemplate<Sdk> by lazy {
                 .forwardLogs()
         }
     }).extend(
-        sharedTeardown = { checkLogs() }
+        sharedTeardown = { checkLogs() },
     )
 }

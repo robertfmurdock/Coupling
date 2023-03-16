@@ -14,7 +14,7 @@ import react.dom.html.ReactHTML.div
 
 fun <T : Props> ChildrenBuilder.waitForAsyncReactComponent(
     getComponent: () -> ElementType<T>?,
-    useComponent: ChildrenBuilder.(ElementType<T>) -> Unit
+    useComponent: ChildrenBuilder.(ElementType<T>) -> Unit,
 ) {
     +DataLoader({ waitForComponent(getComponent) }, { null }) { state ->
         when (state) {

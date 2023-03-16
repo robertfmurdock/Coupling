@@ -15,6 +15,6 @@ interface NewPartyCommandDispatcher {
         id = PartyId(""),
         name = "New Party",
         defaultBadgeName = "Default",
-        alternateBadgeName = "Alternate"
+        alternateBadgeName = "Alternate",
     )
 }

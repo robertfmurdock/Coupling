@@ -43,7 +43,7 @@ object CurrentPairAssignmentsPanel {
                 }
             },
             2000,
-            "CurrentPairAssignmentsPanel.waitForSaveButtonToNotBeDisplayed"
+            "CurrentPairAssignmentsPanel.waitForSaveButtonToNotBeDisplayed",
         )
         WebdriverElement(".current-pair-assignments").waitToExist()
     }

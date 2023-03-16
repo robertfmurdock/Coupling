@@ -44,7 +44,7 @@ fun ChildrenBuilder.configInput(
     placeholder: String = "",
     list: String = "",
     checked: Boolean = false,
-    autoFocus: Boolean? = false
+    autoFocus: Boolean? = false,
 ) {
     label { htmlFor = id; +labelText }
     input {

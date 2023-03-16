@@ -29,6 +29,6 @@ interface DynamoDatatypeSyntax {
         *pairs.toMap()
             .filterValues { it != null && it != "" }
             .toList()
-            .toTypedArray()
+            .toTypedArray(),
     )
 }

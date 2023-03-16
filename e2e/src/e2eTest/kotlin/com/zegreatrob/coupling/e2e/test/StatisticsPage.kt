@@ -18,7 +18,7 @@ object StatisticsPage {
     suspend fun waitForPage() {
         WebdriverBrowser.waitUntil(
             { TestingLibraryBrowser.getByText("Statistics").isDisplayed() },
-            timeoutMessage = "Failed to load stats page"
+            timeoutMessage = "Failed to load stats page",
         )
     }
 }

@@ -13,7 +13,7 @@ import kotlinx.serialization.UseSerializers
 data class JsonUser(
     val id: String,
     val email: String,
-    val authorizedPartyIds: Set<PartyId>
+    val authorizedPartyIds: Set<PartyId>,
 )
 
 @Serializable
@@ -23,13 +23,13 @@ data class JsonUserRecord(
     val authorizedPartyIds: Set<PartyId>,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
-    val timestamp: DateTime
+    val timestamp: DateTime,
 )
 
 fun User.toSerializable() = JsonUser(
     id = id,
     email = email,
-    authorizedPartyIds = authorizedPartyIds
+    authorizedPartyIds = authorizedPartyIds,
 )
 
 fun Record<User>.toSerializable() = JsonUserRecord(
@@ -38,22 +38,22 @@ fun Record<User>.toSerializable() = JsonUserRecord(
     authorizedPartyIds = data.authorizedPartyIds,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp
+    timestamp = timestamp,
 )
 
 fun JsonUser.toModel() = User(
     id = id,
     email = email,
-    authorizedPartyIds = authorizedPartyIds
+    authorizedPartyIds = authorizedPartyIds,
 )
 
 fun JsonUserRecord.toModel() = Record(
     data = User(
         id = id,
         email = email,
-        authorizedPartyIds = authorizedPartyIds
+        authorizedPartyIds = authorizedPartyIds,
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = timestamp
+    timestamp = timestamp,
 )

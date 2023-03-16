@@ -11,7 +11,7 @@ fun logStartup(port: Int, buildDate: String, gitRevision: String, env: String) {
             "port" to "$port",
             "buildDate" to buildDate,
             "gitRevision" to gitRevision,
-            "env" to env
+            "env" to env,
         )
     }
 }

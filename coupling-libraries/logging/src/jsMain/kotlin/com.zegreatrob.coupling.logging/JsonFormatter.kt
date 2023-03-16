@@ -17,8 +17,8 @@ class JsonFormatter : Formatter {
                 name = loggerName,
                 message = message,
                 properties = properties,
-                timestamp = DateTime.now().logFormat()
-            )
+                timestamp = DateTime.now().logFormat(),
+            ),
         )
     }
 
@@ -26,7 +26,7 @@ class JsonFormatter : Formatter {
         level: KotlinLoggingLevel,
         loggerName: String,
         t: Throwable?,
-        msg: () -> Any?
+        msg: () -> Any?,
     ): Any {
         val (message, properties) = extractProperties(msg)
         return Json.encodeToString(
@@ -37,8 +37,8 @@ class JsonFormatter : Formatter {
                 message = message,
                 properties = properties,
                 timestamp = DateTime.now().logFormat(),
-                stackTrace = t.throwableToString()
-            )
+                stackTrace = t.throwableToString(),
+            ),
         )
     }
 
@@ -46,28 +46,7 @@ class JsonFormatter : Formatter {
         level: KotlinLoggingLevel,
         loggerName: String,
         marker: Marker?,
-        msg: () -> Any?
-    ): Any {
-        val (message, properties) = extractProperties(msg)
-        return Json.encodeToString(
-            Message.serializer(),
-            Message(
-                level = level.name,
-                name = loggerName,
-                message = message,
-                properties = properties,
-                timestamp = DateTime.now().logFormat(),
-                marker = marker?.getName()
-            )
-        )
-    }
-
-    override fun formatMessage(
-        level: KotlinLoggingLevel,
-        loggerName: String,
-        marker: Marker?,
-        t: Throwable?,
-        msg: () -> Any?
+        msg: () -> Any?,
     ): Any {
         val (message, properties) = extractProperties(msg)
         return Json.encodeToString(
@@ -79,8 +58,29 @@ class JsonFormatter : Formatter {
                 properties = properties,
                 timestamp = DateTime.now().logFormat(),
                 marker = marker?.getName(),
-                stackTrace = t.throwableToString()
-            )
+            ),
+        )
+    }
+
+    override fun formatMessage(
+        level: KotlinLoggingLevel,
+        loggerName: String,
+        marker: Marker?,
+        t: Throwable?,
+        msg: () -> Any?,
+    ): Any {
+        val (message, properties) = extractProperties(msg)
+        return Json.encodeToString(
+            Message.serializer(),
+            Message(
+                level = level.name,
+                name = loggerName,
+                message = message,
+                properties = properties,
+                timestamp = DateTime.now().logFormat(),
+                marker = marker?.getName(),
+                stackTrace = t.throwableToString(),
+            ),
         )
     }
 

@@ -31,7 +31,7 @@ data class CurrentPairAssignmentsPanel(
     val pairAssignments: PairAssignmentDocument,
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
-    val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>
+    val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommandDispatcher>,
 ) : DataPropsBind<CurrentPairAssignmentsPanel>(currentPairAssignmentsPanel)
 
 val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
@@ -40,7 +40,7 @@ val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
     val redirectToCurrentFunc = { setRedirectUrl(party.id.currentPairsPage()) }
     val onCancel = dispatchFunc(
         { DeletePairAssignmentsCommand(party.id, pairAssignments.id) },
-        { redirectToCurrentFunc() }
+        { redirectToCurrentFunc() },
     )
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
@@ -70,7 +70,7 @@ private fun ChildrenBuilder.pairAssignmentList(
     party: Party,
     pairAssignments: PairAssignmentDocument,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
-    allowSave: Boolean
+    allowSave: Boolean,
 ) = div {
     css {
         whiteSpace = WhiteSpace.preLine
@@ -84,9 +84,9 @@ private fun ChildrenBuilder.pairAssignmentList(
                 swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
                     setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
                 },
-                pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) }
+                pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) },
             ),
-            key = "$index"
+            key = "$index",
         )
     }
 }
@@ -115,7 +115,7 @@ private fun PinnedCouplingPair.removePin(pin: Pin) = copy(pins = pins - pin)
 private fun PairAssignmentDocument.copyWithSwappedPlayers(
     droppedPlayerId: String,
     targetPlayer: PinnedPlayer,
-    targetPair: PinnedCouplingPair
+    targetPair: PinnedCouplingPair,
 ): PairAssignmentDocument {
     val sourcePair = pairs.findPairContainingPlayer(droppedPlayerId)
     val droppedPlayer = sourcePair?.players?.firstOrNull { it.player.id == droppedPlayerId }
@@ -131,7 +131,7 @@ private fun PairAssignmentDocument.copyWithSwappedPlayers(
                 sourcePair -> pair.replacePlayer(droppedPlayer, targetPlayer)
                 else -> pair
             }
-        }
+        },
     )
 }
 
@@ -143,7 +143,7 @@ private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, repl
             } else {
                 pinnedPlayer
             }
-        }
+        },
     )
 
 private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = firstOrNull { pair ->
@@ -155,8 +155,8 @@ private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = add(
         sizeRuleSet = supersize,
         colorRuleSet = green,
         onClick = onSave,
-        css = { margin = 4.px }
-    )
+        css = { margin = 4.px },
+    ),
 ) {
     +"Save!"
 }
@@ -165,8 +165,8 @@ private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) = add(
     CouplingButton(
         sizeRuleSet = small,
         colorRuleSet = red,
-        onClick = onCancel
-    )
+        onClick = onCancel,
+    ),
 ) {
     +"Cancel"
 }

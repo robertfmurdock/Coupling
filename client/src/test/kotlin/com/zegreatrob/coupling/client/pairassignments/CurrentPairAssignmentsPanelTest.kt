@@ -46,7 +46,7 @@ class CurrentPairAssignmentsPanelTest {
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),
-            pairs = emptyList()
+            pairs = emptyList(),
         )
         val stubDispatcher = StubDispatcher()
         val actor = userEvent.setup()
@@ -65,11 +65,11 @@ class CurrentPairAssignmentsPanelTest {
                             pairAssignments,
                             setPairAssignments = { },
                             allowSave = true,
-                            dispatchFunc = stubDispatcher.func()
+                            dispatchFunc = stubDispatcher.func(),
                         ).create()
                     }
                 }
-            }
+            },
         )
     } exercise {
         actor.click(screen.getByText("Save!")).await()
@@ -105,12 +105,12 @@ class CurrentPairAssignmentsPanelTest {
                                 pairAssignments,
                                 setPairAssignments = { },
                                 allowSave = true,
-                                dispatchFunc = stubDispatcher.func()
+                                dispatchFunc = stubDispatcher.func(),
                             ).create()
                         }
                     }
                 }
-            }
+            },
         )
     } exercise {
         actor.click(screen.getByText("Cancel")).await()
@@ -136,8 +136,8 @@ class CurrentPairAssignmentsPanelTest {
             date = DateTime.now(),
             pairs = listOf(
                 pairOf(player1, player2),
-                pairOf(player3, player4)
-            ).withPins()
+                pairOf(player3, player4),
+            ).withPins(),
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
@@ -146,8 +146,8 @@ class CurrentPairAssignmentsPanelTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                allowSave = false
-            )
+                allowSave = false,
+            ),
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -170,7 +170,7 @@ class CurrentPairAssignmentsPanelTest {
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),
-            pairs = listOf(pair1, pair2)
+            pairs = listOf(pair1, pair2),
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
@@ -179,8 +179,8 @@ class CurrentPairAssignmentsPanelTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                allowSave = false
-            )
+                allowSave = false,
+            ),
         )
     }) exercise {
         pin1.dragTo(pair2, wrapper)
@@ -209,8 +209,8 @@ class CurrentPairAssignmentsPanelTest {
             date = DateTime.now(),
             pairs = listOf(
                 pairOf(player1, player2).withPins(setOf(pin1)),
-                pairOf(player3, player4).withPins(setOf(pin2))
-            )
+                pairOf(player3, player4).withPins(setOf(pin2)),
+            ),
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
@@ -219,8 +219,8 @@ class CurrentPairAssignmentsPanelTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                allowSave = false
-            )
+                allowSave = false,
+            ),
         )
     }) exercise {
         player2.dragTo(player3, wrapper)
@@ -246,8 +246,8 @@ class CurrentPairAssignmentsPanelTest {
             date = DateTime.now(),
             pairs = listOf(
                 pairOf(player1, player2),
-                pairOf(player3, player4)
-            ).withPins()
+                pairOf(player3, player4),
+            ).withPins(),
         )
         var lastSetPairAssignments: PairAssignmentDocument? = null
         val wrapper = shallow(
@@ -256,8 +256,8 @@ class CurrentPairAssignmentsPanelTest {
                 pairAssignments,
                 { lastSetPairAssignments = it },
                 dispatchFunc = StubDispatchFunc(),
-                allowSave = false
-            )
+                allowSave = false,
+            ),
         )
     }) exercise {
         player4.dragTo(player3, wrapper)

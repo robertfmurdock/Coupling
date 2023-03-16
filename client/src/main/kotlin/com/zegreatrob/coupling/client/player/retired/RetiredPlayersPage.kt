@@ -8,6 +8,6 @@ val RetiredPlayersPage = partyPageFunction { props, partyId ->
     +CouplingQuery(
         commander = props.commander,
         query = RetiredPlayerListQuery(partyId),
-        toDataprops = { _, _, (party, retiredPlayers) -> RetiredPlayers(party, retiredPlayers) }
+        toDataprops = { _, _, (party, retiredPlayers) -> RetiredPlayers(party, retiredPlayers) },
     ).create(key = partyId.value)
 }

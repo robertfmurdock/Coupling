@@ -18,7 +18,7 @@ data class PinSection(
     val pinList: List<Pin>,
     val scale: PinButtonScale = PinButtonScale.Small,
     val canDrag: Boolean = false,
-    val className: ClassName = ClassName("")
+    val className: ClassName = ClassName(""),
 ) : DataPropsBind<PinSection>(pinSection)
 
 val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
@@ -35,7 +35,7 @@ val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
                     DraggablePinButton(pin, scale)
                 } else {
                     PinButton(pin, scale, showTooltip = true)
-                }
+                },
             )
         }
     }

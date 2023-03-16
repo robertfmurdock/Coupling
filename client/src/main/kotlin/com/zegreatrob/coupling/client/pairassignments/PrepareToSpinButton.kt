@@ -34,8 +34,8 @@ private val prepareToSpinButton = tmFC<PrepareToSpinButton> { (party) ->
                     hover {
                         animationDuration = 0.75.s
                     }
-                }
-            )
+                },
+            ),
         ) {
             +"Prepare to spin!"
         }

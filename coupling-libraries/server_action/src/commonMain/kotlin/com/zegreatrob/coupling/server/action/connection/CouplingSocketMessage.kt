@@ -8,5 +8,5 @@ fun couplingSocketMessage(connections: List<CouplingConnection>, doc: PairAssign
     CouplingSocketMessage(
         "Users viewing this page: ${connections.size}",
         connections.map { it.userPlayer }.toSet(),
-        doc
+        doc,
     )

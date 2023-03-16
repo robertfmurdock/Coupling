@@ -14,7 +14,7 @@ interface DynamoQuerySyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemS
 
     suspend fun Json.continueQuery(params: Json): Array<Json> = if (this["LastEvaluatedKey"] != null) {
         itemsNode() + performQuery(
-            params.add(json("ExclusiveStartKey" to this["LastEvaluatedKey"]))
+            params.add(json("ExclusiveStartKey" to this["LastEvaluatedKey"])),
         )
             .continueQuery(params)
     } else {

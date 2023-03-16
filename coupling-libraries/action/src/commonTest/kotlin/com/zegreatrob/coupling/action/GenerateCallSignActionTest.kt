@@ -87,7 +87,7 @@ class GenerateCallSignActionTest {
         val players = listOf(
             Player(callSignAdjective = "Red", callSignNoun = "Lion"),
             Player(callSignAdjective = "Green", callSignNoun = "Tiger"),
-            Player(callSignAdjective = "Blue", callSignNoun = "Bear")
+            Player(callSignAdjective = "Blue", callSignNoun = "Bear"),
         )
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)

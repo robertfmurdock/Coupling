@@ -41,7 +41,7 @@ data class PinConfigContent(
     val pinList: List<Pin>,
     val onChange: (ChangeEvent<*>) -> Unit,
     val onSubmit: () -> Unit,
-    val onRemove: (() -> Unit)?
+    val onRemove: (() -> Unit)?,
 ) : DataPropsBind<PinConfigContent>(pinConfigContent)
 
 val pinConfigContentClassName = ClassName("pin-config-content")
@@ -93,7 +93,7 @@ private fun ChildrenBuilder.pinConfigForm(
     pin: Pin,
     onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
-    onRemove: (() -> Unit)?
+    onRemove: (() -> Unit)?,
 ) = ConfigForm {
     this.onSubmit = onSubmit
     this.onRemove = onRemove
@@ -122,7 +122,7 @@ private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
         type = InputType.text,
         onChange = onChange,
         placeholder = "Font-awesome icon codes, without the size class",
-        autoFocus = false
+        autoFocus = false,
     )
     span {
         +"This is the icon for the pin. This will be its primary identifier, so "
@@ -142,7 +142,7 @@ private fun ChildrenBuilder.nameInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
         type = InputType.text,
         onChange = onChange,
         placeholder = "The name of the pin.",
-        autoFocus = true
+        autoFocus = true,
     )
     span { +"This is what you call the pin. You won't see this much." }
 }
@@ -155,7 +155,7 @@ private fun ChildrenBuilder.targetInput(onChange: (ChangeEvent<*>) -> Unit) {
         this.value = ""
         this.onChange = onChange
         mapOf(
-            PinTarget.Pair to "Pair"
+            PinTarget.Pair to "Pair",
         ).map { (rule, description) ->
             option {
                 key = "0"

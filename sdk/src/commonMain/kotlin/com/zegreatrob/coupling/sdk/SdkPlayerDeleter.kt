@@ -7,6 +7,6 @@ interface SdkPlayerDeleter : PlayerDelete, GqlSyntax, GraphQueries {
     override suspend fun deletePlayer(partyId: PartyId, playerId: String) = doQuery(
         mutations.deletePlayer,
         mapOf("partyId" to partyId.value, "playerId" to playerId),
-        "deletePlayer"
+        "deletePlayer",
     ) { it: Boolean? -> it } ?: false
 }

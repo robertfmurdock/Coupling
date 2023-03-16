@@ -25,7 +25,7 @@ class SavePlayerCommandTest {
             callSignAdjective = "Spicy",
             callSignNoun = "Meatball",
             email = "tim@tim.meat",
-            imageURL = "italian.jpg"
+            imageURL = "italian.jpg",
         )
         override val playerRepository = PlayerSaverSpy().apply { whenever(currentPartyId.with(player), Unit) }
     }) exercise {

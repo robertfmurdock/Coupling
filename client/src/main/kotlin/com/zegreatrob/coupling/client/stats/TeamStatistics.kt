@@ -14,7 +14,7 @@ import react.dom.html.ReactHTML.span
 data class TeamStatistics(
     val spinsUntilFullRotation: Int,
     val activePlayerCount: Int,
-    val medianSpinDuration: String
+    val medianSpinDuration: String,
 ) : DataPropsBind<TeamStatistics>(teamStatistics)
 
 val teamStatistics = tmFC<TeamStatistics> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->

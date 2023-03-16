@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.party.PartyRepository
 class MemoryPartyRepository(
     override val userId: String,
     override val clock: TimeProvider,
-    private val recordBackend: RecordBackend<Party> = SimpleRecordBackend()
+    private val recordBackend: RecordBackend<Party> = SimpleRecordBackend(),
 ) : PartyRepository, TypeRecordSyntax<Party>, RecordBackend<Party> by recordBackend {
 
     override suspend fun save(party: Party) = party.record().save()

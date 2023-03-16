@@ -26,14 +26,14 @@ class PlayersQueryTest {
             Player(
                 id = "1",
                 callSignAdjective = "Red",
-                callSignNoun = "Horner"
+                callSignNoun = "Horner",
             ),
             Player(id = "2", callSignAdjective = "Blue", callSignNoun = "Bee"),
             Player(
                 id = "3",
                 callSignAdjective = "Green",
-                callSignNoun = "Tacos"
-            )
+                callSignNoun = "Tacos",
+            ),
         )
 
         override val playerRepository = PlayerRepositorySpy()
@@ -49,7 +49,7 @@ class PlayersQueryTest {
             authorizedPartyId.with(it),
             "${uuid4()}@email.com",
             false,
-            DateTime.now()
+            DateTime.now(),
         )
 
     @Test
@@ -58,7 +58,7 @@ class PlayersQueryTest {
         val players = listOf(
             Player(id = "1"),
             Player(id = "2"),
-            Player(id = "3")
+            Player(id = "3"),
         )
         override val playerRepository = PlayerRepositorySpy()
             .apply { whenever(currentPartyId, players.map { toRecord(it, currentPartyId) }) }

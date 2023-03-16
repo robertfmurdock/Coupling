@@ -121,13 +121,13 @@ class CreatePairCandidateReportsActionTest {
         private fun StubActionExecutor<
             CreatePairCandidateReportActionDispatcher,
             CreatePairCandidateReportAction,
-            PairCandidateReport>.givenPlayerReturnReport(
+            PairCandidateReport,>.givenPlayerReturnReport(
             pairCandidateReport: PairCandidateReport,
             players: List<Player>,
-            history: List<PairAssignmentDocument>
+            history: List<PairAssignmentDocument>,
         ) = whenever(
             receive = CreatePairCandidateReportAction(pairCandidateReport.player, history, players),
-            returnValue = pairCandidateReport
+            returnValue = pairCandidateReport,
         )
 
         private fun List<Player>.without(player: Player) = filterNot { it == player }

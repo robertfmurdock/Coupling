@@ -9,7 +9,7 @@ interface GqlQueryComponent : PartyGQLPerformer, GraphQueries
 suspend inline fun <reified T, reified S : Any> GqlQueryComponent.performQueryGetComponent(
     partyId: PartyId,
     gqlComponent: PartyGQLComponent,
-    transform: (S) -> T?
+    transform: (S) -> T?,
 ): T? = performPartyGQLQuery(partyId, listOf(gqlComponent))
     .let {
         val content = it[gqlComponent]

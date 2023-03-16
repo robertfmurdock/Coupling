@@ -22,8 +22,8 @@ private val userConfig = tmFC<UserConfig> { (user) ->
     add(
         PageFrame(
             borderColor = Color("rgb(94, 84, 102)"),
-            backgroundColor = Color("floralwhite")
-        )
+            backgroundColor = Color("floralwhite"),
+        ),
     ) {
         GeneralControlBar {
             title = "User Config"

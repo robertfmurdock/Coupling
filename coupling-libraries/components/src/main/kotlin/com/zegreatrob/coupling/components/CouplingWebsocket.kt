@@ -24,7 +24,7 @@ import react.useState
 val disconnectedMessage = com.zegreatrob.coupling.model.CouplingSocketMessage(
     text = "Not connected",
     players = emptySet(),
-    currentPairAssignments = null
+    currentPairAssignments = null,
 )
 val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
     val (partyId, useSsl, onMessageFunc, buildChild, token) = props
@@ -52,7 +52,7 @@ data class CouplingWebsocket(
     val useSsl: Boolean = "https:" == window.location.protocol,
     val onMessage: (Message) -> Unit,
     val buildChild: (value: ((Message) -> Unit)?) -> ReactNode,
-    val token: String
+    val token: String,
 ) : DataPropsBind<CouplingWebsocket>(couplingWebsocket)
 
 private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->
@@ -66,7 +66,7 @@ private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { me
 
 private fun buildSocketUrl(partyId: PartyId, useSsl: Boolean, token: String) = URL(
     "?partyId=${encodeURIComponent(partyId.value)}&token=${encodeURIComponent(token)}",
-    "${useSsl.protocol}://$host"
+    "${useSsl.protocol}://$host",
 )
 
 external fun encodeURIComponent(value: String): String

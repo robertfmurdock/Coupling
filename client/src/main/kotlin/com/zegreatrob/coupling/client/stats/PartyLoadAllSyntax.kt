@@ -19,7 +19,7 @@ interface PartyLoadAllSyntax : PartyIdGetSyntax, PartyPlayersSyntax, PartyIdHist
             async { get() },
             async { getPlayerList() },
             async { loadHistory() },
-            async { getPins() }
+            async { getPins() },
         )
     }
 
@@ -27,13 +27,13 @@ interface PartyLoadAllSyntax : PartyIdGetSyntax, PartyPlayersSyntax, PartyIdHist
         partyDeferred: Deferred<Party?>,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<List<PairAssignmentDocument>>,
-        pinListDeferred: Deferred<List<Pin>>
+        pinListDeferred: Deferred<List<Pin>>,
     ): PartyData? {
         return awaitPartyData(
             (partyDeferred.await() ?: return null),
             playerListDeferred,
             historyDeferred,
-            pinListDeferred
+            pinListDeferred,
         )
     }
 
@@ -41,12 +41,12 @@ interface PartyLoadAllSyntax : PartyIdGetSyntax, PartyPlayersSyntax, PartyIdHist
         party: Party,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<List<PairAssignmentDocument>>,
-        pinListDeferred: Deferred<List<Pin>>
+        pinListDeferred: Deferred<List<Pin>>,
     ) = PartyData(
         party,
         playerListDeferred.await(),
         historyDeferred.await(),
-        pinListDeferred.await()
+        pinListDeferred.await(),
     )
 }
 
@@ -54,5 +54,5 @@ data class PartyData(
     val party: Party,
     val playerList: List<Player>,
     val history: List<PairAssignmentDocument>,
-    val pinList: List<Pin>
+    val pinList: List<Pin>,
 )

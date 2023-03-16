@@ -5,5 +5,5 @@ import kotlin.js.json
 
 fun staticResourcesPublic() = static(
     resourcePath("public"),
-    json("extensions" to arrayOf("json"))
+    json("extensions" to arrayOf("json")),
 )

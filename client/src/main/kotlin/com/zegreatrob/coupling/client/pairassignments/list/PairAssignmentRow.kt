@@ -46,7 +46,7 @@ data class PairAssignmentRow(
     val party: Party,
     val document: PairAssignmentDocument,
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
-    val windowFunctions: WindowFunctions = WindowFunctions
+    val windowFunctions: WindowFunctions = WindowFunctions,
 
 ) :
     DataPropsBind<PairAssignmentRow>(pairAssignmentRow)
@@ -82,8 +82,8 @@ private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = add(
     CouplingButton(
         sizeRuleSet = small,
         colorRuleSet = red,
-        onClick = onClickFunc
-    )
+        onClick = onClickFunc,
+    ),
 ) {
     +"DELETE"
 }
@@ -110,8 +110,8 @@ private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
                     scale = PinButtonScale.ExtraSmall,
                     className = ClassName {
                         bottom = 2.px
-                    }
-                )
+                    },
+                ),
             )
         }
     }

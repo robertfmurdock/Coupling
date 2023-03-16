@@ -36,7 +36,7 @@ data class PairSection(
     val pairAssignments: PairAssignmentDocument?,
     val allowSave: Boolean,
     val setPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<DeletePairAssignmentsCommandDispatcher>
+    val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
 ) : DataPropsBind<PairSection>(pairSection)
 
 private val pairSection = tmFC<PairSection> { (party, players, pairs, allowSave, setPairs, controls) ->
@@ -64,8 +64,8 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<HTMLElem
                 sizeRuleSet = large,
                 colorRuleSet = white,
                 onClick = { ref.current?.copyToClipboardOnClick()?.invoke() },
-                attrs = { tabIndex = -1 }
-            )
+                attrs = { tabIndex = -1 },
+            ),
         ) {
             i { className = ClassName("fa fa-clipboard") }
         }

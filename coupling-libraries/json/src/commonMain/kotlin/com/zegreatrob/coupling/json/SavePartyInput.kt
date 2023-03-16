@@ -17,5 +17,5 @@ data class SavePartyInput(
     val alternateBadgeName: String?,
     val callSignsEnabled: Boolean?,
     val animationsEnabled: Boolean?,
-    val animationSpeed: Double?
+    val animationSpeed: Double?,
 )

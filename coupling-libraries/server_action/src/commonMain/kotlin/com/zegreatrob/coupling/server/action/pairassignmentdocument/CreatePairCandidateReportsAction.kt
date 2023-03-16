@@ -35,6 +35,6 @@ interface CreatePairCandidateReportsActionDispatcher : PlayerCandidatesFinder {
     }
 
     private fun GameSpin.createReport(player: Player, candidates: Array<Player>) = execute(
-        CreatePairCandidateReportAction(player, history, candidates.toList())
+        CreatePairCandidateReportAction(player, history, candidates.toList()),
     )
 }

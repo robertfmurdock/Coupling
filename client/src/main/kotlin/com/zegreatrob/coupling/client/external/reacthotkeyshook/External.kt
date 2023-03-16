@@ -8,7 +8,7 @@ import kotlin.js.Json
 external fun useHotkeys(
     key: String,
     onPress: (keyboardEvent: dynamic, handler: dynamic) -> Unit,
-    options: Json = definedExternally
+    options: Json = definedExternally,
 )
 
 external fun useIsHotkeyPressed(): (key: String) -> Boolean

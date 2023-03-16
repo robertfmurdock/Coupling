@@ -19,7 +19,7 @@ class PredictableWordPickerTest {
         }) exercise {
             Pair(
                 options.pickForGiven(givenString),
-                options.pickForGiven(givenString)
+                options.pickForGiven(givenString),
             )
         } verify { (result1, result2) ->
             result1.assertIsEqualTo(result2)
@@ -67,7 +67,7 @@ class PredictableWordPickerTest {
                 "option6",
                 "option7",
                 "option8",
-                "option9"
+                "option9",
             )
             val givenStrings = listOf("a", "b", "c")
         }) exercise {

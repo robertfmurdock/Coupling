@@ -9,7 +9,7 @@ interface TribeIdDynamoRecordJsonMapping : DynamoRecordJsonMapping {
         val timestamp = now()
         return json(
             "tribeId" to value,
-            "timestamp+id" to "${timestamp.isoWithMillis()}+$id"
+            "timestamp+id" to "${timestamp.isoWithMillis()}+$id",
         ).add(super.recordJson(timestamp))
     }
 }

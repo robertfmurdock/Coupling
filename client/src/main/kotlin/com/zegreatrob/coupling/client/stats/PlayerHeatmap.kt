@@ -19,7 +19,7 @@ import react.dom.html.ReactHTML.div
 
 data class PlayerHeatmap(
     val players: List<Player>,
-    val heatmapData: List<List<Double?>>
+    val heatmapData: List<List<Double?>>,
 ) :
     DataPropsBind<PlayerHeatmap>(playerHeatmap)
 
@@ -63,8 +63,8 @@ val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
                 ClassName {
                     display = Display.inlineBlock
                     verticalAlign = VerticalAlign.top
-                }
-            )
+                },
+            ),
         )
     }
 }

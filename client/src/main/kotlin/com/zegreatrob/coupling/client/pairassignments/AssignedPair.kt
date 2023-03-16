@@ -43,7 +43,7 @@ data class AssignedPair(
     val pair: PinnedCouplingPair,
     val canDrag: Boolean,
     val swapPlayersFunc: (PinnedPlayer, String) -> Unit = { _, _ -> },
-    val pinDropFunc: PinMoveCallback = {}
+    val pinDropFunc: PinMoveCallback = {},
 ) : DataPropsBind<AssignedPair>(assignedPair)
 
 typealias PinMoveCallback = (String) -> Unit
@@ -128,12 +128,12 @@ private fun PinnedCouplingPair.findCallSign(): CallSign? {
 private fun usePinDrop(pinMoveCallback: PinMoveCallback) = useDrop(
     acceptItemType = pinDragItemType,
     drop = { item -> pinMoveCallback(item["id"].unsafeCast<String>()) },
-    collect = { monitor -> monitor.isOver() }
+    collect = { monitor -> monitor.isOver() },
 )
 
 private fun playerCardComponent(
     canDrag: Boolean,
-    swap: (PinnedPlayer, String) -> Unit
+    swap: (PinnedPlayer, String) -> Unit,
 ): ChildrenBuilder.(PinnedPlayer, csstype.Angle) -> Unit = if (canDrag) {
     { player, tilt ->
         playerFlipped(player.player) {
@@ -170,5 +170,5 @@ private fun swappablePlayer(
     pinnedPlayer: PinnedPlayer,
     zoomOnHover: Boolean,
     tilt: csstype.Angle,
-    onDropSwap: (String) -> Unit
+    onDropSwap: (String) -> Unit,
 ) = DraggablePlayer(pinnedPlayer, zoomOnHover, tilt, onDropSwap)

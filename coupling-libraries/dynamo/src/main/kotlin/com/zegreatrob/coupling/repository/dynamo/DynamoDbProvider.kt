@@ -20,7 +20,7 @@ object DynamoDbProvider : DynamoDBSyntax {
             "region" to "us-east-1",
             "retryMode" to "standard",
             "useFipsEndpoint" to false,
-            "useDualstackEndpoint" to false
+            "useDualstackEndpoint" to false,
         )
         val secret = js("process.env.AWS_SECRET_ACCESS_KEY").unsafeCast<String?>()
         val localDynamo = js("process.env.LOCAL_DYNAMO").unsafeCast<String?>() == "true"
@@ -32,9 +32,9 @@ object DynamoDbProvider : DynamoDBSyntax {
                     "endpoint" to nonAwsHost(),
                     "credentials" to json(
                         "accessKeyId" to "lol",
-                        "secretAccessKey" to "lol"
-                    )
-                )
+                        "secretAccessKey" to "lol",
+                    ),
+                ),
 //                    .add(
 //                        json(
 //                            "logger" to json(
@@ -56,8 +56,8 @@ object DynamoDbProvider : DynamoDBSyntax {
         DynamoDBDocumentClient.from(
             DynamoDBClient(
                 json("convertEmptyValues" to true)
-                    .add(dynamoConfig())
-            )
+                    .add(dynamoConfig()),
+            ),
         )
     }
 }

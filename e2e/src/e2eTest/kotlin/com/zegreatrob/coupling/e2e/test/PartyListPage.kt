@@ -13,7 +13,7 @@ object PartyListPage {
     val partyCardElements get() = PartyCard.element.all()
 
     fun partyCardElement(partyId: PartyId) = WebdriverElement(
-        "[data-party-id=\"${partyId.value}\"]"
+        "[data-party-id=\"${partyId.value}\"]",
     )
 
     suspend fun goTo() {
@@ -25,7 +25,7 @@ object PartyListPage {
         WebdriverBrowser.waitUntil(
             { TestingLibraryBrowser.getByText("Party List").isDisplayed() },
             2000,
-            "PartyListPage.waitForPage"
+            "PartyListPage.waitForPage",
         )
     }
 }

@@ -15,14 +15,14 @@ data class JsonBoostRecord(
     val partyIds: Set<PartyId>,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
-    val timestamp: DateTime
+    val timestamp: DateTime,
 )
 
 fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(
     data = Boost(userId, partyIds),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = timestamp
+    timestamp = timestamp,
 )
 
 fun Record<Boost>.toSerializable() = JsonBoostRecord(
@@ -30,5 +30,5 @@ fun Record<Boost>.toSerializable() = JsonBoostRecord(
     partyIds = data.partyIds,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp
+    timestamp = timestamp,
 )

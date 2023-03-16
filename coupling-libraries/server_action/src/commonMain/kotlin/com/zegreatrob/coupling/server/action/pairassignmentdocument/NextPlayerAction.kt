@@ -36,7 +36,7 @@ interface NextPlayerActionDispatcher {
 
     private fun timeSinceLastPairedIsLonger(
         report: PairCandidateReport,
-        reportWithLongestTime: PairCandidateReport
+        reportWithLongestTime: PairCandidateReport,
     ) = if (
         report.timeResult is TimeResultValue &&
         reportWithLongestTime.timeResult is TimeResultValue

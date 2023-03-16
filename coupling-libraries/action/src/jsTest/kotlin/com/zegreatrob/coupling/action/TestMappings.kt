@@ -20,5 +20,5 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup = loadResource<A
 data class JsonPartySetup(
     val tribe: JsonParty,
     val players: List<JsonPlayerData>,
-    val history: List<JsonPairAssignmentDocument>
+    val history: List<JsonPairAssignmentDocument>,
 )

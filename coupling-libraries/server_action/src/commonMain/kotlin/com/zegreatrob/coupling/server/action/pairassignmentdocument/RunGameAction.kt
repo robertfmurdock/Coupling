@@ -18,7 +18,7 @@ data class RunGameAction(
     val players: List<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-    val party: Party
+    val party: Party,
 ) : SimpleExecutableAction<RunGameActionDispatcher, PairAssignmentDocument> {
     override val performFunc = link(RunGameActionDispatcher::perform)
 }
@@ -39,7 +39,7 @@ interface RunGameActionDispatcher :
     private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
         id = PairAssignmentDocumentId("${uuid4()}"),
         date = currentDate(),
-        pairs = pairAssignments
+        pairs = pairAssignments,
     )
 }
 

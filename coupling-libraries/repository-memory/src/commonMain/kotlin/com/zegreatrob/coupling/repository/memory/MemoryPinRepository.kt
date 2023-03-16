@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 class MemoryPinRepository(
     override val userId: String,
     override val clock: TimeProvider,
-    private val recordBackend: RecordBackend<PartyElement<Pin>> = SimpleRecordBackend()
+    private val recordBackend: RecordBackend<PartyElement<Pin>> = SimpleRecordBackend(),
 ) : PinRepository,
     TypeRecordSyntax<PartyElement<Pin>>,
     RecordBackend<PartyElement<Pin>> by recordBackend {

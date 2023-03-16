@@ -34,29 +34,29 @@ interface PlayersQueryDispatcher : CurrentPartyIdSyntax, PartyPlayerRecordsListS
     private fun List<PartyRecord<Player>>.findCallSign(
         index: Int,
         acc: List<Record<PartyElement<Player>>>,
-        record: PartyRecord<Player>
+        record: PartyRecord<Player>,
     ) = record.data.player.email.findCallSign(
         mapPlayers(),
         index,
-        acc.mapPlayers()
+        acc.mapPlayers(),
     )
 
     private fun List<Record<PartyElement<Player>>>.mapPlayers() = map { it.data.player }
 
     private fun Player.withPopulatedCallSign(callSign: CallSign) = copy(
         callSignAdjective = callSignAdjective.ifEmpty { callSign.adjective },
-        callSignNoun = callSignNoun.ifEmpty { callSign.noun }
+        callSignNoun = callSignNoun.ifEmpty { callSign.noun },
     )
 
     private fun String.findCallSign(
         players: List<Player>,
         index: Int,
-        updatedPlayers: List<Player>
+        updatedPlayers: List<Player>,
     ) = perform(
         FindCallSignAction(
             players = playersWithNamesSoFar(updatedPlayers, players, index),
-            email = this
-        )
+            email = this,
+        ),
     )
 
     private fun playersWithNamesSoFar(updatedPlayers: List<Player>, players: List<Player>, index: Int) =

@@ -10,6 +10,6 @@ interface SdkPartyGet : PartyGet, GqlQueryComponent {
     override suspend fun getPartyRecord(partyId: PartyId) = performQueryGetComponent(
         partyId,
         PartyData,
-        JsonPartyRecord::toModelRecord
+        JsonPartyRecord::toModelRecord,
     )
 }

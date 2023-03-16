@@ -35,7 +35,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("harry", name = "Harry"),
             Player("larry", name = "Larry"),
             Player("curry", name = "Curly"),
-            Player("moe", name = "Moe")
+            Player("moe", name = "Moe"),
         )
         val party = Party(PartyId("1"), name = "Mathematica")
         val history = listOf(
@@ -44,15 +44,15 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 date = DateTime.now(),
                 pairs = listOf<CouplingPair>(
                     pairOf(players[0], players[1]),
-                    pairOf(players[2], players[3])
-                ).withNoPins()
-            )
+                    pairOf(players[2], players[3]),
+                ).withNoPins(),
+            ),
         )
         val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
         render(
             PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify { result ->
         result.baseElement.querySelectorAll("[data-pair-report]")
@@ -66,8 +66,8 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                     "Larry-Curly",
                     "Larry-Moe",
                     "Harry-Larry",
-                    "Curly-Moe"
-                )
+                    "Curly-Moe",
+                ),
             )
         result.baseElement.querySelectorAll("[data-time-since-last-pair]")
             .asList()
@@ -80,8 +80,8 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                     "Never Paired",
                     "Never Paired",
                     "0",
-                    "0"
-                )
+                    "0",
+                ),
             )
     }
 
@@ -91,7 +91,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("harry", name = "Harry"),
             Player("larry", name = "Larry"),
             Player("curry", name = "Curly"),
-            Player("moe", name = "Moe")
+            Player("moe", name = "Moe"),
         )
         val history = listOf(
             PairAssignmentDocument(
@@ -99,9 +99,9 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 date = DateTime.now(),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
-                    pairOf(players[2], players[3])
-                ).withNoPins()
-            )
+                    pairOf(players[2], players[3]),
+                ).withNoPins(),
+            ),
         )
         val party = Party(PartyId("2"), name = "Mathematica")
         val report = perform(ComposeStatisticsAction(party, players, history))
@@ -109,7 +109,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     }) exercise {
         render(
             PartyStatistics(StatisticQueryResults(party, players, history, report, heatmapData)).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify { wrapper ->
         wrapper.baseElement.querySelector("[data-heatmap]")
@@ -120,10 +120,10 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                     listOf(null, 1, 0, 0),
                     listOf(1, null, 0, 0),
                     listOf(0, 0, null, 1),
-                    listOf(0, 0, 1, null)
+                    listOf(0, 0, 1, null),
                 ).joinToString(",") {
                     "[${it.joinToString(",")}]"
-                }
+                },
             )
     }
 
@@ -133,17 +133,17 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("harry", name = "Harry"),
             Player("larry", name = "Larry"),
             Player("curry", name = "Curly"),
-            Player("moe", name = "Moe")
+            Player("moe", name = "Moe"),
         )
         val party = Party(
             PartyId("2"),
-            name = "Mathematica"
+            name = "Mathematica",
         )
         val report = perform(ComposeStatisticsAction(party, players, emptyList()))
     }) exercise {
         render(
             PartyStatistics(StatisticQueryResults(party, players, emptyList(), report, emptyList())).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify {
         within(screen.getByText("Spins Until Full Rotation:").parentElement)
@@ -158,7 +158,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
             Player("harry", name = "Harry"),
             Player("larry", name = "Larry"),
             Player("curry", name = "Curly"),
-            Player("moe", name = "Moe")
+            Player("moe", name = "Moe"),
         )
         val party = Party(PartyId("2"), name = "Mathematica")
         val history = listOf(
@@ -167,23 +167,23 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
                 date = DateTime(2017, 3, 14),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
-                    pairOf(players[2], players[3])
-                ).withNoPins()
+                    pairOf(players[2], players[3]),
+                ).withNoPins(),
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime(2017, 3, 12),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
-                    pairOf(players[2], players[3])
-                ).withNoPins()
-            )
+                    pairOf(players[2], players[3]),
+                ).withNoPins(),
+            ),
         )
         val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
         render(
             PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify {
         within(screen.getByText("Median Spin Duration:").parentElement)

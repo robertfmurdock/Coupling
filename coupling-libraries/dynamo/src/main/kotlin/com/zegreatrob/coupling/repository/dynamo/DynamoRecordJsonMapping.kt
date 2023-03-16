@@ -12,18 +12,18 @@ interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserIdSyntax, ClockSyn
     fun <T> Record<T>.recordJson() = json(
         "timestamp" to timestamp.isoWithMillis(),
         "modifyingUserEmail" to modifyingUserId,
-        "isDeleted" to isDeleted
+        "isDeleted" to isDeleted,
     )
 
     fun recordJson(timestamp: DateTime) = json(
         "timestamp" to timestamp.isoWithMillis(),
-        "modifyingUserEmail" to userId
+        "modifyingUserEmail" to userId,
     )
 
     fun <T> Json.toRecord(data: T) = Record(
         data,
         getDynamoStringValue("modifyingUserEmail") ?: "",
         getDynamoBoolValue("isDeleted") ?: false,
-        getDynamoDateTimeValue("timestamp")?.utc!!
+        getDynamoDateTimeValue("timestamp")?.utc!!,
     )
 }

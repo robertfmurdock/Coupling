@@ -36,7 +36,7 @@ interface ActionLoggingSyntax : LoggingSyntax, TraceIdSyntax {
         mapOf(
             "action" to className,
             "type" to "Start",
-            "traceId" to traceId
+            "traceId" to traceId,
         )
     }
 
@@ -45,7 +45,7 @@ interface ActionLoggingSyntax : LoggingSyntax, TraceIdSyntax {
             "action" to className,
             "type" to "End",
             "duration" to "$duration",
-            "traceId" to traceId
+            "traceId" to traceId,
         )
     }
 
@@ -53,7 +53,7 @@ interface ActionLoggingSyntax : LoggingSyntax, TraceIdSyntax {
         mapOf(
             "action" to className,
             "type" to "End",
-            "traceId" to traceId
+            "traceId" to traceId,
         )
     }
 }

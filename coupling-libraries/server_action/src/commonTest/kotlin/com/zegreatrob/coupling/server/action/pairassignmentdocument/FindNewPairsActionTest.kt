@@ -54,7 +54,7 @@ class FindNewPairsActionTest {
         val players = listOf(bill, ted, mozart)
         val pairCandidateReports = listOf<PairCandidateReport?>(
             PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
-            PairCandidateReport(ted, emptyList(), TimeResultValue(0))
+            PairCandidateReport(ted, emptyList(), TimeResultValue(0)),
         )
         val history: List<PairAssignmentDocument> = emptyList()
     }) {
@@ -64,14 +64,14 @@ class FindNewPairsActionTest {
         perform(FindNewPairsAction(Game(history, players, PairingRule.LongestTime)))
     } verify { result ->
         result.assertIsEqualTo(
-            listOf(pairOf(mozart, bill), pairOf(ted))
+            listOf(pairOf(mozart, bill), pairOf(ted)),
         )
         execute.spyReceivedValues
             .assertIsEqualTo(
                 listOf(
                     NextPlayerAction(GameSpin(history, players, PairingRule.LongestTime)),
-                    NextPlayerAction(GameSpin(history, listOf(ted), PairingRule.LongestTime))
-                )
+                    NextPlayerAction(GameSpin(history, listOf(ted), PairingRule.LongestTime)),
+                ),
             )
         wheel.spyReceivedValues
             .assertContains(listOf(bill, ted))

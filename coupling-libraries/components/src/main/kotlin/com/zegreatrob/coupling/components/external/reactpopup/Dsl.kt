@@ -14,7 +14,7 @@ fun popup(
     handler: ChildrenBuilder.() -> Unit,
     contentStyle: Json? = null,
     onOpen: () -> Unit = {},
-    onClose: () -> Unit = {}
+    onClose: () -> Unit = {},
 ) = default.create {
     this.modal = modal
     this.on = on

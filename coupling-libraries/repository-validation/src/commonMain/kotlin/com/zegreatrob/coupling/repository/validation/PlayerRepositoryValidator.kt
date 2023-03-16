@@ -20,7 +20,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun saveMultipleInPartyThenGetListWillReturnSavedPlayers() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val players = stubPlayers(3)
-        }.bind()
+        }.bind(),
     ) {
         partyId.with(players).forEach { repository.save(it) }
     } exercise {
@@ -38,9 +38,9 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
                 callSignNoun = "2",
                 name = "",
                 email = "",
-                imageURL = null
+                imageURL = null,
             )
-        }.bind()
+        }.bind(),
     ) {
         repository.save(partyId.with(player))
     } exercise {
@@ -60,7 +60,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
         object : PartyContextMint<R>() {
             val player = stubPlayer()
             val updatedPlayer = player.copy(name = "Timmy!")
-        }.bind()
+        }.bind(),
     ) {
         repository.save(partyId.with(player))
     } exercise {
@@ -77,7 +77,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
             val player1 = stubPlayer()
             val party2 = stubPartyId()
             val player2 = player1.copy(id = player1.id)
-        }.bind()
+        }.bind(),
     ) {
         repository.save(partyId.with(player1))
         repository.save(party2.with(player2))
@@ -92,7 +92,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun deleteWillRemoveAGivenPlayer() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val player = stubPlayer()
-        }.bind()
+        }.bind(),
     ) {
         repository.save(partyId.with(player))
     } exercise {
@@ -108,7 +108,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun deletedPlayersShowUpInGetDeleted() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val player = stubPlayer()
-        }.bind()
+        }.bind(),
     ) {
         repository.save(partyId.with(player))
         repository.deletePlayer(partyId, player.id)
@@ -125,7 +125,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
             object : PartyContextMint<R>() {
                 val player = stubPlayer()
                 val playerId = player.id
-            }.bind()
+            }.bind(),
         ) exercise {
             repository.save(partyId.with(player))
             repository.deletePlayer(partyId, playerId)
@@ -141,7 +141,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun deleteWithUnknownPlayerIdWillReturnFalse() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val playerId = "${uuid4()}"
-        }.bind()
+        }.bind(),
     ) exercise {
         repository.deletePlayer(partyId, playerId)
     } verify { result ->
@@ -152,7 +152,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun savedPlayersIncludeModificationDateAndUsername() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val player = stubPlayer()
-        }.bind()
+        }.bind(),
     ) {
     } exercise {
         repository.save(partyId.with(player))
@@ -175,7 +175,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val player = stubPlayer()
-        }.bind()
+        }.bind(),
     ) {
     } exercise {
         repository.save(partyId.with(player))

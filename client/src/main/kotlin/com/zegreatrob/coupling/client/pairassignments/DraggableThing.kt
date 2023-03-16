@@ -15,7 +15,7 @@ data class DraggableThing(
     val itemType: String,
     val itemId: String,
     val dropCallback: (String) -> Unit,
-    val handler: ChildrenBuilder.(isOver: Boolean) -> Unit
+    val handler: ChildrenBuilder.(isOver: Boolean) -> Unit,
 ) : DataPropsBind<DraggableThing>(draggableThing)
 
 val draggableThing = tmFC<DraggableThing> { (itemType, itemId, dropCallback, handler) ->
@@ -25,7 +25,7 @@ val draggableThing = tmFC<DraggableThing> { (itemType, itemId, dropCallback, han
     val (isOver, drop) = useDrop(
         acceptItemType = itemType,
         drop = { item -> dropCallback(item["id"].unsafeCast<String>()) },
-        collect = { monitor -> monitor.isOver() }
+        collect = { monitor -> monitor.isOver() },
     )
     drag(drop(draggableRef))
 

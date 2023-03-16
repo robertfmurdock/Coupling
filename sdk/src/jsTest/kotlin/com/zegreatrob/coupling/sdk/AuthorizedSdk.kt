@@ -102,7 +102,7 @@ private suspend fun generateAccessToken(username: String, password: String): Str
             append("password", password)
             append("audience", "https://localhost/api")
             append("scope", "email")
-        }
+        },
     ).body<JsonObject>()
 
     return result["access_token"]?.jsonPrimitive?.content ?: ""

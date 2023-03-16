@@ -12,7 +12,7 @@ import kotlin.math.round
 data class FrameRunner<S>(
     val sequence: Sequence<Frame<S>>,
     val speed: Double,
-    val children: ChildrenBuilder.(value: S) -> Unit
+    val children: ChildrenBuilder.(value: S) -> Unit,
 ) : DataPropsBind<FrameRunner<S>>(fR())
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second

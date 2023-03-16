@@ -39,7 +39,7 @@ object PinListPage : BrowserSyntax {
         WebdriverBrowser.waitUntil(
             condition = { TestingLibraryBrowser.getByText("These are your pins.").isPresent() },
             timeout = waitToBePresentDuration,
-            timeoutMessage = "PinListPage.waitForLoad"
+            timeoutMessage = "PinListPage.waitForLoad",
         )
     }
 }

@@ -59,7 +59,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
             repository.save(partyId.with(updatedPlayer))
             clock.currentTime = updatedSaveTime2
             repository.deletePlayer(partyId, player.id)
-        }
+        },
     ) exercise {
         repository.getPlayerRecords(partyId)
     } verify { result ->
@@ -76,10 +76,10 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
                 val partyId = stubPartyId()
                 val records = listOf(
                     partyRecord(partyId, stubPlayer(), uuidString(), false, DateTime.now().minus(3.months)),
-                    partyRecord(partyId, stubPlayer(), uuidString(), true, DateTime.now().minus(2.years))
+                    partyRecord(partyId, stubPlayer(), uuidString(), true, DateTime.now().minus(2.years)),
                 )
             }
-        }
+        },
     ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verify {
@@ -95,7 +95,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
                 val partyId = stubPartyId()
                 override val userId: String = "test user"
             }
-        }
+        },
     ) {
         DynamoPlayerRepository.performPutItem(
             recordJson(DateTime.now())
@@ -103,9 +103,9 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
                     json(
                         "tribeId" to partyId.value,
                         "timestamp+id" to "lol",
-                        "name" to "Dead player"
-                    )
-                )
+                        "name" to "Dead player",
+                    ),
+                ),
         )
     } exercise {
         repository.getPlayerRecords(partyId)
@@ -120,7 +120,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
                 val partyId = stubPartyId()
                 override val userId: String = "test user"
             }
-        }
+        },
     ) {
         DynamoPlayerRepository.performPutItem(
             recordJson(DateTime.now())
@@ -128,9 +128,9 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
                     json(
                         "tribeId" to partyId.value,
                         "timestamp+id" to "20210426135844.172+",
-                        "name" to "Dead player"
-                    )
-                )
+                        "name" to "Dead player",
+                    ),
+                ),
         )
     } exercise {
         repository.getPlayers(partyId)
