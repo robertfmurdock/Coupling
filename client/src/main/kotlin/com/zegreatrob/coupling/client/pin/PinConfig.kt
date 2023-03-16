@@ -27,7 +27,7 @@ data class PinConfig<D>(
     val pin: Pin,
     val pinList: List<Pin>,
     val reload: () -> Unit,
-    val dispatchFunc: DispatchFunc<out D>
+    val dispatchFunc: DispatchFunc<out D>,
 ) : DataPropsBind<PinConfig<D>>(pinConfig.unsafeCast<TMFC>())
     where D : SavePinCommandDispatcher, D : DeletePinCommandDispatcher
 

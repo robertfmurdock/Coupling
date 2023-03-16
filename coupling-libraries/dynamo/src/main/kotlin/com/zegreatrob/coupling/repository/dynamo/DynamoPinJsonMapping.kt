@@ -14,20 +14,20 @@ interface DynamoPinJsonMapping : TribeIdDynamoRecordJsonMapping {
         .add(
             json(
                 "tribeId" to data.partyId.value,
-                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.pin.id}"
-            )
+                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.pin.id}",
+            ),
         )
         .add(data.pin.toDynamoJson())
 
     fun Pin.toDynamoJson() = nullFreeJson(
         "id" to id,
         "name" to name,
-        "icon" to icon
+        "icon" to icon,
     )
 
     fun Json.toPin() = Pin(
         id = getDynamoStringValue("id"),
         name = getDynamoStringValue("name") ?: "",
-        icon = getDynamoStringValue("icon") ?: ""
+        icon = getDynamoStringValue("icon") ?: "",
     )
 }

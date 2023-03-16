@@ -30,15 +30,15 @@ class AssignPinsActionTest {
             AssignPinsAction(
                 pairs,
                 listOf(pin),
-                emptyList()
-            )
+                emptyList(),
+            ),
         )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
                 expectedPair.withPins(setOf(pin)),
-                alternatePair.withPins()
-            )
+                alternatePair.withPins(),
+            ),
         )
     }
 
@@ -46,7 +46,7 @@ class AssignPinsActionTest {
     fun givenTwoPinsForAssigningToPairHasNeverBeenUsedWillAssignToEachPair() = setup(object {
         val pins = listOf(
             stubPin().copy(target = PinTarget.Pair),
-            stubPin().copy(target = PinTarget.Pair)
+            stubPin().copy(target = PinTarget.Pair),
         )
 
         val expectedPair = pairOf(stubPlayer(), stubPlayer())
@@ -57,15 +57,15 @@ class AssignPinsActionTest {
             AssignPinsAction(
                 pairs,
                 pins,
-                emptyList()
-            )
+                emptyList(),
+            ),
         )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
                 expectedPair.withPins(setOf(pins[0])),
-                alternatePair.withPins(setOf(pins[1]))
-            )
+                alternatePair.withPins(setOf(pins[1])),
+            ),
         )
     }
 
@@ -73,7 +73,7 @@ class AssignPinsActionTest {
     fun givenTwoPinsAndOnlyOnePairWillAssignBothToThatPair() = setup(object {
         val pins = listOf(
             stubPin().copy(target = PinTarget.Pair),
-            stubPin().copy(target = PinTarget.Pair)
+            stubPin().copy(target = PinTarget.Pair),
         )
         val expectedPair = pairOf(stubPlayer(), stubPlayer())
         val pairs = listOf(expectedPair)
@@ -82,14 +82,14 @@ class AssignPinsActionTest {
             AssignPinsAction(
                 pairs,
                 pins,
-                emptyList()
-            )
+                emptyList(),
+            ),
         )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
-                expectedPair.withPins(setOf(pins[0], pins[1]))
-            )
+                expectedPair.withPins(setOf(pins[0], pins[1])),
+            ),
         )
     }
 
@@ -105,22 +105,22 @@ class AssignPinsActionTest {
         val pairs = listOf(alternatePair, expectedPair)
 
         val history = listOf(
-            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1).withPins(setOf(pin))))
+            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1).withPins(setOf(pin)))),
         )
     }) exercise {
         perform(
             AssignPinsAction(
                 pairs,
                 listOf(pin),
-                history
-            )
+                history,
+            ),
         )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
                 alternatePair.withPins(),
-                expectedPair.withPins(setOf(pin))
-            )
+                expectedPair.withPins(setOf(pin)),
+            ),
         )
     }
 
@@ -136,22 +136,22 @@ class AssignPinsActionTest {
         val pairs = listOf(expectedPair, alternatePair)
 
         val history = listOf(
-            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1, player3).withPins(setOf(pin))))
+            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1, player3).withPins(setOf(pin)))),
         )
     }) exercise {
         perform(
             AssignPinsAction(
                 pairs,
                 listOf(pin),
-                history
-            )
+                history,
+            ),
         )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
                 expectedPair.withPins(setOf(pin)),
-                alternatePair.withPins()
-            )
+                alternatePair.withPins(),
+            ),
         )
     }
 
@@ -173,15 +173,15 @@ class AssignPinsActionTest {
             AssignPinsAction(
                 pairs,
                 listOf(pin1, pin2),
-                history
-            )
+                history,
+            ),
         )
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
                 expectedPair.withPins(setOf(pin1)),
-                alternatePair.withPins(setOf(pin2))
-            )
+                alternatePair.withPins(setOf(pin2)),
+            ),
         )
     }
 
@@ -194,8 +194,8 @@ class AssignPinsActionTest {
             AssignPinsAction(
                 players,
                 pins,
-                emptyList()
-            )
+                emptyList(),
+            ),
         )
     } verify { result ->
         result.assertIsEqualTo(emptyList())

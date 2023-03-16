@@ -15,7 +15,7 @@ interface DynamoBoostJsonMapping : DynamoRecordJsonMapping {
     fun Boost.asDynamoJson() = json(
         "pk" to "user-$userId",
         "userId" to userId,
-        "tribeIds" to partyIds.map { it.value }.toTypedArray()
+        "tribeIds" to partyIds.map { it.value }.toTypedArray(),
     )
 
     fun Json.toBoost() = Boost(
@@ -23,10 +23,10 @@ interface DynamoBoostJsonMapping : DynamoRecordJsonMapping {
         this["tribeIds"]
             .unsafeCast<Array<String?>>()
             .mapNotNull { it?.let(::PartyId) }
-            .toSet()
+            .toSet(),
     )
 
     fun Json.toBoostRecord() = toRecord(
-        toBoost()
+        toBoost(),
     )
 }

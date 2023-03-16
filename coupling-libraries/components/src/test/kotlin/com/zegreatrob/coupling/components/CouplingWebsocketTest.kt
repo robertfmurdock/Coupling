@@ -29,7 +29,7 @@ class CouplingWebsocketTest {
         wrapper.find(reactWebsocket).props()
             .url
             .assertIsEqualTo(
-                "ws://${window.location.host}/?partyId=${partyId.value}&token=$token"
+                "ws://${window.location.host}/?partyId=${partyId.value}&token=$token",
             )
     }
 
@@ -44,7 +44,7 @@ class CouplingWebsocketTest {
         wrapper.find(reactWebsocket).props()
             .url
             .assertIsEqualTo(
-                "wss://${window.location.host}/?partyId=LOL&token=$token"
+                "wss://${window.location.host}/?partyId=LOL&token=$token",
             )
     }
 
@@ -54,7 +54,7 @@ class CouplingWebsocketTest {
         var lastMessage: Message? = null
         val wrapper = enzyme.shallow(
             CouplingWebsocket(partyId, false, { lastMessage = it }, { div.create {} }, "")
-                .create()
+                .create(),
         )
         val websocketProps = wrapper.find(reactWebsocket).props()
         val expectedMessage = "Not connected"

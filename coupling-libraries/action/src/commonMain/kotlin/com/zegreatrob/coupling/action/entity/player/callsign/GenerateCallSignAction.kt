@@ -11,7 +11,7 @@ data class GenerateCallSignAction(
     val adjectives: Set<String>,
     val nouns: Set<String>,
     val email: String,
-    val players: List<Player>
+    val players: List<Player>,
 ) : SimpleExecutableAction<GenerateCallSignActionDispatcher, CallSign> {
     override val performFunc = link(GenerateCallSignActionDispatcher::perform)
 }
@@ -22,7 +22,7 @@ interface GenerateCallSignActionDispatcher : PredictableWordPicker, ExecutableAc
 
     private fun GenerateCallSignAction.callSign() = CallSign(
         pickAdjective(),
-        pickNoun()
+        pickNoun(),
     )
 
     private fun GenerateCallSignAction.pickAdjective() =
@@ -45,7 +45,7 @@ interface GenerateCallSignActionDispatcher : PredictableWordPicker, ExecutableAc
         termList: List<String>,
         usedTerms: List<String>,
         email: String,
-        offset: Int? = null
+        offset: Int? = null,
     ): String {
         if (usedTerms.containsAll(termList)) {
             return "Blank"

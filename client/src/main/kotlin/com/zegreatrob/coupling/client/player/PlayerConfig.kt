@@ -27,7 +27,7 @@ data class PlayerConfig<P>(
     val players: List<Player>,
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out P>,
-    val windowFuncs: WindowFunctions = WindowFunctions
+    val windowFuncs: WindowFunctions = WindowFunctions,
 ) : DataPropsBind<PlayerConfig<P>>(component.unsafeCast<TMFC>())
     where P : SavePlayerCommandDispatcher, P : DeletePlayerCommandDispatcher {
     companion object {
@@ -50,7 +50,7 @@ private fun <P> playerConfig() where P : SavePlayerCommandDispatcher, P : Delete
         val onSubmit = dispatchFunc({ SavePlayerCommand(party.id, updatedPlayer) }, { reload() })
         val onRemove = dispatchFunc(
             { DeletePlayerCommand(party.id, player.id) },
-            { setRedirectUrl(party.id.currentPairsPage()) }
+            { setRedirectUrl(party.id.currentPairsPage()) },
         ).requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
 
         if (redirectUrl != null) {

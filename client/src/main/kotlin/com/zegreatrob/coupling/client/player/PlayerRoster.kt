@@ -29,7 +29,7 @@ data class PlayerRoster(
     val players: List<Player>,
     val partyId: PartyId,
     val className: ClassName? = null,
-    val cssOverrides: PropertiesBuilder.() -> Unit = {}
+    val cssOverrides: PropertiesBuilder.() -> Unit = {},
 ) : DataPropsBind<PlayerRoster>(playerRoster)
 
 val playerRoster = tmFC { (label, players, partyId, className, overrides): PlayerRoster ->

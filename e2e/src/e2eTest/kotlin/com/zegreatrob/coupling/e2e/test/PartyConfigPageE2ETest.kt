@@ -91,7 +91,7 @@ class PartyConfigPageE2ETest {
         companion object {
             private fun buildParty() = Party(
                 id = "${randomInt()}-PartyConfigPageE2ETest-partyId".let(::PartyId),
-                name = "${randomInt()}-PartyConfigPageE2ETest-name"
+                name = "${randomInt()}-PartyConfigPageE2ETest-name",
             )
         }
     }

@@ -15,7 +15,7 @@ interface DynamoScanSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemSy
 
     suspend fun Json.continueScan(params: Json): Array<Json> = if (this["LastEvaluatedKey"] != null) {
         itemsNode() + performScan(
-            params.add(json("ExclusiveStartKey" to this["LastEvaluatedKey"]))
+            params.add(json("ExclusiveStartKey" to this["LastEvaluatedKey"])),
         )
             .continueScan(params)
     } else {

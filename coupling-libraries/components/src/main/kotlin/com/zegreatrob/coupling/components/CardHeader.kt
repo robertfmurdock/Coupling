@@ -50,5 +50,5 @@ val CardHeader = FC<CardHeaderProps> { props ->
 private fun HTMLDivElement.fitContent(size: Int) = fitty(
     maxFontHeight = (size * 0.3),
     minFontHeight = (size * 0.10),
-    multiLine = true
+    multiLine = true,
 )

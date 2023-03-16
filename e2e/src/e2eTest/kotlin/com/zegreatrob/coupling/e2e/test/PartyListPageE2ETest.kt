@@ -15,7 +15,7 @@ class PartyListPageE2ETest {
         private val twoPartySetup = e2eSetup.extend(beforeAll = {
             val parties = listOf(
                 "${randomInt()}-PartyListPageE2ETest-1".let { Party(it.let(::PartyId), name = it) },
-                "${randomInt()}-PartyListPageE2ETest-2".let { Party(it.let(::PartyId), name = it) }
+                "${randomInt()}-PartyListPageE2ETest-2".let { Party(it.let(::PartyId), name = it) },
             )
             sdkProvider.await().apply { parties.forEach { it.save() } }
             object {

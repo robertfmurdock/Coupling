@@ -17,7 +17,7 @@ class MemoryLiveInfoRepositoryTest : LiveInfoRepositoryValidator<MemoryLiveInfoR
             SharedContextData(
                 MemoryLiveInfoRepository(),
                 MagicClock(),
-                User("${uuid4()}", "${uuid4()}@mail.com", emptySet())
+                User("${uuid4()}", "${uuid4()}@mail.com", emptySet()),
             )
         })
 }

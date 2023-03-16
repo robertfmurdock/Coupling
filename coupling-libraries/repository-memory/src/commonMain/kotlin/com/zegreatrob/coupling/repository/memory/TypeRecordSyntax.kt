@@ -10,13 +10,13 @@ interface TypeRecordSyntax<T> : UserIdSyntax, ClockSyntax {
         data = this,
         modifyingUserId = userId,
         isDeleted = false,
-        timestamp = now()
+        timestamp = now(),
     )
 
     fun T.deletionRecord() = Record(
         data = this,
         modifyingUserId = userId,
         isDeleted = true,
-        timestamp = now()
+        timestamp = now(),
     )
 }

@@ -15,6 +15,6 @@ interface SdkPinSave : PinSave, GqlSyntax, GraphQueries {
             "partyId" to partyId.value,
             "pinId" to element.id,
             "icon" to element.icon,
-            "name" to element.name
+            "name" to element.name,
         )
 }

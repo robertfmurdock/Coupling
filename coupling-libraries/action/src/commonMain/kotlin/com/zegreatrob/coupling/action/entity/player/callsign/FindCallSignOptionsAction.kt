@@ -21,7 +21,7 @@ val defaultCallSignOptions = CallSignOptions(
         "Secure",
         "Relaxed",
         "Modest",
-        "Mild"
+        "Mild",
     ),
     nouns = setOf(
         "Gazelle",
@@ -41,14 +41,14 @@ val defaultCallSignOptions = CallSignOptions(
         "Bat",
         "Duck",
         "Wolverine",
-        "Buckeye"
-    )
+        "Buckeye",
+    ),
 )
 
 interface FindCallSignOptionsActionDispatcher {
     fun perform(action: FindCallSignOptionsAction) = CallSignOptions(
         adjectives = defaultCallSignOptions.adjectives - action.players.adjectives(),
-        nouns = defaultCallSignOptions.nouns - action.players.nouns()
+        nouns = defaultCallSignOptions.nouns - action.players.nouns(),
     )
 
     private fun List<Player>.adjectives() = mapNotNull { it.callSignAdjective }

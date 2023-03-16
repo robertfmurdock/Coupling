@@ -32,7 +32,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(5))
     }) {
         execute.spyWillReturn(
-            listOf(billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
+            listOf(billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates),
         )
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
@@ -75,7 +75,7 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), NeverPaired)
     }) {
         execute.spyWillReturn(
-            listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
+            listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates),
         )
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
@@ -88,21 +88,21 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
         val billsPairCandidates = PairCandidateReport(
             bill,
             listOf(Player(), Player(), Player()),
-            NeverPaired
+            NeverPaired,
         )
         val amadeusPairCandidates = PairCandidateReport(
             amadeus,
             listOf(Player()),
-            NeverPaired
+            NeverPaired,
         )
         val shortyPairCandidates = PairCandidateReport(
             shorty,
             listOf(Player(), Player()),
-            NeverPaired
+            NeverPaired,
         )
     }) {
         execute.spyWillReturn(
-            listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
+            listOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates),
         )
     } exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))

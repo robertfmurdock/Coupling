@@ -63,7 +63,7 @@ suspend fun loadPartyData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     jsonLine.getArray("partyRecords").forEach { recordJson ->
         tryToImport({ "Failed to save party $partyId" }) {
             catalog.partyRepository.saveRawRecord(
-                format.decodeFromDynamic<JsonPartyRecord>(recordJson).toModelRecord()
+                format.decodeFromDynamic<JsonPartyRecord>(recordJson).toModelRecord(),
             )
         }
     }
@@ -112,7 +112,7 @@ class DynamoRepositoryCatalog private constructor(
     val playerRepository: DynamoPlayerRepository,
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
     val pinRepository: DynamoPinRepository,
-    val userRepository: DynamoUserRepository
+    val userRepository: DynamoUserRepository,
 ) : UserIdSyntax, ClockSyntax {
 
     companion object {
@@ -129,7 +129,7 @@ class DynamoRepositoryCatalog private constructor(
                 playerRepository,
                 pairAssignmentDocumentRepository,
                 pinRepository,
-                userRepository
+                userRepository,
             )
         }
     }

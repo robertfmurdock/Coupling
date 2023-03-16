@@ -10,7 +10,7 @@ interface WindowFunctions {
 
 fun (() -> Unit).requireConfirmation(
     confirmMessage: String,
-    windowFunctions: WindowFunctions = WindowFunctions
+    windowFunctions: WindowFunctions = WindowFunctions,
 ): () -> Unit = fun() {
     if (windowFunctions.window.confirm(confirmMessage)) {
         invoke()

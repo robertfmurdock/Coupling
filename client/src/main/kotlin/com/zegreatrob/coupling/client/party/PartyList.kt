@@ -32,8 +32,8 @@ val partyList = tmFC<PartyList> { (parties) ->
             className = emotion.css.ClassName {
                 "> div" { padding = 7.px }
                 "*" { verticalAlign = VerticalAlign.middle }
-            }
-        )
+            },
+        ),
     ) {
         GeneralControlBar {
             title = "Party List"

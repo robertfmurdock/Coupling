@@ -23,7 +23,7 @@ interface HistoryQueryDispatcher : PartyIdGetSyntax, PartyIdHistorySyntax {
     private suspend fun PartyId.getData() = withContext(Dispatchers.Default) {
         await(
             async { get() },
-            async { loadHistory() }
+            async { loadHistory() },
         )
     }.let { (first, second) -> if (first == null) null else Pair(first, second) }
 }

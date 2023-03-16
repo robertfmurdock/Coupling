@@ -7,5 +7,5 @@ data class ClientConfig(
     val basename: String,
     val expressEnv: String,
     val webpackPublicPath: String,
-    val websocketHost: String
+    val websocketHost: String,
 )

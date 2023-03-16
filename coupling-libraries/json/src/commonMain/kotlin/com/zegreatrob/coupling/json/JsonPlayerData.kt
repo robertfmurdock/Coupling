@@ -29,7 +29,7 @@ data class JsonPlayerData(
     override val badge: String = "${defaultPlayer.badge}",
     override val callSignAdjective: String = defaultPlayer.callSignAdjective,
     override val callSignNoun: String = defaultPlayer.callSignNoun,
-    override val imageURL: String? = defaultPlayer.imageURL
+    override val imageURL: String? = defaultPlayer.imageURL,
 ) : JsonPlayer
 
 @Serializable
@@ -41,7 +41,7 @@ data class SavePlayerInput(
     val badge: String = "${defaultPlayer.badge}",
     val callSignAdjective: String = defaultPlayer.callSignAdjective,
     val callSignNoun: String = defaultPlayer.callSignNoun,
-    val imageURL: String? = defaultPlayer.imageURL
+    val imageURL: String? = defaultPlayer.imageURL,
 ) : PartyInput
 
 @Serializable
@@ -57,7 +57,7 @@ data class JsonPlayerRecord(
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
-    override val timestamp: DateTime
+    override val timestamp: DateTime,
 ) : JsonPartyRecordInfo, JsonPlayer
 
 fun Player.toSerializable() = JsonPlayerData(
@@ -67,7 +67,7 @@ fun Player.toSerializable() = JsonPlayerData(
     badge = "$badge",
     callSignAdjective = callSignAdjective,
     callSignNoun = callSignNoun,
-    imageURL = imageURL
+    imageURL = imageURL,
 )
 
 fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
@@ -81,7 +81,7 @@ fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
     partyId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
-    timestamp = timestamp
+    timestamp = timestamp,
 )
 
 fun SavePlayerInput.toModel(): Player = Player(
@@ -91,7 +91,7 @@ fun SavePlayerInput.toModel(): Player = Player(
     email = email,
     callSignAdjective = callSignAdjective,
     callSignNoun = callSignNoun,
-    imageURL = imageURL
+    imageURL = imageURL,
 )
 
 fun JsonPlayer.toModel(): Player = Player(
@@ -101,7 +101,7 @@ fun JsonPlayer.toModel(): Player = Player(
     email = email,
     callSignAdjective = callSignAdjective,
     callSignNoun = callSignNoun,
-    imageURL = imageURL
+    imageURL = imageURL,
 )
 
 fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(
@@ -113,10 +113,10 @@ fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(
             email = email,
             callSignAdjective = callSignAdjective,
             callSignNoun = callSignNoun,
-            imageURL = imageURL
-        )
+            imageURL = imageURL,
+        ),
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
-    timestamp = timestamp
+    timestamp = timestamp,
 )

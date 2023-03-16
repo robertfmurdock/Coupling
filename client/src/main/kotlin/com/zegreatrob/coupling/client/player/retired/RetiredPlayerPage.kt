@@ -28,5 +28,5 @@ private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: Party
         query = RetiredPlayerQuery(partyId, playerId),
         toDataprops = { reload, commandFunc, (party, players, player) ->
             PlayerConfig(party, player, players, reload, commandFunc)
-        }
+        },
     ).create(key = playerId)

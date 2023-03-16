@@ -7,6 +7,6 @@ interface PairAssignmentDocumentIdDeleteSyntax {
 
     suspend fun PartyIdPairAssignmentDocumentId.deleteIt() = pairAssignmentDocumentRepository.deleteIt(
         partyId,
-        pairAssignmentDocumentId
+        pairAssignmentDocumentId,
     )
 }

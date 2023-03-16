@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 
 class CompoundPairAssignmentDocumentRepository(
     private val repository1: PairAssignmentDocumentRepository,
-    private val repository2: PairAssignmentDocumentRepository
+    private val repository2: PairAssignmentDocumentRepository,
 ) : PairAssignmentDocumentRepository by repository1 {
 
     override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) =

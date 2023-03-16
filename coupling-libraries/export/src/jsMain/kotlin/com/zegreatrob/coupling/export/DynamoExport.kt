@@ -49,15 +49,15 @@ private suspend fun DynamoRepositoryCatalog.outputParties() = partyRepository.ge
 private suspend fun collectPartyData(
     repositoryCatalog: DynamoRepositoryCatalog,
     partyId: PartyId,
-    partyRecords: List<Record<Party>>
+    partyRecords: List<Record<Party>>,
 ): Json = couplingJsonFormat.encodeToDynamic(
-    partyDataSerializable(partyId, partyRecords, repositoryCatalog)
+    partyDataSerializable(partyId, partyRecords, repositoryCatalog),
 ).unsafeCast<Json>()
 
 private suspend fun partyDataSerializable(
     partyId: PartyId,
     partyRecords: List<Record<Party>>,
-    repositoryCatalog: DynamoRepositoryCatalog
+    repositoryCatalog: DynamoRepositoryCatalog,
 ) = PartyData(
     partyId = partyId.value,
     partyRecords = partyRecords.map(Record<Party>::toSerializable),
@@ -66,7 +66,7 @@ private suspend fun partyDataSerializable(
     pairAssignmentRecords = repositoryCatalog.pairAssignmentDocumentRepository.getRecords(partyId)
         .map(PartyRecord<PairAssignmentDocument>::toSerializable),
     pinRecords = repositoryCatalog.pinRepository.getPinRecords(partyId)
-        .map(Record<PartyElement<Pin>>::toSerializable)
+        .map(Record<PartyElement<Pin>>::toSerializable),
 )
 
 @Serializable
@@ -75,7 +75,7 @@ data class PartyData(
     val partyRecords: List<JsonPartyRecord>,
     val playerRecords: List<JsonPlayerRecord>,
     val pairAssignmentRecords: List<JsonPairAssignmentDocumentRecord>,
-    val pinRecords: List<JsonPinRecord>
+    val pinRecords: List<JsonPinRecord>,
 )
 
 private fun Json.print() = println(JSON.stringify(this))
@@ -96,7 +96,7 @@ class DynamoRepositoryCatalog private constructor(
     val playerRepository: DynamoPlayerRepository,
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
     val pinRepository: DynamoPinRepository,
-    val userRepository: DynamoUserRepository
+    val userRepository: DynamoUserRepository,
 ) :
     UserIdSyntax,
     ClockSyntax {
@@ -115,7 +115,7 @@ class DynamoRepositoryCatalog private constructor(
                 playerRepository,
                 pairAssignmentDocumentRepository,
                 pinRepository,
-                userRepository
+                userRepository,
             )
         }
     }

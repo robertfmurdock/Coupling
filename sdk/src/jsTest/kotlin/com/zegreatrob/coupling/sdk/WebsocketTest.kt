@@ -41,7 +41,7 @@ class WebsocketTest {
     } verifyAnd { (_, message) ->
         message?.readText()?.toCouplingServerMessage()
             .assertIsEqualTo(
-                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null)
+                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet(), null),
             )
     } teardown { result ->
         result?.let { (session) ->
@@ -67,7 +67,7 @@ class WebsocketTest {
     } exercise {
         val twoSessions = listOf(
             couplingSocketSession(party.id),
-            couplingSocketSession(party.id)
+            couplingSocketSession(party.id),
         )
         twoSessions.forEach { it.incoming.receive() }
 
@@ -82,8 +82,8 @@ class WebsocketTest {
                 CouplingSocketMessage(
                     "Users viewing this page: 3",
                     expectedOnlinePlayerList(username).toSet(),
-                    null
-                )
+                    null,
+                ),
             )
     } teardown { result ->
         result?.let { (session) ->
@@ -108,7 +108,7 @@ class WebsocketTest {
             .readTextFrame()
             ?.toCouplingServerMessage()
             .assertIsEqualTo(
-                CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet())
+                CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet()),
             )
     } teardown { result ->
         result?.forEach { it.close() }
@@ -162,7 +162,7 @@ class WebsocketTest {
             .readTextFrame()
             ?.toCouplingServerMessage()
             .assertIsEqualTo(
-                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet())
+                CouplingSocketMessage("Users viewing this page: 1", expectedOnlinePlayerList(username).toSet()),
             )
     } teardown { openSocket ->
         openSocket?.close()
@@ -227,5 +227,5 @@ private fun String.toCouplingServerMessage(): CouplingSocketMessage =
 fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()
 
 private fun expectedOnlinePlayerList(email: String) = listOf(
-    Player(email = email, name = email.substring(0, email.indexOf("@")), id = "-1")
+    Player(email = email, name = email.substring(0, email.indexOf("@")), id = "-1"),
 )

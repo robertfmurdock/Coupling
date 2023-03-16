@@ -46,7 +46,7 @@ data class PrepareSpinContent(
     var pinSelections: List<String?>,
     var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     var setPinSelections: (List<String?>) -> Unit,
-    var onSpin: () -> Unit
+    var onSpin: () -> Unit,
 ) : DataPropsBind<PrepareSpinContent>(prepareSpinContent)
 
 val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
@@ -136,27 +136,27 @@ private fun ChildrenBuilder.pinSelectorDiv(children: ChildrenBuilder.() -> Unit)
 
 private fun ChildrenBuilder.selectAllButton(
     playerSelections: List<Pair<Player, Boolean>>,
-    setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
+    setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
 ) = batchSelectButton("All in!", playerSelections, setPlayerSelections, true)
 
 private fun ChildrenBuilder.selectNoneButton(
     playerSelections: List<Pair<Player, Boolean>>,
-    setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
+    setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
 ) = batchSelectButton("All out!", playerSelections, setPlayerSelections, false)
 
 private fun ChildrenBuilder.batchSelectButton(
     text: String,
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
-    selectionValue: Boolean
+    selectionValue: Boolean,
 ) = add(
-    CouplingButton(onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) })
+    CouplingButton(onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }),
 ) { +text }
 
 private fun ChildrenBuilder.pinSelector(
     pinSelections: List<String?>,
     setPinSelections: (List<String?>) -> Unit,
-    pins: List<Pin>
+    pins: List<Pin>,
 ) = Flipper {
     flipKey = pinSelections.generateFlipKey()
     css {
@@ -221,20 +221,20 @@ private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit, enabled
         supersize,
         pink,
         onClick = generateNewPairsFunc,
-        attrs = { disabled = !enabled }
+        attrs = { disabled = !enabled },
     ) {
         marginBottom = 10.px
         animationName = ident("pulsate")
         animationDuration = 2.s
         animationIterationCount = AnimationIterationCount.infinite
-    }
+    },
 ) {
     +"Spin!"
 }
 
 private fun ChildrenBuilder.selectablePlayerCardList(
     playerSelections: List<Pair<Player, Boolean>>,
-    setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit
+    setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
 ) = playerSelections.map { (player, isSelected) ->
     div {
         css { paddingBottom = 30.px; display = Display.inlineBlock }
@@ -246,7 +246,7 @@ private fun playerCard(
     player: Player,
     isSelected: Boolean,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
-    playerSelections: List<Pair<Player, Boolean>>
+    playerSelections: List<Pair<Player, Boolean>>,
 ) = PlayerCard(
     player,
     className = emotion.css.ClassName {
@@ -256,16 +256,16 @@ private fun playerCard(
     },
     onClick = {
         setPlayerSelections(
-            flipSelectionForPlayer(player, isSelected, playerSelections)
+            flipSelectionForPlayer(player, isSelected, playerSelections),
         )
     },
-    deselected = !isSelected
+    deselected = !isSelected,
 )
 
 private fun flipSelectionForPlayer(
     targetPlayer: Player,
     targetIsSelected: Boolean,
-    playerSelections: List<Pair<Player, Boolean>>
+    playerSelections: List<Pair<Player, Boolean>>,
 ) = playerSelections.map { pair ->
     if (pair.first == targetPlayer) {
         Pair(targetPlayer, !targetIsSelected)

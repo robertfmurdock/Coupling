@@ -12,7 +12,7 @@ import com.zegreatrob.testmints.action.SimpleExecutableAction
 data class CreatePairCandidateReportAction(
     val player: Player,
     val history: List<PairAssignmentDocument>,
-    val allPlayers: List<Player>
+    val allPlayers: List<Player>,
 ) : SimpleExecutableAction<CreatePairCandidateReportActionDispatcher, PairCandidateReport> {
     override val performFunc = link(CreatePairCandidateReportActionDispatcher::perform)
 }
@@ -43,7 +43,7 @@ interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSynt
         ?: PairCandidateReport(
             player,
             emptyList(),
-            NeverPaired
+            NeverPaired,
         )
 
     private fun Map<TimeResult, List<Player>>.findPartnersWithLongestTime() =

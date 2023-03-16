@@ -24,34 +24,34 @@ class ProposeNewPairsCommandTest {
 
     @Test
     fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = asyncSetup(object :
-            ServerProposeNewPairsCommandDispatcher {
-            override val execute = stubActionExecutor(NextPlayerAction::class)
+        ServerProposeNewPairsCommandDispatcher {
+        override val execute = stubActionExecutor(NextPlayerAction::class)
 
-            override val wheel: Wheel get() = throw NotImplementedError("Do not use")
-            override val pairAssignmentDocumentRepository get() = stubRepository
-            override val partyRepository get() = stubRepository
+        override val wheel: Wheel get() = throw NotImplementedError("Do not use")
+        override val pairAssignmentDocumentRepository get() = stubRepository
+        override val partyRepository get() = stubRepository
 
-            val stubRepository = object : PartyGet, PairAssignmentDocumentGet {
-                override suspend fun getPartyRecord(partyId: PartyId) = Record(party, modifyingUserId = "test")
-                    .also { partyId.assertIsEqualTo(party.id) }
+        val stubRepository = object : PartyGet, PairAssignmentDocumentGet {
+            override suspend fun getPartyRecord(partyId: PartyId) = Record(party, modifyingUserId = "test")
+                .also { partyId.assertIsEqualTo(party.id) }
 
-                override suspend fun getPairAssignments(partyId: PartyId) = history.map {
-                    Record(party.id.with(it), modifyingUserId = "")
-                }.also { partyId.assertIsEqualTo(party.id) }
-            }
+            override suspend fun getPairAssignments(partyId: PartyId) = history.map {
+                Record(party.id.with(it), modifyingUserId = "")
+            }.also { partyId.assertIsEqualTo(party.id) }
+        }
 
-            val players = listOf(Player(name = "John"))
-            val pins = listOf(Pin(name = "Bobby"))
-            val history = listOf(stubPairAssignmentDoc())
-            val party = Party(PartyId("Party Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
-            override val currentPartyId = party.id
-            val expectedPairAssignmentDocument = stubPairAssignmentDoc()
+        val players = listOf(Player(name = "John"))
+        val pins = listOf(Pin(name = "Bobby"))
+        val history = listOf(stubPairAssignmentDoc())
+        val party = Party(PartyId("Party Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)
+        override val currentPartyId = party.id
+        val expectedPairAssignmentDocument = stubPairAssignmentDoc()
 
-            val spy = SpyData<RunGameAction, PairAssignmentDocument>()
-                .apply { spyReturnValues.add(expectedPairAssignmentDocument) }
+        val spy = SpyData<RunGameAction, PairAssignmentDocument>()
+            .apply { spyReturnValues.add(expectedPairAssignmentDocument) }
 
-            override fun perform(action: RunGameAction) = spy.spyFunction(action)
-        }) exercise {
+        override fun perform(action: RunGameAction) = spy.spyFunction(action)
+    }) exercise {
         perform(ProposeNewPairsCommand(players, pins))
     } verifySuccess { result ->
         result.assertIsEqualTo(expectedPairAssignmentDocument)

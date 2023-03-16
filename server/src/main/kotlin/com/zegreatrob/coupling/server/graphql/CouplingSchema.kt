@@ -32,25 +32,25 @@ private val entityWithId: Resolver = { _, args, _, _ -> json("id" to args["id"])
 fun couplingSchema() = makeExecutableSchema(
     json(
         "typeDefs" to "${js("require('schema.graphql')").default}",
-        "resolvers" to couplingResolvers()
-    )
+        "resolvers" to couplingResolvers(),
+    ),
 )
 
 fun prereleaseSchema() = makeExecutableSchema(
     json(
         "typeDefs" to "${js("require('prerelease-schema.graphql')").default}",
-        "resolvers" to prereleaseResolvers()
-    )
+        "resolvers" to prereleaseResolvers(),
+    ),
 )
 
 private fun prereleaseResolvers() = json(
     "Mutation" to json(
         "saveBoost" to saveBoostResolver,
-        "deleteBoost" to deleteBoostResolver
+        "deleteBoost" to deleteBoostResolver,
     ),
     "UserRecord" to json(
-        "boost" to boostResolver
-    )
+        "boost" to boostResolver,
+    ),
 )
 
 fun unifiedSchema() = addPrereleaseSchema(couplingSchema())
@@ -70,7 +70,7 @@ fun couplingResolvers() = json(
     "Query" to json(
         "user" to userResolve,
         "partyList" to partyListResolve,
-        "partyData" to entityWithId
+        "partyData" to entityWithId,
     ),
     "Mutation" to json(
         "spin" to spinResolver,
@@ -81,7 +81,7 @@ fun couplingResolvers() = json(
         "savePlayer" to savePlayerResolver,
         "deletePlayer" to deletePlayerResolver,
         "savePairAssignments" to savePairsResolver,
-        "deletePairAssignments" to deletePairsResolver
+        "deletePairAssignments" to deletePairsResolver,
     ),
     "PartyData" to json(
         "party" to partyResolve,
@@ -89,6 +89,6 @@ fun couplingResolvers() = json(
         "playerList" to playerListResolve,
         "retiredPlayers" to retiredPlayerListResolve,
         "pairAssignmentDocumentList" to pairAssignmentListResolve,
-        "currentPairAssignmentDocument" to currentPairAssignmentResolve
-    )
+        "currentPairAssignmentDocument" to currentPairAssignmentResolve,
+    ),
 )

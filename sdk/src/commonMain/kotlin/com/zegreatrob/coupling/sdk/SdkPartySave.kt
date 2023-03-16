@@ -20,6 +20,6 @@ interface SdkPartySave : PartySave, GqlSyntax, GraphQueries {
         badgesEnabled = badgesEnabled,
         callSignsEnabled = callSignsEnabled,
         animationsEnabled = animationEnabled,
-        animationSpeed = animationSpeed
+        animationSpeed = animationSpeed,
     )
 }

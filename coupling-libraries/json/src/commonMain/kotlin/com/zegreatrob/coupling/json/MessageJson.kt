@@ -13,7 +13,7 @@ sealed class JsonMessage
 data class JsonCouplingSocketMessage(
     var text: String,
     var players: Set<JsonPlayerData>,
-    val currentPairAssignments: JsonPairAssignmentDocument? = null
+    val currentPairAssignments: JsonPairAssignmentDocument? = null,
 ) : JsonMessage()
 
 @Serializable
@@ -23,7 +23,7 @@ fun Message.toSerializable() = when (this) {
     is CouplingSocketMessage -> JsonCouplingSocketMessage(
         text = text,
         players = players.map(Player::toSerializable).toSet(),
-        currentPairAssignments = currentPairAssignments?.toSerializable()
+        currentPairAssignments = currentPairAssignments?.toSerializable(),
     )
     is PairAssignmentAdjustmentMessage -> JsonPairAssignmentAdjustmentMessage(currentPairAssignments.toSerializable())
 }
@@ -34,11 +34,11 @@ fun JsonMessage.toModel() = when (this) {
 }
 
 private fun JsonPairAssignmentAdjustmentMessage.toModel() = PairAssignmentAdjustmentMessage(
-    currentPairAssignments.toModel()
+    currentPairAssignments.toModel(),
 )
 
 fun JsonCouplingSocketMessage.toModel() = CouplingSocketMessage(
     text = text,
     players = players.map { it.toModel() }.toSet(),
-    currentPairAssignments = currentPairAssignments?.toModel()
+    currentPairAssignments = currentPairAssignments?.toModel(),
 )

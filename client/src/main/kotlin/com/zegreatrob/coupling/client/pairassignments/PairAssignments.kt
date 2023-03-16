@@ -31,7 +31,7 @@ data class PairAssignments(
     val setPairs: (PairAssignmentDocument) -> Unit,
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
     val message: CouplingSocketMessage,
-    val allowSave: Boolean
+    val allowSave: Boolean,
 ) : DataPropsBind<PairAssignments>(pairAssignments)
 
 val pairAssignmentsClassName = ClassName { pairAssignmentStyles() }
@@ -77,11 +77,11 @@ private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) 
             players = pair.players.map { pinnedPlayer ->
                 pinnedPlayer.copy(
                     player = players.firstOrNull { p -> p.id == pinnedPlayer.player.id }
-                        ?: pinnedPlayer.player
+                        ?: pinnedPlayer.player,
                 )
-            }
+            },
         )
-    }
+    },
 )
 
 private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignmentDocument?) =

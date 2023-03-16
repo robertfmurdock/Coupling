@@ -44,7 +44,7 @@ class PairAssignmentsPageE2ETest {
             val party by lazy {
                 Party(
                     PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
-                    name = "${randomInt()}-PairAssignmentsPageE2ETest"
+                    name = "${randomInt()}-PairAssignmentsPageE2ETest",
                 )
             }
 
@@ -54,7 +54,7 @@ class PairAssignmentsPageE2ETest {
                         id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
                         name = "player$it",
                         callSignAdjective = "nimble",
-                        callSignNoun = "thimble"
+                        callSignNoun = "thimble",
                     )
                 }
             }
@@ -145,7 +145,7 @@ class PairAssignmentsPageE2ETest {
             val party by lazy {
                 Party(
                     PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
-                    name = "${randomInt()}-PairAssignmentsPageE2ETest"
+                    name = "${randomInt()}-PairAssignmentsPageE2ETest",
                 )
             }
 
@@ -155,7 +155,7 @@ class PairAssignmentsPageE2ETest {
                         id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
                         name = "player$it",
                         callSignAdjective = "nimble",
-                        callSignNoun = "thimble"
+                        callSignNoun = "thimble",
                     )
                 }
             }
@@ -165,8 +165,8 @@ class PairAssignmentsPageE2ETest {
                     date = DateTime(year = 2015, month = 5, day = 30),
                     pairs = listOf(
                         pairOf(players[0], players[2]).withPins(emptySet()),
-                        pairOf(players[4]).withPins(emptySet())
-                    )
+                        pairOf(players[4]).withPins(emptySet()),
+                    ),
                 )
             }
 

@@ -11,7 +11,7 @@ interface SharedContext<R> {
 data class SharedContextData<R>(
     override val repository: R,
     override val clock: MagicClock,
-    override val user: User
+    override val user: User,
 ) : SharedContext<R>
 
 fun <C : ContextMint<R>, R> C.bind(): suspend (SharedContext<R>) -> C =

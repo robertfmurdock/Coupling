@@ -27,7 +27,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
                     CouplingConnection(
                         it["id"].toString(),
                         it["tribeId"].toString().let(::PartyId),
-                        player
+                        player,
                     )
                 }
         }
@@ -35,7 +35,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
 
     override suspend fun save(connection: CouplingConnection) = connection.connectionId.logAsync("saveConnection") {
         performPutItem(
-            connection.toDynamoJson()
+            connection.toDynamoJson(),
         )
     }
 
@@ -43,8 +43,8 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         performDeleteItem(
             json(
                 "entityType" to ENTITY_TYPE,
-                "tribeId+id" to "${partyId.value}+$connectionId"
-            )
+                "tribeId+id" to "${partyId.value}+$connectionId",
+            ),
         )
     }
 
@@ -52,22 +52,22 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":entityType" to ENTITY_TYPE,
-            ":tribeId" to partyId.value
+            ":tribeId" to partyId.value,
         ),
         "ExpressionAttributeNames" to json(
-            "#sortKey" to "tribeId+id"
+            "#sortKey" to "tribeId+id",
         ),
-        "KeyConditionExpression" to "entityType = :entityType and begins_with(#sortKey, :tribeId)"
+        "KeyConditionExpression" to "entityType = :entityType and begins_with(#sortKey, :tribeId)",
     )
 
     private fun queryParams(connectionId: String) = json(
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
             ":entityType" to "USER_CONNECTION",
-            ":id" to connectionId
+            ":id" to connectionId,
         ),
         "KeyConditionExpression" to "entityType = :entityType",
-        "FilterExpression" to "id = :id"
+        "FilterExpression" to "id = :id",
     )
 
     companion object :
@@ -94,24 +94,24 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
                 "KeySchema" to arrayOf(
                     json(
                         "AttributeName" to "entityType",
-                        "KeyType" to "HASH"
+                        "KeyType" to "HASH",
                     ),
                     json(
                         "AttributeName" to "tribeId+id",
-                        "KeyType" to "RANGE"
-                    )
+                        "KeyType" to "RANGE",
+                    ),
                 ),
                 "AttributeDefinitions" to arrayOf(
                     json(
                         "AttributeName" to "entityType",
-                        "AttributeType" to "S"
+                        "AttributeType" to "S",
                     ),
                     json(
                         "AttributeName" to "tribeId+id",
-                        "AttributeType" to "S"
-                    )
+                        "AttributeType" to "S",
+                    ),
                 ),
-                "BillingMode" to "PAY_PER_REQUEST"
+                "BillingMode" to "PAY_PER_REQUEST",
             )
     }
 
@@ -120,6 +120,6 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
         "tribeId" to partyId.value,
         "id" to connectionId,
         "tribeId+id" to "${partyId.value}+$connectionId",
-        "userPlayer" to userPlayer.toDynamoJson()
+        "userPlayer" to userPlayer.toDynamoJson(),
     )
 }

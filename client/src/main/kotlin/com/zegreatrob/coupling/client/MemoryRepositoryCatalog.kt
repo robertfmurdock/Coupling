@@ -24,7 +24,7 @@ class MemoryRepositoryCatalog private constructor(
     override val partyRepository: PartyRepository,
     override val playerRepository: PlayerEmailRepository,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
-    override val pinRepository: PinRepository
+    override val pinRepository: PinRepository,
 ) :
     BarebonesSdk,
     UserIdSyntax,
@@ -36,7 +36,7 @@ class MemoryRepositoryCatalog private constructor(
         MemoryPartyRepository(userEmail, clock, backend.party),
         MemoryPlayerRepository(userEmail, clock, backend.player),
         MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
-        MemoryPinRepository(userEmail, clock, backend.pin)
+        MemoryPinRepository(userEmail, clock, backend.pin),
     )
 
     override suspend fun perform(query: UserQuery) = User(userId, "???", setOf(PartyId("Kind of fake")))

@@ -44,7 +44,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val altUser = stubUser()
             }
-        }
+        },
     ) {
         clock.currentTime = initialSaveTime
         repository.save(user)
@@ -66,10 +66,10 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
             object : Context by context {
                 val records = listOf(
                     Record(stubUser(), uuidString(), false, DateTime.now().minus(3.months)),
-                    Record(stubUser(), uuidString(), true, DateTime.now().minus(2.years))
+                    Record(stubUser(), uuidString(), true, DateTime.now().minus(2.years)),
                 )
             }
-        }
+        },
     ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verify {
@@ -86,7 +86,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                 override val userId = uuidString()
                 val record = Record(stubUser(), uuidString(), false, DateTime.now().minus(3.months))
             }
-        }
+        },
     ) {
         DynamoUserRepository.performPutItem(
             record.recordJson().add(
@@ -95,9 +95,9 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                     "email" to record.data.email,
                     "authorizedTribeIds" to record.data.authorizedPartyIds.map { it.value }
                         .plus(null)
-                        .toTypedArray()
-                )
-            )
+                        .toTypedArray(),
+                ),
+            ),
         )
     } exercise {
         repository.getUserRecords()

@@ -20,6 +20,6 @@ interface SdkPlayerSave : PlayerSave, GqlSyntax, GraphQueries {
             badge = "${element.badge}",
             callSignAdjective = element.callSignAdjective,
             callSignNoun = element.callSignNoun,
-            imageURL = element.imageURL
+            imageURL = element.imageURL,
         )
 }

@@ -13,7 +13,7 @@ fun HTMLElement.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: B
         json(
             "maxSize" to maxFontHeight,
             "minSize" to minFontHeight,
-            "multiLine" to multiLine
-        )
+            "multiLine" to multiLine,
+        ),
     ).unsafeCast<Unit>()
 }

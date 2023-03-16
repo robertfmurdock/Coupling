@@ -14,7 +14,7 @@ object RetiredPlayersPage : BrowserSyntax {
 
     suspend fun waitForPage() {
         WebdriverBrowser.waitUntil(
-            { TestingLibraryBrowser.getByText("Retired Players").isDisplayed() }
+            { TestingLibraryBrowser.getByText("Retired Players").isDisplayed() },
         )
     }
 }

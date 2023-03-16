@@ -7,6 +7,6 @@ interface SdkPartyDelete : PartyDelete, GqlSyntax, GraphQueries {
     override suspend fun deleteIt(partyId: PartyId): Boolean = doQuery(
         mutations.deleteParty,
         mapOf("partyId" to partyId.value),
-        "deleteParty"
+        "deleteParty",
     ) { it: Boolean? -> it } ?: false
 }

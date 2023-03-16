@@ -116,7 +116,7 @@ val blue: PropertiesBuilder.() -> Unit = {
 val white: PropertiesBuilder.() -> Unit = {
     buttonColorsWithFocus(
         backgroundColor = Color("#f3ffff"),
-        color = Color("#3e474c")
+        color = Color("#3e474c"),
     )
     textShadow = None.none
     ":hover" {
@@ -126,7 +126,7 @@ val white: PropertiesBuilder.() -> Unit = {
 val yellow: PropertiesBuilder.() -> Unit = {
     buttonColorsWithFocus(
         backgroundColor = Color("#eac435"),
-        color = Color("#3e474c")
+        color = Color("#3e474c"),
     )
     textShadow = None.none
     ":hover" {
@@ -158,7 +158,7 @@ data class CouplingButton(
     val className: ClassName = ClassName(""),
     val onClick: () -> Unit = {},
     val attrs: ButtonHTMLAttributes<*>.() -> Unit = {},
-    val css: PropertiesBuilder.() -> Unit = {}
+    val css: PropertiesBuilder.() -> Unit = {},
 ) : DataPropsBind<CouplingButton>(couplingButton)
 
 val couplingButton = tmFC<CouplingButton> { props ->

@@ -34,7 +34,7 @@ val returnToCouplingButton = FC<Props> {
                 animationName = ident("pulsate")
                 animationDuration = 0.75.s
                 animationIterationCount = AnimationIterationCount.infinite
-            }
+            },
         ) {
             couplingLogo()
         }
@@ -68,7 +68,7 @@ private val couplingLogo = FC<Props> {
                     backgroundImage = radialGradient(
                         NamedColor.yellow,
                         Color("#ffff003d"),
-                        Color("#e22092")
+                        Color("#e22092"),
                     )
                     borderRadius = 75.px
                 }

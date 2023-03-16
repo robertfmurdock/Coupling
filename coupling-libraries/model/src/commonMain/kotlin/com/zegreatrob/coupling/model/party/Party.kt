@@ -11,7 +11,7 @@ data class Party(
     val callSignsEnabled: Boolean = false,
     val animationEnabled: Boolean = true,
     val animationSpeed: Double = 1.0,
-    val imageURL: String? = null
+    val imageURL: String? = null,
 )
 
 val defaultParty = Party(PartyId("DEFAULT"))

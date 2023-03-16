@@ -20,32 +20,32 @@ interface DynamoPairAssignmentDocumentJsonMapping :
         "id" to id.value,
         "date" to "${date.unixMillisLong}",
         "pairs" to pairs.map { it.toDynamoJson() }
-            .toTypedArray()
+            .toTypedArray(),
     )
 
     fun Record<PartyElement<PairAssignmentDocument>>.asDynamoJson() = recordJson()
         .add(
             json(
                 "tribeId" to data.partyId.value,
-                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id.value}"
-            )
+                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id.value}",
+            ),
         )
         .add(data.element.toDynamoJson())
 
     private fun PinnedCouplingPair.toDynamoJson() = json(
         "pins" to pins.map { it.toDynamoJson() }.toTypedArray(),
-        "players" to players.map { it.toDynamoJson() }.toTypedArray()
+        "players" to players.map { it.toDynamoJson() }.toTypedArray(),
     )
 
     private fun PinnedPlayer.toDynamoJson() = json(
         "pins" to pins.map { it.toDynamoJson() }.toTypedArray(),
-        "player" to player.toDynamoJson()
+        "player" to player.toDynamoJson(),
     )
 
     fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
         id = PairAssignmentDocumentId(getDynamoStringValue("id") ?: ""),
         date = getDynamoStringValue("date")?.toLong()?.let { DateTime(it) } ?: DateTime.EPOCH,
-        pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) } ?: emptyList()
+        pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) } ?: emptyList(),
     )
 
     private fun toPinnedCouplingPair(pair: Json) = PinnedCouplingPair(
@@ -54,13 +54,13 @@ interface DynamoPairAssignmentDocumentJsonMapping :
         pins = pair.getDynamoListValue("pins")
             ?.map { pinJson -> pinJson.toPin() }
             ?.toSet()
-            ?: emptySet()
+            ?: emptySet(),
     )
 
     private fun Json.toPinnedPlayer() = this["player"].unsafeCast<Json>().toPlayer()?.let {
         PinnedPlayer(
             player = it,
-            pins = emptyList()
+            pins = emptyList(),
         )
     }
 }

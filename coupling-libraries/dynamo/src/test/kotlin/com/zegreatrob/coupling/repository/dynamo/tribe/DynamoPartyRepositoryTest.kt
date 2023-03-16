@@ -41,7 +41,7 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
             val updatedTribe = tribe.copy(name = "CLONE!")
             val updatedSaveTime = initialSaveTime.plus(2.hours)
             val altTribe = stubParty()
-        }.bind()
+        }.bind(),
     ) exercise {
         clock.currentTime = initialSaveTime
         repository.save(tribe)
@@ -65,9 +65,9 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
         object : TribeMint() {
             val records = listOf(
                 Record(stubParty(), uuidString(), false, DateTime.now().minus(3.months)),
-                Record(stubParty(), uuidString(), true, DateTime.now().minus(2.years))
+                Record(stubParty(), uuidString(), true, DateTime.now().minus(2.years)),
             )
-        }.bind()
+        }.bind(),
     ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verifyAnd {

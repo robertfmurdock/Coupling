@@ -23,7 +23,7 @@ class LocalStorageRepositoryBackend {
     val player by localBackend(List<PartyRecord<Player>>::toSerializableString, String::toPlayerRecords)
     val pairAssignments by localBackend(
         List<PartyRecord<PairAssignmentDocument>>::toSerializableString,
-        String::toPairAssignmentRecords
+        String::toPairAssignmentRecords,
     )
     val pin by localBackend(List<PartyRecord<Pin>>::toSerializableString, String::toPinRecords)
     val user by localBackend(List<Record<User>>::toSerializableString, String::toUserRecords)

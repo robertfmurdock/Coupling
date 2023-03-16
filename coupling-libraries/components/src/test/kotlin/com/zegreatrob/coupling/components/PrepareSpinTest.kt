@@ -41,7 +41,7 @@ class PrepareSpinTest {
         val firstPin = pins[0]
         val wrapper = render(
             PrepareSpin(party, players, null, pins, StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     }) exercise {
         user.click(
@@ -49,7 +49,7 @@ class PrepareSpinTest {
                 ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
                 ?.asList()
                 ?.map { it as? HTMLElement }
-                ?.firstOrNull()
+                ?.firstOrNull(),
         ).await()
     } verify {
         waitFor {
@@ -71,7 +71,7 @@ class PrepareSpinTest {
 
         val render = render(
             PrepareSpin(party, players, null, pins, StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     }) {
         user.click(
@@ -79,7 +79,7 @@ class PrepareSpinTest {
                 ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
                 ?.asList()
                 ?.map { it as? HTMLElement }
-                ?.firstOrNull()
+                ?.firstOrNull(),
         ).await()
         waitFor {
             render.container.querySelector(".$deselectedPinsClass")
@@ -93,7 +93,7 @@ class PrepareSpinTest {
                 ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
                 ?.asList()
                 ?.map { it as? HTMLElement }
-                ?.firstOrNull()
+                ?.firstOrNull(),
         ).await()
     } verify {
         waitFor {
@@ -114,7 +114,7 @@ class PrepareSpinTest {
     }) exercise {
         render(
             PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify { result ->
         result.container.querySelectorAll("[data-player-id]")
@@ -138,12 +138,12 @@ class PrepareSpinTest {
             DateTime.now(),
             listOf(
                 pairOf(players[0], players[1]).withPins(emptySet()),
-                pairOf(players[2]).withPins(emptySet())
-            )
+                pairOf(players[2]).withPins(emptySet()),
+            ),
         )
         val result = render(
             PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     }) exercise {
         result.container.querySelectorAll("[data-player-id]")
@@ -169,7 +169,7 @@ class PrepareSpinTest {
         val currentPairs = null
         val context = render(
             PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     }) exercise {
         user.click(screen.getByText("All in!"))
@@ -190,11 +190,11 @@ class PrepareSpinTest {
         val currentPairs = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),
-            pairs = players.map { pairOf(it).withPins(emptySet()) }
+            pairs = players.map { pairOf(it).withPins(emptySet()) },
         )
         val context = render(
             PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     }) {
     } exercise {

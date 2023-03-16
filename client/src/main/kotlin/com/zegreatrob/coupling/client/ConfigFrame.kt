@@ -18,8 +18,8 @@ val ConfigFrame = FC<ConfigFrameProps> { props ->
         PageFrame(
             className = props.className,
             borderColor = props.borderColor ?: NamedColor.black,
-            backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)")
-        )
+            backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)"),
+        ),
     ) {
         +props.children
     }

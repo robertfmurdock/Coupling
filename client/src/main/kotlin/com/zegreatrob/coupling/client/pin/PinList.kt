@@ -44,9 +44,9 @@ val pinList = tmFC<PinList> { (party, pins) ->
                     PinCard(
                         partyId = party.id,
                         pin = it,
-                        shouldLink = true
+                        shouldLink = true,
                     ),
-                    key = it.id
+                    key = it.id,
                 )
             }
         }

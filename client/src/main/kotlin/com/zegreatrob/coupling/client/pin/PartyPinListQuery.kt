@@ -21,7 +21,7 @@ interface PartyPinListQueryDispatcher : PartyIdGetSyntax, PartyPinsSyntax {
     private suspend fun PartyId.getData() = coroutineScope {
         await(
             async { get() },
-            async { getPins() }
+            async { getPins() },
         )
     }.let { (party, pins) -> if (party == null) null else party to pins }
 }

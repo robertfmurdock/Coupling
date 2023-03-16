@@ -43,8 +43,8 @@ class PairAssignmentsTest {
             date = DateTime.now(),
             pairs = listOf(
                 pairOf(Player(id = "0", name = "Tom"), Player(id = "z", name = "Jerry")),
-                pairOf(fellow, guy)
-            ).withPins()
+                pairOf(fellow, guy),
+            ).withPins(),
         )
     }) exercise {
         render(
@@ -55,9 +55,9 @@ class PairAssignmentsTest {
                 { pairAssignments = it },
                 controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptySet(), null),
-                allowSave = false
+                allowSave = false,
             ).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify {
         screen.getByText("Unpaired players")
@@ -68,7 +68,7 @@ class PairAssignmentsTest {
             ?.map { it.getAttribute("data-player-id") }
             .assertIsEqualTo(
                 listOf(rigby, nerd, pantsmaster)
-                    .map(Player::id)
+                    .map(Player::id),
             )
     }
 
@@ -79,7 +79,7 @@ class PairAssignmentsTest {
             Player(id = "2", name = "Guy"),
             Player(id = "3", name = "fellow"),
             Player(id = "4", name = "nerd"),
-            Player(id = "5", name = "pantsmaster")
+            Player(id = "5", name = "pantsmaster"),
         )
     }) exercise {
         render(
@@ -90,9 +90,9 @@ class PairAssignmentsTest {
                 {},
                 controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptySet(), null),
-                allowSave = false
+                allowSave = false,
             ).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify {
         screen.getByText("Unpaired players")

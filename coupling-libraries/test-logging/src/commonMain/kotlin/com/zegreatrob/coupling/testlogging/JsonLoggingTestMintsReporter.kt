@@ -10,7 +10,7 @@ class JsonLoggingTestMintsReporter private constructor() : MintReporter {
     override fun exerciseStart(context: Any) = logger.info {
         mapOf(
             "message" to "exerciseStart",
-            "context" to context.toString()
+            "context" to context.toString(),
         )
     }
 
@@ -18,7 +18,7 @@ class JsonLoggingTestMintsReporter private constructor() : MintReporter {
     override fun verifyStart(payload: Any?) = logger.info {
         mapOf(
             "message" to "verifyStart",
-            "payload" to payload.toString()
+            "payload" to payload.toString(),
         )
     }
 

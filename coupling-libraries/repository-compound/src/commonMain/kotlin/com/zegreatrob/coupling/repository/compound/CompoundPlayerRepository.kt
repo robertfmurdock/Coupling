@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 
 class CompoundPlayerRepository(
     private val repository1: PlayerEmailRepository,
-    private val repository2: PlayerEmailRepository
+    private val repository2: PlayerEmailRepository,
 ) : PlayerEmailRepository by repository1 {
 
     override suspend fun save(partyPlayer: PartyElement<Player>) = arrayOf(repository1, repository2).forEach {

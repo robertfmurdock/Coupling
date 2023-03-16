@@ -51,7 +51,7 @@ interface ClientNewPairAssignmentsCommandDispatcher :
         await(
             async { partyId.get() },
             async { partyId.getPlayerList() },
-            async { partyId.getPins() }
+            async { partyId.getPins() },
         )
     }
 }

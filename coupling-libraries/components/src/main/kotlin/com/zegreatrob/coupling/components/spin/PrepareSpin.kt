@@ -19,7 +19,7 @@ data class PrepareSpin(
     val players: List<Player>,
     val currentPairsDoc: PairAssignmentDocument?,
     val pins: List<Pin>,
-    val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>
+    val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>,
 ) : DataPropsBind<PrepareSpin>(prepareSpin)
 
 val prepareSpin = tmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, dispatchFunc) ->
@@ -39,8 +39,8 @@ val prepareSpin = tmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, di
                 pinSelections,
                 { playerSelections = it },
                 { pinSelections = it },
-                onSpin
-            )
+                onSpin,
+            ),
         )
     }
 }
@@ -64,8 +64,8 @@ private fun onSpin(
     party: Party,
     playerSelections: List<Pair<Player, Boolean>>,
     pinSelections: List<String?>,
-    setRedirectUrl: (String) -> Unit
+    setRedirectUrl: (String) -> Unit,
 ) = dispatchFunc(
     { NewPairAssignmentsCommand(party.id, playerSelections.playerIds(), pinSelections.filterNotNull()) },
-    { setRedirectUrl(party.newPairAssignmentsPath()) }
+    { setRedirectUrl(party.newPairAssignmentsPath()) },
 )

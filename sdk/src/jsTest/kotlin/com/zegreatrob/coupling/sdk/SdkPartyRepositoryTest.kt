@@ -37,8 +37,8 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
             val playerMatchingSdkUser = stubPlayer().copy(email = context.user.email)
         }
     }, sharedTeardown = {
-            it.repository.deleteIt(it.party.id)
-        })
+        it.repository.deleteIt(it.party.id)
+    })
 
     @Test
     fun getWillReturnAnyPartyThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
@@ -88,7 +88,7 @@ class SdkPartyRepositoryTest : PartyRepositoryValidator<SdkPartyRepository> {
     override fun saveWillIncludeModificationInformation() = repositorySetup.with(
         object : SdkMint() {
             val party = stubParty()
-        }.bind()
+        }.bind(),
     ) {
         repository.save(party)
     } exercise {

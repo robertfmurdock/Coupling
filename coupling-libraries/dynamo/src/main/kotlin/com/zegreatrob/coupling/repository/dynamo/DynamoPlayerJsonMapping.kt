@@ -14,8 +14,8 @@ interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJso
         .add(
             json(
                 "tribeId" to data.partyId.value,
-                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.player.id}"
-            )
+                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.player.id}",
+            ),
         )
         .add(data.player.toDynamoJson())
 
@@ -26,7 +26,7 @@ interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJso
         "badge" to badge,
         "callSignAdjective" to callSignAdjective,
         "callSignNoun" to callSignNoun,
-        "imageURL" to imageURL
+        "imageURL" to imageURL,
     )
 
     fun Json.toPlayer() = getDynamoStringValue("id")?.let {
@@ -37,7 +37,7 @@ interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJso
             badge = getDynamoNumberValue("badge")?.toInt() ?: defaultPlayer.badge,
             callSignAdjective = getDynamoStringValue("callSignAdjective") ?: "",
             callSignNoun = getDynamoStringValue("callSignNoun") ?: "",
-            imageURL = getDynamoStringValue("imageURL")
+            imageURL = getDynamoStringValue("imageURL"),
         )
     }
 }

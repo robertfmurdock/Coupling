@@ -20,6 +20,6 @@ interface DeletePairAssignmentDocumentCommandDispatcher : PairAssignmentDocument
 
     private fun DeletePairAssignmentDocumentCommand.partyIdPairAssignmentId() = PartyIdPairAssignmentDocumentId(
         currentPartyId,
-        pairAssignmentDocumentId
+        pairAssignmentDocumentId,
     )
 }

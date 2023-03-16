@@ -11,6 +11,6 @@ val CurrentPairsPage = partyPageFunction { props, partyId ->
         query = PartyCurrentDataQuery(partyId),
         toDataprops = { reload, dispatchFunc, (party, players, history) ->
             SocketedPairAssignments(party, players, history, Controls(dispatchFunc, reload), false)
-        }
+        },
     ).create(key = partyId.value)
 }

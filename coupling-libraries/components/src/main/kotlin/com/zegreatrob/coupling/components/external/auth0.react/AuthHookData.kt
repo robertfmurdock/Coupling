@@ -8,5 +8,5 @@ data class AuthHookData(
     val loginWithRedirect: () -> Unit,
     val getIdTokenClaims: suspend () -> String,
     val logout: (Auth0LogoutStructure) -> Unit,
-    val getAccessTokenSilently: suspend () -> String
+    val getAccessTokenSilently: suspend () -> String,
 )

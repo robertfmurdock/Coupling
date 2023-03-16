@@ -8,31 +8,31 @@ fun <T> useDrag(itemType: String, itemId: Any): DragDropValueContent<T> {
     val results = useDragFunc(
         json(
             "type" to itemType,
-            "item" to json("id" to itemId)
-        )
+            "item" to json("id" to itemId),
+        ),
     ).unsafeCast<Array<dynamic>>()
 
     return DragDropValueContent(
         results[0].unsafeCast<T>(),
-        results[1].unsafeCast<(Any) -> Any>()
+        results[1].unsafeCast<(Any) -> Any>(),
     )
 }
 
 fun <T> useDrop(
     acceptItemType: String,
     drop: (Json) -> Unit,
-    collect: (DragSourceMonitor) -> T
+    collect: (DragSourceMonitor) -> T,
 ): DragDropValueContent<T> {
     val results = useDropFunc(
         json(
             "accept" to acceptItemType,
             "drop" to drop,
-            "collect" to collect
-        )
+            "collect" to collect,
+        ),
     ).unsafeCast<Array<dynamic>>()
 
     return DragDropValueContent(
         results[0].unsafeCast<T>(),
-        results[1].unsafeCast<(Any) -> Any>()
+        results[1].unsafeCast<(Any) -> Any>(),
     )
 }

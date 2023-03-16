@@ -16,7 +16,7 @@ val DemoPage = FC<PageProps> { props ->
         add(
             FrameRunner(demoSequence, 1.0) { state: DemoAnimationState ->
                 add(DemoPageFrame(state))
-            }
+            },
         )
     }
 }

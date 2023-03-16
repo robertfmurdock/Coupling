@@ -13,6 +13,6 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
         query = PartyPlayerQuery(partyId, props.playerId),
         toDataprops = { reload, commandFunc, (party, players, player) ->
             PlayerConfig(party, player, players, reload, commandFunc)
-        }
+        },
     ).create(key = "${partyId.value}-${props.playerId}")
 }

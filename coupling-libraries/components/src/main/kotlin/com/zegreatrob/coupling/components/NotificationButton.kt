@@ -84,9 +84,9 @@ private fun popupRecentInfo(seenNotification: Boolean, recentInfoMd: String, onC
     contentStyle = json(
         "borderRadius" to "30px",
         "borderColor" to "black",
-        "borderWidth" to "1px"
+        "borderWidth" to "1px",
     ),
-    onClose = onClose
+    onClose = onClose,
 )
 
 private fun notificationButton(open: Boolean, seenNotification: Boolean) = div.create {

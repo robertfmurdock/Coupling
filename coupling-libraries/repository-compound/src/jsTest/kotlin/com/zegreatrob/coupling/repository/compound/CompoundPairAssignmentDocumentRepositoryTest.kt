@@ -36,7 +36,7 @@ class CompoundPairAssignmentDocumentRepositoryTest :
         compoundRepositorySetup.extend<PartyContext<CompoundPairAssignmentDocumentRepository>>(
             sharedSetup = {
                 PartyContextData(it.compoundRepo, it.partyId, it.clock, it.stubUser)
-            }
+            },
         )
 
     @Test

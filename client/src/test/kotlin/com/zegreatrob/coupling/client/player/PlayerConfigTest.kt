@@ -33,7 +33,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc())
                 .create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify { wrapper ->
         wrapper.baseElement
@@ -50,7 +50,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc())
                 .create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify { wrapper ->
         wrapper.baseElement
@@ -69,7 +69,7 @@ class PlayerConfigTest {
     }) {
         render(
             PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatcher.func()).create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } exercise {
         actor.type(screen.getByLabelText("Name"), "nonsense").await()
@@ -79,7 +79,7 @@ class PlayerConfigTest {
         waitFor {
             stubDispatcher.commandsDispatched<SavePlayerCommand>()
                 .assertIsEqualTo(
-                    listOf(SavePlayerCommand(party.id, player.copy(name = "nonsense")))
+                    listOf(SavePlayerCommand(party.id, player.copy(name = "nonsense"))),
                 )
             reloaderSpy.callCount.assertIsEqualTo(1)
         }.await()
@@ -99,7 +99,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFuncs)
                 .create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } exercise {
         actor.click(screen.getByText("Retire")).await()
@@ -108,10 +108,10 @@ class PlayerConfigTest {
         waitFor {
             stubDispatcher.commandsDispatched<DeletePlayerCommand>()
                 .assertIsEqualTo(
-                    listOf(DeletePlayerCommand(party.id, player.id))
+                    listOf(DeletePlayerCommand(party.id, player.id)),
                 )
             pathSetterSpy.spyReceivedValues.contains(
-                "/${party.id.value}/pairAssignments/current/"
+                "/${party.id.value}/pairAssignments/current/",
             )
         }.await()
     }
@@ -129,7 +129,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFunctions)
                 .create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } exercise {
         actor.click(screen.getByText("Retire")).await()
@@ -146,7 +146,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())
                 .create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } exercise {
         actor.type(screen.getByLabelText("Name"), "differentName").await()
@@ -163,7 +163,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())
                 .create(),
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } verify { _ ->
 //        wrapper.find(PromptComponent).props().`when`

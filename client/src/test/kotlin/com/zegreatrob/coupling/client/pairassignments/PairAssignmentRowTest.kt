@@ -37,7 +37,7 @@ class PairAssignmentRowTest {
     }) {
         render(
             PairAssignmentRow(party, document, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } exercise {
         actor.click(screen.getByText("DELETE")).await()
@@ -57,14 +57,14 @@ class PairAssignmentRowTest {
         val document = PairAssignmentDocument(
             PairAssignmentDocumentId("RealId"),
             DateTime.now(),
-            emptyList()
+            emptyList(),
         )
         val stubDispatcher = StubDispatcher()
         val actor = userEvent.setup()
     }) {
         render(
             PairAssignmentRow(party, document, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
-            json("wrapper" to MemoryRouter)
+            json("wrapper" to MemoryRouter),
         )
     } exercise {
         actor.click(screen.getByText("DELETE")).await()

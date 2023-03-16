@@ -8,5 +8,5 @@ import kotlinx.serialization.json.JsonElement
 val deleteBoostResolver = dispatch(
     prereleaseCommand,
     { _, _: JsonElement -> DeleteBoostCommand() },
-    { true }
+    { true },
 )

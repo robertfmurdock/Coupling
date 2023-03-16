@@ -22,7 +22,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     fun getUsersWithEmailWillShowAllUsersWithEmail() = repositorySetup.with(
         object : ContextMint<R>() {
             val userWithEmail = stubUser()
-        }.bind()
+        }.bind(),
     ) exercise {
         repository.save(userWithEmail)
     } verifyWithWait {
@@ -35,7 +35,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     fun saveUserThenGetWillContainAllSavedValues() = repositorySetup.with(
         object : ContextMint<R>() {
             val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
-        }.bind()
+        }.bind(),
     ) exercise {
         repository.save(updatedUser)
     } verifyWithWait {
@@ -48,7 +48,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     fun saveUserThenGetWillIncludeMarkingInformation() = repositorySetup.with(
         object : ContextMint<R>() {
             val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
-        }.bind()
+        }.bind(),
     ) exercise {
         clock.currentTime = DateTime.now().plus(10.days)
         repository.save(updatedUser)

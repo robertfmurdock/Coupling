@@ -28,21 +28,21 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup {
             name = partyJson["name"].textValue(),
             pairingRule = partyJson["pairingRule"].intValue().let {
                 PairingRule.fromValue(
-                    it
+                    it,
                 )
             },
             defaultBadgeName = partyJson["defaultBadgeName"].textValue(),
             alternateBadgeName = partyJson["alternateBadgeName"].textValue(),
-            id = partyJson["id"].textValue().let(::PartyId)
+            id = partyJson["id"].textValue().let(::PartyId),
         ),
         players = fileJson["players"].map { it.toPlayer() },
         history = fileJson["history"].map {
             PairAssignmentDocument(
                 id = it["id"].textValue().let(::PairAssignmentDocumentId),
                 date = it["date"].textValue().let { text -> dateFormat.parse(text).local },
-                pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() }
+                pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() },
             )
-        }
+        },
     )
 }
 
@@ -54,21 +54,21 @@ private fun JsonNode.toPinnedCouplingPair(): PinnedCouplingPair {
             .withPins(
                 playerNode["pins"].map { pinNode ->
                     pinNode.toPin()
-                }
+                },
             )
     }
     return PinnedCouplingPair(
-        players = players
+        players = players,
     )
 }
 
 private fun JsonNode.toPin() = Pin(
     id = this["id"].textValue(),
-    name = this["name"].textValue()
+    name = this["name"].textValue(),
 )
 
 private fun JsonNode.toPlayer() = Player(
     id = this["id"].textValue(),
     badge = this["badge"].intValue(),
-    name = this["name"].textValue()
+    name = this["name"].textValue(),
 )

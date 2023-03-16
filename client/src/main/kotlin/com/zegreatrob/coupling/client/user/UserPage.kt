@@ -10,6 +10,6 @@ val UserPage = FC<PageProps> {
     +CouplingQuery(
         commander = it.commander,
         query = UserQuery(),
-        toDataprops = { _, _, data -> UserConfig(data) }
+        toDataprops = { _, _, data -> UserConfig(data) },
     ).create()
 }

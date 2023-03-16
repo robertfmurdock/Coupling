@@ -15,7 +15,7 @@ val Logout = FC<PageProps> {
             logoutParams = jso {
                 returnTo = "${window.location.origin}${window["basename"]}"
             }
-        }
+        },
     )
     div { }
 }

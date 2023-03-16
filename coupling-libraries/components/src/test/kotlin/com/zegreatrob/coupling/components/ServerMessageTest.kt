@@ -12,7 +12,7 @@ class ServerMessageTest {
     fun displaysServerMessage(): Unit = setup(object {
         val expectedMessage = "Hi it me"
         val wrapper = shallow(
-            ServerMessage(CouplingSocketMessage(expectedMessage, emptySet(), null))
+            ServerMessage(CouplingSocketMessage(expectedMessage, emptySet(), null)),
         )
     }) exercise {
         wrapper.update()

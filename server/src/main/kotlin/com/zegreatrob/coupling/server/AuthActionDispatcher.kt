@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.server.action.user.FindOrCreateUserActionDispatch
 class AuthActionDispatcher internal constructor(
     override val userId: String,
     override val userRepository: UserRepository,
-    override val traceId: Uuid
+    override val traceId: Uuid,
 ) : TraceIdSyntax,
     LoggingActionExecuteSyntax,
     FindOrCreateUserActionDispatcher,

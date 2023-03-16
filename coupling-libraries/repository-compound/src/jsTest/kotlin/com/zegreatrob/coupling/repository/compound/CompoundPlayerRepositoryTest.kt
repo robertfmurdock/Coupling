@@ -33,7 +33,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
                 override val clock = clock
                 override val user = stubUser
             }
-        }
+        },
     )
 
     @Test

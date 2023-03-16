@@ -8,6 +8,6 @@ val PinListPage = partyPageFunction { props, partyId ->
     +CouplingQuery(
         commander = props.commander,
         query = PartyPinListQuery(partyId),
-        toDataprops = { _, _, (party, pins) -> PinList(party, pins) }
+        toDataprops = { _, _, (party, pins) -> PinList(party, pins) },
     ).create(key = partyId.value)
 }

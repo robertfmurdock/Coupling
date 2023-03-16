@@ -98,6 +98,6 @@ private fun ChildrenBuilder.partyGravatar(party: Party, size: Int) = if (party.i
         options = object : GravatarOptions {
             override val size = size
             override val default = "identicon"
-        }
+        },
     )
 }

@@ -20,7 +20,7 @@ fun ChildrenBuilder.gravatarImage(
     fallback: String? = null,
     className: ClassName? = null,
     alt: String?,
-    options: GravatarOptions
+    options: GravatarOptions,
 ) = img {
     src = myGravatarUrl(options, email, fallback)
     this.alt = alt

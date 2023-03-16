@@ -8,7 +8,7 @@ data class Record<T>(
     val data: T,
     val modifyingUserId: String,
     val isDeleted: Boolean = false,
-    val timestamp: DateTime = DateTime.now()
+    val timestamp: DateTime = DateTime.now(),
 )
 
 fun <T> List<Record<T>>.data() = map { it.data }
@@ -20,7 +20,7 @@ fun <T> partyRecord(
     data: T,
     modifyingUserEmail: String,
     isDeleted: Boolean = false,
-    timestamp: DateTime = DateTime.now()
+    timestamp: DateTime = DateTime.now(),
 ) = PartyRecord(PartyElement(partyId, data), modifyingUserEmail, isDeleted, timestamp)
 
 val <T> PartyRecord<T>.element get() = this.data.element

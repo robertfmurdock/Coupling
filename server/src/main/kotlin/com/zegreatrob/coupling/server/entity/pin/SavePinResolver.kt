@@ -11,5 +11,5 @@ val savePinResolver = dispatch(partyCommand, { _, input: SavePinInput -> SavePin
 private fun SavePinInput.toPin() = Pin(
     id = pinId,
     name = name,
-    icon = icon
+    icon = icon,
 )

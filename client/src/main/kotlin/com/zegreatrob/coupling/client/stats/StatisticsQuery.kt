@@ -22,7 +22,7 @@ data class StatisticQueryResults(
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
     val report: StatisticsReport,
-    val heatmapData: List<List<Double?>>
+    val heatmapData: List<List<Double?>>,
 )
 
 interface StatisticsQueryDispatcher :
@@ -49,8 +49,8 @@ interface StatisticsQueryDispatcher :
     private fun calculateHeatMap(
         players: List<Player>,
         history: List<PairAssignmentDocument>,
-        statisticsResult: StatisticsReport
+        statisticsResult: StatisticsReport,
     ) = execute(
-        CalculateHeatMapAction(players, history, statisticsResult.spinsUntilFullRotation)
+        CalculateHeatMapAction(players, history, statisticsResult.spinsUntilFullRotation),
     )
 }

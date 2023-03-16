@@ -32,11 +32,11 @@ class DynamoPinRepository private constructor(override val userId: String, overr
     override suspend fun save(partyPin: PartyElement<Pin>) = performPutItem(
         partyPin.copy(element = with(partyPin.element) { copy(id = id ?: "${uuid4()}") })
             .toRecord()
-            .asDynamoJson()
+            .asDynamoJson(),
     )
 
     suspend fun saveRawRecord(record: PartyRecord<Pin>) = performPutItem(
-        record.asDynamoJson()
+        record.asDynamoJson(),
     )
 
     override suspend fun getPins(partyId: PartyId) = partyId.queryForItemList().map {
@@ -54,7 +54,7 @@ class DynamoPinRepository private constructor(override val userId: String, overr
         partyId,
         now(),
         { toRecord() },
-        { asDynamoJson() }
+        { asDynamoJson() },
     )
 
     suspend fun getPinRecords(partyId: PartyId) = partyId.logAsync("itemList") {

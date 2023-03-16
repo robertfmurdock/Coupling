@@ -67,7 +67,7 @@ class CommandDispatcher(
     private val repositoryCatalog: RepositoryCatalog,
     override val scope: CoroutineScope,
     override val traceId: Uuid,
-    override val managementApiClient: ApiGatewayManagementApiClient = apiGatewayManagementApiClient()
+    override val managementApiClient: ApiGatewayManagementApiClient = apiGatewayManagementApiClient(),
 ) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
     override val execute = this
     override val actionDispatcher = this
@@ -103,7 +103,7 @@ interface ICurrentPartyDispatcher :
 
 class CurrentPartyDispatcher(
     override val currentPartyId: PartyId,
-    private val commandDispatcher: CommandDispatcher
+    private val commandDispatcher: CommandDispatcher,
 ) :
     ICommandDispatcher by commandDispatcher,
     PinsQueryDispatcher,
@@ -155,20 +155,20 @@ class CurrentPartyDispatcher(
 fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(
     json(
         "apiVersion" to "2018-11-29",
-        "endpoint" to Config.apiGatewayManagementApiHost
+        "endpoint" to Config.apiGatewayManagementApiHost,
     ).add(
         if (Process.getEnv("IS_OFFLINE") == "true") {
             json(
                 "region" to "us-east-1",
                 "credentials" to json(
                     "accessKeyId" to "lol",
-                    "secretAccessKey" to "lol"
-                )
+                    "secretAccessKey" to "lol",
+                ),
             )
         } else {
             json()
-        }
-    )
+        },
+    ),
 )
 
 interface PrereleaseDispatcher :

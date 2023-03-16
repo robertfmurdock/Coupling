@@ -41,7 +41,7 @@ class MasterCommander(getIdentityToken: suspend () -> String) : Commander {
             MemoryRepositoryCatalog("test-user", backend, TimeProvider)
         } else {
             sdk
-        }
+        },
     )
 }
 

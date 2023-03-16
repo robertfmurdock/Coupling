@@ -18,7 +18,7 @@ data class Game(val history: List<PairAssignmentDocument>, val players: List<Pla
 data class GameSpin(
     val history: List<PairAssignmentDocument>,
     val remainingPlayers: List<Player>,
-    val rule: PairingRule
+    val rule: PairingRule,
 )
 
 private data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
@@ -53,12 +53,12 @@ interface FindNewPairsActionDispatcher {
     private fun Pair<Round, CouplingPair>.nextRound() = let { (round, newPair) ->
         Round(
             round.pairs.plus(newPair),
-            round.gameSpin.copyWithout(newPair)
+            round.gameSpin.copyWithout(newPair),
         )
     }
 
     private fun GameSpin.copyWithout(newPair: CouplingPair) = copy(
-        remainingPlayers = remainingPlayers.minus(newPair.asArray())
+        remainingPlayers = remainingPlayers.minus(newPair.asArray()),
     )
 
     private fun PairCandidateReport.spinForPartner() = if (partners.isEmpty()) {

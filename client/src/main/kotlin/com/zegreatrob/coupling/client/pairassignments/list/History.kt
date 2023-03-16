@@ -23,7 +23,7 @@ data class History(
     val party: Party,
     val history: List<PairAssignmentDocument>,
     val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
-    val windowFunctions: WindowFunctions = WindowFunctions
+    val windowFunctions: WindowFunctions = WindowFunctions,
 ) : DataPropsBind<History>(com.zegreatrob.coupling.client.pairassignments.list.history)
 
 private val history = tmFC<History> { (party, history, controls, windowFuncs) ->

@@ -25,7 +25,7 @@ import react.dom.html.ReactHTML.div
 data class SpinAnimationPanel(
     val party: Party,
     val rosteredPairAssignments: RosteredPairAssignments,
-    val state: SpinAnimationState
+    val state: SpinAnimationState,
 ) : DataPropsBind<SpinAnimationPanel>(spinAnimationPanel)
 
 val placeholderPlayer = Player("?", name = "Next...", callSignAdjective = "--------", callSignNoun = "--------")
@@ -33,7 +33,7 @@ val placeholderPlayer = Player("?", name = "Next...", callSignAdjective = "-----
 data class SpinStateData(
     val rosterPlayers: List<Player>,
     val revealedPairs: List<PinnedCouplingPair>,
-    val shownPlayer: Player?
+    val shownPlayer: Player?,
 )
 
 val spinAnimationPanel = tmFC<SpinAnimationPanel> { (party, rosteredPairAssignments, state) ->

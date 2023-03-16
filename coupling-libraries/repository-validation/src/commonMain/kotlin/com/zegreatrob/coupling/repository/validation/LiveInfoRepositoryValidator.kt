@@ -17,9 +17,9 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
             val connections = listOf(
                 CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
                 CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
-                CouplingConnection(uuid4().toString(), partyId, stubPlayer())
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
             ).sortedBy { it.connectionId }
-        }.bind()
+        }.bind(),
     ).exercise {
         connections.forEach { repository.save(it) }
     } verifyWithWait {
@@ -35,9 +35,9 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
             val connections = listOf(
                 CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
                 expectedConnection,
-                CouplingConnection(uuid4().toString(), partyId, stubPlayer())
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
             )
-        }.bind()
+        }.bind(),
     ) exercise {
         connections.forEach { repository.save(it) }
     } verifyWithWait {
@@ -52,9 +52,9 @@ interface LiveInfoRepositoryValidator<R : LiveInfoRepository> : RepositoryValida
             val connections = listOf(
                 CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
                 CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
-                CouplingConnection(uuid4().toString(), partyId, stubPlayer())
+                CouplingConnection(uuid4().toString(), partyId, stubPlayer()),
             )
-        }.bind()
+        }.bind(),
     ) {
         connections.forEach { repository.save(it) }
     } exercise {

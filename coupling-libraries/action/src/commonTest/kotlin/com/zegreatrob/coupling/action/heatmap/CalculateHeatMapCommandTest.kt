@@ -21,8 +21,8 @@ class CalculateHeatMapCommandTest {
                 id = PairAssignmentDocumentId(""),
                 date = DateTime.now(),
                 pairs = perform(
-                    AssignPinsAction(listOf(pairOf(player1, player2)), emptyList(), emptyList())
-                )
+                    AssignPinsAction(listOf(pairOf(player1, player2)), emptyList(), emptyList()),
+                ),
             )
     }
 
@@ -50,8 +50,8 @@ class CalculateHeatMapCommandTest {
     } verify { result ->
         result.assertIsEqualTo(
             listOf(
-                listOf(null)
-            )
+                listOf(null),
+            ),
         )
     }
 
@@ -60,7 +60,7 @@ class CalculateHeatMapCommandTest {
         val players = listOf(
             Player(id = "0"),
             Player(id = "1"),
-            Player(id = "2")
+            Player(id = "2"),
         )
         val history = emptyList<PairAssignmentDocument>()
         val rotationPeriod = 3
@@ -73,8 +73,8 @@ class CalculateHeatMapCommandTest {
             listOf(
                 listOf(null, 0.0, 0.0),
                 listOf(0.0, null, 0.0),
-                listOf(0.0, 0.0, null)
-            )
+                listOf(0.0, 0.0, null),
+            ),
         )
     }
 
@@ -82,7 +82,7 @@ class CalculateHeatMapCommandTest {
     fun withTwoPlayersAndShortHistoryProducesTwoRowsWithHeatValues() = setup(object {
         val players = listOf(
             Player(id = "0"),
-            Player(id = "1")
+            Player(id = "1"),
         )
         val history = listOf(pairAssignmentDocument(players[0], players[1]))
         val rotationPeriod = 1
@@ -94,8 +94,8 @@ class CalculateHeatMapCommandTest {
         result.assertIsEqualTo(
             listOf(
                 listOf(null, 1.0),
-                listOf(1.0, null)
-            )
+                listOf(1.0, null),
+            ),
         )
     }
 
@@ -103,14 +103,14 @@ class CalculateHeatMapCommandTest {
     fun withTwoPlayersAndFullHistoryProducesTwoRowsWithHeatValues() = setup(object {
         val players = listOf(
             Player(id = "0"),
-            Player(id = "1")
+            Player(id = "1"),
         )
         val history = listOf(
             pairAssignmentDocument(players[0], players[1]),
             pairAssignmentDocument(players[0], players[1]),
             pairAssignmentDocument(players[0], players[1]),
             pairAssignmentDocument(players[0], players[1]),
-            pairAssignmentDocument(players[0], players[1])
+            pairAssignmentDocument(players[0], players[1]),
         )
         val rotationPeriod = 1
         val action =
@@ -121,8 +121,8 @@ class CalculateHeatMapCommandTest {
         result.assertIsEqualTo(
             listOf(
                 listOf(null, 10.0),
-                listOf(10.0, null)
-            )
+                listOf(10.0, null),
+            ),
         )
     }
 
@@ -131,7 +131,7 @@ class CalculateHeatMapCommandTest {
         val players = listOf(
             Player(id = "0"),
             Player(id = "1"),
-            Player(id = "2")
+            Player(id = "2"),
         )
         val history = listOf(
             pairAssignmentDocument(players[0], players[1]),
@@ -148,7 +148,7 @@ class CalculateHeatMapCommandTest {
             pairAssignmentDocument(players[0], players[1]),
             pairAssignmentDocument(players[0], players[1]),
             pairAssignmentDocument(players[0], players[1]),
-            pairAssignmentDocument(players[0], players[2])
+            pairAssignmentDocument(players[0], players[2]),
         )
         val rotationPeriod = 3
         val action =
@@ -160,8 +160,8 @@ class CalculateHeatMapCommandTest {
             listOf(
                 listOf(null, 10.0, 1.0),
                 listOf(10.0, null, 0.0),
-                listOf(1.0, 0.0, null)
-            )
+                listOf(1.0, 0.0, null),
+            ),
         )
     }
 }

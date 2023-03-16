@@ -19,7 +19,7 @@ class FindCallSignActionTest {
     fun withSimpleSetupWillReturnCallSign() = setup(object {
         val players = listOf(
             Player(callSignAdjective = "Modest", callSignNoun = "Tiger"),
-            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose")
+            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
         )
     }) exercise {
         perform(FindCallSignAction(players, email))
@@ -30,7 +30,7 @@ class FindCallSignActionTest {
     @Test
     fun givenNoCollisionTheNumberOfUsedCallSignsWillNotAffectTheGeneratedResult() = setup(object {
         val players = listOf(
-            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose")
+            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
         )
     }) exercise {
         perform(FindCallSignAction(players, email))
@@ -43,8 +43,8 @@ class FindCallSignActionTest {
         val players = listOf(
             Player(
                 callSignAdjective = expectedCallSign.adjective,
-                callSignNoun = "Mongoose"
-            )
+                callSignNoun = "Mongoose",
+            ),
         )
     }) exercise {
         perform(FindCallSignAction(players, email))
@@ -52,8 +52,8 @@ class FindCallSignActionTest {
         result.assertIsEqualTo(
             CallSign(
                 adjective = "Secure",
-                noun = expectedCallSign.noun
-            )
+                noun = expectedCallSign.noun,
+            ),
         )
     }
 
@@ -62,8 +62,8 @@ class FindCallSignActionTest {
         val players = listOf(
             Player(
                 callSignAdjective = "Intense",
-                callSignNoun = expectedCallSign.noun
-            )
+                callSignNoun = expectedCallSign.noun,
+            ),
         )
     }) exercise {
         perform(FindCallSignAction(players, email))
@@ -71,8 +71,8 @@ class FindCallSignActionTest {
         result.assertIsEqualTo(
             CallSign(
                 adjective = expectedCallSign.adjective,
-                noun = "Lion"
-            )
+                noun = "Lion",
+            ),
         )
     }
 }

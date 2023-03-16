@@ -22,7 +22,7 @@ interface DynamoTribeJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping
         badgesEnabled = getDynamoBoolValue("badgesEnabled") ?: defaultParty.badgesEnabled,
         callSignsEnabled = getDynamoBoolValue("callSignsEnabled") ?: defaultParty.callSignsEnabled,
         animationEnabled = getDynamoBoolValue("animationEnabled") ?: defaultParty.animationEnabled,
-        animationSpeed = getDynamoNumberValue("animationSpeed")?.toDouble() ?: defaultParty.animationSpeed
+        animationSpeed = getDynamoNumberValue("animationSpeed")?.toDouble() ?: defaultParty.animationSpeed,
     )
 
     fun Party.asDynamoJson() = json(
@@ -35,6 +35,6 @@ interface DynamoTribeJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping
         "badgesEnabled" to badgesEnabled,
         "callSignsEnabled" to callSignsEnabled,
         "animationEnabled" to animationEnabled,
-        "animationSpeed" to animationSpeed
+        "animationSpeed" to animationSpeed,
     )
 }

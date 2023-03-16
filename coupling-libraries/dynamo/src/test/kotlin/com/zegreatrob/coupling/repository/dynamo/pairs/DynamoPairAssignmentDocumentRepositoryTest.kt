@@ -47,12 +47,12 @@ class DynamoPairAssignmentDocumentRepositoryTest :
                 val pairAssignmentDocument = stubPairAssignmentDoc()
                 val initialSaveTime = DateTime.now().minus(3.days)
                 val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
-                    pairs = listOf(pairOf(stubPlayer()).withPins(emptySet()))
+                    pairs = listOf(pairOf(stubPlayer()).withPins(emptySet())),
                 )
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val updatedSaveTime2 = initialSaveTime.plus(4.hours)
             }
-        }
+        },
     ) exercise {
         clock.currentTime = initialSaveTime
         repository.save(partyId.with(pairAssignmentDocument))
@@ -74,10 +74,10 @@ class DynamoPairAssignmentDocumentRepositoryTest :
                 val partyId = stubPartyId()
                 val records = listOf(
                     partyRecord(partyId, stubPairAssignmentDoc(), uuidString(), false, DateTime.now().minus(3.months)),
-                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years))
+                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years)),
                 )
             }
-        }
+        },
     ) exercise {
         records.forEach { repository.saveRawRecord(it) }
     } verify {

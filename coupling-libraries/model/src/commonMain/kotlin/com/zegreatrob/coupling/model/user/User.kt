@@ -5,5 +5,5 @@ import com.zegreatrob.coupling.model.party.PartyId
 data class User(
     val id: String,
     val email: String,
-    val authorizedPartyIds: Set<PartyId>
+    val authorizedPartyIds: Set<PartyId>,
 )

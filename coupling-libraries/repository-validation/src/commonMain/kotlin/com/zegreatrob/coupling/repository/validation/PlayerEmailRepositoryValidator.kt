@@ -9,7 +9,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 
 interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
-        where R : PlayerRepository, R : PlayerListGetByEmail {
+    where R : PlayerRepository, R : PlayerListGetByEmail {
 
     @Test
     fun getPlayersForEmailsWillReturnLatestVersionOfPlayers() = repositorySetup.with(
@@ -18,7 +18,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
             val player = stubPlayer().copy(email = email)
             val redHerring = stubPlayer().copy(email = "something else")
             val updatedPlayer = player.copy(name = "Besto")
-        }.bind()
+        }.bind(),
     ) exercise {
         with(repository) {
             save(partyId.with(player))
@@ -37,7 +37,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
                 val email = "test-${uuid4()}@zegreatrob.com"
                 val player = stubPlayer().copy(email = email)
                 val updatedPlayer = player.copy(name = "Besto", email = "something else ")
-            }.bind()
+            }.bind(),
         ) exercise {
             repository.save(partyId.with(player))
             repository.save(partyId.with(updatedPlayer))
@@ -52,7 +52,7 @@ interface PlayerEmailRepositoryValidator<R> : PlayerRepositoryValidator<R>
             object : PartyContextMint<R>() {
                 val email = "test-${uuid4()}@zegreatrob.com"
                 val player = stubPlayer().copy(email = email)
-            }.bind()
+            }.bind(),
         ) exercise {
             repository.save(partyId.with(player))
             repository.deletePlayer(partyId, player.id)

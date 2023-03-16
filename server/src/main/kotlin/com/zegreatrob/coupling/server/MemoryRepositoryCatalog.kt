@@ -31,7 +31,7 @@ class MemoryRepositoryCatalog private constructor(
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
     override val pinRepository: PinRepository,
     override val userRepository: UserRepository,
-    override val liveInfoRepository: LiveInfoRepository
+    override val liveInfoRepository: LiveInfoRepository,
 ) :
     RepositoryCatalog,
     UserIdSyntax,
@@ -51,7 +51,7 @@ class MemoryRepositoryCatalog private constructor(
                 MemoryPairAssignmentDocumentRepository(userEmail, clock, backend.pairAssignments),
                 MemoryPinRepository(userEmail, clock, backend.pin),
                 MemoryUserRepository(userEmail, clock, backend.user),
-                MemoryLiveInfoRepository()
+                MemoryLiveInfoRepository(),
             )
     }
 }

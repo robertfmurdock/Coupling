@@ -28,12 +28,12 @@ data class SocketedPairAssignments<D>(
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val controls: Controls<D>,
-    val allowSave: Boolean
+    val allowSave: Boolean,
 ) : DataPropsBind<SocketedPairAssignments<D>>(socketedPairAssignments<D>())
     where D : SavePairAssignmentsCommandDispatcher, D : DeletePairAssignmentsCommandDispatcher
 
 private fun <D> socketedPairAssignments()
-    where D : SavePairAssignmentsCommandDispatcher, D : DeletePairAssignmentsCommandDispatcher =
+where D : SavePairAssignmentsCommandDispatcher, D : DeletePairAssignmentsCommandDispatcher =
     tmFC<SocketedPairAssignments<D>> { (party, players, originalPairs, controls, allowSave) ->
         val (pairAssignments, setPairAssignments) = useState(originalPairs)
         val (message, setMessage) = useState(disconnectedMessage)
@@ -61,12 +61,12 @@ private fun <D> socketedPairAssignments()
                             updatePairAssignments,
                             controls,
                             message,
-                            allowSave
+                            allowSave,
                         )
                             .create()
                     },
-                    token = token
-                )
+                    token = token,
+                ),
             )
         } else {
             div()
@@ -76,7 +76,7 @@ private fun <D> socketedPairAssignments()
 private fun handleMessage(
     newMessage: Message,
     setMessage: StateSetter<CouplingSocketMessage>,
-    setPairAssignments: StateSetter<PairAssignmentDocument?>
+    setPairAssignments: StateSetter<PairAssignmentDocument?>,
 ) = when (newMessage) {
     is CouplingSocketMessage -> {
         setMessage(newMessage)

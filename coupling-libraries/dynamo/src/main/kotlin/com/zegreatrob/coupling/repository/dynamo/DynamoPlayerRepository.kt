@@ -36,32 +36,32 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                 "KeySchema" to arrayOf(
                     json(
                         "AttributeName" to "tribeId",
-                        "KeyType" to "HASH"
+                        "KeyType" to "HASH",
                     ),
                     json(
                         "AttributeName" to "timestamp+id",
-                        "KeyType" to "RANGE"
-                    )
+                        "KeyType" to "RANGE",
+                    ),
                 ),
                 "AttributeDefinitions" to arrayOf(
                     json(
                         "AttributeName" to "tribeId",
-                        "AttributeType" to "S"
+                        "AttributeType" to "S",
                     ),
                     json(
                         "AttributeName" to "timestamp+id",
-                        "AttributeType" to "S"
+                        "AttributeType" to "S",
                     ),
                     json(
                         "AttributeName" to "id",
-                        "AttributeType" to "S"
+                        "AttributeType" to "S",
                     ),
                     json(
                         "AttributeName" to "email",
-                        "AttributeType" to "S"
-                    )
+                        "AttributeType" to "S",
+                    ),
                 ),
-                "BillingMode" to "PAY_PER_REQUEST"
+                "BillingMode" to "PAY_PER_REQUEST",
             ).add(
                 json(
                     "GlobalSecondaryIndexes" to arrayOf(
@@ -70,24 +70,24 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                             "KeySchema" to arrayOf(
                                 json(
                                     "AttributeName" to "email",
-                                    "KeyType" to "HASH"
+                                    "KeyType" to "HASH",
                                 ),
                                 json(
                                     "AttributeName" to "id",
-                                    "KeyType" to "RANGE"
-                                )
+                                    "KeyType" to "RANGE",
+                                ),
                             ),
                             "Projection" to json(
                                 "NonKeyAttributes" to arrayOf(
                                     "tribeId",
                                     "timestamp",
-                                    "isDeleted"
+                                    "isDeleted",
                                 ),
-                                "ProjectionType" to "INCLUDE"
-                            )
-                        )
-                    )
-                )
+                                "ProjectionType" to "INCLUDE",
+                            ),
+                        ),
+                    ),
+                ),
             )
     }
 
@@ -103,14 +103,14 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
     override suspend fun save(partyPlayer: PartyElement<Player>) =
         saveRawRecord(
-            partyPlayer.copyWithIdCorrection().toRecord()
+            partyPlayer.copyWithIdCorrection().toRecord(),
         )
 
     private fun PartyElement<Player>.copyWithIdCorrection() =
         copy(
             element = with(element) {
                 copy(id = id)
-            }
+            },
         )
 
     suspend fun saveRawRecord(record: PartyRecord<Player>) = performPutItem(record.asDynamoJson())
@@ -120,7 +120,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         partyId,
         now(),
         { toPlayerRecord() },
-        { asDynamoJson() }
+        { asDynamoJson() },
     )
 
     override suspend fun getDeleted(partyId: PartyId): List<Record<PartyElement<Player>>> = partyId.queryForDeletedItemList()
@@ -149,15 +149,15 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     private fun playerIdScanParams(recordTribePlayerIds: Set<String>) = json(
         "TableName" to prefixedTableName,
         "ExpressionAttributeValues" to json(
-            ":playerIdList" to recordTribePlayerIds.toTypedArray()
+            ":playerIdList" to recordTribePlayerIds.toTypedArray(),
         ),
-        "FilterExpression" to "contains(:playerIdList, id)"
+        "FilterExpression" to "contains(:playerIdList, id)",
     )
 
     private fun emailQueryParams(email: String) = json(
         "TableName" to prefixedTableName,
         "IndexName" to playerEmailIndex,
         "ExpressionAttributeValues" to json(":email" to email),
-        "KeyConditionExpression" to "email = :email"
+        "KeyConditionExpression" to "email = :email",
     )
 }

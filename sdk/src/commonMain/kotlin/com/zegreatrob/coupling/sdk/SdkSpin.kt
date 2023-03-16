@@ -17,7 +17,7 @@ interface SdkSpin : RequestSpinActionDispatcher, GqlSyntax, GraphQueries {
             mutations.spin,
             action.spinInput(),
             "spin",
-            ::toOutput
+            ::toOutput,
         )!!
 
     private fun toOutput(at: SpinOutput) = at.result.toModel()
@@ -26,5 +26,5 @@ interface SdkSpin : RequestSpinActionDispatcher, GqlSyntax, GraphQueries {
 fun RequestSpinAction.spinInput() = SpinInput(
     players = players.map(Player::toSerializable),
     pins = pins.map(Pin::toSerializable),
-    partyId = partyId
+    partyId = partyId,
 )

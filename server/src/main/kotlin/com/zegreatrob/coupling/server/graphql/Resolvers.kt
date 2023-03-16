@@ -18,7 +18,7 @@ typealias GraphQLDispatcherProvider<D> = suspend (Request, Json?, Any?) -> D?
 inline fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, reified R, reified J, reified I> dispatch(
     crossinline dispatcherFunc: GraphQLDispatcherProvider<D>,
     crossinline queryFunc: (Json, I) -> Q,
-    crossinline toSerializable: (R) -> J
+    crossinline toSerializable: (R) -> J,
 ) = { entity: Json, args: Json, request: Request, _: Json ->
     request.scope.promise {
         try {

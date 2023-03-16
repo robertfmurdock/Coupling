@@ -87,18 +87,18 @@ private val candidates by lazy {
         WelcomeCardSet(
             left = Card(name = "Frodo", imagePath = frodo),
             right = Card(name = "Sam", imagePath = samwise),
-            proverb = "Together, climb mountains."
+            proverb = "Together, climb mountains.",
         ),
         WelcomeCardSet(
             left = Card(name = "Batman", imagePath = grayson),
             right = Card(name = "Robin", imagePath = wayne),
-            proverb = "Clean up the city, together."
+            proverb = "Clean up the city, together.",
         ),
         WelcomeCardSet(
             left = Card(name = "Rosie", imagePath = rosie),
             right = Card(name = "Wendy", imagePath = wendy),
-            proverb = "Team up. Get things done."
-        )
+            proverb = "Team up. Get things done.",
+        ),
     )
 }
 
@@ -109,7 +109,7 @@ private data class Card(val name: String, val imagePath: String)
 private fun ChildrenBuilder.welcomeSplash(
     welcomeTitleRef: MutableRefObject<HTMLDivElement>,
     pair: CouplingPair.Double,
-    proverb: String
+    proverb: String,
 ) = span {
     css {
         display = Display.inlineBlock
@@ -145,7 +145,7 @@ private fun RandomProvider.choosePairAndProverb() = chooseWelcomeCardSet().toPai
 
 private fun WelcomeCardSet.toPairAndProverb() = pairOf(
     left.toPlayer(),
-    right.toPlayer()
+    right.toPlayer(),
 ) to proverb
 
 private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
@@ -229,8 +229,8 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
                         animationPlayState = AnimationPlayState.running
                     }
                 },
-                onEnterClick
-            )
+                onEnterClick,
+            ),
         ) { +"Come on in!" }
     }
 }

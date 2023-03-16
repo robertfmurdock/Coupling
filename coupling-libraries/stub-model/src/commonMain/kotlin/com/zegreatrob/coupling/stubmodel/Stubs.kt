@@ -29,7 +29,7 @@ fun stubParty() = Party(
     email = "stuby@stub.edu",
     pairingRule = stubPairingRule(),
     animationEnabled = partyCounter % 2 == 0,
-    animationSpeed = partyCounter.toDouble()
+    animationSpeed = partyCounter.toDouble(),
 ).also { partyCounter++ }
 
 private fun stubPairingRule() = PairingRule.values()[partyCounter % PairingRule.values().size]
@@ -44,7 +44,7 @@ fun stubPlayer() = Player(
     callSignAdjective = "Spicy $playerCounter",
     callSignNoun = "Meatball $playerCounter",
     email = "tim$playerCounter@tim.meat",
-    imageURL = "italian$playerCounter.jpg"
+    imageURL = "italian$playerCounter.jpg",
 ).also { playerCounter++ }
 
 fun stubPlayers(number: Int) = generateSequence { stubPlayer() }.take(number).toList()
@@ -72,9 +72,9 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
     pairs = listOf(
         PinnedCouplingPair(
             listOf(stubPlayer().withPins()),
-            setOf(stubPin())
-        )
-    )
+            setOf(stubPin()),
+        ),
+    ),
 ).also { pairAssignmentDocumentCounter++ }
 
 fun uuidString() = uuid4().toString()
@@ -83,5 +83,5 @@ var userCounter = 1
 fun stubUser() = User(
     id = uuidString(),
     email = "$userCounter-${uuidString()}@gmail.com",
-    authorizedPartyIds = setOf(stubPartyId())
+    authorizedPartyIds = setOf(stubPartyId()),
 ).also { userCounter++ }

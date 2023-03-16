@@ -37,7 +37,7 @@ class GameExamplesTest {
         companion object {
             val party = Party(
                 id = PartyId("JLA"),
-                pairingRule = PairingRule.LongestTime
+                pairingRule = PairingRule.LongestTime,
             )
 
             val bruce = Player(id = "1", name = "Batman", badge = 0)
@@ -53,7 +53,7 @@ class GameExamplesTest {
                 diana,
                 hal,
                 barry,
-                john
+                john,
             )
         }
 
@@ -62,7 +62,7 @@ class GameExamplesTest {
             val history = emptyList<PairAssignmentDocument>()
             val party = Party(
                 PartyId("Best party ever"),
-                PairingRule.LongestTime
+                PairingRule.LongestTime,
             )
         }) exercise {
             perform(RunGameAction(allPlayers, emptyList(), history, party))
@@ -78,7 +78,7 @@ class GameExamplesTest {
             val history = emptyList<PairAssignmentDocument>()
             val party = Party(
                 PartyId("Best party ever"),
-                PairingRule.LongestTime
+                PairingRule.LongestTime,
             )
         }) exercise {
             perform(RunGameAction(listOf(clark, bruce, diana), emptyList(), history, party))
@@ -92,23 +92,23 @@ class GameExamplesTest {
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 10),
-                    pairs = listOf(pairOf(bruce, clark)).withNoPins()
+                    pairs = listOf(pairOf(bruce, clark)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 9),
-                    pairs = listOf(pairOf(bruce, diana)).withNoPins()
+                    pairs = listOf(pairOf(bruce, diana)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 8),
-                    pairs = listOf(pairOf(bruce, hal)).withNoPins()
+                    pairs = listOf(pairOf(bruce, hal)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 7),
-                    pairs = listOf(pairOf(bruce, barry)).withNoPins()
-                )
+                    pairs = listOf(pairOf(bruce, barry)).withNoPins(),
+                ),
             )
         }) exercise {
             perform(RunGameAction(allPlayers, emptyList(), history, party))
@@ -121,7 +121,7 @@ class GameExamplesTest {
         companion object {
             val party = Party(
                 id = PartyId("JLA"),
-                pairingRule = PairingRule.LongestTime
+                pairingRule = PairingRule.LongestTime,
             )
 
             val bruce = Player(id = "1", name = "Batman", badge = 0)
@@ -140,23 +140,23 @@ class GameExamplesTest {
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 10),
-                    pairs = listOf(pairOf(bruce, clark)).withNoPins()
+                    pairs = listOf(pairOf(bruce, clark)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 9),
-                    pairs = listOf(pairOf(bruce, diana)).withNoPins()
+                    pairs = listOf(pairOf(bruce, diana)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 8),
-                    pairs = listOf(pairOf(bruce, hal)).withNoPins()
+                    pairs = listOf(pairOf(bruce, hal)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = DateTime(2014, 1, 7),
-                    pairs = listOf(pairOf(bruce, barry)).withNoPins()
-                )
+                    pairs = listOf(pairOf(bruce, barry)).withNoPins(),
+                ),
             )
         }) exercise {
             perform(RunGameAction(allPlayers, emptyList(), history, party))
@@ -169,7 +169,7 @@ class GameExamplesTest {
     fun willNotGetStuckWhenPairingPeopleWithDifferentBadges() = setup(object {
         val party = Party(
             PartyId("Avengers"),
-            PairingRule.PreferDifferentBadge
+            PairingRule.PreferDifferentBadge,
         )
         val kamala = Player(name = "Ms. Marvel", badge = 0)
         val logan = Player(name = "Wolverine", badge = 1)
@@ -181,18 +181,18 @@ class GameExamplesTest {
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime(2014, 1, 10),
-                pairs = listOf(pairOf(kamala, thor)).withNoPins()
+                pairs = listOf(pairOf(kamala, thor)).withNoPins(),
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime(2014, 1, 9),
-                pairs = listOf(pairOf(kamala, steve)).withNoPins()
+                pairs = listOf(pairOf(kamala, steve)).withNoPins(),
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = DateTime(2014, 1, 8),
-                pairs = listOf(pairOf(kamala, logan)).withNoPins()
-            )
+                pairs = listOf(pairOf(kamala, logan)).withNoPins(),
+            ),
         )
     }) exercise {
         perform(RunGameAction(allPlayers, emptyList(), history, party))

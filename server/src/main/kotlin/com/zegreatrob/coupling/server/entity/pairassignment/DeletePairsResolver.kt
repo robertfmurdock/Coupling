@@ -11,5 +11,5 @@ val deletePairsResolver = dispatch(
     { _, entity: DeletePairAssignmentsInput ->
         DeletePairAssignmentDocumentCommand(entity.pairAssignmentsId.let(::PairAssignmentDocumentId))
     },
-    { true }
+    { true },
 )

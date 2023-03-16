@@ -14,11 +14,11 @@ val PartyConfigPage = FC<PageProps> { props ->
 private fun PartyId.partyQueryProps(pageProps: PageProps) = CouplingQuery(
     commander = pageProps.commander,
     query = PartyQuery(this),
-    toDataprops = { _, commandFunc, data -> PartyConfig(data, commandFunc) }
+    toDataprops = { _, commandFunc, data -> PartyConfig(data, commandFunc) },
 )
 
 private fun newPartyProps(pageProps: PageProps) = CouplingQuery(
     commander = pageProps.commander,
     query = NewPartyCommand(),
-    toDataprops = { _, commandFunc, data -> PartyConfig(data, commandFunc) }
+    toDataprops = { _, commandFunc, data -> PartyConfig(data, commandFunc) },
 )

@@ -45,7 +45,7 @@ data class PlayerConfigContent(
     val players: List<Player>,
     val onChange: (ChangeEvent<*>) -> Unit,
     val onSubmit: () -> Unit,
-    val onRemove: () -> Unit
+    val onRemove: () -> Unit,
 ) : DataPropsBind<PlayerConfigContent>(playerConfigContent)
 
 val playerConfigContentClassName = csstype.ClassName("player-config-content")
@@ -91,7 +91,7 @@ val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, o
                     padding = 10.px
                     border = Border(11.px, outset, NamedColor.tan)
                     backgroundColor = NamedColor.wheat
-                }
+                },
             )
         }
     }
@@ -107,7 +107,7 @@ private fun ChildrenBuilder.playerConfigForm(
     party: Party,
     onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
-    onRemoveFunc: (() -> Unit)?
+    onRemoveFunc: (() -> Unit)?,
 ) = ConfigForm {
     this.onSubmit = onSubmit
     this.onRemove = onRemoveFunc
@@ -136,7 +136,7 @@ private fun ChildrenBuilder.nameInput(player: Player, onChange: (ChangeEvent<*>)
         type = InputType.text,
         onChange = onChange,
         placeholder = "My name is...",
-        autoFocus = true
+        autoFocus = true,
     )
     span { +"What's your moniker?" }
 }
@@ -149,7 +149,7 @@ private fun ChildrenBuilder.emailInput(player: Player, onChange: (ChangeEvent<*>
         value = player.email,
         type = InputType.text,
         onChange = onChange,
-        placeholder = "email"
+        placeholder = "email",
     )
     span {
         div { +"Email provides access privileges;" }
@@ -171,7 +171,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
             value = player.callSignAdjective,
             type = InputType.text,
             onChange = onChange,
-            list = "callSignAdjectiveOptions"
+            list = "callSignAdjectiveOptions",
         )
         datalist { id = "callSignAdjectiveOptions" }
         span { +"I feel the need..." }
@@ -184,7 +184,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
             value = player.callSignNoun,
             type = InputType.text,
             onChange = onChange,
-            list = "callSignNounOptions"
+            list = "callSignNounOptions",
         )
         datalist { id = "callSignNounOptions" }
         span { +"... the need for speed!" }
@@ -194,7 +194,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
 private fun ChildrenBuilder.badgeConfig(
     party: Party,
     player: Player,
-    onChange: (ChangeEvent<*>) -> Unit
+    onChange: (ChangeEvent<*>) -> Unit,
 ) = li {
     css {
         "> div" {

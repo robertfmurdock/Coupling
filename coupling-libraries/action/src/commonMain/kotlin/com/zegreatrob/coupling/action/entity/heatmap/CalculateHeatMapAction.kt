@@ -9,7 +9,7 @@ import com.zegreatrob.testmints.action.SimpleExecutableAction
 data class CalculateHeatMapAction(
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
-    val rotationPeriod: Int
+    val rotationPeriod: Int,
 ) : SimpleExecutableAction<CalculateHeatMapActionDispatcher, List<List<Double?>>> {
     override val performFunc = link(CalculateHeatMapActionDispatcher::perform)
 }
@@ -29,7 +29,7 @@ interface CalculateHeatMapActionDispatcher : CalculatePairHeatActionDispatcher, 
             null
         } else {
             execute(
-                CalculatePairHeatAction(pairOf(player, alternatePlayer), history, rotationPeriod)
+                CalculatePairHeatAction(pairOf(player, alternatePlayer), history, rotationPeriod),
             )
         }
 }

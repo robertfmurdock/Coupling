@@ -26,16 +26,16 @@ suspend inline fun <reified T> GqlSyntax.doQuery(query: String, input: T): JsonE
     JsonObject(
         mapOf(
             "query" to JsonPrimitive(query),
-            "variables" to JsonObject(mapOf("input" to input.toJsonElement()))
-        )
-    )
+            "variables" to JsonObject(mapOf("input" to input.toJsonElement())),
+        ),
+    ),
 )
 
 suspend inline fun <reified I, reified O, M> GqlSyntax.doQuery(
     mutation: String,
     input: I,
     resultName: String,
-    toOutput: (O) -> M
+    toOutput: (O) -> M,
 ): M? = doQuery(mutation, input)
     .jsonObject["data"]!!
     .jsonObject[resultName]

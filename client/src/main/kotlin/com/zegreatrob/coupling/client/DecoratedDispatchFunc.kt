@@ -7,7 +7,7 @@ import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
     val dispatcherFunc: () -> D,
-    private val tools: DataLoaderTools
+    private val tools: DataLoaderTools,
 ) : DispatchFunc<D> {
 
     private val dispatcher get() = dispatcherFunc()
@@ -21,6 +21,6 @@ class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
         tools.performAsyncWork(
             { execute(command) },
             { handler: Throwable -> throw handler },
-            onResponse
+            onResponse,
         )
 }

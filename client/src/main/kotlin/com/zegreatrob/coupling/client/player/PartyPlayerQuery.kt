@@ -36,7 +36,7 @@ interface PartyPlayerQueryDispatcher :
                 Triple(
                     party,
                     players,
-                    players.findOrDefaultNew(playerId)
+                    players.findOrDefaultNew(playerId),
                 )
             }
         }
@@ -53,6 +53,6 @@ interface PartyPlayerQueryDispatcher :
 
     private fun defaultPlayer(callSign: CallSign) = Player(
         callSignAdjective = callSign.adjective,
-        callSignNoun = callSign.noun
+        callSignNoun = callSign.noun,
     )
 }

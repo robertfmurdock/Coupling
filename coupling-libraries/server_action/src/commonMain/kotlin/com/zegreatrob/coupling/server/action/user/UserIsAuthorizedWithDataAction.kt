@@ -46,7 +46,7 @@ interface UserIsAuthorizedWithDataActionDispatcher :
     private suspend fun UserIsAuthorizedWithDataAction.loadPartyAndPlayers() = coroutineScope {
         await(
             async { partyId.get() },
-            async { partyId.getPlayerList() }
+            async { partyId.getPlayerList() },
         )
     }
 }

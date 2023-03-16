@@ -23,7 +23,7 @@ interface RetiredPlayerListQueryDispatcher : PartyIdGetSyntax, PartyRetiredPlaye
     private suspend fun getData(partyId: PartyId) = coroutineScope {
         await(
             async { partyId.get() },
-            async { partyId.loadRetiredPlayers() }
+            async { partyId.loadRetiredPlayers() },
         )
     }.let { (party, players) -> if (party == null) null else party to players }
 }

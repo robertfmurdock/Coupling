@@ -23,18 +23,18 @@ interface DynamoItemGetSyntax :
             "TableName" to prefixedTableName,
             "ExpressionAttributeValues" to json(
                 ":tribeId" to partyId.value,
-                ":id" to id
+                ":id" to id,
             ),
             "KeyConditionExpression" to "tribeId = :tribeId",
-            "FilterExpression" to "id = :id"
+            "FilterExpression" to "id = :id",
         )
     } else {
         json(
             "TableName" to prefixedTableName,
             "ExpressionAttributeValues" to json(
-                ":id" to id
+                ":id" to id,
             ),
-            "KeyConditionExpression" to "id = :id"
+            "KeyConditionExpression" to "id = :id",
         )
     }
 
@@ -42,18 +42,18 @@ interface DynamoItemGetSyntax :
         json(
             "TableName" to prefixedTableName,
             "ExpressionAttributeValues" to json(
-                ":id" to id
+                ":id" to id,
             ),
-            "FilterExpression" to "id = :id"
+            "FilterExpression" to "id = :id",
         )
     } else {
         json(
             "TableName" to prefixedTableName,
             "ExpressionAttributeValues" to json(
                 ":id" to id,
-                ":tribeId" to partyId.value
+                ":tribeId" to partyId.value,
             ),
-            "FilterExpression" to "id = :id AND tribeId = :tribeId"
+            "FilterExpression" to "id = :id AND tribeId = :tribeId",
         )
     }
 }

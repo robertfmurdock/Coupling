@@ -46,8 +46,8 @@ val partyStatistics = tmFC<PartyStatistics> { props ->
                                 activePlayerCount = players.size,
                                 medianSpinDuration = medianSpinDuration?.let {
                                     formatDistance(medianSpinDuration.millisecondsInt, 0)
-                                } ?: ""
-                            )
+                                } ?: "",
+                            ),
                         )
                     }
                     add(PairReportTable(pairReports))

@@ -12,7 +12,7 @@ interface RepositoryContext<T> {
     companion object {
         fun <T, R> buildRepository(
             setupContext: (RepositoryContext<R>) -> T,
-            repoBuilder: suspend (User, MagicClock) -> R
+            repoBuilder: suspend (User, MagicClock) -> R,
         ): suspend () -> T = {
             val clock = MagicClock()
             val user = stubUser()
