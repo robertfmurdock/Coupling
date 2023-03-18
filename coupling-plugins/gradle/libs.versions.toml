@@ -8,7 +8,7 @@ org-jlleitschuh-gradle-ktlint = "11.0.0"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.14.2"
 com-github-ben-manes-gradle-versions-plugin = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:3.4.0"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:3.1.6"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:3.1.7"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:9.2.5"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:0.2.2"
 org-ajoberstar-grgit-gradle-plugin = "org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0"
@@ -18,7 +18,7 @@ org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-std
 org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.8.10"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
 org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:3.14.0"
-org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.6"
+org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.7"
 
 [plugins]
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
