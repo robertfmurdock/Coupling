@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.0.1",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.293.0",
-    "@aws-sdk/client-dynamodb": "3.293.0",
-    "@aws-sdk/client-lambda": "~3.293.0",
-    "@aws-sdk/lib-dynamodb": "3.293.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.294.0",
+    "@aws-sdk/client-dynamodb": "3.294.0",
+    "@aws-sdk/client-lambda": "~3.294.0",
+    "@aws-sdk/lib-dynamodb": "3.294.0",
     "@graphql-tools/schema": "^9.0.17",
     "@graphql-tools/stitch": "^8.7.43",
     "@log4js-node/log4js-api": "1.0.2",
@@ -13,7 +13,7 @@
     "@wdio/allure-reporter": "8.5.0",
     "@wdio/reporter": "^8.4.0",
     "@wdio/dot-reporter": "8.4.0",
-    "@wdio/jasmine-framework": "8.6.2",
+    "@wdio/jasmine-framework": "8.6.3",
     "@wdio/junit-reporter": "8.4.0",
     "allure-commandline": "2.21.0",
     "blueimp-md5": "^2.19.0",
