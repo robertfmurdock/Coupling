@@ -172,7 +172,9 @@ class WebsocketTest {
     @Test
     fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup() exercise {
         val url = "wss://$socketHost/api/${PartyId("whoops").value}/pairAssignments/current"
-        generalPurposeClient.webSocketSession { url(url) }
+        generalPurposeClient.webSocketSession {
+            url(url)
+        }
     } verify { socket ->
         withTimeout(400) {
             (socket.incoming.receive() as? Frame.Close)

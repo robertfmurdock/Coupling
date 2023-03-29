@@ -81,7 +81,7 @@ fun healthRoute(): Handler = { request, response, _ ->
         request.commandDispatcher()
     }.invokeOnCompletion { error ->
         response.sendStatus(if (error == null) 200 else 500)
-            .also { println("exception ${error?.message}") }
+            .also { error?.let { println("exception ${error.message}") } }
             .also { error?.printStackTrace() }
     }
 }

@@ -11,6 +11,8 @@ plugins:
 custom:
   serverless-offline:
     allowCache: true
+    useInProcess: true
+    localEnvironment: true
     host: 0.0.0.0
 provider:
   stage: ${opt:stage, 'local'}
@@ -30,7 +32,6 @@ provider:
     CLIENT_BASENAME: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):CLIENT_BASENAME}
     WEBSOCKET_HOST: ${env:WEBSOCKET_HOST, file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):WEBSOCKET_HOST}
     PUBLIC_URL:	${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):PUBLIC_URL, env:PUBLIC_URL}
-    LOCAL_DYNAMO_URL: ${env:LOCAL_DYNAMO_URL}
     DYNAMO_PREFIX: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):DYNAMO_PREFIX}
     ENABLE_PRERELEASE_FEATURES: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):ENABLE_PRERELEASE_FEATURES}
     CLIENT_URL: ${env:CLIENT_URL, "https://static.localhost"}

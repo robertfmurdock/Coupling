@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.benasher44.uuid.uuid4
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -9,6 +10,7 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.header
 import io.ktor.http.Parameters
 import io.ktor.http.Url
 import io.ktor.serialization.kotlinx.json.json
@@ -64,6 +66,7 @@ val generalPurposeClient = HttpClient {
         }
         level = LogLevel.ALL
     }
+    defaultRequest { header("X-Request-Id", "${uuid4()}") }
 }
 
 expect fun setupPlatformSpecificKtorSettings()
