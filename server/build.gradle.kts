@@ -160,7 +160,7 @@ tasks {
             include("executable/**")
         }
         from(project.projectDir) {
-            include("Dockerfile", "serverless.yml", ".env", "deploy/**")
+            include("Dockerfile", "serverless.yml", "deploy/**")
         }
 
         destinationDir = file("build/docker-data")
