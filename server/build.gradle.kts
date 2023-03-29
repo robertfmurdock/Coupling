@@ -160,14 +160,17 @@ tasks {
             include("executable/**")
         }
         from(project.projectDir) {
-            include("Dockerfile", "serverless.yml", "deploy/**")
+            include("Dockerfile", "serverless.yml", ".env", "deploy/**")
         }
 
         destinationDir = file("build/docker-data")
     }
 
     register<Exec>("buildImage") {
-        dependsOn(prepareDockerData, ":server-base:pullImage")
+        dependsOn(
+            prepareDockerData,
+            // ":server-base:pullImage"
+        )
         commandLine(
             "docker build --tag ghcr.io/robertfmurdock/coupling-serverless:latest build/docker-data"
                 .split(" ")

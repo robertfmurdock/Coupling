@@ -1,5 +1,5 @@
-FROM node:17
+FROM node:19
 
 WORKDIR /serverless
 
-RUN npm install serverless@2.72.2 serverless-offline@8.4.0 serverless-offline-ssm@5.2.0
+RUN npm install serverless serverless-offline

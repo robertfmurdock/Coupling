@@ -1,15 +1,21 @@
 service: coupling-server
 
-frameworkVersion: '2'
+frameworkVersion: '3'
 
 package:
   patterns:
     - '!**'
     - 'build/executable/**'
+plugins:
+  - serverless-offline
+custom:
+  serverless-offline:
+    allowCache: true
+    host: 0.0.0.0
 provider:
-  name: aws
-  runtime: nodejs14.x
   stage: ${opt:stage, 'local'}
+  name: aws
+  runtime: nodejs18.x
   iam:
     role:
       managedPolicies:
@@ -24,12 +30,13 @@ provider:
     CLIENT_BASENAME: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):CLIENT_BASENAME}
     WEBSOCKET_HOST: ${env:WEBSOCKET_HOST, file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):WEBSOCKET_HOST}
     PUBLIC_URL:	${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):PUBLIC_URL, env:PUBLIC_URL}
+    LOCAL_DYNAMO_URL: ${env:LOCAL_DYNAMO_URL}
     DYNAMO_PREFIX: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):DYNAMO_PREFIX}
     ENABLE_PRERELEASE_FEATURES: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):ENABLE_PRERELEASE_FEATURES}
     CLIENT_URL: ${env:CLIENT_URL, "https://static.localhost"}
-    AUTH0_CLIENT_ID: ${ssm:/AUTH0_CLIENT_ID~true}
-    AZURE_AD_CLIENT_ID: ${ssm:/AZURE_AD_CLIENT_ID~true}
-    AZURE_AD_CLIENT_SECRET: ${ssm:/AZURE_AD_CLIENT_SECRET~true}
+    AUTH0_CLIENT_ID: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):AUTH0_CLIENT_ID, ssm:/AUTH0_CLIENT_ID~true}
+    AZURE_AD_CLIENT_ID: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):AZURE_AD_CLIENT_ID, ssm:/AZURE_AD_CLIENT_ID~true}
+    AZURE_AD_CLIENT_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):AZURE_AD_CLIENT_SECRET, ssm:/AZURE_AD_CLIENT_SECRET~true}
     STAGE: ${opt:stage, 'local'}
 functions:
   api:
@@ -55,17 +62,3 @@ functions:
     handler: ${env:SERVER_DIR, '.'}/build/executable/app.serverlessSocketMessage
     events:
       - websocket: $default
-plugins:
-  - serverless-offline-ssm
-  - serverless-offline
-custom:
-  serverless-offline-ssm:
-    stages:
-      - local
-    ssm:
-      AUTH0_CLIENT_ID: null
-      AZURE_AD_CLIENT_ID: null
-      AZURE_AD_CLIENT_SECRET: null
-  serverless-offline:
-    allowCache: true
-    host: 0.0.0.0
