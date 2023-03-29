@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.0.1",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.300.0",
-    "@aws-sdk/client-dynamodb": "3.300.0",
-    "@aws-sdk/client-lambda": "~3.300.0",
-    "@aws-sdk/lib-dynamodb": "3.300.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.301.0",
+    "@aws-sdk/client-dynamodb": "3.301.0",
+    "@aws-sdk/client-lambda": "~3.301.0",
+    "@aws-sdk/lib-dynamodb": "3.301.0",
     "@graphql-tools/schema": "^9.0.17",
     "@graphql-tools/stitch": "^8.7.43",
     "@log4js-node/log4js-api": "1.0.2",
@@ -60,7 +60,7 @@
     "mini-css-extract-plugin": "^2.7.5",
     "minimist": "^1.2.8",
     "node-fetch": "^3.3.1",
-    "npm-check-updates": "^16.8.0",
+    "npm-check-updates": "^16.8.2",
     "on-finished": "^2.4.1",
     "parse5": "^7.1.2",
     "parse5-html-rewriting-stream": "^7.0.0",
