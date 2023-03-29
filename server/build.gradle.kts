@@ -169,7 +169,7 @@ tasks {
     register<Exec>("buildImage") {
         dependsOn(
             prepareDockerData,
-            // ":server-base:pullImage"
+            ":server-base:pullImage"
         )
         commandLine(
             "docker build --tag ghcr.io/robertfmurdock/coupling-serverless:latest build/docker-data"
