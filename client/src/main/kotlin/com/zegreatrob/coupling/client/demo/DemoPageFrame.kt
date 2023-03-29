@@ -34,7 +34,6 @@ import csstype.rotate
 import csstype.string
 import csstype.vw
 import emotion.react.css
-import js.core.get
 import js.core.jso
 import kotlinx.browser.document
 import popper.core.Popper

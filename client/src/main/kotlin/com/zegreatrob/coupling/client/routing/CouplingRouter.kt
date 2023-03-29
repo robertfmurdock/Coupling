@@ -23,7 +23,6 @@ import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
-import js.core.get
 import kotlinx.browser.window
 import react.ChildrenBuilder
 import react.FC

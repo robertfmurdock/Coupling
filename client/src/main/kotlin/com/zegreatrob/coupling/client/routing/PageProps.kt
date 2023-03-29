@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.defaultClient
 import js.core.ReadonlyRecord
-import js.core.get
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.Props
