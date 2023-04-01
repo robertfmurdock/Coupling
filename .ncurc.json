@@ -1,9 +1,6 @@
 {
   "reject": [
     "mime",
-    "serverless",
-    "serverless-offline-ssm",
-    "serverless-offline",
     "read-pkg-up",
   ]
 }
