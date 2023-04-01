@@ -76,13 +76,13 @@ tasks {
 
     val serverCompile by registering(NodeExec::class) {
         dependsOn(
+            "packageJson",
             compileKotlinJs,
             processResources,
             compileProductionExecutableKotlinJs,
             "productionExecutableCompileSync",
         )
         mustRunAfter(clean)
-        inputs.dir(compileKotlinJs.map { it.outputFileProperty })
         inputs.dir(processResources.map { it.destinationDir.path })
         inputs.file(compileProductionExecutableKotlinJs.map { it.outputFileProperty })
         inputs.file(file("webpack.config.js"))
