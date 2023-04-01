@@ -58,7 +58,7 @@ fun NodeExec.configureDeploy(stage: String) {
         "--config",
         deployDir.resolve("serverless.yml").absolutePath,
         "--package",
-        deployDir.absolutePath.resolve("lambda-dist"),
+        deployDir.resolve("lambda-dist").absolutePath,
         "--stage",
         stage
     )
