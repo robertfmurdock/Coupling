@@ -104,7 +104,6 @@ private suspend fun handleConnect(request: Request, connectionId: String, event:
     val partyId = request.query["partyId"].toString().let(::PartyId)
     val result = commandDispatcher.execute(ConnectPartyUserCommand(partyId, connectionId))
     return if (result == null) {
-        delete(connectionId, commandDispatcher.managementApiClient).await()
         403
     } else {
         with(result) { first.filterNot { it.connectionId == connectionId } to second }
@@ -148,14 +147,10 @@ fun serverlessSocketMessage(event: Json): dynamic {
     val message = event.at<String>("body")?.fromJsonString<JsonMessage>()?.toModel()
     return MainScope().promise {
         val socketDispatcher = socketDispatcher()
-        when (message) {
-            is PairAssignmentAdjustmentMessage -> {
-                socketDispatcher.execute(
-                    ReportDocCommand(connectionId, message.currentPairAssignments),
-                )?.broadcast(socketDispatcher)
-            }
-            else -> {
-            }
+        if (message is PairAssignmentAdjustmentMessage) {
+            socketDispatcher.execute(
+                ReportDocCommand(connectionId, message.currentPairAssignments),
+            )?.broadcast(socketDispatcher)
         }
         json("statusCode" to 200)
     }

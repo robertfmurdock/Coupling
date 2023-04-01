@@ -172,35 +172,31 @@ class WebsocketTest {
     @Test
     fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup() exercise {
         val url = "wss://$socketHost/api/${PartyId("whoops").value}/pairAssignments/current"
-        generalPurposeClient.webSocketSession {
-            url(url)
+        runCatching {
+            generalPurposeClient.webSocketSession {
+                url(url)
+            }
         }
-    } verify { socket ->
-        withTimeout(400) {
-            (socket.incoming.receive() as? Frame.Close)
-                .assertIsNotEqualTo(null)
-        }
+    } verify { result ->
+        result.getOrNull()
+            .assertIsEqualTo(null)
     }
 
     @Test
     fun whenNotAuthorizedForThePartyWillNotTalkToYou() = sdkSetup() exercise {
-        couplingSocketSession(stubParty().id)
-    } verify { socket ->
-        withTimeout(400) {
-            (socket.incoming.receive() as? Frame.Close)
-                .assertIsNotEqualTo(null)
-        }
+        runCatching { couplingSocketSession(stubParty().id) }
+    } verify { result ->
+        result.getOrNull()
+            .assertIsEqualTo(null)
     }
 
     @Test
     fun willNotCrashWhenGoingToNonExistingSocketLocation() = sdkSetup() exercise {
         val url = "wss://$socketHost/api/404WTF"
-        generalPurposeClient.webSocketSession { url(url) }
-    } verify { socket ->
-        withTimeout(400) {
-            (socket.incoming.receive() as? Frame.Close)
-                .assertIsNotEqualTo(null)
-        }
+        runCatching { generalPurposeClient.webSocketSession { url(url) } }
+    } verify { result ->
+        result.getOrNull()
+            .assertIsEqualTo(null)
     }
 
     @Test
