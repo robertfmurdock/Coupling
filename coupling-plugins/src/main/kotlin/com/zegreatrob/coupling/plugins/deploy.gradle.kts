@@ -21,8 +21,12 @@ tasks {
         into(deployDir)
         from("${serverProject.projectDir.absolutePath}/serverless.yml")
     }
+    val copyDeployConfigs by registering(Copy::class) {
+        into(deployDir.resolve("deploy"))
+        from(serverProject.projectDir.resolve("deploy"))
+    }
     val copyDeployResources by registering(Copy::class) {
-        dependsOn(copyServerYml, ":server:assemble")
+        dependsOn(copyServerYml, copyDeployConfigs, ":server:assemble")
         into(buildDir.resolve("deploy/build/executable"))
         from(serverProject.buildDir.resolve("executable"))
     }
