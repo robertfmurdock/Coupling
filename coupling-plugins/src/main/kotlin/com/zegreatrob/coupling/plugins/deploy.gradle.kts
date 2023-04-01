@@ -37,6 +37,7 @@ fun NodeExec.configureDeploy(stage: String) {
     if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
         enabled = false
     }
+    workingDir = serverProject.projectDir
     nodeCommand = "serverless"
     arguments = listOf(
         "deploy",
