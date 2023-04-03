@@ -1,4 +1,3 @@
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
@@ -135,6 +134,15 @@ tasks {
         outputFile = cdnOutputFile
         outputs.cacheIf { true }
     }
+    val projectResultPath = "${rootProject.buildDir.path}/test-output/${project.path}/results".replace(":", "/")
+    val copyCdnJsonToResultDirectory by registering(Copy::class) {
+        mustRunAfter(check)
+        from(cdnBuildOutput)
+        into(projectResultPath)
+    }
+    named("collectResults") {
+        dependsOn(copyCdnJsonToResultDirectory)
+    }
 
     named("compileTestDevelopmentExecutableKotlinJs") {
         dependsOn(lookupCdnUrls)
@@ -188,7 +196,7 @@ tasks {
 }
 
 artifacts {
-    add(clientConfiguration.name, tasks.compileProductionExecutableKotlinJs.map { it.outputFileProperty }) {
+    add(clientConfiguration.name, tasks.compileProductionExecutableKotlinJs.map { it.destinationDirectory }) {
         builtBy(tasks.compileProductionExecutableKotlinJs)
     }
     val browserProductionWebpack = tasks.named("browserProductionWebpack", KotlinWebpack::class)
