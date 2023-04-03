@@ -120,7 +120,7 @@ tasks {
     val cdnBuildOutput = "${project.buildDir.absolutePath}/cdn.json"
     val lookupCdnUrls by registering(NodeExec::class) {
         setup(project)
-        dependsOn(cdnLookupConfiguration, "publicPackageJson")
+        dependsOn(cdnLookupConfiguration, "publicPackageJson", ":kotlinNpmInstall")
         inputs.files(cdnLookupConfiguration)
         inputs.files(runtimeClasspath)
         val settingsFile = File(project.projectDir, "cdn.settings.json")
