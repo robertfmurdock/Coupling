@@ -105,11 +105,12 @@ class WebsocketTest {
         val socket2 = couplingSocketSession(party.id).alsoWaitForFirstFrame()
         listOf(socket1, socket2)
     } verifyAnd { (socket1) ->
-        socket1
-            .readTextFrame()
+        runCatching { withTimeout(2000) { socket1.readTextFrame() } }
+            .getOrNull()
             ?.toCouplingServerMessage()
             .assertIsEqualTo(
                 CouplingSocketMessage("Users viewing this page: 2", expectedOnlinePlayerList(username).toSet()),
+                "Did not receive appropriate message in 2 seconds",
             )
     } teardown { result ->
         result?.forEach { it.close() }
