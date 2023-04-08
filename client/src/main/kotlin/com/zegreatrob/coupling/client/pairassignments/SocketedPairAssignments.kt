@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.Controls
+import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.create
-import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.components.CouplingWebsocket
 import com.zegreatrob.coupling.components.disconnectedMessage
 import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
@@ -30,10 +30,10 @@ data class SocketedPairAssignments<D>(
     val controls: Controls<D>,
     val allowSave: Boolean,
 ) : DataPropsBind<SocketedPairAssignments<D>>(socketedPairAssignments<D>())
-    where D : SavePairAssignmentsCommandDispatcher, D : DeletePairAssignmentsCommandDispatcher
+    where D : SavePairAssignmentsCommandDispatcher, D : DeletePairAssignmentsCommand.Dispatcher
 
 private fun <D> socketedPairAssignments()
-where D : SavePairAssignmentsCommandDispatcher, D : DeletePairAssignmentsCommandDispatcher =
+where D : SavePairAssignmentsCommandDispatcher, D : DeletePairAssignmentsCommand.Dispatcher =
     tmFC<SocketedPairAssignments<D>> { (party, players, originalPairs, controls, allowSave) ->
         val (pairAssignments, setPairAssignments) = useState(originalPairs)
         val (message, setMessage) = useState(disconnectedMessage)

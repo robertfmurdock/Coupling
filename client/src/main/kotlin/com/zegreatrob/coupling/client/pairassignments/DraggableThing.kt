@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.external.reactdnd.useDrag
-import com.zegreatrob.coupling.client.external.reactdnd.useDrop
+import com.zegreatrob.coupling.components.external.reactdnd.useDrag
+import com.zegreatrob.coupling.components.external.reactdnd.useDrop
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC
 import csstype.Display

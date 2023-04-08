@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
-import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
-import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.components.ServerMessage
+import com.zegreatrob.coupling.components.external.reactdnd.DndProvider
+import com.zegreatrob.coupling.components.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.components.party.PartyBrowser
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -29,7 +29,7 @@ data class PairAssignments(
     val players: List<Player>,
     val pairs: PairAssignmentDocument?,
     val setPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
+    val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
     val message: CouplingSocketMessage,
     val allowSave: Boolean,
 ) : DataPropsBind<PairAssignments>(pairAssignments)
