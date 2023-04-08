@@ -39,7 +39,6 @@ dependencies {
     cdnLookupConfiguration(
         project(mapOf("path" to ":coupling-libraries:cdnLookup", "configuration" to "cdnLookupConfiguration"))
     )
-
     implementation(kotlin("stdlib-js"))
     implementation(project(":sdk"))
     implementation(project(":coupling-libraries:components"))
@@ -150,7 +149,7 @@ tasks {
     compileProductionExecutableKotlinJs {}
 
     val browserProductionWebpack = named("browserProductionWebpack", KotlinWebpack::class) {
-        dependsOn(lookupCdnUrls)
+        dependsOn(lookupCdnUrls, "processResources")
         inputs.file(cdnBuildOutput)
         inputs.file(File(project.projectDir, "cdn.settings.json"))
         outputs.dir(File(destinationDirectory, "html"))
@@ -176,15 +175,9 @@ tasks {
 
     val additionalResources by registering(Copy::class) {
         outputs.cacheIf { true }
-        val javascriptConfig = configurations["runtimeClasspath"]
-        dependsOn(javascriptConfig)
-        duplicatesStrategy = DuplicatesStrategy.WARN
+        dependsOn(":sdk:jsProcessResources")
         into("${project.buildDir.absolutePath}/additionalResources")
-        from({
-            javascriptConfig.files
-                .filter { it.isFile && it.name.endsWith(".klib") }
-                .map { zipTree(it).matching { include("com/**/*") } }
-        })
+        from(provider { (findByPath(":sdk:jsProcessResources") as ProcessResources).destinationDir })
     }
     named("processResources") {
         dependsOn(additionalResources)
@@ -194,6 +187,7 @@ tasks {
         outputs.cacheIf { true }
     }
 }
+
 
 artifacts {
     add(clientConfiguration.name, tasks.compileProductionExecutableKotlinJs.map { it.destinationDirectory }) {
