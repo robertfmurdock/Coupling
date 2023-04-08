@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.pairassignments.spin.PairAssignmentsAnimator
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
@@ -32,7 +32,7 @@ data class PairSectionPanel(
     val pairAssignments: PairAssignmentDocument?,
     val allowSave: Boolean,
     val setPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
+    val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
 ) : DataPropsBind<PairSectionPanel>(pairSectionPanel)
 
 val pairSectionPanel = tmFC<PairSectionPanel> { props ->

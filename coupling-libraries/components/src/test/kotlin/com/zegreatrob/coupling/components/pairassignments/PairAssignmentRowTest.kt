@@ -1,11 +1,10 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.components.pairassignments
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.Controls
-import com.zegreatrob.coupling.client.StubDispatcher
+import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.pairassignments.list.PairAssignmentRow
+import com.zegreatrob.coupling.components.StubDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.Party
@@ -36,7 +35,12 @@ class PairAssignmentRowTest {
         val actor = userEvent.setup()
     }) {
         render(
-            PairAssignmentRow(party, document, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
+            PairAssignmentRow(
+                party,
+                document,
+                Controls(stubDispatcher.func(), reloadSpy::spyFunction),
+                this,
+            ).create {},
             json("wrapper" to MemoryRouter),
         )
     } exercise {
@@ -63,7 +67,12 @@ class PairAssignmentRowTest {
         val actor = userEvent.setup()
     }) {
         render(
-            PairAssignmentRow(party, document, Controls(stubDispatcher.func(), reloadSpy::spyFunction), this).create {},
+            PairAssignmentRow(
+                party,
+                document,
+                Controls(stubDispatcher.func(), reloadSpy::spyFunction),
+                this,
+            ).create {},
             json("wrapper" to MemoryRouter),
         )
     } exercise {

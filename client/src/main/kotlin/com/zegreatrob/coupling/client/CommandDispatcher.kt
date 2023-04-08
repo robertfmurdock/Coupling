@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.action.RequestSpinAction
 import com.zegreatrob.coupling.client.pairassignments.PartyCurrentDataQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.SavePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.client.pairassignments.list.ClientDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryQueryDispatcher
 import com.zegreatrob.coupling.client.party.DeletePartyCommandDispatcher
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
@@ -31,7 +31,7 @@ class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesS
     DeletePinCommandDispatcher,
     NewPairAssignmentsCommandDispatcher,
     SavePairAssignmentsCommandDispatcher,
-    DeletePairAssignmentsCommandDispatcher,
+    ClientDeletePairAssignmentsCommandDispatcher,
     SavePlayerCommandDispatcher,
     DeletePlayerCommandDispatcher,
     SavePartyCommandDispatcher,

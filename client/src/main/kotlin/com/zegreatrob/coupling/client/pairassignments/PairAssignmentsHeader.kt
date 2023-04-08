@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.pairassignments
 
-import com.zegreatrob.coupling.client.pairassignments.list.dateText
 import com.zegreatrob.coupling.components.PairAssignmentBlock
+import com.zegreatrob.coupling.components.pairassignments.dateText
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC

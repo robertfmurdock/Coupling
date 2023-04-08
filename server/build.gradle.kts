@@ -77,6 +77,7 @@ tasks {
     val serverCompile by registering(NodeExec::class) {
         dependsOn(
             "packageJson",
+            ":kotlinNpmInstall",
             compileKotlinJs,
             processResources,
             compileProductionExecutableKotlinJs,

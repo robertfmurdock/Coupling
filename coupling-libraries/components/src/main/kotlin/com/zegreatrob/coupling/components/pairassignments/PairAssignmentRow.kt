@@ -1,13 +1,14 @@
-package com.zegreatrob.coupling.client.pairassignments.list
+package com.zegreatrob.coupling.components.pairassignments
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
-import com.zegreatrob.coupling.client.Controls
+import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.pin.PinSection
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.PairAssignmentBlock
 import com.zegreatrob.coupling.components.PinButtonScale
+import com.zegreatrob.coupling.components.pin.PinSection
 import com.zegreatrob.coupling.components.pngPath
 import com.zegreatrob.coupling.components.red
 import com.zegreatrob.coupling.components.small
@@ -45,7 +46,7 @@ import react.useCallback
 data class PairAssignmentRow(
     val party: Party,
     val document: PairAssignmentDocument,
-    val controls: Controls<DeletePairAssignmentsCommandDispatcher>,
+    val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
     val windowFunctions: WindowFunctions = WindowFunctions,
 
 ) :

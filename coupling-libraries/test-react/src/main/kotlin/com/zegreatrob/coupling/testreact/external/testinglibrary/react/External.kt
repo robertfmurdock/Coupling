@@ -38,6 +38,7 @@ external class Screen {
     fun queryByLabelText(s: String): HTMLElement?
     fun queryAllByAltText(s: String): Array<HTMLElement>
     fun getByRole(role: String, options: Json): HTMLElement
+    fun findByText(text: String): Promise<HTMLElement>
 }
 
 external fun within(element: Element?): Screen

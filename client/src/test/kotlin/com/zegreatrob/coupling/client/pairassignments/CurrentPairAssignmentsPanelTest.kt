@@ -2,12 +2,12 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.client.create
-import com.zegreatrob.coupling.client.external.reactdnd.DndProvider
-import com.zegreatrob.coupling.client.external.reactdndhtml5backend.HTML5Backend
-import com.zegreatrob.coupling.client.pairassignments.list.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.components.external.reactdnd.DndProvider
+import com.zegreatrob.coupling.components.external.reactdndhtml5backend.HTML5Backend
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -113,7 +113,7 @@ class CurrentPairAssignmentsPanelTest {
             },
         )
     } exercise {
-        actor.click(screen.getByText("Cancel")).await()
+        actor.click(screen.findByText("Cancel").await()).await()
         stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
         waitFor {

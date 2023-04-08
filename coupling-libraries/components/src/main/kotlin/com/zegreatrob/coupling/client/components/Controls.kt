@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.components.DispatchFunc
 

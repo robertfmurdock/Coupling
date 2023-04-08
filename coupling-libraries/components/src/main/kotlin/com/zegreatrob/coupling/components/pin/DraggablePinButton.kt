@@ -1,8 +1,8 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.components.pin
 
-import com.zegreatrob.coupling.client.external.reactdnd.useDrag
 import com.zegreatrob.coupling.components.PinButton
 import com.zegreatrob.coupling.components.PinButtonScale
+import com.zegreatrob.coupling.components.external.reactdnd.useDrag
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
