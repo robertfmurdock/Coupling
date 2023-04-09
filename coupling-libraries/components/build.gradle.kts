@@ -31,6 +31,8 @@ dependencies {
     implementation(npmConstrained("react-websocket"))
     implementation(npmConstrained("fitty"))
     implementation(npmConstrained("blueimp-md5"))
+    implementation(npmConstrained("react-dnd"))
+    implementation(npmConstrained("react-dnd-html5-backend"))
 
     testImplementation(project(":coupling-libraries:test-react"))
     testImplementation(project(":coupling-libraries:stub-model"))

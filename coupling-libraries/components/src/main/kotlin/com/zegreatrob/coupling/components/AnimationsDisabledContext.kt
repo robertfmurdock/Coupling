@@ -1,3 +1,3 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
 val animationsDisabledContext = react.createContext(false)

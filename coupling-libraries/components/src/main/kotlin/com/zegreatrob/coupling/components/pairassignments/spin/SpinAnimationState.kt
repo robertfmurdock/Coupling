@@ -1,6 +1,6 @@
-package com.zegreatrob.coupling.client.pairassignments.spin
+package com.zegreatrob.coupling.components.pairassignments.spin
 
-import com.zegreatrob.coupling.client.Frame
+import com.zegreatrob.coupling.components.Frame
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.orderedPairedPlayers
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf

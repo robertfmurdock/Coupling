@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.components.pairassignments
 
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.pink

@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.ClientConfig
-import com.zegreatrob.coupling.client.animationsDisabledContext
 import com.zegreatrob.coupling.client.demo.DemoPage
 import com.zegreatrob.coupling.client.graphql.GraphIQLPage
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
@@ -20,6 +19,7 @@ import com.zegreatrob.coupling.client.stats.StatisticsPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
+import com.zegreatrob.coupling.components.animationsDisabledContext
 import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.tmFC

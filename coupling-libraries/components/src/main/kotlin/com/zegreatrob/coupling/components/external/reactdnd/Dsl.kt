@@ -18,8 +18,12 @@ val reactDnd = MainScope().async {
 }
 
 val DndProvider: ElementType<DnDProvideProps> = FC { props ->
-    waitForAsyncReactComponent({ runCatching { reactDnd.getCompleted().DndProvider }.getOrNull() }) { component ->
-        component { +props }
+    if (js("global.IS_JSDOM") == true) {
+        +props.children
+    } else {
+        waitForAsyncReactComponent({ runCatching { reactDnd.getCompleted().DndProvider }.getOrNull() }) { component ->
+            component { +props }
+        }
     }
 }
 
@@ -42,6 +46,10 @@ fun <T> useDrop(
     drop: (Json) -> Unit,
     collect: (DragSourceMonitor) -> T,
 ): DragDropValueContent<T> {
+    if (js("global.IS_JSDOM") == true) {
+        return DragDropValueContent(null.unsafeCast<T>(), {})
+    }
+
     val results = reactDnd.getCompleted().useDrop(
         json(
             "accept" to acceptItemType,

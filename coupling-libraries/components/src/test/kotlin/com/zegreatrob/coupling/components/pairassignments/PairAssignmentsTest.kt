@@ -1,10 +1,9 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.components.pairassignments
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.components.Controls
-import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.components.StubDispatchFunc
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -16,6 +15,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.await
 import org.w3c.dom.HTMLElement

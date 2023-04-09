@@ -1,10 +1,9 @@
-package com.zegreatrob.coupling.client.pairassignments.spin
+package com.zegreatrob.coupling.components.pairassignments.spin
 
-import com.zegreatrob.coupling.client.FrameRunner
-import com.zegreatrob.coupling.client.animationsDisabledContext
+import com.zegreatrob.coupling.components.FrameRunner
+import com.zegreatrob.coupling.components.animationsDisabledContext
 import com.zegreatrob.coupling.components.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.components.spin.RosteredPairAssignments
-import com.zegreatrob.coupling.components.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
@@ -14,7 +13,7 @@ import com.zegreatrob.minreact.tmFC
 import react.ChildrenBuilder
 import react.Consumer
 import react.create
-import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML
 
 data class PairAssignmentsAnimator(
     val party: Party,
@@ -25,12 +24,11 @@ data class PairAssignmentsAnimator(
 ) : DataPropsBind<PairAssignmentsAnimator>(pairAssignmentsAnimator)
 
 private val animationContextConsumer: Consumer<Boolean> = animationsDisabledContext.Consumer
-
 val pairAssignmentsAnimator = tmFC<PairAssignmentsAnimator> { props ->
     val (party, players, pairAssignments, enabled) = props
     animationContextConsumer {
         children = { animationsDisabled ->
-            div.create {
+            ReactHTML.div.create {
                 if (!animationsDisabled && enabled) {
                     spinFrameRunner(pairAssignments, party, players, props)
                 } else {
@@ -48,8 +46,13 @@ private fun ChildrenBuilder.spinFrameRunner(
     props: PairAssignmentsAnimator,
 ) {
     add(
-        FrameRunner(SpinAnimationState.sequence(pairAssignments), speed = party.animationSpeed) { state ->
-            val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
+        FrameRunner(
+            SpinAnimationState.sequence(
+                pairAssignments,
+            ),
+            speed = party.animationSpeed,
+        ) { state ->
+            val rosteredPairAssignments = RosteredPairAssignments.rosteredPairAssignments(pairAssignments, players)
             flipperSpinAnimation(state, props, party, rosteredPairAssignments)
         },
     )

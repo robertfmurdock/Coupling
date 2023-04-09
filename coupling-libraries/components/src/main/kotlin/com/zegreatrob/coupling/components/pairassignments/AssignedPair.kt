@@ -1,9 +1,9 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.components.pairassignments
 
-import com.zegreatrob.coupling.client.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.external.reactdnd.useDrop
 import com.zegreatrob.coupling.components.external.reactfliptoolkit.Flipped
+import com.zegreatrob.coupling.components.pairassignments.spin.placeholderPlayer
 import com.zegreatrob.coupling.components.pin.PinSection
 import com.zegreatrob.coupling.components.pin.pinDragItemType
 import com.zegreatrob.coupling.components.pngPath

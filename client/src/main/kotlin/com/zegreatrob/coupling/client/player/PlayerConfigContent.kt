@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.components.ConfigForm
 import com.zegreatrob.coupling.components.ConfigHeader
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.configInput
+import com.zegreatrob.coupling.components.player.PlayerRoster
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player

@@ -1,9 +1,9 @@
-package com.zegreatrob.coupling.client.pairassignments.spin
+package com.zegreatrob.coupling.components.pairassignments.spin
 
-import com.zegreatrob.coupling.client.pairassignments.AssignedPair
-import com.zegreatrob.coupling.client.pairassignments.PairAssignmentsHeader
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.external.reactfliptoolkit.Flipped
+import com.zegreatrob.coupling.components.pairassignments.AssignedPair
+import com.zegreatrob.coupling.components.pairassignments.PairAssignmentsHeader
 import com.zegreatrob.coupling.components.spin.RosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.Party
@@ -27,14 +27,6 @@ data class SpinAnimationPanel(
     val rosteredPairAssignments: RosteredPairAssignments,
     val state: SpinAnimationState,
 ) : DataPropsBind<SpinAnimationPanel>(spinAnimationPanel)
-
-val placeholderPlayer = Player("?", name = "Next...", callSignAdjective = "--------", callSignNoun = "--------")
-
-data class SpinStateData(
-    val rosterPlayers: List<Player>,
-    val revealedPairs: List<PinnedCouplingPair>,
-    val shownPlayer: Player?,
-)
 
 val spinAnimationPanel = tmFC<SpinAnimationPanel> { (party, rosteredPairAssignments, state) ->
     val pairAssignments = rosteredPairAssignments.pairAssignments

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.components.pairassignments
 
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind

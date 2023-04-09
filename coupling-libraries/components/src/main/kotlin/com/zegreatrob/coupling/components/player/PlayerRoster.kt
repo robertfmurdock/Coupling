@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.player
+package com.zegreatrob.coupling.components.player
 
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.Paths.playerConfigPage

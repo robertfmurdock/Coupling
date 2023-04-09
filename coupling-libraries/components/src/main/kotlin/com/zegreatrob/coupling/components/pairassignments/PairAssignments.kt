@@ -1,12 +1,12 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
-import com.zegreatrob.coupling.client.player.PlayerRoster
 import com.zegreatrob.coupling.components.ServerMessage
 import com.zegreatrob.coupling.components.external.reactdnd.DndProvider
-import com.zegreatrob.coupling.components.external.reactdndhtml5backend.HTML5Backend
+import com.zegreatrob.coupling.components.external.reactdndhtml5backend.html5BackendDeferred
 import com.zegreatrob.coupling.components.party.PartyBrowser
+import com.zegreatrob.coupling.components.player.PlayerRoster
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
@@ -14,6 +14,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.react.dataloader.DataLoader
+import com.zegreatrob.react.dataloader.EmptyState
+import com.zegreatrob.react.dataloader.PendingState
+import com.zegreatrob.react.dataloader.ResolvedState
 import csstype.Color
 import csstype.Display
 import csstype.LineStyle
@@ -22,6 +26,8 @@ import csstype.PropertiesBuilder
 import csstype.px
 import csstype.vh
 import emotion.css.ClassName
+import react.FC
+import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 
 data class PairAssignments(
@@ -42,9 +48,9 @@ private val pairAssignments = tmFC<PairAssignments> { props ->
     val pairAssignments = pairs?.overlayUpdatedPlayers(players)
     val notPairedPlayers = notPairedPlayers(players, pairs)
 
-    DndProvider {
-        backend = HTML5Backend
+    Html5DndProvider {
         div {
+            println("hi")
             className = pairAssignmentsClassName
             div {
                 add(PartyBrowser(party))
@@ -55,6 +61,26 @@ private val pairAssignments = tmFC<PairAssignments> { props ->
             add(ServerMessage(message), key = "${message.text} ${message.players.size}")
         }
     }
+}
+
+val Html5DndProvider = FC<PropsWithChildren> { props ->
+    add(
+        DataLoader({ html5BackendDeferred.await() }, { null }) { state ->
+            console.log("ho", state, (state as? ResolvedState)?.result)
+            when (state) {
+                is EmptyState -> div { +"Preparing component" }
+                is PendingState -> div { +"Pending component" }
+                is ResolvedState -> state.result?.let {
+                    println("holo")
+                    DndProvider {
+                        println("holup")
+                        backend = it.HTML5Backend
+                        +props.children
+                    }
+                }
+            }
+        },
+    )
 }
 
 private fun PropertiesBuilder.pairAssignmentStyles() {

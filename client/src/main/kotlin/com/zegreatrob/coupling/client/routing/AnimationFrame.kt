@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.client.animationsDisabledContext
+import com.zegreatrob.coupling.components.animationsDisabledContext
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.EmptyState
 import csstype.ident

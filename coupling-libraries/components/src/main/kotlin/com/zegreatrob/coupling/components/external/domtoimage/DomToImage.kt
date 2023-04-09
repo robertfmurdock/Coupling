@@ -1,6 +1,4 @@
-@file:Suppress("unused")
-
-package com.zegreatrob.coupling.client.external.domtoimage
+package com.zegreatrob.coupling.components.external.domtoimage
 
 import org.w3c.files.Blob
 import web.html.HTMLElement

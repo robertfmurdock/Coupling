@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.components.CouplingWebsocket
 import com.zegreatrob.coupling.components.disconnectedMessage
 import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
+import com.zegreatrob.coupling.components.pairassignments.PairAssignments
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage

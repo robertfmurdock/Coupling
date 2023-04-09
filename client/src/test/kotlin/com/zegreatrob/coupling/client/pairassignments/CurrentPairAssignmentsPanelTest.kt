@@ -6,8 +6,10 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.client.create
-import com.zegreatrob.coupling.components.external.reactdnd.DndProvider
-import com.zegreatrob.coupling.components.external.reactdndhtml5backend.HTML5Backend
+import com.zegreatrob.coupling.components.pairassignments.AssignedPair
+import com.zegreatrob.coupling.components.pairassignments.CurrentPairAssignmentsPanel
+import com.zegreatrob.coupling.components.pairassignments.Html5DndProvider
+import com.zegreatrob.coupling.components.pairassignments.assignedPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -90,8 +92,7 @@ class CurrentPairAssignmentsPanelTest {
         val actor = userEvent.setup()
     }) {
         render(
-            DndProvider.create {
-                backend = HTML5Backend
+            Html5DndProvider.create {
                 MemoryRouter {
                     Routes {
                         PathRoute {

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.components.external.reactdnd
 
 import com.zegreatrob.coupling.components.external.reactdndhtml5backend.DnDBackend
-import react.Props
+import react.PropsWithChildren
 
-external interface DnDProvideProps : Props {
+external interface DnDProvideProps : PropsWithChildren {
     var backend: DnDBackend
 }
 
