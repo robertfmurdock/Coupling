@@ -41,7 +41,7 @@ dependencies {
     )
     implementation(kotlin("stdlib-js"))
     implementation(project(":sdk"))
-    implementation(project(":coupling-libraries:components"))
+    implementation(project("components"))
     implementation(project(":coupling-libraries:model"))
     implementation(project(":coupling-libraries:action"))
     implementation(project(":coupling-libraries:logging"))

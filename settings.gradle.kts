@@ -13,6 +13,7 @@ rootProject.name = "Coupling"
 
 includeBuild("coupling-plugins")
 include("client")
+include("client:components")
 include("server")
 include("server-base")
 include("sdk")
@@ -23,7 +24,6 @@ include("deploy:prod")
 
 include("coupling-libraries:action")
 include("coupling-libraries:cdnLookup")
-include("coupling-libraries:components")
 include("coupling-libraries:dependency-bom")
 include("coupling-libraries:dynamo")
 include("coupling-libraries:export")
