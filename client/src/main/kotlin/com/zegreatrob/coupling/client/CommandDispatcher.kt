@@ -16,9 +16,9 @@ import com.zegreatrob.coupling.client.party.SavePartyCommandDispatcher
 import com.zegreatrob.coupling.client.pin.ClientDeletePinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PartyPinListQueryDispatcher
 import com.zegreatrob.coupling.client.pin.PartyPinQueryDispatcher
-import com.zegreatrob.coupling.client.player.DeletePlayerCommandDispatcher
+import com.zegreatrob.coupling.client.player.ClientDeletePlayerCommandDispatcher
+import com.zegreatrob.coupling.client.player.ClientSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.client.player.PartyPlayerQueryDispatcher
-import com.zegreatrob.coupling.client.player.SavePlayerCommandDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.stats.StatisticsQueryDispatcher
@@ -33,7 +33,7 @@ class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesS
     ClientNewPairAssignmentsCommandDispatcher,
     ClientSavePairAssignmentsCommandDispatcher,
     DeletePartyCommandDispatcher,
-    DeletePlayerCommandDispatcher,
+    ClientDeletePlayerCommandDispatcher,
     HistoryQueryDispatcher,
     LoggingActionExecuteSyntax,
     NewPairAssignmentsCommandDispatcher,
@@ -49,7 +49,7 @@ class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesS
     SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommandDispatcher,
     SavePinCommandDispatcher,
-    SavePlayerCommandDispatcher,
+    ClientSavePlayerCommandDispatcher,
     SdkRequestSpinActionDispatcher,
     StatisticsQueryDispatcher,
     BarebonesSdk by sdk {

@@ -1,18 +1,21 @@
-package com.zegreatrob.coupling.client.player
+package com.zegreatrob.coupling.components.player
 
-import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.StubDispatcher
-import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.action.DeletePlayerCommand
+import com.zegreatrob.coupling.action.SavePlayerCommand
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.components.StubDispatchFunc
+import com.zegreatrob.coupling.components.StubDispatcher
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.fireEvent
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
 import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minreact.create
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
@@ -73,7 +76,8 @@ class PlayerConfigTest {
         )
     } exercise {
         actor.type(screen.getByLabelText("Name"), "nonsense").await()
-        actor.click(screen.getByText("Save")).await()
+
+        fireEvent.submit(screen.getByRole("form"))
         stubDispatcher.simulateSuccess<SavePlayerCommand>()
     } verify {
         waitFor {

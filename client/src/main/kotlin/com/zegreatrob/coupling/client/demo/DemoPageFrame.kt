@@ -3,13 +3,13 @@ package com.zegreatrob.coupling.client.demo
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.aboutPageContent
 import com.zegreatrob.coupling.client.party.PartyConfigContent
-import com.zegreatrob.coupling.client.player.PlayerConfigContent
 import com.zegreatrob.coupling.components.Controls
 import com.zegreatrob.coupling.components.DispatchFunc
 import com.zegreatrob.coupling.components.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.components.pairassignments.PairAssignments
 import com.zegreatrob.coupling.components.pin.PinConfigContent
+import com.zegreatrob.coupling.components.player.PlayerConfigContent
 import com.zegreatrob.coupling.components.spin.PrepareSpinContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.minreact.DataPropsBind

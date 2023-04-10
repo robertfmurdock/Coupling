@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.components
 
 import csstype.em
 import emotion.react.css

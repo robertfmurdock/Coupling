@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.playerId
+import com.zegreatrob.coupling.components.player.PlayerConfig
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.create
 

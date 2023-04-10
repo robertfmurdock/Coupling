@@ -1,5 +1,7 @@
-package com.zegreatrob.coupling.client.player
+package com.zegreatrob.coupling.components.player
 
+import com.zegreatrob.coupling.action.DeletePlayerCommand
+import com.zegreatrob.coupling.action.SavePlayerCommand
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.components.DispatchFunc
@@ -12,7 +14,6 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
@@ -29,17 +30,15 @@ data class PlayerConfig<P>(
     val dispatchFunc: DispatchFunc<out P>,
     val windowFuncs: WindowFunctions = WindowFunctions,
 ) : DataPropsBind<PlayerConfig<P>>(component.unsafeCast<TMFC>())
-    where P : SavePlayerCommandDispatcher, P : DeletePlayerCommandDispatcher {
+    where P : SavePlayerCommand.Dispatcher, P : DeletePlayerCommand.Dispatcher {
     companion object {
         private val component = playerConfig<Dispatcho>()
     }
 }
 
-private interface Dispatcho : SavePlayerCommandDispatcher, DeletePlayerCommandDispatcher {
-    override val playerRepository: PlayerRepository
-}
+private interface Dispatcho : SavePlayerCommand.Dispatcher, DeletePlayerCommand.Dispatcher
 
-private fun <P> playerConfig() where P : SavePlayerCommandDispatcher, P : DeletePlayerCommandDispatcher =
+private fun <P> playerConfig() where P : SavePlayerCommand.Dispatcher, P : DeletePlayerCommand.Dispatcher =
     tmFC<PlayerConfig<P>> { props ->
         val (party, player, players, reload, dispatchFunc, windowFuncs) = props
         val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
