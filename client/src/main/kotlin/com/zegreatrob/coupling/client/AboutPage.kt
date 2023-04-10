@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.PageFrame
+import com.zegreatrob.coupling.client.components.PlayerCard
+import com.zegreatrob.coupling.client.components.blue
+import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.client.components.large
+import com.zegreatrob.coupling.client.components.loadMarkdownString
+import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.components.CouplingButton
-import com.zegreatrob.coupling.components.PageFrame
-import com.zegreatrob.coupling.components.PlayerCard
-import com.zegreatrob.coupling.components.blue
-import com.zegreatrob.coupling.components.external.reactmarkdown.Markdown
-import com.zegreatrob.coupling.components.large
-import com.zegreatrob.coupling.components.loadMarkdownString
-import com.zegreatrob.coupling.components.welcome.playerImage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.add
 import csstype.ClassName
@@ -61,7 +61,14 @@ private val backButton = FC<Props> {
         to = "/parties"
         tabIndex = -1
         draggable = false
-        add(CouplingButton(large, blue, ClassName(""), {})) {
+        add(
+            com.zegreatrob.coupling.client.components.CouplingButton(
+                com.zegreatrob.coupling.client.components.large,
+                com.zegreatrob.coupling.client.components.blue,
+                ClassName(""),
+                {},
+            ),
+        ) {
             i { className = ClassName("fa fa-step-backward") }
             span { +"Back to Coupling!" }
         }

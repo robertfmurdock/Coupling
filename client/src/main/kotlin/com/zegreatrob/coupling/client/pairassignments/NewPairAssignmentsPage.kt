@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.pairassignments
 
+import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.components.Controls
 import com.zegreatrob.minreact.create
 
 val NewPairAssignmentsPage = partyPageFunction { props, partyId ->

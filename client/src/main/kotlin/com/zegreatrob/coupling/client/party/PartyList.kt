@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.components.CouplingButton
-import com.zegreatrob.coupling.components.DemoButton
-import com.zegreatrob.coupling.components.GqlButton
-import com.zegreatrob.coupling.components.LogoutButton
-import com.zegreatrob.coupling.components.NotificationButton
-import com.zegreatrob.coupling.components.PageFrame
-import com.zegreatrob.coupling.components.green
-import com.zegreatrob.coupling.components.party.PartyCard
-import com.zegreatrob.coupling.components.supersize
+import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.DemoButton
+import com.zegreatrob.coupling.client.components.GqlButton
+import com.zegreatrob.coupling.client.components.LogoutButton
+import com.zegreatrob.coupling.client.components.NotificationButton
+import com.zegreatrob.coupling.client.components.PageFrame
+import com.zegreatrob.coupling.client.components.green
+import com.zegreatrob.coupling.client.components.party.PartyCard
+import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -61,6 +61,11 @@ val NewPartyButton = FC<Props> {
         to = "/new-party/"
         draggable = false
         tabIndex = -1
-        add(CouplingButton(supersize, green)) { +"Form a new party!" }
+        add(
+            com.zegreatrob.coupling.client.components.CouplingButton(
+                com.zegreatrob.coupling.client.components.supersize,
+                com.zegreatrob.coupling.client.components.green,
+            ),
+        ) { +"Form a new party!" }
     }
 }

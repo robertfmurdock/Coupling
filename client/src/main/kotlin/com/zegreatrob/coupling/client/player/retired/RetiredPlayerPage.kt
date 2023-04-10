@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.player.retired
 
+import com.zegreatrob.coupling.client.components.player.PlayerConfig
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.client.routing.playerId
-import com.zegreatrob.coupling.components.player.PlayerConfig
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.create
 import react.ChildrenBuilder

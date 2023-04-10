@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.pin
 
-import com.zegreatrob.coupling.components.ConfigHeader
-import com.zegreatrob.coupling.components.CouplingButton
-import com.zegreatrob.coupling.components.large
-import com.zegreatrob.coupling.components.orange
-import com.zegreatrob.coupling.components.pin.PinCard
+import com.zegreatrob.coupling.client.components.ConfigHeader
+import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.large
+import com.zegreatrob.coupling.client.components.orange
+import com.zegreatrob.coupling.client.components.pin.PinCard
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
@@ -56,7 +56,12 @@ val pinList = tmFC<PinList> { (party, pins) ->
                 to = "/${party.id.value}/pin/new"
                 tabIndex = -1
                 draggable = false
-                add(CouplingButton(large, orange)) {
+                add(
+                    com.zegreatrob.coupling.client.components.CouplingButton(
+                        com.zegreatrob.coupling.client.components.large,
+                        com.zegreatrob.coupling.client.components.orange,
+                    ),
+                ) {
                     +"Add a new pin."
                 }
             }

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.components.DispatchFunc
+import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.react.dataloader.DataLoaderTools
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax

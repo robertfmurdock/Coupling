@@ -2,15 +2,15 @@ package com.zegreatrob.coupling.client.demo
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.components.Frame
-import com.zegreatrob.coupling.components.pairassignments.pairAssignmentsClassName
-import com.zegreatrob.coupling.components.pairassignments.prepareToSpinButtonClassName
-import com.zegreatrob.coupling.components.party.PartyConfigContent
-import com.zegreatrob.coupling.components.pin.pinConfigContentClassName
-import com.zegreatrob.coupling.components.player.playerConfigContentClassName
-import com.zegreatrob.coupling.components.spin.playerSelectorClass
-import com.zegreatrob.coupling.components.svgPath
-import com.zegreatrob.coupling.components.welcome.playerImage
+import com.zegreatrob.coupling.client.components.Frame
+import com.zegreatrob.coupling.client.components.pairassignments.pairAssignmentsClassName
+import com.zegreatrob.coupling.client.components.pairassignments.prepareToSpinButtonClassName
+import com.zegreatrob.coupling.client.components.party.PartyConfigContent
+import com.zegreatrob.coupling.client.components.pin.pinConfigContentClassName
+import com.zegreatrob.coupling.client.components.player.playerConfigContentClassName
+import com.zegreatrob.coupling.client.components.spin.playerSelectorClass
+import com.zegreatrob.coupling.client.components.svgPath
+import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf

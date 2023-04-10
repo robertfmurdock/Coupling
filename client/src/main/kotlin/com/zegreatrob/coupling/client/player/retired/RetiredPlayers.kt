@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.player.retired
 
-import com.zegreatrob.coupling.components.Paths.playerConfigPage
-import com.zegreatrob.coupling.components.PlayerCard
-import com.zegreatrob.coupling.components.party.PartyBrowser
-import com.zegreatrob.coupling.components.pngPath
+import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
+import com.zegreatrob.coupling.client.components.PlayerCard
+import com.zegreatrob.coupling.client.components.party.PartyBrowser
+import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player

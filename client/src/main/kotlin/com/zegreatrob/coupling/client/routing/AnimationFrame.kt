@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.components.animationsDisabledContext
+import com.zegreatrob.coupling.client.components.animationsDisabledContext
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.EmptyState
 import csstype.ident
@@ -25,7 +25,7 @@ val animationFrame = FC<AnimationFrameProps> { props ->
     var animationState by useState(AnimationState.Start)
     val shouldStartAnimation = props.state !is EmptyState && animationState === AnimationState.Start
 
-    animationsDisabledContext.Consumer {
+    com.zegreatrob.coupling.client.components.animationsDisabledContext.Consumer {
         children = { animationsDisabled: Boolean ->
             div.create {
                 css {

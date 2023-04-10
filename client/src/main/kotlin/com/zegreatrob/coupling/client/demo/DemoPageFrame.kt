@@ -2,15 +2,15 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.aboutPageContent
-import com.zegreatrob.coupling.components.Controls
-import com.zegreatrob.coupling.components.DispatchFunc
-import com.zegreatrob.coupling.components.NewPairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.components.external.reactmarkdown.Markdown
-import com.zegreatrob.coupling.components.pairassignments.PairAssignments
-import com.zegreatrob.coupling.components.party.PartyConfigContent
-import com.zegreatrob.coupling.components.pin.PinConfigContent
-import com.zegreatrob.coupling.components.player.PlayerConfigContent
-import com.zegreatrob.coupling.components.spin.PrepareSpinContent
+import com.zegreatrob.coupling.client.components.Controls
+import com.zegreatrob.coupling.client.components.DispatchFunc
+import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.client.components.pairassignments.PairAssignments
+import com.zegreatrob.coupling.client.components.party.PartyConfigContent
+import com.zegreatrob.coupling.client.components.pin.PinConfigContent
+import com.zegreatrob.coupling.client.components.player.PlayerConfigContent
+import com.zegreatrob.coupling.client.components.spin.PrepareSpinContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add

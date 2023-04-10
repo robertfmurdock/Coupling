@@ -4,6 +4,8 @@ import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.action.RequestSpinAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.client.components.pin.SavePinCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.ClientSavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PartyCurrentDataQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.ClientDeletePairAssignmentsCommandDispatcher
@@ -22,8 +24,6 @@ import com.zegreatrob.coupling.client.player.PartyPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.stats.StatisticsQueryDispatcher
-import com.zegreatrob.coupling.components.NewPairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.components.pin.SavePinCommandDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.sdk.BarebonesSdk
 

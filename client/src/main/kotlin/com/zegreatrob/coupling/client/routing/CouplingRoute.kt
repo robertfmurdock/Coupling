@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.routing
 
-import com.zegreatrob.coupling.components.external.auth0.react.useAuth0Data
+import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import kotlinx.browser.window
 import react.ChildrenBuilder
 import react.FC

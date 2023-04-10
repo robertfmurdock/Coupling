@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.graphql
 
-import com.zegreatrob.coupling.components.waitForAsyncReactComponent
+import com.zegreatrob.coupling.client.components.waitForAsyncReactComponent
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.ElementType

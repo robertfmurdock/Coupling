@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.user
 
+import com.zegreatrob.coupling.client.components.DemoButton
+import com.zegreatrob.coupling.client.components.GqlButton
+import com.zegreatrob.coupling.client.components.LogoutButton
+import com.zegreatrob.coupling.client.components.NotificationButton
+import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.party.AboutButton
 import com.zegreatrob.coupling.client.party.GeneralControlBar
-import com.zegreatrob.coupling.components.DemoButton
-import com.zegreatrob.coupling.components.GqlButton
-import com.zegreatrob.coupling.components.LogoutButton
-import com.zegreatrob.coupling.components.NotificationButton
-import com.zegreatrob.coupling.components.PageFrame
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.add

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.components.svgPath
+import com.zegreatrob.coupling.client.components.svgPath
 import react.FC
 import react.Props
 import react.dom.svg.ReactSVG

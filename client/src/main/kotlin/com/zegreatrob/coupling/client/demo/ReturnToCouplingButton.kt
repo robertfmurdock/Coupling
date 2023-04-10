@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.demo
 
-import com.zegreatrob.coupling.components.CouplingButton
-import com.zegreatrob.coupling.components.pink
-import com.zegreatrob.coupling.components.supersize
-import com.zegreatrob.coupling.components.svgPath
+import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.pink
+import com.zegreatrob.coupling.client.components.supersize
+import com.zegreatrob.coupling.client.components.svgPath
 import com.zegreatrob.minreact.add
 import csstype.AlignItems
 import csstype.AnimationIterationCount
@@ -30,7 +30,10 @@ val returnToCouplingButton = FC<Props> {
         tabIndex = -1
         draggable = false
         add(
-            CouplingButton(sizeRuleSet = supersize, colorRuleSet = pink) {
+            com.zegreatrob.coupling.client.components.CouplingButton(
+                sizeRuleSet = com.zegreatrob.coupling.client.components.supersize,
+                colorRuleSet = com.zegreatrob.coupling.client.components.pink,
+            ) {
                 animationName = ident("pulsate")
                 animationDuration = 0.75.s
                 animationIterationCount = AnimationIterationCount.infinite

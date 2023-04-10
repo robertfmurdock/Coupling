@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.components.ConfigHeader
-import com.zegreatrob.coupling.components.PageFrame
+import com.zegreatrob.coupling.client.components.ConfigHeader
+import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
