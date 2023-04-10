@@ -1,6 +1,8 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.components.party
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.party.DeletePartyCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.components.DispatchFunc
 import com.zegreatrob.coupling.components.Paths
 import com.zegreatrob.coupling.components.useForm
@@ -11,7 +13,6 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
@@ -22,11 +23,9 @@ import kotlin.js.Json
 
 data class PartyConfig<D>(val party: Party, val dispatchFunc: DispatchFunc<out D>) :
     DataPropsBind<PartyConfig<D>>(partyConfig.unsafeCast<TMFC>())
-    where D : SavePartyCommandDispatcher, D : DeletePartyCommandDispatcher
+    where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher
 
-private interface PartyConfigDispatcher : SavePartyCommandDispatcher, DeletePartyCommandDispatcher {
-    override val partyRepository: PartyRepository
-}
+private interface PartyConfigDispatcher : SavePartyCommand.Dispatcher, DeletePartyCommand.Dispatcher
 
 private val partyConfig = tmFC { (party, commandFunc): PartyConfig<PartyConfigDispatcher> ->
     val isNew = party.id.value == ""

@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.components.party
 
-import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.StubDispatcher
-import com.zegreatrob.coupling.client.create
-import com.zegreatrob.coupling.client.party.PartyConfig
-import com.zegreatrob.coupling.client.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.components.StubDispatchFunc
+import com.zegreatrob.coupling.components.StubDispatcher
+import com.zegreatrob.coupling.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.fireEvent
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
@@ -15,8 +15,8 @@ import com.zegreatrob.coupling.testreact.external.testinglibrary.react.within
 import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
-import kotlinx.coroutines.await
+import com.zegreatrob.minreact.create
+import com.zegreatrob.testmints.async.asyncSetup
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLOptionElement
 import react.ReactNode
@@ -33,7 +33,13 @@ class PartyConfigTest {
     fun willDefaultPartyThatIsMissingData() = asyncSetup(object {
         val party = Party(PartyId("1"), name = "1")
     }) exercise {
-        render(PartyConfig(party, StubDispatchFunc()).create(), json("wrapper" to MemoryRouter))
+        render(
+            PartyConfig(
+                party,
+                StubDispatchFunc(),
+            ).create(),
+            json("wrapper" to MemoryRouter),
+        )
     } verify {
         within(screen.getByLabelText("Pairing Rule"))
             .getByRole("option", json("selected" to true))
@@ -72,13 +78,14 @@ class PartyConfigTest {
                     }
                     PathRoute {
                         path = "*"
-                        element = PartyConfig(party, stubDispatcher.func()).create()
+                        element =
+                            PartyConfig(party, stubDispatcher.func()).create()
                     }
                 }
             },
         )
     } exercise {
-        actor.click(screen.getByText("Save")).await()
+        fireEvent.submit(screen.getByRole("form"))
         stubDispatcher.simulateSuccess<SavePartyCommand>()
     } verify {
         waitFor {
@@ -95,12 +102,13 @@ class PartyConfigTest {
         val stubDispatcher = StubDispatcher()
         val actor = userEvent.setup()
     }) {
-        render(PartyConfig(party, stubDispatcher.func()).create(), json("wrapper" to MemoryRouter))
+        render(
+            PartyConfig(party, stubDispatcher.func()).create(),
+            json("wrapper" to MemoryRouter),
+        )
     } exercise {
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value
-            .also {
-                actor.click(screen.getByText("Save")).await()
-            }
+            .also { fireEvent.submit(screen.getByRole("form")) }
     } verify { automatedPartyId ->
         waitFor {
             stubDispatcher.commandsDispatched<SavePartyCommand>()
@@ -113,9 +121,4 @@ class PartyConfigTest {
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value
             .assertIsEqualTo(automatedPartyId)
     }
-}
-
-fun <T> T?.assertNotNull(callback: (T) -> Unit = {}) {
-    this.assertIsNotEqualTo(null)
-    callback(this!!)
 }

@@ -8,11 +8,11 @@ import com.zegreatrob.coupling.client.pairassignments.ClientSavePairAssignmentsC
 import com.zegreatrob.coupling.client.pairassignments.PartyCurrentDataQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.ClientDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryQueryDispatcher
-import com.zegreatrob.coupling.client.party.DeletePartyCommandDispatcher
+import com.zegreatrob.coupling.client.party.ClientDeletePartyCommandDispatcher
+import com.zegreatrob.coupling.client.party.ClientSavePartyCommandDispatcher
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
 import com.zegreatrob.coupling.client.party.PartyListQueryDispatcher
 import com.zegreatrob.coupling.client.party.PartyQueryDispatcher
-import com.zegreatrob.coupling.client.party.SavePartyCommandDispatcher
 import com.zegreatrob.coupling.client.pin.ClientDeletePinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PartyPinListQueryDispatcher
 import com.zegreatrob.coupling.client.pin.PartyPinQueryDispatcher
@@ -29,11 +29,13 @@ import com.zegreatrob.coupling.sdk.BarebonesSdk
 
 class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesSdk) :
     ClientDeletePairAssignmentsCommandDispatcher,
+    ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,
+    ClientDeletePlayerCommandDispatcher,
     ClientNewPairAssignmentsCommandDispatcher,
     ClientSavePairAssignmentsCommandDispatcher,
-    DeletePartyCommandDispatcher,
-    ClientDeletePlayerCommandDispatcher,
+    ClientSavePartyCommandDispatcher,
+    ClientSavePlayerCommandDispatcher,
     HistoryQueryDispatcher,
     LoggingActionExecuteSyntax,
     NewPairAssignmentsCommandDispatcher,
@@ -47,9 +49,7 @@ class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesS
     RetiredPlayerListQueryDispatcher,
     RetiredPlayerQueryDispatcher,
     SavePairAssignmentsCommand.Dispatcher,
-    SavePartyCommandDispatcher,
     SavePinCommandDispatcher,
-    ClientSavePlayerCommandDispatcher,
     SdkRequestSpinActionDispatcher,
     StatisticsQueryDispatcher,
     BarebonesSdk by sdk {

@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.client.demo
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.client.party.PartyConfigContent
 import com.zegreatrob.coupling.components.Frame
 import com.zegreatrob.coupling.components.pairassignments.pairAssignmentsClassName
 import com.zegreatrob.coupling.components.pairassignments.prepareToSpinButtonClassName
+import com.zegreatrob.coupling.components.party.PartyConfigContent
 import com.zegreatrob.coupling.components.pin.pinConfigContentClassName
 import com.zegreatrob.coupling.components.player.playerConfigContentClassName
 import com.zegreatrob.coupling.components.spin.playerSelectorClass
