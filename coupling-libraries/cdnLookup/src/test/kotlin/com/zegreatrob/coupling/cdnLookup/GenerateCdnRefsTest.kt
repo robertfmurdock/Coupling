@@ -1,4 +1,4 @@
-package com.zegreatgrob.coupling.cdnLookup
+package com.zegreatrob.coupling.cdnLookup
 
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup

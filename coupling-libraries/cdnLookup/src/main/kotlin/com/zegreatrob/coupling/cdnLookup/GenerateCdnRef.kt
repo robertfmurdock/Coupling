@@ -1,4 +1,4 @@
-package com.zegreatgrob.coupling.cdnLookup
+package com.zegreatrob.coupling.cdnLookup
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
