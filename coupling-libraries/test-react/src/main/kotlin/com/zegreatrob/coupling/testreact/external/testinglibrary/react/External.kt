@@ -1,5 +1,3 @@
-@file:JsModule("@testing-library/react")
-
 package com.zegreatrob.coupling.testreact.external.testinglibrary.react
 
 import org.w3c.dom.Element
@@ -9,11 +7,17 @@ import react.ReactNode
 import kotlin.js.Json
 import kotlin.js.Promise
 
-external val screen: Screen
+@JsModule("@testing-library/react")
+external val testingLibraryReact: TestingLibraryReact
 
-external fun render(node: ReactNode, options: Json = definedExternally): Result
-
-external val fireEvent: FireEvent
+external interface TestingLibraryReact {
+    val screen: Screen
+    fun render(node: ReactNode, options: Json = definedExternally): Result
+    val fireEvent: FireEvent
+    fun act(block: () -> Unit)
+    fun within(element: Element?): Screen
+    fun waitFor(callback: () -> Any?): Promise<Unit>
+}
 
 external class FireEvent {
     fun click(element: Element)
@@ -40,7 +44,3 @@ external class Screen {
     fun getByRole(role: String, options: Json = definedExternally): HTMLElement
     fun findByText(text: String): Promise<HTMLElement>
 }
-
-external fun within(element: Element?): Screen
-
-external fun waitFor(callback: () -> Any?): Promise<Unit>

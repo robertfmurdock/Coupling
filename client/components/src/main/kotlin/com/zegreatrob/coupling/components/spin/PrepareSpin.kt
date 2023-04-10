@@ -27,6 +27,8 @@ val prepareSpin = tmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, di
     var pinSelections by useState(pins.map { it.id })
     var redirectUrl by useState<String?>(null)
     val onSpin = onSpin(dispatchFunc, party, playerSelections, pinSelections) { redirectUrl = it }
+    val setPinSelections: (List<String?>) -> Unit = { pinSelections = it }
+    val setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit = { playerSelections = it }
 
     if (redirectUrl != null) {
         Navigate { to = redirectUrl ?: "" }
@@ -37,8 +39,8 @@ val prepareSpin = tmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, di
                 playerSelections,
                 pins,
                 pinSelections,
-                { playerSelections = it },
-                { pinSelections = it },
+                setPlayerSelections,
+                setPinSelections,
                 onSpin,
             ),
         )

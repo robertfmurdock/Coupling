@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.act
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
@@ -31,10 +32,10 @@ import kotlin.js.json
 import kotlin.test.Test
 
 class PrepareSpinTest {
-    val user = userEvent.setup()
 
     @Test
     fun whenSelectedPinIsClickedWillDeselectPin() = asyncSetup(object {
+        val user = userEvent.setup()
         val party = stubParty()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
@@ -44,13 +45,15 @@ class PrepareSpinTest {
             json("wrapper" to MemoryRouter),
         )
     }) exercise {
-        user.click(
-            wrapper.container.querySelector(".$selectedPinsClass")
-                ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
-                ?.asList()
-                ?.map { it as? HTMLElement }
-                ?.firstOrNull(),
-        ).await()
+        act {
+            user.click(
+                wrapper.container.querySelector(".$selectedPinsClass")
+                    ?.querySelectorAll("[data-pin-button=\"${firstPin.id}\"]")
+                    ?.asList()
+                    ?.map { it as? HTMLElement }
+                    ?.firstOrNull(),
+            )
+        }
     } verify {
         waitFor {
             wrapper.container.querySelector(".$deselectedPinsClass")
@@ -59,11 +62,12 @@ class PrepareSpinTest {
                 ?.map { it as? HTMLElement }
                 ?.firstOrNull()
                 .assertIsNotEqualTo(null)
-        }.await()
+        }
     }
 
     @Test
     fun whenDeselectedPinIsClickedWillSelectPin() = asyncSetup(object {
+        val user = userEvent.setup()
         val party = stubParty()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
@@ -86,7 +90,7 @@ class PrepareSpinTest {
                 ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
                 ?.asList()
                 ?.firstOrNull()
-        }.await()
+        }
     } exercise {
         user.click(
             render.container.querySelector(".$deselectedPinsClass")
@@ -94,7 +98,7 @@ class PrepareSpinTest {
                 ?.asList()
                 ?.map { it as? HTMLElement }
                 ?.firstOrNull(),
-        ).await()
+        )
     } verify {
         waitFor {
             render.container.querySelector(".$selectedPinsClass")
@@ -103,7 +107,7 @@ class PrepareSpinTest {
                 ?.map { it as? HTMLElement }
                 ?.firstOrNull()
                 .assertIsNotEqualTo(null)
-        }.await()
+        }
     }
 
     @Test
@@ -133,6 +137,7 @@ class PrepareSpinTest {
     fun whenAllPlayersAreDeselectedSpinButtonWillBeDisabled() = asyncSetup(object {
         val party = stubParty()
         val players = stubPlayers(3)
+        val user = userEvent.setup()
         val currentPairs = PairAssignmentDocument(
             PairAssignmentDocumentId(""),
             DateTime.now(),
@@ -159,13 +164,14 @@ class PrepareSpinTest {
             result.getByText("Spin!")
                 .attributes["disabled"]
                 .assertIsNotEqualTo(null)
-        }.await()
+        }
     }
 
     @Test
     fun whenTheAllButtonIsClickedAllPlayersBecomeSelected() = asyncSetup(object {
         val party = stubParty()
         val players = stubPlayers(3)
+        val user = userEvent.setup()
         val currentPairs = null
         val context = render(
             PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
@@ -180,12 +186,13 @@ class PrepareSpinTest {
                 .mapNotNull { it as? HTMLElement }
                 .map { it.getAttribute("data-selected") }
                 .assertIsEqualTo(listOf("true", "true", "true"))
-        }.await()
+        }
     }
 
     @Test
     fun whenTheNoneButtonIsClickedAllPlayersBecomeDeselected() = asyncSetup(object {
         val party = stubParty()
+        val user = userEvent.setup()
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
@@ -206,6 +213,6 @@ class PrepareSpinTest {
                 .mapNotNull { it as? HTMLElement }
                 .map { it.getAttribute("data-selected") }
                 .assertIsEqualTo(listOf("false", "false", "false"))
-        }.await()
+        }
     }
 }

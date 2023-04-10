@@ -86,7 +86,7 @@ class PlayerConfigTest {
                     listOf(SavePlayerCommand(party.id, player.copy(name = "nonsense"))),
                 )
             reloaderSpy.callCount.assertIsEqualTo(1)
-        }.await()
+        }
     }
 
     @Test
@@ -117,7 +117,7 @@ class PlayerConfigTest {
             pathSetterSpy.spyReceivedValues.contains(
                 "/${party.id.value}/pairAssignments/current/",
             )
-        }.await()
+        }
     }
 
     @Test

@@ -1,8 +1,10 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.components.party
 
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.party.PartyConfig
+import com.zegreatrob.coupling.client.party.SavePartyCommand
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -13,8 +15,7 @@ import com.zegreatrob.coupling.testreact.external.testinglibrary.react.within
 import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.setup
+import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import kotlinx.coroutines.await
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLOptionElement
@@ -29,7 +30,7 @@ import kotlin.test.Test
 class PartyConfigTest {
 
     @Test
-    fun willDefaultPartyThatIsMissingData(): Unit = setup(object {
+    fun willDefaultPartyThatIsMissingData() = asyncSetup(object {
         val party = Party(PartyId("1"), name = "1")
     }) exercise {
         render(PartyConfig(party, StubDispatchFunc()).create(), json("wrapper" to MemoryRouter))
@@ -85,7 +86,7 @@ class PartyConfigTest {
                 .assertIsEqualTo(listOf(SavePartyCommand(party)))
             screen.getByText("Parties!")
                 .assertNotNull()
-        }.await()
+        }
     }
 
     @Test

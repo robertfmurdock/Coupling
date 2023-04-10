@@ -78,7 +78,7 @@ class CurrentPairAssignmentsPanelTest {
             stubDispatcher.commandsDispatched<SavePairAssignmentsCommand>().size
                 .assertIsEqualTo(0)
             screen.getByText("current pairs")
-        }.await()
+        }
     }
 
     @Test
@@ -118,7 +118,7 @@ class CurrentPairAssignmentsPanelTest {
             stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
                 .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, pairAssignments.id)))
             screen.getByText("current pairs")
-        }.await()
+        }
     }
 
     @Test
