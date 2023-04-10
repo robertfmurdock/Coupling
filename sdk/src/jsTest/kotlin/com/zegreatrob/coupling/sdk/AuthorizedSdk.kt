@@ -81,9 +81,7 @@ private fun buildClient(): HttpClient {
     val client = defaultClient(null).config {
         followRedirects = false
         expectSuccess = false
-        defaultRequest {
-            url("$baseUrl")
-        }
+        defaultRequest { url("$baseUrl") }
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) = ktorLogger.info { message }

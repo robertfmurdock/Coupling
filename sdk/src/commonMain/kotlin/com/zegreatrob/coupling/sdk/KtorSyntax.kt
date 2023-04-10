@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.benasher44.uuid.uuid4
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
@@ -22,6 +23,7 @@ fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
     expectSuccess = false
     defaultRequest {
         header(UserAgent, "CouplingSdk")
+        header("X-Request-ID", uuid4())
         locationAndBasename
             ?.let { (location, basename) ->
                 url {
