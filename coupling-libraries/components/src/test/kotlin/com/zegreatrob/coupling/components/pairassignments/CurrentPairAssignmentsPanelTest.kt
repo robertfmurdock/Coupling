@@ -1,15 +1,11 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.components.pairassignments
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.StubDispatchFunc
-import com.zegreatrob.coupling.client.StubDispatcher
-import com.zegreatrob.coupling.client.create
-import com.zegreatrob.coupling.components.pairassignments.AssignedPair
-import com.zegreatrob.coupling.components.pairassignments.CurrentPairAssignmentsPanel
-import com.zegreatrob.coupling.components.pairassignments.Html5DndProvider
-import com.zegreatrob.coupling.components.pairassignments.assignedPair
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.components.StubDispatchFunc
+import com.zegreatrob.coupling.components.StubDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -30,6 +26,7 @@ import com.zegreatrob.minenzyme.ShallowWrapper
 import com.zegreatrob.minenzyme.dataprops
 import com.zegreatrob.minenzyme.shallow
 import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import kotlinx.coroutines.await

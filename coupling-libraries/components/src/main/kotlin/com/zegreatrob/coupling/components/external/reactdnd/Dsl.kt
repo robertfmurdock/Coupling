@@ -28,6 +28,9 @@ val DndProvider: ElementType<DnDProvideProps> = FC { props ->
 }
 
 fun <T> useDrag(itemType: String, itemId: Any): DragDropValueContent<T> {
+    if (js("global.IS_JSDOM") == true) {
+        return DragDropValueContent(null.unsafeCast<T>(), {})
+    }
     val results = reactDnd.getCompleted().useDrag(
         json(
             "type" to itemType,

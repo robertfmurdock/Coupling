@@ -1,6 +1,4 @@
-@file:JsModule("react-router-dom")
-
-package com.zegreatrob.coupling.client.external.reactrouter
+package com.zegreatrob.coupling.components.external.reactrouter
 
 import react.ElementType
 import react.Props

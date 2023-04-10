@@ -16,8 +16,8 @@ external fun render(node: ReactNode, options: Json = definedExternally): Result
 external val fireEvent: FireEvent
 
 external class FireEvent {
-
     fun click(element: Element)
+    fun submit(element: Element)
 }
 
 external class Result {
@@ -37,7 +37,7 @@ external class Screen {
     fun queryByText(s: String): HTMLElement?
     fun queryByLabelText(s: String): HTMLElement?
     fun queryAllByAltText(s: String): Array<HTMLElement>
-    fun getByRole(role: String, options: Json): HTMLElement
+    fun getByRole(role: String, options: Json = definedExternally): HTMLElement
     fun findByText(text: String): Promise<HTMLElement>
 }
 

@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.ConfigFrame
-import com.zegreatrob.coupling.client.Editor
 import com.zegreatrob.coupling.client.gravatarLink
 import com.zegreatrob.coupling.components.ConfigForm
+import com.zegreatrob.coupling.components.ConfigFrame
 import com.zegreatrob.coupling.components.ConfigHeader
+import com.zegreatrob.coupling.components.Editor
 import com.zegreatrob.coupling.components.configInput
 import com.zegreatrob.coupling.components.party.PartyCard
 import com.zegreatrob.coupling.model.party.PairingRule

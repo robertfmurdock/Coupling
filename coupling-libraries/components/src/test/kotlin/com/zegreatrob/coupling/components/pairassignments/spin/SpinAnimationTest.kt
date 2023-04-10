@@ -1,20 +1,10 @@
-package com.zegreatrob.coupling.client.pairassignments.spin
+package com.zegreatrob.coupling.components.pairassignments.spin
 
 import com.zegreatrob.coupling.components.PlayerCard
 import com.zegreatrob.coupling.components.pairassignments.AssignedPair
 import com.zegreatrob.coupling.components.pairassignments.assignedPair
-import com.zegreatrob.coupling.components.pairassignments.spin.AssignedPlayer
-import com.zegreatrob.coupling.components.pairassignments.spin.ShowPlayer
-import com.zegreatrob.coupling.components.pairassignments.spin.Shuffle
-import com.zegreatrob.coupling.components.pairassignments.spin.SpinAnimationPanel
-import com.zegreatrob.coupling.components.pairassignments.spin.SpinAnimationState
-import com.zegreatrob.coupling.components.pairassignments.spin.Start
-import com.zegreatrob.coupling.components.pairassignments.spin.pairAssignmentStyles
-import com.zegreatrob.coupling.components.pairassignments.spin.placeholderPlayer
-import com.zegreatrob.coupling.components.pairassignments.spin.playerRosterStyles
-import com.zegreatrob.coupling.components.pairassignments.spin.playerSpotlightStyles
 import com.zegreatrob.coupling.components.playerCard
-import com.zegreatrob.coupling.components.spin.RosteredPairAssignments.Companion.rosteredPairAssignments
+import com.zegreatrob.coupling.components.spin.RosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -45,7 +35,7 @@ class SpinAnimationTest {
         fun startWillMoveToShowFirstAssignedPlayer() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            state.next(pairAssignments)
+            Start.next(pairAssignments)
         } verify { result ->
             result.assertIsEqualTo(ShowPlayer(player))
         }
@@ -65,7 +55,7 @@ class SpinAnimationTest {
                     pairOf(players[0], players[2]).withPins(emptySet()),
                 ),
             )
-            val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
+            val rosteredPairAssignments = RosteredPairAssignments.rosteredPairAssignments(pairAssignments, players)
         }
 
         @Test
@@ -96,7 +86,7 @@ class SpinAnimationTest {
                 ),
             )
 
-            val rosteredPairAssignments = rosteredPairAssignments(pairAssignments, players)
+            val rosteredPairAssignments = RosteredPairAssignments.rosteredPairAssignments(pairAssignments, players)
         }
 
         @Test
@@ -120,7 +110,7 @@ class SpinAnimationTest {
         fun startWillMoveToShuffleStep1() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            state.next(pairAssignments)
+            Start.next(pairAssignments)
         } verify { result ->
             result.assertIsEqualTo(Shuffle(target = pairAssignments.pairs[0].players[0].player, step = 0))
         }

@@ -1,13 +1,13 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.components.pin
 
-import com.zegreatrob.coupling.client.ConfigFrame
-import com.zegreatrob.coupling.client.Editor
-import com.zegreatrob.coupling.client.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.components.ConfigForm
+import com.zegreatrob.coupling.components.ConfigFrame
 import com.zegreatrob.coupling.components.ConfigHeader
+import com.zegreatrob.coupling.components.Editor
 import com.zegreatrob.coupling.components.PinButton
 import com.zegreatrob.coupling.components.PinButtonScale
 import com.zegreatrob.coupling.components.configInput
+import com.zegreatrob.coupling.components.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
@@ -50,9 +50,7 @@ val pinConfigContent = tmFC<PinConfigContent> { (party, pin, pinList, onChange, 
     ConfigFrame {
         className = pinConfigContentClassName
         span {
-            css {
-                display = Display.inlineBlock
-            }
+            css { display = Display.inlineBlock }
             ConfigHeader {
                 this.party = party
                 +"Pin Configuration"

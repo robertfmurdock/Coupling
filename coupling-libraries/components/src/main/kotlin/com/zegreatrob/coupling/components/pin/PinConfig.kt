@@ -1,10 +1,9 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.components.pin
 
+import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.components.DispatchFunc
 import com.zegreatrob.coupling.components.Paths.pinListPath
-import com.zegreatrob.coupling.components.pin.SavePinCommand
-import com.zegreatrob.coupling.components.pin.SavePinCommandDispatcher
 import com.zegreatrob.coupling.components.useForm
 import com.zegreatrob.coupling.json.JsonPinData
 import com.zegreatrob.coupling.json.fromJsonDynamic
@@ -29,9 +28,9 @@ data class PinConfig<D>(
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out D>,
 ) : DataPropsBind<PinConfig<D>>(pinConfig.unsafeCast<TMFC>())
-    where D : SavePinCommandDispatcher, D : DeletePinCommandDispatcher
+    where D : SavePinCommandDispatcher, D : DeletePinCommand.Dispatcher
 
-private interface DD : SavePinCommandDispatcher, DeletePinCommandDispatcher {
+private interface DD : SavePinCommandDispatcher, DeletePinCommand.Dispatcher {
     override val pinRepository: PinRepository
 }
 
@@ -45,7 +44,6 @@ private val pinConfig = tmFC<PinConfig<DD>> { (party, pin, pinList, reload, disp
         dispatchFunc({ DeletePinCommand(party.id, pinId) }) { setRedirectUrl(party.id.pinListPath()) }
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
-
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {

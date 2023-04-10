@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.party
 import com.zegreatrob.coupling.client.StubDispatchFunc
 import com.zegreatrob.coupling.client.StubDispatcher
 import com.zegreatrob.coupling.client.create
-import com.zegreatrob.coupling.client.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -113,4 +112,9 @@ class PartyConfigTest {
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value
             .assertIsEqualTo(automatedPartyId)
     }
+}
+
+fun <T> T?.assertNotNull(callback: (T) -> Unit = {}) {
+    this.assertIsNotEqualTo(null)
+    callback(this!!)
 }

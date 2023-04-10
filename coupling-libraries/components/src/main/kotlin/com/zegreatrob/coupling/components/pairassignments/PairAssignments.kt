@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.components.Controls
+import com.zegreatrob.coupling.components.Controls
 import com.zegreatrob.coupling.components.ServerMessage
 import com.zegreatrob.coupling.components.external.reactdnd.DndProvider
 import com.zegreatrob.coupling.components.external.reactdndhtml5backend.html5BackendDeferred
@@ -66,14 +66,11 @@ private val pairAssignments = tmFC<PairAssignments> { props ->
 val Html5DndProvider = FC<PropsWithChildren> { props ->
     add(
         DataLoader({ html5BackendDeferred.await() }, { null }) { state ->
-            console.log("ho", state, (state as? ResolvedState)?.result)
             when (state) {
                 is EmptyState -> div { +"Preparing component" }
                 is PendingState -> div { +"Pending component" }
                 is ResolvedState -> state.result?.let {
-                    println("holo")
                     DndProvider {
-                        println("holup")
                         backend = it.HTML5Backend
                         +props.children
                     }

@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.components.pairassignments
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.components.Controls
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.PairAssignmentBlock
 import com.zegreatrob.coupling.components.PinButtonScale

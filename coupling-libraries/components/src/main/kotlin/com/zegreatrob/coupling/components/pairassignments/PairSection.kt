@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.components.Controls
+import com.zegreatrob.coupling.components.Controls
 import com.zegreatrob.coupling.components.CouplingButton
 import com.zegreatrob.coupling.components.external.domtoimage.domToImage
 import com.zegreatrob.coupling.components.large

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.components.Controls
+import com.zegreatrob.coupling.components.Controls
 import com.zegreatrob.coupling.components.pairassignments.spin.PairAssignmentsAnimator
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party

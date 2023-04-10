@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.components.pin
 
 import com.zegreatrob.coupling.components.PinButton
 import com.zegreatrob.coupling.components.PinButtonScale
