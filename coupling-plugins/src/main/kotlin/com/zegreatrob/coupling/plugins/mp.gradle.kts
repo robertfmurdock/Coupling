@@ -36,9 +36,9 @@ kotlin {
 }
 
 dependencies {
-    "commonMainApi"(enforcedPlatform(project(":coupling-libraries:dependency-bom")))
-    "commonMainApi"("org.jetbrains.kotlinx:kotlinx-serialization-core")
-    "commonMainApi"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    commonMainApi(enforcedPlatform(project(":coupling-libraries:dependency-bom")))
+    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
+    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 }
 
 tasks.withType(KotlinJsTest::class).configureEach {

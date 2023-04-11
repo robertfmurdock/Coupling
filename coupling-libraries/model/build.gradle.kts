@@ -1,6 +1,7 @@
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
+
 kotlin {
     targets {
         jvm()
@@ -9,40 +10,21 @@ kotlin {
             useCommonJs()
         }
     }
+}
 
-    sourceSets {
-        getByName("commonMain") {
-            dependencies {
-                api(kotlin("stdlib"))
-                api(kotlin("stdlib-common"))
-                api("com.soywiz.korlibs.klock:klock")
-                api("org.jetbrains.kotlinx:kotlinx-datetime")
-                implementation("com.benasher44:uuid")
-            }
-        }
-        getByName("commonTest") {
-            dependencies {
-                implementation(project(":coupling-libraries:test-logging"))
-                implementation(kotlin("test"))
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("com.zegreatrob.testmints:minassert")
-            }
-        }
-        getByName("jvmTest") {
-            dependencies {
-                implementation("org.junit.jupiter:junit-jupiter-api")
-                implementation("org.junit.jupiter:junit-jupiter-engine")
-            }
-        }
-        getByName("jsMain") {
-            dependencies {
-                api(kotlin("stdlib-js"))
-            }
-        }
-        getByName("jsTest") {
-            dependencies {
-                implementation(kotlin("test-js"))
-            }
-        }
-    }
+dependencies {
+    commonMainApi(enforcedPlatform(project(":coupling-libraries:dependency-bom")))
+    commonMainApi(kotlin("stdlib"))
+    commonMainApi(kotlin("stdlib-common"))
+    commonMainApi("com.soywiz.korlibs.klock:klock")
+    commonMainApi("org.jetbrains.kotlinx:kotlinx-datetime")
+    commonMainApi("com.benasher44:uuid")
+    commonTestImplementation(project(":coupling-libraries:test-logging"))
+    commonTestImplementation(kotlin("test"))
+    commonTestImplementation("com.zegreatrob.testmints:standard")
+    commonTestImplementation("com.zegreatrob.testmints:minassert")
+    "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
+    "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
+    "jsMainApi"(kotlin("stdlib-js"))
+    "jsTestImplementation"(kotlin("test-js"))
 }
