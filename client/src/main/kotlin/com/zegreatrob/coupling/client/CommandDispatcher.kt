@@ -23,7 +23,7 @@ import com.zegreatrob.coupling.client.player.ClientSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.client.player.PartyPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
-import com.zegreatrob.coupling.client.stats.StatisticsQueryDispatcher
+import com.zegreatrob.coupling.client.stats.ClientStatisticsQueryDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.sdk.BarebonesSdk
 
@@ -51,7 +51,7 @@ class CommandDispatcher(override val traceId: Uuid, override val sdk: BarebonesS
     SavePairAssignmentsCommand.Dispatcher,
     SavePinCommandDispatcher,
     SdkRequestSpinActionDispatcher,
-    StatisticsQueryDispatcher,
+    ClientStatisticsQueryDispatcher,
     BarebonesSdk by sdk {
     override suspend fun perform(action: RequestSpinAction): PairAssignmentDocument = sdk.perform(action)
 }

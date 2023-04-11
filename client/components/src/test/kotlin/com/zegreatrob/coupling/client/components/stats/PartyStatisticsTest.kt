@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.stats
+package com.zegreatrob.coupling.client.components.stats
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.action.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
+import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -51,7 +52,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
         render(
-            PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())).create(),
+            PartyStatistics(StatisticsQuery.Results(party, players, history, report, emptyList())).create(),
             json("wrapper" to MemoryRouter),
         )
     } verify { result ->
@@ -108,7 +109,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         val heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation))
     }) exercise {
         render(
-            PartyStatistics(StatisticQueryResults(party, players, history, report, heatmapData)).create(),
+            PartyStatistics(StatisticsQuery.Results(party, players, history, report, heatmapData)).create(),
             json("wrapper" to MemoryRouter),
         )
     } verify { wrapper ->
@@ -142,7 +143,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         val report = perform(ComposeStatisticsAction(party, players, emptyList()))
     }) exercise {
         render(
-            PartyStatistics(StatisticQueryResults(party, players, emptyList(), report, emptyList())).create(),
+            PartyStatistics(StatisticsQuery.Results(party, players, emptyList(), report, emptyList())).create(),
             json("wrapper" to MemoryRouter),
         )
     } verify {
@@ -182,7 +183,7 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
         val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
         render(
-            PartyStatistics(StatisticQueryResults(party, players, history, report, emptyList())).create(),
+            PartyStatistics(StatisticsQuery.Results(party, players, history, report, emptyList())).create(),
             json("wrapper" to MemoryRouter),
         )
     } verify {

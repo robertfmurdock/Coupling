@@ -1,9 +1,9 @@
-package com.zegreatrob.coupling.client.stats
+package com.zegreatrob.coupling.client.components.stats
 
-import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import org.w3c.dom.asList

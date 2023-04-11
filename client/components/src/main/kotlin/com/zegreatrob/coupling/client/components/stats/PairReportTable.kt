@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.stats
+package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.action.PairReport
 import com.zegreatrob.coupling.client.components.PlayerCard

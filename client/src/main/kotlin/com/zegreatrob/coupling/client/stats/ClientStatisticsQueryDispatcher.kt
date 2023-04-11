@@ -5,40 +5,31 @@ import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.StatisticsReport
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
+import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class StatisticsQuery(val partyId: PartyId) :
-    SimpleSuspendAction<StatisticsQueryDispatcher, StatisticQueryResults?> {
-    override val performFunc = link(StatisticsQueryDispatcher::perform)
-}
-
-data class StatisticQueryResults(
-    val party: Party,
-    val players: List<Player>,
-    val history: List<PairAssignmentDocument>,
-    val report: StatisticsReport,
-    val heatmapData: List<List<Double?>>,
-)
-
-interface StatisticsQueryDispatcher :
+interface ClientStatisticsQueryDispatcher :
     ExecutableActionExecuteSyntax,
     ComposeStatisticsActionDispatcher,
     CalculateHeatMapActionDispatcher,
-    PartyLoadAllSyntax {
+    PartyLoadAllSyntax,
+    StatisticsQuery.Dispatcher {
 
-    suspend fun perform(query: StatisticsQuery) = query.loadAll()
+    override suspend fun perform(query: StatisticsQuery) = query.loadAll()
 
     private suspend fun StatisticsQuery.loadAll() = partyId.loadAll()?.let { (party, players, history) ->
         val (report, heatmapData) = calculateStats(party, players, history)
-        StatisticQueryResults(party, players, history, report, heatmapData)
+        StatisticsQuery.Results(party, players, history, report, heatmapData)
     }
 
-    private fun calculateStats(party: Party, players: List<Player>, history: List<PairAssignmentDocument>): Pair<StatisticsReport, List<List<Double?>>> {
+    private fun calculateStats(
+        party: Party,
+        players: List<Player>,
+        history: List<PairAssignmentDocument>,
+    ): Pair<StatisticsReport, List<List<Double?>>> {
         val statisticsReport = composeStatistics(party, players, history)
         return statisticsReport to calculateHeatMap(players, history, statisticsReport)
     }
