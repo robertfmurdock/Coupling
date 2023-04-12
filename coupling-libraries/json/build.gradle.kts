@@ -5,51 +5,33 @@ plugins {
 kotlin {
     targets {
         jvm()
-        js {
-            useCommonJs()
-            nodejs()
-        }
+        js { nodejs() }
     }
-    sourceSets {
-        getByName("commonMain") {
-            dependencies {
-                api(project(":coupling-libraries:model"))
-                implementation(kotlin("stdlib"))
-                implementation(kotlin("stdlib-common"))
-                implementation("com.soywiz.korlibs.klock:klock")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-                implementation("io.ktor:ktor-client-core")
-                implementation("io.ktor:ktor-serialization-kotlinx-json")
-                implementation("io.ktor:ktor-client-content-negotiation")
-                implementation("io.ktor:ktor-client-logging")
-            }
-        }
-        getByName("commonTest") {
-            dependencies {
-                implementation(project(":coupling-libraries:test-logging"))
-                implementation(project(":coupling-libraries:stub-model"))
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("com.zegreatrob.testmints:minassert")
-                implementation("org.jetbrains.kotlin:kotlin-test")
-            }
-        }
-        getByName("jvmMain") {
-            dependencies {
-                implementation(kotlin("reflect"))
-            }
-        }
-        getByName("jvmTest") {
-            dependencies {
-                implementation(kotlin("reflect"))
-                implementation("org.junit.jupiter:junit-jupiter-api")
-                implementation("org.junit.jupiter:junit-jupiter-engine")
-            }
-        }
-        getByName("jsMain") {
-            dependencies {
-                implementation(kotlin("stdlib-js"))
-            }
-        }
-    }
+}
+
+dependencies {
+    commonMainApi(project(":coupling-libraries:model"))
+    commonMainImplementation(kotlin("stdlib"))
+    commonMainImplementation(kotlin("stdlib-common"))
+    commonMainImplementation("com.soywiz.korlibs.klock:klock")
+    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    commonMainImplementation("io.ktor:ktor-client-core")
+    commonMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
+    commonMainImplementation("io.ktor:ktor-client-content-negotiation")
+    commonMainImplementation("io.ktor:ktor-client-logging")
+
+    commonTestImplementation(project(":coupling-libraries:test-logging"))
+    commonTestImplementation(project(":coupling-libraries:stub-model"))
+    commonTestImplementation("com.zegreatrob.testmints:standard")
+    commonTestImplementation("com.zegreatrob.testmints:minassert")
+    commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
+
+    "jvmMainImplementation"(kotlin("reflect"))
+
+    "jvmTestImplementation"(kotlin("reflect"))
+    "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
+    "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
+
+    "jsMainImplementation"(kotlin("stdlib-js"))
 }

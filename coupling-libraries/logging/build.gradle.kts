@@ -1,26 +1,19 @@
-repositories {
-    mavenCentral()
-}
-
 plugins {
-    id("com.zegreatrob.coupling.plugins.mp")
     kotlin("plugin.serialization")
+    id("com.zegreatrob.coupling.plugins.mp")
 }
 
 kotlin {
     targets {
         jvm()
-        js {
-            nodejs()
-            useCommonJs()
-        }
+        js { nodejs() }
     }
 }
 
 dependencies {
     commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-common")
     commonMainImplementation("com.soywiz.korlibs.klock:klock")
-    commonMainApi("io.github.microutils:kotlin-logging")
-    commonMainApi("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    commonMainImplementation("io.github.microutils:kotlin-logging")
+    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     "jsMainImplementation"("org.jetbrains.kotlin:kotlin-stdlib-js")
 }
