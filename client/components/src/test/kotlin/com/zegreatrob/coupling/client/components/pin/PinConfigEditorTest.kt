@@ -9,12 +9,11 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.fireEvent
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
-import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
+import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
-import kotlinx.coroutines.await
 import react.router.MemoryRouter
 import kotlin.js.json
 import kotlin.test.Test
@@ -69,14 +68,14 @@ class PinConfigEditorTest {
         val newIcon = "pin new icon"
 
         val stubDispatcher = StubDispatcher()
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             PinConfig(party, pin, emptyList(), {}, stubDispatcher.func()).create(),
             json("wrapper" to MemoryRouter),
         )
-        actor.type(screen.getByLabelText("Name"), newName).await()
-        actor.type(screen.getByLabelText("Icon"), newIcon).await()
+        actor.type(screen.getByLabelText("Name"), newName)
+        actor.type(screen.getByLabelText("Icon"), newIcon)
     } exercise {
         fireEvent.submit(screen.getByRole("form"))
     } verify {

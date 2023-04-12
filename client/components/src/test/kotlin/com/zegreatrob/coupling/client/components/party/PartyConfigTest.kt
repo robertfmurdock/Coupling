@@ -7,12 +7,13 @@ import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.act
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.fireEvent
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.within
-import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
+import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minreact.create
@@ -66,7 +67,6 @@ class PartyConfigTest {
             email = "email-y",
             pairingRule = PairingRule.PreferDifferentBadge,
         )
-        val actor = userEvent.setup()
         val stubDispatcher = StubDispatcher()
     }) {
         render(
@@ -86,7 +86,7 @@ class PartyConfigTest {
         )
     } exercise {
         fireEvent.submit(screen.getByRole("form"))
-        stubDispatcher.simulateSuccess<SavePartyCommand>()
+        act { stubDispatcher.simulateSuccess<SavePartyCommand>() }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePartyCommand>()
@@ -100,7 +100,7 @@ class PartyConfigTest {
     fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = asyncSetup(object {
         val party = Party(PartyId(""))
         val stubDispatcher = StubDispatcher()
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             PartyConfig(party, stubDispatcher.func()).create(),

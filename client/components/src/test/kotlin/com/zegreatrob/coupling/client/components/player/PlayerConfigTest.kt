@@ -9,20 +9,24 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.act
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.fireEvent
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
-import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
+import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
-import kotlinx.coroutines.await
 import org.w3c.dom.Window
+import react.ReactNode
+import react.create
 import react.router.MemoryRouter
+import react.router.PathRoute
+import react.router.Routes
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -68,17 +72,17 @@ class PlayerConfigTest {
         val player = Player(id = "blarg", badge = Badge.Default.value)
         val reloaderSpy = SpyData<Unit, Unit>()
         val stubDispatcher = StubDispatcher()
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatcher.func()).create(),
             json("wrapper" to MemoryRouter),
         )
     } exercise {
-        actor.type(screen.getByLabelText("Name"), "nonsense").await()
+        actor.type(screen.getByLabelText("Name"), "nonsense")
 
         fireEvent.submit(screen.getByRole("form"))
-        stubDispatcher.simulateSuccess<SavePlayerCommand>()
+        act { stubDispatcher.simulateSuccess<SavePlayerCommand>() }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePlayerCommand>()
@@ -98,16 +102,26 @@ class PlayerConfigTest {
         val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
         val stubDispatcher = StubDispatcher()
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
-            PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFuncs)
-                .create(),
-            json("wrapper" to MemoryRouter),
+            MemoryRouter.create {
+                Routes {
+                    PathRoute {
+                        path = "/${party.id.value}/pairAssignments/current/"
+                        element = ReactNode("Fin")
+                    }
+                    PathRoute {
+                        path = "*"
+                        element = PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFuncs)
+                            .create()
+                    }
+                }
+            },
         )
     } exercise {
-        actor.click(screen.getByText("Retire")).await()
-        stubDispatcher.simulateSuccess<DeletePlayerCommand>()
+        actor.click(screen.getByText("Retire"))
+        act { stubDispatcher.simulateSuccess<DeletePlayerCommand>() }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<DeletePlayerCommand>()
@@ -127,7 +141,7 @@ class PlayerConfigTest {
         }
         val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
         val stubDispatcher = StubDispatcher()
     }) {
         render(
@@ -136,7 +150,7 @@ class PlayerConfigTest {
             json("wrapper" to MemoryRouter),
         )
     } exercise {
-        actor.click(screen.getByText("Retire")).await()
+        actor.click(screen.getByText("Retire"))
     } verify {
         stubDispatcher.dispatchList.isEmpty().assertIsEqualTo(true)
     }
@@ -145,7 +159,7 @@ class PlayerConfigTest {
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = asyncSetup(object {
         val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value)
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())
@@ -153,7 +167,7 @@ class PlayerConfigTest {
             json("wrapper" to MemoryRouter),
         )
     } exercise {
-        actor.type(screen.getByLabelText("Name"), "differentName").await()
+        actor.type(screen.getByLabelText("Name"), "differentName")
     } verify {
 //        wrapper.find(PromptComponent).props().`when`
 //            .assertIsEqualTo(true)

@@ -11,13 +11,12 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
-import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
+import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.coroutines.await
 import org.w3c.dom.Window
 import react.router.MemoryRouter
 import kotlin.js.json
@@ -32,7 +31,7 @@ class PairAssignmentRowTest {
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList())
         val stubDispatcher = StubDispatcher()
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             PairAssignmentRow(
@@ -44,7 +43,7 @@ class PairAssignmentRowTest {
             json("wrapper" to MemoryRouter),
         )
     } exercise {
-        actor.click(screen.getByText("DELETE")).await()
+        actor.click(screen.getByText("DELETE"))
 
         stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>()
     } verify {
@@ -64,7 +63,7 @@ class PairAssignmentRowTest {
             emptyList(),
         )
         val stubDispatcher = StubDispatcher()
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             PairAssignmentRow(
@@ -76,7 +75,7 @@ class PairAssignmentRowTest {
             json("wrapper" to MemoryRouter),
         )
     } exercise {
-        actor.click(screen.getByText("DELETE")).await()
+        actor.click(screen.getByText("DELETE"))
     } verify {
         stubDispatcher.dispatchList.isEmpty()
             .assertIsEqualTo(true)

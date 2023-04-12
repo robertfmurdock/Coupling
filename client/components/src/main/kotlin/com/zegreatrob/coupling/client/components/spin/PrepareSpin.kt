@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import react.router.Navigate
 import react.useState
 
@@ -22,14 +22,13 @@ data class PrepareSpin(
     val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommandDispatcher>,
 ) : DataPropsBind<PrepareSpin>(prepareSpin)
 
-val prepareSpin = tmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, dispatchFunc) ->
+val prepareSpin by ntmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, dispatchFunc) ->
     var playerSelections by useState(defaultSelections(players, currentPairsDoc))
     var pinSelections by useState(pins.map { it.id })
     var redirectUrl by useState<String?>(null)
     val onSpin = onSpin(dispatchFunc, party, playerSelections, pinSelections) { redirectUrl = it }
     val setPinSelections: (List<String?>) -> Unit = { pinSelections = it }
     val setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit = { playerSelections = it }
-
     if (redirectUrl != null) {
         Navigate { to = redirectUrl ?: "" }
     } else {

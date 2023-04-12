@@ -50,7 +50,6 @@ private val pairAssignments = tmFC<PairAssignments> { props ->
 
     Html5DndProvider {
         div {
-            println("hi")
             className = pairAssignmentsClassName
             div {
                 add(PartyBrowser(party))

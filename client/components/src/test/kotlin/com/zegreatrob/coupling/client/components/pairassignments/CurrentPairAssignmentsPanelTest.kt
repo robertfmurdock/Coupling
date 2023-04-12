@@ -16,10 +16,11 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
+import com.zegreatrob.coupling.testreact.external.testinglibrary.react.act
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
-import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.userEvent
+import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
@@ -48,7 +49,7 @@ class CurrentPairAssignmentsPanelTest {
             pairs = emptyList(),
         )
         val stubDispatcher = StubDispatcher()
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             MemoryRouter.create {
@@ -71,7 +72,7 @@ class CurrentPairAssignmentsPanelTest {
             },
         )
     } exercise {
-        actor.click(screen.getByText("Save!")).await()
+        actor.click(screen.getByText("Save!"))
         stubDispatcher.simulateSuccess<SavePairAssignmentsCommand>()
     } verify {
         waitFor {
@@ -86,7 +87,7 @@ class CurrentPairAssignmentsPanelTest {
         val party = stubParty()
         val pairAssignments = stubPairAssignmentDoc()
         val stubDispatcher = StubDispatcher()
-        val actor = userEvent.setup()
+        val actor = UserEvent.setup()
     }) {
         render(
             Html5DndProvider.create {
@@ -111,8 +112,8 @@ class CurrentPairAssignmentsPanelTest {
             },
         )
     } exercise {
-        actor.click(screen.findByText("Cancel").await()).await()
-        stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>()
+        actor.click(screen.findByText("Cancel").await())
+        act { stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>() }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()

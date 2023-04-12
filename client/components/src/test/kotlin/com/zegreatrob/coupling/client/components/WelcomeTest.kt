@@ -13,10 +13,9 @@ import kotlin.test.Test
 class WelcomeTest {
 
     @Test
-    fun whenZeroIsRolledWillShowHobbits() = setup(object {
-        val randomProvider = object : RandomProvider {
-            override fun nextRandomInt(until: Int) = 0
-        }
+    fun whenZeroIsRolledWillShowHobbits() = setup(object : RandomProvider {
+        val randomProvider = this
+        override fun nextRandomInt(until: Int) = 0
     }) exercise {
         render(Welcome(randomProvider).create())
     } verify {
