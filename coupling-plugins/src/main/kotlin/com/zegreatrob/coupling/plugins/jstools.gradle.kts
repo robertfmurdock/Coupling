@@ -39,7 +39,7 @@ version = "0.0.0"
 
 project.extensions.create<JsConstraintExtension>("npmConstrained")
 configure<JsConstraintExtension> {
-    json = File(project(":coupling-libraries:dependency-bom").projectDir, "package.json")
+    json = File(project(":coupling-libraries:js-dependencies").projectDir, "package.json")
 }
 
 dependencies {

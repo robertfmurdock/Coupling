@@ -27,30 +27,30 @@ dockerCompose {
 tagger {
     releaseBranch = "master"
 }
-
-tasks {
-    named("composeUp") {
-        dependsOn(":server:buildImage")
-    }
-}
-
-val appConfiguration: Configuration by configurations.creating {
-    attributes {
-        attribute(
-            KotlinJsCompilerAttribute.jsCompilerAttribute,
-            KotlinJsCompilerAttribute.ir
-        )
-        attribute(
-            ProjectLocalConfigurations.ATTRIBUTE,
-            ProjectLocalConfigurations.PUBLIC_VALUE
-        )
-        attribute(
-            KotlinPlatformType.attribute,
-            KotlinPlatformType.js
-        )
-    }
-}
-
-dependencies {
-    appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
-}
+//
+// tasks {
+//     named("composeUp") {
+//         dependsOn(":server:buildImage")
+//     }
+// }
+//
+// val appConfiguration: Configuration by configurations.creating {
+//     attributes {
+//         attribute(
+//             KotlinJsCompilerAttribute.jsCompilerAttribute,
+//             KotlinJsCompilerAttribute.ir
+//         )
+//         attribute(
+//             ProjectLocalConfigurations.ATTRIBUTE,
+//             ProjectLocalConfigurations.PUBLIC_VALUE
+//         )
+//         attribute(
+//             KotlinPlatformType.attribute,
+//             KotlinPlatformType.js
+//         )
+//     }
+// }
+//
+// dependencies {
+//     appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
+// }

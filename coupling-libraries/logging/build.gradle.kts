@@ -15,20 +15,12 @@ kotlin {
             useCommonJs()
         }
     }
+}
 
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-                implementation("com.soywiz.korlibs.klock:klock")
-                api("io.github.microutils:kotlin-logging")
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json")
-            }
-        }
-        getByName("jsMain") {
-            dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
-            }
-        }
-    }
+dependencies {
+    commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-common")
+    commonMainImplementation("com.soywiz.korlibs.klock:klock")
+    commonMainApi("io.github.microutils:kotlin-logging")
+    commonMainApi("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    "jsMainImplementation"("org.jetbrains.kotlin:kotlin-stdlib-js")
 }
