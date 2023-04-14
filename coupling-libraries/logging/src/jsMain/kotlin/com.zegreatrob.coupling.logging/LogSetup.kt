@@ -28,6 +28,5 @@ fun initializeLogging(developmentMode: Boolean) {
         KotlinLoggingLevel.INFO
     }
 
-    @Suppress("CAST_NEVER_SUCCEEDS")
     KotlinLoggingConfiguration.FORMATTER = JsonFormatter()
 }
