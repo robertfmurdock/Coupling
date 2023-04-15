@@ -25,4 +25,12 @@ enum class AvatarType {
     RobohashSet2,
     RobohashSet3,
     RobohashSet4,
+    BoringBeam,
+    BoringBauhaus,
+    Multiavatar,
+    DicebearPixelArt,
+    DicebearAdventurer,
+    DicebearCroodles,
+    DicebearThumbs,
+    DicebearLorelei,
 }

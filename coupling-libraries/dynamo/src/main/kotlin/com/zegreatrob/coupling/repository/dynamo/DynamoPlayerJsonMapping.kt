@@ -51,6 +51,14 @@ private fun AvatarType.toDynamo(): String = when (this) {
     AvatarType.RobohashSet2 -> "robohashset2"
     AvatarType.RobohashSet3 -> "robohashset3"
     AvatarType.RobohashSet4 -> "robohashset4"
+    AvatarType.BoringBeam -> "boringbeam"
+    AvatarType.BoringBauhaus -> "boringbauhaus"
+    AvatarType.Multiavatar -> "multiavatar"
+    AvatarType.DicebearPixelArt -> "dicebearpixelart"
+    AvatarType.DicebearAdventurer -> "dicebearadventurer"
+    AvatarType.DicebearCroodles -> "dicebearcroodles"
+    AvatarType.DicebearThumbs -> "dicebearthumbs"
+    AvatarType.DicebearLorelei -> "dicebearlorelei"
 }
 
 private fun String.toAvatarType(): AvatarType? = when (this) {
@@ -59,5 +67,13 @@ private fun String.toAvatarType(): AvatarType? = when (this) {
     "robohashset2" -> AvatarType.RobohashSet2
     "robohashset3" -> AvatarType.RobohashSet3
     "robohashset4" -> AvatarType.RobohashSet4
+    "boringbeam" -> AvatarType.BoringBeam
+    "boringbauhaus" -> AvatarType.BoringBauhaus
+    "multiavatar" -> AvatarType.Multiavatar
+    "dicebearpixelart" -> AvatarType.DicebearPixelArt
+    "dicebearadventurer" -> AvatarType.DicebearAdventurer
+    "dicebearcroodles" -> AvatarType.DicebearCroodles
+    "dicebearthumbs" -> AvatarType.DicebearThumbs
+    "dicebearlorelei" -> AvatarType.DicebearLorelei
     else -> null
 }

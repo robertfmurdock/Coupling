@@ -128,11 +128,19 @@ private fun Player.hashedRandomAvatar() = emailWithFallback()
     .let { AvatarType.values()[it] }
 
 private fun Player.getAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
-    AvatarType.Retro -> myGravatarUrl(jso { this.size = size; this.default = "retro" }, email, null)
+    AvatarType.Retro -> myGravatarUrl(jso { this.size = size; this.default = "retro" }, emailWithFallback(), null)
     AvatarType.RobohashSet1 -> getRobohashImageUrl("set1")
     AvatarType.RobohashSet2 -> getRobohashImageUrl("set2")
     AvatarType.RobohashSet3 -> getRobohashImageUrl("set3")
     AvatarType.RobohashSet4 -> getRobohashImageUrl("set4")
+    AvatarType.BoringBeam -> "https://source.boringavatars.com/beam/$size/${emailWithFallback()}?colors=E22092,170409,FF8C00,FAF0D2,9FB7C6"
+    AvatarType.BoringBauhaus -> "https://source.boringavatars.com/bauhaus/$size/${emailWithFallback()}?colors=E22092,170409,FF8C00,FAF0D2,9FB7C6"
+    AvatarType.Multiavatar -> "https://api.multiavatar.com/${emailWithFallback()}.png"
+    AvatarType.DicebearPixelArt -> "https://api.dicebear.com/6.x/pixel-art/svg?seed=${emailWithFallback()}"
+    AvatarType.DicebearAdventurer -> "https://api.dicebear.com/6.x/adventurer/svg?seed=${emailWithFallback()}&size=$size"
+    AvatarType.DicebearCroodles -> "https://api.dicebear.com/6.x/croodles/svg?seed=${emailWithFallback()}&size=$size"
+    AvatarType.DicebearThumbs -> "https://api.dicebear.com/6.x/thumbs/svg?seed=${emailWithFallback()}&size=$size"
+    AvatarType.DicebearLorelei -> "https://api.dicebear.com/6.x/lorelei/svg?seed=${emailWithFallback()}&size=$size"
 }
 
 private fun Player.getRobohashImageUrl(setName: String) =
