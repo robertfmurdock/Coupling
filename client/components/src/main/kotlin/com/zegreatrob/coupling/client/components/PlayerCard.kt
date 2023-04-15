@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.coupling.client.components.gravatar.gravatarUrl
 import com.zegreatrob.coupling.client.components.gravatar.myGravatarUrl
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
@@ -110,16 +111,21 @@ private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = whe
     }
 
     else -> img {
-        src = player.getAvatarImageUrl(
-            size,
-            player.avatarType ?: player.hashedRandomAvatar(),
-        )
+        src = player.getAvatarImageUrl(size, player.avatarType ?: player.hashedRandomAvatar())
         alt = "player-icon"
         draggable = false
         width = size.toDouble()
         height = size.toDouble()
     }
 }
+
+private fun String.gravatarWrapper(email: String, size: Int) = gravatarUrl(
+    email,
+    jso {
+        this.size = size
+        this.default = encodeURIComponent(this@gravatarWrapper)
+    },
+)
 
 private fun Player.hashedRandomAvatar() = emailWithFallback()
     .hashCode()
@@ -129,19 +135,30 @@ private fun Player.hashedRandomAvatar() = emailWithFallback()
 
 private fun Player.getAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
     AvatarType.Retro -> myGravatarUrl(jso { this.size = size; this.default = "retro" }, emailWithFallback(), null)
+        .gravatarWrapper(emailWithFallback(), size)
     AvatarType.RobohashSet1 -> getRobohashImageUrl("set1")
     AvatarType.RobohashSet2 -> getRobohashImageUrl("set2")
     AvatarType.RobohashSet3 -> getRobohashImageUrl("set3")
     AvatarType.RobohashSet4 -> getRobohashImageUrl("set4")
-    AvatarType.BoringBeam -> "https://source.boringavatars.com/beam/$size/${emailWithFallback()}?colors=E22092,170409,FF8C00,FAF0D2,9FB7C6"
-    AvatarType.BoringBauhaus -> "https://source.boringavatars.com/bauhaus/$size/${emailWithFallback()}?colors=E22092,170409,FF8C00,FAF0D2,9FB7C6"
-    AvatarType.Multiavatar -> "https://api.multiavatar.com/${emailWithFallback()}.png"
-    AvatarType.DicebearPixelArt -> "https://api.dicebear.com/6.x/pixel-art/svg?seed=${emailWithFallback()}"
-    AvatarType.DicebearAdventurer -> "https://api.dicebear.com/6.x/adventurer/svg?seed=${emailWithFallback()}&size=$size"
-    AvatarType.DicebearCroodles -> "https://api.dicebear.com/6.x/croodles/svg?seed=${emailWithFallback()}&size=$size"
-    AvatarType.DicebearThumbs -> "https://api.dicebear.com/6.x/thumbs/svg?seed=${emailWithFallback()}&size=$size"
-    AvatarType.DicebearLorelei -> "https://api.dicebear.com/6.x/lorelei/svg?seed=${emailWithFallback()}&size=$size"
+    AvatarType.BoringBeam -> boringUrl(size, "beam")
+    AvatarType.BoringBauhaus -> boringUrl(size, "bauhaus")
+    AvatarType.Multiavatar -> multiavatarUrl()
+        .gravatarWrapper(emailWithFallback(), size)
+    AvatarType.DicebearPixelArt -> gravatarDicebearUrl("pixel-art", size)
+    AvatarType.DicebearAdventurer -> gravatarDicebearUrl("adventurer", size)
+    AvatarType.DicebearCroodles -> gravatarDicebearUrl("croodles", size)
+    AvatarType.DicebearThumbs -> gravatarDicebearUrl("thumbs", size)
+    AvatarType.DicebearLorelei -> gravatarDicebearUrl("lorelei", size)
 }
+
+private fun Player.gravatarDicebearUrl(set: String, size: Int) =
+    "https://api.dicebear.com/6.x/$set/png/seed=${emailWithFallback()}&size=$size"
+        .gravatarWrapper(emailWithFallback(), size)
+
+private fun Player.multiavatarUrl() = "https://api.multiavatar.com/${emailWithFallback()}.png"
+
+private fun Player.boringUrl(size: Int, boringSet: String) =
+    "https://source.boringavatars.com/$boringSet/$size/${emailWithFallback()}?colors=E22092,170409,FF8C00,FAF0D2,9FB7C6"
 
 private fun Player.getRobohashImageUrl(setName: String) =
     "https://robohash.org/${emailWithFallback()}?gravatar=yes&set=" +

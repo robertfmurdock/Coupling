@@ -5,7 +5,7 @@ import csstype.ClassName
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.img
 
-private fun gravatarUrl(email: String, options: GravatarOptions): String {
+fun gravatarUrl(email: String, options: GravatarOptions): String {
     val codedEmail = md5(email.lowercase().trim())
     return "https://www.gravatar.com/avatar/$codedEmail?default=${options.default}&s=${options.size}"
 }
