@@ -33,10 +33,10 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     @Test
     fun willShowPairings() = setup(object {
         val players = listOf(
-            Player("harry", name = "Harry"),
-            Player("larry", name = "Larry"),
-            Player("curry", name = "Curly"),
-            Player("moe", name = "Moe"),
+            Player("harry", name = "Harry", avatarType = null),
+            Player("larry", name = "Larry", avatarType = null),
+            Player("curry", name = "Curly", avatarType = null),
+            Player("moe", name = "Moe", avatarType = null),
         )
         val party = Party(PartyId("1"), name = "Mathematica")
         val history = listOf(
@@ -89,10 +89,10 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     @Test
     fun sendsPlayerHeatDataToSubComponent() = setup(object {
         val players = listOf(
-            Player("harry", name = "Harry"),
-            Player("larry", name = "Larry"),
-            Player("curry", name = "Curly"),
-            Player("moe", name = "Moe"),
+            Player("harry", name = "Harry", avatarType = null),
+            Player("larry", name = "Larry", avatarType = null),
+            Player("curry", name = "Curly", avatarType = null),
+            Player("moe", name = "Moe", avatarType = null),
         )
         val history = listOf(
             PairAssignmentDocument(
@@ -131,10 +131,10 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     @Test
     fun willShowBasicStatisticsOnSubComponent() = setup(object {
         val players = listOf(
-            Player("harry", name = "Harry"),
-            Player("larry", name = "Larry"),
-            Player("curry", name = "Curly"),
-            Player("moe", name = "Moe"),
+            Player("harry", name = "Harry", avatarType = null),
+            Player("larry", name = "Larry", avatarType = null),
+            Player("curry", name = "Curly", avatarType = null),
+            Player("moe", name = "Moe", avatarType = null),
         )
         val party = Party(
             PartyId("2"),
@@ -156,10 +156,10 @@ class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsA
     @Test
     fun willShowTheMedianSpinTimeOnSubComponent() = setup(object {
         val players = listOf(
-            Player("harry", name = "Harry"),
-            Player("larry", name = "Larry"),
-            Player("curry", name = "Curly"),
-            Player("moe", name = "Moe"),
+            Player("harry", name = "Harry", avatarType = null),
+            Player("larry", name = "Larry", avatarType = null),
+            Player("curry", name = "Curly", avatarType = null),
+            Player("moe", name = "Moe", avatarType = null),
         )
         val party = Party(PartyId("2"), name = "Mathematica")
         val history = listOf(

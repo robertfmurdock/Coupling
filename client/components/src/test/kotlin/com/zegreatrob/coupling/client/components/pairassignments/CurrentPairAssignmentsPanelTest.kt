@@ -125,10 +125,10 @@ class CurrentPairAssignmentsPanelTest {
     @Test
     fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = setup(object {
         val party = stubParty()
-        val player1 = Player("1", name = "1")
-        val player2 = Player("2", name = "2")
-        val player3 = Player("3", name = "3")
-        val player4 = Player("4", name = "4")
+        val player1 = Player("1", name = "1", avatarType = null)
+        val player2 = Player("2", name = "2", avatarType = null)
+        val player3 = Player("3", name = "3", avatarType = null)
+        val player4 = Player("4", name = "4", avatarType = null)
 
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
@@ -164,8 +164,8 @@ class CurrentPairAssignmentsPanelTest {
         val party = stubParty()
         val pin1 = stubPin()
         val pin2 = stubPin()
-        val pair1 = pairOf(Player("1", name = "1"), Player("2", name = "2")).withPins(setOf(pin1))
-        val pair2 = pairOf(Player("3", name = "3"), Player("4", name = "4")).withPins(setOf(pin2))
+        val pair1 = pairOf(Player("1", name = "1", avatarType = null), Player("2", name = "2", avatarType = null)).withPins(setOf(pin1))
+        val pair2 = pairOf(Player("3", name = "3", avatarType = null), Player("4", name = "4", avatarType = null)).withPins(setOf(pin2))
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),
@@ -195,10 +195,10 @@ class CurrentPairAssignmentsPanelTest {
     @Test
     fun onPlayerDropTheSwapWillNotLosePinAssignments() = setup(object {
         val party = stubParty()
-        val player1 = Player("1", name = "1")
-        val player2 = Player("2", name = "2")
-        val player3 = Player("3", name = "3")
-        val player4 = Player("4", name = "4")
+        val player1 = Player("1", name = "1", avatarType = null)
+        val player2 = Player("2", name = "2", avatarType = null)
+        val player3 = Player("3", name = "3", avatarType = null)
+        val player4 = Player("4", name = "4", avatarType = null)
 
         val pin1 = stubPin()
         val pin2 = stubPin()
@@ -235,10 +235,10 @@ class CurrentPairAssignmentsPanelTest {
     @Test
     fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object {
         val party = stubParty()
-        val player1 = Player("1", name = "1")
-        val player2 = Player("2", name = "2")
-        val player3 = Player("3", name = "3")
-        val player4 = Player("4", name = "4")
+        val player1 = Player("1", name = "1", avatarType = null)
+        val player2 = Player("2", name = "2", avatarType = null)
+        val player3 = Player("3", name = "3", avatarType = null)
+        val player4 = Player("4", name = "4", avatarType = null)
 
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),

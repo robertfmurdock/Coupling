@@ -14,10 +14,10 @@ class PlayerHeatmapBuilderTest {
     @Test
     fun hasRowOfPlayersToTheSide() = asyncSetup(object : ScopeMint() {
         val players = listOf(
-            Player(name = "harry"),
-            Player(name = "larry"),
-            Player(name = "curly"),
-            Player(name = "moe"),
+            Player(name = "harry", avatarType = null),
+            Player(name = "larry", avatarType = null),
+            Player(name = "curly", avatarType = null),
+            Player(name = "moe", avatarType = null),
         )
     }) exercise {
         render(PlayerHeatmap(players = players, heatmapData = emptyList()).create())
@@ -33,10 +33,10 @@ class PlayerHeatmapBuilderTest {
     @Test
     fun hasRowOfPlayersAboveHeatmap() = asyncSetup(object : ScopeMint() {
         val players = listOf(
-            Player(name = "harry"),
-            Player(name = "larry"),
-            Player(name = "curly"),
-            Player(name = "moe"),
+            Player(name = "harry", avatarType = null),
+            Player(name = "larry", avatarType = null),
+            Player(name = "curly", avatarType = null),
+            Player(name = "moe", avatarType = null),
         )
     }) exercise {
         render(PlayerHeatmap(players = players, heatmapData = emptyList()).create())

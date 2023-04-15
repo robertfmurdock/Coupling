@@ -39,8 +39,30 @@ class HistoryPageE2ETest {
             })
 
             private suspend fun setupTwoPairAssignments(party: Party, sdk: Sdk) = listOf(
-                buildPairAssignmentDocument(1, listOf(pairOf(Player(name = "Ollie"), Player(name = "Speedy")))),
-                buildPairAssignmentDocument(2, listOf(pairOf(Player(name = "Arthur"), Player(name = "Garth")))),
+                buildPairAssignmentDocument(
+                    1,
+                    listOf(
+                        pairOf(
+                            Player(
+                                name = "Ollie",
+                                avatarType = null,
+                            ),
+                            Player(name = "Speedy", avatarType = null),
+                        ),
+                    ),
+                ),
+                buildPairAssignmentDocument(
+                    2,
+                    listOf(
+                        pairOf(
+                            Player(
+                                name = "Arthur",
+                                avatarType = null,
+                            ),
+                            Player(name = "Garth", avatarType = null),
+                        ),
+                    ),
+                ),
             ).onEach { sdk.pairAssignmentDocumentRepository.save(party.id.with(it)) }
 
             private fun buildPairAssignmentDocument(number: Int, pairs: List<CouplingPair>) = PairAssignmentDocument(

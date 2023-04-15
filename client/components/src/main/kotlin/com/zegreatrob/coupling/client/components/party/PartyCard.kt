@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
-import com.zegreatrob.coupling.client.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.visuallyHidden
@@ -25,6 +24,7 @@ import csstype.number
 import csstype.px
 import csstype.rgba
 import emotion.react.css
+import js.core.jso
 import react.ChildrenBuilder
 import react.dom.aria.ariaHidden
 import react.dom.html.ReactHTML
@@ -95,9 +95,9 @@ private fun ChildrenBuilder.partyGravatar(party: Party, size: Int) = if (party.i
         email = party.email,
         alt = "party-img",
         fallback = noPartyImagePath,
-        options = object : GravatarOptions {
-            override val size = size
-            override val default = "identicon"
+        options = jso {
+            this.size = size
+            this.default = "identicon"
         },
     )
 }

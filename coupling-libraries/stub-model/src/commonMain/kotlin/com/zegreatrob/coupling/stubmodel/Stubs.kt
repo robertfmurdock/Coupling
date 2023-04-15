@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
+import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
 
@@ -41,10 +42,11 @@ fun stubPlayer() = Player(
     id = uuidString(),
     badge = 1,
     name = "Tim $playerCounter",
+    email = "tim$playerCounter@tim.meat",
     callSignAdjective = "Spicy $playerCounter",
     callSignNoun = "Meatball $playerCounter",
-    email = "tim$playerCounter@tim.meat",
     imageURL = "italian$playerCounter.jpg",
+    avatarType = AvatarType.values().randomOrNull(),
 ).also { playerCounter++ }
 
 fun stubPlayers(number: Int) = generateSequence { stubPlayer() }.take(number).toList()

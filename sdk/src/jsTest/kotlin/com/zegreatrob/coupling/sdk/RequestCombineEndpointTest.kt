@@ -23,7 +23,13 @@ class RequestCombineEndpointTest {
         object : Sdk by sdk {
             val party = Party(id = PartyId("et-${uuid4()}"))
             val playersToSave = listOf(
-                Player(id = "${uuid4()}", name = "Awesome-O", callSignAdjective = "Awesome", callSignNoun = "Sauce"),
+                Player(
+                    id = "${uuid4()}",
+                    name = "Awesome-O",
+                    callSignAdjective = "Awesome",
+                    callSignNoun = "Sauce",
+                    avatarType = null,
+                ),
             )
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
             override suspend fun perform(query: UserQuery) = sdk.perform(query)

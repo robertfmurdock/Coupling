@@ -28,7 +28,7 @@ class ComposeStatisticsActionTest {
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
             .map { number -> makePlayer("$number") }
 
-        private fun makePlayer(id: String) = Player(id = id)
+        private fun makePlayer(id: String) = Player(id = id, avatarType = null)
 
         private fun List<CouplingPair>.assertMatch(expected: List<CouplingPair>) {
             assertIsEqualTo(

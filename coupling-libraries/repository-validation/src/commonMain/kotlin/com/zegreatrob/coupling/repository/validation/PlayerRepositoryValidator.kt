@@ -34,11 +34,12 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val player = Player(
-                callSignAdjective = "1",
-                callSignNoun = "2",
                 name = "",
                 email = "",
+                callSignAdjective = "1",
+                callSignNoun = "2",
                 imageURL = null,
+                avatarType = null,
             )
         }.bind(),
     ) {

@@ -54,5 +54,6 @@ interface PartyPlayerQueryDispatcher :
     private fun defaultPlayer(callSign: CallSign) = Player(
         callSignAdjective = callSign.adjective,
         callSignNoun = callSign.noun,
+        avatarType = null,
     )
 }

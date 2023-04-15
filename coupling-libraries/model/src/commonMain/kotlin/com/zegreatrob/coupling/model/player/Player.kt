@@ -11,9 +11,18 @@ data class Player(
     val callSignAdjective: String = "",
     val callSignNoun: String = "",
     val imageURL: String? = null,
+    val avatarType: AvatarType?,
 )
 
-val defaultPlayer = Player(id = "DEFAULT")
+val defaultPlayer = Player(id = "DEFAULT", avatarType = null)
 
 val PartyElement<Player>.partyId get() = id
 val PartyElement<Player>.player get() = element
+
+enum class AvatarType {
+    Retro,
+    RobohashSet1,
+    RobohashSet2,
+    RobohashSet3,
+    RobohashSet4,
+}

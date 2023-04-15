@@ -125,6 +125,7 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
                         name = "Awesome-O",
                         callSignAdjective = "Awesome",
                         callSignNoun = "Sauce",
+                        avatarType = null,
                     )
                 }) {
                     otherSdk.partyRepository.save(party)

@@ -6,6 +6,7 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.serialization.Serializable
@@ -19,6 +20,7 @@ interface JsonPlayer {
     val callSignAdjective: String
     val callSignNoun: String
     val imageURL: String?
+    val avatarType: String?
 }
 
 @Serializable
@@ -30,6 +32,7 @@ data class JsonPlayerData(
     override val callSignAdjective: String = defaultPlayer.callSignAdjective,
     override val callSignNoun: String = defaultPlayer.callSignNoun,
     override val imageURL: String? = defaultPlayer.imageURL,
+    override val avatarType: String? = defaultPlayer.avatarType?.name,
 ) : JsonPlayer
 
 @Serializable
@@ -42,6 +45,7 @@ data class SavePlayerInput(
     val callSignAdjective: String = defaultPlayer.callSignAdjective,
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
+    val avatarType: String? = defaultPlayer.avatarType?.name,
 ) : PartyInput
 
 @Serializable
@@ -53,7 +57,7 @@ data class JsonPlayerRecord(
     override val callSignAdjective: String = defaultPlayer.callSignAdjective,
     override val callSignNoun: String = defaultPlayer.callSignNoun,
     override val imageURL: String? = defaultPlayer.imageURL,
-
+    override val avatarType: String? = defaultPlayer.avatarType?.name,
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
@@ -68,6 +72,7 @@ fun Player.toSerializable() = JsonPlayerData(
     callSignAdjective = callSignAdjective,
     callSignNoun = callSignNoun,
     imageURL = imageURL,
+    avatarType = avatarType?.name,
 )
 
 fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
@@ -78,6 +83,7 @@ fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
     callSignAdjective = data.element.callSignAdjective,
     callSignNoun = data.element.callSignNoun,
     imageURL = data.element.imageURL,
+    avatarType = data.element.avatarType?.name,
     partyId = data.id,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
@@ -92,6 +98,7 @@ fun SavePlayerInput.toModel(): Player = Player(
     callSignAdjective = callSignAdjective,
     callSignNoun = callSignNoun,
     imageURL = imageURL,
+    avatarType = avatarType?.let(AvatarType::valueOf),
 )
 
 fun JsonPlayer.toModel(): Player = Player(
@@ -102,6 +109,7 @@ fun JsonPlayer.toModel(): Player = Player(
     callSignAdjective = callSignAdjective,
     callSignNoun = callSignNoun,
     imageURL = imageURL,
+    avatarType = avatarType?.let(AvatarType::valueOf),
 )
 
 fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(
@@ -114,6 +122,7 @@ fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(
             callSignAdjective = callSignAdjective,
             callSignNoun = callSignNoun,
             imageURL = imageURL,
+            avatarType = avatarType?.let(AvatarType::valueOf),
         ),
     ),
     modifyingUserId = modifyingUserEmail,

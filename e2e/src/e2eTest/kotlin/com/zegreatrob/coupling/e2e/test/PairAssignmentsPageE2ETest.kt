@@ -55,6 +55,7 @@ class PairAssignmentsPageE2ETest {
                         name = "player$it",
                         callSignAdjective = "nimble",
                         callSignNoun = "thimble",
+                        avatarType = null,
                     )
                 }
             }
@@ -156,6 +157,7 @@ class PairAssignmentsPageE2ETest {
                         name = "player$it",
                         callSignAdjective = "nimble",
                         callSignNoun = "thimble",
+                        avatarType = null,
                     )
                 }
             }

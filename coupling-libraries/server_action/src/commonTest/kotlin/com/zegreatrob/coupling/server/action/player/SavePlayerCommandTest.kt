@@ -22,10 +22,11 @@ class SavePlayerCommandTest {
             id = "1",
             badge = 1,
             name = "Tim",
+            email = "tim@tim.meat",
             callSignAdjective = "Spicy",
             callSignNoun = "Meatball",
-            email = "tim@tim.meat",
             imageURL = "italian.jpg",
+            avatarType = null,
         )
         override val playerRepository = PlayerSaverSpy().apply { whenever(currentPartyId.with(player), Unit) }
     }) exercise {

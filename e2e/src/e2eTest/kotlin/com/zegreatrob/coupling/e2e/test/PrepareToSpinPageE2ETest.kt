@@ -50,6 +50,7 @@ class PrepareToSpinPageE2ETest {
         private fun buildPlayer(it: Int) = Player(
             id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
             name = "Player$it",
+            avatarType = null,
         )
     }
 

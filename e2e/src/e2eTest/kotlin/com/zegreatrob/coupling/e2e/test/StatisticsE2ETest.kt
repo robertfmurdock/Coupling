@@ -12,7 +12,7 @@ class StatisticsE2ETest {
     @Test
     fun pageShowsImportantElements() = sdkSetup(object : SdkContext() {
         val party = Party(PartyId("${randomInt()}-statsE2E"), name = "Funkytown")
-        val players = generateSequence { Player(id = "${randomInt()}-statsE2E") }
+        val players = generateSequence { Player(id = "${randomInt()}-statsE2E", avatarType = null) }
             .take(6).toList()
     }) {
         sdk.partyRepository.save(party)

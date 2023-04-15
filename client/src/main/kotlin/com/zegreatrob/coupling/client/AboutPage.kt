@@ -1,11 +1,8 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.PlayerCard
-import com.zegreatrob.coupling.client.components.blue
 import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
-import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.client.routing.PageProps
@@ -79,12 +76,12 @@ private val playerHeader = FC<Props> {
     div {
         val rob by playerImage()
         add(
-            PlayerCard(Player("1", name = "RoB", imageURL = rob), tilt = (-8).deg),
+            PlayerCard(Player("1", name = "RoB", imageURL = rob, avatarType = null), tilt = (-8).deg),
             key = "1",
         )
         val autumn by playerImage()
         add(
-            PlayerCard(Player("2", name = "Autumn", imageURL = autumn), tilt = 8.deg),
+            PlayerCard(Player("2", name = "Autumn", imageURL = autumn, avatarType = null), tilt = 8.deg),
             key = "2",
         )
     }

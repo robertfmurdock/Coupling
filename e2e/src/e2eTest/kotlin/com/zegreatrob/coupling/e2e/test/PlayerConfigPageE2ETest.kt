@@ -41,6 +41,7 @@ class PlayerConfigPageE2ETest {
                     Player(
                         "${randomInt()}-PlayerConfigPageE2E",
                         name = "${randomInt()}-PlayerConfigPageE2E",
+                        avatarType = null,
                     )
                 },
             )
@@ -168,6 +169,7 @@ class PlayerConfigPageE2ETest {
                 Player(
                     id = "${randomInt()}-PlayerConfigPageE2E",
                     name = "${randomInt()}-PlayerConfigPageE2E",
+                    avatarType = null,
                 )
             }.take(5).toList()
             val page = PlayerConfigPage
@@ -200,6 +202,7 @@ class PlayerConfigPageE2ETest {
                     Player(
                         "${randomInt()}-PlayerConfigPageE2E",
                         name = "${randomInt()}-PlayerConfigPageE2E",
+                        avatarType = null,
                     )
                 },
             )
@@ -269,6 +272,7 @@ class PlayerConfigPageE2ETest {
                     Player(
                         "${randomInt()}-PlayerConfigPageE2E",
                         name = "${randomInt()}-PlayerConfigPageE2E",
+                        avatarType = null,
                     )
                 },
             )

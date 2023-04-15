@@ -11,15 +11,15 @@ interface SdkPlayerSave : PlayerSave, GqlSyntax, GraphQueries {
         doQuery(mutations.savePlayer, partyPlayer.input())
     }
 
-    private fun PartyElement<Player>.input() =
-        SavePlayerInput(
-            partyId = partyId,
-            playerId = element.id,
-            name = element.name,
-            email = element.email,
-            badge = "${element.badge}",
-            callSignAdjective = element.callSignAdjective,
-            callSignNoun = element.callSignNoun,
-            imageURL = element.imageURL,
-        )
+    private fun PartyElement<Player>.input() = SavePlayerInput(
+        partyId = partyId,
+        playerId = element.id,
+        name = element.name,
+        email = element.email,
+        badge = "${element.badge}",
+        callSignAdjective = element.callSignAdjective,
+        callSignNoun = element.callSignNoun,
+        imageURL = element.imageURL,
+        avatarType = element.avatarType?.name,
+    )
 }

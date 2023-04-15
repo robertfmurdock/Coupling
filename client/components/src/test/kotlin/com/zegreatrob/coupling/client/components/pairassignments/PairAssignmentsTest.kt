@@ -30,12 +30,12 @@ class PairAssignmentsTest {
 
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs() = asyncSetup(object {
-        val fellow = Player(id = "3", name = "fellow")
-        val guy = Player(id = "2", name = "Guy")
+        val fellow = Player(id = "3", name = "fellow", avatarType = null)
+        val guy = Player(id = "2", name = "Guy", avatarType = null)
 
-        val rigby = Player(id = "1", name = "rigby")
-        val nerd = Player(id = "4", name = "nerd")
-        val pantsmaster = Player(id = "5", name = "pantsmaster")
+        val rigby = Player(id = "1", name = "rigby", avatarType = null)
+        val nerd = Player(id = "4", name = "nerd", avatarType = null)
+        val pantsmaster = Player(id = "5", name = "pantsmaster", avatarType = null)
 
         val players = listOf(rigby, guy, fellow, nerd, pantsmaster)
 
@@ -43,7 +43,14 @@ class PairAssignmentsTest {
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),
             pairs = listOf(
-                pairOf(Player(id = "0", name = "Tom"), Player(id = "z", name = "Jerry")),
+                pairOf(
+                    Player(id = "0", name = "Tom", avatarType = null),
+                    Player(
+                        id = "z",
+                        name = "Jerry",
+                        avatarType = null,
+                    ),
+                ),
                 pairOf(fellow, guy),
             ).withPins(),
         )
@@ -77,11 +84,11 @@ class PairAssignmentsTest {
     @Test
     fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = asyncSetup(object {
         val players = listOf(
-            Player(id = "1", name = "rigby"),
-            Player(id = "2", name = "Guy"),
-            Player(id = "3", name = "fellow"),
-            Player(id = "4", name = "nerd"),
-            Player(id = "5", name = "pantsmaster"),
+            Player(id = "1", name = "rigby", avatarType = null),
+            Player(id = "2", name = "Guy", avatarType = null),
+            Player(id = "3", name = "fellow", avatarType = null),
+            Player(id = "4", name = "nerd", avatarType = null),
+            Player(id = "5", name = "pantsmaster", avatarType = null),
         )
     }) exercise {
         render(

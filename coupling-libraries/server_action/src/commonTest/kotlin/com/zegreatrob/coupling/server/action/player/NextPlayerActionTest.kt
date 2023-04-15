@@ -17,10 +17,10 @@ import kotlin.test.Test
 class NextPlayerActionTest : NextPlayerActionDispatcher {
     override val execute = stubActionExecutor(CreatePairCandidateReportsAction::class)
 
-    private val bill = Player(id = "Bill")
-    private val ted = Player(id = "Ted")
-    private val amadeus = Player(id = "Mozart")
-    private val shorty = Player(id = "Napoleon")
+    private val bill = Player(id = "Bill", avatarType = null)
+    private val ted = Player(id = "Ted", avatarType = null)
+    private val amadeus = Player(id = "Mozart", avatarType = null)
+    private val shorty = Player(id = "Napoleon", avatarType = null)
 
     @Test
     fun willUseHistoryToProduceSequenceInOrderOfLongestTimeSinceLastPairedToShortest() = setup(object {
@@ -87,17 +87,17 @@ class NextPlayerActionTest : NextPlayerActionDispatcher {
 
         val billsPairCandidates = PairCandidateReport(
             bill,
-            listOf(Player(), Player(), Player()),
+            listOf(Player(avatarType = null), Player(avatarType = null), Player(avatarType = null)),
             NeverPaired,
         )
         val amadeusPairCandidates = PairCandidateReport(
             amadeus,
-            listOf(Player()),
+            listOf(Player(avatarType = null)),
             NeverPaired,
         )
         val shortyPairCandidates = PairCandidateReport(
             shorty,
-            listOf(Player(), Player()),
+            listOf(Player(avatarType = null), Player(avatarType = null)),
             NeverPaired,
         )
     }) {

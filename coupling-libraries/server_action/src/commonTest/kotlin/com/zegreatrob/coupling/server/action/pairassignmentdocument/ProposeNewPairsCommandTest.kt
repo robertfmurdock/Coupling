@@ -40,7 +40,7 @@ class ProposeNewPairsCommandTest {
             }.also { partyId.assertIsEqualTo(party.id) }
         }
 
-        val players = listOf(Player(name = "John"))
+        val players = listOf(Player(name = "John", avatarType = null))
         val pins = listOf(Pin(name = "Bobby"))
         val history = listOf(stubPairAssignmentDoc())
         val party = Party(PartyId("Party Id! ${Random.nextInt(300)}"), PairingRule.PreferDifferentBadge)

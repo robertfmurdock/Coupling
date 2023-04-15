@@ -41,7 +41,7 @@ interface ConnectPartyUserCommandDispatcher :
             existingPlayer
         } else {
             val atIndex = email.indexOf("@")
-            Player("-1", name = email.substring(0, atIndex), email = email)
+            Player("-1", name = email.substring(0, atIndex), email = email, avatarType = null)
         }
     }
 }

@@ -10,9 +10,9 @@ private fun gravatarUrl(email: String, options: GravatarOptions): String {
     return "https://www.gravatar.com/avatar/$codedEmail?default=${options.default}&s=${options.size}"
 }
 
-interface GravatarOptions {
-    val default: String
-    val size: Int
+external interface GravatarOptions {
+    var default: String
+    var size: Int
 }
 
 fun ChildrenBuilder.gravatarImage(

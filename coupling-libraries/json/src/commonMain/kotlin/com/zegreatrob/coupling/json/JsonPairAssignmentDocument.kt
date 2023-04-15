@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.serialization.Serializable
@@ -59,6 +60,7 @@ data class JsonPinnedPlayer(
     val callSignAdjective: String = defaultPlayer.callSignAdjective,
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
+    val avatarType: AvatarType? = defaultPlayer.avatarType,
     val pins: List<JsonPinData>,
 )
 
@@ -98,6 +100,7 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
     callSignAdjective = player.callSignAdjective,
     callSignNoun = player.callSignNoun,
     imageURL = player.imageURL,
+    avatarType = player.avatarType,
     pins = pins.map(Pin::toSerializable),
 )
 
@@ -148,6 +151,7 @@ private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
         callSignAdjective = callSignAdjective,
         callSignNoun = callSignNoun,
         imageURL = imageURL,
+        avatarType = avatarType,
     ),
     pins = pins.map(JsonPinData::toModel),
 )

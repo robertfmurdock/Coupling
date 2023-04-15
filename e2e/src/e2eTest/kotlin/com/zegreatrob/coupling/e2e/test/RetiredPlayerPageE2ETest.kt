@@ -27,7 +27,7 @@ class RetiredPlayerPageE2ETest {
             .let { Party(it.let(::PartyId), name = "$it-name") }
         val players = (1..4)
             .map { "${randomInt()}-RetiredPlayerPageE2ETest-$it" }
-            .map { id -> Player(id, name = "$id-name") }
+            .map { id -> Player(id, name = "$id-name", avatarType = null) }
             .toList()
         val notDeletedPlayer = players[2]
         val retiredPlayers = players - notDeletedPlayer

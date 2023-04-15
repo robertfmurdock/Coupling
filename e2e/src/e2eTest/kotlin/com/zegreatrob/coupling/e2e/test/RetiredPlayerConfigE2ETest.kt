@@ -12,7 +12,11 @@ class RetiredPlayerConfigE2ETest {
     @Test
     fun willShowThePlayerData() = sdkSetup(object : SdkContext() {
         val party = Party(PartyId("${randomInt()}-RetiredPlayerConfigE2E"))
-        val player = Player("${randomInt()}-RetiredPlayerConfigE2E", name = "${randomInt()}-RetiredPlayerConfigE2E")
+        val player = Player(
+            "${randomInt()}-RetiredPlayerConfigE2E",
+            name = "${randomInt()}-RetiredPlayerConfigE2E",
+            avatarType = null,
+        )
     }) {
         sdk.partyRepository.save(party)
         sdk.playerRepository.save(party.id.with(player))

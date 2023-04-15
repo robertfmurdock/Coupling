@@ -35,7 +35,7 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
         val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
-        val player = Player(id = "blarg")
+        val player = Player(id = "blarg", avatarType = null)
     }) exercise {
         render(
             PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc())
@@ -52,7 +52,7 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
         val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
-        val player = Player(id = "blarg", badge = Badge.Alternate.value)
+        val player = Player(id = "blarg", badge = Badge.Alternate.value, avatarType = null)
     }) exercise {
         render(
             PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc())
@@ -69,7 +69,7 @@ class PlayerConfigTest {
     @Test
     fun submitWillSaveAndReload() = asyncSetup(object {
         val party = Party(PartyId("party"))
-        val player = Player(id = "blarg", badge = Badge.Default.value)
+        val player = Player(id = "blarg", badge = Badge.Default.value, avatarType = null)
         val reloaderSpy = SpyData<Unit, Unit>()
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
@@ -100,7 +100,7 @@ class PlayerConfigTest {
         }
         val pathSetterSpy = SpyData<String, Unit>()
         val party = Party(PartyId("party"))
-        val player = Player("blarg", badge = Badge.Alternate.value)
+        val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
@@ -140,7 +140,7 @@ class PlayerConfigTest {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         }
         val party = Party(PartyId("party"))
-        val player = Player("blarg", badge = Badge.Alternate.value)
+        val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
         val actor = UserEvent.setup()
         val stubDispatcher = StubDispatcher()
     }) {
@@ -158,7 +158,7 @@ class PlayerConfigTest {
     @Test
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = asyncSetup(object {
         val party = Party(PartyId("party"))
-        val player = Player("blarg", badge = Badge.Alternate.value)
+        val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
         val actor = UserEvent.setup()
     }) {
         render(
@@ -176,7 +176,7 @@ class PlayerConfigTest {
     @Test
     fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = asyncSetup(object {
         val party = Party(PartyId("party"))
-        val player = Player("blarg", badge = Badge.Alternate.value)
+        val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
     }) exercise {
         render(
             PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())

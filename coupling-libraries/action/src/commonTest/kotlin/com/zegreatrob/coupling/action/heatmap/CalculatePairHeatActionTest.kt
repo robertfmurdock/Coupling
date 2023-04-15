@@ -32,7 +32,7 @@ class CalculatePairHeatActionTest {
 
     @Test
     fun willReturnZeroWhenPairHasNeverOccurred() = setup(object {
-        val pair = pairOf(Player(id = "bob"), Player(id = "fred"))
+        val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
         val history = emptyList<PairAssignmentDocument>()
         val rotationPeriod = 60
         val action = CalculatePairHeatAction(pair, history, rotationPeriod)
@@ -44,8 +44,8 @@ class CalculatePairHeatActionTest {
 
     @Test
     fun willReturnOneWhenPairHasOccurredButDifferentPositions() = setup(object {
-        private val player1 = Player(id = "bob")
-        private val player2 = Player(id = "fred")
+        private val player1 = Player(id = "bob", avatarType = null)
+        private val player2 = Player(id = "fred", avatarType = null)
         val pair = pairOf(player1, player2)
         val history = listOf(
             listOf(pairOf(player2, player1)).pairAssignmentDocument(),
@@ -61,7 +61,7 @@ class CalculatePairHeatActionTest {
     class WhenThereIsOnlyOnePossiblePair {
 
         private fun makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs: Int): CalculatePairHeatAction {
-            val pair = pairOf(Player(id = "bob"), Player(id = "fred"))
+            val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 1
             val history = listOf(pair).buildHistoryByRepeating(numberOfHistoryDocs)
             return CalculatePairHeatAction(pair, history, rotationPeriod)
@@ -117,9 +117,9 @@ class CalculatePairHeatActionTest {
 
         companion object {
             const val rotationPeriod = 3
-            val player1 = Player(id = "bob")
-            val player2 = Player(id = "fred")
-            val player3 = Player(id = "latisha")
+            val player1 = Player(id = "bob", avatarType = null)
+            val player2 = Player(id = "fred", avatarType = null)
+            val player3 = Player(id = "latisha", avatarType = null)
             val pair = pairOf(player1, player2)
         }
 
@@ -178,12 +178,12 @@ class CalculatePairHeatActionTest {
     class WithFivePlayers {
         companion object {
             const val rotationPeriod = 5
-            val player1 = Player(id = "bob")
-            val player2 = Player(id = "fred")
+            val player1 = Player(id = "bob", avatarType = null)
+            val player2 = Player(id = "fred", avatarType = null)
             val pair = pairOf(player1, player2)
-            val player3 = Player(id = "latisha")
-            val player4 = Player(id = "jane")
-            val player5 = Player(id = "fievel")
+            val player3 = Player(id = "latisha", avatarType = null)
+            val player4 = Player(id = "jane", avatarType = null)
+            val player5 = Player(id = "fievel", avatarType = null)
         }
 
         @Test

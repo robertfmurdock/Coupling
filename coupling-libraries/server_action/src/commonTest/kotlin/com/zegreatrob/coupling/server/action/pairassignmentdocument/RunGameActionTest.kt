@@ -32,8 +32,8 @@ class RunGameActionTest {
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()
         val expectedPairingAssignments = listOf(
-            pairOf(Player()),
-            pairOf(Player()),
+            pairOf(Player(avatarType = null)),
+            pairOf(Player(avatarType = null)),
         )
         val spy = SpyData<FindNewPairsAction, List<CouplingPair>>().apply {
             spyReturnValues.add(expectedPairingAssignments)

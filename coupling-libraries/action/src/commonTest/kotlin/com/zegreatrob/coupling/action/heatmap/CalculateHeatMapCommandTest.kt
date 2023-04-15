@@ -40,7 +40,7 @@ class CalculateHeatMapCommandTest {
 
     @Test
     fun withOnePlayerProducesOneRowWithNull() = setup(object {
-        val players = listOf(Player(id = "0"))
+        val players = listOf(Player(id = "0", avatarType = null))
         val history = emptyList<PairAssignmentDocument>()
         val rotationPeriod = 0
         val action =
@@ -58,9 +58,9 @@ class CalculateHeatMapCommandTest {
     @Test
     fun withThreePlayersAndNoHistoryProducesThreeRows() = setup(object {
         val players = listOf(
-            Player(id = "0"),
-            Player(id = "1"),
-            Player(id = "2"),
+            Player(id = "0", avatarType = null),
+            Player(id = "1", avatarType = null),
+            Player(id = "2", avatarType = null),
         )
         val history = emptyList<PairAssignmentDocument>()
         val rotationPeriod = 3
@@ -81,8 +81,8 @@ class CalculateHeatMapCommandTest {
     @Test
     fun withTwoPlayersAndShortHistoryProducesTwoRowsWithHeatValues() = setup(object {
         val players = listOf(
-            Player(id = "0"),
-            Player(id = "1"),
+            Player(id = "0", avatarType = null),
+            Player(id = "1", avatarType = null),
         )
         val history = listOf(pairAssignmentDocument(players[0], players[1]))
         val rotationPeriod = 1
@@ -102,8 +102,8 @@ class CalculateHeatMapCommandTest {
     @Test
     fun withTwoPlayersAndFullHistoryProducesTwoRowsWithHeatValues() = setup(object {
         val players = listOf(
-            Player(id = "0"),
-            Player(id = "1"),
+            Player(id = "0", avatarType = null),
+            Player(id = "1", avatarType = null),
         )
         val history = listOf(
             pairAssignmentDocument(players[0], players[1]),
@@ -129,9 +129,9 @@ class CalculateHeatMapCommandTest {
     @Test
     fun withThreePlayersAndInterestingHistoryProducesThreeRowsWithHeatValues() = setup(object {
         val players = listOf(
-            Player(id = "0"),
-            Player(id = "1"),
-            Player(id = "2"),
+            Player(id = "0", avatarType = null),
+            Player(id = "1", avatarType = null),
+            Player(id = "2", avatarType = null),
         )
         val history = listOf(
             pairAssignmentDocument(players[0], players[1]),

@@ -16,8 +16,8 @@ class FindCallSignOptionsActionTest {
     @Test
     fun willIncludeAllPredefinedAdjectivesAndNounsWhenNoPlayersHaveCallSigns() = setup(object {
         val players = listOf(
-            Player(),
-            Player(),
+            Player(avatarType = null),
+            Player(avatarType = null),
         )
         val action = FindCallSignOptionsAction(players)
     }) exercise {
@@ -29,8 +29,8 @@ class FindCallSignOptionsActionTest {
     @Test
     fun willExcludeAnyOptionsUsedByThePlayers() = setup(object {
         val players = listOf(
-            Player(callSignAdjective = "Modest", callSignNoun = "Tiger"),
-            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
+            Player(callSignAdjective = "Modest", callSignNoun = "Tiger", avatarType = null),
+            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose", avatarType = null),
         )
         val action = FindCallSignOptionsAction(players)
     }) exercise {

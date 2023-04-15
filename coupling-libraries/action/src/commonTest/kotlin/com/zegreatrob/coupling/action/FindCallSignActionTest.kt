@@ -18,8 +18,8 @@ class FindCallSignActionTest {
     @Test
     fun withSimpleSetupWillReturnCallSign() = setup(object {
         val players = listOf(
-            Player(callSignAdjective = "Modest", callSignNoun = "Tiger"),
-            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
+            Player(callSignAdjective = "Modest", callSignNoun = "Tiger", avatarType = null),
+            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose", avatarType = null),
         )
     }) exercise {
         perform(FindCallSignAction(players, email))
@@ -30,7 +30,7 @@ class FindCallSignActionTest {
     @Test
     fun givenNoCollisionTheNumberOfUsedCallSignsWillNotAffectTheGeneratedResult() = setup(object {
         val players = listOf(
-            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
+            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose", avatarType = null),
         )
     }) exercise {
         perform(FindCallSignAction(players, email))
@@ -44,6 +44,7 @@ class FindCallSignActionTest {
             Player(
                 callSignAdjective = expectedCallSign.adjective,
                 callSignNoun = "Mongoose",
+                avatarType = null,
             ),
         )
     }) exercise {
@@ -63,6 +64,7 @@ class FindCallSignActionTest {
             Player(
                 callSignAdjective = "Intense",
                 callSignNoun = expectedCallSign.noun,
+                avatarType = null,
             ),
         )
     }) exercise {

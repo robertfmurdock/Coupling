@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.client.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
@@ -31,6 +30,7 @@ import csstype.rotate
 import csstype.s
 import csstype.url
 import emotion.react.css
+import js.core.jso
 import react.ChildrenBuilder
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.div
@@ -110,12 +110,14 @@ private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = if 
     gravatarImage(
         email = player.emailWithFallback(),
         alt = "player-icon",
-        options = object : GravatarOptions {
-            override val size = size
-            override val default = "retro"
+        options = jso {
+            this.size = size
+            this.default = "retro"
         },
     )
 }
+
+private val Player.robohashImageUrl get() = "https://robohash.org/${emailWithFallback()}?gravatar=yes&set=set3"
 
 private fun Player.emailWithFallback() = when {
     email != "" -> email

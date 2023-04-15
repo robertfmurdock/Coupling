@@ -33,8 +33,8 @@ class SpinTest {
         object : SdkContext by context {
             val party = Party(id = PartyId(uuid4().toString()), name = "commonTest", pairingRule = PairingRule.LongestTime)
             val players = listOf(
-                Player(name = "dude1"),
-                Player(name = "dude2"),
+                Player(name = "dude1", avatarType = null),
+                Player(name = "dude2", avatarType = null),
             )
         }
     }) {
@@ -165,10 +165,10 @@ class SpinTest {
     }
 
     private fun fourPlayersTwoDefaultTwoAlternate() = listOf(
-        Player(id = uuid4().toString(), name = "One", badge = Badge.Default.value),
-        Player(id = uuid4().toString(), name = "Two", badge = Badge.Default.value),
-        Player(id = uuid4().toString(), name = "Three", badge = Badge.Alternate.value),
-        Player(id = uuid4().toString(), name = "Four", badge = Badge.Alternate.value),
+        Player(id = uuid4().toString(), badge = Badge.Default.value, name = "One", avatarType = null),
+        Player(id = uuid4().toString(), badge = Badge.Default.value, name = "Two", avatarType = null),
+        Player(id = uuid4().toString(), badge = Badge.Alternate.value, name = "Three", avatarType = null),
+        Player(id = uuid4().toString(), badge = Badge.Alternate.value, name = "Four", avatarType = null),
     )
 
     companion object {

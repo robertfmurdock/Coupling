@@ -231,5 +231,5 @@ private fun String.toCouplingServerMessage(): CouplingSocketMessage =
 fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()
 
 private fun expectedOnlinePlayerList(email: String) = listOf(
-    Player(email = email, name = email.substring(0, email.indexOf("@")), id = "-1"),
+    Player(id = "-1", name = email.substring(0, email.indexOf("@")), email = email, avatarType = null),
 )

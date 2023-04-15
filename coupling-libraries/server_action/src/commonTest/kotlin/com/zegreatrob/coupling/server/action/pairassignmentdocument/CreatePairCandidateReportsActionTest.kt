@@ -18,10 +18,10 @@ class CreatePairCandidateReportsActionTest {
 
         @Test
         fun willReturnAllReportsForPlayersWithTheSameBadge() = setup(object {
-            val bill = Player(id = "Bill", badge = 1)
-            val ted = Player(id = "Ted", badge = 1)
-            val amadeus = Player(id = "Mozart", badge = 1)
-            val shorty = Player(id = "Napoleon", badge = 1)
+            val bill = Player(id = "Bill", badge = 1, avatarType = null)
+            val ted = Player(id = "Ted", badge = 1, avatarType = null)
+            val amadeus = Player(id = "Mozart", badge = 1, avatarType = null)
+            val shorty = Player(id = "Napoleon", badge = 1, avatarType = null)
 
             val players = listOf(bill, ted, amadeus, shorty)
 
@@ -46,10 +46,10 @@ class CreatePairCandidateReportsActionTest {
         @Test
         fun willReturnFilterCandidatesByUnlikeBadge() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
-            val bill = Player(id = "Bill", badge = 1)
-            val ted = Player(id = "Ted", badge = 1)
-            val altAmadeus = Player(id = "Mozart", badge = 2)
-            val altShorty = Player(id = "Napoleon", badge = 2)
+            val bill = Player(id = "Bill", badge = 1, avatarType = null)
+            val ted = Player(id = "Ted", badge = 1, avatarType = null)
+            val altAmadeus = Player(id = "Mozart", badge = 2, avatarType = null)
+            val altShorty = Player(id = "Napoleon", badge = 2, avatarType = null)
             val players = listOf(bill, ted, altAmadeus, altShorty)
 
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
@@ -75,7 +75,7 @@ class CreatePairCandidateReportsActionTest {
         @Test
         fun willReturnReportForOnePlayer() = setup(object {
             val history = emptyList<PairAssignmentDocument>()
-            val bill = Player(id = "Bill", badge = 1)
+            val bill = Player(id = "Bill", badge = 1, avatarType = null)
             val players = listOf(bill)
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
             val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
@@ -92,10 +92,10 @@ class CreatePairCandidateReportsActionTest {
     fun whenThePartyPrefersPairingByLongestTime() = setup(object : CreatePairCandidateReportsActionDispatcher {
         override val execute = stubActionExecutor(CreatePairCandidateReportAction::class)
         val history = listOf<PairAssignmentDocument>()
-        val bill = Player(id = "Bill", badge = 1)
-        val ted = Player(id = "Ted", badge = 1)
-        val altAmadeus = Player(id = "Mozart", badge = 2)
-        val altShorty = Player(id = "Napoleon", badge = 2)
+        val bill = Player(id = "Bill", badge = 1, avatarType = null)
+        val ted = Player(id = "Ted", badge = 1, avatarType = null)
+        val altAmadeus = Player(id = "Mozart", badge = 2, avatarType = null)
+        val altShorty = Player(id = "Napoleon", badge = 2, avatarType = null)
         val players = listOf(bill, ted, altAmadeus, altShorty)
 
         val billReport = PairCandidateReport(bill, emptyList(), NeverPaired)

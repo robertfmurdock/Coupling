@@ -29,8 +29,8 @@ class FindNewPairsActionTest {
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel = StubWheel()
-        val bill: Player = Player(id = "Bill")
-        val ted: Player = Player(id = "Ted")
+        val bill: Player = Player(id = "Bill", avatarType = null)
+        val ted: Player = Player(id = "Ted", avatarType = null)
         val players = listOf(bill, ted)
     }) {
         wheel.spyReturnValues.add(bill)
@@ -48,9 +48,9 @@ class FindNewPairsActionTest {
     fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel = StubWheel()
-        val bill: Player = Player(id = "Bill")
-        val ted: Player = Player(id = "Ted")
-        val mozart: Player = Player(id = "Mozart")
+        val bill: Player = Player(id = "Bill", avatarType = null)
+        val ted: Player = Player(id = "Ted", avatarType = null)
+        val mozart: Player = Player(id = "Mozart", avatarType = null)
         val players = listOf(bill, ted, mozart)
         val pairCandidateReports = listOf<PairCandidateReport?>(
             PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),

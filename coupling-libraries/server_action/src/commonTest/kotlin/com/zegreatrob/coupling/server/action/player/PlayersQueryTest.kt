@@ -27,12 +27,14 @@ class PlayersQueryTest {
                 id = "1",
                 callSignAdjective = "Red",
                 callSignNoun = "Horner",
+                avatarType = null,
             ),
-            Player(id = "2", callSignAdjective = "Blue", callSignNoun = "Bee"),
+            Player(id = "2", callSignAdjective = "Blue", callSignNoun = "Bee", avatarType = null),
             Player(
                 id = "3",
                 callSignAdjective = "Green",
                 callSignNoun = "Tacos",
+                avatarType = null,
             ),
         )
 
@@ -56,9 +58,9 @@ class PlayersQueryTest {
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = asyncSetup(object : PlayersQueryDispatcher {
         override val currentPartyId = PartyId("Excellent Party")
         val players = listOf(
-            Player(id = "1"),
-            Player(id = "2"),
-            Player(id = "3"),
+            Player(id = "1", avatarType = null),
+            Player(id = "2", avatarType = null),
+            Player(id = "3", avatarType = null),
         )
         override val playerRepository = PlayerRepositorySpy()
             .apply { whenever(currentPartyId, players.map { toRecord(it, currentPartyId) }) }

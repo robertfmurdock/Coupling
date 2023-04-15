@@ -55,7 +55,7 @@ class GenerateCallSignActionTest {
         val nouns = setOf("Lion", "Tiger", "Bear")
         val email = "robert.f.murdock@accenture.com"
         val normalGeneratedCallSign = CallSign("Green", "Bear")
-        val players = listOf(Player(callSignAdjective = normalGeneratedCallSign.adjective))
+        val players = listOf(Player(callSignAdjective = normalGeneratedCallSign.adjective, avatarType = null))
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)
     }) exercise {
@@ -70,7 +70,7 @@ class GenerateCallSignActionTest {
         val nouns = setOf("Lion", "Tiger", "Bear")
         val email = "robert.f.murdock@accenture.com"
         val normalGeneratedCallSign = CallSign("Green", "Bear")
-        val players = listOf(Player(callSignNoun = normalGeneratedCallSign.noun))
+        val players = listOf(Player(callSignNoun = normalGeneratedCallSign.noun, avatarType = null))
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)
     }) exercise {
@@ -85,9 +85,9 @@ class GenerateCallSignActionTest {
         val nouns = setOf("Lion", "Tiger", "Bear")
         val email = "robert.f.murdock@accenture.com"
         val players = listOf(
-            Player(callSignAdjective = "Red", callSignNoun = "Lion"),
-            Player(callSignAdjective = "Green", callSignNoun = "Tiger"),
-            Player(callSignAdjective = "Blue", callSignNoun = "Bear"),
+            Player(callSignAdjective = "Red", callSignNoun = "Lion", avatarType = null),
+            Player(callSignAdjective = "Green", callSignNoun = "Tiger", avatarType = null),
+            Player(callSignAdjective = "Blue", callSignNoun = "Bear", avatarType = null),
         )
 
         val action = GenerateCallSignAction(adjectives, nouns, email, players)

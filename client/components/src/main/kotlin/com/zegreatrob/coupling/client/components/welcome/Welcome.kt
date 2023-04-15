@@ -147,7 +147,7 @@ private fun WelcomeCardSet.toPairAndProverb() = pairOf(
 
 private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
-private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath)
+private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath, avatarType = null)
 
 private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<HTMLDivElement>) = div {
     css {

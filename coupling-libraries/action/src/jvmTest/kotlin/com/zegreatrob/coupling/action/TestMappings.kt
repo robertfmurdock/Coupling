@@ -71,4 +71,5 @@ private fun JsonNode.toPlayer() = Player(
     id = this["id"].textValue(),
     badge = this["badge"].intValue(),
     name = this["name"].textValue(),
+    avatarType = null,
 )

@@ -33,7 +33,7 @@ class CreatePairCandidateReportActionTest {
         val players: List<Player> = emptyList()
         val history: List<PairAssignmentDocument> = emptyList()
     }) exercise {
-        perform(CreatePairCandidateReportAction(Player(id = "player"), history, players))
+        perform(CreatePairCandidateReportAction(Player(id = "player", avatarType = null), history, players))
     } verify {
         assertTrue(it.partners.isEmpty())
     }
@@ -41,10 +41,10 @@ class CreatePairCandidateReportActionTest {
     @Suppress("unused")
     class ShouldDeterminePossiblePartnersForPlayerByChoosingPartner {
         companion object {
-            val bruce = Player(id = "Batman")
-            val jezebel = Player(id = "Jezebel Jett")
-            val talia = Player(id = "Talia")
-            val selena = Player(id = "Catwoman")
+            val bruce = Player(id = "Batman", avatarType = null)
+            val jezebel = Player(id = "Jezebel Jett", avatarType = null)
+            val talia = Player(id = "Talia", avatarType = null)
+            val selena = Player(id = "Catwoman", avatarType = null)
             val availableOtherPlayers = listOf(selena, talia, jezebel)
 
             private fun createPairCandidateReportAction(
@@ -91,7 +91,7 @@ class CreatePairCandidateReportActionTest {
                         listOf(
                             pinnedPair(
                                 bruce,
-                                Player(id = "Batgirl"),
+                                Player(id = "Batgirl", avatarType = null),
                             ),
                         ),
                     ),
@@ -99,7 +99,7 @@ class CreatePairCandidateReportActionTest {
                         listOf(
                             pinnedPair(
                                 bruce,
-                                Player(id = "Robin"),
+                                Player(id = "Robin", avatarType = null),
                             ),
                         ),
                     ),

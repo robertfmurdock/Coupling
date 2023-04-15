@@ -12,6 +12,7 @@ mutation spin($input: SpinInput!) {
                     callSignAdjective
                     callSignNoun
                     imageURL
+                    avatarType
                     pins {
                         id
                         icon

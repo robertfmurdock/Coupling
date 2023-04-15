@@ -47,6 +47,7 @@ type PlayerRecord {
     callSignAdjective: String
     callSignNoun: String
     imageURL: String
+    avatarType: String
     partyId: String
     modifyingUserEmail: String
     timestamp: String
@@ -58,6 +59,7 @@ type PinnedPlayer {
     name: String
     email: String
     badge: String
+    avatarType: String
     callSignAdjective: String
     callSignNoun: String
     imageURL: String
@@ -97,6 +99,7 @@ input PlayerInput {
     callSignAdjective: String
     callSignNoun: String
     imageURL: String
+    avatarType: String
 }
 
 input PinInput {
@@ -162,6 +165,7 @@ input SavePlayerInput {
     callSignAdjective: String
     callSignNoun: String
     imageURL: String
+    avatarType: String
 }
 
 input SavePairAssignmentsInput {
@@ -184,6 +188,7 @@ input PinnedPlayerInput {
     callSignAdjective: String
     callSignNoun: String
     imageURL: String
+    avatarType: String
     pins: [PinInput]!
 }
 

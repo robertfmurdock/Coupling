@@ -17,7 +17,7 @@ class WheelTest : Wheel {
     @Test
     fun randomlyChoosesAPersonOnTheWheel() {
         arrayOf("Scooby", "Shaggy", "Scrappy")
-            .map { Player(id = it) }
+            .map { Player(id = it, avatarType = null) }
             .toTypedArray()
             .checkSpinWorksForIndex(1)
             .checkSpinWorksForIndex(0)

@@ -40,12 +40,12 @@ class GameExamplesTest {
                 pairingRule = PairingRule.LongestTime,
             )
 
-            val bruce = Player(id = "1", name = "Batman", badge = 0)
-            val hal = Player(id = "2", name = "Green Lantern", badge = 0)
-            val barry = Player(id = "3", name = "Flash", badge = 0)
-            val john = Player(id = "4", name = "Martian Manhunter", badge = 0)
-            val clark = Player(id = "5", name = "Superman", badge = 0)
-            val diana = Player(id = "6", name = "Wonder Woman", badge = 0)
+            val bruce = Player(id = "1", badge = 0, name = "Batman", avatarType = null)
+            val hal = Player(id = "2", badge = 0, name = "Green Lantern", avatarType = null)
+            val barry = Player(id = "3", badge = 0, name = "Flash", avatarType = null)
+            val john = Player(id = "4", badge = 0, name = "Martian Manhunter", avatarType = null)
+            val clark = Player(id = "5", badge = 0, name = "Superman", avatarType = null)
+            val diana = Player(id = "6", badge = 0, name = "Wonder Woman", avatarType = null)
 
             val allPlayers = listOf(
                 clark,
@@ -124,12 +124,12 @@ class GameExamplesTest {
                 pairingRule = PairingRule.LongestTime,
             )
 
-            val bruce = Player(id = "1", name = "Batman", badge = 0)
-            val hal = Player(id = "2", name = "Green Lantern", badge = 1)
-            val barry = Player(id = "3", name = "Flash", badge = 0)
-            val john = Player(id = "4", name = "Martian Manhunter", badge = 1)
-            val clark = Player(id = "5", name = "Superman", badge = 0)
-            val diana = Player(id = "6", name = "Wonder Woman", badge = 1)
+            val bruce = Player(id = "1", badge = 0, name = "Batman", avatarType = null)
+            val hal = Player(id = "2", badge = 1, name = "Green Lantern", avatarType = null)
+            val barry = Player(id = "3", badge = 0, name = "Flash", avatarType = null)
+            val john = Player(id = "4", badge = 1, name = "Martian Manhunter", avatarType = null)
+            val clark = Player(id = "5", badge = 0, name = "Superman", avatarType = null)
+            val diana = Player(id = "6", badge = 1, name = "Wonder Woman", avatarType = null)
 
             val allPlayers = listOf(clark, bruce, diana, hal, barry, john)
         }
@@ -171,10 +171,10 @@ class GameExamplesTest {
             PartyId("Avengers"),
             PairingRule.PreferDifferentBadge,
         )
-        val kamala = Player(name = "Ms. Marvel", badge = 0)
-        val logan = Player(name = "Wolverine", badge = 1)
-        val steve = Player(name = "Captain America", badge = 1)
-        val thor = Player(name = "Thor", badge = 1)
+        val kamala = Player(badge = 0, name = "Ms. Marvel", avatarType = null)
+        val logan = Player(badge = 1, name = "Wolverine", avatarType = null)
+        val steve = Player(badge = 1, name = "Captain America", avatarType = null)
+        val thor = Player(badge = 1, name = "Thor", avatarType = null)
         val allPlayers = listOf(kamala, logan, steve, thor)
 
         val history = listOf(
