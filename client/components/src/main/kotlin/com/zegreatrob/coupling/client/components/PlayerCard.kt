@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.client.components.gravatar.gravatarImage
+import com.zegreatrob.coupling.client.components.gravatar.myGravatarUrl
+import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -36,6 +37,7 @@ import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.img
 import react.useCallback
+import kotlin.random.Random
 
 data class PlayerCard(
     val player: Player,
@@ -99,25 +101,43 @@ private fun PropertiesBuilder.playerCardRuleSet(size: Int) {
     flex = Flex(number(0.0), number(0.0), Auto.auto)
 }
 
-private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = if (player.imageURL != null) {
-    img {
+private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = when {
+    player.imageURL != null -> img {
         this.src = player.imageURL
-        alt = "icon"
+        alt = "player-icon"
         this.width = size.toDouble()
         this.height = size.toDouble()
     }
-} else {
-    gravatarImage(
-        email = player.emailWithFallback(),
-        alt = "player-icon",
-        options = jso {
-            this.size = size
-            this.default = "retro"
-        },
-    )
+
+    else -> img {
+        src = player.getAvatarImageUrl(
+            size,
+            player.avatarType ?: player.hashedRandomAvatar(),
+        )
+        alt = "player-icon"
+        draggable = false
+        width = size.toDouble()
+        height = size.toDouble()
+    }
 }
 
-private val Player.robohashImageUrl get() = "https://robohash.org/${emailWithFallback()}?gravatar=yes&set=set3"
+private fun Player.hashedRandomAvatar() = emailWithFallback()
+    .hashCode()
+    .let(::Random)
+    .nextInt(AvatarType.values().size)
+    .let { AvatarType.values()[it] }
+
+private fun Player.getAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
+    AvatarType.Retro -> myGravatarUrl(jso { this.size = size; this.default = "retro" }, email, null)
+    AvatarType.RobohashSet1 -> getRobohashImageUrl("set1")
+    AvatarType.RobohashSet2 -> getRobohashImageUrl("set2")
+    AvatarType.RobohashSet3 -> getRobohashImageUrl("set3")
+    AvatarType.RobohashSet4 -> getRobohashImageUrl("set4")
+}
+
+private fun Player.getRobohashImageUrl(setName: String) =
+    "https://robohash.org/${emailWithFallback()}?gravatar=yes&set=" +
+        setName
 
 private fun Player.emailWithFallback() = when {
     email != "" -> email
