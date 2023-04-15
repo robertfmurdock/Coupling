@@ -220,10 +220,10 @@
     "@aws-sdk/util-waiter" "3.303.0"
     tslib "^2.5.0"
 
-"@aws-sdk/client-lambda@~3.312.0":
-  version "3.312.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.312.0.tgz#f5e7ee85a610088566f06c1390ad74884a190dbf"
-  integrity sha512-Gnzp2oniAzEr6/w8rpPI0VPx9byV2Fu4T5dYMnCKT6sxc9G8Fshb76zShVNrAB/nv7G9noobtP/L9z81yNduhg==
+"@aws-sdk/client-lambda@~3.314.0":
+  version "3.314.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.314.0.tgz#7f7cab050c591ae23bd0fdab4de962d7d270f541"
+  integrity sha512-XF+vndjKygyFVI0I9IqsEEvkKybtq/jRtM+thHgj9VXng6xZTaKQPpwqHanjWvQgN3Gk7mnQDIATO3Buwu8j5w==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
@@ -10942,10 +10942,10 @@ react-flip-toolkit@^7.0.17:
     flip-toolkit "7.0.17"
     prop-types "^15.5.7"
 
-react-hotkeys-hook@^4.3.8:
-  version "4.3.8"
-  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-4.3.8.tgz#75fa18e7edb393c2d308a59378932c6badf94b80"
-  integrity sha512-RmrIQ3M259c84MnYVEAQsmHkD6s7XUgLG0rW6S7qjt1Lh7q+SPIz5b6obVU8OJw1Utsj1mUCj6twtBPaK/ytww==
+react-hotkeys-hook@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-4.4.0.tgz#e7c55bb13ecb6ffb447e90ca5525403a5a3ac7b8"
+  integrity sha512-wOaCWLwgT/f895CMJrR9hmzVf+gfL8IpjWDXWXKngBp9i6Xqzf0tvLv4VI8l3Vlsg/cc4C/Iik3Ck76L/Hj0tw==
 
 react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.6:
   version "16.13.1"
