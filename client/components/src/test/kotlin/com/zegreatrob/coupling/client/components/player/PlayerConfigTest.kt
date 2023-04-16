@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.act
@@ -31,6 +32,53 @@ import kotlin.js.json
 import kotlin.test.Test
 
 class PlayerConfigTest {
+
+    @Test
+    fun selectingAvatarTypeWillAffectSavedPlayer() = asyncSetup(object {
+        val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
+        val player = Player(id = "blarg", avatarType = null)
+        val stubber = StubDispatcher()
+        val actor = UserEvent.setup()
+    }) {
+        render(
+            PlayerConfig(party, player, emptyList(), {}, stubber.func())
+                .create(),
+            json("wrapper" to MemoryRouter),
+        )
+    } exercise {
+        actor.selectOptions(screen.getByRole("combobox", json("name" to "Avatar Type")), "DicebearAdventurer")
+        actor.click(screen.getByRole("button", json("name" to "Save")))
+    } verify {
+        val expectedCommand = SavePlayerCommand(
+            partyId = party.id,
+            player = player.copy(avatarType = AvatarType.DicebearAdventurer),
+        )
+        stubber.commandsDispatched<SavePlayerCommand>()
+            .assertIsEqualTo(listOf(expectedCommand))
+    }
+
+    @Test
+    fun notSelectingAvatarTypeWillLeaveItNull() = asyncSetup(object {
+        val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
+        val player = Player(id = "blarg", avatarType = null)
+        val stubber = StubDispatcher()
+        val actor = UserEvent.setup()
+    }) {
+        render(
+            PlayerConfig(party, player, emptyList(), {}, stubber.func())
+                .create(),
+            json("wrapper" to MemoryRouter),
+        )
+    } exercise {
+        actor.click(screen.getByRole("button", json("name" to "Save")))
+    } verify {
+        val expectedCommand = SavePlayerCommand(
+            partyId = party.id,
+            player = player,
+        )
+        stubber.commandsDispatched<SavePlayerCommand>()
+            .assertIsEqualTo(listOf(expectedCommand))
+    }
 
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {

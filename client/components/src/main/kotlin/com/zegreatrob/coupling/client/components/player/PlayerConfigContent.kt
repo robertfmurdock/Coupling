@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.client.components.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.client.components.gravatarLink
 import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
@@ -118,6 +119,7 @@ private fun ChildrenBuilder.editorDiv(party: Party, player: Player, onChange: (C
     Editor {
         li { nameInput(player, onChange) }
         li { emailInput(player, onChange) }
+        avatarTypeConfig(player, onChange)
         if (party.callSignsEnabled) {
             callSignConfig(player, onChange)
         }
@@ -227,4 +229,36 @@ private fun ChildrenBuilder.defaultBadgeOption(party: Party) = option {
     value = "${Badge.Default.value}"
     label = party.defaultBadgeName
     ariaLabel = "Default Badge Option"
+}
+
+private fun ChildrenBuilder.avatarTypeConfig(
+    player: Player,
+    onChange: (ChangeEvent<*>) -> Unit,
+) = li {
+    css {
+        "> div" {
+            display = Display.inlineBlock
+        }
+    }
+    label { htmlFor = "avatarType"; +"Avatar Type" }
+    select {
+        id = "avatarType"
+        name = "avatarType"
+        this.value = player.avatarType?.name ?: ""
+        this.onChange = onChange
+        option {
+            value = ""
+            this.label = "No avatar currently selected."
+        }
+        AvatarType.values().forEach { avatarType ->
+            option {
+                id = avatarType.name
+                key = avatarType.name
+                value = avatarType.name
+                this.label = avatarType.name
+                ariaLabel = avatarType.name
+            }
+        }
+    }
+    span { +"You may feel a sudden urge to paint yourself blue." }
 }

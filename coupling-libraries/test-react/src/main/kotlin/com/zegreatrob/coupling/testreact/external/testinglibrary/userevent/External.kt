@@ -1,5 +1,3 @@
-
-
 package com.zegreatrob.coupling.testreact.external.testinglibrary.userevent
 
 import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
@@ -14,6 +12,9 @@ class UserEvent(val innerUser: TLUserEvent) {
 
     suspend fun click(element: HTMLElement?) = waitFor { innerUser.click(element) }
     suspend fun type(element: HTMLElement?, text: String) = waitFor { innerUser.type(element, text) }
+    suspend fun selectOptions(element: HTMLElement, vararg value: String) = waitFor {
+        innerUser.selectOptions(element, value)
+    }
 
     companion object {
         fun setup() = UserEvent(userEvent.default.setup())
@@ -29,4 +30,5 @@ external interface UserEventLib {
 external interface TLUserEvent {
     fun click(element: HTMLElement?): Promise<Unit>
     fun type(element: HTMLElement?, text: String): Promise<Unit>
+    fun selectOptions(element: HTMLElement, values: Array<out String>): Promise<Unit>
 }
