@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.ClassName
 import csstype.Clear
 import csstype.Display
@@ -46,7 +46,7 @@ data class PinConfigContent(
 
 val pinConfigContentClassName = ClassName("pin-config-content")
 
-val pinConfigContent = tmFC<PinConfigContent> { (party, pin, pinList, onChange, onSubmit, onRemove) ->
+val pinConfigContent by ntmFC<PinConfigContent> { (party, pin, pinList, onChange, onSubmit, onRemove) ->
     ConfigFrame {
         className = pinConfigContentClassName
         span {

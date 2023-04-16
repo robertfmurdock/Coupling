@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.ClassName
 import csstype.Display
 import csstype.Float
@@ -37,7 +37,7 @@ data class PairSection(
     val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
 ) : DataPropsBind<PairSection>(pairSection)
 
-private val pairSection = tmFC<PairSection> { (party, players, pairs, allowSave, setPairs, controls) ->
+private val pairSection by ntmFC<PairSection> { (party, players, pairs, allowSave, setPairs, controls) ->
     val pairSectionNode = useRef<HTMLElement>(null)
 
     div {

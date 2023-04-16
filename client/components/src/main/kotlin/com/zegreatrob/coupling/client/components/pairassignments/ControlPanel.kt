@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.BoxShadow
 import csstype.Color
 import csstype.Display
@@ -15,7 +15,7 @@ import react.dom.html.ReactHTML.div
 
 data class ControlPanel(val party: Party) : DataPropsBind<ControlPanel>(controlPanel)
 
-val controlPanel = tmFC<ControlPanel> { (party) ->
+val controlPanel by ntmFC<ControlPanel> { (party) ->
     div {
         div {
             css {

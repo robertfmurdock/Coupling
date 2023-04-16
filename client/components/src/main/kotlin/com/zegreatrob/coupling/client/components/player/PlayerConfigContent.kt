@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Border
 import csstype.Clear
 import csstype.Display
@@ -52,7 +52,7 @@ data class PlayerConfigContent(
 
 val playerConfigContentClassName = csstype.ClassName("player-config-content")
 
-val playerConfigContent = tmFC<PlayerConfigContent> { (party, player, players, onChange, onSubmit, onRemove) ->
+val playerConfigContent by ntmFC<PlayerConfigContent> { (party, player, players, onChange, onSubmit, onRemove) ->
     ConfigFrame {
         css(playerConfigContentClassName) {
             "input[type=text]" {

@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.ClassName
 import csstype.Color
 import csstype.Display
@@ -41,7 +41,7 @@ data class PartyConfigContent(
     }
 }
 
-val partyConfigContent = tmFC<PartyConfigContent> { (party, isNew, onChange, onSave, onDelete) ->
+val partyConfigContent by ntmFC<PartyConfigContent> { (party, isNew, onChange, onSave, onDelete) ->
     ConfigFrame {
         className = PartyConfigContent.className
         backgroundColor = Color("hsla(45, 80%, 96%, 1)")

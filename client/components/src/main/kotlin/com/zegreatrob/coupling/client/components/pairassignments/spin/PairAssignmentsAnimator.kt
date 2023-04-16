@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import react.ChildrenBuilder
 import react.Consumer
 import react.create
@@ -23,8 +23,8 @@ data class PairAssignmentsAnimator(
     val children: ChildrenBuilder.() -> Unit,
 ) : DataPropsBind<PairAssignmentsAnimator>(pairAssignmentsAnimator)
 
-private val animationContextConsumer: Consumer<Boolean> = com.zegreatrob.coupling.client.components.animationsDisabledContext.Consumer
-val pairAssignmentsAnimator = tmFC<PairAssignmentsAnimator> { props ->
+private val animationContextConsumer: Consumer<Boolean> = animationsDisabledContext.Consumer
+val pairAssignmentsAnimator by ntmFC<PairAssignmentsAnimator> { props ->
     val (party, players, pairAssignments, enabled) = props
     animationContextConsumer {
         children = { animationsDisabled ->

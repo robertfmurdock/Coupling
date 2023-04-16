@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.minreact.nfc
 import csstype.em
 import emotion.react.css
-import react.FC
 import react.Props
 import react.dom.html.ReactHTML.a
 import web.window.WindowTarget
 
-val gravatarLink = FC<Props> {
+val gravatarLink by nfc<Props> {
     a {
         css {
             marginLeft = 0.4.em

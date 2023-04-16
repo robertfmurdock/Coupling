@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.nfc
 import csstype.BackgroundRepeat
 import csstype.Border
 import csstype.BoxShadow
@@ -25,11 +26,10 @@ import csstype.px
 import csstype.rgba
 import csstype.url
 import emotion.react.css
-import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
 
-val LoginChooser = FC<Props> {
+val LoginChooser by nfc<Props> {
     val auth0Data = useAuth0Data()
     val signInFunc = { auth0Data.loginWithRedirect() }
     div {
@@ -53,9 +53,9 @@ val LoginChooser = FC<Props> {
         }
         div {
             add(
-                com.zegreatrob.coupling.client.components.CouplingButton(
-                    com.zegreatrob.coupling.client.components.supersize,
-                    com.zegreatrob.coupling.client.components.white,
+                CouplingButton(
+                    supersize,
+                    white,
                     onClick = signInFunc,
                 ),
             ) {

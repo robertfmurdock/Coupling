@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.ClassName
 import csstype.Position
 import csstype.pct
@@ -21,7 +21,7 @@ data class PinSection(
     val className: ClassName = ClassName(""),
 ) : DataPropsBind<PinSection>(pinSection)
 
-val pinSection = tmFC<PinSection> { (pinList, scale, canDrag, className) ->
+val pinSection by ntmFC<PinSection> { (pinList, scale, canDrag, className) ->
     div {
         css(className) {
             marginLeft = -(pinList.size * 12 * scale.factor).px

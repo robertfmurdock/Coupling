@@ -4,20 +4,17 @@ import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
-import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PairAssignmentBlock
 import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.client.components.pin.PinSection
 import com.zegreatrob.coupling.client.components.pngPath
-import com.zegreatrob.coupling.client.components.red
-import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Auto
 import csstype.BackgroundRepeat
 import csstype.Border
@@ -52,7 +49,7 @@ data class PairAssignmentRow(
 ) :
     DataPropsBind<PairAssignmentRow>(pairAssignmentRow)
 
-private val pairAssignmentRow = tmFC<PairAssignmentRow> { (party, document, controls, windowFuncs) ->
+private val pairAssignmentRow by ntmFC<PairAssignmentRow> { (party, document, controls, windowFuncs) ->
     val (dispatchFunc, reload) = controls
     val onDeleteClick: () -> Unit = useCallback {
         val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(party.id, document.id) }, { reload() })

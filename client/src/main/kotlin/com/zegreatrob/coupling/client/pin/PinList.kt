@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Border
 import csstype.Color
 import csstype.Display
@@ -26,7 +26,7 @@ import react.router.dom.Link
 
 data class PinList(val party: Party, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
 
-val pinList = tmFC<PinList> { (party, pins) ->
+val pinList by ntmFC<PinList> { (party, pins) ->
     div {
         css { pinListStyles() }
         ConfigHeader {
@@ -57,9 +57,9 @@ val pinList = tmFC<PinList> { (party, pins) ->
                 tabIndex = -1
                 draggable = false
                 add(
-                    com.zegreatrob.coupling.client.components.CouplingButton(
-                        com.zegreatrob.coupling.client.components.large,
-                        com.zegreatrob.coupling.client.components.orange,
+                    CouplingButton(
+                        large,
+                        orange,
                     ),
                 ) {
                     +"Add a new pin."

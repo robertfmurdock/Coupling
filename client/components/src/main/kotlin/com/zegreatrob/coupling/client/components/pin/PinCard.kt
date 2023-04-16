@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.BackgroundRepeat
 import csstype.Border
 import csstype.BoxShadow
@@ -32,7 +32,7 @@ import react.router.dom.Link
 
 data class PinCard(val partyId: PartyId, val pin: Pin, val shouldLink: Boolean = true) : DataPropsBind<PinCard>(pinCard)
 
-val pinCard = tmFC<PinCard> { (partyId, pin, shouldLink) ->
+val pinCard by ntmFC<PinCard> { (partyId, pin, shouldLink) ->
     optionalLink(shouldLink, partyId, pin) {
         div {
             css {

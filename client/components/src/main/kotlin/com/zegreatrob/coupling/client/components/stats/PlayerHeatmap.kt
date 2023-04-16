@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Display
 import csstype.TextAlign
 import csstype.VerticalAlign
@@ -30,7 +30,7 @@ val heatmapSideRow = ClassName {
     display = Display.inlineBlock
 }
 
-val playerHeatmap = tmFC<PlayerHeatmap> { (players, heatmapData) ->
+val playerHeatmap by ntmFC<PlayerHeatmap> { (players, heatmapData) ->
     div {
         css {
             display = Display.inlineBlock

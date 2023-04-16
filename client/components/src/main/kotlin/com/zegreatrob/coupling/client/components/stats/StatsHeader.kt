@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.minreact.nfc
 import csstype.FontSize
 import csstype.FontWeight
 import csstype.px
 import emotion.react.css
-import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 
-val StatsHeader = FC<PropsWithChildren> { props ->
+val StatsHeader by nfc<PropsWithChildren> { props ->
     div {
         css {
             fontWeight = FontWeight.bold

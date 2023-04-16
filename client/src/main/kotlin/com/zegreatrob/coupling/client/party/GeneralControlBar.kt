@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
+import com.zegreatrob.minreact.nfc
 import csstype.AlignItems
 import csstype.Color
 import csstype.Display
@@ -9,7 +10,6 @@ import csstype.VerticalAlign
 import csstype.number
 import csstype.px
 import emotion.react.css
-import react.FC
 import react.PropsWithChildren
 import react.ReactNode
 import react.dom.html.ReactHTML.div
@@ -21,7 +21,7 @@ external interface GeneralControlBarProps : PropsWithChildren {
     var splashComponent: ReactNode
 }
 
-val GeneralControlBar = FC<GeneralControlBarProps> { props ->
+val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
     div {
         css {
             backgroundColor = Color("#faf0d2")

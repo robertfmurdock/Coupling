@@ -22,10 +22,10 @@ import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.nfc
+import com.zegreatrob.minreact.ntmFC
 import kotlinx.browser.window
 import react.ChildrenBuilder
-import react.FC
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
@@ -39,11 +39,11 @@ import react.router.useParams
 data class CouplingRouter(val animationsDisabled: Boolean, val config: ClientConfig) :
     DataPropsBind<CouplingRouter>(couplingRouter)
 
-val couplingRouter = tmFC<CouplingRouter> { (animationsDisabled, config) ->
+val couplingRouter by ntmFC<CouplingRouter> { (animationsDisabled, config) ->
     val (_, isSignedIn, isLoading) = useAuth0Data()
     BrowserRouter {
         basename = config.basename
-        com.zegreatrob.coupling.client.components.animationsDisabledContext.Provider(animationsDisabled) {
+        animationsDisabledContext.Provider(animationsDisabled) {
             if (!isLoading) {
                 Routes { routes(isSignedIn, config) }
             }
@@ -66,7 +66,7 @@ private fun ChildrenBuilder.redirectUnauthenticated() = PathRoute {
     element = Navigate.create { to = "/welcome" }
 }.also { console.warn("not signed in!!!!", window.location.pathname) }
 
-val lostRoute = FC<Props> {
+val lostRoute by nfc<Props> {
     val location = useLocation()
     div { +"Hmm, you seem to be lost. At ${location.pathname}" }
 }

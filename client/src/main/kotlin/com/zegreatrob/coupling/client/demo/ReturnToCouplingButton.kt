@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.components.pink
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.svgPath
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.nfc
 import csstype.AlignItems
 import csstype.AnimationIterationCount
 import csstype.Color
@@ -18,22 +19,18 @@ import csstype.integer
 import csstype.px
 import csstype.s
 import emotion.react.css
-import react.FC
 import react.Props
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 
-val returnToCouplingButton = FC<Props> {
+val returnToCouplingButton by nfc<Props> {
     Link {
         to = "/parties"
         tabIndex = -1
         draggable = false
         add(
-            com.zegreatrob.coupling.client.components.CouplingButton(
-                sizeRuleSet = com.zegreatrob.coupling.client.components.supersize,
-                colorRuleSet = com.zegreatrob.coupling.client.components.pink,
-            ) {
+            CouplingButton(sizeRuleSet = supersize, colorRuleSet = pink) {
                 animationName = ident("pulsate")
                 animationDuration = 0.75.s
                 animationIterationCount = AnimationIterationCount.infinite
@@ -44,7 +41,7 @@ val returnToCouplingButton = FC<Props> {
     }
 }
 
-private val couplingLogo = FC<Props> {
+private val couplingLogo by nfc<Props> {
     div {
         css {
             display = Display.flex

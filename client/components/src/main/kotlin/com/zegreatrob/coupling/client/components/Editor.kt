@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.minreact.nfc
 import csstype.Border
 import csstype.BoxSizing
 import csstype.Clear
@@ -18,11 +19,10 @@ import csstype.pct
 import csstype.px
 import csstype.string
 import emotion.react.css
-import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.ul
 
-val Editor = FC<PropsWithChildren> { props ->
+val Editor by nfc<PropsWithChildren> { props ->
     ul {
         css {
             verticalAlign = VerticalAlign.top

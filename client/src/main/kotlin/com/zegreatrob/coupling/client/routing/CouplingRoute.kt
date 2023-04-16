@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
+import com.zegreatrob.minreact.nfc
 import kotlinx.browser.window
 import react.ChildrenBuilder
 import react.FC
@@ -21,7 +22,7 @@ external interface CouplingRouteProps : Props {
     var rComponent: FC<PageProps>
 }
 
-val CouplingRoute = FC<CouplingRouteProps> {
+val CouplingRoute by nfc<CouplingRouteProps> {
     val (searchParams) = useSearchParams()
     val params = useParams()
     val navigate = useNavigate()

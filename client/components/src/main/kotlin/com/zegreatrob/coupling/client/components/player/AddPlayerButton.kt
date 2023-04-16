@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.orange
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.add
-import react.FC
+import com.zegreatrob.minreact.nfc
 import react.Props
 import react.router.dom.Link
 
@@ -14,7 +14,7 @@ external interface AddPlayerButtonProps : Props {
     var partyId: PartyId
 }
 
-val addPlayerButton = FC<AddPlayerButtonProps> { props ->
+val addPlayerButton by nfc<AddPlayerButtonProps> { props ->
     Link {
         to = "/${props.partyId.value}/player/new/"
         tabIndex = -1

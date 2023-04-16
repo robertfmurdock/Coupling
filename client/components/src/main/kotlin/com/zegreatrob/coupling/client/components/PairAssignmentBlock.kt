@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.minreact.nfc
 import csstype.Display
 import csstype.FontWeight
 import csstype.px
 import emotion.react.css
-import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 
-val PairAssignmentBlock = FC<PropsWithChildren> { props ->
+val PairAssignmentBlock by nfc<PropsWithChildren> { props ->
     div {
         css {
             display = Display.inlineBlock

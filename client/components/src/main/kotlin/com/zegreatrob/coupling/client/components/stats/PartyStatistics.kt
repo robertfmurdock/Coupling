@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Color
 import csstype.Display
 import csstype.VerticalAlign
@@ -27,7 +27,7 @@ data class PartyStatistics(val queryResults: StatisticsQuery.Results) : DataProp
     partyStatistics,
 )
 
-val partyStatistics = tmFC<PartyStatistics> { props ->
+val partyStatistics by ntmFC<PartyStatistics> { props ->
     val (party, players, _, allStats, heatmapData) = props.queryResults
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div {

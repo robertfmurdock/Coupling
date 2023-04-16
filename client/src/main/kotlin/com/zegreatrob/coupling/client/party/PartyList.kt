@@ -12,11 +12,12 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.nfc
+import com.zegreatrob.minreact.ntmFC
 import csstype.Color
 import csstype.VerticalAlign
 import csstype.px
-import react.FC
+import emotion.css.ClassName
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
@@ -24,12 +25,12 @@ import react.router.dom.Link
 
 data class PartyList(val parties: List<Party>) : DataPropsBind<PartyList>(partyList)
 
-val partyList = tmFC<PartyList> { (parties) ->
+val partyList by ntmFC<PartyList> { (parties) ->
     add(
         PageFrame(
             borderColor = Color("rgb(94, 84, 102)"),
             backgroundColor = Color("hsla(0, 0%, 80%, 1)"),
-            className = emotion.css.ClassName {
+            className = ClassName {
                 "> div" { padding = 7.px }
                 "*" { verticalAlign = VerticalAlign.middle }
             },
@@ -56,16 +57,11 @@ val partyList = tmFC<PartyList> { (parties) ->
     }
 }
 
-val NewPartyButton = FC<Props> {
+val NewPartyButton by nfc<Props> {
     Link {
         to = "/new-party/"
         draggable = false
         tabIndex = -1
-        add(
-            com.zegreatrob.coupling.client.components.CouplingButton(
-                com.zegreatrob.coupling.client.components.supersize,
-                com.zegreatrob.coupling.client.components.green,
-            ),
-        ) { +"Form a new party!" }
+        add(CouplingButton(supersize, green)) { +"Form a new party!" }
     }
 }

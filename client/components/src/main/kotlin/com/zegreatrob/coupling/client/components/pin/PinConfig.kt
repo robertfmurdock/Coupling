@@ -16,7 +16,7 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
@@ -34,7 +34,7 @@ private interface DD : SavePinCommandDispatcher, DeletePinCommand.Dispatcher {
     override val pinRepository: PinRepository
 }
 
-private val pinConfig = tmFC<PinConfig<DD>> { (party, pin, pinList, reload, dispatchFunc) ->
+private val pinConfig by ntmFC<PinConfig<DD>> { (party, pin, pinList, reload, dispatchFunc) ->
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()

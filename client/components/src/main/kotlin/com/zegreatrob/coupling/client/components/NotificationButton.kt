@@ -2,10 +2,12 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.components.external.reactpopup.popup
+import com.zegreatrob.minreact.nfc
 import csstype.AlignItems
 import csstype.AnimationIterationCount
 import csstype.ClassName
 import csstype.Display
+import csstype.Float
 import csstype.FontWeight
 import csstype.JustifyContent
 import csstype.NamedColor
@@ -17,7 +19,6 @@ import csstype.px
 import csstype.s
 import emotion.react.css
 import kotlinx.browser.localStorage
-import react.FC
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
@@ -33,7 +34,7 @@ private fun saveNotificationLog(updatedThing: Array<String>) {
 private fun loadNotificationLog() =
     localStorage.getItem("notification-log")?.let { JSON.parse<Array<String>>(it) } ?: emptyArray()
 
-val NotificationButton = FC<Props> {
+val NotificationButton by nfc<Props> {
     val recentInfoMd = loadMarkdownString("recent-info")
     val (seenNotification, setSeenNotification) = useState {
         loadNotificationLog().contains(recentInfoMd.dateLineFromRecentInfo())
@@ -46,7 +47,7 @@ val NotificationButton = FC<Props> {
         css { position = Position.relative }
         span {
             css {
-                float = csstype.Float.left
+                float = Float.left
                 position = Position.absolute
                 top = (-5).px
                 right = (-80).px

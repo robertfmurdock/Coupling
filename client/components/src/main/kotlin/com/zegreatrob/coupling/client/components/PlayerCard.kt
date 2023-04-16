@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Angle
 import csstype.Auto
 import csstype.BackgroundRepeat
@@ -49,7 +49,7 @@ data class PlayerCard(
     val tilt: Angle = 0.deg,
 ) : DataPropsBind<PlayerCard>(playerCard)
 
-val playerCard = tmFC<PlayerCard> { (player, className, size, onClick, deselected, tilt) ->
+val playerCard by ntmFC<PlayerCard> { (player, className, size, onClick, deselected, tilt) ->
     val onClickFunc: (MouseEvent<*, *>) -> Unit = useCallback(onClick) { onClick() }
     div {
         css(className) {

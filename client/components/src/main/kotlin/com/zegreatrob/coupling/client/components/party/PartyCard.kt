@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.components.visuallyHidden
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Auto
 import csstype.BoxShadow
 import csstype.Color
@@ -34,7 +34,7 @@ import react.router.dom.Link
 
 data class PartyCard(val party: Party, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
 
-val partyCard = tmFC<PartyCard> { (party, size) ->
+val partyCard by ntmFC<PartyCard> { (party, size) ->
     Link {
         to = party.id.currentPairsPage()
         visuallyHidden { +"Party Home Page" }

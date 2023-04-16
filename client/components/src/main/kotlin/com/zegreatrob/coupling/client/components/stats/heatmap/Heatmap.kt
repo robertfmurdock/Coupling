@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.stats.heatmap
 
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.ClassName
 import csstype.Display
 import csstype.WhiteSpace
@@ -85,7 +85,7 @@ suspend fun renderD3Heatmap(element: HTMLElement, data: List<Double?>, cellClass
 
 data class Heatmap(val data: List<List<Double?>>, val className: ClassName) : DataPropsBind<Heatmap>(heatmap)
 
-val heatmap = tmFC<Heatmap> { (data, className) ->
+val heatmap by ntmFC<Heatmap> { (data, className) ->
     val rowSize = data.size * 90
     val rootRef = useRef<HTMLElement>(null)
     useLayoutEffect { MainScope().launch { rootRef.current?.renderD3Heatmap(data.flatten()) } }

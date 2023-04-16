@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.BackgroundRepeat
 import csstype.ClassName
 import csstype.Color
@@ -44,7 +44,7 @@ data class PinButton(
     val onClick: () -> Unit = {},
 ) : DataPropsBind<PinButton>(pinButton)
 
-val pinButton = tmFC<PinButton> { (pin, scale, className, showTooltip, onClickFunc) ->
+val pinButton by ntmFC<PinButton> { (pin, scale, className, showTooltip, onClickFunc) ->
     val onClickCallback: (MouseEvent<*, *>) -> Unit = useCallback { onClickFunc() }
     div {
         asDynamic()["data-pin-button"] = "${pin.id}"

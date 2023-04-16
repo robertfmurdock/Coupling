@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Color
 import csstype.Display
 import csstype.LineStyle
@@ -17,7 +17,7 @@ data class TeamStatistics(
     val medianSpinDuration: String,
 ) : DataPropsBind<TeamStatistics>(teamStatistics)
 
-val teamStatistics = tmFC<TeamStatistics> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
+val teamStatistics by ntmFC<TeamStatistics> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
     div {
         css {
             display = Display.inlineBlock

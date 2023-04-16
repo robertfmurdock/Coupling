@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Display
 import csstype.Position
 import csstype.Visibility
@@ -28,7 +28,7 @@ data class SpinAnimationPanel(
     val state: SpinAnimationState,
 ) : DataPropsBind<SpinAnimationPanel>(spinAnimationPanel)
 
-val spinAnimationPanel = tmFC<SpinAnimationPanel> { (party, rosteredPairAssignments, state) ->
+val spinAnimationPanel by ntmFC<SpinAnimationPanel> { (party, rosteredPairAssignments, state) ->
     val pairAssignments = rosteredPairAssignments.pairAssignments
     val players = rosteredPairAssignments.selectedPlayers
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)

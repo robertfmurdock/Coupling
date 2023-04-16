@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components.spin
 
-import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.PinButton
 import com.zegreatrob.coupling.client.components.PinButtonScale
@@ -8,14 +7,12 @@ import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
-import com.zegreatrob.coupling.client.components.pink
-import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.AnimationIterationCount
 import csstype.BorderCollapse
 import csstype.BoxShadow
@@ -49,7 +46,7 @@ data class PrepareSpinContent(
     var onSpin: () -> Unit,
 ) : DataPropsBind<PrepareSpinContent>(prepareSpinContent)
 
-val prepareSpinContent = tmFC<PrepareSpinContent> { props ->
+val prepareSpinContent by ntmFC<PrepareSpinContent> { props ->
     val (party, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props
 
     val enabled = playerSelections.any { it.second }

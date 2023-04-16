@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.player.addPlayerButton
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.nfc
 import csstype.AlignItems
 import csstype.AlignSelf
 import csstype.BoxShadow
@@ -22,7 +23,6 @@ import csstype.px
 import csstype.rgba
 import emotion.react.css
 import react.ChildrenBuilder
-import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
@@ -32,7 +32,7 @@ external interface ConfigHeaderProps : PropsWithChildren {
     var party: Party
 }
 
-val ConfigHeader = FC<ConfigHeaderProps> { props ->
+val ConfigHeader by nfc<ConfigHeaderProps> { props ->
     val party = props.party
     div {
         css {

@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.ClassName
 import csstype.FontWeight
 import csstype.PropertiesBuilder
@@ -28,7 +28,7 @@ data class PlayerRoster(
     val cssOverrides: PropertiesBuilder.() -> Unit = {},
 ) : DataPropsBind<PlayerRoster>(playerRoster)
 
-val playerRoster = tmFC { (label, players, partyId, className, overrides): PlayerRoster ->
+val playerRoster by ntmFC { (label, players, partyId, className, overrides): PlayerRoster ->
     val ref by useState { Date.now().toLong() }
     val random = Random(ref)
 

@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.minreact.nfc
 import csstype.px
 import emotion.react.css
-import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.span
 
-val StatLabel = FC<PropsWithChildren> { props ->
+val StatLabel by nfc<PropsWithChildren> { props ->
     span {
         css {
             marginRight = 5.px

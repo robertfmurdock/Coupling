@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.client.party
 import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
-import react.FC
+import com.zegreatrob.minreact.nfc
 
-val PartyListPage = FC<PageProps> { props ->
+val PartyListPage by nfc<PageProps> { props ->
     +CouplingQuery(
         commander = props.commander,
         query = PartyListQuery,

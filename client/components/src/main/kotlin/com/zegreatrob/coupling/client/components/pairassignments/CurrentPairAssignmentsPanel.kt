@@ -1,13 +1,8 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
-import com.zegreatrob.coupling.client.components.green
-import com.zegreatrob.coupling.client.components.red
-import com.zegreatrob.coupling.client.components.small
-import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -15,7 +10,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.ClassName
 import csstype.WhiteSpace
 import csstype.px
@@ -33,7 +28,7 @@ data class CurrentPairAssignmentsPanel(
     val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommand.Dispatcher>,
 ) : DataPropsBind<CurrentPairAssignmentsPanel>(currentPairAssignmentsPanel)
 
-val currentPairAssignmentsPanel = tmFC<CurrentPairAssignmentsPanel> { props ->
+val currentPairAssignmentsPanel by ntmFC<CurrentPairAssignmentsPanel> { props ->
     val (party, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToCurrentFunc = { setRedirectUrl(party.id.currentPairsPage()) }

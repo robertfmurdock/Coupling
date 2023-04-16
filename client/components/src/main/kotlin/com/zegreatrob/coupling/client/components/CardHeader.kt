@@ -1,11 +1,15 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.client.components.external.fitty.fitty
+import com.zegreatrob.minreact.nfc
 import csstype.AlignItems
+import csstype.Display
+import csstype.FlexDirection
 import csstype.Margin
+import csstype.Overflow
+import csstype.VerticalAlign
 import csstype.px
 import emotion.react.css
-import react.FC
 import react.PropsWithClassName
 import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
@@ -17,7 +21,7 @@ external interface CardHeaderProps : PropsWithClassName {
     var headerContent: String
 }
 
-val CardHeader = FC<CardHeaderProps> { props ->
+val CardHeader by nfc<CardHeaderProps> { props ->
     val size = props.size
     val headerContainerRef = useRef<HTMLDivElement>(null)
     useLayoutEffect { headerContainerRef.current?.fitContent(size) }
@@ -26,18 +30,18 @@ val CardHeader = FC<CardHeaderProps> { props ->
             margin = Margin((size * 0.02).px, 0.px)
             height = (size * 0.33).px
             borderRadius = (size / 10).px
-            overflow = csstype.Overflow.hidden
-            verticalAlign = csstype.VerticalAlign.top
-            display = csstype.Display.flex
+            overflow = Overflow.hidden
+            verticalAlign = VerticalAlign.top
+            display = Display.flex
             alignItems = AlignItems.center
-            flexDirection = csstype.FlexDirection.column
+            flexDirection = FlexDirection.column
         }
         div {
             css { height = (size * 0.33).px }
             ref = headerContainerRef
             div {
                 css {
-                    display = csstype.Display.flex
+                    display = Display.flex
                     alignItems = AlignItems.center
                     height = (size * 0.33).px
                 }

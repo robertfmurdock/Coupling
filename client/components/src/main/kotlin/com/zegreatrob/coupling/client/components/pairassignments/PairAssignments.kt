@@ -13,7 +13,8 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.nfc
+import com.zegreatrob.minreact.ntmFC
 import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
@@ -26,7 +27,6 @@ import csstype.PropertiesBuilder
 import csstype.px
 import csstype.vh
 import emotion.css.ClassName
-import react.FC
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 
@@ -42,7 +42,7 @@ data class PairAssignments(
 
 val pairAssignmentsClassName = ClassName { pairAssignmentStyles() }
 
-private val pairAssignments = tmFC<PairAssignments> { props ->
+private val pairAssignments by ntmFC<PairAssignments> { props ->
     val (party, players, pairs, setPairs, controls, message, allowSave) = props
 
     val pairAssignments = pairs?.overlayUpdatedPlayers(players)
@@ -62,7 +62,7 @@ private val pairAssignments = tmFC<PairAssignments> { props ->
     }
 }
 
-val Html5DndProvider = FC<PropsWithChildren> { props ->
+val Html5DndProvider by nfc<PropsWithChildren> { props ->
     add(
         DataLoader({ html5BackendDeferred.await() }, { null }) { state ->
             when (state) {

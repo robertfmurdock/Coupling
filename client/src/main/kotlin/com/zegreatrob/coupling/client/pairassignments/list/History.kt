@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Border
 import csstype.Color
 import csstype.Display
@@ -28,7 +28,7 @@ data class History(
     val windowFunctions: WindowFunctions = WindowFunctions,
 ) : DataPropsBind<History>(com.zegreatrob.coupling.client.pairassignments.list.history)
 
-private val history = tmFC<History> { (party, history, controls, windowFuncs) ->
+private val history by ntmFC<History> { (party, history, controls, windowFuncs) ->
     div {
         css {
             display = Display.inlineBlock

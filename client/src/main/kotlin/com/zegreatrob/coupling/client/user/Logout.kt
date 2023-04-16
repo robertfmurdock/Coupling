@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.client.user
 
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.routing.PageProps
+import com.zegreatrob.minreact.nfc
 import js.core.jso
 import kotlinx.browser.window
 import org.w3c.dom.get
-import react.FC
 import react.dom.html.ReactHTML.div
 
-val Logout = FC<PageProps> {
+val Logout by nfc<PageProps> {
     val auth0Data = useAuth0Data()
     auth0Data.logout(
         jso {

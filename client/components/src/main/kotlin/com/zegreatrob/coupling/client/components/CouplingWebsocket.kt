@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
@@ -26,7 +26,7 @@ val disconnectedMessage = com.zegreatrob.coupling.model.CouplingSocketMessage(
     players = emptySet(),
     currentPairAssignments = null,
 )
-val couplingWebsocket = tmFC<CouplingWebsocket> { props ->
+val couplingWebsocket by ntmFC<CouplingWebsocket> { props ->
     val (partyId, useSsl, onMessageFunc, buildChild, token) = props
 
     var connected by useState(false)

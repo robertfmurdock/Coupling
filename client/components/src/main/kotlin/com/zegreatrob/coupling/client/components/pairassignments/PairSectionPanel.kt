@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Border
 import csstype.BoxShadow
 import csstype.Display
@@ -35,7 +35,7 @@ data class PairSectionPanel(
     val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
 ) : DataPropsBind<PairSectionPanel>(pairSectionPanel)
 
-val pairSectionPanel = tmFC<PairSectionPanel> { props ->
+val pairSectionPanel by ntmFC<PairSectionPanel> { props ->
     val (party, players, pairAssignments, allowSave, setPairs, controls) = props
     div {
         css { pairSectionCss() }

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.components.external.reactdnd.useDrag
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.AnimationIterationCount
 import csstype.Display
 import csstype.TransitionProperty
@@ -23,7 +23,7 @@ const val pinDragItemType = "PAIR_PIN"
 data class DraggablePinButton(val pin: Pin, val scale: PinButtonScale) :
     DataPropsBind<DraggablePinButton>(draggablePinButton)
 
-val draggablePinButton = tmFC<DraggablePinButton> { (pin, scale) ->
+val draggablePinButton by ntmFC<DraggablePinButton> { (pin, scale) ->
     val (_, drag) = useDrag<Unit>(itemType = pinDragItemType, itemId = pin.id!!)
     val draggableRef = useRef<HTMLElement>(null)
 

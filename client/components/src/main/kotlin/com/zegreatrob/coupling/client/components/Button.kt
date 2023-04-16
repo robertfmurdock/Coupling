@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.AnimationPlayState
 import csstype.BackgroundRepeat
 import csstype.Border
@@ -19,6 +19,7 @@ import csstype.Padding
 import csstype.Position
 import csstype.PropertiesBuilder
 import csstype.TextShadow
+import csstype.VerticalAlign
 import csstype.number
 import csstype.px
 import csstype.rgba
@@ -29,7 +30,7 @@ import react.dom.html.ReactHTML.button
 import web.html.ButtonType
 
 val buttonRuleset: PropertiesBuilder.() -> Unit = {
-    backgroundImage = url(com.zegreatrob.coupling.client.components.pngPath("overlay"))
+    backgroundImage = url(pngPath("overlay"))
     backgroundRepeat = BackgroundRepeat.repeatX
 
     display = Display.inlineBlock
@@ -152,16 +153,16 @@ val black: PropertiesBuilder.() -> Unit = {
 }
 
 data class CouplingButton(
-    val sizeRuleSet: PropertiesBuilder.() -> Unit = com.zegreatrob.coupling.client.components.medium,
-    val colorRuleSet: PropertiesBuilder.() -> Unit = com.zegreatrob.coupling.client.components.black,
+    val sizeRuleSet: PropertiesBuilder.() -> Unit = medium,
+    val colorRuleSet: PropertiesBuilder.() -> Unit = black,
     @JsName("className")
     val className: ClassName = ClassName(""),
     val onClick: () -> Unit = {},
     val attrs: ButtonHTMLAttributes<*>.() -> Unit = {},
     val css: PropertiesBuilder.() -> Unit = {},
-) : DataPropsBind<com.zegreatrob.coupling.client.components.CouplingButton>(com.zegreatrob.coupling.client.components.couplingButton)
+) : DataPropsBind<CouplingButton>(couplingButton)
 
-val couplingButton = tmFC<com.zegreatrob.coupling.client.components.CouplingButton> { props ->
+val couplingButton by ntmFC<CouplingButton> { props ->
     val (sizeRuleSet, colorRuleSet, className, onClick, block, css) = props
     button {
         type = ButtonType.button
@@ -170,7 +171,7 @@ val couplingButton = tmFC<com.zegreatrob.coupling.client.components.CouplingButt
 
         css(className, ClassName("button")) {
             "*" {
-                verticalAlign = csstype.VerticalAlign.middle
+                verticalAlign = VerticalAlign.middle
             }
             buttonRuleset()
             sizeRuleSet()

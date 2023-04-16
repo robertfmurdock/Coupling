@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.nfc
 import csstype.ClassName
 import csstype.Color
 import csstype.Position
@@ -15,7 +16,6 @@ import csstype.deg
 import csstype.em
 import csstype.px
 import emotion.react.css
-import react.FC
 import react.Props
 import react.PropsWithChildren
 import react.dom.html.ReactHTML
@@ -24,13 +24,13 @@ import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
 
-val AboutPage = FC<PageProps> {
+val AboutPage by nfc<PageProps> {
     aboutPageContent {
         Markdown { +loadMarkdownString("About") }
     }
 }
 
-val aboutPageContent = FC<PropsWithChildren> { props ->
+val aboutPageContent by nfc<PropsWithChildren> { props ->
     div {
         add(PageFrame(borderColor = Color("rgb(94, 84, 102)"), backgroundColor = Color("floralwhite"))) {
             div {
@@ -43,7 +43,7 @@ val aboutPageContent = FC<PropsWithChildren> { props ->
     }
 }
 
-private val backButtonSection = FC<Props> {
+private val backButtonSection by nfc<Props> {
     div {
         css { position = Position.relative }
         ReactHTML.span {
@@ -53,7 +53,7 @@ private val backButtonSection = FC<Props> {
     }
 }
 
-private val backButton = FC<Props> {
+private val backButton by nfc<Props> {
     Link {
         to = "/parties"
         tabIndex = -1
@@ -72,7 +72,7 @@ private val backButton = FC<Props> {
     }
 }
 
-private val playerHeader = FC<Props> {
+private val playerHeader by nfc<Props> {
     div {
         val rob by playerImage()
         add(

@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.client.components.spin.PrepareSpinContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import com.zegreatrob.testmints.action.async.SuspendAction
 import csstype.Auto
 import csstype.Color
@@ -54,7 +54,7 @@ import kotlin.js.Json
 
 data class DemoPageFrame(val state: DemoAnimationState) : DataPropsBind<DemoPageFrame>(demoPageFrame)
 
-private val demoPageFrame = tmFC<DemoPageFrame> { (state) ->
+private val demoPageFrame by ntmFC<DemoPageFrame> { (state) ->
     val popperRef = useRef<HTMLElement>()
     val arrowRef = useRef<HTMLElement>()
 

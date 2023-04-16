@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.CardHeader
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.BackgroundRepeat
 import csstype.Color
 import csstype.FontWeight
@@ -20,7 +20,7 @@ import emotion.react.css
 
 data class PartyCardHeader(val party: Party, val size: Int) : DataPropsBind<PartyCardHeader>(partyCardHeader)
 
-val partyCardHeader = tmFC<PartyCardHeader> { (party, size) ->
+val partyCardHeader by ntmFC<PartyCardHeader> { (party, size) ->
     CardHeader {
         this.size = size
         css {

@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.add
-import react.FC
+import com.zegreatrob.minreact.nfc
 
-val PartyConfigPage = FC<PageProps> { props ->
+val PartyConfigPage by nfc<PageProps> { props ->
     add((props.partyId?.partyQueryProps(props) ?: newPartyProps(props)), key = props.partyId?.value)
 }
 

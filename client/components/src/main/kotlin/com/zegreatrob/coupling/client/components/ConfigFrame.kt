@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.nfc
 import csstype.Color
 import csstype.NamedColor
-import react.FC
 import react.PropsWithChildren
 import react.PropsWithClassName
 
@@ -12,7 +12,7 @@ external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren {
     var backgroundColor: Color?
 }
 
-val ConfigFrame = FC<ConfigFrameProps> { props ->
+val ConfigFrame by nfc<ConfigFrameProps> { props ->
     add(
         PageFrame(
             className = props.className,

@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import kotlinx.browser.window
 import react.ChildrenBuilder
 import react.useEffectOnce
@@ -23,7 +23,7 @@ private fun <I> ((I) -> Unit).curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { i
 
 data class Frame<T>(val data: T, val delay: Int)
 
-val frameRunnerCached = tmFC<FrameRunner<Any>> { props ->
+val frameRunnerCached by ntmFC<FrameRunner<Any>> { props ->
     val (sequence, speed) = props
     var state by useState(sequence.first().data)
     val scheduleStateFunc: (Frame<Any>) -> Unit = scheduleStateFunc({ state = it }, speed)

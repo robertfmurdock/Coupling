@@ -7,11 +7,11 @@ import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.client.routing.playerId
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.create
+import com.zegreatrob.minreact.nfc
 import react.ChildrenBuilder
-import react.FC
 import react.dom.html.ReactHTML.div
 
-val RetiredPlayerPage = FC<PageProps> { props ->
+val RetiredPlayerPage by nfc<PageProps> { props ->
     val partyId = props.partyId
     val playerId = props.playerId
 

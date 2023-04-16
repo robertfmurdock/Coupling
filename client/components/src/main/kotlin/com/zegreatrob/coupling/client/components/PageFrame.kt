@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.ClassName
 import csstype.Color
 import csstype.Display
@@ -17,7 +17,7 @@ import react.dom.html.ReactHTML.div
 data class PageFrame(val borderColor: Color, val backgroundColor: Color, val className: ClassName? = null) :
     DataPropsBind<PageFrame>(pageFrame)
 
-val pageFrame = tmFC<PageFrame> { props ->
+val pageFrame by ntmFC<PageFrame> { props ->
     div {
         css(props.className) {
             padding = Padding(0.px, 25.px, 25.px, 25.px)

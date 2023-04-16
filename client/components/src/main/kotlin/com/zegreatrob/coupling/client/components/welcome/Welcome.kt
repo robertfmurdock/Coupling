@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.AnimationIterationCount
 import csstype.AnimationPlayState
 import csstype.Border
@@ -44,7 +44,7 @@ import web.html.HTMLDivElement
 
 data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataPropsBind<Welcome>(welcome)
 
-val welcome = tmFC { (randomProvider): Welcome ->
+val welcome by ntmFC { (randomProvider): Welcome ->
     var showLoginChooser by useState(false)
     val welcomeTitleRef = useRef<HTMLDivElement>(null)
     useLayoutEffect {

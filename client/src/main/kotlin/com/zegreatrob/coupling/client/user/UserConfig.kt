@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.party.GeneralControlBar
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Color
 import react.dom.html.ReactHTML.div
 
@@ -18,7 +18,7 @@ data class UserConfig(val user: User) : DataProps<UserConfig> {
     override val component = userConfig
 }
 
-private val userConfig = tmFC<UserConfig> { (user) ->
+private val userConfig by ntmFC<UserConfig> { (user) ->
     add(
         PageFrame(
             borderColor = Color("rgb(94, 84, 102)"),

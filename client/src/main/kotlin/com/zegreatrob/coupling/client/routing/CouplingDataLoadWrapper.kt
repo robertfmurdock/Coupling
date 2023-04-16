@@ -7,7 +7,7 @@ import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.DataLoaderTools
@@ -26,7 +26,7 @@ data class CouplingQuery<R, P : DataProps<P>>(
 
 interface StubDataProps : DataProps<StubDataProps>
 
-private val couplingQuery = tmFC { props: CouplingQuery<Any, StubDataProps> ->
+private val couplingQuery by ntmFC { props: CouplingQuery<Any, StubDataProps> ->
     val (query, toDataprops, commander) = props
 
     val getDataAsync: suspend (DataLoaderTools) -> StubDataProps? = useCallback { tools ->

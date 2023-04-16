@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.BackgroundRepeat
 import csstype.Color
 import csstype.Display
@@ -20,7 +20,7 @@ import emotion.react.css
 
 data class PlayerCardHeader(val player: Player, val size: Int) : DataPropsBind<PlayerCardHeader>(playerCardHeader)
 
-private val playerCardHeader = tmFC<PlayerCardHeader> { props ->
+private val playerCardHeader by ntmFC<PlayerCardHeader> { props ->
     val (player, size) = props
     CardHeader {
         this.size = size

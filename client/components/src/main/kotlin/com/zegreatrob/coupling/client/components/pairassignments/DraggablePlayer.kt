@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.AnimationIterationCount
 import csstype.NamedColor
 import csstype.TransitionProperty
@@ -24,7 +24,7 @@ data class DraggablePlayer(
 
 const val playerDragItemType = "PLAYER"
 
-val draggablePlayer = tmFC<DraggablePlayer> { (pinnedPlayer, zoomOnHover, tilt, onPlayerDrop) ->
+val draggablePlayer by ntmFC<DraggablePlayer> { (pinnedPlayer, zoomOnHover, tilt, onPlayerDrop) ->
     add(
         DraggableThing(
             itemType = playerDragItemType,

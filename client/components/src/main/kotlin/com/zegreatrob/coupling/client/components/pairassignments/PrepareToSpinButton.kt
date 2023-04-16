@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.AnimationIterationCount
 import csstype.ClassName
 import csstype.ident
@@ -17,15 +17,15 @@ data class PrepareToSpinButton(val party: Party) : DataPropsBind<PrepareToSpinBu
 
 val prepareToSpinButtonClassName = ClassName("prepare-to-spin")
 
-private val prepareToSpinButton = tmFC<PrepareToSpinButton> { (party) ->
+private val prepareToSpinButton by ntmFC<PrepareToSpinButton> { (party) ->
     Link {
         to = "/${party.id.value}/prepare/"
         tabIndex = -1
         draggable = false
         add(
-            com.zegreatrob.coupling.client.components.CouplingButton(
-                sizeRuleSet = com.zegreatrob.coupling.client.components.supersize,
-                colorRuleSet = com.zegreatrob.coupling.client.components.pink,
+            CouplingButton(
+                sizeRuleSet = supersize,
+                colorRuleSet = pink,
                 className = prepareToSpinButtonClassName,
                 css = {
                     animationName = ident("pulsate")

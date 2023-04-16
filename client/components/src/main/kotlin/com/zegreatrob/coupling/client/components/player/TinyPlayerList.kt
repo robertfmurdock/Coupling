@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.deg
 import react.router.dom.Link
 import react.useState
@@ -16,7 +16,7 @@ import kotlin.random.Random
 
 data class TinyPlayerList(val party: Party, val players: List<Player>) : DataPropsBind<TinyPlayerList>(tinyPlayerList)
 
-val tinyPlayerList = tmFC<TinyPlayerList> { (party, players) ->
+val tinyPlayerList by ntmFC<TinyPlayerList> { (party, players) ->
     val ref by useState { Date.now().toLong() }
     val random = Random(ref)
     players.forEach { player ->

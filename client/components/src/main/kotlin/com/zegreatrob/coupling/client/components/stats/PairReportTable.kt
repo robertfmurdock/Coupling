@@ -8,13 +8,14 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.ClassName
 import csstype.Color
 import csstype.Display
 import csstype.LineStyle
 import csstype.TextAlign
 import csstype.VerticalAlign
+import csstype.WhiteSpace
 import csstype.px
 import emotion.react.css
 import react.ChildrenBuilder
@@ -25,12 +26,12 @@ data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<Pa
     pairReportTable,
 )
 
-val pairReportTable = tmFC<PairReportTable> { (pairReports) ->
+val pairReportTable by ntmFC<PairReportTable> { (pairReports) ->
     div {
         css {
             display = Display.inlineBlock
             textAlign = TextAlign.left
-            whiteSpace = csstype.WhiteSpace.normal
+            whiteSpace = WhiteSpace.normal
         }
         pairReports.mapIndexed { index, pairReport ->
             add(PairReportView(pairReport), key = "$index")
@@ -42,7 +43,7 @@ data class PairReportView(val pairReport: PairReport) : DataPropsBind<PairReport
     pairReportView,
 )
 
-private val pairReportView = tmFC<PairReportView> { (pairReport) ->
+private val pairReportView by ntmFC<PairReportView> { (pairReport) ->
     div {
         css {
             borderWidth = 2.px

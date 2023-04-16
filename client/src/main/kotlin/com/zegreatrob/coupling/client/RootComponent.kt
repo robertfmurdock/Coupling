@@ -5,15 +5,15 @@ import com.zegreatrob.coupling.client.components.external.auth0.react.Auth0Provi
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions.Companion.window
 import com.zegreatrob.coupling.client.routing.CouplingRouter
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.nfc
 import js.core.jso
-import react.FC
 import react.Props
 
 external interface RootProps : Props {
     var clientConfig: ClientConfig
 }
 
-val RootComponent = FC<RootProps> { props ->
+val RootComponent by nfc<RootProps> { props ->
     val config = props.clientConfig
     Auth0Provider {
         clientId = config.auth0ClientId

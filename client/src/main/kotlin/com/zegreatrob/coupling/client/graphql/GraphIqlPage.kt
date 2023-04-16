@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Da
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.nfc
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
@@ -14,12 +15,11 @@ import csstype.vh
 import emotion.react.css
 import kotlinx.browser.window
 import org.w3c.dom.get
-import react.FC
 import react.dom.html.ReactHTML.div
 
 private val graphQlUrl = "${WindowFunctions.window.location.origin}${window["basename"]}/api/graphql"
 
-val GraphIQLPage = FC<PageProps> {
+val GraphIQLPage by nfc<PageProps> {
     val auth0Data = useAuth0Data()
     div {
         css {

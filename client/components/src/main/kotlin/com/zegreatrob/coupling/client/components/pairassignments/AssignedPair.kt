@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.create
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.BackgroundRepeat
 import csstype.Color
 import csstype.Display
@@ -51,7 +51,7 @@ typealias PinMoveCallback = (String) -> Unit
 val tiltLeft = (-8).deg
 val tiltRight = 8.deg
 
-val assignedPair = tmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
+val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.findCallSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)

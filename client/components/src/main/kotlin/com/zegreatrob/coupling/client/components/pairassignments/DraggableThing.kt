@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrop
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ntmFC
 import csstype.Display
 import emotion.react.css
 import react.ChildrenBuilder
@@ -18,7 +18,7 @@ data class DraggableThing(
     val handler: ChildrenBuilder.(isOver: Boolean) -> Unit,
 ) : DataPropsBind<DraggableThing>(draggableThing)
 
-val draggableThing = tmFC<DraggableThing> { (itemType, itemId, dropCallback, handler) ->
+val draggableThing by ntmFC<DraggableThing> { (itemType, itemId, dropCallback, handler) ->
     val draggableRef = useRef<HTMLElement>(null)
 
     val (_, drag) = useDrag<Unit>(itemType = itemType, itemId = itemId)
