@@ -59,6 +59,7 @@ private fun AvatarType.toDynamo(): String = when (this) {
     AvatarType.DicebearCroodles -> "dicebearcroodles"
     AvatarType.DicebearThumbs -> "dicebearthumbs"
     AvatarType.DicebearLorelei -> "dicebearlorelei"
+    AvatarType.RobohashSet5 -> "robohashset5"
 }
 
 private fun String.toAvatarType(): AvatarType? = when (this) {
@@ -75,5 +76,6 @@ private fun String.toAvatarType(): AvatarType? = when (this) {
     "dicebearcroodles" -> AvatarType.DicebearCroodles
     "dicebearthumbs" -> AvatarType.DicebearThumbs
     "dicebearlorelei" -> AvatarType.DicebearLorelei
+    "robohashset5" -> AvatarType.RobohashSet5
     else -> null
 }

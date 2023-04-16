@@ -140,6 +140,7 @@ private fun Player.getAvatarImageUrl(size: Int, avatarType: AvatarType) = when (
     AvatarType.RobohashSet2 -> getRobohashImageUrl("set2")
     AvatarType.RobohashSet3 -> getRobohashImageUrl("set3")
     AvatarType.RobohashSet4 -> getRobohashImageUrl("set4")
+    AvatarType.RobohashSet5 -> getRobohashImageUrl("set5")
     AvatarType.BoringBeam -> boringUrl(size, "beam")
     AvatarType.BoringBauhaus -> boringUrl(size, "bauhaus")
     AvatarType.Multiavatar -> multiavatarUrl()

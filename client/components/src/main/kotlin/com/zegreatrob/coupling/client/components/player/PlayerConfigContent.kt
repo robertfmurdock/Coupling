@@ -31,6 +31,7 @@ import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
+import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.datalist
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
@@ -260,5 +261,14 @@ private fun ChildrenBuilder.avatarTypeConfig(
             }
         }
     }
-    span { +"You may feel a sudden urge to paint yourself blue." }
+    span {
+        div { +"You may feel a sudden urge to paint yourself blue." }
+        player.avatarType?.let {
+            it.attribution?.let { attribution ->
+                div { +"${it.name} comes from " }
+                div { a { href = attribution; +attribution } }
+                div { +"Send them love if you like!" }
+            }
+        }
+    }
 }
