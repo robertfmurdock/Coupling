@@ -102,20 +102,14 @@ private fun PropertiesBuilder.playerCardRuleSet(size: Int) {
     flex = Flex(number(0.0), number(0.0), Auto.auto)
 }
 
-private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = when {
-    player.imageURL != null -> img {
-        this.src = player.imageURL
-        alt = "player-icon"
-        this.width = size.toDouble()
-        this.height = size.toDouble()
-    }
-
-    else -> img {
-        src = player.getAvatarImageUrl(size, player.avatarType ?: player.hashedRandomAvatar())
-        alt = "player-icon"
-        draggable = false
-        width = size.toDouble()
-        height = size.toDouble()
+private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = img {
+    alt = "player-icon"
+    width = size.toDouble()
+    height = size.toDouble()
+    src = when {
+        player.imageURL != null -> player.imageURL
+        player.avatarType != null -> player.getDirectAvatarImageUrl(size, player.avatarType!!)
+        else -> player.getGravatarSafeAvatarImageUrl(size, player.avatarType ?: player.hashedRandomAvatar())
     }
 }
 
@@ -133,9 +127,23 @@ private fun Player.hashedRandomAvatar() = emailWithFallback()
     .nextInt(AvatarType.values().size)
     .let { AvatarType.values()[it] }
 
-private fun Player.getAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
+private fun Player.getGravatarSafeAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
+    AvatarType.RobohashSet1 -> getRobohashImageUrl("set1", "&gravatar=yes")
+    AvatarType.RobohashSet2 -> getRobohashImageUrl("set2", "&gravatar=yes")
+    AvatarType.RobohashSet3 -> getRobohashImageUrl("set3", "&gravatar=yes")
+    AvatarType.RobohashSet4 -> getRobohashImageUrl("set4", "&gravatar=yes")
+    AvatarType.RobohashSet5 -> getRobohashImageUrl("set5", "&gravatar=yes")
+    AvatarType.Multiavatar -> multiavatarUrl("png").gravatarWrapper(emailWithFallback(), size)
+    AvatarType.DicebearPixelArt -> gravatarDicebearUrl("pixel-art", size)
+    AvatarType.DicebearAdventurer -> gravatarDicebearUrl("adventurer", size)
+    AvatarType.DicebearCroodles -> gravatarDicebearUrl("croodles", size)
+    AvatarType.DicebearThumbs -> gravatarDicebearUrl("thumbs", size)
+    AvatarType.DicebearLorelei -> gravatarDicebearUrl("lorelei", size)
+    else -> myGravatarUrl(jso { this.size = size; this.default = "retro" }, emailWithFallback(), null)
+}
+
+private fun Player.getDirectAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
     AvatarType.Retro -> myGravatarUrl(jso { this.size = size; this.default = "retro" }, emailWithFallback(), null)
-        .gravatarWrapper(emailWithFallback(), size)
     AvatarType.RobohashSet1 -> getRobohashImageUrl("set1")
     AvatarType.RobohashSet2 -> getRobohashImageUrl("set2")
     AvatarType.RobohashSet3 -> getRobohashImageUrl("set3")
@@ -143,27 +151,27 @@ private fun Player.getAvatarImageUrl(size: Int, avatarType: AvatarType) = when (
     AvatarType.RobohashSet5 -> getRobohashImageUrl("set5")
     AvatarType.BoringBeam -> boringUrl(size, "beam")
     AvatarType.BoringBauhaus -> boringUrl(size, "bauhaus")
-    AvatarType.Multiavatar -> multiavatarUrl()
-        .gravatarWrapper(emailWithFallback(), size)
-    AvatarType.DicebearPixelArt -> gravatarDicebearUrl("pixel-art", size)
-    AvatarType.DicebearAdventurer -> gravatarDicebearUrl("adventurer", size)
-    AvatarType.DicebearCroodles -> gravatarDicebearUrl("croodles", size)
-    AvatarType.DicebearThumbs -> gravatarDicebearUrl("thumbs", size)
-    AvatarType.DicebearLorelei -> gravatarDicebearUrl("lorelei", size)
+    AvatarType.Multiavatar -> multiavatarUrl("svg")
+    AvatarType.DicebearPixelArt -> dicebearUrl("pixel-art", size, "svg")
+    AvatarType.DicebearAdventurer -> dicebearUrl("adventurer", size, "svg")
+    AvatarType.DicebearCroodles -> dicebearUrl("croodles", size, "svg")
+    AvatarType.DicebearThumbs -> dicebearUrl("thumbs", size, "svg")
+    AvatarType.DicebearLorelei -> dicebearUrl("lorelei", size, "svg")
 }
 
-private fun Player.gravatarDicebearUrl(set: String, size: Int) =
-    "https://api.dicebear.com/6.x/$set/png/seed=${emailWithFallback()}&size=$size"
-        .gravatarWrapper(emailWithFallback(), size)
+private fun Player.gravatarDicebearUrl(set: String, size: Int) = dicebearUrl(set, size, "png")
+    .gravatarWrapper(emailWithFallback(), size)
 
-private fun Player.multiavatarUrl() = "https://api.multiavatar.com/${emailWithFallback()}.png"
+private fun Player.dicebearUrl(set: String, size: Int, type: String) =
+    "https://api.dicebear.com/6.x/$set/$type/seed=${emailWithFallback()}&size=$size"
+
+private fun Player.multiavatarUrl(type: String) = "https://api.multiavatar.com/${emailWithFallback()}.$type"
 
 private fun Player.boringUrl(size: Int, boringSet: String) =
     "https://source.boringavatars.com/$boringSet/$size/${emailWithFallback()}?colors=E22092,170409,FF8C00,FAF0D2,9FB7C6"
 
-private fun Player.getRobohashImageUrl(setName: String) =
-    "https://robohash.org/${emailWithFallback()}?gravatar=yes&set=" +
-        setName
+private fun Player.getRobohashImageUrl(setName: String, additionalArgs: String = "") =
+    "https://robohash.org/${emailWithFallback()}?set=$setName$additionalArgs"
 
 private fun Player.emailWithFallback() = when {
     email != "" -> email
