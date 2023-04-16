@@ -109,7 +109,7 @@ fun JsonPlayer.toModel(): Player = Player(
     callSignAdjective = callSignAdjective,
     callSignNoun = callSignNoun,
     imageURL = imageURL,
-    avatarType = avatarType?.let(AvatarType::valueOf),
+    avatarType = avatarType.takeUnless(String?::isNullOrEmpty)?.let(AvatarType::valueOf),
 )
 
 fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(

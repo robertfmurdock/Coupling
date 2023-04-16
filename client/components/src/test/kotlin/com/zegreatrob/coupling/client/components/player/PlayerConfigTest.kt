@@ -58,9 +58,9 @@ class PlayerConfigTest {
     }
 
     @Test
-    fun notSelectingAvatarTypeWillLeaveItNull() = asyncSetup(object {
+    fun deselectingAvatarTypeWillRemoveIt() = asyncSetup(object {
         val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
-        val player = Player(id = "blarg", avatarType = null)
+        val player = Player(id = "blarg", avatarType = AvatarType.BoringBeam)
         val stubber = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
@@ -70,11 +70,12 @@ class PlayerConfigTest {
             json("wrapper" to MemoryRouter),
         )
     } exercise {
+        actor.selectOptions(screen.getByRole("combobox", json("name" to "Avatar Type")), "")
         actor.click(screen.getByRole("button", json("name" to "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(
             partyId = party.id,
-            player = player,
+            player = player.copy(avatarType = null),
         )
         stubber.commandsDispatched<SavePlayerCommand>()
             .assertIsEqualTo(listOf(expectedCommand))
