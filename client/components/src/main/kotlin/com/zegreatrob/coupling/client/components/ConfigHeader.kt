@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.client.components.party.PartyCard
+import com.zegreatrob.coupling.client.components.player.addPlayerButton
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.add
 import csstype.AlignItems
@@ -82,6 +83,7 @@ private fun ChildrenBuilder.partyControls(props: ConfigHeaderProps, party: Party
                     boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
                 }
                 settingsButton(party)
+                addPlayerButton { this.partyId = party.id }
                 viewHistoryButton(party)
                 pinListButton(party)
                 statisticsButton(party)

@@ -11,12 +11,7 @@ fun ChildrenBuilder.viewHistoryButton(party: Party) = Link {
     to = "/${party.id.value}/history/"
     tabIndex = -1
     draggable = false
-    add(
-        com.zegreatrob.coupling.client.components.CouplingButton(
-            com.zegreatrob.coupling.client.components.large,
-            com.zegreatrob.coupling.client.components.lightGreen,
-        ),
-    ) {
+    add(CouplingButton(large, lightGreen)) {
         i { this.className = ClassName("fa fa-history") }
         +" History!"
     }

@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.components.player
 
-import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
 import com.zegreatrob.coupling.client.components.PlayerCard
-import com.zegreatrob.coupling.client.components.large
-import com.zegreatrob.coupling.client.components.orange
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
@@ -17,7 +14,6 @@ import csstype.PropertiesBuilder
 import csstype.deg
 import csstype.em
 import emotion.react.css
-import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 import react.useState
@@ -62,20 +58,5 @@ val playerRoster = tmFC { (label, players, partyId, className, overrides): Playe
                 }
             }
         }
-        addPlayerButton(partyId)
-    }
-}
-
-private fun ChildrenBuilder.addPlayerButton(partyId: PartyId) = Link {
-    to = "/${partyId.value}/player/new/"
-    tabIndex = -1
-    draggable = false
-    add(
-        com.zegreatrob.coupling.client.components.CouplingButton(
-            com.zegreatrob.coupling.client.components.large,
-            com.zegreatrob.coupling.client.components.orange,
-        ),
-    ) {
-        +"Add a new player!"
     }
 }
