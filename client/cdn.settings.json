@@ -2,6 +2,5 @@
   "react": "React",
   "react-dom": "ReactDOM",
   "blueimp-md5": "md5",
-  "dom-to-image": "domtoimage",
   "@auth0/auth0-react": "reactAuth0"
 }

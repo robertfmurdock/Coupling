@@ -34,6 +34,7 @@ dependencies {
     implementation(npmConstrained("date-fns"))
     implementation(npmConstrained("react-dnd"))
     implementation(npmConstrained("react-dnd-html5-backend"))
+    implementation(npmConstrained("html2canvas"))
 
     testImplementation(project(":coupling-libraries:test-react"))
     testImplementation(project(":coupling-libraries:stub-model"))

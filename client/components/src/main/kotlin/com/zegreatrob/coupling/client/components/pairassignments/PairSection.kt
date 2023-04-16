@@ -2,11 +2,8 @@ package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
-import com.zegreatrob.coupling.client.components.CouplingButton
-import com.zegreatrob.coupling.client.components.external.domtoimage.domToImage
-import com.zegreatrob.coupling.client.components.large
+import com.zegreatrob.coupling.client.components.external.html2canvas.html2canvas
 import com.zegreatrob.coupling.client.components.player.TinyPlayerList
-import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
@@ -28,6 +25,7 @@ import react.dom.html.ReactHTML.i
 import react.useRef
 import web.html.HTMLElement
 import kotlin.js.Json
+import kotlin.js.Promise
 import kotlin.js.json
 
 data class PairSection(
@@ -72,22 +70,16 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<HTMLElem
     }
 }
 
-private fun HTMLElement.copyToClipboardOnClick(): () -> Unit = if (isReallyTrulySafari()) {
-    writeImageToClipboardAsPromise()
-} else {
-    collectImageThenWriteToClipboard()
-}
-
-private fun HTMLElement.collectImageThenWriteToClipboard(): () -> Unit = {
-    domToImage.toBlob(this).then { window.navigator.clipboard.write(dataTransfer(it)) }
-}
+private fun HTMLElement.copyToClipboardOnClick(): () -> Unit = writeImageToClipboardAsPromise()
 
 private fun HTMLElement.writeImageToClipboardAsPromise(): () -> Unit = {
-    window.navigator.clipboard.write(dataTransfer(domToImage.toBlob(this)))
+    window.navigator.clipboard.write(
+        dataTransfer(
+            html2canvas(this, json("useCORS" to true, "imageTimeout" to 500))
+                .then { Promise { resolve, _ -> it.toBlob(resolve, "image/svg") } },
+        ),
+    )
 }
-
-private fun isReallyTrulySafari() = window.navigator.userAgent.indexOf("Safari") != -1 &&
-    window.navigator.userAgent.indexOf("Chrome") == -1
 
 private fun dataTransfer(it: Any) = arrayOf(ClipboardItem(json("image/png" to it))).unsafeCast<DataTransfer>()
 

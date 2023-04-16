@@ -68,7 +68,6 @@ dependencies {
     implementation(npmConstrained("d3-color"))
     implementation(npmConstrained("d3-selection"))
     implementation(npmConstrained("date-fns"))
-    implementation(npmConstrained("dom-to-image"))
     implementation(npmConstrained("drag-drop-webkit-mobile"))
     implementation(npmConstrained("favicons"))
     implementation(npmConstrained("file-loader"))
