@@ -2,8 +2,11 @@ package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
+import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.external.html2canvas.html2canvas
+import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.player.TinyPlayerList
+import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
@@ -58,9 +61,9 @@ private val pairSection by ntmFC<PairSection> { (party, players, pairs, allowSav
 private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<HTMLElement>) {
     if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
         add(
-            com.zegreatrob.coupling.client.components.CouplingButton(
-                sizeRuleSet = com.zegreatrob.coupling.client.components.large,
-                colorRuleSet = com.zegreatrob.coupling.client.components.white,
+            CouplingButton(
+                sizeRuleSet = large,
+                colorRuleSet = white,
                 onClick = { ref.current?.copyToClipboardOnClick()?.invoke() },
                 attrs = { tabIndex = -1 },
             ),
