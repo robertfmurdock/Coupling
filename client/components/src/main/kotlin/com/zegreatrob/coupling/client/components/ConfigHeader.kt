@@ -17,10 +17,12 @@ import csstype.TextAlign
 import csstype.TextDecoration
 import csstype.VerticalAlign
 import csstype.WhiteSpace
+import csstype.fr
 import csstype.integer
 import csstype.number
 import csstype.pt
 import csstype.px
+import csstype.repeat
 import csstype.rgba
 import emotion.react.css
 import react.PropsWithChildren
@@ -42,6 +44,7 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
         div {
             css {
                 display = Display.grid
+                gridTemplateColumns = repeat(6, 1.fr)
                 flexDirection = FlexDirection.row
                 alignItems = AlignItems.center
                 whiteSpace = WhiteSpace.nowrap
@@ -57,7 +60,7 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
             div {
                 css {
                     gridColumnStart = integer(2)
-                    gridColumnEnd = integer(12)
+                    gridColumnEnd = integer(7)
                     gridRow = integer(1)
                 }
                 h1 {
@@ -105,9 +108,8 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
             div {
                 css {
                     gridColumnStart = integer(2)
-                    gridColumnEnd = integer(11)
-                    gridRowStart = integer(2)
-                    gridRowEnd = integer(2)
+                    gridColumnEnd = integer(6)
+                    gridRow = integer(2)
                     display = Display.flex
                     alignItems = AlignItems.center
                     flexDirection = FlexDirection.column
