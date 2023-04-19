@@ -77,4 +77,4 @@ data class StatisticsReport(
     val medianSpinDuration: TimeSpan?,
 )
 
-data class PairReport(val pair: CouplingPair, val timeSinceLastPair: TimeResult)
+data class PairReport(val pair: CouplingPair.Double, val timeSinceLastPair: TimeResult)

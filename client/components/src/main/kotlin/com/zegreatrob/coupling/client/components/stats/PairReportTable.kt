@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
+import csstype.Angle
 import csstype.ClassName
 import csstype.Color
 import csstype.Display
@@ -16,11 +17,14 @@ import csstype.LineStyle
 import csstype.TextAlign
 import csstype.VerticalAlign
 import csstype.WhiteSpace
+import csstype.deg
 import csstype.px
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
+import react.useMemo
+import kotlin.random.Random
 
 data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<PairReportTable>(
     pairReportTable,
@@ -44,6 +48,7 @@ data class PairReportView(val pairReport: PairReport) : DataPropsBind<PairReport
 )
 
 private val pairReportView by ntmFC<PairReportView> { (pairReport) ->
+    val tweak = useMemo { Random.nextInt(8).toDouble() }
     div {
         css {
             borderWidth = 2.px
@@ -54,7 +59,8 @@ private val pairReportView by ntmFC<PairReportView> { (pairReport) ->
             margin = 2.px
         }
         asDynamic()["data-pair-report"] = pairReport.pair.asArray().joinToString("-") { it.name }
-        pairReport.pair.asArray().map { player -> reportPlayerCard(player) }
+        reportPlayerCard(pairReport.pair.player1, (-tweak).deg)
+        reportPlayerCard(pairReport.pair.player2, (tweak).deg)
 
         div {
             css {
@@ -78,10 +84,10 @@ private fun TimeResult.presentationString() = when (this) {
     NeverPaired -> "Never Paired"
 }
 
-private fun ChildrenBuilder.reportPlayerCard(player: Player) = div {
+private fun ChildrenBuilder.reportPlayerCard(player: Player, tilt: Angle) = div {
     css {
         display = Display.inlineBlock
     }
     key = player.id
-    add(PlayerCard(player, size = 50))
+    add(PlayerCard(player, size = 50, tilt = tilt))
 }

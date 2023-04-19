@@ -10,12 +10,14 @@ import csstype.Display
 import csstype.TextAlign
 import csstype.VerticalAlign
 import csstype.WhiteSpace
+import csstype.deg
 import csstype.number
 import csstype.px
 import emotion.css.ClassName
 import emotion.react.css
-import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
+import react.useMemo
+import kotlin.random.Random
 
 data class PlayerHeatmap(
     val players: List<Player>,
@@ -47,15 +49,11 @@ val playerHeatmap by ntmFC<PlayerHeatmap> { (players, heatmapData) ->
                     width = 62.px
                 }
             }
-            players.map { player ->
-                keyedPlayerCard(player, true)
-            }
+            players.forEach { player -> add(TopRowPlayer(player)) }
         }
         div {
             className = heatmapSideRow
-            players.map { player ->
-                keyedPlayerCard(player, false)
-            }
+            players.forEach { player -> add(SidePlayer(player)) }
         }
         add(
             Heatmap(
@@ -69,20 +67,34 @@ val playerHeatmap by ntmFC<PlayerHeatmap> { (players, heatmapData) ->
     }
 }
 
-private fun ChildrenBuilder.keyedPlayerCard(player: Player, topRow: Boolean) = div {
-    css {
-        if (topRow) {
+val topRowPlayer by ntmFC<TopRowPlayer> { props ->
+    val tweak = useMemo { Random.nextInt(6).toDouble() - 3.0 }
+    div {
+        css {
             display = Display.inlineBlock
             width = 90.px
             textAlign = TextAlign.center
-        } else {
+        }
+        key = props.player.id
+        add(PlayerCard(props.player, size = 50, tilt = tweak.deg))
+    }
+}
+
+data class TopRowPlayer(val player: Player) : DataPropsBind<TopRowPlayer>(topRowPlayer)
+
+val sidePlayer by ntmFC<SidePlayer> { props ->
+    val tweak = useMemo(props.player.id) { 1.5 - Random.nextInt(6).toDouble() }
+    div {
+        css {
             display = Display.block
             height = 90.px
             "> div" {
                 verticalAlign = VerticalAlign.middle
             }
         }
+        key = props.player.id
+        add(PlayerCard(props.player, size = 50, tilt = tweak.deg))
     }
-    key = player.id
-    add(PlayerCard(player, size = 50))
 }
+
+data class SidePlayer(val player: Player) : DataPropsBind<SidePlayer>(sidePlayer)
