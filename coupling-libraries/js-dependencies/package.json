@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.0.1",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.315.0",
-    "@aws-sdk/client-dynamodb": "3.315.0",
-    "@aws-sdk/client-lambda": "~3.315.0",
-    "@aws-sdk/lib-dynamodb": "3.315.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.316.0",
+    "@aws-sdk/client-dynamodb": "3.316.0",
+    "@aws-sdk/client-lambda": "~3.316.0",
+    "@aws-sdk/lib-dynamodb": "3.316.0",
     "@graphql-tools/schema": "^9.0.18",
     "@graphql-tools/stitch": "^8.7.48",
     "@log4js-node/log4js-api": "1.0.2",
@@ -83,7 +83,7 @@
     "url-loader": "^4.1.1",
     "uuid": "^9.0.0",
     "wdio-chromedriver-service": "8.1.1",
-    "webpack": "5.79.0",
+    "webpack": "5.80.0",
     "webpack-cli": "5.0.1",
     "webpack-node-externals": "^3.0.0",
     "wdio-html-nice-reporter": "8.1.0"
