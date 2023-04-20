@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.action.SavePlayerCommand
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.player.PartyPlayerSaveSyntax
 

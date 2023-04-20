@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.player
 
-import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignAction
-import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignActionDispatcher
+import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
+import com.zegreatrob.coupling.action.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player

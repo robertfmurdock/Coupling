@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.party.with
@@ -13,7 +12,7 @@ import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 interface ServerSavePairAssignmentDocumentCommandDispatcher :
-    SavePairAssignmentDocumentCommandDispatcher,
+    SavePairAssignmentDocumentCommand.Dispatcher,
     PartyIdPairAssignmentDocumentSaveSyntax,
     CurrentPartyIdSyntax,
     CouplingConnectionGetSyntax,

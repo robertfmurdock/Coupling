@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.RequestSpinAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.action.RequestSpinAction
-import com.zegreatrob.coupling.action.RequestSpinActionDispatcher
+import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.model.party.with
@@ -22,7 +21,7 @@ interface ClientNewPairAssignmentsCommandDispatcher :
     PartyPinsSyntax,
     PartyPlayersSyntax,
     SuspendActionExecuteSyntax,
-    RequestSpinActionDispatcher,
+    RequestSpinAction.Dispatcher,
     PartyIdPairAssignmentDocumentSaveSyntax {
 
     override suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {

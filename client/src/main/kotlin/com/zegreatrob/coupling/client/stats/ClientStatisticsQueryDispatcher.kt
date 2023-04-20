@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.action.ComposeStatisticsAction
-import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
-import com.zegreatrob.coupling.action.StatisticsReport
-import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
-import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
+import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
+import com.zegreatrob.coupling.action.stats.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
+import com.zegreatrob.coupling.action.stats.StatisticsReport
+import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
+import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player

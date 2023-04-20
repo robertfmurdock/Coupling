@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.action.entity.heatmap
+package com.zegreatrob.coupling.action.stats.heatmap
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair.Companion.equivalent

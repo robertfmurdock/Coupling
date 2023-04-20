@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.pairassignmentdocument.ProposeNewPairsCommand
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PairingRule

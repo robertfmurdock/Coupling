@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.action.ComposeStatisticsAction
-import com.zegreatrob.coupling.action.ComposeStatisticsActionDispatcher
-import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapAction
-import com.zegreatrob.coupling.action.entity.heatmap.CalculateHeatMapActionDispatcher
+import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
+import com.zegreatrob.coupling.action.stats.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
+import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
+import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId

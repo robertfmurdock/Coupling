@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.action
+package com.zegreatrob.coupling.action.stats
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan

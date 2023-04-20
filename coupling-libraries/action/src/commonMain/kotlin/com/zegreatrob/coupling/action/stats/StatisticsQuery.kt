@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.action.stats
 
-import com.zegreatrob.coupling.action.StatisticsReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId

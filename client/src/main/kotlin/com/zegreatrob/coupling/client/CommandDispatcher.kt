@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
-import com.zegreatrob.coupling.action.RequestSpinAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.components.pin.SavePinCommandDispatcher

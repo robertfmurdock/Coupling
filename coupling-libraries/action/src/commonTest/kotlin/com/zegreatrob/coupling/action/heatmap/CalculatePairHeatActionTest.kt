@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.action.heatmap
 
 import com.soywiz.klock.DateTime
-import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatAction
-import com.zegreatrob.coupling.action.entity.heatmap.CalculatePairHeatActionDispatcher
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
+import com.zegreatrob.coupling.action.stats.heatmap.CalculatePairHeatAction
+import com.zegreatrob.coupling.action.stats.heatmap.CalculatePairHeatActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId

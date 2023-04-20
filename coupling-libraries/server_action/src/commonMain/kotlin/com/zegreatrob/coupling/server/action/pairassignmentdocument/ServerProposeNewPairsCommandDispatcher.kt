@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.Result
+import com.zegreatrob.coupling.action.pairassignmentdocument.ProposeNewPairsCommand
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.repository.await
@@ -13,7 +14,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 interface ServerProposeNewPairsCommandDispatcher :
-    ProposeNewPairsCommandDispatcher,
+    ProposeNewPairsCommand.Dispatcher,
     ExecutableActionExecuteSyntax,
     RunGameActionDispatcher,
     PartyIdGetSyntax,

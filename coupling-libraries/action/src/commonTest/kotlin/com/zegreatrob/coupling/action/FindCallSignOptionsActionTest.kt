@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.action.entity.player.callsign.CallSignOptions
-import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignOptionsAction
-import com.zegreatrob.coupling.action.entity.player.callsign.FindCallSignOptionsActionDispatcher
-import com.zegreatrob.coupling.action.entity.player.callsign.defaultCallSignOptions
+import com.zegreatrob.coupling.action.player.callsign.CallSignOptions
+import com.zegreatrob.coupling.action.player.callsign.FindCallSignOptionsAction
+import com.zegreatrob.coupling.action.player.callsign.FindCallSignOptionsActionDispatcher
+import com.zegreatrob.coupling.action.player.callsign.defaultCallSignOptions
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup

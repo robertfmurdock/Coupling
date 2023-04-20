@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
 import com.soywiz.klock.TimeProvider
-import com.zegreatrob.coupling.action.RequestSpinAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument

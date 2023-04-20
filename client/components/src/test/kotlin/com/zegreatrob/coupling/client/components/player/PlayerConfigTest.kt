@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.player
 
-import com.zegreatrob.coupling.action.DeletePlayerCommand
-import com.zegreatrob.coupling.action.SavePlayerCommand
+import com.zegreatrob.coupling.action.player.DeletePlayerCommand
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.StubDispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.external.w3c.WindowFunctions

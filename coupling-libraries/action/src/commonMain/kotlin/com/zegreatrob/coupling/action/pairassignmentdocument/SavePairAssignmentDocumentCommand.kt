@@ -6,10 +6,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyElement
 
 data class SavePairAssignmentDocumentCommand(val pairAssignmentDocument: PairAssignmentDocument) :
-    SimpleSuspendResultAction<SavePairAssignmentDocumentCommandDispatcher, PartyElement<PairAssignmentDocument>> {
-    override val performFunc = link(SavePairAssignmentDocumentCommandDispatcher::perform)
-}
+    SimpleSuspendResultAction<SavePairAssignmentDocumentCommand.Dispatcher, PartyElement<PairAssignmentDocument>> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface SavePairAssignmentDocumentCommandDispatcher {
-    suspend fun perform(command: SavePairAssignmentDocumentCommand): Result<PartyElement<PairAssignmentDocument>>
+    interface Dispatcher {
+        suspend fun perform(command: SavePairAssignmentDocumentCommand): Result<PartyElement<PairAssignmentDocument>>
+    }
 }

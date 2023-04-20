@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.action.entity.player.callsign
+package com.zegreatrob.coupling.action.player.callsign
 
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
