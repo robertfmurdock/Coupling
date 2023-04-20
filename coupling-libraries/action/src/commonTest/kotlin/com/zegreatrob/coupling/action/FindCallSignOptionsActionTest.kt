@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.player.callsign.CallSignOptions
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignOptionsAction
-import com.zegreatrob.coupling.action.player.callsign.FindCallSignOptionsActionDispatcher
 import com.zegreatrob.coupling.action.player.callsign.defaultCallSignOptions
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -11,7 +10,7 @@ import kotlin.test.Test
 
 class FindCallSignOptionsActionTest {
 
-    companion object : FindCallSignOptionsActionDispatcher
+    companion object : FindCallSignOptionsAction.Dispatcher
 
     @Test
     fun willIncludeAllPredefinedAdjectivesAndNounsWhenNoPlayersHaveCallSigns() = setup(object {

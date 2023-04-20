@@ -6,16 +6,18 @@ import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 
 data class FindCallSignAction(val players: List<Player>, val email: String) :
-    SimpleExecutableAction<FindCallSignActionDispatcher, CallSign> {
-    override val performFunc = link(FindCallSignActionDispatcher::perform)
-}
+    SimpleExecutableAction<FindCallSignAction.Dispatcher, CallSign> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface FindCallSignActionDispatcher : GenerateCallSignActionDispatcher, ExecutableActionExecuteSyntax {
+    interface Dispatcher :
+        GenerateCallSignAction.Dispatcher,
+        ExecutableActionExecuteSyntax {
 
-    fun perform(action: FindCallSignAction) = with(defaultCallSignOptions) {
-        action.generateCallSign(adjectives, nouns)
+        fun perform(action: FindCallSignAction) = with(defaultCallSignOptions) {
+            action.generateCallSign(adjectives, nouns)
+        }
+
+        private fun FindCallSignAction.generateCallSign(adjectives: Set<String>, nouns: Set<String>) =
+            execute(GenerateCallSignAction(adjectives, nouns, email, players))
     }
-
-    private fun FindCallSignAction.generateCallSign(adjectives: Set<String>, nouns: Set<String>) =
-        execute(GenerateCallSignAction(adjectives, nouns, email, players))
 }

@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.server.action.player
 
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
-import com.zegreatrob.coupling.action.player.callsign.FindCallSignActionDispatcher
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
@@ -17,7 +16,10 @@ object PlayersQuery : SimpleSuspendResultAction<PlayersQueryDispatcher, List<Rec
     override val performFunc = link(PlayersQueryDispatcher::perform)
 }
 
-interface PlayersQueryDispatcher : CurrentPartyIdSyntax, PartyPlayerRecordsListSyntax, FindCallSignActionDispatcher {
+interface PlayersQueryDispatcher :
+    CurrentPartyIdSyntax,
+    PartyPlayerRecordsListSyntax,
+    FindCallSignAction.Dispatcher {
     suspend fun perform(query: PlayersQuery) = doWork().successResult()
 
     private suspend fun doWork() = currentPartyId.getPlayerRecords().populateMissingCallSigns()
