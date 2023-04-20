@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
-import com.zegreatrob.coupling.action.user.UserQueryDispatcher
+import com.zegreatrob.coupling.action.user.UserQuery
 
 interface BarebonesSdk :
     RepositoryCatalog,
-    UserQueryDispatcher,
+    UserQuery.Dispatcher,
     RequestSpinAction.Dispatcher

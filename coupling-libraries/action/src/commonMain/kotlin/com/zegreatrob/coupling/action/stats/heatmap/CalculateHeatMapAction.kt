@@ -10,26 +10,28 @@ data class CalculateHeatMapAction(
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
     val rotationPeriod: Int,
-) : SimpleExecutableAction<CalculateHeatMapActionDispatcher, List<List<Double?>>> {
-    override val performFunc = link(CalculateHeatMapActionDispatcher::perform)
-}
+) : SimpleExecutableAction<CalculateHeatMapAction.Dispatcher, List<List<Double?>>> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface CalculateHeatMapActionDispatcher : CalculatePairHeatActionDispatcher, ExecutableActionExecuteSyntax {
+    interface Dispatcher :
+        CalculatePairHeatAction.Dispatcher,
+        ExecutableActionExecuteSyntax {
 
-    fun perform(action: CalculateHeatMapAction) = action.players.map { player ->
-        action.heatForEachPair(player)
-    }
-
-    private fun CalculateHeatMapAction.heatForEachPair(player: Player) = players.map { partner ->
-        calculatePairHeat(player, partner)
-    }
-
-    private fun CalculateHeatMapAction.calculatePairHeat(player: Player, alternatePlayer: Player) =
-        if (player == alternatePlayer) {
-            null
-        } else {
-            execute(
-                CalculatePairHeatAction(pairOf(player, alternatePlayer), history, rotationPeriod),
-            )
+        fun perform(action: CalculateHeatMapAction) = action.players.map { player ->
+            action.heatForEachPair(player)
         }
+
+        private fun CalculateHeatMapAction.heatForEachPair(player: Player) = players.map { partner ->
+            calculatePairHeat(player, partner)
+        }
+
+        private fun CalculateHeatMapAction.calculatePairHeat(player: Player, alternatePlayer: Player) =
+            if (player == alternatePlayer) {
+                null
+            } else {
+                execute(
+                    CalculatePairHeatAction(pairOf(player, alternatePlayer), history, rotationPeriod),
+                )
+            }
+    }
 }

@@ -1,5 +1,5 @@
 package com.zegreatrob.coupling.sdk.user
 
-import com.zegreatrob.coupling.action.user.UserQueryDispatcher
+import com.zegreatrob.coupling.action.user.UserQuery
 
-interface SdkUserGet : UserQueryDispatcher
+interface SdkUserGet : UserQuery.Dispatcher

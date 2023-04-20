@@ -4,7 +4,6 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.hours
 import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
-import com.zegreatrob.coupling.action.stats.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.stats.PairReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
@@ -25,7 +24,7 @@ import kotlin.test.Test
 @Suppress("unused")
 class ComposeStatisticsActionTest {
 
-    companion object : ComposeStatisticsActionDispatcher {
+    companion object : ComposeStatisticsAction.Dispatcher {
         val party = Party(PartyId("LOL"), PairingRule.LongestTime)
 
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)

@@ -3,10 +3,8 @@ package com.zegreatrob.coupling.client.components.stats
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
-import com.zegreatrob.coupling.action.stats.ComposeStatisticsActionDispatcher
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
-import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -28,7 +26,9 @@ import react.router.MemoryRouter
 import kotlin.js.json
 import kotlin.test.Test
 
-class PartyStatisticsTest : CalculateHeatMapActionDispatcher, ComposeStatisticsActionDispatcher {
+class PartyStatisticsTest :
+    CalculateHeatMapAction.Dispatcher,
+    ComposeStatisticsAction.Dispatcher {
 
     @Test
     fun willShowPairings() = setup(object {

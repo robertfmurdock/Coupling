@@ -4,7 +4,6 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.action.stats.heatmap.CalculatePairHeatAction
-import com.zegreatrob.coupling.action.stats.heatmap.CalculatePairHeatActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -17,7 +16,7 @@ import kotlin.test.Test
 class CalculatePairHeatActionTest {
 
     companion object :
-        CalculatePairHeatActionDispatcher,
+        CalculatePairHeatAction.Dispatcher,
         AssignPinsActionDispatcher {
         private fun List<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
             .map { pairAssignmentDocument() }

@@ -4,7 +4,6 @@ import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
-import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -15,7 +14,9 @@ import kotlin.test.Test
 
 class CalculateHeatMapCommandTest {
 
-    companion object : CalculateHeatMapActionDispatcher, AssignPinsActionDispatcher {
+    companion object :
+        CalculateHeatMapAction.Dispatcher,
+        AssignPinsActionDispatcher {
         private fun pairAssignmentDocument(player1: Player, player2: Player) =
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId(""),
