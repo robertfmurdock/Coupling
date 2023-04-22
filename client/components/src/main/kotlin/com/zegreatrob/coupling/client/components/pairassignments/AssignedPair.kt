@@ -77,11 +77,11 @@ val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, p
         div {
             css {
                 position = Position.absolute
-                transform = rotatex(15.deg)
                 top = 0.px
                 left = 0.px
                 right = 0.px
                 bottom = 0.px
+                transform = rotatex(15.deg)
                 borderWidth = 3.px
                 borderRadius = 40.px
                 borderStyle = LineStyle.hidden

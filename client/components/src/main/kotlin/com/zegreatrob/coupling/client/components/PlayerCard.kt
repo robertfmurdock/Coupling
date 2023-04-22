@@ -26,6 +26,7 @@ import csstype.Position
 import csstype.PropertiesBuilder
 import csstype.TextAlign
 import csstype.deg
+import csstype.em
 import csstype.number
 import csstype.px
 import csstype.rotate
@@ -61,7 +62,10 @@ val playerCard by ntmFC<PlayerCard> { (player, className, size, onClick, deselec
         asDynamic()["data-selected"] = "${!deselected}"
         this.onClick = onClickFunc
         div {
-            css { margin = ((size * 0.02).px) }
+            css {
+                margin = ((size * 0.02).px)
+                perspective = 15.em
+            }
             playerGravatarImage(player, size)
             add(PlayerCardHeader(player, size))
         }
@@ -72,7 +76,7 @@ private fun PropertiesBuilder.playerCardStyles(tilt: Angle, deselected: Boolean)
     position = Position.relative
     clear = Clear.both
     display = Display.inlineBlock
-    overflow = Overflow.hidden
+    overflow = Overflow.visible
     border = Border(3.px, LineStyle.outset, Color("#dab8018f"))
     backgroundImage = url(pngPath("overlay"))
     backgroundRepeat = BackgroundRepeat.repeatX
