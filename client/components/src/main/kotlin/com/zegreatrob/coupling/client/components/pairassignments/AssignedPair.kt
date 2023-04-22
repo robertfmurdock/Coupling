@@ -27,8 +27,11 @@ import csstype.NamedColor
 import csstype.Position
 import csstype.Visibility
 import csstype.deg
+import csstype.em
 import csstype.integer
+import csstype.number
 import csstype.px
+import csstype.rotatex
 import csstype.url
 import emotion.react.css
 import react.ChildrenBuilder
@@ -63,21 +66,35 @@ val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, p
     span {
         asDynamic()["data-assigned-pair"] = pair.toPair().asArray().joinToString("-") { it.id }
         css {
-            borderWidth = 3.px
-            borderStyle = LineStyle.double
-            borderColor = NamedColor.dimgray
             padding = 5.px
-            display = Display.inlineBlock
-            borderRadius = 40.px
+            display = Display.inlineFlex
             margin = Margin(0.px, 2.px, 0.px, 2.px)
             position = Position.relative
-            backgroundColor = if (isOver) {
-                Color("#cff8ff")
-            } else {
-                NamedColor.aliceblue
-            }
+            perspective = 10.em
         }
         ref = pinDroppableRef
+
+        div {
+            css {
+                position = Position.absolute
+                transform = rotatex(15.deg)
+                top = 0.px
+                left = 0.px
+                right = 0.px
+                bottom = 0.px
+                borderWidth = 3.px
+                borderRadius = 40.px
+                borderStyle = LineStyle.hidden
+                borderColor = NamedColor.dimgray
+                margin = 10.px
+                backgroundColor = if (isOver) {
+                    Color("#cff8ff")
+                } else {
+                    NamedColor.aliceblue
+                }
+                flexGrow = number(1.0)
+            }
+        }
         div {
             if (party.callSignsEnabled && callSign != null) {
                 callSign(callSign)

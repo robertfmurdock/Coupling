@@ -1,10 +1,16 @@
 package com.zegreatrob.coupling.client
 
+import com.benasher44.uuid.uuid4
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
@@ -42,6 +48,15 @@ class MemoryRepositoryCatalog private constructor(
     override suspend fun perform(query: UserQuery) = User(userId, "???", setOf(PartyId("Kind of fake")))
 
     override suspend fun perform(action: RequestSpinAction): PairAssignmentDocument {
-        TODO("Not yet implemented")
+        val pairs = action.players.shuffled().map { it.withPins(emptyList()) }.withIndex().groupBy { it.index / 2 }
+            .entries
+            .map { it.value.map(IndexedValue<PinnedPlayer>::value) }
+            .map { PinnedCouplingPair(it, emptySet()) }
+            .toList()
+        return PairAssignmentDocument(
+            id = PairAssignmentDocumentId("${uuid4()}"),
+            date = DateTime.now(),
+            pairs = pairs,
+        )
     }
 }
