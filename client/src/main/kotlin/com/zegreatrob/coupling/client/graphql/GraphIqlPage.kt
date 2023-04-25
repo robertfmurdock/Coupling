@@ -10,12 +10,12 @@ import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
-import csstype.TextAlign
-import csstype.vh
 import emotion.react.css
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.dom.html.ReactHTML.div
+import web.cssom.TextAlign
+import web.cssom.vh
 
 private val graphQlUrl = "${WindowFunctions.window.location.origin}${window["basename"]}/api/graphql"
 

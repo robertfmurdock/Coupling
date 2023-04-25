@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.nfc
-import csstype.em
 import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.a
+import web.cssom.em
 import web.window.WindowTarget
 
 val gravatarLink by nfc<Props> {

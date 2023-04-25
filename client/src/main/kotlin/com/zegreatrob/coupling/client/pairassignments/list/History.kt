@@ -10,16 +10,16 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Border
-import csstype.Color
-import csstype.Display
-import csstype.LineStyle
-import csstype.Padding
-import csstype.px
-import csstype.vh
 import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
+import web.cssom.Border
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.LineStyle
+import web.cssom.Padding
+import web.cssom.px
+import web.cssom.vh
 
 data class History(
     val party: Party,

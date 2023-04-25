@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.spin
 
+import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.PinButton
 import com.zegreatrob.coupling.client.components.PinButtonScale
@@ -7,27 +8,14 @@ import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
+import com.zegreatrob.coupling.client.components.pink
+import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.AnimationIterationCount
-import csstype.BorderCollapse
-import csstype.BoxShadow
-import csstype.Color
-import csstype.Display
-import csstype.FlexDirection
-import csstype.Position
-import csstype.TransitionProperty
-import csstype.TransitionTimingFunction
-import csstype.em
-import csstype.ident
-import csstype.number
-import csstype.px
-import csstype.rgba
-import csstype.s
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.br
@@ -35,6 +23,21 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.h2
 import react.dom.html.ReactHTML.span
+import web.cssom.AnimationIterationCount
+import web.cssom.BorderCollapse
+import web.cssom.BoxShadow
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.FlexDirection
+import web.cssom.Position
+import web.cssom.TransitionProperty
+import web.cssom.TransitionTimingFunction
+import web.cssom.em
+import web.cssom.ident
+import web.cssom.number
+import web.cssom.px
+import web.cssom.rgba
+import web.cssom.s
 
 data class PrepareSpinContent(
     var party: Party,
@@ -147,7 +150,7 @@ private fun ChildrenBuilder.batchSelectButton(
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean,
 ) = add(
-    com.zegreatrob.coupling.client.components.CouplingButton(onClick = {
+    CouplingButton(onClick = {
         playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections)
     }),
 ) { +text }
@@ -216,9 +219,9 @@ private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {})
 private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 
 private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit, enabled: Boolean) = add(
-    com.zegreatrob.coupling.client.components.CouplingButton(
-        com.zegreatrob.coupling.client.components.supersize,
-        com.zegreatrob.coupling.client.components.pink,
+    CouplingButton(
+        supersize,
+        pink,
         onClick = generateNewPairsFunc,
         attrs = { disabled = !enabled },
     ) {

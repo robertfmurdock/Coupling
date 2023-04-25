@@ -2,14 +2,14 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.ntmFC
-import csstype.Color
-import csstype.Display
-import csstype.LineStyle
-import csstype.VerticalAlign
-import csstype.px
 import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.LineStyle
+import web.cssom.VerticalAlign
+import web.cssom.px
 
 data class TeamStatistics(
     val spinsUntilFullRotation: Int,

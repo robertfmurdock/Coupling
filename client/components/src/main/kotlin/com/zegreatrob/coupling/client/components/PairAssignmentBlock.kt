@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.nfc
-import csstype.Display
-import csstype.FontWeight
-import csstype.px
 import emotion.react.css
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
+import web.cssom.Display
+import web.cssom.FontWeight
+import web.cssom.px
 
 val PairAssignmentBlock by nfc<PropsWithChildren> { props ->
     div {

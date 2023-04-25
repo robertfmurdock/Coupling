@@ -14,14 +14,14 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.minreact.ntmFC
-import csstype.Color
-import csstype.VerticalAlign
-import csstype.px
 import emotion.css.ClassName
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
+import web.cssom.Color
+import web.cssom.VerticalAlign
+import web.cssom.px
 
 data class PartyList(val parties: List<Party>) : DataPropsBind<PartyList>(partyList)
 

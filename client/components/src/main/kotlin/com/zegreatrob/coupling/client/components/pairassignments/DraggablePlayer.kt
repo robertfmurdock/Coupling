@@ -5,20 +5,21 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.AnimationIterationCount
-import csstype.NamedColor
-import csstype.TransitionProperty
-import csstype.TransitionTimingFunction
-import csstype.deg
-import csstype.ident
-import csstype.rotate
-import csstype.s
 import emotion.css.ClassName
+import web.cssom.Angle
+import web.cssom.AnimationIterationCount
+import web.cssom.NamedColor
+import web.cssom.TransitionProperty
+import web.cssom.TransitionTimingFunction
+import web.cssom.deg
+import web.cssom.ident
+import web.cssom.rotate
+import web.cssom.s
 
 data class DraggablePlayer(
     val pinnedPlayer: PinnedPlayer,
     val zoomOnHover: Boolean,
-    val tilt: csstype.Angle,
+    val tilt: Angle,
     val onPlayerDrop: (String) -> Unit,
 ) : DataPropsBind<DraggablePlayer>(draggablePlayer)
 

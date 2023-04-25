@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.client.components.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrop
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.ntmFC
-import csstype.Display
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.useRef
+import web.cssom.Display
 import web.html.HTMLElement
 
 data class DraggableThing(

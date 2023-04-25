@@ -15,18 +15,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Border
-import csstype.Clear
-import csstype.Display
-import csstype.FontSize
-import csstype.LineStyle.Companion.outset
-import csstype.NamedColor
-import csstype.None
-import csstype.Position
-import csstype.TextAlign
-import csstype.VerticalAlign
-import csstype.number
-import csstype.px
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.aria.ariaLabel
@@ -39,6 +27,19 @@ import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
+import web.cssom.Border
+import web.cssom.ClassName
+import web.cssom.Clear
+import web.cssom.Display
+import web.cssom.FontSize
+import web.cssom.LineStyle.Companion.outset
+import web.cssom.NamedColor
+import web.cssom.None
+import web.cssom.Position
+import web.cssom.TextAlign
+import web.cssom.VerticalAlign
+import web.cssom.number
+import web.cssom.px
 import web.html.InputType
 
 data class PlayerConfigContent(
@@ -50,7 +51,7 @@ data class PlayerConfigContent(
     val onRemove: () -> Unit,
 ) : DataPropsBind<PlayerConfigContent>(playerConfigContent)
 
-val playerConfigContentClassName = csstype.ClassName("player-config-content")
+val playerConfigContentClassName = ClassName("player-config-content")
 
 val playerConfigContent by ntmFC<PlayerConfigContent> { (party, player, players, onChange, onSubmit, onRemove) ->
     ConfigFrame {

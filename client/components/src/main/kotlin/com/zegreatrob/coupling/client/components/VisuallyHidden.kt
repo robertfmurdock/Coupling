@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.nfc
-import csstype.ClipPath.Companion.borderBox
-import csstype.Overflow
-import csstype.Position
-import csstype.WhiteSpace
-import csstype.px
 import emotion.react.css
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.span
+import web.cssom.ClipPath.Companion.borderBox
+import web.cssom.Overflow
+import web.cssom.Position
+import web.cssom.WhiteSpace
+import web.cssom.px
 
 val visuallyHidden by nfc<PropsWithChildren> { props ->
     span {

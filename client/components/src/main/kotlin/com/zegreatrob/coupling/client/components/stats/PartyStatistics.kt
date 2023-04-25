@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Color
-import csstype.Display
-import csstype.VerticalAlign
-import csstype.WhiteSpace
-import csstype.number
 import emotion.react.css
 import react.dom.html.ReactHTML.div
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.VerticalAlign
+import web.cssom.WhiteSpace
+import web.cssom.number
 
 @JsModule("date-fns/formatDistance")
 external val formatDistanceModule: dynamic

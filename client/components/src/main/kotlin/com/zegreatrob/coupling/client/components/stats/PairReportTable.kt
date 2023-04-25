@@ -9,21 +9,21 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Angle
-import csstype.ClassName
-import csstype.Color
-import csstype.Display
-import csstype.LineStyle
-import csstype.TextAlign
-import csstype.VerticalAlign
-import csstype.WhiteSpace
-import csstype.deg
-import csstype.px
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useMemo
+import web.cssom.Angle
+import web.cssom.ClassName
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.LineStyle
+import web.cssom.TextAlign
+import web.cssom.VerticalAlign
+import web.cssom.WhiteSpace
+import web.cssom.deg
+import web.cssom.px
 import kotlin.random.Random
 
 data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<PairReportTable>(

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.components.gravatar
 
 import com.zegreatrob.coupling.client.components.external.blueimpMd5.md5
-import csstype.ClassName
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.img
+import web.cssom.ClassName
 
 fun gravatarUrl(email: String, options: GravatarOptions): String {
     val codedEmail = md5(email.lowercase().trim())

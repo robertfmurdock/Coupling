@@ -11,8 +11,8 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Color
 import react.dom.html.ReactHTML.div
+import web.cssom.Color
 
 data class UserConfig(val user: User) : DataProps<UserConfig> {
     override val component = userConfig

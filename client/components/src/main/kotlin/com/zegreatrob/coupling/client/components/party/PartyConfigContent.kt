@@ -11,10 +11,6 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.ClassName
-import csstype.Color
-import csstype.Display
-import csstype.number
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.aria.ariaLabel
@@ -26,6 +22,10 @@ import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
+import web.cssom.ClassName
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.number
 import web.html.InputType
 
 data class PartyConfigContent(

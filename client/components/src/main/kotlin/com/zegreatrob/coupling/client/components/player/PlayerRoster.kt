@@ -8,15 +8,15 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.ClassName
-import csstype.FontWeight
 import csstype.PropertiesBuilder
-import csstype.deg
-import csstype.em
 import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 import react.useState
+import web.cssom.ClassName
+import web.cssom.FontWeight
+import web.cssom.deg
+import web.cssom.em
 import kotlin.js.Date
 import kotlin.random.Random
 

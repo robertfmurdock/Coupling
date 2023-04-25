@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.ClassName
-import csstype.Position
-import csstype.pct
-import csstype.px
-import csstype.unaryMinus
 import emotion.react.css
 import react.dom.html.ReactHTML.div
+import web.cssom.ClassName
+import web.cssom.Position
+import web.cssom.pct
+import web.cssom.px
+import web.cssom.unaryMinus
 
 data class PinSection(
     val pinList: List<Pin>,

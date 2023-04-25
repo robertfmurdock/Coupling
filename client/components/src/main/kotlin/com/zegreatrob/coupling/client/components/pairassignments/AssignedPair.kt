@@ -16,30 +16,31 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.ntmFC
-import csstype.BackgroundRepeat
-import csstype.Color
-import csstype.Display
-import csstype.FlexDirection
-import csstype.FontSize
-import csstype.FontWeight
-import csstype.LineStyle
-import csstype.Margin
-import csstype.NamedColor
-import csstype.Position
-import csstype.Visibility
-import csstype.deg
-import csstype.em
-import csstype.integer
-import csstype.number
-import csstype.px
-import csstype.rotatex
-import csstype.url
 import emotion.react.css
 import react.ChildrenBuilder
 import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useRef
+import web.cssom.Angle
+import web.cssom.BackgroundRepeat
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.FlexDirection
+import web.cssom.FontSize
+import web.cssom.FontWeight
+import web.cssom.LineStyle
+import web.cssom.Margin
+import web.cssom.NamedColor
+import web.cssom.Position
+import web.cssom.Visibility
+import web.cssom.deg
+import web.cssom.em
+import web.cssom.integer
+import web.cssom.number
+import web.cssom.px
+import web.cssom.rotatex
+import web.cssom.url
 import web.html.HTMLElement
 
 data class AssignedPair(
@@ -155,7 +156,7 @@ private fun usePinDrop(pinMoveCallback: PinMoveCallback) = useDrop(
 private fun playerCardComponent(
     canDrag: Boolean,
     swap: (PinnedPlayer, String) -> Unit,
-): ChildrenBuilder.(PinnedPlayer, csstype.Angle) -> Unit = if (canDrag) {
+): ChildrenBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) {
     { player, tilt ->
         playerFlipped(player.player) {
             swappablePlayer(player, canDrag, tilt) { droppedPlayerId: String -> swap(player, droppedPlayerId) }
@@ -185,11 +186,11 @@ private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNo
     }
 }
 
-private fun notSwappablePlayer(player: Player, tilt: csstype.Angle) = PlayerCard(player, tilt = tilt)
+private fun notSwappablePlayer(player: Player, tilt: Angle) = PlayerCard(player, tilt = tilt)
 
 private fun swappablePlayer(
     pinnedPlayer: PinnedPlayer,
     zoomOnHover: Boolean,
-    tilt: csstype.Angle,
+    tilt: Angle,
     onDropSwap: (String) -> Unit,
 ) = DraggablePlayer(pinnedPlayer, zoomOnHover, tilt, onDropSwap)
