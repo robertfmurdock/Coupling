@@ -26,6 +26,7 @@ import csstype.Margin
 import csstype.NamedColor
 import csstype.Position
 import csstype.Visibility
+import csstype.WhiteSpace
 import csstype.deg
 import csstype.em
 import csstype.integer
@@ -96,6 +97,12 @@ val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, p
             }
         }
         div {
+            css {
+                position = Position.absolute
+                left = 0.px
+                right = 0.px
+                whiteSpace = WhiteSpace.nowrap
+            }
             if (party.callSignsEnabled && callSign != null) {
                 callSign(callSign)
             }
