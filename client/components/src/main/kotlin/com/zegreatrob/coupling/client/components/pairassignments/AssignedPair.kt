@@ -19,6 +19,7 @@ import com.zegreatrob.minreact.ntmFC
 import csstype.BackgroundRepeat
 import csstype.Color
 import csstype.Display
+import csstype.FlexDirection
 import csstype.FontSize
 import csstype.FontWeight
 import csstype.LineStyle
@@ -26,7 +27,6 @@ import csstype.Margin
 import csstype.NamedColor
 import csstype.Position
 import csstype.Visibility
-import csstype.WhiteSpace
 import csstype.deg
 import csstype.em
 import csstype.integer
@@ -72,6 +72,7 @@ val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, p
             margin = Margin(0.px, 2.px, 0.px, 2.px)
             position = Position.relative
             perspective = 10.em
+            flexDirection = FlexDirection.column
         }
         ref = pinDroppableRef
 
@@ -97,18 +98,14 @@ val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, p
             }
         }
         div {
-            css {
-                position = Position.absolute
-                left = 0.px
-                right = 0.px
-                whiteSpace = WhiteSpace.nowrap
-            }
             if (party.callSignsEnabled && callSign != null) {
                 callSign(callSign)
             }
         }
-        pair.players.mapIndexed { index, player ->
-            playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
+        div {
+            pair.players.mapIndexed { index, player ->
+                playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
+            }
         }
 
         add(PinSection(pinList = pair.pins.toList(), canDrag = canDrag))
