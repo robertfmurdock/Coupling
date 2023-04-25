@@ -7,11 +7,11 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.AnimationIterationCount
-import csstype.ClassName
-import csstype.ident
-import csstype.s
 import react.router.dom.Link
+import web.cssom.AnimationIterationCount
+import web.cssom.ClassName
+import web.cssom.ident
+import web.cssom.s
 
 data class PrepareToSpinButton(val party: Party) : DataPropsBind<PrepareToSpinButton>(prepareToSpinButton)
 

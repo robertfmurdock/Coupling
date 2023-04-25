@@ -19,16 +19,16 @@ import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
-import csstype.Color
-import csstype.Display
-import csstype.LineStyle
-import csstype.Padding
 import csstype.PropertiesBuilder
-import csstype.px
-import csstype.vh
 import emotion.css.ClassName
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.LineStyle
+import web.cssom.Padding
+import web.cssom.px
+import web.cssom.vh
 
 data class PairAssignments(
     val party: Party,

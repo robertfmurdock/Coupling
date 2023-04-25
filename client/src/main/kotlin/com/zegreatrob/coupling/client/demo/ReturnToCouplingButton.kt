@@ -6,23 +6,23 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.svgPath
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
-import csstype.AlignItems
-import csstype.AnimationIterationCount
-import csstype.Color
-import csstype.Display
-import csstype.Gradient
-import csstype.LinearColorStop
-import csstype.NamedColor
-import csstype.Position
-import csstype.ident
-import csstype.integer
-import csstype.px
-import csstype.s
 import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
+import web.cssom.AlignItems
+import web.cssom.AnimationIterationCount
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.Gradient
+import web.cssom.LinearColorStop
+import web.cssom.NamedColor
+import web.cssom.Position
+import web.cssom.ident
+import web.cssom.integer
+import web.cssom.px
+import web.cssom.s
 
 val returnToCouplingButton by nfc<Props> {
     Link {

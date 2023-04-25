@@ -10,19 +10,19 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Border
-import csstype.Color
-import csstype.Display
-import csstype.LineStyle
-import csstype.NamedColor
 import csstype.PropertiesBuilder
-import csstype.TextAlign
-import csstype.px
-import csstype.vh
 import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import react.router.dom.Link
+import web.cssom.Border
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.LineStyle
+import web.cssom.NamedColor
+import web.cssom.TextAlign
+import web.cssom.px
+import web.cssom.vh
 
 data class PinList(val party: Party, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
 

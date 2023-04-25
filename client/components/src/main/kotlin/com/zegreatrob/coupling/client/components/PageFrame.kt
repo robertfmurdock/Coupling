@@ -3,16 +3,16 @@ package com.zegreatrob.coupling.client.components
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.children
 import com.zegreatrob.minreact.ntmFC
-import csstype.ClassName
-import csstype.Color
-import csstype.Display
-import csstype.LineStyle
-import csstype.Margin
-import csstype.Padding
-import csstype.px
-import csstype.vh
 import emotion.react.css
 import react.dom.html.ReactHTML.div
+import web.cssom.ClassName
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.LineStyle
+import web.cssom.Margin
+import web.cssom.Padding
+import web.cssom.px
+import web.cssom.vh
 
 data class PageFrame(val borderColor: Color, val backgroundColor: Color, val className: ClassName? = null) :
     DataPropsBind<PageFrame>(pageFrame)

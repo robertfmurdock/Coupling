@@ -19,8 +19,8 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import csstype.ClassName
 import popper.core.Placement
+import web.cssom.ClassName
 
 private val demoParty = Party(id = PartyId("${uuid4()}"), name = "The Simpsons", imageURL = svgPath("parties/simpsons"))
 

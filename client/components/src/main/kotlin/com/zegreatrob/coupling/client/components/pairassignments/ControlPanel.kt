@@ -4,14 +4,14 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.BoxShadow
-import csstype.Color
-import csstype.Display
-import csstype.Margin
-import csstype.px
-import csstype.rgba
 import emotion.react.css
 import react.dom.html.ReactHTML.div
+import web.cssom.BoxShadow
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.Margin
+import web.cssom.px
+import web.cssom.rgba
 
 data class ControlPanel(val party: Party) : DataPropsBind<ControlPanel>(controlPanel)
 

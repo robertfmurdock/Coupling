@@ -6,17 +6,17 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Display
-import csstype.TextAlign
-import csstype.VerticalAlign
-import csstype.WhiteSpace
-import csstype.deg
-import csstype.number
-import csstype.px
 import emotion.css.ClassName
 import emotion.react.css
 import react.dom.html.ReactHTML.div
 import react.useMemo
+import web.cssom.Display
+import web.cssom.TextAlign
+import web.cssom.VerticalAlign
+import web.cssom.WhiteSpace
+import web.cssom.deg
+import web.cssom.number
+import web.cssom.px
 import kotlin.random.Random
 
 data class PlayerHeatmap(

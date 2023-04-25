@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.external.react
 
-import csstype.ClassName
+import web.cssom.ClassName
 
 external interface SimpleStyle {
     val className: ClassName

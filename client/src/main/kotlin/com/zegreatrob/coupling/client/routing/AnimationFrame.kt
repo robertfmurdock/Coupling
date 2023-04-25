@@ -4,14 +4,14 @@ import com.zegreatrob.coupling.client.components.animationsDisabledContext
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.EmptyState
-import csstype.ident
-import csstype.integer
-import csstype.s
 import emotion.react.css
 import react.PropsWithChildren
 import react.create
 import react.dom.html.ReactHTML.div
 import react.useState
+import web.cssom.ident
+import web.cssom.integer
+import web.cssom.s
 
 external interface AnimationFrameProps : PropsWithChildren {
     var state: DataLoadState<*>

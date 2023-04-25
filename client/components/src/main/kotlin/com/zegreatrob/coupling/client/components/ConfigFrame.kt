@@ -2,10 +2,10 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
-import csstype.Color
-import csstype.NamedColor
 import react.PropsWithChildren
 import react.PropsWithClassName
+import web.cssom.Color
+import web.cssom.NamedColor
 
 external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren {
     var borderColor: Color?

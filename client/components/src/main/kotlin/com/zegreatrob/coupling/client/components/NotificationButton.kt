@@ -3,20 +3,6 @@ package com.zegreatrob.coupling.client.components
 import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.components.external.reactpopup.popup
 import com.zegreatrob.minreact.nfc
-import csstype.AlignItems
-import csstype.AnimationIterationCount
-import csstype.ClassName
-import csstype.Display
-import csstype.Float
-import csstype.FontWeight
-import csstype.JustifyContent
-import csstype.NamedColor
-import csstype.Position
-import csstype.TextAlign
-import csstype.VerticalAlign
-import csstype.ident
-import csstype.px
-import csstype.s
 import emotion.react.css
 import kotlinx.browser.localStorage
 import react.Props
@@ -25,6 +11,20 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
 import react.useState
+import web.cssom.AlignItems
+import web.cssom.AnimationIterationCount
+import web.cssom.ClassName
+import web.cssom.Display
+import web.cssom.Float
+import web.cssom.FontWeight
+import web.cssom.JustifyContent
+import web.cssom.NamedColor
+import web.cssom.Position
+import web.cssom.TextAlign
+import web.cssom.VerticalAlign
+import web.cssom.ident
+import web.cssom.px
+import web.cssom.s
 import kotlin.js.json
 
 private fun saveNotificationLog(updatedThing: Array<String>) {

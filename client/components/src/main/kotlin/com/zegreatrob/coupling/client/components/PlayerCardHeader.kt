@@ -3,13 +3,13 @@ package com.zegreatrob.coupling.client.components
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.ntmFC
-import csstype.Display
-import csstype.Globals
-import csstype.None
-import csstype.TransitionProperty
-import csstype.TransitionTimingFunction
-import csstype.s
 import emotion.react.css
+import web.cssom.Display
+import web.cssom.Globals
+import web.cssom.None
+import web.cssom.TransitionProperty
+import web.cssom.TransitionTimingFunction
+import web.cssom.s
 
 data class PlayerCardHeader(val player: Player, val size: Int) : DataPropsBind<PlayerCardHeader>(playerCardHeader)
 

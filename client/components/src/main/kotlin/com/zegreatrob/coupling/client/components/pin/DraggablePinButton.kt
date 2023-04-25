@@ -7,15 +7,15 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.AnimationIterationCount
-import csstype.Display
-import csstype.TransitionProperty
-import csstype.TransitionTimingFunction
-import csstype.ident
-import csstype.s
 import emotion.react.css
 import react.dom.html.ReactHTML.span
 import react.useRef
+import web.cssom.AnimationIterationCount
+import web.cssom.Display
+import web.cssom.TransitionProperty
+import web.cssom.TransitionTimingFunction
+import web.cssom.ident
+import web.cssom.s
 import web.html.HTMLElement
 
 const val pinDragItemType = "PAIR_PIN"

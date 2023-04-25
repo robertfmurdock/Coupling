@@ -8,27 +8,27 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.BackgroundRepeat
-import csstype.Border
-import csstype.BoxShadow
-import csstype.ClassName
-import csstype.Clear
-import csstype.Color
-import csstype.Display
-import csstype.LineStyle
-import csstype.Margin
-import csstype.NamedColor
-import csstype.None
-import csstype.Overflow
-import csstype.Position
-import csstype.TextAlign
-import csstype.px
-import csstype.rgba
-import csstype.url
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
+import web.cssom.BackgroundRepeat
+import web.cssom.Border
+import web.cssom.BoxShadow
+import web.cssom.ClassName
+import web.cssom.Clear
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.LineStyle
+import web.cssom.Margin
+import web.cssom.NamedColor
+import web.cssom.None
+import web.cssom.Overflow
+import web.cssom.Position
+import web.cssom.TextAlign
+import web.cssom.px
+import web.cssom.rgba
+import web.cssom.url
 
 data class PinCard(val partyId: PartyId, val pin: Pin, val shouldLink: Boolean = true) : DataPropsBind<PinCard>(pinCard)
 

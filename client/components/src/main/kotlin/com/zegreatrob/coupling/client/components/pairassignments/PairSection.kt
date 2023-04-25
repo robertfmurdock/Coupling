@@ -13,11 +13,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.ClassName
-import csstype.Display
-import csstype.Float
-import csstype.VerticalAlign
-import csstype.px
 import emotion.react.css
 import kotlinx.browser.window
 import org.w3c.dom.DataTransfer
@@ -26,6 +21,11 @@ import react.MutableRefObject
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.useRef
+import web.cssom.ClassName
+import web.cssom.Display
+import web.cssom.Float
+import web.cssom.VerticalAlign
+import web.cssom.px
 import web.html.HTMLElement
 import kotlin.js.Json
 import kotlin.js.Promise

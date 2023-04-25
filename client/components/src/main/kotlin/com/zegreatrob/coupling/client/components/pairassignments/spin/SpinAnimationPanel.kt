@@ -11,16 +11,16 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Display
-import csstype.Position
-import csstype.Visibility
-import csstype.integer
-import csstype.pct
-import csstype.translate
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
+import web.cssom.Display
+import web.cssom.Position
+import web.cssom.Visibility
+import web.cssom.integer
+import web.cssom.pct
+import web.cssom.translate
 
 data class SpinAnimationPanel(
     val party: Party,

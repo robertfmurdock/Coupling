@@ -9,12 +9,6 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
-import csstype.ClassName
-import csstype.Color
-import csstype.Position
-import csstype.deg
-import csstype.em
-import csstype.px
 import emotion.react.css
 import react.Props
 import react.PropsWithChildren
@@ -23,6 +17,13 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
+import web.cssom.ClassName
+import web.cssom.Color
+import web.cssom.Float
+import web.cssom.Position
+import web.cssom.deg
+import web.cssom.em
+import web.cssom.px
 
 val AboutPage by nfc<PageProps> {
     aboutPageContent {
@@ -47,7 +48,7 @@ private val backButtonSection by nfc<Props> {
     div {
         css { position = Position.relative }
         ReactHTML.span {
-            css { float = csstype.Float.left; position = Position.absolute; right = (-15).px; top = 20.px }
+            css { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }
             backButton()
         }
     }

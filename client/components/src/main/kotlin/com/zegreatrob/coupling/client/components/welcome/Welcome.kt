@@ -1,36 +1,17 @@
 package com.zegreatrob.coupling.client.components.welcome
 
+import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.external.fitty.fitty
+import com.zegreatrob.coupling.client.components.pink
+import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.AnimationIterationCount
-import csstype.AnimationPlayState
-import csstype.Border
-import csstype.Color
-import csstype.Display
-import csstype.FontWeight
-import csstype.LineStyle
-import csstype.NamedColor
-import csstype.Overflow
-import csstype.Padding
 import csstype.PropertiesBuilder
-import csstype.TransformFunction
-import csstype.TransitionProperty
-import csstype.TransitionTimingFunction
-import csstype.VerticalAlign
-import csstype.deg
-import csstype.em
-import csstype.ident
-import csstype.integer
-import csstype.number
-import csstype.px
-import csstype.rotate
-import csstype.s
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
@@ -40,6 +21,28 @@ import react.dom.html.ReactHTML.span
 import react.useLayoutEffect
 import react.useRef
 import react.useState
+import web.cssom.AnimationIterationCount
+import web.cssom.AnimationPlayState
+import web.cssom.Border
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.FontWeight
+import web.cssom.LineStyle
+import web.cssom.NamedColor
+import web.cssom.Overflow
+import web.cssom.Padding
+import web.cssom.TransformFunction
+import web.cssom.TransitionProperty
+import web.cssom.TransitionTimingFunction
+import web.cssom.VerticalAlign
+import web.cssom.deg
+import web.cssom.em
+import web.cssom.ident
+import web.cssom.integer
+import web.cssom.number
+import web.cssom.px
+import web.cssom.rotate
+import web.cssom.s
 import web.html.HTMLDivElement
 
 data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataPropsBind<Welcome>(welcome)
@@ -213,9 +216,9 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
         LoginChooser()
     } else {
         add(
-            com.zegreatrob.coupling.client.components.CouplingButton(
-                com.zegreatrob.coupling.client.components.supersize,
-                com.zegreatrob.coupling.client.components.pink,
+            CouplingButton(
+                supersize,
+                pink,
                 ClassName {
                     marginTop = 20.px
                     animationName = ident("pulsate")

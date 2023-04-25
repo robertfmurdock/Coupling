@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.client.components.CardHeader
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.ntmFC
-import csstype.Globals
-import csstype.None
 import emotion.react.css
+import web.cssom.Globals
+import web.cssom.None
 
 data class PartyCardHeader(val party: Party, val size: Int) : DataPropsBind<PartyCardHeader>(partyCardHeader)
 

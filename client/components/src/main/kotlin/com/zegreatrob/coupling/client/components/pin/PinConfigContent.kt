@@ -14,15 +14,6 @@ import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.ClassName
-import csstype.Clear
-import csstype.Display
-import csstype.NamedColor
-import csstype.None
-import csstype.Position
-import csstype.TextAlign
-import csstype.VerticalAlign
-import csstype.px
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.events.ChangeEvent
@@ -33,6 +24,15 @@ import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
+import web.cssom.ClassName
+import web.cssom.Clear
+import web.cssom.Display
+import web.cssom.NamedColor
+import web.cssom.None
+import web.cssom.Position
+import web.cssom.TextAlign
+import web.cssom.VerticalAlign
+import web.cssom.px
 import web.html.InputType
 
 data class PinConfigContent(

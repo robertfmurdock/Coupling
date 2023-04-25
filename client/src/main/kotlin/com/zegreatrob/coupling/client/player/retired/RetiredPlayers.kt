@@ -10,16 +10,16 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.BackgroundRepeat
-import csstype.Display
-import csstype.FontSize
-import csstype.NamedColor
-import csstype.px
-import csstype.url
 import emotion.react.css
 import kotlinx.css.Color
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
+import web.cssom.BackgroundRepeat
+import web.cssom.Display
+import web.cssom.FontSize
+import web.cssom.NamedColor
+import web.cssom.px
+import web.cssom.url
 
 data class RetiredPlayers(val party: Party, val retiredPlayers: List<Player>) :
     DataPropsBind<RetiredPlayers>(com.zegreatrob.coupling.client.player.retired.retiredPlayers)

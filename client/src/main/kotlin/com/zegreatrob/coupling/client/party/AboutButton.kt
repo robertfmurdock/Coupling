@@ -5,12 +5,12 @@ import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.orange
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
-import csstype.ClassName
-import csstype.px
 import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
+import web.cssom.ClassName
+import web.cssom.px
 
 val AboutButton by nfc<Props> {
     Link {

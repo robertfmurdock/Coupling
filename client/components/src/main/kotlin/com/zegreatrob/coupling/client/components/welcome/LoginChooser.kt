@@ -8,26 +8,26 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
-import csstype.BackgroundRepeat
-import csstype.Border
-import csstype.BoxShadow
-import csstype.Clear
-import csstype.Color
-import csstype.Display
-import csstype.LineStyle
-import csstype.Margin
-import csstype.NamedColor
-import csstype.None
-import csstype.Overflow
-import csstype.Padding
-import csstype.Position
-import csstype.TextAlign
-import csstype.px
-import csstype.rgba
-import csstype.url
 import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
+import web.cssom.BackgroundRepeat
+import web.cssom.Border
+import web.cssom.BoxShadow
+import web.cssom.Clear
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.LineStyle
+import web.cssom.Margin
+import web.cssom.NamedColor
+import web.cssom.None
+import web.cssom.Overflow
+import web.cssom.Padding
+import web.cssom.Position
+import web.cssom.TextAlign
+import web.cssom.px
+import web.cssom.rgba
+import web.cssom.url
 
 val LoginChooser by nfc<Props> {
     val auth0Data = useAuth0Data()

@@ -9,22 +9,22 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Border
-import csstype.BoxShadow
-import csstype.Display
-import csstype.FontSize
-import csstype.FontWeight
-import csstype.LineStyle
-import csstype.Margin
-import csstype.NamedColor
-import csstype.Padding
 import csstype.PropertiesBuilder
-import csstype.px
-import csstype.rgb
-import csstype.rgba
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
+import web.cssom.Border
+import web.cssom.BoxShadow
+import web.cssom.Display
+import web.cssom.FontSize
+import web.cssom.FontWeight
+import web.cssom.LineStyle
+import web.cssom.Margin
+import web.cssom.NamedColor
+import web.cssom.Padding
+import web.cssom.px
+import web.cssom.rgb
+import web.cssom.rgba
 
 data class PairSectionPanel(
     val party: Party,

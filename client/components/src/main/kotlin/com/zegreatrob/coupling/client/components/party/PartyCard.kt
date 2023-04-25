@@ -8,21 +8,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.Auto
-import csstype.BoxShadow
-import csstype.Color
-import csstype.Display
-import csstype.Flex
-import csstype.LineStyle
-import csstype.Margin
-import csstype.NamedColor
-import csstype.None
 import csstype.PropertiesBuilder
-import csstype.TextAlign
-import csstype.integer
-import csstype.number
-import csstype.px
-import csstype.rgba
 import emotion.react.css
 import js.core.jso
 import react.ChildrenBuilder
@@ -31,6 +17,20 @@ import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
+import web.cssom.Auto
+import web.cssom.BoxShadow
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.Flex
+import web.cssom.LineStyle
+import web.cssom.Margin
+import web.cssom.NamedColor
+import web.cssom.None
+import web.cssom.TextAlign
+import web.cssom.integer
+import web.cssom.number
+import web.cssom.px
+import web.cssom.rgba
 
 data class PartyCard(val party: Party, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
 

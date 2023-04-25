@@ -1,26 +1,26 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.nfc
-import csstype.Border
-import csstype.BoxSizing
-import csstype.Clear
-import csstype.Color
-import csstype.Display
-import csstype.Float
-import csstype.FontSize
-import csstype.LineStyle
-import csstype.Margin
-import csstype.None
-import csstype.Overflow
-import csstype.Padding
-import csstype.TextAlign
-import csstype.VerticalAlign
-import csstype.pct
-import csstype.px
-import csstype.string
 import emotion.react.css
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.ul
+import web.cssom.Border
+import web.cssom.BoxSizing
+import web.cssom.Clear
+import web.cssom.Color
+import web.cssom.Display
+import web.cssom.Float
+import web.cssom.FontSize
+import web.cssom.LineStyle
+import web.cssom.Margin
+import web.cssom.None
+import web.cssom.Overflow
+import web.cssom.Padding
+import web.cssom.TextAlign
+import web.cssom.VerticalAlign
+import web.cssom.pct
+import web.cssom.px
+import web.cssom.string
 
 val Editor by nfc<PropsWithChildren> { props ->
     ul {

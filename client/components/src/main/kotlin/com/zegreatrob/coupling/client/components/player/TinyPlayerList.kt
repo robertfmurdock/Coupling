@@ -8,9 +8,9 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
-import csstype.deg
 import react.router.dom.Link
 import react.useState
+import web.cssom.deg
 import kotlin.js.Date
 import kotlin.random.Random
 

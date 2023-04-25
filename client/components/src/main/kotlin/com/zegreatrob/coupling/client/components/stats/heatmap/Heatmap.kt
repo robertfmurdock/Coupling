@@ -2,10 +2,6 @@ package com.zegreatrob.coupling.client.components.stats.heatmap
 
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.ntmFC
-import csstype.ClassName
-import csstype.Display
-import csstype.WhiteSpace
-import csstype.px
 import emotion.css.ClassName
 import emotion.react.css
 import js.import.import
@@ -18,6 +14,10 @@ import org.w3c.dom.Element
 import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
 import react.useRef
+import web.cssom.ClassName
+import web.cssom.Display
+import web.cssom.WhiteSpace
+import web.cssom.px
 import web.html.HTMLElement
 import kotlin.js.Promise
 
