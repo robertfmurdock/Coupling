@@ -11,7 +11,7 @@ import web.cssom.Color
 import web.cssom.Display
 import web.cssom.Margin
 import web.cssom.px
-import web.cssom.rgba
+import web.cssom.rgb
 
 data class ControlPanel(val party: Party) : DataPropsBind<ControlPanel>(controlPanel)
 
@@ -24,7 +24,7 @@ val controlPanel by ntmFC<ControlPanel> { (party) ->
                 padding = 5.px
                 margin = Margin(5.px, 0.px)
                 backgroundColor = Color("#d5cdc3")
-                boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+                boxShadow = BoxShadow(1.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
             }
             div { add(PrepareToSpinButton(party)) }
         }

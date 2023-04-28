@@ -37,7 +37,7 @@ import web.cssom.Overflow
 import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.px
-import web.cssom.rgba
+import web.cssom.rgb
 import web.cssom.url
 
 data class PairAssignmentRow(
@@ -64,7 +64,7 @@ private val pairAssignmentRow by ntmFC<PairAssignmentRow> { (party, document, co
             padding = 5.px
             margin = Margin(5.px, 0.px)
             backgroundColor = Color("#C3D5CBFF")
-            boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+            boxShadow = BoxShadow(1.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
         }
         asDynamic()["data-pair-assignments-id"] = document.id.value
         key = document.id.value
@@ -131,7 +131,7 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
         textAlign = TextAlign.center
         textDecoration = None.none
         borderRadius = 6.px
-        boxShadow = BoxShadow(0.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+        boxShadow = BoxShadow(0.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
         color = NamedColor.black
         margin = Margin(0.px, 2.px, 0.px, 2.px)
     }

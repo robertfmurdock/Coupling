@@ -36,6 +36,7 @@ import web.cssom.deg
 import web.cssom.em
 import web.cssom.number
 import web.cssom.px
+import web.cssom.rgb
 import web.cssom.rotate
 import web.cssom.s
 import web.cssom.url
@@ -102,7 +103,7 @@ private fun PropertiesBuilder.playerCardRuleSet(size: Int) {
     height = (size * 1.4).px
     borderWidth = (size * 0.04).px
     borderRadius = (size * 0.08).px
-    boxShadow = BoxShadow((size * 0.02).px, (size * 0.04).px, (size * 0.04).px, Color("rgba(0, 0, 0, 0.6)"))
+    boxShadow = BoxShadow((size * 0.02).px, (size * 0.04).px, (size * 0.04).px, rgb(0, 0, 0, 0.6))
     flex = Flex(number(0.0), number(0.0), Auto.auto)
 }
 

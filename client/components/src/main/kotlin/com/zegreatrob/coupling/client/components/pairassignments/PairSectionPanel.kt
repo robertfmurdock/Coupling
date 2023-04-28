@@ -24,7 +24,6 @@ import web.cssom.NamedColor
 import web.cssom.Padding
 import web.cssom.px
 import web.cssom.rgb
-import web.cssom.rgba
 
 data class PairSectionPanel(
     val party: Party,
@@ -70,7 +69,7 @@ private fun PropertiesBuilder.pairSectionCss() {
     padding = 5.px
     margin = Margin(5.px, 0.px)
     backgroundColor = rgb(195, 213, 203)
-    boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+    boxShadow = BoxShadow(1.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
 }
 
 private fun ChildrenBuilder.noPairsHeader() = div {
