@@ -220,10 +220,10 @@
     "@aws-sdk/util-waiter" "3.303.0"
     tslib "^2.5.0"
 
-"@aws-sdk/client-lambda@~3.321.1":
-  version "3.321.1"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.321.1.tgz#45f0df184b968dbf52153b99ba8f4ee7913ab719"
-  integrity sha512-+to+MJi+PzEZodAxZnCjaFaULKHdTccHllptKB1OYl2T1Gz8TfUyxknUnh6TpY3LBH/r4hcmT/Zkenj5rwelwA==
+"@aws-sdk/client-lambda@~3.322.0":
+  version "3.322.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.322.0.tgz#c77ab8d7757bb801efa3f1b25cafb023bd8e6ca1"
+  integrity sha512-nNyARMIxYDCWQIi/Az+/ZPEyxoECPafM8//GmcYDBBBl5CYcAetKN5vM1e3p9efr2njgP5vBTGU9EBaO45fYRQ==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
@@ -1825,15 +1825,16 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
 
-"@graphql-tools/batch-delegate@^8.4.25":
-  version "8.4.25"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-8.4.25.tgz#2ef78838c36348ef609c3bf5dbe0a6ef9ac4c78d"
-  integrity sha512-Rn/gLxMZULzo2+l4uKxYzXQYdZykWmKXTGPyyxuiLUu92Odt71IVb0+56WS+Tg0d7WUS0DeRVZWTRT2bZS7Nvw==
+"@graphql-tools/batch-delegate@^8.4.27":
+  version "8.4.27"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-delegate/-/batch-delegate-8.4.27.tgz#af6fd26ba02ef03b6a3c63a106b47175188bbd97"
+  integrity sha512-efgDDJhljma9d3Ky/LswIu1xm/if2oS27XA1sOcxcShW+Ze+Qxi0hZZ6iyI4eQxVDX5Lyy/n+NvQEZAK1riqnQ==
   dependencies:
-    "@graphql-tools/delegate" "^9.0.31"
+    "@graphql-tools/delegate" "^9.0.35"
     "@graphql-tools/utils" "^9.2.1"
     dataloader "2.2.2"
     tslib "^2.4.0"
+    value-or-promise "^1.0.12"
 
 "@graphql-tools/batch-execute@^8.5.19":
   version "8.5.19"
@@ -1845,6 +1846,16 @@
     tslib "^2.4.0"
     value-or-promise "1.0.12"
 
+"@graphql-tools/batch-execute@^8.5.22":
+  version "8.5.22"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-execute/-/batch-execute-8.5.22.tgz#a742aa9d138fe794e786d8fb6429665dc7df5455"
+  integrity sha512-hcV1JaY6NJQFQEwCKrYhpfLK8frSXDbtNMoTur98u10Cmecy1zrqNKSqhEyGetpgHxaJRqszGzKeI3RuroDN6A==
+  dependencies:
+    "@graphql-tools/utils" "^9.2.1"
+    dataloader "^2.2.2"
+    tslib "^2.4.0"
+    value-or-promise "^1.0.12"
+
 "@graphql-tools/delegate@^9.0.31":
   version "9.0.31"
   resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-9.0.31.tgz#e147f25c3deaf9ce161867986da129f48ecc7190"
@@ -1853,6 +1864,19 @@
     "@graphql-tools/batch-execute" "^8.5.19"
     "@graphql-tools/executor" "^0.0.17"
     "@graphql-tools/schema" "^9.0.18"
+    "@graphql-tools/utils" "^9.2.1"
+    dataloader "^2.2.2"
+    tslib "^2.5.0"
+    value-or-promise "^1.0.12"
+
+"@graphql-tools/delegate@^9.0.35":
+  version "9.0.35"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-9.0.35.tgz#94683f4bcec63520b4a6c8b2abf2e2e9324ea4f1"
+  integrity sha512-jwPu8NJbzRRMqi4Vp/5QX1vIUeUPpWmlQpOkXQD2r1X45YsVceyUUBnktCrlJlDB4jPRVy7JQGwmYo3KFiOBMA==
+  dependencies:
+    "@graphql-tools/batch-execute" "^8.5.22"
+    "@graphql-tools/executor" "^0.0.20"
+    "@graphql-tools/schema" "^9.0.19"
     "@graphql-tools/utils" "^9.2.1"
     dataloader "^2.2.2"
     tslib "^2.5.0"
@@ -1868,6 +1892,17 @@
     "@repeaterjs/repeater" "3.0.4"
     tslib "^2.4.0"
     value-or-promise "1.0.12"
+
+"@graphql-tools/executor@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/executor/-/executor-0.0.20.tgz#d51d159696e839522dd49d936636af251670e425"
+  integrity sha512-GdvNc4vszmfeGvUqlcaH1FjBoguvMYzxAfT6tDd4/LgwymepHhinqLNA5otqwVLW+JETcDaK7xGENzFomuE6TA==
+  dependencies:
+    "@graphql-tools/utils" "^9.2.1"
+    "@graphql-typed-document-node/core" "3.2.0"
+    "@repeaterjs/repeater" "^3.0.4"
+    tslib "^2.4.0"
+    value-or-promise "^1.0.12"
 
 "@graphql-tools/merge@^8.4.1":
   version "8.4.1"
@@ -1897,13 +1932,13 @@
     tslib "^2.4.0"
     value-or-promise "^1.0.12"
 
-"@graphql-tools/stitch@^8.7.48":
-  version "8.7.48"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-8.7.48.tgz#f2aa148726673827fdba71ae4c98abf5722521c7"
-  integrity sha512-19C+RCjndOn8824fbea/X+EpnDTwMRWnXd+qiaUU6L6laDKT5Bv6iZtIcJ3AKcP0ipSsTo4buCO7ynxO+qECgA==
+"@graphql-tools/stitch@^8.7.49":
+  version "8.7.49"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-8.7.49.tgz#4ad905bcb37628a130bc24511c56d1b8ef9defd3"
+  integrity sha512-2EgkIawsK6CJ4RMaP5D2zPAbhlvh7cvF3VtYvsw/HKH017XWlgLSvl62f8nnq2zGTCwnx/t7rKvM0WmbQeUlnQ==
   dependencies:
-    "@graphql-tools/batch-delegate" "^8.4.25"
-    "@graphql-tools/delegate" "^9.0.31"
+    "@graphql-tools/batch-delegate" "^8.4.27"
+    "@graphql-tools/delegate" "^9.0.35"
     "@graphql-tools/merge" "^8.4.1"
     "@graphql-tools/schema" "^9.0.18"
     "@graphql-tools/utils" "^9.2.1"
@@ -2450,7 +2485,7 @@
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.5.0.tgz#57618e57942a5f0131374a9fdb0167e25a117fdc"
   integrity sha512-bkUDCp8o1MvFO+qxkODcbhSqRa6P2GXgrGZVpt0dCXNW2HCSCqYI0ZoAqEOSAjRWmmlKcYgFvN4B4S+zo/f8kg==
 
-"@repeaterjs/repeater@3.0.4":
+"@repeaterjs/repeater@3.0.4", "@repeaterjs/repeater@^3.0.4":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@repeaterjs/repeater/-/repeater-3.0.4.tgz#a04d63f4d1bf5540a41b01a921c9a7fddc3bd1ca"
   integrity sha512-AW8PKd6iX3vAZ0vA43nOUOnbq/X5ihgU+mSXXqunMkeQADGiqw/PY0JNeYtD5sr0PAy51YPgAPbDoeapv9r8WA==
@@ -3141,6 +3176,14 @@
     expect-webdriverio "^4.0.1"
     webdriverio "8.8.7"
 
+"@wdio/globals@8.8.8":
+  version "8.8.8"
+  resolved "https://registry.yarnpkg.com/@wdio/globals/-/globals-8.8.8.tgz#4271349857d86ecd78b9c28d02e75b15281ee638"
+  integrity sha512-d2NmIcKxWkPb9Eu0xcBlH4tO31+KCmifRafi4qXzhHaMVFzUBHdaANRBeYVy23KRoV7J0yOVmu0rpSN1CjbvZw==
+  optionalDependencies:
+    expect-webdriverio "^4.0.1"
+    webdriverio "8.8.8"
+
 "@wdio/globals@^8.2.4":
   version "8.3.10"
   resolved "https://registry.yarnpkg.com/@wdio/globals/-/globals-8.3.10.tgz#18483e8ef8d2acb6488716b33b7b8eeff702bbbe"
@@ -3149,13 +3192,13 @@
     expect-webdriverio "^4.0.1"
     webdriverio "8.3.10"
 
-"@wdio/jasmine-framework@8.8.7":
-  version "8.8.7"
-  resolved "https://registry.yarnpkg.com/@wdio/jasmine-framework/-/jasmine-framework-8.8.7.tgz#6b08e810c1285c1b8b3bac431c33d60325849bfa"
-  integrity sha512-w2YtxsOlVrqRcfRpFqW0jwWlI1rt7EXUW1FjsN3UzVc8MNEN86YIgl72ehwS15FYohE+UhyNlpdpBlWabCn0Kg==
+"@wdio/jasmine-framework@8.8.8":
+  version "8.8.8"
+  resolved "https://registry.yarnpkg.com/@wdio/jasmine-framework/-/jasmine-framework-8.8.8.tgz#89d217ecd564b6ad9bd4234c034a7e83685f88f5"
+  integrity sha512-MI5nd3ymzJONum2z6bb1N/2Sj63ahNkMiwpTQHp19YnwTvr3/y391FY4GHRIv/ZjiQKvE1T8QeCGeDsthe1L/w==
   dependencies:
     "@types/node" "^18.0.0"
-    "@wdio/globals" "8.8.7"
+    "@wdio/globals" "8.8.8"
     "@wdio/logger" "8.6.6"
     "@wdio/types" "8.8.7"
     "@wdio/utils" "8.8.7"
@@ -13253,6 +13296,37 @@ webdriverio@8.8.7:
   version "8.8.7"
   resolved "https://registry.yarnpkg.com/webdriverio/-/webdriverio-8.8.7.tgz#e9ce5b518086d3f4b56a39d2c6c35d3c3271992a"
   integrity sha512-g/gjOu6GVHW4f+Ift+24wpDtxk3YFgjHQLWVgRKlPSF8hBSJYwcLhPGNdqsMQXQ0jDLgT5rSIwPOFlwHFJZgZQ==
+  dependencies:
+    "@types/node" "^18.0.0"
+    "@wdio/config" "8.8.7"
+    "@wdio/logger" "8.6.6"
+    "@wdio/protocols" "8.8.1"
+    "@wdio/repl" "8.6.6"
+    "@wdio/types" "8.8.7"
+    "@wdio/utils" "8.8.7"
+    archiver "^5.0.0"
+    aria-query "^5.0.0"
+    css-shorthand-properties "^1.1.1"
+    css-value "^0.0.1"
+    devtools "8.8.7"
+    devtools-protocol "^0.0.1135726"
+    grapheme-splitter "^1.0.2"
+    import-meta-resolve "^3.0.0"
+    is-plain-obj "^4.1.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.zip "^4.2.0"
+    minimatch "^9.0.0"
+    puppeteer-core "19.11.1"
+    query-selector-shadow-dom "^1.0.0"
+    resq "^1.9.1"
+    rgb2hex "0.2.5"
+    serialize-error "^8.0.0"
+    webdriver "8.8.7"
+
+webdriverio@8.8.8:
+  version "8.8.8"
+  resolved "https://registry.yarnpkg.com/webdriverio/-/webdriverio-8.8.8.tgz#9aa5bf4ac48647009718d3e381cd427d84a755cf"
+  integrity sha512-o0wRlPcR0DaiqezKf8+dYHhEsjw5h+uyLr5eR1Ap8n9oaCWm5CCUKEWSZ7EfqvpYmnYKt1wYyF7sKbmgH8mqsw==
   dependencies:
     "@types/node" "^18.0.0"
     "@wdio/config" "8.8.7"
