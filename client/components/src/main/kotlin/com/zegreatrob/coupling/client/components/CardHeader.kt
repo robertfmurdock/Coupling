@@ -22,7 +22,7 @@ import web.cssom.deg
 import web.cssom.em
 import web.cssom.integer
 import web.cssom.px
-import web.cssom.rgba
+import web.cssom.rgb
 import web.cssom.rotatex
 import web.cssom.scale
 import web.cssom.url
@@ -60,7 +60,7 @@ val CardHeader by nfc<CardHeaderProps> { props ->
                 right = 0.px
                 bottom = 0.px
                 transform = rotatex(20.deg)
-                backgroundColor = rgba(255, 255, 255, 0.4)
+                backgroundColor = rgb(255, 255, 255, 0.4)
                 backgroundImage = url(pngPath("overlay"))
                 backgroundRepeat = BackgroundRepeat.repeatX
                 borderStyle = LineStyle.hidden

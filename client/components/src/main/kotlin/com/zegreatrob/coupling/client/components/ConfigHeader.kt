@@ -28,7 +28,7 @@ import web.cssom.number
 import web.cssom.pt
 import web.cssom.px
 import web.cssom.repeat
-import web.cssom.rgba
+import web.cssom.rgb
 
 external interface ConfigHeaderProps : PropsWithChildren {
     var party: Party
@@ -123,7 +123,7 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                         margin = Margin(2.px, 2.px)
                         fontSize = 0.pt
                         backgroundColor = Color("#00000014")
-                        boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+                        boxShadow = BoxShadow(1.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
                     }
                     settingsButton(party)
                     addPlayerButton { this.partyId = party.id }

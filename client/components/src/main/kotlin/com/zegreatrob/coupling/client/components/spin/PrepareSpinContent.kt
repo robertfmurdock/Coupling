@@ -36,7 +36,7 @@ import web.cssom.em
 import web.cssom.ident
 import web.cssom.number
 import web.cssom.px
-import web.cssom.rgba
+import web.cssom.rgb
 import web.cssom.s
 
 data class PrepareSpinContent(
@@ -112,7 +112,7 @@ val playerSelectorClass = emotion.css.ClassName {
     borderRadius = 20.px
     padding = 5.px
     backgroundColor = Color("#fffbed")
-    boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+    boxShadow = BoxShadow(1.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
 }
 
 private fun ChildrenBuilder.playerSelectorDiv(children: ChildrenBuilder.() -> Unit) = div {
@@ -128,7 +128,7 @@ private fun ChildrenBuilder.pinSelectorDiv(children: ChildrenBuilder.() -> Unit)
         borderRadius = 20.px
         padding = (5.px)
         backgroundColor = Color("#fffbed")
-        boxShadow = BoxShadow(1.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+        boxShadow = BoxShadow(1.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
         width = 125.px
     }
     children()

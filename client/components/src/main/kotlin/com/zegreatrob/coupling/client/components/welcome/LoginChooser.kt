@@ -26,7 +26,7 @@ import web.cssom.Padding
 import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.px
-import web.cssom.rgba
+import web.cssom.rgb
 import web.cssom.url
 
 val LoginChooser by nfc<Props> {
@@ -46,7 +46,7 @@ val LoginChooser by nfc<Props> {
             backgroundRepeat = BackgroundRepeat.repeatX
             textAlign = TextAlign.center
             textDecoration = None.none
-            boxShadow = BoxShadow(1.px, 2.px, 2.px, rgba(0, 0, 0, 0.6))
+            boxShadow = BoxShadow(1.px, 2.px, 2.px, rgb(0, 0, 0, 0.6))
             color = NamedColor.black
             margin = Margin(0.px, 2.px, 0.px, 2.px)
             top = 0.px

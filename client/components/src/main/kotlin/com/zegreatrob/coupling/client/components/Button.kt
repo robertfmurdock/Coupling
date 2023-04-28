@@ -25,7 +25,7 @@ import web.cssom.TextShadow
 import web.cssom.VerticalAlign
 import web.cssom.number
 import web.cssom.px
-import web.cssom.rgba
+import web.cssom.rgb
 import web.cssom.url
 import web.html.ButtonType
 
@@ -38,9 +38,9 @@ val buttonRuleset: PropertiesBuilder.() -> Unit = {
     color = NamedColor.white
     textDecoration = None.none
     borderRadius = 6.px
-    boxShadow = BoxShadow(offsetX = 0.px, offsetY = 1.px, blurRadius = 3.px, color = rgba(0, 0, 0, 0.6))
-    textShadow = TextShadow(0.px, (-1).px, 1.px, rgba(0, 0, 0, 0.25))
-    border = Border(1.px, solid, rgba(0, 0, 0, 0.25))
+    boxShadow = BoxShadow(offsetX = 0.px, offsetY = 1.px, blurRadius = 3.px, color = rgb(0, 0, 0, 0.6))
+    textShadow = TextShadow(0.px, (-1).px, 1.px, rgb(0, 0, 0, 0.25))
+    border = Border(1.px, solid, rgb(0, 0, 0, 0.25))
     position = Position.relative
     cursor = Cursor.pointer
     asDynamic()["text-fill-color"] = "initial"
@@ -49,7 +49,7 @@ val buttonRuleset: PropertiesBuilder.() -> Unit = {
     margin = 2.px
 
     visited {
-        borderBottom = Border(1.px, solid, rgba(0, 0, 0, 0.25))
+        borderBottom = Border(1.px, solid, rgb(0, 0, 0, 0.25))
     }
 
     disabled {

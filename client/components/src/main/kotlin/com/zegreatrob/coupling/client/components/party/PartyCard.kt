@@ -30,7 +30,7 @@ import web.cssom.TextAlign
 import web.cssom.integer
 import web.cssom.number
 import web.cssom.px
-import web.cssom.rgba
+import web.cssom.rgb
 
 data class PartyCard(val party: Party, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
 
@@ -62,7 +62,7 @@ private fun PropertiesBuilder.staticCardStyles() {
     backgroundColor = NamedColor.lightsteelblue
     textAlign = TextAlign.center
     textDecoration = None.none
-    boxShadow = BoxShadow(0.px, 1.px, 3.px, rgba(0, 0, 0, 0.6))
+    boxShadow = BoxShadow(0.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
     color = NamedColor.black
     margin = Margin(0.px, 2.px, 4.px, 2.px)
 
