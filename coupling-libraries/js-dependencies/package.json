@@ -15,7 +15,7 @@
     "@wdio/dot-reporter": "8.8.7",
     "@wdio/jasmine-framework": "8.8.8",
     "@wdio/junit-reporter": "8.8.7",
-    "allure-commandline": "2.21.0",
+    "allure-commandline": "2.22.0",
     "blueimp-md5": "^2.19.0",
     "body-parser": "^1.20.2",
     "chromedriver": "112.0.0",
