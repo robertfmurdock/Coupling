@@ -8,9 +8,9 @@ org-jlleitschuh-gradle-ktlint = "11.0.0"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.0"
 com-github-ben-manes-gradle-versions-plugin = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:3.4.0"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:3.2.3"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:3.2.4"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:9.3.19"
-com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:0.2.10"
+com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:0.2.11"
 org-ajoberstar-grgit-gradle-plugin = "org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0"
 org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "org-apache-logging-log4j" }
