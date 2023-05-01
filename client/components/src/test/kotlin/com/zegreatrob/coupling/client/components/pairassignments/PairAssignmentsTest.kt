@@ -12,16 +12,15 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.coroutines.await
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import js.core.jso
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import react.router.MemoryRouter
-import kotlin.js.json
 import kotlin.test.Test
 
 class PairAssignmentsTest {
@@ -65,11 +64,10 @@ class PairAssignmentsTest {
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
             ).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } verify {
         screen.findByText("Unpaired players")
-            .await()
             .parentElement
             ?.querySelectorAll("[data-player-id]")
             ?.asList()
@@ -101,11 +99,10 @@ class PairAssignmentsTest {
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
             ).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } verify {
         screen.findByText("Unpaired players")
-            .await()
             .parentElement
             ?.querySelectorAll("[data-player-id]")
             ?.asList()

@@ -10,11 +10,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.act
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.fireEvent
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
 import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minreact.create
@@ -22,6 +17,13 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
+import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
+import js.core.jso
 import org.w3c.dom.Window
 import react.ReactNode
 import react.create
@@ -43,11 +45,11 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), {}, stubber.func())
                 .create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } exercise {
-        actor.selectOptions(screen.getByRole("combobox", json("name" to "Avatar Type")), "DicebearAdventurer")
-        actor.click(screen.getByRole("button", json("name" to "Save")))
+        actor.selectOptions(screen.getByRole("combobox", RoleOptions(name = "Avatar Type")), "DicebearAdventurer")
+        actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(
             partyId = party.id,
@@ -67,11 +69,11 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), {}, stubber.func())
                 .create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } exercise {
-        actor.selectOptions(screen.getByRole("combobox", json("name" to "Avatar Type")), "")
-        actor.click(screen.getByRole("button", json("name" to "Save")))
+        actor.selectOptions(screen.getByRole("combobox", RoleOptions(name = "Avatar Type")), "")
+        actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(
             partyId = party.id,
@@ -89,7 +91,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc())
                 .create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } verify { wrapper ->
         wrapper.baseElement
@@ -106,7 +108,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc())
                 .create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } verify { wrapper ->
         wrapper.baseElement
@@ -125,7 +127,7 @@ class PlayerConfigTest {
     }) {
         render(
             PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatcher.func()).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } exercise {
         actor.type(screen.getByLabelText("Name"), "nonsense")
@@ -196,7 +198,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFunctions)
                 .create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } exercise {
         actor.click(screen.getByText("Retire"))
@@ -213,7 +215,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())
                 .create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } exercise {
         actor.type(screen.getByLabelText("Name"), "differentName")
@@ -230,7 +232,7 @@ class PlayerConfigTest {
         render(
             PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())
                 .create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } verify { _ ->
 //        wrapper.find(PromptComponent).props().`when`

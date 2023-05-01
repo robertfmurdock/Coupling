@@ -16,10 +16,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.act
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
 import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -30,7 +26,10 @@ import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
-import kotlinx.coroutines.await
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import react.ReactNode
 import react.create
 import react.router.MemoryRouter
@@ -112,7 +111,7 @@ class CurrentPairAssignmentsPanelTest {
             },
         )
     } exercise {
-        actor.click(screen.findByText("Cancel").await())
+        actor.click(screen.findByText("Cancel"))
         act { stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>() }
     } verify {
         waitFor {

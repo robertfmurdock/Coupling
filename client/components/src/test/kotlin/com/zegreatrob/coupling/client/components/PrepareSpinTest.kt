@@ -13,20 +13,20 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
 import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
+import js.core.jso
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
 import react.router.MemoryRouter
-import kotlin.js.json
 import kotlin.test.Test
 
 class PrepareSpinTest {
@@ -40,7 +40,7 @@ class PrepareSpinTest {
         val firstPin = pins[0]
         val wrapper = render(
             PrepareSpin(party, players, null, pins, StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     }) exercise {
         user.click(
@@ -71,7 +71,7 @@ class PrepareSpinTest {
 
         val render = render(
             PrepareSpin(party, players, null, pins, StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     }) {
         user.click(
@@ -107,7 +107,7 @@ class PrepareSpinTest {
     }) exercise {
         render(
             PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } verify { result ->
         result.container.querySelectorAll("[data-player-id]")
@@ -137,7 +137,7 @@ class PrepareSpinTest {
         )
         val result = render(
             PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     }) exercise {
         result.container.querySelectorAll("[data-player-id]")
@@ -150,7 +150,7 @@ class PrepareSpinTest {
             }
     } verify {
         waitFor {
-            result.getByText("Spin!")
+            screen.getByText("Spin!")
                 .attributes["disabled"]
                 .assertIsNotEqualTo(null)
         }
@@ -164,7 +164,7 @@ class PrepareSpinTest {
         val currentPairs = null
         val context = render(
             PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     }) exercise {
         user.click(screen.getByText("All in!"))
@@ -190,7 +190,7 @@ class PrepareSpinTest {
         )
         val context = render(
             PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     }) {
     } exercise {

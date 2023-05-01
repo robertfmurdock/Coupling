@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import org.w3c.dom.asList
 import kotlin.test.Test
 

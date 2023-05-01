@@ -6,16 +6,16 @@ import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.fireEvent
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import js.core.jso
 import react.router.MemoryRouter
-import kotlin.js.json
 import kotlin.test.Test
 
 class PinConfigEditorTest {
@@ -33,7 +33,7 @@ class PinConfigEditorTest {
                 {},
                 StubDispatchFunc(),
             ).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } verify {
         screen.queryByText("Retire")
@@ -53,7 +53,7 @@ class PinConfigEditorTest {
                 {},
                 StubDispatchFunc(),
             ).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } verify {
         screen.queryByText("Retire")
@@ -72,7 +72,7 @@ class PinConfigEditorTest {
     }) {
         render(
             PinConfig(party, pin, emptyList(), {}, stubDispatcher.func()).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
         actor.type(screen.getByLabelText("Name"), newName)
         actor.type(screen.getByLabelText("Icon"), newIcon)

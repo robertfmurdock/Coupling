@@ -7,17 +7,18 @@ import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.act
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.fireEvent
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.waitFor
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.within
-import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
+import js.core.jso
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLOptionElement
 import react.ReactNode
@@ -25,7 +26,6 @@ import react.create
 import react.router.MemoryRouter
 import react.router.PathRoute
 import react.router.Routes
-import kotlin.js.json
 import kotlin.test.Test
 
 class PartyConfigTest {
@@ -39,11 +39,11 @@ class PartyConfigTest {
                 party,
                 StubDispatchFunc(),
             ).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } verify {
         within(screen.getByLabelText("Pairing Rule"))
-            .getByRole("option", json("selected" to true))
+            .getByRole("option", RoleOptions(selected = true))
             .let { it as? HTMLOptionElement }
             ?.label
             .assertIsEqualTo("Prefer Longest Time")
@@ -100,11 +100,10 @@ class PartyConfigTest {
     fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = asyncSetup(object {
         val party = Party(PartyId(""))
         val stubDispatcher = StubDispatcher()
-        val actor = UserEvent.setup()
     }) {
         render(
             PartyConfig(party, stubDispatcher.func()).create(),
-            json("wrapper" to MemoryRouter),
+            jso { wrapper = MemoryRouter },
         )
     } exercise {
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value

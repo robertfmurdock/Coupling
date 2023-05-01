@@ -17,12 +17,13 @@ kotlin {
     }
 }
 dependencies {
-    api("org.jetbrains.kotlin:kotlin-test")
+    api("com.zegreatrob.jsmints:minreact")
+    api("com.zegreatrob.jsmints:react-testing-library")
+    api("com.zegreatrob.testmints:minassert")
+    api("com.zegreatrob.testmints:standard")
     api("org.jetbrains.kotlin-wrappers:kotlin-react")
     api("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
-    api("com.zegreatrob.jsmints:minreact")
-    api("com.zegreatrob.testmints:standard")
-    api("com.zegreatrob.testmints:minassert")
+    api("org.jetbrains.kotlin:kotlin-test")
     api(npmConstrained("@testing-library/react"))
     api(npmConstrained("@testing-library/user-event"))
     api(npmConstrained("jsdom"))

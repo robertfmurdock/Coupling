@@ -2,12 +2,12 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.client.components.welcome.RandomProvider
 import com.zegreatrob.coupling.client.components.welcome.Welcome
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.render
-import com.zegreatrob.coupling.testreact.external.testinglibrary.react.screen
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.setup
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import kotlin.test.Test
 
 class WelcomeTest {

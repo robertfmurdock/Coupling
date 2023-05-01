@@ -6,46 +6,22 @@ kotlin {
         jvm()
         js { nodejs() }
     }
+}
 
-    sourceSets {
-        getByName("commonMain") {
-            dependencies {
-                api(project(":coupling-libraries:model"))
-                api(project(":coupling-libraries:repository-core"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-            }
-        }
-        getByName("commonTest") {
-            dependencies {
-                implementation(project(":coupling-libraries:test-logging"))
-                implementation(project(":coupling-libraries:repository-memory"))
-                implementation(project(":coupling-libraries:repository-validation"))
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("com.zegreatrob.testmints:minassert")
-                implementation("org.jetbrains.kotlin:kotlin-test")
-            }
-        }
-        getByName("jvmMain") {
-            dependencies {
-                api(kotlin("reflect"))
-            }
-        }
-        getByName("jvmTest") {
-            dependencies {
-                implementation(kotlin("reflect"))
-                implementation("org.junit.jupiter:junit-jupiter-api")
-                implementation("org.junit.jupiter:junit-jupiter-engine")
-            }
-        }
-        getByName("jsMain") {
-            dependencies {
-                api("org.jetbrains.kotlin:kotlin-stdlib-js")
-            }
-        }
-        getByName("jsTest") {
-            dependencies {
-                implementation("com.zegreatrob.testmints:async")
-            }
-        }
-    }
+dependencies {
+    commonMainApi(project(":coupling-libraries:model"))
+    commonMainApi(project(":coupling-libraries:repository-core"))
+    commonMainApi("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    commonTestImplementation(project(":coupling-libraries:test-logging"))
+    commonTestImplementation(project(":coupling-libraries:repository-memory"))
+    commonTestImplementation(project(":coupling-libraries:repository-validation"))
+    commonTestImplementation("com.zegreatrob.testmints:standard")
+    commonTestImplementation("com.zegreatrob.testmints:minassert")
+    commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
+    "jvmMainApi"(kotlin("reflect"))
+    "jvmTestImplementation"(kotlin("reflect"))
+    "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
+    "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
+    "jsTestImplementation"("com.zegreatrob.testmints:async")
+    "jsMainApi"("org.jetbrains.kotlin:kotlin-stdlib-js")
 }
