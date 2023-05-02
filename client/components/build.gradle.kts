@@ -41,6 +41,4 @@ dependencies {
     testImplementation(project(":coupling-libraries:test-logging"))
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.jsmints:minenzyme")
-    testImplementation(npmConstrained("@testing-library/react"))
-    testImplementation(npmConstrained("@testing-library/user-event"))
 }

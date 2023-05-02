@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.testreact.external.testinglibrary.userevent.UserEvent
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minspy.SpyData
@@ -23,6 +22,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
+import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import org.w3c.dom.Window
 import react.ReactNode
@@ -48,7 +48,8 @@ class PlayerConfigTest {
             jso { wrapper = MemoryRouter },
         )
     } exercise {
-        actor.selectOptions(screen.getByRole("combobox", RoleOptions(name = "Avatar Type")), "DicebearAdventurer")
+        val element = screen.getByRole("combobox", RoleOptions(name = "Avatar Type"))
+        actor.selectOptions(element, "DicebearAdventurer")
         actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(

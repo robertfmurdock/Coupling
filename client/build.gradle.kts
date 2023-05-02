@@ -104,8 +104,6 @@ dependencies {
     testImplementation("com.zegreatrob.jsmints:minenzyme")
     testImplementation(npmConstrained("enzyme"))
     testImplementation(npmConstrained("enzyme-adapter-react-16"))
-    testImplementation(npmConstrained("@testing-library/react"))
-    testImplementation(npmConstrained("@testing-library/user-event"))
 }
 
 val taggerExtension = TaggerExtension.apply(rootProject)
