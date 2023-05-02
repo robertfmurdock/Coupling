@@ -37,7 +37,7 @@ config.optimization = {
                 chunks: 'all',
             },
             couplingCore: {
-                test: /[\\/]kotlin[\\/](Coupling-client|Coupling-components)/,
+                test: /[\\/]kotlin[\\/](Coupling-client|Coupling-components|Coupling-model|Coupling-action)/,
                 name: 'coupling-core',
                 chunks: 'all',
             },
