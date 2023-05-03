@@ -11,6 +11,8 @@ import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minreact.DataProps
+import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
@@ -24,12 +26,15 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
+import kotlinx.browser.window
 import org.w3c.dom.Window
+import react.Fragment
 import react.ReactNode
 import react.create
-import react.router.MemoryRouter
-import react.router.PathRoute
-import react.router.Routes
+import react.dom.html.ReactHTML.button
+import react.router.RouterProvider
+import react.router.createMemoryRouter
+import react.router.dom.Link
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -43,9 +48,11 @@ class PlayerConfigTest {
         val actor = UserEvent.setup()
     }) {
         render(
-            PlayerConfig(party, player, emptyList(), {}, stubber.func())
-                .create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PlayerConfig(party, player, emptyList(), {}, stubber.func()),
+                )
+            },
         )
     } exercise {
         val element = screen.getByRole("combobox", RoleOptions(name = "Avatar Type"))
@@ -68,9 +75,11 @@ class PlayerConfigTest {
         val actor = UserEvent.setup()
     }) {
         render(
-            PlayerConfig(party, player, emptyList(), {}, stubber.func())
-                .create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PlayerConfig(party, player, emptyList(), {}, stubber.func()),
+                )
+            },
         )
     } exercise {
         actor.selectOptions(screen.getByRole("combobox", RoleOptions(name = "Avatar Type")), "")
@@ -84,15 +93,26 @@ class PlayerConfigTest {
             .assertIsEqualTo(listOf(expectedCommand))
     }
 
+    private fun singleRouteRouter(element: DataProps<*>) = createMemoryRouter(
+        arrayOf(
+            jso {
+                path = "*"
+                this.element = element.create()
+            },
+        ),
+    )
+
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
         val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
         val player = Player(id = "blarg", avatarType = null)
     }) exercise {
         render(
-            PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc())
-                .create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()),
+                )
+            },
         )
     } verify { wrapper ->
         wrapper.baseElement
@@ -107,9 +127,11 @@ class PlayerConfigTest {
         val player = Player(id = "blarg", badge = Badge.Alternate.value, avatarType = null)
     }) exercise {
         render(
-            PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc())
-                .create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()),
+                )
+            },
         )
     } verify { wrapper ->
         wrapper.baseElement
@@ -127,8 +149,11 @@ class PlayerConfigTest {
         val actor = UserEvent.setup()
     }) {
         render(
-            PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatcher.func()).create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatcher.func()),
+                )
+            },
         )
     } exercise {
         actor.type(screen.getByLabelText("Name"), "nonsense")
@@ -157,18 +182,20 @@ class PlayerConfigTest {
         val actor = UserEvent.setup()
     }) {
         render(
-            MemoryRouter.create {
-                Routes {
-                    PathRoute {
-                        path = "/${party.id.value}/pairAssignments/current/"
-                        element = ReactNode("Fin")
-                    }
-                    PathRoute {
-                        path = "*"
-                        element = PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFuncs)
-                            .create()
-                    }
-                }
+            RouterProvider.create {
+                router = createMemoryRouter(
+                    arrayOf(
+                        jso {
+                            path = "/${party.id.value}/pairAssignments/current/"
+                            element = ReactNode("Fin")
+                        },
+                        jso {
+                            path = "*"
+                            element = PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFuncs)
+                                .create()
+                        },
+                    ),
+                )
             },
         )
     } exercise {
@@ -197,9 +224,11 @@ class PlayerConfigTest {
         val stubDispatcher = StubDispatcher()
     }) {
         render(
-            PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFunctions)
-                .create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFunctions),
+                )
+            },
         )
     } exercise {
         actor.click(screen.getByText("Retire"))
@@ -212,31 +241,59 @@ class PlayerConfigTest {
         val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
         val actor = UserEvent.setup()
+        val spy = SpyData<String, Boolean>().apply { spyWillReturn(true) }
+        val confirmFunc: (message: String) -> Boolean = window::confirm
     }) {
+        window.asDynamic()["confirm"] = spy::spyFunction
         render(
-            PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())
-                .create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = createMemoryRouter(
+                    arrayOf(
+                        jso {
+                            path = "elsewhere"
+                            element = ReactNode("Elsewhere")
+                        },
+                        jso {
+                            path = "*"
+                            element = Fragment.create {
+                                Link { to = "elsewhere"; button { +"Leave" } }
+                                add(PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc()))
+                            }
+                        },
+                    ),
+                )
+            },
         )
-    } exercise {
         actor.type(screen.getByLabelText("Name"), "differentName")
-    } verify {
-//        wrapper.find(PromptComponent).props().`when`
-//            .assertIsEqualTo(true)
+    } exercise {
+        actor.click(screen.getByRole("button", RoleOptions(name = "Leave")))
+    } verifyAnd {
+        spy.spyReceivedValues
+            .assertIsEqualTo(listOf("You have unsaved data. Press OK to leave without saving."))
+    } teardown {
+        window.asDynamic()["confirm"] = confirmFunc
     }
 
     @Test
     fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = asyncSetup(object {
         val party = Party(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
-    }) exercise {
+        val spy = SpyData<String, Boolean>().apply { spyWillReturn(true) }
+        val confirmFunc: (message: String) -> Boolean = window::confirm
+    }) {
+        window.asDynamic()["confirm"] = spy::spyFunction
+    } exercise {
         render(
-            PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())
-                .create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc()),
+                )
+            },
         )
-    } verify { _ ->
-//        wrapper.find(PromptComponent).props().`when`
-//            .assertIsEqualTo(false)
+    } verifyAnd { _ ->
+        spy.spyReceivedValues
+            .assertIsEqualTo(emptyList())
+    } teardown {
+        window.asDynamic()["confirm"] = confirmFunc
     }
 }

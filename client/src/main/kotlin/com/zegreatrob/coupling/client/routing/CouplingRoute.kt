@@ -2,18 +2,18 @@ package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.minreact.nfc
+import js.core.jso
 import kotlinx.browser.window
-import react.ChildrenBuilder
 import react.FC
 import react.Props
 import react.create
 import react.router.NavigateFunction
-import react.router.PathRoute
+import react.router.RouteObject
 import react.router.dom.useSearchParams
 import react.router.useNavigate
 import react.router.useParams
 
-fun ChildrenBuilder.couplingRoute(path: String, rComponent: FC<PageProps>) = PathRoute {
+fun couplingRoute(path: String, rComponent: FC<PageProps>) = jso<RouteObject> {
     this.path = path
     this.element = CouplingRoute.create { this.rComponent = rComponent }
 }

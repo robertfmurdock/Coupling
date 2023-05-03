@@ -24,44 +24,55 @@ import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.minreact.ntmFC
+import js.core.jso
 import kotlinx.browser.window
-import react.ChildrenBuilder
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
 import react.router.Navigate
-import react.router.PathRoute
-import react.router.Routes
-import react.router.dom.BrowserRouter
+import react.router.RouteObject
+import react.router.RouterProvider
+import react.router.dom.createBrowserRouter
 import react.router.useLocation
 import react.router.useParams
+import react.useMemo
 
 data class CouplingRouter(val animationsDisabled: Boolean, val config: ClientConfig) :
     DataPropsBind<CouplingRouter>(couplingRouter)
 
 val couplingRouter by ntmFC<CouplingRouter> { (animationsDisabled, config) ->
     val (_, isSignedIn, isLoading) = useAuth0Data()
-    BrowserRouter {
-        basename = config.basename
-        animationsDisabledContext.Provider(animationsDisabled) {
-            if (!isLoading) {
-                Routes { routes(isSignedIn, config) }
+
+    val browserRouter = useMemo(isSignedIn, config) {
+        createBrowserRouter(
+            routes = arrayOf(
+                couplingRoute("/welcome/", WelcomePage),
+                couplingRoute("/about", AboutPage),
+                couplingRoute("/demo", DemoPage),
+            ).plus(routes(isSignedIn, config)),
+            opts = jso { basename = config.basename },
+        )
+    }
+
+    animationsDisabledContext.Provider(animationsDisabled) {
+        if (!isLoading) {
+            RouterProvider {
+                router = browserRouter
             }
         }
     }
 }
 
-private fun ChildrenBuilder.routes(isSignedIn: Boolean, config: ClientConfig) {
-    couplingRoute("/welcome/", WelcomePage)
-    couplingRoute("/about", AboutPage)
-    couplingRoute("/demo", DemoPage)
+private fun routes(isSignedIn: Boolean, config: ClientConfig) = (
+    if (isSignedIn) {
+        authenticatedRoutes(config)
+    } else {
+        arrayOf(redirectUnauthenticated())
+    }
+    )
+    .plus(jso<RouteObject> { element = lostRoute.create() })
 
-    if (isSignedIn) authenticatedRoutes(config) else redirectUnauthenticated()
-
-    PathRoute { element = lostRoute.create() }
-}
-
-private fun ChildrenBuilder.redirectUnauthenticated() = PathRoute {
+private fun redirectUnauthenticated(): RouteObject = jso<RouteObject> {
     path = "*"
     element = Navigate.create { to = "/welcome" }
 }.also { console.warn("not signed in!!!!", window.location.pathname) }
@@ -71,28 +82,28 @@ val lostRoute by nfc<Props> {
     div { +"Hmm, you seem to be lost. At ${location.pathname}" }
 }
 
-private fun ChildrenBuilder.authenticatedRoutes(config: ClientConfig) {
-    PathRoute { path = "/"; element = redirectToParties() }
-    if (config.prereleaseMode) couplingRoute("/user", UserPage)
-    couplingRoute("/parties/", PartyListPage)
-    couplingRoute("/logout/", Logout)
-    couplingRoute("/graphiql/", GraphIQLPage)
-    couplingRoute("/new-party/", PartyConfigPage)
-    PathRoute { path = "/:partyId"; element = redirectToCurrentPairs() }
-    couplingRoute("/:partyId/prepare/", PrepareSpinPage)
-    couplingRoute("/:partyId/edit/", PartyConfigPage)
-    couplingRoute("/:partyId/history", HistoryPage)
-    couplingRoute("/:partyId/pins", PinListPage)
-    couplingRoute("/:partyId/pin/new", PinPage)
-    couplingRoute("/:partyId/pin/:pinId/", PinPage)
-    couplingRoute("/:partyId/pairAssignments/current/", CurrentPairsPage)
-    couplingRoute("/:partyId/pairAssignments/new", NewPairAssignmentsPage)
-    couplingRoute("/:partyId/player/new", PlayerPage)
-    couplingRoute("/:partyId/player/:playerId/", PlayerPage)
-    couplingRoute("/:partyId/retired-player/:playerId/", RetiredPlayerPage)
-    couplingRoute("/:partyId/players/retired", RetiredPlayersPage)
-    couplingRoute("/:partyId/statistics", StatisticsPage)
-}
+private fun authenticatedRoutes(config: ClientConfig): Array<RouteObject> = listOfNotNull(
+    jso { path = "/"; element = redirectToParties() },
+    if (config.prereleaseMode) couplingRoute("/user", UserPage) else null,
+    couplingRoute("/parties/", PartyListPage),
+    couplingRoute("/logout/", Logout),
+    couplingRoute("/graphiql/", GraphIQLPage),
+    couplingRoute("/new-party/", PartyConfigPage),
+    jso { path = "/:partyId"; element = redirectToCurrentPairs() },
+    couplingRoute("/:partyId/prepare/", PrepareSpinPage),
+    couplingRoute("/:partyId/edit/", PartyConfigPage),
+    couplingRoute("/:partyId/history", HistoryPage),
+    couplingRoute("/:partyId/pins", PinListPage),
+    couplingRoute("/:partyId/pin/new", PinPage),
+    couplingRoute("/:partyId/pin/:pinId/", PinPage),
+    couplingRoute("/:partyId/pairAssignments/current/", CurrentPairsPage),
+    couplingRoute("/:partyId/pairAssignments/new", NewPairAssignmentsPage),
+    couplingRoute("/:partyId/player/new", PlayerPage),
+    couplingRoute("/:partyId/player/:playerId/", PlayerPage),
+    couplingRoute("/:partyId/retired-player/:playerId/", RetiredPlayerPage),
+    couplingRoute("/:partyId/players/retired", RetiredPlayersPage),
+    couplingRoute("/:partyId/statistics", StatisticsPage),
+).toTypedArray()
 
 private fun redirectToParties() = Navigate.create { to = "/parties/" }
 

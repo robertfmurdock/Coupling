@@ -72,13 +72,13 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.playerNameTextField().setValue("completely different name")
         } exercise {
             element.click()
-//            WebdriverBrowser.waitForAlert()
-//            WebdriverBrowser.alertText().also {
-//                WebdriverBrowser.acceptAlert()
-//                PairAssignmentsPage.waitForPage()
-//            }
-        } verify { _ ->
-//            alertText.assertIsEqualTo("You have unsaved data. Press OK to leave without saving.")
+            WebdriverBrowser.waitForAlert()
+            WebdriverBrowser.alertText().also {
+                WebdriverBrowser.acceptAlert()
+                PairAssignmentsPage.waitForPage()
+            }
+        } verify { alertText ->
+            alertText.assertIsEqualTo("You have unsaved data. Press OK to leave without saving.")
         }
 
         @Test

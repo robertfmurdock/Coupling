@@ -18,7 +18,9 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
+import js.core.jso
 import react.router.Navigate
+import react.router.dom.usePrompt
 import react.useState
 import kotlin.js.Json
 
@@ -42,16 +44,19 @@ private fun <P> playerConfig() where P : SavePlayerCommand.Dispatcher, P : Delet
     tmFC<PlayerConfig<P>> { props ->
         val (party, player, players, reload, dispatchFunc, windowFuncs) = props
         val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
-
         val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-
         val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
+        usePrompt(
+            jso {
+                `when` = updatedPlayer != player
+                message = "You have unsaved data. Press OK to leave without saving."
+            },
+        )
         val onSubmit = dispatchFunc({ SavePlayerCommand(party.id, updatedPlayer) }, { reload() })
         val onRemove = dispatchFunc(
             { DeletePlayerCommand(party.id, player.id) },
             { setRedirectUrl(party.id.currentPairsPage()) },
         ).requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
-
         if (redirectUrl != null) {
             Navigate { to = redirectUrl }
         } else {
