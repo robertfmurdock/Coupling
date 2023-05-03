@@ -9,8 +9,8 @@ data class FindCallSignOptionsAction(val players: List<Player>) :
 
     interface Dispatcher {
         fun perform(action: FindCallSignOptionsAction) = CallSignOptions(
-            adjectives = defaultCallSignOptions.adjectives - action.players.adjectives(),
-            nouns = defaultCallSignOptions.nouns - action.players.nouns(),
+            adjectives = defaultCallSignOptions.adjectives - action.players.adjectives().toSet(),
+            nouns = defaultCallSignOptions.nouns - action.players.nouns().toSet(),
         )
 
         private fun List<Player>.adjectives() = mapNotNull { it.callSignAdjective }

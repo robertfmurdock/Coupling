@@ -20,5 +20,6 @@ val html5BackendDeferred = MainScope().async {
 }
 
 external interface ReactDndHtml5BackendModule {
-    val HTML5Backend: DnDBackend
+    @JsName("HTML5Backend")
+    val html5Backend: DnDBackend
 }

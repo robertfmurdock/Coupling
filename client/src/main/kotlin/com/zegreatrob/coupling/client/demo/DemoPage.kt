@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.nfc
 val demoSequence by lazy { DemoAnimationState.generateSequence() }
 
 val DemoPage by nfc<PageProps> { props ->
-    val frameIndex = props.search.get("frame")
+    val frameIndex = props.search["frame"]
     val currentFrame = frameIndex?.toIntOrNull()?.let { demoSequence.toList()[it] }
     if (currentFrame != null) {
         add(DemoPageFrame(currentFrame.data))

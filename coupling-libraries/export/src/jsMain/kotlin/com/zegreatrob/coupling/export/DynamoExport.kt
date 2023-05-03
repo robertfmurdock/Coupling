@@ -84,7 +84,7 @@ private suspend fun outputUsers(repositoryCatalog: DynamoRepositoryCatalog) {
         .groupBy { it.data.email }
         .entries.sortedBy { it.key }
         .forEach {
-            json("userEmail" to it.key, "userRecords" to it.value.map { it.toSerializable().toJsonDynamic() })
+            json("userEmail" to it.key, "userRecords" to it.value.map { record -> record.toSerializable().toJsonDynamic() })
                 .print()
         }
 }

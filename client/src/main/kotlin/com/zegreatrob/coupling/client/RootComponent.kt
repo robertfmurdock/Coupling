@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.SessionConfig.animationsDisabled
 import com.zegreatrob.coupling.client.components.external.auth0.react.Auth0Provider
-import com.zegreatrob.coupling.client.external.w3c.WindowFunctions.Companion.window
+import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions.Companion.window
 import com.zegreatrob.coupling.client.routing.CouplingRouter
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc

@@ -7,7 +7,7 @@ import org.w3c.dom.get
 import org.w3c.dom.set
 
 class LocalStorageRecordBackend<T>(
-    val name: String,
+    private val name: String,
     val toSerializableString: (List<Record<T>>) -> String,
     private val toModel: (String) -> List<Record<T>>,
 ) : RecordBackend<T> {

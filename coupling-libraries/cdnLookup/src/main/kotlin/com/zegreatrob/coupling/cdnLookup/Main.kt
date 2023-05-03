@@ -1,4 +1,5 @@
-import com.zegreatrob.coupling.cdnLookup.generateCdnRef
+package com.zegreatrob.coupling.cdnLookup
+
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json

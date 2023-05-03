@@ -16,7 +16,7 @@ object PartyConfigPage : ByRole by TestingLibraryBrowser {
     suspend fun getDefaultBadgeNameInput() = getByRole("combobox", RoleOptions(name = "Default Badge Name"))
     suspend fun getAltBadgeNameInput() = getByRole("combobox", RoleOptions(name = "Alt Badge Name"))
     suspend fun getDifferentBadgesOption() = getByRole("option", RoleOptions(name = "Prefer Different Badges (Beta)"))
-    suspend fun getCheckedOption() = WebdriverElement("#pairing-rule option:checked")
+    fun getCheckedOption() = WebdriverElement("#pairing-rule option:checked")
 
     suspend fun goTo(partyId: PartyId) {
         WebdriverBrowser.setLocation("/${partyId.value}/edit/")

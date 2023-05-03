@@ -62,11 +62,6 @@ fun stubPinTarget(): PinTarget {
         .also { pinTargetCounter++ }
 }
 
-fun stubSimplePairAssignmentDocument(date: DateTime = DateTime.now()) = PairAssignmentDocumentId(uuidString())
-    .let { id ->
-        id to stubPairAssignmentDoc().copy(date = date, id = id)
-    }
-
 var pairAssignmentDocumentCounter = 1
 fun stubPairAssignmentDoc() = PairAssignmentDocument(
     id = PairAssignmentDocumentId(uuidString()),

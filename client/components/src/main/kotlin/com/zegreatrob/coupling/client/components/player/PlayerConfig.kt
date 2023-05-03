@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.client.components.useForm
-import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
-import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.JsonPlayerData
 import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic

@@ -21,7 +21,7 @@ val DndProvider: ElementType<DnDProvideProps> = FC { props ->
     if (js("global.IS_JSDOM") == true) {
         +props.children
     } else {
-        waitForAsyncReactComponent({ runCatching { reactDnd.getCompleted().DndProvider }.getOrNull() }) { component ->
+        waitForAsyncReactComponent({ runCatching { reactDnd.getCompleted().dndProvider }.getOrNull() }) { component ->
             component { +props }
         }
     }
@@ -29,7 +29,7 @@ val DndProvider: ElementType<DnDProvideProps> = FC { props ->
 
 fun <T> useDrag(itemType: String, itemId: Any): DragDropValueContent<T> {
     if (js("global.IS_JSDOM") == true) {
-        return DragDropValueContent(null.unsafeCast<T>(), {})
+        return DragDropValueContent(null.unsafeCast<T>()) {}
     }
     val results = reactDnd.getCompleted().useDrag(
         json(
@@ -50,7 +50,7 @@ fun <T> useDrop(
     collect: (DragSourceMonitor) -> T,
 ): DragDropValueContent<T> {
     if (js("global.IS_JSDOM") == true) {
-        return DragDropValueContent(null.unsafeCast<T>(), {})
+        return DragDropValueContent(null.unsafeCast<T>()) {}
     }
 
     val results = reactDnd.getCompleted().useDrop(
@@ -70,5 +70,7 @@ fun <T> useDrop(
 external interface ReactDnd {
     fun useDrag(options: Json): dynamic
     fun useDrop(options: Json): dynamic
-    val DndProvider: ElementType<DnDProvideProps>
+
+    @JsName("DndProvider")
+    val dndProvider: ElementType<DnDProvideProps>
 }

@@ -58,7 +58,7 @@ interface FindNewPairsActionDispatcher {
     }
 
     private fun GameSpin.copyWithout(newPair: CouplingPair) = copy(
-        remainingPlayers = remainingPlayers.minus(newPair.asArray()),
+        remainingPlayers = remainingPlayers.minus(newPair.asArray().toSet()),
     )
 
     private fun PairCandidateReport.spinForPartner() = if (partners.isEmpty()) {

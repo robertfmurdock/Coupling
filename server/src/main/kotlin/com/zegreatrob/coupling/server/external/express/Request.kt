@@ -10,7 +10,6 @@ external interface Request {
     val auth: Json?
     val isAuthenticated: Boolean?
     val query: Json
-    val params: Json
     val body: dynamic
     val method: String
     val path: String

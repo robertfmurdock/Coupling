@@ -58,10 +58,8 @@ data class ShowPlayer(val player: Player) : SpinAnimationState() {
         AssignedPlayer(player)
 
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument): SpinStateData {
-        fun ifEmptyAddPlaceholder(rosterPlayers: List<Player>) = if (rosterPlayers.isEmpty()) {
+        fun ifEmptyAddPlaceholder(rosterPlayers: List<Player>) = rosterPlayers.ifEmpty {
             makePlaceholderPlayers(pairAssignments)
-        } else {
-            rosterPlayers
         }
 
         val presentedPlayers = pairAssignments.previouslyPresentedPlayers(player)

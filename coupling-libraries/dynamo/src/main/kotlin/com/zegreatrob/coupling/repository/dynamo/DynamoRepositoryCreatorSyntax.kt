@@ -8,7 +8,7 @@ abstract class DynamoRepositoryCreatorSyntax<T> : DynamoCreateTableSyntax {
 
     abstract val construct: (String, TimeProvider) -> T
 
-    val ensure by lazy {
+    private val ensure by lazy {
         MainScope().async { ensureTableExists() }
     }
 

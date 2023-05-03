@@ -70,7 +70,7 @@ val Html5DndProvider by nfc<PropsWithChildren> { props ->
                 is PendingState -> div { +"Pending component" }
                 is ResolvedState -> state.result?.let {
                     DndProvider {
-                        backend = it.HTML5Backend
+                        backend = it.html5Backend
                         +props.children
                     }
                 }

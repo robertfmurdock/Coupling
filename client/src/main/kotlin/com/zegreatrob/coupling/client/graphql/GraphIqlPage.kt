@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.graphql
 
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
-import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc

@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.components.pin
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.pinListPath
+import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.client.components.useForm
-import com.zegreatrob.coupling.client.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.json.JsonPinData
 import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic

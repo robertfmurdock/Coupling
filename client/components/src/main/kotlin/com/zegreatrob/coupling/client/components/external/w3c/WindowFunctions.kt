@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.external.w3c
+package com.zegreatrob.coupling.client.components.external.w3c
 
 import org.w3c.dom.Window
 

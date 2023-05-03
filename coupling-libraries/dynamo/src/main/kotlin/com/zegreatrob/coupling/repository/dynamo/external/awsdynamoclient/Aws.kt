@@ -28,11 +28,20 @@ external interface DynamoCommand
 external class ScanCommand(input: ScanCommandInput) : DynamoCommand
 
 external interface ScanCommandInput {
-    var TableName: String
-    var IndexName: String?
-    var ProjectionExpression: String
+    @JsName("TableName")
+    var tableName: String
+
+    @JsName("IndexName")
+    var indexName: String?
+
+    @JsName("ProjectionExpression")
+    var projectionExpression: String
 }
+
 external interface ScanCommandOutput {
-    val Count: Int
-    val Items: Json
+    @JsName("Count")
+    val count: Int
+
+    @JsName("Items")
+    val items: Json
 }

@@ -1,6 +1,6 @@
 {
   "reject": [
     "mime",
-    "read-pkg-up",
+    "read-pkg-up"
   ]
 }

@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.PairAssignmentBlock
 import com.zegreatrob.coupling.client.components.PinButtonScale
+import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.pin.PinSection
 import com.zegreatrob.coupling.client.components.pngPath
-import com.zegreatrob.coupling.client.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.Party

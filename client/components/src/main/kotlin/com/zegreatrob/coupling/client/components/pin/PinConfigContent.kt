@@ -147,16 +147,13 @@ private fun ChildrenBuilder.targetInput(onChange: (ChangeEvent<*>) -> Unit) {
         this.onChange = onChange
         mapOf(
             PinTarget.Pair to "Pair",
-        ).map { (rule, description) ->
+        ).map { (_, description) ->
             option {
                 key = "0"
-                value = rule.toValue()
+                value = ""
                 label = description
             }
         }
     }
     span { +"This is where the pin is assigned." }
 }
-
-@Suppress("unused")
-private fun PinTarget.toValue(): String = ""
