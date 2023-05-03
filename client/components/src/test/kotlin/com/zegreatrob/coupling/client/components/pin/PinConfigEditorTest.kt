@@ -3,19 +3,19 @@ package com.zegreatrob.coupling.client.components.pin
 import com.zegreatrob.coupling.client.components.StubDispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
+import com.zegreatrob.coupling.client.components.player.singleRouteRouter
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.core.jso
-import react.router.MemoryRouter
+import react.create
+import react.router.RouterProvider
 import kotlin.test.Test
 
 class PinConfigEditorTest {
@@ -26,14 +26,11 @@ class PinConfigEditorTest {
         val pin = Pin(id = null)
     }) exercise {
         render(
-            PinConfig(
-                party,
-                pin,
-                emptyList(),
-                {},
-                StubDispatchFunc(),
-            ).create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PinConfig(party, pin, emptyList(), {}, StubDispatchFunc()),
+                )
+            },
         )
     } verify {
         screen.queryByText("Retire")
@@ -46,14 +43,11 @@ class PinConfigEditorTest {
         val pin = Pin(id = "excellent id")
     }) exercise {
         render(
-            PinConfig(
-                party,
-                pin,
-                emptyList(),
-                {},
-                StubDispatchFunc(),
-            ).create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PinConfig(party, pin, emptyList(), {}, StubDispatchFunc()),
+                )
+            },
         )
     } verify {
         screen.queryByText("Retire")
@@ -71,8 +65,11 @@ class PinConfigEditorTest {
         val actor = UserEvent.setup()
     }) {
         render(
-            PinConfig(party, pin, emptyList(), {}, stubDispatcher.func()).create(),
-            jso { wrapper = MemoryRouter },
+            RouterProvider.create {
+                router = singleRouteRouter(
+                    PinConfig(party, pin, emptyList(), {}, stubDispatcher.func()),
+                )
+            },
         )
         actor.type(screen.getByLabelText("Name"), newName)
         actor.type(screen.getByLabelText("Icon"), newIcon)

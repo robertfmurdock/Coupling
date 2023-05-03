@@ -30,11 +30,11 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
+import js.core.jso
 import react.ReactNode
 import react.create
-import react.router.MemoryRouter
-import react.router.PathRoute
-import react.router.Routes
+import react.router.RouterProvider
+import react.router.createMemoryRouter
 import kotlin.test.Test
 
 class CurrentPairAssignmentsPanelTest {
@@ -51,23 +51,25 @@ class CurrentPairAssignmentsPanelTest {
         val actor = UserEvent.setup()
     }) {
         render(
-            MemoryRouter.create {
-                Routes {
-                    PathRoute {
-                        path = "/${party.id.value}/pairAssignments/current/"
-                        element = ReactNode("current pairs")
-                    }
-                    PathRoute {
-                        path = "*"
-                        element = CurrentPairAssignmentsPanel(
-                            party,
-                            pairAssignments,
-                            setPairAssignments = { },
-                            allowSave = true,
-                            dispatchFunc = stubDispatcher.func(),
-                        ).create()
-                    }
-                }
+            RouterProvider.create {
+                router = createMemoryRouter(
+                    arrayOf(
+                        jso {
+                            path = "/${party.id.value}/pairAssignments/current/"
+                            element = ReactNode("current pairs")
+                        },
+                        jso {
+                            path = "*"
+                            element = CurrentPairAssignmentsPanel(
+                                party,
+                                pairAssignments,
+                                setPairAssignments = { },
+                                allowSave = true,
+                                dispatchFunc = stubDispatcher.func(),
+                            ).create()
+                        },
+                    ),
+                )
             },
         )
     } exercise {
@@ -90,23 +92,25 @@ class CurrentPairAssignmentsPanelTest {
     }) {
         render(
             Html5DndProvider.create {
-                MemoryRouter {
-                    Routes {
-                        PathRoute {
-                            path = "/${party.id.value}/pairAssignments/current/"
-                            element = ReactNode("current pairs")
-                        }
-                        PathRoute {
-                            path = "*"
-                            element = CurrentPairAssignmentsPanel(
-                                party,
-                                pairAssignments,
-                                setPairAssignments = { },
-                                allowSave = true,
-                                dispatchFunc = stubDispatcher.func(),
-                            ).create()
-                        }
-                    }
+                RouterProvider {
+                    router = createMemoryRouter(
+                        arrayOf(
+                            jso {
+                                path = "/${party.id.value}/pairAssignments/current/"
+                                element = ReactNode("current pairs")
+                            },
+                            jso {
+                                path = "*"
+                                element = CurrentPairAssignmentsPanel(
+                                    party,
+                                    pairAssignments,
+                                    setPairAssignments = { },
+                                    allowSave = true,
+                                    dispatchFunc = stubDispatcher.func(),
+                                ).create()
+                            },
+                        ),
+                    )
                 }
             },
         )
@@ -163,8 +167,14 @@ class CurrentPairAssignmentsPanelTest {
         val party = stubParty()
         val pin1 = stubPin()
         val pin2 = stubPin()
-        val pair1 = pairOf(Player("1", name = "1", avatarType = null), Player("2", name = "2", avatarType = null)).withPins(setOf(pin1))
-        val pair2 = pairOf(Player("3", name = "3", avatarType = null), Player("4", name = "4", avatarType = null)).withPins(setOf(pin2))
+        val pair1 =
+            pairOf(Player("1", name = "1", avatarType = null), Player("2", name = "2", avatarType = null)).withPins(
+                setOf(pin1),
+            )
+        val pair2 =
+            pairOf(Player("3", name = "3", avatarType = null), Player("4", name = "4", avatarType = null)).withPins(
+                setOf(pin2),
+            )
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),

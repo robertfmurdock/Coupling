@@ -17,7 +17,9 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
+import js.core.jso
 import react.router.Navigate
+import react.router.dom.usePrompt
 import react.useState
 import kotlin.js.Json
 
@@ -44,6 +46,12 @@ private val pinConfig by ntmFC<PinConfig<DD>> { (party, pin, pinList, reload, di
         dispatchFunc({ DeletePinCommand(party.id, pinId) }) { setRedirectUrl(party.id.pinListPath()) }
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
+    usePrompt(
+        jso {
+            `when` = updatedPin != pin
+            message = "You have unsaved data. Press OK to leave without saving."
+        },
+    )
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {

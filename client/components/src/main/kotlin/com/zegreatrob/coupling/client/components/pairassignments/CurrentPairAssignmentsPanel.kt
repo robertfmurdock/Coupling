@@ -36,6 +36,7 @@ val currentPairAssignmentsPanel by ntmFC<CurrentPairAssignmentsPanel> { props ->
         { DeletePairAssignmentsCommand(party.id, pairAssignments.id) },
         { redirectToCurrentFunc() },
     )
+    // usePrompt(jso { `when` = redirectUrl == null; message = "Press OK to save these pairs." })
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {
@@ -45,7 +46,6 @@ val currentPairAssignmentsPanel by ntmFC<CurrentPairAssignmentsPanel> { props ->
             pairAssignmentList(party, pairAssignments, setPairAssignments, allowSave)
             if (allowSave) {
                 div {
-//                    prompt(`when` = true, message = "Press OK to save these pairs.")
                     saveButton(redirectToCurrentFunc)
                     cancelButton(onCancel)
                 }

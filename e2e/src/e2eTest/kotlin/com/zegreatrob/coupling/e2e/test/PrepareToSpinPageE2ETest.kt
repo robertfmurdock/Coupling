@@ -83,14 +83,15 @@ class PrepareToSpinPageE2ETest {
         PairAssignmentsPage.waitForPage()
     } exercise {
         WebdriverBrowser.setLocation("welcome")
-//        WebdriverBrowser.waitForAlert()
-//        WebdriverBrowser.alertText().also {
-//            WebdriverBrowser.dismissAlert()
-//        }
-    } verify { // _ ->
-//        alertText.assertIsEqualTo("Press OK to save these pairs.")
-//        assignedPairElements.count().assertIsEqualTo(1)
-//        saveButton.isDisplayed().assertIsEqualTo(true)
+        // WebdriverBrowser.waitForAlert()
+        // WebdriverBrowser.alertText().also {
+        //     WebdriverBrowser.dismissAlert()
+        // }
+    } verify {
+        // alertText ->
+        // alertText.assertIsEqualTo("Press OK to save these pairs.")
+        // assignedPairElements.count().assertIsEqualTo(1)
+        // getSaveButton().isDisplayed().assertIsEqualTo(true)
     }
 
     @Test

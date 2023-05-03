@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.PinButton
 import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.client.components.configInput
-import com.zegreatrob.coupling.client.components.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
@@ -67,7 +66,6 @@ val pinConfigContent by ntmFC<PinConfigContent> { (party, pin, pinList, onChange
                     color = NamedColor.black
                 }
                 pinConfigForm(pin, onChange, onSubmit, onRemove)
-//                promptOnExit(shouldShowPrompt = updatedPin != pin)
             }
             span {
                 css {
@@ -104,11 +102,6 @@ private fun ChildrenBuilder.editorDiv(pin: Pin, onChange: (ChangeEvent<*>) -> Un
         li { iconInput(pin, onChange) }
         li { targetInput(onChange) }
     }
-}
-
-private fun ChildrenBuilder.promptOnExit(shouldShowPrompt: Boolean) = PromptComponent {
-    `when` = shouldShowPrompt
-    message = "You have unsaved data. Press OK to leave without saving."
 }
 
 private fun ChildrenBuilder.iconInput(pin: Pin, onChange: (ChangeEvent<*>) -> Unit) {

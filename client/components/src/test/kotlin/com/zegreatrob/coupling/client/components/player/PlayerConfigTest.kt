@@ -93,15 +93,6 @@ class PlayerConfigTest {
             .assertIsEqualTo(listOf(expectedCommand))
     }
 
-    private fun singleRouteRouter(element: DataProps<*>) = createMemoryRouter(
-        arrayOf(
-            jso {
-                path = "*"
-                this.element = element.create()
-            },
-        ),
-    )
-
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
         val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
@@ -297,3 +288,12 @@ class PlayerConfigTest {
         window.asDynamic()["confirm"] = confirmFunc
     }
 }
+
+fun singleRouteRouter(element: DataProps<*>) = createMemoryRouter(
+    arrayOf(
+        jso {
+            path = "*"
+            this.element = element.create()
+        },
+    ),
+)
