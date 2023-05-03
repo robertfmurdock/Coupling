@@ -5,5 +5,7 @@
   "react-router": "ReactRouter",
   "react-router-dom": "ReactRouterDOM",
   "blueimp-md5": "md5",
-  "@auth0/auth0-react": "reactAuth0"
+  "@auth0/auth0-react": "reactAuth0",
+  "html2canvas": "html2canvas",
+  "@emotion/css": "emotion"
 }
