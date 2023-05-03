@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.0.2",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.321.1",
-    "@aws-sdk/client-dynamodb": "3.321.1",
-    "@aws-sdk/client-lambda": "~3.322.0",
-    "@aws-sdk/lib-dynamodb": "3.321.1",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.325.0",
+    "@aws-sdk/client-dynamodb": "3.325.0",
+    "@aws-sdk/client-lambda": "~3.325.0",
+    "@aws-sdk/lib-dynamodb": "3.325.0",
     "@graphql-tools/schema": "^9.0.19",
     "@graphql-tools/stitch": "^8.7.49",
     "@log4js-node/log4js-api": "1.0.2",
@@ -50,7 +50,7 @@
     "jasmine": "^4.6.0",
     "jasmine-core": "^4.6.0",
     "jasmine-reporters": "^2.5.2",
-    "jsdom": "21.1.2",
+    "jsdom": "22.0.0",
     "jwks-rsa": "3.0.1",
     "jwt-decode": "3.1.2",
     "karma": "^6.4.2",
