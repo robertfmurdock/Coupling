@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.configInput
-import com.zegreatrob.coupling.client.components.external.reactrouter.PromptComponent
 import com.zegreatrob.coupling.client.components.gravatarLink
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.AvatarType
@@ -81,7 +80,6 @@ val playerConfigContent by ntmFC<PlayerConfigContent> { (party, player, players,
                         color = NamedColor.black
                     }
                     playerConfigForm(player, party, onChange, onSubmit, onRemove)
-//                    promptOnExit(shouldShowPrompt = updatedPlayer != player)
                 }
                 add(PlayerCard(player, size = 250))
             }
@@ -98,11 +96,6 @@ val playerConfigContent by ntmFC<PlayerConfigContent> { (party, player, players,
             )
         }
     }
-}
-
-private fun ChildrenBuilder.promptOnExit(shouldShowPrompt: Boolean) = PromptComponent {
-    `when` = shouldShowPrompt
-    message = "You have unsaved data. Press OK to leave without saving."
 }
 
 private fun ChildrenBuilder.playerConfigForm(
