@@ -4,23 +4,27 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PartyContextMint
-import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
+import com.zegreatrob.coupling.repository.validation.assertHasIds
+import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.repository.validation.bind
+import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.SdkPlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.waitForTest
+import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
+class SdkPlayerRepositoryTest {
 
-    override val repositorySetup = asyncTestTemplate<SdkPartyContext<SdkPlayerRepository>>(sharedSetup = {
+    private val repositorySetup = asyncTestTemplate<SdkPartyContext<SdkPlayerRepository>>(sharedSetup = {
         val sdk = authorizedSdk()
         val party = stubParty()
         sdk.partyRepository.save(party)
@@ -30,7 +34,121 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
         it.sdk.partyRepository.deleteIt(it.partyId)
     })
 
-    override fun whenPlayerIdIsUsedInTwoDifferentPartiesTheyRemainDistinct() =
+    @Test
+    fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = repositorySetup.with(
+        object : PartyContextMint<SdkPlayerRepository>() {
+            val player = stubPlayer()
+            val updatedPlayer = player.copy(name = "Timmy!")
+        }.bind(),
+    ) {
+        repository.save(partyId.with(this.player))
+    } exercise {
+        repository.save(partyId.with(this.updatedPlayer))
+        repository.getPlayers(partyId)
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(listOf(this.updatedPlayer))
+    }
+
+    @Test
+    fun deleteWillRemoveAGivenPlayer() = repositorySetup.with(
+        object : PartyContextMint<SdkPlayerRepository>() {
+            val player = stubPlayer()
+        }.bind(),
+    ) {
+        repository.save(partyId.with(this.player))
+    } exercise {
+        repository.deletePlayer(partyId, this.player.id)
+        repository.getPlayers(partyId)
+    } verifyWithWait { result ->
+        result.map { it.data.player }
+            .contains(this.player)
+            .assertIsEqualTo(false)
+    }
+
+    @Test
+    fun deleteWithUnknownPlayerIdWillReturnFalse(): TestResult {
+        return repositorySetup.with(
+            object : PartyContextMint<SdkPlayerRepository>() {
+                val playerId = "${uuid4()}"
+            }.bind(),
+        ) exercise {
+            repository.deletePlayer(partyId, this.playerId)
+        } verify { result ->
+            result.assertIsEqualTo(false)
+        }
+    }
+
+    @Test
+    fun deletedPlayersShowUpInGetDeleted() = repositorySetup.with(
+        object : PartyContextMint<SdkPlayerRepository>() {
+            val player = stubPlayer()
+        }.bind(),
+    ) {
+        repository.save(partyId.with(this.player))
+        repository.deletePlayer(partyId, this.player.id)
+    } exercise {
+        repository.getDeleted(partyId)
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(listOf(this.player))
+    }
+
+    @Test
+    fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = repositorySetup.with(
+        object : PartyContextMint<SdkPlayerRepository>() {
+            val player = stubPlayer()
+            val playerId = player.id
+        }.bind(),
+    ) exercise {
+        repository.save(partyId.with(this.player))
+        repository.deletePlayer(partyId, this.playerId)
+        repository.save(partyId.with(this.player))
+        repository.deletePlayer(partyId, this.playerId)
+    } verifyWithWait {
+        this.repository.getDeleted(this.partyId)
+            .map { it.data.player }
+            .assertIsEqualTo(listOf(this.player))
+    }
+
+    @Test
+    fun saveMultipleInPartyThenGetListWillReturnSavedPlayers() = repositorySetup.with(
+        object : PartyContextMint<SdkPlayerRepository>() {
+            val players = stubPlayers(3)
+        }.bind(),
+    ) {
+        partyId.with(this.players).forEach { repository.save(it) }
+    } exercise {
+        repository.getPlayers(partyId)
+    } verify { result ->
+        result.map { it.data.player }
+            .assertIsEqualTo(this.players)
+    }
+
+    @Test
+    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(
+        object : PartyContextMint<SdkPlayerRepository>() {
+            val player = Player(
+                name = "",
+                email = "",
+                callSignAdjective = "1",
+                callSignNoun = "2",
+                imageURL = null,
+                avatarType = null,
+            )
+        }.bind(),
+    ) {
+        repository.save(partyId.with(this.player))
+    } exercise {
+        repository.getPlayers(partyId)
+    } verify { result ->
+        result.map { it.data.player }
+            .also { it.assertHasIds() }
+            .assertIsEqualTo(listOf(this.player))
+    }
+
+    @Test
+    fun whenPlayerIdIsUsedInTwoDifferentPartiesTheyRemainDistinct() =
         repositorySetup.with({ parent: SdkPartyContext<SdkPlayerRepository> ->
             object {
                 val sdk = parent.sdk
@@ -54,7 +172,8 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             sdk.partyRepository.deleteIt(partyId2)
         }
 
-    override fun deletedPlayersIncludeModificationDateAndUsername() =
+    @Test
+    fun deletedPlayersIncludeModificationDateAndUsername() =
         repositorySetup.with(
             object : PartyContextMint<SdkPlayerRepository>() {
                 val player = stubPlayer()
@@ -73,7 +192,8 @@ class SdkPlayerRepositoryTest : PlayerRepositoryValidator<SdkPlayerRepository> {
             }
         }
 
-    override fun savedPlayersIncludeModificationDateAndUsername() =
+    @Test
+    fun savedPlayersIncludeModificationDateAndUsername() =
         repositorySetup.with(
             object : PartyContextMint<SdkPlayerRepository>() {
                 val player = stubPlayer()

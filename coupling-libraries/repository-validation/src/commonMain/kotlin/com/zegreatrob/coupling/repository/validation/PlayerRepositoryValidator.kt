@@ -52,10 +52,6 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
             .assertIsEqualTo(listOf(player))
     }
 
-    private fun List<Player>.assertHasIds() {
-        forEach { player -> player.id.assertIsNotEqualTo(null) }
-    }
-
     @Test
     fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = repositorySetup.with(
         object : PartyContextMint<R>() {
@@ -166,12 +162,6 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
         }
     }
 
-    fun DateTime.assertIsCloseToNow() {
-        val distanceFromNow = DateTime.now() - this
-        (distanceFromNow < 5.seconds)
-            .assertIsEqualTo(true, "Distance from now was $distanceFromNow, but was expected to be < 5")
-    }
-
     @Test
     fun deletedPlayersIncludeModificationDateAndUsername() = repositorySetup.with(
         object : PartyContextMint<R>() {
@@ -191,4 +181,14 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
             }
         }
     }
+}
+
+fun List<Player>.assertHasIds() {
+    forEach { player -> player.id.assertIsNotEqualTo(null) }
+}
+
+fun DateTime.assertIsCloseToNow() {
+    val distanceFromNow = DateTime.now() - this
+    (distanceFromNow < 5.seconds)
+        .assertIsEqualTo(true, "Distance from now was $distanceFromNow, but was expected to be < 5")
 }
