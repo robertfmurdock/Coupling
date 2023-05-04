@@ -1,5 +1,3 @@
-package com.zegreatrob.coupling.sdk
-
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
@@ -8,6 +6,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PartyContextMint
 import com.zegreatrob.coupling.repository.validation.PlayerRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.bind
+import com.zegreatrob.coupling.sdk.SdkPlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer

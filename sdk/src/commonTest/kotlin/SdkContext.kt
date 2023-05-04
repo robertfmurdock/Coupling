@@ -1,5 +1,5 @@
-package com.zegreatrob.coupling.sdk
-
+import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.SdkProviderSyntax
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
 interface SdkContext : SdkProviderSyntax {

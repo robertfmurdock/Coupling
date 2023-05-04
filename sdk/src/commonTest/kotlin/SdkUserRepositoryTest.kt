@@ -1,8 +1,7 @@
-package com.zegreatrob.coupling.sdk
-
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContextData
+import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo

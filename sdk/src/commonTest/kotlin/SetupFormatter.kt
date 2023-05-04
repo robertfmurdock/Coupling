@@ -1,5 +1,3 @@
-package com.zegreatrob.coupling.sdk
-
 import com.zegreatrob.coupling.logging.JsonFormatter
 import com.zegreatrob.coupling.sdk.js.Process
 import mu.KotlinLoggingConfiguration

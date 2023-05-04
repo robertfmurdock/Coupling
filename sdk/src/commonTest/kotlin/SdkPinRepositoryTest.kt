@@ -1,11 +1,10 @@
-package com.zegreatrob.coupling.sdk
-
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PartyContextMint
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.bind
+import com.zegreatrob.coupling.sdk.SdkPinRepository
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertIsEqualTo
