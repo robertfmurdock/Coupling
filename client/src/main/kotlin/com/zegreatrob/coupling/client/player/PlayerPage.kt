@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.playerId
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.sdk.PartyPlayerQuery
 import com.zegreatrob.minreact.create
 
 val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->

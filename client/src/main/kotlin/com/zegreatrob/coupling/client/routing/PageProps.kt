@@ -30,16 +30,13 @@ interface Commander {
     fun tracingDispatcher() = getDispatcher(uuid4())
 }
 
-class MasterCommander(getIdentityToken: suspend () -> String) : Commander {
+class MasterCommander(private val getIdentityToken: suspend () -> String) : Commander {
     private val backend = LocalStorageRepositoryBackend()
-    private val sdk = SdkSingleton(getIdentityToken, defaultClient(getLocationAndBasename()))
-
     override fun getDispatcher(traceId: Uuid): CommandDispatcher = CommandDispatcher(
-        traceId,
         if (window["inMemory"] == true) {
             MemoryRepositoryCatalog("test-user", backend, TimeProvider)
         } else {
-            sdk
+            SdkSingleton(getIdentityToken, defaultClient(getLocationAndBasename()), traceId)
         },
     )
 }

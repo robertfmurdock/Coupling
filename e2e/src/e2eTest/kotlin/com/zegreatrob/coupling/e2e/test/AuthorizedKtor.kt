@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.sdk.SdkSingleton
 import com.zegreatrob.coupling.sdk.defaultClient
@@ -83,4 +84,4 @@ private suspend fun generateAccessToken(username: String, password: String): Str
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
-fun authorizedSdk(token: String) = SdkSingleton({ token }, buildClientWithToken())
+fun authorizedSdk(token: String) = SdkSingleton({ token }, buildClientWithToken(), uuid4())

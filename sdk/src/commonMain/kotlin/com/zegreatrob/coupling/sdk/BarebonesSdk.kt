@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.user.UserQuery
@@ -9,4 +10,6 @@ interface BarebonesSdk :
     UserQuery.Dispatcher,
     RequestSpinAction.Dispatcher,
     SavePlayerCommand.Dispatcher,
-    ClientSavePlayerCommandDispatcher
+    ClientSavePlayerCommandDispatcher,
+    LoggingActionExecuteSyntax,
+    PartyPlayerQueryDispatcher

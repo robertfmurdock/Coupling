@@ -50,7 +50,7 @@ private suspend fun Sdk.deleteAnyDisplayedParties() = with(partyRepository) {
 }
 
 private suspend fun authorizedSdk(username: String, password: String) = generateAccessToken(username, password)
-    .let { token -> SdkSingleton({ token }, buildClient()) }
+    .let { token -> SdkSingleton({ token }, buildClient(), uuid4()) }
 
 suspend fun authorizedSdk() = primaryAuthorizedSdkDeferred.await()
 

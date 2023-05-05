@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdDeleteSyntax
@@ -77,8 +78,11 @@ interface Sdk :
     override val queries get() = Queries(this)
 }
 
-class SdkSingleton(val getIdTokenFunc: suspend () -> String, private val httpClient: HttpClient) :
-    Sdk,
+class SdkSingleton(
+    val getIdTokenFunc: suspend () -> String,
+    private val httpClient: HttpClient,
+    override val traceId: Uuid,
+) : Sdk,
     PartyGQLPerformer by BatchingPartyGQLPerformer(StandardPartyGQLPerformer(getIdTokenFunc, httpClient)) {
     override suspend fun getToken(): String = getIdTokenFunc()
 }

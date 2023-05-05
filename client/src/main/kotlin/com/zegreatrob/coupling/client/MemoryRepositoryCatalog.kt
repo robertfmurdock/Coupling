@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
@@ -31,6 +32,7 @@ class MemoryRepositoryCatalog private constructor(
     override val playerRepository: PlayerEmailRepository,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
     override val pinRepository: PinRepository,
+    override val traceId: Uuid = uuid4(),
 ) :
     BarebonesSdk,
     UserIdSyntax,
