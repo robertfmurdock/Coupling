@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.components.pin.SavePinCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.ClientSavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PartyCurrentDataQueryDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.ClientDeletePairAssignmentsCommandDispatcher
@@ -23,6 +22,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.sdk.BarebonesSdk
 import com.zegreatrob.coupling.sdk.ClientDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePartyCommandDispatcher
+import com.zegreatrob.coupling.sdk.ClientSavePinCommandDispatcher
 
 class CommandDispatcher(override val sdk: BarebonesSdk) :
     ClientDeletePairAssignmentsCommandDispatcher,
@@ -43,7 +43,7 @@ class CommandDispatcher(override val sdk: BarebonesSdk) :
     RetiredPlayerListQueryDispatcher,
     RetiredPlayerQueryDispatcher,
     SavePairAssignmentsCommand.Dispatcher,
-    SavePinCommandDispatcher,
+    ClientSavePinCommandDispatcher,
     SdkRequestSpinActionDispatcher,
     ClientStatisticsQueryDispatcher,
     BarebonesSdk by sdk {

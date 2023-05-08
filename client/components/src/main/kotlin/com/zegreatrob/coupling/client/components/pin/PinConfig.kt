@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.pin
 
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
+import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.pinListPath
 import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
@@ -12,7 +13,6 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.add
@@ -30,11 +30,9 @@ data class PinConfig<D>(
     val reload: () -> Unit,
     val dispatchFunc: DispatchFunc<out D>,
 ) : DataPropsBind<PinConfig<D>>(pinConfig.unsafeCast<TMFC>())
-    where D : SavePinCommandDispatcher, D : DeletePinCommand.Dispatcher
+    where D : SavePinCommand.Dispatcher, D : DeletePinCommand.Dispatcher
 
-private interface DD : SavePinCommandDispatcher, DeletePinCommand.Dispatcher {
-    override val pinRepository: PinRepository
-}
+private interface DD : SavePinCommand.Dispatcher, DeletePinCommand.Dispatcher
 
 private val pinConfig by ntmFC<PinConfig<DD>> { (party, pin, pinList, reload, dispatchFunc) ->
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())

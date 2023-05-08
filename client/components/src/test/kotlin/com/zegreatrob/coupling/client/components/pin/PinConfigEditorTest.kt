@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.pin
 
+import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.client.components.StubDispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
