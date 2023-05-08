@@ -24,6 +24,9 @@ import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.sdk.BarebonesSdk
+import com.zegreatrob.coupling.sdk.ClientSavePartyCommandDispatcher
+import com.zegreatrob.coupling.sdk.ClientSavePinCommandDispatcher
+import com.zegreatrob.coupling.sdk.ClientSavePlayerCommandDispatcher
 
 class MemoryRepositoryCatalog private constructor(
     override val userId: String,
@@ -35,6 +38,9 @@ class MemoryRepositoryCatalog private constructor(
     override val traceId: Uuid = uuid4(),
 ) :
     BarebonesSdk,
+    ClientSavePartyCommandDispatcher,
+    ClientSavePlayerCommandDispatcher,
+    ClientSavePinCommandDispatcher,
     UserIdSyntax,
     ClockSyntax {
 

@@ -24,7 +24,7 @@ class SdkPairAssignmentDocumentRepositoryTest :
         sdk.partyRepository.save(party)
         SdkPartyContext(sdk, sdk.pairAssignmentDocumentRepository, party.id, MagicClock())
     }, sharedTeardown = {
-        it.sdk.partyRepository.deleteIt(it.partyId)
+        it.partyRepository.deleteIt(it.partyId)
     })
 
     @Test

@@ -1,12 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.player.Player
@@ -21,7 +20,7 @@ class RequestCombineEndpointTest {
     @Test
     fun postPlayersAndPinsThenGet() = asyncSetup.with({
         val sdk = authorizedSdk()
-        object : Sdk by sdk {
+        object : BarebonesSdk by sdk {
             val party = Party(id = PartyId("et-${uuid4()}"))
             val playersToSave = listOf(
                 Player(
@@ -33,16 +32,11 @@ class RequestCombineEndpointTest {
                 ),
             )
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
-            override suspend fun perform(query: UserQuery) = sdk.perform(query)
-            override suspend fun perform(action: RequestSpinAction) = sdk.perform(action)
-            override suspend fun perform(command: SavePlayerCommand) = sdk.perform(command)
         }
     }) {
-        party.save()
-        party.id.with(pinsToSave)
-            .forEach { it.save() }
-        party.id.with(playersToSave)
-            .forEach { it.save() }
+        perform(SavePartyCommand(party))
+        pinsToSave.forEach { perform(SavePinCommand(party.id, it)) }
+        playersToSave.forEach { perform(SavePlayerCommand(party.id, it)) }
     } exercise {
         coroutineScope {
             val a1 = async { playerRepository.getPlayers(party.id).map { it.data.player } }

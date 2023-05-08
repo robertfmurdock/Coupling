@@ -4,11 +4,14 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.user.UserQuery
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
+import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.validation.assertHasIds
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
@@ -31,9 +34,12 @@ class SdkPlayerTest {
             val authorizedSdk = authorizedSdk()
             object : Sdk by authorizedSdk {
                 val party = stubParty()
-                override suspend fun perform(action: RequestSpinAction) = authorizedSdk.perform(action)
-                override suspend fun perform(query: UserQuery) = authorizedSdk.perform(query)
+                override suspend fun perform(action: RequestSpinAction): PairAssignmentDocument =
+                    authorizedSdk.perform(action)
+                override suspend fun perform(command: SavePartyCommand) = authorizedSdk.perform(command)
+                override suspend fun perform(command: SavePinCommand) = authorizedSdk.perform(command)
                 override suspend fun perform(command: SavePlayerCommand) = authorizedSdk.perform(command)
+                override suspend fun perform(query: UserQuery): User? = authorizedSdk.perform(query)
             }.apply {
                 perform(SavePartyCommand(party))
             }

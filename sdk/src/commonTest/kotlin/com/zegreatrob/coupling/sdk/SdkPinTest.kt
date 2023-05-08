@@ -1,13 +1,11 @@
 package com.zegreatrob.coupling.sdk
+
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
-import com.zegreatrob.coupling.repository.validation.MagicClock
-import com.zegreatrob.coupling.repository.validation.PartyContextMint
-import com.zegreatrob.coupling.repository.validation.bind
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
@@ -18,71 +16,69 @@ import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
 import kotlin.test.Test
 
-class SdkPinRepositoryTest {
+class SdkPinTest {
 
-    private val repositorySetup = asyncTestTemplate<SdkPartyContext<SdkPinRepository>>(sharedSetup = {
-        val sdk = authorizedSdk()
-        val party = stubParty()
-        SdkPartyContext(sdk, sdk.pinRepository, party.id, MagicClock())
-            .apply {
-                party.save()
-            }
-    }, sharedTeardown = {
-        it.sdk.partyRepository.deleteIt(it.partyId)
-    })
+    private val repositorySetup = asyncTestTemplate(
+        sharedSetup = suspend {
+            val sdk = authorizedSdk()
+            object : BarebonesSdk by sdk {
+                val party = stubParty()
+            }.apply { sdk.perform(SavePartyCommand(party)) }
+        },
+        sharedTeardown = {
+            it.partyRepository.deleteIt(it.party.id)
+        },
+    )
 
     @Test
     fun canSaveAndGetPins() = repositorySetup.with(
-        object : PartyContextMint<SdkPinRepository>() {
-            val pins = listOf(
-                stubPin(),
-                stubPin(),
-                stubPin(),
-            )
-        }.bind(),
+        {
+            object : BarebonesSdk by it {
+                val party = it.party
+                val pins = listOf(
+                    stubPin(),
+                    stubPin(),
+                    stubPin(),
+                )
+            }
+        },
     ) exercise {
-        partyId.with(this.pins).forEach { repository.save(it) }
+        pins.forEach { perform(SavePinCommand(party.id, it)) }
     } verifyWithWait {
-        repository.getPins(partyId)
+        pinRepository.getPins(party.id)
             .map { it.data.pin }
-            .assertIsEqualTo(this.pins)
+            .assertIsEqualTo(pins)
     }
 
     @Test
-    fun deleteWillFailWhenPinDoesNotExist() = repositorySetup.with(
-        object : PartyContextMint<SdkPinRepository>() {
-        }.bind(),
-    ) {
-    } exercise {
-        repository.deletePin(partyId, "${uuid4()}")
+    fun deleteWillFailWhenPinDoesNotExist() = repositorySetup() exercise {
+        pinRepository.deletePin(party.id, "${uuid4()}")
     } verify { result ->
         result.assertIsEqualTo(false)
     }
 
     @Test
-    fun givenNoPinsWillReturnEmptyList() = repositorySetup {
-    } exercise {
-        repository.getPins(partyId)
+    fun givenNoPinsWillReturnEmptyList() = repositorySetup() exercise {
+        pinRepository.getPins(party.id)
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
 
     @Test
-    fun saveThenDeleteWillNotShowThatPin() = repositorySetup.with(
-        object : PartyContextMint<SdkPinRepository>() {
+    fun saveThenDeleteWillNotShowThatPin() = repositorySetup.with({
+        object : BarebonesSdk by it {
+            val party = it.party
             val pins = listOf(
                 stubPin(),
                 stubPin(),
                 stubPin(),
             )
-        }.bind(),
-    ) exercise {
-        partyId.with(this.pins).forEach {
-            repository.save(it)
         }
-        repository.deletePin(partyId, this.pins[1].id!!)
+    }) exercise {
+        pins.forEach { perform(SavePinCommand(party.id, it)) }
+        pinRepository.deletePin(party.id, this.pins[1].id!!)
     } verifyWithWait {
-        this.repository.getPins(this.partyId).map { it.data.pin }
+        this.pinRepository.getPins(party.id).map { it.data.pin }
             .assertContains(this.pins[0])
             .assertContains(this.pins[2])
             .size
@@ -90,18 +86,19 @@ class SdkPinRepositoryTest {
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(
-        object : PartyContextMint<SdkPinRepository>() {
+    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with({
+        object : BarebonesSdk by it {
+            val partyId = it.party.id
             val pin = Pin(
                 id = null,
                 name = "",
                 icon = "",
             )
-        }.bind(),
-    ) exercise {
-        repository.save(partyId.with(this.pin))
+        }
+    }) exercise {
+        perform(SavePinCommand(partyId, pin))
     } verifyWithWait {
-        this.repository.getPins(this.partyId).map { it.data.pin }
+        pinRepository.getPins(this.partyId).map { it.data.pin }
             .also { it.assertHasIds() }
             .map { it.copy(id = null) }
             .assertIsEqualTo(listOf(this.pin))
@@ -121,8 +118,8 @@ class SdkPinRepositoryTest {
             val otherSdk = otherSdk
         }
     }) {
-        otherSdk.partyRepository.save(otherParty)
-        otherSdk.pinRepository.save(otherParty.id.with(stubPin()))
+        otherSdk.perform(SavePartyCommand(otherParty))
+        otherSdk.perform(SavePinCommand(otherParty.id, stubPin()))
     } exercise {
         sdk.pinRepository.getPins(otherParty.id)
     } verifyAnd { result ->
@@ -139,7 +136,7 @@ class SdkPinRepositoryTest {
     }) {
         sdk = authorizedSdk()
         sdk.perform(SavePartyCommand(party))
-        sdk.pinRepository.save(party.id.with(pin))
+        sdk.perform(SavePinCommand(party.id, pin))
     } exercise {
         sdk.pinRepository.getPins(party.id)
     } verify { result ->
