@@ -1,6 +1,7 @@
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.user.UserQuery
@@ -33,7 +34,7 @@ class SdkPlayerTest {
                 override suspend fun perform(query: UserQuery) = authorizedSdk.perform(query)
                 override suspend fun perform(command: SavePlayerCommand) = authorizedSdk.perform(command)
             }.apply {
-                partyRepository.save(party)
+                perform(SavePartyCommand(party))
             }
         },
         sharedTeardown = {
@@ -68,7 +69,7 @@ class SdkPlayerTest {
     }) {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
     } exercise {
-        sdk.deletePlayer(partyId, this.player.id)
+        sdk.perform(DeletePlayerCommand(partyId, player.id))
         sdk.getPlayers(partyId)
     } verifyWithWait { result ->
         result.map { it.data.player }
@@ -83,9 +84,9 @@ class SdkPlayerTest {
             val playerId = "${uuid4()}"
         }
     }) exercise {
-        sdk.deletePlayer(sdk.party.id, this.playerId)
+        sdk.perform(DeletePlayerCommand(sdk.party.id, playerId))
     } verify { result ->
-        result.assertIsEqualTo(false)
+        result.assertIsEqualTo(NotFoundResult("player"))
     }
 
     @Test
@@ -99,7 +100,7 @@ class SdkPlayerTest {
         },
     ) {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
-        sdk.deletePlayer(partyId, this.player.id)
+        sdk.perform(DeletePlayerCommand(partyId, player.id))
     } exercise {
         sdk.getDeleted(partyId)
     } verify { result ->
@@ -117,9 +118,9 @@ class SdkPlayerTest {
         }
     }) exercise {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
-        sdk.deletePlayer(partyId, this.playerId)
+        sdk.perform(DeletePlayerCommand(partyId, playerId))
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
-        sdk.deletePlayer(partyId, this.playerId)
+        sdk.perform(DeletePlayerCommand(partyId, playerId))
     } verifyWithWait {
         sdk.getDeleted(this.partyId)
             .map { it.data.player }
@@ -176,7 +177,7 @@ class SdkPlayerTest {
             val player2 = player1.copy(id = player1.id)
         }
     }) {
-        sdk.partyRepository.save(stubParty().copy(id = partyId2))
+        sdk.perform(SavePartyCommand(stubParty().copy(id = partyId2)))
         sdk.perform(SavePlayerCommand(partyId, player1))
         sdk.perform(SavePlayerCommand(partyId2, player2))
     } exercise {

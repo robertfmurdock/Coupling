@@ -12,5 +12,6 @@ interface BarebonesSdk :
     SavePlayerCommand.Dispatcher,
     ClientSavePlayerCommandDispatcher,
     ClientDeletePlayerCommandDispatcher,
+    ClientSavePartyCommandDispatcher,
     LoggingActionExecuteSyntax,
     PartyPlayerQueryDispatcher

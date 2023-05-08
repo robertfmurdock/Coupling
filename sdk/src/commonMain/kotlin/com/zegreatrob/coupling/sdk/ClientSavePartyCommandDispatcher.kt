@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.party
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.repository.party.PartySaveSyntax
