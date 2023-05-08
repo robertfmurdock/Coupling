@@ -1,6 +1,7 @@
-
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.player.Player
@@ -275,17 +276,12 @@ class SdkPlayerTest {
         }
 
         @Test
-        fun deleteIsNotAllowed() = runTest {
-            val sdk = authorizedSdk()
-            waitForTest {
-                asyncSetup(object {
-                    val party = stubParty()
-                }) exercise {
-                    sdk.deletePlayer(party.id, "player id")
-                } verify { result ->
-                    result.assertIsEqualTo(false)
-                }
-            }
+        fun deleteIsNotAllowed() = asyncSetup(object {
+            val party = stubParty()
+        }) exercise {
+            authorizedSdk().perform(DeletePlayerCommand(party.id, "player id"))
+        } verify { result ->
+            result.assertIsEqualTo(NotFoundResult("player"))
         }
     }
 }

@@ -11,5 +11,6 @@ interface BarebonesSdk :
     RequestSpinAction.Dispatcher,
     SavePlayerCommand.Dispatcher,
     ClientSavePlayerCommandDispatcher,
+    ClientDeletePlayerCommandDispatcher,
     LoggingActionExecuteSyntax,
     PartyPlayerQueryDispatcher

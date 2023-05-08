@@ -17,12 +17,12 @@ import com.zegreatrob.coupling.client.party.PartyQueryDispatcher
 import com.zegreatrob.coupling.client.pin.ClientDeletePinCommandDispatcher
 import com.zegreatrob.coupling.client.pin.PartyPinListQueryDispatcher
 import com.zegreatrob.coupling.client.pin.PartyPinQueryDispatcher
-import com.zegreatrob.coupling.client.player.ClientDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispatcher
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.stats.ClientStatisticsQueryDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.sdk.BarebonesSdk
+import com.zegreatrob.coupling.sdk.ClientDeletePlayerCommandDispatcher
 
 class CommandDispatcher(override val sdk: BarebonesSdk) :
     ClientDeletePairAssignmentsCommandDispatcher,

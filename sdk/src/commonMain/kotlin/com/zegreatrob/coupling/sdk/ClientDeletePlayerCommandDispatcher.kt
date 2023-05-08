@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.player
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
