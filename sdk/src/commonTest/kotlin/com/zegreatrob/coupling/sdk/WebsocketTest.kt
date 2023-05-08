@@ -1,3 +1,5 @@
+package com.zegreatrob.coupling.sdk
+
 import com.zegreatrob.coupling.json.JsonCouplingSocketMessage
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString

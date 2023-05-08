@@ -1,3 +1,5 @@
+package com.zegreatrob.coupling.sdk
+
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.party.PartyId
@@ -6,7 +8,6 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.PartyContextMint
 import com.zegreatrob.coupling.repository.validation.bind
-import com.zegreatrob.coupling.sdk.SdkPairAssignmentsRepository
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo

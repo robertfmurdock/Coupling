@@ -1,10 +1,6 @@
-
+package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.sdk.BatchingPartyGQLPerformer
-import com.zegreatrob.coupling.sdk.PartyGQLPerformer
-import com.zegreatrob.coupling.sdk.QueryPerformer
-import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.CompletableDeferred

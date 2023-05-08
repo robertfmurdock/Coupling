@@ -1,4 +1,4 @@
-
+package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo

@@ -1,7 +1,6 @@
+package com.zegreatrob.coupling.sdk
+
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.sdk.SdkSingleton
-import com.zegreatrob.coupling.sdk.defaultClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

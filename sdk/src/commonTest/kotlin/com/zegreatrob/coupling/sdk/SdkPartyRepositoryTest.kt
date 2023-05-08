@@ -1,3 +1,5 @@
+package com.zegreatrob.coupling.sdk
+
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -8,7 +10,6 @@ import com.zegreatrob.coupling.repository.validation.PartyRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.bind
-import com.zegreatrob.coupling.sdk.SdkPartyRepository
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubUser

@@ -1,3 +1,5 @@
+package com.zegreatrob.coupling.sdk
+
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
@@ -10,7 +12,6 @@ import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.validation.assertHasIds
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
-import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
