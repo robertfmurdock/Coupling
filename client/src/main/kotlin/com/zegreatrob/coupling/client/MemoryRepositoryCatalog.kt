@@ -23,7 +23,10 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
+import com.zegreatrob.coupling.repository.player.PlayerListGet
+import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 import com.zegreatrob.coupling.sdk.BarebonesSdk
+import com.zegreatrob.coupling.sdk.ClientDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePartyCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePinCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePlayerCommandDispatcher
@@ -41,6 +44,9 @@ class MemoryRepositoryCatalog private constructor(
     ClientSavePartyCommandDispatcher,
     ClientSavePlayerCommandDispatcher,
     ClientSavePinCommandDispatcher,
+    ClientDeletePlayerCommandDispatcher,
+    PlayerListGet by playerRepository,
+    PlayerListGetDeleted by playerRepository,
     UserIdSyntax,
     ClockSyntax {
 

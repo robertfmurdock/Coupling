@@ -17,13 +17,11 @@ import com.zegreatrob.coupling.client.player.retired.RetiredPlayerListQueryDispa
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.client.stats.ClientStatisticsQueryDispatcher
 import com.zegreatrob.coupling.sdk.BarebonesSdk
-import com.zegreatrob.coupling.sdk.ClientDeletePlayerCommandDispatcher
 
 class CommandDispatcher(private val sdk: BarebonesSdk) :
     ClientDeletePairAssignmentsCommandDispatcher,
     ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,
-    ClientDeletePlayerCommandDispatcher,
     ClientNewPairAssignmentsCommandDispatcher,
     ClientSavePairAssignmentsCommandDispatcher,
     HistoryQueryDispatcher,
