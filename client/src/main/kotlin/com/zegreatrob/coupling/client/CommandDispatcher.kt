@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.client.pairassignments.ClientSavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.PartyCurrentDataQueryDispatcher
-import com.zegreatrob.coupling.client.pairassignments.list.ClientDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryQueryDispatcher
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
 import com.zegreatrob.coupling.client.party.PartyListQueryDispatcher
@@ -17,9 +14,7 @@ import com.zegreatrob.coupling.client.stats.ClientStatisticsQueryDispatcher
 import com.zegreatrob.coupling.sdk.BarebonesSdk
 
 class CommandDispatcher(private val sdk: BarebonesSdk) :
-    ClientDeletePairAssignmentsCommandDispatcher,
     ClientNewPairAssignmentsCommandDispatcher,
-    ClientSavePairAssignmentsCommandDispatcher,
     HistoryQueryDispatcher,
     NewPairAssignmentsCommandDispatcher,
     NewPartyCommandDispatcher,
@@ -30,6 +25,5 @@ class CommandDispatcher(private val sdk: BarebonesSdk) :
     PartyQueryDispatcher,
     RetiredPlayerListQueryDispatcher,
     RetiredPlayerQueryDispatcher,
-    SavePairAssignmentsCommand.Dispatcher,
     ClientStatisticsQueryDispatcher,
     BarebonesSdk by sdk

@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
+import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
@@ -17,12 +19,14 @@ interface BarebonesSdk :
     RepositoryCatalog,
     UserQuery.Dispatcher,
     RequestSpinAction.Dispatcher,
+    SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommand.Dispatcher,
-    SavePlayerCommand.Dispatcher,
     SavePinCommand.Dispatcher,
+    SavePlayerCommand.Dispatcher,
+    DeletePairAssignmentsCommand.Dispatcher,
+    DeletePartyCommand.Dispatcher,
     DeletePinCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
-    DeletePartyCommand.Dispatcher,
     LoggingActionExecuteSyntax,
     PartyPlayerQueryDispatcher,
     PlayerListGet,

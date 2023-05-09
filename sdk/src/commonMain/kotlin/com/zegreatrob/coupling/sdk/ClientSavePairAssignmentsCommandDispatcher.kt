@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pairassignments
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.party.with
