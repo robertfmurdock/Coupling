@@ -3,10 +3,11 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.player.DeletePlayerCommand
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -93,8 +94,10 @@ class SdkPartyTest {
 
     @Test
     fun getWillReturnAnyPartyThatHasPlayerWithGivenEmail() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.partyRepository.save(party)
-        sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
+        with(sdkForOtherUser) {
+            perform(SavePartyCommand(party))
+            perform(SavePlayerCommand(party.id, playerMatchingSdkUser))
+        }
     } exercise {
         sdk.partyRepository.getParties()
     } verify { result ->
@@ -104,9 +107,11 @@ class SdkPartyTest {
 
     @Test
     fun getWillNotReturnPartyIfPlayerHadEmailButThenHadItRemoved() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.partyRepository.save(party)
-        sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
-        sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser.copy(email = "something else")))
+        with(sdkForOtherUser) {
+            perform(SavePartyCommand(party))
+            perform(SavePlayerCommand(party.id, playerMatchingSdkUser))
+            perform(SavePlayerCommand(party.id, playerMatchingSdkUser.copy(email = "something else")))
+        }
     } exercise {
         sdk.partyRepository.getParties()
     } verify { result ->
@@ -116,9 +121,11 @@ class SdkPartyTest {
 
     @Test
     fun getWillNotReturnPartyIfPlayerHadEmailButPlayerWasRemoved() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.partyRepository.save(party)
-        sdkForOtherUser.playerRepository.save(party.id.with(playerMatchingSdkUser))
-        sdkForOtherUser.playerRepository.deletePlayer(party.id, playerMatchingSdkUser.id)
+        with(sdkForOtherUser) {
+            perform(SavePartyCommand(party))
+            perform(SavePlayerCommand(party.id, playerMatchingSdkUser))
+            perform(DeletePlayerCommand(party.id, playerMatchingSdkUser.id))
+        }
     } exercise {
         sdk.partyRepository.getParties()
     } verify { result ->
@@ -128,9 +135,9 @@ class SdkPartyTest {
 
     @Test
     fun saveWillNotSaveWhenPartyAlreadyExistsForSomeoneElse() = setupWithPlayerMatchingUserTwoSdks {
-        sdkForOtherUser.partyRepository.save(party)
+        sdkForOtherUser.perform(SavePartyCommand(party))
     } exercise {
-        sdk.partyRepository.save(party.copy(name = "changed name"))
+        sdk.perform(SavePartyCommand(party.copy(name = "changed name")))
         sdkForOtherUser.partyRepository.getPartyRecord(party.id)
     } verify { result ->
         result?.data.assertIsEqualTo(party)
