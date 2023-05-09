@@ -66,10 +66,12 @@ interface Sdk :
     SdkUserQueryDispatcher,
     SdkSyntax,
     SdkPlayer,
-    ClientSavePlayerCommandDispatcher,
+    ClientDeletePartyCommandDispatcher,
+    ClientDeletePinCommandDispatcher,
     ClientDeletePlayerCommandDispatcher,
     ClientSavePartyCommandDispatcher,
     ClientSavePinCommandDispatcher,
+    ClientSavePlayerCommandDispatcher,
     GqlQueryComponent,
     GqlFileLoader {
     suspend fun getToken(): String

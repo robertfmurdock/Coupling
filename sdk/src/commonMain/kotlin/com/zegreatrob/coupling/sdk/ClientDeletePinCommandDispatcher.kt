@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.action.pin.DeletePinCommand

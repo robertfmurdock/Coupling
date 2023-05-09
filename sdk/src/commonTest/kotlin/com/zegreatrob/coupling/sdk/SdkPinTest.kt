@@ -2,7 +2,10 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
+import com.zegreatrob.coupling.action.NotFoundResult
+import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
@@ -52,9 +55,9 @@ class SdkPinTest {
 
     @Test
     fun deleteWillFailWhenPinDoesNotExist() = repositorySetup() exercise {
-        pinRepository.deletePin(party.id, "${uuid4()}")
+        perform(DeletePinCommand(party.id, "${uuid4()}"))
     } verify { result ->
-        result.assertIsEqualTo(false)
+        result.assertIsEqualTo(NotFoundResult("Pin"))
     }
 
     @Test
@@ -76,9 +79,9 @@ class SdkPinTest {
         }
     }) exercise {
         pins.forEach { perform(SavePinCommand(party.id, it)) }
-        pinRepository.deletePin(party.id, this.pins[1].id!!)
+        perform(DeletePinCommand(party.id, this.pins[1].id!!))
     } verifyWithWait {
-        this.pinRepository.getPins(party.id).map { it.data.pin }
+        pinRepository.getPins(party.id).map { it.data.pin }
             .assertContains(this.pins[0])
             .assertContains(this.pins[2])
             .size
@@ -125,7 +128,7 @@ class SdkPinTest {
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
-        otherSdk.partyRepository.deleteIt(otherParty.id)
+        otherSdk.perform(DeletePartyCommand(otherParty.id))
     }
 
     @Test

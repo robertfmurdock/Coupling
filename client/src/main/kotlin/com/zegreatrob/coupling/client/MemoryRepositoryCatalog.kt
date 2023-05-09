@@ -26,6 +26,8 @@ import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 import com.zegreatrob.coupling.sdk.BarebonesSdk
+import com.zegreatrob.coupling.sdk.ClientDeletePartyCommandDispatcher
+import com.zegreatrob.coupling.sdk.ClientDeletePinCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePartyCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePinCommandDispatcher
@@ -45,6 +47,8 @@ class MemoryRepositoryCatalog private constructor(
     ClientSavePlayerCommandDispatcher,
     ClientSavePinCommandDispatcher,
     ClientDeletePlayerCommandDispatcher,
+    ClientDeletePartyCommandDispatcher,
+    ClientDeletePinCommandDispatcher,
     PlayerListGet by playerRepository,
     PlayerListGetDeleted by playerRepository,
     UserIdSyntax,
