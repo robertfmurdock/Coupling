@@ -21,6 +21,7 @@ import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
+import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.player.PlayerListGet
@@ -51,6 +52,7 @@ class MemoryRepositoryCatalog private constructor(
     ClientDeletePinCommandDispatcher,
     PlayerListGet by playerRepository,
     PlayerListGetDeleted by playerRepository,
+    PinGet by pinRepository,
     UserIdSyntax,
     ClockSyntax {
 

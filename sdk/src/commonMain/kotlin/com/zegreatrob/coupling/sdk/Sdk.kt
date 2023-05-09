@@ -42,12 +42,12 @@ interface SdkPlayer :
     PlayerRepository,
     GqlQueryComponent
 
-class SdkPinRepository(gqlQueryComponent: GqlQueryComponent) :
+interface SdkPin :
     SdkPinGet,
     SdkPinSave,
     SdkPinDelete,
     PinRepository,
-    GqlQueryComponent by gqlQueryComponent
+    GqlQueryComponent
 
 class SdkPairAssignmentsRepository(gqlQueryComponent: GqlQueryComponent) :
     SdkPairAssignmentDocumentGet,
@@ -66,6 +66,7 @@ interface Sdk :
     SdkUserQueryDispatcher,
     SdkSyntax,
     SdkPlayer,
+    SdkPin,
     ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,
     ClientDeletePlayerCommandDispatcher,
@@ -76,7 +77,7 @@ interface Sdk :
     GqlFileLoader {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
-    override val pinRepository get() = SdkPinRepository(this)
+    override val pinRepository get() = this
     override val pairAssignmentDocumentRepository get() = SdkPairAssignmentsRepository(this)
     override val playerRepository get() = this
     override val partyRepository get() = SdkPartyRepository(this)

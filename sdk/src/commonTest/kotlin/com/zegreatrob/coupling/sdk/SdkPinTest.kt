@@ -28,9 +28,7 @@ class SdkPinTest {
                 val party = stubParty()
             }.apply { sdk.perform(SavePartyCommand(party)) }
         },
-        sharedTeardown = {
-            it.partyRepository.deleteIt(it.party.id)
-        },
+        sharedTeardown = { it.perform(DeletePartyCommand(it.party.id)) },
     )
 
     @Test
@@ -48,7 +46,7 @@ class SdkPinTest {
     ) exercise {
         pins.forEach { perform(SavePinCommand(party.id, it)) }
     } verifyWithWait {
-        pinRepository.getPins(party.id)
+        getPins(party.id)
             .map { it.data.pin }
             .assertIsEqualTo(pins)
     }
@@ -62,7 +60,7 @@ class SdkPinTest {
 
     @Test
     fun givenNoPinsWillReturnEmptyList() = repositorySetup() exercise {
-        pinRepository.getPins(party.id)
+        getPins(party.id)
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
@@ -81,7 +79,7 @@ class SdkPinTest {
         pins.forEach { perform(SavePinCommand(party.id, it)) }
         perform(DeletePinCommand(party.id, this.pins[1].id!!))
     } verifyWithWait {
-        pinRepository.getPins(party.id).map { it.data.pin }
+        getPins(party.id).map { it.data.pin }
             .assertContains(this.pins[0])
             .assertContains(this.pins[2])
             .size
@@ -101,7 +99,7 @@ class SdkPinTest {
     }) exercise {
         perform(SavePinCommand(partyId, pin))
     } verifyWithWait {
-        pinRepository.getPins(this.partyId).map { it.data.pin }
+        getPins(this.partyId).map { it.data.pin }
             .also { it.assertHasIds() }
             .map { it.copy(id = null) }
             .assertIsEqualTo(listOf(this.pin))
@@ -124,7 +122,7 @@ class SdkPinTest {
         otherSdk.perform(SavePartyCommand(otherParty))
         otherSdk.perform(SavePinCommand(otherParty.id, stubPin()))
     } exercise {
-        sdk.pinRepository.getPins(otherParty.id)
+        sdk.getPins(otherParty.id)
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
@@ -141,7 +139,7 @@ class SdkPinTest {
         sdk.perform(SavePartyCommand(party))
         sdk.perform(SavePinCommand(party.id, pin))
     } exercise {
-        sdk.pinRepository.getPins(party.id)
+        sdk.getPins(party.id)
     } verify { result ->
         result.size.assertIsEqualTo(1)
         result.first().apply {

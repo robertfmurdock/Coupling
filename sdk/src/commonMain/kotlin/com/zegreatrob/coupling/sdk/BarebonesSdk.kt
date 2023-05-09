@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.user.UserQuery
+import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 
@@ -25,4 +26,5 @@ interface BarebonesSdk :
     LoggingActionExecuteSyntax,
     PartyPlayerQueryDispatcher,
     PlayerListGet,
+    PinGet,
     PlayerListGetDeleted
