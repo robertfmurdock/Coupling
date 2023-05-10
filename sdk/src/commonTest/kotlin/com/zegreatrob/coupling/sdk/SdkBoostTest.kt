@@ -2,6 +2,9 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.DeleteBoostCommand
+import com.zegreatrob.coupling.action.NotFoundResult
+import com.zegreatrob.coupling.action.SuccessfulResult
+import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.Boost
@@ -30,8 +33,8 @@ class SdkBoostTest {
         perform(SaveBoostCommand(setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))))
         perform(DeleteBoostCommand())
     } verifyWithWait {
-        get()
-            .assertIsEqualTo(null)
+        perform(BoostQuery())
+            .assertIsEqualTo(NotFoundResult("Boost"))
     }
 
     @Test
@@ -39,8 +42,8 @@ class SdkBoostTest {
     } exercise {
         perform(DeleteBoostCommand())
     } verifyWithWait {
-        get()
-            .assertIsEqualTo(null)
+        perform(BoostQuery())
+            .assertIsEqualTo(NotFoundResult("Boost"))
     }
 
     @Test
@@ -52,7 +55,10 @@ class SdkBoostTest {
     }) exercise {
         perform(SaveBoostCommand(partyIds))
     } verifyWithWait {
-        get()?.data
+        perform(BoostQuery())
+            .let { it as? SuccessfulResult }
+            ?.value
+            ?.data
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
@@ -74,7 +80,10 @@ class SdkBoostTest {
         perform(SaveBoostCommand(updatedBoostParties1))
         perform(SaveBoostCommand(updatedBoostParties2))
     } verifyWithWait {
-        get()?.data
+        perform(BoostQuery())
+            .let { it as? SuccessfulResult }
+            ?.value
+            ?.data
             .assertIsEqualTo(
                 Boost(
                     userId = userId,

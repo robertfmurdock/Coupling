@@ -60,7 +60,7 @@ interface SdkPairAssignmentsRepository :
 interface Sdk :
     BarebonesSdk,
     RepositoryCatalog,
-    SdkBoostRepository,
+    SdkBoost,
     SdkSpin,
     SdkUserGet,
     SdkUserQueryDispatcher,
