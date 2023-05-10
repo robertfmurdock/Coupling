@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -13,12 +13,16 @@ import kotlinx.coroutines.coroutineScope
 typealias PartyPinData = Triple<Party, List<Pin>, Pin>
 
 data class PartyPinQuery(val partyId: PartyId, val pinId: String?) :
-    SimpleSuspendAction<PartyPinQueryDispatcher, PartyPinData?> {
-    override val performFunc = link(PartyPinQueryDispatcher::perform)
+    SimpleSuspendAction<PartyPinQuery.Dispatcher, PartyPinData?> {
+    override val performFunc = link(Dispatcher::perform)
+
+    interface Dispatcher {
+        suspend fun perform(query: PartyPinQuery): PartyPinData?
+    }
 }
 
-interface PartyPinQueryDispatcher : PartyIdGetSyntax, PartyPinsSyntax {
-    suspend fun perform(query: PartyPinQuery) = query.getData()
+interface ClientPartyPinQueryDispatcher : PartyIdGetSyntax, PartyPinsSyntax, PartyPinQuery.Dispatcher {
+    override suspend fun perform(query: PartyPinQuery) = query.getData()
 
     private suspend fun PartyPinQuery.getData() = partyId.getData()
         ?.let { (party, pins) -> PartyPinData(party, pins, pins.findOrDefaultNew(pinId)) }

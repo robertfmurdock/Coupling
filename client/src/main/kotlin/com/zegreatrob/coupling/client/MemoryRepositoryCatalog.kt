@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.user.UserQuery
+import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -36,10 +37,21 @@ import com.zegreatrob.coupling.sdk.ClientDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientDeletePinCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientDeletePlayerCommandDispatcher
+import com.zegreatrob.coupling.sdk.ClientHistoryQueryDispatcher
+import com.zegreatrob.coupling.sdk.ClientNewPairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.sdk.ClientPartyCurrentDataQueryDispatcher
+import com.zegreatrob.coupling.sdk.ClientPartyListQueryDispatcher
+import com.zegreatrob.coupling.sdk.ClientPartyPinListQueryDispatcher
+import com.zegreatrob.coupling.sdk.ClientPartyPinQueryDispatcher
+import com.zegreatrob.coupling.sdk.ClientPartyPlayerQueryDispatcher
+import com.zegreatrob.coupling.sdk.ClientPartyQueryDispatcher
+import com.zegreatrob.coupling.sdk.ClientRetiredPlayerListQueryDispatcher
+import com.zegreatrob.coupling.sdk.ClientRetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePartyCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePinCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePlayerCommandDispatcher
+import com.zegreatrob.coupling.sdk.ClientStatisticsQueryDispatcher
 
 class MemoryRepositoryCatalog private constructor(
     override val userId: String,
@@ -51,14 +63,26 @@ class MemoryRepositoryCatalog private constructor(
     override val traceId: Uuid = uuid4(),
 ) :
     BarebonesSdk,
-    ClientSavePartyCommandDispatcher,
-    ClientSavePairAssignmentsCommandDispatcher,
-    ClientSavePlayerCommandDispatcher,
-    ClientSavePinCommandDispatcher,
     ClientDeletePairAssignmentsCommandDispatcher,
-    ClientDeletePlayerCommandDispatcher,
     ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,
+    ClientDeletePlayerCommandDispatcher,
+    ClientHistoryQueryDispatcher,
+    ClientNewPairAssignmentsCommandDispatcher,
+    ClientPartyCurrentDataQueryDispatcher,
+    ClientPartyListQueryDispatcher,
+    ClientPartyPinListQueryDispatcher,
+    ClientPartyPinQueryDispatcher,
+    ClientPartyPlayerQueryDispatcher,
+    ClientPartyQueryDispatcher,
+    ClientRetiredPlayerListQueryDispatcher,
+    ClientRetiredPlayerQueryDispatcher,
+    ClientSavePairAssignmentsCommandDispatcher,
+    ClientSavePartyCommandDispatcher,
+    ClientSavePinCommandDispatcher,
+    ClientSavePlayerCommandDispatcher,
+    ClientStatisticsQueryDispatcher,
+    NewPartyCommandDispatcher,
     PlayerListGet by playerRepository,
     PlayerListGetDeleted by playerRepository,
     PinGet by pinRepository,

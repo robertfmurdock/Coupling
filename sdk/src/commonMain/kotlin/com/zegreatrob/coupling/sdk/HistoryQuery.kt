@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pairassignments.list
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
@@ -13,12 +13,16 @@ import kotlinx.coroutines.withContext
 
 typealias HistoryData = Pair<Party, List<PairAssignmentDocument>>
 
-data class HistoryQuery(val partyId: PartyId) : SimpleSuspendAction<HistoryQueryDispatcher, HistoryData?> {
-    override val performFunc = link(HistoryQueryDispatcher::perform)
+data class HistoryQuery(val partyId: PartyId) : SimpleSuspendAction<HistoryQuery.Dispatcher, HistoryData?> {
+    override val performFunc = link(Dispatcher::perform)
+
+    interface Dispatcher {
+        suspend fun perform(query: HistoryQuery): Pair<Party, List<PairAssignmentDocument>>?
+    }
 }
 
-interface HistoryQueryDispatcher : PartyIdGetSyntax, PartyIdHistorySyntax {
-    suspend fun perform(query: HistoryQuery) = query.partyId.getData()
+interface ClientHistoryQueryDispatcher : PartyIdGetSyntax, PartyIdHistorySyntax, HistoryQuery.Dispatcher {
+    override suspend fun perform(query: HistoryQuery) = query.partyId.getData()
 
     private suspend fun PartyId.getData() = withContext(Dispatchers.Default) {
         await(

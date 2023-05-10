@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.sdk.PartyQuery
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 

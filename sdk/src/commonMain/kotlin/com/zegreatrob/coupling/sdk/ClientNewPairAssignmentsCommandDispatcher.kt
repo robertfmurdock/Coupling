@@ -1,8 +1,7 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
-import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommand
-import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -16,7 +15,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 interface ClientNewPairAssignmentsCommandDispatcher :
-    NewPairAssignmentsCommandDispatcher,
+    NewPairAssignmentsCommand.Dispatcher,
     PartyIdGetSyntax,
     PartyPinsSyntax,
     PartyPlayersSyntax,

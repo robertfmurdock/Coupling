@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.client.routing.playerId
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.sdk.RetiredPlayerQuery
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.nfc
 import react.ChildrenBuilder

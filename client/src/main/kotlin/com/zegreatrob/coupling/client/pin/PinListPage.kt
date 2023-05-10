@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
+import com.zegreatrob.coupling.sdk.PartyPinListQuery
 import com.zegreatrob.minreact.create
 
 val PinListPage = partyPageFunction { props, partyId ->

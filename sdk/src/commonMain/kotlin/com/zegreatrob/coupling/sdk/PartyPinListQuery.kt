@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.pin
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -11,12 +11,16 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class PartyPinListQuery(val partyId: PartyId) :
-    SimpleSuspendAction<PartyPinListQueryDispatcher, Pair<Party, List<Pin>>?> {
-    override val performFunc = link(PartyPinListQueryDispatcher::perform)
+    SimpleSuspendAction<PartyPinListQuery.Dispatcher, Pair<Party, List<Pin>>?> {
+    override val performFunc = link(Dispatcher::perform)
+
+    interface Dispatcher {
+        suspend fun perform(query: PartyPinListQuery): Pair<Party, List<Pin>>?
+    }
 }
 
-interface PartyPinListQueryDispatcher : PartyIdGetSyntax, PartyPinsSyntax {
-    suspend fun perform(query: PartyPinListQuery) = query.partyId.getData()
+interface ClientPartyPinListQueryDispatcher : PartyIdGetSyntax, PartyPinsSyntax, PartyPinListQuery.Dispatcher {
+    override suspend fun perform(query: PartyPinListQuery) = query.partyId.getData()
 
     private suspend fun PartyId.getData() = coroutineScope {
         await(

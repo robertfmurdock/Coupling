@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.party
 
+import com.zegreatrob.coupling.action.PartyListQuery
 import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps

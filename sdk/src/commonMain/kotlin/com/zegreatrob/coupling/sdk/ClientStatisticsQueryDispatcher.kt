@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.stats
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.stats.StatisticsQuery

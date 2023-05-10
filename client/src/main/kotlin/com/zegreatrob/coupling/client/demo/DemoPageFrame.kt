@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.demo
 
+import com.zegreatrob.coupling.action.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.aboutPageContent
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.DispatchFunc
-import com.zegreatrob.coupling.client.components.NewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.components.party.PartyConfigContent
@@ -222,4 +222,4 @@ private val noOpDispatchFunc = object : DispatchFunc<NoOpDispatcher> {
 
 interface NoOpDispatcher :
     DeletePairAssignmentsCommand.Dispatcher,
-    NewPairAssignmentsCommandDispatcher
+    NewPairAssignmentsCommand.Dispatcher

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.player.retired
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -13,12 +13,19 @@ import kotlinx.coroutines.coroutineScope
 typealias PlayerListData = Pair<Party, List<Player>>
 
 data class RetiredPlayerListQuery(val partyId: PartyId) :
-    SimpleSuspendAction<RetiredPlayerListQueryDispatcher, PlayerListData?> {
-    override val performFunc = link(RetiredPlayerListQueryDispatcher::perform)
+    SimpleSuspendAction<RetiredPlayerListQuery.Dispatcher, PlayerListData?> {
+    override val performFunc = link(Dispatcher::perform)
+
+    interface Dispatcher {
+        suspend fun perform(query: RetiredPlayerListQuery): Pair<Party, List<Player>>?
+    }
 }
 
-interface RetiredPlayerListQueryDispatcher : PartyIdGetSyntax, PartyRetiredPlayersSyntax {
-    suspend fun perform(query: RetiredPlayerListQuery) = getData(query.partyId)
+interface ClientRetiredPlayerListQueryDispatcher :
+    PartyIdGetSyntax,
+    PartyRetiredPlayersSyntax,
+    RetiredPlayerListQuery.Dispatcher {
+    override suspend fun perform(query: RetiredPlayerListQuery) = getData(query.partyId)
 
     private suspend fun getData(partyId: PartyId) = coroutineScope {
         await(

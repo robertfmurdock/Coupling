@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments.list
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
+import com.zegreatrob.coupling.sdk.HistoryQuery
 import com.zegreatrob.minreact.create
 
 val HistoryPage = partyPageFunction { props, partyId ->

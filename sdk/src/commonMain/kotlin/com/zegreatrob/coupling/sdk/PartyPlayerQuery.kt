@@ -15,15 +15,20 @@ import kotlinx.coroutines.coroutineScope
 typealias PartyPlayerData = Triple<Party, List<Player>, Player>
 
 data class PartyPlayerQuery(val partyId: PartyId, val playerId: String?) :
-    SimpleSuspendAction<PartyPlayerQueryDispatcher, PartyPlayerData?> {
-    override val performFunc = link(PartyPlayerQueryDispatcher::perform)
+    SimpleSuspendAction<PartyPlayerQuery.Dispatcher, PartyPlayerData?> {
+    override val performFunc = link(Dispatcher::perform)
+
+    interface Dispatcher {
+        suspend fun perform(query: PartyPlayerQuery): Triple<Party, List<Player>, Player>?
+    }
 }
 
-interface PartyPlayerQueryDispatcher :
+interface ClientPartyPlayerQueryDispatcher :
     PartyIdGetSyntax,
     PartyPlayersSyntax,
-    FindCallSignAction.Dispatcher {
-    suspend fun perform(query: PartyPlayerQuery) = query.get()
+    FindCallSignAction.Dispatcher,
+    PartyPlayerQuery.Dispatcher {
+    override suspend fun perform(query: PartyPlayerQuery) = query.get()
 
     private suspend fun PartyPlayerQuery.get() = partyId.getData()
         .let { (party, players) ->
