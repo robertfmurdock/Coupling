@@ -12,7 +12,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
-class SdkBoostRepositoryTest {
+class SdkBoostTest {
 
     private val setupWithUser = asyncTestTemplate(
         sharedSetup = suspend {

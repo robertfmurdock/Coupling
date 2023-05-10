@@ -27,7 +27,7 @@ import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
 import kotlin.test.Test
 
-class SdkPairAssignmentDocumentRepositoryTest {
+class SdkPairAssignmentDocumentTest {
 
     private val repositorySetup = asyncTestTemplate(
         sharedSetup = suspend {

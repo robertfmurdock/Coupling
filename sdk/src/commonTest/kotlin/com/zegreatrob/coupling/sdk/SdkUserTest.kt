@@ -5,7 +5,7 @@ import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
-class SdkUserRepositoryTest {
+class SdkUserTest {
 
     @Test
     fun canPerformUserQuery() = asyncSetup() exercise {
