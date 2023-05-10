@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.Boost
@@ -24,17 +25,19 @@ class SdkBoostRepositoryTest {
     )
 
     @Test
-    fun deleteWillMakeBoostNotRecoverableThroughGet() = setupWithUser().exercise {
+    fun deleteWillMakeBoostNotRecoverableThroughGet() = setupWithUser {
+    } exercise {
         perform(SaveBoostCommand(setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))))
-        deleteIt()
+        perform(DeleteBoostCommand())
     } verifyWithWait {
         get()
             .assertIsEqualTo(null)
     }
 
     @Test
-    fun getBoostWhenThereIsNoneReturnsNull() = setupWithUser().exercise {
-        deleteIt()
+    fun getBoostWhenThereIsNoneReturnsNull() = setupWithUser {
+    } exercise {
+        perform(DeleteBoostCommand())
     } verifyWithWait {
         get()
             .assertIsEqualTo(null)

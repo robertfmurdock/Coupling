@@ -4,6 +4,7 @@ import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.action.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.user.UserQuery
@@ -90,6 +91,6 @@ class MemoryRepositoryCatalog private constructor(
     }
 
     override suspend fun get() = TODO("Not yet implemented")
-    override suspend fun deleteIt() = TODO("Not yet implemented")
+    override suspend fun perform(command: DeleteBoostCommand) = TODO("Not yet implemented")
     override suspend fun perform(command: SaveBoostCommand) = TODO("Not yet implemented")
 }

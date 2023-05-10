@@ -1,16 +1,12 @@
 package com.zegreatrob.coupling.server.action.boost
 
-import com.zegreatrob.coupling.action.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.DeleteBoostCommand
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.repository.BoostDelete
 
-class DeleteBoostCommand : SimpleSuspendResultAction<DeleteBoostCommandDispatcher, Unit> {
-    override val performFunc = link(DeleteBoostCommandDispatcher::perform)
-}
+interface ServerDeleteBoostCommandDispatcher : BoostDeleteSyntax, DeleteBoostCommand.Dispatcher {
 
-interface DeleteBoostCommandDispatcher : BoostDeleteSyntax {
-
-    suspend fun perform(command: DeleteBoostCommand): SuccessfulResult<Unit> {
+    override suspend fun perform(command: DeleteBoostCommand): SuccessfulResult<Unit> {
         deleteIt()
         return SuccessfulResult(Unit)
     }

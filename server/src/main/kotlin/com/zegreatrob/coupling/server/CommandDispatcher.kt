@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
 import com.zegreatrob.coupling.server.action.boost.BoostQueryDispatcher
-import com.zegreatrob.coupling.server.action.boost.DeleteBoostCommandDispatcher
+import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerSaveBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommandDispatcher
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQueryDispatcher
@@ -175,6 +175,6 @@ interface PrereleaseDispatcher :
     ICommandDispatcher,
     ServerSaveBoostCommandDispatcher,
     BoostQueryDispatcher,
-    DeleteBoostCommandDispatcher {
+    ServerDeleteBoostCommandDispatcher {
     override val boostRepository: BoostRepository
 }
