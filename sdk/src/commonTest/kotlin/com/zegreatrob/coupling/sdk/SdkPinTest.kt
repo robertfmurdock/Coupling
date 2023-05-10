@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
@@ -21,9 +20,9 @@ import kotlin.test.Test
 
 class SdkPinTest {
 
-    private val repositorySetup = asyncTestTemplate(
+    private val partySetup = asyncTestTemplate(
         sharedSetup = suspend {
-            val sdk = authorizedSdk()
+            val sdk = sdk()
             object : BarebonesSdk by sdk {
                 val party = stubParty()
             }.apply { sdk.perform(SavePartyCommand(party)) }
@@ -32,7 +31,7 @@ class SdkPinTest {
     )
 
     @Test
-    fun canSaveAndGetPins() = repositorySetup.with(
+    fun canSaveAndGetPins() = partySetup.with(
         {
             object : BarebonesSdk by it {
                 val party = it.party
@@ -52,21 +51,21 @@ class SdkPinTest {
     }
 
     @Test
-    fun deleteWillFailWhenPinDoesNotExist() = repositorySetup() exercise {
+    fun deleteWillFailWhenPinDoesNotExist() = partySetup() exercise {
         perform(DeletePinCommand(party.id, "${uuid4()}"))
     } verify { result ->
         result.assertIsEqualTo(NotFoundResult("Pin"))
     }
 
     @Test
-    fun givenNoPinsWillReturnEmptyList() = repositorySetup() exercise {
+    fun givenNoPinsWillReturnEmptyList() = partySetup() exercise {
         getPins(party.id)
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
 
     @Test
-    fun saveThenDeleteWillNotShowThatPin() = repositorySetup.with({
+    fun saveThenDeleteWillNotShowThatPin() = partySetup.with({
         object : BarebonesSdk by it {
             val party = it.party
             val pins = listOf(
@@ -87,7 +86,7 @@ class SdkPinTest {
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with({
+    fun saveWorksWithNullableValuesAndAssignsIds() = partySetup.with({
         object : BarebonesSdk by it {
             val partyId = it.party.id
             val pin = Pin(
@@ -111,7 +110,7 @@ class SdkPinTest {
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({
-        val sdk = authorizedSdk()
+        val sdk = sdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
             val otherParty = stubParty()
@@ -133,9 +132,9 @@ class SdkPinTest {
     fun savedPinsIncludeModificationDateAndUsername() = asyncSetup(object {
         val party = stubParty()
         val pin = stubPin()
-        lateinit var sdk: SdkSingleton
+        lateinit var sdk: BarebonesSdk
     }) {
-        sdk = authorizedSdk()
+        sdk = sdk()
         sdk.perform(SavePartyCommand(party))
         sdk.perform(SavePinCommand(party.id, pin))
     } exercise {
@@ -147,10 +146,4 @@ class SdkPinTest {
             modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
         }
     }
-}
-
-fun DateTime.isWithinOneSecondOfNow() {
-    val timeSpan = DateTime.now() - this
-    (timeSpan.seconds < 1)
-        .assertIsEqualTo(true)
 }

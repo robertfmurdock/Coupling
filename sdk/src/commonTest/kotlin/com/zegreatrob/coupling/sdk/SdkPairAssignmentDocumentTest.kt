@@ -31,7 +31,7 @@ class SdkPairAssignmentDocumentTest {
 
     private val repositorySetup = asyncTestTemplate(
         sharedSetup = suspend {
-            val sdk = authorizedSdk()
+            val sdk = sdk()
             object : BarebonesSdk by sdk {
                 val party = stubParty()
             }.apply { perform(SavePartyCommand(party)) }
@@ -132,7 +132,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({
-        val sdk = authorizedSdk()
+        val sdk = sdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
             val otherParty = stubParty()

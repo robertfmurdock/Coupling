@@ -90,7 +90,7 @@ class SpinTest {
 
     @Test
     fun givenTheLongestPairRuleItWillIgnoreBadges() = asyncSetup(object : ScopeMint() {
-        val sdk = setupScope.async { authorizedSdk() }
+        val sdk = setupScope.async { sdk() }
         val party = Party(id = PartyId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
@@ -173,7 +173,7 @@ class SpinTest {
 
     companion object {
         private suspend fun setupScenario(
-            sdk: Sdk,
+            sdk: BarebonesSdk,
             party: Party,
             players: List<Player> = emptyList(),
             history: List<PairAssignmentDocument> = emptyList(),

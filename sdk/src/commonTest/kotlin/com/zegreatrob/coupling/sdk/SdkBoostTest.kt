@@ -19,7 +19,7 @@ class SdkBoostTest {
 
     private val setupWithUser = asyncTestTemplate(
         sharedSetup = suspend {
-            val sdk = authorizedSdk()
+            val sdk = sdk()
             val user = sdk.perform(UserQuery())?.let { Record(it, "") }!!.data
             object : BarebonesSdk by sdk {
                 val user = user

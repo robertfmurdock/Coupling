@@ -27,7 +27,7 @@ expect fun getEnv(name: String): String?
 
 val primaryAuthorizedSdkDeferred by lazy {
     MainScope().async {
-        authorizedSdk(primaryAuthorizedUsername, primaryTestPassword)
+        sdk(primaryAuthorizedUsername, primaryTestPassword)
             .apply { deleteAnyDisplayedParties() }
     }
 }
@@ -37,7 +37,7 @@ val altTestPassword = getEnv("COUPLING_ALT_TEST_PASSWORD") ?: ""
 
 val altAuthorizedSdkDeferred by lazy {
     MainScope().async {
-        authorizedSdk(altAuthorizedUsername, altTestPassword)
+        sdk(altAuthorizedUsername, altTestPassword)
             .apply { deleteAnyDisplayedParties() }
     }
 }
@@ -48,10 +48,10 @@ private suspend fun Sdk.deleteAnyDisplayedParties() = with(partyRepository) {
     }
 }
 
-private suspend fun authorizedSdk(username: String, password: String) = generateAccessToken(username, password)
+private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
     .let { token -> SdkSingleton({ token }, buildClient(), uuid4()) }
 
-suspend fun authorizedSdk() = primaryAuthorizedSdkDeferred.await()
+suspend fun sdk(): BarebonesSdk = primaryAuthorizedSdkDeferred.await()
 
 val generalPurposeClient = HttpClient {
     install(ContentNegotiation) { json() }

@@ -26,7 +26,7 @@ class SdkPlayerTest {
 
     private val sdkSetup = asyncTestTemplate(
         sharedSetup = suspend {
-            val authorizedSdk = authorizedSdk()
+            val authorizedSdk = sdk()
             object : BarebonesSdk by authorizedSdk {
                 val party = stubParty()
             }.apply {
@@ -227,7 +227,7 @@ class SdkPlayerTest {
 
         @Test
         fun getIsNotAllowed() = runTest {
-            val sdk = authorizedSdk()
+            val sdk = sdk()
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
@@ -247,7 +247,7 @@ class SdkPlayerTest {
 
         @Test
         fun postIsNotAllowed() = runTest {
-            val sdk = authorizedSdk()
+            val sdk = sdk()
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
@@ -276,7 +276,7 @@ class SdkPlayerTest {
         fun deleteIsNotAllowed() = asyncSetup(object {
             val party = stubParty()
         }) exercise {
-            authorizedSdk().perform(DeletePlayerCommand(party.id, "player id"))
+            sdk().perform(DeletePlayerCommand(party.id, "player id"))
         } verify { result ->
             result.assertIsEqualTo(NotFoundResult("player"))
         }

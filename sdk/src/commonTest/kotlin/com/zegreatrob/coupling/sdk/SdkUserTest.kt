@@ -9,7 +9,7 @@ class SdkUserTest {
 
     @Test
     fun canPerformUserQuery() = asyncSetup() exercise {
-        authorizedSdk().perform(UserQuery())
+        sdk().perform(UserQuery())
     } verify { result ->
         result.let {
             it?.email.assertIsEqualTo(primaryAuthorizedUsername)
