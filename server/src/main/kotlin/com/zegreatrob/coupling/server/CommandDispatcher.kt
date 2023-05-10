@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.A
 import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
 import com.zegreatrob.coupling.server.action.boost.BoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.DeleteBoostCommandDispatcher
-import com.zegreatrob.coupling.server.action.boost.SaveBoostCommandDispatcher
+import com.zegreatrob.coupling.server.action.boost.ServerSaveBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommandDispatcher
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQueryDispatcher
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
@@ -173,7 +173,7 @@ fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(
 
 interface PrereleaseDispatcher :
     ICommandDispatcher,
-    SaveBoostCommandDispatcher,
+    ServerSaveBoostCommandDispatcher,
     BoostQueryDispatcher,
     DeleteBoostCommandDispatcher {
     override val boostRepository: BoostRepository
