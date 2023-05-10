@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
@@ -14,7 +15,7 @@ val e2eSetup: TestTemplate<Sdk> by lazy {
 
     asyncTestTemplate(beforeAll = {
         CouplingLogin.sdkProvider.await().apply {
-            getParties().map(Party::id).forEach { it.deleteIt() }
+            getParties().map(Record<Party>::data).map(Party::id).forEach { it.deleteIt() }
 
             WebdriverBrowser.setUrl("")
             js("browser.executeAsync(function(ignore, done) {window.sessionStorage.setItem('animationDisabled', true); done()}, undefined)")

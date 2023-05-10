@@ -4,7 +4,6 @@ import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdDeleteSyntax
-import com.zegreatrob.coupling.repository.party.PartyListSyntax
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.party.PartySaveSyntax
 import com.zegreatrob.coupling.repository.pin.PartyPinSaveSyntax
@@ -26,13 +25,13 @@ interface RepositoryCatalog {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
 
-class SdkPartyRepository(gqlQueryComponent: GqlQueryComponent) :
+interface SdkParty :
     SdkPartyGet,
     SdkPartyListGet,
     SdkPartySave,
     SdkPartyDelete,
     PartyRepository,
-    GqlQueryComponent by gqlQueryComponent
+    GqlQueryComponent
 
 interface SdkPlayer :
     SdkPlayerListGet,
@@ -76,6 +75,7 @@ interface Sdk :
     ClientDeletePairAssignmentsCommandDispatcher,
     ClientSavePairAssignmentsCommandDispatcher,
     SdkPairAssignmentsRepository,
+    SdkParty,
     GqlQueryComponent,
     GqlFileLoader {
     suspend fun getToken(): String
@@ -83,7 +83,7 @@ interface Sdk :
     override val pinRepository get() = this
     override val pairAssignmentDocumentRepository get() = this
     override val playerRepository get() = this
-    override val partyRepository get() = SdkPartyRepository(this)
+    override val partyRepository get() = this
     override val mutations get() = Mutations(this)
     override val queries get() = Queries(this)
 }
@@ -109,7 +109,6 @@ interface SdkProviderSyntax {
 
 interface SdkSyntax :
     SdkProviderSyntax,
-    PartyListSyntax,
     PartySaveSyntax,
     PartyIdDeleteSyntax,
     PartyPinsSyntax,
