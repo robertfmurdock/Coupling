@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
@@ -24,7 +25,7 @@ class SdkBoostRepositoryTest {
 
     @Test
     fun deleteWillMakeBoostNotRecoverableThroughGet() = setupWithUser().exercise {
-        save(Boost(user.id, setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))))
+        perform(SaveBoostCommand(setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))))
         deleteIt()
     } verifyWithWait {
         get()
@@ -42,28 +43,40 @@ class SdkBoostRepositoryTest {
     @Test
     fun getSavedBoostWillReturnSuccessfully() = setupWithUser.with({
         object : BarebonesSdk by it {
-            val boost by lazy { Boost(it.user.id, setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))) }
+            val userId = it.user.id
+            val partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))
         }
     }) exercise {
-        save(this.boost)
+        perform(SaveBoostCommand(partyIds))
     } verifyWithWait {
         get()?.data
-            .assertIsEqualTo(this.boost)
+            .assertIsEqualTo(
+                Boost(
+                    userId = userId,
+                    partyIds = partyIds,
+                ),
+            )
     }
 
     @Test
     fun saveBoostRepeatedlyGetsLatest() = setupWithUser.with({
         object : BarebonesSdk by it {
-            val boost = Boost(it.user.id, setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}")))
-            val updatedBoost1 = boost.copy(partyIds = emptySet())
-            val updatedBoost2 = updatedBoost1.copy(partyIds = setOf(PartyId("${uuid4()}")))
+            val userId = it.user.id
+            val initialBoostParties = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))
+            val updatedBoostParties1 = emptySet<PartyId>()
+            val updatedBoostParties2 = setOf(PartyId("${uuid4()}"))
         }
     }) exercise {
-        save(boost)
-        save(updatedBoost1)
-        save(updatedBoost2)
+        perform(SaveBoostCommand(initialBoostParties))
+        perform(SaveBoostCommand(updatedBoostParties1))
+        perform(SaveBoostCommand(updatedBoostParties2))
     } verifyWithWait {
         get()?.data
-            .assertIsEqualTo(updatedBoost2)
+            .assertIsEqualTo(
+                Boost(
+                    userId = userId,
+                    partyIds = updatedBoostParties2,
+                ),
+            )
     }
 }

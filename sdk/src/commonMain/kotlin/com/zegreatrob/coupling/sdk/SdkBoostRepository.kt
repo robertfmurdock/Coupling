@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.boost.SaveBoostCommand
+import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.json.JsonBoostRecord
 import com.zegreatrob.coupling.json.SaveBoostInput
 import com.zegreatrob.coupling.json.at
@@ -11,7 +13,15 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
-interface SdkBoostRepository : BoostRepository, GqlSyntax, GraphQueries {
+interface SdkBoostRepository : BoostRepository, GqlSyntax, GraphQueries, SaveBoostCommand.Dispatcher {
+
+    override suspend fun perform(command: SaveBoostCommand) = doQuery(
+        query = mutations.saveBoost,
+        input = command.saveBoostInput(),
+    ).let { }
+        .successResult()
+
+    private fun SaveBoostCommand.saveBoostInput() = SaveBoostInput(partyIds)
 
     override suspend fun get() = performer.postAsync(boostQuery()).await()
         .at("/data/user/boost")
