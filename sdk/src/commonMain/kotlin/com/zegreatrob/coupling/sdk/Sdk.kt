@@ -49,13 +49,13 @@ interface SdkPin :
     PinRepository,
     GqlQueryComponent
 
-class SdkPairAssignmentsRepository(gqlQueryComponent: GqlQueryComponent) :
+interface SdkPairAssignmentsRepository :
     SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentSave,
     SdkPairAssignmentDocumentDelete,
     SdkPairAssignmentDocumentGetCurrent,
     PairAssignmentDocumentRepository,
-    GqlQueryComponent by gqlQueryComponent
+    GqlQueryComponent
 
 interface Sdk :
     BarebonesSdk,
@@ -75,12 +75,13 @@ interface Sdk :
     ClientSavePlayerCommandDispatcher,
     ClientDeletePairAssignmentsCommandDispatcher,
     ClientSavePairAssignmentsCommandDispatcher,
+    SdkPairAssignmentsRepository,
     GqlQueryComponent,
     GqlFileLoader {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
     override val pinRepository get() = this
-    override val pairAssignmentDocumentRepository get() = SdkPairAssignmentsRepository(this)
+    override val pairAssignmentDocumentRepository get() = this
     override val playerRepository get() = this
     override val partyRepository get() = SdkPartyRepository(this)
     override val mutations get() = Mutations(this)

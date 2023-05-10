@@ -5,6 +5,7 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.action.NotFoundResult
+import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
@@ -15,6 +16,7 @@ import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.document
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -53,7 +55,7 @@ class SdkPairAssignmentDocumentRepositoryTest {
     } exercise {
         perform(SavePairAssignmentsCommand(party.id, updatedDocument))
     } verifyWithWait {
-        pairAssignmentDocumentRepository.getPairAssignments(this.party.id).data()
+        getPairAssignments(this.party.id).data()
             .map { it.document }
             .assertIsEqualTo(listOf(this.updatedDocument))
     }
@@ -77,7 +79,7 @@ class SdkPairAssignmentDocumentRepositoryTest {
         listOf(middle, oldest, newest)
             .forEach { perform(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        pairAssignmentDocumentRepository.getCurrentPairAssignments(partyId)
+        getCurrentPairAssignments(partyId)
     } verify { result: PartyRecord<PairAssignmentDocument>? ->
         result?.element.assertIsEqualTo(newest)
     }
@@ -91,12 +93,12 @@ class SdkPairAssignmentDocumentRepositoryTest {
     }) {
         perform(SavePairAssignmentsCommand(partyId, document))
     } exercise {
-        pairAssignmentDocumentRepository.deleteIt(partyId, this.document.id)
+        perform(DeletePairAssignmentsCommand(partyId, document.id))
     } verifyWithWait { result ->
-        result.assertIsEqualTo(true)
-        pairAssignmentDocumentRepository.getPairAssignments(this.partyId)
+        result.assertIsEqualTo(SuccessfulResult(Unit))
+        getPairAssignments(partyId)
             .data()
-            .map { it.document }
+            .map(PartyElement<PairAssignmentDocument>::document)
             .assertIsEqualTo(emptyList())
     }
 
@@ -112,7 +114,7 @@ class SdkPairAssignmentDocumentRepositoryTest {
         listOf(middle, oldest, newest)
             .forEach { perform(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        pairAssignmentDocumentRepository.getPairAssignments(partyId)
+        getPairAssignments(partyId)
     } verifyWithWait { result ->
         result.data()
             .map { it.document }
@@ -123,7 +125,7 @@ class SdkPairAssignmentDocumentRepositoryTest {
 
     @Test
     fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {
-        pairAssignmentDocumentRepository.getPairAssignments(party.id)
+        getPairAssignments(party.id)
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
@@ -141,7 +143,7 @@ class SdkPairAssignmentDocumentRepositoryTest {
         otherSdk.perform(SavePartyCommand(otherParty))
         otherSdk.perform(SavePairAssignmentsCommand(otherParty.id, stubPairAssignmentDoc()))
     } exercise {
-        sdk.pairAssignmentDocumentRepository.getPairAssignments(PartyId("someoneElseParty"))
+        sdk.getPairAssignments(PartyId("someoneElseParty"))
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
@@ -157,7 +159,7 @@ class SdkPairAssignmentDocumentRepositoryTest {
     }) {
         perform(SavePairAssignmentsCommand(partyId, pairAssignmentDoc))
     } exercise {
-        pairAssignmentDocumentRepository.getPairAssignments(partyId)
+        getPairAssignments(partyId)
     } verify { result ->
         result.size.assertIsEqualTo(1)
         result.first().apply {

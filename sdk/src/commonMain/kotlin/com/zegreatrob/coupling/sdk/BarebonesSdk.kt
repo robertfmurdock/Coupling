@@ -11,6 +11,9 @@ import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.user.UserQuery
+import com.zegreatrob.coupling.repository.BoostRepository
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
 import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
@@ -31,4 +34,7 @@ interface BarebonesSdk :
     PartyPlayerQueryDispatcher,
     PlayerListGet,
     PinGet,
-    PlayerListGetDeleted
+    PlayerListGetDeleted,
+    PairAssignmentDocumentGetCurrent,
+    PairAssignmentDocumentGet,
+    BoostRepository

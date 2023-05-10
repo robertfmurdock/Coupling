@@ -6,6 +6,7 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.user.UserQuery
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -19,6 +20,8 @@ import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRep
 import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinGet
@@ -57,6 +60,8 @@ class MemoryRepositoryCatalog private constructor(
     PlayerListGet by playerRepository,
     PlayerListGetDeleted by playerRepository,
     PinGet by pinRepository,
+    PairAssignmentDocumentGetCurrent by pairAssignmentDocumentRepository,
+    PairAssignmentDocumentGet by pairAssignmentDocumentRepository,
     UserIdSyntax,
     ClockSyntax {
 
@@ -83,4 +88,8 @@ class MemoryRepositoryCatalog private constructor(
             pairs = pairs,
         )
     }
+
+    override suspend fun get() = TODO("Not yet implemented")
+    override suspend fun save(boost: Boost) = TODO("Not yet implemented")
+    override suspend fun deleteIt() = TODO("Not yet implemented")
 }
