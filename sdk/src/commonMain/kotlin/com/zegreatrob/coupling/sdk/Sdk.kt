@@ -97,10 +97,6 @@ interface Sdk :
     override val mutations get() = Mutations(this)
     override val queries get() = Queries(this)
 
-    override suspend fun getParties(): List<Record<Party>> {
-        return super.getParties()
-    }
-
     override suspend fun perform(query: PartyListQuery): List<Party> = sdk.getParties().map(Record<Party>::data)
 }
 

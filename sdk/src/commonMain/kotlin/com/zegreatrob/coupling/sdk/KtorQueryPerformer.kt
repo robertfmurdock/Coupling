@@ -20,9 +20,10 @@ interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
         return postStringToJsonObject(body)
     }
 
-    override suspend fun doQuery(body: String): JsonElement {
-        return postStringToJsonObject(JsonObject(mapOf("query" to JsonPrimitive(body))))
-    }
+    override suspend fun doQuery(body: String) =
+        postStringToJsonObject(
+            JsonObject(mapOf("query" to JsonPrimitive(body))),
+        )
 
     override fun postAsync(body: JsonElement) = MainScope().async {
         postStringToJsonObject(body)
