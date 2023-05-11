@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -13,7 +14,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
@@ -183,7 +183,7 @@ class SpinTest {
         ) = coroutineScope {
             sdk.partyRepository.save(party)
             players.forEach { launch { sdk.perform(SavePlayerCommand(party.id, it)) } }
-            party.id.with(history).forEach { launch { sdk.pairAssignmentDocumentRepository.save(it) } }
+            history.forEach { launch { sdk.perform(SavePairAssignmentsCommand(party.id, it)) } }
             pins.forEach { launch { sdk.perform(SavePinCommand(party.id, it)) } }
         }
     }

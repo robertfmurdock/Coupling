@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.json.JsonCouplingSocketMessage
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString
@@ -8,7 +9,6 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
@@ -130,7 +130,7 @@ class WebsocketTest {
         sdk.partyRepository.save(party)
         sockets.add(couplingSocketSession(party.id).alsoWaitForFirstFrame())
     } exercise {
-        sdk.pairAssignmentDocumentRepository.save(party.id.with(expectedPairDoc))
+        sdk.perform(SavePairAssignmentsCommand(party.id, expectedPairDoc))
     } verifyAnd {
         sockets.first()
             .readTextFrame()
