@@ -87,8 +87,8 @@ interface Sdk :
     override val pairAssignmentDocumentRepository get() = this
     override val playerRepository get() = this
     override val partyRepository get() = this
-    override val mutations get() = Mutations
-    override val queries get() = Queries
+    override val mutations get() = Mutation
+    override val queries get() = Query
 
     override suspend fun perform(query: GraphQuery) = query.queryString.performQuery()
         .jsonObject["data"]

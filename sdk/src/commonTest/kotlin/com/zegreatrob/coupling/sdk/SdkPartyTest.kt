@@ -17,6 +17,7 @@ import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
+import kotlin.test.assertNotNull
 
 class SdkPartyTest {
 
@@ -29,12 +30,12 @@ class SdkPartyTest {
         with(sdk()) {
             perform(DeletePartyCommand(party.id))
             Pair(
-                getParties(),
+                perform(GraphQuery(Query.listParties))?.partyList,
                 getPartyRecord(party.id)?.data,
             )
         }
     } verifyAnd { (listResult, getResult) ->
-        listResult.find { it.data.id == this.party.id }
+        listResult?.find { it.data.id == this.party.id }
             .assertIsEqualTo(null)
         getResult.assertIsEqualTo(null)
     } teardown {
@@ -58,15 +59,17 @@ class SdkPartyTest {
     }) {
         parties.forEach { sdk().perform(SavePartyCommand(it)) }
     } exercise {
-        sdk().getParties()
+        sdk().perform(GraphQuery(Query.listParties))?.partyList
     } verify { result ->
-        result.parties().assertContainsAll(parties)
+        result?.parties().assertContainsAll(parties)
     }
 
     private fun List<Record<Party>>.parties() = map(Record<Party>::data)
 
-    private fun List<Party>.assertContainsAll(expectedParties: List<Party>) =
+    private fun List<Party>?.assertContainsAll(expectedParties: List<Party>) {
+        assertNotNull(this, "List was null.")
         expectedParties.forEach(this::assertContains)
+    }
 
     private val setupWithPlayerMatchingUserTwoSdks = asyncTestTemplate(
         sharedSetup = suspend {
@@ -88,9 +91,9 @@ class SdkPartyTest {
             perform(SavePlayerCommand(party.id, playerMatchingSdkUser))
         }
     } exercise {
-        sdk().getParties()
+        sdk().perform(GraphQuery(Query.listParties))?.partyList ?: emptyList()
     } verify { result ->
-        result.map { it.data }
+        result.map(Record<Party>::data)
             .assertContains(party)
     }
 
@@ -102,7 +105,7 @@ class SdkPartyTest {
             perform(SavePlayerCommand(party.id, playerMatchingSdkUser.copy(email = "something else")))
         }
     } exercise {
-        sdk().getParties()
+        sdk().perform(GraphQuery(Query.listParties))?.partyList ?: emptyList()
     } verify { result ->
         result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
@@ -116,7 +119,7 @@ class SdkPartyTest {
             perform(DeletePlayerCommand(party.id, playerMatchingSdkUser.id))
         }
     } exercise {
-        sdk().getParties()
+        sdk().perform(GraphQuery(Query.listParties))?.partyList ?: emptyList()
     } verify { result ->
         result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
@@ -138,7 +141,7 @@ class SdkPartyTest {
     }) {
         sdk().perform(SavePartyCommand(party))
     } exercise {
-        sdk().getParties()
+        sdk().perform(GraphQuery(Query.listParties))?.partyList ?: emptyList()
     } verifyAnd { result ->
         result.first { it.data.id == party.id }.apply {
             modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")

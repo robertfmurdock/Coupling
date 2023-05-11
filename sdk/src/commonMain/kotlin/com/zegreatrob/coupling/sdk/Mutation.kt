@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
 interface GraphQueries {
-    val mutations: Mutations
-    val queries: Queries
+    val mutations: Mutation
+    val queries: Query
 }
 
-object Mutations {
+object Mutation {
     val spin by GqlFileLoader
     val savePin by GqlFileLoader
     val saveBoost by GqlFileLoader
@@ -19,7 +19,7 @@ object Mutations {
     val deletePlayer by GqlFileLoader
 }
 
-object Queries {
+object Query {
     val listParties by GqlFileLoader
     val user by GqlFileLoader
     val boost by GqlFileLoader

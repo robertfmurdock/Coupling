@@ -8,9 +8,7 @@ import com.zegreatrob.coupling.model.party.Party
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 
-interface SdkPartyListGet : BarebonesSdk, GqlSyntax, GraphQueries {
-    override suspend fun getParties(): List<Record<Party>> = queries.listParties.performQuery().partyRecords()
-}
+interface SdkPartyListGet : BarebonesSdk, GqlSyntax, GraphQueries
 
 fun JsonElement.partyRecords() = jsonObject["data"]
     ?.jsonObject
