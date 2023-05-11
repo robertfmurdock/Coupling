@@ -1,8 +1,5 @@
 package com.zegreatrob.coupling.action
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.days
-import com.soywiz.klock.hours
 import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.stats.PairReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -19,6 +16,9 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import korlibs.time.DateTime
+import korlibs.time.days
+import korlibs.time.hours
 import kotlin.test.Test
 
 @Suppress("unused")

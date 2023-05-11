@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -10,6 +9,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import korlibs.time.TimeProvider
 import kotlin.js.Json
 
 class DynamoPairAssignmentDocumentRepository private constructor(

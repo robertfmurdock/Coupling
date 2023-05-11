@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.compound
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
@@ -13,6 +12,7 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import korlibs.time.TimeProvider
 import kotlin.test.Test
 
 class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlayerRepository> {

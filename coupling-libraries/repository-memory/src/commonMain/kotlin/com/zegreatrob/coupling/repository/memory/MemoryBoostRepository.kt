@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.repository.memory
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
+import korlibs.time.TimeProvider
 
 class MemoryBoostRepository(
     override val userId: String,

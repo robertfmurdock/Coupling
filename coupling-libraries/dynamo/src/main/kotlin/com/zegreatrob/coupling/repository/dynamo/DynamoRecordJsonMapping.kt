@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.UserIdSyntax
+import korlibs.time.DateTime
 import kotlin.js.Json
 import kotlin.js.json
 

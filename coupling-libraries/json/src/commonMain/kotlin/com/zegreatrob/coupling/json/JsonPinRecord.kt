@@ -2,12 +2,12 @@
 
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
+import korlibs.time.DateTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.PatternDateFormat
-import com.soywiz.klock.parse
+import korlibs.time.DateTime
+import korlibs.time.PatternDateFormat
+import korlibs.time.parse
 import kotlin.js.Json
 import kotlin.js.json
 

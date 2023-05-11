@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.action.stats
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.TimeSpan
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -12,6 +10,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.SimpleExecutableAction
+import korlibs.time.DateTime
+import korlibs.time.TimeSpan
 import kotlin.math.floor
 
 data class ComposeStatisticsAction(

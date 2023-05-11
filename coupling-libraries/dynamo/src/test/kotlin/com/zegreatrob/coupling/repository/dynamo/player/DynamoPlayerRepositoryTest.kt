@@ -1,10 +1,5 @@
 package com.zegreatrob.coupling.repository.dynamo.player
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.days
-import com.soywiz.klock.hours
-import com.soywiz.klock.months
-import com.soywiz.klock.years
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
@@ -22,6 +17,11 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import korlibs.time.DateTime
+import korlibs.time.days
+import korlibs.time.hours
+import korlibs.time.months
+import korlibs.time.years
 import kotlin.js.json
 import kotlin.test.Test
 

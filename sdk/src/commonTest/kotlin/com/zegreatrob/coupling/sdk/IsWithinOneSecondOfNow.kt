@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.minassert.assertIsEqualTo
+import korlibs.time.DateTime
 
 fun DateTime.isWithinOneSecondOfNow() {
     val timeSpan = DateTime.now() - this

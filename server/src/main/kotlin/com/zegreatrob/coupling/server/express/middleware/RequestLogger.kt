@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.server.express.middleware
 
-import com.soywiz.klock.measureTime
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
+import kotlin.time.measureTime
 
 private val logger by lazy { KotlinLogging.logger("RequestLogger") }
 

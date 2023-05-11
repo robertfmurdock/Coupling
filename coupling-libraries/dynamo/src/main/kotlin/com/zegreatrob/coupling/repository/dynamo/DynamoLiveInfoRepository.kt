@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
+import korlibs.time.TimeProvider
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlin.js.Json

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.model
 
-import com.soywiz.klock.TimeProvider
+import korlibs.time.TimeProvider
 
 interface ClockSyntax {
     val clock: TimeProvider

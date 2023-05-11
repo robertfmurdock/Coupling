@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.model.pairassignmentdocument
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.party.PartyElement
+import korlibs.time.DateTime
 
 data class PairAssignmentDocument(
     val id: PairAssignmentDocumentId,

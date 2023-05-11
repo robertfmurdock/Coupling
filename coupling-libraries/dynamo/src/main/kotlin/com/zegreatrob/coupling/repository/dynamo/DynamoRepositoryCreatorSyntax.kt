@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.soywiz.klock.TimeProvider
+import korlibs.time.TimeProvider
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 

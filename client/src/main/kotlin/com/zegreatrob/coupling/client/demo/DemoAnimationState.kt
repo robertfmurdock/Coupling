@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.demo
 
 import com.benasher44.uuid.uuid4
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.components.Frame
 import com.zegreatrob.coupling.client.components.pairassignments.pairAssignmentsClassName
 import com.zegreatrob.coupling.client.components.pairassignments.prepareToSpinButtonClassName
@@ -19,6 +18,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import korlibs.time.DateTime
 import popper.core.Placement
 import web.cssom.ClassName
 

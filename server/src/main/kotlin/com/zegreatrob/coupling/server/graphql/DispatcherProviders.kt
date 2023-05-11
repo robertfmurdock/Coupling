@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
@@ -9,6 +8,7 @@ import com.zegreatrob.coupling.server.CurrentPartyDispatcher
 import com.zegreatrob.coupling.server.ICommandDispatcher
 import com.zegreatrob.coupling.server.PrereleaseDispatcher
 import com.zegreatrob.coupling.server.express.Config
+import korlibs.time.TimeProvider
 
 object DispatcherProviders {
     val command: GraphQLDispatcherProvider<CommandDispatcher> = { r, _, _ -> r.commandDispatcher }

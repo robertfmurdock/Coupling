@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -9,6 +8,7 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
+import korlibs.time.TimeProvider
 import kotlin.js.Json
 import kotlin.js.json
 

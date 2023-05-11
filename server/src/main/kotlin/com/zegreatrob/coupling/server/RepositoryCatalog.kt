@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
@@ -10,6 +9,7 @@ import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
+import korlibs.time.TimeProvider
 import kotlinx.coroutines.CoroutineScope
 
 interface RepositoryCatalog {

@@ -2,7 +2,6 @@
 
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -16,6 +15,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
+import korlibs.time.DateTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 

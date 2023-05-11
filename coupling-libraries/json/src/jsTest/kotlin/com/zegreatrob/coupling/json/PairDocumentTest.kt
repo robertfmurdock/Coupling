@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import korlibs.time.DateTime
 import kotlin.test.Test
 
 class PairDocumentTest {
