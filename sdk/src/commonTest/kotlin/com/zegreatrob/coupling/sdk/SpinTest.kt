@@ -4,6 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -181,7 +182,7 @@ class SpinTest {
             pins: List<Pin> = emptyList(),
         ) = coroutineScope {
             sdk.partyRepository.save(party)
-            party.id.with(players).forEach { launch { sdk.playerRepository.save(it) } }
+            players.forEach { launch { sdk.perform(SavePlayerCommand(party.id, it)) } }
             party.id.with(history).forEach { launch { sdk.pairAssignmentDocumentRepository.save(it) } }
             pins.forEach { launch { sdk.perform(SavePinCommand(party.id, it)) } }
         }
