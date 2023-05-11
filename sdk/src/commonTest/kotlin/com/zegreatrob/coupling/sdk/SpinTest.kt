@@ -4,6 +4,8 @@ import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.action.party.DeletePartyCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -33,14 +35,18 @@ class SpinTest {
     @Test
     fun willTakeThePlayersGivenAndUseThoseForPairing() = sdkSetup.with({ context ->
         object : SdkContext by context {
-            val party = Party(id = PartyId(uuid4().toString()), name = "commonTest", pairingRule = PairingRule.LongestTime)
+            val party = Party(
+                id = PartyId(uuid4().toString()),
+                name = "commonTest",
+                pairingRule = PairingRule.LongestTime,
+            )
             val players = listOf(
                 Player(name = "dude1", avatarType = null),
                 Player(name = "dude2", avatarType = null),
             )
         }
     }) {
-        sdk.partyRepository.save(party)
+        sdk.perform(SavePartyCommand(party))
     } exercise {
         sdk.perform(RequestSpinAction(party.id, players, emptyList()))
     } verifyAnd { result ->
@@ -48,7 +54,7 @@ class SpinTest {
             listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) })),
         )
     } teardown {
-        sdk.partyRepository.deleteIt(party.id)
+        sdk.perform(DeletePartyCommand(party.id))
     }
 
     @Test
@@ -87,7 +93,7 @@ class SpinTest {
             ),
         )
     } teardown {
-        sdk.partyRepository.deleteIt(party.id)
+        sdk.perform(DeletePartyCommand(party.id))
     }
 
     @Test
@@ -125,7 +131,7 @@ class SpinTest {
             ),
         )
     } teardown {
-        sdk.await().partyRepository.deleteIt(party.id)
+        sdk().perform(DeletePartyCommand(party.id))
     }
 
     class WhenPinExists {
@@ -149,7 +155,7 @@ class SpinTest {
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), setOf(pin))),
             )
         } teardown {
-            sdk.partyRepository.deleteIt(party.id)
+            sdk.perform(DeletePartyCommand(party.id))
         }
 
         @Test
@@ -162,7 +168,7 @@ class SpinTest {
                 listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptySet())),
             )
         } teardown {
-            sdk.partyRepository.deleteIt(party.id)
+            sdk.perform(DeletePartyCommand(party.id))
         }
     }
 
@@ -181,10 +187,12 @@ class SpinTest {
             history: List<PairAssignmentDocument> = emptyList(),
             pins: List<Pin> = emptyList(),
         ) = coroutineScope {
-            sdk.partyRepository.save(party)
-            players.forEach { launch { sdk.perform(SavePlayerCommand(party.id, it)) } }
-            history.forEach { launch { sdk.perform(SavePairAssignmentsCommand(party.id, it)) } }
-            pins.forEach { launch { sdk.perform(SavePinCommand(party.id, it)) } }
+            with(sdk) {
+                perform(SavePartyCommand(party))
+                players.forEach { launch { perform(SavePlayerCommand(party.id, it)) } }
+                history.forEach { launch { perform(SavePairAssignmentsCommand(party.id, it)) } }
+                pins.forEach { launch { perform(SavePinCommand(party.id, it)) } }
+            }
         }
     }
 }

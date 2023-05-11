@@ -29,8 +29,8 @@ class SdkPartyTest {
         with(sdk()) {
             perform(DeletePartyCommand(party.id))
             Pair(
-                partyRepository.getParties(),
-                partyRepository.getPartyRecord(party.id)?.data,
+                getParties(),
+                getPartyRecord(party.id)?.data,
             )
         }
     } verifyAnd { (listResult, getResult) ->
@@ -47,7 +47,7 @@ class SdkPartyTest {
     }) {
         parties.forEach { sdk().perform(SavePartyCommand(it)) }
     } exercise {
-        parties.map { sdk().partyRepository.getPartyRecord(it.id)?.data }
+        parties.map { sdk().getPartyRecord(it.id)?.data }
     } verify { result ->
         result.assertIsEqualTo(this.parties)
     }
@@ -58,7 +58,7 @@ class SdkPartyTest {
     }) {
         parties.forEach { sdk().perform(SavePartyCommand(it)) }
     } exercise {
-        sdk().partyRepository.getParties()
+        sdk().getParties()
     } verify { result ->
         result.parties().assertContainsAll(parties)
     }
@@ -88,7 +88,7 @@ class SdkPartyTest {
             perform(SavePlayerCommand(party.id, playerMatchingSdkUser))
         }
     } exercise {
-        sdk().partyRepository.getParties()
+        sdk().getParties()
     } verify { result ->
         result.map { it.data }
             .assertContains(party)
@@ -102,7 +102,7 @@ class SdkPartyTest {
             perform(SavePlayerCommand(party.id, playerMatchingSdkUser.copy(email = "something else")))
         }
     } exercise {
-        sdk().partyRepository.getParties()
+        sdk().getParties()
     } verify { result ->
         result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
@@ -116,7 +116,7 @@ class SdkPartyTest {
             perform(DeletePlayerCommand(party.id, playerMatchingSdkUser.id))
         }
     } exercise {
-        sdk().partyRepository.getParties()
+        sdk().getParties()
     } verify { result ->
         result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
@@ -127,7 +127,7 @@ class SdkPartyTest {
         altSdk().perform(SavePartyCommand(party))
     } exercise {
         sdk().perform(SavePartyCommand(party.copy(name = "changed name")))
-        altSdk().partyRepository.getPartyRecord(party.id)
+        altSdk().getPartyRecord(party.id)
     } verify { result ->
         result?.data.assertIsEqualTo(party)
     }
@@ -138,7 +138,7 @@ class SdkPartyTest {
     }) {
         sdk().perform(SavePartyCommand(party))
     } exercise {
-        sdk().partyRepository.getParties()
+        sdk().getParties()
     } verifyAnd { result ->
         result.first { it.data.id == party.id }.apply {
             modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")

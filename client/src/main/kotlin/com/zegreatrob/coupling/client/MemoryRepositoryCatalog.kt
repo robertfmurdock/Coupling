@@ -26,6 +26,8 @@ import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
+import com.zegreatrob.coupling.repository.party.PartyGet
+import com.zegreatrob.coupling.repository.party.PartyListGet
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.repository.pin.PinRepository
@@ -83,6 +85,8 @@ class MemoryRepositoryCatalog private constructor(
     ClientSavePlayerCommandDispatcher,
     ClientStatisticsQueryDispatcher,
     NewPartyCommandDispatcher,
+    PartyGet by partyRepository,
+    PartyListGet by partyRepository,
     PlayerListGet by playerRepository,
     PlayerListGetDeleted by playerRepository,
     PinGet by pinRepository,

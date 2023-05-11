@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.NotFoundResult
+import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
@@ -34,7 +35,7 @@ class SdkPlayerTest {
             }
         },
         sharedTeardown = {
-            it.partyRepository.deleteIt(it.party.id)
+            it.perform(DeletePartyCommand(it.party.id))
         },
     )
 
@@ -182,7 +183,7 @@ class SdkPlayerTest {
         result.map { it.data.player }
             .assertIsEqualTo(listOf(player1))
     } teardown {
-        sdk.partyRepository.deleteIt(partyId2)
+        sdk.perform(DeletePartyCommand(partyId2))
     }
 
     @Test

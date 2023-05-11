@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.action.party.DeletePartyCommand
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.json.JsonCouplingSocketMessage
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString
@@ -34,7 +36,7 @@ class WebsocketTest {
             val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(party)
+        sdk.perform(SavePartyCommand(party))
     } exercise {
         val webSocketSession = couplingSocketSession(party.id)
         val message = (webSocketSession.incoming.receive() as? Frame.Text)
@@ -47,7 +49,7 @@ class WebsocketTest {
     } teardown { result ->
         result?.let { (session) ->
             session.close()
-            sdk.partyRepository.deleteIt(party.id)
+            sdk.perform(DeletePartyCommand(party.id))
         }
     }
 
@@ -64,7 +66,7 @@ class WebsocketTest {
             val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(party)
+        sdk.perform(SavePartyCommand(party))
     } exercise {
         val twoSessions = listOf(
             couplingSocketSession(party.id),
@@ -89,7 +91,7 @@ class WebsocketTest {
     } teardown { result ->
         result?.let { (session) ->
             session.forEach { it.close() }
-            sdk.partyRepository.deleteIt(party.id)
+            sdk.perform(DeletePartyCommand(party.id))
         }
     }
 
@@ -99,7 +101,7 @@ class WebsocketTest {
             val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(party)
+        sdk.perform(SavePartyCommand(party))
     } exercise {
         val socket1 = couplingSocketSession(party.id).alsoWaitForFirstFrame()
         val socket2 = couplingSocketSession(party.id).alsoWaitForFirstFrame()
@@ -114,7 +116,7 @@ class WebsocketTest {
             )
     } teardown { result ->
         result?.forEach { it.close() }
-        sdk.partyRepository.deleteIt(party.id)
+        sdk.perform(DeletePartyCommand(party.id))
     }
 
     private suspend fun DefaultClientWebSocketSession.readTextFrame() = (incoming.receive() as? Frame.Text)?.readText()
@@ -127,7 +129,7 @@ class WebsocketTest {
             val expectedPairDoc = stubPairAssignmentDoc()
         }
     }) {
-        sdk.partyRepository.save(party)
+        sdk.perform(SavePartyCommand(party))
         sockets.add(couplingSocketSession(party.id).alsoWaitForFirstFrame())
     } exercise {
         sdk.perform(SavePairAssignmentsCommand(party.id, expectedPairDoc))
@@ -138,7 +140,7 @@ class WebsocketTest {
             .assertIsEqualTo(PairAssignmentAdjustmentMessage(expectedPairDoc))
     } teardown {
         sockets.forEach { it.close() }
-        sdk.partyRepository.deleteIt(party.id)
+        sdk.perform(DeletePartyCommand(party.id))
     }
 
     private suspend fun DefaultClientWebSocketSession.alsoWaitForFirstFrame() = also {
@@ -151,7 +153,7 @@ class WebsocketTest {
             val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(party)
+        sdk.perform(SavePartyCommand(party))
     } exercise {
         val socketToClose = couplingSocketSession(party.id)
             .alsoWaitForFirstFrame()
@@ -168,7 +170,7 @@ class WebsocketTest {
             )
     } teardown { openSocket ->
         openSocket?.close()
-        sdk.partyRepository.deleteIt(party.id)
+        sdk.perform(DeletePartyCommand(party.id))
     }
 
     @Test
@@ -207,7 +209,7 @@ class WebsocketTest {
             val party = stubParty()
         }
     }) {
-        sdk.partyRepository.save(party)
+        sdk.perform(SavePartyCommand(party))
     } exercise {
         couplingSocketSession(party.id)
             .apply { close() }
@@ -221,7 +223,7 @@ class WebsocketTest {
             frame.assertIsNotEqualTo(null)
         }
     } teardown {
-        sdk.partyRepository.deleteIt(party.id)
+        sdk.perform(DeletePartyCommand(party.id))
     }
 }
 
