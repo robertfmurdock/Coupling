@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -182,7 +183,7 @@ class SpinTest {
             sdk.partyRepository.save(party)
             party.id.with(players).forEach { launch { sdk.playerRepository.save(it) } }
             party.id.with(history).forEach { launch { sdk.pairAssignmentDocumentRepository.save(it) } }
-            party.id.with(pins).forEach { launch { sdk.pinRepository.save(it) } }
+            pins.forEach { launch { sdk.perform(SavePinCommand(party.id, it)) } }
         }
     }
 }

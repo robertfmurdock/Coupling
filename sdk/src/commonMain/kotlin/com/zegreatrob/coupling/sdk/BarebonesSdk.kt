@@ -22,7 +22,6 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinGet
-import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 import com.zegreatrob.coupling.repository.player.PlayerRepository
@@ -59,7 +58,6 @@ interface BarebonesSdk :
     SavePlayerCommand.Dispatcher,
     UserQuery.Dispatcher {
     val playerRepository: PlayerRepository
-    val pinRepository: PinRepository
     val partyRepository: PartyRepository
     val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 }
