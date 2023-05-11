@@ -9,14 +9,14 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 
 interface SdkPartyListGet : BarebonesSdk, GqlSyntax, GraphQueries {
-
-    override suspend fun getParties() = queries.listParties.performQuery()
-        .jsonObject["data"]
-        ?.jsonObject
-        ?.get("partyList")
-        .toPartyRecordList()
-
-    private fun JsonElement?.toPartyRecordList(): List<Record<Party>> = this?.fromJsonElement<List<JsonPartyRecord>>()
-        ?.map(JsonPartyRecord::toModelRecord)
-        ?: emptyList()
+    override suspend fun getParties(): List<Record<Party>> = queries.listParties.performQuery().partyRecords()
 }
+
+fun JsonElement.partyRecords() = jsonObject["data"]
+    ?.jsonObject
+    ?.get("partyList")
+    .toPartyRecordList()
+
+private fun JsonElement?.toPartyRecordList(): List<Record<Party>> = this?.fromJsonElement<List<JsonPartyRecord>>()
+    ?.map(JsonPartyRecord::toModelRecord)
+    ?: emptyList()

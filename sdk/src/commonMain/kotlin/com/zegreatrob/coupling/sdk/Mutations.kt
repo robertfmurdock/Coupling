@@ -5,22 +5,22 @@ interface GraphQueries {
     val queries: Queries
 }
 
-class Mutations(gqlFileLoader: GqlFileLoader) {
-    val spin by gqlFileLoader
-    val savePin by gqlFileLoader
-    val saveBoost by gqlFileLoader
-    val deleteBoost by gqlFileLoader
-    val saveParty by gqlFileLoader
-    val savePlayer by gqlFileLoader
-    val savePairAssignments by gqlFileLoader
-    val deleteParty by gqlFileLoader
-    val deletePin by gqlFileLoader
-    val deletePairAssignments by gqlFileLoader
-    val deletePlayer by gqlFileLoader
+object Mutations {
+    val spin by GqlFileLoader
+    val savePin by GqlFileLoader
+    val saveBoost by GqlFileLoader
+    val deleteBoost by GqlFileLoader
+    val saveParty by GqlFileLoader
+    val savePlayer by GqlFileLoader
+    val savePairAssignments by GqlFileLoader
+    val deleteParty by GqlFileLoader
+    val deletePin by GqlFileLoader
+    val deletePairAssignments by GqlFileLoader
+    val deletePlayer by GqlFileLoader
 }
 
-class Queries(gqlFileLoader: GqlFileLoader) {
-    val listParties by gqlFileLoader
-    val user by gqlFileLoader
-    val boost by gqlFileLoader
+object Queries {
+    val listParties by GqlFileLoader
+    val user by GqlFileLoader
+    val boost by GqlFileLoader
 }

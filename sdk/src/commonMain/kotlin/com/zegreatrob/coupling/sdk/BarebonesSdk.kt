@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.DeleteBoostCommand
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.action.NewPairAssignmentsCommand
-import com.zegreatrob.coupling.action.PartyListQuery
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
@@ -33,30 +32,30 @@ interface BarebonesSdk :
     DeletePartyCommand.Dispatcher,
     DeletePinCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
-    PartyPinListQuery.Dispatcher,
+    GraphQuery.Dispatcher,
     HistoryQuery.Dispatcher,
-    PartyListQuery.Dispatcher,
-    PartyQuery.Dispatcher,
-    StatisticsQuery.Dispatcher,
-    RetiredPlayerQuery.Dispatcher,
-    NewPairAssignmentsCommand.Dispatcher,
-    RetiredPlayerListQuery.Dispatcher,
-    PartyCurrentDataQuery.Dispatcher,
     LoggingActionExecuteSyntax,
+    NewPairAssignmentsCommand.Dispatcher,
     PairAssignmentDocumentGet,
     PairAssignmentDocumentGetCurrent,
-    PartyPlayerQuery.Dispatcher,
+    PartyCurrentDataQuery.Dispatcher,
     PartyGet,
+    PartyPinListQuery.Dispatcher,
+    PartyPinQuery.Dispatcher,
+    PartyPlayerQuery.Dispatcher,
+    PartyQuery.Dispatcher,
     PinGet,
     PlayerListGet,
     PlayerListGetDeleted,
     RequestSpinAction.Dispatcher,
-    PartyPinQuery.Dispatcher,
+    RetiredPlayerListQuery.Dispatcher,
+    RetiredPlayerQuery.Dispatcher,
     SaveBoostCommand.Dispatcher,
     SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommand.Dispatcher,
     SavePinCommand.Dispatcher,
     SavePlayerCommand.Dispatcher,
+    StatisticsQuery.Dispatcher,
     UserQuery.Dispatcher {
 
     suspend fun getParties(): List<Record<Party>>

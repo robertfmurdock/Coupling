@@ -52,6 +52,7 @@ import com.zegreatrob.coupling.sdk.ClientSavePartyCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePinCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientStatisticsQueryDispatcher
+import com.zegreatrob.coupling.sdk.GraphQuery
 import korlibs.time.DateTime
 import korlibs.time.TimeProvider
 
@@ -122,4 +123,5 @@ class MemoryRepositoryCatalog private constructor(
     override suspend fun perform(command: BoostQuery) = TODO("Not yet implemented")
     override suspend fun perform(command: DeleteBoostCommand) = TODO("Not yet implemented")
     override suspend fun perform(command: SaveBoostCommand) = TODO("Not yet implemented")
+    override suspend fun perform(query: GraphQuery) = TODO("Not yet implemented")
 }
