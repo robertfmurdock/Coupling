@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.seconds
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
@@ -12,6 +10,8 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
+import korlibs.time.DateTime
+import korlibs.time.seconds
 import kotlin.test.Test
 
 interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, PartyContext<R>> {

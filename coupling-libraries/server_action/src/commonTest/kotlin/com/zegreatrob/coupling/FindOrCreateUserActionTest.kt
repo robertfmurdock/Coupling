@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling
 
 import com.benasher44.uuid.uuid4
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
@@ -14,6 +13,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
+import korlibs.time.DateTime
 import kotlin.test.Test
 import kotlin.test.fail
 

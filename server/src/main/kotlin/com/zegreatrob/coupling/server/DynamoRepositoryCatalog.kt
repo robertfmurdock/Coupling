@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.LiveInfoRepository
@@ -15,6 +14,7 @@ import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
+import korlibs.time.TimeProvider
 
 class DynamoRepositoryCatalog private constructor(
     override val userId: String,

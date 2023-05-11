@@ -1,10 +1,5 @@
 package com.zegreatrob.coupling.repository.dynamo.tribe
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.days
-import com.soywiz.klock.hours
-import com.soywiz.klock.months
-import com.soywiz.klock.years
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
 import com.zegreatrob.coupling.repository.validation.ContextMint
@@ -19,6 +14,11 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import korlibs.time.DateTime
+import korlibs.time.days
+import korlibs.time.hours
+import korlibs.time.months
+import korlibs.time.years
 import kotlin.test.Test
 
 typealias TribeMint = ContextMint<DynamoPartyRepository>

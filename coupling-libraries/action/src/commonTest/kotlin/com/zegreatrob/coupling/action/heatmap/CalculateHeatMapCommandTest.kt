@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.action.heatmap
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
@@ -10,6 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import korlibs.time.DateTime
 import kotlin.test.Test
 
 class CalculateHeatMapCommandTest {

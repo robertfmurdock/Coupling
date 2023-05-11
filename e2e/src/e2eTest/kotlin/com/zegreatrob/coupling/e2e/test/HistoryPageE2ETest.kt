@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -15,6 +14,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
+import korlibs.time.DateTime
 import kotlin.test.Test
 
 @Suppress("unused")

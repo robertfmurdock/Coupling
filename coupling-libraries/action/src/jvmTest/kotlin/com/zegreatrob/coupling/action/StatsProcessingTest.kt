@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.action
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.Year
+import korlibs.time.DateTime
+import korlibs.time.Year
 import java.io.File
 import kotlin.math.roundToInt
 import kotlin.test.Ignore

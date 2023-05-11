@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.user.UserRepository
+import korlibs.time.TimeProvider
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlin.js.Json

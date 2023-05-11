@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.json
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.ISO8601
-import com.soywiz.klock.parse
+import korlibs.time.DateTime
+import korlibs.time.ISO8601
+import korlibs.time.parse
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor

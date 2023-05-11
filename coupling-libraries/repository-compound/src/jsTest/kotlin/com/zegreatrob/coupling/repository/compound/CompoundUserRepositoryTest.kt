@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.compound
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.repository.memory.MemoryUserRepository
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
@@ -10,6 +9,7 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import korlibs.time.TimeProvider
 import kotlin.test.Test
 
 @Suppress("unused")

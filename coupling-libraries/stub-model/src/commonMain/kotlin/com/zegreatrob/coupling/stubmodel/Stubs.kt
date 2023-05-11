@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.stubmodel
 
 import com.benasher44.uuid.uuid4
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.minutes
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -15,6 +13,8 @@ import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
+import korlibs.time.DateTime
+import korlibs.time.minutes
 
 fun stubParties(number: Int) = generateSequence { stubParty() }.take(number).toList()
 

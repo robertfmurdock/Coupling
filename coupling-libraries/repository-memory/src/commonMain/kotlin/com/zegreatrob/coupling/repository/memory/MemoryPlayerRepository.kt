@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.repository.memory
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
@@ -9,6 +8,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.partyId
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
+import korlibs.time.TimeProvider
 
 class MemoryPlayerRepository(
     override val userId: String,

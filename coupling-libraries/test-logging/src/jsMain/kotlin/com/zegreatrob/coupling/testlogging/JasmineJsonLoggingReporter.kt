@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.testlogging
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.logging.initializeLogging
+import korlibs.time.DateTime
 import mu.KotlinLogging
 
 @Suppress("unused")

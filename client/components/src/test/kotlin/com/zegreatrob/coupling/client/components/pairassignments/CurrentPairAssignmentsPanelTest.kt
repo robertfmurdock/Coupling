@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.benasher44.uuid.uuid4
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.StubDispatchFunc
@@ -31,6 +30,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
+import korlibs.time.DateTime
 import react.ReactNode
 import react.create
 import react.router.RouterProvider

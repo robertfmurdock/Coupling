@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.benasher44.uuid.uuid4
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -10,6 +9,7 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
+import korlibs.time.TimeProvider
 import kotlin.js.Json
 
 class DynamoPinRepository private constructor(override val userId: String, override val clock: TimeProvider) :

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.model
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
+import korlibs.time.DateTime
 
 data class Record<T>(
     val data: T,

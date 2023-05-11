@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.repository.validation
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.days
 import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
+import korlibs.time.DateTime
+import korlibs.time.days
 import kotlin.test.Test
 import kotlin.test.fail
 

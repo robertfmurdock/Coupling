@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.memory
 
-import com.soywiz.klock.TimeProvider
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
+import korlibs.time.TimeProvider
 
 class MemoryUserRepository(
     override val userId: String,

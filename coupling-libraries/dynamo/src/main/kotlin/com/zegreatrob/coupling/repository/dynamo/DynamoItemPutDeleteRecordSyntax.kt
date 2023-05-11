@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
+import korlibs.time.DateTime
 import kotlin.js.Json
 
 interface DynamoItemPutDeleteRecordSyntax :

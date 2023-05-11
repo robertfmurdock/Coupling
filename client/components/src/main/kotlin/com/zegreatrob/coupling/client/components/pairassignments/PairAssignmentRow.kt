@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.DateTimeTz
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.PairAssignmentBlock
@@ -17,6 +15,8 @@ import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import emotion.css.ClassName
 import emotion.react.css
+import korlibs.time.DateFormat
+import korlibs.time.DateTimeTz
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span

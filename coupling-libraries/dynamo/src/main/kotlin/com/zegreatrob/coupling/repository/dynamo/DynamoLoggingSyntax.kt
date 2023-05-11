@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.soywiz.klock.PerformanceCounter
-import com.soywiz.klock.TimeSpan
-import com.soywiz.klock.microseconds
+import korlibs.time.PerformanceCounter
+import korlibs.time.TimeSpan
+import korlibs.time.microseconds
 import mu.KotlinLogging
 
 private val theLogger by lazy { KotlinLogging.logger("DynamoLogger") }

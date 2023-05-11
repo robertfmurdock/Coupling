@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
 import com.benasher44.uuid.uuid4
-import com.soywiz.klock.DateTime
 import com.zegreatrob.coupling.client.components.spin.PrepareSpin
 import com.zegreatrob.coupling.client.components.spin.deselectedPinsClass
 import com.zegreatrob.coupling.client.components.spin.selectedPinsClass
@@ -23,6 +22,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
+import korlibs.time.DateTime
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get

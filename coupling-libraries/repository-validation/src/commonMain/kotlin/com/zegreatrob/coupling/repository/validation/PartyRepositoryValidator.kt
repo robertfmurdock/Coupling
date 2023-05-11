@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.repository.validation
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.days
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.party.PartyRepository
@@ -9,6 +7,8 @@ import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
+import korlibs.time.DateTime
+import korlibs.time.days
 import kotlin.test.Test
 
 interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R, SharedContext<R>> {

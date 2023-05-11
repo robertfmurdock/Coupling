@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.logging
 
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.DateTime
+import korlibs.time.DateFormat
+import korlibs.time.DateTime
 import kotlinx.serialization.Serializable
 import mu.KotlinLoggingConfiguration
 import mu.KotlinLoggingLevel
