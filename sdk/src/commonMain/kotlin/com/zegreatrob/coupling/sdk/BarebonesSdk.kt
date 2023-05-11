@@ -17,10 +17,11 @@ import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.action.user.UserQuery
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
 import com.zegreatrob.coupling.repository.party.PartyGet
-import com.zegreatrob.coupling.repository.party.PartyListGet
 import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
@@ -46,7 +47,6 @@ interface BarebonesSdk :
     PairAssignmentDocumentGetCurrent,
     PartyPlayerQuery.Dispatcher,
     PartyGet,
-    PartyListGet,
     PinGet,
     PlayerListGet,
     PlayerListGetDeleted,
@@ -57,4 +57,7 @@ interface BarebonesSdk :
     SavePartyCommand.Dispatcher,
     SavePinCommand.Dispatcher,
     SavePlayerCommand.Dispatcher,
-    UserQuery.Dispatcher
+    UserQuery.Dispatcher {
+
+    suspend fun getParties(): List<Record<Party>>
+}

@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.Uuid
+import com.zegreatrob.coupling.action.PartyListQuery
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
-import com.zegreatrob.coupling.repository.party.PartyIdDeleteSyntax
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.party.PartySaveSyntax
 import com.zegreatrob.coupling.repository.pin.PartyPinSaveSyntax
@@ -26,11 +28,10 @@ interface RepositoryCatalog {
 }
 
 interface SdkParty :
-    SdkPartyGet,
     SdkPartyListGet,
+    SdkPartyGet,
     SdkPartySave,
     SdkPartyDelete,
-    PartyRepository,
     GqlQueryComponent
 
 interface SdkPlayer :
@@ -69,7 +70,6 @@ interface Sdk :
     ClientPartyPlayerQueryDispatcher,
     ClientStatisticsQueryDispatcher,
     ClientHistoryQueryDispatcher,
-    ClientPartyListQueryDispatcher,
     ClientPartyQueryDispatcher,
     ClientSavePairAssignmentsCommandDispatcher,
     ClientSavePartyCommandDispatcher,
@@ -77,7 +77,6 @@ interface Sdk :
     ClientSavePlayerCommandDispatcher,
     ClientRetiredPlayerQueryDispatcher,
     ClientRetiredPlayerListQueryDispatcher,
-    RepositoryCatalog,
     SdkBoost,
     SdkSpin,
     SdkUserGet,
@@ -97,6 +96,12 @@ interface Sdk :
     override val partyRepository get() = this
     override val mutations get() = Mutations(this)
     override val queries get() = Queries(this)
+
+    override suspend fun getParties(): List<Record<Party>> {
+        return super.getParties()
+    }
+
+    override suspend fun perform(query: PartyListQuery): List<Party> = sdk.getParties().map(Record<Party>::data)
 }
 
 class SdkSingleton(
@@ -121,12 +126,10 @@ interface SdkProviderSyntax {
 interface SdkSyntax :
     SdkProviderSyntax,
     PartySaveSyntax,
-    PartyIdDeleteSyntax,
     PartyPinsSyntax,
     PartyPinSaveSyntax,
     PartyPlayerSaveSyntax,
     PartyPlayersSyntax {
-    override val partyRepository: PartyRepository
     override val pinRepository: PinRepository
     override val playerRepository: PlayerRepository
 }
