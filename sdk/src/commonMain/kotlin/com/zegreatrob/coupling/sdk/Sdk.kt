@@ -49,9 +49,9 @@ interface SdkPairAssignments :
 interface Sdk :
     BarebonesSdk,
     SdkDeletePairAssignmentsCommandDispatcher,
+    SdkDeletePartyCommandDispatcher,
+    SdkDeletePinCommandDispatcher,
     ClientNewPairAssignmentsCommandDispatcher,
-    ClientDeletePartyCommandDispatcher,
-    ClientDeletePinCommandDispatcher,
     ClientDeletePlayerCommandDispatcher,
     ClientPartyCurrentDataQueryDispatcher,
     ClientPartyPinListQueryDispatcher,

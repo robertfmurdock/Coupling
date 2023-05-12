@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.model.party.PartyId
 
-data class DeletePinCommand(val id: PartyId, val pinId: String) :
+data class DeletePinCommand(val partyId: PartyId, val pinId: String) :
     SimpleSuspendResultAction<DeletePinCommand.Dispatcher, Unit> {
     override val performFunc = link(Dispatcher::perform)
 
