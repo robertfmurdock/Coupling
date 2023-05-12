@@ -1,17 +1,25 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.json.JsonCouplingQueryResult
 import com.zegreatrob.coupling.json.fromJsonElement
+import com.zegreatrob.coupling.json.toDomain
 import com.zegreatrob.coupling.json.toJsonElement
 import kotlinx.coroutines.Deferred
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject
 
 interface GqlSyntax {
     val performer: QueryPerformer
     suspend fun String.performQuery(): JsonElement = performer.doQuery(this)
     suspend fun performQuery(body: JsonElement): JsonElement = performer.doQuery(body)
+    suspend fun String.perform() = performQuery()
+        .jsonObject["data"]
+        ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
+        ?.toDomain()
 }
 
 interface QueryPerformer {

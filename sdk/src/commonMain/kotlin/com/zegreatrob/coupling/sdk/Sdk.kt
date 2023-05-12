@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.json.JsonCouplingQueryResult
-import com.zegreatrob.coupling.json.toDomain
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
 import com.zegreatrob.coupling.repository.party.PartySaveSyntax
@@ -17,12 +15,8 @@ import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
 import com.zegreatrob.coupling.sdk.user.SdkUserGet
 import com.zegreatrob.coupling.sdk.user.SdkUserQueryDispatcher
 import io.ktor.client.HttpClient
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.jsonObject
 
 interface SdkParty :
-    SdkPartyListGet,
     SdkPartyGet,
     SdkPartySave,
     SdkPartyDelete,
@@ -80,7 +74,8 @@ interface Sdk :
     SdkPin,
     SdkPairAssignmentsRepository,
     SdkParty,
-    GqlQueryComponent {
+    GqlQueryComponent,
+    SdkGraphQueryDispatcher {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
     override val pinRepository get() = this
@@ -89,11 +84,6 @@ interface Sdk :
     override val partyRepository get() = this
     override val mutations get() = Mutation
     override val queries get() = Query
-
-    override suspend fun perform(query: GraphQuery) = query.queryString.performQuery()
-        .jsonObject["data"]
-        ?.let { Json.decodeFromJsonElement<JsonCouplingQueryResult>(it) }
-        ?.toDomain()
 }
 
 class SdkSingleton(
