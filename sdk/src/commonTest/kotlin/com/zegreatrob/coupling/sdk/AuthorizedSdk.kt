@@ -52,7 +52,7 @@ private suspend fun Sdk.deleteAnyDisplayedParties() = with(partyRepository) {
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
     .let { token -> SdkSingleton({ token }, buildClient(), uuid4()) }
 
-suspend fun sdk(): BarebonesSdk = primaryAuthorizedSdkDeferred.await()
+suspend fun sdk(): SdkApi = primaryAuthorizedSdkDeferred.await()
 
 val generalPurposeClient = HttpClient {
     install(ContentNegotiation) { json() }

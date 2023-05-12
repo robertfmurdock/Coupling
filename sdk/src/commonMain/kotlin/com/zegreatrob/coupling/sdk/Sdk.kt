@@ -10,17 +10,9 @@ import com.zegreatrob.coupling.sdk.pairassignments.SdkSavePairAssignmentsCommand
 import com.zegreatrob.coupling.sdk.user.SdkUserQueryDispatcher
 import io.ktor.client.HttpClient
 
-interface SdkParty :
-    SdkPartyGet,
-    GqlQueryComponent
-
 interface SdkPlayer :
     SdkPlayerListGet,
     SdkPlayerGetDeleted,
-    GqlQueryComponent
-
-interface SdkPin :
-    SdkPinGet,
     GqlQueryComponent
 
 interface SdkPairAssignments :
@@ -30,7 +22,7 @@ interface SdkPairAssignments :
     GqlQueryComponent
 
 interface Sdk :
-    BarebonesSdk,
+    SdkApi,
     ClientHistoryQueryDispatcher,
     ClientNewPairAssignmentsCommandDispatcher,
     ClientPartyCurrentDataQueryDispatcher,
@@ -47,9 +39,10 @@ interface Sdk :
     SdkDeletePartyCommandDispatcher,
     SdkDeletePinCommandDispatcher,
     SdkDeletePlayerCommandDispatcher,
+    SdkGraphQueryDispatcher,
     SdkPairAssignments,
-    SdkParty,
-    SdkPin,
+    SdkPartyGet,
+    SdkPinGet,
     SdkPlayer,
     SdkSavePairAssignmentsCommandDispatcher,
     SdkSavePartyCommandDispatcher,
@@ -57,8 +50,7 @@ interface Sdk :
     SdkSavePlayerCommandDispatcher,
     SdkSpin,
     SdkSyntax,
-    SdkUserQueryDispatcher,
-    SdkGraphQueryDispatcher {
+    SdkUserQueryDispatcher {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
     override val pinRepository get() = this
@@ -85,7 +77,7 @@ class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String
 }
 
 interface SdkProviderSyntax {
-    val sdk: BarebonesSdk
+    val sdk: SdkApi
 }
 
 interface SdkSyntax :

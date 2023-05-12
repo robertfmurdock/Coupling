@@ -23,7 +23,7 @@ import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 
-interface BarebonesSdk :
+interface SdkApi :
     BoostQuery.Dispatcher,
     DeleteBoostCommand.Dispatcher,
     DeletePairAssignmentsCommand.Dispatcher,

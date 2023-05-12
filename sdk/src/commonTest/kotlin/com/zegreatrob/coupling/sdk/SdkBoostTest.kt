@@ -21,7 +21,7 @@ class SdkBoostTest {
         sharedSetup = suspend {
             val sdk = sdk()
             val user = sdk.perform(UserQuery())?.let { Record(it, "") }!!.data
-            object : BarebonesSdk by sdk {
+            object : SdkApi by sdk {
                 val user = user
             }
         },
@@ -48,7 +48,7 @@ class SdkBoostTest {
 
     @Test
     fun getSavedBoostWillReturnSuccessfully() = setupWithUser.with({
-        object : BarebonesSdk by it {
+        object : SdkApi by it {
             val userId = it.user.id
             val partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))
         }
@@ -69,7 +69,7 @@ class SdkBoostTest {
 
     @Test
     fun saveBoostRepeatedlyGetsLatest() = setupWithUser.with({
-        object : BarebonesSdk by it {
+        object : SdkApi by it {
             val userId = it.user.id
             val initialBoostParties = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))
             val updatedBoostParties1 = emptySet<PartyId>()

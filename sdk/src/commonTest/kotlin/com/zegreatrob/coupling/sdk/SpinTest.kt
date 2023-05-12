@@ -181,7 +181,7 @@ class SpinTest {
 
     companion object {
         private suspend fun setupScenario(
-            sdk: BarebonesSdk,
+            sdk: SdkApi,
             party: Party,
             players: List<Player> = emptyList(),
             history: List<PairAssignmentDocument> = emptyList(),

@@ -32,7 +32,6 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
-import com.zegreatrob.coupling.sdk.BarebonesSdk
 import com.zegreatrob.coupling.sdk.ClientDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientDeletePinCommandDispatcher
@@ -53,6 +52,7 @@ import com.zegreatrob.coupling.sdk.ClientSavePinCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientStatisticsQueryDispatcher
 import com.zegreatrob.coupling.sdk.GraphQuery
+import com.zegreatrob.coupling.sdk.SdkApi
 import korlibs.time.DateTime
 import korlibs.time.TimeProvider
 
@@ -65,7 +65,7 @@ class MemoryRepositoryCatalog private constructor(
     override val pinRepository: PinRepository,
     override val traceId: Uuid = uuid4(),
 ) :
-    BarebonesSdk,
+    SdkApi,
     ClientDeletePairAssignmentsCommandDispatcher,
     ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,

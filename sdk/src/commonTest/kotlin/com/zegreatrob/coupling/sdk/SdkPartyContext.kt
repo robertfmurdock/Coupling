@@ -10,6 +10,6 @@ class SdkPartyContext<T>(
     override val repository: T,
     override val partyId: PartyId,
     override val clock: MagicClock,
-) : PartyContext<T>, BarebonesSdk by sdk {
+) : PartyContext<T>, SdkApi by sdk {
     override val user = stubUser().copy(email = primaryAuthorizedUsername)
 }

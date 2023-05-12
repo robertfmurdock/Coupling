@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
 interface SdkContext : SdkProviderSyntax {
-    override val sdk: BarebonesSdk
+    override val sdk: SdkApi
     val username: String
 }
 

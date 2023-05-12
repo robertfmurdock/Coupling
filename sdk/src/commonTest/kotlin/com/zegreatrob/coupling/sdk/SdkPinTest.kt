@@ -23,7 +23,7 @@ class SdkPinTest {
     private val partySetup = asyncTestTemplate(
         sharedSetup = suspend {
             val sdk = sdk()
-            object : BarebonesSdk by sdk {
+            object : SdkApi by sdk {
                 val party = stubParty()
             }.apply { sdk.perform(SavePartyCommand(party)) }
         },
@@ -33,7 +33,7 @@ class SdkPinTest {
     @Test
     fun canSaveAndGetPins() = partySetup.with(
         {
-            object : BarebonesSdk by it {
+            object : SdkApi by it {
                 val party = it.party
                 val pins = listOf(
                     stubPin(),
@@ -66,7 +66,7 @@ class SdkPinTest {
 
     @Test
     fun saveThenDeleteWillNotShowThatPin() = partySetup.with({
-        object : BarebonesSdk by it {
+        object : SdkApi by it {
             val party = it.party
             val pins = listOf(
                 stubPin(),
@@ -87,7 +87,7 @@ class SdkPinTest {
 
     @Test
     fun saveWorksWithNullableValuesAndAssignsIds() = partySetup.with({
-        object : BarebonesSdk by it {
+        object : SdkApi by it {
             val partyId = it.party.id
             val pin = Pin(
                 id = null,
@@ -132,7 +132,7 @@ class SdkPinTest {
     fun savedPinsIncludeModificationDateAndUsername() = asyncSetup(object {
         val party = stubParty()
         val pin = stubPin()
-        lateinit var sdk: BarebonesSdk
+        lateinit var sdk: SdkApi
     }) {
         sdk = sdk()
         sdk.perform(SavePartyCommand(party))
