@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PartyPlayerSaveSyntax
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.coupling.repository.player.PlayerRepository
+import com.zegreatrob.coupling.sdk.pairassignments.SdkDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
@@ -37,7 +38,7 @@ interface SdkPin :
     PinRepository,
     GqlQueryComponent
 
-interface SdkPairAssignmentsRepository :
+interface SdkPairAssignments :
     SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentSave,
     SdkPairAssignmentDocumentDelete,
@@ -47,7 +48,7 @@ interface SdkPairAssignmentsRepository :
 
 interface Sdk :
     BarebonesSdk,
-    ClientDeletePairAssignmentsCommandDispatcher,
+    SdkDeletePairAssignmentsCommandDispatcher,
     ClientNewPairAssignmentsCommandDispatcher,
     ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,
@@ -72,7 +73,7 @@ interface Sdk :
     SdkSyntax,
     SdkPlayer,
     SdkPin,
-    SdkPairAssignmentsRepository,
+    SdkPairAssignments,
     SdkParty,
     GqlQueryComponent,
     SdkGraphQueryDispatcher {
