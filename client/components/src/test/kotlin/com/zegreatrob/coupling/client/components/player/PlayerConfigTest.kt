@@ -54,9 +54,9 @@ class PlayerConfigTest {
                 )
             },
         )
-    } exercise {
         val element = screen.getByRole("combobox", RoleOptions(name = "Avatar Type"))
         actor.selectOptions(element, "DicebearAdventurer")
+    } exercise {
         actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(
