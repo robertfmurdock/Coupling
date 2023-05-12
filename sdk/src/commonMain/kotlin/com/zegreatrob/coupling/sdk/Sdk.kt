@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.sdk.pairassignments.SdkDeletePairAssignmentsComma
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
-import com.zegreatrob.coupling.sdk.user.SdkUserGet
+import com.zegreatrob.coupling.sdk.pairassignments.SdkSavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.user.SdkUserQueryDispatcher
 import io.ktor.client.HttpClient
 
@@ -48,34 +48,33 @@ interface SdkPairAssignments :
 
 interface Sdk :
     BarebonesSdk,
-    SdkDeletePairAssignmentsCommandDispatcher,
-    SdkDeletePartyCommandDispatcher,
-    SdkDeletePinCommandDispatcher,
+    ClientHistoryQueryDispatcher,
     ClientNewPairAssignmentsCommandDispatcher,
-    ClientDeletePlayerCommandDispatcher,
     ClientPartyCurrentDataQueryDispatcher,
     ClientPartyPinListQueryDispatcher,
     ClientPartyPinQueryDispatcher,
     ClientPartyPlayerQueryDispatcher,
-    ClientStatisticsQueryDispatcher,
-    ClientHistoryQueryDispatcher,
     ClientPartyQueryDispatcher,
-    ClientSavePairAssignmentsCommandDispatcher,
-    ClientSavePartyCommandDispatcher,
-    ClientSavePinCommandDispatcher,
-    ClientRetiredPlayerQueryDispatcher,
     ClientRetiredPlayerListQueryDispatcher,
-    SdkSavePlayerCommandDispatcher,
+    ClientRetiredPlayerQueryDispatcher,
+    ClientStatisticsQueryDispatcher,
+    GqlQueryComponent,
     SdkBoost,
-    SdkSpin,
-    SdkUserGet,
-    SdkUserQueryDispatcher,
-    SdkSyntax,
-    SdkPlayer,
-    SdkPin,
+    SdkDeletePairAssignmentsCommandDispatcher,
+    SdkDeletePartyCommandDispatcher,
+    SdkDeletePinCommandDispatcher,
+    SdkDeletePlayerCommandDispatcher,
     SdkPairAssignments,
     SdkParty,
-    GqlQueryComponent,
+    SdkPin,
+    SdkPlayer,
+    SdkSavePairAssignmentsCommandDispatcher,
+    SdkSavePartyCommandDispatcher,
+    SdkSavePinCommandDispatcher,
+    SdkSavePlayerCommandDispatcher,
+    SdkSpin,
+    SdkSyntax,
+    SdkUserQueryDispatcher,
     SdkGraphQueryDispatcher {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
