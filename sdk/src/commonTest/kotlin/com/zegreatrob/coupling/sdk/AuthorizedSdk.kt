@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -43,9 +44,9 @@ val altAuthorizedSdkDeferred by lazy {
 }
 
 private suspend fun Sdk.deleteAnyDisplayedParties() = with(partyRepository) {
-    perform(GraphQuery(Query.listParties))?.partyList?.forEach {
-        deleteIt(it.data.id)
-    }
+    perform(GraphQuery(Query.listParties))
+        ?.partyList
+        ?.forEach { perform(DeletePartyCommand(it.data.id)) }
 }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)

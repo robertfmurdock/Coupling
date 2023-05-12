@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -29,7 +30,7 @@ class HistoryPageE2ETest {
             private val historyPageSetup = e2eSetup.extend(beforeAll = {
                 val party = buildParty()
                 val sdk = sdkProvider.await().apply {
-                    party.save()
+                    perform(SavePartyCommand(party))
                 }
 
                 val pairAssignments = setupTwoPairAssignments(party, sdk)

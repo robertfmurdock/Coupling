@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
@@ -23,7 +24,7 @@ class PartyConfigPageE2ETest {
             val expectedBadgeSelection = "true"
             val page = PartyConfigPage
         }) {
-            sdk.partyRepository.save(party)
+            sdk.perform(SavePartyCommand(party))
             with(page) {
                 goTo(party.id)
 
@@ -60,7 +61,7 @@ class PartyConfigPageE2ETest {
             val party = buildParty().copy(email = "${randomInt()}-email")
             val page = PartyConfigPage
         }) {
-            sdk.partyRepository.save(party)
+            sdk.perform(SavePartyCommand(party))
         } exercise {
             PartyConfigPage.goTo(party.id)
         } verify {
@@ -76,7 +77,7 @@ class PartyConfigPageE2ETest {
         fun canDeleteParty() = sdkSetup(object : SdkContext() {
             val party = buildParty()
         }) {
-            sdk.partyRepository.save(party)
+            sdk.perform(SavePartyCommand(party))
             PartyConfigPage.goTo(party.id)
         } exercise {
             getDeleteButton().click()

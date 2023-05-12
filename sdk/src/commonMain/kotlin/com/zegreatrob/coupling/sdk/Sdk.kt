@@ -1,16 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
-import com.zegreatrob.coupling.repository.party.PartySaveSyntax
-import com.zegreatrob.coupling.repository.pin.PartyPinSaveSyntax
-import com.zegreatrob.coupling.repository.pin.PinRepository
-import com.zegreatrob.coupling.repository.player.PartyPlayerSaveSyntax
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
-import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.sdk.pairassignments.SdkDeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentDelete
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
 import com.zegreatrob.coupling.sdk.pairassignments.SdkSavePairAssignmentsCommandDispatcher
@@ -19,31 +12,21 @@ import io.ktor.client.HttpClient
 
 interface SdkParty :
     SdkPartyGet,
-    SdkPartySave,
-    SdkPartyDelete,
     GqlQueryComponent
 
 interface SdkPlayer :
     SdkPlayerListGet,
     SdkPlayerGetDeleted,
-    SdkPlayerSave,
-    SdkPlayerDeleter,
-    PlayerRepository,
     GqlQueryComponent
 
 interface SdkPin :
     SdkPinGet,
-    SdkPinSave,
-    SdkPinDelete,
-    PinRepository,
     GqlQueryComponent
 
 interface SdkPairAssignments :
     SdkPairAssignmentDocumentGet,
     SdkPairAssignmentDocumentSave,
-    SdkPairAssignmentDocumentDelete,
     SdkPairAssignmentDocumentGetCurrent,
-    PairAssignmentDocumentRepository,
     GqlQueryComponent
 
 interface Sdk :
@@ -107,11 +90,5 @@ interface SdkProviderSyntax {
 
 interface SdkSyntax :
     SdkProviderSyntax,
-    PartySaveSyntax,
     PartyPinsSyntax,
-    PartyPinSaveSyntax,
-    PartyPlayerSaveSyntax,
-    PartyPlayersSyntax {
-    override val pinRepository: PinRepository
-    override val playerRepository: PlayerRepository
-}
+    PartyPlayersSyntax

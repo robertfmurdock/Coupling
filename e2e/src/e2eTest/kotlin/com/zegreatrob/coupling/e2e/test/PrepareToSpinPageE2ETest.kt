@@ -1,5 +1,8 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairElements
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.CurrentPairAssignmentsPanel.getSaveButton
@@ -9,7 +12,6 @@ import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSelectNoneButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSpinButton
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -26,9 +28,9 @@ class PrepareToSpinPageE2ETest {
             val players = (1..5).map(Companion::buildPlayer)
             val pin = Pin("${randomInt()}-PairAssignmentsPageE2ETest", name = "e2e-pin")
             val sdk = sdkProvider.await().apply {
-                party.save()
-                players.forEach { party.id.with(it).save() }
-                party.id.with(pin).save()
+                perform(SavePartyCommand(party))
+                players.forEach { perform(SavePlayerCommand(party.id, it)) }
+                sdk.perform(SavePinCommand(party.id, pin))
             }
 
             FullPartyData(players, listOf(pin), party, sdk)

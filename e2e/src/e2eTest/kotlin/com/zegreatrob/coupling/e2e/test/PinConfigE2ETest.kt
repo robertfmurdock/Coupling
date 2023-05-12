@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -28,7 +29,7 @@ class PinConfigE2ETest {
         private val partySetup = e2eSetup.extend(beforeAll = {
             val party = Party(PartyId("${randomInt()}-PinConfigE2ETest-test"))
             val sdk = sdkProvider.await().apply {
-                party.save()
+                perform(SavePartyCommand(party))
             }
             sdk to party
         })
@@ -71,7 +72,7 @@ class PinConfigE2ETest {
                 val pin = randomPin()
             }.attachParty(),
         ) {
-            sdk.pinRepository.save(party.id.with(pin))
+            sdk.perform(SavePinCommand(party.id, pin))
         } exercise {
             PinConfigPage.goTo(party.id, pin.id)
         } verify {
@@ -89,7 +90,7 @@ class PinConfigE2ETest {
                 val pin = randomPin()
             }.attachParty(),
         ) {
-            sdk.pinRepository.save(party.id.with(pin))
+            sdk.perform(SavePinCommand(party.id, pin))
             PinConfigPage.goTo(party.id, pin.id)
         } exercise {
             getDeleteButton().click()

@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
@@ -8,7 +10,6 @@ import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -25,8 +26,8 @@ class PlayerConfigPageE2ETest {
                 val party = buildParty()
                 val player = buildPlayer()
                 sdkProvider.await().apply {
-                    party.save()
-                    party.id.with(player).save()
+                    perform(SavePartyCommand(party))
+                    perform(SavePlayerCommand(party.id, player))
                 }
                 Triple(player, party, sdkProvider.await())
             })
@@ -149,7 +150,7 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer(),
         ) {
-            sdk.partyRepository.save(party.copy(badgesEnabled = false))
+            sdk.perform(SavePartyCommand(party.copy(badgesEnabled = false)))
         } exercise {
             PlayerConfigPage.goTo(party.id, player.id)
         } verify {
@@ -175,8 +176,8 @@ class PlayerConfigPageE2ETest {
             val page = PlayerConfigPage
         }) {
             sdkProvider.await().apply {
-                party.save()
-                players.forEach { player -> party.id.with(player).save() }
+                perform(SavePartyCommand(party))
+                players.forEach { player -> perform(SavePlayerCommand(party.id, player)) }
             }
             PlayerConfigPage.goTo(party.id, players[0].id)
         } exercise {
@@ -309,7 +310,7 @@ class PlayerConfigPageE2ETest {
             )
         }) {
             sdkProvider.await().apply {
-                party.save()
+                perform(SavePartyCommand(party))
             }
         } exercise {
             PlayerConfigPage.goToNew(party.id)

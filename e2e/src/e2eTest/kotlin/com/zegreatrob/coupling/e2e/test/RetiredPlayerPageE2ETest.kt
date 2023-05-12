@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.player.DeletePlayerCommand
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -16,7 +18,7 @@ class RetiredPlayerPageE2ETest {
     companion object {
         private suspend fun delete(players: List<Player>, sdk: Sdk, party: Party) {
             coroutineScope {
-                players.forEach { launch { sdk.playerRepository.deletePlayer(party.id, it.id) } }
+                players.forEach { launch { sdk.perform(DeletePlayerCommand(party.id, it.id)) } }
             }
         }
     }
@@ -32,8 +34,8 @@ class RetiredPlayerPageE2ETest {
         val notDeletedPlayer = players[2]
         val retiredPlayers = players - notDeletedPlayer
     }) {
-        sdk.partyRepository.save(party)
-        players.forEach { sdk.playerRepository.save(party.id.with(it)) }
+        sdk.perform(SavePartyCommand(party))
+        players.forEach { sdk.perform(SavePlayerCommand(party.id, it)) }
         delete(retiredPlayers, sdk, party)
     } exercise {
         RetiredPlayersPage.goTo(party.id)

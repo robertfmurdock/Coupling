@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairCallSigns
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairElements
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getRetiredPlayersButton
@@ -31,9 +33,9 @@ class PairAssignmentsPageE2ETest {
 
     companion object {
         private suspend fun Sdk.save(party: Party, players: List<Player>) {
-            partyRepository.save(party)
+            perform(SavePartyCommand(party))
             with(playerRepository) {
-                players.forEach { save(party.id.with(it)) }
+                players.forEach { perform(SavePlayerCommand(party.id, it)) }
             }
         }
     }
@@ -178,9 +180,9 @@ class PairAssignmentsPageE2ETest {
 
             private val setup = e2eSetup.extend(beforeAll = {
                 sdkProvider.await().apply {
-                    party.save()
+                    perform(SavePartyCommand(party))
                     coroutineScope {
-                        launch { players.forEach { party.id.with(it).save() } }
+                        launch { players.forEach { perform(SavePlayerCommand(party.id, it)) } }
                         launch { sdk.pairAssignmentDocumentRepository.save(party.id.with(pairAssignmentDocument)) }
                     }
                 }
@@ -215,8 +217,7 @@ class PairAssignmentsPageE2ETest {
         @Test
         fun whenThePartyHasCallSignsTurnedOffTheyDoNotDisplay() = currentPairAssignmentPageSetup {
             sdkProvider.await().apply {
-                party.copy(callSignsEnabled = false)
-                    .save()
+                perform(SavePartyCommand(party.copy(callSignsEnabled = false)))
             }
         } exercise {
             goTo(party.id)
@@ -228,7 +229,7 @@ class PairAssignmentsPageE2ETest {
         @Test
         fun whenThePartyHasCallSignsTurnedOnTheyDisplay() = currentPairAssignmentPageSetup {
             sdkProvider.await().apply {
-                party.copy(callSignsEnabled = true).save()
+                perform(SavePartyCommand(party.copy(callSignsEnabled = true)))
             }
             WelcomePage.goTo()
         } exercise {

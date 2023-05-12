@@ -234,14 +234,14 @@ class SdkPlayerTest {
                 asyncSetup(object {
                     val party = stubParty()
                 }) {
-                    otherSdk.partyRepository.save(party)
+                    otherSdk.perform(SavePartyCommand(party))
                     otherSdk.perform(SavePlayerCommand(party.id, stubPlayer()))
                 } exercise {
                     sdk.getPlayers(party.id)
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.partyRepository.deleteIt(party.id)
+                    otherSdk.perform(DeletePartyCommand(party.id))
                 }
             }
         }
@@ -261,14 +261,14 @@ class SdkPlayerTest {
                         avatarType = null,
                     )
                 }) {
-                    otherSdk.partyRepository.save(party)
+                    otherSdk.perform(SavePartyCommand(party))
                 } exercise {
                     sdk.perform(SavePlayerCommand(party.id, player))
                     otherSdk.getPlayers(party.id)
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.partyRepository.deleteIt(party.id)
+                    otherSdk.perform(DeletePartyCommand(party.id))
                 }
             }
         }
