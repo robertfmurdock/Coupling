@@ -7394,10 +7394,10 @@ jake@^10.8.5:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-jasmine-core@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-4.6.0.tgz#6884fc3d5b66bf293e422751eed6d6da217c38f5"
-  integrity sha512-O236+gd0ZXS8YAjFx8xKaJ94/erqUliEkJTDedyE7iHvv4ZVqi+q+8acJxu05/WJDKm512EUNn809In37nWlAQ==
+jasmine-core@^5.0.0, jasmine-core@~5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-5.0.0.tgz#84a200637f9ef92f6d0788e96bb4e67bb1316a81"
+  integrity sha512-BJLxZlSVyWPN/oyaS1IIvIjChghI9/xWsLAIJqL9J5Fz47CN3JNr8Lmik3S2S7QS2RxclYjvSVSXP7IR35PAmg==
 
 jasmine-reporters@^2.5.2:
   version "2.5.2"
@@ -7407,13 +7407,13 @@ jasmine-reporters@^2.5.2:
     "@xmldom/xmldom" "^0.8.5"
     mkdirp "^1.0.4"
 
-jasmine@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-4.6.0.tgz#2ecde288da25815c67897bb9b9b91f6709880ce1"
-  integrity sha512-iq7HQ5M8ydNUspjd9vbFW9Lu+6lQ1QLDIqjl0WysEllF5EJZy8XaUyNlhCJVwOx2YFzqTtARWbS56F/f0PzRFw==
+jasmine@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-5.0.0.tgz#858cfa02dc34c4e22beba0821331f7fac760a52a"
+  integrity sha512-wrigegsVTke3gt65LmLhIVqDZVcsYZwj9Oyai0pc04NlmgxIhfgbX0Af9CC3+S9lk0KZlttqjr2EBO8j2OCovA==
   dependencies:
-    glob "^7.1.6"
-    jasmine-core "^4.6.0"
+    glob "^10.2.2"
+    jasmine-core "~5.0.0"
 
 java-invoke-local@0.0.6:
   version "0.0.6"
