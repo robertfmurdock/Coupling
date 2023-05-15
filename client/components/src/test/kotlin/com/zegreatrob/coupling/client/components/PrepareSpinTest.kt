@@ -16,6 +16,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
@@ -27,12 +28,26 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
 import react.router.MemoryRouter
+import web.window.window
 import kotlin.test.Test
 
 class PrepareSpinTest {
 
+    private val prepareSetup = asyncTestTemplate(
+        sharedSetup = suspend {
+            val matchFunc = window.asDynamic()["matchMedia"]
+            window.asDynamic()["matchMedia"] = {}
+            object {
+                val matchFunc = matchFunc
+            }
+        },
+        sharedTeardown = {
+            window.asDynamic()["matchMedia"] = it.matchFunc
+        },
+    )
+
     @Test
-    fun whenSelectedPinIsClickedWillDeselectPin() = asyncSetup(object {
+    fun whenSelectedPinIsClickedWillDeselectPin() = prepareSetup(object {
         val user = UserEvent.setup()
         val party = stubParty()
         val players = emptyList<Player>()
@@ -62,7 +77,7 @@ class PrepareSpinTest {
     }
 
     @Test
-    fun whenDeselectedPinIsClickedWillSelectPin() = asyncSetup(object {
+    fun whenDeselectedPinIsClickedWillSelectPin() = prepareSetup(object {
         val user = UserEvent.setup()
         val party = stubParty()
         val players = emptyList<Player>()
