@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.coupling.repository.player.PartyRetiredPlayersSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
@@ -22,7 +21,7 @@ data class RetiredPlayerQuery(val partyId: PartyId, val playerId: String) :
 }
 
 interface ClientRetiredPlayerQueryDispatcher :
-    PartyIdGetSyntax,
+    SdkProviderSyntax,
     PartyRetiredPlayersSyntax,
     RetiredPlayerQuery.Dispatcher {
     override suspend fun perform(query: RetiredPlayerQuery) = query.getData()
@@ -36,6 +35,6 @@ interface ClientRetiredPlayerQueryDispatcher :
     }
 
     private suspend fun PartyId.getData() = coroutineScope {
-        await(async { get() }, async { loadRetiredPlayers() })
+        await(async { sdk.getPartyRecord(this@getData)?.data }, async { loadRetiredPlayers() })
     }
 }

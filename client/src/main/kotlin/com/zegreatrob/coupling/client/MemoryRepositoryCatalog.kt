@@ -124,4 +124,5 @@ class MemoryRepositoryCatalog private constructor(
     override suspend fun perform(command: DeleteBoostCommand) = TODO("Not yet implemented")
     override suspend fun perform(command: SaveBoostCommand) = TODO("Not yet implemented")
     override suspend fun perform(query: GraphQuery) = TODO("Not yet implemented")
+    override val sdk: SdkApi get() = this
 }

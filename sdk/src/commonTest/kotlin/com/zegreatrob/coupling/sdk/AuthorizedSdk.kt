@@ -43,11 +43,9 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun Sdk.deleteAnyDisplayedParties() = with(partyRepository) {
-    perform(GraphQuery(Query.listParties))
-        ?.partyList
-        ?.forEach { perform(DeletePartyCommand(it.data.id)) }
-}
+private suspend fun Sdk.deleteAnyDisplayedParties() = perform(GraphQuery(Query.listParties))
+    ?.partyList
+    ?.forEach { perform(DeletePartyCommand(it.data.id)) }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
     .let { token -> SdkSingleton({ token }, buildClient(), uuid4()) }

@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
 data class PartyQuery(val partyId: PartyId) : SimpleSuspendAction<PartyQuery.Dispatcher, Party?> {
@@ -13,6 +12,6 @@ data class PartyQuery(val partyId: PartyId) : SimpleSuspendAction<PartyQuery.Dis
     }
 }
 
-interface ClientPartyQueryDispatcher : PartyIdGetSyntax, PartyQuery.Dispatcher {
-    override suspend fun perform(query: PartyQuery) = query.partyId.get()
+interface ClientPartyQueryDispatcher : SdkProviderSyntax, PartyQuery.Dispatcher {
+    override suspend fun perform(query: PartyQuery) = sdk.getPartyRecord(query.partyId)?.data
 }

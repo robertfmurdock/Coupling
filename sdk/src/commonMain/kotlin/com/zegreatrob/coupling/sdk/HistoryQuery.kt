@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistorySyntax
-import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -21,12 +20,12 @@ data class HistoryQuery(val partyId: PartyId) : SimpleSuspendAction<HistoryQuery
     }
 }
 
-interface ClientHistoryQueryDispatcher : PartyIdGetSyntax, PartyIdHistorySyntax, HistoryQuery.Dispatcher {
+interface ClientHistoryQueryDispatcher : SdkProviderSyntax, PartyIdHistorySyntax, HistoryQuery.Dispatcher {
     override suspend fun perform(query: HistoryQuery) = query.partyId.getData()
 
     private suspend fun PartyId.getData() = withContext(Dispatchers.Default) {
         await(
-            async { get() },
+            async { sdk.getPartyRecord(this@getData)?.data },
             async { loadHistory() },
         )
     }.let { (first, second) -> if (first == null) null else Pair(first, second) }

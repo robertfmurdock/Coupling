@@ -56,7 +56,6 @@ interface Sdk :
     override val pinRepository get() = this
     override val pairAssignmentDocumentRepository get() = this
     override val playerRepository get() = this
-    override val partyRepository get() = this
     override val mutations get() = Mutation
     override val queries get() = Query
 }

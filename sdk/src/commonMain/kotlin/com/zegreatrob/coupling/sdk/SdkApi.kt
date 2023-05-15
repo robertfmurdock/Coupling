@@ -16,9 +16,11 @@ import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.action.user.UserQuery
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
-import com.zegreatrob.coupling.repository.party.PartyGet
 import com.zegreatrob.coupling.repository.pin.PinGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
@@ -37,7 +39,6 @@ interface SdkApi :
     PairAssignmentDocumentGet,
     PairAssignmentDocumentGetCurrent,
     PartyCurrentDataQuery.Dispatcher,
-    PartyGet,
     PartyPinListQuery.Dispatcher,
     PartyPinQuery.Dispatcher,
     PartyPlayerQuery.Dispatcher,
@@ -54,4 +55,6 @@ interface SdkApi :
     SavePinCommand.Dispatcher,
     SavePlayerCommand.Dispatcher,
     StatisticsQuery.Dispatcher,
-    UserQuery.Dispatcher
+    UserQuery.Dispatcher {
+    suspend fun getPartyRecord(partyId: PartyId): Record<Party>?
+}

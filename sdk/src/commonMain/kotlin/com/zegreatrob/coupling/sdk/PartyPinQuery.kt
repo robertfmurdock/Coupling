@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
-import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -21,14 +20,14 @@ data class PartyPinQuery(val partyId: PartyId, val pinId: String?) :
     }
 }
 
-interface ClientPartyPinQueryDispatcher : PartyIdGetSyntax, PartyPinsSyntax, PartyPinQuery.Dispatcher {
+interface ClientPartyPinQueryDispatcher : SdkProviderSyntax, PartyPinsSyntax, PartyPinQuery.Dispatcher {
     override suspend fun perform(query: PartyPinQuery) = query.getData()
 
     private suspend fun PartyPinQuery.getData() = partyId.getData()
         ?.let { (party, pins) -> PartyPinData(party, pins, pins.findOrDefaultNew(pinId)) }
 
     private suspend fun PartyId.getData() = coroutineScope {
-        await(async { get() }, async { getPins() })
+        await(async { sdk.getPartyRecord(this@getData)?.data }, async { getPins() })
     }.let { (party, pins) -> if (party == null) null else Pair(party, pins) }
 }
 

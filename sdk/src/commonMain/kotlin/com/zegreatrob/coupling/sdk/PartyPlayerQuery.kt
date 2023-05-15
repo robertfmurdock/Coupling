@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
@@ -24,7 +23,7 @@ data class PartyPlayerQuery(val partyId: PartyId, val playerId: String?) :
 }
 
 interface ClientPartyPlayerQueryDispatcher :
-    PartyIdGetSyntax,
+    SdkProviderSyntax,
     PartyPlayersSyntax,
     FindCallSignAction.Dispatcher,
     PartyPlayerQuery.Dispatcher {
@@ -44,7 +43,7 @@ interface ClientPartyPlayerQueryDispatcher :
         }
 
     private suspend fun PartyId.getData() = coroutineScope {
-        await(async { get() }, async { getPlayerList() })
+        await(async { sdk.getPartyRecord(this@getData)?.data }, async { getPlayerList() })
     }
 
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }
