@@ -1,5 +1,8 @@
 package com.zegreatrob.coupling.sdk
+
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.json.JsonCouplingQueryResult
+import com.zegreatrob.coupling.json.JsonPartyData
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -8,19 +11,18 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.putJsonArray
-import kotlinx.serialization.json.putJsonObject
+import kotlinx.serialization.json.encodeToJsonElement
 import kotlin.test.Test
 
 class RequestCombineTest {
 
     @Test
     fun whenMultipleGetsAreCalledInCloseProximityWillOnlyMakeOneGraphQLCall() = asyncSetup(object {
-        val performer = StubQueryPerformer1()
+        val performer = StubQueryPerformer()
         val sdk = object : Sdk, PartyGQLPerformer by BatchingPartyGQLPerformer(performer) {
             override suspend fun getToken() = ""
             override val traceId = uuid4()
@@ -38,7 +40,7 @@ class RequestCombineTest {
     }
 }
 
-class StubQueryPerformer1 : QueryPerformer {
+class StubQueryPerformer : QueryPerformer {
     val allPostCalls = mutableListOf<JsonElement>()
 
     override suspend fun doQuery(body: String): JsonElement =
@@ -53,13 +55,8 @@ class StubQueryPerformer1 : QueryPerformer {
     override suspend fun get(path: String): JsonElement = JsonNull
 }
 
-private fun stubResponseData() = buildJsonObject {
-    putJsonObject("data") {
-        putJsonObject("data") {
-            putJsonObject("party") {
-                putJsonArray("playerList") {}
-                putJsonArray("pinList") {}
-            }
-        }
-    }
-}
+private fun stubResponseData() = Json.encodeToJsonElement(
+    JsonCouplingQueryResult(
+        partyData = JsonPartyData(),
+    ),
+)

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.toModel
+import com.zegreatrob.coupling.json.toDomain
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
 
@@ -9,6 +8,5 @@ interface SdkPairAssignmentDocumentGetCurrent : PairAssignmentDocumentGetCurrent
     override suspend fun getCurrentPairAssignments(partyId: PartyId) = performQueryGetComponent(
         partyId,
         PartyGQLComponent.CurrentPairAssignmentDocument,
-        JsonPairAssignmentDocumentRecord::toModel,
-    )
+    ) { it?.toDomain()?.partyData?.currentPairAssignmentDocument }
 }

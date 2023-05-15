@@ -1,12 +1,15 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.json.JsonCouplingQueryResult
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.plus
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject
 
 interface PartyGQLPerformer : GqlSyntax {
@@ -14,22 +17,8 @@ interface PartyGQLPerformer : GqlSyntax {
     suspend fun performPartyGQLQuery(
         partyId: PartyId,
         components: List<PartyGQLComponent>,
-    ): Map<PartyGQLComponent, JsonElement?> {
-        val result = sendQuery(partyId, components)
-        val data = result.jsonObject["data"]
-
-        return components.associateWith { component ->
-            getNodeAtPath(data, component)
-        }
-    }
-
-    private fun getNodeAtPath(data: JsonElement?, component: PartyGQLComponent): JsonElement? {
-        var node: JsonElement? = data
-        component.jsonPath.split("/").filterNot(String::isBlank).forEach { bit ->
-            node = node?.jsonObject?.get(bit)
-        }
-        return node
-    }
+    ): JsonCouplingQueryResult? = sendQuery(partyId, components).jsonObject["data"]
+        ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
 
     private suspend fun sendQuery(partyId: PartyId, components: List<PartyGQLComponent>) =
         buildFinalQuery(partyId, components)
@@ -47,14 +36,14 @@ class BatchingPartyGQLPerformer(override val performer: QueryPerformer) : PartyG
 
     private val batchScope = MainScope() + CoroutineName("batch")
 
-    private var pending: Deferred<Map<PartyGQLComponent, JsonElement?>>? = null
+    private var pending: Deferred<JsonCouplingQueryResult?>? = null
 
     private var pendingComponents = emptyList<PartyGQLComponent>()
 
     override suspend fun performPartyGQLQuery(
         partyId: PartyId,
         components: List<PartyGQLComponent>,
-    ): Map<PartyGQLComponent, JsonElement?> {
+    ): JsonCouplingQueryResult? {
         pendingComponents = pendingComponents + components
 
         return with(batchScope) {
