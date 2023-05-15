@@ -32,11 +32,10 @@ import kotlin.test.Test
 class PairAssignmentsPageE2ETest {
 
     companion object {
-        private suspend fun Sdk.save(party: Party, players: List<Player>) {
+        private suspend fun Sdk.save(party: Party, players: List<Player>) = coroutineScope {
             perform(SavePartyCommand(party))
-            with(playerRepository) {
-                players.forEach { perform(SavePlayerCommand(party.id, it)) }
-            }
+            players.map { SavePlayerCommand(party.id, it) }
+                .forEach { perform(it) }
         }
     }
 

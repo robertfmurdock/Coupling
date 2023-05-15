@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -28,7 +29,7 @@ class RequestCombineTest {
     }) exercise {
         with(sdk) {
             coroutineScope {
-                launch { partyId.getPlayerList() }
+                launch { getPlayers(partyId).elements }
                 launch { getPins(partyId) }
             }
         }

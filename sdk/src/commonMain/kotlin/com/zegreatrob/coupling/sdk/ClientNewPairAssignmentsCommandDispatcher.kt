@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
-import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -16,7 +15,6 @@ import kotlinx.coroutines.coroutineScope
 interface ClientNewPairAssignmentsCommandDispatcher :
     NewPairAssignmentsCommand.Dispatcher,
     SdkProviderSyntax,
-    PartyPlayersSyntax,
     SuspendActionExecuteSyntax,
     RequestSpinAction.Dispatcher,
     PartyIdPairAssignmentDocumentSaveSyntax {
@@ -46,7 +44,7 @@ interface ClientNewPairAssignmentsCommandDispatcher :
     private suspend fun NewPairAssignmentsCommand.getData() = coroutineScope {
         await(
             async { sdk.getPartyRecord(partyId)?.data },
-            async { partyId.getPlayerList() },
+            async { sdk.getPlayers(partyId).elements },
             async { sdk.getPins(partyId).elements },
         )
     }

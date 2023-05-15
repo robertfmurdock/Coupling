@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.repository.await
-import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -24,7 +24,6 @@ data class PartyPlayerQuery(val partyId: PartyId, val playerId: String?) :
 
 interface ClientPartyPlayerQueryDispatcher :
     SdkProviderSyntax,
-    PartyPlayersSyntax,
     FindCallSignAction.Dispatcher,
     PartyPlayerQuery.Dispatcher {
     override suspend fun perform(query: PartyPlayerQuery) = query.get()
@@ -43,7 +42,7 @@ interface ClientPartyPlayerQueryDispatcher :
         }
 
     private suspend fun PartyId.getData() = coroutineScope {
-        await(async { sdk.getPartyRecord(this@getData)?.data }, async { getPlayerList() })
+        await(async { sdk.getPartyRecord(this@getData)?.data }, async { sdk.getPlayers(this@getData).elements })
     }
 
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }

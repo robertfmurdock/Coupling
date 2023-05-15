@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.coupling.sdk.pairassignments.SdkDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
@@ -48,12 +47,11 @@ interface Sdk :
     SdkSavePinCommandDispatcher,
     SdkSavePlayerCommandDispatcher,
     SdkSpin,
-    SdkSyntax,
+    SdkProviderSyntax,
     SdkUserQueryDispatcher {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
     override val pairAssignmentDocumentRepository get() = this
-    override val playerRepository get() = this
     override val mutations get() = Mutation
     override val queries get() = Query
 }
@@ -76,7 +74,3 @@ class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String
 interface SdkProviderSyntax {
     val sdk: SdkApi
 }
-
-interface SdkSyntax :
-    SdkProviderSyntax,
-    PartyPlayersSyntax

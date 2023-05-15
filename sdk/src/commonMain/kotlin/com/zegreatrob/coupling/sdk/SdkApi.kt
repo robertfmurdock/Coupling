@@ -21,10 +21,9 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
-import com.zegreatrob.coupling.repository.player.PlayerListGet
-import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 
 interface SdkApi :
     BoostQuery.Dispatcher,
@@ -44,8 +43,6 @@ interface SdkApi :
     PartyPinQuery.Dispatcher,
     PartyPlayerQuery.Dispatcher,
     PartyQuery.Dispatcher,
-    PlayerListGet,
-    PlayerListGetDeleted,
     RequestSpinAction.Dispatcher,
     RetiredPlayerListQuery.Dispatcher,
     RetiredPlayerQuery.Dispatcher,
@@ -59,4 +56,6 @@ interface SdkApi :
 
     suspend fun getPartyRecord(partyId: PartyId): Record<Party>?
     suspend fun getPins(partyId: PartyId): List<PartyRecord<Pin>>
+    suspend fun getPlayers(partyId: PartyId): List<PartyRecord<Player>>
+    suspend fun getDeleted(partyId: PartyId): List<PartyRecord<Player>>
 }
