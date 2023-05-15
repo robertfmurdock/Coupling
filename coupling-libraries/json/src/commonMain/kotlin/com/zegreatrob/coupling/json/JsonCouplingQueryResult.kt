@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class JsonCouplingQueryResult(
     val partyList: List<JsonPartyRecord>? = null,
-    val user: JsonUserRecord? = null,
+    val user: JsonUser? = null,
     val partyData: JsonPartyData? = null,
 )
 
@@ -35,7 +35,7 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
 
 data class CouplingQueryResult(
     val partyList: List<Record<Party>>? = null,
-    val user: Record<User>? = null,
+    val user: User? = null,
     val partyData: PartyData? = null,
 )
 

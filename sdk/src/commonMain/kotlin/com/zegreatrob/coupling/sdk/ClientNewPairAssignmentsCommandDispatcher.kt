@@ -42,10 +42,12 @@ interface ClientNewPairAssignmentsCommandDispatcher :
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
 
     private suspend fun NewPairAssignmentsCommand.getData() = coroutineScope {
-        await(
-            async { sdk.getPartyRecord(partyId)?.data },
-            async { sdk.getPlayers(partyId).elements },
-            async { sdk.getPins(partyId).elements },
-        )
+        with(sdk) {
+            await(
+                async { getPartyRecord(partyId)?.data },
+                async { getPlayers(partyId).elements },
+                async { getPins(partyId).elements },
+            )
+        }
     }
 }

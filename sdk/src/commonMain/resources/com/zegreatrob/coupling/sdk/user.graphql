@@ -3,8 +3,5 @@ query user {
         id
         email
         authorizedPartyIds
-        modifyingUserEmail
-        timestamp
-        isDeleted
     }
 }

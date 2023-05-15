@@ -11,7 +11,7 @@ val UserPage by nfc<PageProps> {
         CouplingQuery(
             commander = it.commander,
             query = UserQuery(),
-            toDataprops = { _, _, data -> UserConfig(data) },
+            toDataprops = { _, _, result -> UserConfig(result) },
         ),
     )
 }

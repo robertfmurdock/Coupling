@@ -5,6 +5,8 @@ import com.zegreatrob.coupling.json.pinJsonKeys
 import com.zegreatrob.coupling.json.pinRecordJsonKeys
 import com.zegreatrob.coupling.json.playerJsonKeys
 import com.zegreatrob.coupling.json.playerRecordJsonKeys
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.buildJsonObject
 
 enum class PartyGQLComponent(val value: String) {
     PartyData(queryAllFields("party", partyRecordJsonKeys)),
@@ -36,3 +38,20 @@ enum class PartyGQLComponent(val value: String) {
 }
 
 private fun queryAllFields(name: String, keys: Set<String>) = "$name {${keys.joinToString(",")}}"
+
+@DslMarker
+annotation class CouplingQueryDsl
+
+@CouplingQueryDsl
+class CouplingQueryBuilder {
+    private var queries = mutableListOf<String>()
+    private var inputs = mutableListOf<String>()
+    private var variables = mutableMapOf<String, JsonElement>()
+
+    fun build(): String {
+        val args = if (inputs.isEmpty()) "" else "(${inputs.joinToString(",")})"
+        return "query $args {\n${queries.joinToString("\n")}\n}"
+    }
+
+    fun variablesJson() = buildJsonObject { variables.forEach { put(it.key, it.value) } }
+}
