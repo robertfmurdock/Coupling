@@ -12,7 +12,7 @@ type PartyData {
     boost: BoostRecord
 }
 
-type UserRecord {
+type User {
     id: String!
     boost: BoostRecord
 }

@@ -14,13 +14,10 @@ type PartyRecord {
     isDeleted: Boolean
 }
 
-type UserRecord {
+type User {
     id: String!
     email: String!
     authorizedPartyIds: [String]!
-    modifyingUserEmail: String
-    timestamp: String
-    isDeleted: Boolean
 }
 
 type Pin {
@@ -198,7 +195,7 @@ All Queries and Mutations are subject to change. If you want to program an integ
 type Query {
     partyList: [PartyRecord]
     partyData(id: String!): PartyData
-    user: UserRecord
+    user: User
 }
 
 """

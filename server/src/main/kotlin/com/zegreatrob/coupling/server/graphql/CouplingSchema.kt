@@ -48,7 +48,7 @@ private fun prereleaseResolvers() = json(
         "saveBoost" to saveBoostResolver,
         "deleteBoost" to deleteBoostResolver,
     ),
-    "UserRecord" to json(
+    "User" to json(
         "boost" to boostResolver,
     ),
 )
