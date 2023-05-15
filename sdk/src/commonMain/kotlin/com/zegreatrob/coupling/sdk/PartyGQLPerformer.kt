@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.json.CouplingQueryResult
 import com.zegreatrob.coupling.json.JsonCouplingQueryResult
+import com.zegreatrob.coupling.json.toDomain
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Deferred
@@ -17,8 +19,9 @@ interface PartyGQLPerformer : GqlSyntax {
     suspend fun performPartyGQLQuery(
         partyId: PartyId,
         components: List<PartyGQLComponent>,
-    ): JsonCouplingQueryResult? = sendQuery(partyId, components).jsonObject["data"]
+    ) = sendQuery(partyId, components).jsonObject["data"]
         ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
+        ?.toDomain()
 
     private suspend fun sendQuery(partyId: PartyId, components: List<PartyGQLComponent>) =
         buildFinalQuery(partyId, components)
@@ -36,14 +39,14 @@ class BatchingPartyGQLPerformer(override val performer: QueryPerformer) : PartyG
 
     private val batchScope = MainScope() + CoroutineName("batch")
 
-    private var pending: Deferred<JsonCouplingQueryResult?>? = null
+    private var pending: Deferred<CouplingQueryResult?>? = null
 
     private var pendingComponents = emptyList<PartyGQLComponent>()
 
     override suspend fun performPartyGQLQuery(
         partyId: PartyId,
         components: List<PartyGQLComponent>,
-    ): JsonCouplingQueryResult? {
+    ): CouplingQueryResult? {
         pendingComponents = pendingComponents + components
 
         return with(batchScope) {
