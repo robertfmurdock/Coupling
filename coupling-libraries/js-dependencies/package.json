@@ -60,7 +60,7 @@
     "raw-loader": "^4.0.2",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-flip-toolkit": "^7.0.17",
+    "react-flip-toolkit": "^7.1.0",
     "react-hotkeys-hook": "^4.4.0",
     "react-websocket": "^2.1.0",
     "reactjs-popup": "^2.0.5",
