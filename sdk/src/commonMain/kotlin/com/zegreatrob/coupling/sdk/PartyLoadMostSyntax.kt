@@ -1,18 +1,18 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-interface PartyLoadMostSyntax : SdkProviderSyntax, PartyPlayersSyntax, PartyPinsSyntax {
+interface PartyLoadMostSyntax : SdkProviderSyntax, PartyPlayersSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentGetCurrent
 
     suspend fun PartyId.loadMost() = coroutineScope {
@@ -20,7 +20,7 @@ interface PartyLoadMostSyntax : SdkProviderSyntax, PartyPlayersSyntax, PartyPins
             async { sdk.getPartyRecord(this@loadMost)?.data },
             async { getPlayerList() },
             async { pairAssignmentDocumentRepository.getCurrentPairAssignments(this@loadMost)?.data?.element },
-            async { getPins() },
+            async { sdk.getPins(this@loadMost).elements },
         )
     }
 

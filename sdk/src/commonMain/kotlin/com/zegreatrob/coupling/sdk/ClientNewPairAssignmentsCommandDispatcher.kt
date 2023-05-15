@@ -2,12 +2,12 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
@@ -16,7 +16,6 @@ import kotlinx.coroutines.coroutineScope
 interface ClientNewPairAssignmentsCommandDispatcher :
     NewPairAssignmentsCommand.Dispatcher,
     SdkProviderSyntax,
-    PartyPinsSyntax,
     PartyPlayersSyntax,
     SuspendActionExecuteSyntax,
     RequestSpinAction.Dispatcher,
@@ -48,7 +47,7 @@ interface ClientNewPairAssignmentsCommandDispatcher :
         await(
             async { sdk.getPartyRecord(partyId)?.data },
             async { partyId.getPlayerList() },
-            async { partyId.getPins() },
+            async { sdk.getPins(partyId).elements },
         )
     }
 }

@@ -1,24 +1,24 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistorySyntax
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-interface PartyLoadAllSyntax : SdkProviderSyntax, PartyPlayersSyntax, PartyIdHistorySyntax, PartyPinsSyntax {
+interface PartyLoadAllSyntax : SdkProviderSyntax, PartyPlayersSyntax, PartyIdHistorySyntax {
     suspend fun PartyId.loadAll() = coroutineScope {
         await(
             async { sdk.getPartyRecord(this@loadAll)?.data },
             async { getPlayerList() },
             async { loadHistory() },
-            async { getPins() },
+            async { sdk.getPins(this@loadAll).elements },
         )
     }
 

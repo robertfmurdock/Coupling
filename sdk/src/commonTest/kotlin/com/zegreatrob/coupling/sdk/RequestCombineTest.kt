@@ -29,7 +29,7 @@ class RequestCombineTest {
         with(sdk) {
             coroutineScope {
                 launch { partyId.getPlayerList() }
-                launch { partyId.getPins() }
+                launch { getPins(partyId) }
             }
         }
     } verify {

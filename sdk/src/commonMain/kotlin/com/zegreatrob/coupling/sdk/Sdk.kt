@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyPinsSyntax
 import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.coupling.sdk.pairassignments.SdkDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
@@ -53,7 +52,6 @@ interface Sdk :
     SdkUserQueryDispatcher {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
-    override val pinRepository get() = this
     override val pairAssignmentDocumentRepository get() = this
     override val playerRepository get() = this
     override val mutations get() = Mutation
@@ -81,5 +79,4 @@ interface SdkProviderSyntax {
 
 interface SdkSyntax :
     SdkProviderSyntax,
-    PartyPinsSyntax,
     PartyPlayersSyntax
