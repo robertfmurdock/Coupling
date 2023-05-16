@@ -43,7 +43,7 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun Sdk.deleteAnyDisplayedParties() = perform(GraphQuery(Query.listParties))
+private suspend fun Sdk.deleteAnyDisplayedParties() = perform(graphQuery { partyList() })
     ?.partyList
     ?.forEach { perform(DeletePartyCommand(it.data.id)) }
 

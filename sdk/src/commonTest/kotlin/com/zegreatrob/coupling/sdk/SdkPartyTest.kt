@@ -30,7 +30,7 @@ class SdkPartyTest {
         with(sdk()) {
             perform(DeletePartyCommand(party.id))
             Pair(
-                perform(GraphQuery(Query.listParties))?.partyList,
+                perform(graphQuery { partyList() })?.partyList,
                 getPartyRecord(party.id)?.data,
             )
         }
@@ -59,7 +59,7 @@ class SdkPartyTest {
     }) {
         parties.forEach { sdk().perform(SavePartyCommand(it)) }
     } exercise {
-        sdk().perform(GraphQuery(Query.listParties))?.partyList
+        sdk().perform(graphQuery { partyList() })?.partyList
     } verify { result ->
         result?.parties().assertContainsAll(parties)
     }
@@ -91,7 +91,7 @@ class SdkPartyTest {
             perform(SavePlayerCommand(party.id, playerMatchingSdkUser))
         }
     } exercise {
-        sdk().perform(GraphQuery(Query.listParties))?.partyList ?: emptyList()
+        sdk().perform(graphQuery { partyList() })?.partyList ?: emptyList()
     } verify { result ->
         result.map(Record<Party>::data)
             .assertContains(party)
@@ -105,7 +105,7 @@ class SdkPartyTest {
             perform(SavePlayerCommand(party.id, playerMatchingSdkUser.copy(email = "something else")))
         }
     } exercise {
-        sdk().perform(GraphQuery(Query.listParties))?.partyList ?: emptyList()
+        sdk().perform(graphQuery { partyList() })?.partyList ?: emptyList()
     } verify { result ->
         result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
@@ -119,7 +119,7 @@ class SdkPartyTest {
             perform(DeletePlayerCommand(party.id, playerMatchingSdkUser.id))
         }
     } exercise {
-        sdk().perform(GraphQuery(Query.listParties))?.partyList ?: emptyList()
+        sdk().perform(graphQuery { partyList() })?.partyList ?: emptyList()
     } verify { result ->
         result.map { it.data }.contains(party)
             .assertIsEqualTo(false)
@@ -141,7 +141,7 @@ class SdkPartyTest {
     }) {
         sdk().perform(SavePartyCommand(party))
     } exercise {
-        sdk().perform(GraphQuery(Query.listParties))?.partyList ?: emptyList()
+        sdk().perform(graphQuery { partyList() })?.partyList ?: emptyList()
     } verifyAnd { result ->
         result.first { it.data.id == party.id }.apply {
             modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")

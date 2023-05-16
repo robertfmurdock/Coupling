@@ -3,9 +3,8 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
-import com.zegreatrob.coupling.sdk.GraphQuery
-import com.zegreatrob.coupling.sdk.Query
 import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.graphQuery
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncTestTemplate
@@ -18,7 +17,7 @@ val e2eSetup: TestTemplate<Sdk> by lazy {
 
     asyncTestTemplate(beforeAll = {
         CouplingLogin.sdkProvider.await().apply {
-            perform(GraphQuery(Query.listParties))
+            perform(graphQuery { partyList() })
                 ?.partyList
                 ?.map(Record<Party>::data)
                 ?.map(Party::id)

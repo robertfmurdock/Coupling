@@ -20,7 +20,6 @@ object Mutation {
 }
 
 object Query {
-    val listParties by GqlFileLoader
     val user by GqlFileLoader
     val boost by GqlFileLoader
 }

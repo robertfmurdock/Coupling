@@ -6,5 +6,5 @@ import korlibs.time.DateTime
 fun DateTime.isWithinOneSecondOfNow() {
     val timeSpan = DateTime.now() - this
     (timeSpan.seconds < 1)
-        .assertIsEqualTo(true)
+        .assertIsEqualTo(true, "timespan was not within 1 second - instead was $timeSpan")
 }
