@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.sdk.pairassignments.SdkDeletePairAssignmentsComma
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
 import com.zegreatrob.coupling.sdk.pairassignments.SdkSavePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.sdk.user.SdkUserQueryDispatcher
 import io.ktor.client.HttpClient
 
 interface SdkPlayer :
@@ -47,8 +46,7 @@ interface Sdk :
     SdkSavePinCommandDispatcher,
     SdkSavePlayerCommandDispatcher,
     SdkSpin,
-    SdkProviderSyntax,
-    SdkUserQueryDispatcher {
+    SdkProviderSyntax {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
     override val pairAssignmentDocumentRepository get() = this

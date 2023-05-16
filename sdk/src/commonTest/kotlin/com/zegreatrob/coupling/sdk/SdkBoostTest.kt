@@ -6,9 +6,7 @@ import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
-import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.model.Boost
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -18,9 +16,10 @@ import kotlin.test.Test
 class SdkBoostTest {
 
     private val setupWithUser = asyncTestTemplate(
-        sharedSetup = suspend {
+        beforeAll = suspend {
             val sdk = sdk()
-            val user = sdk.perform(UserQuery())?.let { Record(it, "") }!!.data
+            val user = sdk.perform(graphQuery { user() })?.user
+                ?: throw Exception("Sdk did not provide user.")
             object : SdkApi by sdk {
                 val user = user
             }

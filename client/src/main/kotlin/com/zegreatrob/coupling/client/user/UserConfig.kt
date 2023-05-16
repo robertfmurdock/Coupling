@@ -14,7 +14,7 @@ import com.zegreatrob.minreact.ntmFC
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
 
-data class UserConfig(val user: User) : DataProps<UserConfig> {
+data class UserConfig(val user: User?) : DataProps<UserConfig> {
     override val component = userConfig
 }
 
@@ -33,14 +33,17 @@ private val userConfig by ntmFC<UserConfig> { (user) ->
             GqlButton()
             NotificationButton()
         }
-
-        div { +"User ID: ${user.id}" }
-        div { +"User Email: ${user.email}" }
-        div { +"This user owns these parties:" }
-        user.authorizedPartyIds
-            .map { it.value }
-            .forEach { id ->
-                div { +"Party ID: $id" }
-            }
+        if (user == null) {
+            div { +"User not found." }
+        } else {
+            div { +"User ID: ${user.id}" }
+            div { +"User Email: ${user.email}" }
+            div { +"This user owns these parties:" }
+            user.authorizedPartyIds
+                .map { it.value }
+                .forEach { id ->
+                    div { +"Party ID: $id" }
+                }
+        }
     }
 }

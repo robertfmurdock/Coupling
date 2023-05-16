@@ -10,3 +10,9 @@ data class GraphQuery(val queryString: String) : SimpleSuspendAction<GraphQuery.
         suspend fun perform(query: GraphQuery): CouplingQueryResult?
     }
 }
+
+fun graphQuery(block: CouplingQueryBuilder.() -> Unit) = GraphQuery(
+    CouplingQueryBuilder()
+        .apply(block)
+        .build(),
+)

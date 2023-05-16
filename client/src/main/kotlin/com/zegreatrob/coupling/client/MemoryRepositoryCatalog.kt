@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.action.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
-import com.zegreatrob.coupling.action.user.UserQuery
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
+import com.zegreatrob.coupling.json.CouplingQueryResult
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -105,8 +105,6 @@ class MemoryRepositoryCatalog private constructor(
         MemoryPinRepository(userEmail, clock, backend.pin),
     )
 
-    override suspend fun perform(query: UserQuery) = User(userId, "???", setOf(PartyId("Kind of fake")))
-
     override suspend fun perform(action: RequestSpinAction): PairAssignmentDocument {
         val pairs = action.players.shuffled().map { it.withPins(emptyList()) }.withIndex().groupBy { it.index / 2 }
             .entries
@@ -123,6 +121,8 @@ class MemoryRepositoryCatalog private constructor(
     override suspend fun perform(command: BoostQuery) = TODO("Not yet implemented")
     override suspend fun perform(command: DeleteBoostCommand) = TODO("Not yet implemented")
     override suspend fun perform(command: SaveBoostCommand) = TODO("Not yet implemented")
-    override suspend fun perform(query: GraphQuery) = TODO("Not yet implemented")
+    override suspend fun perform(query: GraphQuery) = CouplingQueryResult(
+        user = User(userId, "???", setOf(PartyId("Kind of fake"))),
+    )
     override val sdk: SdkApi get() = this
 }
