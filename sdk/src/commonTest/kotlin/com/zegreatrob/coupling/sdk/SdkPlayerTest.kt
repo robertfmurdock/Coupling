@@ -105,7 +105,10 @@ class SdkPlayerTest {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
         sdk.perform(DeletePlayerCommand(partyId, player.id))
     } exercise {
-        sdk.getDeleted(partyId)
+        sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
+            ?.partyData
+            ?.retiredPlayers
+            .let { it ?: emptyList() }
     } verify { result ->
         result.map { it.data.player }
             .assertIsEqualTo(listOf(this.player))
@@ -125,7 +128,10 @@ class SdkPlayerTest {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
         sdk.perform(DeletePlayerCommand(partyId, playerId))
     } verifyWithWait {
-        sdk.getDeleted(this.partyId)
+        sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
+            ?.partyData
+            ?.retiredPlayers
+            .let { it ?: emptyList() }
             .map { it.data.player }
             .assertIsEqualTo(listOf(this.player))
     }
@@ -211,7 +217,10 @@ class SdkPlayerTest {
     }) exercise {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
         sdk.perform(DeletePlayerCommand(partyId, player.id))
-        sdk.getDeleted(partyId)
+        sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
+            ?.partyData
+            ?.retiredPlayers
+            .let { it ?: emptyList() }
     } verify { result ->
         result.size.assertIsEqualTo(1)
         result.first().apply {

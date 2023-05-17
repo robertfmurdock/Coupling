@@ -31,7 +31,12 @@ interface ClientRetiredPlayerListQueryDispatcher :
                     ?.partyData
                     ?.party?.data
             },
-            async { sdk.getDeleted(partyId).map { it.data.element } },
+            async {
+                sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
+                    ?.partyData
+                    ?.retiredPlayers
+                    .let { it ?: emptyList() }.map { it.data.element }
+            },
         )
     }.let { (party, players) -> if (party == null) null else party to players }
 }

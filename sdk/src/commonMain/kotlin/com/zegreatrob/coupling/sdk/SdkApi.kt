@@ -15,10 +15,6 @@ import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
-import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGetCurrent
 
@@ -48,8 +44,4 @@ interface SdkApi :
     SavePartyCommand.Dispatcher,
     SavePinCommand.Dispatcher,
     SavePlayerCommand.Dispatcher,
-    StatisticsQuery.Dispatcher {
-
-    suspend fun getPins(partyId: PartyId): List<PartyRecord<Pin>>
-    suspend fun getDeleted(partyId: PartyId): List<PartyRecord<Player>>
-}
+    StatisticsQuery.Dispatcher

@@ -124,6 +124,12 @@ class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
             playerList = listOf(referencePlayerRecord()),
         )
     }
+
+    fun retiredPlayers() {
+        output = output.copy(
+            retiredPlayers = listOf(referencePlayerRecord()),
+        )
+    }
 }
 
 @CouplingQueryDsl
