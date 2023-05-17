@@ -6,11 +6,8 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 
 interface ClientNewPairAssignmentsCommandDispatcher :
     NewPairAssignmentsCommand.Dispatcher,
@@ -41,28 +38,15 @@ interface ClientNewPairAssignmentsCommandDispatcher :
 
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
 
-    private suspend fun NewPairAssignmentsCommand.getData() = coroutineScope {
-        with(sdk) {
-            await(
-                async {
-                    perform(graphQuery { party(partyId) { party() } })
-                        ?.partyData
-                        ?.party?.data
-                },
-                async {
-                    perform(graphQuery { party(partyId) { playerList() } })
-                        ?.partyData
-                        ?.playerList
-                        .let { it ?: emptyList() }.elements
-                },
-                async {
-                    perform(graphQuery { party(partyId) { pinList() } })
-                        ?.partyData
-                        ?.pinList
-                        ?.elements
-                        ?: emptyList()
-                },
-            )
-        }
+    private suspend fun NewPairAssignmentsCommand.getData() = sdk.perform(
+        graphQuery {
+            party(partyId) {
+                party()
+                playerList()
+                pinList()
+            }
+        },
+    )?.partyData.let {
+        Triple(it?.party?.data, it?.playerList?.elements ?: emptyList(), it?.pinList?.elements ?: emptyList())
     }
 }
