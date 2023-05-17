@@ -79,7 +79,9 @@ class SdkPairAssignmentDocumentTest {
         listOf(middle, oldest, newest)
             .forEach { perform(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        getCurrentPairAssignments(partyId)
+        perform(graphQuery { party(partyId) { currentPairAssignments() } })
+            ?.partyData
+            ?.currentPairAssignmentDocument
     } verify { result: PartyRecord<PairAssignmentDocument>? ->
         result?.element.assertIsEqualTo(newest)
     }

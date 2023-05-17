@@ -1,8 +1,12 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonPartyData
 import com.zegreatrob.coupling.json.JsonPartyRecord
+import com.zegreatrob.coupling.json.JsonPinData
 import com.zegreatrob.coupling.json.JsonPinRecord
+import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
+import com.zegreatrob.coupling.json.JsonPinnedPlayer
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonUser
 import com.zegreatrob.coupling.json.nestedKeys
@@ -13,6 +17,7 @@ import com.zegreatrob.coupling.json.playerJsonKeys
 import com.zegreatrob.coupling.json.playerRecordJsonKeys
 import com.zegreatrob.coupling.json.toGqlQueryFields
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.AvatarType
 import korlibs.time.DateTime
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -130,6 +135,12 @@ class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
             retiredPlayers = listOf(referencePlayerRecord()),
         )
     }
+
+    fun currentPairAssignments() {
+        output = output.copy(
+            currentPairAssignmentDocument = referencePairAssignmentRecord(),
+        )
+    }
 }
 
 @CouplingQueryDsl
@@ -174,6 +185,39 @@ private fun referencePlayerRecord() = JsonPlayerRecord(
     callSignNoun = "",
     imageURL = "",
     avatarType = "",
+    partyId = PartyId(""),
+    modifyingUserEmail = "",
+    isDeleted = false,
+    timestamp = DateTime.EPOCH,
+)
+
+private fun referenceJsonPinnedPlayer() = JsonPinnedPlayer(
+    id = "",
+    name = "",
+    email = "",
+    badge = "",
+    callSignAdjective = "",
+    callSignNoun = "",
+    imageURL = "",
+    avatarType = AvatarType.BoringBeam,
+    pins = listOf(referenceJsonPinData()),
+)
+
+private fun referenceJsonPinnedCouplingPair() = JsonPinnedCouplingPair(
+    players = listOf(referenceJsonPinnedPlayer()),
+    pins = setOf(referenceJsonPinData()),
+)
+
+private fun referenceJsonPinData() = JsonPinData(
+    id = "",
+    name = "",
+    icon = "",
+)
+
+private fun referencePairAssignmentRecord() = JsonPairAssignmentDocumentRecord(
+    id = "",
+    date = DateTime.EPOCH,
+    pairs = listOf(referenceJsonPinnedCouplingPair()),
     partyId = PartyId(""),
     modifyingUserEmail = "",
     isDeleted = false,

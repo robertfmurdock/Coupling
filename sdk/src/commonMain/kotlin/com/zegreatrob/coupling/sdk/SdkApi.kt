@@ -45,5 +45,4 @@ interface SdkApi :
     SavePlayerCommand.Dispatcher,
     StatisticsQuery.Dispatcher {
     suspend fun getPairAssignments(partyId: PartyId): List<PartyRecord<PairAssignmentDocument>>
-    suspend fun getCurrentPairAssignments(partyId: PartyId): PartyRecord<PairAssignmentDocument>?
 }
