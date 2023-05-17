@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
@@ -45,8 +47,11 @@ class SdkPinTest {
     ) exercise {
         pins.forEach { perform(SavePinCommand(party.id, it)) }
     } verifyWithWait {
-        getPins(party.id)
-            .map { it.data.pin }
+        perform(graphQuery { party(party.id) { pinList() } })
+            ?.partyData
+            ?.pinList
+            ?.map(PartyRecord<Pin>::data)
+            ?.map(PartyElement<Pin>::pin)
             .assertIsEqualTo(pins)
     }
 

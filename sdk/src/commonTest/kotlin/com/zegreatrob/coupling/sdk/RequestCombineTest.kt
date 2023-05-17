@@ -43,8 +43,8 @@ class RequestCombineTest {
 class StubQueryPerformer : QueryPerformer {
     val allPostCalls = mutableListOf<JsonElement>()
 
-    override suspend fun doQuery(body: String): JsonElement =
-        stubResponseData().apply { allPostCalls.add(JsonPrimitive(body)) }
+    override suspend fun doQuery(queryString: String): JsonElement =
+        stubResponseData().apply { allPostCalls.add(JsonPrimitive(queryString)) }
 
     override suspend fun doQuery(body: JsonElement): JsonElement =
         stubResponseData().apply { allPostCalls.add(body) }

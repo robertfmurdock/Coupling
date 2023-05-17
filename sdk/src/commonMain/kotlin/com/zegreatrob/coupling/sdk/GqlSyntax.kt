@@ -16,6 +16,10 @@ interface GqlSyntax {
     val performer: QueryPerformer
     suspend fun String.performQuery(): JsonElement = performer.doQuery(this)
     suspend fun performQuery(body: JsonElement): JsonElement = performer.doQuery(body)
+    suspend fun JsonElement.perform() = performQuery(this)
+        .jsonObject["data"]
+        ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
+        ?.toDomain()
     suspend fun String.perform() = performQuery()
         .jsonObject["data"]
         ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
@@ -23,7 +27,7 @@ interface GqlSyntax {
 }
 
 interface QueryPerformer {
-    suspend fun doQuery(body: String): JsonElement
+    suspend fun doQuery(queryString: String): JsonElement
     suspend fun doQuery(body: JsonElement): JsonElement
     fun postAsync(body: JsonElement): Deferred<JsonElement>
 

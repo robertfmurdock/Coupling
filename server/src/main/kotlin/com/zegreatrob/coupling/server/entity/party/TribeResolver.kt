@@ -10,6 +10,6 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import com.zegreatrob.minjson.at
 import kotlinx.serialization.json.JsonElement
 
-val partyResolve = dispatch(command, { entity, _: JsonElement -> PartyQuery(PartyId(entity.at("id")!!)) }, ::toJson)
+val partyResolve = dispatch(command, { entity, _: JsonElement -> PartyQuery(PartyId(entity.at("input")!!)) }, ::toJson)
 
 private fun toJson(record: Record<Party>?) = record?.toSerializable()

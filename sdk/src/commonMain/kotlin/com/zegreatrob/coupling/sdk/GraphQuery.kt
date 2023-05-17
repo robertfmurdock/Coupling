@@ -2,8 +2,10 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.json.CouplingQueryResult
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import kotlinx.serialization.json.JsonObject
 
-data class GraphQuery(val queryString: String) : SimpleSuspendAction<GraphQuery.Dispatcher, CouplingQueryResult?> {
+data class GraphQuery(val queryString: String, val variables: JsonObject?) :
+    SimpleSuspendAction<GraphQuery.Dispatcher, CouplingQueryResult?> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {
@@ -11,8 +13,8 @@ data class GraphQuery(val queryString: String) : SimpleSuspendAction<GraphQuery.
     }
 }
 
-fun graphQuery(block: CouplingQueryBuilder.() -> Unit) = GraphQuery(
+fun graphQuery(block: CouplingQueryBuilder.() -> Unit) =
     CouplingQueryBuilder()
         .apply(block)
-        .build(),
-)
+        .build()
+        .let { (query, variables) -> GraphQuery(query, variables) }

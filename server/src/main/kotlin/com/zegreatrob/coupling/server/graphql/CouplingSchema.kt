@@ -27,7 +27,7 @@ import com.zegreatrob.coupling.server.external.graphql.tools.schema.makeExecutab
 import com.zegreatrob.coupling.server.external.graphql.tools.schema.mergeSchemas
 import kotlin.js.json
 
-private val entityWithId: Resolver = { _, args, _, _ -> json("id" to args["id"]) }
+private val entityWithId: Resolver = { _, args, _, _ -> json("input" to args["input"]) }
 
 fun couplingSchema() = makeExecutableSchema(
     json(

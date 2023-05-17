@@ -13,7 +13,7 @@ import korlibs.time.TimeProvider
 object DispatcherProviders {
     val command: GraphQLDispatcherProvider<CommandDispatcher> = { r, _, _ -> r.commandDispatcher }
     val partyCommand: GraphQLDispatcherProvider<CurrentPartyDispatcher> = { request, entity, args ->
-        val partyId = entity?.get("id").unsafeCast<String?>()
+        val partyId = entity?.get("input").unsafeCast<String?>()
             ?: (args as? PartyInput)?.partyId?.value
             ?: ""
         request.commandDispatcher

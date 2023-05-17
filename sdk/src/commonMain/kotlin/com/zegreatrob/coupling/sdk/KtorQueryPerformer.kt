@@ -16,14 +16,11 @@ import kotlinx.serialization.json.jsonArray
 
 interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
 
-    override suspend fun doQuery(body: JsonElement): JsonElement {
-        return postStringToJsonObject(body)
-    }
+    override suspend fun doQuery(body: JsonElement) = postStringToJsonObject(body)
 
-    override suspend fun doQuery(body: String) =
-        postStringToJsonObject(
-            JsonObject(mapOf("query" to JsonPrimitive(body))),
-        )
+    override suspend fun doQuery(queryString: String) = postStringToJsonObject(
+        JsonObject(mapOf("query" to JsonPrimitive(queryString))),
+    )
 
     override fun postAsync(body: JsonElement) = MainScope().async {
         postStringToJsonObject(body)

@@ -30,7 +30,7 @@ interface PartyGQLPerformer : GqlSyntax {
     private fun buildFinalQuery(partyId: PartyId, components: List<PartyGQLComponent>) =
         "{ ${partyId.partyQueryArgs()} { ${components.partyComponentString()} } }"
 
-    private fun PartyId.partyQueryArgs() = "partyData(id: \"$value\")"
+    private fun PartyId.partyQueryArgs() = "partyData(input: \"$value\")"
 
     private fun List<PartyGQLComponent>.partyComponentString() = joinToString(",") { it.value }
 }
