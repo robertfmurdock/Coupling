@@ -40,7 +40,11 @@ class RequestCombineEndpointTest {
     } exercise {
         coroutineScope {
             val a1 = async { getPlayers(party.id).map { it.data.player } }
-            val a2 = async { getPins(party.id).map { it.data.pin } }
+            val a2 = async {
+                perform(graphQuery { party(party.id) { pinList() } })
+                    ?.partyData
+                    ?.pinList?.map { it.data.pin }
+            }
             a1.await() to a2.await()
         }
     } verify { (players, pins) ->

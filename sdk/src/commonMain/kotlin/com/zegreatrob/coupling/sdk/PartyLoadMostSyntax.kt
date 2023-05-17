@@ -19,7 +19,13 @@ interface PartyLoadMostSyntax : SdkProviderSyntax {
             async { sdk.getPartyRecord(this@loadMost)?.data },
             async { sdk.getPlayers(this@loadMost).elements },
             async { pairAssignmentDocumentRepository.getCurrentPairAssignments(this@loadMost)?.data?.element },
-            async { sdk.getPins(this@loadMost).elements },
+            async {
+                sdk.perform(graphQuery { party(this@loadMost) { pinList() } })
+                    ?.partyData
+                    ?.pinList
+                    ?.elements
+                    ?: emptyList()
+            },
         )
     }
 

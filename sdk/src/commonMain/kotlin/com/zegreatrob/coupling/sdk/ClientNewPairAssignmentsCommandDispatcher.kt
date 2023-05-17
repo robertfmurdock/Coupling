@@ -46,7 +46,13 @@ interface ClientNewPairAssignmentsCommandDispatcher :
             await(
                 async { getPartyRecord(partyId)?.data },
                 async { getPlayers(partyId).elements },
-                async { getPins(partyId).elements },
+                async {
+                    perform(graphQuery { party(partyId) { pinList() } })
+                        ?.partyData
+                        ?.pinList
+                        ?.elements
+                        ?: emptyList()
+                },
             )
         }
     }

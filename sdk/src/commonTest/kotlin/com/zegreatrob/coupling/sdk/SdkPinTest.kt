@@ -64,7 +64,9 @@ class SdkPinTest {
 
     @Test
     fun givenNoPinsWillReturnEmptyList() = partySetup() exercise {
-        getPins(party.id)
+        perform(graphQuery { party(party.id) { pinList() } })
+            ?.partyData
+            ?.pinList
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
@@ -83,7 +85,11 @@ class SdkPinTest {
         pins.forEach { perform(SavePinCommand(party.id, it)) }
         perform(DeletePinCommand(party.id, this.pins[1].id!!))
     } verifyWithWait {
-        getPins(party.id).map { it.data.pin }
+        perform(graphQuery { party(party.id) { pinList() } })
+            ?.partyData
+            ?.pinList
+            .let { it ?: emptyList() }
+            .map { it.data.pin }
             .assertContains(this.pins[0])
             .assertContains(this.pins[2])
             .size
@@ -103,7 +109,11 @@ class SdkPinTest {
     }) exercise {
         perform(SavePinCommand(partyId, pin))
     } verifyWithWait {
-        getPins(this.partyId).map { it.data.pin }
+        perform(graphQuery { party(partyId) { pinList() } })
+            ?.partyData
+            ?.pinList
+            .let { it ?: emptyList() }
+            .map { it.data.pin }
             .also { it.assertHasIds() }
             .map { it.copy(id = null) }
             .assertIsEqualTo(listOf(this.pin))
@@ -114,23 +124,20 @@ class SdkPinTest {
     }
 
     @Test
-    fun givenNoAuthGetIsNotAllowed() = asyncSetup.with({
-        val sdk = sdk()
-        val otherSdk = altAuthorizedSdkDeferred.await()
-        object {
-            val otherParty = stubParty()
-            val sdk = sdk
-            val otherSdk = otherSdk
-        }
+    fun givenNoAuthGetIsNotAllowed() = asyncSetup(object {
+        val otherParty = stubParty()
+        suspend fun otherSdk() = altAuthorizedSdkDeferred.await()
     }) {
-        otherSdk.perform(SavePartyCommand(otherParty))
-        otherSdk.perform(SavePinCommand(otherParty.id, stubPin()))
+        otherSdk().perform(SavePartyCommand(otherParty))
+        otherSdk().perform(SavePinCommand(otherParty.id, stubPin()))
     } exercise {
-        sdk.getPins(otherParty.id)
+        sdk().perform(graphQuery { party(otherParty.id) { pinList() } })
+            ?.partyData
+            ?.pinList
     } verifyAnd { result ->
-        result.assertIsEqualTo(emptyList())
+        result.assertIsEqualTo(null)
     } teardown {
-        otherSdk.perform(DeletePartyCommand(otherParty.id))
+        otherSdk().perform(DeletePartyCommand(otherParty.id))
     }
 
     @Test
@@ -143,7 +150,10 @@ class SdkPinTest {
         sdk.perform(SavePartyCommand(party))
         sdk.perform(SavePinCommand(party.id, pin))
     } exercise {
-        sdk.getPins(party.id)
+        sdk.perform(graphQuery { party(party.id) { pinList() } })
+            ?.partyData
+            ?.pinList
+            ?: emptyList()
     } verify { result ->
         result.size.assertIsEqualTo(1)
         result.first().apply {

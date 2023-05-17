@@ -24,7 +24,13 @@ interface ClientPartyPinListQueryDispatcher : SdkProviderSyntax, PartyPinListQue
     private suspend fun PartyId.getData() = coroutineScope {
         await(
             async { sdk.getPartyRecord(this@getData)?.data },
-            async { sdk.getPins(this@getData).elements },
+            async {
+                sdk.perform(graphQuery { party(this@getData) { pinList() } })
+                    ?.partyData
+                    ?.pinList
+                    ?.elements
+                    ?: emptyList()
+            },
         )
     }.let { (party, pins) -> if (party == null) null else party to pins }
 }
