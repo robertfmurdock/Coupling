@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.sdk.SdkApi
 import com.zegreatrob.coupling.sdk.performQueryGetComponent
 
 interface SdkPairAssignmentDocumentGet : SdkApi, GqlQueryComponent {
-    override suspend fun getPairAssignments(partyId: PartyId) =
+    suspend fun getPairAssignments(partyId: PartyId) =
         performQueryGetComponent(partyId, PairAssignmentDocumentList)
             ?.partyData
             ?.pairAssignmentDocumentList

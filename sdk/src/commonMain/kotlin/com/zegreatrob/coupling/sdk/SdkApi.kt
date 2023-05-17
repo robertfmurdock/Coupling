@@ -15,9 +15,6 @@ import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
-import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.PartyId
 
 interface SdkApi :
     BoostQuery.Dispatcher,
@@ -43,6 +40,4 @@ interface SdkApi :
     SavePartyCommand.Dispatcher,
     SavePinCommand.Dispatcher,
     SavePlayerCommand.Dispatcher,
-    StatisticsQuery.Dispatcher {
-    suspend fun getPairAssignments(partyId: PartyId): List<PartyRecord<PairAssignmentDocument>>
-}
+    StatisticsQuery.Dispatcher

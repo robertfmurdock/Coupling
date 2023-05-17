@@ -141,6 +141,12 @@ class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
             currentPairAssignmentDocument = referencePairAssignmentRecord(),
         )
     }
+
+    fun pairAssignmentDocumentList() {
+        output = output.copy(
+            pairAssignmentDocumentList = listOf(referencePairAssignmentRecord()),
+        )
+    }
 }
 
 @CouplingQueryDsl

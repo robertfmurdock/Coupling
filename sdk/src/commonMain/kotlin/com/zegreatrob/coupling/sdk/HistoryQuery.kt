@@ -30,7 +30,12 @@ interface ClientHistoryQueryDispatcher : SdkProviderSyntax, HistoryQuery.Dispatc
                     ?.partyData
                     ?.party?.data
             },
-            async { sdk.getPairAssignments(this@getData).elements },
+            async {
+                sdk.perform(graphQuery { party(this@getData) { pairAssignmentDocumentList() } })
+                    ?.partyData
+                    ?.pairAssignmentDocumentList
+                    .let { it ?: emptyList() }.elements
+            },
         )
     }.let { (first, second) -> if (first == null) null else Pair(first, second) }
 }

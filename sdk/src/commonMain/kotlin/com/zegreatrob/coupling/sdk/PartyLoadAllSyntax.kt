@@ -24,7 +24,12 @@ interface PartyLoadAllSyntax : SdkProviderSyntax {
                     ?.playerList
                     .let { it ?: emptyList() }.elements
             },
-            async { sdk.getPairAssignments(this@loadAll).elements },
+            async {
+                sdk.perform(graphQuery { party(this@loadAll) { pairAssignmentDocumentList() } })
+                    ?.partyData
+                    ?.pairAssignmentDocumentList
+                    .let { it ?: emptyList() }.elements
+            },
             async {
                 sdk.perform(graphQuery { party(this@loadAll) { pinList() } })
                     ?.partyData

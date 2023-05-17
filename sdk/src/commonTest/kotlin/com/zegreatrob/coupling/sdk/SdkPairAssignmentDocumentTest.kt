@@ -55,7 +55,11 @@ class SdkPairAssignmentDocumentTest {
     } exercise {
         perform(SavePairAssignmentsCommand(party.id, updatedDocument))
     } verifyWithWait {
-        getPairAssignments(this.party.id).data()
+        perform(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
+            ?.partyData
+            ?.pairAssignmentDocumentList
+            .let { it ?: emptyList() }
+            .data()
             .map { it.document }
             .assertIsEqualTo(listOf(this.updatedDocument))
     }
@@ -98,7 +102,10 @@ class SdkPairAssignmentDocumentTest {
         perform(DeletePairAssignmentsCommand(partyId, document.id))
     } verifyWithWait { result ->
         result.assertIsEqualTo(SuccessfulResult(Unit))
-        getPairAssignments(partyId)
+        perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
+            ?.partyData
+            ?.pairAssignmentDocumentList
+            .let { it ?: emptyList() }
             .data()
             .map(PartyElement<PairAssignmentDocument>::document)
             .assertIsEqualTo(emptyList())
@@ -116,7 +123,10 @@ class SdkPairAssignmentDocumentTest {
         listOf(middle, oldest, newest)
             .forEach { perform(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        getPairAssignments(partyId)
+        perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
+            ?.partyData
+            ?.pairAssignmentDocumentList
+            .let { it ?: emptyList() }
     } verifyWithWait { result ->
         result.data()
             .map { it.document }
@@ -127,7 +137,10 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {
-        getPairAssignments(party.id)
+        perform(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
+            ?.partyData
+            ?.pairAssignmentDocumentList
+            .let { it ?: emptyList() }
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
@@ -145,7 +158,10 @@ class SdkPairAssignmentDocumentTest {
         otherSdk.perform(SavePartyCommand(otherParty))
         otherSdk.perform(SavePairAssignmentsCommand(otherParty.id, stubPairAssignmentDoc()))
     } exercise {
-        sdk.getPairAssignments(PartyId("someoneElseParty"))
+        sdk.perform(graphQuery { party(PartyId("someoneElseParty")) { pairAssignmentDocumentList() } })
+            ?.partyData
+            ?.pairAssignmentDocumentList
+            .let { it ?: emptyList() }
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
@@ -161,7 +177,10 @@ class SdkPairAssignmentDocumentTest {
     }) {
         perform(SavePairAssignmentsCommand(partyId, pairAssignmentDoc))
     } exercise {
-        getPairAssignments(partyId)
+        perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
+            ?.partyData
+            ?.pairAssignmentDocumentList
+            .let { it ?: emptyList() }
     } verify { result ->
         result.size.assertIsEqualTo(1)
         result.first().apply {
