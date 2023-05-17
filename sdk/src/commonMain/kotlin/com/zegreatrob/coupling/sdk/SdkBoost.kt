@@ -18,12 +18,11 @@ import kotlinx.serialization.json.put
 interface SdkBoost :
     BoostQuery.Dispatcher,
     GqlSyntax,
-    GraphQueries,
     SaveBoostCommand.Dispatcher,
     DeleteBoostCommand.Dispatcher {
 
     override suspend fun perform(command: SaveBoostCommand) = doQuery(
-        query = mutations.saveBoost,
+        query = Mutation.saveBoost,
         input = command.saveBoostInput(),
     ).let { }
         .successResult()
@@ -40,13 +39,13 @@ interface SdkBoost :
         .at("/data/user/boost")
         ?.toBoostRecord()
 
-    private fun boostQuery() = buildJsonObject { put("query", queries.boost) }
+    private fun boostQuery() = buildJsonObject { put("query", Query.boost) }
 
     private fun JsonElement.toBoostRecord() = fromJsonElement<JsonBoostRecord?>()
         ?.toModelRecord()
 
     private suspend fun deleteIt() {
-        performQuery(buildJsonObject { put("query", mutations.deleteBoost) })
+        performQuery(buildJsonObject { put("query", Mutation.deleteBoost) })
     }
 
     private fun Boost.saveBoostInput() = SaveBoostInput(partyIds)

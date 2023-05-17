@@ -4,14 +4,12 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.json.SavePartyInput
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
-import com.zegreatrob.coupling.repository.party.PartySave
 
-interface SdkPartySave : PartySave, GqlSyntax, GraphQueries {
-    override suspend fun save(party: Party) {
-        doQuery(mutations.saveParty, party.savePartyInput())
+interface SdkSavePartyCommandDispatcher : SavePartyCommand.Dispatcher, GqlSyntax {
+    override suspend fun perform(command: SavePartyCommand) {
+        doQuery(Mutation.saveParty, command.party.savePartyInput())
     }
 }
-
 private fun Party.savePartyInput() = SavePartyInput(
     partyId = id,
     pairingRule = PairingRule.toValue(pairingRule),
@@ -24,9 +22,3 @@ private fun Party.savePartyInput() = SavePartyInput(
     animationsEnabled = animationEnabled,
     animationSpeed = animationSpeed,
 )
-
-interface SdkSavePartyCommandDispatcher : SavePartyCommand.Dispatcher, GqlSyntax {
-    override suspend fun perform(command: SavePartyCommand) {
-        doQuery(Mutation.saveParty, command.party.savePartyInput())
-    }
-}

@@ -2,21 +2,9 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.sdk.pairassignments.SdkDeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentGet
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
 import com.zegreatrob.coupling.sdk.pairassignments.SdkSavePairAssignmentsCommandDispatcher
 import io.ktor.client.HttpClient
-
-interface SdkPlayer :
-    SdkPlayerListGet,
-    SdkPlayerGetDeleted,
-    GqlQueryComponent
-
-interface SdkPairAssignments :
-    SdkPairAssignmentDocumentGet,
-    SdkPairAssignmentDocumentSave,
-    SdkPairAssignmentDocumentGetCurrent,
-    GqlQueryComponent
 
 interface Sdk :
     SdkApi,
@@ -30,17 +18,13 @@ interface Sdk :
     ClientRetiredPlayerListQueryDispatcher,
     ClientRetiredPlayerQueryDispatcher,
     ClientStatisticsQueryDispatcher,
-    GqlQueryComponent,
     SdkBoost,
     SdkDeletePairAssignmentsCommandDispatcher,
     SdkDeletePartyCommandDispatcher,
     SdkDeletePinCommandDispatcher,
     SdkDeletePlayerCommandDispatcher,
     SdkGraphQueryDispatcher,
-    SdkPairAssignments,
-    SdkPartyGet,
-    SdkPinGet,
-    SdkPlayer,
+    SdkPairAssignmentDocumentSave,
     SdkSavePairAssignmentsCommandDispatcher,
     SdkSavePartyCommandDispatcher,
     SdkSavePinCommandDispatcher,
