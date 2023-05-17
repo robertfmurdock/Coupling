@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.json.JsonPartyData
 import com.zegreatrob.coupling.json.JsonPartyRecord
 import com.zegreatrob.coupling.json.JsonPinRecord
+import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonUser
 import com.zegreatrob.coupling.json.nestedKeys
 import com.zegreatrob.coupling.json.partyRecordJsonKeys
@@ -117,6 +118,12 @@ class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
             party = referencePartyRecord(),
         )
     }
+
+    fun playerList() {
+        output = output.copy(
+            playerList = listOf(referencePlayerRecord()),
+        )
+    }
 }
 
 @CouplingQueryDsl
@@ -147,6 +154,21 @@ private fun referencePartyRecord() = JsonPartyRecord(
     callSignsEnabled = false,
     animationsEnabled = false,
     animationSpeed = 0.0,
+    modifyingUserEmail = "",
+    isDeleted = false,
+    timestamp = DateTime.EPOCH,
+)
+
+private fun referencePlayerRecord() = JsonPlayerRecord(
+    id = "",
+    name = "",
+    email = "",
+    badge = "",
+    callSignAdjective = "",
+    callSignNoun = "",
+    imageURL = "",
+    avatarType = "",
+    partyId = PartyId(""),
     modifyingUserEmail = "",
     isDeleted = false,
     timestamp = DateTime.EPOCH,

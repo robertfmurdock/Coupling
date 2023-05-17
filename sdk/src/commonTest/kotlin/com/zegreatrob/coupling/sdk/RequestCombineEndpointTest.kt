@@ -39,11 +39,18 @@ class RequestCombineEndpointTest {
         playersToSave.forEach { perform(SavePlayerCommand(party.id, it)) }
     } exercise {
         coroutineScope {
-            val a1 = async { getPlayers(party.id).map { it.data.player } }
+            val a1 = async {
+                perform(graphQuery { party(party.id) { playerList() } })
+                    ?.partyData
+                    ?.playerList
+                    .let { it ?: emptyList() }
+                    .map { it.data.player }
+            }
             val a2 = async {
                 perform(graphQuery { party(party.id) { pinList() } })
                     ?.partyData
-                    ?.pinList?.map { it.data.pin }
+                    ?.pinList
+                    ?.map { it.data.pin }
             }
             a1.await() to a2.await()
         }

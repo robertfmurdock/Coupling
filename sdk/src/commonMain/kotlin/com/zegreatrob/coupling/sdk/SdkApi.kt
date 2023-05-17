@@ -51,6 +51,5 @@ interface SdkApi :
     StatisticsQuery.Dispatcher {
 
     suspend fun getPins(partyId: PartyId): List<PartyRecord<Pin>>
-    suspend fun getPlayers(partyId: PartyId): List<PartyRecord<Player>>
     suspend fun getDeleted(partyId: PartyId): List<PartyRecord<Player>>
 }

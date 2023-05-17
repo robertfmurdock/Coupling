@@ -49,7 +49,12 @@ interface ClientNewPairAssignmentsCommandDispatcher :
                         ?.partyData
                         ?.party?.data
                 },
-                async { getPlayers(partyId).elements },
+                async {
+                    perform(graphQuery { party(partyId) { playerList() } })
+                        ?.partyData
+                        ?.playerList
+                        .let { it ?: emptyList() }.elements
+                },
                 async {
                     perform(graphQuery { party(partyId) { pinList() } })
                         ?.partyData

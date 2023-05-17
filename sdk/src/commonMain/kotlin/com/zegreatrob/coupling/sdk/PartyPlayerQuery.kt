@@ -48,7 +48,12 @@ interface ClientPartyPlayerQueryDispatcher :
                     ?.partyData
                     ?.party?.data
             },
-            async { sdk.getPlayers(this@getData).elements },
+            async {
+                sdk.perform(graphQuery { party(this@getData) { playerList() } })
+                    ?.partyData
+                    ?.playerList
+                    .let { it ?: emptyList() }.elements
+            },
         )
     }
 

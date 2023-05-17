@@ -50,7 +50,10 @@ class SdkPlayerTest {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
     } exercise {
         sdk.perform(SavePlayerCommand(sdk.party.id, updatedPlayer))
-        sdk.getPlayers(sdk.party.id)
+        sdk.perform(graphQuery { party(sdk.party.id) { playerList() } })
+            ?.partyData
+            ?.playerList
+            .let { it ?: emptyList() }
     } verify { result ->
         result.map { it.data.player }
             .assertIsEqualTo(listOf(this.updatedPlayer))
@@ -67,7 +70,10 @@ class SdkPlayerTest {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
     } exercise {
         sdk.perform(DeletePlayerCommand(partyId, player.id))
-        sdk.getPlayers(partyId)
+        sdk.perform(graphQuery { party(partyId) { playerList() } })
+            ?.partyData
+            ?.playerList
+            .let { it ?: emptyList() }
     } verifyWithWait { result ->
         result.map { it.data.player }
             .contains(this.player)
@@ -134,7 +140,10 @@ class SdkPlayerTest {
     }) {
         players.forEach { sdk.perform(SavePlayerCommand(partyId, it)) }
     } exercise {
-        sdk.getPlayers(partyId)
+        sdk.perform(graphQuery { party(partyId) { playerList() } })
+            ?.partyData
+            ?.playerList
+            .let { it ?: emptyList() }
     } verify { result ->
         result.map { it.data.player }
             .assertIsEqualTo(this.players)
@@ -157,7 +166,10 @@ class SdkPlayerTest {
     }) {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
     } exercise {
-        sdk.getPlayers(partyId)
+        sdk.perform(graphQuery { party(partyId) { playerList() } })
+            ?.partyData
+            ?.playerList
+            .let { it ?: emptyList() }
     } verify { result ->
         result.map { it.data.player }
             .also { it.assertHasIds() }
@@ -178,7 +190,10 @@ class SdkPlayerTest {
         sdk.perform(SavePlayerCommand(partyId, player1))
         sdk.perform(SavePlayerCommand(partyId2, player2))
     } exercise {
-        sdk.getPlayers(partyId)
+        sdk.perform(graphQuery { party(partyId) { playerList() } })
+            ?.partyData
+            ?.playerList
+            .let { it ?: emptyList() }
     } verifyAnd { result ->
         result.map { it.data.player }
             .assertIsEqualTo(listOf(player1))
@@ -215,7 +230,10 @@ class SdkPlayerTest {
         }
     }) exercise {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
-        sdk.getPlayers(partyId)
+        sdk.perform(graphQuery { party(partyId) { playerList() } })
+            ?.partyData
+            ?.playerList
+            .let { it ?: emptyList() }
     } verify { result ->
         result.size.assertIsEqualTo(1)
         result.first().apply {
@@ -237,7 +255,10 @@ class SdkPlayerTest {
                     otherSdk.perform(SavePartyCommand(party))
                     otherSdk.perform(SavePlayerCommand(party.id, stubPlayer()))
                 } exercise {
-                    sdk.getPlayers(party.id)
+                    sdk.perform(graphQuery { party(party.id) { playerList() } })
+                        ?.partyData
+                        ?.playerList
+                        .let { it ?: emptyList() }
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
@@ -264,7 +285,10 @@ class SdkPlayerTest {
                     otherSdk.perform(SavePartyCommand(party))
                 } exercise {
                     sdk.perform(SavePlayerCommand(party.id, player))
-                    otherSdk.getPlayers(party.id)
+                    otherSdk.perform(graphQuery { party(party.id) { playerList() } })
+                        ?.partyData
+                        ?.playerList
+                        .let { it ?: emptyList() }
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {

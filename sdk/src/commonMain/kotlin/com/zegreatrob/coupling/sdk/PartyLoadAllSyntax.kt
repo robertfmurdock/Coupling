@@ -19,7 +19,12 @@ interface PartyLoadAllSyntax : SdkProviderSyntax, PartyIdHistorySyntax {
                     ?.partyData
                     ?.party?.data
             },
-            async { sdk.getPlayers(this@loadAll).elements },
+            async {
+                sdk.perform(graphQuery { party(this@loadAll) { playerList() } })
+                    ?.partyData
+                    ?.playerList
+                    .let { it ?: emptyList() }.elements
+            },
             async { loadHistory() },
             async {
                 sdk.perform(graphQuery { party(this@loadAll) { pinList() } })
