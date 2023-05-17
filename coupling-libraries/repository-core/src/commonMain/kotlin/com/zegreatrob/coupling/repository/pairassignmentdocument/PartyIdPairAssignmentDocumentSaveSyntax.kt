@@ -5,6 +5,5 @@ import com.zegreatrob.coupling.model.party.PartyElement
 
 interface PartyIdPairAssignmentDocumentSaveSyntax {
     val pairAssignmentDocumentRepository: PairAssignmentDocumentSave
-    suspend fun PartyElement<PairAssignmentDocument>.save() =
-        pairAssignmentDocumentRepository.save(this)
+    suspend fun PartyElement<PairAssignmentDocument>.save() = pairAssignmentDocumentRepository.save(this)
 }

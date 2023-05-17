@@ -6,12 +6,11 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistorySyntax
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-interface PartyLoadAllSyntax : SdkProviderSyntax, PartyIdHistorySyntax {
+interface PartyLoadAllSyntax : SdkProviderSyntax {
     suspend fun PartyId.loadAll() = coroutineScope {
         await(
             async {
@@ -25,7 +24,7 @@ interface PartyLoadAllSyntax : SdkProviderSyntax, PartyIdHistorySyntax {
                     ?.playerList
                     .let { it ?: emptyList() }.elements
             },
-            async { loadHistory() },
+            async { sdk.getPairAssignments(this@loadAll).elements },
             async {
                 sdk.perform(graphQuery { party(this@loadAll) { pinList() } })
                     ?.partyData
