@@ -25,7 +25,11 @@ interface ClientHistoryQueryDispatcher : SdkProviderSyntax, PartyIdHistorySyntax
 
     private suspend fun PartyId.getData() = withContext(Dispatchers.Default) {
         await(
-            async { sdk.getPartyRecord(this@getData)?.data },
+            async {
+                sdk.perform(graphQuery { party(this@getData) { party() } })
+                    ?.partyData
+                    ?.party?.data
+            },
             async { loadHistory() },
         )
     }.let { (first, second) -> if (first == null) null else Pair(first, second) }

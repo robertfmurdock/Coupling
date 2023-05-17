@@ -108,7 +108,13 @@ class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
 
     fun pinList() {
         output = output.copy(
-            pinList = listOf(referencePin()),
+            pinList = listOf(referencePinRecord()),
+        )
+    }
+
+    fun party() {
+        output = output.copy(
+            party = referencePartyRecord(),
         )
     }
 }
@@ -118,7 +124,7 @@ interface QueryBuilder<T> {
     val output: T
 }
 
-private fun referencePin() = JsonPinRecord(
+private fun referencePinRecord() = JsonPinRecord(
     id = "",
     name = "",
     icon = "",

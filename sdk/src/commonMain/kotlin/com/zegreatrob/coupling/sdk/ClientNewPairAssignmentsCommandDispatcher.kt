@@ -44,7 +44,11 @@ interface ClientNewPairAssignmentsCommandDispatcher :
     private suspend fun NewPairAssignmentsCommand.getData() = coroutineScope {
         with(sdk) {
             await(
-                async { getPartyRecord(partyId)?.data },
+                async {
+                    perform(graphQuery { party(partyId) { party() } })
+                        ?.partyData
+                        ?.party?.data
+                },
                 async { getPlayers(partyId).elements },
                 async {
                     perform(graphQuery { party(partyId) { pinList() } })

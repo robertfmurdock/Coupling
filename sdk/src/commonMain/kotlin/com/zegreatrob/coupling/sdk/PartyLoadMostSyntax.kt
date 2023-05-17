@@ -16,7 +16,11 @@ interface PartyLoadMostSyntax : SdkProviderSyntax {
 
     suspend fun PartyId.loadMost() = coroutineScope {
         await(
-            async { sdk.getPartyRecord(this@loadMost)?.data },
+            async {
+                sdk.perform(graphQuery { party(this@loadMost) { party() } })
+                    ?.partyData
+                    ?.party?.data
+            },
             async { sdk.getPlayers(this@loadMost).elements },
             async { pairAssignmentDocumentRepository.getCurrentPairAssignments(this@loadMost)?.data?.element },
             async {

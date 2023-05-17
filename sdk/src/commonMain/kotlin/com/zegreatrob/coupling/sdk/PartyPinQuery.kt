@@ -28,7 +28,11 @@ interface ClientPartyPinQueryDispatcher : PartyPinQuery.Dispatcher, SdkProviderS
 
     private suspend fun PartyId.getData() = coroutineScope {
         await(
-            async { sdk.getPartyRecord(this@getData)?.data },
+            async {
+                sdk.perform(graphQuery { party(this@getData) { party() } })
+                    ?.partyData
+                    ?.party?.data
+            },
             async {
                 sdk.perform(graphQuery { party(this@getData) { pinList() } })
                     ?.partyData

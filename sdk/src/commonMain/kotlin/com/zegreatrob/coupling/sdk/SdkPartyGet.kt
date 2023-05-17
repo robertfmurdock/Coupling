@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.PartyGQLComponent.PartyData
 
 interface SdkPartyGet : SdkApi, GqlQueryComponent {
-    override suspend fun getPartyRecord(partyId: PartyId) = performQueryGetComponent(partyId, PartyData)
+    suspend fun getPartyRecord(partyId: PartyId) = performQueryGetComponent(partyId, PartyData)
         ?.partyData
         ?.party
 }

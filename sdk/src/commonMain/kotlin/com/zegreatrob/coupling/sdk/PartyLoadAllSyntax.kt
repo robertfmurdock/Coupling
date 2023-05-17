@@ -14,7 +14,11 @@ import kotlinx.coroutines.coroutineScope
 interface PartyLoadAllSyntax : SdkProviderSyntax, PartyIdHistorySyntax {
     suspend fun PartyId.loadAll() = coroutineScope {
         await(
-            async { sdk.getPartyRecord(this@loadAll)?.data },
+            async {
+                sdk.perform(graphQuery { party(this@loadAll) { party() } })
+                    ?.partyData
+                    ?.party?.data
+            },
             async { sdk.getPlayers(this@loadAll).elements },
             async { loadHistory() },
             async {

@@ -26,7 +26,11 @@ interface ClientRetiredPlayerListQueryDispatcher :
 
     private suspend fun getData(partyId: PartyId) = coroutineScope {
         await(
-            async { sdk.getPartyRecord(partyId)?.data },
+            async {
+                sdk.perform(graphQuery { party(partyId) { party() } })
+                    ?.partyData
+                    ?.party?.data
+            },
             async { sdk.getDeleted(partyId).map { it.data.element } },
         )
     }.let { (party, players) -> if (party == null) null else party to players }

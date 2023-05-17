@@ -31,7 +31,9 @@ class SdkPartyTest {
             perform(DeletePartyCommand(party.id))
             Pair(
                 perform(graphQuery { partyList() })?.partyList,
-                getPartyRecord(party.id)?.data,
+                perform(graphQuery { party(party.id) { party() } })
+                    ?.partyData
+                    ?.party?.data,
             )
         }
     } verifyAnd { (listResult, getResult) ->
@@ -48,7 +50,11 @@ class SdkPartyTest {
     }) {
         parties.forEach { sdk().perform(SavePartyCommand(it)) }
     } exercise {
-        parties.map { sdk().getPartyRecord(it.id)?.data }
+        parties.map {
+            sdk().perform(graphQuery { party(it.id) { party() } })
+                ?.partyData
+                ?.party?.data
+        }
     } verify { result ->
         result.assertIsEqualTo(this.parties)
     }
@@ -130,7 +136,9 @@ class SdkPartyTest {
         altSdk().perform(SavePartyCommand(party))
     } exercise {
         sdk().perform(SavePartyCommand(party.copy(name = "changed name")))
-        altSdk().getPartyRecord(party.id)
+        altSdk().perform(graphQuery { party(party.id) { party() } })
+            ?.partyData
+            ?.party
     } verify { result ->
         result?.data.assertIsEqualTo(party)
     }

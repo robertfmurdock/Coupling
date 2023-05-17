@@ -13,5 +13,7 @@ data class PartyQuery(val partyId: PartyId) : SimpleSuspendAction<PartyQuery.Dis
 }
 
 interface ClientPartyQueryDispatcher : SdkProviderSyntax, PartyQuery.Dispatcher {
-    override suspend fun perform(query: PartyQuery) = sdk.getPartyRecord(query.partyId)?.data
+    override suspend fun perform(query: PartyQuery) = sdk.perform(graphQuery { party(query.partyId) { party() } })
+        ?.partyData
+        ?.party?.data
 }

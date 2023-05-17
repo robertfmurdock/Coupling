@@ -42,7 +42,14 @@ interface ClientPartyPlayerQueryDispatcher :
         }
 
     private suspend fun PartyId.getData() = coroutineScope {
-        await(async { sdk.getPartyRecord(this@getData)?.data }, async { sdk.getPlayers(this@getData).elements })
+        await(
+            async {
+                sdk.perform(graphQuery { party(this@getData) { party() } })
+                    ?.partyData
+                    ?.party?.data
+            },
+            async { sdk.getPlayers(this@getData).elements },
+        )
     }
 
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }
