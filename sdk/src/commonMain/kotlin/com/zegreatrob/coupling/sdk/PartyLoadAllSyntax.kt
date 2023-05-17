@@ -7,36 +7,23 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 
 interface PartyLoadAllSyntax : SdkProviderSyntax {
-    suspend fun PartyId.loadAll() = coroutineScope {
-        await(
-            async {
-                sdk.perform(graphQuery { party(this@loadAll) { party() } })
-                    ?.partyData
-                    ?.party?.data
-            },
-            async {
-                sdk.perform(graphQuery { party(this@loadAll) { playerList() } })
-                    ?.partyData
-                    ?.playerList
-                    .let { it ?: emptyList() }.elements
-            },
-            async {
-                sdk.perform(graphQuery { party(this@loadAll) { pairAssignmentDocumentList() } })
-                    ?.partyData
-                    ?.pairAssignmentDocumentList
-                    .let { it ?: emptyList() }.elements
-            },
-            async {
-                sdk.perform(graphQuery { party(this@loadAll) { pinList() } })
-                    ?.partyData
-                    ?.pinList
-                    ?.elements
-                    ?: emptyList()
-            },
+    suspend fun PartyId.loadAll(): PartyData? = sdk.perform(
+        graphQuery {
+            party(this@loadAll) {
+                party()
+                playerList()
+                pairAssignmentDocumentList()
+                pinList()
+            }
+        },
+    )?.partyData?.let {
+        PartyData(
+            party = it.party?.data ?: return@let null,
+            playerList = it.playerList?.elements ?: return@let null,
+            history = it.pairAssignmentDocumentList?.elements ?: return@let null,
+            pinList = it.pinList?.elements ?: return@let null,
         )
     }
 

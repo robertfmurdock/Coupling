@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
@@ -7,36 +8,24 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 
 interface PartyLoadMostSyntax : SdkProviderSyntax {
 
-    suspend fun PartyId.loadMost() = coroutineScope {
-        await(
-            async {
-                sdk.perform(graphQuery { party(this@loadMost) { party() } })
-                    ?.partyData
-                    ?.party?.data
-            },
-            async {
-                sdk.perform(graphQuery { party(this@loadMost) { playerList() } })
-                    ?.partyData
-                    ?.playerList
-                    .let { it ?: emptyList() }.elements
-            },
-            async {
-                sdk.perform(graphQuery { party(this@loadMost) { currentPairAssignments() } })
-                    ?.partyData
-                    ?.currentPairAssignmentDocument?.data?.element
-            },
-            async {
-                sdk.perform(graphQuery { party(this@loadMost) { pinList() } })
-                    ?.partyData
-                    ?.pinList
-                    ?.elements
-                    ?: emptyList()
-            },
+    suspend fun PartyId.loadMost(): PartyDataMost? = sdk.perform(
+        graphQuery {
+            party(this@loadMost) {
+                party()
+                playerList()
+                currentPairAssignments()
+                pinList()
+            }
+        },
+    )?.partyData?.let {
+        PartyDataMost(
+            party = it.party?.data ?: return@let null,
+            playerList = it.playerList?.elements ?: return@let null,
+            pinList = it.pinList?.elements ?: return@let null,
+            currentPairDocument = it.currentPairAssignmentDocument?.element,
         )
     }
 
