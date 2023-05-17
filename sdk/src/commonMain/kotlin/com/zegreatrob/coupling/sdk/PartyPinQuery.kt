@@ -4,10 +4,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 
 typealias PartyPinData = Triple<Party, List<Pin>, Pin>
 
@@ -26,22 +23,16 @@ interface ClientPartyPinQueryDispatcher : PartyPinQuery.Dispatcher, SdkProviderS
     private suspend fun PartyPinQuery.getData() = partyId.getData()
         ?.let { (party, pins) -> PartyPinData(party, pins, pins.findOrDefaultNew(pinId)) }
 
-    private suspend fun PartyId.getData() = coroutineScope {
-        await(
-            async {
-                sdk.perform(graphQuery { party(this@getData) { party() } })
-                    ?.partyData
-                    ?.party?.data
-            },
-            async {
-                sdk.perform(graphQuery { party(this@getData) { pinList() } })
-                    ?.partyData
-                    ?.pinList
-                    ?.elements
-                    ?: emptyList()
-            },
-        )
-    }.let { (party, pins) -> if (party == null) null else Pair(party, pins) }
+    private suspend fun PartyId.getData() = sdk.perform(
+        graphQuery {
+            party(this@getData) {
+                party()
+                pinList()
+            }
+        },
+    )?.partyData
+        ?.let { it.party?.data to it.pinList?.elements }
+        ?.let { (party, pins) -> if (party == null || pins == null) null else Pair(party, pins) }
 }
 
 private fun List<Pin>.findOrDefaultNew(pinId: String?) = find { it.id == pinId } ?: Pin()

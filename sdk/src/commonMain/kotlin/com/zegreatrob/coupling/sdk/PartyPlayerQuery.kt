@@ -6,10 +6,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 
 typealias PartyPlayerData = Triple<Party, List<Player>, Player>
 
@@ -29,7 +26,7 @@ interface ClientPartyPlayerQueryDispatcher :
     override suspend fun perform(query: PartyPlayerQuery) = query.get()
 
     private suspend fun PartyPlayerQuery.get() = partyId.getData()
-        .let { (party, players) ->
+        ?.let { (party, players) ->
             if (party == null) {
                 null
             } else {
@@ -41,21 +38,15 @@ interface ClientPartyPlayerQueryDispatcher :
             }
         }
 
-    private suspend fun PartyId.getData() = coroutineScope {
-        await(
-            async {
-                sdk.perform(graphQuery { party(this@getData) { party() } })
-                    ?.partyData
-                    ?.party?.data
-            },
-            async {
-                sdk.perform(graphQuery { party(this@getData) { playerList() } })
-                    ?.partyData
-                    ?.playerList
-                    .let { it ?: emptyList() }.elements
-            },
-        )
-    }
+    private suspend fun PartyId.getData() = sdk.perform(
+        graphQuery {
+            party(this@getData) {
+                party()
+                playerList()
+            }
+        },
+    )?.partyData
+        ?.let { it.party?.data to (it.playerList?.elements ?: emptyList()) }
 
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }
         ?: defaultWithCallSign()
