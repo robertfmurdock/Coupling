@@ -33,7 +33,7 @@ kotlin {
         }
         getByName("jvmMain") {
             dependencies {
-                implementation("io.github.microutils:kotlin-logging")
+                api("io.github.microutils:kotlin-logging")
                 implementation(kotlin("reflect"))
                 implementation("org.junit.jupiter:junit-jupiter-api")
                 implementation("org.junit.jupiter:junit-jupiter-engine")

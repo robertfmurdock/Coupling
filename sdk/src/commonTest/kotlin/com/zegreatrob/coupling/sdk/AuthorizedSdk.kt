@@ -1,3 +1,5 @@
+@file:OptIn(DelicateCoroutinesApi::class)
+
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
@@ -15,7 +17,8 @@ import io.ktor.client.request.header
 import io.ktor.http.Parameters
 import io.ktor.http.Url
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -27,7 +30,7 @@ val primaryTestPassword = getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
 expect fun getEnv(name: String): String?
 
 val primaryAuthorizedSdkDeferred by lazy {
-    MainScope().async {
+    GlobalScope.async {
         sdk(primaryAuthorizedUsername, primaryTestPassword)
             .apply { deleteAnyDisplayedParties() }
     }
@@ -37,7 +40,7 @@ const val altAuthorizedUsername = "couplingtestuser.alt@gmail.com"
 val altTestPassword = getEnv("COUPLING_ALT_TEST_PASSWORD") ?: ""
 
 val altAuthorizedSdkDeferred by lazy {
-    MainScope().async {
+    GlobalScope.async {
         sdk(altAuthorizedUsername, altTestPassword)
             .apply { deleteAnyDisplayedParties() }
     }
