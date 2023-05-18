@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.sdk.KtorCouplingSdk
-import com.zegreatrob.coupling.sdk.graphQuery
+import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.testlogging.JasmineJsonLoggingReporter
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncTestTemplate

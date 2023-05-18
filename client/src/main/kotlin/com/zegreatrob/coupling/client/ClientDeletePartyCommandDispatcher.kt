@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.action.party.DeletePartyCommand

@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.sdk.gql.graphQuery
 import kotlinx.coroutines.Deferred
 
 interface PartyLoadAllSyntax : SdkProviderSyntax {

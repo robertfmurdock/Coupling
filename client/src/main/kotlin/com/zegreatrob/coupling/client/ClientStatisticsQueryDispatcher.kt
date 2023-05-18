@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.sdk.PartyLoadAllSyntax
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 
 interface ClientStatisticsQueryDispatcher :

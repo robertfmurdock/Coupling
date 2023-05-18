@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.sdk.pairassignments
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.deletionResult
@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.json.at
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.sdk.GqlSyntax
-import com.zegreatrob.coupling.sdk.Mutation
+import com.zegreatrob.coupling.sdk.gql.GqlSyntax
+import com.zegreatrob.coupling.sdk.gql.Mutation
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.buildJsonObject

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.pinId
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.sdk.graphQuery
+import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.create
 
 val PinPage = partyPageFunction { props, partyId ->

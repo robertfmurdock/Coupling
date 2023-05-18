@@ -8,6 +8,9 @@ import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.sdk.gql.GqlSyntax
+import com.zegreatrob.coupling.sdk.gql.Mutation
+import com.zegreatrob.coupling.sdk.gql.doQuery
 
 interface SdkSpin :
     RequestSpinAction.Dispatcher,

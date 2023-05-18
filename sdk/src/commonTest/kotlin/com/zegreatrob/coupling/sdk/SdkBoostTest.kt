@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
+import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test

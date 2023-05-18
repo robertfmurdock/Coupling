@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.action.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignments
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.sdk.SdkProviderSyntax
+import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 interface ClientNewPairAssignmentsCommandDispatcher :

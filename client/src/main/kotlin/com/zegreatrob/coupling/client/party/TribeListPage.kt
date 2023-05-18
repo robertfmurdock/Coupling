@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
-import com.zegreatrob.coupling.sdk.graphQuery
+import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.nfc
 
 val PartyListPage by nfc<PageProps> { props ->

@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.sdk.gql
 
+import com.zegreatrob.coupling.sdk.KtorSyntax
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.header

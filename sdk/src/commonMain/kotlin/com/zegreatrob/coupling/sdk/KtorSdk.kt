@@ -2,9 +2,8 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
-import com.zegreatrob.coupling.sdk.pairassignments.SdkDeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
-import com.zegreatrob.coupling.sdk.pairassignments.SdkSavePairAssignmentsCommandDispatcher
+import com.zegreatrob.coupling.sdk.gql.KtorQueryPerformer
+import com.zegreatrob.coupling.sdk.gql.QueryPerformer
 import io.ktor.client.HttpClient
 
 class KtorCouplingSdk(
@@ -19,7 +18,6 @@ class KtorCouplingSdk(
     SdkDeletePinCommandDispatcher,
     SdkDeletePlayerCommandDispatcher,
     SdkGraphQueryDispatcher,
-    SdkPairAssignmentDocumentSave,
     SdkSavePairAssignmentsCommandDispatcher,
     SdkSavePartyCommandDispatcher,
     SdkSavePinCommandDispatcher,

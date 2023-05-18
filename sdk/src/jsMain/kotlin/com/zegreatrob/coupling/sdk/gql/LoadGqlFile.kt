@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.sdk.gql
 
 actual fun loadGqlFile(path: String): String = kotlinext.js.require("fs")
     ?.readFileSync.unsafeCast<((String, String) -> dynamic)?>()

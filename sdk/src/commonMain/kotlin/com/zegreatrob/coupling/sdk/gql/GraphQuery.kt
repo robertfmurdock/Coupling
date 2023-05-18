@@ -1,6 +1,7 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.sdk.gql
 
 import com.zegreatrob.coupling.json.CouplingQueryResult
+import com.zegreatrob.coupling.sdk.dsl.CouplingQueryBuilder
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.serialization.json.JsonObject
 

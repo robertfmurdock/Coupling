@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.sdk.gql.GqlSyntax
+import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 

@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.sdk.gql.GraphQuery
 
 interface CouplingSdk :
     BoostQuery.Dispatcher,

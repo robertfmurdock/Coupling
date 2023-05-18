@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.sdk.pairassignments
+package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.json.toJsonElement
@@ -7,8 +7,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
-import com.zegreatrob.coupling.sdk.GqlSyntax
-import com.zegreatrob.coupling.sdk.Mutation
+import com.zegreatrob.coupling.sdk.gql.GqlSyntax
+import com.zegreatrob.coupling.sdk.gql.Mutation
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject

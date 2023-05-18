@@ -31,20 +31,8 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
-import com.zegreatrob.coupling.sdk.ClientDeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientDeletePartyCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientDeletePinCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientDeletePlayerCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientNewPairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientPartyListQueryDispatcher
-import com.zegreatrob.coupling.sdk.ClientPartyPlayerQueryDispatcher
-import com.zegreatrob.coupling.sdk.ClientSavePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientSavePartyCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientSavePinCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientSavePlayerCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientStatisticsQueryDispatcher
 import com.zegreatrob.coupling.sdk.CouplingSdk
-import com.zegreatrob.coupling.sdk.GraphQuery
+import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import korlibs.time.DateTime
 import korlibs.time.TimeProvider
 

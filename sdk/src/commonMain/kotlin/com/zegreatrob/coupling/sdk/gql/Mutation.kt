@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.sdk
+package com.zegreatrob.coupling.sdk.gql
 
 object Mutation {
     val spin by GqlFileLoader
@@ -12,9 +12,4 @@ object Mutation {
     val deletePin by GqlFileLoader
     val deletePairAssignments by GqlFileLoader
     val deletePlayer by GqlFileLoader
-}
-
-object Query {
-    val user by GqlFileLoader
-    val boost by GqlFileLoader
 }

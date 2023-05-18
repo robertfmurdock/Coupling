@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.json.CouplingQueryResult
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
-import com.zegreatrob.coupling.sdk.graphQuery
+import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.create
 
 val HistoryPage = partyPageFunction { props, partyId ->

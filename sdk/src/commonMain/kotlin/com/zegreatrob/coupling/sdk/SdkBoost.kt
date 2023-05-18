@@ -10,7 +10,10 @@ import com.zegreatrob.coupling.json.SaveBoostInput
 import com.zegreatrob.coupling.json.at
 import com.zegreatrob.coupling.json.fromJsonElement
 import com.zegreatrob.coupling.json.toModelRecord
-import com.zegreatrob.coupling.model.Boost
+import com.zegreatrob.coupling.sdk.gql.GqlSyntax
+import com.zegreatrob.coupling.sdk.gql.Mutation
+import com.zegreatrob.coupling.sdk.gql.Query
+import com.zegreatrob.coupling.sdk.gql.doQuery
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -47,6 +50,4 @@ interface SdkBoost :
     private suspend fun deleteIt() {
         performQuery(buildJsonObject { put("query", Mutation.deleteBoost) })
     }
-
-    private fun Boost.saveBoostInput() = SaveBoostInput(partyIds)
 }
