@@ -36,7 +36,6 @@ import com.zegreatrob.coupling.sdk.ClientDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientDeletePinCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientDeletePlayerCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientHistoryQueryDispatcher
 import com.zegreatrob.coupling.sdk.ClientNewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientPartyCurrentDataQueryDispatcher
 import com.zegreatrob.coupling.sdk.ClientPartyListQueryDispatcher
@@ -70,7 +69,6 @@ class MemoryRepositoryCatalog private constructor(
     ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,
     ClientDeletePlayerCommandDispatcher,
-    ClientHistoryQueryDispatcher,
     ClientNewPairAssignmentsCommandDispatcher,
     ClientPartyCurrentDataQueryDispatcher,
     ClientPartyListQueryDispatcher,

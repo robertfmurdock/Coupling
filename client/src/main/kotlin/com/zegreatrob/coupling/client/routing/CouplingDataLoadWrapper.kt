@@ -20,7 +20,7 @@ import react.useCallback
 
 data class CouplingQuery<R, P : DataProps<P>>(
     val query: SuspendAction<CommandDispatcher, R?>,
-    val toDataprops: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P,
+    val toDataprops: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P?,
     val commander: Commander,
 ) : DataPropsBind<CouplingQuery<R, P>>(couplingQuery.unsafeCast<TMFC>())
 

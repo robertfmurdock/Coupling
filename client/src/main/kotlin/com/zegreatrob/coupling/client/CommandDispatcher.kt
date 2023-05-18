@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
-import com.zegreatrob.coupling.sdk.ClientHistoryQueryDispatcher
 import com.zegreatrob.coupling.sdk.ClientNewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientPartyCurrentDataQueryDispatcher
 import com.zegreatrob.coupling.sdk.ClientPartyPinListQueryDispatcher
@@ -15,7 +14,6 @@ import com.zegreatrob.coupling.sdk.SdkApi
 
 class CommandDispatcher(override val sdk: SdkApi) :
     NewPartyCommandDispatcher,
-    ClientHistoryQueryDispatcher,
     ClientNewPairAssignmentsCommandDispatcher,
     ClientPartyCurrentDataQueryDispatcher,
     ClientPartyPinListQueryDispatcher,
