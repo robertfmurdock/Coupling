@@ -2,19 +2,17 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 interface ClientNewPairAssignmentsCommandDispatcher :
     NewPairAssignmentsCommand.Dispatcher,
     SdkProviderSyntax,
     SuspendActionExecuteSyntax,
-    RequestSpinAction.Dispatcher,
-    PartyIdPairAssignmentDocumentSaveSyntax {
+    RequestSpinAction.Dispatcher {
 
     override suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {
         val (party, players, pins) = getData()
@@ -22,7 +20,7 @@ interface ClientNewPairAssignmentsCommandDispatcher :
             null
         } else {
             execute(requestSpinAction(players, pins))
-                .let { party.id.with(it).save() }
+                .let { sdk.perform(SavePairAssignmentsCommand(party.id, it)) }
         }
     }
 

@@ -1,10 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-interface GraphQueries {
-    val mutations: Mutation
-    val queries: Query
-}
-
 object Mutation {
     val spin by GqlFileLoader
     val savePin by GqlFileLoader

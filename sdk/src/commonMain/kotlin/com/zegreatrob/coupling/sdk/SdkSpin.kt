@@ -11,12 +11,11 @@ import com.zegreatrob.coupling.model.player.Player
 
 interface SdkSpin :
     RequestSpinAction.Dispatcher,
-    GqlSyntax,
-    GraphQueries {
+    GqlSyntax {
 
     override suspend fun perform(action: RequestSpinAction): PairAssignmentDocument =
         doQuery(
-            mutations.spin,
+            Mutation.spin,
             action.spinInput(),
             "spin",
             ::toOutput,

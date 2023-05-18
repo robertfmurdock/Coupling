@@ -8,17 +8,16 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
 import com.zegreatrob.coupling.sdk.GqlSyntax
-import com.zegreatrob.coupling.sdk.GraphQueries
 import com.zegreatrob.coupling.sdk.Mutation
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 
-interface SdkPairAssignmentDocumentSave : PairAssignmentDocumentSave, GqlSyntax, GraphQueries {
+interface SdkPairAssignmentDocumentSave : PairAssignmentDocumentSave, GqlSyntax {
     override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) {
         performQuery(
             buildJsonObject {
-                put("query", mutations.savePairAssignments)
+                put("query", Mutation.savePairAssignments)
                 putJsonObject("variables") {
                     put("input", partyPairDocument.savePairAssignmentsInput())
                 }

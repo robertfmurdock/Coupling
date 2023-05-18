@@ -33,9 +33,6 @@ interface Sdk :
     SdkProviderSyntax {
     suspend fun getToken(): String
     override val sdk: Sdk get() = this
-    override val pairAssignmentDocumentRepository get() = this
-    override val mutations get() = Mutation
-    override val queries get() = Query
 }
 
 class SdkSingleton(

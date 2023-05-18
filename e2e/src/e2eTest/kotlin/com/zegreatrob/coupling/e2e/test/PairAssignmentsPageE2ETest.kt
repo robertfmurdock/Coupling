@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairCallSigns
@@ -16,7 +17,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.Sdk
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -182,7 +182,7 @@ class PairAssignmentsPageE2ETest {
                     perform(SavePartyCommand(party))
                     coroutineScope {
                         launch { players.forEach { perform(SavePlayerCommand(party.id, it)) } }
-                        launch { sdk.pairAssignmentDocumentRepository.save(party.id.with(pairAssignmentDocument)) }
+                        launch { sdk.perform(SavePairAssignmentsCommand(party.id, pairAssignmentDocument)) }
                     }
                 }
             })
