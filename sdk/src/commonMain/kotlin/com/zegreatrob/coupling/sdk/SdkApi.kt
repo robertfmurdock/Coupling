@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.DeleteBoostCommand
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
-import com.zegreatrob.coupling.action.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
@@ -14,7 +13,6 @@ import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.stats.StatisticsQuery
 
 interface SdkApi :
     BoostQuery.Dispatcher,
@@ -24,20 +22,10 @@ interface SdkApi :
     DeletePinCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
     GraphQuery.Dispatcher,
-    HistoryQuery.Dispatcher,
     LoggingActionExecuteSyntax,
-    NewPairAssignmentsCommand.Dispatcher,
-    PartyCurrentDataQuery.Dispatcher,
-    PartyPinListQuery.Dispatcher,
-    PartyPinQuery.Dispatcher,
-    PartyPlayerQuery.Dispatcher,
-    PartyQuery.Dispatcher,
     RequestSpinAction.Dispatcher,
-    RetiredPlayerListQuery.Dispatcher,
-    RetiredPlayerQuery.Dispatcher,
     SaveBoostCommand.Dispatcher,
     SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommand.Dispatcher,
     SavePinCommand.Dispatcher,
-    SavePlayerCommand.Dispatcher,
-    StatisticsQuery.Dispatcher
+    SavePlayerCommand.Dispatcher

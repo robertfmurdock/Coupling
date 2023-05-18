@@ -8,16 +8,6 @@ import io.ktor.client.HttpClient
 
 interface Sdk :
     SdkApi,
-    ClientHistoryQueryDispatcher,
-    ClientNewPairAssignmentsCommandDispatcher,
-    ClientPartyCurrentDataQueryDispatcher,
-    ClientPartyPinListQueryDispatcher,
-    ClientPartyPinQueryDispatcher,
-    ClientPartyPlayerQueryDispatcher,
-    ClientPartyQueryDispatcher,
-    ClientRetiredPlayerListQueryDispatcher,
-    ClientRetiredPlayerQueryDispatcher,
-    ClientStatisticsQueryDispatcher,
     SdkBoost,
     SdkDeletePairAssignmentsCommandDispatcher,
     SdkDeletePartyCommandDispatcher,
