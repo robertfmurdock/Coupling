@@ -3,15 +3,29 @@ package com.zegreatrob.coupling.client.pairassignments
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.sdk.PartyCurrentDataQuery
+import com.zegreatrob.coupling.model.element
+import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.sdk.graphQuery
 import com.zegreatrob.minreact.create
 
 val CurrentPairsPage = partyPageFunction { props, partyId ->
     +CouplingQuery(
         commander = props.commander,
-        query = PartyCurrentDataQuery(partyId),
-        toDataprops = { reload, dispatchFunc, (party, players, history) ->
-            SocketedPairAssignments(party, players, history, Controls(dispatchFunc, reload), false)
+        query = graphQuery {
+            party(partyId) {
+                party()
+                playerList()
+                currentPairAssignments()
+            }
+        },
+        toDataprops = { reload, dispatchFunc, result ->
+            SocketedPairAssignments(
+                party = result.partyData?.party?.data ?: return@CouplingQuery null,
+                players = result.partyData?.playerList?.elements ?: return@CouplingQuery null,
+                pairAssignments = result.partyData?.currentPairAssignmentDocument?.element,
+                controls = Controls(dispatchFunc, reload),
+                allowSave = false,
+            )
         },
     ).create(key = partyId.value)
 }
