@@ -45,7 +45,8 @@ dependencies {
 wdioTest {
     baseUrl.set("https://localhost/local/")
     htmlReporter.set(true)
-    allureReporter.set(false)
+    allureReporter.set(true)
+    allureReportHint.set("")
 }
 
 tasks {
