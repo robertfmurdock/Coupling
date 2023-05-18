@@ -5,8 +5,9 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.partyId
 import com.zegreatrob.coupling.client.routing.playerId
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.sdk.RetiredPlayerQuery
+import com.zegreatrob.coupling.sdk.graphQuery
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.nfc
 import react.ChildrenBuilder
@@ -26,8 +27,20 @@ val RetiredPlayerPage by nfc<PageProps> { props ->
 private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: PartyId, playerId: String) =
     +CouplingQuery(
         commander = props.commander,
-        query = RetiredPlayerQuery(partyId, playerId),
-        toDataprops = { reload, commandFunc, (party, players, player) ->
-            PlayerConfig(party, player, players, reload, commandFunc)
+        query = graphQuery {
+            party(partyId) {
+                party()
+                retiredPlayers()
+            }
+        },
+        toDataprops = { reload, commandFunc, result ->
+            val players = result.partyData?.retiredPlayers?.elements ?: return@CouplingQuery null
+            PlayerConfig(
+                party = result.partyData?.party?.data ?: return@CouplingQuery null,
+                player = players.first { it.id == playerId },
+                players = players,
+                reload = reload,
+                dispatchFunc = commandFunc,
+            )
         },
     ).create(key = playerId)

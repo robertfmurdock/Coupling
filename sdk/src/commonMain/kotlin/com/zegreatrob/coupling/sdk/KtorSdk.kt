@@ -1,13 +1,18 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.Uuid
+import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.sdk.pairassignments.SdkDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.pairassignments.SdkPairAssignmentDocumentSave
 import com.zegreatrob.coupling.sdk.pairassignments.SdkSavePairAssignmentsCommandDispatcher
 import io.ktor.client.HttpClient
 
-interface Sdk :
-    SdkApi,
+class KtorCouplingSdk(
+    val getIdTokenFunc: suspend () -> String,
+    override val traceId: Uuid,
+    httpClient: HttpClient,
+) : CouplingSdk,
+    LoggingActionExecuteSyntax,
     SdkBoost,
     SdkDeletePairAssignmentsCommandDispatcher,
     SdkDeletePartyCommandDispatcher,
@@ -19,18 +24,7 @@ interface Sdk :
     SdkSavePartyCommandDispatcher,
     SdkSavePinCommandDispatcher,
     SdkSavePlayerCommandDispatcher,
-    SdkSpin,
-    SdkProviderSyntax {
-    suspend fun getToken(): String
-    override val sdk: Sdk get() = this
-}
-
-class SdkSingleton(
-    val getIdTokenFunc: suspend () -> String,
-    override val traceId: Uuid,
-    httpClient: HttpClient,
-) : Sdk {
-    override suspend fun getToken(): String = getIdTokenFunc()
+    SdkSpin {
     override val performer: QueryPerformer = StandardPartyGQLPerformer(getIdTokenFunc, httpClient)
 }
 
@@ -41,5 +35,5 @@ class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String
 }
 
 interface SdkProviderSyntax {
-    val sdk: SdkApi
+    val sdk: CouplingSdk
 }

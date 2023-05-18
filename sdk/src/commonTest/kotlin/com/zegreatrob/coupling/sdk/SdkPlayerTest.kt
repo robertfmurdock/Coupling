@@ -28,7 +28,7 @@ class SdkPlayerTest {
     private val sdkSetup = asyncTestTemplate(
         sharedSetup = suspend {
             val authorizedSdk = sdk()
-            object : SdkApi by authorizedSdk {
+            object : CouplingSdk by authorizedSdk {
                 val party = stubParty()
             }.apply {
                 perform(SavePartyCommand(party))

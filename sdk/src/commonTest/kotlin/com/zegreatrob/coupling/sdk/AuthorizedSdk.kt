@@ -43,14 +43,14 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun Sdk.deleteAnyDisplayedParties() = perform(graphQuery { partyList() })
+private suspend fun KtorCouplingSdk.deleteAnyDisplayedParties() = perform(graphQuery { partyList() })
     ?.partyList
     ?.forEach { perform(DeletePartyCommand(it.data.id)) }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
-    .let { token -> SdkSingleton({ token }, uuid4(), buildClient()) }
+    .let { token -> KtorCouplingSdk({ token }, uuid4(), buildClient()) }
 
-suspend fun sdk(): SdkApi = primaryAuthorizedSdkDeferred.await()
+suspend fun sdk(): CouplingSdk = primaryAuthorizedSdkDeferred.await()
 
 val generalPurposeClient = HttpClient {
     install(ContentNegotiation) { json() }

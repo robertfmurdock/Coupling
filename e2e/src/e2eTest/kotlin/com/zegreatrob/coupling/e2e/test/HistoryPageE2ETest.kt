@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.KtorCouplingSdk
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import korlibs.time.DateTime
@@ -29,7 +29,7 @@ class HistoryPageE2ETest {
         companion object {
             private val historyPageSetup = e2eSetup.extend(beforeAll = {
                 val party = buildParty()
-                val sdk = sdkProvider.await().apply {
+                val sdk = sdk.await().apply {
                     perform(SavePartyCommand(party))
                 }
 
@@ -39,7 +39,7 @@ class HistoryPageE2ETest {
                 Context(pairAssignments)
             })
 
-            private suspend fun setupTwoPairAssignments(party: Party, sdk: Sdk) = listOf(
+            private suspend fun setupTwoPairAssignments(party: Party, sdk: KtorCouplingSdk) = listOf(
                 buildPairAssignmentDocument(
                     1,
                     listOf(

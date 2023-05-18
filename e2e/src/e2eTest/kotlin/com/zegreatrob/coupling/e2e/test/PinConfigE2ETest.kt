@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
-import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -28,7 +28,7 @@ class PinConfigE2ETest {
 
         private val partySetup = e2eSetup.extend(beforeAll = {
             val party = Party(PartyId("${randomInt()}-PinConfigE2ETest-test"))
-            val sdk = sdkProvider.await().apply {
+            val sdk = sdk.await().apply {
                 perform(SavePartyCommand(party))
             }
             sdk to party

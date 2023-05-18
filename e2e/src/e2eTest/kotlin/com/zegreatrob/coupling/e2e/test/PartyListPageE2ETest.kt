@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.PartyListPage.getNewPartyButton
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
@@ -18,7 +18,7 @@ class PartyListPageE2ETest {
                 "${randomInt()}-PartyListPageE2ETest-1".let { Party(it.let(::PartyId), name = it) },
                 "${randomInt()}-PartyListPageE2ETest-2".let { Party(it.let(::PartyId), name = it) },
             )
-            sdkProvider.await().apply { parties.forEach { perform(SavePartyCommand(it)) } }
+            sdk.await().apply { parties.forEach { perform(SavePartyCommand(it)) } }
             object {
                 val parties = parties
             }

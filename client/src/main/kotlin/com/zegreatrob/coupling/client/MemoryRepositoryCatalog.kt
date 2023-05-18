@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client
 
-import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.BoostQuery
@@ -39,14 +38,13 @@ import com.zegreatrob.coupling.sdk.ClientDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientNewPairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientPartyListQueryDispatcher
 import com.zegreatrob.coupling.sdk.ClientPartyPlayerQueryDispatcher
-import com.zegreatrob.coupling.sdk.ClientRetiredPlayerQueryDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePartyCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePinCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.sdk.ClientStatisticsQueryDispatcher
+import com.zegreatrob.coupling.sdk.CouplingSdk
 import com.zegreatrob.coupling.sdk.GraphQuery
-import com.zegreatrob.coupling.sdk.SdkApi
 import korlibs.time.DateTime
 import korlibs.time.TimeProvider
 
@@ -57,9 +55,7 @@ class MemoryRepositoryCatalog private constructor(
     override val playerRepository: PlayerEmailRepository,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
     override val pinRepository: PinRepository,
-    override val traceId: Uuid = uuid4(),
-) :
-    SdkApi,
+) : CouplingSdk,
     ClientDeletePairAssignmentsCommandDispatcher,
     ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,
@@ -67,7 +63,6 @@ class MemoryRepositoryCatalog private constructor(
     ClientNewPairAssignmentsCommandDispatcher,
     ClientPartyListQueryDispatcher,
     ClientPartyPlayerQueryDispatcher,
-    ClientRetiredPlayerQueryDispatcher,
     ClientSavePairAssignmentsCommandDispatcher,
     ClientSavePartyCommandDispatcher,
     ClientSavePinCommandDispatcher,
@@ -112,5 +107,6 @@ class MemoryRepositoryCatalog private constructor(
     override suspend fun perform(query: GraphQuery) = CouplingQueryResult(
         user = User(userId, "???", setOf(PartyId("Kind of fake"))),
     )
-    override val sdk: SdkApi get() = this
+
+    override val sdk: CouplingSdk get() = this
 }

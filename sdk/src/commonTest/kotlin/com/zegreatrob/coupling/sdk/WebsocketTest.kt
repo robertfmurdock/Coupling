@@ -54,7 +54,7 @@ class WebsocketTest {
     }
 
     private suspend fun SdkContext.couplingSocketSession(partyId: PartyId): DefaultClientWebSocketSession {
-        val token = (sdk as Sdk).getToken()
+        val token = (sdk as KtorCouplingSdk).getIdTokenFunc()
         return generalPurposeClient.webSocketSession {
             url("wss://$socketHost/api/websocket?partyId=${partyId.value}&token=$token")
         }

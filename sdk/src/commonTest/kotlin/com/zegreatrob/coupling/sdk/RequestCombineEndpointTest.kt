@@ -18,7 +18,7 @@ class RequestCombineEndpointTest {
     @Test
     fun postPlayersAndPinsThenGet() = asyncSetup.with({
         val sdk = sdk()
-        object : SdkApi by sdk {
+        object : CouplingSdk by sdk {
             val party = Party(id = PartyId("et-${uuid4()}"))
             val playersToSave = listOf(
                 Player(

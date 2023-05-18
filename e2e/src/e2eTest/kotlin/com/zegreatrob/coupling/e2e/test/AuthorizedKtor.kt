@@ -1,8 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.sdk.Sdk
-import com.zegreatrob.coupling.sdk.SdkSingleton
+import com.zegreatrob.coupling.sdk.KtorCouplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -25,16 +24,16 @@ external val process: dynamic
 const val primaryAuthorizedUsername = "couplingtestuser.e2e@gmail.com"
 val primaryTestPassword = Process.getEnv("COUPLING_E2E_TEST_PASSWORD") ?: ""
 
-val primaryAuthorizedSdkDeferred: Deferred<Sdk> by lazyDeferred {
-    authorizedKtorSdk(primaryAuthorizedUsername, primaryTestPassword)
+val primaryAuthorizedSdkDeferred: Deferred<KtorCouplingSdk> by lazyDeferred {
+    authorizedKtorCouplingSdk(primaryAuthorizedUsername, primaryTestPassword)
 }
 
-private suspend fun authorizedKtorSdk(username: String, password: String) =
+private suspend fun authorizedKtorCouplingSdk(username: String, password: String) =
     authorizedSdk(
         generateAccessToken(username, password),
     )
 
-suspend fun authorizedKtorSdk() = primaryAuthorizedSdkDeferred.await()
+suspend fun authorizedKtorCouplingSdk() = primaryAuthorizedSdkDeferred.await()
 
 private val generalPurposeClient = HttpClient {
     install(ContentNegotiation) { json() }
@@ -84,4 +83,4 @@ private suspend fun generateAccessToken(username: String, password: String): Str
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
-fun authorizedSdk(token: String) = SdkSingleton({ token }, uuid4(), buildClientWithToken())
+fun authorizedSdk(token: String) = KtorCouplingSdk({ token }, uuid4(), buildClientWithToken())

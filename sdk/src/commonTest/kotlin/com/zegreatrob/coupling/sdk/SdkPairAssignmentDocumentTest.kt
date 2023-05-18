@@ -32,7 +32,7 @@ class SdkPairAssignmentDocumentTest {
     private val repositorySetup = asyncTestTemplate(
         sharedSetup = suspend {
             val sdk = sdk()
-            object : SdkApi by sdk {
+            object : CouplingSdk by sdk {
                 val party = stubParty()
             }.apply { perform(SavePartyCommand(party)) }
         },
@@ -43,7 +43,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun afterSavingUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() = repositorySetup.with({
-        object : SdkApi by it {
+        object : CouplingSdk by it {
             val party = it.party
             val originalDateTime = DateTime.now()
             val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
@@ -73,7 +73,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun getCurrentPairAssignmentsOnlyReturnsTheNewest() = repositorySetup.with({
-        object : SdkApi by it {
+        object : CouplingSdk by it {
             val partyId = it.party.id
             val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
             val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
@@ -92,7 +92,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun saveAndDeleteThenGetWillReturnNothing() = repositorySetup.with({
-        object : SdkApi by it {
+        object : CouplingSdk by it {
             val partyId = it.party.id
             val document = stubPairAssignmentDoc()
         }
@@ -113,7 +113,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun saveMultipleThenGetListWillReturnSavedDocumentsNewestToOldest() = repositorySetup.with({
-        object : SdkApi by it {
+        object : CouplingSdk by it {
             val partyId = it.party.id
             val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
             val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
@@ -170,7 +170,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun savedWillIncludeModificationDateAndUsername() = repositorySetup.with({
-        object : SdkApi by it {
+        object : CouplingSdk by it {
             val partyId = it.party.id
             val pairAssignmentDoc = stubPairAssignmentDoc()
         }

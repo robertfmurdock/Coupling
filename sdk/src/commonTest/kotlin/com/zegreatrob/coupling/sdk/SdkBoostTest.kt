@@ -20,7 +20,7 @@ class SdkBoostTest {
             val sdk = sdk()
             val user = sdk.perform(graphQuery { user() })?.user
                 ?: throw Exception("Sdk did not provide user.")
-            object : SdkApi by sdk {
+            object : CouplingSdk by sdk {
                 val user = user
             }
         },
@@ -47,7 +47,7 @@ class SdkBoostTest {
 
     @Test
     fun getSavedBoostWillReturnSuccessfully() = setupWithUser.with({
-        object : SdkApi by it {
+        object : CouplingSdk by it {
             val userId = it.user.id
             val partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))
         }
@@ -68,7 +68,7 @@ class SdkBoostTest {
 
     @Test
     fun saveBoostRepeatedlyGetsLatest() = setupWithUser.with({
-        object : SdkApi by it {
+        object : CouplingSdk by it {
             val userId = it.user.id
             val initialBoostParties = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))
             val updatedBoostParties1 = emptySet<PartyId>()

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.DeleteBoostCommand
-import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
@@ -14,7 +13,7 @@ import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 
-interface SdkApi :
+interface CouplingSdk :
     BoostQuery.Dispatcher,
     DeleteBoostCommand.Dispatcher,
     DeletePairAssignmentsCommand.Dispatcher,
@@ -22,7 +21,6 @@ interface SdkApi :
     DeletePinCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
     GraphQuery.Dispatcher,
-    LoggingActionExecuteSyntax,
     RequestSpinAction.Dispatcher,
     SaveBoostCommand.Dispatcher,
     SavePairAssignmentsCommand.Dispatcher,

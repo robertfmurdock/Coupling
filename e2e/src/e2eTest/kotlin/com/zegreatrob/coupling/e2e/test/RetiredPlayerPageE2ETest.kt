@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.KtorCouplingSdk
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -16,7 +16,7 @@ import kotlin.test.Test
 class RetiredPlayerPageE2ETest {
 
     companion object {
-        private suspend fun delete(players: List<Player>, sdk: Sdk, party: Party) {
+        private suspend fun delete(players: List<Player>, sdk: KtorCouplingSdk, party: Party) {
             coroutineScope {
                 players.forEach { launch { sdk.perform(DeletePlayerCommand(party.id, it.id)) } }
             }

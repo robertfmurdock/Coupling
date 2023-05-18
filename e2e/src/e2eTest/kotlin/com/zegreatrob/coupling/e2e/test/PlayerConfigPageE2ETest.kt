@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
-import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
 import com.zegreatrob.coupling.model.party.Party
@@ -25,11 +25,11 @@ class PlayerConfigPageE2ETest {
             e2eSetup.extend(beforeAll = {
                 val party = buildParty()
                 val player = buildPlayer()
-                sdkProvider.await().apply {
+                sdk.await().apply {
                     perform(SavePartyCommand(party))
                     perform(SavePlayerCommand(party.id, player))
                 }
-                Triple(player, party, sdkProvider.await())
+                Triple(player, party, sdk.await())
             })
     }
 
@@ -175,7 +175,7 @@ class PlayerConfigPageE2ETest {
             }.take(5).toList()
             val page = PlayerConfigPage
         }) {
-            sdkProvider.await().apply {
+            sdk.await().apply {
                 perform(SavePartyCommand(party))
                 players.forEach { player -> perform(SavePlayerCommand(party.id, player)) }
             }
@@ -309,7 +309,7 @@ class PlayerConfigPageE2ETest {
                 callSignsEnabled = true,
             )
         }) {
-            sdkProvider.await().apply {
+            sdk.await().apply {
                 perform(SavePartyCommand(party))
             }
         } exercise {

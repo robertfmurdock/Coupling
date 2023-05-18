@@ -181,7 +181,7 @@ class SpinTest {
 
     companion object {
         private suspend fun setupScenario(
-            sdk: SdkApi,
+            sdk: CouplingSdk,
             party: Party,
             players: List<Player> = emptyList(),
             history: List<PairAssignmentDocument> = emptyList(),

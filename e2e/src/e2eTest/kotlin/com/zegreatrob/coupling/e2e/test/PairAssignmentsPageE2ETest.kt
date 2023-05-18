@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairElements
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getRetiredPlayersButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getStatisticsButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getViewHistoryButton
-import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdkProvider
+import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.Sdk
+import com.zegreatrob.coupling.sdk.KtorCouplingSdk
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
@@ -32,7 +32,7 @@ import kotlin.test.Test
 class PairAssignmentsPageE2ETest {
 
     companion object {
-        private suspend fun Sdk.save(party: Party, players: List<Player>) = coroutineScope {
+        private suspend fun KtorCouplingSdk.save(party: Party, players: List<Player>) = coroutineScope {
             perform(SavePartyCommand(party))
             players.map { SavePlayerCommand(party.id, it) }
                 .forEach { perform(it) }
@@ -178,11 +178,11 @@ class PairAssignmentsPageE2ETest {
             private val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() }).toSet()
 
             private val setup = e2eSetup.extend(beforeAll = {
-                sdkProvider.await().apply {
+                sdk.await().apply {
                     perform(SavePartyCommand(party))
                     coroutineScope {
                         launch { players.forEach { perform(SavePlayerCommand(party.id, it)) } }
-                        launch { sdk.perform(SavePairAssignmentsCommand(party.id, pairAssignmentDocument)) }
+                        launch { perform(SavePairAssignmentsCommand(party.id, pairAssignmentDocument)) }
                     }
                 }
             })
@@ -215,7 +215,7 @@ class PairAssignmentsPageE2ETest {
 
         @Test
         fun whenThePartyHasCallSignsTurnedOffTheyDoNotDisplay() = currentPairAssignmentPageSetup {
-            sdkProvider.await().apply {
+            sdk.await().apply {
                 perform(SavePartyCommand(party.copy(callSignsEnabled = false)))
             }
         } exercise {
@@ -227,7 +227,7 @@ class PairAssignmentsPageE2ETest {
 
         @Test
         fun whenThePartyHasCallSignsTurnedOnTheyDisplay() = currentPairAssignmentPageSetup {
-            sdkProvider.await().apply {
+            sdk.await().apply {
                 perform(SavePartyCommand(party.copy(callSignsEnabled = true)))
             }
             WelcomePage.goTo()
