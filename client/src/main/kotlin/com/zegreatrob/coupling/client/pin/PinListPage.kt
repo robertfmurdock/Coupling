@@ -2,13 +2,24 @@ package com.zegreatrob.coupling.client.pin
 
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.sdk.PartyPinListQuery
+import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.sdk.graphQuery
 import com.zegreatrob.minreact.create
 
 val PinListPage = partyPageFunction { props, partyId ->
     +CouplingQuery(
         commander = props.commander,
-        query = PartyPinListQuery(partyId),
-        toDataprops = { _, _, (party, pins) -> PinList(party, pins) },
+        query = graphQuery {
+            party(partyId) {
+                party()
+                pinList()
+            }
+        },
+        toDataprops = { _, _, result ->
+            PinList(
+                party = result.partyData?.party?.data ?: return@CouplingQuery null,
+                pins = result.partyData?.pinList?.elements ?: return@CouplingQuery null,
+            )
+        },
     ).create(key = partyId.value)
 }
