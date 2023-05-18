@@ -6,8 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 
 interface SdkDeletePinCommandDispatcher : DeletePinCommand.Dispatcher, GqlSyntax {
     override suspend fun perform(command: DeletePinCommand) = with(command) {
-        doQuery(Mutation.deletePin, deletePinInput(command.partyId, pinId), "deletePin", ::passThrough)
-            .let { it ?: false }
+        (doQuery(Mutation.deletePin, deletePinInput(command.partyId, pinId), "deletePin", ::passThrough) ?: false)
             .deletionResult("Pin")
     }
 }

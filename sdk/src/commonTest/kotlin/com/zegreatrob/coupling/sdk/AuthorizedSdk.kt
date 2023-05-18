@@ -48,7 +48,7 @@ private suspend fun Sdk.deleteAnyDisplayedParties() = perform(graphQuery { party
     ?.forEach { perform(DeletePartyCommand(it.data.id)) }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
-    .let { token -> SdkSingleton({ token }, buildClient(), uuid4()) }
+    .let { token -> SdkSingleton({ token }, uuid4(), buildClient()) }
 
 suspend fun sdk(): SdkApi = primaryAuthorizedSdkDeferred.await()
 

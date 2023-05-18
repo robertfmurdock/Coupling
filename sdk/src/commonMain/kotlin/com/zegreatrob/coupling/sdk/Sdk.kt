@@ -40,11 +40,11 @@ interface Sdk :
 
 class SdkSingleton(
     val getIdTokenFunc: suspend () -> String,
-    private val httpClient: HttpClient,
     override val traceId: Uuid,
-) : Sdk,
-    PartyGQLPerformer by BatchingPartyGQLPerformer(StandardPartyGQLPerformer(getIdTokenFunc, httpClient)) {
+    httpClient: HttpClient,
+) : Sdk {
     override suspend fun getToken(): String = getIdTokenFunc()
+    override val performer: QueryPerformer = StandardPartyGQLPerformer(getIdTokenFunc, httpClient)
 }
 
 class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String, httpClient: HttpClient) :

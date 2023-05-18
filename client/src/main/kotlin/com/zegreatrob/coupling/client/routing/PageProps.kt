@@ -36,7 +36,7 @@ class MasterCommander(private val getIdentityToken: suspend () -> String) : Comm
         if (window["inMemory"] == true) {
             MemoryRepositoryCatalog("test-user", backend, TimeProvider)
         } else {
-            SdkSingleton(getIdentityToken, defaultClient(getLocationAndBasename()), traceId)
+            SdkSingleton(getIdentityToken, traceId, defaultClient(getLocationAndBasename()))
         },
     )
 }

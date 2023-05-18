@@ -84,4 +84,4 @@ private suspend fun generateAccessToken(username: String, password: String): Str
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
-fun authorizedSdk(token: String) = SdkSingleton({ token }, buildClientWithToken(), uuid4())
+fun authorizedSdk(token: String) = SdkSingleton({ token }, uuid4(), buildClientWithToken())

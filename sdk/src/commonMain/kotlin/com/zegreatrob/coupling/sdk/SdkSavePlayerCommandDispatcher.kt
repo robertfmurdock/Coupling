@@ -6,13 +6,6 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.partyId
-import com.zegreatrob.coupling.repository.player.PlayerSave
-
-interface SdkPlayerSave : PlayerSave, GqlSyntax, GraphQueries {
-    override suspend fun save(partyPlayer: PartyElement<Player>) {
-        doQuery(mutations.savePlayer, partyPlayer.input())
-    }
-}
 
 interface SdkSavePlayerCommandDispatcher : SavePlayerCommand.Dispatcher, GqlSyntax {
     override suspend fun perform(command: SavePlayerCommand) = with(command) {

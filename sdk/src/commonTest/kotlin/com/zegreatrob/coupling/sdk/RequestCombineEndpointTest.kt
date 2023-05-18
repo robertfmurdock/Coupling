@@ -4,15 +4,13 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlin.test.Test
 
@@ -39,20 +37,9 @@ class RequestCombineEndpointTest {
         playersToSave.forEach { perform(SavePlayerCommand(party.id, it)) }
     } exercise {
         coroutineScope {
-            val a1 = async {
-                perform(graphQuery { party(party.id) { playerList() } })
-                    ?.partyData
-                    ?.playerList
-                    .let { it ?: emptyList() }
-                    .map { it.data.player }
-            }
-            val a2 = async {
-                perform(graphQuery { party(party.id) { pinList() } })
-                    ?.partyData
-                    ?.pinList
-                    ?.map { it.data.pin }
-            }
-            a1.await() to a2.await()
+            perform(graphQuery { party(party.id) { playerList(); pinList() } })
+                ?.partyData
+                .let { it?.playerList?.elements to it?.pinList?.elements }
         }
     } verify { (players, pins) ->
         players.assertIsEqualTo(playersToSave)
