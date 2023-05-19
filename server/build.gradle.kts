@@ -196,11 +196,7 @@ tasks {
         val serverlessBuildDir = "${project.buildDir.absolutePath}/$stage/lambda-dist"
         setup(project)
         dependsOn(assemble, test, compileKotlinJs, ":calculateVersion")
-        environment(
-            "AWS_ACCESS_KEY_ID" to (System.getenv("AWS_ACCESS_KEY_ID") ?: "fake"),
-            "AWS_SECRET_ACCESS_KEY" to (System.getenv("AWS_SECRET_ACCESS_KEY") ?: "fake"),
-            "CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${rootProject.version}",
-        )
+        environment("CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${rootProject.version}")
         nodeCommand = "serverless"
         arguments = listOf(
             "package",
