@@ -196,7 +196,9 @@ tasks {
         val serverlessBuildDir = "${project.buildDir.absolutePath}/$stage/lambda-dist"
         setup(project)
         dependsOn(assemble, test, compileKotlinJs, ":calculateVersion")
-        environment("CLIENT_URL" to "https://assets.zegreatrob.com/coupling/${rootProject.version}")
+        val releaseVersion = rootProject.version
+        environment("CLIENT_URL" to "https://assets.zegreatrob.com/coupling/$releaseVersion")
+        enabled = "$releaseVersion".run { !(contains("SNAPSHOT") || isBlank()) }
         nodeCommand = "serverless"
         arguments = listOf(
             "package",
