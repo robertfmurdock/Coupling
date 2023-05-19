@@ -49,12 +49,11 @@ jobs:
       - uses: testspace-com/setup-testspace@v1
         with:
           domain: robertfmurdock
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
+          role-to-assume: arn:aws:iam::174159267544:role/CouplingDeploy
           aws-region: us-east-1
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Generate Version 🧮
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
       - name: Build Coupling
