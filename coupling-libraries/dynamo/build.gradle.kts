@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 import java.time.Duration
 
 plugins {
@@ -18,8 +19,9 @@ kotlin {
 }
 
 tasks {
-    named("nodeTest") {
+    named("nodeTest", KotlinJsTest::class) {
         dependsOn("composeUp")
+        environment("LOCAL_DYNAMO", "true")
     }
 }
 
