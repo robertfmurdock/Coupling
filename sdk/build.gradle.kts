@@ -12,7 +12,7 @@ kotlin {
             val test = compilations.findByName("test")!!
             test.defaultSourceSet.dependsOn(main.defaultSourceSet)
         }
-        // jvm()
+        jvm()
     }
 }
 
@@ -42,7 +42,7 @@ dependencies {
     "commonTestImplementation"("org.jetbrains.kotlin:kotlin-test")
 
     "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-    // "jvmTestImplementation"("io.ktor:ktor-client-java")
+    "jvmTestImplementation"("io.ktor:ktor-client-java")
 }
 
 tasks {

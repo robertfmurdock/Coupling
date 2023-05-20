@@ -15,13 +15,13 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minassert.assertIsNotEqualTo
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.client.plugins.websocket.webSocketSession
 import io.ktor.client.request.url
 import io.ktor.websocket.Frame
 import io.ktor.websocket.close
 import io.ktor.websocket.readText
+import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
 import kotlin.test.Test
@@ -215,12 +215,16 @@ class WebsocketTest {
             .apply { close() }
     } verifyAnd { socket ->
         withTimeout(400) {
-            var frame = socket.incoming.receive() as? Frame.Close
-            while (frame == null) {
-                delay(50)
-                frame = socket.incoming.receive() as? Frame.Close
-            }
-            frame.assertIsNotEqualTo(null)
+            runCatching {
+                var frame = socket.incoming.receive() as? Frame.Close
+                while (frame == null) {
+                    delay(50)
+                    frame = socket.incoming.receive() as? Frame.Close
+                }
+                throw ClosedReceiveChannelException("received close frame.")
+            }.exceptionOrNull()
+                ?.let { it::class }
+                .assertIsEqualTo(ClosedReceiveChannelException::class)
         }
     } teardown {
         sdk.perform(DeletePartyCommand(party.id))
