@@ -1,7 +1,3 @@
-
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
-import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
-import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
 import java.time.Duration
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -22,6 +18,13 @@ dockerCompose {
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
     waitForTcpPorts.set(false)
     waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
+
+
+    nested("caddy").apply {
+        setProjectName("Coupling-root")
+        startedServices.set(listOf("caddy"))
+        waitForTcpPorts.set(false)
+    }
 }
 
 tagger {
@@ -32,4 +35,14 @@ tasks {
     named("composeUp") {
         dependsOn(":server:buildImage")
     }
+    register("importCert", Exec::class) {
+        dependsOn("caddyComposeUp")
+        val cert = "${System.getenv("HOME")}/caddy_data/caddy/pki/authorities/local/root.crt"
+        commandLine(
+            ("keytool -importcert -file $cert -alias $cert -cacerts -storepass changeit -noprompt")
+                .split(" ")
+        )
+        isIgnoreExitValue = true
+    }
 }
+
