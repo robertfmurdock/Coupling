@@ -66,12 +66,12 @@ jobs:
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
       - name: Build Coupling
         run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --no-configuration-cache --scan
-      - name: DELETE ME - logging
-        if: ${{ always() }}
-        run: ls -ltr ~/caddy_data/caddy/pki/authorities/local
       - name: DELETE ME - logging2
         if: ${{ always() }}
         run: ls -ltr ~/caddy_data
+      - name: DELETE ME - logging
+        if: ${{ always() }}
+        run: ls -ltr ~/caddy_data/caddy/pki/authorities/local
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew :composeLogs collectResults
