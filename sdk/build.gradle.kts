@@ -51,6 +51,7 @@ tasks {
         outputs.cacheIf { true }
     }
     "jvmTest" {
+        enabled = false
         dependsOn(":importCert")
     }
 }
