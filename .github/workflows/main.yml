@@ -60,8 +60,12 @@ jobs:
           aws-region: us-east-1
       - name: Add home environment variable
         run: echo "HOME=$(echo ~)" >> $GITHUB_ENV
-      - name: Create Caddy Directory to avoid permissions problems
-        run: mkdir -p ~/caddy_data
+#      - name: Create Caddy Directory to avoid permissions problems
+#        run: mkdir -p ~/caddy_data
+      - name: Setup users for Docker
+        run: |-
+          echo "UID=$(id -u)" >> $GITHUB_ENV &&
+          echo "GID=$(id -g)" >> $GITHUB_ENV
       - name: Generate Version 🧮
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
       - name: Build Coupling
