@@ -22,10 +22,10 @@ services:
       start_period: 0s
   caddy:
     image: caddy:2.4.6-alpine
+    user: "${UID-}:${GID-}"
     ports:
       - "80:80"
       - "443:443"
-    user: "${UID-}:${GID-}"
     volumes:
       - $PWD/Caddyfile:/etc/caddy/Caddyfile
       - $PWD/client:/client
