@@ -25,6 +25,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    user: "${UID-}:${GID-}"
     volumes:
       - $PWD/Caddyfile:/etc/caddy/Caddyfile
       - $PWD/client:/client
