@@ -43,6 +43,8 @@ data class CouplingRouter(val animationsDisabled: Boolean, val config: ClientCon
 val couplingRouter by ntmFC<CouplingRouter> { (animationsDisabled, config) ->
     val (_, isSignedIn, isLoading) = useAuth0Data()
 
+    println("coupling router isSignedId $isSignedIn")
+
     val browserRouter = useMemo(isSignedIn, config) {
         createBrowserRouter(
             routes = arrayOf(
