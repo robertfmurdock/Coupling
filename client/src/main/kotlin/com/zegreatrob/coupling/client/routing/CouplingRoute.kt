@@ -32,7 +32,11 @@ val CouplingRoute by nfc<CouplingRouteProps> {
     it.rComponent {
         pathParams = params
         search = searchParams
-        commander = MasterCommander(auth0Data.getAccessTokenSilently)
+        commander = MasterCommander {
+            runCatching { auth0Data.getAccessTokenSilently() }
+                .onFailure { auth0Data.loginWithRedirect() }
+                .getOrThrow()
+        }
     }
     window.asDynamic().pathSetter = newPathSetter(navigate)
 }
