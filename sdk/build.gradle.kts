@@ -51,6 +51,7 @@ tasks {
         outputs.cacheIf { true }
     }
     "jvmTest" {
+        dependsOn(":composeUp")
         dependsOn(":importCert")
     }
 }
