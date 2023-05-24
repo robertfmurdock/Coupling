@@ -41,9 +41,6 @@
     "graphql": "^16.6.0",
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.5.1",
-    "jasmine": "^5.0.0",
-    "jasmine-core": "^5.0.0",
-    "jasmine-reporters": "^2.5.2",
     "jsdom": "22.0.0",
     "jwks-rsa": "3.0.1",
     "jwt-decode": "3.1.2",
@@ -52,7 +49,6 @@
     "mini-css-extract-plugin": "^2.7.6",
     "minimist": "^1.2.8",
     "node-fetch": "^3.3.1",
-    "npm-check-updates": "^16.10.12",
     "on-finished": "^2.4.1",
     "parse5": "^7.1.2",
     "parse5-html-rewriting-stream": "^7.0.0",
@@ -73,10 +69,8 @@
     "styled-components": "^5.3.10",
     "text-loader": "0.0.1",
     "url-loader": "^4.1.1",
-    "uuid": "^9.0.0",
     "webpack": "5.83.1",
     "webpack-cli": "5.1.1",
-    "webpack-node-externals": "^3.0.0",
-    "@testing-library/dom": "^9.3.0"
+    "webpack-node-externals": "^3.0.0"
   }
 }

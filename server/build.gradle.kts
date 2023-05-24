@@ -58,9 +58,6 @@ dependencies {
     implementation(npmConstrained("on-finished"))
     implementation(npmConstrained("parse5"))
 
-    testImplementation(npmConstrained("jasmine"))
-    testImplementation(npmConstrained("jasmine-core"))
-    testImplementation(npmConstrained("jasmine-reporters"))
     testImplementation(npmConstrained("serverless"))
     testImplementation(npmConstrained("serverless-offline"))
     testImplementation(npmConstrained("serverless-offline-ssm"))
