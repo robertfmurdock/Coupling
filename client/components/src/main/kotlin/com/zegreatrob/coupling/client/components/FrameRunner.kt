@@ -21,7 +21,7 @@ private fun <A, B, C> Pair<A, B>.let(transform: (A, B) -> C) = transform(first, 
 private fun <I, O, O2> ((I) -> O).join(transform: (O) -> O2) = { pair: I -> transform(this(pair)) }
 private fun <I> ((I) -> Unit).curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { it: I -> { this(it) } }
 
-data class Frame<T>(val data: T, val delay: Int)
+data class Frame<out T>(val data: T, val delay: Int)
 
 val frameRunnerCached by ntmFC<FrameRunner<Any>> { props ->
     val (sequence, speed) = props
