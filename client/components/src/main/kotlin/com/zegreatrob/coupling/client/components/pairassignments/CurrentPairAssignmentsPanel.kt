@@ -36,7 +36,6 @@ val currentPairAssignmentsPanel by ntmFC<CurrentPairAssignmentsPanel> { props ->
         { DeletePairAssignmentsCommand(party.id, pairAssignments.id) },
         { redirectToCurrentFunc() },
     )
-    // usePrompt(jso { `when` = redirectUrl == null; message = "Press OK to save these pairs." })
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {

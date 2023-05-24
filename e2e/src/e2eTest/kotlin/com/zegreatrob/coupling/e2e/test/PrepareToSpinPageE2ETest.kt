@@ -77,26 +77,6 @@ class PrepareToSpinPageE2ETest {
     }
 
     @Test
-    fun spinningWillAlertOnExitIfNotSavedAndIfAcceptedPairsAreNotSaved() = pinPartySetup {
-        PrepareToSpinPage.goTo(party.id)
-        getSelectNoneButton().click()
-        PlayerCard.playerElements[0].element(PlayerCard.iconLocator).click()
-        getSpinButton().click()
-        PairAssignmentsPage.waitForPage()
-    } exercise {
-        WebdriverBrowser.setLocation("welcome")
-        // WebdriverBrowser.waitForAlert()
-        // WebdriverBrowser.alertText().also {
-        //     WebdriverBrowser.dismissAlert()
-        // }
-    } verify {
-        // alertText ->
-        // alertText.assertIsEqualTo("Press OK to save these pairs.")
-        // assignedPairElements.count().assertIsEqualTo(1)
-        // getSaveButton().isDisplayed().assertIsEqualTo(true)
-    }
-
-    @Test
     fun whenTwoPlayersAreEnabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinPartySetup {
         PrepareToSpinPage.goTo(party.id)
         with(PlayerCard) {
