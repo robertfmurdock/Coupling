@@ -21,4 +21,4 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-      - run: ./gradlew :server-base:buildImage :server-base:pushImage --configuration-cache
+      - run: ./gradlew :server:base:buildImage :server-base:pushImage --configuration-cache
