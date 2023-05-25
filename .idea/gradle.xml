@@ -37,7 +37,6 @@
             <option value="$PROJECT_DIR$/coupling-libraries/repository-core" />
             <option value="$PROJECT_DIR$/coupling-libraries/repository-memory" />
             <option value="$PROJECT_DIR$/coupling-libraries/repository-validation" />
-            <option value="$PROJECT_DIR$/coupling-libraries/server_action" />
             <option value="$PROJECT_DIR$/coupling-libraries/stub-model" />
             <option value="$PROJECT_DIR$/coupling-libraries/test-action" />
             <option value="$PROJECT_DIR$/coupling-libraries/test-logging" />
@@ -50,6 +49,7 @@
             <option value="$PROJECT_DIR$/e2e" />
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
+            <option value="$PROJECT_DIR$/server/action" />
             <option value="$PROJECT_DIR$/server/base" />
           </set>
         </option>

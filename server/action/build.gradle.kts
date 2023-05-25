@@ -4,6 +4,7 @@ plugins {
 kotlin {
     targets {
         js {
+            moduleName = "Coupling-server-action"
             nodejs()
             useCommonJs()
         }
