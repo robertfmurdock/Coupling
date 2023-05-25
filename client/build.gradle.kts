@@ -45,7 +45,7 @@ dependencies {
     implementation(project(":coupling-libraries:model"))
     implementation(project(":coupling-libraries:action"))
     implementation(project(":coupling-libraries:logging"))
-    implementation(project(":coupling-libraries:repository-memory"))
+    implementation(project(":coupling-libraries:repository:memory"))
     implementation("com.zegreatrob.testmints:action")
     implementation("com.zegreatrob.testmints:action-async")
     implementation("com.zegreatrob.jsmints:minreact")

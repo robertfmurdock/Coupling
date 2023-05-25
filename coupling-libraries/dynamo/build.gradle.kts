@@ -36,7 +36,7 @@ dockerCompose {
 
 dependencies {
     api(project(":coupling-libraries:model"))
-    api(project(":coupling-libraries:repository-core"))
+    api(project(":coupling-libraries:repository:core"))
     api(project(":coupling-libraries:logging"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
@@ -47,7 +47,7 @@ dependencies {
     implementation(npmConstrained("@aws-sdk/client-dynamodb"))
     implementation(npmConstrained("@aws-sdk/lib-dynamodb"))
 
-    testImplementation(project(":coupling-libraries:repository-validation"))
+    testImplementation(project(":coupling-libraries:repository:validation"))
     testImplementation(project(":coupling-libraries:stub-model"))
     testImplementation("com.zegreatrob.testmints:standard")
     testImplementation("com.zegreatrob.testmints:minassert")

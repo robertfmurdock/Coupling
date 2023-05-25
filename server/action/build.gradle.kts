@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":coupling-libraries:repository-core"))
+                api(project(":coupling-libraries:repository:core"))
                 api(project(":coupling-libraries:model"))
                 api(project(":coupling-libraries:action"))
                 api("com.zegreatrob.testmints:action")

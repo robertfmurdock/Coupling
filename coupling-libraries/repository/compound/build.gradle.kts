@@ -10,11 +10,11 @@ kotlin {
 
 dependencies {
     commonMainApi(project(":coupling-libraries:model"))
-    commonMainApi(project(":coupling-libraries:repository-core"))
+    commonMainApi(project(":coupling-libraries:repository:core"))
     commonMainApi("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     commonTestImplementation(project(":coupling-libraries:test-logging"))
-    commonTestImplementation(project(":coupling-libraries:repository-memory"))
-    commonTestImplementation(project(":coupling-libraries:repository-validation"))
+    commonTestImplementation(project(":coupling-libraries:repository:memory"))
+    commonTestImplementation(project(":coupling-libraries:repository:validation"))
     commonTestImplementation("com.zegreatrob.testmints:standard")
     commonTestImplementation("com.zegreatrob.testmints:minassert")
     commonTestImplementation("org.jetbrains.kotlin:kotlin-test")

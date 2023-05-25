@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":coupling-libraries:repository-core"))
+                api(project(":coupling-libraries:repository:core"))
                 api(project(":coupling-libraries:test-logging"))
                 api(project(":coupling-libraries:stub-model"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
