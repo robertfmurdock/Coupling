@@ -15,8 +15,8 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                implementation(project(":coupling-libraries:action"))
-                implementation(project(":coupling-libraries:test-logging"))
+                implementation(project(":libraries:action"))
+                implementation(project(":libraries:test-logging"))
                 api("com.zegreatrob.testmints:action")
                 api("com.zegreatrob.testmints:action-async")
                 api("com.zegreatrob.testmints:async")

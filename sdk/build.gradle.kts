@@ -17,10 +17,10 @@ kotlin {
 }
 
 dependencies {
-    "commonMainImplementation"(project(":coupling-libraries:action"))
-    "commonMainImplementation"(project(":coupling-libraries:json"))
-    "commonMainImplementation"(project(":coupling-libraries:model"))
-    "commonMainImplementation"(project(":coupling-libraries:repository:core"))
+    "commonMainImplementation"(project(":libraries:action"))
+    "commonMainImplementation"(project(":libraries:json"))
+    "commonMainImplementation"(project(":libraries:model"))
+    "commonMainImplementation"(project(":libraries:repository:core"))
     "commonMainImplementation"("com.soywiz.korlibs.klock:klock")
     "commonMainImplementation"("io.ktor:ktor-client-content-negotiation")
     "commonMainImplementation"("io.ktor:ktor-client-core")
@@ -32,9 +32,9 @@ dependencies {
     "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-json")
 
-    "commonTestImplementation"(project(":coupling-libraries:repository:validation"))
-    "commonTestImplementation"(project(":coupling-libraries:stub-model"))
-    "commonTestImplementation"(project(":coupling-libraries:test-logging"))
+    "commonTestImplementation"(project(":libraries:repository:validation"))
+    "commonTestImplementation"(project(":libraries:stub-model"))
+    "commonTestImplementation"(project(":libraries:test-logging"))
     "commonTestImplementation"("com.benasher44:uuid")
     "commonTestImplementation"("com.zegreatrob.testmints:async")
     "commonTestImplementation"("com.zegreatrob.testmints:minassert")

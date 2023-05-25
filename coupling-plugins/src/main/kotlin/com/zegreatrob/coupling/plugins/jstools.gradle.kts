@@ -39,11 +39,11 @@ version = "0.0.0"
 
 project.extensions.create<JsConstraintExtension>("npmConstrained")
 configure<JsConstraintExtension> {
-    json = File(project(":coupling-libraries:js-dependencies").projectDir, "package.json")
+    json = File(project(":libraries:js-dependencies").projectDir, "package.json")
 }
 
 dependencies {
-    implementation(enforcedPlatform(project(":coupling-libraries:dependency-bom")))
+    implementation(enforcedPlatform(project(":libraries:dependency-bom")))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 }

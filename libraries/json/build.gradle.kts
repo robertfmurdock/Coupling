@@ -10,7 +10,7 @@ kotlin {
 }
 
 dependencies {
-    commonMainApi(project(":coupling-libraries:model"))
+    commonMainApi(project(":libraries:model"))
     commonMainImplementation(kotlin("stdlib"))
     commonMainImplementation(kotlin("stdlib-common"))
     commonMainImplementation("com.soywiz.korlibs.klock:klock")
@@ -21,8 +21,8 @@ dependencies {
     commonMainImplementation("io.ktor:ktor-client-content-negotiation")
     commonMainImplementation("io.ktor:ktor-client-logging")
 
-    commonTestImplementation(project(":coupling-libraries:test-logging"))
-    commonTestImplementation(project(":coupling-libraries:stub-model"))
+    commonTestImplementation(project(":libraries:test-logging"))
+    commonTestImplementation(project(":libraries:stub-model"))
     commonTestImplementation("com.zegreatrob.testmints:standard")
     commonTestImplementation("com.zegreatrob.testmints:minassert")
     commonTestImplementation("org.jetbrains.kotlin:kotlin-test")

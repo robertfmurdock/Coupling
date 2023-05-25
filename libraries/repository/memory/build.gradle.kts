@@ -13,13 +13,16 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":coupling-libraries:model"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+                implementation(project(":libraries:model"))
+                implementation(project(":libraries:repository:core"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+                implementation("com.benasher44:uuid")
             }
         }
         getByName("commonTest") {
             dependencies {
-                implementation(project(":coupling-libraries:test-logging"))
+                implementation(project(":libraries:test-logging"))
+                implementation(project(":libraries:repository:validation"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:minassert")
                 implementation("org.jetbrains.kotlin:kotlin-test")
@@ -28,7 +31,6 @@ kotlin {
         getByName("jvmMain") {
             dependencies {
                 api(kotlin("reflect"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
             }
         }
         getByName("jvmTest") {
@@ -38,9 +40,15 @@ kotlin {
                 implementation("org.junit.jupiter:junit-jupiter-engine")
             }
         }
+
         getByName("jsMain") {
             dependencies {
                 api("org.jetbrains.kotlin:kotlin-stdlib-js")
+            }
+        }
+        getByName("jsTest") {
+            dependencies {
+                implementation("com.zegreatrob.testmints:async")
             }
         }
     }

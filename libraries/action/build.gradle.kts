@@ -21,8 +21,8 @@ tasks {
 }
 
 dependencies {
-    commonMainImplementation(project(":coupling-libraries:model"))
-    commonMainImplementation(project(":coupling-libraries:logging"))
+    commonMainImplementation(project(":libraries:model"))
+    commonMainImplementation(project(":libraries:logging"))
     commonMainApi("com.zegreatrob.testmints:action")
     commonMainApi("com.zegreatrob.testmints:action-async")
     commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-common")
@@ -31,8 +31,8 @@ dependencies {
     commonMainImplementation("com.soywiz.korlibs.klock:klock")
     commonMainImplementation("io.github.microutils:kotlin-logging")
 
-    commonTestImplementation(project(":coupling-libraries:json"))
-    commonTestImplementation(project(":coupling-libraries:test-logging"))
+    commonTestImplementation(project(":libraries:json"))
+    commonTestImplementation(project(":libraries:test-logging"))
     commonTestImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
     commonTestImplementation("com.zegreatrob.testmints:standard")

@@ -36,7 +36,7 @@ kotlin {
 }
 
 dependencies {
-    commonMainApi(enforcedPlatform(project(":coupling-libraries:dependency-bom")))
+    commonMainApi(enforcedPlatform(project(":libraries:dependency-bom")))
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 }

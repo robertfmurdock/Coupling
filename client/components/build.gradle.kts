@@ -14,10 +14,10 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":coupling-libraries:action"))
-    implementation(project(":coupling-libraries:json"))
-    implementation(project(":coupling-libraries:model"))
-    implementation(project(":coupling-libraries:repository:core"))
+    implementation(project(":libraries:action"))
+    implementation(project(":libraries:json"))
+    implementation(project(":libraries:model"))
+    implementation(project(":libraries:repository:core"))
     implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
@@ -36,9 +36,9 @@ dependencies {
     implementation(npmConstrained("react-dnd-html5-backend"))
     implementation(npmConstrained("html2canvas"))
 
-    testImplementation(project(":coupling-libraries:test-react"))
-    testImplementation(project(":coupling-libraries:stub-model"))
-    testImplementation(project(":coupling-libraries:test-logging"))
+    testImplementation(project(":libraries:test-react"))
+    testImplementation(project(":libraries:stub-model"))
+    testImplementation(project(":libraries:test-logging"))
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.jsmints:minenzyme")
 }

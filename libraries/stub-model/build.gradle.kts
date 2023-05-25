@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":coupling-libraries:model"))
+                api(project(":libraries:model"))
                 api(kotlin("stdlib"))
                 api(kotlin("stdlib-common"))
                 api("com.soywiz.korlibs.klock:klock")

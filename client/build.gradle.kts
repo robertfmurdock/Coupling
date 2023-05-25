@@ -37,15 +37,15 @@ val cdnLookupConfiguration: Configuration by configurations.creating
 
 dependencies {
     cdnLookupConfiguration(
-        project(mapOf("path" to ":coupling-libraries:cdnLookup", "configuration" to "cdnLookupConfiguration"))
+        project(mapOf("path" to ":libraries:cdnLookup", "configuration" to "cdnLookupConfiguration"))
     )
     implementation(kotlin("stdlib-js"))
     implementation(project(":sdk"))
     implementation(project("components"))
-    implementation(project(":coupling-libraries:model"))
-    implementation(project(":coupling-libraries:action"))
-    implementation(project(":coupling-libraries:logging"))
-    implementation(project(":coupling-libraries:repository:memory"))
+    implementation(project(":libraries:model"))
+    implementation(project(":libraries:action"))
+    implementation(project(":libraries:logging"))
+    implementation(project(":libraries:repository:memory"))
     implementation("com.zegreatrob.testmints:action")
     implementation("com.zegreatrob.testmints:action-async")
     implementation("com.zegreatrob.jsmints:minreact")
@@ -91,9 +91,9 @@ dependencies {
     implementation(npmConstrained("webpack-cli"))
     implementation(npmConstrained("webpack-favicons"))
 
-    testImplementation(project(":coupling-libraries:stub-model"))
-    testImplementation(project(":coupling-libraries:test-react"))
-    testImplementation(project(":coupling-libraries:test-logging"))
+    testImplementation(project(":libraries:stub-model"))
+    testImplementation(project(":libraries:test-react"))
+    testImplementation(project(":libraries:test-logging"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")

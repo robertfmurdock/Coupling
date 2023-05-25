@@ -30,7 +30,7 @@ dependencies {
     clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
     appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
     e2eTestImplementation(project(":sdk"))
-    e2eTestImplementation(project(":coupling-libraries:test-logging"))
+    e2eTestImplementation(project(":libraries:test-logging"))
     e2eTestImplementation(kotlin("test-js"))
     e2eTestImplementation("io.github.microutils:kotlin-logging")
     e2eTestImplementation("com.zegreatrob.testmints:standard")
