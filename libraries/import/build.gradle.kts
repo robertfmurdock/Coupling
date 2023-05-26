@@ -27,7 +27,7 @@ kotlin {
         getByName("jsMain") {
             dependencies {
                 api(project(":libraries:json"))
-                api(project(":libraries:dynamo"))
+                api(project(":libraries:repository:dynamo"))
                 api(kotlin("stdlib-js"))
             }
         }
