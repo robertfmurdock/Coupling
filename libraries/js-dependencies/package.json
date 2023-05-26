@@ -66,10 +66,10 @@
     "react": "18.2.0",
     "source-map-loader": "^4.0.1",
     "style-loader": "^3.3.3",
-    "styled-components": "^5.3.10",
+    "styled-components": "^5.3.11",
     "text-loader": "0.0.1",
     "url-loader": "^4.1.1",
-    "webpack": "5.84.0",
+    "webpack": "5.84.1",
     "webpack-cli": "5.1.1",
     "webpack-node-externals": "^3.0.0"
   }
