@@ -37,7 +37,7 @@ val cdnLookupConfiguration: Configuration by configurations.creating
 
 dependencies {
     cdnLookupConfiguration(
-        project(mapOf("path" to ":libraries:cdnLookup", "configuration" to "cdnLookupConfiguration"))
+        project(mapOf("path" to ":scripts:cdn-lookup", "configuration" to "cdnLookupConfiguration"))
     )
     implementation(kotlin("stdlib-js"))
     implementation(project(":sdk"))

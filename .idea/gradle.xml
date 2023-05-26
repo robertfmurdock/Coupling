@@ -30,10 +30,7 @@
             <option value="$PROJECT_DIR$/e2e" />
             <option value="$PROJECT_DIR$/libraries" />
             <option value="$PROJECT_DIR$/libraries/action" />
-            <option value="$PROJECT_DIR$/libraries/cdnLookup" />
             <option value="$PROJECT_DIR$/libraries/dependency-bom" />
-            <option value="$PROJECT_DIR$/libraries/export" />
-            <option value="$PROJECT_DIR$/libraries/import" />
             <option value="$PROJECT_DIR$/libraries/js-dependencies" />
             <option value="$PROJECT_DIR$/libraries/json" />
             <option value="$PROJECT_DIR$/libraries/logging" />
@@ -48,6 +45,10 @@
             <option value="$PROJECT_DIR$/libraries/test-action" />
             <option value="$PROJECT_DIR$/libraries/test-logging" />
             <option value="$PROJECT_DIR$/libraries/test-react" />
+            <option value="$PROJECT_DIR$/scripts" />
+            <option value="$PROJECT_DIR$/scripts/cdn-lookup" />
+            <option value="$PROJECT_DIR$/scripts/export" />
+            <option value="$PROJECT_DIR$/scripts/import" />
             <option value="$PROJECT_DIR$/sdk" />
             <option value="$PROJECT_DIR$/server" />
             <option value="$PROJECT_DIR$/server/action" />
