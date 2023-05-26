@@ -34,6 +34,7 @@ tagger {
 
 tasks {
     named("composeUp") {
+        mustRunAfter("caddyComposeUp", "libraries:repository:dynamo:composeUp")
         dependsOn(":server:buildImage")
     }
     register("importCert", Exec::class) {
