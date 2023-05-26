@@ -189,6 +189,21 @@ input PinnedPlayerInput {
     pins: [PinInput]!
 }
 
+type GlobalStats {
+    parties: [PartyStats]!
+}
+
+type PartyStats {
+    name: String!
+    id: String!
+    playerCount: Int!
+    spins: Int!
+}
+
+input GlobalStatsInput {
+    year: Int
+}
+
 """
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
@@ -196,6 +211,7 @@ type Query {
     partyList: [PartyRecord]
     partyData(input: String!): PartyData
     user: User
+    globalStats(input: GlobalStatsInput) : GlobalStats!
 }
 
 """
