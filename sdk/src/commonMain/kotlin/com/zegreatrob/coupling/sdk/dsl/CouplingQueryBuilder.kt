@@ -1,10 +1,12 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.JsonGlobalStatsInput
 import com.zegreatrob.coupling.json.nestedKeys
 import com.zegreatrob.coupling.json.toGqlQueryFields
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.partyRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.user
+import korlibs.time.Year
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -56,4 +58,15 @@ class CouplingQueryBuilder {
             "partyData",
             InputSettings(id.value, "input", "String"),
         )
+
+    fun globalStats(year: Year) {
+        GqlReference.globalStats.addToQuery(
+            queryKey = "globalStats",
+            inputSettings = InputSettings(
+                input = JsonGlobalStatsInput(year = year.year),
+                inputName = "input",
+                inputType = "GlobalStatsInput",
+            ),
+        )
+    }
 }

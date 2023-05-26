@@ -71,6 +71,7 @@ fun couplingResolvers() = json(
         "user" to userResolve,
         "partyList" to partyListResolve,
         "partyData" to entityWithId,
+        "globalStats" to globalStatsResolve,
     ),
     "Mutation" to json(
         "spin" to spinResolver,

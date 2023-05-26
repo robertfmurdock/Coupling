@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
+import com.zegreatrob.coupling.server.action.GlobalStatsQuery
 import com.zegreatrob.coupling.server.action.boost.ServerBoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerSaveBoostCommandDispatcher
@@ -58,6 +59,7 @@ interface ICommandDispatcher :
     ReportDocCommandDispatcher,
     DispatchingActionExecutor<CommandDispatcher>,
     RepositoryCatalog,
+    GlobalStatsQuery.Dispatcher,
     AwsManagementApiSyntax,
     BroadcastActionDispatcher,
     AwsSocketCommunicator

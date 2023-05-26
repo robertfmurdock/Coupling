@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.json
 
+import com.zegreatrob.coupling.model.GlobalStats
 import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
@@ -15,6 +17,7 @@ data class JsonCouplingQueryResult(
     val partyList: List<JsonPartyRecord>? = null,
     val user: JsonUser? = null,
     val partyData: JsonPartyData? = null,
+    val globalStats: JsonGlobalStats? = null,
 )
 
 private fun JsonPartyData.toModel() = PartyData(
@@ -31,12 +34,14 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
     partyList = partyList?.map(JsonPartyRecord::toModelRecord),
     user = user?.toModel(),
     partyData = partyData?.toModel(),
+    globalStats = globalStats?.toModel(),
 )
 
 data class CouplingQueryResult(
     val partyList: List<Record<Party>>? = null,
     val user: User? = null,
     val partyData: PartyData? = null,
+    val globalStats: GlobalStats? = null,
 )
 
 @Serializable
@@ -48,6 +53,46 @@ data class JsonPartyData(
     val retiredPlayers: List<JsonPlayerRecord>? = null,
     val pairAssignmentDocumentList: List<JsonPairAssignmentDocumentRecord>? = null,
     val currentPairAssignmentDocument: JsonPairAssignmentDocumentRecord? = null,
+)
+
+@Serializable
+data class JsonGlobalStats(
+    val parties: List<JsonPartyStats>,
+)
+
+fun JsonGlobalStats.toModel() = GlobalStats(
+    parties = parties.map(JsonPartyStats::toModel),
+)
+
+fun GlobalStats.toJson() = JsonGlobalStats(
+    parties = parties.map(PartyStats::toJson),
+)
+
+@Serializable
+data class JsonGlobalStatsInput(
+    val year: Int,
+)
+
+@Serializable
+data class JsonPartyStats(
+    val name: String,
+    val id: String,
+    val playerCount: Int,
+    val spins: Int,
+)
+
+fun JsonPartyStats.toModel() = PartyStats(
+    name = name,
+    id = PartyId(id),
+    playerCount = playerCount,
+    spins = spins,
+)
+
+fun PartyStats.toJson() = JsonPartyStats(
+    name = name,
+    id = id.value,
+    playerCount = playerCount,
+    spins = spins,
 )
 
 data class PartyData(

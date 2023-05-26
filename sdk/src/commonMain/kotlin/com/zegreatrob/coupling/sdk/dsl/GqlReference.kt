@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonPartyRecord
+import com.zegreatrob.coupling.json.JsonPartyStats
 import com.zegreatrob.coupling.json.JsonPinData
 import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
@@ -13,6 +15,16 @@ import com.zegreatrob.coupling.model.player.AvatarType
 import korlibs.time.DateTime
 
 object GqlReference {
+    val globalStats = JsonGlobalStats(
+        listOf(
+            JsonPartyStats(
+                name = "",
+                id = "",
+                playerCount = 0,
+                spins = 0,
+            ),
+        ),
+    )
     val user = JsonUser("", "", emptySet())
 
     private val pinData = JsonPinData(
