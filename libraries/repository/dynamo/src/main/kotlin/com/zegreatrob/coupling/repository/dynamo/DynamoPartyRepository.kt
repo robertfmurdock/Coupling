@@ -34,7 +34,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
     override suspend fun getPartyRecord(partyId: PartyId) = performGetSingleItemQuery(partyId.value)
         ?.let { it.toRecord(it.toParty()) }
 
-    override suspend fun getParties() = scanAllRecords()
+    override suspend fun loadParties() = scanAllRecords()
         .map { it.toRecord(it.toParty()) }
         .sortedBy { it.timestamp }
         .groupBy { it.data.id }

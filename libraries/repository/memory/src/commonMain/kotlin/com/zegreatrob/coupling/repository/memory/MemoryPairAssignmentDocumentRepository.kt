@@ -24,7 +24,7 @@ class MemoryPairAssignmentDocumentRepository(
             .record()
             .save()
 
-    override suspend fun getPairAssignments(partyId: PartyId): List<Record<PartyElement<PairAssignmentDocument>>> =
+    override suspend fun loadPairAssignments(partyId: PartyId): List<Record<PartyElement<PairAssignmentDocument>>> =
         partyId.records()
             .filterNot { it.isDeleted }
             .sortedByDescending { it.data.document.date }

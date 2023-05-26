@@ -23,5 +23,5 @@ interface PartyGet {
 }
 
 interface PartyListGet {
-    suspend fun getParties(): List<Record<Party>>
+    suspend fun loadParties(): List<Record<Party>>
 }

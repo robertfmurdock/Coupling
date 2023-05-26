@@ -38,7 +38,7 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         record.asDynamoJson(),
     )
 
-    override suspend fun getPairAssignments(partyId: PartyId) = partyId.queryForItemList()
+    override suspend fun loadPairAssignments(partyId: PartyId) = partyId.queryForItemList()
         .map { toRecord(it) }
         .sortedByDescending { it.data.document.date }
 

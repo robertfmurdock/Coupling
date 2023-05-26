@@ -43,7 +43,7 @@ class CompoundPairAssignmentDocumentRepositoryTest :
     fun saveWillWriteToSecondRepository() = compoundRepositorySetup() exercise {
         compoundRepo.save(partyId.with(pairAssignmentDocument))
     } verify {
-        repository2.getPairAssignments(partyId).map { it.data.document }
+        repository2.loadPairAssignments(partyId).map { it.data.document }
             .find { it.id == pairAssignmentDocument.id }
             .assertIsEqualTo(pairAssignmentDocument)
     }
@@ -53,7 +53,7 @@ class CompoundPairAssignmentDocumentRepositoryTest :
         compoundRepo.save(partyId.with(pairAssignmentDocument))
         compoundRepo.deleteIt(partyId, pairAssignmentDocument.id)
     } verify {
-        repository2.getPairAssignments(partyId).map { it.data.document }
+        repository2.loadPairAssignments(partyId).map { it.data.document }
             .find { it.id == pairAssignmentDocument.id }
             .assertIsEqualTo(null)
     }

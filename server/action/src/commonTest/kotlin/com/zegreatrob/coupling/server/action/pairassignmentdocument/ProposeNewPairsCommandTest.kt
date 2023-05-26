@@ -36,7 +36,7 @@ class ProposeNewPairsCommandTest {
             override suspend fun getPartyRecord(partyId: PartyId) = Record(party, modifyingUserId = "test")
                 .also { partyId.assertIsEqualTo(party.id) }
 
-            override suspend fun getPairAssignments(partyId: PartyId) = history.map {
+            override suspend fun loadPairAssignments(partyId: PartyId) = history.map {
                 Record(party.id.with(it), modifyingUserId = "")
             }.also { partyId.assertIsEqualTo(party.id) }
         }

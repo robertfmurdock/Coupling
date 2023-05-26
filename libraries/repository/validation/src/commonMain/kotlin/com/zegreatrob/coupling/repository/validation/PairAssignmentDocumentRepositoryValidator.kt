@@ -31,7 +31,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             partyId.with(listOf(middle, oldest, newest))
                 .forEach { repository.save(it) }
         } exercise {
-            repository.getPairAssignments(partyId)
+            repository.loadPairAssignments(partyId)
         } verifyWithWait { result ->
             result.data().map { it.document }
                 .assertIsEqualTo(listOf(newest, middle, oldest))
@@ -55,7 +55,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
 
     @Test
     fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {
-        repository.getPairAssignments(partyId)
+        repository.loadPairAssignments(partyId)
     } verify { result ->
         result.assertIsEqualTo(emptyList())
     }
@@ -69,7 +69,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
         clock.currentTime = DateTime.now().plus(4.hours)
         repository.save(partyId.with(pairAssignmentDoc))
     } exercise {
-        repository.getPairAssignments(partyId)
+        repository.loadPairAssignments(partyId)
     } verify { result ->
         result.size.assertIsEqualTo(1)
         result.first().apply {
@@ -89,7 +89,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
         repository.deleteIt(partyId, document.id)
     } verifyWithWait { result ->
         result.assertIsEqualTo(true)
-        repository.getPairAssignments(partyId)
+        repository.loadPairAssignments(partyId)
             .data().map { it.document }
             .assertIsEqualTo(emptyList())
     }
@@ -119,7 +119,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
         } exercise {
             repository.save(partyId.with(updatedDocument))
         } verifyWithWait {
-            repository.getPairAssignments(partyId).data().map { it.document }
+            repository.loadPairAssignments(partyId).data().map { it.document }
                 .assertIsEqualTo(listOf(updatedDocument))
         }
 }

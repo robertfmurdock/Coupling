@@ -16,7 +16,7 @@ class MemoryPartyRepository(
     override suspend fun getPartyRecord(partyId: PartyId) = partyId.findParty()
         ?.takeUnless { it.isDeleted }
 
-    override suspend fun getParties() = recordList()
+    override suspend fun loadParties() = recordList()
         .filterNot { it.isDeleted }
 
     private fun recordList() = records.groupBy { (party) -> party.id }

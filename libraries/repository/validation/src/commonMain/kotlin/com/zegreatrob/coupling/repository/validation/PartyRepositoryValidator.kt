@@ -21,7 +21,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     ) {
         parties.forEach { repository.save(it) }
     } exercise {
-        repository.getParties()
+        repository.loadParties()
     } verify { result ->
         result.parties().assertContainsAll(parties)
     }
@@ -53,7 +53,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
         clock.currentTime = DateTime.now().minus(3.days)
         repository.save(party)
     } exercise {
-        repository.getParties()
+        repository.loadParties()
     } verifyAnd { result ->
         result.first { it.data.id == party.id }.apply {
             modifyingUserId.assertIsEqualTo(user.email)
@@ -73,7 +73,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     } exercise {
         repository.deleteIt(party.id)
         Pair(
-            repository.getParties(),
+            repository.loadParties(),
             repository.getPartyRecord(party.id)?.data,
         )
     } verifyAnd { (listResult, getResult) ->
