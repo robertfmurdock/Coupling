@@ -34,16 +34,22 @@ object DynamoDbProvider : DynamoDBSyntax {
                         "accessKeyId" to "lol",
                         "secretAccessKey" to "lol",
                     ),
-                ).add(
-                    json(
-                        "logger" to json(
-                            "info" to { thing: dynamic -> logger.info { JSON.stringify(thing) } },
-                            "debug" to { thing: dynamic -> logger.debug { JSON.stringify(thing) } },
-                            "warn" to { thing: dynamic -> logger.warn { JSON.stringify(thing) } },
-                            "error" to { thing: dynamic -> logger.error { JSON.stringify(thing) } },
-                        ),
-                    ),
-                ),
+                ).let {
+                    if (js("process.env.AWS_DYNAMO_LOGGING").unsafeCast<String?>() != "true") {
+                        it
+                    } else {
+                        it.add(
+                            json(
+                                "logger" to json(
+                                    "info" to { thing: dynamic -> logger.info { JSON.stringify(thing) } },
+                                    "debug" to { thing: dynamic -> logger.debug { JSON.stringify(thing) } },
+                                    "warn" to { thing: dynamic -> logger.warn { JSON.stringify(thing) } },
+                                    "error" to { thing: dynamic -> logger.error { JSON.stringify(thing) } },
+                                ),
+                            ),
+                        )
+                    }
+                },
             )
         }
     }

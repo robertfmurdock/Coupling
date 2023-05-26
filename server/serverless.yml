@@ -15,8 +15,9 @@ custom:
     localEnvironment: true
     host: 0.0.0.0
 provider:
-  stage: ${opt:stage, 'local'}
   name: aws
+  timeout: 20
+  stage: ${opt:stage, 'local'}
   runtime: nodejs18.x
   iam:
     role:
