@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.GlobalStats
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import kotlinx.coroutines.flow.asFlow
@@ -31,14 +32,19 @@ data class GlobalStatsQuery(val year: Int) : SimpleSuspendResultAction<GlobalSta
                 .map { it to pairAssignmentDocumentRepository.loadPairAssignments(it.data.id) }
                 .filter { (_, docs) -> docs.any(matchesYear) }
                 .map { (party, docs) ->
+                    val pairDocsThisYear = docs.filter(matchesYear)
                     PartyStats(
                         name = party.data.name ?: party.data.id.value,
                         id = party.data.id,
-                        playerCount = 0,
-                        spins = docs.filter(matchesYear).size,
+                        playerCount = pairDocsThisYear.distinctPlayersPairedThisYear().size,
+                        spins = pairDocsThisYear.size,
                     )
                 }
             return GlobalStats(parties = partyStatsFlow.toList()).successResult()
         }
+
+        private fun List<PartyRecord<PairAssignmentDocument>>.distinctPlayersPairedThisYear() =
+            flatMap { it.data.document.pairs.flatMap { it.players.map { it.player.id } } }
+                .distinct()
     }
 }
