@@ -5,19 +5,19 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
 data class DisconnectPartyUserCommand(val connectionId: String) :
-    SimpleSuspendAction<DisconnectPartyUserCommandDispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
-    override val performFunc = link(DisconnectPartyUserCommandDispatcher::perform)
-}
+    SimpleSuspendAction<DisconnectPartyUserCommand.Dispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface DisconnectPartyUserCommandDispatcher : CouplingConnectionGetSyntax, CouplingConnectionDeleteSyntax {
-    suspend fun perform(command: DisconnectPartyUserCommand) = with(command) {
-        liveInfoRepository.get(connectionId)
-            ?.deleteAndLoadRemainingConnections()
+    interface Dispatcher : CouplingConnectionGetSyntax, CouplingConnectionDeleteSyntax {
+        suspend fun perform(command: DisconnectPartyUserCommand) = with(command) {
+            liveInfoRepository.get(connectionId)
+                ?.deleteAndLoadRemainingConnections()
+        }
+
+        private suspend fun CouplingConnection.deleteAndLoadRemainingConnections() = deleteIt()
+            .let { partyId.loadConnections() }
+            .let { it to couplingSocketMessage(it, null) }
+
+        private suspend fun CouplingConnection.deleteIt() = deleteConnection(partyId, connectionId)
     }
-
-    private suspend fun CouplingConnection.deleteAndLoadRemainingConnections() = deleteIt()
-        .let { partyId.loadConnections() }
-        .let { it to couplingSocketMessage(it, null) }
-
-    private suspend fun CouplingConnection.deleteIt() = deleteConnection(partyId, connectionId)
 }

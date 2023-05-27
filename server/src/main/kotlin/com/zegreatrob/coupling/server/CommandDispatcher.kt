@@ -15,12 +15,12 @@ import com.zegreatrob.coupling.server.action.GlobalStatsQuery
 import com.zegreatrob.coupling.server.action.boost.ServerBoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerSaveBoostCommandDispatcher
-import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommandDispatcher
-import com.zegreatrob.coupling.server.action.connection.ConnectionsQueryDispatcher
+import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommand
+import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
-import com.zegreatrob.coupling.server.action.connection.DeletePartyCommandDispatcher
-import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommandDispatcher
-import com.zegreatrob.coupling.server.action.connection.ReportDocCommandDispatcher
+import com.zegreatrob.coupling.server.action.connection.DeletePartyCommand
+import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
+import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQueryDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
@@ -53,10 +53,10 @@ interface ICommandDispatcher :
     PairAssignmentDispatcher,
     UserDispatcher,
     UserQueryDispatcher,
-    ConnectPartyUserCommandDispatcher,
-    ConnectionsQueryDispatcher,
-    DisconnectPartyUserCommandDispatcher,
-    ReportDocCommandDispatcher,
+    ConnectPartyUserCommand.Dispatcher,
+    ConnectionsQuery.Dispatcher,
+    DisconnectPartyUserCommand.Dispatcher,
+    ReportDocCommand.Dispatcher,
     DispatchingActionExecutor<CommandDispatcher>,
     RepositoryCatalog,
     GlobalStatsQuery.Dispatcher,
@@ -96,7 +96,7 @@ interface ICurrentPartyDispatcher :
     RetiredPlayersQueryDispatcher,
     ServerSavePairAssignmentDocumentCommandDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher,
-    DeletePartyCommandDispatcher,
+    DeletePartyCommand.Dispatcher,
     DeletePinCommandDispatcher,
     SavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQueryDispatcher,
@@ -115,7 +115,7 @@ class CurrentPartyDispatcher(
     RetiredPlayersQueryDispatcher,
     ServerSavePairAssignmentDocumentCommandDispatcher,
     DeletePairAssignmentDocumentCommandDispatcher,
-    DeletePartyCommandDispatcher,
+    DeletePartyCommand.Dispatcher,
     DeletePinCommandDispatcher,
     SavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQueryDispatcher,

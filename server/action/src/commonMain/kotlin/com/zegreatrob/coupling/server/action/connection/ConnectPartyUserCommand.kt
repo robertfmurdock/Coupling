@@ -12,36 +12,36 @@ import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: String) :
-    SimpleSuspendAction<ConnectPartyUserCommandDispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
-    override val performFunc = link(ConnectPartyUserCommandDispatcher::perform)
-}
+    SimpleSuspendAction<ConnectPartyUserCommand.Dispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface ConnectPartyUserCommandDispatcher :
-    UserIsAuthorizedWithDataActionDispatcher,
-    SuspendActionExecuteSyntax,
-    CouplingConnectionSaveSyntax,
-    CouplingConnectionGetSyntax,
-    AuthenticatedUserSyntax {
+    interface Dispatcher :
+        UserIsAuthorizedWithDataActionDispatcher,
+        SuspendActionExecuteSyntax,
+        CouplingConnectionSaveSyntax,
+        CouplingConnectionGetSyntax,
+        AuthenticatedUserSyntax {
 
-    suspend fun perform(command: ConnectPartyUserCommand) = with(command) {
-        partyId.getAuthorizationData()?.let { (_, players) ->
-            CouplingConnection(connectionId, partyId, userPlayer(players, user.email))
-                .also { it.save() }
-                .let { partyId.loadConnections() }
-                .let { it to couplingSocketMessage(it, null) }
+        suspend fun perform(command: ConnectPartyUserCommand) = with(command) {
+            partyId.getAuthorizationData()?.let { (_, players) ->
+                CouplingConnection(connectionId, partyId, userPlayer(players, user.email))
+                    .also { it.save() }
+                    .let { partyId.loadConnections() }
+                    .let { it to couplingSocketMessage(it, null) }
+            }
         }
-    }
 
-    private suspend fun PartyId.getAuthorizationData() = execute(UserIsAuthorizedWithDataAction(this)).valueOrNull()
+        private suspend fun PartyId.getAuthorizationData() = execute(UserIsAuthorizedWithDataAction(this)).valueOrNull()
 
-    private fun userPlayer(players: List<Player>, email: String): Player {
-        val existingPlayer = players.find { it.email == email }
+        private fun userPlayer(players: List<Player>, email: String): Player {
+            val existingPlayer = players.find { it.email == email }
 
-        return if (existingPlayer != null) {
-            existingPlayer
-        } else {
-            val atIndex = email.indexOf("@")
-            Player("-1", name = email.substring(0, atIndex), email = email, avatarType = null)
+            return if (existingPlayer != null) {
+                existingPlayer
+            } else {
+                val atIndex = email.indexOf("@")
+                Player("-1", name = email.substring(0, atIndex), email = email, avatarType = null)
+            }
         }
     }
 }

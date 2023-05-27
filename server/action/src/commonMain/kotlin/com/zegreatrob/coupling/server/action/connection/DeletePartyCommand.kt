@@ -8,27 +8,27 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.party.PartyIdDeleteSyntax
 import com.zegreatrob.coupling.server.action.user.UserSaveSyntax
 
-object DeletePartyCommand : SimpleSuspendResultAction<DeletePartyCommandDispatcher, Unit> {
-    override val performFunc = link(DeletePartyCommandDispatcher::perform)
-}
+object DeletePartyCommand : SimpleSuspendResultAction<DeletePartyCommand.Dispatcher, Unit> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface DeletePartyCommandDispatcher :
-    PartyIdDeleteSyntax,
-    CurrentPartyIdSyntax,
-    AuthenticatedUserSyntax,
-    UserSaveSyntax {
-    suspend fun perform(command: DeletePartyCommand) = currentPartyId.deleteIt().deletionResult("Party")
-        .also {
-            if (it is SuccessfulResult) {
-                user
-                    .copy(authorizedPartyIds = user.authorizedPartyIds.filter { id -> id != currentPartyId }.toSet())
-                    .saveIfChanged()
+    interface Dispatcher :
+        PartyIdDeleteSyntax,
+        CurrentPartyIdSyntax,
+        AuthenticatedUserSyntax,
+        UserSaveSyntax {
+        suspend fun perform(command: DeletePartyCommand) = currentPartyId.deleteIt().deletionResult("Party")
+            .also {
+                if (it is SuccessfulResult) {
+                    user
+                        .copy(authorizedPartyIds = user.authorizedPartyIds.filter { id -> id != currentPartyId }.toSet())
+                        .saveIfChanged()
+                }
             }
-        }
 
-    private suspend fun User.saveIfChanged() {
-        if (this != user) {
-            save()
+        private suspend fun User.saveIfChanged() {
+            if (this != user) {
+                save()
+            }
         }
     }
 }

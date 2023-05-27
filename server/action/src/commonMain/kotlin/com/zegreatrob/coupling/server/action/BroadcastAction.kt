@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.action
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
-import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommandDispatcher
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
@@ -15,7 +14,7 @@ data class BroadcastAction(val connections: List<CouplingConnection>, val messag
 interface BroadcastActionDispatcher :
     SocketCommunicator,
     SuspendActionExecuteSyntax,
-    DisconnectPartyUserCommandDispatcher {
+    DisconnectPartyUserCommand.Dispatcher {
     suspend fun perform(action: BroadcastAction) = with(action) {
         println("Broadcasting to ${connections.size} connections")
         connections.mapNotNull { connection ->
