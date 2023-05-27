@@ -16,7 +16,8 @@ import kotlin.test.Test
 class SavePlayerCommandTest {
 
     @Test
-    fun willSaveToRepository() = asyncSetup(object : SavePlayerCommandDispatcher {
+    fun willSaveToRepository() = asyncSetup(object :
+        SavePlayerCommand.Dispatcher {
         override val currentPartyId = PartyId("woo")
         val player = Player(
             id = "1",

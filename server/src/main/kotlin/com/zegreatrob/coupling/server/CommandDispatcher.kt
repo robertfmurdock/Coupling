@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
-import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
+import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.GlobalStatsQuery
 import com.zegreatrob.coupling.server.action.boost.ServerBoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
@@ -21,20 +21,19 @@ import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 import com.zegreatrob.coupling.server.action.connection.DeletePartyCommand
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQueryDispatcher
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommandDispatcher
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQueryDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQuery
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommand
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerProposeNewPairsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSavePairAssignmentDocumentCommandDispatcher
-import com.zegreatrob.coupling.server.action.pin.DeletePinCommandDispatcher
-import com.zegreatrob.coupling.server.action.pin.PinsQueryDispatcher
-import com.zegreatrob.coupling.server.action.pin.SavePinCommandDispatcher
-import com.zegreatrob.coupling.server.action.player.DeletePlayerCommandDispatcher
+import com.zegreatrob.coupling.server.action.pin.DeletePinCommand
+import com.zegreatrob.coupling.server.action.pin.PinsQuery
+import com.zegreatrob.coupling.server.action.pin.SavePinCommand
+import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
-import com.zegreatrob.coupling.server.action.player.PlayersQueryDispatcher
-import com.zegreatrob.coupling.server.action.player.RetiredPlayersQueryDispatcher
-import com.zegreatrob.coupling.server.action.player.SavePlayerCommandDispatcher
-import com.zegreatrob.coupling.server.action.user.UserQueryDispatcher
+import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
+import com.zegreatrob.coupling.server.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.server.action.user.UserQuery
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
 import com.zegreatrob.coupling.server.entity.party.PartyDispatcher
 import com.zegreatrob.coupling.server.entity.party.ScopeSyntax
@@ -52,7 +51,7 @@ interface ICommandDispatcher :
     PartyDispatcher,
     PairAssignmentDispatcher,
     UserDispatcher,
-    UserQueryDispatcher,
+    UserQuery.Dispatcher,
     ConnectPartyUserCommand.Dispatcher,
     ConnectionsQuery.Dispatcher,
     DisconnectPartyUserCommand.Dispatcher,
@@ -61,7 +60,7 @@ interface ICommandDispatcher :
     RepositoryCatalog,
     GlobalStatsQuery.Dispatcher,
     AwsManagementApiSyntax,
-    BroadcastActionDispatcher,
+    BroadcastAction.Dispatcher,
     AwsSocketCommunicator
 
 class CommandDispatcher(
@@ -89,38 +88,38 @@ class CommandDispatcher(
 
 interface ICurrentPartyDispatcher :
     ICommandDispatcher,
-    PinsQueryDispatcher,
-    PlayersQueryDispatcher,
-    SavePlayerCommandDispatcher,
-    DeletePlayerCommandDispatcher,
-    RetiredPlayersQueryDispatcher,
+    PinsQuery.Dispatcher,
+    PlayersQuery.Dispatcher,
+    SavePlayerCommand.Dispatcher,
+    DeletePlayerCommand.Dispatcher,
+    RetiredPlayersQuery.Dispatcher,
     ServerSavePairAssignmentDocumentCommandDispatcher,
-    DeletePairAssignmentDocumentCommandDispatcher,
+    DeletePairAssignmentDocumentCommand.Dispatcher,
     DeletePartyCommand.Dispatcher,
-    DeletePinCommandDispatcher,
-    SavePinCommandDispatcher,
-    CurrentPairAssignmentDocumentQueryDispatcher,
+    DeletePinCommand.Dispatcher,
+    SavePinCommand.Dispatcher,
+    CurrentPairAssignmentDocumentQuery.Dispatcher,
     ServerProposeNewPairsCommandDispatcher,
-    PairAssignmentDocumentListQueryDispatcher
+    PairAssignmentDocumentListQuery.Dispatcher
 
 class CurrentPartyDispatcher(
     override val currentPartyId: PartyId,
     private val commandDispatcher: CommandDispatcher,
 ) :
     ICommandDispatcher by commandDispatcher,
-    PinsQueryDispatcher,
-    PlayersQueryDispatcher,
-    SavePlayerCommandDispatcher,
-    DeletePlayerCommandDispatcher,
-    RetiredPlayersQueryDispatcher,
+    PinsQuery.Dispatcher,
+    PlayersQuery.Dispatcher,
+    SavePlayerCommand.Dispatcher,
+    DeletePlayerCommand.Dispatcher,
+    RetiredPlayersQuery.Dispatcher,
     ServerSavePairAssignmentDocumentCommandDispatcher,
-    DeletePairAssignmentDocumentCommandDispatcher,
+    DeletePairAssignmentDocumentCommand.Dispatcher,
     DeletePartyCommand.Dispatcher,
-    DeletePinCommandDispatcher,
-    SavePinCommandDispatcher,
-    CurrentPairAssignmentDocumentQueryDispatcher,
+    DeletePinCommand.Dispatcher,
+    SavePinCommand.Dispatcher,
+    CurrentPairAssignmentDocumentQuery.Dispatcher,
     ServerProposeNewPairsCommandDispatcher,
-    PairAssignmentDocumentListQueryDispatcher,
+    PairAssignmentDocumentListQuery.Dispatcher,
     ICurrentPartyDispatcher {
     override val userId: String get() = commandDispatcher.userId
 
@@ -129,7 +128,7 @@ class CurrentPartyDispatcher(
     private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
 
     private fun nonCachingPlayerQueryDispatcher() = object :
-        PlayersQueryDispatcher,
+        PlayersQuery.Dispatcher,
         LoggingActionExecuteSyntax by this,
         CurrentPartyIdSyntax by this,
         RepositoryCatalog by this {}

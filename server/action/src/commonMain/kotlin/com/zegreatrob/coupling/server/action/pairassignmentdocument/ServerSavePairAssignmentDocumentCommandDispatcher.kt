@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
 import com.zegreatrob.coupling.server.action.BroadcastAction
-import com.zegreatrob.coupling.server.action.BroadcastActionDispatcher
 import com.zegreatrob.coupling.server.action.connection.CouplingConnectionGetSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
@@ -17,7 +16,7 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher :
     CurrentPartyIdSyntax,
     CouplingConnectionGetSyntax,
     SuspendActionExecuteSyntax,
-    BroadcastActionDispatcher {
+    BroadcastAction.Dispatcher {
 
     override suspend fun perform(command: SavePairAssignmentDocumentCommand) = with(command) {
         currentPartyId.with(pairAssignmentDocument)

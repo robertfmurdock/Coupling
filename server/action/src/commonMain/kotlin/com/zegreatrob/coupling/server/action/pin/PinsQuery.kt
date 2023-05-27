@@ -7,11 +7,10 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPinRecordsSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 
-object PinsQuery :
-    SimpleSuspendResultAction<PinsQueryDispatcher, List<PartyRecord<Pin>>> {
-    override val performFunc = link(PinsQueryDispatcher::perform)
-}
+object PinsQuery : SimpleSuspendResultAction<PinsQuery.Dispatcher, List<PartyRecord<Pin>>> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface PinsQueryDispatcher : CurrentPartyIdSyntax, PartyIdPinRecordsSyntax {
-    suspend fun perform(query: PinsQuery) = currentPartyId.getPinRecords().successResult()
+    interface Dispatcher : CurrentPartyIdSyntax, PartyIdPinRecordsSyntax {
+        suspend fun perform(query: PinsQuery) = currentPartyId.getPinRecords().successResult()
+    }
 }

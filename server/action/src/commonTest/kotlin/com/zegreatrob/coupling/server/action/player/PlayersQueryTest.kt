@@ -20,7 +20,8 @@ import kotlin.test.Test
 class PlayersQueryTest {
 
     @Test
-    fun willReturnPlayersFromRepository() = asyncSetup(object : PlayersQueryDispatcher {
+    fun willReturnPlayersFromRepository() = asyncSetup(object :
+        PlayersQuery.Dispatcher {
         override val currentPartyId = PartyId("Excellent Party")
         val players = listOf(
             Player(
@@ -55,7 +56,8 @@ class PlayersQueryTest {
         )
 
     @Test
-    fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = asyncSetup(object : PlayersQueryDispatcher {
+    fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = asyncSetup(object :
+        PlayersQuery.Dispatcher {
         override val currentPartyId = PartyId("Excellent Party")
         val players = listOf(
             Player(id = "1", avatarType = null),

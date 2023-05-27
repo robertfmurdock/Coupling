@@ -8,11 +8,11 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssi
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 
 object PairAssignmentDocumentListQuery :
-    SimpleSuspendResultAction<PairAssignmentDocumentListQueryDispatcher, List<PartyRecord<PairAssignmentDocument>>> {
-    override val performFunc = link(PairAssignmentDocumentListQueryDispatcher::perform)
-}
+    SimpleSuspendResultAction<PairAssignmentDocumentListQuery.Dispatcher, List<PartyRecord<PairAssignmentDocument>>> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface PairAssignmentDocumentListQueryDispatcher : PartyIdPairAssignmentRecordsSyntax, CurrentPartyIdSyntax {
-    suspend fun perform(query: PairAssignmentDocumentListQuery) = currentPartyId.loadPairAssignmentRecords()
-        .successResult()
+    interface Dispatcher : PartyIdPairAssignmentRecordsSyntax, CurrentPartyIdSyntax {
+        suspend fun perform(query: PairAssignmentDocumentListQuery) = currentPartyId.loadPairAssignmentRecords()
+            .successResult()
+    }
 }

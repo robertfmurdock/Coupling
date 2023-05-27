@@ -8,18 +8,18 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 
 data class DeletePairAssignmentDocumentCommand(val pairAssignmentDocumentId: PairAssignmentDocumentId) :
-    SimpleSuspendResultAction<DeletePairAssignmentDocumentCommandDispatcher, Unit> {
-    override val performFunc = link(DeletePairAssignmentDocumentCommandDispatcher::perform)
-}
+    SimpleSuspendResultAction<DeletePairAssignmentDocumentCommand.Dispatcher, Unit> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface DeletePairAssignmentDocumentCommandDispatcher : PairAssignmentDocumentIdDeleteSyntax, CurrentPartyIdSyntax {
+    interface Dispatcher : PairAssignmentDocumentIdDeleteSyntax, CurrentPartyIdSyntax {
 
-    suspend fun perform(command: DeletePairAssignmentDocumentCommand) = command.partyIdPairAssignmentId()
-        .deleteIt()
-        .deletionResult("Pair Assignment Document")
+        suspend fun perform(command: DeletePairAssignmentDocumentCommand) = command.partyIdPairAssignmentId()
+            .deleteIt()
+            .deletionResult("Pair Assignment Document")
 
-    private fun DeletePairAssignmentDocumentCommand.partyIdPairAssignmentId() = PartyIdPairAssignmentDocumentId(
-        currentPartyId,
-        pairAssignmentDocumentId,
-    )
+        private fun DeletePairAssignmentDocumentCommand.partyIdPairAssignmentId() = PartyIdPairAssignmentDocumentId(
+            currentPartyId,
+            pairAssignmentDocumentId,
+        )
+    }
 }

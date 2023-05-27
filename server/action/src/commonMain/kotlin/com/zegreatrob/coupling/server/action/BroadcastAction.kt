@@ -7,20 +7,20 @@ import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 data class BroadcastAction(val connections: List<CouplingConnection>, val message: Message) :
-    SimpleSuspendAction<BroadcastActionDispatcher, Unit> {
-    override val performFunc = link(BroadcastActionDispatcher::perform)
-}
+    SimpleSuspendAction<BroadcastAction.Dispatcher, Unit> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface BroadcastActionDispatcher :
-    SocketCommunicator,
-    SuspendActionExecuteSyntax,
-    DisconnectPartyUserCommand.Dispatcher {
-    suspend fun perform(action: BroadcastAction) = with(action) {
-        println("Broadcasting to ${connections.size} connections")
-        connections.mapNotNull { connection ->
-            sendMessageAndReturnIdWhenFail(connection.connectionId, message)
-        }.forEach {
-            execute(DisconnectPartyUserCommand(it))
+    interface Dispatcher :
+        SocketCommunicator,
+        SuspendActionExecuteSyntax,
+        DisconnectPartyUserCommand.Dispatcher {
+        suspend fun perform(action: BroadcastAction) = with(action) {
+            println("Broadcasting to ${connections.size} connections")
+            connections.mapNotNull { connection ->
+                sendMessageAndReturnIdWhenFail(connection.connectionId, message)
+            }.forEach {
+                execute(DisconnectPartyUserCommand(it))
+            }
         }
     }
 }

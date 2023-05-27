@@ -9,15 +9,15 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 
 object CurrentPairAssignmentDocumentQuery :
-    SimpleSuspendResultAction<CurrentPairAssignmentDocumentQueryDispatcher, PartyRecord<PairAssignmentDocument>> {
-    override val performFunc = link(CurrentPairAssignmentDocumentQueryDispatcher::perform)
-}
+    SimpleSuspendResultAction<CurrentPairAssignmentDocumentQuery.Dispatcher, PartyRecord<PairAssignmentDocument>> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface CurrentPairAssignmentDocumentQueryDispatcher : CurrentPartyIdSyntax {
-    val pairAssignmentDocumentRepository: PairAssignmentDocumentGetCurrent
+    interface Dispatcher : CurrentPartyIdSyntax {
+        val pairAssignmentDocumentRepository: PairAssignmentDocumentGetCurrent
 
-    suspend fun perform(query: CurrentPairAssignmentDocumentQuery) =
-        pairAssignmentDocumentRepository.getCurrentPairAssignments(currentPartyId)
-            ?.successResult()
-            ?: NotFoundResult("currentPairAssignment")
+        suspend fun perform(query: CurrentPairAssignmentDocumentQuery) =
+            pairAssignmentDocumentRepository.getCurrentPairAssignments(currentPartyId)
+                ?.successResult()
+                ?: NotFoundResult("currentPairAssignment")
+    }
 }

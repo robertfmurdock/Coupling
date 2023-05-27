@@ -7,14 +7,14 @@ import com.zegreatrob.coupling.server.action.party.UserAuthenticatedPartyIdSynta
 import com.zegreatrob.coupling.server.action.party.UserPlayerIdsSyntax
 
 data class UserIsAuthorizedAction(val partyId: PartyId) :
-    SimpleSuspendResultAction<UserIsAuthorizedActionDispatcher, Boolean> {
-    override val performFunc = link(UserIsAuthorizedActionDispatcher::perform)
-}
+    SimpleSuspendResultAction<UserIsAuthorizedAction.Dispatcher, Boolean> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface UserIsAuthorizedActionDispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax {
+    interface Dispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax {
 
-    suspend fun perform(action: UserIsAuthorizedAction) = getUserPlayerIds()
-        .authenticatedPartyIds()
-        .contains(action.partyId)
-        .successResult()
+        suspend fun perform(action: UserIsAuthorizedAction) = getUserPlayerIds()
+            .authenticatedPartyIds()
+            .contains(action.partyId)
+            .successResult()
+    }
 }

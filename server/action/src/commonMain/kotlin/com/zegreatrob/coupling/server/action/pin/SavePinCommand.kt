@@ -7,13 +7,13 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pin.PartyPinSaveSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 
-data class SavePinCommand(val pin: Pin) : SimpleSuspendResultAction<SavePinCommandDispatcher, Pin> {
-    override val performFunc = link(SavePinCommandDispatcher::perform)
-}
+data class SavePinCommand(val pin: Pin) : SimpleSuspendResultAction<SavePinCommand.Dispatcher, Pin> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface SavePinCommandDispatcher : PartyPinSaveSyntax, CurrentPartyIdSyntax {
+    interface Dispatcher : PartyPinSaveSyntax, CurrentPartyIdSyntax {
 
-    suspend fun perform(command: SavePinCommand) = command.save().successResult()
+        suspend fun perform(command: SavePinCommand) = command.save().successResult()
 
-    private suspend fun SavePinCommand.save() = currentPartyId.with(pin).save().let { pin }
+        private suspend fun SavePinCommand.save() = currentPartyId.with(pin).save().let { pin }
+    }
 }
