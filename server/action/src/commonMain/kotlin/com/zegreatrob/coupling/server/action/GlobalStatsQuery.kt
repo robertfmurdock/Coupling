@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.action
 
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.stats.medianSpinDuration
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.GlobalStats
 import com.zegreatrob.coupling.model.PartyRecord
@@ -54,6 +55,7 @@ private fun partyStats(
         id = party.data.id,
         playerCount = pairDocsThisYear.distinctPlayersPairedThisYear().size,
         spins = pairDocsThisYear.size,
+        medianSpinDuration = pairDocsThisYear.elements.medianSpinDuration(),
     )
 }
 

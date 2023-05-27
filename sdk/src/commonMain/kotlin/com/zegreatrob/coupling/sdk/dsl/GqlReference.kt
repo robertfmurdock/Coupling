@@ -22,6 +22,8 @@ object GqlReference {
                 id = "",
                 playerCount = 0,
                 spins = 0,
+                medianSpinDurationMillis = 0.0,
+                medianSpinDuration = null,
             ),
         ),
     )

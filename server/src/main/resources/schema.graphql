@@ -198,6 +198,8 @@ type PartyStats {
     id: String!
     playerCount: Int!
     spins: Int!
+    medianSpinDuration: String
+    medianSpinDurationMillis: Int
 }
 
 input GlobalStatsInput {

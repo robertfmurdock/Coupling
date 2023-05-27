@@ -55,19 +55,6 @@ data class ComposeStatisticsAction(
         } else {
             this
         }
-
-        private fun List<PairAssignmentDocument>.medianSpinDuration() = asDateTimes()
-            .toDeltas()
-            .sorted()
-            .halfwayValue()
-
-        private fun List<TimeSpan>.halfwayValue() = getOrNull(indexOfMedian())
-
-        private fun List<TimeSpan>.indexOfMedian() = floor(size / 2.0).toInt()
-
-        private fun List<DateTime>.toDeltas() = zipWithNext { a, b -> a - b }
-
-        private fun List<PairAssignmentDocument>.asDateTimes() = map { it.date }
     }
 }
 
@@ -78,3 +65,16 @@ data class StatisticsReport(
 )
 
 data class PairReport(val pair: CouplingPair.Double, val timeSinceLastPair: TimeResult)
+
+fun List<PairAssignmentDocument>.medianSpinDuration() = asDateTimes()
+    .toDeltas()
+    .sorted()
+    .halfwayValue()
+
+fun List<PairAssignmentDocument>.asDateTimes() = map(PairAssignmentDocument::date)
+
+fun List<DateTime>.toDeltas() = zipWithNext { a, b -> a - b }
+
+fun List<TimeSpan>.halfwayValue() = getOrNull(indexOfMedian())
+
+fun List<TimeSpan>.indexOfMedian() = floor(size / 2.0).toInt()

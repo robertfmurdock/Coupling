@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
+import korlibs.time.TimeSpan
+import korlibs.time.toTimeString
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -79,6 +81,8 @@ data class JsonPartyStats(
     val id: String,
     val playerCount: Int,
     val spins: Int,
+    val medianSpinDurationMillis: Double?,
+    val medianSpinDuration: String? = null,
 )
 
 fun JsonPartyStats.toModel() = PartyStats(
@@ -86,6 +90,7 @@ fun JsonPartyStats.toModel() = PartyStats(
     id = PartyId(id),
     playerCount = playerCount,
     spins = spins,
+    medianSpinDuration = medianSpinDurationMillis?.let(::TimeSpan),
 )
 
 fun PartyStats.toJson() = JsonPartyStats(
@@ -93,6 +98,8 @@ fun PartyStats.toJson() = JsonPartyStats(
     id = id.value,
     playerCount = playerCount,
     spins = spins,
+    medianSpinDuration = medianSpinDuration?.toTimeString(components = 4),
+    medianSpinDurationMillis = medianSpinDuration?.milliseconds,
 )
 
 data class PartyData(
