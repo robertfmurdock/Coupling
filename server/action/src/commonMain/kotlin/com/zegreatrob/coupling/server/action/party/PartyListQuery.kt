@@ -9,27 +9,27 @@ import com.zegreatrob.coupling.repository.party.PartyRecordSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-object PartyListQuery : SimpleSuspendResultAction<PartyListQueryDispatcher, List<Record<Party>>> {
-    override val performFunc = link(PartyListQueryDispatcher::perform)
-}
+object PartyListQuery : SimpleSuspendResultAction<PartyListQuery.Dispatcher, List<Record<Party>>> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface PartyListQueryDispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax, PartyRecordSyntax {
+    interface Dispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax, PartyRecordSyntax {
 
-    suspend fun perform(query: PartyListQuery) = getPartiesAndUserPlayerIds()
-        .onlyAuthenticatedParties()
-        .successResult()
+        suspend fun perform(query: PartyListQuery) = getPartiesAndUserPlayerIds()
+            .onlyAuthenticatedParties()
+            .successResult()
 
-    private suspend fun getPartiesAndUserPlayerIds() = getPartiesAndPlayersDeferred()
-        .let { (partyDeferred, playerDeferred) -> partyDeferred.await() to playerDeferred.await() }
+        private suspend fun getPartiesAndUserPlayerIds() = getPartiesAndPlayersDeferred()
+            .let { (partyDeferred, playerDeferred) -> partyDeferred.await() to playerDeferred.await() }
 
-    private suspend fun getPartiesAndPlayersDeferred() = coroutineScope {
-        async { getPartyRecords() } to async { getUserPlayerIds() }
-    }
-
-    private fun Pair<List<Record<Party>>, List<PartyElement<String>>>.onlyAuthenticatedParties() =
-        let { (partyRecords, players) ->
-            partyRecords.filter {
-                players.authenticatedFilter()(it)
-            }
+        private suspend fun getPartiesAndPlayersDeferred() = coroutineScope {
+            async { getPartyRecords() } to async { getUserPlayerIds() }
         }
+
+        private fun Pair<List<Record<Party>>, List<PartyElement<String>>>.onlyAuthenticatedParties() =
+            let { (partyRecords, players) ->
+                partyRecords.filter {
+                    players.authenticatedFilter()(it)
+                }
+            }
+    }
 }

@@ -16,7 +16,7 @@ import kotlinx.coroutines.coroutineScope
 interface ServerProposeNewPairsCommandDispatcher :
     ProposeNewPairsCommand.Dispatcher,
     ExecutableActionExecuteSyntax,
-    RunGameActionDispatcher,
+    RunGameAction.Dispatcher,
     PartyIdGetSyntax,
     PartyIdHistorySyntax,
     CurrentPartyIdSyntax {

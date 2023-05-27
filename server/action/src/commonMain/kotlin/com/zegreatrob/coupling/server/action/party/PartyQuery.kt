@@ -9,11 +9,11 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.party.PartyIdGetRecordSyntax
 
 data class PartyQuery(val partyId: PartyId) :
-    SimpleSuspendResultAction<PartyQueryDispatcher, Record<Party>> {
-    override val performFunc = link(PartyQueryDispatcher::perform)
-}
+    SimpleSuspendResultAction<PartyQuery.Dispatcher, Record<Party>> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface PartyQueryDispatcher : UserAuthenticatedPartyIdSyntax, PartyIdGetRecordSyntax {
-    suspend fun perform(query: PartyQuery) = query.partyId.loadRecord()?.let { SuccessfulResult(it) }
-        ?: NotFoundResult("party")
+    interface Dispatcher : UserAuthenticatedPartyIdSyntax, PartyIdGetRecordSyntax {
+        suspend fun perform(query: PartyQuery) = query.partyId.loadRecord()?.let { SuccessfulResult(it) }
+            ?: NotFoundResult("party")
+    }
 }

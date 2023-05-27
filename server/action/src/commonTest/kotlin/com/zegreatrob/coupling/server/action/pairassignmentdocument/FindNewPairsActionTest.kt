@@ -18,7 +18,8 @@ import kotlin.test.assertEquals
 class FindNewPairsActionTest {
 
     @Test
-    fun withNoPlayersShouldReturnNoPairs() = setup(object : FindNewPairsActionDispatcher, Wheel {
+    fun withNoPlayersShouldReturnNoPairs() = setup(object :
+        FindNewPairsAction.Dispatcher, Wheel {
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel = this
     }) exercise {
@@ -26,7 +27,8 @@ class FindNewPairsActionTest {
     } verify { assertEquals(it, listOf()) }
 
     @Test
-    fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
+    fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object :
+        FindNewPairsAction.Dispatcher {
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill", avatarType = null)
@@ -45,7 +47,8 @@ class FindNewPairsActionTest {
     }
 
     @Test
-    fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object : FindNewPairsActionDispatcher {
+    fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = setup(object :
+        FindNewPairsAction.Dispatcher {
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill", avatarType = null)

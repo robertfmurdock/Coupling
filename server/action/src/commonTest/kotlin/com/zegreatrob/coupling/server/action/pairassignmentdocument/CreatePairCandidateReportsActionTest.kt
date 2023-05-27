@@ -13,7 +13,8 @@ import kotlin.test.Test
 
 class CreatePairCandidateReportsActionTest {
 
-    class WhenThePartyPrefersPairingWithDifferentBadges : CreatePairCandidateReportsActionDispatcher {
+    class WhenThePartyPrefersPairingWithDifferentBadges :
+        CreatePairCandidateReportsAction.Dispatcher {
         override val execute = stubActionExecutor(CreatePairCandidateReportAction::class)
 
         @Test
@@ -89,7 +90,8 @@ class CreatePairCandidateReportsActionTest {
     }
 
     @Test
-    fun whenThePartyPrefersPairingByLongestTime() = setup(object : CreatePairCandidateReportsActionDispatcher {
+    fun whenThePartyPrefersPairingByLongestTime() = setup(object :
+        CreatePairCandidateReportsAction.Dispatcher {
         override val execute = stubActionExecutor(CreatePairCandidateReportAction::class)
         val history = listOf<PairAssignmentDocument>()
         val bill = Player(id = "Bill", badge = 1, avatarType = null)
@@ -119,9 +121,10 @@ class CreatePairCandidateReportsActionTest {
     companion object {
 
         private fun StubActionExecutor<
-            CreatePairCandidateReportActionDispatcher,
+            CreatePairCandidateReportAction.Dispatcher,
             CreatePairCandidateReportAction,
-            PairCandidateReport,>.givenPlayerReturnReport(
+            PairCandidateReport,
+            >.givenPlayerReturnReport(
             pairCandidateReport: PairCandidateReport,
             players: List<Player>,
             history: List<PairAssignmentDocument>,

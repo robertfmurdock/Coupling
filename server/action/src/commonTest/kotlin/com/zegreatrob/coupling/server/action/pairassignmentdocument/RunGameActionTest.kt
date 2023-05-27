@@ -21,7 +21,8 @@ import kotlin.test.Test
 class RunGameActionTest {
 
     @Test
-    fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object : RunGameActionDispatcher {
+    fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object :
+        RunGameAction.Dispatcher {
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 

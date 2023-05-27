@@ -13,41 +13,41 @@ data class CreatePairCandidateReportAction(
     val player: Player,
     val history: List<PairAssignmentDocument>,
     val allPlayers: List<Player>,
-) : SimpleExecutableAction<CreatePairCandidateReportActionDispatcher, PairCandidateReport> {
-    override val performFunc = link(CreatePairCandidateReportActionDispatcher::perform)
-}
+) : SimpleExecutableAction<CreatePairCandidateReportAction.Dispatcher, PairCandidateReport> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface CreatePairCandidateReportActionDispatcher : PairingTimeCalculationSyntax {
+    interface Dispatcher : PairingTimeCalculationSyntax {
 
-    fun perform(action: CreatePairCandidateReportAction) = action.pairTimeMap()
-        .candidateReport()
+        fun perform(action: CreatePairCandidateReportAction) = action.pairTimeMap()
+            .candidateReport()
 
-    private fun CreatePairCandidateReportAction.pairTimeMap() = PairTimeMap(player, timeToPartnersMap())
+        private fun CreatePairCandidateReportAction.pairTimeMap() = PairTimeMap(player, timeToPartnersMap())
 
-    private data class PairTimeMap(val player: Player, val timeToPartners: Map<TimeResult, List<Player>>)
+        private data class PairTimeMap(val player: Player, val timeToPartners: Map<TimeResult, List<Player>>)
 
-    private fun CreatePairCandidateReportAction.timeToPartnersMap() = allPlayers.groupBy { availablePartner ->
-        calculateTimeSinceLastPartnership(pair(availablePartner), history)
+        private fun CreatePairCandidateReportAction.timeToPartnersMap() = allPlayers.groupBy { availablePartner ->
+            calculateTimeSinceLastPartnership(pair(availablePartner), history)
+        }
+
+        private fun CreatePairCandidateReportAction.pair(availablePartner: Player) = pairOf(player, availablePartner)
+
+        private fun PairTimeMap.candidateReport() = neverPairedReport() ?: longestTimeReport()
+
+        private fun PairTimeMap.neverPairedReport() = timeToPartners[NeverPaired]?.let {
+            PairCandidateReport(player, it, NeverPaired)
+        }
+
+        private fun PairTimeMap.longestTimeReport() = timeToPartners.findPartnersWithLongestTime()
+            ?.let { (timeResult, partners) -> PairCandidateReport(player, partners, timeResult) }
+            ?: PairCandidateReport(
+                player,
+                emptyList(),
+                NeverPaired,
+            )
+
+        private fun Map<TimeResult, List<Player>>.findPartnersWithLongestTime() =
+            maxByOrNull { (key, _) -> if (key is TimeResultValue) key.time else -1 }
     }
-
-    private fun CreatePairCandidateReportAction.pair(availablePartner: Player) = pairOf(player, availablePartner)
-
-    private fun PairTimeMap.candidateReport() = neverPairedReport() ?: longestTimeReport()
-
-    private fun PairTimeMap.neverPairedReport() = timeToPartners[NeverPaired]?.let {
-        PairCandidateReport(player, it, NeverPaired)
-    }
-
-    private fun PairTimeMap.longestTimeReport() = timeToPartners.findPartnersWithLongestTime()
-        ?.let { (timeResult, partners) -> PairCandidateReport(player, partners, timeResult) }
-        ?: PairCandidateReport(
-            player,
-            emptyList(),
-            NeverPaired,
-        )
-
-    private fun Map<TimeResult, List<Player>>.findPartnersWithLongestTime() =
-        maxByOrNull { (key, _) -> if (key is TimeResultValue) key.time else -1 }
 }
 
 data class PairCandidateReport(val player: Player, val partners: List<Player>, val timeResult: TimeResult)

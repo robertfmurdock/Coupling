@@ -7,14 +7,13 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportsAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.GameSpin
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerActionDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairCandidateReport
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
 
-class NextPlayerActionTest : NextPlayerActionDispatcher {
+class NextPlayerActionTest : NextPlayerAction.Dispatcher {
     override val execute = stubActionExecutor(CreatePairCandidateReportsAction::class)
 
     private val bill = Player(id = "Bill", avatarType = null)

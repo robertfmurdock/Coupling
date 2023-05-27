@@ -19,28 +19,28 @@ data class RunGameAction(
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
     val party: Party,
-) : SimpleExecutableAction<RunGameActionDispatcher, PairAssignmentDocument> {
-    override val performFunc = link(RunGameActionDispatcher::perform)
-}
+) : SimpleExecutableAction<RunGameAction.Dispatcher, PairAssignmentDocument> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface RunGameActionDispatcher :
-    Clock,
-    ExecutableActionExecuteSyntax,
-    FindNewPairsActionDispatcher,
-    AssignPinsActionDispatcher {
+    interface Dispatcher :
+        Clock,
+        ExecutableActionExecuteSyntax,
+        FindNewPairsAction.Dispatcher,
+        AssignPinsActionDispatcher {
 
-    fun perform(action: RunGameAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
+        fun perform(action: RunGameAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 
-    private fun RunGameAction.assignPinsToPairs() = assignPins(findNewPairs())
-    private fun RunGameAction.assignPins(pairs: List<CouplingPair>) = execute(assignPinsAction(pairs))
-    private fun RunGameAction.assignPinsAction(pairs: List<CouplingPair>) = AssignPinsAction(pairs, pins, history)
-    private fun RunGameAction.findNewPairs() = execute(findNewPairsAction())
-    private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(Game(history, players, party.pairingRule))
-    private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
-        id = PairAssignmentDocumentId("${uuid4()}"),
-        date = currentDate(),
-        pairs = pairAssignments,
-    )
+        private fun RunGameAction.assignPinsToPairs() = assignPins(findNewPairs())
+        private fun RunGameAction.assignPins(pairs: List<CouplingPair>) = execute(assignPinsAction(pairs))
+        private fun RunGameAction.assignPinsAction(pairs: List<CouplingPair>) = AssignPinsAction(pairs, pins, history)
+        private fun RunGameAction.findNewPairs() = execute(findNewPairsAction())
+        private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(Game(history, players, party.pairingRule))
+        private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
+            id = PairAssignmentDocumentId("${uuid4()}"),
+            date = currentDate(),
+            pairs = pairAssignments,
+        )
+    }
 }
 
 interface Clock {
