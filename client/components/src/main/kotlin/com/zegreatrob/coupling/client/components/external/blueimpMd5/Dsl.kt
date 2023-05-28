@@ -12,6 +12,6 @@ package com.zegreatrob.coupling.client.components.external.blueimpMd5
 @JsModule("blueimp-md5")
 external fun md5(
     value: String,
-    key: String? = definedExternally /* null */,
-    raw: Boolean? = definedExternally, /* null */
+    key: String? = definedExternally,
+    raw: Boolean? = definedExternally,
 ): String = definedExternally
