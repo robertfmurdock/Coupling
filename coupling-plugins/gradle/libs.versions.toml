@@ -7,7 +7,7 @@ org-jlleitschuh-gradle-ktlint = "11.0.0"
 [libraries]
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.1"
 com-github-ben-manes-gradle-versions-plugin = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
-com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:4.0.2"
+com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:4.0.3"
 com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:3.5.17"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:9.3.29"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:0.2.25"
