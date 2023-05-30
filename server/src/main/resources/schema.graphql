@@ -191,15 +191,17 @@ input PinnedPlayerInput {
 
 type GlobalStats {
     parties: [PartyStats]!
-    totalSpins: Int!,
+    totalParties: Int!,
     totalPlayers: Int!,
     totalPins: Int!,
+    totalSpins: Int!,
 }
 
 type PartyStats {
     name: String!
     id: String!
     playerCount: Int!
+    pinCount: Int!
     spins: Int!
     medianSpinDuration: String
     medianSpinDurationMillis: Int

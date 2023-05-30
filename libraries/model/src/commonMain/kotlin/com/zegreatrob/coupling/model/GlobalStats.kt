@@ -5,6 +5,7 @@ import korlibs.time.TimeSpan
 
 data class GlobalStats(
     val parties: List<PartyStats>,
+    val totalParties: Int,
     val totalSpins: Int,
     val totalPlayers: Int,
     val totalPins: Int,
@@ -16,4 +17,5 @@ data class PartyStats(
     val playerCount: Int,
     val spins: Int,
     val medianSpinDuration: TimeSpan?,
+    val pinCount: Int,
 )

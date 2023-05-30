@@ -11,7 +11,9 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import kotlinx.coroutines.flow.asFlow
@@ -43,9 +45,10 @@ data class GlobalStatsQuery(val year: Int) : SimpleSuspendResultAction<GlobalSta
 
         private fun List<PartyStats>.toGlobalStats() = GlobalStats(
             parties = this,
-            totalSpins = sumOf { it.spins },
-            totalPlayers = sumOf { it.playerCount },
-            totalPins = 0,
+            totalParties = size,
+            totalSpins = sumOf(PartyStats::spins),
+            totalPlayers = sumOf(PartyStats::playerCount),
+            totalPins = sumOf(PartyStats::pinCount),
         )
     }
 }
@@ -59,18 +62,25 @@ private fun partyStats(
     docs: List<PartyRecord<PairAssignmentDocument>>,
     filter: (PartyRecord<PairAssignmentDocument>) -> Boolean,
 ): PartyStats {
-    val pairDocsThisYear = docs.filter(filter)
+    val pairDocsThisYear = docs.filter(filter).elements
     return PartyStats(
         name = party.data.name ?: party.data.id.value,
         id = party.data.id,
         playerCount = pairDocsThisYear.distinctPlayersPairedThisYear().size,
         spins = pairDocsThisYear.size,
-        medianSpinDuration = pairDocsThisYear.elements.medianSpinDuration(),
+        medianSpinDuration = pairDocsThisYear.medianSpinDuration(),
+        pinCount = pairDocsThisYear.pinCount().size,
     )
 }
 
-private fun List<PartyRecord<PairAssignmentDocument>>.distinctPlayersPairedThisYear() = elements
-    .flatMap(PairAssignmentDocument::pairs)
+private fun List<PairAssignmentDocument>.pinCount() = flatMap {
+    it.pairs.map(PinnedCouplingPair::allPins)
+}
+
+private fun PinnedCouplingPair.allPins(): List<Pin> = pins.toList()
+    .plus(players.flatMap(PinnedPlayer::pins))
+
+private fun List<PairAssignmentDocument>.distinctPlayersPairedThisYear() = flatMap(PairAssignmentDocument::pairs)
     .flatMap(PinnedCouplingPair::players)
     .map { it.player.id }
     .distinct()

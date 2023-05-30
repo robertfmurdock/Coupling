@@ -60,6 +60,7 @@ data class JsonPartyData(
 @Serializable
 data class JsonGlobalStats(
     val parties: List<JsonPartyStats>,
+    val totalParties: Int,
     val totalSpins: Int,
     val totalPlayers: Int,
     val totalPins: Int,
@@ -70,6 +71,7 @@ fun JsonGlobalStats.toModel() = GlobalStats(
     totalSpins = totalSpins,
     totalPlayers = totalPlayers,
     totalPins = totalPins,
+    totalParties = totalParties,
 )
 
 fun GlobalStats.toJson() = JsonGlobalStats(
@@ -77,6 +79,7 @@ fun GlobalStats.toJson() = JsonGlobalStats(
     totalSpins = totalSpins,
     totalPlayers = totalPlayers,
     totalPins = totalPins,
+    totalParties = totalParties,
 )
 
 @Serializable
@@ -92,6 +95,7 @@ data class JsonPartyStats(
     val spins: Int,
     val medianSpinDurationMillis: Double?,
     val medianSpinDuration: String? = null,
+    val pinCount: Int,
 )
 
 fun JsonPartyStats.toModel() = PartyStats(
@@ -99,6 +103,7 @@ fun JsonPartyStats.toModel() = PartyStats(
     id = PartyId(id),
     playerCount = playerCount,
     spins = spins,
+    pinCount = pinCount,
     medianSpinDuration = medianSpinDurationMillis?.let(::TimeSpan),
 )
 
@@ -106,6 +111,7 @@ fun PartyStats.toJson() = JsonPartyStats(
     name = name,
     id = id.value,
     playerCount = playerCount,
+    pinCount = pinCount,
     spins = spins,
     medianSpinDuration = medianSpinDuration?.toTimeString(components = 4),
     medianSpinDurationMillis = medianSpinDuration?.milliseconds,
