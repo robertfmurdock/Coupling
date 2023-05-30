@@ -1,17 +1,19 @@
 # News
 
-## Sept 29, 2022
+## May 30, 2023
 
-Hey ya. Hey-ey ey ya.
+Hey! What's happening? How are *you*?
 
-Couple tweaks recently - it came to my attention that the microsoft social integration wasn't working anymore, so I checked up on it and it appears that the secret expired in June.
+*waits patiently for answer, pretending to listen.*
 
-I'm so sorry if this affected you! I've taken a pass at restoring it to some extent, but it looks like some of the Microsoft tenancy rules have changed, which historically is _annoying_.
+Whoa, I'm happy for you. Or sorry that happened.
 
-As an alternative, I've swapped over to "passwordless" authentication from the previous username/password login. If you can't get access to something because of the Microsoft issues, you should be able to get in using the same email address (as long as you still have access to the email, natch). 
+Anyway, I've finally crunched the numbers for Coupling in 2022. If you're curious how the world-o-coupling is doing, I've posted the update [here](https://www.zegreatrob.com/2023/05/30/Grow-Together-2022.html).
 
-Can't emphasize enough, if you have a problem, clue me in! Open an issue on [github](https://www.github.com/robertfmurdock/coupling), or send me a note.
+Thank you, yes you, you-in-particular, for using the app. It doesn't make me any money, but it does bring me joy, and I hope it makes your lives easier.
 
-Stay cooler than cool,
+As always: got a problem? Yo, I'll consider it! Open an issue on [github](https://www.github.com/robertfmurdock/coupling) and let the dj revolve (prioritize?) it.
+
+Have a hot-dev-summer 🌞,
 
 - RoB
