@@ -8,7 +8,8 @@ data class GlobalStats(
     val totalParties: Int,
     val totalSpins: Int,
     val totalPlayers: Int,
-    val totalPins: Int,
+    val totalAppliedPins: Int,
+    val totalUniquePins: Int,
 )
 
 data class PartyStats(
@@ -17,5 +18,6 @@ data class PartyStats(
     val playerCount: Int,
     val spins: Int,
     val medianSpinDuration: TimeSpan?,
-    val pinCount: Int,
+    val appliedPinCount: Int,
+    val uniquePinCount: Int,
 )

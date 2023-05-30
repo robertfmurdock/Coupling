@@ -21,7 +21,8 @@ object GqlReference {
                 name = "",
                 id = "",
                 playerCount = 0,
-                pinCount = 0,
+                appliedPinCount = 0,
+                uniquePinCount = 0,
                 spins = 0,
                 medianSpinDurationMillis = 0.0,
                 medianSpinDuration = null,
@@ -30,7 +31,8 @@ object GqlReference {
         totalParties = 0,
         totalSpins = 0,
         totalPlayers = 0,
-        totalPins = 0,
+        totalAppliedPins = 0,
+        totalUniquePins = 0,
     )
     val user = JsonUser("", "", emptySet())
 

@@ -63,14 +63,16 @@ data class JsonGlobalStats(
     val totalParties: Int,
     val totalSpins: Int,
     val totalPlayers: Int,
-    val totalPins: Int,
+    val totalAppliedPins: Int,
+    val totalUniquePins: Int,
 )
 
 fun JsonGlobalStats.toModel() = GlobalStats(
     parties = parties.map(JsonPartyStats::toModel),
     totalSpins = totalSpins,
     totalPlayers = totalPlayers,
-    totalPins = totalPins,
+    totalAppliedPins = totalAppliedPins,
+    totalUniquePins = totalUniquePins,
     totalParties = totalParties,
 )
 
@@ -78,7 +80,8 @@ fun GlobalStats.toJson() = JsonGlobalStats(
     parties = parties.map(PartyStats::toJson),
     totalSpins = totalSpins,
     totalPlayers = totalPlayers,
-    totalPins = totalPins,
+    totalAppliedPins = totalAppliedPins,
+    totalUniquePins = totalUniquePins,
     totalParties = totalParties,
 )
 
@@ -95,7 +98,8 @@ data class JsonPartyStats(
     val spins: Int,
     val medianSpinDurationMillis: Double?,
     val medianSpinDuration: String? = null,
-    val pinCount: Int,
+    val appliedPinCount: Int,
+    val uniquePinCount: Int,
 )
 
 fun JsonPartyStats.toModel() = PartyStats(
@@ -103,15 +107,17 @@ fun JsonPartyStats.toModel() = PartyStats(
     id = PartyId(id),
     playerCount = playerCount,
     spins = spins,
-    pinCount = pinCount,
     medianSpinDuration = medianSpinDurationMillis?.let(::TimeSpan),
+    appliedPinCount = appliedPinCount,
+    uniquePinCount = uniquePinCount,
 )
 
 fun PartyStats.toJson() = JsonPartyStats(
     name = name,
     id = id.value,
     playerCount = playerCount,
-    pinCount = pinCount,
+    appliedPinCount = appliedPinCount,
+    uniquePinCount = uniquePinCount,
     spins = spins,
     medianSpinDuration = medianSpinDuration?.toTimeString(components = 4),
     medianSpinDurationMillis = medianSpinDuration?.milliseconds,

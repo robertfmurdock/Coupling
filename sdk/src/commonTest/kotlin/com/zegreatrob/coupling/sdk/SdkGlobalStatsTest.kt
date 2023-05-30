@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import korlibs.time.DateTime
+import korlibs.time.days
 import kotlin.test.Test
 
 class SdkGlobalStatsTest {
@@ -18,7 +19,18 @@ class SdkGlobalStatsTest {
         val party = stubParty()
     }) {
         sdk().perform(SavePartyCommand(party))
-        sdk().perform(SavePairAssignmentsCommand(party.id, stubPairAssignmentDoc().copy(date = DateTime.now())))
+        sdk().perform(
+            SavePairAssignmentsCommand(
+                partyId = party.id,
+                pairAssignments = stubPairAssignmentDoc().copy(date = DateTime.now().minus(2.days)),
+            ),
+        )
+        sdk().perform(
+            SavePairAssignmentsCommand(
+                partyId = party.id,
+                pairAssignments = stubPairAssignmentDoc().copy(date = DateTime.now()),
+            ),
+        )
     } exercise {
         sdk().perform(
             graphQuery {

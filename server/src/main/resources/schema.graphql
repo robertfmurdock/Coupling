@@ -193,7 +193,8 @@ type GlobalStats {
     parties: [PartyStats]!
     totalParties: Int!,
     totalPlayers: Int!,
-    totalPins: Int!,
+    totalAppliedPins: Int!,
+    totalUniquePins: Int!,
     totalSpins: Int!,
 }
 
@@ -201,7 +202,8 @@ type PartyStats {
     name: String!
     id: String!
     playerCount: Int!
-    pinCount: Int!
+    appliedPinCount: Int!
+    uniquePinCount: Int!
     spins: Int!
     medianSpinDuration: String
     medianSpinDurationMillis: String

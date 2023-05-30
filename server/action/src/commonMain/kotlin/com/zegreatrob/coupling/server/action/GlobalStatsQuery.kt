@@ -55,7 +55,8 @@ data class GlobalStatsQuery(val year: Int) : SimpleSuspendResultAction<GlobalSta
             totalParties = size,
             totalSpins = sumOf(PartyStats::spins),
             totalPlayers = sumOf(PartyStats::playerCount),
-            totalPins = sumOf(PartyStats::pinCount),
+            totalAppliedPins = sumOf(PartyStats::appliedPinCount),
+            totalUniquePins = sumOf(PartyStats::uniquePinCount),
         )
     }
 }
@@ -76,12 +77,13 @@ private fun partyStats(
         playerCount = pairDocsThisYear.distinctPlayersPairedThisYear().size,
         spins = pairDocsThisYear.size,
         medianSpinDuration = pairDocsThisYear.medianSpinDuration(),
-        pinCount = pairDocsThisYear.pinCount().size,
+        appliedPinCount = pairDocsThisYear.allPins().size,
+        uniquePinCount = pairDocsThisYear.allPins().map(Pin::id).distinct().size,
     )
 }
 
-private fun List<PairAssignmentDocument>.pinCount() = flatMap {
-    it.pairs.map(PinnedCouplingPair::allPins)
+private fun List<PairAssignmentDocument>.allPins(): List<Pin> = flatMap {
+    it.pairs.flatMap(PinnedCouplingPair::allPins)
 }
 
 private fun PinnedCouplingPair.allPins(): List<Pin> = pins.toList()
