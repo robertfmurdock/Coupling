@@ -191,6 +191,9 @@ input PinnedPlayerInput {
 
 type GlobalStats {
     parties: [PartyStats]!
+    totalSpins: Int!,
+    totalPlayers: Int!,
+    totalPins: Int!,
 }
 
 type PartyStats {

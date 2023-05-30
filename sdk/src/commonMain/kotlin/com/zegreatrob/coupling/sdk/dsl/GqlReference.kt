@@ -16,7 +16,7 @@ import korlibs.time.DateTime
 
 object GqlReference {
     val globalStats = JsonGlobalStats(
-        listOf(
+        parties = listOf(
             JsonPartyStats(
                 name = "",
                 id = "",
@@ -26,6 +26,9 @@ object GqlReference {
                 medianSpinDuration = null,
             ),
         ),
+        totalSpins = 0,
+        totalPlayers = 0,
+        totalPins = 0,
     )
     val user = JsonUser("", "", emptySet())
 

@@ -60,14 +60,23 @@ data class JsonPartyData(
 @Serializable
 data class JsonGlobalStats(
     val parties: List<JsonPartyStats>,
+    val totalSpins: Int,
+    val totalPlayers: Int,
+    val totalPins: Int,
 )
 
 fun JsonGlobalStats.toModel() = GlobalStats(
     parties = parties.map(JsonPartyStats::toModel),
+    totalSpins = totalSpins,
+    totalPlayers = totalPlayers,
+    totalPins = totalPins,
 )
 
 fun GlobalStats.toJson() = JsonGlobalStats(
     parties = parties.map(PartyStats::toJson),
+    totalSpins = totalSpins,
+    totalPlayers = totalPlayers,
+    totalPins = totalPins,
 )
 
 @Serializable

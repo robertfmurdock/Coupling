@@ -27,16 +27,26 @@ data class GlobalStatsQuery(val year: Int) : SimpleSuspendResultAction<GlobalSta
         val partyRepository: PartyRepository
         val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 
-        suspend fun perform(query: GlobalStatsQuery): Result<GlobalStats> {
-            val matchesYear = yearMatcher(query.year)
-            val partyStats = partyRepository.loadParties()
-                .asFlow()
-                .map { it to pairAssignmentDocumentRepository.loadPairAssignments(it.data.id) }
-                .filter { (_, docs) -> docs.any(matchesYear) }
-                .map { (party, docs) -> partyStats(party, docs, matchesYear) }
-                .toList()
-            return GlobalStats(parties = partyStats).successResult()
-        }
+        suspend fun perform(query: GlobalStatsQuery): Result<GlobalStats> =
+            partyRepository.loadParties()
+                .toStats(yearMatcher(query.year))
+                .toGlobalStats()
+                .successResult()
+
+        private suspend fun List<Record<Party>>.toStats(
+            matchesYear: (PartyRecord<PairAssignmentDocument>) -> Boolean,
+        ): List<PartyStats> = asFlow()
+            .map { it to pairAssignmentDocumentRepository.loadPairAssignments(it.data.id) }
+            .filter { (_, docs) -> docs.any(matchesYear) }
+            .map { (party, docs) -> partyStats(party, docs, matchesYear) }
+            .toList()
+
+        private fun List<PartyStats>.toGlobalStats() = GlobalStats(
+            parties = this,
+            totalSpins = sumOf { it.spins },
+            totalPlayers = sumOf { it.playerCount },
+            totalPins = 0,
+        )
     }
 }
 
