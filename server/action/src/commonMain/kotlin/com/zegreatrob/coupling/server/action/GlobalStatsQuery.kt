@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
+import korlibs.time.minutes
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -32,6 +33,7 @@ data class GlobalStatsQuery(val year: Int) : SimpleSuspendResultAction<GlobalSta
         suspend fun perform(query: GlobalStatsQuery): Result<GlobalStats> =
             partyRepository.loadParties()
                 .toStats(yearMatcher(query.year))
+                .filter(::excludePartiesSpinningUnnaturallyFast)
                 .toGlobalStats()
                 .successResult()
 
@@ -42,6 +44,11 @@ data class GlobalStatsQuery(val year: Int) : SimpleSuspendResultAction<GlobalSta
             .filter { (_, docs) -> docs.any(matchesYear) }
             .map { (party, docs) -> partyStats(party, docs, matchesYear) }
             .toList()
+
+        private fun excludePartiesSpinningUnnaturallyFast(stats: PartyStats): Boolean {
+            val medianSpinDuration = stats.medianSpinDuration
+            return medianSpinDuration != null && medianSpinDuration > 1.minutes
+        }
 
         private fun List<PartyStats>.toGlobalStats() = GlobalStats(
             parties = this,
