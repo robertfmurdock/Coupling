@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsExec
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
+
 kotlin {
     targets {
         jvm()

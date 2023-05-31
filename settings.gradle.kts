@@ -13,6 +13,7 @@ rootProject.name = "Coupling"
 
 includeBuild("coupling-plugins")
 
+include("cli")
 include("client")
 include("client:components")
 include("deploy:prerelease")
