@@ -1,6 +1,5 @@
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
-    kotlin("plugin.serialization")
 }
 
 kotlin {
