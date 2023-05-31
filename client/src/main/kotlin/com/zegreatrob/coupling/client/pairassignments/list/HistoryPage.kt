@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.pairassignments.list
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.json.CouplingQueryResult
+import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party

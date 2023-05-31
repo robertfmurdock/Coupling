@@ -16,9 +16,9 @@ kotlin {
 }
 
 dependencies {
-    "commonMainImplementation"(project(":libraries:action"))
+    "commonMainApi"(project(":libraries:action"))
+    "commonMainApi"(project(":libraries:model"))
     "commonMainImplementation"(project(":libraries:json"))
-    "commonMainImplementation"(project(":libraries:model"))
     "commonMainImplementation"(project(":libraries:repository:core"))
     "commonMainImplementation"("com.soywiz.korlibs.klock:klock")
     "commonMainImplementation"("io.ktor:ktor-client-content-negotiation")

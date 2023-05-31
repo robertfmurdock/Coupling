@@ -6,8 +6,8 @@ import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
-import com.zegreatrob.coupling.json.CouplingQueryResult
 import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair

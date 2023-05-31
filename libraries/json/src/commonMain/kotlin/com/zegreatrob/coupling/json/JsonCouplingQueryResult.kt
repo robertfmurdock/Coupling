@@ -1,15 +1,10 @@
 package com.zegreatrob.coupling.json
 
+import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.GlobalStats
-import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.PartyData
 import com.zegreatrob.coupling.model.PartyStats
-import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.user.User
 import korlibs.time.TimeSpan
 import korlibs.time.toTimeString
 import kotlinx.serialization.Serializable
@@ -37,13 +32,6 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
     user = user?.toModel(),
     partyData = partyData?.toModel(),
     globalStats = globalStats?.toModel(),
-)
-
-data class CouplingQueryResult(
-    val partyList: List<Record<Party>>? = null,
-    val user: User? = null,
-    val partyData: PartyData? = null,
-    val globalStats: GlobalStats? = null,
 )
 
 @Serializable
@@ -121,14 +109,4 @@ fun PartyStats.toJson() = JsonPartyStats(
     spins = spins,
     medianSpinDuration = medianSpinDuration?.toTimeString(components = 4),
     medianSpinDurationMillis = medianSpinDuration?.milliseconds,
-)
-
-data class PartyData(
-    val id: PartyId? = null,
-    val party: Record<Party>? = null,
-    val pinList: List<PartyRecord<Pin>>? = null,
-    val playerList: List<PartyRecord<Player>>? = null,
-    val retiredPlayers: List<PartyRecord<Player>>? = null,
-    val pairAssignmentDocumentList: List<PartyRecord<PairAssignmentDocument>>? = null,
-    val currentPairAssignmentDocument: PartyRecord<PairAssignmentDocument>? = null,
 )
