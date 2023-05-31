@@ -1,3 +1,5 @@
+package com.zegreatrob.coupling.server
+
 import com.zegreatrob.coupling.json.toJsonString
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Message

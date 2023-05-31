@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.server
 
-import AwsManagementApiSyntax
-import AwsSocketCommunicator
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
