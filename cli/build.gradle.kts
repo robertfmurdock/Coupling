@@ -9,6 +9,7 @@ application {
 }
 
 dependencies {
+    implementation(project(":libraries:auth0-management"))
     implementation(project(":sdk"))
     implementation(libs.com.github.ajalt.clikt.clikt)
     implementation("com.benasher44:uuid")

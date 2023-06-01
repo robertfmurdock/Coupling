@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.cli
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import com.zegreatrob.coupling.cli.auth0.KtorAuth0Client
-import com.zegreatrob.coupling.cli.auth0.PollResult
+import com.zegreatrob.coupling.auth0.management.KtorAuth0Client
+import com.zegreatrob.coupling.auth0.management.PollResult
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.buildJsonObject
@@ -21,7 +21,7 @@ class Login : CliktCommand() {
         if (environment != null) {
             runBlocking {
                 val client = KtorAuth0Client()
-                val result = client.getDeviceCodeRequest(environment)
+                val result = client.getDeviceCodeRequest(environment.audience, environment.clientId)
 
                 echo("Your user code is: ${result.userCode}")
                 echo("Please follow link to authenticate: ${result.verificationUriComplete}")
@@ -51,7 +51,7 @@ class Login : CliktCommand() {
     ): PollResult? {
         var pollResult: PollResult?
         while (true) {
-            pollResult = checkForResult(environment, deviceCode)
+            pollResult = checkForResult(environment.clientId, deviceCode)
             when (pollResult.error) {
                 null, "expired_token", "access_denied" -> break
             }
