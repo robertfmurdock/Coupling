@@ -42,6 +42,7 @@ include("scripts:import")
 include("sdk")
 include("server")
 include("server:action")
+include("server:secret")
 include("server:base")
 
 gradleEnterprise {
