@@ -3791,10 +3791,10 @@ available-typed-arrays@^1.0.5:
   resolved "https://registry.yarnpkg.com/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz#92f95616501069d07d10edb2fc37d3e1c65123b7"
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
-aws-sdk@^2.1379.0:
-  version "2.1380.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1380.0.tgz#3aa8dc83a723b0ba338f13dcbdc636a8f02db66b"
-  integrity sha512-R7vhM3iqINbQVhkIBKB5UbRRKuMD1rwZWuImtDYM1WGpuwmacDhbqtefdwf9fng2n0LHgC81509TYT1xxgQoIQ==
+aws-sdk@^2.1387.0:
+  version "2.1388.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1388.0.tgz#eb930be78cbd1ce2abd588c869aea15ca01a7557"
+  integrity sha512-T/zLsBj3ckKUTXDWoE+xZOWFZmoFLHAc2fs/uOJjMQCLEonxkmVI9Jtpq3dxkSu817UOizZ5rjULDfrNBTsreA==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -5750,10 +5750,10 @@ dotenv-expand@^10.0.0:
   resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-10.0.0.tgz#12605d00fb0af6d0a592e6558585784032e4ef37"
   integrity sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==
 
-dotenv@^16.0.3:
-  version "16.0.3"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
-  integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
+dotenv@^16.1.2:
+  version "16.1.3"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.1.3.tgz#0c67e90d0ddb48d08c570888f709b41844928210"
+  integrity sha512-FYssxsmCTtKL72fGBSvb1K9dRz0/VZeWqFme/vSb7r7323x4CRaHu4LvQ5JG3+s6yt2YPbBrkpiEODktfyjI9A==
 
 drag-drop-webkit-mobile@^1.4.1:
   version "1.4.1"
@@ -6704,10 +6704,10 @@ find-up@^6.3.0:
     locate-path "^7.1.0"
     path-exists "^5.0.0"
 
-fitty@^2.3.6:
-  version "2.3.6"
-  resolved "https://registry.yarnpkg.com/fitty/-/fitty-2.3.6.tgz#1dc2f3fbf6ffd4766b4fdd8b3d55a0cb01334ed1"
-  integrity sha512-ENp/+MqqYmXBGHC0dlltCX75+5zL5m0uiIGCgYdoThao99BrJpNYzEh3xrvhiy4b7O5X82CQT7dPTiB53H6stw==
+fitty@^2.3.7:
+  version "2.3.7"
+  resolved "https://registry.yarnpkg.com/fitty/-/fitty-2.3.7.tgz#f80002f8291334ef1bac7e9256a5648a54608db8"
+  integrity sha512-yucQBzDD8sRa8EXfHu4/h9vNDFHUXpYtC+nydtBRfLSjzToCEvacy4qiBJyihgUVrqpXB+Kp5kWCbROSrePd2g==
 
 flat@^5.0.2:
   version "5.0.2"
@@ -11422,10 +11422,10 @@ serverless-offline@^12.0.4:
     velocityjs "^2.0.6"
     ws "^8.11.0"
 
-serverless@^3.31.0:
-  version "3.31.0"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.31.0.tgz#e36a2b1abbb0f1445694e108a84c1d86ec39ecc3"
-  integrity sha512-Cr2gEoPxxPFI1sLsLn5hzcsGMpsgzVEb7tiU0I/zcBe4Yug70bQrnZWReYw7N+DZlOMoWQ9ifCXD6yF1wWPQXg==
+serverless@^3.32.0:
+  version "3.32.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.32.0.tgz#8338185d758cb7b2300fe5b3d170d111271e00bb"
+  integrity sha512-7Bnyud2RM2PSyEwOXtPhH4WdY9VqLw70/uYHoUtttcKooQZdnTATXe4AZ7FBSUfqH+x9Qb/QSt6m0XC0psKvrQ==
   dependencies:
     "@serverless/dashboard-plugin" "^6.2.3"
     "@serverless/platform-client" "^4.3.2"
@@ -11433,7 +11433,7 @@ serverless@^3.31.0:
     ajv "^8.12.0"
     ajv-formats "^2.1.1"
     archiver "^5.3.1"
-    aws-sdk "^2.1379.0"
+    aws-sdk "^2.1387.0"
     bluebird "^3.7.2"
     cachedir "^2.3.0"
     chalk "^4.1.2"
@@ -11443,7 +11443,7 @@ serverless@^3.31.0:
     d "^1.0.1"
     dayjs "^1.11.7"
     decompress "^4.2.1"
-    dotenv "^16.0.3"
+    dotenv "^16.1.2"
     dotenv-expand "^10.0.0"
     essentials "^1.2.0"
     ext "^1.7.0"
@@ -13029,10 +13029,10 @@ webpack-sources@^3.2.3:
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.3.tgz#2d4daab8451fd4b240cc27055ff6a0c2ccea0cde"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
-webpack@5.84.1:
-  version "5.84.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.84.1.tgz#d4493acdeca46b26ffc99d86d784cabfeb925a15"
-  integrity sha512-ZP4qaZ7vVn/K8WN/p990SGATmrL1qg4heP/MrVneczYtpDGJWlrgZv55vxaV2ul885Kz+25MP2kSXkPe3LZfmg==
+webpack@5.85.0:
+  version "5.85.0"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.85.0.tgz#c14a6a3a91f84d67c450225661fda8da36bc7f49"
+  integrity sha512-7gazTiYqwo5OSqwH1tigLDL2r3qDeP2dOKYgd+LlXpsUMqDTklg6tOghexqky0/+6QY38kb/R/uRPUleuL43zg==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
     "@types/estree" "^1.0.0"
