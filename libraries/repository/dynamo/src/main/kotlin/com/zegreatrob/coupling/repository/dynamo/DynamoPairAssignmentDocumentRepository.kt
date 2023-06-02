@@ -19,10 +19,10 @@ class DynamoPairAssignmentDocumentRepository private constructor(
 
     companion object :
         DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>(),
-        TribeCreateTableParamProvider,
+        PartyCreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoItemPutDeleteRecordSyntax,
-        TribeIdDynamoItemListGetSyntax,
+        PartyIdDynamoItemListGetSyntax,
         DynamoDBSyntax by DynamoDbProvider {
         override val construct = ::DynamoPairAssignmentDocumentRepository
         override val tableName = "PAIR_ASSIGNMENTS"

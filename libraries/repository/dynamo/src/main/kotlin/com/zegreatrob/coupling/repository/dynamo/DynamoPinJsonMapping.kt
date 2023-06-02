@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pin.pin
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoPinJsonMapping : TribeIdDynamoRecordJsonMapping {
+interface DynamoPinJsonMapping : PartyIdDynamoRecordJsonMapping {
 
     fun Record<PartyElement<Pin>>.asDynamoJson() = recordJson()
         .add(

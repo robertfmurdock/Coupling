@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.player.player
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, TribeIdDynamoRecordJsonMapping {
+interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, PartyIdDynamoRecordJsonMapping {
 
     fun PartyRecord<Player>.asDynamoJson() = recordJson()
         .add(

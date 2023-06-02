@@ -1,0 +1,157 @@
+package com.zegreatrob.coupling.repository.dynamo.secret
+
+import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.partyRecord
+import com.zegreatrob.coupling.repository.validation.MagicClock
+import com.zegreatrob.coupling.repository.validation.verifyWithWait
+import com.zegreatrob.coupling.stubmodel.stubPartyId
+import com.zegreatrob.coupling.stubmodel.stubSecret
+import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.uuidString
+import com.zegreatrob.minassert.assertContains
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncSetup
+import korlibs.time.DateTime
+import korlibs.time.days
+import korlibs.time.hours
+import korlibs.time.months
+import korlibs.time.years
+import kotlin.test.Test
+
+@Suppress("unused")
+class DynamoSecretRepositoryTest {
+
+    @Test
+    fun canSaveAndGetSecrets() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoSecretRepository
+        val secrets = listOf(
+            stubSecret(),
+            stubSecret(),
+            stubSecret(),
+        )
+    }) {
+        repository = DynamoSecretRepository("userId", MagicClock())
+    } exercise {
+        partyId.with(secrets).forEach { repository.save(it) }
+    } verifyWithWait {
+        repository.getSecrets(partyId)
+            .map { it.data.element }
+            .assertIsEqualTo(secrets)
+    }
+
+    @Test
+    fun saveThenDeleteWillNotShowThatSecret() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoSecretRepository
+        val secrets = listOf(
+            stubSecret(),
+            stubSecret(),
+            stubSecret(),
+        )
+    }) {
+        repository = DynamoSecretRepository("userId", MagicClock())
+    } exercise {
+        partyId.with(secrets).forEach {
+            repository.save(it)
+        }
+        repository.deleteSecret(partyId, secrets[1].id)
+    } verifyWithWait {
+        repository.getSecrets(partyId).map { it.data.element }
+            .assertContains(secrets[0])
+            .assertContains(secrets[2])
+            .size
+            .assertIsEqualTo(2)
+    }
+
+    @Test
+    fun deleteWillFailWhenSecretDoesNotExist() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoSecretRepository
+    }) {
+        repository = DynamoSecretRepository("userId", MagicClock())
+    } exercise {
+        repository.deleteSecret(partyId, "${uuid4()}")
+    } verify { result ->
+        result.assertIsEqualTo(false)
+    }
+
+    @Test
+    fun givenNoSecretsWillReturnEmptyList() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoSecretRepository
+    }) {
+        repository = DynamoSecretRepository("userId", MagicClock())
+    } exercise {
+        repository.getSecrets(partyId)
+    } verify { result ->
+        result.assertIsEqualTo(emptyList())
+    }
+
+    @Test
+    fun savedSecretsIncludeModificationDateAndUsername() = asyncSetup(object {
+        val clock = MagicClock()
+        val user = stubUser()
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoSecretRepository
+        val secret = stubSecret()
+    }) {
+        repository = DynamoSecretRepository(user.email, clock)
+    } exercise {
+        clock.currentTime = DateTime.now().plus(4.hours)
+        repository.save(partyId.with(secret))
+    } verifyWithWait {
+        val result = repository.getSecrets(partyId)
+        result.size.assertIsEqualTo(1)
+        result.first().apply {
+            timestamp.assertIsEqualTo(clock.currentTime)
+            modifyingUserId.assertIsEqualTo(user.email)
+        }
+    }
+
+    @Test
+    fun getSecretRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(object {
+        val partyId = stubPartyId()
+        val clock = MagicClock()
+        val user = stubUser()
+        lateinit var repository: DynamoSecretRepository
+        val secret = stubSecret()
+        val initialSaveTime = DateTime.now().minus(3.days)
+        val updatedSecret = secret
+        val updatedSaveTime = initialSaveTime.plus(2.hours)
+        val updatedSaveTime2 = initialSaveTime.plus(4.hours)
+    }) {
+        repository = DynamoSecretRepository(user.email, clock)
+    } exercise {
+        clock.currentTime = initialSaveTime
+        repository.save(partyId.with(secret))
+        clock.currentTime = updatedSaveTime
+        repository.save(partyId.with(updatedSecret))
+        clock.currentTime = updatedSaveTime2
+        repository.deleteSecret(partyId, secret.id)
+    } verifyWithWait {
+        repository.getSecretRecords(partyId)
+            .assertContains(Record(partyId.with(secret), user.email, false, initialSaveTime))
+            .assertContains(Record(partyId.with(updatedSecret), user.email, false, updatedSaveTime))
+            .assertContains(Record(partyId.with(updatedSecret), user.email, true, updatedSaveTime2))
+    }
+
+    @Test
+    fun canSaveRawRecord() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoSecretRepository
+        val records = listOf(
+            partyRecord(partyId, stubSecret(), uuidString(), false, DateTime.now().minus(3.months)),
+            partyRecord(partyId, stubSecret(), uuidString(), true, DateTime.now().minus(2.years)),
+        )
+    }) {
+        repository = DynamoSecretRepository("userId", MagicClock())
+    } exercise {
+        records.forEach { repository.saveRawRecord(it) }
+    } verifyWithWait {
+        val loadedRecords = repository.getSecretRecords(partyId)
+        records.forEach { loadedRecords.assertContains(it) }
+    }
+}

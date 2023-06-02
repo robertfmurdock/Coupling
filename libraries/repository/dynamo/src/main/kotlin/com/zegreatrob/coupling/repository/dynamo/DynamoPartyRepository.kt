@@ -19,7 +19,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
 
     companion object :
         DynamoTableNameSyntax,
-        com.zegreatrob.coupling.repository.dynamo.CreateTableParamProvider,
+        CreateTableParamProvider,
         DynamoItemGetSyntax,
         DynamoItemPutSyntax,
         DynamoQueryItemListGetSyntax,

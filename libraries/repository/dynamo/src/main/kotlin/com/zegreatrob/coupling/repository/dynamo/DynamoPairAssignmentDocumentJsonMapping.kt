@@ -12,7 +12,7 @@ import kotlin.js.Json
 import kotlin.js.json
 
 interface DynamoPairAssignmentDocumentJsonMapping :
-    TribeIdDynamoRecordJsonMapping,
+    PartyIdDynamoRecordJsonMapping,
     DynamoPlayerJsonMapping,
     DynamoPinJsonMapping {
 

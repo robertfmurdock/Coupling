@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.repository.dynamo.tribe
+package com.zegreatrob.coupling.repository.dynamo.party
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository

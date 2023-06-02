@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.AvatarType
@@ -36,6 +37,8 @@ fun stubParty() = Party(
 private fun stubPairingRule() = PairingRule.values()[partyCounter % PairingRule.values().size]
 
 fun stubPartyId() = PartyId(uuidString())
+
+fun stubSecret() = Secret(id = uuidString())
 
 var playerCounter = 1
 fun stubPlayer() = Player(

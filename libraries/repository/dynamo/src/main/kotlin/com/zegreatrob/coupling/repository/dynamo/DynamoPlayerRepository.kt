@@ -21,9 +21,9 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
     companion object :
         DynamoRepositoryCreatorSyntax<DynamoPlayerRepository>(),
         DynamoDBSyntax by DynamoDbProvider,
-        TribeCreateTableParamProvider,
+        PartyCreateTableParamProvider,
         DynamoItemPutSyntax,
-        TribeIdDynamoItemListGetSyntax,
+        PartyIdDynamoItemListGetSyntax,
         DynamoQuerySyntax,
         DynamoItemPutDeleteRecordSyntax,
         DynamoLoggingSyntax {
