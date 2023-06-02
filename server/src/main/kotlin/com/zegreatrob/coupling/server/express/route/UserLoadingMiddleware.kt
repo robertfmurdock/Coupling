@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.express.route
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.valueOrNull
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.UserDataService
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
@@ -16,9 +17,16 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
         next()
     } else {
         request.scope.async({ _, _ -> next() }) {
-            UserDataService.authActionDispatcher("${auth["https://zegreatrob.com/email"]}", uuid4())
-                .invoke(FindOrCreateUserAction)
-                .valueOrNull()
+            val userEmail = auth["https://zegreatrob.com/email"].asDynamic()
+            if (userEmail == null) {
+                val secretId = "${auth["https://zegreatrob.com/secret-id"]}"
+                val partyId = "${auth["sub"]}"
+                User(id = secretId, email = secretId, authorizedPartyIds = setOf(PartyId(partyId)))
+            } else {
+                UserDataService.authActionDispatcher("$userEmail", uuid4())
+                    .invoke(FindOrCreateUserAction)
+                    .valueOrNull()
+            }
                 .let(request::setUser)
         }
     }

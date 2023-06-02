@@ -14,7 +14,7 @@ interface JwtSecretGenerator : SecretGenerator {
     val secretSigningSecret: String
     val secretAudience: String
 
-    override suspend fun createSecret(secret: PartyElement<Secret>) = SignJWT(jso { secretId = secret.element.id })
+    override suspend fun createSecret(secret: PartyElement<Secret>) = SignJWT(customClaims(secret))
         .setAudience(secretAudience)
         .setSubject(secret.partyId.value)
         .setIssuedAt()
@@ -22,6 +22,10 @@ interface JwtSecretGenerator : SecretGenerator {
         .setProtectedHeader(jso { alg = "HS256" })
         .sign(TextEncoder().encode(secretSigningSecret))
         .await()
+
+    private fun customClaims(secret: PartyElement<Secret>): dynamic = jso {
+        this["https://zegreatrob.com/secret-id"] = secret.element.id
+    }
 }
 
 external class TextEncoder {

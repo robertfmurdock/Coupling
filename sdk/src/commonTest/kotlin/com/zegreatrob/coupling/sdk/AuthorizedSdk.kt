@@ -78,7 +78,7 @@ private val baseUrl = Url("https://localhost/local/")
 
 private val ktorLogger = KotlinLogging.logger("ktor")
 
-private fun buildClient(): HttpClient {
+fun buildClient(): HttpClient {
     setupPlatformSpecificKtorSettings()
 
     val client = defaultClient(null).config {

@@ -7,26 +7,35 @@ import com.zegreatrob.coupling.server.external.express.jwt.expressjwt
 import com.zegreatrob.coupling.server.external.jwksrsa.expressJwtSecret
 import kotlin.js.json
 
-fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler = expressjwt(
-    json(
-        "secret" to expressJwtSecret(
-            json(
-                "cache" to true,
-                "rateLimit" to true,
-                "jwksRequestsPerMinute" to 5,
-                "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json",
-            ),
-        ),
-        "issuer" to "https://${Config.AUTH0_DOMAIN}/",
-        "audience" to "${Config.publicUrl}/api",
-        "algorithms" to arrayOf("RS256"),
-        "requestProperty" to "auth",
-        "credentialsRequired" to false,
-    ).let {
-        if (getToken == null) {
-            it
-        } else {
-            it.add(json("getToken" to getToken))
-        }
-    },
-)
+fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler {
+    val auth0Issuer = "https://${Config.AUTH0_DOMAIN}/"
+
+    return expressjwt(
+        json(
+            "secret" to { request: Request, token: dynamic ->
+                when (token.payload.iss) {
+                    Config.publicUrl -> Config.secretSigningSecret
+                    else -> expressJwtSecret(
+                        json(
+                            "cache" to true,
+                            "rateLimit" to true,
+                            "jwksRequestsPerMinute" to 5,
+                            "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json",
+                        ),
+                    )(request, token)
+                }
+            },
+            "issuer" to arrayOf(auth0Issuer, Config.publicUrl),
+            "audience" to "${Config.publicUrl}/api",
+            "algorithms" to arrayOf("RS256", "HS256"),
+            "requestProperty" to "auth",
+            "credentialsRequired" to false,
+        ).let {
+            if (getToken == null) {
+                it
+            } else {
+                it.add(json("getToken" to getToken))
+            }
+        },
+    )
+}

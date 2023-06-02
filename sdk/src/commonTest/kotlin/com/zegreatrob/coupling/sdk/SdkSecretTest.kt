@@ -2,10 +2,12 @@
 
 package com.zegreatrob.coupling.sdk
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.CreateSecretCommand
 import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
@@ -24,7 +26,7 @@ import kotlin.test.Test
 class SdkSecretTest {
 
     @Test
-    fun canGenerateSecret() = asyncSetup(object {
+    fun canGenerateSecretThatCanBeUsedInSdk() = asyncSetup(object {
         val party = stubParty()
     }) {
         sdk().perform(SavePartyCommand(party))
@@ -39,6 +41,33 @@ class SdkSecretTest {
             ?.secretList
             ?.elements
             .assertIsEqualTo(listOf(secret))
+
+        val tokenSdk = KtorCouplingSdk({ token }, uuid4(), buildClient())
+        tokenSdk.perform(graphQuery { party(party.id) { party() } })
+            ?.partyData
+            ?.party
+            ?.data
+            .assertIsEqualTo(party)
+    }
+
+    @Test
+    fun secretTokenCanOnlySeeRelevantParty() = asyncSetup(object {
+        val party1 = stubParty()
+        val party2 = stubParty()
+        val party3 = stubParty()
+    }) {
+        listOf(party1, party2, party3)
+            .map { SavePartyCommand(it) }
+            .forEach { sdk().perform(it) }
+    } exercise {
+        sdk().perform(CreateSecretCommand(party1.id))
+    } verify { result ->
+        val (_, token) = (result as SuccessfulResult<Pair<Secret, String>>).value
+        val tokenSdk = KtorCouplingSdk({ token }, uuid4(), buildClient())
+        tokenSdk.perform(graphQuery { partyList() })
+            ?.partyList
+            ?.data()
+            .assertIsEqualTo(listOf(party1))
     }
 
     @Test

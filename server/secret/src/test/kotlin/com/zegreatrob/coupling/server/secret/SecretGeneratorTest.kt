@@ -35,7 +35,7 @@ class SecretGeneratorTest {
                 audience = arrayOf(this@verify.secretAudience)
             },
         ).await()
-        token.payload["secretId"]
+        token.payload["https://zegreatrob.com/secret-id"]
             .assertIsEqualTo(secret.id)
     }
 }
