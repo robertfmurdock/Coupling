@@ -13,6 +13,7 @@ class KtorCouplingSdk(
 ) : CouplingSdk,
     LoggingActionExecuteSyntax,
     SdkBoost,
+    SdkCreateSecretCommandDispatcher,
     SdkDeletePairAssignmentsCommandDispatcher,
     SdkDeletePartyCommandDispatcher,
     SdkDeletePinCommandDispatcher,

@@ -17,14 +17,12 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
-import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
 import kotlin.test.Test
 
 class SdkPinTest {
 
-    private val partySetup = asyncTestTemplate(
-        sharedSetup = suspend {
+    private val partySetup = asyncSetup.extend(
+        sharedSetup = { _ ->
             val sdk = sdk()
             object : CouplingSdk by sdk {
                 val party = stubParty()

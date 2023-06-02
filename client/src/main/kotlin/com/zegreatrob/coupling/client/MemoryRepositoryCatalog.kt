@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.CreateSecretCommand
 import com.zegreatrob.coupling.action.DeleteBoostCommand
+import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
@@ -14,6 +16,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
@@ -90,6 +93,10 @@ class MemoryRepositoryCatalog private constructor(
     }
 
     override suspend fun perform(command: BoostQuery) = TODO("Not yet implemented")
+    override suspend fun perform(command: CreateSecretCommand): Result<Pair<Secret, String>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun perform(command: DeleteBoostCommand) = TODO("Not yet implemented")
     override suspend fun perform(command: SaveBoostCommand) = TODO("Not yet implemented")
     override suspend fun perform(query: GraphQuery) = CouplingQueryResult(

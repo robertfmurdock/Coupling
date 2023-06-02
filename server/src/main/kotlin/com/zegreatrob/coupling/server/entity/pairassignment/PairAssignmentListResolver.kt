@@ -6,11 +6,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.partyCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
-import kotlinx.serialization.json.JsonElement
 
 val pairAssignmentListResolve = dispatch(
     partyCommand,
-    { _, _: JsonElement -> PairAssignmentDocumentListQuery },
+    { _, _ -> PairAssignmentDocumentListQuery },
     ::toSerializable,
 )
 

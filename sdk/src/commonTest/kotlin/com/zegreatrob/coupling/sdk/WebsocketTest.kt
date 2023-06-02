@@ -31,7 +31,7 @@ class WebsocketTest {
     private val socketHost = "socket.localhost"
 
     @Test
-    fun whenOnlyOneConnectionWillReturnCountOfOne() = sdkSetup.with({
+    fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup.with({
         object : SdkContext by it {
             val party = stubParty()
         }
@@ -61,7 +61,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenMultipleConnectionsWillReturnTheTotalCount() = sdkSetup.with({
+    fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup.with({
         object : SdkContext by it {
             val party = stubParty()
         }
@@ -96,7 +96,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = sdkSetup.with({
+    fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = asyncSetup.with({
         object : SdkContext by it {
             val party = stubParty()
         }
@@ -122,7 +122,7 @@ class WebsocketTest {
     private suspend fun DefaultClientWebSocketSession.readTextFrame() = (incoming.receive() as? Frame.Text)?.readText()
 
     @Test
-    fun whenPairsAreSavedWillSendMessageToClients() = sdkSetup.with({
+    fun whenPairsAreSavedWillSendMessageToClients() = asyncSetup.with({
         object : SdkContext by it {
             val party = stubParty()
             val sockets = mutableListOf<DefaultClientWebSocketSession>()
@@ -148,7 +148,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = sdkSetup.with({
+    fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = asyncSetup.with({
         object : SdkContext by it {
             val party = stubParty()
         }
@@ -174,7 +174,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthenticatedDoesNotTalkToYou() = sdkSetup() exercise {
+    fun whenNotAuthenticatedDoesNotTalkToYou() = asyncSetup() exercise {
         val url = "wss://$socketHost/api/${PartyId("whoops").value}/pairAssignments/current"
         runCatching {
             generalPurposeClient.webSocketSession {
@@ -187,7 +187,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenNotAuthorizedForThePartyWillNotTalkToYou() = sdkSetup() exercise {
+    fun whenNotAuthorizedForThePartyWillNotTalkToYou() = asyncSetup() exercise {
         runCatching { couplingSocketSession(stubParty().id) }
     } verify { result ->
         result.getOrNull()
@@ -195,7 +195,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun willNotCrashWhenGoingToNonExistingSocketLocation() = sdkSetup() exercise {
+    fun willNotCrashWhenGoingToNonExistingSocketLocation() = asyncSetup() exercise {
         val url = "wss://$socketHost/api/404WTF"
         runCatching { generalPurposeClient.webSocketSession { url(url) } }
     } verify { result ->
@@ -204,7 +204,7 @@ class WebsocketTest {
     }
 
     @Test
-    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = sdkSetup.with({
+    fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = asyncSetup.with({
         object : SdkContext by it {
             val party = stubParty()
         }

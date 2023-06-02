@@ -4,9 +4,10 @@ import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.json.SaveBoostInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.prereleaseCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
+import kotlinx.serialization.json.JsonNull
 
 val saveBoostResolver = dispatch(
-    prereleaseCommand,
-    { _, args: SaveBoostInput -> SaveBoostCommand(args.partyIds) },
+    prereleaseCommand(),
+    { _: JsonNull, args: SaveBoostInput -> SaveBoostCommand(args.partyIds) },
     { true },
 )

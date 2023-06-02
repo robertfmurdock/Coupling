@@ -15,8 +15,6 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
@@ -78,8 +76,8 @@ class SdkPartyTest {
         expectedParties.forEach(this::assertContains)
     }
 
-    private val setupWithPlayerMatchingUserTwoSdks = asyncTestTemplate(
-        sharedSetup = suspend {
+    private val setupWithPlayerMatchingUserTwoSdks = asyncSetup.extend(
+        sharedSetup = { _ ->
             object {
                 suspend fun altSdk() = altAuthorizedSdkDeferred.await()
                 val party = Party(PartyId(uuid4().toString()), name = "party-from-endpoint-tests")

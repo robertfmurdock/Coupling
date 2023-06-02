@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
 import korlibs.time.DateTime
 import korlibs.time.days
 import kotlin.test.Test

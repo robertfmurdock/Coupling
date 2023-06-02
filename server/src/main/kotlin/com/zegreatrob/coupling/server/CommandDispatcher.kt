@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.GlobalStatsQuery
+import com.zegreatrob.coupling.server.action.SecretGenerator
+import com.zegreatrob.coupling.server.action.ServerCreateSecretCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerBoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerSaveBoostCommandDispatcher
@@ -107,6 +109,7 @@ class CurrentPartyDispatcher(
     ICommandDispatcher by commandDispatcher,
     PinsQuery.Dispatcher,
     PlayersQuery.Dispatcher,
+    ServerCreateSecretCommandDispatcher,
     SavePlayerCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
     RetiredPlayersQuery.Dispatcher,
@@ -149,6 +152,9 @@ class CurrentPartyDispatcher(
     private suspend fun players() = playerDeferred.await().value.map { it.data.element }
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? =
         commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
+
+    override val secretGenerator: SecretGenerator
+        get() = TODO("Not yet implemented")
 }
 
 fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(

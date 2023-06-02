@@ -213,14 +213,18 @@ input GlobalStatsInput {
     year: Int
 }
 
+input PartyDataInput {
+    partyId: String!
+}
+
 """
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
 type Query {
     partyList: [PartyRecord]
-    partyData(input: String!): PartyData
+    partyData(input: PartyDataInput!): PartyData
     user: User
-    globalStats(input: GlobalStatsInput) : GlobalStats!
+    globalStats(input: GlobalStatsInput!) : GlobalStats!
 }
 
 """
@@ -236,4 +240,14 @@ type Mutation {
     deletePlayer(input: DeletePlayerInput!): Boolean
     savePairAssignments(input: SavePairAssignmentsInput!): Boolean
     deletePairAssignments(input: DeletePairAssignmentsInput!): Boolean
+    createSecret(input: CreateSecretInput!) : SecretToken
+}
+
+input CreateSecretInput {
+    partyId: String!
+}
+
+type SecretToken {
+    secretId: String!
+    secretToken: String!
 }

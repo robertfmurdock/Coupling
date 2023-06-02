@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.CreateSecretCommand
 import com.zegreatrob.coupling.action.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
@@ -16,6 +17,7 @@ import com.zegreatrob.coupling.sdk.gql.GraphQuery
 
 interface CouplingSdk :
     BoostQuery.Dispatcher,
+    CreateSecretCommand.Dispatcher,
     DeleteBoostCommand.Dispatcher,
     DeletePairAssignmentsCommand.Dispatcher,
     DeletePartyCommand.Dispatcher,

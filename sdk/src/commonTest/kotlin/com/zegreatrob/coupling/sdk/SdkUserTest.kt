@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class SdkUserTest {

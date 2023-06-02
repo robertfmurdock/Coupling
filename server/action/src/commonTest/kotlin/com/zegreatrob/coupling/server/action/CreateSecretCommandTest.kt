@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.action
 
 import com.zegreatrob.coupling.action.CreateSecretCommand
+import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.Secret
@@ -27,7 +28,8 @@ class CreateSecretCommandTest {
         val partyId = stubPartyId()
     }) exercise {
         perform(CreateSecretCommand(partyId))
-    } verify { (secret, token) ->
+    } verify { result ->
+        val (secret, token) = (result as SuccessfulResult<Pair<Secret, String>>).value
         token.assertIsEqualTo(expectedSecretToken)
         secretRepository.getSecrets(partyId).elements
             .assertIsEqualTo(listOf(secret))

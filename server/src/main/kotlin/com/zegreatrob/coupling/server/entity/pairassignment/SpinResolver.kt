@@ -8,12 +8,18 @@ import com.zegreatrob.coupling.json.SpinInput
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.server.external.graphql.Resolver
-import com.zegreatrob.coupling.server.graphql.DispatcherProviders.partyCommand
+import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedDispatcher
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonNull
 
 val spinResolver: Resolver = dispatch(
-    partyCommand,
+    { request, _: JsonNull, args ->
+        authorizedDispatcher(
+            request = request,
+            partyId = args.partyId.value,
+        )
+    },
     { _, args: SpinInput ->
         val (_, players, pins) = args
         ProposeNewPairsCommand(

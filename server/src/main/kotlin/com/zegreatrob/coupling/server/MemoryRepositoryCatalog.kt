@@ -14,12 +14,14 @@ import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRep
 import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPlayerRepository
+import com.zegreatrob.coupling.repository.memory.MemorySecretRepository
 import com.zegreatrob.coupling.repository.memory.MemoryUserRepository
 import com.zegreatrob.coupling.repository.memory.SimpleRecordBackend
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
+import com.zegreatrob.coupling.repository.secret.SecretSave
 import com.zegreatrob.coupling.repository.user.UserRepository
 import korlibs.time.TimeProvider
 
@@ -32,6 +34,7 @@ class MemoryRepositoryCatalog private constructor(
     override val pinRepository: PinRepository,
     override val userRepository: UserRepository,
     override val liveInfoRepository: LiveInfoRepository,
+    override val secretRepository: SecretSave,
 ) :
     RepositoryCatalog,
     UserIdSyntax,
@@ -52,6 +55,7 @@ class MemoryRepositoryCatalog private constructor(
                 MemoryPinRepository(userEmail, clock, backend.pin),
                 MemoryUserRepository(userEmail, clock, backend.user),
                 MemoryLiveInfoRepository(),
+                MemorySecretRepository(),
             )
     }
 }

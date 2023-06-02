@@ -19,3 +19,9 @@ data class SavePartyInput(
     val animationsEnabled: Boolean?,
     val animationSpeed: Double?,
 )
+
+@Serializable
+data class JsonSecretToken(
+    val secretId: String,
+    val secretToken: String,
+)

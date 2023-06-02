@@ -21,8 +21,6 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
-import com.zegreatrob.testmints.async.AsyncMints.asyncTestTemplate
 import korlibs.time.DateTime
 import korlibs.time.days
 import korlibs.time.seconds
@@ -30,8 +28,8 @@ import kotlin.test.Test
 
 class SdkPairAssignmentDocumentTest {
 
-    private val repositorySetup = asyncTestTemplate(
-        sharedSetup = suspend {
+    private val repositorySetup = asyncSetup.extend(
+        sharedSetup = { _ ->
             val sdk = sdk()
             object : CouplingSdk by sdk {
                 val party = stubParty()

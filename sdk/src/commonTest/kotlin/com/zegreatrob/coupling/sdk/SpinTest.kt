@@ -22,7 +22,6 @@ import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.AsyncMints.asyncSetup
 import com.zegreatrob.testmints.async.ScopeMint
 import korlibs.time.DateTime
 import kotlinx.coroutines.async
@@ -33,7 +32,7 @@ import kotlin.test.Test
 class SpinTest {
 
     @Test
-    fun willTakeThePlayersGivenAndUseThoseForPairing() = sdkSetup.with({ context ->
+    fun willTakeThePlayersGivenAndUseThoseForPairing() = asyncSetup.with({ context ->
         object : SdkContext by context {
             val party = Party(
                 id = PartyId(uuid4().toString()),
@@ -58,7 +57,7 @@ class SpinTest {
     }
 
     @Test
-    fun givenThePartyRuleIsPreferDifferentBadgeThenPairsWillComply() = sdkSetup.with({
+    fun givenThePartyRuleIsPreferDifferentBadgeThenPairsWillComply() = asyncSetup.with({
         object : SdkContext by it {
             val party = Party(id = PartyId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
             val players = fourPlayersTwoDefaultTwoAlternate()
@@ -146,7 +145,7 @@ class SpinTest {
             }
 
         @Test
-        fun whenAPinExistsWillAssignOnePinToPair() = sdkSetup.with({ pinExistsSetup(it) }) {
+        fun whenAPinExistsWillAssignOnePinToPair() = asyncSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
             sdk.perform(RequestSpinAction(party.id, players, listOf(pin)))
@@ -159,7 +158,7 @@ class SpinTest {
         }
 
         @Test
-        fun whenAPinExistsButIsDeselectedWillNotAssign() = sdkSetup.with({ pinExistsSetup(it) }) {
+        fun whenAPinExistsButIsDeselectedWillNotAssign() = asyncSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
             sdk.perform(RequestSpinAction(party.id, players, emptyList()))

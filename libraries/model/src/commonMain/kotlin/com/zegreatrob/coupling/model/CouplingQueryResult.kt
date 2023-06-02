@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.model
 
 import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.user.User
 
 data class CouplingQueryResult(
@@ -8,4 +9,8 @@ data class CouplingQueryResult(
     val user: User? = null,
     val partyData: PartyData? = null,
     val globalStats: GlobalStats? = null,
+)
+
+data class CouplingMutationResult(
+    val createSecret: Pair<Secret, String>? = null,
 )

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.JsonGlobalStatsInput
+import com.zegreatrob.coupling.json.PartyDataInput
 import com.zegreatrob.coupling.json.nestedKeys
 import com.zegreatrob.coupling.json.toGqlQueryFields
 import com.zegreatrob.coupling.model.party.PartyId
@@ -56,7 +57,7 @@ class CouplingQueryBuilder {
         .output
         .addToQuery(
             "partyData",
-            InputSettings(id.value, "input", "String"),
+            InputSettings(PartyDataInput(id.value), "input", "PartyDataInput"),
         )
 
     fun globalStats(year: Year) {

@@ -5,5 +5,6 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.server.action.party.SavePartyCommand
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.command
 import com.zegreatrob.coupling.server.graphql.dispatch
+import kotlinx.serialization.json.JsonNull
 
-val savePartyResolver = dispatch(command, { _, args: SavePartyInput -> SavePartyCommand(args.toModel()) }, { true })
+val savePartyResolver = dispatch(command(), { _: JsonNull, args: SavePartyInput -> SavePartyCommand(args.toModel()) }, { true })

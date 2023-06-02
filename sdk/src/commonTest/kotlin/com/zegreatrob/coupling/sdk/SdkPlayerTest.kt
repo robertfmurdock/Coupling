@@ -18,16 +18,14 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.testmints.async.asyncSetup
-import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.async.waitForTest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class SdkPlayerTest {
 
-    private val sdkSetup = asyncTestTemplate(
-        sharedSetup = suspend {
+    private val sdkSetup = asyncSetup.extend(
+        sharedSetup = { _ ->
             val authorizedSdk = sdk()
             object : CouplingSdk by authorizedSdk {
                 val party = stubParty()

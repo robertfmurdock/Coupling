@@ -17,6 +17,11 @@ data class JsonCouplingQueryResult(
     val globalStats: JsonGlobalStats? = null,
 )
 
+@Serializable
+data class PartyDataInput(
+    val partyId: String,
+)
+
 private fun JsonPartyData.toModel() = PartyData(
     id = id?.let(::PartyId),
     party = party?.toModelRecord(),
