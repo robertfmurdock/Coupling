@@ -23,7 +23,8 @@ class KtorCouplingSdk(
     SdkSavePartyCommandDispatcher,
     SdkSavePinCommandDispatcher,
     SdkSavePlayerCommandDispatcher,
-    SdkSpin {
+    SdkSpin,
+    SdkDeleteSecretCommandDispatcher {
     override val performer: QueryPerformer = StandardPartyGQLPerformer(getIdTokenFunc, httpClient)
 }
 

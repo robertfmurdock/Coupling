@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.CreateSecretCommand
 import com.zegreatrob.coupling.action.DeleteBoostCommand
+import com.zegreatrob.coupling.action.DeleteSecretCommand
 import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
@@ -94,6 +95,10 @@ class MemoryRepositoryCatalog private constructor(
 
     override suspend fun perform(command: BoostQuery) = TODO("Not yet implemented")
     override suspend fun perform(command: CreateSecretCommand): Result<Pair<Secret, String>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun perform(command: DeleteSecretCommand): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

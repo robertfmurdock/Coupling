@@ -2,13 +2,16 @@ package com.zegreatrob.coupling.server.express.route
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.valueOrNull
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.server.UserDataService
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
 import com.zegreatrob.coupling.server.express.async
 import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.secretRepository
 
 fun userLoadingMiddleware(): Handler = { request, _, next ->
     val auth = request.auth
@@ -20,8 +23,12 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
             val userEmail = auth["https://zegreatrob.com/email"].asDynamic()
             if (userEmail == null) {
                 val secretId = "${auth["https://zegreatrob.com/secret-id"]}"
-                val partyId = "${auth["sub"]}"
-                User(id = secretId, email = secretId, authorizedPartyIds = setOf(PartyId(partyId)))
+                val partyId = PartyId("${auth["sub"]}")
+                if (secretIsNotDeleted(secretId, partyId)) {
+                    User(id = secretId, email = secretId, authorizedPartyIds = setOf(partyId))
+                } else {
+                    null
+                }
             } else {
                 UserDataService.authActionDispatcher("$userEmail", uuid4())
                     .invoke(FindOrCreateUserAction)
@@ -31,6 +38,11 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
         }
     }
 }
+
+private suspend fun secretIsNotDeleted(secretId: String, partyId: PartyId): Boolean = secretRepository(secretId)
+    .getSecrets(partyId)
+    .elements
+    .contains(Secret(secretId))
 
 fun Request.setUser(user: User?) {
     with(asDynamic()) {

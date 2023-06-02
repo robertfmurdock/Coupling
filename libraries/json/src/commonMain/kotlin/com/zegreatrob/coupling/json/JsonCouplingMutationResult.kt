@@ -7,10 +7,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class JsonCouplingMutationResult(
     val createSecret: JsonSecretToken? = null,
+    val deleteSecret: Boolean? = null,
 )
 
 fun JsonCouplingMutationResult.toDomain() = CouplingMutationResult(
     createSecret = createSecret?.toDomain(),
+    deleteSecret = deleteSecret,
 )
 
 fun JsonSecretToken.toDomain(): Pair<Secret, String> = Secret(secretId) to secretToken

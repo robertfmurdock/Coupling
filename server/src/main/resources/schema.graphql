@@ -250,6 +250,7 @@ type Mutation {
     savePairAssignments(input: SavePairAssignmentsInput!): Boolean
     deletePairAssignments(input: DeletePairAssignmentsInput!): Boolean
     createSecret(input: CreateSecretInput!) : SecretToken
+    deleteSecret(input: DeleteSecretInput!) : Boolean
 }
 
 input CreateSecretInput {
@@ -259,4 +260,9 @@ input CreateSecretInput {
 type SecretToken {
     secretId: String!
     secretToken: String!
+}
+
+input DeleteSecretInput {
+    partyId: String!
+    secretId: String!
 }

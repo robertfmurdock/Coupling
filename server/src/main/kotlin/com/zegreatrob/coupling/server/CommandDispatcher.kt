@@ -41,6 +41,7 @@ import com.zegreatrob.coupling.server.entity.party.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.secret.JwtSecretGenerator
+import com.zegreatrob.coupling.server.secret.ServerDeleteSecretCommandDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
@@ -115,6 +116,7 @@ class CurrentPartyDispatcher(
     ServerCreateSecretCommandDispatcher,
     SavePlayerCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
+    ServerDeleteSecretCommandDispatcher,
     RetiredPlayersQuery.Dispatcher,
     ServerSavePairAssignmentDocumentCommandDispatcher,
     DeletePairAssignmentDocumentCommand.Dispatcher,

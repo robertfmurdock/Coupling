@@ -13,4 +13,5 @@ data class CouplingQueryResult(
 
 data class CouplingMutationResult(
     val createSecret: Pair<Secret, String>? = null,
+    val deleteSecret: Boolean? = null,
 )

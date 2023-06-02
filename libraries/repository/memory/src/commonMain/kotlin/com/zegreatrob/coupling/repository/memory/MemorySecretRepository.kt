@@ -16,4 +16,7 @@ class MemorySecretRepository(
     RecordBackend<PartyElement<Secret>> by recordBackend {
     override suspend fun save(it: PartyElement<Secret>) = it.record().save()
     override suspend fun getSecrets(partyId: PartyId): List<PartyRecord<Secret>> = records
+    override suspend fun deleteSecret(partyId: PartyId, secretId: String): Boolean {
+        TODO("Not yet implemented")
+    }
 }

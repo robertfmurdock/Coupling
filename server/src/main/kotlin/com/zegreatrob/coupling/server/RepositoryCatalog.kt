@@ -4,6 +4,7 @@ import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
+import com.zegreatrob.coupling.repository.dynamo.secret.DynamoSecretRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
@@ -40,6 +41,12 @@ suspend fun userRepository(userId: String): UserRepository = if (useInMemory()) 
     memoryRepositoryCatalog(userId).userRepository
 } else {
     DynamoUserRepository(userId, TimeProvider)
+}
+
+suspend fun secretRepository(userId: String): SecretRepository = if (useInMemory()) {
+    memoryRepositoryCatalog(userId).secretRepository
+} else {
+    DynamoSecretRepository(userId, TimeProvider)
 }
 
 fun useInMemory() = Process.getEnv("COUPLING_IN_MEMORY") == "true"

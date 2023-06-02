@@ -4,9 +4,11 @@ package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.CreateSecretCommand
+import com.zegreatrob.coupling.action.DeleteSecretCommand
 import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
@@ -48,6 +50,30 @@ class SdkSecretTest {
             ?.party
             ?.data
             .assertIsEqualTo(party)
+    }
+
+    @Test
+    fun deletingSecretWillPreventTokenFromBeingUsed() = asyncSetup(object {
+        val party = stubParty()
+        lateinit var secret: Secret
+        lateinit var token: String
+    }) {
+        sdk().perform(SavePartyCommand(party))
+        val result = sdk().perform(CreateSecretCommand(party.id)).valueOrNull()!!
+        secret = result.first
+        token = result.second
+    } exercise {
+        sdk().perform(DeleteSecretCommand(party.id, secret))
+    } verify {
+        sdk().perform(graphQuery { party(party.id) { secretList() } })
+            ?.partyData
+            ?.secretList
+            ?.elements
+            .assertIsEqualTo(emptyList())
+        val tokenSdk = KtorCouplingSdk({ token }, uuid4(), buildClient())
+        runCatching { tokenSdk.perform(graphQuery { party(party.id) { party() } }) }
+            .exceptionOrNull()
+            .assertIsNotEqualTo(null, "Expect this to fail")
     }
 
     @Test

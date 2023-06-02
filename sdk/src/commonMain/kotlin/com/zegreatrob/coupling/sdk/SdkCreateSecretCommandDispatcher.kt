@@ -25,8 +25,8 @@ interface SdkCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher, Gql
             ?: NotFoundResult("secret")
 
     private fun createSecretInput(command: CreateSecretCommand) = CreateSecretInput(command.partyId.value)
-
-    private fun JsonElement.parseMutationResult() = Json.decodeFromJsonElement<JsonCouplingMutationResult>(
-        jsonObject["data"]!!.jsonObject,
-    )
 }
+
+fun JsonElement.parseMutationResult() = Json.decodeFromJsonElement<JsonCouplingMutationResult>(
+    jsonObject["data"]!!.jsonObject,
+)
