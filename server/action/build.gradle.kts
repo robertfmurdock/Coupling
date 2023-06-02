@@ -29,6 +29,7 @@ kotlin {
             dependencies {
                 api(project(":libraries:stub-model"))
                 api(project(":libraries:test-action"))
+                implementation(project(":libraries:repository:memory"))
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("com.zegreatrob.testmints:async")
                 implementation("com.zegreatrob.testmints:minassert")

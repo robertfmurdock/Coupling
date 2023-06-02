@@ -11,7 +11,7 @@ interface UserAuthenticatedPartyIdSyntax : UserIdSyntax, UserAuthorizedPartyIdsS
 
     fun List<PartyElement<String>>.authenticatedFilter() = authenticatedPartyIds().authenticatedFilter()
 
-    fun List<PartyElement<String>>.authenticatedPartyIds() = map { it.id } + userAuthorizedPartyIds()
+    fun List<PartyElement<String>>.authenticatedPartyIds() = map { it.partyId } + userAuthorizedPartyIds()
 
     private fun List<PartyId>.authenticatedFilter(): (Record<Party>) -> Boolean = { contains(it.data.id) }
 }

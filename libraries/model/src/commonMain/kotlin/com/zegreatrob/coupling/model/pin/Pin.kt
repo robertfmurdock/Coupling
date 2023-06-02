@@ -9,5 +9,4 @@ data class Pin(
     val target: PinTarget = PinTarget.Pair,
 )
 
-val PartyElement<Pin>.partyId get() = id
 val PartyElement<Pin>.pin get() = element

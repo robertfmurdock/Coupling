@@ -16,10 +16,16 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoSecretJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.PartyCreateTableParamProvider
 import com.zegreatrob.coupling.repository.dynamo.PartyIdDynamoItemListGetSyntax
 import com.zegreatrob.coupling.repository.dynamo.RecordSyntax
+import com.zegreatrob.coupling.repository.secret.SecretDelete
+import com.zegreatrob.coupling.repository.secret.SecretListGet
+import com.zegreatrob.coupling.repository.secret.SecretSave
 import korlibs.time.TimeProvider
 
 class DynamoSecretRepository private constructor(override val userId: String, override val clock: TimeProvider) :
     DynamoSecretJsonMapping,
+    SecretSave,
+    SecretDelete,
+    SecretListGet,
     RecordSyntax,
     UserIdSyntax {
 
@@ -34,14 +40,14 @@ class DynamoSecretRepository private constructor(override val userId: String, ov
         override val tableName = "SECRET"
     }
 
-    suspend fun save(it: PartyElement<Secret>) = performPutItem(
+    override suspend fun save(it: PartyElement<Secret>) = performPutItem(
         it.toRecord().asDynamoJson(),
     )
 
-    suspend fun getSecrets(partyId: PartyId): List<PartyRecord<Secret>> = partyId.queryForItemList()
+    override suspend fun getSecrets(partyId: PartyId): List<PartyRecord<Secret>> = partyId.queryForItemList()
         .map { it.toRecord() }
 
-    suspend fun deleteSecret(partyId: PartyId, secretId: String) = performDelete(
+    override suspend fun deleteSecret(partyId: PartyId, secretId: String) = performDelete(
         secretId,
         partyId,
         now(),
@@ -51,8 +57,9 @@ class DynamoSecretRepository private constructor(override val userId: String, ov
 
     suspend fun getSecretRecords(partyId: PartyId) = partyId.logAsync("itemList") {
         queryAllRecords(partyId.itemListQueryParams())
+    }.map {
+        it.toRecord(partyId.with(it.toSecret()))
     }
-        .map { it.toRecord(partyId.with(it.toSecret())) }
 
     suspend fun saveRawRecord(record: Record<PartyElement<Secret>>) = performPutItem(
         record.asDynamoJson(),

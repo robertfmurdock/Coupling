@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.repository.memory
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.partyId
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import korlibs.time.TimeProvider

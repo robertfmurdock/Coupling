@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.model.player.partyId
 import com.zegreatrob.coupling.model.player.player
 import kotlin.js.Json
 import kotlin.js.json

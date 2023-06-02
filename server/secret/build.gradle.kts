@@ -11,6 +11,7 @@ kotlin {
 
 dependencies {
     implementation(project(":libraries:model"))
+    implementation(project(":server:action"))
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-node")
     testImplementation(project(":libraries:stub-model"))

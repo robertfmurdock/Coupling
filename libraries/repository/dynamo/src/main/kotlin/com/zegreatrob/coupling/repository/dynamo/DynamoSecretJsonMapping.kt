@@ -13,7 +13,7 @@ interface DynamoSecretJsonMapping : PartyIdDynamoRecordJsonMapping {
     fun Record<PartyElement<Secret>>.asDynamoJson() = recordJson()
         .add(
             json(
-                "tribeId" to data.id.value,
+                "tribeId" to data.partyId.value,
                 "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id}",
             ),
         )

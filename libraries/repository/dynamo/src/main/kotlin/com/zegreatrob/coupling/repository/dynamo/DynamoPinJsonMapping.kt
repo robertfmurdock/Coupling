@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.pin.partyId
 import com.zegreatrob.coupling.model.pin.pin
 import kotlin.js.Json
 import kotlin.js.json

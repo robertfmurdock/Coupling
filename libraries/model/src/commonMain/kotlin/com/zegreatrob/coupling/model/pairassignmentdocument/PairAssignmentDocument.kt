@@ -14,5 +14,4 @@ fun PairAssignmentDocument.orderedPairedPlayers() = pairs
     .flatMap { it.players.asSequence() }
     .map { it.player }
 
-val PartyElement<PairAssignmentDocument>.partyId get() = id
 val PartyElement<PairAssignmentDocument>.document get() = element

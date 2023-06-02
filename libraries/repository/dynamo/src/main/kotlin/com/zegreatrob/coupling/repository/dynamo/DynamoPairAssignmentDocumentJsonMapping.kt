@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.pairassignmentdocument.partyId
 import com.zegreatrob.coupling.model.party.PartyElement
 import korlibs.time.DateTime
 import kotlin.js.Json

@@ -1,8 +1,11 @@
 package com.zegreatrob.coupling.server.secret
 
+import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.server.secret.external.jose.get
 import com.zegreatrob.coupling.server.secret.external.jose.jwtVerify
 import com.zegreatrob.coupling.stubmodel.stubPartyId
-import com.zegreatrob.coupling.stubmodel.uuidString
+import com.zegreatrob.coupling.stubmodel.stubSecret
+import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import js.core.jso
 import kotlinx.coroutines.await
@@ -14,16 +17,16 @@ class SecretGeneratorTest {
     private val testSecretSigningSecret = Random.nextBytes(256).decodeToString()
 
     @Test
-    fun canGenerateSecretValue() = asyncSetup(object : SecretGenerator {
+    fun canGenerateSecretValue() = asyncSetup(object : JwtSecretGenerator {
         override val secretIssuer: String = "test-issuer"
         override val secretAudience: String = "https://test.coupling.zegreatrob.com"
         override val secretSigningSecret: String = testSecretSigningSecret
         val partyId = stubPartyId()
-        val secretId = uuidString()
+        val secret = stubSecret()
     }) exercise {
-        createSecret(partyId, secretId)
+        createSecret(partyId.with(secret))
     } verify { result ->
-        jwtVerify(
+        val token = jwtVerify(
             result,
             TextEncoder().encode(secretSigningSecret),
             jso {
@@ -32,5 +35,7 @@ class SecretGeneratorTest {
                 audience = arrayOf(this@verify.secretAudience)
             },
         ).await()
+        token.payload["secretId"]
+            .assertIsEqualTo(secret.id)
     }
 }

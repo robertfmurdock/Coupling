@@ -16,7 +16,6 @@ data class Player(
 
 val defaultPlayer = Player(id = "DEFAULT", avatarType = null)
 
-val PartyElement<Player>.partyId get() = id
 val PartyElement<Player>.player get() = element
 
 enum class AvatarType(val attribution: String?) {

@@ -11,5 +11,5 @@ object Paths {
     fun PartyId.pinListPath() = "/$value/pins"
     fun PartyId.currentPairsPage() = "/$value/pairAssignments/current/"
     fun Party.newPairAssignmentsPath() = "/${id.value}/pairAssignments/new"
-    fun PartyElement<Player>.playerConfigPage() = "/${id.value}/player/${element.id}/"
+    fun PartyElement<Player>.playerConfigPage() = "/${partyId.value}/player/${element.id}/"
 }
