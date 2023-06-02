@@ -16,6 +16,7 @@ fun main(args: Array<String>) = Welcome()
 
 val configFile = File("${System.getenv("HOME")}/.coupling/config.json")
 
-fun getAccessToken() = configFile.readText()
-    .let(Json.Default::parseToJsonElement)
-    .let { it.jsonObject["accessToken"]?.jsonPrimitive?.content }
+fun getAccessToken() = System.getenv("COUPLING_CLI_ACCESS_TOKEN")
+    ?: configFile.readText()
+        .let(Json.Default::parseToJsonElement)
+        .let { it.jsonObject["accessToken"]?.jsonPrimitive?.content }
