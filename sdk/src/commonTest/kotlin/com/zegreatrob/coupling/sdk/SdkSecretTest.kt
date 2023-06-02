@@ -14,13 +14,11 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
-import kotlin.test.Ignore
 import kotlin.test.Test
 
 class SdkSecretTest {
 
     @Test
-    @Ignore
     fun canGenerateSecret() = asyncSetup(object {
         val party = stubParty()
     }) {
@@ -30,11 +28,20 @@ class SdkSecretTest {
     } verify { result ->
         val (secret, token) = (result as SuccessfulResult<Pair<Secret, String>>).value
         secret.assertIsNotEqualTo(null)
-        Base64.decode(token)
-            .let { Json.parseToJsonElement(it.contentToString()) }
-            .jsonObject["sub"]
+        val (header, body, signature) = token.split(".")
+        with(header.parseAsObject()) {
+            this["alg"]?.jsonPrimitive?.content
+                .assertIsEqualTo("HS256")
+        }
+        body.parseAsObject()["sub"]
             ?.jsonPrimitive
             ?.content
             .assertIsEqualTo(party.id.value)
+        signature.assertIsNotEqualTo(null)
     }
+
+    private fun String.parseAsObject() = Base64.decode(this)
+        .decodeToString()
+        .let(Json.Default::parseToJsonElement)
+        .jsonObject
 }

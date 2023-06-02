@@ -39,6 +39,7 @@ import com.zegreatrob.coupling.server.entity.party.PartyDispatcher
 import com.zegreatrob.coupling.server.entity.party.ScopeSyntax
 import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import com.zegreatrob.coupling.server.express.Config
+import com.zegreatrob.coupling.server.secret.JwtSecretGenerator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
@@ -153,8 +154,11 @@ class CurrentPartyDispatcher(
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? =
         commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
 
-    override val secretGenerator: SecretGenerator
-        get() = TODO("Not yet implemented")
+    override val secretGenerator: SecretGenerator = object : JwtSecretGenerator {
+        override val secretIssuer: String = Config.publicUrl
+        override val secretAudience = "${Config.publicUrl}/api"
+        override val secretSigningSecret: String = Config.secretSigningSecret
+    }
 }
 
 fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(

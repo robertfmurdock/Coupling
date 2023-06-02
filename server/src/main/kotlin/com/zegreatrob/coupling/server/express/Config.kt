@@ -13,6 +13,7 @@ object Config {
     val clientBasename: String = Process.getEnv("CLIENT_BASENAME") ?: ""
     val clientUrl: String = Process.getEnv("CLIENT_URL")?.ifEmpty { null } ?: "/no-client-url-found"
     val publicUrl = Process.getEnv("PUBLIC_URL") ?: "http://localhost:3000"
+    val secretSigningSecret = Process.getEnv("SECRET_SIGNING_SECRET") ?: throw Exception("Missing secret signing secret")
     val websocketHost = Process.getEnv("WEBSOCKET_HOST") ?: "${URL(publicUrl).host}/api/websocket"
     val apiGatewayManagementApiHost =
         Process.getEnv("API_GATEWAY_MANAGEMENT_API_HOST") ?: "${URL(publicUrl).protocol}//$websocketHost"

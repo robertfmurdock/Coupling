@@ -2,5 +2,6 @@
   "WEBSOCKET_HOST": "socket.coupling.zegreatrob.com",
   "PUBLIC_URL": "https://coupling.zegreatrob.com",
   "CLIENT_BASENAME": "",
-  "DYNAMO_PREFIX" : ""
+  "DYNAMO_PREFIX" : "",
+  "SECRET_SIGNING_SECRET" : "temporary"
 }

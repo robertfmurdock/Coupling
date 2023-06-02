@@ -13,10 +13,8 @@ interface ServerCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher {
     val secretGenerator: SecretGenerator
 
     override suspend fun perform(command: CreateSecretCommand): Result<Pair<Secret, String>> {
-        println("HI ROB")
         val secret = newSecret()
         val partyId = command.partyId
-        println("GONNA SAVE $partyId $secret")
         secretRepository.save(partyId.with(secret))
         return (secret to secretGenerator.createSecret(partyId.with(secret)))
             .successResult()

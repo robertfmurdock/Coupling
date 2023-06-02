@@ -19,12 +19,9 @@ inline fun <D : SuspendActionExecuteSyntax, Q : SuspendResultAction<D, R>, reifi
     crossinline dispatcherFunc: GraphQLDispatcherProvider<E, I, D>,
     crossinline queryFunc: (E, I) -> Q,
     crossinline toSerializable: (R) -> J,
-) = { entityJson: Json, args: Json, request: Request, sdfds: Json ->
+) = { entityJson: Json, args: Json, request: Request, _: Json ->
     request.scope.promise {
         try {
-            println("Entity Json ${JSON.stringify(entityJson)}")
-            println("args Json ${JSON.stringify(args)}")
-            println("sdfds Json ${JSON.stringify(sdfds)}")
             val entity = couplingJsonFormat.decodeFromDynamic<E>(entityJson)
             val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
             val command = queryFunc(entity, input)

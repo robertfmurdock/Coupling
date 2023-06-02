@@ -3,5 +3,6 @@
   "PUBLIC_URL": "https://prerelease.coupling.zegreatrob.com",
   "CLIENT_BASENAME": "",
   "ENABLE_PRERELEASE_FEATURES": "true",
-  "DYNAMO_PREFIX" : "prerelease-"
+  "DYNAMO_PREFIX" : "prerelease-",
+  "SECRET_SIGNING_SECRET" : "temporary"
 }

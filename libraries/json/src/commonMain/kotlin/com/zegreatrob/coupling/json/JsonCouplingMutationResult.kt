@@ -13,4 +13,5 @@ fun JsonCouplingMutationResult.toDomain() = CouplingMutationResult(
     createSecret = createSecret?.toDomain(),
 )
 
-fun JsonSecretToken.toDomain() = Secret(secretId) to secretToken
+fun JsonSecretToken.toDomain(): Pair<Secret, String> = Secret(secretId) to secretToken
+fun Pair<Secret, String>.toModel() = JsonSecretToken(first.id, second)
