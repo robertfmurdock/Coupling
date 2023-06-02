@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action
 
+import com.zegreatrob.coupling.action.CreateSecretCommand
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.Secret
@@ -14,8 +15,9 @@ import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class CreateSecretCommandTest {
+
     @Test
-    fun willSaveAndGenerateSecret() = asyncSetup(object : CreateSecretCommand.Dispatcher {
+    fun willSaveAndGenerateSecret() = asyncSetup(object : ServerCreateSecretCommandDispatcher {
         override val secretRepository = MemorySecretRepository()
         val expectedSecretToken = uuidString()
         val spy = SpyData<PartyElement<Secret>, String>().apply {
