@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.CreateSecretCommand
+import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.json.CreateSecretInput
 import com.zegreatrob.coupling.json.JsonCouplingMutationResult
@@ -19,8 +20,9 @@ interface SdkCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher, Gql
         doQuery(Mutation.createSecret, createSecretInput(command))
             .parseMutationResult()
             .toDomain()
-            .createSecret!!
-            .successResult()
+            .createSecret
+            ?.successResult()
+            ?: NotFoundResult("secret")
 
     private fun createSecretInput(command: CreateSecretCommand) = CreateSecretInput(command.partyId.value)
 

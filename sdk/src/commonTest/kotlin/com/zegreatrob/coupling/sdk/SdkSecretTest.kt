@@ -3,6 +3,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.CreateSecretCommand
+import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.model.elements
@@ -10,6 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlinx.serialization.json.Json
@@ -37,6 +39,15 @@ class SdkSecretTest {
             ?.secretList
             ?.elements
             .assertIsEqualTo(listOf(secret))
+    }
+
+    @Test
+    fun canNotGenerateSecretForArbitraryParty() = asyncSetup(object {
+        val partyId = stubPartyId()
+    }) exercise {
+        sdk().perform(CreateSecretCommand(partyId))
+    } verify { result ->
+        result.assertIsEqualTo(NotFoundResult("secret"))
     }
 
     private fun String.assertIsValidToken(partyId: PartyId) {
