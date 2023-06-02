@@ -28,15 +28,14 @@ import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.graphql.GraphQLSchema
-import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.external.graphql.tools.schema.makeExecutableSchema
 import com.zegreatrob.coupling.server.external.graphql.tools.schema.mergeSchemas
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.promise
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 import kotlin.js.json
-
-private val entityWithId: Resolver = { _, args, _, _ -> json("input" to args["input"]) }
 
 fun couplingSchema() = makeExecutableSchema(
     json(
@@ -79,10 +78,16 @@ fun couplingResolvers() = json(
     "Query" to json(
         "user" to userResolve,
         "partyList" to partyListResolve,
-        "partyData" to { _: Json, args: Json, _: Request, _: Json ->
-            kotlinx.serialization.json.Json.decodeFromDynamic<PartyDataInput>(args["input"])
-                .let { JsonPartyData(id = it.partyId) }
-                .let { kotlinx.serialization.json.Json.encodeToDynamic(it) }
+        "partyData" to { _: Json, args: Json, r: Request, _: Json ->
+            MainScope().promise {
+                val jsonPartyData = kotlinx.serialization.json.Json.decodeFromDynamic<PartyDataInput>(args["input"])
+                    .let { JsonPartyData(id = it.partyId) }
+                if (DispatcherProviders.authorizedDispatcher(r, jsonPartyData.id!!) != null) {
+                    jsonPartyData.let { kotlinx.serialization.json.Json.encodeToDynamic(it) }
+                } else {
+                    null
+                }
+            }
         },
         "globalStats" to globalStatsResolve,
     ),

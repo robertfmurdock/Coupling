@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.valueOrNull
+import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
@@ -90,10 +91,18 @@ class SdkSecretTest {
     } verify { result ->
         val (_, token) = (result as SuccessfulResult<Pair<Secret, String>>).value
         val tokenSdk = KtorCouplingSdk({ token }, uuid4(), buildClient())
-        tokenSdk.perform(graphQuery { partyList() })
+        val queryResult: CouplingQueryResult? = tokenSdk.perform(
+            graphQuery {
+                partyList()
+                party(party2.id) { party() }
+            },
+        )
+        queryResult
             ?.partyList
             ?.data()
             .assertIsEqualTo(listOf(party1))
+        queryResult?.partyData
+            .assertIsEqualTo(null)
     }
 
     @Test
