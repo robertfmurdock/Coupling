@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignmentRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.partyRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pinRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.playerRecord
+import com.zegreatrob.coupling.sdk.dsl.GqlReference.secretRecord
 
 class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
 
@@ -43,6 +44,12 @@ class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
     fun pairAssignmentDocumentList() {
         output = output.copy(
             pairAssignmentDocumentList = listOf(pairAssignmentRecord),
+        )
+    }
+
+    fun secretList() {
+        output = output.copy(
+            secretList = listOf(secretRecord),
         )
     }
 }

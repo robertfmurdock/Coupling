@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.AvatarType
@@ -38,6 +39,30 @@ data class JsonPairAssignmentDocumentRecord(
     override val isDeleted: Boolean,
     override val timestamp: DateTime,
 ) : JsonPartyRecordInfo
+
+@Serializable
+data class JsonSecretRecord(
+    val id: String,
+    override val partyId: PartyId,
+    override val modifyingUserEmail: String,
+    override val isDeleted: Boolean,
+    override val timestamp: DateTime,
+) : JsonPartyRecordInfo
+
+fun JsonSecretRecord.toModel(): PartyRecord<Secret> = PartyRecord(
+    partyId.with(Secret(id = id)),
+    modifyingUserId = modifyingUserEmail,
+    isDeleted = isDeleted,
+    timestamp = timestamp,
+)
+
+fun PartyRecord<Secret>.toSerializable() = JsonSecretRecord(
+    id = data.element.id,
+    partyId = data.partyId,
+    modifyingUserEmail = modifyingUserId,
+    isDeleted = isDeleted,
+    timestamp = timestamp,
+)
 
 @Serializable
 data class SavePairAssignmentsInput(

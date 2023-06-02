@@ -22,6 +22,7 @@ import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
 import com.zegreatrob.coupling.server.entity.player.savePlayerResolver
 import com.zegreatrob.coupling.server.entity.secret.createSecretResolver
+import com.zegreatrob.coupling.server.entity.secret.secretListResolve
 import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.express.Request
@@ -102,6 +103,7 @@ fun couplingResolvers() = json(
         "playerList" to playerListResolve,
         "retiredPlayers" to retiredPlayerListResolve,
         "pairAssignmentDocumentList" to pairAssignmentListResolve,
+        "secretList" to secretListResolve,
         "currentPairAssignmentDocument" to currentPairAssignmentResolve,
     ),
 )

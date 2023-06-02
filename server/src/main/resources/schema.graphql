@@ -78,6 +78,14 @@ type PairAssignmentDocumentRecord {
     isDeleted: Boolean
 }
 
+type SecretRecord {
+    id: String!
+    partyId: String
+    modifyingUserEmail: String
+    timestamp: String
+    isDeleted: Boolean
+}
+
 type PartyData {
     id: String!
     party: PartyRecord
@@ -85,6 +93,7 @@ type PartyData {
     playerList: [PlayerRecord]
     retiredPlayers: [PlayerRecord]
     pairAssignmentDocumentList: [PairAssignmentDocumentRecord]
+    secretList: [SecretRecord]
     currentPairAssignmentDocument: PairAssignmentDocumentRecord
 }
 

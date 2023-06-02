@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
 import com.zegreatrob.coupling.json.JsonPinnedPlayer
 import com.zegreatrob.coupling.json.JsonPlayerRecord
+import com.zegreatrob.coupling.json.JsonSecretRecord
 import com.zegreatrob.coupling.json.JsonUser
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
@@ -60,6 +61,13 @@ object GqlReference {
         id = "",
         date = DateTime.EPOCH,
         pairs = listOf(pinnedCouplingPair),
+        partyId = PartyId(""),
+        modifyingUserEmail = "",
+        isDeleted = false,
+        timestamp = DateTime.EPOCH,
+    )
+    val secretRecord = JsonSecretRecord(
+        id = "",
         partyId = PartyId(""),
         modifyingUserEmail = "",
         isDeleted = false,
