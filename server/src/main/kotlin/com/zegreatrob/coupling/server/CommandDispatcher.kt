@@ -22,8 +22,8 @@ import com.zegreatrob.coupling.server.action.connection.DeletePartyCommand
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQuery
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.DeletePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerProposeNewPairsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.DeletePinCommand
@@ -98,7 +98,7 @@ interface ICurrentPartyDispatcher :
     RetiredPlayersQuery.Dispatcher,
     SecretListQuery.Dispatcher,
     ServerSavePairAssignmentDocumentCommandDispatcher,
-    DeletePairAssignmentDocumentCommand.Dispatcher,
+    ServerDeletePairAssignmentsCommandDispatcher,
     DeletePartyCommand.Dispatcher,
     DeletePinCommand.Dispatcher,
     SavePinCommand.Dispatcher,
@@ -119,7 +119,7 @@ class CurrentPartyDispatcher(
     ServerDeleteSecretCommandDispatcher,
     RetiredPlayersQuery.Dispatcher,
     ServerSavePairAssignmentDocumentCommandDispatcher,
-    DeletePairAssignmentDocumentCommand.Dispatcher,
+    ServerDeletePairAssignmentsCommandDispatcher,
     DeletePartyCommand.Dispatcher,
     DeletePinCommand.Dispatcher,
     SavePinCommand.Dispatcher,
