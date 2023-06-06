@@ -1,7 +1,8 @@
 {
-  "WEBSOCKET_HOST": "socket.prerelease.coupling.zegreatrob.com",
-  "PUBLIC_URL": "https://prerelease.coupling.zegreatrob.com",
+  "APP_TITLE": "Coupling Prerelease",
   "CLIENT_BASENAME": "",
+  "DYNAMO_PREFIX": "prerelease-",
   "ENABLE_PRERELEASE_FEATURES": "true",
-  "DYNAMO_PREFIX" : "prerelease-"
+  "PUBLIC_URL": "https://prerelease.coupling.zegreatrob.com",
+  "WEBSOCKET_HOST": "socket.prerelease.coupling.zegreatrob.com"
 }

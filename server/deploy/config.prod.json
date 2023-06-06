@@ -1,6 +1,7 @@
 {
-  "WEBSOCKET_HOST": "socket.coupling.zegreatrob.com",
-  "PUBLIC_URL": "https://coupling.zegreatrob.com",
+  "APP_TITLE": "Coupling",
   "CLIENT_BASENAME": "",
-  "DYNAMO_PREFIX" : ""
+  "DYNAMO_PREFIX": "",
+  "PUBLIC_URL": "https://coupling.zegreatrob.com",
+  "WEBSOCKET_HOST": "socket.coupling.zegreatrob.com"
 }

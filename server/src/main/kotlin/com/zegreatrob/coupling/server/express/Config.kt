@@ -11,6 +11,7 @@ object Config {
     const val gitRev: String = "None"
 
     val clientBasename: String = Process.getEnv("CLIENT_BASENAME") ?: ""
+    val appTitle: String = Process.getEnv("APP_TITLE") ?: ""
     val clientUrl: String = Process.getEnv("CLIENT_URL")?.ifEmpty { null } ?: "/no-client-url-found"
     val publicUrl = Process.getEnv("PUBLIC_URL") ?: "http://localhost:3000"
     val secretSigningSecret = Process.getEnv("SECRET_SIGNING_SECRET") ?: throw Exception("Missing secret signing secret")

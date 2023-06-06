@@ -32,7 +32,7 @@ fun Express.indexRoute(): Handler = { _, response, _ ->
             rewritingStream.emitStartTag(tag)
 
             if (tag.tagName == "title") {
-                replaceNextText = "Coupling"
+                replaceNextText = Config.appTitle
             }
             if (tag.tagName == "head") {
                 rewritingStream.emitRaw(injectVariablesForClient())

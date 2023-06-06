@@ -1,6 +1,7 @@
 {
-  "WEBSOCKET_HOST": "socket.sandbox.coupling.zegreatrob.com",
-  "PUBLIC_URL": "https://sandbox.coupling.zegreatrob.com",
+  "APP_TITLE": "Coupling Sandbox",
   "CLIENT_BASENAME": "",
-  "DYNAMO_PREFIX": "sandbox-"
+  "DYNAMO_PREFIX": "sandbox-",
+  "PUBLIC_URL": "https://sandbox.coupling.zegreatrob.com",
+  "WEBSOCKET_HOST": "socket.sandbox.coupling.zegreatrob.com"
 }
