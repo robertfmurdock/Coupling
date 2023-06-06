@@ -46,10 +46,10 @@ val couplingRouter by ntmFC<CouplingRouter> { (animationsDisabled, config) ->
     val browserRouter = useMemo(isSignedIn, config) {
         createBrowserRouter(
             routes = arrayOf(
-                couplingRoute("/welcome/", WelcomePage),
-                couplingRoute("/about", AboutPage),
-                couplingRoute("/demo", DemoPage),
-                couplingRoute("/loading", LoadingPage),
+                couplingRoute("Welcome", "/welcome/", WelcomePage),
+                couplingRoute("About", "/about", AboutPage),
+                couplingRoute("Demo", "/demo", DemoPage),
+                couplingRoute("Loading Test", "/loading", LoadingPage),
             ).plus(routes(isSignedIn, config)),
             opts = jso { basename = config.basename },
         )
@@ -84,25 +84,29 @@ val lostRoute by nfc<Props> {
 
 private fun authenticatedRoutes(config: ClientConfig): Array<RouteObject> = listOfNotNull(
     jso { path = "/"; element = redirectToParties() },
-    if (config.prereleaseMode) couplingRoute("/user", UserPage) else null,
-    couplingRoute("/parties/", PartyListPage),
-    couplingRoute("/logout/", Logout),
-    couplingRoute("/graphiql/", GraphIQLPage),
-    couplingRoute("/new-party/", PartyConfigPage),
+    if (config.prereleaseMode) {
+        couplingRoute("User", "/user", UserPage)
+    } else {
+        null
+    },
+    couplingRoute("Party List", "/parties/", PartyListPage),
+    couplingRoute("Logout", "/logout/", Logout),
+    couplingRoute("Graph IQL", "/graphiql/", GraphIQLPage),
+    couplingRoute("New Party", "/new-party/", PartyConfigPage),
     jso { path = "/:partyId"; element = redirectToCurrentPairs() },
-    couplingRoute("/:partyId/prepare/", PrepareSpinPage),
-    couplingRoute("/:partyId/edit/", PartyConfigPage),
-    couplingRoute("/:partyId/history", HistoryPage),
-    couplingRoute("/:partyId/pins", PinListPage),
-    couplingRoute("/:partyId/pin/new", PinPage),
-    couplingRoute("/:partyId/pin/:pinId/", PinPage),
-    couplingRoute("/:partyId/pairAssignments/current/", CurrentPairsPage),
-    couplingRoute("/:partyId/pairAssignments/new", NewPairAssignmentsPage),
-    couplingRoute("/:partyId/player/new", PlayerPage),
-    couplingRoute("/:partyId/player/:playerId/", PlayerPage),
-    couplingRoute("/:partyId/retired-player/:playerId/", RetiredPlayerPage),
-    couplingRoute("/:partyId/players/retired", RetiredPlayersPage),
-    couplingRoute("/:partyId/statistics", StatisticsPage),
+    couplingRoute("Prepare to Spin", "/:partyId/prepare/", PrepareSpinPage),
+    couplingRoute("Party Config", "/:partyId/edit/", PartyConfigPage),
+    couplingRoute("History", "/:partyId/history", HistoryPage),
+    couplingRoute("Pin List", "/:partyId/pins", PinListPage),
+    couplingRoute("New Pin", "/:partyId/pin/new", PinPage),
+    couplingRoute("Pin Config", "/:partyId/pin/:pinId/", PinPage),
+    couplingRoute("Current Pairs", "/:partyId/pairAssignments/current/", CurrentPairsPage),
+    couplingRoute("New Pairs", "/:partyId/pairAssignments/new", NewPairAssignmentsPage),
+    couplingRoute("New Player", "/:partyId/player/new", PlayerPage),
+    couplingRoute("Player Config", "/:partyId/player/:playerId/", PlayerPage),
+    couplingRoute("Retired Player Config", "/:partyId/retired-player/:playerId/", RetiredPlayerPage),
+    couplingRoute("Retired Player List", "/:partyId/players/retired", RetiredPlayersPage),
+    couplingRoute("Statistics", "/:partyId/statistics", StatisticsPage),
 ).toTypedArray()
 
 private fun redirectToParties() = Navigate.create { to = "/parties/" }
