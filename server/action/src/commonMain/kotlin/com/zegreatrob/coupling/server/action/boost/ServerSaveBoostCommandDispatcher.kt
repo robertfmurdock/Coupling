@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
-import com.zegreatrob.coupling.repository.BoostSave
 
 interface ServerSaveBoostCommandDispatcher : BoostSaveSyntax, AuthenticatedUserSyntax, SaveBoostCommand.Dispatcher {
 
@@ -12,14 +11,5 @@ interface ServerSaveBoostCommandDispatcher : BoostSaveSyntax, AuthenticatedUserS
 
     private suspend fun SaveBoostCommand.save() {
         Boost(user.id, partyIds).apply { save() }
-    }
-}
-
-interface BoostSaveSyntax {
-
-    val boostRepository: BoostSave
-
-    suspend fun Boost.save() {
-        boostRepository.save(this)
     }
 }
