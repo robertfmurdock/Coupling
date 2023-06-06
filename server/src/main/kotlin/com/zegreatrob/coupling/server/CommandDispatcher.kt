@@ -31,8 +31,8 @@ import com.zegreatrob.coupling.server.action.pin.ServerDeletePinCommandDispatche
 import com.zegreatrob.coupling.server.action.pin.ServerSavePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
-import com.zegreatrob.coupling.server.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.server.action.player.ServerDeletePlayerCommandDispatcher
+import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.secret.SecretListQuery
 import com.zegreatrob.coupling.server.action.user.UserQuery
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
@@ -93,7 +93,7 @@ interface ICurrentPartyDispatcher :
     ICommandDispatcher,
     PinsQuery.Dispatcher,
     PlayersQuery.Dispatcher,
-    SavePlayerCommand.Dispatcher,
+    ServerSavePlayerCommandDispatcher,
     ServerDeletePlayerCommandDispatcher,
     RetiredPlayersQuery.Dispatcher,
     SecretListQuery.Dispatcher,
@@ -114,7 +114,7 @@ class CurrentPartyDispatcher(
     PinsQuery.Dispatcher,
     PlayersQuery.Dispatcher,
     ServerCreateSecretCommandDispatcher,
-    SavePlayerCommand.Dispatcher,
+    ServerSavePlayerCommandDispatcher,
     ServerDeletePlayerCommandDispatcher,
     ServerDeleteSecretCommandDispatcher,
     RetiredPlayersQuery.Dispatcher,

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action.player
 
+import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
@@ -16,8 +17,7 @@ import kotlin.test.Test
 class SavePlayerCommandTest {
 
     @Test
-    fun willSaveToRepository() = asyncSetup(object :
-        SavePlayerCommand.Dispatcher {
+    fun willSaveToRepository() = asyncSetup(object : ServerSavePlayerCommandDispatcher {
         override val currentPartyId = PartyId("woo")
         val player = Player(
             id = "1",
@@ -31,9 +31,10 @@ class SavePlayerCommandTest {
         )
         override val playerRepository = PlayerSaverSpy().apply { whenever(currentPartyId.with(player), Unit) }
     }) exercise {
-        perform(SavePlayerCommand(player))
-    } verifySuccess { result ->
-        result.assertIsEqualTo(player)
+        perform(SavePlayerCommand(currentPartyId, player))
+    } verifySuccess {
+        playerRepository.spyReceivedValues
+            .assertIsEqualTo(listOf(currentPartyId.with(player)))
     }
 
     class PlayerSaverSpy : PlayerSave, Spy<PartyElement<Player>, Unit> by SpyData() {
