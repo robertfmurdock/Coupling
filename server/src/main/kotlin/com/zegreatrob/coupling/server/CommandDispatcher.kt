@@ -20,15 +20,15 @@ import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
-import com.zegreatrob.coupling.server.action.connection.ServerDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerProposeNewPairsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSavePairAssignmentDocumentCommandDispatcher
-import com.zegreatrob.coupling.server.action.pin.DeletePinCommand
+import com.zegreatrob.coupling.server.action.party.ServerDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.action.pin.SavePinCommand
+import com.zegreatrob.coupling.server.action.pin.ServerDeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
@@ -100,7 +100,7 @@ interface ICurrentPartyDispatcher :
     ServerSavePairAssignmentDocumentCommandDispatcher,
     ServerDeletePairAssignmentsCommandDispatcher,
     ServerDeletePartyCommandDispatcher,
-    DeletePinCommand.Dispatcher,
+    ServerDeletePinCommandDispatcher,
     SavePinCommand.Dispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
     ServerProposeNewPairsCommandDispatcher,
@@ -121,7 +121,7 @@ class CurrentPartyDispatcher(
     ServerSavePairAssignmentDocumentCommandDispatcher,
     ServerDeletePairAssignmentsCommandDispatcher,
     ServerDeletePartyCommandDispatcher,
-    DeletePinCommand.Dispatcher,
+    ServerDeletePinCommandDispatcher,
     SavePinCommand.Dispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
     ServerProposeNewPairsCommandDispatcher,
