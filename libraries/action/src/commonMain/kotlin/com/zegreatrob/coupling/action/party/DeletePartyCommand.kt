@@ -1,14 +1,13 @@
 package com.zegreatrob.coupling.action.party
 
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SimpleSuspendResultAction
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class DeletePartyCommand(val partyId: PartyId) :
-    SimpleSuspendResultAction<DeletePartyCommand.Dispatcher, Unit> {
+data class DeletePartyCommand(val partyId: PartyId) : SimpleSuspendAction<DeletePartyCommand.Dispatcher, VoidResult> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {
-        suspend fun perform(command: DeletePartyCommand): Result<Unit>
+        suspend fun perform(command: DeletePartyCommand): VoidResult
     }
 }
