@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.json.SavePairAssignmentsInput
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedDispatcher
@@ -14,6 +14,8 @@ val savePairsResolver = dispatch(
             partyId = args.partyId.value,
         )
     },
-    { _, args: SavePairAssignmentsInput -> SavePairAssignmentDocumentCommand(args.toModel()) },
+    { _, input: SavePairAssignmentsInput -> input.command() },
     { true },
 )
+
+private fun SavePairAssignmentsInput.command() = SavePairAssignmentsCommand(partyId, toModel())

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.json.toJsonElement
 import com.zegreatrob.coupling.json.toSavePairAssignmentsInput
@@ -40,6 +41,6 @@ interface SdkSavePairAssignmentsCommandDispatcher : SavePairAssignmentsCommand.D
                 }
             },
         )
-        Unit
+        VoidResult.Accepted
     }
 }

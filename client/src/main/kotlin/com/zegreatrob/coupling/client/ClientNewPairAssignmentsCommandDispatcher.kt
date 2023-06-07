@@ -23,6 +23,7 @@ interface ClientNewPairAssignmentsCommandDispatcher :
         } else {
             execute(requestSpinAction(players, pins))
                 .let { sdk.perform(SavePairAssignmentsCommand(party.id, it)) }
+                .let { Unit }
         }
     }
 

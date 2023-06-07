@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.VoidResult
-import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -36,7 +36,7 @@ class SavePairAssignmentDocumentCommandTest {
         override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
             .apply { whenever(pairAssignmentDocument, Unit) }
     }) exercise {
-        perform(SavePairAssignmentDocumentCommand(pairAssignmentDocument.element))
+        perform(SavePairAssignmentsCommand(currentPartyId, pairAssignmentDocument.element))
     } verify { result ->
         result.assertIsEqualTo(VoidResult.Accepted)
         pairAssignmentDocumentRepository.spyReceivedValues
