@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.json.SavePlayerInput
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.with
@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.sdk.gql.doQuery
 interface SdkSavePlayerCommandDispatcher : SavePlayerCommand.Dispatcher, GqlSyntax {
     override suspend fun perform(command: SavePlayerCommand) = with(command) {
         doQuery(Mutation.savePlayer, partyId.with(player).input())
-        Unit.successResult()
+        VoidResult.Accepted
     }
 }
 

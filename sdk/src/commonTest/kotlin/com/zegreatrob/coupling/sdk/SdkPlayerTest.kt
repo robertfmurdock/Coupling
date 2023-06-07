@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.NotFoundResult
+import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
@@ -312,7 +312,7 @@ class SdkPlayerTest {
         }) exercise {
             sdk().perform(DeletePlayerCommand(party.id, "player id"))
         } verify { result ->
-            result.assertIsEqualTo(NotFoundResult("player"))
+            result.assertIsEqualTo(CommandResult.Unauthorized)
         }
     }
 }

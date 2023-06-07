@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server.action
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.player.PlayerDelete
 import com.zegreatrob.coupling.server.action.player.ServerDeletePlayerCommandDispatcher
-import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
@@ -13,6 +13,7 @@ import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.test.Test
 
 class DeletePlayerCommandTest {
+
     @Test
     fun willUseRepositoryToRemove() = asyncSetup(object : ServerDeletePlayerCommandDispatcher {
         val playerId = "ThatGuyGetHim"
@@ -20,7 +21,8 @@ class DeletePlayerCommandTest {
         override val currentPartyId = PartyId("")
     }) exercise {
         perform(DeletePlayerCommand(currentPartyId, playerId))
-    } verifySuccess {
+    } verify { result ->
+        result.assertIsEqualTo(VoidResult.Accepted)
         playerRepository.spyReceivedValues.assertIsEqualTo(listOf(playerId))
     }
 
