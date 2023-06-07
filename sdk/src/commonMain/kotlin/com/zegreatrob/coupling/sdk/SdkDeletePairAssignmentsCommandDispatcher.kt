@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.action.voidResult
 import com.zegreatrob.coupling.json.at
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyId
@@ -19,7 +21,8 @@ interface SdkDeletePairAssignmentsCommandDispatcher : DeletePairAssignmentsComma
             .at("/data/deletePairAssignments")
             ?.jsonPrimitive
             ?.booleanOrNull
-            .let { }
+            ?.voidResult()
+            ?: CommandResult.Unauthorized
     }
 }
 
