@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.DeleteBoostCommand
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.successResult
@@ -26,8 +27,7 @@ interface SdkBoost :
     override suspend fun perform(command: SaveBoostCommand) = doQuery(
         query = Mutation.saveBoost,
         input = command.saveBoostInput(),
-    ).let { }
-        .successResult()
+    ).let { VoidResult.Accepted }
 
     override suspend fun perform(command: DeleteBoostCommand) = deleteIt().let { Unit.successResult() }
 

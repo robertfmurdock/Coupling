@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.action.boost
 
-import com.zegreatrob.coupling.action.SimpleSuspendResultAction
-import com.zegreatrob.coupling.action.SuccessfulResult
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
 data class SaveBoostCommand(val partyIds: Set<PartyId>) :
-    SimpleSuspendResultAction<SaveBoostCommand.Dispatcher, Unit> {
+    SimpleSuspendAction<SaveBoostCommand.Dispatcher, VoidResult> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {
-        suspend fun perform(command: SaveBoostCommand): SuccessfulResult<Unit>
+        suspend fun perform(command: SaveBoostCommand): VoidResult
     }
 }
