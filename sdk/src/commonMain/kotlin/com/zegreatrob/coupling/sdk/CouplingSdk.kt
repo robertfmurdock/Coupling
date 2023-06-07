@@ -1,9 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.action.CreateSecretCommand
-import com.zegreatrob.coupling.action.DeleteBoostCommand
-import com.zegreatrob.coupling.action.DeleteSecretCommand
 import com.zegreatrob.coupling.action.boost.BoostQuery
+import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
@@ -14,6 +12,8 @@ import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.action.secret.CreateSecretCommand
+import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
 
 interface CouplingSdk :

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.action.CreateSecretCommand
+import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.json.CreateSecretInput
 import com.zegreatrob.coupling.json.JsonCouplingMutationResult
 import com.zegreatrob.coupling.json.toDomain

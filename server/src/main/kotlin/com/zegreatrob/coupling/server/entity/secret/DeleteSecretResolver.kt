@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.secret
 
-import com.zegreatrob.coupling.action.DeleteSecretCommand
+import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.json.DeleteSecretInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret

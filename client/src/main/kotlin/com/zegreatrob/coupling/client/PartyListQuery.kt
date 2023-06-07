@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.action
+package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction

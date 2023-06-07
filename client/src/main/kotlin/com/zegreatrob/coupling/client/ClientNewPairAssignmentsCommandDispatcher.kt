@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.action.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.client.action.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player

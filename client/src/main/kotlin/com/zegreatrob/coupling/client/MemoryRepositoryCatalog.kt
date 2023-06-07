@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.CreateSecretCommand
-import com.zegreatrob.coupling.action.DeleteBoostCommand
-import com.zegreatrob.coupling.action.DeleteSecretCommand
-import com.zegreatrob.coupling.action.Result
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.boost.BoostQuery
+import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.secret.CreateSecretCommand
+import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.CouplingQueryResult
@@ -98,7 +98,7 @@ class MemoryRepositoryCatalog private constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun perform(command: DeleteSecretCommand): Result<Boolean> {
+    override suspend fun perform(command: DeleteSecretCommand): VoidResult {
         TODO("Not yet implemented")
     }
 

@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/cli" />
             <option value="$PROJECT_DIR$/client" />
             <option value="$PROJECT_DIR$/client/components" />
+            <option value="$PROJECT_DIR$/client/components/action" />
             <option value="$PROJECT_DIR$/coupling-plugins" />
             <option value="$PROJECT_DIR$/deploy" />
             <option value="$PROJECT_DIR$/deploy/prerelease" />

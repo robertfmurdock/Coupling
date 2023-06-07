@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.secret
 
-import com.zegreatrob.coupling.action.CreateSecretCommand
+import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.json.CreateSecretInput
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.party.PartyId

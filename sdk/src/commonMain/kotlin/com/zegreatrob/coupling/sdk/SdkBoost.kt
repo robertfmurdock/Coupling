@@ -1,10 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.action.DeleteBoostCommand
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.boost.BoostQuery
+import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.json.JsonBoostRecord
 import com.zegreatrob.coupling.json.SaveBoostInput
 import com.zegreatrob.coupling.json.at
@@ -29,7 +28,7 @@ interface SdkBoost :
         input = command.saveBoostInput(),
     ).let { VoidResult.Accepted }
 
-    override suspend fun perform(command: DeleteBoostCommand) = deleteIt().let { Unit.successResult() }
+    override suspend fun perform(command: DeleteBoostCommand) = deleteIt().let { VoidResult.Accepted }
 
     private fun SaveBoostCommand.saveBoostInput() = SaveBoostInput(partyIds)
 
