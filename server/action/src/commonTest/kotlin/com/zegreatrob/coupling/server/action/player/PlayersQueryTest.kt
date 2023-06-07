@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PlayerListGet
-import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
@@ -43,7 +42,7 @@ class PlayersQueryTest {
             .apply { whenever(currentPartyId, players.map { toRecord(it, currentPartyId) }) }
     }) exercise {
         perform(PlayersQuery)
-    } verifySuccess { result ->
+    } verify { result ->
         result.map { it.data.player }.assertIsEqualTo(players)
     }
 
@@ -68,7 +67,7 @@ class PlayersQueryTest {
             .apply { whenever(currentPartyId, players.map { toRecord(it, currentPartyId) }) }
     }) exercise {
         perform(PlayersQuery)
-    } verifySuccess { result ->
+    } verify { result ->
         result.map { it.data.player }
             .apply {
                 map(Player::id)

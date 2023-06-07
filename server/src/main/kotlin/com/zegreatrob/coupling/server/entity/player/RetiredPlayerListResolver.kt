@@ -9,4 +9,4 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val retiredPlayerListResolve = dispatch(partyCommand, { _, _ -> RetiredPlayersQuery }, ::toJsonArray)
 
-private fun toJsonArray(list: List<PartyRecord<Player>>) = list.map(PartyRecord<Player>::toSerializable)
+private fun toJsonArray(list: List<PartyRecord<Player>>?) = list?.map(PartyRecord<Player>::toSerializable)

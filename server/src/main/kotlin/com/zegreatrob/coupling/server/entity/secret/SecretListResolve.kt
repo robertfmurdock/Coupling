@@ -13,5 +13,4 @@ val secretListResolve = dispatch(
     ::toSerializable,
 )
 
-private fun toSerializable(result: List<PartyRecord<Secret>>) =
-    result.map(PartyRecord<Secret>::toSerializable)
+private fun toSerializable(result: List<PartyRecord<Secret>>?) = result?.map(PartyRecord<Secret>::toSerializable)

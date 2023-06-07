@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.DeleteBoostCommand
-import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.successResult
@@ -34,11 +33,7 @@ interface SdkBoost :
 
     private fun SaveBoostCommand.saveBoostInput() = SaveBoostInput(partyIds)
 
-    override suspend fun perform(command: BoostQuery) = get()
-        ?.successResult()
-        ?: NotFoundResult("Boost")
-
-    private suspend fun get() = performer.postAsync(boostQuery()).await()
+    override suspend fun perform(command: BoostQuery) = performer.postAsync(boostQuery()).await()
         .at("/data/user/boost")
         ?.toBoostRecord()
 

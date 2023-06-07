@@ -13,5 +13,5 @@ val pairAssignmentListResolve = dispatch(
     ::toSerializable,
 )
 
-private fun toSerializable(result: List<PartyRecord<PairAssignmentDocument>>) =
-    result.map(PartyRecord<PairAssignmentDocument>::toSerializable)
+private fun toSerializable(result: List<PartyRecord<PairAssignmentDocument>>?) =
+    result?.map(PartyRecord<PairAssignmentDocument>::toSerializable)

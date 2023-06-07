@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.action
 
-class DeleteBoostCommand : SimpleSuspendResultAction<DeleteBoostCommand.Dispatcher, Unit> {
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+
+class DeleteBoostCommand : SimpleSuspendAction<DeleteBoostCommand.Dispatcher, Unit> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {

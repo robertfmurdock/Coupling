@@ -13,7 +13,6 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.repository.party.PartyGet
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
-import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
@@ -54,7 +53,7 @@ class ProposeNewPairsCommandTest {
         override fun perform(action: RunGameAction) = spy.spyFunction(action)
     }) exercise {
         perform(ProposeNewPairsCommand(players, pins))
-    } verifySuccess { result ->
+    } verify { result ->
         result.assertIsEqualTo(expectedPairAssignmentDocument)
         spy.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, party)))
     }

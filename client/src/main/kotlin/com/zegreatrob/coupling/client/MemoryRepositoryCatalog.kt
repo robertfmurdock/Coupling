@@ -94,7 +94,7 @@ class MemoryRepositoryCatalog private constructor(
     }
 
     override suspend fun perform(command: BoostQuery) = TODO("Not yet implemented")
-    override suspend fun perform(command: CreateSecretCommand): Result<Pair<Secret, String>> {
+    override suspend fun perform(command: CreateSecretCommand): Pair<Secret, String> {
         TODO("Not yet implemented")
     }
 

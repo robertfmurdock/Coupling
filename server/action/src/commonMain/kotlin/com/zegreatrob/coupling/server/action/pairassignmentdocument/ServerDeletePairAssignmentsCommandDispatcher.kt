@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.model.pairassignmentdocument.PartyIdPairAssignmentDocumentId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentIdDeleteSyntax
@@ -11,9 +10,10 @@ interface ServerDeletePairAssignmentsCommandDispatcher :
     PairAssignmentDocumentIdDeleteSyntax,
     CurrentPartyIdSyntax {
 
-    override suspend fun perform(command: DeletePairAssignmentsCommand) = command.partyIdPairAssignmentId()
-        .deleteIt()
-        .deletionResult("Pair Assignment Document")
+    override suspend fun perform(command: DeletePairAssignmentsCommand) {
+        command.partyIdPairAssignmentId()
+            .deleteIt()
+    }
 
     private fun DeletePairAssignmentsCommand.partyIdPairAssignmentId() = PartyIdPairAssignmentDocumentId(
         currentPartyId,

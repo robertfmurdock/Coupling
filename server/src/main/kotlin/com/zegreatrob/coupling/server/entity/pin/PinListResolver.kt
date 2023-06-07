@@ -11,4 +11,4 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val pinListResolve = dispatch(partyCommand, { _, _ -> PinsQuery }, ::toSerializable)
 
-private fun toSerializable(it: List<PartyRecord<Pin>>) = it.map(Record<PartyElement<Pin>>::toSerializable)
+private fun toSerializable(it: List<PartyRecord<Pin>>?) = it?.map(Record<PartyElement<Pin>>::toSerializable)

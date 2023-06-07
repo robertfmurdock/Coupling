@@ -80,15 +80,16 @@ class SdkPlayerTest {
     }
 
     @Test
-    fun deleteWithUnknownPlayerIdWillReturnFalse() = sdkSetup.with({
+    fun deleteWithUnknownPlayerIdWillNotExplode() = sdkSetup.with({
         object {
             val sdk = it
             val playerId = "${uuid4()}"
         }
     }) exercise {
-        sdk.perform(DeletePlayerCommand(sdk.party.id, playerId))
+        runCatching { sdk.perform(DeletePlayerCommand(sdk.party.id, playerId)) }
     } verify { result ->
-        result.assertIsEqualTo(NotFoundResult("player"))
+        result.exceptionOrNull()
+            .assertIsEqualTo(null)
     }
 
     @Test

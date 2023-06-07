@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.json.at
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -16,13 +14,12 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 
 interface SdkDeletePairAssignmentsCommandDispatcher : DeletePairAssignmentsCommand.Dispatcher, GqlSyntax {
-    override suspend fun perform(command: DeletePairAssignmentsCommand): Result<Unit> = with(command) {
+    override suspend fun perform(command: DeletePairAssignmentsCommand) = with(command) {
         performQuery(options(partyId, pairAssignmentDocumentId))
             .at("/data/deletePairAssignments")
             ?.jsonPrimitive
             ?.booleanOrNull
-            .let { it ?: false }
-            .deletionResult("Pair Assignments")
+            .let { }
     }
 }
 

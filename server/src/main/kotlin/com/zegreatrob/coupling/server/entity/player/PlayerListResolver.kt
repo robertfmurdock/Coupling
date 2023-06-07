@@ -8,6 +8,8 @@ import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.partyCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
 
-val playerListResolve = dispatch(partyCommand, { _, _ -> PlayersQuery }) {
-    it.map(Record<PartyElement<Player>>::toSerializable)
-}
+val playerListResolve = dispatch(
+    dispatcherFunc = partyCommand,
+    queryFunc = { _, _ -> PlayersQuery },
+    toSerializable = { it?.map(Record<PartyElement<Player>>::toSerializable) },
+)

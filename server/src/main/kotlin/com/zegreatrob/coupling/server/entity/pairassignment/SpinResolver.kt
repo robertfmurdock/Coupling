@@ -27,7 +27,7 @@ val spinResolver: Resolver = dispatch(
             pins.map(JsonPinData::toModel),
         )
     },
-    { Return(it.toSerializable()) },
+    { it?.toSerializable()?.let(::Return) },
 )
 
 @Serializable

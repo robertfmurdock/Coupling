@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.NotFoundResult
-import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
@@ -64,10 +62,11 @@ class SdkPairAssignmentDocumentTest {
     }
 
     @Test
-    fun deleteWhenDocumentDoesNotExistWillReturnFalse() = repositorySetup().exercise {
-        perform(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${uuid4()}")))
+    fun deleteWhenDocumentDoesNotExistWillNotExplode() = repositorySetup().exercise {
+        runCatching { perform(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${uuid4()}"))) }
     } verify { result ->
-        result.assertIsEqualTo(NotFoundResult("Pair Assignments"))
+        result.exceptionOrNull()
+            .assertIsEqualTo(null)
     }
 
     @Test
@@ -99,8 +98,7 @@ class SdkPairAssignmentDocumentTest {
         perform(SavePairAssignmentsCommand(partyId, document))
     } exercise {
         perform(DeletePairAssignmentsCommand(partyId, document.id))
-    } verifyWithWait { result ->
-        result.assertIsEqualTo(SuccessfulResult(Unit))
+    } verifyWithWait {
         perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
             ?.partyData
             ?.pairAssignmentDocumentList

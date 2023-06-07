@@ -10,4 +10,4 @@ import kotlinx.serialization.json.JsonNull
 
 val partyListResolve = dispatch(command(), { _: JsonNull, _: JsonNull -> PartyListQuery }, ::toJson)
 
-private fun toJson(records: List<Record<Party>>) = records.map(Record<Party>::toSerializable)
+private fun toJson(records: List<Record<Party>>?) = records?.map(Record<Party>::toSerializable)

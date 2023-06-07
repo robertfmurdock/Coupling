@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.server.action
 
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.stats.medianSpinDuration
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.GlobalStats
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PartyStats
@@ -16,13 +13,14 @@ import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import korlibs.time.minutes
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 
-data class GlobalStatsQuery(val year: Int) : SimpleSuspendResultAction<GlobalStatsQuery.Dispatcher, GlobalStats> {
+data class GlobalStatsQuery(val year: Int) : SimpleSuspendAction<GlobalStatsQuery.Dispatcher, GlobalStats> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {
@@ -30,12 +28,10 @@ data class GlobalStatsQuery(val year: Int) : SimpleSuspendResultAction<GlobalSta
         val partyRepository: PartyRepository
         val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 
-        suspend fun perform(query: GlobalStatsQuery): Result<GlobalStats> =
-            partyRepository.loadParties()
-                .toStats(yearMatcher(query.year))
-                .filter(::excludePartiesSpinningUnnaturallyFast)
-                .toGlobalStats()
-                .successResult()
+        suspend fun perform(query: GlobalStatsQuery): GlobalStats = partyRepository.loadParties()
+            .toStats(yearMatcher(query.year))
+            .filter(::excludePartiesSpinningUnnaturallyFast)
+            .toGlobalStats()
 
         private suspend fun List<Record<Party>>.toStats(
             matchesYear: (PartyRecord<PairAssignmentDocument>) -> Boolean,

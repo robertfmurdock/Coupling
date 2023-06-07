@@ -5,10 +5,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.CreateSecretCommand
 import com.zegreatrob.coupling.action.DeleteSecretCommand
-import com.zegreatrob.coupling.action.NotFoundResult
-import com.zegreatrob.coupling.action.SuccessfulResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.elements
@@ -36,7 +33,7 @@ class SdkSecretTest {
     } exercise {
         sdk().perform(CreateSecretCommand(party.id))
     } verify { result ->
-        val (secret, token) = (result as SuccessfulResult<Pair<Secret, String>>).value
+        val (secret, token) = result!!
         secret.assertIsNotEqualTo(null)
         token.assertIsValidToken(party.id)
         sdk().perform(graphQuery { party(party.id) { secretList() } })
@@ -60,7 +57,7 @@ class SdkSecretTest {
         lateinit var token: String
     }) {
         sdk().perform(SavePartyCommand(party))
-        val result = sdk().perform(CreateSecretCommand(party.id)).valueOrNull()!!
+        val result = sdk().perform(CreateSecretCommand(party.id))!!
         secret = result.first
         token = result.second
     } exercise {
@@ -89,7 +86,7 @@ class SdkSecretTest {
     } exercise {
         sdk().perform(CreateSecretCommand(party1.id))
     } verify { result ->
-        val (_, token) = (result as SuccessfulResult<Pair<Secret, String>>).value
+        val (_, token) = result!!
         val tokenSdk = KtorCouplingSdk({ token }, uuid4(), buildClient())
         val queryResult: CouplingQueryResult? = tokenSdk.perform(
             graphQuery {
@@ -111,7 +108,7 @@ class SdkSecretTest {
     }) exercise {
         sdk().perform(CreateSecretCommand(partyId))
     } verify { result ->
-        result.assertIsEqualTo(NotFoundResult("secret"))
+        result.assertIsEqualTo(null)
     }
 
     private fun String.assertIsValidToken(partyId: PartyId) {

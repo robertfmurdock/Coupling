@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.NotFoundResult
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
@@ -55,10 +54,11 @@ class SdkPinTest {
     }
 
     @Test
-    fun deleteWillFailWhenPinDoesNotExist() = partySetup() exercise {
-        perform(DeletePinCommand(party.id, "${uuid4()}"))
+    fun whenPinDoesNotExistDeleteWillDoNothing() = partySetup() exercise {
+        runCatching { perform(DeletePinCommand(party.id, "${uuid4()}")) }
     } verify { result ->
-        result.assertIsEqualTo(NotFoundResult("Pin"))
+        result.exceptionOrNull()
+            .assertIsEqualTo(null)
     }
 
     @Test

@@ -1,9 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.NotFoundResult
-import com.zegreatrob.coupling.action.Result
 import com.zegreatrob.coupling.action.pairassignmentdocument.ProposeNewPairsCommand
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistorySyntax
@@ -21,9 +18,7 @@ interface ServerProposeNewPairsCommandDispatcher :
     PartyIdHistorySyntax,
     CurrentPartyIdSyntax {
 
-    override suspend fun perform(command: ProposeNewPairsCommand): Result<PairAssignmentDocument> = command.runGame()
-        ?.successResult()
-        ?: NotFoundResult("Party")
+    override suspend fun perform(command: ProposeNewPairsCommand): PairAssignmentDocument? = command.runGame()
 
     private suspend fun ProposeNewPairsCommand.runGame() = loadData()
         ?.let { (history, party) -> execute(RunGameAction(players, pins, history, party)) }
