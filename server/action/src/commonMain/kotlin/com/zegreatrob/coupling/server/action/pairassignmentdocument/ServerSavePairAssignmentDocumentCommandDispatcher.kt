@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
@@ -22,7 +22,7 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher :
         currentPartyId.with(pairAssignmentDocument)
             .apply { save() }
             .apply { execute(broadcastAction()) }
-            .successResult()
+            .let { VoidResult.Accepted }
     }
 
     suspend fun SavePairAssignmentDocumentCommand.broadcastAction() = BroadcastAction(

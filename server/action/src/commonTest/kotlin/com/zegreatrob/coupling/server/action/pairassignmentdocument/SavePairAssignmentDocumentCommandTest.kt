@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentDocumentCommand
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.Message
@@ -11,7 +12,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
-import com.zegreatrob.coupling.testaction.verifySuccess
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
@@ -37,9 +37,10 @@ class SavePairAssignmentDocumentCommandTest {
             .apply { whenever(pairAssignmentDocument, Unit) }
     }) exercise {
         perform(SavePairAssignmentDocumentCommand(pairAssignmentDocument.element))
-    } verifySuccess { result ->
-        result.assertIsEqualTo(pairAssignmentDocument)
-        pairAssignmentDocumentRepository.spyReceivedValues.assertIsEqualTo(listOf(pairAssignmentDocument))
+    } verify { result ->
+        result.assertIsEqualTo(VoidResult.Accepted)
+        pairAssignmentDocumentRepository.spyReceivedValues
+            .assertIsEqualTo(listOf(pairAssignmentDocument))
     }
 }
 
