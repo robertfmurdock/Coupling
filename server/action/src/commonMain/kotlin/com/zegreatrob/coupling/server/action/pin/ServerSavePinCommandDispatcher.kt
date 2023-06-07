@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.pin
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pin.SavePinCommand
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pin.PartyPinSaveSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
@@ -11,7 +11,7 @@ interface ServerSavePinCommandDispatcher :
     PartyPinSaveSyntax,
     CurrentPartyIdSyntax {
 
-    override suspend fun perform(command: SavePinCommand) = command.save().let { Unit.successResult() }
+    override suspend fun perform(command: SavePinCommand) = command.save().let { VoidResult.Accepted }
 
     private suspend fun SavePinCommand.save() = currentPartyId.with(pin).save().let { pin }
 }
