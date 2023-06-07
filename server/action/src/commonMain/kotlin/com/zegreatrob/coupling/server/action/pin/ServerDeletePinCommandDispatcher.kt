@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.pin
 
-import com.zegreatrob.coupling.action.deletionResult
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
+import com.zegreatrob.coupling.action.voidResult
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 
 interface ServerDeletePinCommandDispatcher :
@@ -11,7 +11,7 @@ interface ServerDeletePinCommandDispatcher :
 
     override suspend fun perform(command: DeletePinCommand) = command.partyIdPinId()
         .deletePin()
-        .deletionResult("Pin")
+        .voidResult()
 
     private fun DeletePinCommand.partyIdPinId() = PartyIdPinId(currentPartyId, pinId)
 }
