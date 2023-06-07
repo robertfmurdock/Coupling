@@ -1,9 +1,8 @@
 package com.zegreatrob.coupling.server.action.party
 
-import com.zegreatrob.coupling.action.Result
-import com.zegreatrob.coupling.action.UnauthorizedResult
+import com.zegreatrob.coupling.action.CommandResult
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.action.successResult
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
@@ -60,11 +59,12 @@ interface ServerSavePartyCommandDispatcher :
 
     private fun Party?.partyIsNew() = this == null
 
-    private suspend fun Boolean.whenAuthorized(block: suspend () -> Unit): Result<Unit> = let {
+    private suspend fun Boolean.whenAuthorized(block: suspend () -> Unit) = let {
         if (it) {
-            block().successResult()
+            block()
+            VoidResult.Accepted
         } else {
-            UnauthorizedResult()
+            CommandResult.Unauthorized
         }
     }
 }
