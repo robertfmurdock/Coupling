@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.json.SpinInput
 import com.zegreatrob.coupling.json.SpinOutput
 import com.zegreatrob.coupling.json.toModel
@@ -13,10 +13,10 @@ import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
 interface SdkSpin :
-    RequestSpinAction.Dispatcher,
+    SpinCommand.Dispatcher,
     GqlSyntax {
 
-    override suspend fun perform(action: RequestSpinAction): PairAssignmentDocument =
+    override suspend fun perform(action: SpinCommand): PairAssignmentDocument =
         doQuery(
             Mutation.spin,
             action.spinInput(),
@@ -27,7 +27,7 @@ interface SdkSpin :
     private fun toOutput(at: SpinOutput) = at.result.toModel()
 }
 
-fun RequestSpinAction.spinInput() = SpinInput(
+fun SpinCommand.spinInput() = SpinInput(
     players = players.map(Player::toSerializable),
     pins = pins.map(Pin::toSerializable),
     partyId = partyId,

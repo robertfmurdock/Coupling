@@ -19,10 +19,10 @@ dependencies {
     implementation(project(":libraries:json"))
     implementation(project(":libraries:model"))
     implementation(project(":libraries:repository:core"))
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("com.zegreatrob.testmints:action")
     implementation("com.zegreatrob.testmints:action-async")
     implementation("com.zegreatrob.testmints:minspy")
+    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
 
     testImplementation(project(":libraries:stub-model"))
     testImplementation(project(":libraries:test-logging"))

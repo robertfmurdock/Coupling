@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.client.aboutPageContent
-import com.zegreatrob.coupling.client.action.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown

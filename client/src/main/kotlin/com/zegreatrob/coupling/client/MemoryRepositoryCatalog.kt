@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
@@ -80,7 +80,7 @@ class MemoryRepositoryCatalog private constructor(
         MemoryPinRepository(userEmail, clock, backend.pin),
     )
 
-    override suspend fun perform(action: RequestSpinAction): PairAssignmentDocument {
+    override suspend fun perform(action: SpinCommand): PairAssignmentDocument {
         val pairs = action.players.shuffled().map { it.withPins(emptyList()) }.withIndex().groupBy { it.index / 2 }
             .entries
             .map { it.value.map(IndexedValue<PinnedPlayer>::value) }

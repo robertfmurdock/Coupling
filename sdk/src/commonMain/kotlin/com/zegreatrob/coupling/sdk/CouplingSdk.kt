@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
@@ -26,7 +26,7 @@ interface CouplingSdk :
     DeletePinCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
     GraphQuery.Dispatcher,
-    RequestSpinAction.Dispatcher,
+    SpinCommand.Dispatcher,
     SaveBoostCommand.Dispatcher,
     SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommand.Dispatcher,

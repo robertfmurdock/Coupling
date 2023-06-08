@@ -12,7 +12,8 @@ data class DeletePairAssignmentsCommand(
 
     override val performFunc = link(Dispatcher::perform)
 
-    interface Dispatcher {
+    @Suppress("FUN_INTERFACE_WITH_SUSPEND_FUNCTION")
+    fun interface Dispatcher {
         suspend fun perform(command: DeletePairAssignmentsCommand): VoidResult
     }
 }

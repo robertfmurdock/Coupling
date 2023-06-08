@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.RequestSpinAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
-import com.zegreatrob.coupling.client.action.NewPairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -14,7 +14,7 @@ interface ClientNewPairAssignmentsCommandDispatcher :
     NewPairAssignmentsCommand.Dispatcher,
     SdkProviderSyntax,
     SuspendActionExecuteSyntax,
-    RequestSpinAction.Dispatcher {
+    SpinCommand.Dispatcher {
 
     override suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {
         val (party, players, pins) = getData()
@@ -27,10 +27,10 @@ interface ClientNewPairAssignmentsCommandDispatcher :
         }
     }
 
-    private fun NewPairAssignmentsCommand.requestSpinAction(players: List<Player>, pins: List<Pin>): RequestSpinAction {
+    private fun NewPairAssignmentsCommand.requestSpinAction(players: List<Player>, pins: List<Pin>): SpinCommand {
         val selectedPlayers = filterSelectedPlayers(players, playerIds)
         val selectedPins = filterSelectedPins(pins, pinIds)
-        return RequestSpinAction(partyId, selectedPlayers, selectedPins)
+        return SpinCommand(partyId, selectedPlayers, selectedPins)
     }
 
     private fun filterSelectedPlayers(players: List<Player>, playerIds: List<String>) = players.filter {

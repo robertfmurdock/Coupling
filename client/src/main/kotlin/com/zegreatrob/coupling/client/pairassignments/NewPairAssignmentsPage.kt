@@ -18,12 +18,12 @@ val NewPairAssignmentsPage = partyPageFunction { props, partyId ->
                 currentPairAssignments()
             }
         },
-        toDataprops = { reload, commandFunc, result ->
+        toDataprops = { reload, dispatchFunc, result ->
             SocketedPairAssignments(
                 party = result.partyData?.party?.data ?: return@CouplingQuery null,
                 players = result.partyData?.playerList?.elements ?: return@CouplingQuery null,
                 pairAssignments = result.partyData?.currentPairAssignmentDocument?.element,
-                controls = Controls(commandFunc, reload),
+                controls = Controls(dispatchFunc, reload),
                 allowSave = true,
             )
         },
