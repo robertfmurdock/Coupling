@@ -1,12 +1,14 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -18,6 +20,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubParty
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
@@ -46,12 +49,16 @@ class SpinTest {
         }
     }) {
         sdk.perform(SavePartyCommand(party))
+        players.forEach { sdk.perform(SavePlayerCommand(party.id, it)) }
     } exercise {
-        sdk.perform(SpinCommand(party.id, players, emptyList()))
+        sdk.perform(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
-        result.pairs.assertIsEqualTo(
-            listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) })),
-        )
+        result.assertIsEqualTo(VoidResult.Accepted)
+        queryCurrentPairs(party.id, sdk)
+            ?.pairs
+            .assertIsEqualTo(
+                listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) })),
+            )
     } teardown {
         sdk.perform(DeletePartyCommand(party.id))
     }
@@ -83,14 +90,17 @@ class SpinTest {
     }) {
         setupScenario(sdk, party, players, history)
     } exercise {
-        sdk.perform(SpinCommand(party.id, players, emptyList()))
+        sdk.perform(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
-        result.pairs.assertIsEqualTo(
-            listOf(
-                pairOf(players[0], players[3]).withPins(),
-                pairOf(players[1], players[2]).withPins(),
-            ),
-        )
+        result.assertIsEqualTo(VoidResult.Accepted)
+        queryCurrentPairs(party.id, sdk)
+            ?.pairs
+            .assertIsEqualTo(
+                listOf(
+                    pairOf(players[0], players[3]).withPins(),
+                    pairOf(players[1], players[2]).withPins(),
+                ),
+            )
     } teardown {
         sdk.perform(DeletePartyCommand(party.id))
     }
@@ -121,14 +131,17 @@ class SpinTest {
     }) {
         setupScenario(sdk.await(), party, players, history)
     } exercise {
-        sdk.await().perform(SpinCommand(party.id, players, emptyList()))
+        sdk.await().perform(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
-        result.pairs.assertIsEqualTo(
-            listOf(
-                pairOf(players[0], players[1]).withPins(),
-                pairOf(players[2], players[3]).withPins(),
-            ),
-        )
+        result.assertIsEqualTo(VoidResult.Accepted)
+        queryCurrentPairs(party.id, sdk.await())
+            ?.pairs
+            .assertIsEqualTo(
+                listOf(
+                    pairOf(players[0], players[1]).withPins(),
+                    pairOf(players[2], players[3]).withPins(),
+                ),
+            )
     } teardown {
         sdk().perform(DeletePartyCommand(party.id))
     }
@@ -148,11 +161,14 @@ class SpinTest {
         fun whenAPinExistsWillAssignOnePinToPair() = asyncSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            sdk.perform(SpinCommand(party.id, players, listOf(pin)))
+            sdk.perform(SpinCommand(party.id, players.map { it.id }, listOf(pin.id!!)))
         } verifyAnd { result ->
-            result.pairs.assertIsEqualTo(
-                listOf(PinnedCouplingPair(listOf(players[0].withPins()), setOf(pin))),
-            )
+            result.assertIsEqualTo(VoidResult.Accepted)
+            queryCurrentPairs(party.id, sdk)
+                ?.pairs
+                .assertIsEqualTo(
+                    listOf(PinnedCouplingPair(listOf(players[0].withPins()), setOf(pin))),
+                )
         } teardown {
             sdk.perform(DeletePartyCommand(party.id))
         }
@@ -161,11 +177,14 @@ class SpinTest {
         fun whenAPinExistsButIsDeselectedWillNotAssign() = asyncSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            sdk.perform(SpinCommand(party.id, players, emptyList()))
+            sdk.perform(SpinCommand(party.id, players.map { it.id }, emptyList()))
         } verifyAnd { result ->
-            result.pairs.assertIsEqualTo(
-                listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptySet())),
-            )
+            result.assertIsEqualTo(VoidResult.Accepted)
+            queryCurrentPairs(party.id, sdk)
+                ?.pairs
+                .assertIsEqualTo(
+                    listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptySet())),
+                )
         } teardown {
             sdk.perform(DeletePartyCommand(party.id))
         }
@@ -188,10 +207,16 @@ class SpinTest {
         ) = coroutineScope {
             with(sdk) {
                 perform(SavePartyCommand(party))
-                players.forEach { launch { perform(SavePlayerCommand(party.id, it)) } }
+                players.forEach { perform(SavePlayerCommand(party.id, it)) }
                 history.forEach { launch { perform(SavePairAssignmentsCommand(party.id, it)) } }
                 pins.forEach { launch { perform(SavePinCommand(party.id, it)) } }
             }
         }
     }
 }
+
+private suspend fun queryCurrentPairs(partyId: PartyId, sdk: CouplingSdk) =
+    sdk.perform(graphQuery { party(partyId) { currentPairAssignments() } })
+        ?.partyData
+        ?.currentPairAssignmentDocument
+        ?.element

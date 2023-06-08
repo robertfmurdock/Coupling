@@ -116,8 +116,8 @@ input PinInput {
 
 input SpinInput {
     partyId: String!
-    players: [PlayerInput]!
-    pins: [PinInput]!
+    playerIds: [String]!
+    pinIds: [String]!
 }
 
 type SpinOutput {
@@ -240,7 +240,7 @@ type Query {
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
 type Mutation {
-    spin(input: SpinInput!): SpinOutput!
+    spin(input: SpinInput!): Boolean
     saveParty(input: SavePartyInput!): Boolean
     deleteParty(input: DeletePartyInput!): Boolean
     savePin(input: SavePinInput!): Boolean

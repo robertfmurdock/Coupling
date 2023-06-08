@@ -1,34 +1,29 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.CommandResult
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.json.SpinInput
-import com.zegreatrob.coupling.json.SpinOutput
-import com.zegreatrob.coupling.json.toModel
-import com.zegreatrob.coupling.json.toSerializable
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
+import kotlinx.serialization.json.JsonElement
 
 interface SdkSpin :
     SpinCommand.Dispatcher,
     GqlSyntax {
 
-    override suspend fun perform(action: SpinCommand): PairAssignmentDocument =
+    override suspend fun perform(command: SpinCommand): VoidResult =
         doQuery(
-            Mutation.spin,
-            action.spinInput(),
-            "spin",
-            ::toOutput,
-        )!!
-
-    private fun toOutput(at: SpinOutput) = at.result.toModel()
+            mutation = Mutation.spin,
+            input = command.spinInput(),
+            resultName = "spin",
+            toOutput = { _: JsonElement -> VoidResult.Accepted },
+        ) ?: CommandResult.Unauthorized
 }
 
 fun SpinCommand.spinInput() = SpinInput(
-    players = players.map(Player::toSerializable),
-    pins = pins.map(Pin::toSerializable),
     partyId = partyId,
+    playerIds = playerIds,
+    pinIds = pinIds,
 )

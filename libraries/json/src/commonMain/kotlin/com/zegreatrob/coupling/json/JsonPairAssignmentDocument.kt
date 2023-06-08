@@ -27,9 +27,6 @@ data class JsonPairAssignmentDocument(
 )
 
 @Serializable
-data class SpinOutput(val result: JsonPairAssignmentDocument)
-
-@Serializable
 data class JsonPairAssignmentDocumentRecord(
     val id: String,
     val date: DateTime,
@@ -91,8 +88,8 @@ data class JsonPinnedPlayer(
 @Serializable
 data class SpinInput(
     override val partyId: PartyId,
-    val players: List<JsonPlayerData>,
-    val pins: List<JsonPinData>,
+    val playerIds: List<String>,
+    val pinIds: List<String>,
 ) : PartyInput
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(

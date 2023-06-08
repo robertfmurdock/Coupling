@@ -1,12 +1,8 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.ProposeNewPairsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocument
-import com.zegreatrob.coupling.json.JsonPinData
-import com.zegreatrob.coupling.json.JsonPlayerData
 import com.zegreatrob.coupling.json.SpinInput
-import com.zegreatrob.coupling.json.toModel
-import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedDispatcher
 import com.zegreatrob.coupling.server.graphql.dispatch
@@ -20,14 +16,14 @@ val spinResolver: Resolver = dispatch(
             partyId = args.partyId.value,
         )
     },
-    { _, args: SpinInput ->
-        val (_, players, pins) = args
-        ProposeNewPairsCommand(
-            players.map(JsonPlayerData::toModel),
-            pins.map(JsonPinData::toModel),
-        )
-    },
-    { it?.toSerializable()?.let(::Return) },
+    { _, args: SpinInput -> args.command() },
+    { true },
+)
+
+private fun SpinInput.command() = SpinCommand(
+    partyId = partyId,
+    playerIds = playerIds,
+    pinIds = pinIds,
 )
 
 @Serializable

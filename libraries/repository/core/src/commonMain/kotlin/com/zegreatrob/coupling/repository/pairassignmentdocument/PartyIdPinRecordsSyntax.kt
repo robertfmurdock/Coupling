@@ -5,5 +5,5 @@ import com.zegreatrob.coupling.repository.pin.PinGet
 
 interface PartyIdPinRecordsSyntax {
     val pinRepository: PinGet
-    suspend fun PartyId.getPinRecords() = pinRepository.getPins(this)
+    suspend fun PartyId.loadPins() = pinRepository.getPins(this)
 }

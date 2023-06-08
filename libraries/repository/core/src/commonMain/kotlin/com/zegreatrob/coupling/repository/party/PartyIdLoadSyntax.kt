@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.party
 
 import com.zegreatrob.coupling.model.party.PartyId
 
-interface PartyIdGetRecordSyntax {
+interface PartyIdLoadSyntax {
     val partyRepository: PartyGet
-    suspend fun PartyId.loadRecord() = partyRepository.getPartyRecord(this)
+    suspend fun PartyId.load() = partyRepository.getPartyRecord(this)
 }

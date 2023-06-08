@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.spin
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.NewPairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.newPairAssignmentsPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -18,7 +18,7 @@ data class PrepareSpin(
     val players: List<Player>,
     val currentPairsDoc: PairAssignmentDocument?,
     val pins: List<Pin>,
-    val dispatchFunc: DispatchFunc<out NewPairAssignmentsCommand.Dispatcher>,
+    val dispatchFunc: DispatchFunc<out SpinCommand.Dispatcher>,
 ) : DataPropsBind<PrepareSpin>(prepareSpin)
 
 val prepareSpin by ntmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, dispatchFunc) ->
@@ -60,12 +60,12 @@ private fun isInLastSetOfPairs(player: Player, currentPairsDoc: PairAssignmentDo
 private fun List<Pair<Player, Boolean>>.playerIds() = filter { (_, isSelected) -> isSelected }.map { it.first.id }
 
 private fun onSpin(
-    dispatchFunc: DispatchFunc<out NewPairAssignmentsCommand.Dispatcher>,
+    dispatchFunc: DispatchFunc<out SpinCommand.Dispatcher>,
     party: Party,
     playerSelections: List<Pair<Player, Boolean>>,
     pinSelections: List<String?>,
     setRedirectUrl: (String) -> Unit,
 ) = dispatchFunc(
-    { NewPairAssignmentsCommand(party.id, playerSelections.playerIds(), pinSelections.filterNotNull()) },
+    { SpinCommand(party.id, playerSelections.playerIds(), pinSelections.filterNotNull()) },
     { setRedirectUrl(party.newPairAssignmentsPath()) },
 )

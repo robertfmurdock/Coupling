@@ -23,8 +23,9 @@ import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerDeletePairAssignmentsCommandDispatcher
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerProposeNewPairsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSavePairAssignmentDocumentCommandDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSpinActionDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSpinCommandDispatcher
 import com.zegreatrob.coupling.server.action.party.ServerDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.action.pin.ServerDeletePinCommandDispatcher
@@ -103,7 +104,7 @@ interface ICurrentPartyDispatcher :
     ServerDeletePinCommandDispatcher,
     ServerSavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
-    ServerProposeNewPairsCommandDispatcher,
+    ServerSpinActionDispatcher,
     PairAssignmentDocumentListQuery.Dispatcher
 
 class CurrentPartyDispatcher(
@@ -113,6 +114,7 @@ class CurrentPartyDispatcher(
     ICommandDispatcher by commandDispatcher,
     PinsQuery.Dispatcher,
     PlayersQuery.Dispatcher,
+    ServerSpinCommandDispatcher,
     ServerCreateSecretCommandDispatcher,
     ServerSavePlayerCommandDispatcher,
     ServerDeletePlayerCommandDispatcher,
@@ -124,7 +126,7 @@ class CurrentPartyDispatcher(
     ServerDeletePinCommandDispatcher,
     ServerSavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
-    ServerProposeNewPairsCommandDispatcher,
+    ServerSpinActionDispatcher,
     PairAssignmentDocumentListQuery.Dispatcher,
     ICurrentPartyDispatcher {
     override val userId: String get() = commandDispatcher.userId

@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
@@ -11,11 +10,6 @@ import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.CouplingQueryResult
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.user.User
@@ -37,7 +31,6 @@ import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 import com.zegreatrob.coupling.sdk.CouplingSdk
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
-import korlibs.time.DateTime
 import korlibs.time.TimeProvider
 
 class MemoryRepositoryCatalog private constructor(
@@ -52,7 +45,6 @@ class MemoryRepositoryCatalog private constructor(
     ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,
     ClientDeletePlayerCommandDispatcher,
-    ClientNewPairAssignmentsCommandDispatcher,
     ClientPartyListQueryDispatcher,
     ClientPartyPlayerQueryDispatcher,
     ClientSavePairAssignmentsCommandDispatcher,
@@ -80,17 +72,8 @@ class MemoryRepositoryCatalog private constructor(
         MemoryPinRepository(userEmail, clock, backend.pin),
     )
 
-    override suspend fun perform(action: SpinCommand): PairAssignmentDocument {
-        val pairs = action.players.shuffled().map { it.withPins(emptyList()) }.withIndex().groupBy { it.index / 2 }
-            .entries
-            .map { it.value.map(IndexedValue<PinnedPlayer>::value) }
-            .map { PinnedCouplingPair(it, emptySet()) }
-            .toList()
-        return PairAssignmentDocument(
-            id = PairAssignmentDocumentId("${uuid4()}"),
-            date = DateTime.now(),
-            pairs = pairs,
-        )
+    override suspend fun perform(command: SpinCommand): VoidResult {
+        TODO("Not yet implemented")
     }
 
     override suspend fun perform(command: BoostQuery) = TODO("Not yet implemented")

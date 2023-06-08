@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.ProposeNewPairsCommand
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PairingRule
@@ -20,11 +19,10 @@ import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.random.Random
 import kotlin.test.Test
 
-class ProposeNewPairsCommandTest {
+class SpinActionTest {
 
     @Test
-    fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = asyncSetup(object :
-        ServerProposeNewPairsCommandDispatcher {
+    fun willUseRepositoryToGetThingsAsyncAndUseThemForRunGameAction() = asyncSetup(object : ServerSpinActionDispatcher {
         override val execute = stubActionExecutor(NextPlayerAction::class)
 
         override val wheel: Wheel get() = throw NotImplementedError("Do not use")
@@ -52,7 +50,7 @@ class ProposeNewPairsCommandTest {
 
         override fun perform(action: RunGameAction) = spy.spyFunction(action)
     }) exercise {
-        perform(ProposeNewPairsCommand(players, pins))
+        perform(SpinAction(party.id, players, pins))
     } verify { result ->
         result.assertIsEqualTo(expectedPairAssignmentDocument)
         spy.spyReceivedValues.assertIsEqualTo(listOf(RunGameAction(players, pins, history, party)))

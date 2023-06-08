@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.repository.player.PartyPlayerRecordsListSyntax
+import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
@@ -16,10 +16,10 @@ object PlayersQuery : SimpleSuspendAction<PlayersQuery.Dispatcher, List<Record<P
 
     interface Dispatcher :
         CurrentPartyIdSyntax,
-        PartyPlayerRecordsListSyntax,
+        PartyIdLoadPlayersSyntax,
         FindCallSignAction.Dispatcher {
 
-        suspend fun perform(query: PlayersQuery) = currentPartyId.getPlayerRecords().populateMissingCallSigns()
+        suspend fun perform(query: PlayersQuery) = currentPartyId.loadPlayers().populateMissingCallSigns()
 
         private fun List<PartyRecord<Player>>.populateMissingCallSigns() = foldIndexedToList { index, acc, record ->
             val callSign = findCallSign(index, acc, record)

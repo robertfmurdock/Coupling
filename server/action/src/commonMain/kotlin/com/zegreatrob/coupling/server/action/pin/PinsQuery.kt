@@ -10,6 +10,6 @@ object PinsQuery : SimpleSuspendAction<PinsQuery.Dispatcher, List<PartyRecord<Pi
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher : CurrentPartyIdSyntax, PartyIdPinRecordsSyntax {
-        suspend fun perform(query: PinsQuery) = currentPartyId.getPinRecords()
+        suspend fun perform(query: PinsQuery) = currentPartyId.loadPins()
     }
 }
