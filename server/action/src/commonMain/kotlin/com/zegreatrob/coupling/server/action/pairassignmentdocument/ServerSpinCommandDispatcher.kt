@@ -14,10 +14,12 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPinRecor
 import com.zegreatrob.coupling.repository.party.PartyIdLoadSyntax
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 interface ServerSpinCommandDispatcher :
     SpinCommand.Dispatcher,
-    SpinAction.Dispatcher,
+    RunGameAction.Dispatcher,
     SuspendActionExecuteSyntax,
     PartyIdPairAssignmentDocumentSaveSyntax,
     PartyIdLoadSyntax,
@@ -28,19 +30,24 @@ interface ServerSpinCommandDispatcher :
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 
     override suspend fun perform(command: SpinCommand): VoidResult = with(command) {
-        requestSpinAction(partyId)
+        runGameAction(partyId)
             ?.let { execute(it) }
             ?.let { partyId.with(it).save() }
             ?.let { VoidResult.Accepted }
             ?: VoidResult.Rejected
     }
 
-    private suspend fun SpinCommand.requestSpinAction(partyId: PartyId): SpinAction? {
-        return SpinAction(
-            party = partyId.load()?.data ?: return null,
-            players = filterSelectedPlayers(partyId.loadPlayers().elements, playerIds),
-            pins = filterSelectedPins(partyId.loadPins().elements, pinIds),
-            history = partyId.loadHistory(),
+    private suspend fun SpinCommand.runGameAction(partyId: PartyId): RunGameAction? = coroutineScope {
+        val partyDeferred = async { partyId.load()?.data }
+        val playersDeferred = async { partyId.loadPlayers().elements }
+        val pinsDeferred = async { partyId.loadPins().elements }
+        val historyDeferred = async { partyId.loadHistory() }
+        RunGameAction(
+            party = partyDeferred.await()
+                ?: return@coroutineScope null,
+            players = filterSelectedPlayers(playersDeferred.await(), playerIds),
+            pins = filterSelectedPins(pinsDeferred.await(), pinIds),
+            history = historyDeferred.await(),
         )
     }
 

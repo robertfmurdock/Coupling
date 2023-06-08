@@ -42,7 +42,7 @@ class RunGameActionTest {
 
         override fun perform(action: FindNewPairsAction): List<CouplingPair> = spy.spyFunction(action)
     }) exercise {
-        perform(RunGameAction(players, pins, history, party))
+        perform(RunGameAction(party, players, pins, history))
     } verify { result ->
         result.assertIsEqualTo(
             PairAssignmentDocument(

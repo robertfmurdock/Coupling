@@ -12,13 +12,12 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
-import korlibs.time.DateTime
 
 data class RunGameAction(
+    val party: Party,
     val players: List<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-    val party: Party,
 ) : SimpleExecutableAction<RunGameAction.Dispatcher, PairAssignmentDocument> {
     override val performFunc = link(Dispatcher::perform)
 
@@ -41,8 +40,4 @@ data class RunGameAction(
             pairs = pairAssignments,
         )
     }
-}
-
-interface Clock {
-    fun currentDate() = DateTime.now()
 }

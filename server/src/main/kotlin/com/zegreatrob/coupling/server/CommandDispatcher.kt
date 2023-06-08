@@ -24,7 +24,6 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairA
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSavePairAssignmentDocumentCommandDispatcher
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSpinActionDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSpinCommandDispatcher
 import com.zegreatrob.coupling.server.action.party.ServerDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
@@ -104,7 +103,6 @@ interface ICurrentPartyDispatcher :
     ServerDeletePinCommandDispatcher,
     ServerSavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
-    ServerSpinActionDispatcher,
     PairAssignmentDocumentListQuery.Dispatcher
 
 class CurrentPartyDispatcher(
@@ -126,7 +124,6 @@ class CurrentPartyDispatcher(
     ServerDeletePinCommandDispatcher,
     ServerSavePinCommandDispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
-    ServerSpinActionDispatcher,
     PairAssignmentDocumentListQuery.Dispatcher,
     ICurrentPartyDispatcher {
     override val userId: String get() = commandDispatcher.userId
