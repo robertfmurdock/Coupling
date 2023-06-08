@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.NewPairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
@@ -16,14 +17,14 @@ interface ClientNewPairAssignmentsCommandDispatcher :
     SuspendActionExecuteSyntax,
     SpinCommand.Dispatcher {
 
-    override suspend fun perform(query: NewPairAssignmentsCommand) = with(query) {
+    override suspend fun perform(query: NewPairAssignmentsCommand): VoidResult = with(query) {
         val (party, players, pins) = getData()
         if (party == null) {
-            null
+            VoidResult.Rejected
         } else {
             execute(requestSpinAction(players, pins))
                 .let { sdk.perform(SavePairAssignmentsCommand(party.id, it)) }
-                .let { Unit }
+                .let { VoidResult.Accepted }
         }
     }
 
