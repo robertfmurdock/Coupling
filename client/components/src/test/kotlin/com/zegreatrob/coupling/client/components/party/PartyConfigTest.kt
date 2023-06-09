@@ -61,11 +61,11 @@ class PartyConfigTest {
     fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheParty() = asyncSetup(object {
         val party = Party(
             PartyId("1"),
-            name = "1",
-            alternateBadgeName = "alt",
-            defaultBadgeName = "def",
-            email = "email-y",
             pairingRule = PairingRule.PreferDifferentBadge,
+            defaultBadgeName = "def",
+            alternateBadgeName = "alt",
+            email = "email-y",
+            name = "1",
         )
         val stubDispatcher = StubDispatcher()
     }) {

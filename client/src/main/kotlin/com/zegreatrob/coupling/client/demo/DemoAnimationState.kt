@@ -22,7 +22,11 @@ import korlibs.time.DateTime
 import popper.core.Placement
 import web.cssom.ClassName
 
-private val demoParty = Party(id = PartyId("${uuid4()}"), name = "The Simpsons", imageURL = svgPath("parties/simpsons"))
+private val demoParty = Party(
+    id = PartyId("${uuid4()}"),
+    name = "The Simpsons",
+    imageURL = svgPath("parties/simpsons"),
+)
 
 private val homer by playerImage()
 private val marge by playerImage()

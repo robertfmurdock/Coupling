@@ -9,6 +9,7 @@ type PartyRecord {
     callSignsEnabled: Boolean
     animationsEnabled: Boolean
     animationSpeed: Float
+    slackChannel: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
@@ -160,6 +161,7 @@ input SavePartyInput {
     callSignsEnabled: Boolean
     animationsEnabled: Boolean
     animationSpeed: Float
+    slackChannel: String
 }
 
 input SavePlayerInput {

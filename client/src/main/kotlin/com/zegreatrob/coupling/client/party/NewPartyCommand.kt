@@ -13,8 +13,8 @@ interface NewPartyCommandDispatcher {
 
     private fun newParty() = Party(
         id = PartyId(""),
-        name = "New Party",
         defaultBadgeName = "Default",
         alternateBadgeName = "Alternate",
+        name = "New Party",
     )
 }

@@ -22,6 +22,7 @@ data class JsonParty(
     val callSignsEnabled: Boolean = false,
     val animationsEnabled: Boolean = true,
     val animationSpeed: Double = 1.0,
+    val slackChannel: String? = null,
 )
 
 @Serializable
@@ -35,6 +36,7 @@ data class JsonPartyRecord(
     val name: String? = null,
     val callSignsEnabled: Boolean = false,
     val animationsEnabled: Boolean = true,
+    val slackChannel: String? = null,
     val animationSpeed: Double = 1.0,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
@@ -52,6 +54,7 @@ fun Party.toSerializable() = JsonParty(
     callSignsEnabled = callSignsEnabled,
     animationsEnabled = animationEnabled,
     animationSpeed = animationSpeed,
+    slackChannel = slackChannel,
 )
 
 fun Record<Party>.toSerializable() = JsonPartyRecord(
@@ -65,6 +68,7 @@ fun Record<Party>.toSerializable() = JsonPartyRecord(
     callSignsEnabled = data.callSignsEnabled,
     animationsEnabled = data.animationEnabled,
     animationSpeed = data.animationSpeed,
+    slackChannel = data.slackChannel,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -81,6 +85,7 @@ fun JsonParty.toModel(): Party = Party(
     callSignsEnabled = callSignsEnabled,
     animationEnabled = animationsEnabled,
     animationSpeed = animationSpeed,
+    slackChannel = slackChannel,
 )
 
 fun JsonPartyRecord.toModelRecord(): Record<Party> = Record(
@@ -95,6 +100,7 @@ fun JsonPartyRecord.toModelRecord(): Record<Party> = Record(
         callSignsEnabled = callSignsEnabled,
         animationEnabled = animationsEnabled,
         animationSpeed = animationSpeed,
+        slackChannel = slackChannel,
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,

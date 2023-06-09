@@ -136,10 +136,7 @@ class PartyStatisticsTest :
             Player("curry", name = "Curly", avatarType = null),
             Player("moe", name = "Moe", avatarType = null),
         )
-        val party = Party(
-            PartyId("2"),
-            name = "Mathematica",
-        )
+        val party = Party(PartyId("2"), name = "Mathematica")
         val report = perform(ComposeStatisticsAction(party, players, emptyList()))
     }) exercise {
         render(

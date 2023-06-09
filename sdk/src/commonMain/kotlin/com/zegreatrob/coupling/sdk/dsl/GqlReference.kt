@@ -85,6 +85,7 @@ object GqlReference {
         animationsEnabled = false,
         animationSpeed = 0.0,
         modifyingUserEmail = "",
+        slackChannel = "",
         isDeleted = false,
         timestamp = DateTime.EPOCH,
     )

@@ -26,4 +26,5 @@ private fun Party.savePartyInput() = SavePartyInput(
     callSignsEnabled = callSignsEnabled,
     animationsEnabled = animationEnabled,
     animationSpeed = animationSpeed,
+    slackChannel = slackChannel,
 )

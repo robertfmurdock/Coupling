@@ -42,7 +42,7 @@ class PlayerConfigTest {
 
     @Test
     fun selectingAvatarTypeWillAffectSavedPlayer() = asyncSetup(object {
-        val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
+        val party = Party(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
         val player = Player(id = "blarg", avatarType = null)
         val stubber = StubDispatcher()
         val actor = UserEvent.setup()
@@ -69,7 +69,7 @@ class PlayerConfigTest {
 
     @Test
     fun deselectingAvatarTypeWillRemoveIt() = asyncSetup(object {
-        val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
+        val party = Party(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
         val player = Player(id = "blarg", avatarType = AvatarType.BoringBeam)
         val stubber = StubDispatcher()
         val actor = UserEvent.setup()
@@ -95,7 +95,7 @@ class PlayerConfigTest {
 
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
-        val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
+        val party = Party(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
         val player = Player(id = "blarg", avatarType = null)
     }) exercise {
         render(
@@ -114,7 +114,7 @@ class PlayerConfigTest {
 
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
-        val party = Party(id = PartyId("party"), name = "Party tribe", badgesEnabled = true)
+        val party = Party(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
         val player = Player(id = "blarg", badge = Badge.Alternate.value, avatarType = null)
     }) exercise {
         render(

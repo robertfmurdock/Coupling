@@ -6,13 +6,14 @@ import com.zegreatrob.coupling.model.party.defaultParty
 
 fun SavePartyInput.toModel() = Party(
     id = partyId,
-    name = name,
-    email = email,
     pairingRule = PairingRule.fromValue(pairingRule),
+    badgesEnabled = badgesEnabled ?: defaultParty.badgesEnabled,
     defaultBadgeName = defaultBadgeName ?: defaultParty.defaultBadgeName,
     alternateBadgeName = alternateBadgeName ?: defaultParty.alternateBadgeName,
-    badgesEnabled = badgesEnabled ?: defaultParty.badgesEnabled,
+    email = email,
+    name = name,
     callSignsEnabled = callSignsEnabled ?: defaultParty.callSignsEnabled,
     animationEnabled = animationsEnabled ?: defaultParty.animationEnabled,
     animationSpeed = animationSpeed ?: defaultParty.animationSpeed,
+    slackChannel = slackChannel,
 )

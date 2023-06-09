@@ -39,8 +39,8 @@ class SpinTest {
         object : SdkContext by context {
             val party = Party(
                 id = PartyId(uuid4().toString()),
-                name = "commonTest",
                 pairingRule = PairingRule.LongestTime,
+                name = "commonTest",
             )
             val players = listOf(
                 Player(name = "dude1", avatarType = null),
@@ -66,7 +66,10 @@ class SpinTest {
     @Test
     fun givenThePartyRuleIsPreferDifferentBadgeThenPairsWillComply() = asyncSetup.with({
         object : SdkContext by it {
-            val party = Party(id = PartyId(uuid4().toString()), pairingRule = PairingRule.PreferDifferentBadge)
+            val party = Party(
+                id = PartyId(uuid4().toString()),
+                pairingRule = PairingRule.PreferDifferentBadge,
+            )
             val players = fourPlayersTwoDefaultTwoAlternate()
             val history = listOf(
                 PairAssignmentDocument(

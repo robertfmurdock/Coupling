@@ -15,7 +15,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
     UserIdSyntax,
     ClockSyntax,
     RecordSyntax,
-    DynamoTribeJsonMapping {
+    DynamoPartyJsonMapping {
 
     companion object :
         DynamoTableNameSyntax,

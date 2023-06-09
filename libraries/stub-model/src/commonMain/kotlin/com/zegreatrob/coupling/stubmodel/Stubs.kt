@@ -23,15 +23,16 @@ var partyCounter = 1
 
 fun stubParty() = Party(
     id = stubPartyId(),
-    name = "Stub Party $partyCounter",
-    alternateBadgeName = "Badgely",
-    badgesEnabled = partyCounter % 2 == 0,
-    callSignsEnabled = partyCounter % 2 == 1,
-    defaultBadgeName = "Badgerton",
-    email = "stuby@stub.edu",
     pairingRule = stubPairingRule(),
+    badgesEnabled = partyCounter % 2 == 0,
+    defaultBadgeName = "Badgerton",
+    alternateBadgeName = "Badgely",
+    email = "stuby@stub.edu",
+    name = "Stub Party $partyCounter",
+    callSignsEnabled = partyCounter % 2 == 1,
     animationEnabled = partyCounter % 2 == 0,
     animationSpeed = partyCounter.toDouble(),
+    slackChannel = uuidString(),
 ).also { partyCounter++ }
 
 private fun stubPairingRule() = PairingRule.values()[partyCounter % PairingRule.values().size]

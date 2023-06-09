@@ -37,7 +37,12 @@ class PlayerConfigPageE2ETest {
 
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
-                buildParty = { Party(PartyId("${randomInt()}-PlayerConfigPageE2E"), name = "${uuid4()}") },
+                buildParty = {
+                    Party(
+                        PartyId("${randomInt()}-PlayerConfigPageE2E"),
+                        name = "${uuid4()}",
+                    )
+                },
                 buildPlayer = {
                     Player(
                         "${randomInt()}-PlayerConfigPageE2E",

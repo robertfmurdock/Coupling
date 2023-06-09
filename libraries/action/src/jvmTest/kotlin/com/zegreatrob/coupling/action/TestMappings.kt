@@ -25,7 +25,7 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup {
 
     return PartySetup(
         party = Party(
-            name = partyJson["name"].textValue(),
+            id = partyJson["id"].textValue().let(::PartyId),
             pairingRule = partyJson["pairingRule"].intValue().let {
                 PairingRule.fromValue(
                     it,
@@ -33,7 +33,7 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup {
             },
             defaultBadgeName = partyJson["defaultBadgeName"].textValue(),
             alternateBadgeName = partyJson["alternateBadgeName"].textValue(),
-            id = partyJson["id"].textValue().let(::PartyId),
+            name = partyJson["name"].textValue(),
         ),
         players = fileJson["players"].map { it.toPlayer() },
         history = fileJson["history"].map {
