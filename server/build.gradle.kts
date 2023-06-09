@@ -30,6 +30,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(project("action"))
     implementation(project("secret"))
+    implementation(project("slack"))
     implementation(project(":libraries:json"))
     implementation(project(":libraries:repository:dynamo"))
     implementation(project(":libraries:repository:memory"))

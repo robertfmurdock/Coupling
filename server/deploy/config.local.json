@@ -7,5 +7,6 @@
   "DYNAMO_PREFIX": "local-",
   "ENABLE_PRERELEASE_FEATURES": "true",
   "SECRET_SIGNING_SECRET": "temporary",
-  "WEBSOCKET_HOST": "socket.local"
+  "WEBSOCKET_HOST": "socket.local",
+  "SLACK_SIGNING_SECRET": ""
 }

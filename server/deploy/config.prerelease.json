@@ -4,5 +4,6 @@
   "DYNAMO_PREFIX": "prerelease-",
   "ENABLE_PRERELEASE_FEATURES": "true",
   "PUBLIC_URL": "https://prerelease.coupling.zegreatrob.com",
-  "WEBSOCKET_HOST": "socket.prerelease.coupling.zegreatrob.com"
+  "WEBSOCKET_HOST": "socket.prerelease.coupling.zegreatrob.com",
+  "SLACK_SIGNING_SECRET": ""
 }
