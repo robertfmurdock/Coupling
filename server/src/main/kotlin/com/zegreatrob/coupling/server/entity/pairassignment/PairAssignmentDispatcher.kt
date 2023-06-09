@@ -4,12 +4,12 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCa
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportsAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.FindNewPairsAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.RunGameAction
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.ShufflePairsAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.Wheel
 import com.zegreatrob.testmints.action.ExecutableActionExecutor
 
 interface PairAssignmentDispatcher :
-    RunGameAction.Dispatcher,
+    ShufflePairsAction.Dispatcher,
     FindNewPairsAction.Dispatcher,
     NextPlayerAction.Dispatcher,
     CreatePairCandidateReportsAction.Dispatcher,

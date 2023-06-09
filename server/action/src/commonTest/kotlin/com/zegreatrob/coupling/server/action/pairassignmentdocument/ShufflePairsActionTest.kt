@@ -18,11 +18,11 @@ import com.zegreatrob.testmints.setup
 import korlibs.time.DateTime
 import kotlin.test.Test
 
-class RunGameActionTest {
+class ShufflePairsActionTest {
 
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object :
-        RunGameAction.Dispatcher {
+        ShufflePairsAction.Dispatcher {
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 
@@ -42,7 +42,7 @@ class RunGameActionTest {
 
         override fun perform(action: FindNewPairsAction): List<CouplingPair> = spy.spyFunction(action)
     }) exercise {
-        perform(RunGameAction(party, players, pins, history))
+        perform(ShufflePairsAction(party, players, pins, history))
     } verify { result ->
         result.assertIsEqualTo(
             PairAssignmentDocument(

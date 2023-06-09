@@ -13,12 +13,12 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 
-data class RunGameAction(
+data class ShufflePairsAction(
     val party: Party,
     val players: List<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-) : SimpleExecutableAction<RunGameAction.Dispatcher, PairAssignmentDocument> {
+) : SimpleExecutableAction<ShufflePairsAction.Dispatcher, PairAssignmentDocument> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher :
@@ -27,13 +27,18 @@ data class RunGameAction(
         FindNewPairsAction.Dispatcher,
         AssignPinsActionDispatcher {
 
-        fun perform(action: RunGameAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
+        fun perform(action: ShufflePairsAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 
-        private fun RunGameAction.assignPinsToPairs() = assignPins(findNewPairs())
-        private fun RunGameAction.assignPins(pairs: List<CouplingPair>) = execute(assignPinsAction(pairs))
-        private fun RunGameAction.assignPinsAction(pairs: List<CouplingPair>) = AssignPinsAction(pairs, pins, history)
-        private fun RunGameAction.findNewPairs() = execute(findNewPairsAction())
-        private fun RunGameAction.findNewPairsAction() = FindNewPairsAction(Game(history, players, party.pairingRule))
+        private fun ShufflePairsAction.assignPinsToPairs() = assignPins(findNewPairs())
+        private fun ShufflePairsAction.assignPins(pairs: List<CouplingPair>) = execute(assignPinsAction(pairs))
+        private fun ShufflePairsAction.findNewPairs() = execute(findNewPairsAction())
+
+        private fun ShufflePairsAction.assignPinsAction(pairs: List<CouplingPair>) =
+            AssignPinsAction(pairs, pins, history)
+
+        private fun ShufflePairsAction.findNewPairsAction() =
+            FindNewPairsAction(Game(history, players, party.pairingRule))
+
         private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = currentDate(),

@@ -20,7 +20,7 @@ import kotlin.test.Test
 class GameExamplesTest {
 
     companion object :
-        RunGameAction.Dispatcher,
+        ShufflePairsAction.Dispatcher,
         FindNewPairsAction.Dispatcher,
         NextPlayerAction.Dispatcher,
         CreatePairCandidateReportAction.Dispatcher,
@@ -65,7 +65,7 @@ class GameExamplesTest {
                 PairingRule.LongestTime,
             )
         }) exercise {
-            perform(RunGameAction(party, allPlayers, emptyList(), history))
+            perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
         } verify { result ->
             result.pairs.map { pair -> pair.players.size.assertIsEqualTo(2); pair.players }
                 .flatten()
@@ -81,7 +81,7 @@ class GameExamplesTest {
                 PairingRule.LongestTime,
             )
         }) exercise {
-            perform(RunGameAction(party, listOf(clark, bruce, diana), emptyList(), history))
+            perform(ShufflePairsAction(party, listOf(clark, bruce, diana), emptyList(), history))
         } verify { result ->
             result.pairs.size.assertIsEqualTo(2)
         }
@@ -111,7 +111,7 @@ class GameExamplesTest {
                 ),
             )
         }) exercise {
-            perform(RunGameAction(party, allPlayers, emptyList(), history))
+            perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
         } verify { result ->
             result.pairs.contains(pairOf(bruce, john).toPinnedPair())
         }
@@ -159,7 +159,7 @@ class GameExamplesTest {
                 ),
             )
         }) exercise {
-            perform(RunGameAction(party, allPlayers, emptyList(), history))
+            perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
         } verify { result ->
             result.pairs.contains(pairOf(bruce, john).toPinnedPair())
         }
@@ -195,7 +195,7 @@ class GameExamplesTest {
             ),
         )
     }) exercise {
-        perform(RunGameAction(party, allPlayers, emptyList(), history))
+        perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
     } verify { result ->
         result.pairs.contains(pairOf(kamala, logan).toPinnedPair())
     }

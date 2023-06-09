@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -19,7 +18,7 @@ import kotlinx.coroutines.coroutineScope
 
 interface ServerSpinCommandDispatcher :
     SpinCommand.Dispatcher,
-    RunGameAction.Dispatcher,
+    ShufflePairsAction.Dispatcher,
     SuspendActionExecuteSyntax,
     PartyIdPairAssignmentDocumentSaveSyntax,
     PartyIdLoadSyntax,
@@ -29,20 +28,24 @@ interface ServerSpinCommandDispatcher :
 
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 
-    override suspend fun perform(command: SpinCommand): VoidResult = with(command) {
-        runGameAction(partyId)
-            ?.let { execute(it) }
-            ?.let { partyId.with(it).save() }
-            ?.let { VoidResult.Accepted }
-            ?: VoidResult.Rejected
+    override suspend fun perform(command: SpinCommand): VoidResult {
+        val shufflePairsAction = command.shufflePairsAction()
+            ?: return VoidResult.Rejected
+
+        val newPairs = execute(shufflePairsAction)
+
+        command.partyId.with(newPairs)
+            .save()
+
+        return VoidResult.Accepted
     }
 
-    private suspend fun SpinCommand.runGameAction(partyId: PartyId): RunGameAction? = coroutineScope {
+    private suspend fun SpinCommand.shufflePairsAction(): ShufflePairsAction? = coroutineScope {
         val partyDeferred = async { partyId.load()?.data }
         val playersDeferred = async { partyId.loadPlayers().elements }
         val pinsDeferred = async { partyId.loadPins().elements }
         val historyDeferred = async { partyId.loadHistory() }
-        RunGameAction(
+        ShufflePairsAction(
             party = partyDeferred.await()
                 ?: return@coroutineScope null,
             players = filterSelectedPlayers(playersDeferred.await(), playerIds),
