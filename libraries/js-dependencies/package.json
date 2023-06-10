@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.1.0",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.348.0",
-    "@aws-sdk/client-dynamodb": "3.348.0",
-    "@aws-sdk/client-lambda": "~3.348.0",
-    "@aws-sdk/lib-dynamodb": "3.348.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.350.0",
+    "@aws-sdk/client-dynamodb": "3.350.0",
+    "@aws-sdk/client-lambda": "~3.350.0",
+    "@aws-sdk/lib-dynamodb": "3.350.0",
     "@graphql-tools/schema": "^10.0.0",
     "@graphql-tools/stitch": "^9.0.0",
     "@log4js-node/log4js-api": "1.0.2",
@@ -38,7 +38,7 @@
     "global-jsdom": "9.0.1",
     "graphql": "^16.6.0",
     "html-webpack-harddisk-plugin": "^2.0.0",
-    "html-webpack-plugin": "^5.5.1",
+    "html-webpack-plugin": "^5.5.2",
     "html2canvas": "^1.4.1",
     "jose": "^4.14.4",
     "jsdom": "22.1.0",
