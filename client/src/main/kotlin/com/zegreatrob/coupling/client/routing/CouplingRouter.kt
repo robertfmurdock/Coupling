@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Da
 import com.zegreatrob.coupling.client.demo.DemoPage
 import com.zegreatrob.coupling.client.demo.LoadingPage
 import com.zegreatrob.coupling.client.graphql.GraphIQLPage
+import com.zegreatrob.coupling.client.incubating.IncubatingPage
 import com.zegreatrob.coupling.client.pairassignments.CurrentPairsPage
 import com.zegreatrob.coupling.client.pairassignments.NewPairAssignmentsPage
 import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
@@ -50,6 +51,7 @@ val couplingRouter by ntmFC<CouplingRouter> { (animationsDisabled, config) ->
                 couplingRoute("About", "/about", AboutPage),
                 couplingRoute("Demo", "/demo", DemoPage),
                 couplingRoute("Loading Test", "/loading", LoadingPage),
+                couplingRoute("Incubating", "/incubating", IncubatingPage),
             ).plus(routes(isSignedIn, config)),
             opts = jso { basename = config.basename },
         )
