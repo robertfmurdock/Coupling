@@ -13,9 +13,11 @@ import korlibs.time.TimeProvider
 import kotlinx.serialization.json.JsonNull
 
 object DispatcherProviders {
+
     fun <E, I> command(): GraphQLDispatcherProvider<E, I, CommandDispatcher> = { r, _, _ -> r.commandDispatcher }
+
     val partyCommand: GraphQLDispatcherProvider<JsonPartyData, JsonNull, CurrentPartyDispatcher> =
-        { request, entity, _ -> authorizedDispatcher(request = request, partyId = entity.id ?: throw Exception("Party not found")) }
+        { request, entity, _ -> authorizedDispatcher(request = request, partyId = entity.id) }
 
     suspend fun authorizedDispatcher(
         request: Request,

@@ -23,7 +23,7 @@ data class PartyDataInput(
 )
 
 private fun JsonPartyData.toModel() = PartyData(
-    id = id?.let(::PartyId),
+    id = id.let(::PartyId),
     party = party?.toModelRecord(),
     pinList = pinList?.map(JsonPinRecord::toModel),
     playerList = playerList?.map(JsonPlayerRecord::toModel),
@@ -42,7 +42,7 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
 
 @Serializable
 data class JsonPartyData(
-    val id: String? = null,
+    val id: String,
     val party: JsonPartyRecord? = null,
     val pinList: List<JsonPinRecord>? = null,
     val playerList: List<JsonPlayerRecord>? = null,

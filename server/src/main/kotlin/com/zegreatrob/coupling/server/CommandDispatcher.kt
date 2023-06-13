@@ -53,6 +53,7 @@ interface ICommandDispatcher :
     ScopeSyntax,
     PartyDispatcher,
     PairAssignmentDispatcher,
+    PinsQuery.Dispatcher,
     UserDispatcher,
     UserQuery.Dispatcher,
     ConnectPartyUserCommand.Dispatcher,

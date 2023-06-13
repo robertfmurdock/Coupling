@@ -82,7 +82,7 @@ fun couplingResolvers() = json(
             MainScope().promise {
                 val jsonPartyData = kotlinx.serialization.json.Json.decodeFromDynamic<PartyDataInput>(args["input"])
                     .let { JsonPartyData(id = it.partyId) }
-                if (DispatcherProviders.authorizedDispatcher(r, jsonPartyData.id!!) != null) {
+                if (DispatcherProviders.authorizedDispatcher(r, jsonPartyData.id) != null) {
                     jsonPartyData.let { kotlinx.serialization.json.Json.encodeToDynamic(it) }
                 } else {
                     null

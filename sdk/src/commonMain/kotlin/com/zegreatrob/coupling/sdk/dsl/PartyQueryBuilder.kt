@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.sdk.dsl.GqlReference.secretRecord
 
 class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
 
-    override var output: JsonPartyData = JsonPartyData()
+    override var output: JsonPartyData = JsonPartyData("")
 
     fun pinList() {
         output = output.copy(
