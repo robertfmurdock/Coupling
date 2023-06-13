@@ -4,7 +4,9 @@ import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
 import com.zegreatrob.coupling.model.Message
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
@@ -17,7 +19,6 @@ import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispa
 import com.zegreatrob.coupling.server.action.boost.ServerSaveBoostCommandDispatcher
 import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
-import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQuery
@@ -43,28 +44,31 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.secret.JwtSecretGenerator
 import com.zegreatrob.coupling.server.secret.ServerDeleteSecretCommandDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlin.js.json
 
 interface ICommandDispatcher :
-    LoggingActionExecuteSyntax,
-    ScopeSyntax,
-    PartyDispatcher,
-    PairAssignmentDispatcher,
-    PinsQuery.Dispatcher,
-    UserDispatcher,
-    UserQuery.Dispatcher,
-    ConnectPartyUserCommand.Dispatcher,
-    ConnectionsQuery.Dispatcher,
-    DisconnectPartyUserCommand.Dispatcher,
-    ReportDocCommand.Dispatcher,
-    DispatchingActionExecutor<CommandDispatcher>,
-    RepositoryCatalog,
-    GlobalStatsQuery.Dispatcher,
     AwsManagementApiSyntax,
     BroadcastAction.Dispatcher,
+    ConnectPartyUserCommand.Dispatcher,
+    ConnectionsQuery.Dispatcher,
+    CurrentPairAssignmentDocumentQuery.Dispatcher,
+    DisconnectPartyUserCommand.Dispatcher,
+    DispatchingActionExecutor<CommandDispatcher>,
+    GlobalStatsQuery.Dispatcher,
+    PairAssignmentDispatcher,
+    PairAssignmentDocumentListQuery.Dispatcher,
+    PartyDispatcher,
+    PinsQuery.Dispatcher,
+    PlayersQuery.Dispatcher,
+    ReportDocCommand.Dispatcher,
+    RepositoryCatalog,
+    RetiredPlayersQuery.Dispatcher,
+    ScopeSyntax,
+    SecretListQuery.Dispatcher,
+    UserDispatcher,
+    UserQuery.Dispatcher,
     AwsSocketCommunicator
 
 class CommandDispatcher(
@@ -73,7 +77,7 @@ class CommandDispatcher(
     override val scope: CoroutineScope,
     override val traceId: Uuid,
     override val managementApiClient: ApiGatewayManagementApiClient = apiGatewayManagementApiClient(),
-) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog {
+) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog, LoggingActionExecuteSyntax {
     override val execute = this
     override val actionDispatcher = this
 
@@ -88,31 +92,24 @@ class CommandDispatcher(
                 authorizedPartyIdDispatcherJob = it
             }.await()
     }
-}
 
-interface ICurrentPartyDispatcher :
-    ICommandDispatcher,
-    PinsQuery.Dispatcher,
-    PlayersQuery.Dispatcher,
-    ServerSavePlayerCommandDispatcher,
-    ServerDeletePlayerCommandDispatcher,
-    RetiredPlayersQuery.Dispatcher,
-    SecretListQuery.Dispatcher,
-    ServerSavePairAssignmentDocumentCommandDispatcher,
-    ServerDeletePairAssignmentsCommandDispatcher,
-    ServerDeletePartyCommandDispatcher,
-    ServerDeletePinCommandDispatcher,
-    ServerSavePinCommandDispatcher,
-    CurrentPairAssignmentDocumentQuery.Dispatcher,
-    PairAssignmentDocumentListQuery.Dispatcher
+    private fun nonCachingPlayerQueryDispatcher() = object :
+        PlayersQuery.Dispatcher,
+        LoggingActionExecuteSyntax by this,
+        RepositoryCatalog by this {}
+
+    private val playersQueryCache = mutableMapOf<PartyId, Deferred<List<PartyRecord<Player>>>>()
+
+    override suspend fun perform(query: PlayersQuery) =
+        playersQueryCache.getOrPut(query.partyId) { scope.async { nonCachingPlayerQueryDispatcher().perform(query) } }
+            .await()
+}
 
 class CurrentPartyDispatcher(
     override val currentPartyId: PartyId,
     private val commandDispatcher: CommandDispatcher,
 ) :
     ICommandDispatcher by commandDispatcher,
-    PinsQuery.Dispatcher,
-    PlayersQuery.Dispatcher,
     ServerSpinCommandDispatcher,
     ServerCreateSecretCommandDispatcher,
     ServerSavePlayerCommandDispatcher,
@@ -123,29 +120,12 @@ class CurrentPartyDispatcher(
     ServerDeletePairAssignmentsCommandDispatcher,
     ServerDeletePartyCommandDispatcher,
     ServerDeletePinCommandDispatcher,
-    ServerSavePinCommandDispatcher,
-    CurrentPairAssignmentDocumentQuery.Dispatcher,
-    PairAssignmentDocumentListQuery.Dispatcher,
-    ICurrentPartyDispatcher {
+    ServerSavePinCommandDispatcher {
     override val userId: String get() = commandDispatcher.userId
 
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
 
     private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
-
-    private fun nonCachingPlayerQueryDispatcher() = object :
-        PlayersQuery.Dispatcher,
-        LoggingActionExecuteSyntax by this,
-        CurrentPartyIdSyntax by this,
-        RepositoryCatalog by this {}
-
-    private val playerDeferred = scope.async(start = CoroutineStart.LAZY) {
-        with(nonCachingPlayerQueryDispatcher()) {
-            perform(PlayersQuery)
-        }
-    }
-
-    override suspend fun perform(query: PlayersQuery) = playerDeferred.await()
 
     private suspend fun userIsAuthorized(partyId: PartyId) = user.authorizedPartyIds.contains(partyId) ||
         userIsAlsoPlayer()
@@ -154,7 +134,7 @@ class CurrentPartyDispatcher(
         .map { it.email }
         .contains(user.email)
 
-    private suspend fun players() = playerDeferred.await().map { it.data.element }
+    private suspend fun players() = perform(PlayersQuery(currentPartyId)).map { it.data.element }
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? =
         commandDispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
 

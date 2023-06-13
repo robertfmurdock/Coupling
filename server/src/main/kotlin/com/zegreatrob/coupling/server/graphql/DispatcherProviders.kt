@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.json.JsonPartyData
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
 import com.zegreatrob.coupling.server.CommandDispatcher
-import com.zegreatrob.coupling.server.CurrentPartyDispatcher
 import com.zegreatrob.coupling.server.ICommandDispatcher
 import com.zegreatrob.coupling.server.PrereleaseDispatcher
 import com.zegreatrob.coupling.server.express.Config
@@ -16,8 +15,8 @@ object DispatcherProviders {
 
     fun <E, I> command(): GraphQLDispatcherProvider<E, I, CommandDispatcher> = { r, _, _ -> r.commandDispatcher }
 
-    val partyCommand: GraphQLDispatcherProvider<JsonPartyData, JsonNull, CurrentPartyDispatcher> =
-        { request, entity, _ -> authorizedDispatcher(request = request, partyId = entity.id) }
+    val partyCommand: (Request, JsonPartyData, JsonNull) -> CommandDispatcher =
+        { request, _, _ -> request.commandDispatcher }
 
     suspend fun authorizedDispatcher(
         request: Request,

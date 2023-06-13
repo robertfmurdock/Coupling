@@ -21,7 +21,7 @@ class PlayersQueryTest {
     @Test
     fun willReturnPlayersFromRepository() = asyncSetup(object :
         PlayersQuery.Dispatcher {
-        override val currentPartyId = PartyId("Excellent Party")
+        val currentPartyId = PartyId("Excellent Party")
         val players = listOf(
             Player(
                 id = "1",
@@ -41,7 +41,7 @@ class PlayersQueryTest {
         override val playerRepository = PlayerRepositorySpy()
             .apply { whenever(currentPartyId, players.map { toRecord(it, currentPartyId) }) }
     }) exercise {
-        perform(PlayersQuery)
+        perform(PlayersQuery(currentPartyId))
     } verify { result ->
         result.map { it.data.player }.assertIsEqualTo(players)
     }
@@ -57,7 +57,7 @@ class PlayersQueryTest {
     @Test
     fun willReturnPlayersFromRepositoryAndAutoAssignThemCallSigns() = asyncSetup(object :
         PlayersQuery.Dispatcher {
-        override val currentPartyId = PartyId("Excellent Party")
+        val currentPartyId = PartyId("Excellent Party")
         val players = listOf(
             Player(id = "1", avatarType = null),
             Player(id = "2", avatarType = null),
@@ -66,7 +66,7 @@ class PlayersQueryTest {
         override val playerRepository = PlayerRepositorySpy()
             .apply { whenever(currentPartyId, players.map { toRecord(it, currentPartyId) }) }
     }) exercise {
-        perform(PlayersQuery)
+        perform(PlayersQuery(currentPartyId))
     } verify { result ->
         result.map { it.data.player }
             .apply {
