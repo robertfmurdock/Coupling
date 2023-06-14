@@ -19,7 +19,7 @@ import web.cssom.string
 
 val AddToSlackButton by nfc<Props> {
     a {
-        href = "https://slack.com/oauth/v2/authorize?scope=chat%3Awrite%2Cchat%3Awrite.customize%2Ccommands&amp;user_scope=&amp;redirect_uri=https%3A%2F%2Fcoupling.zegreatrob.com%2Fintegration%2Fslack&amp;client_id=825373060518.5406193751616"
+        href = "https://slack.com/oauth/v2/authorize?scope=chat%3Awrite%2Cchat%3Awrite.customize%2Ccommands&user_scope=&redirect_uri=https%3A%2F%2Fcoupling.zegreatrob.com%2Fintegration%2Fslack&client_id=825373060518.5406193751616"
         style = jso {
             alignItems = AlignItems.center
             color = rgb(0, 0, 0)
