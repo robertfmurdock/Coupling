@@ -8,7 +8,7 @@ import kotlin.js.json
 fun Express.routes() {
     get("/", indexRoute())
     get("/api/health", healthRoute())
-    get("/integration/slack") { request, response, _ ->
+    get("/api/integration/slack") { request, response, _ ->
         val code = request.query["code"]
         response.send("Got code $code")
     }
