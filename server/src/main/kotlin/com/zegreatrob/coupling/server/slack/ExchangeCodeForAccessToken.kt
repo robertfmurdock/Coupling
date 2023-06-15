@@ -2,6 +2,7 @@
 
 package com.zegreatrob.coupling.server.slack
 
+import com.zegreatrob.coupling.model.SlackTeamAccess
 import com.zegreatrob.coupling.server.btoa
 import com.zegreatrob.coupling.server.express.Config
 import js.core.jso
@@ -11,7 +12,7 @@ import web.http.fetch
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.js.json
 
-suspend fun exchangeCodeForAccessToken(code: String): dynamic = fetch(
+suspend fun exchangeCodeForAccessToken(code: String) = fetch(
     "https://slack.com/api/oauth.v2.access",
     jso {
         method = "post"
@@ -24,4 +25,11 @@ suspend fun exchangeCodeForAccessToken(code: String): dynamic = fetch(
 )
     .text()
     .await()
-    .let { JSON.parse(it) }
+    .let { toSlackTeamAccess(JSON.parse(it)) }
+
+private fun toSlackTeamAccess(result: dynamic) = SlackTeamAccess(
+    teamId = result.team.id as String,
+    accessToken = result.access_token as String,
+    appId = result.app_id as String,
+    slackUserId = result.authed_user.id as String,
+)

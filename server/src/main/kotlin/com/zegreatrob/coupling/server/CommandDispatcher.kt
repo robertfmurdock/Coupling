@@ -35,6 +35,7 @@ import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
 import com.zegreatrob.coupling.server.action.player.ServerDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.secret.SecretListQuery
+import com.zegreatrob.coupling.server.action.slack.SaveSlackAccessCommand
 import com.zegreatrob.coupling.server.action.user.UserQuery
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
 import com.zegreatrob.coupling.server.entity.party.PartyDispatcher
@@ -50,6 +51,7 @@ import kotlin.js.json
 
 interface ICommandDispatcher :
     AwsManagementApiSyntax,
+    AwsSocketCommunicator,
     BroadcastAction.Dispatcher,
     ConnectPartyUserCommand.Dispatcher,
     ConnectionsQuery.Dispatcher,
@@ -65,11 +67,11 @@ interface ICommandDispatcher :
     ReportDocCommand.Dispatcher,
     RepositoryCatalog,
     RetiredPlayersQuery.Dispatcher,
+    SaveSlackAccessCommand.Dispatcher,
     ScopeSyntax,
     SecretListQuery.Dispatcher,
     UserDispatcher,
-    UserQuery.Dispatcher,
-    AwsSocketCommunicator
+    UserQuery.Dispatcher
 
 class CommandDispatcher(
     override val user: User,

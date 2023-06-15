@@ -10,11 +10,13 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.repository.dynamo.secret.DynamoSecretRepository
+import com.zegreatrob.coupling.repository.dynamo.slack.DynamoSlackRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.secret.SecretRepository
+import com.zegreatrob.coupling.repository.slack.SlackSave
 import com.zegreatrob.coupling.repository.user.UserRepository
 import korlibs.time.TimeProvider
 
@@ -28,6 +30,7 @@ class DynamoRepositoryCatalog private constructor(
     override val userRepository: UserRepository,
     override val liveInfoRepository: LiveInfoRepository,
     override val secretRepository: SecretRepository,
+    override val slackRepository: SlackSave,
 ) :
     RepositoryCatalog,
     UserIdSyntax,
@@ -43,6 +46,7 @@ class DynamoRepositoryCatalog private constructor(
             DynamoUserRepository(userId, clock),
             DynamoLiveInfoRepository(userId, clock),
             DynamoSecretRepository(userId, clock),
+            DynamoSlackRepository(userId, clock),
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.express.route
 
+import com.zegreatrob.coupling.server.action.slack.SaveSlackAccessCommand
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.graphql.graphqlHTTP
 import com.zegreatrob.coupling.server.graphql.unifiedSchema
@@ -15,10 +16,12 @@ fun Express.routes() {
     get("/", indexRoute())
     get("/api/health", healthRoute())
     use(userLoadingMiddleware())
+    all("/api/*", apiGuard())
     get("/api/integration/slack") { request, response, _ ->
         val code = "${request.query["code"]}"
         MainScope().launch {
             val result = exchangeCodeForAccessToken(code)
+            request.commandDispatcher.perform(SaveSlackAccessCommand(result))
             response.send(JSON.stringify(result))
         }.invokeOnCompletion { it?.printStackTrace() }
     }
@@ -30,7 +33,6 @@ fun Express.routes() {
             },
         ).then(response::send)
     }
-    all("/api/*", apiGuard())
     use("/api/graphql", graphqlHTTP(json("schema" to unifiedSchema())))
     get("*", indexRoute())
 }
