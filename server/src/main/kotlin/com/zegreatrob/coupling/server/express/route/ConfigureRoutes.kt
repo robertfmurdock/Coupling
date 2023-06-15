@@ -16,7 +16,6 @@ fun Express.routes() {
     get("/", indexRoute())
     get("/api/health", healthRoute())
     use(userLoadingMiddleware())
-    all("/api/*", apiGuard())
     get("/api/integration/slack") { request, response, _ ->
         val code = "${request.query["code"]}"
         MainScope().launch {
@@ -25,6 +24,7 @@ fun Express.routes() {
             response.send(JSON.stringify(result))
         }.invokeOnCompletion { it?.printStackTrace() }
     }
+    all("/api/*", apiGuard())
     get("/api/integration/slack-install-url") { _, response, _ ->
         slackInstallProvider.generateInstallUrl(
             jso {
