@@ -3,6 +3,5 @@
   "CLIENT_BASENAME": "",
   "DYNAMO_PREFIX": "sandbox-",
   "PUBLIC_URL": "https://sandbox.coupling.zegreatrob.com",
-  "WEBSOCKET_HOST": "socket.sandbox.coupling.zegreatrob.com",
-  "SLACK_SIGNING_SECRET": ""
+  "WEBSOCKET_HOST": "socket.sandbox.coupling.zegreatrob.com"
 }

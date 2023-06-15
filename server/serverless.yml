@@ -33,9 +33,11 @@ provider:
     APP_TITLE: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):APP_TITLE}
     CLIENT_BASENAME: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):CLIENT_BASENAME}
     WEBSOCKET_HOST: ${env:WEBSOCKET_HOST, file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):WEBSOCKET_HOST}
-    PUBLIC_URL:	${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):PUBLIC_URL, env:PUBLIC_URL}
-    SECRET_SIGNING_SECRET:	${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SECRET_SIGNING_SECRET, env:SECRET_SIGNING_SECRET, ssm:/${opt:stage, 'local'}_secret_signing_secret}
-    SLACK_SIGNING_SECRET:	${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_SIGNING_SECRET, env:SLACK_SIGNING_SECRET, ssm:/SLACK_SIGNING_SECRET}
+    PUBLIC_URL: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):PUBLIC_URL, env:PUBLIC_URL}
+    SECRET_SIGNING_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SECRET_SIGNING_SECRET, env:SECRET_SIGNING_SECRET, ssm:/${opt:stage, 'local'}_secret_signing_secret}
+    SLACK_CLIENT_ID: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_CLIENT_ID, env:SLACK_CLIENT_ID, ssm:/${opt:stage, 'local'}_slack_client_id}
+    SLACK_CLIENT_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_CLIENT_SECRET, env:SLACK_CLIENT_SECRET, ssm:/${opt:stage, 'local'}_slack_client_secret}
+    SLACK_SIGNING_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_SIGNING_SECRET, env:SLACK_SIGNING_SECRET, ssm:/$${opt:stage, 'local'}_slack_signing_secret}
     DYNAMO_PREFIX: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):DYNAMO_PREFIX}
     ENABLE_PRERELEASE_FEATURES: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):ENABLE_PRERELEASE_FEATURES, 'false'}
     CLIENT_URL: ${env:CLIENT_URL, "https://static.localhost"}

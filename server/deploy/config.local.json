@@ -7,6 +7,8 @@
   "DYNAMO_PREFIX": "local-",
   "ENABLE_PRERELEASE_FEATURES": "true",
   "SECRET_SIGNING_SECRET": "temporary",
+  "SLACK_CLIENT_ID": "fake",
+  "SLACK_CLIENT_SECRET": "fake",
   "WEBSOCKET_HOST": "socket.local",
   "SLACK_SIGNING_SECRET": ""
 }
