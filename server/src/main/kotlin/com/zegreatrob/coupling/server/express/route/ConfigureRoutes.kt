@@ -24,7 +24,6 @@ fun Express.routes() {
             response.send(JSON.stringify(result))
         }.invokeOnCompletion { it?.printStackTrace() }
     }
-    all("/api/*", apiGuard())
     get("/api/integration/slack-install-url") { _, response, _ ->
         slackInstallProvider.generateInstallUrl(
             jso {
@@ -33,6 +32,7 @@ fun Express.routes() {
             },
         ).then(response::send)
     }
+    all("/api/*", apiGuard())
     use("/api/graphql", graphqlHTTP(json("schema" to unifiedSchema())))
     get("*", indexRoute())
 }
