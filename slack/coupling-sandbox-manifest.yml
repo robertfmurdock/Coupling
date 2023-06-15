@@ -7,13 +7,13 @@ features:
     display_name: Coupling Sandbox
     always_online: false
   slash_commands:
-    - command: /coupling
-      url: https://sandbox.coupling.zegreatrob.com/local/api/slack
+    - command: /coupling-sandbox
+      url: https://sandbox.coupling.zegreatrob.com/api/slack
       description: Operates Coupling
       should_escape: false
 oauth_config:
   redirect_urls:
-    - https://sandbox.coupling.zegreatrob.com/integration/slack
+    - https://sandbox.coupling.zegreatrob.com/api/integration/slack
     - https://localhost/local/api/integration/slack
   scopes:
     bot:
