@@ -8,6 +8,7 @@ import web.http.FormData
 import web.http.fetch
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.js.Json
 import kotlin.js.json
 
 interface SlackClient {
@@ -33,7 +34,14 @@ class FetchSlackClient(
     )
         .text()
         .await()
-        .let { JSON.parse(it) }
+        .let { JSON.parse<Json>(it) }
+        .let {
+            if (it["ok"] != false) {
+                it
+            } else {
+                throw Exception("${it["error"]}")
+            }
+        }
 
     @ExperimentalEncodingApi
     fun btoa(s: String): String = Base64.encode(s.encodeToByteArray())

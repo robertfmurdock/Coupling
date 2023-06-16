@@ -28,7 +28,6 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.minreact.ntmFC
 import js.core.jso
-import kotlinx.browser.window
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
@@ -74,10 +73,10 @@ private fun routes(isSignedIn: Boolean, config: ClientConfig) = (
     )
     .plus(jso<RouteObject> { element = lostRoute.create() })
 
-private fun redirectUnauthenticated(): RouteObject = jso<RouteObject> {
+private fun redirectUnauthenticated(): RouteObject = jso {
     path = "*"
     element = Navigate.create { to = "/welcome" }
-}.also { console.warn("not signed in!!!!", window.location.pathname) }
+}
 
 val lostRoute by nfc<Props> {
     val location = useLocation()

@@ -24,8 +24,11 @@ val RootComponent by nfc<RootProps> { props ->
             audience = "https://${window.location.hostname}/api"
             scope = "email"
         }
+        skipRedirectCallback = isCallbackFromOtherProvider()
         useRefreshTokens = true
 
         add(CouplingRouter(animationsDisabled, config))
     }
 }
+
+private fun isCallbackFromOtherProvider() = window.location.pathname.endsWith("/integration/slack/callback")

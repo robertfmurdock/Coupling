@@ -32,8 +32,8 @@ val SlackCallbackPage by nfc<PageProps> { props ->
                         is PendingState -> +"Pending"
                         is ResolvedState -> when (it.result) {
                             VoidResult.Accepted -> +"Accepted"
-                            CommandResult.Unauthorized -> +"Unauthorized"
                             VoidResult.Rejected -> +"Rejected"
+                            CommandResult.Unauthorized -> +"Unauthorized"
                         }
                     }
                 },

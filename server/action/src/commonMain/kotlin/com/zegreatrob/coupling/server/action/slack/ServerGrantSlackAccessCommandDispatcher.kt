@@ -11,7 +11,6 @@ interface ServerGrantSlackAccessCommandDispatcher : GrantSlackAccessCommand.Disp
 
     override suspend fun perform(command: GrantSlackAccessCommand): VoidResult {
         val access = runCatching { slackRepository.exchangeCodeForAccessToken(command.code) }
-
         return if (access.isSuccess) {
             slackAccessRepository.save(access.getOrThrow())
             VoidResult.Accepted

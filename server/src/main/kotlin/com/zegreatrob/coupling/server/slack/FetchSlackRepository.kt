@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.server.express.Config
 
 class FetchSlackRepository : SlackRepository {
 
-    private val client = FetchSlackClient(Config.slackClientId, Config.secretSigningSecret, slackRedirectUri())
+    private val client = FetchSlackClient(Config.slackClientId, Config.slackClientSecret, slackRedirectUri())
 
     override suspend fun exchangeCodeForAccessToken(code: String) =
         toSlackTeamAccess(client.exchangeCodeForAccess(code))

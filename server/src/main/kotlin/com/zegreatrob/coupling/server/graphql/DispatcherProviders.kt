@@ -18,7 +18,7 @@ object DispatcherProviders {
     val partyCommand: (Request, JsonPartyData, JsonNull) -> CommandDispatcher =
         { request, _, _ -> request.commandDispatcher }
 
-    suspend fun authorizedDispatcher(
+    suspend fun authorizedPartyDispatcher(
         request: Request,
         partyId: String,
     ) = request.commandDispatcher.authorizedPartyIdDispatcher(partyId).let { if (it.isAuthorized()) it else null }

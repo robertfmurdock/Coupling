@@ -10,7 +10,7 @@ import kotlinx.serialization.json.JsonNull
 
 val deleteSecretResolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args ->
-        DispatcherProviders.authorizedDispatcher(
+        DispatcherProviders.authorizedPartyDispatcher(
             request = request,
             partyId = args.partyId,
         )

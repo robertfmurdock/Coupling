@@ -14,6 +14,8 @@ external interface Auth0ProviderProps : Props {
     var clientId: String
     var cacheLocation: String
     var useRefreshTokens: Boolean?
+    var skipRedirectCallback: Boolean?
+
     var authorizationParams: Auth0AuthorizationParams
 }
 

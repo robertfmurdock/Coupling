@@ -24,6 +24,7 @@ import com.zegreatrob.coupling.server.entity.player.savePlayerResolver
 import com.zegreatrob.coupling.server.entity.secret.createSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.deleteSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.secretListResolve
+import com.zegreatrob.coupling.server.entity.slackaccess.grantSlackAccessResolver
 import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.external.express.Request
@@ -82,7 +83,7 @@ fun couplingResolvers() = json(
             MainScope().promise {
                 val jsonPartyData = kotlinx.serialization.json.Json.decodeFromDynamic<PartyDataInput>(args["input"])
                     .let { JsonPartyData(id = it.partyId) }
-                if (DispatcherProviders.authorizedDispatcher(r, jsonPartyData.id) != null) {
+                if (DispatcherProviders.authorizedPartyDispatcher(r, jsonPartyData.id) != null) {
                     jsonPartyData.let { kotlinx.serialization.json.Json.encodeToDynamic(it) }
                 } else {
                     null
@@ -103,6 +104,7 @@ fun couplingResolvers() = json(
         "savePin" to savePinResolver,
         "savePlayer" to savePlayerResolver,
         "spin" to spinResolver,
+        "grantSlackAccess" to grantSlackAccessResolver,
     ),
     "PartyData" to json(
         "party" to partyResolve,
