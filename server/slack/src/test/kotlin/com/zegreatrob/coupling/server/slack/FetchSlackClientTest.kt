@@ -8,6 +8,7 @@ import kotlin.test.Test
 
 @ExperimentalEncodingApi
 class FetchSlackClientTest {
+
     private val token = ""
 
     @Test
@@ -16,33 +17,38 @@ class FetchSlackClientTest {
         val client = FetchSlackClient("", "", "")
         val channelId = "C05BWC204S0"
     }) exercise {
-        runCatching {
-            client.sendMessage(
-                accessToken = token,
-                channel = channelId,
-                message = "HEY KOOL AID MAN",
-            )
-        }
+        client.postMessage(
+            accessToken = token,
+            channel = channelId,
+            message = "HEY KOOL AID MAN",
+        )
     } verify { result ->
-        result.isSuccess
+        result.ok
             .assertIsEqualTo(true)
     }
 
-    // @Test
-    // @Ignore
-    // fun canUpdateMessage() = asyncSetup(object {
-    //     val client = FetchSlackClient("", "", "")
-    //     val channelId = "C05BWC204S0"
-    //     lateinit var ts: String
-    // }) {
-    //     val response = client.chat.postMessage(jso { channel = channelId; text = "HEY KOOL AID MAN" })
-    //         .await()
-    //     ts = response.ts
-    // } exercise {
-    //     client.chat.update(jso { ts = this@exercise.ts; channel = channelId; text = "HEY NONG MAN" })
-    //         .await()
-    // } verify { result ->
-    //     result.ok
-    //         .assertIsEqualTo(true)
-    // }
+    @Test
+    @Ignore
+    fun canUpdateMessage() = asyncSetup(object {
+        val client = FetchSlackClient("", "", "")
+        val channelId = "C05BWC204S0"
+        var ts: String? = null
+    }) {
+        val response = client.postMessage(
+            accessToken = token,
+            channel = channelId,
+            message = "HEY KOOL AID MAN",
+        )
+        ts = response.ts
+    } exercise {
+        client.updateMessage(
+            accessToken = token,
+            channel = channelId,
+            ts = this@exercise.ts,
+            text = "HEY NONG MAN",
+        )
+    } verify { result ->
+        result.ok
+            .assertIsEqualTo(true)
+    }
 }

@@ -32,6 +32,6 @@ class FetchSlackRepository : SlackRepository {
     }
 
     override suspend fun sendMessage(channel: String, token: String) {
-        client.sendMessage("Spin!", channel, token)
+        client.postMessage("Spin!", channel, token)
     }
 }
