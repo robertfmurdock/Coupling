@@ -14,7 +14,7 @@ const config = {
         __dirname: false
     },
     target: 'node',
-    externals: ["aws-sdk"],
+    externals: [],
     resolve: {
         extensions: ['.js'],
         modules: [

@@ -72,6 +72,7 @@ interface ServerSpinCommandDispatcher :
         val channel = slackChannel ?: return
         val accessRecord = slackAccessRepository.get(team) ?: return
         val token = accessRecord.data.accessToken
-        slackRepository.sendMessage(channel, token)
+        runCatching { slackRepository.sendMessage(channel, token) }
+            .onFailure { it.printStackTrace() }
     }
 }

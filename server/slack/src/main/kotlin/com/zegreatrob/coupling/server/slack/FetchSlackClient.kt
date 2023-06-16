@@ -13,6 +13,7 @@ import kotlin.js.json
 
 interface SlackClient {
     suspend fun exchangeCodeForAccess(code: String): dynamic
+    suspend fun sendMessage(message: String, channel: String, accessToken: String)
 }
 
 class FetchSlackClient(
@@ -45,4 +46,33 @@ class FetchSlackClient(
 
     @ExperimentalEncodingApi
     fun btoa(s: String): String = Base64.encode(s.encodeToByteArray())
+
+    override suspend fun sendMessage(message: String, channel: String, accessToken: String) {
+        fetch(
+            "https://slack.com/api/chat.postMessage",
+            jso {
+                method = "post"
+                headers = json(
+                    "Authorization" to "Bearer $accessToken",
+                    "Content-type" to "application/json",
+                )
+                body = JSON.stringify(
+                    json(
+                        "channel" to channel,
+                        "text" to message,
+                    ),
+                )
+            },
+        )
+            .text()
+            .await()
+            .let { JSON.parse<Json>(it) }
+            .let {
+                if (it["ok"] != false) {
+                    it
+                } else {
+                    throw Exception("${it["error"]}")
+                }
+            }
+    }
 }

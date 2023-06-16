@@ -4,5 +4,5 @@ import com.zegreatrob.coupling.model.SlackTeamAccess
 
 interface SlackRepository {
     suspend fun exchangeCodeForAccessToken(code: String): SlackTeamAccess
-    fun sendMessage(channel: String, token: String)
+    suspend fun sendMessage(channel: String, token: String)
 }
