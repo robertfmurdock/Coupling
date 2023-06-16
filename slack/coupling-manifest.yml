@@ -13,9 +13,7 @@ features:
       should_escape: false
 oauth_config:
   redirect_urls:
-    - https://coupling.zegreatrob.com/integration/slack
-    - https://b22c-2601-401-500-7bf0-6868-58fc-fcfe-9745.ngrok-free.app/local/api/integration/slack
-    - https://localhost/local/api/integration/slack
+    - https://coupling.zegreatrob.com/integration/slack/callback
   scopes:
     bot:
       - incoming-webhook
