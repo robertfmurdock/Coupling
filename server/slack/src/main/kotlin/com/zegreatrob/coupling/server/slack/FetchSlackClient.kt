@@ -1,9 +1,9 @@
-@file:OptIn(ExperimentalEncodingApi::class)
-
 package com.zegreatrob.coupling.server.slack
 
 import js.core.jso
 import kotlinx.coroutines.await
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import web.http.FormData
 import web.http.fetch
 import kotlin.io.encoding.Base64
@@ -12,17 +12,22 @@ import kotlin.js.Json
 import kotlin.js.json
 
 interface SlackClient {
-    suspend fun exchangeCodeForAccess(code: String): dynamic
+    suspend fun exchangeCodeForAccess(code: String): AccessResponse
     suspend fun sendMessage(message: String, channel: String, accessToken: String)
 }
 
+@ExperimentalEncodingApi
 class FetchSlackClient(
     private val clientId: String,
     private val clientSecret: String,
     private val slackRedirectUri: String,
 ) : SlackClient {
 
-    override suspend fun exchangeCodeForAccess(code: String): dynamic = fetch(
+    private val jsonParser = kotlinx.serialization.json.Json {
+        ignoreUnknownKeys = true
+    }
+
+    override suspend fun exchangeCodeForAccess(code: String): AccessResponse = fetch(
         "https://slack.com/api/oauth.v2.access",
         jso {
             method = "post"
@@ -35,14 +40,7 @@ class FetchSlackClient(
     )
         .text()
         .await()
-        .let { JSON.parse<Json>(it) }
-        .let {
-            if (it["ok"] != false) {
-                it
-            } else {
-                throw Exception("${it["error"]}")
-            }
-        }
+        .let(jsonParser::decodeFromString)
 
     @ExperimentalEncodingApi
     fun btoa(s: String): String = Base64.encode(s.encodeToByteArray())
@@ -76,3 +74,26 @@ class FetchSlackClient(
             }
     }
 }
+
+@Serializable
+data class AccessResponse(
+    val ok: Boolean? = null,
+    val error: String? = null,
+    val team: AccessResponseTeam? = null,
+    @SerialName("authed_user")
+    val authedUser: AuthedUser? = null,
+    @SerialName("access_token")
+    val accessToken: String? = null,
+    @SerialName("app_id")
+    val appId: String? = null,
+)
+
+@Serializable
+data class AccessResponseTeam(
+    val id: String,
+)
+
+@Serializable
+data class AuthedUser(
+    val id: String,
+)

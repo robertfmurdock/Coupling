@@ -12,7 +12,6 @@ kotlin {
 dependencies {
     commonMainApi(project(":libraries:model"))
     commonMainImplementation(kotlin("stdlib"))
-    commonMainImplementation(kotlin("stdlib-common"))
     commonMainImplementation("com.soywiz.korlibs.klock:klock")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
@@ -28,10 +27,6 @@ dependencies {
     commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
 
     "jvmMainImplementation"(kotlin("reflect"))
-
-    "jvmTestImplementation"(kotlin("reflect"))
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
-
-    "jsMainImplementation"(kotlin("stdlib-js"))
 }

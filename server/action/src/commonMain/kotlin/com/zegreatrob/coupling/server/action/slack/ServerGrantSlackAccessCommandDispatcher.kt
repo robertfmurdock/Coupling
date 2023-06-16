@@ -9,14 +9,10 @@ interface ServerGrantSlackAccessCommandDispatcher : GrantSlackAccessCommand.Disp
     val slackRepository: SlackRepository
     val slackAccessRepository: SlackAccessSave
 
-    override suspend fun perform(command: GrantSlackAccessCommand): VoidResult {
-        val access = runCatching { slackRepository.exchangeCodeForAccessToken(command.code) }
-        return if (access.isSuccess) {
-            slackAccessRepository.save(access.getOrThrow())
-            VoidResult.Accepted
-        } else {
-            access.exceptionOrNull()?.printStackTrace()
-            VoidResult.Rejected
+    override suspend fun perform(command: GrantSlackAccessCommand) =
+        when (val result = slackRepository.exchangeCodeForAccessToken(command.code)) {
+            is SlackRepository.AccessTokenResult.Success -> VoidResult.Accepted.also { slackAccessRepository.save(result.access) }
+            is SlackRepository.AccessTokenResult.RemoteError -> VoidResult.Rejected
+            is SlackRepository.AccessTokenResult.Unknown -> VoidResult.Rejected.also { result.exception.printStackTrace() }
         }
-    }
 }

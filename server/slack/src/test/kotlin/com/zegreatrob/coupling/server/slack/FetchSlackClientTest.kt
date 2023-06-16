@@ -2,11 +2,13 @@ package com.zegreatrob.coupling.server.slack
 
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.Ignore
 import kotlin.test.Test
 
+@ExperimentalEncodingApi
 class FetchSlackClientTest {
-    val token = ""
+    private val token = ""
 
     @Test
     @Ignore
