@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.secret.SecretRepository
-import com.zegreatrob.coupling.repository.slack.SlackSave
+import com.zegreatrob.coupling.repository.slack.SlackAccessSave
 import com.zegreatrob.coupling.repository.user.UserRepository
 import korlibs.time.TimeProvider
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +23,7 @@ interface RepositoryCatalog {
     val userRepository: UserRepository
     val liveInfoRepository: LiveInfoRepository
     val secretRepository: SecretRepository
-    val slackRepository: SlackSave
+    val slackAccessRepository: SlackAccessSave
 }
 
 suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid) =

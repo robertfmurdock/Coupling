@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.action.GrantSlackAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
@@ -90,6 +91,8 @@ class MemoryRepositoryCatalog private constructor(
     override suspend fun perform(query: GraphQuery) = CouplingQueryResult(
         user = User(userId, "???", setOf(PartyId("Kind of fake"))),
     )
+
+    override suspend fun perform(command: GrantSlackAccessCommand): VoidResult = VoidResult.Accepted
 
     override val sdk: CouplingSdk get() = this
 }

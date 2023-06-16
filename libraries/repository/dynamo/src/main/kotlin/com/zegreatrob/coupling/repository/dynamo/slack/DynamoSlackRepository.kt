@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoQueryItemListGetSyntax
 import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.DynamoRepositoryCreatorSyntax
 import com.zegreatrob.coupling.repository.dynamo.RecordSyntax
-import com.zegreatrob.coupling.repository.slack.SlackSave
+import com.zegreatrob.coupling.repository.slack.SlackAccessSave
 import korlibs.time.TimeProvider
 import kotlin.js.Json
 import kotlin.js.json
@@ -21,7 +21,7 @@ class DynamoSlackRepository private constructor(override val userId: String, ove
     RecordSyntax,
     DynamoRecordJsonMapping,
     UserIdSyntax,
-    SlackSave {
+    SlackAccessSave {
 
     override suspend fun save(slackTeamAccess: SlackTeamAccess) = performPutItem(
         slackTeamAccess.toRecord().asDynamoJson(),

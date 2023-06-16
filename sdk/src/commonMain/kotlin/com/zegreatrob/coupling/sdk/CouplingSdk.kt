@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.GrantSlackAccessCommand
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
@@ -26,6 +27,7 @@ interface CouplingSdk :
     DeletePinCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
     GraphQuery.Dispatcher,
+    GrantSlackAccessCommand.Dispatcher,
     SpinCommand.Dispatcher,
     SaveBoostCommand.Dispatcher,
     SavePairAssignmentsCommand.Dispatcher,

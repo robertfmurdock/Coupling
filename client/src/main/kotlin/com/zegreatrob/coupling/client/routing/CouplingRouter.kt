@@ -19,6 +19,7 @@ import com.zegreatrob.coupling.client.pin.PinPage
 import com.zegreatrob.coupling.client.player.PlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayersPage
+import com.zegreatrob.coupling.client.slack.SlackCallbackPage
 import com.zegreatrob.coupling.client.stats.StatisticsPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
@@ -51,7 +52,6 @@ val couplingRouter by ntmFC<CouplingRouter> { (animationsDisabled, config) ->
                 couplingRoute("About", "/about", AboutPage),
                 couplingRoute("Demo", "/demo", DemoPage),
                 couplingRoute("Loading Test", "/loading", LoadingPage),
-                couplingRoute("Incubating", "/incubating", IncubatingPage),
             ).plus(routes(isSignedIn, config)),
             opts = jso { basename = config.basename },
         )
@@ -109,6 +109,8 @@ private fun authenticatedRoutes(config: ClientConfig): Array<RouteObject> = list
     couplingRoute("Retired Player Config", "/:partyId/retired-player/:playerId/", RetiredPlayerPage),
     couplingRoute("Retired Player List", "/:partyId/players/retired", RetiredPlayersPage),
     couplingRoute("Statistics", "/:partyId/statistics", StatisticsPage),
+    couplingRoute("Incubating", "/incubating", IncubatingPage),
+    couplingRoute("SlackCallback", "/integration/slack/callback", SlackCallbackPage),
 ).toTypedArray()
 
 private fun redirectToParties() = Navigate.create { to = "/parties/" }

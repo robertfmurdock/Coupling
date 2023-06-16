@@ -92,6 +92,12 @@ data class SpinInput(
     val pinIds: List<String>,
 ) : PartyInput
 
+@Serializable
+data class GrantSlackAccessInput(
+    val code: String,
+    val state: String,
+)
+
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     id = id.value,
     date = date,

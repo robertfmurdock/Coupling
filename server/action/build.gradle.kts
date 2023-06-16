@@ -36,13 +36,13 @@ kotlin {
                 implementation("com.zegreatrob.testmints:standard")
                 implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 implementation("org.jetbrains.kotlin:kotlin-test-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
 
         getByName("jsTest") {
             dependencies {
                 api(project(":libraries:logging"))
+                implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
     }

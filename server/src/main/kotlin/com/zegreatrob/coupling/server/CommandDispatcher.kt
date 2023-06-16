@@ -35,7 +35,8 @@ import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
 import com.zegreatrob.coupling.server.action.player.ServerDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.secret.SecretListQuery
-import com.zegreatrob.coupling.server.action.slack.SaveSlackAccessCommand
+import com.zegreatrob.coupling.server.action.slack.ServerGrantSlackAccessCommandDispatcher
+import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.coupling.server.action.user.UserQuery
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
 import com.zegreatrob.coupling.server.entity.party.PartyDispatcher
@@ -44,6 +45,7 @@ import com.zegreatrob.coupling.server.entity.user.UserDispatcher
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.secret.JwtSecretGenerator
 import com.zegreatrob.coupling.server.secret.ServerDeleteSecretCommandDispatcher
+import com.zegreatrob.coupling.server.slack.FetchSlackRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -67,7 +69,7 @@ interface ICommandDispatcher :
     ReportDocCommand.Dispatcher,
     RepositoryCatalog,
     RetiredPlayersQuery.Dispatcher,
-    SaveSlackAccessCommand.Dispatcher,
+    ServerGrantSlackAccessCommandDispatcher,
     ScopeSyntax,
     SecretListQuery.Dispatcher,
     UserDispatcher,
@@ -82,6 +84,8 @@ class CommandDispatcher(
 ) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog, LoggingActionExecuteSyntax {
     override val execute = this
     override val actionDispatcher = this
+
+    override val slackRepository: SlackRepository by lazy { FetchSlackRepository() }
 
     private var authorizedPartyIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
 

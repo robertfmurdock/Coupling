@@ -18,13 +18,14 @@ class KtorCouplingSdk(
     SdkDeletePartyCommandDispatcher,
     SdkDeletePinCommandDispatcher,
     SdkDeletePlayerCommandDispatcher,
+    SdkDeleteSecretCommandDispatcher,
+    SdkGrantSlackAccess,
     SdkGraphQueryDispatcher,
     SdkSavePairAssignmentsCommandDispatcher,
     SdkSavePartyCommandDispatcher,
     SdkSavePinCommandDispatcher,
     SdkSavePlayerCommandDispatcher,
-    SdkSpin,
-    SdkDeleteSecretCommandDispatcher {
+    SdkSpin {
     override val performer: QueryPerformer = StandardPartyGQLPerformer(getIdTokenFunc, httpClient)
 }
 

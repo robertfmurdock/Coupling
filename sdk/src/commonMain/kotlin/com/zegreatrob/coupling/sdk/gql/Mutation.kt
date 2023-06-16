@@ -14,4 +14,5 @@ object Mutation {
     val deletePin by GqlFileLoader
     val deletePairAssignments by GqlFileLoader
     val deletePlayer by GqlFileLoader
+    val grantSlackAccess by GqlFileLoader
 }
