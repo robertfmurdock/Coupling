@@ -12,6 +12,7 @@ data class Party(
     val animationEnabled: Boolean = true,
     val animationSpeed: Double = 1.0,
     val imageURL: String? = null,
+    val slackTeam: String? = null,
     val slackChannel: String? = null,
 )
 

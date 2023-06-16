@@ -3,6 +3,9 @@ package com.zegreatrob.coupling.server.slack
 import com.zegreatrob.coupling.model.SlackTeamAccess
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.coupling.server.express.Config
+import com.zegreatrob.coupling.server.slack.external.webclient.ChatPostOptions
+import com.zegreatrob.coupling.server.slack.external.webclient.WebClient
+import js.core.jso
 
 class FetchSlackRepository : SlackRepository {
 
@@ -10,6 +13,15 @@ class FetchSlackRepository : SlackRepository {
 
     override suspend fun exchangeCodeForAccessToken(code: String) =
         toSlackTeamAccess(client.exchangeCodeForAccess(code))
+
+    override fun sendMessage(channel: String, token: String) {
+        WebClient(token).chat.postMessage(spinMessage(channel))
+    }
+
+    private fun spinMessage(channel: String): ChatPostOptions = jso {
+        this.text = "Spin!"
+        this.channel = channel
+    }
 
     private fun toSlackTeamAccess(result: dynamic) = SlackTeamAccess(
         teamId = result.team.id as String,

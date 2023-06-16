@@ -32,6 +32,7 @@ fun stubParty() = Party(
     callSignsEnabled = partyCounter % 2 == 1,
     animationEnabled = partyCounter % 2 == 0,
     animationSpeed = partyCounter.toDouble(),
+    slackTeam = uuidString(),
     slackChannel = uuidString(),
 ).also { partyCounter++ }
 

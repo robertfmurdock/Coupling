@@ -16,7 +16,7 @@ import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.secret.SecretRepository
-import com.zegreatrob.coupling.repository.slack.SlackAccessSave
+import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 import korlibs.time.TimeProvider
 
@@ -30,7 +30,7 @@ class DynamoRepositoryCatalog private constructor(
     override val userRepository: UserRepository,
     override val liveInfoRepository: LiveInfoRepository,
     override val secretRepository: SecretRepository,
-    override val slackAccessRepository: SlackAccessSave,
+    override val slackAccessRepository: SlackAccessRepository,
 ) :
     RepositoryCatalog,
     UserIdSyntax,

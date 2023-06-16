@@ -17,14 +17,15 @@ interface SdkSavePartyCommandDispatcher : SavePartyCommand.Dispatcher, GqlSyntax
 }
 private fun Party.savePartyInput() = SavePartyInput(
     partyId = id,
-    pairingRule = PairingRule.toValue(pairingRule),
     name = name,
     email = email,
+    pairingRule = PairingRule.toValue(pairingRule),
+    badgesEnabled = badgesEnabled,
     defaultBadgeName = defaultBadgeName,
     alternateBadgeName = alternateBadgeName,
-    badgesEnabled = badgesEnabled,
     callSignsEnabled = callSignsEnabled,
     animationsEnabled = animationEnabled,
     animationSpeed = animationSpeed,
+    slackTeam = slackTeam,
     slackChannel = slackChannel,
 )

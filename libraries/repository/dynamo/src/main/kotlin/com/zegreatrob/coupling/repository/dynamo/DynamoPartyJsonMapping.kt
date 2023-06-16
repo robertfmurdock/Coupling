@@ -23,6 +23,7 @@ interface DynamoPartyJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping
         callSignsEnabled = getDynamoBoolValue("callSignsEnabled") ?: defaultParty.callSignsEnabled,
         animationEnabled = getDynamoBoolValue("animationEnabled") ?: defaultParty.animationEnabled,
         animationSpeed = getDynamoNumberValue("animationSpeed")?.toDouble() ?: defaultParty.animationSpeed,
+        slackTeam = getDynamoStringValue("slackTeam"),
         slackChannel = getDynamoStringValue("slackChannel"),
     )
 
@@ -37,6 +38,7 @@ interface DynamoPartyJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping
         "callSignsEnabled" to callSignsEnabled,
         "animationEnabled" to animationEnabled,
         "animationSpeed" to animationSpeed,
+        "slackTeam" to slackTeam,
         "slackChannel" to slackChannel,
     )
 }

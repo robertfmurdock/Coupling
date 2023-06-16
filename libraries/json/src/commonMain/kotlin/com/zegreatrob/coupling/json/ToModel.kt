@@ -15,5 +15,6 @@ fun SavePartyInput.toModel() = Party(
     callSignsEnabled = callSignsEnabled ?: defaultParty.callSignsEnabled,
     animationEnabled = animationsEnabled ?: defaultParty.animationEnabled,
     animationSpeed = animationSpeed ?: defaultParty.animationSpeed,
+    slackTeam = slackTeam,
     slackChannel = slackChannel,
 )

@@ -47,15 +47,15 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
         partyId.value,
         null,
         now(),
-        { asTribeRecord() },
+        { asPartyRecord() },
         { asDynamoJson() },
     )
 
     suspend fun getTribeRecords() = scanAllRecords()
         .sortByRecordTimestamp()
-        .map { it.asTribeRecord() }
+        .map { it.asPartyRecord() }
 
-    private fun Json.asTribeRecord() = toRecord(toParty())
+    private fun Json.asPartyRecord() = toRecord(toParty())
 
     suspend fun saveRawRecord(record: Record<Party>) = performPutItem(record.asDynamoJson())
 }

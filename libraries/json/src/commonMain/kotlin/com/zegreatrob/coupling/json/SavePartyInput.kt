@@ -18,6 +18,7 @@ data class SavePartyInput(
     val callSignsEnabled: Boolean?,
     val animationsEnabled: Boolean?,
     val animationSpeed: Double?,
+    val slackTeam: String?,
     val slackChannel: String?,
 )
 
