@@ -31,7 +31,8 @@ class FetchSlackRepository : SlackRepository {
             SlackGrantAccess.Result.Success(
                 SlackTeamAccess(
                     teamId = team?.id ?: return SlackGrantAccess.Result.Unknown(Exception("Missing team id")),
-                    accessToken = accessToken ?: return SlackGrantAccess.Result.Unknown(Exception("Missing access token")),
+                    accessToken = accessToken
+                        ?: return SlackGrantAccess.Result.Unknown(Exception("Missing access token")),
                     appId = appId ?: "",
                     slackUserId = authedUser?.id ?: "",
                 ),
@@ -47,17 +48,25 @@ class FetchSlackRepository : SlackRepository {
             oldest = pairTimestamp + 0.5,
         )
 
+        if (conversationHistory.ok == false) {
+            throw Exception("Conversation History error: " + conversationHistory.error)
+        }
+
         val messageToUpdate = conversationHistory.messages
             ?.minByOrNull { abs(pairTimestamp - it.ts.toDouble()) }
             ?.ts
-
-        client.updateMessage(
-            accessToken = token,
-            channel = channel,
-            ts = messageToUpdate,
-            text = "Update!",
-            blocks = pairs.toSlackBlocks(),
-        )
+        if (messageToUpdate != null) {
+            val response = client.updateMessage(
+                accessToken = token,
+                channel = channel,
+                ts = messageToUpdate,
+                text = "Update!",
+                blocks = pairs.toSlackBlocks(),
+            )
+            if (response.ok == false) {
+                throw Exception("Update Message error: " + response.error)
+            }
+        }
     }
 
     override suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
