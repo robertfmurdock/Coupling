@@ -1,15 +1,17 @@
 package com.zegreatrob.coupling.server.slack
 
+import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.js.Date
 import kotlin.test.Ignore
 import kotlin.test.Test
 
 @ExperimentalEncodingApi
 class FetchSlackClientTest {
 
-    private val token = ""
+    private val token = "xoxb-825373060518-5446975846529-LmDjrjYaJVbA71Y1AQ5HLW2V"
 
     @Test
     @Ignore
@@ -51,6 +53,34 @@ class FetchSlackClientTest {
     } verify { result ->
         result.ok
             .assertIsEqualTo(true)
+    }
+
+    @Test
+    @Ignore
+    fun canGetConversation() = asyncSetup(object {
+        val client = FetchSlackClient("", "", "")
+        val channelId = "C05BWC204S0"
+        val tenSecondsAgo = Date.now() - 10_000
+        val tenSecondsFromNow = Date.now() + 10_000
+        var lastMessageTs: String? = null
+    }) {
+        lastMessageTs = client.postMessage(
+            text = "HEY KOOL AID MAN",
+            channel = channelId,
+            accessToken = token,
+        ).ts
+    } exercise {
+        client.getConversationHistory(
+            accessToken = token,
+            channel = channelId,
+            latest = tenSecondsFromNow,
+            oldest = tenSecondsAgo,
+        )
+    } verify { result ->
+        result.ok
+            .assertIsEqualTo(true)
+        result.messages!!.map { it.ts }
+            .assertContains(lastMessageTs)
     }
 
     @Test

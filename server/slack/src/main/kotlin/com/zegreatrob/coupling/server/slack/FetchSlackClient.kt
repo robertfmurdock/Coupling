@@ -44,7 +44,12 @@ class FetchSlackClient(
     @ExperimentalEncodingApi
     fun btoa(s: String): String = Base64.encode(s.encodeToByteArray())
 
-    override suspend fun postMessage(text: String, channel: String, accessToken: String, blocks: String?): MessageResponse = fetch(
+    override suspend fun postMessage(
+        text: String,
+        channel: String,
+        accessToken: String,
+        blocks: String?,
+    ): MessageResponse = fetch(
         "https://slack.com/api/chat.postMessage",
         jso {
             method = "post"
@@ -84,7 +89,32 @@ class FetchSlackClient(
         .text()
         .await()
         .let(jsonParser::decodeFromString)
+
+    suspend fun getConversationHistory(
+        accessToken: String,
+        channel: String,
+        latest: Double,
+        oldest: Double,
+    ): HistoryResponse = fetch(
+        "https://slack.com/api/conversations.history",
+        jso {
+            method = "post"
+            headers = jsonHeaders(accessToken)
+            body = JSON.stringify(
+                json(
+                    "channel" to channel,
+                    "latest" to latest.toUnixString(),
+                    "oldest" to oldest.toUnixString(),
+                ),
+            )
+        },
+    )
+        .text()
+        .await()
+        .let(jsonParser::decodeFromString)
 }
+
+private fun Double.toUnixString(): String = "${this / 1_000}"
 
 @Serializable
 data class AccessResponse(
@@ -104,6 +134,21 @@ data class MessageResponse(
     val ok: Boolean? = null,
     val error: String? = null,
     val ts: String? = null,
+)
+
+@Serializable
+data class HistoryResponse(
+    val ok: Boolean? = null,
+    val error: String? = null,
+    val messages: List<MessageReference>? = null,
+)
+
+@Serializable
+data class MessageReference(
+    val type: String,
+    val user: String,
+    val text: String,
+    val ts: String,
 )
 
 @Serializable
