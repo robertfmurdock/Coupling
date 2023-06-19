@@ -4,6 +4,7 @@ import js.core.jso
 import kotlinx.coroutines.await
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 import web.http.FormData
 import web.http.fetch
 import kotlin.io.encoding.Base64
@@ -176,7 +177,7 @@ data class MessageReference(
     val type: String,
     val user: String,
     val text: String,
-    val blocks: String? = null,
+    val blocks: JsonElement? = null,
     val ts: String,
 )
 

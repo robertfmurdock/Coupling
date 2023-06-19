@@ -40,12 +40,12 @@ class FetchSlackRepository : SlackRepository {
     }
 
     override suspend fun updateSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
-        val pairTimestamp = pairs.date.unixMillisDouble / 1_000
+        val pairTimestamp = pairs.date.unixMillisDouble
         val conversationHistory = client.getConversationHistory(
             channel = channel,
             accessToken = token,
-            latest = pairTimestamp - 0.5,
-            oldest = pairTimestamp + 0.5,
+            oldest = pairTimestamp - 1000,
+            latest = pairTimestamp + 2000,
         )
 
         if (conversationHistory.ok == false) {
