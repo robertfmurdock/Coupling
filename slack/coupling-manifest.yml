@@ -8,12 +8,13 @@ features:
     always_online: false
   slash_commands:
     - command: /coupling
-      url: https://e705-2601-401-500-7bf0-1d38-aba-a96d-8b39.ngrok-free.app/local/api/slack
+      url: https://coupling.zegreatrob.com/api/slack
       description: Operates Coupling
       should_escape: false
 oauth_config:
   redirect_urls:
     - https://coupling.zegreatrob.com/integration/slack/callback
+    - https://localhost/local/integration/slack/callback
   scopes:
     bot:
       - channels:history
