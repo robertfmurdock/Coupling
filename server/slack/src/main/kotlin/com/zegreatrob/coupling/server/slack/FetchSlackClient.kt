@@ -11,32 +11,6 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.js.json
 
-interface SlackClient {
-    suspend fun exchangeCodeForAccess(code: String): AccessResponse
-
-    suspend fun postMessage(
-        text: String,
-        channel: String,
-        accessToken: String,
-        blocks: String? = null,
-    ): MessageResponse
-
-    suspend fun updateMessage(
-        accessToken: String,
-        channel: String,
-        ts: String?,
-        text: String,
-        blocks: String? = null,
-    ): MessageResponse
-
-    suspend fun getConversationHistory(
-        accessToken: String,
-        channel: String,
-        latest: Double,
-        oldest: Double,
-    ): HistoryResponse
-}
-
 @ExperimentalEncodingApi
 class FetchSlackClient(
     private val clientId: String,
@@ -134,6 +108,23 @@ class FetchSlackClient(
                     "channel" to channel,
                     "latest" to latest.toUnixString(),
                     "oldest" to oldest.toUnixString(),
+                ),
+            )
+        },
+    )
+        .text()
+        .await()
+        .let(jsonParser::decodeFromString)
+
+    suspend fun deleteMessage(accessToken: String, channel: String, ts: String): MessageResponse = fetch(
+        "https://slack.com/api/chat.delete",
+        jso {
+            method = "post"
+            headers = jsonHeaders(accessToken)
+            body = JSON.stringify(
+                json(
+                    "ts" to ts,
+                    "channel" to channel,
                 ),
             )
         },

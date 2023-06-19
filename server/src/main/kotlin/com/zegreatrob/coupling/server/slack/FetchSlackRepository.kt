@@ -96,11 +96,6 @@ private fun PairAssignmentDocument.toSlackBlocks() = arrayOf(
                 "text" to it.pairFieldText(),
             )
         }.toTypedArray(),
-        "accessory" to json(
-            "type" to "image",
-            "image_url" to "${Config.clientUrl}html/a9612ac3fc17807e372f.svg",
-            "alt_text" to "coupling logo",
-        ),
     ),
 ).let(JSON::stringify)
 

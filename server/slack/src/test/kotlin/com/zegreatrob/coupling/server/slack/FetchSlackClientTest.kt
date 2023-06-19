@@ -85,6 +85,40 @@ class FetchSlackClientTest {
 
     @Test
     @Ignore
+    fun canDeleteMessage() = asyncSetup(object {
+        val client = FetchSlackClient("", "", "")
+        val channelId = "C05BWC204S0"
+        val tenSecondsAgo = Date.now() - 10_000
+        val tenSecondsFromNow = Date.now() + 10_000
+        lateinit var lastMessageTs: String
+    }) {
+        lastMessageTs = client.postMessage(
+            text = "HEY KOOL AID MAN",
+            channel = channelId,
+            accessToken = token,
+        ).ts!!
+    } exercise {
+        client.deleteMessage(
+            accessToken = token,
+            channel = channelId,
+            ts = lastMessageTs,
+        )
+    } verify { result ->
+        result.ok
+            .assertIsEqualTo(true, "Got $result")
+        client.getConversationHistory(
+            accessToken = token,
+            channel = channelId,
+            latest = tenSecondsFromNow,
+            oldest = tenSecondsAgo,
+        ).run {
+            ok.assertIsEqualTo(true, "Got $this")
+            messages?.size.assertIsEqualTo(0)
+        }
+    }
+
+    @Test
+    @Ignore
     fun canUpdateMessage() = asyncSetup(object {
         val client = FetchSlackClient("", "", "")
         val channelId = "C05BWC204S0"
