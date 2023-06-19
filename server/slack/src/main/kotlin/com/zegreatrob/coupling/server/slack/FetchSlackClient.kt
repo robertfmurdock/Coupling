@@ -12,7 +12,7 @@ import kotlin.js.json
 
 interface SlackClient {
     suspend fun exchangeCodeForAccess(code: String): AccessResponse
-    suspend fun postMessage(message: String, channel: String, accessToken: String): MessageResponse
+    suspend fun postMessage(text: String, channel: String, accessToken: String, blocks: String? = null): MessageResponse
 }
 
 @ExperimentalEncodingApi
@@ -44,7 +44,7 @@ class FetchSlackClient(
     @ExperimentalEncodingApi
     fun btoa(s: String): String = Base64.encode(s.encodeToByteArray())
 
-    override suspend fun postMessage(message: String, channel: String, accessToken: String): MessageResponse = fetch(
+    override suspend fun postMessage(text: String, channel: String, accessToken: String, blocks: String?): MessageResponse = fetch(
         "https://slack.com/api/chat.postMessage",
         jso {
             method = "post"
@@ -52,7 +52,8 @@ class FetchSlackClient(
             body = JSON.stringify(
                 json(
                     "channel" to channel,
-                    "text" to message,
+                    "text" to text,
+                    "blocks" to blocks,
                 ),
             )
         },

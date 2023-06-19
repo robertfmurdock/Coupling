@@ -18,9 +18,35 @@ class FetchSlackClientTest {
         val channelId = "C05BWC204S0"
     }) exercise {
         client.postMessage(
-            accessToken = token,
+            text = "HEY KOOL AID MAN",
             channel = channelId,
-            message = "HEY KOOL AID MAN",
+            accessToken = token,
+        )
+    } verify { result ->
+        result.ok
+            .assertIsEqualTo(true)
+    }
+
+    @Test
+    @Ignore
+    fun canPostMessageWithBlock() = asyncSetup(object {
+        val client = FetchSlackClient("", "", "")
+        val channelId = "C05BWC204S0"
+    }) exercise {
+        client.postMessage(
+            text = "HEY KOOL AID MAN",
+            blocks = """[
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "Couples for 6/19/2023 - 09:19:45",
+        "emoji": true
+      }
+    }
+  ]""",
+            channel = channelId,
+            accessToken = token,
         )
     } verify { result ->
         result.ok
@@ -35,9 +61,9 @@ class FetchSlackClientTest {
         var ts: String? = null
     }) {
         val response = client.postMessage(
-            accessToken = token,
+            text = "HEY KOOL AID MAN",
             channel = channelId,
-            message = "HEY KOOL AID MAN",
+            accessToken = token,
         )
         ts = response.ts
     } exercise {
