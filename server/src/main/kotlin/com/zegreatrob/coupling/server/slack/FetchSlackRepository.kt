@@ -75,7 +75,9 @@ private fun PairAssignmentDocument.toSlackBlocks() = arrayOf(
 private fun PinnedCouplingPair.pairFieldText() = listOfNotNull(
     callSign()?.let { "*$it*" },
     players.joinToString(" & ") { player -> player.player.name },
-    pins.joinToString(" / ") { it.name }.ifEmpty { null },
+    pins.joinToString(" / ") { it.name }
+        .ifEmpty { null }
+        ?.let { "📍 $it" },
 ).joinToString("\n")
 
 fun PairAssignmentDocument.dateText() = date.local.dateText()
