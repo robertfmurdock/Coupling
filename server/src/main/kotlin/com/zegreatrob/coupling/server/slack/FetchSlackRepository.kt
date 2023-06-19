@@ -40,6 +40,26 @@ class FetchSlackRepository : SlackRepository {
     }
 
     override suspend fun updateSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
+        val messageTs = findExistingMessage(token, channel, pairs)
+        if (messageTs != null) {
+            val response = client.updateMessage(
+                accessToken = token,
+                channel = channel,
+                ts = messageTs,
+                text = "Update!",
+                blocks = pairs.toSlackBlocks(),
+            )
+            if (response.ok == false) {
+                throw Exception("Update Message error: " + response.error)
+            }
+        }
+    }
+
+    private suspend fun findExistingMessage(
+        token: String,
+        channel: String,
+        pairs: PairAssignmentDocument,
+    ): String? {
         val pairTimestamp = pairs.date.unixMillisDouble
         val conversationHistory = client.getConversationHistory(
             channel = channel,
@@ -55,18 +75,17 @@ class FetchSlackRepository : SlackRepository {
         val messageToUpdate = conversationHistory.messages
             ?.minByOrNull { abs(pairTimestamp - it.ts.toDouble()) }
             ?.ts
-        if (messageToUpdate != null) {
-            val response = client.updateMessage(
-                accessToken = token,
-                channel = channel,
-                ts = messageToUpdate,
-                text = "Update!",
-                blocks = pairs.toSlackBlocks(),
-            )
-            if (response.ok == false) {
-                throw Exception("Update Message error: " + response.error)
+        return messageToUpdate
+    }
+
+    override suspend fun deleteSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
+        findExistingMessage(token, channel, pairs)
+            ?.let { messageTs ->
+                val response = client.deleteMessage(accessToken = token, channel = channel, ts = messageTs)
+                if (response.ok == false) {
+                    throw Exception("Delete Message error: " + response.error)
+                }
             }
-        }
     }
 
     override suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
