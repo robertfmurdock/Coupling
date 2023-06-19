@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.model.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.callsign.CallSign
 
 fun pairOf(player1: Player) = CouplingPair.Single(player1)
 
@@ -47,3 +48,17 @@ fun CouplingPair.withPins(pins: Set<Pin> = emptySet()) = PinnedCouplingPair(
     asArray().map { player -> player.withPins() },
     pins,
 )
+
+val PinnedCouplingPair.callSign: CallSign?
+    get() {
+        val nounPlayer = toPair().asArray().getOrNull(0)
+        val adjectivePlayer = toPair().asArray().getOrNull(1) ?: nounPlayer
+
+        val adjective = adjectivePlayer?.callSignAdjective
+        val noun = nounPlayer?.callSignNoun
+        return if (adjective != null && noun != null) {
+            CallSign(adjective, noun)
+        } else {
+            null
+        }
+    }

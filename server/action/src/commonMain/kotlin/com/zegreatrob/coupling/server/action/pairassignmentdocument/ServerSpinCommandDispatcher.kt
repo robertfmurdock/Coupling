@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
@@ -43,7 +44,7 @@ interface ServerSpinCommandDispatcher :
             .save()
 
         val party = shufflePairsAction.party
-        party.sendMessage()
+        party.sendMessage(newPairs)
         return VoidResult.Accepted
     }
 
@@ -67,12 +68,12 @@ interface ServerSpinCommandDispatcher :
 
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
 
-    private suspend fun Party.sendMessage() {
+    private suspend fun Party.sendMessage(pairs: PairAssignmentDocument) {
         val team = slackTeam ?: return
         val channel = slackChannel ?: return
         val accessRecord = slackAccessRepository.get(team) ?: return
         val token = accessRecord.data.accessToken
-        runCatching { slackRepository.sendMessage(channel, token) }
+        runCatching { slackRepository.sendSpinMessage(channel, token, pairs) }
             .onFailure { it.printStackTrace() }
     }
 }

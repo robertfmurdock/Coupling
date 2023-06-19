@@ -1,10 +1,16 @@
 package com.zegreatrob.coupling.server.slack
 
 import com.zegreatrob.coupling.model.SlackTeamAccess
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.coupling.server.action.slack.SlackRepository.AccessTokenResult
 import com.zegreatrob.coupling.server.express.Config
+import korlibs.time.DateFormat
+import korlibs.time.DateTimeTz
 import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.js.json
 
 @OptIn(ExperimentalEncodingApi::class)
 class FetchSlackRepository : SlackRepository {
@@ -31,7 +37,44 @@ class FetchSlackRepository : SlackRepository {
             )
     }
 
-    override suspend fun sendMessage(channel: String, token: String) {
-        client.postMessage("Spin!", channel, token)
+    override suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
+        client.postMessage(
+            blocks = pairs.toSlackBlocks(),
+            text = "Spin!",
+            channel = channel,
+            accessToken = token,
+        )
     }
 }
+
+private fun PairAssignmentDocument.toSlackBlocks() = arrayOf(
+    json(
+        "type" to "header",
+        "text" to json(
+            "type" to "plain_text",
+            "text" to "Couples for ${dateText()}",
+            "emoji" to true,
+        ),
+    ),
+    json(
+        "type" to "section",
+        "fields" to pairs.map {
+            json(
+                "type" to "mrkdwn",
+                "text" to it.pairFieldText(),
+            )
+        }.toTypedArray(),
+        "accessory" to json(
+            "type" to "image",
+            "image_url" to "https://pbs.twimg.com/profile_images/625633822235693056/lNGUneLX_400x400.jpg",
+            "alt_text" to "cute cat",
+        ),
+    ),
+).let(JSON::stringify)
+
+private fun PinnedCouplingPair.pairFieldText() =
+    "*$callSign*\n${players.joinToString(" & ") { player -> player.player.name }}"
+
+fun PairAssignmentDocument.dateText() = date.local.dateText()
+
+private fun DateTimeTz.dateText() = "${format(DateFormat("MM/dd/YYYY"))} - ${format(DateFormat("HH:mm:ss"))}"

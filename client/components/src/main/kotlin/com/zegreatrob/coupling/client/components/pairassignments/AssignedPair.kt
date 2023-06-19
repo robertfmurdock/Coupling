@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.pin.pinDragItemType
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
 import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
@@ -57,7 +58,7 @@ val tiltLeft = (-8).deg
 val tiltRight = 8.deg
 
 val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
-    val callSign = pair.findCallSign()
+    val callSign = pair.callSign
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
     val pinDroppableRef = useRef<HTMLElement>(null)
@@ -131,19 +132,6 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
             zIndex = integer(10)
         }
         +"${callSign.adjective} ${callSign.noun}"
-    }
-}
-
-private fun PinnedCouplingPair.findCallSign(): CallSign? {
-    val nounPlayer = toPair().asArray().getOrNull(0)
-    val adjectivePlayer = toPair().asArray().getOrNull(1) ?: nounPlayer
-
-    val adjective = adjectivePlayer?.callSignAdjective
-    val noun = nounPlayer?.callSignNoun
-    return if (adjective != null && noun != null) {
-        CallSign(adjective, noun)
-    } else {
-        null
     }
 }
 
