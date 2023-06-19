@@ -66,8 +66,8 @@ private fun PairAssignmentDocument.toSlackBlocks() = arrayOf(
         }.toTypedArray(),
         "accessory" to json(
             "type" to "image",
-            "image_url" to "https://pbs.twimg.com/profile_images/625633822235693056/lNGUneLX_400x400.jpg",
-            "alt_text" to "cute cat",
+            "image_url" to "${Config.clientUrl}/html/a9612ac3fc17807e372f.svg",
+            "alt_text" to "coupling logo",
         ),
     ),
 ).let(JSON::stringify)
