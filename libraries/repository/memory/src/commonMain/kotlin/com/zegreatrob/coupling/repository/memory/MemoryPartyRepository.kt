@@ -7,7 +7,7 @@ import korlibs.time.TimeProvider
 
 class MemoryPartyRepository(
     override val userId: String,
-    override val clock: TimeProvider,
+    override val clock: TimeProvider = TimeProvider,
     private val recordBackend: RecordBackend<Party> = SimpleRecordBackend(),
 ) : PartyRepository, TypeRecordSyntax<Party>, RecordBackend<Party> by recordBackend {
 

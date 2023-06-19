@@ -4,13 +4,14 @@ import com.zegreatrob.coupling.model.SlackTeamAccess
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
+import com.zegreatrob.coupling.server.action.slack.SlackGrantAccess
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
-import com.zegreatrob.coupling.server.action.slack.SlackRepository.AccessTokenResult
 import com.zegreatrob.coupling.server.express.Config
 import korlibs.time.DateFormat
 import korlibs.time.DateTimeTz
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.js.json
+import kotlin.math.abs
 
 @OptIn(ExperimentalEncodingApi::class)
 class FetchSlackRepository : SlackRepository {
@@ -21,20 +22,42 @@ class FetchSlackRepository : SlackRepository {
         .toResult()
 
     private fun Result<AccessResponse>.toResult() = map { it.toResult() }
-        .getOrElse { AccessTokenResult.Unknown(it) }
+        .getOrElse { SlackGrantAccess.Result.Unknown(it) }
 
-    private fun AccessResponse.toResult(): AccessTokenResult {
+    private fun AccessResponse.toResult(): SlackGrantAccess.Result {
         return if (ok == false) {
-            AccessTokenResult.RemoteError(error)
+            SlackGrantAccess.Result.RemoteError(error)
         } else
-            AccessTokenResult.Success(
+            SlackGrantAccess.Result.Success(
                 SlackTeamAccess(
-                    teamId = team?.id ?: return AccessTokenResult.Unknown(Exception("Missing team id")),
-                    accessToken = accessToken ?: return AccessTokenResult.Unknown(Exception("Missing access token")),
+                    teamId = team?.id ?: return SlackGrantAccess.Result.Unknown(Exception("Missing team id")),
+                    accessToken = accessToken ?: return SlackGrantAccess.Result.Unknown(Exception("Missing access token")),
                     appId = appId ?: "",
                     slackUserId = authedUser?.id ?: "",
                 ),
             )
+    }
+
+    override suspend fun updateSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
+        val pairTimestamp = pairs.date.unixMillisDouble / 1_000
+        val conversationHistory = client.getConversationHistory(
+            channel = channel,
+            accessToken = token,
+            latest = pairTimestamp - 0.5,
+            oldest = pairTimestamp + 0.5,
+        )
+
+        val messageToUpdate = conversationHistory.messages
+            ?.minByOrNull { abs(pairTimestamp - it.ts.toDouble()) }
+            ?.ts
+
+        client.updateMessage(
+            accessToken = token,
+            channel = channel,
+            ts = messageToUpdate,
+            text = "Update!",
+            blocks = pairs.toSlackBlocks(),
+        )
     }
 
     override suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {

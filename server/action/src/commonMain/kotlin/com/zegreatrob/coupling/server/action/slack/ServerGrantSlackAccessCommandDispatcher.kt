@@ -11,8 +11,8 @@ interface ServerGrantSlackAccessCommandDispatcher : GrantSlackAccessCommand.Disp
 
     override suspend fun perform(command: GrantSlackAccessCommand) =
         when (val result = slackRepository.exchangeCodeForAccessToken(command.code)) {
-            is SlackRepository.AccessTokenResult.Success -> VoidResult.Accepted.also { slackAccessRepository.save(result.access) }
-            is SlackRepository.AccessTokenResult.RemoteError -> VoidResult.Rejected
-            is SlackRepository.AccessTokenResult.Unknown -> VoidResult.Rejected.also { result.exception.printStackTrace() }
+            is SlackGrantAccess.Result.Success -> VoidResult.Accepted.also { slackAccessRepository.save(result.access) }
+            is SlackGrantAccess.Result.RemoteError -> VoidResult.Rejected
+            is SlackGrantAccess.Result.Unknown -> VoidResult.Rejected.also { result.exception.printStackTrace() }
         }
 }

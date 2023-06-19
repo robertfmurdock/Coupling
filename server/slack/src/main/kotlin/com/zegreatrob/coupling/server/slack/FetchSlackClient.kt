@@ -12,7 +12,28 @@ import kotlin.js.json
 
 interface SlackClient {
     suspend fun exchangeCodeForAccess(code: String): AccessResponse
-    suspend fun postMessage(text: String, channel: String, accessToken: String, blocks: String? = null): MessageResponse
+
+    suspend fun postMessage(
+        text: String,
+        channel: String,
+        accessToken: String,
+        blocks: String? = null,
+    ): MessageResponse
+
+    suspend fun updateMessage(
+        accessToken: String,
+        channel: String,
+        ts: String?,
+        text: String,
+        blocks: String? = null,
+    ): MessageResponse
+
+    suspend fun getConversationHistory(
+        accessToken: String,
+        channel: String,
+        latest: Double,
+        oldest: Double,
+    ): HistoryResponse
 }
 
 @ExperimentalEncodingApi
@@ -72,7 +93,13 @@ class FetchSlackClient(
         "Content-type" to "application/json",
     )
 
-    suspend fun updateMessage(accessToken: String, channel: String, ts: String?, text: String): MessageResponse = fetch(
+    override suspend fun updateMessage(
+        accessToken: String,
+        channel: String,
+        ts: String?,
+        text: String,
+        blocks: String?,
+    ): MessageResponse = fetch(
         "https://slack.com/api/chat.update",
         jso {
             method = "post"
@@ -82,6 +109,7 @@ class FetchSlackClient(
                     "ts" to ts,
                     "channel" to channel,
                     "text" to text,
+                    "blocks" to blocks,
                 ),
             )
         },
@@ -90,7 +118,7 @@ class FetchSlackClient(
         .await()
         .let(jsonParser::decodeFromString)
 
-    suspend fun getConversationHistory(
+    override suspend fun getConversationHistory(
         accessToken: String,
         channel: String,
         latest: Double,
@@ -148,6 +176,7 @@ data class MessageReference(
     val type: String,
     val user: String,
     val text: String,
+    val blocks: String? = null,
     val ts: String,
 )
 

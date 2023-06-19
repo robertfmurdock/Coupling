@@ -18,7 +18,7 @@ interface PartyDelete {
     suspend fun deleteIt(partyId: PartyId): Boolean
 }
 
-interface PartyGet {
+fun interface PartyGet {
     suspend fun getPartyRecord(partyId: PartyId): Record<Party>?
 }
 

@@ -3,30 +3,47 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.party.Party
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdLoadSyntax
+import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.connection.CouplingConnectionGetSyntax
-import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
+import com.zegreatrob.coupling.server.action.slack.SlackUpdateSpin
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 interface ServerSavePairAssignmentDocumentCommandDispatcher :
     SavePairAssignmentsCommand.Dispatcher,
     PartyIdPairAssignmentDocumentSaveSyntax,
-    CurrentPartyIdSyntax,
     CouplingConnectionGetSyntax,
+    PartyIdLoadSyntax,
     SuspendActionExecuteSyntax,
     BroadcastAction.Dispatcher {
 
+    val slackRepository: SlackUpdateSpin
+    val slackAccessRepository: SlackAccessGet
+
     override suspend fun perform(command: SavePairAssignmentsCommand) = with(command) {
-        currentPartyId.with(pairAssignments)
+        partyId.with(pairAssignments)
             .apply { save() }
             .apply { execute(broadcastAction()) }
             .let { VoidResult.Accepted }
+            .also { partyId.load()?.data?.updateMessage(pairAssignments) }
+    }
+
+    private suspend fun Party.updateMessage(pairs: PairAssignmentDocument) {
+        val team = slackTeam ?: return
+        val channel = slackChannel ?: return
+        val accessRecord = slackAccessRepository.get(team) ?: return
+        val token = accessRecord.data.accessToken
+        runCatching { slackRepository.updateSpinMessage(channel, token, pairs) }
+            .onFailure { it.printStackTrace() }
     }
 
     suspend fun SavePairAssignmentsCommand.broadcastAction() = BroadcastAction(
-        currentPartyId.loadConnections(),
+        partyId.loadConnections(),
         PairAssignmentAdjustmentMessage(pairAssignments),
     )
 }
