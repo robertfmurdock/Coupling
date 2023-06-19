@@ -15,7 +15,7 @@ fun Express.routes() {
     get("/api/integration/slack-install-url") { _, response, _ ->
         slackInstallProvider.generateInstallUrl(
             jso {
-                scopes = arrayOf("chat:write", "chat:write.customize", "commands")
+                scopes = arrayOf("chat:write", "chat:write.customize", "channels:history", "commands")
                 redirectUri = slackRedirectUri()
             },
         ).then(response::send)

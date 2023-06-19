@@ -16,10 +16,11 @@ oauth_config:
     - https://coupling.zegreatrob.com/integration/slack/callback
   scopes:
     bot:
-      - incoming-webhook
+      - channels:history
       - chat:write.customize
       - chat:write
       - commands
+      - incoming-webhook
 settings:
   org_deploy_enabled: false
   socket_mode_enabled: false
