@@ -10,7 +10,7 @@ val slackInstallProvider = InstallProvider(
         clientSecret = Config.slackClientSecret
         stateSecret = Config.secretSigningSecret
         installUrlOptions = jso {
-            scopes = arrayOf("chat:write", "chat:write.customize", "channels:history", "commands")
+            scopes = arrayOf("chat:write", "chat:write.customize", "channels:history", "groups:history", "commands")
             redirectUri = slackRedirectUri()
         }
     },
