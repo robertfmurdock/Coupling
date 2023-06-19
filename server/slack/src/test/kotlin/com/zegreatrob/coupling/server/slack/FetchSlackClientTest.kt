@@ -11,7 +11,7 @@ import kotlin.test.Test
 @ExperimentalEncodingApi
 class FetchSlackClientTest {
 
-    private val token = "xoxb-825373060518-5446975846529-LmDjrjYaJVbA71Y1AQ5HLW2V"
+    private val token = ""
 
     @Test
     @Ignore
