@@ -72,8 +72,11 @@ private fun PairAssignmentDocument.toSlackBlocks() = arrayOf(
     ),
 ).let(JSON::stringify)
 
-private fun PinnedCouplingPair.pairFieldText() =
-    "*$callSign*\n${players.joinToString(" & ") { player -> player.player.name }}"
+private fun PinnedCouplingPair.pairFieldText() = listOfNotNull(
+    callSign()?.let { "*$it*" },
+    players.joinToString(" & ") { player -> player.player.name },
+    pins.joinToString(" / ") { it.name }.ifEmpty { null },
+).joinToString("\n")
 
 fun PairAssignmentDocument.dateText() = date.local.dateText()
 

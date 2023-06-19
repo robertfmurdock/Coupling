@@ -58,7 +58,7 @@ val tiltLeft = (-8).deg
 val tiltRight = 8.deg
 
 val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
-    val callSign = pair.callSign
+    val callSign = pair.callSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
     val pinDroppableRef = useRef<HTMLElement>(null)

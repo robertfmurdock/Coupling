@@ -49,16 +49,15 @@ fun CouplingPair.withPins(pins: Set<Pin> = emptySet()) = PinnedCouplingPair(
     pins,
 )
 
-val PinnedCouplingPair.callSign: CallSign?
-    get() {
-        val nounPlayer = toPair().asArray().getOrNull(0)
-        val adjectivePlayer = toPair().asArray().getOrNull(1) ?: nounPlayer
+fun PinnedCouplingPair.callSign(): CallSign? {
+    val nounPlayer = toPair().asArray().getOrNull(0)
+    val adjectivePlayer = toPair().asArray().getOrNull(1) ?: nounPlayer
 
-        val adjective = adjectivePlayer?.callSignAdjective
-        val noun = nounPlayer?.callSignNoun
-        return if (adjective != null && noun != null) {
-            CallSign(adjective, noun)
-        } else {
-            null
-        }
+    val adjective = adjectivePlayer?.callSignAdjective
+    val noun = nounPlayer?.callSignNoun
+    return if (adjective != null && noun != null) {
+        CallSign(adjective, noun)
+    } else {
+        null
     }
+}
