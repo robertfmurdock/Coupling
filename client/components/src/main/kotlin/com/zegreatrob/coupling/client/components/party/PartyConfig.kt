@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths
 import com.zegreatrob.coupling.client.components.useForm
-import com.zegreatrob.coupling.json.JsonParty
+import com.zegreatrob.coupling.json.JsonPartyDetails
 import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.coupling.json.toModel
@@ -30,7 +30,7 @@ private interface PartyConfigDispatcher : SavePartyCommand.Dispatcher, DeletePar
 private val partyConfig by ntmFC { (party, commandFunc): PartyConfig<PartyConfigDispatcher> ->
     val isNew = party.id.value == ""
     val (values, onChange) = useForm(party.withDefaultPartyId().toSerializable().toJsonDynamic().unsafeCast<Json>())
-    val updatedParty = values.correctTypes().fromJsonDynamic<JsonParty>().toModel()
+    val updatedParty = values.correctTypes().fromJsonDynamic<JsonPartyDetails>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToPartyList = { setRedirectUrl(Paths.partyList()) }
     val onSave = commandFunc({ SavePartyCommand(updatedParty) }, { redirectToPartyList() })

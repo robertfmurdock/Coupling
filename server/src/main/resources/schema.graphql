@@ -1,4 +1,4 @@
-type PartyRecord {
+type PartyDetails {
     id: String!
     name: String
     email: String
@@ -28,7 +28,7 @@ type Pin {
     name: String
 }
 
-type PinRecord {
+type PinDetails {
     id: String!
     icon: String
     name: String
@@ -38,7 +38,7 @@ type PinRecord {
     isDeleted: Boolean
 }
 
-type PlayerRecord {
+type PlayerDetails {
     id: String!
     name: String
     email: String
@@ -70,7 +70,7 @@ type PinnedPair {
     pins: [Pin]
 }
 
-type PairAssignmentDocumentRecord {
+type PairAssignmentDocumentDetails {
     id: String!
     date: String!
     pairs: [PinnedPair]!
@@ -80,7 +80,7 @@ type PairAssignmentDocumentRecord {
     isDeleted: Boolean
 }
 
-type SecretRecord {
+type PartySecret {
     id: String!
     partyId: String
     modifyingUserEmail: String
@@ -88,15 +88,15 @@ type SecretRecord {
     isDeleted: Boolean
 }
 
-type PartyData {
+type Party {
     id: String!
-    party: PartyRecord
-    pinList: [PinRecord]
-    playerList: [PlayerRecord]
-    retiredPlayers: [PlayerRecord]
-    pairAssignmentDocumentList: [PairAssignmentDocumentRecord]
-    secretList: [SecretRecord]
-    currentPairAssignmentDocument: PairAssignmentDocumentRecord
+    details: PartyDetails
+    pinList: [PinDetails]
+    playerList: [PlayerDetails]
+    retiredPlayers: [PlayerDetails]
+    pairAssignmentDocumentList: [PairAssignmentDocumentDetails]
+    secretList: [PartySecret]
+    currentPairAssignmentDocument: PairAssignmentDocumentDetails
 }
 
 input PlayerInput {
@@ -123,7 +123,7 @@ input SpinInput {
 }
 
 type SpinOutput {
-    result: PairAssignmentDocumentRecord!
+    result: PairAssignmentDocumentDetails!
 }
 
 input DeletePartyInput {
@@ -226,7 +226,7 @@ input GlobalStatsInput {
     year: Int
 }
 
-input PartyDataInput {
+input PartyInput {
     partyId: String!
 }
 
@@ -234,8 +234,8 @@ input PartyDataInput {
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
 type Query {
-    partyList: [PartyRecord]
-    partyData(input: PartyDataInput!): PartyData
+    partyList: [PartyDetails]
+    party(input: PartyInput!): Party
     user: User
     globalStats(input: GlobalStatsInput!) : GlobalStats!
 }

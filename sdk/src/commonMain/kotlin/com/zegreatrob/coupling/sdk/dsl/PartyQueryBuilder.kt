@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.sdk.dsl
 
-import com.zegreatrob.coupling.json.JsonPartyData
+import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignmentRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.partyRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pinRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.playerRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.secretRecord
 
-class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
+class PartyQueryBuilder : QueryBuilder<JsonParty> {
 
-    override var output: JsonPartyData = JsonPartyData("")
+    override var output: JsonParty = JsonParty("")
 
     fun pinList() {
         output = output.copy(
@@ -19,7 +19,7 @@ class PartyQueryBuilder : QueryBuilder<JsonPartyData> {
 
     fun party() {
         output = output.copy(
-            party = partyRecord,
+            details = partyRecord,
         )
     }
 

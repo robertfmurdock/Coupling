@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class JsonParty(
+data class JsonPartyDetails(
     val id: String,
     val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
     val badgesEnabled: Boolean = false,
@@ -27,7 +27,7 @@ data class JsonParty(
 )
 
 @Serializable
-data class JsonPartyRecord(
+data class JsonPartyDetailsRecord(
     val id: PartyId,
     val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
     val badgesEnabled: Boolean = false,
@@ -45,7 +45,7 @@ data class JsonPartyRecord(
     val timestamp: DateTime,
 )
 
-fun Party.toSerializable() = JsonParty(
+fun Party.toSerializable() = JsonPartyDetails(
     id = id.value,
     pairingRule = PairingRule.toValue(pairingRule),
     badgesEnabled = badgesEnabled,
@@ -60,7 +60,7 @@ fun Party.toSerializable() = JsonParty(
     slackChannel = slackChannel,
 )
 
-fun Record<Party>.toSerializable() = JsonPartyRecord(
+fun Record<Party>.toSerializable() = JsonPartyDetailsRecord(
     id = data.id,
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
@@ -78,7 +78,7 @@ fun Record<Party>.toSerializable() = JsonPartyRecord(
     timestamp = timestamp,
 )
 
-fun JsonParty.toModel(): Party = Party(
+fun JsonPartyDetails.toModel(): Party = Party(
     id = PartyId(id),
     pairingRule = PairingRule.fromValue(pairingRule),
     badgesEnabled = badgesEnabled,
@@ -93,7 +93,7 @@ fun JsonParty.toModel(): Party = Party(
     slackChannel = slackChannel,
 )
 
-fun JsonPartyRecord.toModelRecord(): Record<Party> = Record(
+fun JsonPartyDetailsRecord.toModelRecord(): Record<Party> = Record(
     data = Party(
         id = id,
         pairingRule = PairingRule.fromValue(pairingRule),

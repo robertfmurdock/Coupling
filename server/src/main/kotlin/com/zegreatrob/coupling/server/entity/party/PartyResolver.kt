@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.party
 
-import com.zegreatrob.coupling.json.JsonPartyData
+import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.Party
@@ -11,7 +11,7 @@ import kotlinx.serialization.json.JsonElement
 
 val partyResolve = dispatch(
     { r, _, _ -> r.commandDispatcher },
-    { entity: JsonPartyData, _: JsonElement -> PartyQuery(PartyId(entity.id)) },
+    { entity: JsonParty, _: JsonElement -> PartyQuery(PartyId(entity.id)) },
     ::toJson,
 )
 

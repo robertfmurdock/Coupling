@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.import.external.readline.inputReader
 import com.zegreatrob.coupling.import.external.readline.onEnd
 import com.zegreatrob.coupling.import.external.readline.onNewLine
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPartyRecord
+import com.zegreatrob.coupling.json.JsonPartyDetailsRecord
 import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonUserRecord
@@ -63,7 +63,7 @@ suspend fun loadPartyData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     jsonLine.getArray("partyRecords").forEach { recordJson ->
         tryToImport({ "Failed to save party $partyId" }) {
             catalog.partyRepository.saveRawRecord(
-                format.decodeFromDynamic<JsonPartyRecord>(recordJson).toModelRecord(),
+                format.decodeFromDynamic<JsonPartyDetailsRecord>(recordJson).toModelRecord(),
             )
         }
     }

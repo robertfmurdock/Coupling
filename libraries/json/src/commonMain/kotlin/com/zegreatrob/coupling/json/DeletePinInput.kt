@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class DeletePinInput(override val partyId: PartyId, val pinId: String) : PartyInput
+data class DeletePinInput(override val partyId: PartyId, val pinId: String) : IPartyInput

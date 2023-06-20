@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPartyRecord
+import com.zegreatrob.coupling.json.JsonPartyDetailsRecord
 import com.zegreatrob.coupling.json.JsonPartyStats
 import com.zegreatrob.coupling.json.JsonPinData
 import com.zegreatrob.coupling.json.JsonPinRecord
@@ -73,7 +73,7 @@ object GqlReference {
         isDeleted = false,
         timestamp = DateTime.EPOCH,
     )
-    val partyRecord = JsonPartyRecord(
+    val partyRecord = JsonPartyDetailsRecord(
         id = PartyId(""),
         pairingRule = 0,
         badgesEnabled = false,

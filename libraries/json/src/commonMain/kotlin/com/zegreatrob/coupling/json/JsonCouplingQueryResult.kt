@@ -11,20 +11,20 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class JsonCouplingQueryResult(
-    val partyList: List<JsonPartyRecord>? = null,
+    val partyList: List<JsonPartyDetailsRecord>? = null,
     val user: JsonUser? = null,
-    val partyData: JsonPartyData? = null,
+    val party: JsonParty? = null,
     val globalStats: JsonGlobalStats? = null,
 )
 
 @Serializable
-data class PartyDataInput(
+data class PartyInput(
     val partyId: String,
 )
 
-private fun JsonPartyData.toModel() = PartyData(
+private fun JsonParty.toModel() = PartyData(
     id = id.let(::PartyId),
-    party = party?.toModelRecord(),
+    party = details?.toModelRecord(),
     pinList = pinList?.map(JsonPinRecord::toModel),
     playerList = playerList?.map(JsonPlayerRecord::toModel),
     secretList = secretList?.map(JsonSecretRecord::toModel),
@@ -34,16 +34,16 @@ private fun JsonPartyData.toModel() = PartyData(
 )
 
 fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
-    partyList = partyList?.map(JsonPartyRecord::toModelRecord),
+    partyList = partyList?.map(JsonPartyDetailsRecord::toModelRecord),
     user = user?.toModel(),
-    partyData = partyData?.toModel(),
+    partyData = party?.toModel(),
     globalStats = globalStats?.toModel(),
 )
 
 @Serializable
-data class JsonPartyData(
+data class JsonParty(
     val id: String,
-    val party: JsonPartyRecord? = null,
+    val details: JsonPartyDetailsRecord? = null,
     val pinList: List<JsonPinRecord>? = null,
     val playerList: List<JsonPlayerRecord>? = null,
     val secretList: List<JsonSecretRecord>? = null,

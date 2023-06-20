@@ -67,7 +67,7 @@ data class SavePairAssignmentsInput(
     val pairAssignmentsId: String,
     val date: DateTime,
     val pairs: List<JsonPinnedCouplingPair>,
-) : PartyInput
+) : IPartyInput
 
 @Serializable
 data class JsonPinnedCouplingPair(val players: List<JsonPinnedPlayer>, val pins: Set<JsonPinData> = emptySet())
@@ -90,7 +90,7 @@ data class SpinInput(
     override val partyId: PartyId,
     val playerIds: List<String>,
     val pinIds: List<String>,
-) : PartyInput
+) : IPartyInput
 
 @Serializable
 data class GrantSlackAccessInput(

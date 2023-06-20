@@ -1,4 +1,4 @@
-type BoostRecord {
+type BoostDetails {
     userId: String!
     partyIds: [String]!
     expirationDate: String
@@ -7,14 +7,14 @@ type BoostRecord {
     isDeleted: Boolean
 }
 
-type PartyData {
+type Party {
     id: String!
-    boost: BoostRecord
+    boost: BoostDetails
 }
 
 type User {
     id: String!
-    boost: BoostRecord
+    boost: BoostDetails
 }
 
 input SaveBoostInput {

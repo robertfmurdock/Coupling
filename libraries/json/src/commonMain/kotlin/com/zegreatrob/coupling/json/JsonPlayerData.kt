@@ -46,7 +46,7 @@ data class SavePlayerInput(
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
     val avatarType: String? = defaultPlayer.avatarType?.name,
-) : PartyInput
+) : IPartyInput
 
 @Serializable
 data class JsonPlayerRecord(

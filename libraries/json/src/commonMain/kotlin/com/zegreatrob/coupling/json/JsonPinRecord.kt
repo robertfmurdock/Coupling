@@ -44,7 +44,7 @@ data class SavePinInput(
     val pinId: String?,
     val name: String,
     val icon: String,
-) : PartyInput
+) : IPartyInput
 
 fun Pin.toSerializable() = JsonPinData(
     id = id,

@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class DeletePartyInput(override val partyId: PartyId) : PartyInput
+data class DeletePartyInput(override val partyId: PartyId) : IPartyInput
