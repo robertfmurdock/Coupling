@@ -1,10 +1,12 @@
 package com.zegreatrob.coupling.repository.validation
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.stubmodel.stubParties
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
+import com.zegreatrob.coupling.stubmodel.stubPartyIntegration
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import korlibs.time.DateTime
@@ -26,10 +28,10 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
         result.parties().assertContainsAll(parties)
     }
 
-    private fun List<Party>.assertContainsAll(expectedParties: List<Party>) =
+    private fun List<PartyDetails>.assertContainsAll(expectedParties: List<PartyDetails>) =
         expectedParties.forEach(this::assertContains)
 
-    private fun List<Record<Party>>.parties() = map(Record<Party>::data)
+    private fun List<Record<PartyDetails>>.parties() = map(Record<PartyDetails>::data)
 
     @Test
     fun saveMultipleThenGetEachByIdWillReturnSavedParties() = repositorySetup.with(
@@ -39,7 +41,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     ) {
         parties.forEach { repository.save(it) }
     } exercise {
-        parties.map { repository.getPartyRecord(it.id)?.data }
+        parties.map { repository.getDetails(it.id)?.data }
     } verify { result ->
         result.assertIsEqualTo(parties)
     }
@@ -47,7 +49,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     @Test
     fun saveWillIncludeModificationInformation() = repositorySetup.with(
         object : ContextMint<R>() {
-            val party = stubParty()
+            val party = stubPartyDetails()
         }.bind(),
     ) {
         clock.currentTime = DateTime.now().minus(3.days)
@@ -64,9 +66,35 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
     }
 
     @Test
+    fun canSaveAndLoadIntegrationWithoutAffectingParty() = repositorySetup.with(
+        object : ContextMint<R>() {
+            val partyDetails = stubPartyDetails()
+            val partyId = partyDetails.id
+            val partyIntegration = stubPartyIntegration()
+        }.bind(),
+    ) {
+        clock.currentTime = DateTime.now().minus(3.days)
+        repository.save(partyDetails)
+        repository.save(partyId.with(partyIntegration))
+    } exercise {
+        repository.getIntegration(partyId)
+    } verifyAnd { result ->
+        result?.data
+            .assertIsEqualTo(partyIntegration)
+        result!!.apply {
+            modifyingUserId.assertIsEqualTo(user.email)
+            timestamp.assertIsEqualTo(clock.currentTime)
+        }
+        repository.getDetails(partyId)?.data
+            .assertIsEqualTo(partyDetails)
+    } teardown {
+        repository.deleteIt(partyDetails.id)
+    }
+
+    @Test
     fun deleteWillMakePartyInaccessible() = repositorySetup.with(
         object : ContextMint<R>() {
-            val party = stubParty()
+            val party = stubPartyDetails()
         }.bind(),
     ) {
         repository.save(party)
@@ -74,7 +102,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
         repository.deleteIt(party.id)
         Pair(
             repository.loadParties(),
-            repository.getPartyRecord(party.id)?.data,
+            repository.getDetails(party.id)?.data,
         )
     } verifyAnd { (listResult, getResult) ->
         listResult.find { it.data.id == party.id }

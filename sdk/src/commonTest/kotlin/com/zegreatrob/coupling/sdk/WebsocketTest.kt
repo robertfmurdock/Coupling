@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.client.plugins.websocket.webSocketSession
@@ -33,7 +33,7 @@ class WebsocketTest {
     @Test
     fun whenOnlyOneConnectionWillReturnCountOfOne() = asyncSetup.with({
         object : SdkContext by it {
-            val party = stubParty()
+            val party = stubPartyDetails()
         }
     }) {
         sdk.perform(SavePartyCommand(party))
@@ -63,7 +63,7 @@ class WebsocketTest {
     @Test
     fun whenMultipleConnectionsWillReturnTheTotalCount() = asyncSetup.with({
         object : SdkContext by it {
-            val party = stubParty()
+            val party = stubPartyDetails()
         }
     }) {
         sdk.perform(SavePartyCommand(party))
@@ -98,7 +98,7 @@ class WebsocketTest {
     @Test
     fun whenNewConnectionIsOpenExistingConnectionsReceiveMessage() = asyncSetup.with({
         object : SdkContext by it {
-            val party = stubParty()
+            val party = stubPartyDetails()
         }
     }) {
         sdk.perform(SavePartyCommand(party))
@@ -124,7 +124,7 @@ class WebsocketTest {
     @Test
     fun whenPairsAreSavedWillSendMessageToClients() = asyncSetup.with({
         object : SdkContext by it {
-            val party = stubParty()
+            val party = stubPartyDetails()
             val sockets = mutableListOf<DefaultClientWebSocketSession>()
             val expectedPairDoc = stubPairAssignmentDoc()
         }
@@ -150,7 +150,7 @@ class WebsocketTest {
     @Test
     fun whenConnectionClosesOtherConnectionsGetMessageWithNewCount() = asyncSetup.with({
         object : SdkContext by it {
-            val party = stubParty()
+            val party = stubPartyDetails()
         }
     }) {
         sdk.perform(SavePartyCommand(party))
@@ -188,7 +188,7 @@ class WebsocketTest {
 
     @Test
     fun whenNotAuthorizedForThePartyWillNotTalkToYou() = asyncSetup() exercise {
-        runCatching { couplingSocketSession(stubParty().id) }
+        runCatching { couplingSocketSession(stubPartyDetails().id) }
     } verify { result ->
         result.getOrNull()
             .assertIsEqualTo(null)
@@ -206,7 +206,7 @@ class WebsocketTest {
     @Test
     fun whenSocketIsImmediatelyClosedDoesNotCrashServer() = asyncSetup.with({
         object : SdkContext by it {
-            val party = stubParty()
+            val party = stubPartyDetails()
         }
     }) {
         sdk.perform(SavePartyCommand(party))

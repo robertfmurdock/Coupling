@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.create
 
@@ -27,7 +27,7 @@ val HistoryPage = partyPageFunction { props, partyId ->
     ).create(key = partyId.value)
 }
 
-typealias HistoryData = Pair<Party, List<PairAssignmentDocument>>
+typealias HistoryData = Pair<PartyDetails, List<PairAssignmentDocument>>
 
 fun CouplingQueryResult?.toHistoryData(): HistoryData? {
     return this?.partyData?.let {

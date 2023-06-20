@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -25,7 +25,7 @@ import kotlin.test.Test
 class ComposeStatisticsActionTest {
 
     companion object : ComposeStatisticsAction.Dispatcher {
-        val party = Party(PartyId("LOL"), PairingRule.LongestTime)
+        val party = PartyDetails(PartyId("LOL"), PairingRule.LongestTime)
 
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
             .map { number -> makePlayer("$number") }
@@ -391,4 +391,4 @@ class ComposeStatisticsActionTest {
 expect fun loadJsonPartySetup(fileResource: String): PartySetup
 expect inline fun <reified T> loadResource(fileResource: String): T
 
-data class PartySetup(val party: Party, val players: List<Player>, val history: List<PairAssignmentDocument>)
+data class PartySetup(val party: PartyDetails, val players: List<Player>, val history: List<PairAssignmentDocument>)

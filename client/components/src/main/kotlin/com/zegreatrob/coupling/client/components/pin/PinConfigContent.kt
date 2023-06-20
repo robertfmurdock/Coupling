@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.PinButton
 import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.client.components.configInput
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.minreact.DataPropsBind
@@ -35,7 +35,7 @@ import web.cssom.px
 import web.html.InputType
 
 data class PinConfigContent(
-    val party: Party,
+    val party: PartyDetails,
     val pin: Pin,
     val pinList: List<Pin>,
     val onChange: (ChangeEvent<*>) -> Unit,
@@ -79,7 +79,7 @@ val pinConfigContent by ntmFC<PinConfigContent> { (party, pin, pinList, onChange
     }
 }
 
-private fun ChildrenBuilder.pinBag(party: Party, pinList: List<Pin>) = div {
+private fun ChildrenBuilder.pinBag(party: PartyDetails, pinList: List<Pin>) = div {
     pinList.map { pin ->
         add(PinCard(party.id, pin), key = pin.id)
     }

@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -13,7 +13,7 @@ class RetiredPlayerConfigE2ETest {
 
     @Test
     fun willShowThePlayerData() = sdkSetup(object : SdkContext() {
-        val party = Party(PartyId("${randomInt()}-RetiredPlayerConfigE2E"))
+        val party = PartyDetails(PartyId("${randomInt()}-RetiredPlayerConfigE2E"))
         val player = Player(
             "${randomInt()}-RetiredPlayerConfigE2E",
             name = "${randomInt()}-RetiredPlayerConfigE2E",

@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -12,7 +12,9 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistorySyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPinRecordsSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdLoadIntegrationSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdLoadSyntax
+import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
@@ -26,16 +28,18 @@ interface ServerSpinCommandDispatcher :
     SuspendActionExecuteSyntax,
     PartyIdPairAssignmentDocumentSaveSyntax,
     PartyIdLoadSyntax,
+    PartyIdLoadIntegrationSyntax,
     PartyIdLoadPlayersSyntax,
     PartyIdHistorySyntax,
     PartyIdPinRecordsSyntax {
 
     val slackRepository: SlackRepository
     val slackAccessRepository: SlackAccessGet
+    override val partyRepository: PartyRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 
     override suspend fun perform(command: SpinCommand): VoidResult {
-        val shufflePairsAction = command.shufflePairsAction()
+        val (shufflePairsAction, integration) = command.shufflePairsAction()
             ?: return VoidResult.Rejected
 
         val newPairs = execute(shufflePairsAction)
@@ -43,13 +47,13 @@ interface ServerSpinCommandDispatcher :
         command.partyId.with(newPairs)
             .save()
 
-        val party = shufflePairsAction.party
-        party.sendMessage(newPairs)
+        integration?.sendMessage(newPairs)
         return VoidResult.Accepted
     }
 
-    private suspend fun SpinCommand.shufflePairsAction(): ShufflePairsAction? = coroutineScope {
+    private suspend fun SpinCommand.shufflePairsAction() = coroutineScope {
         val partyDeferred = async { partyId.load()?.data }
+        val partyIntegrationDeferred = async { partyId.loadIntegration() }
         val playersDeferred = async { partyId.loadPlayers().elements }
         val pinsDeferred = async { partyId.loadPins().elements }
         val historyDeferred = async { partyId.loadHistory() }
@@ -59,7 +63,7 @@ interface ServerSpinCommandDispatcher :
             players = filterSelectedPlayers(playersDeferred.await(), playerIds),
             pins = filterSelectedPins(pinsDeferred.await(), pinIds),
             history = historyDeferred.await(),
-        )
+        ) to partyIntegrationDeferred.await()
     }
 
     private fun filterSelectedPlayers(players: List<Player>, playerIds: List<String>) = players.filter {
@@ -68,7 +72,7 @@ interface ServerSpinCommandDispatcher :
 
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
 
-    private suspend fun Party.sendMessage(pairs: PairAssignmentDocument) {
+    private suspend fun PartyIntegration.sendMessage(pairs: PairAssignmentDocument) {
         val team = slackTeam ?: return
         val channel = slackChannel ?: return
         val accessRecord = slackAccessRepository.get(team) ?: return

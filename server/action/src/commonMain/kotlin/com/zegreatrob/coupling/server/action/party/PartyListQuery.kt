@@ -1,14 +1,14 @@
 package com.zegreatrob.coupling.server.action.party
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.repository.party.PartyRecordSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-object PartyListQuery : SimpleSuspendAction<PartyListQuery.Dispatcher, List<Record<Party>>?> {
+object PartyListQuery : SimpleSuspendAction<PartyListQuery.Dispatcher, List<Record<PartyDetails>>?> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax, PartyRecordSyntax {
@@ -23,7 +23,7 @@ object PartyListQuery : SimpleSuspendAction<PartyListQuery.Dispatcher, List<Reco
             async { getPartyRecords() } to async { getUserPlayerIds() }
         }
 
-        private fun Pair<List<Record<Party>>, List<PartyElement<String>>>.onlyAuthenticatedParties() =
+        private fun Pair<List<Record<PartyDetails>>, List<PartyElement<String>>>.onlyAuthenticatedParties() =
             let { (partyRecords, players) ->
                 partyRecords.filter {
                     players.authenticatedFilter()(it)

@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.components.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignmentsHeader
 import com.zegreatrob.coupling.client.components.spin.RosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -23,7 +23,7 @@ import web.cssom.pct
 import web.cssom.translate
 
 data class SpinAnimationPanel(
-    val party: Party,
+    val party: PartyDetails,
     val rosteredPairAssignments: RosteredPairAssignments,
     val state: SpinAnimationState,
 ) : DataPropsBind<SpinAnimationPanel>(spinAnimationPanel)
@@ -43,7 +43,7 @@ val spinAnimationPanel by ntmFC<SpinAnimationPanel> { (party, rosteredPairAssign
 val pairAssignmentStyles = ClassName {
 }
 
-private fun ChildrenBuilder.assignedPairs(party: Party, revealedPairs: List<PinnedCouplingPair>) = div {
+private fun ChildrenBuilder.assignedPairs(party: PartyDetails, revealedPairs: List<PinnedCouplingPair>) = div {
     className = pairAssignmentStyles
     revealedPairs.forEachIndexed { index, it -> add(AssignedPair(party, it, false), key = "$index") }
 }

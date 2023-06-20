@@ -2,8 +2,10 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import korlibs.time.TimeProvider
@@ -31,8 +33,16 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
         override val construct = ::DynamoPartyRepository
     }
 
-    override suspend fun getPartyRecord(partyId: PartyId) = performGetSingleItemQuery(partyId.value)
+    override suspend fun getDetails(partyId: PartyId) = performGetSingleItemQuery(partyId.value)
         ?.let { it.toRecord(it.toParty()) }
+
+    override suspend fun save(integration: PartyElement<PartyIntegration>) = performPutItem(
+        integration.toRecord().asDynamoJson(),
+    )
+
+    override suspend fun getIntegration(partyId: PartyId): Record<PartyIntegration>? = performGetSingleItemQuery(
+        "${DynamoPartyJsonMapping.integrationConstant}${partyId.value}",
+    )?.let { it.toRecord(it.toIntegration()) }
 
     override suspend fun loadParties() = scanAllRecords()
         .map { it.toRecord(it.toParty()) }
@@ -41,7 +51,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
         .map { it.value.last() }
         .filterNot { it.isDeleted }
 
-    override suspend fun save(party: Party) = performPutItem(party.toRecord().asDynamoJson())
+    override suspend fun save(party: PartyDetails) = performPutItem(party.toRecord().asDynamoJson())
 
     override suspend fun deleteIt(partyId: PartyId) = performDelete(
         partyId.value,
@@ -51,11 +61,11 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
         { asDynamoJson() },
     )
 
-    suspend fun getTribeRecords() = scanAllRecords()
+    suspend fun getPartyRecords() = scanAllRecords()
         .sortByRecordTimestamp()
         .map { it.asPartyRecord() }
 
     private fun Json.asPartyRecord() = toRecord(toParty())
 
-    suspend fun saveRawRecord(record: Record<Party>) = performPutItem(record.asDynamoJson())
+    suspend fun saveRawRecord(record: Record<PartyDetails>) = performPutItem(record.asDynamoJson())
 }

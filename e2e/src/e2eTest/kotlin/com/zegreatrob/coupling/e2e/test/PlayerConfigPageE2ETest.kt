@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -21,7 +21,7 @@ import kotlin.test.Test
 class PlayerConfigPageE2ETest {
 
     companion object {
-        private fun playerConfigOnePlayerSetup(buildParty: () -> Party, buildPlayer: () -> Player) =
+        private fun playerConfigOnePlayerSetup(buildParty: () -> PartyDetails, buildPlayer: () -> Player) =
             e2eSetup.extend(beforeAll = {
                 val party = buildParty()
                 val player = buildPlayer()
@@ -38,7 +38,7 @@ class PlayerConfigPageE2ETest {
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
                 buildParty = {
-                    Party(
+                    PartyDetails(
                         PartyId("${randomInt()}-PlayerConfigPageE2E"),
                         name = "${uuid4()}",
                     )
@@ -170,7 +170,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun willShowAllPlayers() = e2eSetup(object {
-            val party = Party(PartyId("${randomInt()}-PlayerConfigPageE2E"))
+            val party = PartyDetails(PartyId("${randomInt()}-PlayerConfigPageE2E"))
             val players = generateSequence {
                 Player(
                     id = "${randomInt()}-PlayerConfigPageE2E",
@@ -197,7 +197,7 @@ class PlayerConfigPageE2ETest {
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
                 buildParty = {
-                    Party(
+                    PartyDetails(
                         PartyId("${randomInt()}-PlayerConfigPageE2E"),
                         badgesEnabled = true,
                         defaultBadgeName = "Badge 1",
@@ -269,7 +269,7 @@ class PlayerConfigPageE2ETest {
         companion object {
             private val playerSetup = playerConfigOnePlayerSetup(
                 buildParty = {
-                    Party(
+                    PartyDetails(
                         PartyId("${randomInt()}-PlayerConfigPageE2E"),
                         callSignsEnabled = true,
                     )
@@ -309,7 +309,7 @@ class PlayerConfigPageE2ETest {
 
         @Test
         fun willSuggestCallSign() = e2eSetup(object {
-            val party = Party(
+            val party = PartyDetails(
                 id = PartyId("${randomInt()}-WithOnePartyNoPlayers"),
                 callSignsEnabled = true,
             )

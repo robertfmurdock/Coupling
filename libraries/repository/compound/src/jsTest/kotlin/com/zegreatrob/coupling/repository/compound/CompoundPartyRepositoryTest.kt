@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PartyRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
@@ -37,11 +37,11 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
 
         val compoundRepo = CompoundPartyRepository(repository1, repository2)
 
-        val party = stubParty()
+        val party = stubPartyDetails()
     }) exercise {
         compoundRepo.save(party)
     } verify {
-        repository2.getPartyRecord(party.id)
+        repository2.getDetails(party.id)
             ?.data
             .assertIsEqualTo(party)
     }
@@ -55,12 +55,12 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
 
         val compoundRepo = CompoundPartyRepository(repository1, repository2)
 
-        val party = stubParty()
+        val party = stubPartyDetails()
     }) exercise {
         compoundRepo.save(party)
         compoundRepo.deleteIt(party.id)
     } verify {
-        repository2.getPartyRecord(party.id)
+        repository2.getDetails(party.id)
             .assertIsEqualTo(null)
     }
 }

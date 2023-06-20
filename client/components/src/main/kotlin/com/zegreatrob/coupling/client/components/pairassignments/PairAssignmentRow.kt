@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.components.pin.PinSection
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
@@ -41,7 +41,7 @@ import web.cssom.rgb
 import web.cssom.url
 
 data class PairAssignmentRow(
-    val party: Party,
+    val party: PartyDetails,
     val document: PairAssignmentDocument,
     val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
     val windowFunctions: WindowFunctions = WindowFunctions,

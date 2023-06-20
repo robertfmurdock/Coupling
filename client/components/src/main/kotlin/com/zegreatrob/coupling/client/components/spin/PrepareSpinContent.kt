@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipp
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.pink
 import com.zegreatrob.coupling.client.components.supersize
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
@@ -40,7 +40,7 @@ import web.cssom.rgb
 import web.cssom.s
 
 data class PrepareSpinContent(
-    var party: Party,
+    var party: PartyDetails,
     var playerSelections: List<Pair<Player, Boolean>>,
     var pins: List<Pin>,
     var pinSelections: List<String?>,

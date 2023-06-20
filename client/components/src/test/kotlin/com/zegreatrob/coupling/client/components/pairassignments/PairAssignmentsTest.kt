@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -25,7 +25,7 @@ import kotlin.test.Test
 
 class PairAssignmentsTest {
 
-    private val party = Party(PartyId("Party"))
+    private val party = PartyDetails(PartyId("Party"))
 
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs() = asyncSetup(object {

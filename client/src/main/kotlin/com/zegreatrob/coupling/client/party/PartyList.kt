@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.green
 import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.supersize
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
@@ -23,7 +23,7 @@ import web.cssom.Color
 import web.cssom.VerticalAlign
 import web.cssom.px
 
-data class PartyList(val parties: List<Party>) : DataPropsBind<PartyList>(partyList)
+data class PartyList(val parties: List<PartyDetails>) : DataPropsBind<PartyList>(partyList)
 
 val partyList by ntmFC<PartyList> { (parties) ->
     add(

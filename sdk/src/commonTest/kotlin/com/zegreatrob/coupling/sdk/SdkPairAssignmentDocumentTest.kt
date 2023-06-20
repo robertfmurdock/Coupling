@@ -16,7 +16,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import korlibs.time.DateTime
@@ -30,7 +30,7 @@ class SdkPairAssignmentDocumentTest {
         sharedSetup = { _ ->
             val sdk = sdk()
             object : CouplingSdk by sdk {
-                val party = stubParty()
+                val party = stubPartyDetails()
             }.apply { perform(SavePartyCommand(party)) }
         },
         sharedTeardown = {
@@ -147,7 +147,7 @@ class SdkPairAssignmentDocumentTest {
         val sdk = sdk()
         val otherSdk = altAuthorizedSdkDeferred.await()
         object {
-            val otherParty = stubParty()
+            val otherParty = stubPartyDetails()
             val sdk = sdk
             val otherSdk = otherSdk
         }

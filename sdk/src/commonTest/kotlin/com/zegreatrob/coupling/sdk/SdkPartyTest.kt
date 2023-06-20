@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubParties
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -22,7 +22,7 @@ class SdkPartyTest {
 
     @Test
     fun deleteWillMakePartyInaccessible() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
     }) {
         sdk().perform(SavePartyCommand(party))
     } exercise {
@@ -69,9 +69,9 @@ class SdkPartyTest {
         result?.parties().assertContainsAll(parties)
     }
 
-    private fun List<Record<Party>>.parties() = map(Record<Party>::data)
+    private fun List<Record<PartyDetails>>.parties() = map(Record<PartyDetails>::data)
 
-    private fun List<Party>?.assertContainsAll(expectedParties: List<Party>) {
+    private fun List<PartyDetails>?.assertContainsAll(expectedParties: List<PartyDetails>) {
         assertNotNull(this, "List was null.")
         expectedParties.forEach(this::assertContains)
     }
@@ -80,7 +80,7 @@ class SdkPartyTest {
         sharedSetup = { _ ->
             object {
                 suspend fun altSdk() = altAuthorizedSdkDeferred.await()
-                val party = Party(PartyId(uuid4().toString()), name = "party-from-endpoint-tests")
+                val party = PartyDetails(PartyId(uuid4().toString()), name = "party-from-endpoint-tests")
                 val playerMatchingSdkUser = stubPlayer().copy(email = primaryAuthorizedUsername)
             }
         },
@@ -98,7 +98,7 @@ class SdkPartyTest {
     } exercise {
         sdk().perform(graphQuery { partyList() })?.partyList ?: emptyList()
     } verify { result ->
-        result.map(Record<Party>::data)
+        result.map(Record<PartyDetails>::data)
             .assertContains(party)
     }
 
@@ -144,7 +144,7 @@ class SdkPartyTest {
 
     @Test
     fun saveWillIncludeModificationInformation() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
     }) {
         sdk().perform(SavePartyCommand(party))
     } exercise {

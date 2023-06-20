@@ -7,14 +7,14 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 
 data class ShufflePairsAction(
-    val party: Party,
+    val party: PartyDetails,
     val players: List<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,

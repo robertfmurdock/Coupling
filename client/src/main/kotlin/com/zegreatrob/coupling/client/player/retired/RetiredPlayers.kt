@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
 import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.pngPath
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
@@ -21,7 +21,7 @@ import web.cssom.NamedColor
 import web.cssom.px
 import web.cssom.url
 
-data class RetiredPlayers(val party: Party, val retiredPlayers: List<Player>) :
+data class RetiredPlayers(val party: PartyDetails, val retiredPlayers: List<Player>) :
     DataPropsBind<RetiredPlayers>(com.zegreatrob.coupling.client.player.retired.retiredPlayers)
 
 val retiredPlayers by ntmFC<RetiredPlayers> { (party, players) ->

@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.e2e.test.CurrentPairAssignmentsPanel.querySaveBut
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSelectAllButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSelectNoneButton
 import com.zegreatrob.coupling.e2e.test.PrepareToSpinPage.getSpinButton
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -44,7 +44,7 @@ class PrepareToSpinPageE2ETest {
             }
         })
 
-        private fun buildFunkyParty() = Party(
+        private fun buildFunkyParty() = PartyDetails(
             id = PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
             name = "Funkytown",
         )

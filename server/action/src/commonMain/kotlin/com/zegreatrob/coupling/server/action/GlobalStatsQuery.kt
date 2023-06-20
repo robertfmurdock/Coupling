@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
@@ -33,7 +33,7 @@ data class GlobalStatsQuery(val year: Int) : SimpleSuspendAction<GlobalStatsQuer
             .filter(::excludePartiesSpinningUnnaturallyFast)
             .toGlobalStats()
 
-        private suspend fun List<Record<Party>>.toStats(
+        private suspend fun List<Record<PartyDetails>>.toStats(
             matchesYear: (PartyRecord<PairAssignmentDocument>) -> Boolean,
         ): List<PartyStats> = asFlow()
             .map { it to pairAssignmentDocumentRepository.loadPairAssignments(it.data.id) }
@@ -62,7 +62,7 @@ private fun yearMatcher(year: Int) = { record: PartyRecord<PairAssignmentDocumen
 }
 
 private fun partyStats(
-    party: Record<Party>,
+    party: Record<PartyDetails>,
     docs: List<PartyRecord<PairAssignmentDocument>>,
     filter: (PartyRecord<PairAssignmentDocument>) -> Boolean,
 ): PartyStats {

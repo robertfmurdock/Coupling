@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.KtorCouplingSdk
@@ -39,7 +39,7 @@ class HistoryPageE2ETest {
                 Context(pairAssignments)
             })
 
-            private suspend fun setupTwoPairAssignments(party: Party, sdk: KtorCouplingSdk) = listOf(
+            private suspend fun setupTwoPairAssignments(party: PartyDetails, sdk: KtorCouplingSdk) = listOf(
                 buildPairAssignmentDocument(
                     1,
                     listOf(
@@ -73,7 +73,7 @@ class HistoryPageE2ETest {
             )
 
             private fun buildParty() = "${randomInt()}-HistoryPageE2ETest".let {
-                Party(it.let(::PartyId), name = it)
+                PartyDetails(it.let(::PartyId), name = it)
             }
         }
 

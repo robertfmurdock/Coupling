@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.orange
 import com.zegreatrob.coupling.client.components.pin.PinCard
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -24,7 +24,7 @@ import web.cssom.TextAlign
 import web.cssom.px
 import web.cssom.vh
 
-data class PinList(val party: Party, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
+data class PinList(val party: PartyDetails, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
 
 val pinList by ntmFC<PinList> { (party, pins) ->
     div {

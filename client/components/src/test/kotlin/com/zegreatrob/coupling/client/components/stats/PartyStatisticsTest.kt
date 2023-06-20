@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -38,7 +38,7 @@ class PartyStatisticsTest :
             Player("curry", name = "Curly", avatarType = null),
             Player("moe", name = "Moe", avatarType = null),
         )
-        val party = Party(PartyId("1"), name = "Mathematica")
+        val party = PartyDetails(PartyId("1"), name = "Mathematica")
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
@@ -104,7 +104,7 @@ class PartyStatisticsTest :
                 ).withNoPins(),
             ),
         )
-        val party = Party(PartyId("2"), name = "Mathematica")
+        val party = PartyDetails(PartyId("2"), name = "Mathematica")
         val report = perform(ComposeStatisticsAction(party, players, history))
         val heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation))
     }) exercise {
@@ -136,7 +136,7 @@ class PartyStatisticsTest :
             Player("curry", name = "Curly", avatarType = null),
             Player("moe", name = "Moe", avatarType = null),
         )
-        val party = Party(PartyId("2"), name = "Mathematica")
+        val party = PartyDetails(PartyId("2"), name = "Mathematica")
         val report = perform(ComposeStatisticsAction(party, players, emptyList()))
     }) exercise {
         render(
@@ -158,7 +158,7 @@ class PartyStatisticsTest :
             Player("curry", name = "Curly", avatarType = null),
             Player("moe", name = "Moe", avatarType = null),
         )
-        val party = Party(PartyId("2"), name = "Mathematica")
+        val party = PartyDetails(PartyId("2"), name = "Mathematica")
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),

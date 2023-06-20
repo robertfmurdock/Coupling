@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignmentRow
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
@@ -22,7 +22,7 @@ import web.cssom.px
 import web.cssom.vh
 
 data class History(
-    val party: Party,
+    val party: PartyDetails,
     val history: List<PairAssignmentDocument>,
     val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
     val windowFunctions: WindowFunctions = WindowFunctions,

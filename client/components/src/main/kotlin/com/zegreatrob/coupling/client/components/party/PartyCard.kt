@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.visuallyHidden
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
@@ -32,7 +32,7 @@ import web.cssom.number
 import web.cssom.px
 import web.cssom.rgb
 
-data class PartyCard(val party: Party, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
+data class PartyCard(val party: PartyDetails, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
 
 val partyCard by ntmFC<PartyCard> { (party, size) ->
     Link {
@@ -83,7 +83,7 @@ private fun PropertiesBuilder.partyCardCss(size: Int) {
 
 val noPartyImagePath = pngPath("parties/no-party")
 
-private fun ChildrenBuilder.partyGravatar(party: Party, size: Int) = if (party.imageURL != null) {
+private fun ChildrenBuilder.partyGravatar(party: PartyDetails, size: Int) = if (party.imageURL != null) {
     ReactHTML.img {
         this.src = party.imageURL
         alt = "icon"

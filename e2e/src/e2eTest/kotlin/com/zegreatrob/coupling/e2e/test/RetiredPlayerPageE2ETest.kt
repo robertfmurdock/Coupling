@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.KtorCouplingSdk
@@ -16,7 +16,7 @@ import kotlin.test.Test
 class RetiredPlayerPageE2ETest {
 
     companion object {
-        private suspend fun delete(players: List<Player>, sdk: KtorCouplingSdk, party: Party) {
+        private suspend fun delete(players: List<Player>, sdk: KtorCouplingSdk, party: PartyDetails) {
             coroutineScope {
                 players.forEach { launch { sdk.perform(DeletePlayerCommand(party.id, it.id)) } }
             }
@@ -26,7 +26,7 @@ class RetiredPlayerPageE2ETest {
     @Test
     fun showsTheRetiredPlayers() = sdkSetup(object : SdkContext() {
         val party = "${randomInt()}-RetiredPlayerPageE2ETest"
-            .let { Party(it.let(::PartyId), name = "$it-name") }
+            .let { PartyDetails(it.let(::PartyId), name = "$it-name") }
         val players = (1..4)
             .map { "${randomInt()}-RetiredPlayerPageE2ETest-$it" }
             .map { id -> Player(id, name = "$id-name", avatarType = null) }

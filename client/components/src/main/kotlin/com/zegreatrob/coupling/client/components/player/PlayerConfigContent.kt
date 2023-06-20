@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.client.components.gravatarLink
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
@@ -42,7 +42,7 @@ import web.cssom.px
 import web.html.InputType
 
 data class PlayerConfigContent(
-    val party: Party,
+    val party: PartyDetails,
     val player: Player,
     val players: List<Player>,
     val onChange: (ChangeEvent<*>) -> Unit,
@@ -100,7 +100,7 @@ val playerConfigContent by ntmFC<PlayerConfigContent> { (party, player, players,
 
 private fun ChildrenBuilder.playerConfigForm(
     player: Player,
-    party: Party,
+    party: PartyDetails,
     onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
     onRemoveFunc: (() -> Unit)?,
@@ -110,7 +110,7 @@ private fun ChildrenBuilder.playerConfigForm(
     editorDiv(party, player, onChange)
 }
 
-private fun ChildrenBuilder.editorDiv(party: Party, player: Player, onChange: (ChangeEvent<*>) -> Unit) = div {
+private fun ChildrenBuilder.editorDiv(party: PartyDetails, player: Player, onChange: (ChangeEvent<*>) -> Unit) = div {
     Editor {
         li { nameInput(player, onChange) }
         li { emailInput(player, onChange) }
@@ -189,7 +189,7 @@ private fun ChildrenBuilder.callSignConfig(player: Player, onChange: (ChangeEven
 }
 
 private fun ChildrenBuilder.badgeConfig(
-    party: Party,
+    party: PartyDetails,
     player: Player,
     onChange: (ChangeEvent<*>) -> Unit,
 ) = li {
@@ -210,7 +210,7 @@ private fun ChildrenBuilder.badgeConfig(
     span { +"Your badge makes you feel... different than the others." }
 }
 
-private fun ChildrenBuilder.altBadgeOption(party: Party) = option {
+private fun ChildrenBuilder.altBadgeOption(party: PartyDetails) = option {
     id = "alt-badge-option"
     key = "${Badge.Alternate.value}"
     value = "${Badge.Alternate.value}"
@@ -218,7 +218,7 @@ private fun ChildrenBuilder.altBadgeOption(party: Party) = option {
     ariaLabel = "Alt Badge Option"
 }
 
-private fun ChildrenBuilder.defaultBadgeOption(party: Party) = option {
+private fun ChildrenBuilder.defaultBadgeOption(party: PartyDetails) = option {
     id = "default-badge-option"
     key = "${Badge.Default.value}"
     value = "${Badge.Default.value}"

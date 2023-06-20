@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -49,7 +49,7 @@ class PrepareSpinTest {
     @Test
     fun whenSelectedPinIsClickedWillDeselectPin() = prepareSetup(object {
         val user = UserEvent.setup()
-        val party = stubParty()
+        val party = stubPartyDetails()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
@@ -79,7 +79,7 @@ class PrepareSpinTest {
     @Test
     fun whenDeselectedPinIsClickedWillSelectPin() = prepareSetup(object {
         val user = UserEvent.setup()
-        val party = stubParty()
+        val party = stubPartyDetails()
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
@@ -116,7 +116,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenThereIsNoHistoryAllPlayersWillDefaultToDeselected() = setup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val players = stubPlayers(3)
         val currentPairs = null
     }) exercise {
@@ -139,7 +139,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenAllPlayersAreDeselectedSpinButtonWillBeDisabled() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val players = stubPlayers(3)
         val user = UserEvent.setup()
         val currentPairs = PairAssignmentDocument(
@@ -173,7 +173,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenTheAllButtonIsClickedAllPlayersBecomeSelected() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val players = stubPlayers(3)
         val user = UserEvent.setup()
         val currentPairs = null
@@ -195,7 +195,7 @@ class PrepareSpinTest {
 
     @Test
     fun whenTheNoneButtonIsClickedAllPlayersBecomeDeselected() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val user = UserEvent.setup()
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(

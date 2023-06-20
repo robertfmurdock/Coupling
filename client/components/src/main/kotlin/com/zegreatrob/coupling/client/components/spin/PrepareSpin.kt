@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.newPairAssignmentsPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
@@ -14,7 +14,7 @@ import react.router.Navigate
 import react.useState
 
 data class PrepareSpin(
-    val party: Party,
+    val party: PartyDetails,
     val players: List<Player>,
     val currentPairsDoc: PairAssignmentDocument?,
     val pins: List<Pin>,
@@ -61,7 +61,7 @@ private fun List<Pair<Player, Boolean>>.playerIds() = filter { (_, isSelected) -
 
 private fun onSpin(
     dispatchFunc: DispatchFunc<out SpinCommand.Dispatcher>,
-    party: Party,
+    party: PartyDetails,
     playerSelections: List<Pair<Player, Boolean>>,
     pinSelections: List<String?>,
     setRedirectUrl: (String) -> Unit,

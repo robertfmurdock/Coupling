@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -24,7 +24,7 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup {
     val partyJson = fileJson["tribe"]
 
     return PartySetup(
-        party = Party(
+        party = PartyDetails(
             id = partyJson["id"].textValue().let(::PartyId),
             pairingRule = partyJson["pairingRule"].intValue().let {
                 PairingRule.fromValue(

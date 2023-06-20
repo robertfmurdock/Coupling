@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -29,7 +29,7 @@ interface PartyLoadAllSyntax : SdkProviderSyntax {
     }
 
     private suspend fun await(
-        partyDeferred: Deferred<Party?>,
+        partyDeferred: Deferred<PartyDetails?>,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<List<PairAssignmentDocument>>,
         pinListDeferred: Deferred<List<Pin>>,
@@ -43,7 +43,7 @@ interface PartyLoadAllSyntax : SdkProviderSyntax {
     }
 
     suspend fun awaitPartyData(
-        party: Party,
+        party: PartyDetails,
         playerListDeferred: Deferred<List<Player>>,
         historyDeferred: Deferred<List<PairAssignmentDocument>>,
         pinListDeferred: Deferred<List<Pin>>,
@@ -56,7 +56,7 @@ interface PartyLoadAllSyntax : SdkProviderSyntax {
 }
 
 data class PartyData(
-    val party: Party,
+    val party: PartyDetails,
     val playerList: List<Player>,
     val history: List<PairAssignmentDocument>,
     val pinList: List<Pin>,

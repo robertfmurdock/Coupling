@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.sdk.gql.graphQuery
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -27,7 +27,7 @@ class SdkSecretTest {
 
     @Test
     fun canGenerateSecretThatCanBeUsedInSdk() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
     }) {
         sdk().perform(SavePartyCommand(party))
     } exercise {
@@ -52,7 +52,7 @@ class SdkSecretTest {
 
     @Test
     fun deletingSecretWillPreventTokenFromBeingUsed() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         lateinit var secret: Secret
         lateinit var token: String
     }) {
@@ -76,9 +76,9 @@ class SdkSecretTest {
 
     @Test
     fun secretTokenCanOnlySeeRelevantParty() = asyncSetup(object {
-        val party1 = stubParty()
-        val party2 = stubParty()
-        val party3 = stubParty()
+        val party1 = stubPartyDetails()
+        val party2 = stubPartyDetails()
+        val party3 = stubPartyDetails()
     }) {
         listOf(party1, party2, party3)
             .map { SavePartyCommand(it) }

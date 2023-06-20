@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.StubDispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.client.components.player.singleRouteRouter
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -23,7 +23,7 @@ class PinConfigEditorTest {
 
     @Test
     fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
-        val party = Party(PartyId(""))
+        val party = PartyDetails(PartyId(""))
         val pin = Pin(id = null)
     }) exercise {
         render(
@@ -40,7 +40,7 @@ class PinConfigEditorTest {
 
     @Test
     fun whenGivenPinHasIdWillShowDeleteButton() = setup(object {
-        val party = Party(PartyId(""))
+        val party = PartyDetails(PartyId(""))
         val pin = Pin(id = "excellent id")
     }) exercise {
         render(
@@ -57,7 +57,7 @@ class PinConfigEditorTest {
 
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = asyncSetup(object {
-        val party = Party(PartyId("dumb party"))
+        val party = PartyDetails(PartyId("dumb party"))
         val pin = Pin(id = null, name = "")
         val newName = "pin new name"
         val newIcon = "pin new icon"

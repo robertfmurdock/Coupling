@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.repository.validation.assertHasIds
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.graphQuery
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
@@ -28,7 +28,7 @@ class SdkPlayerTest {
         sharedSetup = { _ ->
             val authorizedSdk = sdk()
             object : CouplingSdk by authorizedSdk {
-                val party = stubParty()
+                val party = stubPartyDetails()
             }.apply {
                 perform(SavePartyCommand(party))
             }
@@ -192,7 +192,7 @@ class SdkPlayerTest {
             val player2 = player1.copy(id = player1.id)
         }
     }) {
-        sdk.perform(SavePartyCommand(stubParty().copy(id = partyId2)))
+        sdk.perform(SavePartyCommand(stubPartyDetails().copy(id = partyId2)))
         sdk.perform(SavePlayerCommand(partyId, player1))
         sdk.perform(SavePlayerCommand(partyId2, player2))
     } exercise {
@@ -259,7 +259,7 @@ class SdkPlayerTest {
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
-                    val party = stubParty()
+                    val party = stubPartyDetails()
                 }) {
                     otherSdk.perform(SavePartyCommand(party))
                     otherSdk.perform(SavePlayerCommand(party.id, stubPlayer()))
@@ -282,7 +282,7 @@ class SdkPlayerTest {
             val otherSdk = altAuthorizedSdkDeferred.await()
             waitForTest {
                 asyncSetup(object {
-                    val party = stubParty()
+                    val party = stubPartyDetails()
                     val player = Player(
                         id = "${uuid4()}",
                         name = "Awesome-O",
@@ -308,7 +308,7 @@ class SdkPlayerTest {
 
         @Test
         fun deleteIsNotAllowed() = asyncSetup(object {
-            val party = stubParty()
+            val party = stubPartyDetails()
         }) exercise {
             sdk().perform(DeletePlayerCommand(party.id, "player id"))
         } verify { result ->

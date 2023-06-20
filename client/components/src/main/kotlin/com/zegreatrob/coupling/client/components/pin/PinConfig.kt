@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
@@ -24,7 +24,7 @@ import react.useState
 import kotlin.js.Json
 
 data class PinConfig<D>(
-    val party: Party,
+    val party: PartyDetails,
     val pin: Pin,
     val pinList: List<Pin>,
     val reload: () -> Unit,

@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignments
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import korlibs.time.DateTime
 import korlibs.time.days
@@ -15,7 +15,7 @@ class SdkGlobalStatsTest {
     @Test
     fun canGetGlobalStats() = asyncSetup(object {
         val now = DateTime.now().year
-        val party = stubParty()
+        val party = stubPartyDetails()
     }) {
         sdk().perform(SavePartyCommand(party))
         sdk().perform(

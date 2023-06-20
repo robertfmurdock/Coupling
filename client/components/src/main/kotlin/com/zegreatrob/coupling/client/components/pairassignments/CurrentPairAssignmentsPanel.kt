@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -21,7 +21,7 @@ import web.cssom.WhiteSpace
 import web.cssom.px
 
 data class CurrentPairAssignmentsPanel(
-    val party: Party,
+    val party: PartyDetails,
     val pairAssignments: PairAssignmentDocument,
     val setPairAssignments: (PairAssignmentDocument) -> Unit,
     val allowSave: Boolean,
@@ -60,7 +60,7 @@ private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) 
 }
 
 private fun ChildrenBuilder.pairAssignmentList(
-    party: Party,
+    party: PartyDetails,
     pairAssignments: PairAssignmentDocument,
     setPairAssignments: (PairAssignmentDocument) -> Unit,
     allowSave: Boolean,

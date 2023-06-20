@@ -15,13 +15,13 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.gql.graphQuery
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -37,7 +37,7 @@ class SpinTest {
     @Test
     fun willTakeThePlayersGivenAndUseThoseForPairing() = asyncSetup.with({ context ->
         object : SdkContext by context {
-            val party = Party(
+            val party = PartyDetails(
                 id = PartyId(uuid4().toString()),
                 pairingRule = PairingRule.LongestTime,
                 name = "commonTest",
@@ -66,7 +66,7 @@ class SpinTest {
     @Test
     fun givenThePartyRuleIsPreferDifferentBadgeThenPairsWillComply() = asyncSetup.with({
         object : SdkContext by it {
-            val party = Party(
+            val party = PartyDetails(
                 id = PartyId(uuid4().toString()),
                 pairingRule = PairingRule.PreferDifferentBadge,
             )
@@ -111,7 +111,7 @@ class SpinTest {
     @Test
     fun givenTheLongestPairRuleItWillIgnoreBadges() = asyncSetup(object : ScopeMint() {
         val sdk = setupScope.async { sdk() }
-        val party = Party(id = PartyId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
+        val party = PartyDetails(id = PartyId(uuid4().toString()), pairingRule = PairingRule.LongestTime)
         val players = fourPlayersTwoDefaultTwoAlternate()
         val history = listOf(
             PairAssignmentDocument(
@@ -154,7 +154,7 @@ class SpinTest {
         private val pinExistsSetup
             get() = { context: SdkContext ->
                 object : SdkContext by context {
-                    val party = stubParty()
+                    val party = stubPartyDetails()
                     val players = listOf(stubPlayer())
                     val pin = stubPin()
                 }
@@ -203,7 +203,7 @@ class SpinTest {
     companion object {
         private suspend fun setupScenario(
             sdk: CouplingSdk,
-            party: Party,
+            party: PartyDetails,
             players: List<Player> = emptyList(),
             history: List<PairAssignmentDocument> = emptyList(),
             pins: List<Pin> = emptyList(),

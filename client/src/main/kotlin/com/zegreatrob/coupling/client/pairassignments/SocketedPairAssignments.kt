@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -26,7 +26,7 @@ import react.useEffect
 import react.useState
 
 data class SocketedPairAssignments<D>(
-    val party: Party,
+    val party: PartyDetails,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val controls: Controls<D>,

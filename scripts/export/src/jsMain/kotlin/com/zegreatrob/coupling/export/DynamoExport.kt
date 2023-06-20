@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
@@ -38,7 +38,7 @@ fun exportWithDynamo() {
     }
 }
 
-private suspend fun DynamoRepositoryCatalog.outputParties() = partyRepository.getTribeRecords()
+private suspend fun DynamoRepositoryCatalog.outputParties() = partyRepository.getPartyRecords()
     .groupBy { it.data.id }
     .entries.sortedBy { it.key.value }
     .forEach { partyGroup ->
@@ -49,18 +49,18 @@ private suspend fun DynamoRepositoryCatalog.outputParties() = partyRepository.ge
 private suspend fun collectPartyData(
     repositoryCatalog: DynamoRepositoryCatalog,
     partyId: PartyId,
-    partyRecords: List<Record<Party>>,
+    partyRecords: List<Record<PartyDetails>>,
 ): Json = couplingJsonFormat.encodeToDynamic(
     partyDataSerializable(partyId, partyRecords, repositoryCatalog),
 ).unsafeCast<Json>()
 
 private suspend fun partyDataSerializable(
     partyId: PartyId,
-    partyRecords: List<Record<Party>>,
+    partyRecords: List<Record<PartyDetails>>,
     repositoryCatalog: DynamoRepositoryCatalog,
 ) = PartyData(
     partyId = partyId.value,
-    partyRecords = partyRecords.map(Record<Party>::toSerializable),
+    partyRecords = partyRecords.map(Record<PartyDetails>::toSerializable),
     playerRecords = repositoryCatalog.playerRepository.getPlayerRecords(partyId)
         .map(Record<PartyElement<Player>>::toSerializable),
     pairAssignmentRecords = repositoryCatalog.pairAssignmentDocumentRepository.getRecords(partyId)

@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
-import com.zegreatrob.coupling.repository.party.PartyIdLoadSyntax
+import com.zegreatrob.coupling.repository.party.PartyIdLoadIntegrationSyntax
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.connection.CouplingConnectionGetSyntax
@@ -18,7 +18,7 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher :
     SavePairAssignmentsCommand.Dispatcher,
     PartyIdPairAssignmentDocumentSaveSyntax,
     CouplingConnectionGetSyntax,
-    PartyIdLoadSyntax,
+    PartyIdLoadIntegrationSyntax,
     SuspendActionExecuteSyntax,
     BroadcastAction.Dispatcher {
 
@@ -30,10 +30,10 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher :
             .apply { save() }
             .apply { execute(broadcastAction()) }
             .let { VoidResult.Accepted }
-            .also { partyId.load()?.data?.updateMessage(pairAssignments) }
+            .also { partyId.loadIntegration()?.updateMessage(pairAssignments) }
     }
 
-    private suspend fun Party.updateMessage(pairs: PairAssignmentDocument) {
+    private suspend fun PartyIntegration.updateMessage(pairs: PairAssignmentDocument) {
         val team = slackTeam ?: return
         val channel = slackChannel ?: return
         val accessRecord = slackAccessRepository.get(team) ?: return

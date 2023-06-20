@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.action.party
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
@@ -53,11 +53,11 @@ interface ServerSavePartyCommandDispatcher :
         )
     }
 
-    private fun shouldSave(partyId: PartyId, loadedParty: Party?, playerList: List<PartyElement<String>>) =
+    private fun shouldSave(partyId: PartyId, loadedParty: PartyDetails?, playerList: List<PartyElement<String>>) =
         loadedParty.partyIsNew() ||
             playerList.authenticatedPartyIds().contains(partyId)
 
-    private fun Party?.partyIsNew() = this == null
+    private fun PartyDetails?.partyIsNew() = this == null
 
     private suspend fun Boolean.whenAuthorized(block: suspend () -> Unit) = let {
         if (it) {

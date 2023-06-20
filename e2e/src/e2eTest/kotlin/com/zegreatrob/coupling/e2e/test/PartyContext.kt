@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.KtorCouplingSdk
 
-fun <C1 : PartyContext> C1.attachParty(): suspend (Pair<KtorCouplingSdk, Party>) -> C1 = { pair: Pair<KtorCouplingSdk, Party> ->
+fun <C1 : PartyContext> C1.attachParty(): suspend (Pair<KtorCouplingSdk, PartyDetails>) -> C1 = { pair: Pair<KtorCouplingSdk, PartyDetails> ->
     also {
         this.party = pair.second
         this.sdk = pair.first
@@ -11,5 +11,5 @@ fun <C1 : PartyContext> C1.attachParty(): suspend (Pair<KtorCouplingSdk, Party>)
 }
 
 abstract class PartyContext : SdkContext() {
-    lateinit var party: Party
+    lateinit var party: PartyDetails
 }

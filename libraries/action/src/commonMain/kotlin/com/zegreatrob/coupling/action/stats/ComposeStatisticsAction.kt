@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairingTimeCalculati
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 import korlibs.time.DateTime
@@ -15,7 +15,7 @@ import korlibs.time.TimeSpan
 import kotlin.math.floor
 
 data class ComposeStatisticsAction(
-    val party: Party,
+    val party: PartyDetails,
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
 ) : SimpleExecutableAction<ComposeStatisticsAction.Dispatcher, StatisticsReport> {

@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minreact.DataPropsBind
@@ -45,7 +45,7 @@ import web.cssom.url
 import web.html.HTMLElement
 
 data class AssignedPair(
-    val party: Party,
+    val party: PartyDetails,
     val pair: PinnedCouplingPair,
     val canDrag: Boolean,
     val swapPlayersFunc: (PinnedPlayer, String) -> Unit = { _, _ -> },

@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.pink
 import com.zegreatrob.coupling.client.components.supersize
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
@@ -13,7 +13,7 @@ import web.cssom.ClassName
 import web.cssom.ident
 import web.cssom.s
 
-data class PrepareToSpinButton(val party: Party) : DataPropsBind<PrepareToSpinButton>(prepareToSpinButton)
+data class PrepareToSpinButton(val party: PartyDetails) : DataPropsBind<PrepareToSpinButton>(prepareToSpinButton)
 
 val prepareToSpinButtonClassName = ClassName("prepare-to-spin")
 

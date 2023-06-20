@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.slack.SlackUpdateSpin
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
@@ -29,7 +29,7 @@ class SavePairAssignmentDocumentCommandTest {
 
     @Test
     fun willSendToRepository() = asyncSetup(object : ServerSavePairAssignmentDocumentCommandDispatcher {
-        val party = stubParty()
+        val party = stubPartyDetails()
         override val liveInfoRepository: LiveInfoRepository get() = TODO("Not yet implemented")
         override suspend fun PartyId.loadConnections(): List<CouplingConnection> = emptyList()
         override val partyRepository = MemoryPartyRepository("", TimeProvider)

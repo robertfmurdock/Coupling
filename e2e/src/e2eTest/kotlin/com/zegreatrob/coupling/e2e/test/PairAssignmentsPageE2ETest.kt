@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.KtorCouplingSdk
@@ -32,7 +32,7 @@ import kotlin.test.Test
 class PairAssignmentsPageE2ETest {
 
     companion object {
-        private suspend fun KtorCouplingSdk.save(party: Party, players: List<Player>) = coroutineScope {
+        private suspend fun KtorCouplingSdk.save(party: PartyDetails, players: List<Player>) = coroutineScope {
             perform(SavePartyCommand(party))
             players.map { SavePlayerCommand(party.id, it) }
                 .forEach { perform(it) }
@@ -43,7 +43,7 @@ class PairAssignmentsPageE2ETest {
 
         companion object {
             val party by lazy {
-                Party(
+                PartyDetails(
                     PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
                     name = "${randomInt()}-PairAssignmentsPageE2ETest",
                 )
@@ -145,7 +145,7 @@ class PairAssignmentsPageE2ETest {
 
         companion object {
             val party by lazy {
-                Party(
+                PartyDetails(
                     PartyId("${randomInt()}-PairAssignmentsPageE2ETest"),
                     name = "${randomInt()}-PairAssignmentsPageE2ETest",
                 )

@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
@@ -21,7 +21,7 @@ import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class PartyConfig<D>(val party: Party, val dispatchFunc: DispatchFunc<out D>) :
+data class PartyConfig<D>(val party: PartyDetails, val dispatchFunc: DispatchFunc<out D>) :
     DataPropsBind<PartyConfig<D>>(partyConfig.unsafeCast<TMFC>())
     where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher
 
@@ -48,7 +48,7 @@ private fun Json.correctTypes() = also {
     set("pairingRule", this["pairingRule"].toString().toInt())
 }
 
-private fun Party.withDefaultPartyId() = if (id.value.isNotBlank()) {
+private fun PartyDetails.withDefaultPartyId() = if (id.value.isNotBlank()) {
     this
 } else {
     copy(id = PartyId("${uuid4()}"))

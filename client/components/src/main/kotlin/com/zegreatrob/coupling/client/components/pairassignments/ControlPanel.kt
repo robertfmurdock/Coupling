@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
@@ -13,7 +13,7 @@ import web.cssom.Margin
 import web.cssom.px
 import web.cssom.rgb
 
-data class ControlPanel(val party: Party) : DataPropsBind<ControlPanel>(controlPanel)
+data class ControlPanel(val party: PartyDetails) : DataPropsBind<ControlPanel>(controlPanel)
 
 val controlPanel by ntmFC<ControlPanel> { (party) ->
     div {

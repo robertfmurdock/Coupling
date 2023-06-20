@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -22,7 +22,7 @@ import korlibs.time.DateTime
 import popper.core.Placement
 import web.cssom.ClassName
 
-private val demoParty = Party(
+private val demoParty = PartyDetails(
     id = PartyId("${uuid4()}"),
     name = "The Simpsons",
     imageURL = svgPath("parties/simpsons"),
@@ -142,7 +142,7 @@ fun makePinSequence() = pins.flatMapIndexed { pinIndex, pin ->
 
 private fun String?.rangeOfStringLength() = (0..(this ?: "").length)
 
-data class MakeParty(val party: Party) : DemoAnimationState() {
+data class MakeParty(val party: PartyDetails) : DemoAnimationState() {
     override val descriptionSelector = ".${PartyConfigContent.className} input[name=name]"
     override val placement = Placement.bottomStart
     override val description = """
@@ -154,7 +154,7 @@ We'll enter the name and then save.
 """
 }
 
-data class AddPlayer(val party: Party, val newPlayer: Player, val players: List<Player>) : DemoAnimationState() {
+data class AddPlayer(val party: PartyDetails, val newPlayer: Player, val players: List<Player>) : DemoAnimationState() {
     override val descriptionSelector = ".$playerConfigContentClassName li:first-of-type"
     override val description = """
 ## Now we'll add a few players. 
@@ -168,7 +168,7 @@ In this way, your entire team can operate Coupling.
 """
 }
 
-data class AddPin(val party: Party, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState() {
+data class AddPin(val party: PartyDetails, val newPin: Pin, val pins: List<Pin>) : DemoAnimationState() {
     override val descriptionSelector = ".$pinConfigContentClassName li:first-of-type"
     override val description = """
 ## And now... a pin! 
@@ -181,7 +181,7 @@ It'll prefer to be with pairs that haven't done it recently, but it's not too pa
 }
 
 data class CurrentPairs(
-    val party: Party,
+    val party: PartyDetails,
     val players: List<Player>,
     val pins: List<Pin>,
     val pairAssignments: PairAssignmentDocument?,
@@ -233,7 +233,7 @@ We'll hit the spin button.
 
 private fun classSelector(className: ClassName) = ".$className"
 
-data class PrepareToSpin(val party: Party, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
+data class PrepareToSpin(val party: PartyDetails, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
     DemoAnimationState() {
     override val descriptionSelector = ".$playerSelectorClass"
     override val placement: Placement = Placement.right

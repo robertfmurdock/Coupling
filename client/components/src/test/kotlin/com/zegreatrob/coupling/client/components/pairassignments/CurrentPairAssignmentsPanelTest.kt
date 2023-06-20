@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -41,7 +41,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun clickingSaveButtonWillNRedirectToCurrentPairAssignmentsPageWithoutSavingBecauseAutosave() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = DateTime.now(),
@@ -85,7 +85,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val pairAssignments = stubPairAssignmentDoc()
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
@@ -127,7 +127,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = setup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val player1 = Player("1", name = "1", avatarType = null)
         val player2 = Player("2", name = "2", avatarType = null)
         val player3 = Player("3", name = "3", avatarType = null)
@@ -164,7 +164,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPinDropWillTakeMovePinFromOnePairToAnother() = setup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val pin1 = stubPin()
         val pin2 = stubPin()
         val pair1 =
@@ -203,7 +203,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPlayerDropTheSwapWillNotLosePinAssignments() = setup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val player1 = Player("1", name = "1", avatarType = null)
         val player2 = Player("2", name = "2", avatarType = null)
         val player3 = Player("3", name = "3", avatarType = null)
@@ -243,7 +243,7 @@ class CurrentPairAssignmentsPanelTest {
 
     @Test
     fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val player1 = Player("1", name = "1", avatarType = null)
         val player2 = Player("2", name = "2", avatarType = null)
         val player3 = Player("3", name = "3", avatarType = null)

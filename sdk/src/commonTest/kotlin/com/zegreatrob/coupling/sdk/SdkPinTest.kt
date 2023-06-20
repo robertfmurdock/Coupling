@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.pin
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.graphQuery
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -24,7 +24,7 @@ class SdkPinTest {
         sharedSetup = { _ ->
             val sdk = sdk()
             object : CouplingSdk by sdk {
-                val party = stubParty()
+                val party = stubPartyDetails()
             }.apply { sdk.perform(SavePartyCommand(party)) }
         },
         sharedTeardown = { it.perform(DeletePartyCommand(it.party.id)) },
@@ -124,7 +124,7 @@ class SdkPinTest {
 
     @Test
     fun givenNoAuthGetIsNotAllowed() = asyncSetup(object {
-        val otherParty = stubParty()
+        val otherParty = stubPartyDetails()
         suspend fun otherSdk() = altAuthorizedSdkDeferred.await()
     }) {
         otherSdk().perform(SavePartyCommand(otherParty))
@@ -141,7 +141,7 @@ class SdkPinTest {
 
     @Test
     fun savedPinsIncludeModificationDateAndUsername() = asyncSetup(object {
-        val party = stubParty()
+        val party = stubPartyDetails()
         val pin = stubPin()
         lateinit var sdk: CouplingSdk
     }) {

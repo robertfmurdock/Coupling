@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.action.stats.StatisticsReport
 import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.PartyLoadAllSyntax
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
@@ -25,7 +25,7 @@ interface ClientStatisticsQueryDispatcher :
     }
 
     private fun calculateStats(
-        party: Party,
+        party: PartyDetails,
         players: List<Player>,
         history: List<PairAssignmentDocument>,
     ): Pair<StatisticsReport, List<List<Double?>>> {
@@ -33,7 +33,7 @@ interface ClientStatisticsQueryDispatcher :
         return statisticsReport to calculateHeatMap(players, history, statisticsReport)
     }
 
-    private fun composeStatistics(party: Party, players: List<Player>, history: List<PairAssignmentDocument>) =
+    private fun composeStatistics(party: PartyDetails, players: List<Player>, history: List<PairAssignmentDocument>) =
         execute(ComposeStatisticsAction(party, players, history))
 
     private fun calculateHeatMap(

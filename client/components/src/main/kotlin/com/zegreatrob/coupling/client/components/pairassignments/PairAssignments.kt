@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.player.PlayerRoster
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -31,7 +31,7 @@ import web.cssom.px
 import web.cssom.vh
 
 data class PairAssignments(
-    val party: Party,
+    val party: PartyDetails,
     val players: List<Player>,
     val pairs: PairAssignmentDocument?,
     val setPairs: (PairAssignmentDocument) -> Unit,

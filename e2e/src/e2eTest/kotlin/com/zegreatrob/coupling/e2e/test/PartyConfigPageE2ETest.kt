@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
@@ -90,7 +90,7 @@ class PartyConfigPageE2ETest {
         }
 
         companion object {
-            private fun buildParty() = Party(
+            private fun buildParty() = PartyDetails(
                 id = "${randomInt()}-PartyConfigPageE2ETest-partyId".let(::PartyId),
                 name = "${randomInt()}-PartyConfigPageE2ETest-name",
             )

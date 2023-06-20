@@ -1,27 +1,39 @@
 package com.zegreatrob.coupling.repository.party
 
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.PartyIntegration
 
 interface PartyRepository :
-    PartyGet,
+    PartyDetailsGet,
+    PartyIntegrationGet,
     PartyListGet,
-    PartySave,
+    PartyDetailsSave,
+    PartyIntegrationSave,
     PartyDelete
 
-interface PartySave {
-    suspend fun save(party: Party)
+fun interface PartyDetailsSave {
+    suspend fun save(party: PartyDetails)
 }
 
-interface PartyDelete {
+fun interface PartyIntegrationSave {
+    suspend fun save(integration: PartyElement<PartyIntegration>)
+}
+
+fun interface PartyDelete {
     suspend fun deleteIt(partyId: PartyId): Boolean
 }
 
-fun interface PartyGet {
-    suspend fun getPartyRecord(partyId: PartyId): Record<Party>?
+fun interface PartyDetailsGet {
+    suspend fun getDetails(partyId: PartyId): Record<PartyDetails>?
 }
 
-interface PartyListGet {
-    suspend fun loadParties(): List<Record<Party>>
+fun interface PartyIntegrationGet {
+    suspend fun getIntegration(partyId: PartyId): Record<PartyIntegration>?
+}
+
+fun interface PartyListGet {
+    suspend fun loadParties(): List<Record<PartyDetails>>
 }

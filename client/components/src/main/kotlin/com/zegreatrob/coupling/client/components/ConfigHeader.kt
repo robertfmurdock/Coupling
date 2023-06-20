@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.player.addPlayerButton
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -31,7 +31,7 @@ import web.cssom.repeat
 import web.cssom.rgb
 
 external interface ConfigHeaderProps : PropsWithChildren {
-    var party: Party
+    var party: PartyDetails
 }
 
 val ConfigHeader by nfc<ConfigHeaderProps> { props ->

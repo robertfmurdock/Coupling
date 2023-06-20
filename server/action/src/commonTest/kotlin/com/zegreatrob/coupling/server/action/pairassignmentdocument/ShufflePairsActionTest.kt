@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -28,7 +28,7 @@ class ShufflePairsActionTest {
 
         val expectedDate = DateTime.now()
         override fun currentDate() = expectedDate
-        val party = Party(PartyId("1"), PairingRule.LongestTime)
+        val party = PartyDetails(PartyId("1"), PairingRule.LongestTime)
         val players = emptyList<Player>()
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()

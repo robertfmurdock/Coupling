@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minreact.create
@@ -28,7 +28,7 @@ class PairAssignmentRowTest {
     @Test
     fun whenRemoveIsCalledAndConfirmedWillDeletePlayer() = asyncSetup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
-        val party = Party(PartyId("me"))
+        val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList())
         val stubDispatcher = StubDispatcher()
@@ -56,7 +56,7 @@ class PairAssignmentRowTest {
     @Test
     fun whenRemoveIsCalledAndNotConfirmedWillNotDeletePlayer() = asyncSetup(object : WindowFunctions {
         override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
-        val party = Party(PartyId("me"))
+        val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(
             PairAssignmentDocumentId("RealId"),

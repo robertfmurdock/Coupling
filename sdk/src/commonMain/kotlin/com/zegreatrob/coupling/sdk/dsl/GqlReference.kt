@@ -83,8 +83,6 @@ object GqlReference {
         name = "",
         callSignsEnabled = false,
         animationsEnabled = false,
-        slackTeam = "",
-        slackChannel = "",
         animationSpeed = 0.0,
         modifyingUserEmail = "",
         isDeleted = false,

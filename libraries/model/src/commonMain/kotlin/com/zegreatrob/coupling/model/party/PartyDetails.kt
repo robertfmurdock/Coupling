@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.model.party
 
-data class Party(
+data class PartyDetails(
     val id: PartyId,
     val pairingRule: PairingRule = PairingRule.LongestTime,
     val badgesEnabled: Boolean = false,
@@ -12,8 +12,11 @@ data class Party(
     val animationEnabled: Boolean = true,
     val animationSpeed: Double = 1.0,
     val imageURL: String? = null,
+)
+
+data class PartyIntegration(
     val slackTeam: String? = null,
     val slackChannel: String? = null,
 )
 
-val defaultParty = Party(PartyId("DEFAULT"))
+val defaultParty = PartyDetails(PartyId("DEFAULT"))

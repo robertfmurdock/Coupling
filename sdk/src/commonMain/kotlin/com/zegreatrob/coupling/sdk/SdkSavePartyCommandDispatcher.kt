@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.json.SavePartyInput
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
@@ -15,7 +15,7 @@ interface SdkSavePartyCommandDispatcher : SavePartyCommand.Dispatcher, GqlSyntax
         return VoidResult.Accepted
     }
 }
-private fun Party.savePartyInput() = SavePartyInput(
+private fun PartyDetails.savePartyInput() = SavePartyInput(
     partyId = id,
     name = name,
     email = email,
@@ -26,6 +26,4 @@ private fun Party.savePartyInput() = SavePartyInput(
     callSignsEnabled = callSignsEnabled,
     animationsEnabled = animationEnabled,
     animationSpeed = animationSpeed,
-    slackTeam = slackTeam,
-    slackChannel = slackChannel,
 )

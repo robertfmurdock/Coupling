@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.player.TinyPlayerList
 import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -32,7 +32,7 @@ import kotlin.js.Promise
 import kotlin.js.json
 
 data class PairSection(
-    val party: Party,
+    val party: PartyDetails,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val allowSave: Boolean,

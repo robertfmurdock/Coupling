@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.client.components.spin.RosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
-import com.zegreatrob.coupling.stubmodel.stubParty
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minenzyme.ShallowWrapper
@@ -43,7 +43,7 @@ class SpinAnimationTest {
 
     class GivenThreePlayersAndOnePair {
         open class Setup {
-            val party = stubParty()
+            val party = stubPartyDetails()
             val excludedPlayer = stubPlayer()
             val players = listOf(
                 stubPlayer(),
@@ -72,7 +72,7 @@ class SpinAnimationTest {
 
     class GivenFourPlayersAndTwoPairs {
         open class Setup {
-            val party = stubParty()
+            val party = stubPartyDetails()
             val players = listOf(
                 stubPlayer(),
                 stubPlayer(),

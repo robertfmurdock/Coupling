@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -20,7 +20,7 @@ class RequestCombineEndpointTest {
     fun postPlayersAndPinsThenGet() = asyncSetup.with({
         val sdk = sdk()
         object : CouplingSdk by sdk {
-            val party = Party(id = PartyId("et-${uuid4()}"))
+            val party = PartyDetails(id = PartyId("et-${uuid4()}"))
             val playersToSave = listOf(
                 Player(
                     id = "${uuid4()}",

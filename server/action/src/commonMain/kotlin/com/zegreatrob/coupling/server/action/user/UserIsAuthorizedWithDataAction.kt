@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.user
 
 import com.zegreatrob.coupling.action.SimpleSuspendResultAction
 import com.zegreatrob.coupling.action.successResult
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.await
@@ -15,7 +15,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class UserIsAuthorizedWithDataAction(val partyId: PartyId) :
-    SimpleSuspendResultAction<UserIsAuthorizedWithDataActionDispatcher, Pair<Party, List<Player>>?> {
+    SimpleSuspendResultAction<UserIsAuthorizedWithDataActionDispatcher, Pair<PartyDetails, List<Player>>?> {
     override val performFunc = link(UserIsAuthorizedWithDataActionDispatcher::perform)
 }
 
@@ -28,7 +28,7 @@ interface UserIsAuthorizedWithDataActionDispatcher :
 
     suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.skdjflskdjf().successResult()
 
-    private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf(): Pair<Party, List<Player>>? {
+    private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf(): Pair<PartyDetails, List<Player>>? {
         val contains = getUserPlayerIds()
             .authenticatedPartyIds()
             .contains(partyId)

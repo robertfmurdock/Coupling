@@ -4,7 +4,7 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import korlibs.time.DateTime
 import kotlinx.serialization.Serializable
@@ -22,8 +22,6 @@ data class JsonPartyDetails(
     val callSignsEnabled: Boolean = false,
     val animationsEnabled: Boolean = true,
     val animationSpeed: Double = 1.0,
-    val slackTeam: String? = null,
-    val slackChannel: String? = null,
 )
 
 @Serializable
@@ -37,15 +35,13 @@ data class JsonPartyDetailsRecord(
     val name: String? = null,
     val callSignsEnabled: Boolean = false,
     val animationsEnabled: Boolean = true,
-    val slackTeam: String? = null,
-    val slackChannel: String? = null,
     val animationSpeed: Double = 1.0,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
     val timestamp: DateTime,
 )
 
-fun Party.toSerializable() = JsonPartyDetails(
+fun PartyDetails.toSerializable() = JsonPartyDetails(
     id = id.value,
     pairingRule = PairingRule.toValue(pairingRule),
     badgesEnabled = badgesEnabled,
@@ -56,11 +52,9 @@ fun Party.toSerializable() = JsonPartyDetails(
     callSignsEnabled = callSignsEnabled,
     animationsEnabled = animationEnabled,
     animationSpeed = animationSpeed,
-    slackTeam = slackTeam,
-    slackChannel = slackChannel,
 )
 
-fun Record<Party>.toSerializable() = JsonPartyDetailsRecord(
+fun Record<PartyDetails>.toSerializable() = JsonPartyDetailsRecord(
     id = data.id,
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
@@ -71,14 +65,12 @@ fun Record<Party>.toSerializable() = JsonPartyDetailsRecord(
     callSignsEnabled = data.callSignsEnabled,
     animationsEnabled = data.animationEnabled,
     animationSpeed = data.animationSpeed,
-    slackTeam = data.slackTeam,
-    slackChannel = data.slackChannel,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
 )
 
-fun JsonPartyDetails.toModel(): Party = Party(
+fun JsonPartyDetails.toModel(): PartyDetails = PartyDetails(
     id = PartyId(id),
     pairingRule = PairingRule.fromValue(pairingRule),
     badgesEnabled = badgesEnabled,
@@ -89,12 +81,10 @@ fun JsonPartyDetails.toModel(): Party = Party(
     callSignsEnabled = callSignsEnabled,
     animationEnabled = animationsEnabled,
     animationSpeed = animationSpeed,
-    slackTeam = slackTeam,
-    slackChannel = slackChannel,
 )
 
-fun JsonPartyDetailsRecord.toModelRecord(): Record<Party> = Record(
-    data = Party(
+fun JsonPartyDetailsRecord.toModelRecord(): Record<PartyDetails> = Record(
+    data = PartyDetails(
         id = id,
         pairingRule = PairingRule.fromValue(pairingRule),
         badgesEnabled = badgesEnabled,
@@ -105,8 +95,6 @@ fun JsonPartyDetailsRecord.toModelRecord(): Record<Party> = Record(
         callSignsEnabled = callSignsEnabled,
         animationEnabled = animationsEnabled,
         animationSpeed = animationSpeed,
-        slackTeam = slackTeam,
-        slackChannel = slackChannel,
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,

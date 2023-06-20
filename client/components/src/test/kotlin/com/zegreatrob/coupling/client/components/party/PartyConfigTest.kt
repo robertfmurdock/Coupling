@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.StubDispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -32,7 +32,7 @@ class PartyConfigTest {
 
     @Test
     fun willDefaultPartyThatIsMissingData() = asyncSetup(object {
-        val party = Party(PartyId("1"), name = "1")
+        val party = PartyDetails(PartyId("1"), name = "1")
     }) exercise {
         render(
             PartyConfig(
@@ -59,7 +59,7 @@ class PartyConfigTest {
 
     @Test
     fun whenClickTheSaveButtonWillUseCouplingServiceToSaveTheParty() = asyncSetup(object {
-        val party = Party(
+        val party = PartyDetails(
             PartyId("1"),
             pairingRule = PairingRule.PreferDifferentBadge,
             defaultBadgeName = "def",
@@ -98,7 +98,7 @@ class PartyConfigTest {
 
     @Test
     fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = asyncSetup(object {
-        val party = Party(PartyId(""))
+        val party = PartyDetails(PartyId(""))
         val stubDispatcher = StubDispatcher()
     }) {
         render(

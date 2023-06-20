@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.pairassignments.spin.PairAssignmentsAnimator
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
@@ -26,7 +26,7 @@ import web.cssom.px
 import web.cssom.rgb
 
 data class PairSectionPanel(
-    val party: Party,
+    val party: PartyDetails,
     val players: List<Player>,
     val pairAssignments: PairAssignmentDocument?,
     val allowSave: Boolean,

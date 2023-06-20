@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.e2e.test
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.PartyListPage.getNewPartyButton
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -15,8 +15,8 @@ class PartyListPageE2ETest {
     companion object {
         private val twoPartySetup = e2eSetup.extend(beforeAll = {
             val parties = listOf(
-                "${randomInt()}-PartyListPageE2ETest-1".let { Party(it.let(::PartyId), name = it) },
-                "${randomInt()}-PartyListPageE2ETest-2".let { Party(it.let(::PartyId), name = it) },
+                "${randomInt()}-PartyListPageE2ETest-1".let { PartyDetails(it.let(::PartyId), name = it) },
+                "${randomInt()}-PartyListPageE2ETest-2".let { PartyDetails(it.let(::PartyId), name = it) },
             )
             sdk.await().apply { parties.forEach { perform(SavePartyCommand(it)) } }
             object {

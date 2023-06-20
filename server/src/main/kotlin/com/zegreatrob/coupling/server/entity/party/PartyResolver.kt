@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.entity.party
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.action.party.PartyQuery
 import com.zegreatrob.coupling.server.graphql.dispatch
@@ -15,4 +15,4 @@ val partyResolve = dispatch(
     ::toJson,
 )
 
-private fun toJson(record: Record<Party>?) = record?.toSerializable()
+private fun toJson(record: Record<PartyDetails>?) = record?.toSerializable()

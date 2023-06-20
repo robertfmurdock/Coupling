@@ -6,8 +6,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
@@ -17,11 +18,11 @@ import com.zegreatrob.coupling.model.user.User
 import korlibs.time.DateTime
 import korlibs.time.minutes
 
-fun stubParties(number: Int) = generateSequence { stubParty() }.take(number).toList()
+fun stubParties(number: Int) = generateSequence(::stubPartyDetails).take(number).toList()
 
 var partyCounter = 1
 
-fun stubParty() = Party(
+fun stubPartyDetails() = PartyDetails(
     id = stubPartyId(),
     pairingRule = stubPairingRule(),
     badgesEnabled = partyCounter % 2 == 0,
@@ -32,9 +33,12 @@ fun stubParty() = Party(
     callSignsEnabled = partyCounter % 2 == 1,
     animationEnabled = partyCounter % 2 == 0,
     animationSpeed = partyCounter.toDouble(),
+).also { partyCounter++ }
+
+fun stubPartyIntegration() = PartyIntegration(
     slackTeam = uuidString(),
     slackChannel = uuidString(),
-).also { partyCounter++ }
+)
 
 private fun stubPairingRule() = PairingRule.values()[partyCounter % PairingRule.values().size]
 

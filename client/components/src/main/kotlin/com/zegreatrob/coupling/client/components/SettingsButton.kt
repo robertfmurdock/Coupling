@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.add
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.i
@@ -9,7 +9,7 @@ import web.cssom.ClassName
 import web.cssom.Padding
 import web.cssom.px
 
-fun ChildrenBuilder.settingsButton(party: Party, className: ClassName = ClassName("")) = Link {
+fun ChildrenBuilder.settingsButton(party: PartyDetails, className: ClassName = ClassName("")) = Link {
     to = "/${party.id.value}/edit"
     tabIndex = -1
     draggable = false

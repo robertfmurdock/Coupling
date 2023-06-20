@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
@@ -61,7 +61,7 @@ class MemoryRepositoryCatalog private constructor(
 }
 
 class MemoryRepositoryBackend {
-    val party = SimpleRecordBackend<Party>()
+    val party = SimpleRecordBackend<PartyDetails>()
     val player = SimpleRecordBackend<PartyElement<Player>>()
     val pairAssignments = SimpleRecordBackend<PartyElement<PairAssignmentDocument>>()
     val pin = SimpleRecordBackend<PartyElement<Pin>>()

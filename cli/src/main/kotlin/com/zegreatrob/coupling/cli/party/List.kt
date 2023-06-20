@@ -7,7 +7,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.zegreatrob.coupling.cli.Auth0Environment
 import com.zegreatrob.coupling.cli.getAccessToken
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.party.Party
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.KtorCouplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.coupling.sdk.gql.graphQuery
@@ -35,7 +35,7 @@ class List : CliktCommand() {
             runBlocking {
                 sdk.perform(graphQuery { partyList() })
                     ?.partyList
-                    ?.map(Record<Party>::data)
+                    ?.map(Record<PartyDetails>::data)
                     ?.joinToString("\n") { "Party: id = ${it.id.value}, name = ${it.name}" }
                     .let { it ?: "" }
                     .let { echo(it) }
