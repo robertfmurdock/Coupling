@@ -7,6 +7,7 @@ object Mutation {
     val deleteBoost by GqlFileLoader
     val saveParty by GqlFileLoader
     val createSecret by GqlFileLoader
+    val saveSlackIntegration by GqlFileLoader
     val deleteSecret by GqlFileLoader
     val savePlayer by GqlFileLoader
     val savePairAssignments by GqlFileLoader

@@ -46,7 +46,7 @@ class SdkPinTest {
         pins.forEach { perform(SavePinCommand(party.id, it)) }
     } verifyWithWait {
         perform(graphQuery { party(party.id) { pinList() } })
-            ?.partyData
+            ?.party
             ?.pinList
             ?.map(PartyRecord<Pin>::data)
             ?.map(PartyElement<Pin>::pin)
@@ -64,7 +64,7 @@ class SdkPinTest {
     @Test
     fun givenNoPinsWillReturnEmptyList() = partySetup() exercise {
         perform(graphQuery { party(party.id) { pinList() } })
-            ?.partyData
+            ?.party
             ?.pinList
     } verify { result ->
         result.assertIsEqualTo(emptyList())
@@ -85,7 +85,7 @@ class SdkPinTest {
         perform(DeletePinCommand(party.id, this.pins[1].id!!))
     } verifyWithWait {
         perform(graphQuery { party(party.id) { pinList() } })
-            ?.partyData
+            ?.party
             ?.pinList
             .let { it ?: emptyList() }
             .map { it.data.pin }
@@ -109,7 +109,7 @@ class SdkPinTest {
         perform(SavePinCommand(partyId, pin))
     } verifyWithWait {
         perform(graphQuery { party(partyId) { pinList() } })
-            ?.partyData
+            ?.party
             ?.pinList
             .let { it ?: emptyList() }
             .map { it.data.pin }
@@ -131,7 +131,7 @@ class SdkPinTest {
         otherSdk().perform(SavePinCommand(otherParty.id, stubPin()))
     } exercise {
         sdk().perform(graphQuery { party(otherParty.id) { pinList() } })
-            ?.partyData
+            ?.party
             ?.pinList
     } verifyAnd { result ->
         result.assertIsEqualTo(null)
@@ -150,7 +150,7 @@ class SdkPinTest {
         sdk.perform(SavePinCommand(party.id, pin))
     } exercise {
         sdk.perform(graphQuery { party(party.id) { pinList() } })
-            ?.partyData
+            ?.party
             ?.pinList
             ?: emptyList()
     } verify { result ->

@@ -53,7 +53,7 @@ class SdkPairAssignmentDocumentTest {
         perform(SavePairAssignmentsCommand(party.id, updatedDocument))
     } verifyWithWait {
         perform(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
-            ?.partyData
+            ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
             .data()
@@ -82,7 +82,7 @@ class SdkPairAssignmentDocumentTest {
             .forEach { perform(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
         perform(graphQuery { party(partyId) { currentPairAssignments() } })
-            ?.partyData
+            ?.party
             ?.currentPairAssignmentDocument
     } verify { result: PartyRecord<PairAssignmentDocument>? ->
         result?.element.assertIsEqualTo(newest)
@@ -100,7 +100,7 @@ class SdkPairAssignmentDocumentTest {
         perform(DeletePairAssignmentsCommand(partyId, document.id))
     } verifyWithWait {
         perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
-            ?.partyData
+            ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
             .data()
@@ -121,7 +121,7 @@ class SdkPairAssignmentDocumentTest {
             .forEach { perform(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
         perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
-            ?.partyData
+            ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
     } verifyWithWait { result ->
@@ -135,7 +135,7 @@ class SdkPairAssignmentDocumentTest {
     @Test
     fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {
         perform(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
-            ?.partyData
+            ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
     } verify { result ->
@@ -156,7 +156,7 @@ class SdkPairAssignmentDocumentTest {
         otherSdk.perform(SavePairAssignmentsCommand(otherParty.id, stubPairAssignmentDoc()))
     } exercise {
         sdk.perform(graphQuery { party(PartyId("someoneElseParty")) { pairAssignmentDocumentList() } })
-            ?.partyData
+            ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
     } verifyAnd { result ->
@@ -175,7 +175,7 @@ class SdkPairAssignmentDocumentTest {
         perform(SavePairAssignmentsCommand(partyId, pairAssignmentDoc))
     } exercise {
         perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
-            ?.partyData
+            ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
     } verify { result ->

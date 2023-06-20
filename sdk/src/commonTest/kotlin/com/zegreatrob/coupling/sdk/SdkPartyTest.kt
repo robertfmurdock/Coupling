@@ -1,8 +1,11 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.CommandResult
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.Record
@@ -12,6 +15,7 @@ import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
@@ -31,8 +35,8 @@ class SdkPartyTest {
             Pair(
                 perform(graphQuery { partyList() })?.partyList,
                 perform(graphQuery { party(party.id) { party() } })
-                    ?.partyData
-                    ?.party?.data,
+                    ?.party
+                    ?.details?.data,
             )
         }
     } verifyAnd { (listResult, getResult) ->
@@ -51,8 +55,8 @@ class SdkPartyTest {
     } exercise {
         parties.map {
             sdk().perform(graphQuery { party(it.id) { party() } })
-                ?.partyData
-                ?.party?.data
+                ?.party
+                ?.details?.data
         }
     } verify { result ->
         result.assertIsEqualTo(this.parties)
@@ -136,8 +140,8 @@ class SdkPartyTest {
     } exercise {
         sdk().perform(SavePartyCommand(party.copy(name = "changed name")))
         altSdk().perform(graphQuery { party(party.id) { party() } })
-            ?.partyData
             ?.party
+            ?.details
     } verify { result ->
         result?.data.assertIsEqualTo(party)
     }
@@ -156,5 +160,45 @@ class SdkPartyTest {
         }
     } teardown {
         sdk().perform(DeletePartyCommand(party.id))
+    }
+
+    @Test
+    fun saveIntegrationCanBeLoaded() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val slackTeam = uuidString()
+        val slackChannel = uuidString()
+    }) {
+        sdk().perform(SavePartyCommand(party))
+    } exercise {
+        sdk().perform(SaveSlackIntegrationCommand(partyId = party.id, team = slackTeam, channel = slackChannel))
+    } verifyAnd { result ->
+        result.assertIsEqualTo(VoidResult.Accepted)
+        val queryResult = sdk().perform(graphQuery { party(party.id) { integration() } })
+            ?.party
+            ?.integration
+        assertNotNull(queryResult)
+        queryResult.apply {
+            data.slackTeam.assertIsEqualTo(slackTeam)
+            data.slackChannel.assertIsEqualTo(slackChannel)
+            modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
+            timestamp.isWithinOneSecondOfNow()
+        }
+    } teardown {
+        sdk().perform(DeletePartyCommand(party.id))
+    }
+
+    @Test
+    fun cannotSaveIntegrationForUnauthorizedParty() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val slackTeam = uuidString()
+        val slackChannel = uuidString()
+    }) exercise {
+        sdk().perform(SaveSlackIntegrationCommand(partyId = party.id, team = slackTeam, channel = slackChannel))
+    } verify { result ->
+        result.assertIsEqualTo(CommandResult.Unauthorized)
+        sdk().perform(graphQuery { party(party.id) { integration() } })
+            ?.party
+            ?.integration
+            .assertIsEqualTo(null)
     }
 }

@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignments
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
@@ -33,4 +34,5 @@ interface CouplingSdk :
     SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommand.Dispatcher,
     SavePinCommand.Dispatcher,
-    SavePlayerCommand.Dispatcher
+    SavePlayerCommand.Dispatcher,
+    SaveSlackIntegrationCommand.Dispatcher

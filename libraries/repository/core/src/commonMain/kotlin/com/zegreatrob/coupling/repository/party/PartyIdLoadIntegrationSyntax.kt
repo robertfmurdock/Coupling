@@ -7,4 +7,5 @@ interface PartyIdLoadIntegrationSyntax {
     val partyRepository: PartyIntegrationGet
 
     suspend fun PartyId.loadIntegration() = partyRepository.getIntegration(this)?.data
+    suspend fun PartyId.loadIntegrationRecord() = partyRepository.getIntegration(this)
 }

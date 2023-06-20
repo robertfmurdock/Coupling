@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.JsonParty
+import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignmentRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.partyRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pinRecord
@@ -50,6 +51,12 @@ class PartyQueryBuilder : QueryBuilder<JsonParty> {
     fun secretList() {
         output = output.copy(
             secretList = listOf(secretRecord),
+        )
+    }
+
+    fun integration() {
+        output = output.copy(
+            integration = integrationRecord,
         )
     }
 }

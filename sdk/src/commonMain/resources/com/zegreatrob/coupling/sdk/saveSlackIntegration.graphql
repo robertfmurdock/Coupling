@@ -1,0 +1,3 @@
+mutation saveSlackIntegration($input: SaveSlackIntegrationInput!) {
+    saveSlackIntegration(input: $input)
+}

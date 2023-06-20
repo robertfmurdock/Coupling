@@ -19,9 +19,9 @@ interface PartyLoadAllSyntax : SdkProviderSyntax {
                 pinList()
             }
         },
-    )?.partyData?.let {
+    )?.party?.let {
         PartyData(
-            party = it.party?.data ?: return@let null,
+            party = it.details?.data ?: return@let null,
             playerList = it.playerList?.elements ?: return@let null,
             history = it.pairAssignmentDocumentList?.elements ?: return@let null,
             pinList = it.pinList?.elements ?: return@let null,

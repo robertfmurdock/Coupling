@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.JsonGlobalStats
+import com.zegreatrob.coupling.json.JsonIntegrationRecord
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonPartyDetailsRecord
 import com.zegreatrob.coupling.json.JsonPartyStats
@@ -62,6 +63,13 @@ object GqlReference {
         date = DateTime.EPOCH,
         pairs = listOf(pinnedCouplingPair),
         partyId = PartyId(""),
+        modifyingUserEmail = "",
+        isDeleted = false,
+        timestamp = DateTime.EPOCH,
+    )
+    val integrationRecord = JsonIntegrationRecord(
+        slackTeam = "",
+        slackChannel = "",
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = DateTime.EPOCH,

@@ -39,7 +39,7 @@ class RequestCombineEndpointTest {
     } exercise {
         coroutineScope {
             perform(graphQuery { party(party.id) { playerList(); pinList() } })
-                ?.partyData
+                ?.party
                 .let { it?.playerList?.elements to it?.pinList?.elements }
         }
     } verify { (players, pins) ->

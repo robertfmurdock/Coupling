@@ -50,7 +50,7 @@ class SdkPlayerTest {
     } exercise {
         sdk.perform(SavePlayerCommand(sdk.party.id, updatedPlayer))
         sdk.perform(graphQuery { party(sdk.party.id) { playerList() } })
-            ?.partyData
+            ?.party
             ?.playerList
             .let { it ?: emptyList() }
     } verify { result ->
@@ -70,7 +70,7 @@ class SdkPlayerTest {
     } exercise {
         sdk.perform(DeletePlayerCommand(partyId, player.id))
         sdk.perform(graphQuery { party(partyId) { playerList() } })
-            ?.partyData
+            ?.party
             ?.playerList
             .let { it ?: emptyList() }
     } verifyWithWait { result ->
@@ -106,7 +106,7 @@ class SdkPlayerTest {
         sdk.perform(DeletePlayerCommand(partyId, player.id))
     } exercise {
         sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
-            ?.partyData
+            ?.party
             ?.retiredPlayers
             .let { it ?: emptyList() }
     } verify { result ->
@@ -129,7 +129,7 @@ class SdkPlayerTest {
         sdk.perform(DeletePlayerCommand(partyId, playerId))
     } verifyWithWait {
         sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
-            ?.partyData
+            ?.party
             ?.retiredPlayers
             .let { it ?: emptyList() }
             .map { it.data.player }
@@ -147,7 +147,7 @@ class SdkPlayerTest {
         players.forEach { sdk.perform(SavePlayerCommand(partyId, it)) }
     } exercise {
         sdk.perform(graphQuery { party(partyId) { playerList() } })
-            ?.partyData
+            ?.party
             ?.playerList
             .let { it ?: emptyList() }
     } verify { result ->
@@ -173,7 +173,7 @@ class SdkPlayerTest {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
     } exercise {
         sdk.perform(graphQuery { party(partyId) { playerList() } })
-            ?.partyData
+            ?.party
             ?.playerList
             .let { it ?: emptyList() }
     } verify { result ->
@@ -197,7 +197,7 @@ class SdkPlayerTest {
         sdk.perform(SavePlayerCommand(partyId2, player2))
     } exercise {
         sdk.perform(graphQuery { party(partyId) { playerList() } })
-            ?.partyData
+            ?.party
             ?.playerList
             .let { it ?: emptyList() }
     } verifyAnd { result ->
@@ -218,7 +218,7 @@ class SdkPlayerTest {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
         sdk.perform(DeletePlayerCommand(partyId, player.id))
         sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
-            ?.partyData
+            ?.party
             ?.retiredPlayers
             .let { it ?: emptyList() }
     } verify { result ->
@@ -240,7 +240,7 @@ class SdkPlayerTest {
     }) exercise {
         sdk.perform(SavePlayerCommand(sdk.party.id, player))
         sdk.perform(graphQuery { party(partyId) { playerList() } })
-            ?.partyData
+            ?.party
             ?.playerList
             .let { it ?: emptyList() }
     } verify { result ->
@@ -265,7 +265,7 @@ class SdkPlayerTest {
                     otherSdk.perform(SavePlayerCommand(party.id, stubPlayer()))
                 } exercise {
                     sdk.perform(graphQuery { party(party.id) { playerList() } })
-                        ?.partyData
+                        ?.party
                         ?.playerList
                         .let { it ?: emptyList() }
                 } verifyAnd { result ->
@@ -295,7 +295,7 @@ class SdkPlayerTest {
                 } exercise {
                     sdk.perform(SavePlayerCommand(party.id, player))
                     otherSdk.perform(graphQuery { party(party.id) { playerList() } })
-                        ?.partyData
+                        ?.party
                         ?.playerList
                         .let { it ?: emptyList() }
                 } verifyAnd { result ->

@@ -15,8 +15,8 @@ data class PartyDetails(
 )
 
 data class PartyIntegration(
-    val slackTeam: String? = null,
-    val slackChannel: String? = null,
+    val slackTeam: String?,
+    val slackChannel: String?,
 )
 
 val defaultParty = PartyDetails(PartyId("DEFAULT"))

@@ -35,8 +35,8 @@ interface ClientPartyPlayerQueryDispatcher :
                 playerList()
             }
         },
-    )?.partyData
-        ?.let { it.party?.data to (it.playerList?.elements ?: emptyList()) }
+    )?.party
+        ?.let { it.details?.data to (it.playerList?.elements ?: emptyList()) }
 
     private fun List<Player>.findOrDefaultNew(playerId: String?) = firstOrNull { it.id == playerId }
         ?: defaultWithCallSign()

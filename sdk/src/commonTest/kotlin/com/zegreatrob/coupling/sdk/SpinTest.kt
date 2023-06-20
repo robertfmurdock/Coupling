@@ -220,6 +220,6 @@ class SpinTest {
 
 private suspend fun queryCurrentPairs(partyId: PartyId, sdk: CouplingSdk) =
     sdk.perform(graphQuery { party(partyId) { currentPairAssignments() } })
-        ?.partyData
+        ?.party
         ?.currentPairAssignmentDocument
         ?.element

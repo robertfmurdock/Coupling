@@ -30,9 +30,9 @@ val HistoryPage = partyPageFunction { props, partyId ->
 typealias HistoryData = Pair<PartyDetails, List<PairAssignmentDocument>>
 
 fun CouplingQueryResult?.toHistoryData(): HistoryData? {
-    return this?.partyData?.let {
+    return this?.party?.let {
         Pair(
-            first = it.party?.data ?: return@let null,
+            first = it.details?.data ?: return@let null,
             second = it.pairAssignmentDocumentList?.elements ?: return@let null,
         )
     }

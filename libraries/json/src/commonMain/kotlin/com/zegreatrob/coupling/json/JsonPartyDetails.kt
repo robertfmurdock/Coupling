@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.party.PartyIntegration
 import korlibs.time.DateTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
@@ -66,6 +67,24 @@ fun Record<PartyDetails>.toSerializable() = JsonPartyDetailsRecord(
     animationsEnabled = data.animationEnabled,
     animationSpeed = data.animationSpeed,
     modifyingUserEmail = modifyingUserId,
+    isDeleted = isDeleted,
+    timestamp = timestamp,
+)
+
+fun Record<PartyIntegration>.toSerializable() = JsonIntegrationRecord(
+    slackTeam = data.slackTeam,
+    slackChannel = data.slackChannel,
+    modifyingUserEmail = modifyingUserId,
+    isDeleted = isDeleted,
+    timestamp = timestamp,
+)
+
+fun JsonIntegrationRecord.toModelRecord(): Record<PartyIntegration> = Record(
+    data = PartyIntegration(
+        slackTeam = slackTeam,
+        slackChannel = slackChannel,
+    ),
+    modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
     timestamp = timestamp,
 )

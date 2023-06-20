@@ -38,6 +38,15 @@ data class JsonPairAssignmentDocumentRecord(
 ) : JsonPartyRecordInfo
 
 @Serializable
+data class JsonIntegrationRecord(
+    val slackTeam: String?,
+    val slackChannel: String?,
+    val modifyingUserEmail: String,
+    val isDeleted: Boolean,
+    val timestamp: DateTime,
+)
+
+@Serializable
 data class JsonSecretRecord(
     val id: String,
     override val partyId: PartyId,

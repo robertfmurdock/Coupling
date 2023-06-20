@@ -8,9 +8,11 @@ import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListRe
 import com.zegreatrob.coupling.server.entity.pairassignment.savePairsResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
 import com.zegreatrob.coupling.server.entity.party.deletePartyResolver
+import com.zegreatrob.coupling.server.entity.party.partyIntegrationResolve
 import com.zegreatrob.coupling.server.entity.party.partyListResolve
 import com.zegreatrob.coupling.server.entity.party.partyResolve
 import com.zegreatrob.coupling.server.entity.party.savePartyResolver
+import com.zegreatrob.coupling.server.entity.party.saveSlackIntegrationResolver
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.pin.savePinResolver
@@ -50,6 +52,7 @@ fun couplingResolvers() = json(
     ),
     "Mutation" to json(
         "createSecret" to createSecretResolver,
+        "saveSlackIntegration" to saveSlackIntegrationResolver,
         "deleteSecret" to deleteSecretResolver,
         "deletePairAssignments" to deletePairsResolver,
         "deleteParty" to deletePartyResolver,
@@ -64,6 +67,7 @@ fun couplingResolvers() = json(
     ),
     "Party" to json(
         "details" to partyResolve,
+        "integration" to partyIntegrationResolve,
         "pinList" to pinListResolve,
         "playerList" to playerListResolve,
         "retiredPlayers" to retiredPlayerListResolve,

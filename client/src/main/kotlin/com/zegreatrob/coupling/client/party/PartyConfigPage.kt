@@ -18,7 +18,7 @@ private fun PartyId.partyQueryProps(pageProps: PageProps) = CouplingQuery(
     query = graphQuery { party(this@partyQueryProps) { party() } },
     toDataprops = { _, commandFunc, result ->
         PartyConfig(
-            party = result.partyData?.party?.data ?: return@CouplingQuery null,
+            party = result.party?.details?.data ?: return@CouplingQuery null,
             dispatchFunc = commandFunc,
         )
     },

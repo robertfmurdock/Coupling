@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.GlobalStats
-import com.zegreatrob.coupling.model.PartyData
+import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.party.PartyId
 import korlibs.time.TimeSpan
@@ -22,13 +22,14 @@ data class PartyInput(
     val partyId: String,
 )
 
-private fun JsonParty.toModel() = PartyData(
+private fun JsonParty.toModel() = Party(
     id = id.let(::PartyId),
-    party = details?.toModelRecord(),
+    details = details?.toModelRecord(),
+    integration = integration?.toModelRecord(),
     pinList = pinList?.map(JsonPinRecord::toModel),
     playerList = playerList?.map(JsonPlayerRecord::toModel),
-    secretList = secretList?.map(JsonSecretRecord::toModel),
     retiredPlayers = retiredPlayers?.map(JsonPlayerRecord::toModel),
+    secretList = secretList?.map(JsonSecretRecord::toModel),
     pairAssignmentDocumentList = pairAssignmentDocumentList?.map(JsonPairAssignmentDocumentRecord::toModel),
     currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
 )
@@ -36,7 +37,7 @@ private fun JsonParty.toModel() = PartyData(
 fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
     partyList = partyList?.map(JsonPartyDetailsRecord::toModelRecord),
     user = user?.toModel(),
-    partyData = party?.toModel(),
+    party = party?.toModel(),
     globalStats = globalStats?.toModel(),
 )
 
@@ -44,6 +45,7 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
 data class JsonParty(
     val id: String,
     val details: JsonPartyDetailsRecord? = null,
+    val integration: JsonIntegrationRecord? = null,
     val pinList: List<JsonPinRecord>? = null,
     val playerList: List<JsonPlayerRecord>? = null,
     val secretList: List<JsonSecretRecord>? = null,

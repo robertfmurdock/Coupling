@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
+import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
@@ -88,6 +89,10 @@ class MemoryRepositoryCatalog private constructor(
 
     override suspend fun perform(command: DeleteBoostCommand) = TODO("Not yet implemented")
     override suspend fun perform(command: SaveBoostCommand) = TODO("Not yet implemented")
+    override suspend fun perform(command: SaveSlackIntegrationCommand): VoidResult {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun perform(query: GraphQuery) = CouplingQueryResult(
         user = User(userId, "???", setOf(PartyId("Kind of fake"))),
     )

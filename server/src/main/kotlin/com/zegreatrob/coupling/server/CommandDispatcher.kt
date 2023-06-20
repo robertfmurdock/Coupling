@@ -26,6 +26,7 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignme
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSpinCommandDispatcher
+import com.zegreatrob.coupling.server.action.party.PartyIntegrationQuery
 import com.zegreatrob.coupling.server.action.party.ServerDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.action.pin.ServerDeletePinCommandDispatcher
@@ -65,6 +66,7 @@ interface ICommandDispatcher :
     PairAssignmentDocumentListQuery.Dispatcher,
     PartyDispatcher,
     PinsQuery.Dispatcher,
+    PartyIntegrationQuery.Dispatcher,
     PlayersQuery.Dispatcher,
     ReportDocCommand.Dispatcher,
     RepositoryCatalog,
@@ -117,6 +119,7 @@ class CurrentPartyDispatcher(
 ) :
     ICommandDispatcher by commandDispatcher,
     ServerSpinCommandDispatcher,
+    ServerSaveSlackIntegrationCommandDispatcher,
     ServerCreateSecretCommandDispatcher,
     ServerSavePlayerCommandDispatcher,
     ServerDeletePlayerCommandDispatcher,

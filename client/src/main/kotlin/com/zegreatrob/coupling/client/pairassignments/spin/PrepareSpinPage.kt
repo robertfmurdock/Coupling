@@ -21,10 +21,10 @@ val PrepareSpinPage = partyPageFunction { props, partyId ->
         },
         toDataprops = { _, dispatcher, result ->
             PrepareSpin(
-                party = result.partyData?.party?.data ?: return@CouplingQuery null,
-                players = result.partyData?.playerList?.elements ?: return@CouplingQuery null,
-                pins = result.partyData?.pinList?.elements ?: return@CouplingQuery null,
-                currentPairsDoc = result.partyData?.currentPairAssignmentDocument?.element,
+                party = result.party?.details?.data ?: return@CouplingQuery null,
+                players = result.party?.playerList?.elements ?: return@CouplingQuery null,
+                pins = result.party?.pinList?.elements ?: return@CouplingQuery null,
+                currentPairsDoc = result.party?.currentPairAssignmentDocument?.element,
                 dispatchFunc = dispatcher,
             )
         },

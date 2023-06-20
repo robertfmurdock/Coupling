@@ -9,6 +9,12 @@ type PartyDetails {
     callSignsEnabled: Boolean
     animationsEnabled: Boolean
     animationSpeed: Float
+    modifyingUserEmail: String
+    timestamp: String
+    isDeleted: Boolean
+}
+
+type PartyIntegration {
     slackTeam: String
     slackChannel: String
     modifyingUserEmail: String
@@ -91,6 +97,7 @@ type PartySecret {
 type Party {
     id: String!
     details: PartyDetails
+    integration: PartyIntegration
     pinList: [PinDetails]
     playerList: [PlayerDetails]
     retiredPlayers: [PlayerDetails]
@@ -151,6 +158,12 @@ input SavePinInput {
     name: String
 }
 
+input SaveSlackIntegrationInput {
+    partyId: String
+    team: String
+    channel: String
+}
+
 input SavePartyInput {
     partyId: String!
     name: String
@@ -162,8 +175,6 @@ input SavePartyInput {
     callSignsEnabled: Boolean
     animationsEnabled: Boolean
     animationSpeed: Float
-    slackTeam: String
-    slackChannel: String
 }
 
 input SavePlayerInput {
@@ -247,6 +258,7 @@ type Mutation {
     spin(input: SpinInput!): Boolean
     saveParty(input: SavePartyInput!): Boolean
     deleteParty(input: DeletePartyInput!): Boolean
+    saveSlackIntegration(input: SaveSlackIntegrationInput!): Boolean
     savePin(input: SavePinInput!): Boolean
     deletePin(input: DeletePinInput!): Boolean
     savePlayer(input: SavePlayerInput!): Boolean

@@ -21,9 +21,10 @@ data class SavePartyInput(
 )
 
 @Serializable
-data class SavePartyIntegrationInput(
-    val slackTeam: String?,
-    val slackChannel: String?,
+data class SaveSlackIntegrationInput(
+    val partyId: String,
+    val team: String,
+    val channel: String,
 )
 
 @Serializable

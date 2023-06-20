@@ -17,8 +17,8 @@ val RetiredPlayersPage = partyPageFunction { props, partyId ->
         },
         toDataprops = { _, _, result ->
             RetiredPlayers(
-                party = result.partyData?.party?.data ?: return@CouplingQuery null,
-                retiredPlayers = result.partyData?.retiredPlayers?.elements ?: return@CouplingQuery null,
+                party = result.party?.details?.data ?: return@CouplingQuery null,
+                retiredPlayers = result.party?.retiredPlayers?.elements ?: return@CouplingQuery null,
             )
         },
     ).create(key = partyId.value)

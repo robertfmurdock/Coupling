@@ -37,15 +37,15 @@ class SdkSecretTest {
         secret.assertIsNotEqualTo(null)
         token.assertIsValidToken(party.id)
         sdk().perform(graphQuery { party(party.id) { secretList() } })
-            ?.partyData
+            ?.party
             ?.secretList
             ?.elements
             .assertIsEqualTo(listOf(secret))
 
         val tokenSdk = KtorCouplingSdk({ token }, uuid4(), buildClient())
         tokenSdk.perform(graphQuery { party(party.id) { party() } })
-            ?.partyData
             ?.party
+            ?.details
             ?.data
             .assertIsEqualTo(party)
     }
@@ -64,7 +64,7 @@ class SdkSecretTest {
         sdk().perform(DeleteSecretCommand(party.id, secret))
     } verify {
         sdk().perform(graphQuery { party(party.id) { secretList() } })
-            ?.partyData
+            ?.party
             ?.secretList
             ?.elements
             .assertIsEqualTo(emptyList())
@@ -98,7 +98,7 @@ class SdkSecretTest {
             ?.partyList
             ?.data()
             .assertIsEqualTo(listOf(party1))
-        queryResult?.partyData
+        queryResult?.party
             .assertIsEqualTo(null)
     }
 
