@@ -8,7 +8,7 @@ features:
     always_online: false
   slash_commands:
     - command: /coupling-sandbox
-      url: https://sandbox.coupling.zegreatrob.com/api/slack
+      url: https://sandbox.coupling.zegreatrob.com/api/integration/slack/command
       description: Operates Coupling
       should_escape: false
 oauth_config:

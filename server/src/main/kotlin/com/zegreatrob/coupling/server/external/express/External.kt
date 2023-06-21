@@ -13,7 +13,7 @@ external interface Express {
     fun all(path: String, function: Handler)
     fun use(path: String, router: Router)
     fun use(path: String, function: Handler)
-    fun post(path: String, vararg handlers: Handler)
+    fun post(path: String, function: Handler)
 }
 
 typealias Handler = (Request, Response, Next) -> Unit
