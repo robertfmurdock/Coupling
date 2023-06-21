@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.ConfigFrame
 import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.GqlButton
 import com.zegreatrob.coupling.client.components.LogoutButton
+import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.party.CouplingLogo
 import com.zegreatrob.coupling.client.party.GeneralControlBar
@@ -29,13 +30,13 @@ import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
 import react.useMemo
 import web.cssom.Color
+import web.html.InputType
 
 val SlackConnectPage by nfc<PageProps> { props ->
     +CouplingQuery(
         commander = props.commander,
         query = graphQuery { partyList() },
         toDataprops = { _, _, result ->
-            println("query response is $result")
             SlackConnectContent(
                 result.partyList?.map(Record<PartyDetails>::data) ?: emptyList(),
             )
@@ -63,6 +64,8 @@ val slackConnectContent: FC<DataPropsBridge> by ntmFC<SlackConnectContent> { (pa
 
         val partySelectId = useMemo { "${uuid4()}" }
         ConfigForm {
+            onSubmit = {}
+
             div {
                 Editor {
                     li {
@@ -73,7 +76,7 @@ val slackConnectContent: FC<DataPropsBridge> by ntmFC<SlackConnectContent> { (pa
                         select {
                             id = partySelectId
                             name = "party"
-                            value = null
+                            value = ""
                             onChange = { }
                             parties.map { party ->
                                 val partyName = party.name
@@ -90,6 +93,26 @@ val slackConnectContent: FC<DataPropsBridge> by ntmFC<SlackConnectContent> { (pa
                         span {
                             +"Which party would you like to connect to a Slack channel?"
                         }
+                    }
+                    li {
+                        configInput(
+                            labelText = "Slack Team ID",
+                            id = "slack-team-id",
+                            name = "slackTeam",
+                            value = "",
+                            type = InputType.text,
+                            onChange = {},
+                        )
+                    }
+                    li {
+                        configInput(
+                            labelText = "Slack Channel ID",
+                            id = "slack-channel-id",
+                            name = "slackChannel",
+                            value = "",
+                            type = InputType.text,
+                            onChange = {},
+                        )
                     }
                 }
             }
