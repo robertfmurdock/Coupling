@@ -3,7 +3,7 @@
     "@auth0/auth0-react": "2.1.1",
     "@aws-sdk/client-apigatewaymanagementapi": "~3.354.0",
     "@aws-sdk/client-dynamodb": "3.354.0",
-    "@aws-sdk/client-lambda": "~3.354.0",
+    "@aws-sdk/client-lambda": "~3.356.0",
     "@aws-sdk/lib-dynamodb": "3.354.0",
     "@graphql-tools/schema": "^10.0.0",
     "@graphql-tools/stitch": "^9.0.0",
