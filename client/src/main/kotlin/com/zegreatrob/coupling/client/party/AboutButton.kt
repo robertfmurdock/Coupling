@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.party
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.orange
+import com.zegreatrob.coupling.client.components.party.CouplingLogo
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
