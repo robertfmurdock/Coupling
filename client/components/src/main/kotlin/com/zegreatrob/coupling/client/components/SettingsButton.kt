@@ -14,9 +14,9 @@ fun ChildrenBuilder.settingsButton(party: PartyDetails, className: ClassName = C
     tabIndex = -1
     draggable = false
     add(
-        com.zegreatrob.coupling.client.components.CouplingButton(
-            com.zegreatrob.coupling.client.components.large,
-            com.zegreatrob.coupling.client.components.black,
+        CouplingButton(
+            large,
+            black,
             className,
         ) {
             fontSize = 24.px

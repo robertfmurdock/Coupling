@@ -20,6 +20,7 @@ import com.zegreatrob.coupling.client.player.PlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayersPage
 import com.zegreatrob.coupling.client.slack.SlackCallbackPage
+import com.zegreatrob.coupling.client.slack.SlackConnectPage
 import com.zegreatrob.coupling.client.stats.StatisticsPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
@@ -109,6 +110,7 @@ private fun authenticatedRoutes(config: ClientConfig): Array<RouteObject> = list
     couplingRoute("Retired Player List", "/:partyId/players/retired", RetiredPlayersPage),
     couplingRoute("Statistics", "/:partyId/statistics", StatisticsPage),
     couplingRoute("Incubating", "/incubating", IncubatingPage),
+    couplingRoute("SlackCallback", "/integration/slack/connect", SlackConnectPage),
     couplingRoute("SlackCallback", "/integration/slack/callback", SlackCallbackPage),
 ).toTypedArray()
 
