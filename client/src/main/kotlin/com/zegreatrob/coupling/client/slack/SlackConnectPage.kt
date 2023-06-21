@@ -10,6 +10,9 @@ import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.nfc
 
 val SlackConnectPage by nfc<PageProps> { props ->
+    val slackTeam = props.search["slackTeam"] ?: ""
+    val slackChannel = props.search["slackChannel"] ?: ""
+
     SlackConnectPageFrame {
         +CouplingQuery(
             commander = props.commander,
@@ -17,8 +20,8 @@ val SlackConnectPage by nfc<PageProps> { props ->
             toDataprops = { _, dispatch, result ->
                 SlackConnectPageContent(
                     parties = result.partyList?.map(Record<PartyDetails>::data) ?: emptyList(),
-                    slackTeam = "",
-                    slackChannel = "",
+                    slackTeam = slackTeam,
+                    slackChannel = slackChannel,
                     dispatchFunc = dispatch,
                 )
             },

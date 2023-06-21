@@ -5,13 +5,13 @@ import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.client.components.ConfigForm
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Editor
-import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.ntmFC
 import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
@@ -57,11 +57,7 @@ val slackConnectPageContent by ntmFC<SlackConnectPageContent> { props ->
                         id = partySelectId
                         name = "party"
                         value = command.partyId.value
-                        onChange = {
-                            println("change")
-                            command = command.copy(partyId = PartyId(it.target.value))
-                            println("command is now $command")
-                        }
+                        onChange = { command = command.copy(partyId = PartyId(it.target.value)) }
                         props.parties.map { party ->
                             val partyName = party.name
                             option {
@@ -79,24 +75,36 @@ val slackConnectPageContent by ntmFC<SlackConnectPageContent> { props ->
                     }
                 }
                 li {
-                    configInput(
-                        labelText = "Slack Team ID",
-                        id = "slack-team-id",
-                        name = "slackTeam",
-                        value = "",
-                        type = InputType.text,
-                        onChange = {},
-                    )
+                    label { this.htmlFor = "slack-team-id"; +"Slack Team ID" }
+                    input {
+                        value = props.slackTeam
+                        ariaLabel = "Slack Team ID"
+                        this.name = "slackTeam"
+                        id = "slack-team-id"
+                        this.type = InputType.text
+                        disabled = true
+                        placeholder = ""
+                        this.list = ""
+                        this.checked = false
+                        this.onChange = { }
+                        autoFocus = false
+                    }
                 }
                 li {
-                    configInput(
-                        labelText = "Slack Channel ID",
-                        id = "slack-channel-id",
-                        name = "slackChannel",
-                        value = "",
-                        type = InputType.text,
-                        onChange = {},
-                    )
+                    label { this.htmlFor = "slack-channel-id"; +"Slack Channel ID" }
+                    input {
+                        value = props.slackChannel
+                        ariaLabel = "Slack Channel ID"
+                        this.name = "slackChannel"
+                        id = "slack-channel-id"
+                        this.type = InputType.text
+                        placeholder = ""
+                        this.list = ""
+                        this.checked = false
+                        this.onChange = { }
+                        autoFocus = false
+                        disabled = true
+                    }
                 }
             }
         }
