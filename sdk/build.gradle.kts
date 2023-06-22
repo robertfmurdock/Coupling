@@ -41,6 +41,7 @@ dependencies {
     "commonTestImplementation"("org.jetbrains.kotlin:kotlin-test")
 
     "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    "jsTestImplementation"(project(":server:slack"))
     "jvmTestImplementation"("io.ktor:ktor-client-java")
 }
 

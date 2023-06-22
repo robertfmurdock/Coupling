@@ -23,4 +23,4 @@ external interface RouterParams {
 }
 
 external fun static(path: String, options: Json): Handler
-external fun raw(): Handler
+external fun raw(json: Json): Handler

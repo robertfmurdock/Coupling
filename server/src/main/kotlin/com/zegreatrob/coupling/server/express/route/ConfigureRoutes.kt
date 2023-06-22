@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.server.express.route
 
+import com.zegreatrob.coupling.server.external.bodyparser.bodyParserJson
+import com.zegreatrob.coupling.server.external.bodyparser.urlencoded
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.graphql.graphqlHTTP
 import com.zegreatrob.coupling.server.external.express.raw
@@ -9,6 +11,7 @@ import com.zegreatrob.coupling.server.slack.slackRedirectUri
 import com.zegreatrob.coupling.server.slack.slackRequestVerifier
 import js.core.jso
 import node.buffer.Buffer
+import node.buffer.BufferEncoding
 import kotlin.js.json
 
 fun Express.routes() {
@@ -23,15 +26,14 @@ fun Express.routes() {
             },
         ).then(response::send)
     }
-    post("/api/integration/slack/command", raw())
-    post("/api/integration/slack/command") { request, response, _ ->
+    post("/api/integration/slack/command", raw(json("type" to "*/*")), { request, response, _ ->
         val timestamp = request.get("X-Slack-Request-Timestamp")?.toIntOrNull()
         val signature = request.get("X-Slack-Signature")
         val body = request.body as? Buffer
         if (timestamp != null && body != null) {
-            val expectedSignature = slackRequestVerifier.signature(timestamp, body.toString())
+            val bodyString = body.toString(encoding = BufferEncoding.utf8)
+            val expectedSignature = slackRequestVerifier.signature(timestamp, bodyString)
             if (expectedSignature != signature) {
-                response.send("bad signature")
                 response.sendStatus(400)
             } else {
                 response.send(200)
@@ -39,8 +41,10 @@ fun Express.routes() {
         } else {
             response.sendStatus(400)
         }
-    }
+    })
     all("/api/*", apiGuard())
+    use("/api/graphql", urlencoded(json("extended" to true)))
+    use("/api/graphql", bodyParserJson())
     use("/api/graphql", graphqlHTTP(json("schema" to unifiedSchema())))
     get("*", indexRoute())
 }

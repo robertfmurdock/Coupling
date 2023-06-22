@@ -9,6 +9,6 @@
   "SECRET_SIGNING_SECRET": "temporary",
   "SLACK_CLIENT_ID": "fake",
   "SLACK_CLIENT_SECRET": "fake",
-  "WEBSOCKET_HOST": "socket.local",
-  "SLACK_SIGNING_SECRET": ""
+  "SLACK_SIGNING_SECRET": "fake",
+  "WEBSOCKET_HOST": "socket.local"
 }
