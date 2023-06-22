@@ -5,7 +5,7 @@ data class AuthHookData(
     val authenticated: Boolean,
     val loading: Boolean,
     val error: Throwable?,
-    val loginWithRedirect: () -> Unit,
+    val loginWithRedirect: (RedirectLoginOptions) -> Unit,
     val getIdTokenClaims: suspend () -> String,
     val logout: (Auth0LogoutStructure) -> Unit,
     val getAccessTokenSilently: suspend () -> String,

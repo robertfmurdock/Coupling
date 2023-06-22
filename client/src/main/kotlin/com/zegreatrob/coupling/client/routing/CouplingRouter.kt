@@ -29,6 +29,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.minreact.ntmFC
 import js.core.jso
+import react.FC
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
@@ -39,6 +40,7 @@ import react.router.dom.createBrowserRouter
 import react.router.useLocation
 import react.router.useParams
 import react.useMemo
+import web.url.URLSearchParams
 
 data class CouplingRouter(val animationsDisabled: Boolean, val config: ClientConfig) :
     DataPropsBind<CouplingRouter>(couplingRouter)
@@ -76,7 +78,13 @@ private fun routes(isSignedIn: Boolean, config: ClientConfig) = (
 
 private fun redirectUnauthenticated(): RouteObject = jso {
     path = "*"
-    element = Navigate.create { to = "/welcome" }
+    element = RedirectUnauthenticated.create()
+}
+
+val RedirectUnauthenticated = FC<Props> {
+    val location = useLocation()
+    val params = URLSearchParams(arrayOf()).apply { append("path", location.pathname) }
+    Navigate { to = "/welcome?$params" }
 }
 
 val lostRoute by nfc<Props> {

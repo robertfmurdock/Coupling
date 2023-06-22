@@ -43,7 +43,7 @@ val CouplingRoute by nfc<CouplingRouteProps> { props ->
         search = searchParams
         commander = MasterCommander {
             runCatching { auth0Data.getAccessTokenSilently() }
-                .onFailure { auth0Data.loginWithRedirect() }
+                .onFailure { auth0Data.loginWithRedirect(jso()) }
                 .getOrThrow()
         }
     }

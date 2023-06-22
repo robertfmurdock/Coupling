@@ -9,8 +9,10 @@ import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.core.jso
 import react.Props
 import react.dom.html.ReactHTML.div
+import react.router.dom.useSearchParams
 import web.cssom.BackgroundRepeat
 import web.cssom.Border
 import web.cssom.BoxShadow
@@ -28,10 +30,15 @@ import web.cssom.TextAlign
 import web.cssom.px
 import web.cssom.rgb
 import web.cssom.url
+import web.window.window
 
 val LoginChooser by nfc<Props> {
     val auth0Data = useAuth0Data()
-    val signInFunc = { auth0Data.loginWithRedirect() }
+    val (params) = useSearchParams()
+    val returnPath = params["path"] ?: ""
+    val signInFunc = {
+        auth0Data.loginWithRedirect(jso { appState = jso { returnTo = "${window.asDynamic()["basename"]}$returnPath" } })
+    }
     div {
         css {
             borderRadius = 82.px

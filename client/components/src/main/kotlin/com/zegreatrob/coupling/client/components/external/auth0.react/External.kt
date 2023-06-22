@@ -29,7 +29,7 @@ external interface Auth0AuthorizationParams {
 external fun useAuth0(): Auth0Hook
 
 external interface Auth0Hook {
-    fun loginWithRedirect()
+    fun loginWithRedirect(options: RedirectLoginOptions = definedExternally)
     val user: Auth0User?
     val isLoading: Boolean?
     val isAuthenticated: Boolean?
@@ -37,6 +37,14 @@ external interface Auth0Hook {
     fun getAccessTokenSilently(options: Json): Promise<String>
     fun getIdTokenClaims(): Promise<Json>
     fun logout(json: Auth0LogoutStructure = definedExternally)
+}
+
+external interface RedirectLoginOptions {
+    var appState: TAppState
+}
+
+external interface TAppState {
+    var returnTo: String
 }
 
 external interface Auth0LogoutStructure {
