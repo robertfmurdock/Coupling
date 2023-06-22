@@ -89,7 +89,7 @@ fun buildClient(): HttpClient {
             logger = object : Logger {
                 override fun log(message: String) = ktorLogger.info { message }
             }
-            level = LogLevel.BODY
+            level = LogLevel.ALL
         }
     }
     return client
