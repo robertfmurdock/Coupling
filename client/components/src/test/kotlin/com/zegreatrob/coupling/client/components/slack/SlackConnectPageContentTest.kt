@@ -104,7 +104,7 @@ class SlackConnectPageContentTest {
                             ).create()
                         },
                         jso {
-                            path = "/${party.id.value}"
+                            path = "/${party.id.value}/pairAssignments/current/"
                             element = ReactNode("Party Time")
                         },
                     ),

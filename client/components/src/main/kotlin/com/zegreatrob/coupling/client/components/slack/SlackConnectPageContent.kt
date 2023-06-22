@@ -7,7 +7,9 @@ import com.zegreatrob.coupling.client.components.ConfigForm
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Editor
+import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.components.large
+import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.orange
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
@@ -117,8 +119,9 @@ val slackConnectPageContent by ntmFC<SlackConnectPageContent> { props ->
             }
         }
     } else {
+        Markdown { +loadMarkdownString("ConnectSuccess") }
         Link {
-            to = "/${command.partyId.value}"
+            to = "/${command.partyId.value}/pairAssignments/current/"
             draggable = false
             add(CouplingButton(large, orange)) {
                 +"Return to Coupling"
