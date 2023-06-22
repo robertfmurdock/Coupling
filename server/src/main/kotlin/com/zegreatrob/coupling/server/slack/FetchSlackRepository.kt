@@ -35,6 +35,8 @@ class FetchSlackRepository : SlackRepository {
                         ?: return SlackGrantAccess.Result.Unknown(Exception("Missing access token")),
                     appId = appId ?: "",
                     slackUserId = authedUser?.id ?: "",
+                    slackBotUserId = botUserId
+                        ?: return SlackGrantAccess.Result.Unknown(Exception("Missing bot user")),
                 ),
             )
     }
@@ -72,10 +74,9 @@ class FetchSlackRepository : SlackRepository {
             throw Exception("Conversation History error: " + conversationHistory.error)
         }
 
-        val messageToUpdate = conversationHistory.messages
+        return conversationHistory.messages
             ?.minByOrNull { abs(pairTimestamp - it.ts.toDouble()) }
             ?.ts
-        return messageToUpdate
     }
 
     override suspend fun deleteSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {

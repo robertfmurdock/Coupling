@@ -19,6 +19,7 @@ class DynamoSlackRepositoryTest {
             accessToken = uuidString(),
             appId = uuidString(),
             slackUserId = uuidString(),
+            slackBotUserId = uuidString(),
         )
         lateinit var repository: DynamoSlackRepository
         val userEmail = uuidString()

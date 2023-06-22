@@ -2,6 +2,15 @@ display_information:
   name: Coupling
   description: An app to track your pairing.
   background_color: "#000000"
+  long_description: "Coupling helps your team pair, by making it big and visible who's working with whom, as well as showing how long its been since specific people have worked together.\r
+
+    \r
+
+    This Slack integration will push that information into a channel of your choice. It updates as you make adjustments, and will even remove invalid entries when you delete them.\r
+
+    \r
+
+    If you like to pair, try it out!"
 features:
   bot_user:
     display_name: Coupling
@@ -20,7 +29,6 @@ oauth_config:
       - chat:write
       - chat:write.customize
       - commands
-      - incoming-webhook
       - groups:history
 settings:
   interactivity:

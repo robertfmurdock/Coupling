@@ -55,6 +55,7 @@ class DynamoSlackRepository private constructor(override val userId: String, ove
         "accessToken" to accessToken,
         "appId" to appId,
         "slackUserId" to slackUserId,
+        "slackBotUserId" to slackBotUserId,
     )
 }
 
@@ -63,4 +64,5 @@ private fun Json.toDomain(): SlackTeamAccess = SlackTeamAccess(
     accessToken = this["accessToken"].toString(),
     appId = this["appId"].toString(),
     slackUserId = this["slackUserId"].toString(),
+    slackBotUserId = this["slackBotUserId"].toString(),
 )

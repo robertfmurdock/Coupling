@@ -141,6 +141,8 @@ data class AccessResponse(
     val ok: Boolean? = null,
     val error: String? = null,
     val team: AccessResponseTeam? = null,
+    @SerialName("bot_user_id")
+    val botUserId: String? = null,
     @SerialName("authed_user")
     val authedUser: AuthedUser? = null,
     @SerialName("access_token")

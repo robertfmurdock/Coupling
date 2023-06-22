@@ -39,7 +39,22 @@ private fun connectMessage(slackTeam: String, slackChannel: String) = json(
             "type" to "section",
             "text" to json(
                 "type" to "mrkdwn",
-                "text" to "Click the button and follow the instructions in Coupling to connect your Party to this channel.",
+                "text" to "First, invite the coupling bot to your preferred channel. Simply type `/invite @coupling`, or select it from the dropdown on the right.",
+            ),
+            "accessory" to json(
+                "type" to "conversations_select",
+                "placeholder" to json(
+                    "type" to "plain_text",
+                    "text" to "Select a channel...",
+                    "emoji" to true,
+                ),
+            ),
+        ),
+        json(
+            "type" to "section",
+            "text" to json(
+                "type" to "mrkdwn",
+                "text" to "Then, click the button to connect your Coupling party by following the instructions over there.",
             ),
             "accessory" to json(
                 "type" to "button",
