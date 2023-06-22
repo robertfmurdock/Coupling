@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.server.external.express.Handler
 import node.buffer.Buffer
 import node.buffer.BufferEncoding
 import node.url.URLSearchParams
+import kotlin.js.Json
 import kotlin.js.json
 
 fun slackCommandResponse(): Handler = { request, response, _ ->
@@ -13,8 +14,15 @@ fun slackCommandResponse(): Handler = { request, response, _ ->
 
     val slackTeam = params["team_id"] ?: ""
     val slackChannel = params["channel_id"] ?: ""
+    val text = params["text"] ?: ""
 
-    response.send(connectMessage(slackTeam, slackChannel))
+    response.send(
+        when (text) {
+            "connect" -> connectMessage(slackTeam, slackChannel)
+            "help" -> helpMessage()
+            else -> helpMessage()
+        },
+    )
 }
 
 private fun connectMessage(slackTeam: String, slackChannel: String) = json(
@@ -46,6 +54,54 @@ private fun connectMessage(slackTeam: String, slackChannel: String) = json(
         ),
     ),
 )
+
+private fun helpMessage(): Json {
+    val connectDescription = """
+        *connect*
+        This connects the current Slack channel to a Coupling party, so that when a new spin occurs a message is sent to the channel.
+
+            /coupling connect
+    """.trimIndent()
+    val helpDescription = """
+        *help*
+        This tells you what you can do with the Coupling Slack app.
+
+            /coupling help
+    """.trimIndent()
+    return json(
+        "blocks" to arrayOf(
+            json(
+                "type" to "header",
+                "text" to json(
+                    "type" to "plain_text",
+                    "text" to "Coupling Slack Help",
+                    "emoji" to true,
+                ),
+            ),
+            json(
+                "type" to "section",
+                "text" to json(
+                    "type" to "mrkdwn",
+                    "text" to "There are a few things you can do with Coupling through slack.",
+                ),
+            ),
+            json(
+                "type" to "section",
+                "text" to json(
+                    "type" to "mrkdwn",
+                    "text" to connectDescription,
+                ),
+            ),
+            json(
+                "type" to "section",
+                "text" to json(
+                    "type" to "mrkdwn",
+                    "text" to helpDescription,
+                ),
+            ),
+        ),
+    )
+}
 
 private fun connectUrl(slackTeam: String, slackChannel: String): String {
     val targetParams = URLSearchParams(emptyArray()).apply {
