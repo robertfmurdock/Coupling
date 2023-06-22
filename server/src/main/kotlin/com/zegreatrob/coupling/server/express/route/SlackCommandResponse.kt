@@ -29,13 +29,19 @@ private fun connectMessage(slackTeam: String, slackChannel: String) = json(
         ),
         json(
             "type" to "section",
-            "fields" to arrayOf(
-                json(
-                    "type" to "button",
+            "text" to json(
+                "type" to "mrkdwn",
+                "text" to "Click the button to connect your Party to this channel.",
+            ),
+            "accessory" to json(
+                "type" to "button",
+                "text" to json(
+                    "type" to "plain_text",
                     "text" to "Click here!",
-                    "value" to "connect_link",
-                    "url" to connectUrl(slackTeam, slackChannel),
+                    "emoji" to true,
                 ),
+                "value" to "connect_link",
+                "url" to connectUrl(slackTeam, slackChannel),
             ),
         ),
     ),
