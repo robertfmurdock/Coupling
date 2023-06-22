@@ -14,16 +14,18 @@ features:
 oauth_config:
   redirect_urls:
     - https://coupling.zegreatrob.com/integration/slack/callback
-    - https://localhost/local/integration/slack/callback
   scopes:
     bot:
       - channels:history
-      - groups:history
-      - chat:write.customize
       - chat:write
+      - chat:write.customize
       - commands
       - incoming-webhook
+      - groups:history
 settings:
+  interactivity:
+    is_enabled: true
+    request_url: https://coupling.zegreatrob.com/api/integration/slack/command
   org_deploy_enabled: false
   socket_mode_enabled: false
   token_rotation_enabled: false

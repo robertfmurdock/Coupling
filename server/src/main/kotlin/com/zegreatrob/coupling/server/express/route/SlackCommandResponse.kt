@@ -31,7 +31,7 @@ private fun connectMessage(slackTeam: String, slackChannel: String) = json(
             "type" to "section",
             "text" to json(
                 "type" to "mrkdwn",
-                "text" to "Click the button to connect your Party to this channel.",
+                "text" to "Click the button and follow the instructions in Coupling to connect your Party to this channel.",
             ),
             "accessory" to json(
                 "type" to "button",
