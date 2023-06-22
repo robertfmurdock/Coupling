@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.player
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.StubDispatchFunc
@@ -150,7 +151,7 @@ class PlayerConfigTest {
         actor.type(screen.getByLabelText("Name"), "nonsense")
 
         fireEvent.submit(screen.getByRole("form"))
-        act { stubDispatcher.simulateSuccess<SavePlayerCommand>() }
+        act { stubDispatcher.sendResult<SavePlayerCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePlayerCommand>()
@@ -191,7 +192,7 @@ class PlayerConfigTest {
         )
     } exercise {
         actor.click(screen.getByText("Retire"))
-        act { stubDispatcher.simulateSuccess<DeletePlayerCommand>() }
+        act { stubDispatcher.sendResult<DeletePlayerCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<DeletePlayerCommand>()

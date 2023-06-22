@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.StubDispatcher
@@ -46,7 +47,7 @@ class PairAssignmentRowTest {
     } exercise {
         actor.click(screen.getByText("DELETE"))
 
-        stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>()
+        stubDispatcher.sendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted)
     } verify {
         stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
             .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, document.id)))

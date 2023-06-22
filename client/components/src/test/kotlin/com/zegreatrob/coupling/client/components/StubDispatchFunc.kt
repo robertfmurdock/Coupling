@@ -7,11 +7,19 @@ class StubDispatcher {
 
     fun <D> func() = StubDispatchFunc<D>(this)
 
-    private fun <C, R> commandFunctionsDispatched() = dispatchList.filterIsInstance<DispatchedFunc<C, R>>()
+    fun <C, R> sendResult(result: R) where C : SuspendAction<*, R> {
+        commandFunctionsDispatched<C, _, _>()
+            .firstOrNull()
+            ?.responseFunc
+            ?.invoke(result)
+    }
+
+    fun <C, D, R> commandFunctionsDispatched() where C : SuspendAction<D, R> =
+        dispatchList.filterIsInstance<DispatchedFunc<C, R>>()
 
     inline fun <reified C> commandsDispatched() = dispatchList.map { it.command }.filterIsInstance<C>()
 
-    fun <C> simulateSuccess() = commandFunctionsDispatched<C, Unit>().map {
+    fun <C, D> sendResult() where C : SuspendAction<D, Unit> = commandFunctionsDispatched<C, _, Unit>().map {
         it.responseFunc(Unit)
     }
 }

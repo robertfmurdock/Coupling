@@ -1,8 +1,13 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.components.green
+import com.zegreatrob.coupling.client.components.red
+import com.zegreatrob.coupling.client.components.small
+import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -144,9 +149,9 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
 }
 
 private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = add(
-    com.zegreatrob.coupling.client.components.CouplingButton(
-        sizeRuleSet = com.zegreatrob.coupling.client.components.supersize,
-        colorRuleSet = com.zegreatrob.coupling.client.components.green,
+    CouplingButton(
+        sizeRuleSet = supersize,
+        colorRuleSet = green,
         onClick = onSave,
         css = { margin = 4.px },
     ),
@@ -155,9 +160,9 @@ private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = add(
 }
 
 private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) = add(
-    com.zegreatrob.coupling.client.components.CouplingButton(
-        sizeRuleSet = com.zegreatrob.coupling.client.components.small,
-        colorRuleSet = com.zegreatrob.coupling.client.components.red,
+    CouplingButton(
+        sizeRuleSet = small,
+        colorRuleSet = red,
         onClick = onCancel,
     ),
 ) {

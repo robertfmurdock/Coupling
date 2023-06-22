@@ -2,11 +2,14 @@ package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
+import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PairAssignmentBlock
 import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.pin.PinSection
 import com.zegreatrob.coupling.client.components.pngPath
+import com.zegreatrob.coupling.client.components.red
+import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -77,9 +80,9 @@ private val pairAssignmentRow by ntmFC<PairAssignmentRow> { (party, document, co
 }
 
 private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = add(
-    com.zegreatrob.coupling.client.components.CouplingButton(
-        sizeRuleSet = com.zegreatrob.coupling.client.components.small,
-        colorRuleSet = com.zegreatrob.coupling.client.components.red,
+    CouplingButton(
+        sizeRuleSet = small,
+        colorRuleSet = red,
         onClick = onClickFunc,
     ),
 ) {

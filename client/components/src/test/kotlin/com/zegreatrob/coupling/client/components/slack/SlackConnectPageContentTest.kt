@@ -1,22 +1,34 @@
 package com.zegreatrob.coupling.client.components.slack
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.stubmodel.stubParties
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
+import js.core.jso
+import react.ReactNode
+import react.create
+import react.router.MemoryRouter
+import react.router.RouterProvider
+import react.router.createMemoryRouter
 import kotlin.test.Test
 
 class SlackConnectPageContentTest {
 
-    private val saveButton get() = TestingLibraryReact.screen.getByRole("button", RoleOptions(name = "Save"))
-    private val partySelect get() = TestingLibraryReact.screen.getByLabelText("Party")
+    private val saveButton get() = screen.getByRole("button", RoleOptions(name = "Save"))
+    private val returnButton get() = screen.queryByRole("button", RoleOptions(name = "Return to Coupling"))
+    private val partySelect get() = screen.getByLabelText("Party")
 
     @Test
     fun willSendSaveCommandOnSave() = asyncSetup(object {
@@ -34,10 +46,14 @@ class SlackConnectPageContentTest {
                 slackChannel = slackChannel,
                 dispatchFunc = stubber.func(),
             ).create {},
+            jso { wrapper = MemoryRouter },
         )
         actor.selectOptions(partySelect, targetParty.id.value)
+        returnButton
+            .assertIsEqualTo(null, "Return button showed up unexpectedly early")
     } exercise {
         actor.click(saveButton)
+        act { stubber.sendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
     } verify {
         stubber.commandsDispatched<SaveSlackIntegrationCommand>()
             .assertIsEqualTo(
@@ -49,5 +65,58 @@ class SlackConnectPageContentTest {
                     ),
                 ),
             )
+        waitFor { returnButton.assertIsNotEqualTo(null) }
+    }
+
+    @Test
+    fun willNotShowReturnImmediately() = asyncSetup(object {
+    }) exercise {
+        render(
+            SlackConnectPageContent(
+                parties = stubParties(2),
+                slackTeam = uuidString(),
+                slackChannel = uuidString(),
+                dispatchFunc = StubDispatcher().func(),
+            ).create {},
+        )
+    } verify {
+        returnButton
+            .assertIsEqualTo(null, "Return button showed up unexpectedly early")
+    }
+
+    @Test
+    fun afterSaveReturnButtonTakesYouToParty() = asyncSetup(object {
+        val actor = UserEvent.setup()
+        val party = stubPartyDetails()
+        val stubDispatcher = StubDispatcher()
+    }) {
+        render(
+            RouterProvider.create {
+                router = createMemoryRouter(
+                    arrayOf(
+                        jso {
+                            path = "*"
+                            element = SlackConnectPageContent(
+                                parties = listOf(party),
+                                slackTeam = uuidString(),
+                                slackChannel = uuidString(),
+                                dispatchFunc = stubDispatcher.func(),
+                            ).create()
+                        },
+                        jso {
+                            path = "/${party.id.value}"
+                            element = ReactNode("Party Time")
+                        },
+                    ),
+                )
+            },
+        )
+        actor.click(saveButton)
+        act { stubDispatcher.sendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
+    } exercise {
+        actor.click(returnButton)
+    } verify {
+        screen.getByText("Party Time")
+            .assertIsNotEqualTo(null, "Didn't end up at party page")
     }
 }

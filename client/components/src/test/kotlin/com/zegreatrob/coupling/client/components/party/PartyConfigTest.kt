@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.party
 
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.client.components.StubDispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
@@ -86,7 +87,7 @@ class PartyConfigTest {
         )
     } exercise {
         fireEvent.submit(screen.getByRole("form"))
-        act { stubDispatcher.simulateSuccess<SavePartyCommand>() }
+        act { stubDispatcher.sendResult<SavePartyCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePartyCommand>()

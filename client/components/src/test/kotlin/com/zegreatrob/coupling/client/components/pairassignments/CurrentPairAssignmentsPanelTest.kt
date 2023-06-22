@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.StubDispatchFunc
@@ -74,7 +75,7 @@ class CurrentPairAssignmentsPanelTest {
         )
     } exercise {
         actor.click(screen.getByText("Save!"))
-        stubDispatcher.simulateSuccess<SavePairAssignmentsCommand>()
+        stubDispatcher.sendResult<SavePairAssignmentsCommand, _>(VoidResult.Accepted)
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePairAssignmentsCommand>().size
@@ -116,7 +117,7 @@ class CurrentPairAssignmentsPanelTest {
         )
     } exercise {
         actor.click(screen.findByText("Cancel"))
-        act { stubDispatcher.simulateSuccess<DeletePairAssignmentsCommand>() }
+        act { stubDispatcher.sendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
