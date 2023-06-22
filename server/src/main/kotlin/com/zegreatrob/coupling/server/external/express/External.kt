@@ -13,6 +13,7 @@ external interface Express {
     fun all(path: String, function: Handler)
     fun use(path: String, router: Router)
     fun use(path: String, function: Handler)
+    fun use(path: String, vararg function: Handler)
     fun post(path: String, vararg functions: Handler)
 }
 
