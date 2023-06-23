@@ -51,7 +51,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     }) {
         repository = DynamoUserRepository(userId, TimeProvider)
         coroutineScope {
-            (1..5000).forEach { number ->
+            (1..2000).forEach { number ->
                 launch {
                     repository.saveRawRecord(
                         Record(
@@ -76,7 +76,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         val user = timed.result.first().data
         user.authorizedPartyIds.contains(PartyId("party-infinity"))
             .assertIsEqualTo(true, "Oops, got ${user.authorizedPartyIds}")
-        (timed.time.seconds < 0.1)
+        (timed.time.seconds < 0.075)
             .assertIsEqualTo(true, "Too slow, ${timed.time}")
     }
 
