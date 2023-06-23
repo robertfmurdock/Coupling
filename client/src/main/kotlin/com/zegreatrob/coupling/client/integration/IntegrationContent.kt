@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.integrations.slackChannel
 import com.zegreatrob.coupling.client.components.integrations.slackTeam
+import com.zegreatrob.coupling.client.incubating.AddToSlackButton
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.minreact.DataPropsBind
@@ -21,7 +22,7 @@ val integrationContent by ntmFC<IntegrationContent> { (party, integrations) ->
             this.party = party
             +"Integrations!"
         }
-        h2 { +"Anything turned on will show up here!" }
+        h2 { +"Any integrations enabled for this party will show up here!" }
 
         if (integrations != null) {
             Editor {
@@ -32,5 +33,9 @@ val integrationContent by ntmFC<IntegrationContent> { (party, integrations) ->
         } else {
             +"Looks like this party doesn't have any integrations currently."
         }
+
+        h2 { +"Want to add an integration?" }
+
+        div { AddToSlackButton { url = "" } }
     }
 }
