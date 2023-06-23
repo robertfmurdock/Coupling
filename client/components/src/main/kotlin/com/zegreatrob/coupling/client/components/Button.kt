@@ -170,9 +170,7 @@ val couplingButton by ntmFC<CouplingButton> { props ->
         block(this)
 
         css(className, ClassName("button")) {
-            "*" {
-                verticalAlign = VerticalAlign.middle
-            }
+            "*" { verticalAlign = VerticalAlign.middle }
             buttonRuleset()
             sizeRuleSet()
             colorRuleSet()

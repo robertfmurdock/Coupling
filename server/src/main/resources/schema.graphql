@@ -249,6 +249,7 @@ type Query {
     party(input: PartyInput!): Party
     user: User
     globalStats(input: GlobalStatsInput!) : GlobalStats!
+    addToSlackUrl: String
 }
 
 """

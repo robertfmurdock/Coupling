@@ -70,4 +70,8 @@ class CouplingQueryBuilder {
             ),
         )
     }
+
+    fun addToSlackUrl() {
+        queries.add("addToSlackUrl")
+    }
 }

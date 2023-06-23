@@ -15,6 +15,7 @@ data class JsonCouplingQueryResult(
     val user: JsonUser? = null,
     val party: JsonParty? = null,
     val globalStats: JsonGlobalStats? = null,
+    val addToSlackUrl: String? = null,
 )
 
 @Serializable
@@ -39,6 +40,7 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
     user = user?.toModel(),
     party = party?.toModel(),
     globalStats = globalStats?.toModel(),
+    addToSlackUrl = addToSlackUrl,
 )
 
 @Serializable

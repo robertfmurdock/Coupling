@@ -49,6 +49,7 @@ fun couplingResolvers() = json(
             }
         },
         "globalStats" to globalStatsResolve,
+        "addToSlackUrl" to addToSlackUrlResolve,
     ),
     "Mutation" to json(
         "createSecret" to createSecretResolver,

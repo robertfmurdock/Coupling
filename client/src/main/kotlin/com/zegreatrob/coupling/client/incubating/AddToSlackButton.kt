@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.incubating
 
 import com.zegreatrob.minreact.nfc
+import emotion.react.css
 import js.core.jso
 import react.Props
 import react.dom.html.ReactHTML.a
@@ -24,7 +25,7 @@ external interface AddToSlackButtonProps : Props {
 val AddToSlackButton by nfc<AddToSlackButtonProps> { props ->
     a {
         href = props.url
-        style = jso {
+        css {
             alignItems = AlignItems.center
             color = rgb(0, 0, 0)
             backgroundColor = Color("#fff")
@@ -40,6 +41,9 @@ val AddToSlackButton by nfc<AddToSlackButtonProps> { props ->
             justifyContent = JustifyContent.center
             textDecoration = None.none
             width = 276.px
+            hover {
+                backgroundColor = Color("#f7f7f7")
+            }
         }
         svg {
             xmlns = "http://www.w3.org/2000/svg"
@@ -58,8 +62,7 @@ val AddToSlackButton by nfc<AddToSlackButtonProps> { props ->
                 fill = "#36c5f0"
             }
             path {
-                d =
-                    "M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z"
+                d = "M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z"
                 fill = "#2eb67d"
             }
             path {
