@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import korlibs.time.DateTime
@@ -30,6 +29,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.js.json
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -43,15 +43,17 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         SharedContextData(repository, clock, user)
     })
 
+    // Performance test - Does not run in CI
     @Test
-    fun canHandleLargeNumberOfRecordRevisionsAndGetLatestOneFast() = asyncSetup(object : ScopeMint() {
+    @Ignore
+    fun canHandleLargeNumberOfRecordRevisionsAndGetLatestOneFast() = asyncSetup(object {
         val userId = "${uuid4()}"
         val user = User(userId, "${uuid4()}", emptySet())
         lateinit var repository: DynamoUserRepository
     }) {
         repository = DynamoUserRepository(userId, TimeProvider)
         coroutineScope {
-            (1..2000).forEach { number ->
+            (1..5000).forEach { number ->
                 launch {
                     repository.saveRawRecord(
                         Record(
@@ -76,7 +78,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         val user = timed.result.first().data
         user.authorizedPartyIds.contains(PartyId("party-infinity"))
             .assertIsEqualTo(true, "Oops, got ${user.authorizedPartyIds}")
-        (timed.time.seconds < 0.075)
+        (timed.time.seconds < 0.1)
             .assertIsEqualTo(true, "Too slow, ${timed.time}")
     }
 
