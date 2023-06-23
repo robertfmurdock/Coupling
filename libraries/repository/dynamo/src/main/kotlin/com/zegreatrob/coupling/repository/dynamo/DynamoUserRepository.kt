@@ -1,12 +1,15 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.user.UserRepository
 import korlibs.time.TimeProvider
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -18,7 +21,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
 
     companion object :
         DynamoDBSyntax by DynamoDbProvider,
-        com.zegreatrob.coupling.repository.dynamo.CreateTableParamProvider,
+        CreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoQuerySyntax,
         DynamoItemSyntax,
@@ -28,6 +31,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
         private val ensure by lazy {
             MainScope().async { ensureTableExists() }
         }
+
         suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoUserRepository(userId, clock)
             .also { ensure.await() }
 
@@ -86,14 +90,14 @@ class DynamoUserRepository private constructor(override val userId: String, over
             )
     }
 
-    override suspend fun save(user: User) = logAsync("saveUser") { performPutItem(user.toRecord().asDynamoJson()) }
+    override suspend fun save(user: User) = logAsync("saveUser") { saveRawRecord(user.toRecord()) }
 
     override suspend fun getUser() = logAsync("getUser") { queryAllRecords(queryParams(userId)) }
         .sortByRecordTimestamp()
         .lastOrNull()
         ?.toUserRecord()
 
-    override suspend fun getUsersWithEmail(email: String) = logAsync("userIdsWithEmail") {
+    override suspend fun getUsersWithEmail(email: String) = firstEmailIdRecord(email) ?: logAsync("userIdsWithEmail") {
         queryAllRecords(emailQueryParams(email))
             .mapNotNull { it.getDynamoStringValue("id") }
             .distinct()
@@ -105,6 +109,31 @@ class DynamoUserRepository private constructor(override val userId: String, over
                 ?.toUserRecord()
         }
     }
+
+    private suspend fun firstEmailIdRecord(email: String) = logAsync("firstEmailIdRecord") {
+        performQuery(
+            json(
+                "TableName" to prefixedTableName,
+                "ExpressionAttributeValues" to json(":id" to emailId(email)),
+                "KeyConditionExpression" to "id = :id",
+                "ScanIndexForward" to false,
+                "Limit" to 1,
+            ),
+        )
+            .itemsNode()
+            .firstOrNull()
+            ?.let { it.toRecord(emailIdRecordToUser(it)) }
+            ?.let { listOf(it) }
+    }
+
+    private fun emailIdRecordToUser(firstOrNull: Json) = User(
+        firstOrNull["user_id"].toString(),
+        firstOrNull["email"].toString(),
+        firstOrNull["authorizedTribeIds"]
+            .unsafeCast<Array<String?>>()
+            .mapNotNull { it?.let(::PartyId) }
+            .toSet(),
+    )
 
     private fun queryParams(id: String) = json(
         "TableName" to prefixedTableName,
@@ -119,7 +148,20 @@ class DynamoUserRepository private constructor(override val userId: String, over
         "KeyConditionExpression" to "email = :email",
     )
 
-    suspend fun saveRawRecord(record: Record<User>) = performPutItem(record.asDynamoJson())
+    suspend fun saveRawRecord(record: Record<User>) = coroutineScope {
+        val recordJson = record.recordJson()
+        launch { performPutItem(recordJson.add(record.data.asDynamoJson())) }
+        launch { performPutItem(recordJson.add(record.asEmailIdDynamoJson())) }
+    }.let { }
+
+    private fun Record<User>.asEmailIdDynamoJson() = json(
+        "id" to emailId(data.email),
+        "user_id" to data.id,
+        "email" to data.email,
+        "authorizedTribeIds" to data.authorizedPartyIds.map { it.value }.toTypedArray(),
+    )
+
+    private fun emailId(email: String) = "EMAIL-$email"
 
     suspend fun getUserRecords() = scanAllRecords()
         .sortByRecordTimestamp()

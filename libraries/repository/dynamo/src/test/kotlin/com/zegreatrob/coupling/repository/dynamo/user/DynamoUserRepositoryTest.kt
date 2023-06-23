@@ -14,13 +14,21 @@ import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import korlibs.time.DateTime
+import korlibs.time.TimeProvider
 import korlibs.time.days
 import korlibs.time.hours
+import korlibs.time.measureTimeWithResult
 import korlibs.time.months
+import korlibs.time.seconds
 import korlibs.time.years
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -34,6 +42,43 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         val repository = DynamoUserRepository(userId, clock)
         SharedContextData(repository, clock, user)
     })
+
+    @Test
+    fun canHandleLargeNumberOfRecordRevisionsAndGetLatestOneFast() = asyncSetup(object : ScopeMint() {
+        val userId = "${uuid4()}"
+        val user = User(userId, "${uuid4()}", emptySet())
+        lateinit var repository: DynamoUserRepository
+    }) {
+        repository = DynamoUserRepository(userId, TimeProvider)
+        coroutineScope {
+            (1..5000).forEach { number ->
+                launch {
+                    repository.saveRawRecord(
+                        Record(
+                            data = user.copy(authorizedPartyIds = setOf(PartyId("party-$number"))),
+                            modifyingUserId = "",
+                            isDeleted = false,
+                            timestamp = DateTime.now().minus(1.days).plus(number.seconds),
+                        ),
+                    )
+                }
+            }
+        }
+        delay(10)
+        repository.save(
+            user.copy(authorizedPartyIds = setOf(PartyId("party-infinity"))),
+        )
+    } exercise {
+        measureTimeWithResult {
+            repository.getUsersWithEmail(user.email)
+        }
+    } verify { timed ->
+        val user = timed.result.first().data
+        user.authorizedPartyIds.contains(PartyId("party-infinity"))
+            .assertIsEqualTo(true, "Oops, got ${user.authorizedPartyIds}")
+        (timed.time.seconds < 0.1)
+            .assertIsEqualTo(true, "Too slow, ${timed.time}")
+    }
 
     @Test
     fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup.with(
