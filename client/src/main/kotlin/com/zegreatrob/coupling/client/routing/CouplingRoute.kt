@@ -14,7 +14,7 @@ import react.router.useNavigate
 import react.router.useParams
 import react.useEffect
 
-fun couplingRoute(title: String, path: String, rComponent: FC<PageProps>) = jso<RouteObject> {
+fun couplingRoute(path: String, title: String, rComponent: FC<PageProps>) = jso<RouteObject> {
     this.path = path
     this.element = CouplingRoute.create {
         this.title = title

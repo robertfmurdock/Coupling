@@ -8,6 +8,8 @@ import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
+import com.zegreatrob.coupling.client.components.integrations.slackChannel
+import com.zegreatrob.coupling.client.components.integrations.slackTeam
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.orange
@@ -18,7 +20,6 @@ import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.option
@@ -27,7 +28,6 @@ import react.dom.html.ReactHTML.span
 import react.router.dom.Link
 import react.useMemo
 import react.useState
-import web.html.InputType
 
 data class SlackConnectPageContent(
     val parties: List<PartyDetails>,
@@ -83,38 +83,8 @@ val slackConnectPageContent by ntmFC<SlackConnectPageContent> { props ->
                             +"Which party would you like to connect to a Slack channel?"
                         }
                     }
-                    li {
-                        label { this.htmlFor = "slack-team-id"; +"Slack Team ID" }
-                        input {
-                            value = props.slackTeam
-                            ariaLabel = "Slack Team ID"
-                            this.name = "slackTeam"
-                            id = "slack-team-id"
-                            this.type = InputType.text
-                            disabled = true
-                            placeholder = ""
-                            this.list = ""
-                            this.checked = false
-                            this.onChange = { }
-                            autoFocus = false
-                        }
-                    }
-                    li {
-                        label { this.htmlFor = "slack-channel-id"; +"Slack Channel ID" }
-                        input {
-                            value = props.slackChannel
-                            ariaLabel = "Slack Channel ID"
-                            this.name = "slackChannel"
-                            id = "slack-channel-id"
-                            this.type = InputType.text
-                            placeholder = ""
-                            this.list = ""
-                            this.checked = false
-                            this.onChange = { }
-                            autoFocus = false
-                            disabled = true
-                        }
-                    }
+                    li { slackTeam(props.slackTeam) }
+                    li { slackChannel(props.slackChannel) }
                 }
             }
         }
