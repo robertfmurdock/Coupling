@@ -93,14 +93,14 @@
     "@aws-sdk/types" "3.357.0"
     tslib "^2.5.0"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.358.0":
-  version "3.358.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.358.0.tgz#70c7fa68f7bb23621e279218141441ae490cab4b"
-  integrity sha512-qeMakra7+FID2q/esK4W7LK3F9N+n8i6oSvR2nQ0dkx9vAe7x903FWma5OcVYnbvaGdpEGSQw1ALHIBH9/ajiw==
+"@aws-sdk/client-apigatewaymanagementapi@~3.359.0":
+  version "3.359.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.359.0.tgz#878559b8941188874cbd1afa076e7383b38d1596"
+  integrity sha512-41jUDFkY1u+ao1iMQwFfIjz2hl/SIifVc6Uic/V4l18mnM6ZKgKCtE0jZY4xIb7BcvAAx0ZytaC5M1eOsXIUIw==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
-    "@aws-sdk/client-sts" "3.358.0"
+    "@aws-sdk/client-sts" "3.359.0"
     "@aws-sdk/config-resolver" "3.357.0"
     "@aws-sdk/credential-provider-node" "3.358.0"
     "@aws-sdk/fetch-http-handler" "3.357.0"
@@ -135,14 +135,14 @@
     "@smithy/types" "^1.0.0"
     tslib "^2.5.0"
 
-"@aws-sdk/client-dynamodb@3.358.0":
-  version "3.358.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.358.0.tgz#19353432c3b1a67150137c92316607573dbfc784"
-  integrity sha512-gtZoJomJY8bRLm/8TQq2onvf0aFcdZSBfW//txlsGsC4gUwps7cGVcc9fDVbSyoFsOcFNVdE/7iADo85u9KUDA==
+"@aws-sdk/client-dynamodb@3.359.0":
+  version "3.359.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.359.0.tgz#b01149e841346761515dc717b2b9d460c4188547"
+  integrity sha512-SX0g9RkgdYGZFlbnSZIscdQliTWeGoiWWeuLY2jOnlz90KGc31jXHpzFilbFY0w+gdUVSKFF3wAxS0bbN2jDSQ==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
-    "@aws-sdk/client-sts" "3.358.0"
+    "@aws-sdk/client-sts" "3.359.0"
     "@aws-sdk/config-resolver" "3.357.0"
     "@aws-sdk/credential-provider-node" "3.358.0"
     "@aws-sdk/fetch-http-handler" "3.357.0"
@@ -226,14 +226,14 @@
     "@smithy/types" "^1.0.0"
     tslib "^2.5.0"
 
-"@aws-sdk/client-lambda@~3.358.0":
-  version "3.358.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.358.0.tgz#566e82b0825ceff8b0cf8cee3081504575cefb21"
-  integrity sha512-+A77C6D12ur11ZAx4obx/ueIANb7Ypr2l4594/dmPKXeGH0rz9Y+njow9mubaHtwFcnAcaVI5nhbmCO7PQVCvA==
+"@aws-sdk/client-lambda@~3.359.0":
+  version "3.359.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.359.0.tgz#9fe95c44d5bc4dd0554883843d51e9d8d2454a1a"
+  integrity sha512-o6A3x+R6Oi64+mmK+mbYO1BLr18z5U/NiBevqE+FqQFptAoA6vp8CQW7zpeuUeC1J0ZdSNZCHc3HqUAlv7l/bg==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
-    "@aws-sdk/client-sts" "3.358.0"
+    "@aws-sdk/client-sts" "3.359.0"
     "@aws-sdk/config-resolver" "3.357.0"
     "@aws-sdk/credential-provider-node" "3.358.0"
     "@aws-sdk/eventstream-serde-browser" "3.357.0"
@@ -472,10 +472,10 @@
     fast-xml-parser "4.2.4"
     tslib "^2.5.0"
 
-"@aws-sdk/client-sts@3.358.0":
-  version "3.358.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.358.0.tgz#ac8874fbf499be58d792b8f8442259ad42406e19"
-  integrity sha512-lBtle7UMBXXxp9LHcmNDwsQZoz1B0sE4F6F63sTv+U4fT/Uo8m0AcxUE0WFxAP687w8rg7dSqxJCbMCKrfVQPA==
+"@aws-sdk/client-sts@3.359.0":
+  version "3.359.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.359.0.tgz#a216e9f1950c8ff82b4604800c3dd47b4d8ceea5"
+  integrity sha512-zpyui8hXvEUvq8MwzZsm51ni0intvPjtV8dgx10nVJnm605nqrLlAMGqQ1S/UxO7CVmhqWbh5dnGHEc//UJlsw==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
@@ -512,7 +512,7 @@
     "@aws-sdk/util-utf8" "3.310.0"
     "@smithy/protocol-http" "^1.0.1"
     "@smithy/types" "^1.0.0"
-    fast-xml-parser "4.2.4"
+    fast-xml-parser "4.2.5"
     tslib "^2.5.0"
 
 "@aws-sdk/config-resolver@3.347.0":
@@ -862,12 +862,12 @@
   dependencies:
     tslib "^2.5.0"
 
-"@aws-sdk/lib-dynamodb@3.358.0":
-  version "3.358.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.358.0.tgz#afc585aed72dc2412d7711ba400feb6ecf4da359"
-  integrity sha512-zdGqZpnmD/ZIYhMGSOJk65sQZJJO04/CJkRwTsATZcqkCGROEykDV0FJO2MjJ2rxBdkTldTk5GtQg+Tdcr8V0g==
+"@aws-sdk/lib-dynamodb@3.359.0":
+  version "3.359.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.359.0.tgz#e580481094649410226a6ff154ec7b3a0f7635b1"
+  integrity sha512-O5aajgyqH4xf4aBhKNwgM+HG58nJZS0shTd5gxesI51WlTrssciDgfZO9y57TnkgJd4i87GlqVvC2BQj8iPx8g==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.358.0"
+    "@aws-sdk/util-dynamodb" "3.359.0"
     tslib "^2.5.0"
 
 "@aws-sdk/middleware-content-length@3.347.0":
@@ -1407,10 +1407,10 @@
     "@aws-sdk/types" "3.357.0"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.358.0":
-  version "3.358.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.358.0.tgz#45e89a5ce5d0931068ec4c8c95190be0491d83f2"
-  integrity sha512-est2CVx9XDhGtYxqg+73PxNap8pFM0Mr5EuxwEz5O/kIwfYgxlY6c/It5xwfu2s3fqR35yB6eSWjToifSYhMZg==
+"@aws-sdk/util-dynamodb@3.359.0":
+  version "3.359.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.359.0.tgz#6cd9b19ff4b16ebc8f09af1398f563995ff902a9"
+  integrity sha512-Mrx+fFJToYT37AUApxJ1wE8EiMdxcMK4x/vXndok/8ISt37jdm1P0At8ahRHas+UABTKcP7X44qU2BcObDrTxg==
   dependencies:
     tslib "^2.5.0"
 
@@ -6539,6 +6539,13 @@ fast-xml-parser@4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/fast-xml-parser/-/fast-xml-parser-4.2.4.tgz#6e846ede1e56ad9e5ef07d8720809edf0ed07e9b"
   integrity sha512-fbfMDvgBNIdDJLdLOwacjFAPYt67tr31H9ZhWSm45CDAxvd0I6WTlSOUo7K2P/K5sA5JgMKG64PI3DMcaFdWpQ==
+  dependencies:
+    strnum "^1.0.5"
+
+fast-xml-parser@4.2.5:
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/fast-xml-parser/-/fast-xml-parser-4.2.5.tgz#a6747a09296a6cb34f2ae634019bf1738f3b421f"
+  integrity sha512-B9/wizE4WngqQftFPmdaMYlXoJlJOYxGQOanC77fq9k8+Z0v5dDSVh+3glErdIROP//s/jgb7ZuxKfB8nVyo0g==
   dependencies:
     strnum "^1.0.5"
 
