@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.memory
 
+import com.zegreatrob.coupling.client.PartyListQuery
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.repository.party.PartyRecordSyntax

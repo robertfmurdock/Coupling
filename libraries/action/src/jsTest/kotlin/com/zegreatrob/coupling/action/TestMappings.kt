@@ -13,12 +13,12 @@ import kotlin.js.Json
 actual fun loadJsonPartySetup(fileResource: String): PartySetup = loadResource<Any>(fileResource).unsafeCast<Json>()
     .let<Json, JsonPartySetup>(couplingJsonFormat::decodeFromDynamic)
     .run {
-        PartySetup(tribe.toModel(), players.map(JsonPlayer::toModel), history.map(JsonPairAssignmentDocument::toModel))
+        PartySetup(party.toModel(), players.map(JsonPlayer::toModel), history.map(JsonPairAssignmentDocument::toModel))
     }
 
 @Serializable
 data class JsonPartySetup(
-    val tribe: JsonPartyDetails,
+    val party: JsonPartyDetails,
     val players: List<JsonPlayerData>,
     val history: List<JsonPairAssignmentDocument>,
 )

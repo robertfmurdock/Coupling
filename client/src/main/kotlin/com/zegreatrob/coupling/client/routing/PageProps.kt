@@ -4,7 +4,7 @@ import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
-import com.zegreatrob.coupling.client.MemoryRepositoryCatalog
+import com.zegreatrob.coupling.client.memory.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.KtorCouplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient

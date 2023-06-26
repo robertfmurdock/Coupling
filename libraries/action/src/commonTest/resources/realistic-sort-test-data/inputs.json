@@ -1,5 +1,5 @@
 {
-  "tribe": {
+  "party": {
     "name": "BIGTEAM",
     "pairingRule": 1,
     "defaultBadgeName": "Default",
@@ -10,54 +10,54 @@
     {
       "id": "58ab6c2cd8ae399014d887aa",
       "badge": "1",
-      "tribe": "bigteamisbig",
+      "party": "bigteamisbig",
       "name": "11122"
     },
     {
       "id": "58ab6c2fd8ae399014d887ab",
-      "tribe": "bigteamisbig",
+      "party": "bigteamisbig",
       "badge": "1",
       "name": "2"
     },
     {
       "id": "58ab6c31d8ae399014d887ac",
       "badge": "1",
-      "tribe": "bigteamisbig",
+      "party": "bigteamisbig",
       "name": "323"
     },
     {
       "id": "58ab6c33d8ae399014d887ad",
-      "tribe": "bigteamisbig",
+      "party": "bigteamisbig",
       "badge": "1",
       "name": "4"
     },
     {
       "id": "58ab6c35d8ae399014d887ae",
-      "tribe": "bigteamisbig",
+      "party": "bigteamisbig",
       "badge": "1",
       "name": "5"
     },
     {
       "id": "58ab6c38d8ae399014d887af",
-      "tribe": "bigteamisbig",
+      "party": "bigteamisbig",
       "badge": "1",
       "name": "6"
     },
     {
       "id": "58ab6c3ad8ae399014d887b0",
-      "tribe": "bigteamisbig",
+      "party": "bigteamisbig",
       "badge": "1",
       "name": "7"
     },
     {
       "id": "58ab6c3dd8ae399014d887b1",
-      "tribe": "bigteamisbig",
+      "party": "bigteamisbig",
       "badge": "1",
       "name": "8"
     },
     {
       "id": "58ab7105c7d17c94cc295491",
-      "tribe": "bigteamisbig",
+      "party": "bigteamisbig",
       "badge": "1",
       "name": "9"
     }

@@ -21,7 +21,7 @@ private val dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
 actual fun loadJsonPartySetup(fileResource: String): PartySetup {
     val fileJson = mapper.readTree(PartySetup::class.java.classLoader.getResource(fileResource))
 
-    val partyJson = fileJson["tribe"]
+    val partyJson = fileJson["party"]
 
     return PartySetup(
         party = PartyDetails(

@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.memory
 
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
+import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.CouplingQueryResult

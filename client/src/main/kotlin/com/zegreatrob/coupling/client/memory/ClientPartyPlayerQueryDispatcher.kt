@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client
+package com.zegreatrob.coupling.client.memory
 
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.model.elements
