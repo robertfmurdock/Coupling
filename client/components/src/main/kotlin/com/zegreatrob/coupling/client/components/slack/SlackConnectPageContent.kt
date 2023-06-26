@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.nfc
 import com.zegreatrob.minreact.ntmFC
 import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.div
@@ -26,6 +27,7 @@ import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
+import react.router.dom.LinkProps
 import react.useMemo
 import react.useState
 
@@ -90,12 +92,18 @@ val slackConnectPageContent by ntmFC<SlackConnectPageContent> { props ->
         }
     } else {
         Markdown { +loadMarkdownString("ConnectSuccess") }
-        Link {
+        ReturnToCouplingButton {
             to = "/${command.partyId.value}/pairAssignments/current/"
-            draggable = false
-            add(CouplingButton(large, orange)) {
-                +"Return to Coupling"
-            }
+        }
+    }
+}
+
+val ReturnToCouplingButton by nfc<LinkProps> { props ->
+    Link {
+        draggable = false
+        +props
+        add(CouplingButton(large, orange)) {
+            +"Return to Coupling"
         }
     }
 }

@@ -1,19 +1,19 @@
 # News
 
-## May 30, 2023
+## June 26, 2023
 
-Hey! What's happening? How are *you*?
+Salutations!
 
-*waits patiently for answer, pretending to listen.*
+So I've spent a little time this summer working on a new thing - Slack integration for Coupling. It was more annoying to get setup than one would expect and hope, but I do have a version that people can try if they're interested.
 
-Whoa, I'm happy for you. Or sorry that happened.
+If you want to give it a shot, click on this [link](/incubating) and hit the "Add to Slack" button. And definitely, definitely let me know about any problems or feedback related to it - open an [issue](https://www.github.com/robertfmurdock/coupling/issues), or just contact me by email, I'd love to hear from you.
 
-Anyway, I've finally crunched the numbers for Coupling in 2022. If you're curious how the world-o-coupling is doing, I've posted the update [here](https://www.zegreatrob.com/2023/05/30/Grow-Together-2022.html).
+Also, I'm considering adding a new payment tier that will allow access to features *like* the Slack integration. Stuff that requires more time to develop. So it is possible - possible I say - that the Slack integration may go behind this paywall at some point.
 
-Thank you, yes you, you-in-particular, for using the app. It doesn't make me any money, but it does bring me joy, and I hope it makes your lives easier.
+But! Anyone who tries the Slack feature out now to help me prove its functionality, I'll make sure to grandfather in. And rest assured, none of the current Coupling feature set will disappear - pairs, pins, stats, call-signs... they ain't going NO-where.
 
-As always: got a problem? Yo, I'll consider it! Open an issue on [github](https://www.github.com/robertfmurdock/coupling) and let the dj revolve (prioritize?) it.
+Feedback and concerns about this are also appreciated! I don't want to freak anyone out, so I'm breaking the ice here.
 
-Have a hot-dev-summer 🌞,
+Come together, right now, over me,
 
 - RoB
