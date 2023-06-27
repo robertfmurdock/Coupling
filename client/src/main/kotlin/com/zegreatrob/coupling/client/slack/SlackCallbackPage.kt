@@ -21,7 +21,9 @@ val SlackCallbackPage by nfc<PageProps> { props ->
     val code = urlSearchParams["code"]
     val state = urlSearchParams["state"]
     SlackInstallPageFrame {
-        if (code != null && state != null) {
+        if (code == null || state == null) {
+            +"code and state missing"
+        } else {
             add(
                 DataLoader(
                     getDataAsync = {
@@ -43,8 +45,6 @@ val SlackCallbackPage by nfc<PageProps> { props ->
                     },
                 ),
             )
-        } else {
-            +"code and state missing"
         }
     }
 }

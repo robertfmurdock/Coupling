@@ -81,7 +81,7 @@ dependencies {
     implementation(npmConstrained("react-dnd-html5-backend"))
     implementation(npmConstrained("react-flip-toolkit"))
     implementation(npmConstrained("react-hotkeys-hook"))
-    implementation(npmConstrained("react-websocket"))
+    implementation(npmConstrained("react-use-websocket"))
     implementation(npmConstrained("reactjs-popup"))
     implementation(npmConstrained("style-loader"))
     implementation(npmConstrained("styled-components"))

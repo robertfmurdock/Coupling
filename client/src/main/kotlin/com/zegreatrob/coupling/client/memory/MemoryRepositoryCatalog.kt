@@ -11,8 +11,10 @@ import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
+import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.CouplingQueryResult
+import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.user.User
@@ -35,6 +37,8 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 import com.zegreatrob.coupling.sdk.CouplingSdk
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import korlibs.time.TimeProvider
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
 
 class MemoryRepositoryCatalog private constructor(
     override val userId: String,
@@ -96,6 +100,18 @@ class MemoryRepositoryCatalog private constructor(
 
     override suspend fun perform(query: GraphQuery) = CouplingQueryResult(
         user = User(userId, "???", setOf(PartyId("Kind of fake"))),
+        partyList = partyRepository.loadParties(),
+        party = query.variables?.get("input")?.let { Json.decodeFromJsonElement<PartyInput>(it) }?.partyId?.let {
+            val id = PartyId(it)
+            Party(
+                id,
+                details = partyRepository.getDetails(id),
+                playerList = playerRepository.getPlayers(id),
+                pinList = pinRepository.getPins(id),
+                pairAssignmentDocumentList = pairAssignmentDocumentRepository.loadPairAssignments(id),
+                currentPairAssignmentDocument = pairAssignmentDocumentRepository.getCurrentPairAssignments(id),
+            )
+        },
     )
 
     override suspend fun perform(command: GrantSlackAccessCommand): VoidResult = VoidResult.Accepted

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.client.components.external.reactwebsocket.WebsocketComponent
-import com.zegreatrob.coupling.client.components.external.reactwebsocket.websocket
+import com.zegreatrob.coupling.client.components.external.reactwebsocket.useWebSocket
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString
 import com.zegreatrob.coupling.json.toJsonString
@@ -11,14 +10,13 @@ import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.ntmFC
+import js.core.jso
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
 import react.ReactNode
-import react.RefObject
 import react.dom.html.ReactHTML.div
 import react.useMemo
-import react.useRef
 import react.useState
 
 val disconnectedMessage = com.zegreatrob.coupling.model.CouplingSocketMessage(
@@ -28,21 +26,20 @@ val disconnectedMessage = com.zegreatrob.coupling.model.CouplingSocketMessage(
 )
 val couplingWebsocket by ntmFC<CouplingWebsocket> { props ->
     val (partyId, useSsl, onMessageFunc, buildChild, token) = props
-
     var connected by useState(false)
-    val ref = useRef<WebsocketComponent>(null)
 
-    val sendMessageFunc = useMemo { sendMessageWithSocketFunc(ref) }
-
-    div {
-        websocket {
-            url = buildSocketUrl(partyId, useSsl, token).href
-            onMessage = { onMessageFunc(it.fromJsonString<JsonMessage>().toModel()) }
+    val socketHook = useWebSocket(
+        url = buildSocketUrl(partyId, useSsl, token).href,
+        jso {
+            onMessage = { (it.data as? String)?.fromJsonString<JsonMessage>()?.toModel()?.let(onMessageFunc) }
             onOpen = { connected = true }
             onClose = { onMessageFunc(disconnectedMessage) }
-            this.ref = { ref.current = it }
-        }
+        },
+    )
 
+    val sendMessageFunc: (Message) -> Unit = useMemo { sendMessageWithSocketFunc(socketHook.sendMessage) }
+
+    div {
         +buildChild(if (connected) sendMessageFunc else null)
     }
 }
@@ -55,13 +52,8 @@ data class CouplingWebsocket(
     val token: String,
 ) : DataPropsBind<CouplingWebsocket>(couplingWebsocket)
 
-private fun sendMessageWithSocketFunc(ref: RefObject<WebsocketComponent>) = { message: Message ->
-    val websocket = ref.current
-    if (websocket != null) {
-        message.toSerializable().toJsonString().let(websocket::sendMessage)
-    } else {
-        console.error("Message not sent, websocket not initialized", message)
-    }
+private fun sendMessageWithSocketFunc(sendMessage: (message: String, keep: Boolean) -> Unit) = { message: Message ->
+    message.toSerializable().toJsonString().let { sendMessage(it, true) }
 }
 
 private fun buildSocketUrl(partyId: PartyId, useSsl: Boolean, token: String) = URL(

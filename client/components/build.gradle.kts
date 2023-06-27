@@ -29,7 +29,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
-    implementation(npmConstrained("react-websocket"))
+    implementation(npmConstrained("react-use-websocket"))
     implementation(npmConstrained("fitty"))
     implementation(npmConstrained("blueimp-md5"))
     implementation(npmConstrained("date-fns"))
