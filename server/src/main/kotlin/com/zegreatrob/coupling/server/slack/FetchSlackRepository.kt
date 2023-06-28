@@ -4,6 +4,9 @@ import com.zegreatrob.coupling.model.SlackTeamAccess
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
+import com.zegreatrob.coupling.model.pairassignmentdocument.players
+import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.slack.SlackGrantAccess
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.coupling.server.express.Config
@@ -121,8 +124,8 @@ private fun PairAssignmentDocument.toSlackBlocks() = arrayOf(
 
 private fun PinnedCouplingPair.pairFieldText() = listOfNotNull(
     callSign()?.let { "*$it*" },
-    players.joinToString(" & ") { player -> player.player.name },
-    pins.joinToString(" / ") { it.name }
+    players.joinToString(" & ", transform = Player::name),
+    pins.joinToString(" / ", transform = Pin::name)
         .ifEmpty { null }
         ?.let { "📍 $it" },
 ).joinToString("\n")

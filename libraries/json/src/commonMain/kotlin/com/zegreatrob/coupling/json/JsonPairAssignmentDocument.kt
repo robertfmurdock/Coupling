@@ -124,7 +124,7 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDoc
 )
 
 fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
-    players = players.map(PinnedPlayer::toSerializable),
+    players = pinnedPlayers.map(PinnedPlayer::toSerializable),
     pins = pins.map(Pin::toSerializable).toSet(),
 )
 
@@ -174,7 +174,7 @@ fun JsonPairAssignmentDocumentRecord.toModel() = PartyRecord(
 )
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
-    players = players.map(JsonPinnedPlayer::toModel),
+    pinnedPlayers = players.map(JsonPinnedPlayer::toModel),
     pins = pins.map(JsonPinData::toModel).toSet(),
 )
 

@@ -76,6 +76,140 @@ class PrepareToSpinPageE2ETest {
             .assertIsEqualTo(3)
     }
 
+    // Tests related to Drag and Drop. WDIO support doesn't seem compatible with the react-dnd library, and these were original written as unit tests in Enzyme. Enzyme's gotta go, so they're here in limbo for now.
+    // @Test
+    // fun onPlayerDropWillTakeTwoPlayersAndSwapTheirPlaces() = pinPartySetup {
+    //     PrepareToSpinPage.goTo(party.id)
+    //     getSelectAllButton().click()
+    //     getSpinButton().click()
+    //     PairAssignmentsPage.waitForPage()
+    // } exercise {
+    //     val initialOrder = assignedPairElements.map { it.text() }
+    //     assignedPairElements[0].all(playerLocator)[1]
+    //         .dragAndDrop(
+    //             assignedPairElements[2].all(playerLocator)[0],
+    //         )
+    //     initialOrder
+    // } verify { initialOrder ->
+    //     initialOrder.assertIsNotEqualTo(
+    //         assignedPairElements.map { it.text() },
+    //     )
+    // }
+    //
+    // @Test
+    // fun onPinDropWillTakeMovePinFromOnePairToAnother() = setup(object {
+    //     val party = stubPartyDetails()
+    //     val pin1 = stubPin()
+    //     val pin2 = stubPin()
+    //     val pair1 =
+    //         pairOf(Player("1", name = "1", avatarType = null), Player("2", name = "2", avatarType = null)).withPins(
+    //             setOf(pin1),
+    //         )
+    //     val pair2 =
+    //         pairOf(Player("3", name = "3", avatarType = null), Player("4", name = "4", avatarType = null)).withPins(
+    //             setOf(pin2),
+    //         )
+    //     val pairAssignments = PairAssignmentDocument(
+    //         id = PairAssignmentDocumentId("${uuid4()}"),
+    //         date = DateTime.now(),
+    //         pairs = listOf(pair1, pair2),
+    //     )
+    //     var lastSetPairAssignments: PairAssignmentDocument? = null
+    //     val wrapper = shallow(
+    //         CurrentPairAssignmentsPanel(
+    //             party,
+    //             pairAssignments,
+    //             { lastSetPairAssignments = it },
+    //             dispatchFunc = StubDispatchFunc(),
+    //             allowSave = false,
+    //         ),
+    //     )
+    // }) exercise {
+    //     pin1.dragTo(pair2, wrapper)
+    // } verify {
+    //     lastSetPairAssignments.assertNotNull { pairs ->
+    //         pairs.pairs[0]
+    //             .assertIsEqualTo(pair1.copy(pins = emptySet()))
+    //         pairs.pairs[1]
+    //             .assertIsEqualTo(pair2.copy(pins = setOf(pin2, pin1)))
+    //     }
+    // }
+    //
+    // @Test
+    // fun onPlayerDropTheSwapWillNotLosePinAssignments() = setup(object {
+    //     val party = stubPartyDetails()
+    //     val player1 = Player("1", name = "1", avatarType = null)
+    //     val player2 = Player("2", name = "2", avatarType = null)
+    //     val player3 = Player("3", name = "3", avatarType = null)
+    //     val player4 = Player("4", name = "4", avatarType = null)
+    //
+    //     val pin1 = stubPin()
+    //     val pin2 = stubPin()
+    //
+    //     val pairAssignments = PairAssignmentDocument(
+    //         id = PairAssignmentDocumentId("${uuid4()}"),
+    //         date = DateTime.now(),
+    //         pairs = listOf(
+    //             pairOf(player1, player2).withPins(setOf(pin1)),
+    //             pairOf(player3, player4).withPins(setOf(pin2)),
+    //         ),
+    //     )
+    //     var lastSetPairAssignments: PairAssignmentDocument? = null
+    //     val wrapper = shallow(
+    //         CurrentPairAssignmentsPanel(
+    //             party,
+    //             pairAssignments,
+    //             { lastSetPairAssignments = it },
+    //             dispatchFunc = StubDispatchFunc(),
+    //             allowSave = false,
+    //         ),
+    //     )
+    // }) exercise {
+    //     player2.dragTo(player3, wrapper)
+    // } verify {
+    //     lastSetPairAssignments.assertNotNull {
+    //         it.pairs[0].pins
+    //             .assertIsEqualTo(setOf(pin1))
+    //         it.pairs[1].pins
+    //             .assertIsEqualTo(setOf(pin2))
+    //     }
+    // }
+    //
+    // @Test
+    // fun onPlayerDropWillNotSwapPlayersThatAreAlreadyPaired() = setup(object {
+    //     val party = stubPartyDetails()
+    //     val player1 = Player("1", name = "1", avatarType = null)
+    //     val player2 = Player("2", name = "2", avatarType = null)
+    //     val player3 = Player("3", name = "3", avatarType = null)
+    //     val player4 = Player("4", name = "4", avatarType = null)
+    //
+    //     val pairAssignments = PairAssignmentDocument(
+    //         id = PairAssignmentDocumentId("${uuid4()}"),
+    //         date = DateTime.now(),
+    //         pairs = listOf(
+    //             pairOf(player1, player2),
+    //             pairOf(player3, player4),
+    //         ).withPins(),
+    //     )
+    //     var lastSetPairAssignments: PairAssignmentDocument? = null
+    //     val wrapper = shallow(
+    //         CurrentPairAssignmentsPanel(
+    //             party,
+    //             pairAssignments,
+    //             { lastSetPairAssignments = it },
+    //             dispatchFunc = StubDispatchFunc(),
+    //             allowSave = false,
+    //         ),
+    //     )
+    // }) exercise {
+    //     player4.dragTo(player3, wrapper)
+    // } verify {
+    //     lastSetPairAssignments.assertNotNull {
+    //         it.pairs[0].toPair().assertIsEqualTo(pairOf(player1, player2))
+    //         it.pairs[1].toPair().assertIsEqualTo(pairOf(player3, player4))
+    //     }
+    // }
+
     @Test
     fun whenTwoPlayersAreEnabledSpinWillYieldOnePairAndSavingPersistsThePair() = pinPartySetup {
         PrepareToSpinPage.goTo(party.id)

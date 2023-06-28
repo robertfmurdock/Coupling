@@ -9,6 +9,8 @@ import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.player.PlayerRoster
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
@@ -96,7 +98,7 @@ private fun PropertiesBuilder.pairAssignmentStyles() {
 private fun PairAssignmentDocument.overlayUpdatedPlayers(players: List<Player>) = copy(
     pairs = pairs.map { pair ->
         pair.copy(
-            players = pair.players.map { pinnedPlayer ->
+            pinnedPlayers = pair.pinnedPlayers.map { pinnedPlayer ->
                 pinnedPlayer.copy(
                     player = players.firstOrNull { p -> p.id == pinnedPlayer.player.id }
                         ?: pinnedPlayer.player,
@@ -114,4 +116,6 @@ private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignm
         players.filterNot { player -> currentlyPairedPlayerIds.contains(player.id) }
     }
 
-private fun PairAssignmentDocument.currentlyPairedPlayerIds() = pairs.flatMap { it.players }.map { it.player.id }
+private fun PairAssignmentDocument.currentlyPairedPlayerIds() =
+    pairs.flatMap(PinnedCouplingPair::players)
+        .map(Player::id)

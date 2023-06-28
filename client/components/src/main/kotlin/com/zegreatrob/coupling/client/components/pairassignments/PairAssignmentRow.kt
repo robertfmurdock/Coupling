@@ -102,7 +102,7 @@ private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
                 position = Position.relative
             }
             key = "$index"
-            pair.players.map { pinnedPlayer: PinnedPlayer ->
+            pair.pinnedPlayers.map { pinnedPlayer: PinnedPlayer ->
                 showPlayer(pinnedPlayer)
             }
             add(

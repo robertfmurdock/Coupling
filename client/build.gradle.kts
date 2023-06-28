@@ -94,7 +94,6 @@ dependencies {
     testImplementation(project(":libraries:stub-model"))
     testImplementation(project(":libraries:test-react"))
     testImplementation(project(":libraries:test-logging"))
-    testImplementation("com.zegreatrob.jsmints:minenzyme")
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.testmints:minassert")
     testImplementation("com.zegreatrob.testmints:minspy")
@@ -102,8 +101,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
     testImplementation("org.jetbrains.kotlin:kotlin-test-js")
-    testImplementation(npmConstrained("enzyme"))
-    testImplementation(npmConstrained("enzyme-adapter-react-16"))
 }
 
 val taggerExtension = TaggerExtension.apply(rootProject)

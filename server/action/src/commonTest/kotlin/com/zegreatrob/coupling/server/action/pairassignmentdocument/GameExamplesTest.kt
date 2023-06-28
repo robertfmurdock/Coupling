@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -67,7 +68,7 @@ class GameExamplesTest {
         }) exercise {
             perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
         } verify { result ->
-            result.pairs.map { pair -> pair.players.size.assertIsEqualTo(2); pair.players }
+            result.pairs.map { pair -> pair.players.size.assertIsEqualTo(2); pair.pinnedPlayers }
                 .flatten()
                 .size
                 .assertIsEqualTo(allPlayers.size)

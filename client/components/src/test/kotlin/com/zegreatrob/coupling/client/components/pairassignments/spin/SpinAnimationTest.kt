@@ -1,21 +1,21 @@
 package com.zegreatrob.coupling.client.components.pairassignments.spin
 
-import com.zegreatrob.coupling.client.components.PlayerCard
-import com.zegreatrob.coupling.client.components.pairassignments.AssignedPair
-import com.zegreatrob.coupling.client.components.pairassignments.assignedPair
-import com.zegreatrob.coupling.client.components.playerCard
 import com.zegreatrob.coupling.client.components.spin.RosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minenzyme.ShallowWrapper
-import com.zegreatrob.minenzyme.dataprops
-import com.zegreatrob.minenzyme.findByClass
-import com.zegreatrob.minenzyme.shallow
+import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.setup
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.external.Result
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.asList
+import org.w3c.dom.get
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -62,10 +62,10 @@ class SpinAnimationTest {
         fun whenInStartStateWillShowAllPlayersExceptExcluded() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            shallow(SpinAnimationPanel(party, rosteredPairAssignments, state))
+            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
         } verify { result ->
             result.apply {
-                playersInRoster().assertIsEqualTo(players - excludedPlayer)
+                playersInRoster().assertIsEqualTo(players.map(Player::id) - excludedPlayer.id)
             }
         }
     }
@@ -93,14 +93,14 @@ class SpinAnimationTest {
         fun whenInStartStateWillShowAllPlayersAndNoPairs() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            shallow(SpinAnimationPanel(party, rosteredPairAssignments, state))
+            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
         } verify { result ->
             result.apply {
-                playersInRoster().assertIsEqualTo(players)
+                playersInRoster().assertIsEqualTo(players.map { it.id })
                 shownPairAssignments().assertIsEqualTo(
                     listOf(
-                        pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet()),
-                        pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet()),
+                        listOf(placeholderPlayer, placeholderPlayer).joinToString("-") { it.id },
+                        listOf(placeholderPlayer, placeholderPlayer).joinToString("-") { it.id },
                     ),
                 )
             }
@@ -112,7 +112,7 @@ class SpinAnimationTest {
         }) exercise {
             Start.next(pairAssignments)
         } verify { result ->
-            result.assertIsEqualTo(Shuffle(target = pairAssignments.pairs[0].players[0].player, step = 0))
+            result.assertIsEqualTo(Shuffle(target = pairAssignments.pairs[0].players[0], step = 0))
         }
 
         @Test
@@ -133,7 +133,7 @@ class SpinAnimationTest {
         }) exercise {
             state.nextUntilNotShuffle()
         } verify { result ->
-            result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs[0].players[0].player))
+            result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs[0].players[0]))
         }
 
         @Test
@@ -141,116 +141,120 @@ class SpinAnimationTest {
             val firstAssignedPlayer = players[1]
             val state = ShowPlayer(firstAssignedPlayer)
         }) exercise {
-            shallow(SpinAnimationPanel(party, rosteredPairAssignments, state))
+            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
         } verify { result ->
-            result.playerInSpotlight().assertIsEqualTo(firstAssignedPlayer)
-            result.playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
+            result.playerInSpotlight().assertIsEqualTo(firstAssignedPlayer.id)
+            result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map { it.id })
             result.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet()),
-                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet()),
+                    listOf(placeholderPlayer, placeholderPlayer).joinToString("-") { it.id },
+                    listOf(placeholderPlayer, placeholderPlayer).joinToString("-") { it.id },
                 ),
             )
         }
 
         @Test
         fun whenShowingMidwayShownPlayerWillContinueShowingPreviousAssignments() = setup(object : Setup() {
-            val midwayShownPlayer = pairAssignments.pairs[1].players[0].player
+            val midwayShownPlayer = pairAssignments.pairs[1].players[0]
             val state = ShowPlayer(midwayShownPlayer)
         }) exercise {
-            shallow(SpinAnimationPanel(party, rosteredPairAssignments, state))
+            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
         } verify {
-            it.playerInSpotlight().assertIsEqualTo(midwayShownPlayer)
+            it.playerInSpotlight().assertIsEqualTo(midwayShownPlayer.id)
             it.playersInRoster().assertIsEqualTo(
-                listOf(pairAssignments.pairs[1].players[1].player),
+                listOf(pairAssignments.pairs[1].players[1].id),
             )
             it.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairAssignments.pairs[0],
-                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet()),
+                    pairAssignments.pairs[0].players.joinToString("-", transform = Player::id),
+                    listOf(placeholderPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
                 ),
             )
         }
 
         @Test
         fun showPlayerWillTransitionToAssigned() = setup(object : Setup() {
-            val state = ShowPlayer(pairAssignments.pairs[0].players[0].player)
+            val state = ShowPlayer(pairAssignments.pairs[0].players[0])
         }) exercise {
             state.next(pairAssignments)
         } verify { result ->
-            result.assertIsEqualTo(AssignedPlayer(pairAssignments.pairs[0].players[0].player))
+            result.assertIsEqualTo(AssignedPlayer(pairAssignments.pairs[0].players[0]))
         }
 
         @Test
         fun whenShowingFirstAssignedPlayerWillRemoveFromRosterAndShowInSpotlight() = setup(object : Setup() {
-            val firstAssignedPlayer = pairAssignments.pairs[0].players[0].player
+            val firstAssignedPlayer = pairAssignments.pairs[0].players[0]
             val state = AssignedPlayer(firstAssignedPlayer)
         }) exercise {
-            shallow(SpinAnimationPanel(party, rosteredPairAssignments, state))
+            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
         } verify { result ->
-            result.playerInSpotlight().assertIsEqualTo(placeholderPlayer)
-            result.playersInRoster().assertIsEqualTo(players - firstAssignedPlayer)
+            result.playerInSpotlight().assertIsEqualTo(placeholderPlayer.id)
+            result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map(Player::id))
             result.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairOf(firstAssignedPlayer, placeholderPlayer).withPins(emptySet()),
-                    pairOf(placeholderPlayer, placeholderPlayer).withPins(emptySet()),
+                    listOf(firstAssignedPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
+                    listOf(placeholderPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
                 ),
             )
         }
 
         @Test
         fun whenShowingMidwayAssignedPlayerWillContinueShowingPreviousAssignments() = setup(object : Setup() {
-            val midwayAssignedPlayer = pairAssignments.pairs[1].players[0].player
+            val midwayAssignedPlayer = pairAssignments.pairs[1].players[0]
             val state = AssignedPlayer(midwayAssignedPlayer)
         }) exercise {
-            shallow(SpinAnimationPanel(party, rosteredPairAssignments, state))
+            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
         } verify { result ->
-            result.playerInSpotlight().assertIsEqualTo(placeholderPlayer)
+            result.playerInSpotlight().assertIsEqualTo(placeholderPlayer.id)
             result.playersInRoster().assertIsEqualTo(
-                listOf(pairAssignments.pairs[1].players[1].player),
+                listOf(pairAssignments.pairs[1].players[1].id),
             )
             result.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairAssignments.pairs[0],
-                    pairOf(midwayAssignedPlayer, placeholderPlayer).withPins(emptySet()),
+                    pairAssignments.pairs[0].players.joinToString("-", transform = Player::id),
+                    listOf(midwayAssignedPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
                 ),
             )
         }
 
         @Test
         fun assignedPlayerWillTransitionToShuffleNextPlayerInPair() = setup(object : Setup() {
-            val state = AssignedPlayer(pairAssignments.pairs[0].players[0].player)
+            val state = AssignedPlayer(pairAssignments.pairs[0].players[0])
         }) exercise {
             state.next(pairAssignments)
         } verify { result ->
-            result.assertIsEqualTo(Shuffle(pairAssignments.pairs[0].players[1].player, 0))
+            result.assertIsEqualTo(Shuffle(pairAssignments.pairs[0].players[1], 0))
         }
 
         @Test
         fun assignedPlayerWillTransitionToShuffleNextPlayerInNextPair() = setup(object : Setup() {
-            val state = AssignedPlayer(pairAssignments.pairs[0].players[1].player)
+            val state = AssignedPlayer(pairAssignments.pairs[0].players[1])
         }) exercise {
             state.next(pairAssignments)
         } verify { result ->
-            result.assertIsEqualTo(Shuffle(pairAssignments.pairs[1].players[0].player, 0))
+            result.assertIsEqualTo(Shuffle(pairAssignments.pairs[1].players[0], 0))
         }
     }
 
     companion object {
 
-        private fun ShallowWrapper<dynamic>.playersInRoster() = findByClass(playerRosterStyles.toString())
-            .find(playerCard)
-            .map { it.dataprops<PlayerCard>().player }
-            .toList()
+        private fun Result.playersInRoster() = baseElement.querySelector("[data-testid=player-roster]")
+            ?.querySelectorAll("[data-player-id]")
+            ?.asList()
+            ?.mapNotNull { it as? HTMLElement }
+            ?.map { it.getAttribute("data-player-id") }
 
-        private fun ShallowWrapper<dynamic>.playerInSpotlight() = findByClass("$playerSpotlightStyles")
-            .find(playerCard).run {
-                if (length == 1) dataprops<PlayerCard>().player else null
-            }
+        private fun Result.playerInSpotlight() = baseElement.getElementsByClassName("$playerSpotlightStyles")[0]
+            ?.querySelectorAll("[data-player-id]")
+            ?.asList()
+            ?.mapNotNull { it as? HTMLElement }
+            ?.map { it.getAttribute("data-player-id") }
+            ?.firstOrNull()
 
-        private fun ShallowWrapper<dynamic>.shownPairAssignments() = findByClass("$pairAssignmentStyles")
-            .find(assignedPair)
-            .map { it.dataprops<AssignedPair>().pair }
-            .toList()
+        private fun Result.shownPairAssignments() = baseElement.querySelector("[data-testid=assigned-pairs]")
+            ?.querySelectorAll("[data-assigned-pair]")
+            ?.asList()
+            ?.mapNotNull { it as? HTMLElement }
+            ?.map { it.getAttribute("data-assigned-pair") }
     }
 }

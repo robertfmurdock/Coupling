@@ -105,7 +105,7 @@ val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, p
             }
         }
         div {
-            pair.players.mapIndexed { index, player ->
+            pair.pinnedPlayers.mapIndexed { index, player ->
                 playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
             }
         }

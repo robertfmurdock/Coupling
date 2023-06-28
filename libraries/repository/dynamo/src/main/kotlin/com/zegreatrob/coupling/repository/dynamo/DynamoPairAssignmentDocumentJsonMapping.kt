@@ -33,7 +33,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
 
     private fun PinnedCouplingPair.toDynamoJson() = json(
         "pins" to pins.map { it.toDynamoJson() }.toTypedArray(),
-        "players" to players.map { it.toDynamoJson() }.toTypedArray(),
+        "players" to pinnedPlayers.map { it.toDynamoJson() }.toTypedArray(),
     )
 
     private fun PinnedPlayer.toDynamoJson() = json(
@@ -48,7 +48,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
     )
 
     private fun toPinnedCouplingPair(pair: Json) = PinnedCouplingPair(
-        players = pair.getDynamoListValue("players")
+        pinnedPlayers = pair.getDynamoListValue("players")
             ?.mapNotNull { pinnedPlayerJson -> pinnedPlayerJson.toPinnedPlayer() } ?: emptyList(),
         pins = pair.getDynamoListValue("pins")
             ?.map { pinJson -> pinJson.toPin() }

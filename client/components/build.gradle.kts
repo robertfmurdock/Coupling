@@ -40,6 +40,5 @@ dependencies {
     testImplementation(project(":libraries:test-react"))
     testImplementation(project(":libraries:stub-model"))
     testImplementation(project(":libraries:test-logging"))
-    testImplementation("com.zegreatrob.jsmints:minenzyme")
     testImplementation("com.zegreatrob.testmints:async")
 }

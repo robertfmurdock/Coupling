@@ -116,7 +116,7 @@ private fun PairAssignmentDocument.copyWithSwappedPlayers(
     targetPair: PinnedCouplingPair,
 ): PairAssignmentDocument {
     val sourcePair = pairs.findPairContainingPlayer(droppedPlayerId)
-    val droppedPlayer = sourcePair?.players?.firstOrNull { it.player.id == droppedPlayerId }
+    val droppedPlayer = sourcePair?.pinnedPlayers?.firstOrNull { it.player.id == droppedPlayerId }
 
     if (sourcePair == targetPair || droppedPlayer == null) {
         return this
@@ -135,7 +135,7 @@ private fun PairAssignmentDocument.copyWithSwappedPlayers(
 
 private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
     copy(
-        players = players.map { pinnedPlayer ->
+        pinnedPlayers = pinnedPlayers.map { pinnedPlayer ->
             if (pinnedPlayer == playerToReplace) {
                 replacement
             } else {
@@ -145,7 +145,7 @@ private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, repl
     )
 
 private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = firstOrNull { pair ->
-    pair.players.any { player -> player.player.id == droppedPlayerId }
+    pair.pinnedPlayers.any { player -> player.player.id == droppedPlayerId }
 }
 
 private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = add(

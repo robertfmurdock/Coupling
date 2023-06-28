@@ -2,8 +2,10 @@ package com.zegreatrob.coupling.client.components.pairassignments.spin
 
 import com.zegreatrob.coupling.client.components.Frame
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.orderedPairedPlayers
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
 
@@ -35,9 +37,7 @@ object Start : SpinAnimationState() {
 
     override fun stateData(players: List<Player>, pairAssignments: PairAssignmentDocument) = SpinStateData(
         rosterPlayers = players,
-        revealedPairs = makePlaceholderPlayers(
-            pairAssignments,
-        ).toSimulatedPairs(),
+        revealedPairs = makePlaceholderPlayers(pairAssignments).toSimulatedPairs(),
         shownPlayer = null,
     )
 }
@@ -115,7 +115,7 @@ data class Shuffle(val target: Player, val step: Int) : SpinAnimationState() {
 
 data class AssignedPlayer(val player: Player) : SpinAnimationState() {
     override fun next(pairAssignments: PairAssignmentDocument): SpinAnimationState {
-        val orderedPlayers = pairAssignments.pairs.flatMap { it.players }.map { it.player }
+        val orderedPlayers = pairAssignments.pairs.flatMap(PinnedCouplingPair::players)
         val playerIndex = orderedPlayers.indexOf(player)
         val nextPlayer = orderedPlayers.getOrNull(playerIndex + 1)
         return nextPlayer?.let { Shuffle(it, 0) } ?: End

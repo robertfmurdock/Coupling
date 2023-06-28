@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.action.pairassignmentdocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
@@ -46,7 +46,7 @@ interface AssignPinsActionDispatcher {
         history: List<PairAssignmentDocument>,
     ): List<PinnedCouplingPair> {
         val pairsGroupedByLastTime = pinnedPairs.groupBy { pair ->
-            lastTimePlayerInPairHadPin(pin, history, pair.asPlayers())
+            lastTimePlayerInPairHadPin(pin, history, pair.players)
         }
 
         val candidatePairsWhoNeverHadPin = pairsGroupedByLastTime[-1]
@@ -79,9 +79,7 @@ interface AssignPinsActionDispatcher {
         ?: emptyList()
 
     private fun playersWithPin(doc: PairAssignmentDocument, pin: Pin) = pairWithPin(doc, pin)
-        ?.asPlayers()
-
-    private fun PinnedCouplingPair.asPlayers() = players.map(PinnedPlayer::player)
+        ?.players
 
     private fun pairWithPin(pairAssignmentDocument: PairAssignmentDocument, pin: Pin) =
         pairAssignmentDocument.pairs.find { docPair -> docPair.pins.contains(pin) }

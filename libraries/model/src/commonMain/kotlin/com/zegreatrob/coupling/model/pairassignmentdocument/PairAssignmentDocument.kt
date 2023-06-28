@@ -9,9 +9,6 @@ data class PairAssignmentDocument(
     val pairs: List<PinnedCouplingPair>,
 )
 
-fun PairAssignmentDocument.orderedPairedPlayers() = pairs
-    .asSequence()
-    .flatMap { it.players.asSequence() }
-    .map { it.player }
+fun PairAssignmentDocument.orderedPairedPlayers() = pairs.flatMap(PinnedCouplingPair::players)
 
 val PartyElement<PairAssignmentDocument>.document get() = element

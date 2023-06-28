@@ -33,14 +33,16 @@ fun Player.withPins(pins: List<Pin> = emptyList()) = PinnedPlayer(this, pins)
 
 data class PinnedPlayer(val player: Player, val pins: List<Pin>)
 
-data class PinnedCouplingPair(val players: List<PinnedPlayer>, val pins: Set<Pin> = emptySet()) {
+data class PinnedCouplingPair(val pinnedPlayers: List<PinnedPlayer>, val pins: Set<Pin> = emptySet()) {
 
-    fun toPair() = when (this.players.size) {
-        2 -> pairOf(players[0].player, players[1].player)
-        1 -> pairOf(players[0].player)
+    fun toPair() = when (this.pinnedPlayers.size) {
+        2 -> pairOf(pinnedPlayers[0].player, pinnedPlayers[1].player)
+        1 -> pairOf(pinnedPlayers[0].player)
         else -> CouplingPair.Empty
     }
 }
+
+val PinnedCouplingPair.players get() = pinnedPlayers.map(PinnedPlayer::player)
 
 fun List<CouplingPair>.withPins() = map { it.withPins() }
 

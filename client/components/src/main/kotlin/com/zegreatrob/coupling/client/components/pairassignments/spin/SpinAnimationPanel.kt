@@ -40,11 +40,8 @@ val spinAnimationPanel by ntmFC<SpinAnimationPanel> { (party, rosteredPairAssign
     }
 }
 
-val pairAssignmentStyles = ClassName {
-}
-
 private fun ChildrenBuilder.assignedPairs(party: PartyDetails, revealedPairs: List<PinnedCouplingPair>) = div {
-    className = pairAssignmentStyles
+    asDynamic()["data-testid"] = "assigned-pairs"
     revealedPairs.forEachIndexed { index, it -> add(AssignedPair(party, it, false), key = "$index") }
 }
 
@@ -82,11 +79,8 @@ private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) =
     }
 }
 
-val playerRosterStyles = ClassName {
-}
-
 private fun ChildrenBuilder.playerRoster(players: List<Player>) = div {
-    className = playerRosterStyles
+    asDynamic()["data-testid"] = "player-roster"
     players.forEach { player ->
         if (player == placeholderPlayer) {
             placeholderPlayerCard()

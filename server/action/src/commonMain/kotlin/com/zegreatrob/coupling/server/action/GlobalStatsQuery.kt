@@ -9,8 +9,10 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
@@ -83,9 +85,9 @@ private fun List<PairAssignmentDocument>.allPins(): List<Pin> = flatMap {
 }
 
 private fun PinnedCouplingPair.allPins(): List<Pin> = pins.toList()
-    .plus(players.flatMap(PinnedPlayer::pins))
+    .plus(pinnedPlayers.flatMap(PinnedPlayer::pins))
 
 private fun List<PairAssignmentDocument>.distinctPlayersPairedThisYear() = flatMap(PairAssignmentDocument::pairs)
     .flatMap(PinnedCouplingPair::players)
-    .map { it.player.id }
+    .map(Player::id)
     .distinct()
