@@ -5,11 +5,11 @@ import com.zegreatrob.minreact.ntmFC
 import emotion.css.ClassName
 import emotion.react.css
 import js.import.import
+import js.promise.await
 import js.promise.toPromise
 import kotlinx.browser.document
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
 import org.w3c.dom.Element
 import react.dom.html.ReactHTML.div
