@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.slack
 
 import js.core.jso
-import kotlinx.coroutines.await
+import js.promise.await
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
