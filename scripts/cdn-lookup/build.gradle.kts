@@ -47,7 +47,7 @@ tasks {
 
 artifacts {
     val task = tasks.named("compileProductionExecutableKotlinJs", KotlinJsIrLink::class)
-    add(cdnLookupConfiguration.name, task.map { it.outputFileProperty }) {
-        builtBy(task)
-    }
+    add(cdnLookupConfiguration.name, task.map {
+        it.destinationDirectory.file(it.compilerOptions.moduleName.map { "$it.js" })
+    }) { builtBy(task) }
 }

@@ -90,7 +90,9 @@ tasks {
         )
         mustRunAfter(clean)
         inputs.dir(processResources.map { it.destinationDir.path })
-        inputs.file(compileProductionExecutableKotlinJs.map { it.outputFileProperty })
+        inputs.file(compileProductionExecutableKotlinJs.map {
+            it.destinationDirectory.file(it.compilerOptions.moduleName.map { "$it.js" })
+        })
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")
         outputs.dir(file("build/webpack-output"))
@@ -99,7 +101,7 @@ tasks {
         val jsProject: org.jetbrains.kotlin.gradle.dsl.KotlinJsProjectExtension = project.extensions.getByType()
         val compilation = jsProject.js().compilations.named(compilationName).get()
 
-        inputs.file(compilation?.npmProject?.packageJsonFile)
+        inputs.file(compilation.npmProject.packageJsonFile)
 
         setup(project)
         nodeModulesDir = compilation?.npmProject?.nodeModulesDir
@@ -227,7 +229,9 @@ tasks {
 }
 
 artifacts {
-    add(appConfiguration.name, tasks.compileKotlinJs.map { it.outputFileProperty }) {
+    add(appConfiguration.name, tasks.compileKotlinJs.map {
+        it.destinationDirectory.file(it.compilerOptions.moduleName.map { "$it.js" })
+    }) {
         builtBy(tasks.compileKotlinJs)
     }
     add(appConfiguration.name, file("build/executable")) {

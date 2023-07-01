@@ -46,12 +46,12 @@ dependencies {
 }
 
 tasks {
-    "jsNodeTest" {
+    val jsNodeTest by getting {
         dependsOn(":composeUp")
         outputs.cacheIf { true }
     }
     "jvmTest" {
-        dependsOn(":composeUp")
+        dependsOn(":composeUp", jsNodeTest)
         dependsOn(":importCert")
     }
 }
