@@ -58,7 +58,6 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next")
-    implementation("org.jetbrains.kotlinx:kotlinx-html-js")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     implementation(npmConstrained("@auth0/auth0-react"))
     implementation(npmConstrained("blueimp-md5"))

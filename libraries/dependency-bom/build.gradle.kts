@@ -27,7 +27,6 @@ dependencies {
         api(libs.com.soywiz.korlibs.klock)
         api(libs.io.github.microutils.kotlin.logging)
         api(libs.org.jetbrains.kotlinx.kotlinx.datetime)
-        api(libs.org.jetbrains.kotlinx.kotlinx.html.js)
         api(libs.org.slf4j.slf4j.simple)
     }
 }
