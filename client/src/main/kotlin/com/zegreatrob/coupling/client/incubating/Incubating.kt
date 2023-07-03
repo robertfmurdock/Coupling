@@ -28,7 +28,7 @@ val IncubatingPage by nfc<PageProps> { props ->
 data class IncubatingContent(val addToSlackUrl: String) : DataPropsBind<IncubatingContent>(incubatingContent)
 
 val incubatingContent by ntmFC<IncubatingContent> { props ->
-    add(PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9"))) {
+    PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9")) {
         +"Incubating Features - Best not to touch"
         div {
             AddToSlackButton { url = props.addToSlackUrl }

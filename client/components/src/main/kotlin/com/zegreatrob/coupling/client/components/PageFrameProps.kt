@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.children
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 import web.cssom.ClassName
 import web.cssom.Color
@@ -14,10 +14,14 @@ import web.cssom.Padding
 import web.cssom.px
 import web.cssom.vh
 
-data class PageFrame(val borderColor: Color, val backgroundColor: Color, val className: ClassName? = null) :
-    DataPropsBind<PageFrame>(pageFrame)
+external interface PageFrameProps : PropsWithChildren {
+    var borderColor: Color
+    var backgroundColor: Color
+    var className: ClassName?
+}
 
-val pageFrame by ntmFC<PageFrame> { props ->
+@ReactFunc
+val PageFrame by nfc<PageFrameProps> { props ->
     div {
         css(props.className) {
             padding = Padding(0.px, 25.px, 25.px, 25.px)

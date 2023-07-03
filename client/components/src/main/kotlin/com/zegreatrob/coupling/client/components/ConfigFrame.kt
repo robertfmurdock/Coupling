@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import react.PropsWithChildren
 import react.PropsWithClassName
@@ -13,12 +12,10 @@ external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren {
 }
 
 val ConfigFrame by nfc<ConfigFrameProps> { props ->
-    add(
-        PageFrame(
-            className = props.className,
-            borderColor = props.borderColor ?: NamedColor.black,
-            backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)"),
-        ),
+    PageFrame(
+        className = props.className,
+        borderColor = props.borderColor ?: NamedColor.black,
+        backgroundColor = props.backgroundColor ?: Color("hsla(45, 80%, 96%, 1)"),
     ) {
         +props.children
     }

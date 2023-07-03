@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.coupling.client.party.AboutButton
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
@@ -19,11 +18,9 @@ data class UserConfig(val user: User?) : DataProps<UserConfig> {
 }
 
 private val userConfig by ntmFC<UserConfig> { (user) ->
-    add(
-        PageFrame(
-            borderColor = Color("rgb(94, 84, 102)"),
-            backgroundColor = Color("floralwhite"),
-        ),
+    PageFrame(
+        borderColor = Color("rgb(94, 84, 102)"),
+        backgroundColor = Color("floralwhite"),
     ) {
         GeneralControlBar {
             title = "User Config"

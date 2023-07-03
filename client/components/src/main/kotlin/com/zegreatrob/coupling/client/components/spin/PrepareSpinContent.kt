@@ -55,7 +55,7 @@ val prepareSpinContent by ntmFC<PrepareSpinContent> { props ->
     val enabled = playerSelections.any { it.second }
 
     div {
-        add(PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2"))) {
+        PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2")) {
             div { add(PartyBrowser(party)) }
             div {
                 div {
