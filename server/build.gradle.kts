@@ -48,7 +48,6 @@ dependencies {
     implementation(npmConstrained("compression"))
     implementation(npmConstrained("cookie-parser"))
     implementation(npmConstrained("express"))
-    implementation(npmConstrained("express-graphql"))
     implementation(npmConstrained("express-jwt"))
     implementation(npmConstrained("express-statsd"))
     implementation(npmConstrained("fs-extra"))

@@ -10,7 +10,7 @@ import kotlinx.serialization.json.JsonNull
 val savePlayerResolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args ->
         authorizedPartyDispatcher(
-            request = request,
+            context = request,
             partyId = args.partyId.value,
         )
     },

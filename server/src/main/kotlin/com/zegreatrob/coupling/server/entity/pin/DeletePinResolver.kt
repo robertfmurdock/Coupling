@@ -9,7 +9,7 @@ import kotlinx.serialization.json.JsonNull
 val deletePinResolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args ->
         authorizedPartyDispatcher(
-            request = request,
+            context = request,
             partyId = args.partyId.value,
         )
     },

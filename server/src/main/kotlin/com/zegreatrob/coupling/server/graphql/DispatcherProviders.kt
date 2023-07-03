@@ -7,21 +7,24 @@ import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.ICommandDispatcher
 import com.zegreatrob.coupling.server.PrereleaseDispatcher
 import com.zegreatrob.coupling.server.express.Config
-import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.express.route.CouplingContext
 import korlibs.time.TimeProvider
 import kotlinx.serialization.json.JsonNull
 
 object DispatcherProviders {
 
-    fun <E, I> command(): GraphQLDispatcherProvider<E, I, CommandDispatcher> = { r, _, _ -> r.commandDispatcher }
+    fun <E, I> command(): GraphQLDispatcherProvider<E, I, CommandDispatcher> = { context, _, _ ->
+        context.commandDispatcher
+    }
 
-    val partyCommand: (Request, JsonParty, JsonNull) -> CommandDispatcher =
-        { request, _, _ -> request.commandDispatcher }
+    val partyCommand: (CouplingContext, JsonParty, JsonNull) -> CommandDispatcher = { context, _, _ ->
+        context.commandDispatcher
+    }
 
     suspend fun authorizedPartyDispatcher(
-        request: Request,
+        context: CouplingContext,
         partyId: String,
-    ) = request.commandDispatcher.authorizedPartyIdDispatcher(partyId).let { if (it.isAuthorized()) it else null }
+    ) = context.commandDispatcher.authorizedPartyIdDispatcher(partyId).let { if (it.isAuthorized()) it else null }
 
     fun <E, I> prereleaseCommand(): GraphQLDispatcherProvider<E, I, PrereleaseDispatcher> = { request, entity, args ->
         val dispatcher = command<E, I>()(request, entity, args)

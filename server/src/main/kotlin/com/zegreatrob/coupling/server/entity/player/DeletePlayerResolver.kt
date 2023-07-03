@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val deletePlayerResolver = dispatch(
-    { request, _: JsonNull, args -> authorizedPartyDispatcher(request = request, partyId = args.partyId.value) },
+    { request, _: JsonNull, args -> authorizedPartyDispatcher(context = request, partyId = args.partyId.value) },
     { _, input: DeletePlayerInput -> input.toCommand() },
     { true },
 )

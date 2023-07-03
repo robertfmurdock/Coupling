@@ -25,7 +25,7 @@ import com.zegreatrob.coupling.server.entity.secret.deleteSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.secretListResolve
 import com.zegreatrob.coupling.server.entity.slackaccess.grantSlackAccessResolver
 import com.zegreatrob.coupling.server.entity.user.userResolve
-import com.zegreatrob.coupling.server.external.express.Request
+import com.zegreatrob.coupling.server.express.route.CouplingContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
 import kotlinx.serialization.json.decodeFromDynamic
@@ -37,7 +37,7 @@ fun couplingResolvers() = json(
     "Query" to json(
         "user" to userResolve,
         "partyList" to partyListResolve,
-        "party" to { _: Json, args: Json, r: Request, _: Json ->
+        "party" to { _: Json, args: Json, r: CouplingContext, _: Json ->
             MainScope().promise {
                 val jsonParty = kotlinx.serialization.json.Json.decodeFromDynamic<PartyInput>(args["input"])
                     .let { JsonParty(id = it.partyId) }
