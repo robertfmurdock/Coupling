@@ -1,3 +1,5 @@
+import org.jmailen.gradle.kotlinter.tasks.LintTask
+
 plugins {
     id("com.zegreatrob.jsmints.plugins.minreact")
     id("com.zegreatrob.coupling.plugins.jstools")
@@ -11,6 +13,27 @@ kotlin {
                 customField("mocha", mapOf("require" to "global-jsdom/register"))
             }
         }
+    }
+}
+
+kotlin {
+    sourceSets.main {
+        kotlin.srcDir("build/generated/ksp/js/main/kotlin")
+    }
+    sourceSets.test {
+        kotlin.srcDir("build/generated/ksp/js/test/kotlin")
+    }
+}
+
+tasks {
+    formatKotlinMain {
+        dependsOn("kspKotlinJs")
+    }
+    withType(LintTask::class) {
+        exclude { spec -> spec.file.absolutePath.contains("generated") }
+    }
+    lintKotlinMain {
+        dependsOn("kspKotlinJs")
     }
 }
 

@@ -11,12 +11,7 @@ fun ChildrenBuilder.statisticsButton(party: PartyDetails) = Link {
     to = "/${party.id.value}/statistics"
     tabIndex = -1
     draggable = false
-    add(
-        com.zegreatrob.coupling.client.components.CouplingButton(
-            com.zegreatrob.coupling.client.components.large,
-            com.zegreatrob.coupling.client.components.blue,
-        ),
-    ) {
+    add(CouplingButton(large, blue)) {
         i { this.className = ClassName("fa fa-database") }
         +" Statistics!"
     }

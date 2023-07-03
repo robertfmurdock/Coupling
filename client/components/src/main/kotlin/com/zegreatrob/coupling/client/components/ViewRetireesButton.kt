@@ -11,12 +11,7 @@ fun ChildrenBuilder.viewRetireesButton(party: PartyDetails) = Link {
     to = "/${party.id.value}/players/retired"
     tabIndex = -1
     draggable = false
-    add(
-        com.zegreatrob.coupling.client.components.CouplingButton(
-            com.zegreatrob.coupling.client.components.large,
-            com.zegreatrob.coupling.client.components.yellow,
-        ),
-    ) {
+    add(CouplingButton(large, yellow)) {
         i { this.className = ClassName("fa fa-user-slash") }
         +" Retirees!"
     }
