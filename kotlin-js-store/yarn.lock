@@ -774,12 +774,12 @@
   dependencies:
     tslib "^2.5.0"
 
-"@aws-sdk/lib-dynamodb@3.363.0":
-  version "3.363.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.363.0.tgz#a5e8fd168d3ac9b1fe0b2dab08b08256f83fb6c1"
-  integrity sha512-6sa/dbZACurhjqV9GxM/iXOgV4hzOTd1/jlhzP7KLJW7UVoGXTBf0rRLpLUE0SxozML0jhDkqJ0hOUVY7Q1Xew==
+"@aws-sdk/lib-dynamodb@3.365.0":
+  version "3.365.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.365.0.tgz#1024e15fd30269b88e0622748db08b48ac6c3e11"
+  integrity sha512-eiJaSDkXbsIL2SZrgKbOtZTsvgH1/T9j9WhPzD35fC6BlP0v6Wvuh9L6wXp4kxb/BmfaU6WUBmKWar9By7RkNg==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.363.0"
+    "@aws-sdk/util-dynamodb" "3.365.0"
     tslib "^2.5.0"
 
 "@aws-sdk/middleware-content-length@3.357.0":
@@ -1151,10 +1151,10 @@
     "@aws-sdk/types" "3.357.0"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.363.0":
-  version "3.363.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.363.0.tgz#3732bc512077236c659447ffdb13e4cc14faadc9"
-  integrity sha512-zzY2PnNFxqJYIrbd/C2VMWhPMWP+XQG4C/V/yEfU2LY+HNAZ0aJPUwvXnMJTumZjcfYr+20qRiowsw8dnXEVgA==
+"@aws-sdk/util-dynamodb@3.365.0":
+  version "3.365.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.365.0.tgz#db4b53bd1b68327618bf86543313b3739bdab390"
+  integrity sha512-/Or+CZvhw3LXEJL7E+xRsGb2cvW/QqxzszUErLxFsechxdybTRDL2Hc2z+UZDSDjXVjzHoN8bXFWOwMSEdAbBA==
   dependencies:
     tslib "^2.5.0"
 
@@ -11554,10 +11554,10 @@ react-flip-toolkit@^7.1.0:
     flip-toolkit "7.1.0"
     prop-types "^15.8.1"
 
-react-hotkeys-hook@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-4.4.0.tgz#e7c55bb13ecb6ffb447e90ca5525403a5a3ac7b8"
-  integrity sha512-wOaCWLwgT/f895CMJrR9hmzVf+gfL8IpjWDXWXKngBp9i6Xqzf0tvLv4VI8l3Vlsg/cc4C/Iik3Ck76L/Hj0tw==
+react-hotkeys-hook@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-4.4.1.tgz#1f7a7a1c9c21d4fa3280bf340fcca8fd77d81994"
+  integrity sha512-sClBMBioFEgFGYLTWWRKvhxcCx1DRznd+wkFHwQZspnRBkHTgruKIHptlK/U/2DPX8BhHoRGzpMVWUXMmdZlmw==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
