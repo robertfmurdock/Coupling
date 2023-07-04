@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import emotion.react.css
 import react.ChildrenBuilder
@@ -53,7 +52,7 @@ val pinCard by ntmFC<PinCard> { (partyId, pin, shouldLink) ->
                 top = 0.px
                 padding = 2.px
             }
-            add(PinButton(pin, PinButtonScale.Small, showTooltip = false))
+            PinButton(pin, PinButtonScale.Small, showTooltip = false)
             div {
                 className = ClassName("pin-name")
                 +pin.name

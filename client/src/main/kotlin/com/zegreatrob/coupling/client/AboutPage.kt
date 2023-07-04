@@ -33,7 +33,10 @@ val AboutPage by nfc<PageProps> {
 
 val aboutPageContent by nfc<PropsWithChildren> { props ->
     div {
-        PageFrame(borderColor = Color("rgb(94, 84, 102)"), backgroundColor = Color("floralwhite")) {
+        PageFrame(
+            borderColor = Color("rgb(94, 84, 102)"),
+            backgroundColor = Color("floralwhite"),
+        ) {
             div {
                 css { width = 40.em }
                 backButtonSection()

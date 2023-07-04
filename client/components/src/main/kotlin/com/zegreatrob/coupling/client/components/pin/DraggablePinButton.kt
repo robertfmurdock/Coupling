@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrag
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import emotion.react.css
 import react.dom.html.ReactHTML.span
@@ -40,6 +39,6 @@ val draggablePinButton by ntmFC<DraggablePinButton> { (pin, scale) ->
             animationName = ident("pulsate")
             animationIterationCount = AnimationIterationCount.infinite
         }
-        add(PinButton(pin, scale, showTooltip = true))
+        PinButton(pin = pin, scale = scale, showTooltip = true)
     }
 }

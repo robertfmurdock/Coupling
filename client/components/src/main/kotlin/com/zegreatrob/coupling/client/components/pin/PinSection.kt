@@ -30,13 +30,11 @@ val pinSection by ntmFC<PinSection> { (pinList, scale, canDrag, className) ->
             left = 50.pct
         }
         pinList.map { pin ->
-            add(
-                if (canDrag) {
-                    DraggablePinButton(pin, scale)
-                } else {
-                    PinButton(pin, scale, showTooltip = true)
-                },
-            )
+            if (canDrag) {
+                add(DraggablePinButton(pin, scale))
+            } else {
+                PinButton(pin, scale, showTooltip = true)
+            }
         }
     }
 }

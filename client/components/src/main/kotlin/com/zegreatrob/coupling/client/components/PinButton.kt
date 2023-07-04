@@ -1,10 +1,11 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
+import react.Props
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
@@ -36,19 +37,23 @@ enum class PinButtonScale(val faTag: String, val factor: Double) {
     fun diameterInPixels() = 14 * factor
 }
 
-data class PinButton(
-    val pin: Pin,
-    val scale: PinButtonScale = PinButtonScale.Normal,
-    val className: String = "",
-    val showTooltip: Boolean = true,
-    val onClick: () -> Unit = {},
-) : DataPropsBind<PinButton>(pinButton)
+external interface PinButtonProps : Props {
+    var pin: Pin
+    var scale: PinButtonScale?
+    var className: String?
+    var showTooltip: Boolean?
+    var onClick: (() -> Unit)?
+}
 
-val pinButton by ntmFC<PinButton> { (pin, scale, className, showTooltip, onClickFunc) ->
-    val onClickCallback: (MouseEvent<*, *>) -> Unit = useCallback { onClickFunc() }
+@ReactFunc
+val PinButton by nfc<PinButtonProps> { props ->
+    val onClickCallback: (MouseEvent<*, *>) -> Unit = useCallback { props.onClick?.invoke() }
+    val scale = props.scale ?: PinButtonScale.Normal
+    val showTooltip = props.showTooltip ?: true
     div {
+        val pin = props.pin
         asDynamic()["data-pin-button"] = "${pin.id}"
-        css(ClassName(className)) {
+        css(ClassName(props.className ?: "")) {
             pinButtonStyles()
             scaledStyles(scale)
         }

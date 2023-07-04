@@ -72,7 +72,7 @@ val pinConfigContent by ntmFC<PinConfigContent> { (party, pin, pinList, onChange
                     marginLeft = 15.px
                     marginBottom = 15.px
                 }
-                add(PinButton(pin, PinButtonScale.Large, showTooltip = false))
+                PinButton(pin, PinButtonScale.Large, showTooltip = false)
             }
         }
         pinBag(party, pinList)

@@ -212,7 +212,7 @@ private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {})
     div {
         key = pin.id ?: ""
         css { display = Display.inlineBlock }
-        add(PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick))
+        PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick)
     }
 }
 
