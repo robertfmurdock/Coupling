@@ -14,11 +14,7 @@ fun ChildrenBuilder.settingsButton(party: PartyDetails, className: ClassName = C
     tabIndex = -1
     draggable = false
     add(
-        CouplingButton(
-            large,
-            black,
-            className,
-        ) {
+        CouplingButton(large, black, className) {
             fontSize = 24.px
             padding = Padding(1.px, 4.px, 2.px)
         },

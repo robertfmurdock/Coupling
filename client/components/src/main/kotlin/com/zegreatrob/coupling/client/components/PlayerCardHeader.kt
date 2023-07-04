@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Props
 import web.cssom.Display
 import web.cssom.Globals
 import web.cssom.None
@@ -11,12 +12,15 @@ import web.cssom.TransitionProperty
 import web.cssom.TransitionTimingFunction
 import web.cssom.s
 
-data class PlayerCardHeader(val player: Player, val size: Int) : DataPropsBind<PlayerCardHeader>(playerCardHeader)
+external interface PlayerCardHeaderProps : Props {
+    var player: Player
+    var size: Int
+}
 
-private val playerCardHeader by ntmFC<PlayerCardHeader> { props ->
-    val (player, size) = props
+@ReactFunc
+val PlayerCardHeader by nfc<PlayerCardHeaderProps> { props ->
     CardHeader {
-        this.size = size
+        size = props.size
         css {
             transitionProperty = TransitionProperty.all
             transitionTimingFunction = TransitionTimingFunction.easeOut
@@ -28,6 +32,6 @@ private val playerCardHeader by ntmFC<PlayerCardHeader> { props ->
                 display = Display.block
             }
         }
-        this.headerContent = player.name
+        headerContent = props.player.name
     }
 }

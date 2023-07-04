@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.client.components.gravatar.myGravatarUrl
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import csstype.PropertiesBuilder
 import emotion.react.css
@@ -68,7 +67,7 @@ val playerCard by ntmFC<PlayerCard> { (player, className, size, onClick, deselec
                 perspective = 15.em
             }
             playerGravatarImage(player, size)
-            add(PlayerCardHeader(player, size))
+            PlayerCardHeader(player, size)
         }
     }
 }
