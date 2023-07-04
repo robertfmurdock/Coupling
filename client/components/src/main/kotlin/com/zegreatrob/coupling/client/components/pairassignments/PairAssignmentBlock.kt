@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.components
+package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.minreact.nfc
 import emotion.react.css

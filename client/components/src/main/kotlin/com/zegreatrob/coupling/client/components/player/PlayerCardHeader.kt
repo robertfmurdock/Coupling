@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.client.components
+package com.zegreatrob.coupling.client.components.player
 
+import com.zegreatrob.coupling.client.components.CardHeader
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc

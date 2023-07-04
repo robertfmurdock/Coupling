@@ -1,5 +1,8 @@
-package com.zegreatrob.coupling.client.components
+package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.blue
+import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.add
 import react.ChildrenBuilder

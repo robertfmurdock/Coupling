@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components.player
 
 import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
-import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player

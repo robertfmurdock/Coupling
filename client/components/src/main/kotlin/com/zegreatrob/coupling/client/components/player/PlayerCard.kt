@@ -1,7 +1,9 @@
-package com.zegreatrob.coupling.client.components
+package com.zegreatrob.coupling.client.components.player
 
+import com.zegreatrob.coupling.client.components.encodeURIComponent
 import com.zegreatrob.coupling.client.components.gravatar.gravatarUrl
 import com.zegreatrob.coupling.client.components.gravatar.myGravatarUrl
+import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind

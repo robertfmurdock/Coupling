@@ -3,9 +3,8 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.CouplingButton
-import com.zegreatrob.coupling.client.components.PairAssignmentBlock
-import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
+import com.zegreatrob.coupling.client.components.pin.PinButtonScale
 import com.zegreatrob.coupling.client.components.pin.PinSection
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.red

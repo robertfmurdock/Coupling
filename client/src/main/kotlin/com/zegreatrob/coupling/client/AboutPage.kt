@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.components.PageFrame
-import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.components.loadMarkdownString
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player

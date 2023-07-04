@@ -1,14 +1,13 @@
 package com.zegreatrob.coupling.client.components.pin
 
-import com.zegreatrob.coupling.client.components.PinButton
-import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 import web.cssom.BackgroundRepeat
@@ -29,10 +28,18 @@ import web.cssom.px
 import web.cssom.rgb
 import web.cssom.url
 
-data class PinCard(val partyId: PartyId, val pin: Pin, val shouldLink: Boolean = true) : DataPropsBind<PinCard>(pinCard)
+external interface PinCardProps : Props {
+    @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
+    var partyId: PartyId
+    var pin: Pin
+    var shouldLink: Boolean?
+}
 
-val pinCard by ntmFC<PinCard> { (partyId, pin, shouldLink) ->
-    optionalLink(shouldLink, partyId, pin) {
+@ReactFunc
+val PinCard by nfc<PinCardProps> { props ->
+    val shouldLink = props.shouldLink ?: true
+    val pin = props.pin
+    optionalLink(shouldLink, props.partyId, pin) {
         div {
             css {
                 position = Position.relative

@@ -1,5 +1,6 @@
-package com.zegreatrob.coupling.client.components
+package com.zegreatrob.coupling.client.components.pin
 
+import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc

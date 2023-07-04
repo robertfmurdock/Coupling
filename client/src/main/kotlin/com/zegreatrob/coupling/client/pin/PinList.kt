@@ -40,16 +40,7 @@ val pinList by ntmFC<PinList> { (party, pins) ->
         }
 
         div {
-            pins.map {
-                add(
-                    PinCard(
-                        partyId = party.id,
-                        pin = it,
-                        shouldLink = true,
-                    ),
-                    key = it.id,
-                )
-            }
+            pins.map { PinCard(partyId = party.id, pin = it, shouldLink = true, key = it.id) }
         }
         div {
             Link {

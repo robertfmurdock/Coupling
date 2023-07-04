@@ -1,7 +1,12 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.coupling.client.components.pairassignments.viewHistoryButton
 import com.zegreatrob.coupling.client.components.party.PartyCard
+import com.zegreatrob.coupling.client.components.party.PartySelectButton
+import com.zegreatrob.coupling.client.components.pin.pinListButton
 import com.zegreatrob.coupling.client.components.player.addPlayerButton
+import com.zegreatrob.coupling.client.components.player.viewRetireesButton
+import com.zegreatrob.coupling.client.components.stats.statisticsButton
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc

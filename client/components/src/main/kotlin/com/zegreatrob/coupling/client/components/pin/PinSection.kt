@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.components.pin
 
-import com.zegreatrob.coupling.client.components.PinButton
-import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import emotion.react.css
 import react.dom.html.ReactHTML.div
@@ -31,7 +28,7 @@ val pinSection by ntmFC<PinSection> { (pinList, scale, canDrag, className) ->
         }
         pinList.map { pin ->
             if (canDrag) {
-                add(DraggablePinButton(pin, scale))
+                DraggablePinButton(pin, scale)
             } else {
                 PinButton(pin, scale, showTooltip = true)
             }

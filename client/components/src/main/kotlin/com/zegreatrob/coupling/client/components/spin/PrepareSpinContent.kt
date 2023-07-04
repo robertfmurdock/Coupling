@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.client.components.spin
 
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
-import com.zegreatrob.coupling.client.components.PinButton
-import com.zegreatrob.coupling.client.components.PinButtonScale
-import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
+import com.zegreatrob.coupling.client.components.pin.PinButton
+import com.zegreatrob.coupling.client.components.pin.PinButtonScale
 import com.zegreatrob.coupling.client.components.pink
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
+import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.br
@@ -251,7 +252,7 @@ private fun playerCard(
     playerSelections: List<Pair<Player, Boolean>>,
 ) = PlayerCard(
     player,
-    className = emotion.css.ClassName {
+    className = ClassName {
         transitionProperty = TransitionProperty.all
         transitionDuration = 0.25.s
         transitionTimingFunction = TransitionTimingFunction.easeOut

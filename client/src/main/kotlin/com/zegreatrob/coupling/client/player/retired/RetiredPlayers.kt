@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.player.retired
 
 import com.zegreatrob.coupling.client.components.Paths.playerConfigPage
-import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.with

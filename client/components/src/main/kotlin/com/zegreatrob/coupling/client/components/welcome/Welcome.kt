@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.components.welcome
 
 import com.zegreatrob.coupling.client.components.CouplingButton
-import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.external.fitty.fitty
 import com.zegreatrob.coupling.client.components.pink
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf

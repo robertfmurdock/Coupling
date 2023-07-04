@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.coupling.client.components.pin.PinButton
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact
+import com.zegreatrob.wrapper.testinglibrary.react.render
 import kotlinx.dom.hasClass
 import org.w3c.dom.Element
-import react.Fragment
-import react.create
 import kotlin.test.Test
 
 class PinButtonTest {
@@ -16,7 +16,7 @@ class PinButtonTest {
     fun whenGivenPinWithSimpleIconWillUseStandardFontAwesomeTag() = setup(object {
         val pin = Pin(icon = "angry")
     }) exercise {
-        render(Fragment.create { PinButton(pin, onClick = {}) })
+        TestingLibraryReact.render { PinButton(pin, onClick = {}) }
     } verify { wrapper ->
         wrapper.baseElement.getElementsByTagName("i").item(0)
             .assertIconHasClasses("fa", "fa-angry")
@@ -26,7 +26,7 @@ class PinButtonTest {
     fun whenGivenPinWithAlreadyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object {
         val pin = Pin(icon = "fa-angry")
     }) exercise {
-        render(Fragment.create { PinButton(pin, onClick = {}) })
+        TestingLibraryReact.render { PinButton(pin, onClick = {}) }
     } verify { wrapper ->
         wrapper.baseElement.getElementsByTagName("i").item(0)
             .assertIconHasClasses("fa", "fa-angry")
@@ -36,7 +36,7 @@ class PinButtonTest {
     fun whenGivenPinWithFullyDecoratedIconWillUseStandardFontAwesomeTag() = setup(object {
         val pin = Pin(icon = "far fa-angry")
     }) exercise {
-        render(Fragment.create { PinButton(pin, onClick = {}) })
+        TestingLibraryReact.render { PinButton(pin, onClick = {}) }
     } verify { wrapper ->
         wrapper.baseElement.getElementsByTagName("i").item(0)
             .assertIconHasClasses("far", "fa-angry")

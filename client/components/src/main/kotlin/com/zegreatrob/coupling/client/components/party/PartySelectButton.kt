@@ -1,5 +1,7 @@
-package com.zegreatrob.coupling.client.components
+package com.zegreatrob.coupling.client.components.party
 
+import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import react.Props

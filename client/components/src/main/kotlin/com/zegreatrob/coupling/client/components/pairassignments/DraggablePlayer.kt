@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
-import com.zegreatrob.coupling.client.components.PlayerCard
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.components.pairassignments.spin
 
-import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.components.pairassignments.AssignedPair
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignmentsHeader
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.spin.RosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails

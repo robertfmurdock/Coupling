@@ -4,14 +4,11 @@ import com.zegreatrob.coupling.client.components.ConfigForm
 import com.zegreatrob.coupling.client.components.ConfigFrame
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.Editor
-import com.zegreatrob.coupling.client.components.PinButton
-import com.zegreatrob.coupling.client.components.PinButtonScale
 import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import emotion.react.css
 import react.ChildrenBuilder
@@ -80,9 +77,7 @@ val pinConfigContent by ntmFC<PinConfigContent> { (party, pin, pinList, onChange
 }
 
 private fun ChildrenBuilder.pinBag(party: PartyDetails, pinList: List<Pin>) = div {
-    pinList.map { pin ->
-        add(PinCard(party.id, pin), key = pin.id)
-    }
+    pinList.map { pin -> PinCard(party.id, pin, key = pin.id) }
 }
 
 private fun ChildrenBuilder.pinConfigForm(

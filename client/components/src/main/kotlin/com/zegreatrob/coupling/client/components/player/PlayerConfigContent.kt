@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.components.ConfigForm
 import com.zegreatrob.coupling.client.components.ConfigFrame
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.Editor
-import com.zegreatrob.coupling.client.components.PlayerCard
 import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.client.components.gravatarLink
 import com.zegreatrob.coupling.model.party.PartyDetails
