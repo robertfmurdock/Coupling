@@ -26,7 +26,7 @@ data class RetiredPlayers(val party: PartyDetails, val retiredPlayers: List<Play
 
 val retiredPlayers by ntmFC<RetiredPlayers> { (party, players) ->
     div {
-        add(PartyBrowser(party))
+        PartyBrowser(party)
         div {
             css {
                 display = Display.inlineBlock

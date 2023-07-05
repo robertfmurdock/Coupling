@@ -16,9 +16,9 @@ val PartyConfigPage by nfc<PageProps> { props ->
 private fun PartyId.partyQueryProps(pageProps: PageProps) = CouplingQuery(
     commander = pageProps.commander,
     query = graphQuery { party(this@partyQueryProps) { party() } },
-    toDataprops = { _, commandFunc, result ->
+    build = { _, commandFunc, result ->
         PartyConfig(
-            party = result.party?.details?.data ?: return@CouplingQuery null,
+            party = result.party?.details?.data ?: return@CouplingQuery,
             dispatchFunc = commandFunc,
         )
     },
@@ -27,5 +27,5 @@ private fun PartyId.partyQueryProps(pageProps: PageProps) = CouplingQuery(
 private fun newPartyProps(pageProps: PageProps) = CouplingQuery(
     commander = pageProps.commander,
     query = NewPartyCommand(),
-    toDataprops = { _, commandFunc, data -> PartyConfig(data, commandFunc) },
+    build = { _, commandFunc, data -> PartyConfig(data, commandFunc) },
 )

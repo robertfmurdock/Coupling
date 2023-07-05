@@ -22,10 +22,7 @@ val AboutButton by nfc<Props> {
             span { +"About" }
             span {
                 css { margin = 2.px }
-                CouplingLogo {
-                    width = 27.0
-                    height = 18.0
-                }
+                CouplingLogo(width = 27.0, height = 18.0)
             }
         }
     }

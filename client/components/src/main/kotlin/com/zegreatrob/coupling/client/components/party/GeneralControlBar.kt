@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.party
 
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.PropsWithChildren
@@ -21,6 +22,7 @@ external interface GeneralControlBarProps : PropsWithChildren {
     var splashComponent: ReactNode
 }
 
+@ReactFunc
 val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
     div {
         css {

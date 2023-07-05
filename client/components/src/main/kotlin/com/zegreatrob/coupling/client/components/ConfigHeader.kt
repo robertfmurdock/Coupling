@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.client.components.player.addPlayerButton
 import com.zegreatrob.coupling.client.components.player.viewRetireesButton
 import com.zegreatrob.coupling.client.components.stats.statisticsButton
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.PropsWithChildren
@@ -60,7 +59,7 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                     gridRowStart = integer(1)
                     gridRowEnd = integer(3)
                 }
-                add(PartyCard(party, 75))
+                PartyCard(party, 75)
             }
             div {
                 css {

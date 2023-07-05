@@ -57,7 +57,7 @@ val prepareSpinContent by ntmFC<PrepareSpinContent> { props ->
 
     div {
         PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2")) {
-            div { add(PartyBrowser(party)) }
+            div { PartyBrowser(party) }
             div {
                 div {
                     spinButton(onSpin, enabled = enabled)

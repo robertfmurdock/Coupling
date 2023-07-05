@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.LogoutButton
 import com.zegreatrob.coupling.client.components.party.CouplingLogo
 import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.minreact.nfc
+import react.Fragment
 import react.PropsWithChildren
 import react.create
 import web.cssom.Color
@@ -16,10 +17,7 @@ val SlackConnectPageFrame by nfc<PropsWithChildren> {
         borderColor = Color("#ff8c00")
         GeneralControlBar {
             title = "Slack Connect"
-            splashComponent = CouplingLogo.create {
-                width = 72.0
-                height = 48.0
-            }
+            splashComponent = Fragment.create { CouplingLogo(width = 72.0, height = 48.0) }
             LogoutButton()
             GqlButton()
         }

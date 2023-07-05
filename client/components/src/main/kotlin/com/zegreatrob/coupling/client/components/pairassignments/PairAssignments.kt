@@ -54,7 +54,7 @@ private val pairAssignments by ntmFC<PairAssignments> { props ->
         div {
             className = pairAssignmentsClassName
             div {
-                add(PartyBrowser(party))
+                PartyBrowser(party)
                 add(PairSection(party, players, pairAssignments, allowSave, setPairs, controls))
             }
             add(ControlPanel(party))

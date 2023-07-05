@@ -8,11 +8,11 @@ import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.client.components.gravatarLink
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.events.ChangeEventHandler
@@ -28,22 +28,20 @@ import web.cssom.Display
 import web.cssom.number
 import web.html.InputType
 
-data class PartyConfigContent(
-    var party: PartyDetails,
-    var isNew: Boolean?,
-    var onChange: (ChangeEvent<*>) -> Unit,
-    var onSave: () -> Unit,
-    var onDelete: (() -> Unit)?,
-) : DataPropsBind<PartyConfigContent>(partyConfigContent) {
-
-    companion object {
-        val className get() = ClassName("party-config-content")
-    }
+external interface PartyConfigContentProps : Props {
+    var party: PartyDetails
+    var isNew: Boolean?
+    var onChange: (ChangeEvent<*>) -> Unit
+    var onSave: () -> Unit
+    var onDelete: (() -> Unit)?
 }
 
-val partyConfigContent by ntmFC<PartyConfigContent> { (party, isNew, onChange, onSave, onDelete) ->
+val partyConfigContentClassName = ClassName("party-config-content")
+
+@ReactFunc
+val PartyConfigContent by nfc<PartyConfigContentProps> { (party, isNew, onChange, onSave, onDelete) ->
     ConfigFrame {
-        className = PartyConfigContent.className
+        className = partyConfigContentClassName
         backgroundColor = Color("hsla(45, 80%, 96%, 1)")
         borderColor = Color("#ff8c00")
 
@@ -54,7 +52,7 @@ val partyConfigContent by ntmFC<PartyConfigContent> { (party, isNew, onChange, o
         div {
             css { display = Display.flex }
             partyConfigEditor(party, isNew ?: false, onChange, onSave, onDelete)
-            add(PartyCard(party))
+            PartyCard(party)
         }
     }
 }
@@ -201,15 +199,16 @@ private fun ChildrenBuilder.enableBadgesInput(party: PartyDetails, onChange: (Ch
     checked = party.badgesEnabled,
 )
 
-private fun ChildrenBuilder.enableAnimationsInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
-    labelText = "Enable Animations",
-    id = "animations-checkbox",
-    name = "animationsEnabled",
-    value = party.id.value,
-    type = InputType.checkbox,
-    onChange = onChange,
-    checked = party.animationEnabled,
-)
+private fun ChildrenBuilder.enableAnimationsInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) =
+    configInput(
+        labelText = "Enable Animations",
+        id = "animations-checkbox",
+        name = "animationsEnabled",
+        value = party.id.value,
+        type = InputType.checkbox,
+        onChange = onChange,
+        checked = party.animationEnabled,
+    )
 
 private fun ChildrenBuilder.enableCallSignsInput(party: PartyDetails, onChange: (ChangeEvent<*>) -> Unit) = configInput(
     labelText = "Enable Call Signs",

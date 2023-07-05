@@ -185,7 +185,7 @@ private fun ChildrenBuilder.popperDiv(
 }
 
 private fun ChildrenBuilder.partyConfigFrame(state: MakeParty) {
-    add(PartyConfigContent(state.party, true, {}, {}, {}))
+    PartyConfigContent(state.party, true, {}, {}, {})
 }
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {

@@ -2,15 +2,20 @@ package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.client.components.CardHeader
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Props
 import web.cssom.Globals
 import web.cssom.None
 
-data class PartyCardHeader(val party: PartyDetails, val size: Int) : DataPropsBind<PartyCardHeader>(partyCardHeader)
+external interface PartyCardHeaderProps : Props {
+    var party: PartyDetails
+    var size: Int
+}
 
-val partyCardHeader by ntmFC<PartyCardHeader> { (party, size) ->
+@ReactFunc
+val PartyCardHeader by nfc<PartyCardHeaderProps> { (party, size) ->
     CardHeader {
         this.size = size
         css {

@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
@@ -22,6 +21,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import js.core.jso
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLOptionElement
+import react.Fragment
 import react.ReactNode
 import react.create
 import react.router.MemoryRouter
@@ -35,13 +35,9 @@ class PartyConfigTest {
     fun willDefaultPartyThatIsMissingData() = asyncSetup(object {
         val party = PartyDetails(PartyId("1"), name = "1")
     }) exercise {
-        render(
-            PartyConfig(
-                party,
-                StubDispatchFunc(),
-            ).create(),
-            jso { wrapper = MemoryRouter },
-        )
+        render(jso { wrapper = MemoryRouter }) {
+            PartyConfig(party, StubDispatchFunc())
+        }
     } verify {
         within(screen.getByLabelText("Pairing Rule"))
             .getByRole("option", RoleOptions(selected = true))
@@ -79,8 +75,7 @@ class PartyConfigTest {
                     }
                     PathRoute {
                         path = "*"
-                        element =
-                            PartyConfig(party, stubDispatcher.func()).create()
+                        element = Fragment.create { PartyConfig(party, stubDispatcher.func()) }
                     }
                 }
             },
@@ -102,10 +97,9 @@ class PartyConfigTest {
         val party = PartyDetails(PartyId(""))
         val stubDispatcher = StubDispatcher()
     }) {
-        render(
-            PartyConfig(party, stubDispatcher.func()).create(),
-            jso { wrapper = MemoryRouter },
-        )
+        render(jso { wrapper = MemoryRouter }) {
+            PartyConfig(party, stubDispatcher.func())
+        }
     } exercise {
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value
             .also { fireEvent.submit(screen.getByRole("form")) }

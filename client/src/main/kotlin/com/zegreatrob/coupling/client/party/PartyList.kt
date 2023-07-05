@@ -15,6 +15,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.minreact.ntmFC
+import react.Fragment
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
@@ -26,10 +27,7 @@ val partyList by ntmFC<PartyList> { (parties) ->
     PartyListFrame {
         GeneralControlBar {
             title = "Party List"
-            splashComponent = CouplingLogo.create {
-                width = 72.0
-                height = 48.0
-            }
+            splashComponent = Fragment.create { CouplingLogo(width = 72.0, height = 48.0) }
             AboutButton()
             DemoButton()
             LogoutButton()
@@ -38,7 +36,7 @@ val partyList by ntmFC<PartyList> { (parties) ->
         }
         div {
             parties.forEach { party ->
-                add(PartyCard(party), key = party.id.value)
+                PartyCard(party, key = party.id.value)
             }
         }
         div { NewPartyButton() }

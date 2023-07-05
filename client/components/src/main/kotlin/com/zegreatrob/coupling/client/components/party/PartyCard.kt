@@ -5,13 +5,13 @@ import com.zegreatrob.coupling.client.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.visuallyHidden
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
 import js.core.jso
 import react.ChildrenBuilder
+import react.Props
 import react.dom.aria.ariaHidden
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
@@ -32,9 +32,15 @@ import web.cssom.number
 import web.cssom.px
 import web.cssom.rgb
 
-data class PartyCard(val party: PartyDetails, val size: Int = 150) : DataPropsBind<PartyCard>(partyCard)
+external interface PartyCardProps : Props {
+    var party: PartyDetails
+    var size: Int?
+}
 
-val partyCard by ntmFC<PartyCard> { (party, size) ->
+@ReactFunc
+val PartyCard by nfc<PartyCardProps> { props ->
+    val (party) = props
+    val size = props.size ?: 150
     Link {
         to = party.id.currentPairsPage()
         visuallyHidden { +"Party Home Page" }
@@ -48,7 +54,7 @@ val partyCard by ntmFC<PartyCard> { (party, size) ->
 
             div {
                 css { margin = ((size * 0.02).px) }
-                add(PartyCardHeader(party, size))
+                PartyCardHeader(party, size)
                 partyGravatar(party, size)
             }
         }

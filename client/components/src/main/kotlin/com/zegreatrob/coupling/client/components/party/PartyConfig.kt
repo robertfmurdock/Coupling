@@ -13,21 +13,21 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.TMFC
-import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
+import react.Props
 import react.router.Navigate
 import react.useState
 import kotlin.js.Json
 
-data class PartyConfig<D>(val party: PartyDetails, val dispatchFunc: DispatchFunc<out D>) :
-    DataPropsBind<PartyConfig<D>>(partyConfig.unsafeCast<TMFC>())
-    where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher
+external interface PartyConfigProps<D> : Props
+    where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher {
+    var party: PartyDetails
+    var dispatchFunc: DispatchFunc<out D>
+}
 
-private interface PartyConfigDispatcher : SavePartyCommand.Dispatcher, DeletePartyCommand.Dispatcher
-
-private val partyConfig by ntmFC { (party, commandFunc): PartyConfig<PartyConfigDispatcher> ->
+@ReactFunc
+val PartyConfig by nfc<PartyConfigProps<*>> { (party, commandFunc) ->
     val isNew = party.id.value == ""
     val (values, onChange) = useForm(party.withDefaultPartyId().toSerializable().toJsonDynamic().unsafeCast<Json>())
     val updatedParty = values.correctTypes().fromJsonDynamic<JsonPartyDetails>().toModel()
@@ -39,7 +39,7 @@ private val partyConfig by ntmFC { (party, commandFunc): PartyConfig<PartyConfig
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {
-        add(PartyConfigContent(updatedParty, isNew, onChange, onSave, onDelete))
+        PartyConfigContent(updatedParty, isNew, onChange, onSave, onDelete)
     }
 }
 

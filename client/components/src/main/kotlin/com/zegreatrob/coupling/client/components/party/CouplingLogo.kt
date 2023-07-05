@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.client.components.svgPath
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.svg.ReactSVG
@@ -11,12 +12,13 @@ external interface CouplingLogoProps : Props {
     var height: Double
 }
 
-val CouplingLogo by nfc<CouplingLogoProps> { props ->
+@ReactFunc
+val CouplingLogo by nfc<CouplingLogoProps> { (width, height) ->
     svg {
         fill = "none"
         viewBox = "0 0 36 24"
-        this.width = props.width
-        this.height = props.height
+        this.width = width
+        this.height = height
         ReactSVG.image {
             this.href = svgPath("logo")
         }

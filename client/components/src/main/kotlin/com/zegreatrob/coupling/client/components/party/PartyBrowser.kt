@@ -2,18 +2,23 @@ package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Props
 import react.dom.html.ReactHTML.div
+import web.authn.AuthenticatorTransport.Companion.nfc
 import web.cssom.Display
 import web.cssom.TextAlign
 import web.cssom.WhiteSpace
 import web.cssom.px
 
-data class PartyBrowser(val party: PartyDetails) : DataPropsBind<PartyBrowser>(partyBrowser)
+external interface PartyBrowserProps : Props {
+    var party: PartyDetails
+}
 
-val partyBrowser by ntmFC<PartyBrowser> { (party) ->
+@ReactFunc
+val PartyBrowser by nfc<PartyBrowserProps> { (party) ->
     div {
         css {
             whiteSpace = WhiteSpace.normal
