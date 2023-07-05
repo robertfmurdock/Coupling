@@ -1,8 +1,9 @@
 package com.zegreatrob.coupling.client.components.stats
 
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import web.cssom.Color
@@ -11,13 +12,14 @@ import web.cssom.LineStyle
 import web.cssom.VerticalAlign
 import web.cssom.px
 
-data class TeamStatistics(
-    val spinsUntilFullRotation: Int,
-    val activePlayerCount: Int,
-    val medianSpinDuration: String,
-) : DataPropsBind<TeamStatistics>(teamStatistics)
+external interface TeamStatisticsProps : Props {
+    var spinsUntilFullRotation: Int
+    var activePlayerCount: Int
+    var medianSpinDuration: String
+}
 
-val teamStatistics by ntmFC<TeamStatistics> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
+@ReactFunc
+val TeamStatistics by nfc<TeamStatisticsProps> { (spinsUntilFullRotation, activePlayerCount, medianSpinDuration) ->
     div {
         css {
             display = Display.inlineBlock

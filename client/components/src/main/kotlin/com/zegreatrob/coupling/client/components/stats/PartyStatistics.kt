@@ -3,10 +3,10 @@ package com.zegreatrob.coupling.client.components.stats
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
 import web.cssom.Display
@@ -23,11 +23,12 @@ val formatDistance: (Int?, Int) -> String = if (formatDistanceModule.default != 
     formatDistanceModule.unsafeCast<(Int?, Int) -> String>()
 }
 
-data class PartyStatistics(val queryResults: StatisticsQuery.Results) : DataPropsBind<PartyStatistics>(
-    partyStatistics,
-)
+external interface PartyStatisticsProps : Props {
+    var queryResults: StatisticsQuery.Results
+}
 
-val partyStatistics by ntmFC<PartyStatistics> { props ->
+@ReactFunc
+val PartyStatistics by nfc<PartyStatisticsProps> { props ->
     val (party, players, _, allStats, heatmapData) = props.queryResults
     val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
     div {
@@ -48,19 +49,17 @@ val partyStatistics by ntmFC<PartyStatistics> { props ->
                         flexGrow = number(0.0)
                     }
                     div {
-                        add(
-                            TeamStatistics(
-                                spinsUntilFullRotation = spinsUntilFullRotation,
-                                activePlayerCount = players.size,
-                                medianSpinDuration = medianSpinDuration?.let {
-                                    formatDistance(medianSpinDuration.millisecondsInt, 0)
-                                } ?: "",
-                            ),
+                        TeamStatistics(
+                            spinsUntilFullRotation = spinsUntilFullRotation,
+                            activePlayerCount = players.size,
+                            medianSpinDuration = medianSpinDuration?.let {
+                                formatDistance(medianSpinDuration.millisecondsInt, 0)
+                            } ?: "",
                         )
                     }
-                    add(PairReportTable(pairReports))
+                    PairReportTable(pairReports)
                 }
-                add(PlayerHeatmap(players, heatmapData))
+                PlayerHeatmap(players, heatmapData)
             }
         }
     }

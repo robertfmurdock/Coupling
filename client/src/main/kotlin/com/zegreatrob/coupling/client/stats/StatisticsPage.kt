@@ -10,6 +10,6 @@ val StatisticsPage = partyPageFunction { props, partyId ->
     +CouplingQuery(
         commander = props.commander,
         query = StatisticsQuery(partyId),
-        toDataprops = { _, _, queryResult -> PartyStatistics(queryResult) },
+        build = { _, _, queryResult -> PartyStatistics(queryResult) },
     ).create(key = partyId.value)
 }

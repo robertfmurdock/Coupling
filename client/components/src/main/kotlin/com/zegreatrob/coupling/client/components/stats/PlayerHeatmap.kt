@@ -4,10 +4,13 @@ import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
+import com.zegreatrob.minreact.nfc
 import com.zegreatrob.minreact.ntmFC
 import emotion.css.ClassName
 import emotion.react.css
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.useMemo
 import web.cssom.Display
@@ -19,12 +22,6 @@ import web.cssom.number
 import web.cssom.px
 import kotlin.random.Random
 
-data class PlayerHeatmap(
-    val players: List<Player>,
-    val heatmapData: List<List<Double?>>,
-) :
-    DataPropsBind<PlayerHeatmap>(playerHeatmap)
-
 val heatmapTopRowClass = ClassName {
 }
 
@@ -32,7 +29,13 @@ val heatmapSideRow = ClassName {
     display = Display.inlineBlock
 }
 
-val playerHeatmap by ntmFC<PlayerHeatmap> { (players, heatmapData) ->
+external interface PlayerHeatmapProps : Props {
+    var players: List<Player>
+    var heatmapData: List<List<Double?>>
+}
+
+@ReactFunc
+val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
     div {
         css {
             display = Display.inlineBlock

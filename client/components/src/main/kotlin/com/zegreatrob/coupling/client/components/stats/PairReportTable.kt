@@ -6,11 +6,12 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useMemo
@@ -26,11 +27,12 @@ import web.cssom.deg
 import web.cssom.px
 import kotlin.random.Random
 
-data class PairReportTable(val pairReports: List<PairReport>) : DataPropsBind<PairReportTable>(
-    pairReportTable,
-)
+external interface PairReportTableProps : Props {
+    var pairReports: List<PairReport>
+}
 
-val pairReportTable by ntmFC<PairReportTable> { (pairReports) ->
+@ReactFunc
+val PairReportTable by nfc<PairReportTableProps> { (pairReports) ->
     div {
         css {
             display = Display.inlineBlock
@@ -38,16 +40,17 @@ val pairReportTable by ntmFC<PairReportTable> { (pairReports) ->
             whiteSpace = WhiteSpace.normal
         }
         pairReports.mapIndexed { index, pairReport ->
-            add(PairReportView(pairReport), key = "$index")
+            PairReportView(pairReport, key = "$index")
         }
     }
 }
 
-data class PairReportView(val pairReport: PairReport) : DataPropsBind<PairReportView>(
-    pairReportView,
-)
+external interface PairReportViewProps : Props {
+    var pairReport: PairReport
+}
 
-private val pairReportView by ntmFC<PairReportView> { (pairReport) ->
+@ReactFunc
+val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
     val tweak = useMemo { Random.nextInt(8).toDouble() }
     div {
         css {
