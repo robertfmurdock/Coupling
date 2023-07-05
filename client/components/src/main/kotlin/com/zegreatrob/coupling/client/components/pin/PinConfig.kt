@@ -16,7 +16,6 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
-import com.zegreatrob.testmints.action.async.SuspendAction
 import js.core.jso
 import react.Props
 import react.router.Navigate
@@ -32,22 +31,16 @@ external interface PinConfigProps<D> : Props where D : DeletePinCommand.Dispatch
     var dispatchFunc: DispatchFunc<out D>
 }
 
-fun <D, C : SuspendAction<D, R>, R> PinConfigProps<D>.dispatch(commandFunc: () -> C, response: (R) -> Unit)
-    where D : DeletePinCommand.Dispatcher, D : SavePinCommand.Dispatcher = dispatchFunc(commandFunc, response)
-
 @ReactFunc
 val PinConfig by nfc<PinConfigProps<*>> { props ->
-    val party = props.party
-    val pin = props.pin
-    val pinList = props.pinList
-    val reload = props.reload
+    val (party, pin, pinList, reload, dispatchFunc) = props
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val onSubmit = props.dispatch({ SavePinCommand(party.id, updatedPin) }) { reload() }
+    val onSubmit = dispatchFunc({ SavePinCommand(party.id, updatedPin) }) { reload() }
     val onRemove = pin.id?.let { pinId ->
-        props.dispatch({ DeletePinCommand(party.id, pinId) }) { setRedirectUrl(party.id.pinListPath()) }
+        dispatchFunc({ DeletePinCommand(party.id, pinId) }) { setRedirectUrl(party.id.pinListPath()) }
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
     usePrompt(
