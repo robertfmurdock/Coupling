@@ -13,35 +13,41 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
+import com.zegreatrob.testmints.action.async.SuspendAction
 import js.core.jso
+import react.Props
 import react.router.Navigate
 import react.router.dom.usePrompt
 import react.useState
 import kotlin.js.Json
 
-data class PinConfig<D>(
-    val party: PartyDetails,
-    val pin: Pin,
-    val pinList: List<Pin>,
-    val reload: () -> Unit,
-    val dispatchFunc: DispatchFunc<out D>,
-) : DataPropsBind<PinConfig<D>>(pinConfig.unsafeCast<TMFC>())
-    where D : SavePinCommand.Dispatcher, D : DeletePinCommand.Dispatcher
+external interface PinConfigProps<D> : Props where D : DeletePinCommand.Dispatcher, D : SavePinCommand.Dispatcher {
+    var party: PartyDetails
+    var pin: Pin
+    var pinList: List<Pin>
+    var reload: () -> Unit
+    var dispatchFunc: DispatchFunc<out D>
+}
 
-private interface DD : SavePinCommand.Dispatcher, DeletePinCommand.Dispatcher
+fun <D, C : SuspendAction<D, R>, R> PinConfigProps<D>.dispatch(commandFunc: () -> C, response: (R) -> Unit)
+    where D : DeletePinCommand.Dispatcher, D : SavePinCommand.Dispatcher = dispatchFunc(commandFunc, response)
 
-private val pinConfig by ntmFC<PinConfig<DD>> { (party, pin, pinList, reload, dispatchFunc) ->
+@ReactFunc
+val PinConfig by nfc<PinConfigProps<*>> { props ->
+    val party = props.party
+    val pin = props.pin
+    val pinList = props.pinList
+    val reload = props.reload
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val onSubmit = dispatchFunc({ SavePinCommand(party.id, updatedPin) }) { reload() }
+    val onSubmit = props.dispatch({ SavePinCommand(party.id, updatedPin) }) { reload() }
     val onRemove = pin.id?.let { pinId ->
-        dispatchFunc({ DeletePinCommand(party.id, pinId) }) { setRedirectUrl(party.id.pinListPath()) }
+        props.dispatch({ DeletePinCommand(party.id, pinId) }) { setRedirectUrl(party.id.pinListPath()) }
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
     usePrompt(

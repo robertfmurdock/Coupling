@@ -19,10 +19,10 @@ val PinPage = partyPageFunction { props, partyId ->
                 pinList()
             }
         },
-        toDataprops = { reload, commandFunc, result ->
-            val pinList = result.party?.pinList?.elements ?: return@CouplingQuery null
+        build = { reload, commandFunc, result ->
+            val pinList = result.party?.pinList?.elements ?: return@CouplingQuery
             PinConfig(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
+                party = result.party?.details?.data ?: return@CouplingQuery,
                 pinList = pinList,
                 pin = pinList.firstOrNull { it.id == pinId } ?: Pin(),
                 reload = reload,

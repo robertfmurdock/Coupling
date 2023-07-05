@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.routing
 import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.components.DispatchFunc
+import com.zegreatrob.coupling.client.create
 import com.zegreatrob.minreact.DataProps
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
@@ -16,20 +17,44 @@ import com.zegreatrob.react.dataloader.ResolvedState
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.execute
 import react.ChildrenBuilder
+import react.ReactNode
+import react.create
 import react.useCallback
 
-data class CouplingQuery<R, P : DataProps<P>>(
+data class CouplingQuery<R>(
     val query: SuspendAction<CommandDispatcher, R?>,
-    val toDataprops: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P?,
+    val toNode: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> ReactNode?,
     val commander: Commander,
-) : DataPropsBind<CouplingQuery<R, P>>(couplingQuery.unsafeCast<TMFC>())
+) : DataPropsBind<CouplingQuery<R>>(couplingQuery.unsafeCast<TMFC>())
 
-interface StubDataProps : DataProps<StubDataProps>
+fun <P : DataProps<P>, R> CouplingQuery(
+    query: SuspendAction<CommandDispatcher, R?>,
+    toDataprops: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P?,
+    commander: Commander,
+) = CouplingQuery(
+    query = query,
+    toNode = { r: ReloadFunc, d: DispatchFunc<CommandDispatcher>, result: R ->
+        toDataprops(r, d, result)?.create()
+    },
+    commander = commander,
+)
 
-private val couplingQuery by ntmFC { props: CouplingQuery<Any, StubDataProps> ->
+fun <R> CouplingQuery(
+    query: SuspendAction<CommandDispatcher, R?>,
+    build: ChildrenBuilder.(ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> Unit,
+    commander: Commander,
+) = CouplingQuery<R>(
+    query = query,
+    toNode = { r: ReloadFunc, d: DispatchFunc<CommandDispatcher>, result: R ->
+        react.Fragment.create { build(r, d, result) }
+    },
+    commander = commander,
+)
+
+private val couplingQuery by ntmFC { props: CouplingQuery<Any> ->
     val (query, toDataprops, commander) = props
 
-    val getDataAsync: suspend (DataLoaderTools) -> StubDataProps? = useCallback { tools ->
+    val getDataAsync: suspend (DataLoaderTools) -> ReactNode? = useCallback { tools ->
         val dispatchFunc = DecoratedDispatchFunc(commander::tracingDispatcher, tools)
         commander.tracingDispatcher()
             .execute(query)
@@ -38,13 +63,13 @@ private val couplingQuery by ntmFC { props: CouplingQuery<Any, StubDataProps> ->
             }
     }
     add(
-        DataLoader(getDataAsync, { null }) { state: DataLoadState<StubDataProps?> ->
+        DataLoader(getDataAsync, { null }) { state: DataLoadState<ReactNode?> ->
             animationFrame(state)
         },
     )
 }
 
-private fun <P : DataProps<P>> ChildrenBuilder.animationFrame(state: DataLoadState<P?>) =
+private fun <P : DataProps<P>> ChildrenBuilder.animationFrame(state: DataLoadState<ReactNode?>) =
     animationFrame {
         this.state = state
         if (state is ResolvedState) {
@@ -52,9 +77,9 @@ private fun <P : DataProps<P>> ChildrenBuilder.animationFrame(state: DataLoadSta
         }
     }
 
-private fun <P : DataProps<P>> ChildrenBuilder.resolvedComponent(state: ResolvedState<P?>) {
+private fun ChildrenBuilder.resolvedComponent(state: ResolvedState<ReactNode?>) {
     when (val result = state.result) {
         null -> notFoundContent()
-        else -> add(result)
+        else -> +result
     }
 }

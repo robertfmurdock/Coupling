@@ -28,9 +28,15 @@ class PinConfigEditorTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PinConfig(party, pin, emptyList(), {}, StubDispatchFunc()),
-                )
+                router = singleRouteRouter {
+                    PinConfig(
+                        party = party,
+                        pin = pin,
+                        pinList = emptyList(),
+                        reload = {},
+                        dispatchFunc = StubDispatchFunc(),
+                    )
+                }
             },
         )
     } verify {
@@ -45,9 +51,7 @@ class PinConfigEditorTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PinConfig(party, pin, emptyList(), {}, StubDispatchFunc()),
-                )
+                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, StubDispatchFunc()) }
             },
         )
     } verify {
@@ -67,9 +71,7 @@ class PinConfigEditorTest {
     }) {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PinConfig(party, pin, emptyList(), {}, stubDispatcher.func()),
-                )
+                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, stubDispatcher.func()) }
             },
         )
         actor.type(screen.getByLabelText("Name"), newName)

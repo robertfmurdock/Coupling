@@ -29,6 +29,7 @@ import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import kotlinx.browser.window
 import org.w3c.dom.Window
+import react.ChildrenBuilder
 import react.Fragment
 import react.ReactNode
 import react.create
@@ -295,6 +296,15 @@ fun singleRouteRouter(element: DataProps<*>) = createMemoryRouter(
         jso {
             path = "*"
             this.element = element.create()
+        },
+    ),
+)
+
+fun singleRouteRouter(block: ChildrenBuilder.() -> Unit) = createMemoryRouter(
+    arrayOf(
+        jso {
+            path = "*"
+            this.element = Fragment.create(block)
         },
     ),
 )
