@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.components.welcome.RandomProvider
 import com.zegreatrob.coupling.client.components.welcome.Welcome
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
@@ -17,7 +16,7 @@ class WelcomeTest {
         val randomProvider = this
         override fun nextRandomInt(until: Int) = 0
     }) exercise {
-        render(Welcome(randomProvider).create())
+        render { Welcome(randomProvider) }
     } verify {
         screen.queryByText("Frodo")
             .assertIsNotEqualTo(null)
@@ -36,7 +35,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 1
         }
     }) exercise {
-        render(Welcome(randomProvider).create {})
+        render { Welcome(randomProvider) }
     } verify {
         screen.queryByText("Batman")
             .assertIsNotEqualTo(null)
@@ -55,7 +54,7 @@ class WelcomeTest {
             override fun nextRandomInt(until: Int) = 2
         }
     }) exercise {
-        render(Welcome(randomProvider).create())
+        render { Welcome(randomProvider) }
     } verify {
         screen.queryByText("Rosie")
             .assertIsNotEqualTo(null)

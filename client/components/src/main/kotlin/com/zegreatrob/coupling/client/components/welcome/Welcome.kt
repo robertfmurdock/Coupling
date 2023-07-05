@@ -8,14 +8,15 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
 import react.MutableRefObject
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useLayoutEffect
@@ -45,9 +46,13 @@ import web.cssom.rotate
 import web.cssom.s
 import web.html.HTMLDivElement
 
-data class Welcome(val randomProvider: RandomProvider = RandomProvider) : DataPropsBind<Welcome>(welcome)
+external interface WelcomeProps : Props {
+    var randomProvider: RandomProvider?
+}
 
-val welcome by ntmFC { (randomProvider): Welcome ->
+@ReactFunc
+val Welcome by nfc<WelcomeProps> { props ->
+    val randomProvider = props.randomProvider ?: RandomProvider
     var showLoginChooser by useState(false)
     val welcomeTitleRef = useRef<HTMLDivElement>(null)
     useLayoutEffect {
