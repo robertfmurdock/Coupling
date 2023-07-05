@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.client.components.pin
 
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.ClassName
 import web.cssom.Position
@@ -11,14 +12,19 @@ import web.cssom.pct
 import web.cssom.px
 import web.cssom.unaryMinus
 
-data class PinSection(
-    val pinList: List<Pin>,
-    val scale: PinButtonScale = PinButtonScale.Small,
-    val canDrag: Boolean = false,
-    val className: ClassName = ClassName(""),
-) : DataPropsBind<PinSection>(pinSection)
+external interface PinSectionProps : Props {
+    var pinList: List<Pin>
+    var scale: PinButtonScale?
+    var canDrag: Boolean?
+    var className: ClassName?
+}
 
-val pinSection by ntmFC<PinSection> { (pinList, scale, canDrag, className) ->
+@ReactFunc
+val PinSection by nfc<PinSectionProps> { props ->
+    val (pinList) = props
+    val scale = props.scale ?: PinButtonScale.Small
+    val canDrag = props.canDrag ?: false
+    val className = props.className ?: ClassName("")
     div {
         css(className) {
             marginLeft = -(pinList.size * 12 * scale.factor).px

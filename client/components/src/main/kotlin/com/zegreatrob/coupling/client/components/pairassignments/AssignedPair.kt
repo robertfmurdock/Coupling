@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.ntmFC
 import emotion.react.css
@@ -110,7 +109,7 @@ val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, p
             }
         }
 
-        add(PinSection(pinList = pair.pins.toList(), canDrag = canDrag))
+        PinSection(pinList = pair.pins.toList(), canDrag = canDrag)
     }
 }
 

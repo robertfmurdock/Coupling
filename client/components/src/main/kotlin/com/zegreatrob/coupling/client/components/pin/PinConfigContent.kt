@@ -8,10 +8,11 @@ import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
@@ -31,18 +32,19 @@ import web.cssom.VerticalAlign
 import web.cssom.px
 import web.html.InputType
 
-data class PinConfigContent(
-    val party: PartyDetails,
-    val pin: Pin,
-    val pinList: List<Pin>,
-    val onChange: (ChangeEvent<*>) -> Unit,
-    val onSubmit: () -> Unit,
-    val onRemove: (() -> Unit)?,
-) : DataPropsBind<PinConfigContent>(pinConfigContent)
+external interface PinConfigContentProps : Props {
+    var party: PartyDetails
+    var pin: Pin
+    var pinList: List<Pin>
+    var onChange: (ChangeEvent<*>) -> Unit
+    var onSubmit: () -> Unit
+    var onRemove: (() -> Unit)?
+}
 
 val pinConfigContentClassName = ClassName("pin-config-content")
 
-val pinConfigContent by ntmFC<PinConfigContent> { (party, pin, pinList, onChange, onSubmit, onRemove) ->
+@ReactFunc
+val PinConfigContent by nfc<PinConfigContentProps> { (party, pin, pinList, onChange, onSubmit, onRemove) ->
     ConfigFrame {
         className = pinConfigContentClassName
         span {

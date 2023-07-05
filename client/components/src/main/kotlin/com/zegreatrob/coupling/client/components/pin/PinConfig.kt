@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import js.core.jso
 import react.Props
@@ -52,6 +51,6 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {
-        add(PinConfigContent(party, updatedPin, pinList, onChange, onSubmit, onRemove))
+        PinConfigContent(party, updatedPin, pinList, onChange, onSubmit, onRemove)
     }
 }

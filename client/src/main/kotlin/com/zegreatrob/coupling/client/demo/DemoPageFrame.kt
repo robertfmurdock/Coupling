@@ -197,9 +197,8 @@ private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = add(
     PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {}),
 )
 
-private fun ChildrenBuilder.pinConfigFrame(state: AddPin) = add(
-    PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {}),
-)
+private fun ChildrenBuilder.pinConfigFrame(state: AddPin) =
+    PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {})
 
 private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = add(
     PairAssignments(
