@@ -15,10 +15,10 @@ import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.orange
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
-import com.zegreatrob.minreact.ntmFC
+import react.Props
 import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
@@ -31,16 +31,15 @@ import react.router.dom.LinkProps
 import react.useMemo
 import react.useState
 
-data class SlackConnectPageContent(
-    val parties: List<PartyDetails>,
-    val slackTeam: String,
-    val slackChannel: String,
-    val dispatchFunc: DispatchFunc<out SaveSlackIntegrationCommand.Dispatcher>,
-) : DataPropsBind<SlackConnectPageContent>(
-    slackConnectPageContent,
-)
+external interface SlackConnectPageContentProps : Props {
+    var parties: List<PartyDetails>
+    var slackTeam: String
+    var slackChannel: String
+    var dispatchFunc: DispatchFunc<out SaveSlackIntegrationCommand.Dispatcher>
+}
 
-val slackConnectPageContent by ntmFC<SlackConnectPageContent> { props ->
+@ReactFunc
+val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
     val partySelectId = useMemo { "${uuid4()}" }
 
     var command by useState {

@@ -12,13 +12,12 @@ import com.zegreatrob.minreact.nfc
 val SlackConnectPage by nfc<PageProps> { props ->
     val slackTeam = props.search["slackTeam"] ?: ""
     val slackChannel = props.search["slackChannel"] ?: ""
-
     SlackConnectPageFrame {
         add(
             CouplingQuery(
                 commander = props.commander,
                 query = graphQuery { partyList() },
-                toDataprops = { _, dispatch, result ->
+                build = { _, dispatch, result ->
                     SlackConnectPageContent(
                         parties = result.partyList?.map(Record<PartyDetails>::data) ?: emptyList(),
                         slackTeam = slackTeam,

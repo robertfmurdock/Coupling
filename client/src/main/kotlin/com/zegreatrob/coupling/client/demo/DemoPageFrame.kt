@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.client.components.pin.PinConfigContent
 import com.zegreatrob.coupling.client.components.player.PlayerConfigContent
 import com.zegreatrob.coupling.client.components.spin.PrepareSpinContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
@@ -190,7 +191,7 @@ private fun ChildrenBuilder.partyConfigFrame(state: MakeParty) {
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     val (party, players, pins) = state
-    add(PrepareSpinContent(party, players, pins, pins.map { it.id }, {}, {}, {}))
+    PrepareSpinContent(party, players, pins, pins.map(Pin::id), {}, {}, {})
 }
 
 private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = add(

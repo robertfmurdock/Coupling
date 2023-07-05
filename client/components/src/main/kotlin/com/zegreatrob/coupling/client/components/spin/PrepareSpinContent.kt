@@ -13,12 +13,13 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.dom.html.ReactHTML.br
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
@@ -40,17 +41,18 @@ import web.cssom.px
 import web.cssom.rgb
 import web.cssom.s
 
-data class PrepareSpinContent(
-    var party: PartyDetails,
-    var playerSelections: List<Pair<Player, Boolean>>,
-    var pins: List<Pin>,
-    var pinSelections: List<String?>,
-    var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
-    var setPinSelections: (List<String?>) -> Unit,
-    var onSpin: () -> Unit,
-) : DataPropsBind<PrepareSpinContent>(prepareSpinContent)
+external interface PrepareSpinContentProps : Props {
+    var party: PartyDetails
+    var playerSelections: List<Pair<Player, Boolean>>
+    var pins: List<Pin>
+    var pinSelections: List<String?>
+    var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
+    var setPinSelections: (List<String?>) -> Unit
+    var onSpin: () -> Unit
+}
 
-val prepareSpinContent by ntmFC<PrepareSpinContent> { props ->
+@ReactFunc
+val PrepareSpinContent by nfc<PrepareSpinContentProps> { props ->
     val (party, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props
 
     val enabled = playerSelections.any { it.second }

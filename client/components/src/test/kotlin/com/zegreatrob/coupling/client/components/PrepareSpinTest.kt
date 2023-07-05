@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.setup
@@ -53,10 +52,9 @@ class PrepareSpinTest {
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
-        val wrapper = render(
-            PrepareSpin(party, players, null, pins, StubDispatchFunc()).create(),
-            jso { wrapper = MemoryRouter },
-        )
+        val wrapper = render(jso { wrapper = MemoryRouter }) {
+            PrepareSpin(party, players, null, pins, StubDispatchFunc())
+        }
     }) exercise {
         user.click(
             wrapper.container.querySelector(".$selectedPinsClass")
@@ -84,10 +82,9 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val render = render(
-            PrepareSpin(party, players, null, pins, StubDispatchFunc()).create(),
-            jso { wrapper = MemoryRouter },
-        )
+        val render = render(jso { wrapper = MemoryRouter }) {
+            PrepareSpin(party, players, null, pins, StubDispatchFunc())
+        }
     }) {
         user.click(
             render.container.querySelector(".$selectedPinsClass")
@@ -120,10 +117,9 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val currentPairs = null
     }) exercise {
-        render(
-            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            jso { wrapper = MemoryRouter },
-        )
+        render(jso { wrapper = MemoryRouter }) {
+            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc())
+        }
     } verify { result ->
         result.container.querySelectorAll("[data-player-id]")
             .asList()
@@ -150,10 +146,9 @@ class PrepareSpinTest {
                 pairOf(players[2]).withPins(emptySet()),
             ),
         )
-        val result = render(
-            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            jso { wrapper = MemoryRouter },
-        )
+        val result = render(jso { wrapper = MemoryRouter }) {
+            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc())
+        }
     }) exercise {
         result.container.querySelectorAll("[data-player-id]")
             .asList()
@@ -177,10 +172,9 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val user = UserEvent.setup()
         val currentPairs = null
-        val context = render(
-            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            jso { wrapper = MemoryRouter },
-        )
+        val context = render(jso { wrapper = MemoryRouter }) {
+            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc())
+        }
     }) exercise {
         user.click(screen.getByText("All in!"))
     } verify {
@@ -203,10 +197,9 @@ class PrepareSpinTest {
             date = DateTime.now(),
             pairs = players.map { pairOf(it).withPins(emptySet()) },
         )
-        val context = render(
-            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc()).create(),
-            jso { wrapper = MemoryRouter },
-        )
+        val context = render(jso { wrapper = MemoryRouter }) {
+            PrepareSpin(party, players, currentPairs, emptyList(), StubDispatchFunc())
+        }
     }) {
     } exercise {
         user.click(screen.getByText("All out!"))

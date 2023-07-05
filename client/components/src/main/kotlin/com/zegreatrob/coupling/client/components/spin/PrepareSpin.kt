@@ -9,21 +9,22 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
+import react.Props
 import react.router.Navigate
 import react.useState
 
-data class PrepareSpin(
-    val party: PartyDetails,
-    val players: List<Player>,
-    val currentPairsDoc: PairAssignmentDocument?,
-    val pins: List<Pin>,
-    val dispatchFunc: DispatchFunc<out SpinCommand.Dispatcher>,
-) : DataPropsBind<PrepareSpin>(prepareSpin)
+external interface PrepareSpinProps : Props {
+    var party: PartyDetails
+    var players: List<Player>
+    var currentPairsDoc: PairAssignmentDocument?
+    var pins: List<Pin>
+    var dispatchFunc: DispatchFunc<out SpinCommand.Dispatcher>
+}
 
-val prepareSpin by ntmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, dispatchFunc) ->
+@ReactFunc
+val PrepareSpin by nfc<PrepareSpinProps> { (party, players, currentPairsDoc, pins, dispatchFunc) ->
     var playerSelections by useState(defaultSelections(players, currentPairsDoc))
     var pinSelections by useState(pins.map { it.id })
     var redirectUrl by useState<String?>(null)
@@ -33,16 +34,14 @@ val prepareSpin by ntmFC<PrepareSpin> { (party, players, currentPairsDoc, pins, 
     if (redirectUrl != null) {
         Navigate { to = redirectUrl ?: "" }
     } else {
-        add(
-            PrepareSpinContent(
-                party,
-                playerSelections,
-                pins,
-                pinSelections,
-                setPlayerSelections,
-                setPinSelections,
-                onSpin,
-            ),
+        PrepareSpinContent(
+            party,
+            playerSelections,
+            pins,
+            pinSelections,
+            setPlayerSelections,
+            setPinSelections,
+            onSpin,
         )
     }
 }

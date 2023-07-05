@@ -43,7 +43,7 @@ fun <R> CouplingQuery(
     query: SuspendAction<CommandDispatcher, R?>,
     build: ChildrenBuilder.(ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> Unit,
     commander: Commander,
-) = CouplingQuery<R>(
+) = CouplingQuery(
     query = query,
     toNode = { r: ReloadFunc, d: DispatchFunc<CommandDispatcher>, result: R ->
         react.Fragment.create { build(r, d, result) }

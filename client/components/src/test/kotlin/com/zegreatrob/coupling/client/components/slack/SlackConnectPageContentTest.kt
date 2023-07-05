@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
@@ -17,6 +16,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
+import react.Fragment
 import react.ReactNode
 import react.create
 import react.router.MemoryRouter
@@ -39,15 +39,14 @@ class SlackConnectPageContentTest {
         val slackTeam = uuidString()
         val slackChannel = uuidString()
     }) {
-        render(
+        render(jso { wrapper = MemoryRouter }) {
             SlackConnectPageContent(
                 parties = parties,
                 slackTeam = slackTeam,
                 slackChannel = slackChannel,
                 dispatchFunc = stubber.func(),
-            ).create {},
-            jso { wrapper = MemoryRouter },
-        )
+            )
+        }
         actor.selectOptions(partySelect, targetParty.id.value)
         returnButton
             .assertIsEqualTo(null, "Return button showed up unexpectedly early")
@@ -71,14 +70,14 @@ class SlackConnectPageContentTest {
     @Test
     fun willNotShowReturnImmediately() = asyncSetup(object {
     }) exercise {
-        render(
+        render {
             SlackConnectPageContent(
                 parties = stubParties(2),
                 slackTeam = uuidString(),
                 slackChannel = uuidString(),
                 dispatchFunc = StubDispatcher().func(),
-            ).create {},
-        )
+            )
+        }
     } verify {
         returnButton
             .assertIsEqualTo(null, "Return button showed up unexpectedly early")
@@ -96,12 +95,14 @@ class SlackConnectPageContentTest {
                     arrayOf(
                         jso {
                             path = "*"
-                            element = SlackConnectPageContent(
-                                parties = listOf(party),
-                                slackTeam = uuidString(),
-                                slackChannel = uuidString(),
-                                dispatchFunc = stubDispatcher.func(),
-                            ).create()
+                            element = Fragment.create {
+                                SlackConnectPageContent(
+                                    parties = listOf(party),
+                                    slackTeam = uuidString(),
+                                    slackChannel = uuidString(),
+                                    dispatchFunc = stubDispatcher.func(),
+                                )
+                            }
                         },
                         jso {
                             path = "/${party.id.value}/pairAssignments/current/"
