@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.large
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.html.ReactHTML.i
@@ -15,7 +14,7 @@ val PartySelectButton by nfc<Props> {
         to = "/parties/"
         tabIndex = -1
         draggable = false
-        add(CouplingButton(large)) {
+        CouplingButton(large) {
             i { className = ClassName("fa fa-arrow-circle-up") }
             span { +"Party select" }
         }

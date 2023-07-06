@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.client.components.pin.PinCard
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import csstype.PropertiesBuilder
 import emotion.react.css
@@ -47,12 +46,7 @@ val pinList by ntmFC<PinList> { (party, pins) ->
                 to = "/${party.id.value}/pin/new"
                 tabIndex = -1
                 draggable = false
-                add(
-                    CouplingButton(
-                        large,
-                        orange,
-                    ),
-                ) {
+                CouplingButton(large, orange) {
                     +"Add a new pin."
                 }
             }

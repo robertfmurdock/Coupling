@@ -13,7 +13,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import emotion.css.ClassName
 import emotion.react.css
@@ -78,12 +77,10 @@ private val pairAssignmentRow by ntmFC<PairAssignmentRow> { (party, document, co
     }
 }
 
-private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = add(
-    CouplingButton(
-        sizeRuleSet = small,
-        colorRuleSet = red,
-        onClick = onClickFunc,
-    ),
+private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = CouplingButton(
+    sizeRuleSet = small,
+    colorRuleSet = red,
+    onClick = onClickFunc,
 ) {
     +"DELETE"
 }

@@ -16,10 +16,12 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
+import csstype.PropertiesBuilder
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
 import react.Props
+import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.br
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
@@ -108,7 +110,7 @@ private fun ChildrenBuilder.selectorAreaDiv(children: ChildrenBuilder.() -> Unit
     children()
 }
 
-val playerSelectorClass = emotion.css.ClassName {
+val playerSelectorClass = ClassName {
     display = Display.inlineBlock
     flex = number(1.0)
     margin = 5.px
@@ -152,10 +154,8 @@ private fun ChildrenBuilder.batchSelectButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean,
-) = add(
-    CouplingButton(onClick = {
-        playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections)
-    }),
+) = CouplingButton(
+    onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) },
 ) { +text }
 
 private fun ChildrenBuilder.pinSelector(
@@ -183,7 +183,7 @@ private fun ChildrenBuilder.pinSelector(
     }
 }
 
-val selectedPinsClass = emotion.css.ClassName {
+val selectedPinsClass = ClassName {
     margin = (5.px)
     flex = number(1.0)
 }
@@ -194,7 +194,7 @@ private fun ChildrenBuilder.selectedPinsDiv(children: ChildrenBuilder.() -> Unit
     children()
 }
 
-val deselectedPinsClass = emotion.css.ClassName {
+val deselectedPinsClass = ClassName {
     flex = number(1.0)
     margin = (5.px)
     backgroundColor = Color("#de8286")
@@ -221,13 +221,12 @@ private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {})
 
 private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 
-private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit, enabled: Boolean) = add(
-    CouplingButton(
-        supersize,
-        pink,
-        onClick = generateNewPairsFunc,
-        attrs = { disabled = !enabled },
-    ) {
+private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit, enabled: Boolean) = CouplingButton(
+    supersize,
+    pink,
+    onClick = generateNewPairsFunc,
+    attrs = fun ButtonHTMLAttributes<*>.() { disabled = !enabled },
+    css = fun PropertiesBuilder.() {
         marginBottom = 10.px
         animationName = ident("pulsate")
         animationDuration = 2.s

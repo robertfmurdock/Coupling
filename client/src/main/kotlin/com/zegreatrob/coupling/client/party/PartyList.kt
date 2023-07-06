@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.minreact.ntmFC
 import react.Fragment
@@ -48,6 +47,6 @@ val NewPartyButton by nfc<Props> {
         to = "/new-party/"
         draggable = false
         tabIndex = -1
-        add(CouplingButton(supersize, green)) { +"Form a new party!" }
+        CouplingButton(supersize, green) { +"Form a new party!" }
     }
 }

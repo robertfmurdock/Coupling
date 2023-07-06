@@ -16,7 +16,6 @@ import com.zegreatrob.coupling.client.components.orange
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.aria.ariaLabel
@@ -101,7 +100,7 @@ val ReturnToCouplingButton by nfc<LinkProps> { props ->
     Link {
         draggable = false
         +props
-        add(CouplingButton(large, orange)) {
+        CouplingButton(large, orange) {
             +"Return to Coupling"
         }
     }

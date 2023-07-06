@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.html.ReactHTML.img
@@ -11,7 +10,7 @@ val GqlButton by nfc<Props> {
         to = "/graphiql"
         tabIndex = -1
         draggable = false
-        add(CouplingButton(large, white)) {
+        CouplingButton(large, white) {
             img {
                 src = svgPath("graphql")
                 height = 18.0

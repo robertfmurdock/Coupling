@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
+import csstype.PropertiesBuilder
 import emotion.react.css
 import react.ChildrenBuilder
 import react.dom.html.ReactHTML.div
@@ -148,23 +149,19 @@ private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: S
     pair.pinnedPlayers.any { player -> player.player.id == droppedPlayerId }
 }
 
-private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = add(
-    CouplingButton(
-        sizeRuleSet = supersize,
-        colorRuleSet = green,
-        onClick = onSave,
-        css = { margin = 4.px },
-    ),
+private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = CouplingButton(
+    sizeRuleSet = supersize,
+    colorRuleSet = green,
+    onClick = onSave,
+    css = fun PropertiesBuilder.() { margin = 4.px },
 ) {
     +"Save!"
 }
 
-private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) = add(
-    CouplingButton(
-        sizeRuleSet = small,
-        colorRuleSet = red,
-        onClick = onCancel,
-    ),
+private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) = CouplingButton(
+    sizeRuleSet = small,
+    colorRuleSet = red,
+    onClick = onCancel,
 ) {
     +"Cancel"
 }

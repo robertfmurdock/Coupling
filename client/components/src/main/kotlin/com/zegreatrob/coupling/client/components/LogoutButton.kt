@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.html.ReactHTML.i
@@ -13,7 +12,7 @@ val LogoutButton by nfc<Props> {
         to = "/logout"
         tabIndex = -1
         draggable = false
-        add(CouplingButton(large, red)) {
+        CouplingButton(large, red) {
             i { className = ClassName("fa fa-sign-out-alt") }
             span { +"Sign Out" }
         }

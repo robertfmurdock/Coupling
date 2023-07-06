@@ -18,6 +18,7 @@ import kotlinx.browser.window
 import org.w3c.dom.DataTransfer
 import react.ChildrenBuilder
 import react.MutableRefObject
+import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.useRef
@@ -60,13 +61,11 @@ private val pairSection by ntmFC<PairSection> { (party, players, pairs, allowSav
 
 private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<HTMLElement>) {
     if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
-        add(
-            CouplingButton(
-                sizeRuleSet = large,
-                colorRuleSet = white,
-                onClick = { ref.current?.copyToClipboardOnClick()?.invoke() },
-                attrs = { tabIndex = -1 },
-            ),
+        CouplingButton(
+            sizeRuleSet = large,
+            colorRuleSet = white,
+            onClick = { ref.current?.copyToClipboardOnClick()?.invoke() },
+            attrs = fun ButtonHTMLAttributes<*>.() { tabIndex = -1 },
         ) {
             i { className = ClassName("fa fa-clipboard") }
         }

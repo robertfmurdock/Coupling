@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.children
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
+import react.PropsWithChildren
 import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.button
 import web.cssom.AnimationPlayState
@@ -152,31 +152,37 @@ val black: PropertiesBuilder.() -> Unit = {
     }
 }
 
-data class CouplingButton(
-    val sizeRuleSet: PropertiesBuilder.() -> Unit = medium,
-    val colorRuleSet: PropertiesBuilder.() -> Unit = black,
-    @JsName("className")
-    val className: ClassName = ClassName(""),
-    val onClick: () -> Unit = {},
-    val attrs: ButtonHTMLAttributes<*>.() -> Unit = {},
-    val css: PropertiesBuilder.() -> Unit = {},
-) : DataPropsBind<CouplingButton>(couplingButton)
+external interface CouplingButtonProps : PropsWithChildren {
+    var sizeRuleSet: ((PropertiesBuilder) -> Unit)?
+    var colorRuleSet: ((PropertiesBuilder) -> Unit)?
+    var className: (ClassName)?
+    var onClick: (() -> Unit)?
+    var attrs: ((ButtonHTMLAttributes<*>) -> Unit)?
+    var css: ((PropertiesBuilder) -> Unit)?
+}
 
-val couplingButton by ntmFC<CouplingButton> { props ->
-    val (sizeRuleSet, colorRuleSet, className, onClick, block, css) = props
+@ReactFunc
+val CouplingButton by nfc<CouplingButtonProps> { props ->
+    val sizeRuleSet = props.sizeRuleSet ?: medium
+    val colorRuleSet = props.colorRuleSet ?: black
+    val className = props.className ?: ClassName("")
+    val onClick = props.onClick ?: {}
+    val attrs = props.attrs ?: {}
+    val css = props.css ?: {}
+
     button {
         type = ButtonType.button
         this.onClick = { onClick() }
-        block(this)
+        attrs(this)
 
         css(className, ClassName("button")) {
             "*" { verticalAlign = VerticalAlign.middle }
             buttonRuleset()
-            sizeRuleSet()
-            colorRuleSet()
-            css()
+            sizeRuleSet(this)
+            colorRuleSet(this)
+            css(this)
         }
 
-        children(props)
+        +props.children
     }
 }

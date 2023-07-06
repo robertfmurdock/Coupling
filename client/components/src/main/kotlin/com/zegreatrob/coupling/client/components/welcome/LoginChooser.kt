@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Da
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.white
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import js.core.jso
@@ -37,7 +36,11 @@ val LoginChooser by nfc<Props> {
     val (params) = useSearchParams()
     val returnPath = params["path"] ?: ""
     val signInFunc = {
-        auth0Data.loginWithRedirect(jso { appState = jso { returnTo = "${window.asDynamic()["basename"]}$returnPath" } })
+        auth0Data.loginWithRedirect(
+            jso {
+                appState = jso { returnTo = "${window.asDynamic()["basename"]}$returnPath" }
+            },
+        )
     }
     div {
         css {
@@ -59,15 +62,11 @@ val LoginChooser by nfc<Props> {
             top = 0.px
         }
         div {
-            add(
-                CouplingButton(
-                    supersize,
-                    white,
-                    onClick = signInFunc,
-                ),
-            ) {
-                +"Login"
-            }
+            CouplingButton(
+                supersize,
+                white,
+                onClick = signInFunc,
+            ) { +"Login" }
         }
         div { DemoButton() }
     }
