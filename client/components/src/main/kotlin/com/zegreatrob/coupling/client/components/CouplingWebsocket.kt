@@ -8,12 +8,13 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import js.core.jso
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
+import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.useMemo
@@ -24,8 +25,20 @@ val disconnectedMessage = com.zegreatrob.coupling.model.CouplingSocketMessage(
     players = emptySet(),
     currentPairAssignments = null,
 )
-val couplingWebsocket by ntmFC<CouplingWebsocket> { props ->
-    val (partyId, useSsl, onMessageFunc, buildChild, token) = props
+
+external interface CouplingWebsocketProps : Props {
+    @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
+    var partyId: PartyId
+    var onMessage: (Message) -> Unit
+    var buildChild: (value: ((Message) -> Unit)?) -> ReactNode
+    var token: String
+    var useSsl: Boolean?
+}
+
+@ReactFunc
+val CouplingWebsocket by nfc<CouplingWebsocketProps> { props ->
+    val (partyId, onMessageFunc, buildChild, token) = props
+    val useSsl = props.useSsl ?: "https:" == window.location.protocol
     var connected by useState(false)
 
     val socketHook = useWebSocket(
@@ -43,14 +56,6 @@ val couplingWebsocket by ntmFC<CouplingWebsocket> { props ->
         +buildChild(if (connected) sendMessageFunc else null)
     }
 }
-
-data class CouplingWebsocket(
-    val partyId: PartyId,
-    val useSsl: Boolean = "https:" == window.location.protocol,
-    val onMessage: (Message) -> Unit,
-    val buildChild: (value: ((Message) -> Unit)?) -> ReactNode,
-    val token: String,
-) : DataPropsBind<CouplingWebsocket>(couplingWebsocket)
 
 private fun sendMessageWithSocketFunc(sendMessage: (message: String, keep: Boolean) -> Unit) = { message: Message ->
     message.toSerializable().toJsonString().let { sendMessage(it, true) }

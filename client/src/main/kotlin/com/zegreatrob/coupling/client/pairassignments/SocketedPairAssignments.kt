@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.tmFC
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -51,24 +50,22 @@ where D : SavePairAssignmentsCommand.Dispatcher, D : DeletePairAssignmentsComman
         }
 
         if (token.isNotBlank()) {
-            add(
-                CouplingWebsocket(
-                    party.id,
-                    onMessage = onMessageFunc,
-                    buildChild = {
-                        PairAssignments(
-                            party,
-                            players,
-                            pairAssignments,
-                            updatePairAssignments,
-                            controls,
-                            message,
-                            allowSave,
-                        )
-                            .create()
-                    },
-                    token = token,
-                ),
+            CouplingWebsocket(
+                party.id,
+                onMessage = onMessageFunc,
+                buildChild = {
+                    PairAssignments(
+                        party,
+                        players,
+                        pairAssignments,
+                        updatePairAssignments,
+                        controls,
+                        message,
+                        allowSave,
+                    )
+                        .create()
+                },
+                token = token,
             )
         } else {
             div()
@@ -84,5 +81,6 @@ private fun handleMessage(
         setMessage(newMessage)
         newMessage.currentPairAssignments?.let { setPairAssignments(it) }
     }
+
     is PairAssignmentAdjustmentMessage -> setPairAssignments(newMessage.currentPairAssignments)
 }

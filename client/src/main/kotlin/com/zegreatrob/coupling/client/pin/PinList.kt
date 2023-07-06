@@ -7,10 +7,11 @@ import com.zegreatrob.coupling.client.components.orange
 import com.zegreatrob.coupling.client.components.pin.PinCard
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import react.router.dom.Link
@@ -23,9 +24,13 @@ import web.cssom.TextAlign
 import web.cssom.px
 import web.cssom.vh
 
-data class PinList(val party: PartyDetails, val pins: List<Pin>) : DataPropsBind<PinList>(pinList)
+external interface PinListProps : Props {
+    var party: PartyDetails
+    var pins: List<Pin>
+}
 
-val pinList by ntmFC<PinList> { (party, pins) ->
+@ReactFunc
+val PinList by nfc<PinListProps> { (party, pins) ->
     div {
         css { pinListStyles() }
         ConfigHeader {

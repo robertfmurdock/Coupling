@@ -4,8 +4,10 @@ import com.zegreatrob.coupling.plugins.setup
 import com.zegreatrob.tools.tagger.TaggerExtension
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
+import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
+    id("com.zegreatrob.jsmints.plugins.minreact")
     id("com.zegreatrob.coupling.plugins.jstools")
     kotlin("plugin.serialization")
 }
@@ -28,6 +30,15 @@ kotlin {
         getByName("main") {
             resources.srcDir("src/main/javascript")
         }
+    }
+}
+
+kotlin {
+    sourceSets.main {
+        kotlin.srcDir("build/generated/ksp/js/main/kotlin")
+    }
+    sourceSets.test {
+        kotlin.srcDir("build/generated/ksp/js/test/kotlin")
     }
 }
 
@@ -181,6 +192,17 @@ tasks {
     }
 }
 
+tasks {
+    formatKotlinMain {
+        dependsOn("kspKotlinJs")
+    }
+    withType(LintTask::class) {
+        exclude { spec -> spec.file.absolutePath.contains("generated") }
+    }
+    lintKotlinMain {
+        dependsOn("kspKotlinJs")
+    }
+}
 
 artifacts {
     add(clientConfiguration.name, tasks.compileProductionExecutableKotlinJs.map { it.destinationDirectory }) {
