@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.plugins.setup
 import com.zegreatrob.tools.tagger.TaggerExtension
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
@@ -196,11 +197,14 @@ tasks {
     formatKotlinMain {
         dependsOn("kspKotlinJs")
     }
-    withType(LintTask::class) {
-        exclude { spec -> spec.file.absolutePath.contains("generated") }
-    }
     lintKotlinMain {
         dependsOn("kspKotlinJs")
+    }
+    withType(FormatTask::class) {
+        exclude { spec -> spec.file.absolutePath.contains("generated") }
+    }
+    withType(LintTask::class) {
+        exclude { spec -> spec.file.absolutePath.contains("generated") }
     }
 }
 
