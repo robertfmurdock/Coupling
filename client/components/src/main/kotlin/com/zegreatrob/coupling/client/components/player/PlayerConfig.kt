@@ -14,52 +14,46 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.nfc
 import js.core.jso
+import react.Props
 import react.router.Navigate
 import react.router.dom.usePrompt
 import react.useState
 import kotlin.js.Json
 
-data class PlayerConfig<P>(
-    val party: PartyDetails,
-    val player: Player,
-    val players: List<Player>,
-    val reload: () -> Unit,
-    val dispatchFunc: DispatchFunc<out P>,
-    val windowFuncs: WindowFunctions = WindowFunctions,
-) : DataPropsBind<PlayerConfig<P>>(component.unsafeCast<TMFC>())
+external interface PlayerConfigProps<P> : Props
     where P : SavePlayerCommand.Dispatcher, P : DeletePlayerCommand.Dispatcher {
-    companion object {
-        private val component = playerConfig<Dispatcho>()
-    }
+    var party: PartyDetails
+    var player: Player
+    var players: List<Player>
+    var reload: () -> Unit
+    var dispatchFunc: DispatchFunc<out P>
+    var windowFuncs: WindowFunctions?
 }
 
-private interface Dispatcho : SavePlayerCommand.Dispatcher, DeletePlayerCommand.Dispatcher
-
-private fun <P> playerConfig() where P : SavePlayerCommand.Dispatcher, P : DeletePlayerCommand.Dispatcher =
-    tmFC<PlayerConfig<P>> { props ->
-        val (party, player, players, reload, dispatchFunc, windowFuncs) = props
-        val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
-        val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-        val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
-        usePrompt(
-            jso {
-                `when` = updatedPlayer != player
-                message = "You have unsaved data. Press OK to leave without saving."
-            },
-        )
-        val onSubmit = dispatchFunc({ SavePlayerCommand(party.id, updatedPlayer) }, { reload() })
-        val onRemove = dispatchFunc(
-            { DeletePlayerCommand(party.id, player.id) },
-            { setRedirectUrl(party.id.currentPairsPage()) },
-        ).requireConfirmation("Are you sure you want to delete this player?", windowFuncs)
-        if (redirectUrl != null) {
-            Navigate { to = redirectUrl }
-        } else {
-            add(PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove))
-        }
+@ReactFunc
+val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
+    val (party, player, players, reload, dispatchFunc, windowFuncs) = props
+    val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
+    val (redirectUrl, setRedirectUrl) = useState<String?>(null)
+    val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
+    usePrompt(
+        jso {
+            `when` = updatedPlayer != player
+            message = "You have unsaved data. Press OK to leave without saving."
+        },
+    )
+    val onSubmit = dispatchFunc({ SavePlayerCommand(party.id, updatedPlayer) }, { reload() })
+    val onRemove = dispatchFunc(
+        { DeletePlayerCommand(party.id, player.id) },
+        { setRedirectUrl(party.id.currentPairsPage()) },
+    ).requireConfirmation("Are you sure you want to delete this player?", windowFuncs ?: WindowFunctions)
+    if (redirectUrl != null) {
+        Navigate { to = redirectUrl }
+    } else {
+        add(PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove))
     }
+}

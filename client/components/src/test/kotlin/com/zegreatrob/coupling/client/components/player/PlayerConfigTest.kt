@@ -12,9 +12,6 @@ import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.create
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
@@ -51,9 +48,7 @@ class PlayerConfigTest {
     }) {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PlayerConfig(party, player, emptyList(), {}, stubber.func()),
-                )
+                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, stubber.func()) }
             },
         )
         val element = screen.getByRole("combobox", RoleOptions(name = "Avatar Type"))
@@ -78,9 +73,7 @@ class PlayerConfigTest {
     }) {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PlayerConfig(party, player, emptyList(), {}, stubber.func()),
-                )
+                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, stubber.func()) }
             },
         )
     } exercise {
@@ -102,9 +95,7 @@ class PlayerConfigTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()),
-                )
+                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()) }
             },
         )
     } verify { wrapper ->
@@ -121,9 +112,7 @@ class PlayerConfigTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()),
-                )
+                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()) }
             },
         )
     } verify { wrapper ->
@@ -143,9 +132,9 @@ class PlayerConfigTest {
     }) {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatcher.func()),
-                )
+                router = singleRouteRouter {
+                    PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatcher.func())
+                }
             },
         )
     } exercise {
@@ -184,8 +173,9 @@ class PlayerConfigTest {
                         },
                         jso {
                             path = "*"
-                            element = PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFuncs)
-                                .create()
+                            element = Fragment.create {
+                                PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFuncs)
+                            }
                         },
                     ),
                 )
@@ -218,9 +208,9 @@ class PlayerConfigTest {
     }) {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFunctions),
-                )
+                router = singleRouteRouter {
+                    PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFunctions)
+                }
             },
         )
     } exercise {
@@ -250,7 +240,7 @@ class PlayerConfigTest {
                             path = "*"
                             element = Fragment.create {
                                 Link { to = "elsewhere"; button { +"Leave" } }
-                                add(PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc()))
+                                PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())
                             }
                         },
                     ),
@@ -278,9 +268,7 @@ class PlayerConfigTest {
     } exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter(
-                    PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc()),
-                )
+                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc()) }
             },
         )
     } verifyAnd { _ ->
@@ -290,15 +278,6 @@ class PlayerConfigTest {
         window.asDynamic()["confirm"] = confirmFunc
     }
 }
-
-fun singleRouteRouter(element: DataProps<*>) = createMemoryRouter(
-    arrayOf(
-        jso {
-            path = "*"
-            this.element = element.create()
-        },
-    ),
-)
 
 fun singleRouteRouter(block: ChildrenBuilder.() -> Unit) = createMemoryRouter(
     arrayOf(

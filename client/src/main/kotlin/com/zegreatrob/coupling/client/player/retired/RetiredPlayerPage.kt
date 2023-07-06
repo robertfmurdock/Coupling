@@ -33,10 +33,10 @@ private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: Party
                 retiredPlayers()
             }
         },
-        toDataprops = { reload, commandFunc, result ->
-            val players = result.party?.retiredPlayers?.elements ?: return@CouplingQuery null
+        build = { reload, commandFunc, result ->
+            val players = result.party?.retiredPlayers?.elements ?: return@CouplingQuery
             PlayerConfig(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
+                party = result.party?.details?.data ?: return@CouplingQuery,
                 player = players.first { it.id == playerId },
                 players = players,
                 reload = reload,
