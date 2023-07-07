@@ -26,8 +26,10 @@ kotlin {
                 api(project(":libraries:model"))
                 api(kotlin("stdlib"))
                 api(kotlin("stdlib-common"))
-                api("com.soywiz.korlibs.klock:klock")
                 api("com.benasher44:uuid")
+                api("com.soywiz.korlibs.klock:klock")
+                api("io.github.microutils:kotlin-logging")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json")
             }
         }
         getByName("jsMain") {

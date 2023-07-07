@@ -10,7 +10,7 @@ plugins {
     id("com.zegreatrob.coupling.plugins.reports")
     id("com.zegreatrob.coupling.plugins.testLogging")
     id("com.zegreatrob.coupling.plugins.linter")
-    id("com.zegreatrob.testmints.logs.mint-logs")
+//    id("com.zegreatrob.testmints.logs.mint-logs")
 }
 
 kotlin {

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="17">
+      <module name="jsmints-plugins.plugins" target="11" />
+      <module name="jsmints-plugins.plugins.functionalTest" target="11" />
+      <module name="jsmints-plugins.plugins.main" target="11" />
+      <module name="jsmints-plugins.plugins.test" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

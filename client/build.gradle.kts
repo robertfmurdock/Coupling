@@ -16,7 +16,7 @@ plugins {
 kotlin {
     js {
         browser {
-            webpackTask {
+            webpackTask(Action {
                 dependsOn("additionalResources")
                 inputs.files("${project.projectDir}/src/main/resources")
                 val profile: String? by project
@@ -24,7 +24,7 @@ kotlin {
                     this.args.add("--profile")
                     this.args.add("--json=$buildDir/reports/stats.json")
                 }
-            }
+            })
         }
     }
     sourceSets {
@@ -103,7 +103,6 @@ dependencies {
     implementation(npmConstrained("webpack-favicons"))
 
     testImplementation(project(":libraries:stub-model"))
-    testImplementation(project(":libraries:test-react"))
     testImplementation(project(":libraries:test-logging"))
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.testmints:minassert")
@@ -157,12 +156,12 @@ tasks {
         dependsOn(lookupCdnUrls, "processResources")
         inputs.file(cdnBuildOutput)
         inputs.file(File(project.projectDir, "cdn.settings.json"))
-        outputs.dir(File(destinationDirectory, "html"))
-        outputs.file(File(destinationDirectory, "client-vendor.js"))
-        outputs.file(File(destinationDirectory, "client-kotlin.js"))
-        outputs.file(File(destinationDirectory, "client-coupling-core.js"))
-        outputs.file(File(destinationDirectory, "client-kotlinx.js"))
-        outputs.file(File(destinationDirectory, "client-ktor.js"))
+        outputs.dir(outputDirectory.dir("html"))
+        outputs.file(outputDirectory.file("client-vendor.js"))
+        outputs.file(outputDirectory.file("client-kotlin.js"))
+        outputs.file(outputDirectory.file("client-coupling-core.js"))
+        outputs.file(outputDirectory.file("client-kotlinx.js"))
+        outputs.file(outputDirectory.file("client-ktor.js"))
         outputs.cacheIf { true }
     }
 
@@ -171,7 +170,7 @@ tasks {
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
-        val absolutePath = browserProductionWebpack.get().destinationDirectory.absolutePath
+        val absolutePath = browserProductionWebpack.get().outputDirectory.get().asFile.absolutePath
         commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${rootProject.version}".split(" ")
     }
     taggerExtension.releaseProvider.configure {
@@ -214,7 +213,7 @@ artifacts {
     }
     val browserProductionWebpack = tasks.named("browserProductionWebpack", KotlinWebpack::class)
     val browserDistribution = tasks.named("browserDistribution")
-    add(clientConfiguration.name, browserProductionWebpack.map { it.destinationDirectory }) {
+    add(clientConfiguration.name, browserProductionWebpack.map { it.outputDirectory }) {
         builtBy(browserProductionWebpack, browserDistribution)
     }
 }
