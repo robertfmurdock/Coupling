@@ -18,4 +18,5 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.testmints:standard")
     testImplementation("com.zegreatrob.testmints:minassert")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
 }

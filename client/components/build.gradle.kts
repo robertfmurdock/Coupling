@@ -69,4 +69,6 @@ dependencies {
     testImplementation(project(":libraries:stub-model"))
     testImplementation(project(":libraries:test-logging"))
     testImplementation("com.zegreatrob.testmints:async")
+    testImplementation(npmConstrained("jsdom"))
+    testImplementation(npmConstrained("global-jsdom"))
 }

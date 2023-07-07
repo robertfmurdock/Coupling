@@ -25,6 +25,6 @@ dependencies {
     api("org.jetbrains.kotlin-wrappers:kotlin-react")
     api("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     api("org.jetbrains.kotlin:kotlin-test")
-    api(npmConstrained("jsdom"))
-    api(npmConstrained("global-jsdom"))
+    implementation(npmConstrained("jsdom"))
+    implementation(npmConstrained("global-jsdom"))
 }

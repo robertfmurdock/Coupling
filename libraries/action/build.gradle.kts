@@ -7,7 +7,7 @@ kotlin {
 
     targets {
         js {
-            nodejs { testTask { useMocha { timeout = "10s" } } }
+            nodejs { testTask(Action { useMocha { timeout = "10s" } } )}
         }
         jvm()
     }
@@ -34,6 +34,7 @@ dependencies {
     commonTestImplementation(project(":libraries:json"))
     commonTestImplementation(project(":libraries:test-logging"))
     commonTestImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
+    commonTestImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
     commonTestImplementation("com.zegreatrob.testmints:standard")
     commonTestImplementation("com.zegreatrob.testmints:minassert")

@@ -15,6 +15,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-node")
     testImplementation(project(":libraries:stub-model"))
+    testImplementation(kotlin("test"))
     testImplementation("com.zegreatrob.testmints:async")
     testImplementation("com.zegreatrob.testmints:standard")
     testImplementation("com.zegreatrob.testmints:minassert")
