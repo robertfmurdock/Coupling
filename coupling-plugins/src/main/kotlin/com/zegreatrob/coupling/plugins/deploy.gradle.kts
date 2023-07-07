@@ -7,7 +7,10 @@ plugins {
 }
 
 kotlin {
-    js { nodejs() }
+    js {
+        moduleName = "Coupling-deploy-${project.name}"
+        nodejs()
+    }
 }
 
 val serverProject: Project = project.project(":server")
