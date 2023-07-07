@@ -40,22 +40,3 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 }
-
-tasks.withType(KotlinJvmTest::class).configureEach {
-    outputs.cacheIf { true }
-}
-tasks.withType(MetadataDependencyTransformationTask::class).configureEach {
-    outputs.cacheIf { true }
-}
-tasks.withType(org.gradle.api.tasks.bundling.Jar::class).configureEach {
-    outputs.cacheIf { true }
-}
-tasks.withType(org.gradle.jvm.tasks.Jar::class).configureEach {
-    outputs.cacheIf { true }
-}
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).configureEach {
-    outputs.cacheIf { true }
-}
-tasks.withType(org.gradle.language.jvm.tasks.ProcessResources::class).configureEach {
-    outputs.cacheIf { true }
-}
