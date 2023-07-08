@@ -18,7 +18,7 @@ const cdnResources = JSON.parse(
 const cdnSettings = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/cdn.settings.json')))
 
 if (config.entry && config.entry.main) {
-    config.entry.main = [path.resolve(resourcesPath, "com/zegreatrob/coupling/client/app.js")].concat(config.entry.main);
+    // config.entry.main = [path.resolve(resourcesPath, "com/zegreatrob/coupling/client/app.js")].concat(config.entry.main);
 }
 
 if (config.output) {
