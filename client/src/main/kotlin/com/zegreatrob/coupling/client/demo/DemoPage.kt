@@ -11,11 +11,11 @@ val DemoPage by nfc<PageProps> { props ->
     val frameIndex = props.search["frame"]
     val currentFrame = frameIndex?.toIntOrNull()?.let { demoSequence.toList()[it] }
     if (currentFrame != null) {
-//        add(DemoPageFrame(currentFrame.data))
+        DemoPageFrame(currentFrame.data)
     } else {
         add(
-            FrameRunner(demoSequence, 1.0) { // state: DemoAnimationState ->
-//                add(DemoPageFrame(state))
+            FrameRunner(demoSequence, 1.0) { state: DemoAnimationState ->
+                DemoPageFrame(state)
             },
         )
     }
