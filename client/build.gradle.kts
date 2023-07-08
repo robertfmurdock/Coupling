@@ -27,11 +27,6 @@ kotlin {
             })
         }
     }
-    sourceSets {
-        getByName("main") {
-            resources.srcDir("src/main/javascript")
-        }
-    }
 }
 
 kotlin {

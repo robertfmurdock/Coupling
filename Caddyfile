@@ -3,7 +3,7 @@ localhost {
 }
 
 static.localhost {
-    root * /client/build/distributions
+    root * /client/build/dist/js/productionExecutable
     file_server browse
     header Access-Control-Allow-Origin "https://localhost"
 }
