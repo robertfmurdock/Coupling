@@ -27,14 +27,10 @@ kotlin {
             })
         }
     }
-}
-
-kotlin {
-    sourceSets.main {
-        kotlin.srcDir("build/generated/ksp/js/main/kotlin")
-    }
-    sourceSets.test {
-        kotlin.srcDir("build/generated/ksp/js/test/kotlin")
+    sourceSets {
+        getByName("main") {
+            resources.srcDir("src/main/javascript")
+        }
     }
 }
 
