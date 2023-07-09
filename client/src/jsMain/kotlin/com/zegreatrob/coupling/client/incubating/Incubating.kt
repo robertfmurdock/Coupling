@@ -5,23 +5,20 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
 
 val IncubatingPage by nfc<PageProps> { props ->
-    add(
-        CouplingQuery(
-            commander = props.commander,
-            query = graphQuery { addToSlackUrl() },
-            build = { _, _, result ->
-                IncubatingContent(
-                    addToSlackUrl = result.addToSlackUrl ?: return@CouplingQuery,
-                )
-            },
-        ),
+    CouplingQuery(
+        commander = props.commander,
+        query = graphQuery { addToSlackUrl() },
+        build = { _, _, result ->
+            IncubatingContent(
+                addToSlackUrl = result.addToSlackUrl ?: return@CouplingQuery,
+            )
+        },
     )
 }
 

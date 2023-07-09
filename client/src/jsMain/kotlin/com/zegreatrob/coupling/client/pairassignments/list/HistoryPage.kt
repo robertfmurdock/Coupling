@@ -8,10 +8,9 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.graphQuery
-import com.zegreatrob.minreact.create
 
 val HistoryPage = partyPageFunction { props, partyId ->
-    +CouplingQuery(
+    CouplingQuery(
         commander = props.commander,
         query = graphQuery {
             party(partyId) {
@@ -19,12 +18,13 @@ val HistoryPage = partyPageFunction { props, partyId ->
                 pairAssignmentDocumentList()
             }
         },
-        build = { reload, commandFunc, result ->
+        toNode = { reload, commandFunc, result ->
             val (party, history) = result.toHistoryData()
-                ?: return@CouplingQuery
-            History(party, history, Controls(commandFunc, reload))
+                ?: return@CouplingQuery null
+            History.create(party, history, Controls(commandFunc, reload))
         },
-    ).create(key = partyId.value)
+        key = partyId.value,
+    )
 }
 
 typealias HistoryData = Pair<PartyDetails, List<PairAssignmentDocument>>

@@ -5,10 +5,9 @@ import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.create
 import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.TMFC
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.DataLoaderTools
@@ -17,17 +16,12 @@ import com.zegreatrob.react.dataloader.ResolvedState
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.execute
 import react.ChildrenBuilder
+import react.Props
 import react.ReactNode
 import react.create
 import react.useCallback
 
-data class CouplingQuery<R>(
-    val query: SuspendAction<CommandDispatcher, R?>,
-    val toNode: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> ReactNode?,
-    val commander: Commander,
-) : DataPropsBind<CouplingQuery<R>>(couplingQuery.unsafeCast<TMFC>())
-
-fun <P : DataProps<P>, R> CouplingQuery(
+fun <P : DataProps<P>, R> ChildrenBuilder.CouplingQuery(
     query: SuspendAction<CommandDispatcher, R?>,
     toDataprops: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> P?,
     commander: Commander,
@@ -39,7 +33,7 @@ fun <P : DataProps<P>, R> CouplingQuery(
     commander = commander,
 )
 
-fun <R> CouplingQuery(
+fun <R> ChildrenBuilder.CouplingQuery(
     query: SuspendAction<CommandDispatcher, R?>,
     build: ChildrenBuilder.(ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> Unit,
     commander: Commander,
@@ -51,7 +45,14 @@ fun <R> CouplingQuery(
     commander = commander,
 )
 
-private val couplingQuery by ntmFC { props: CouplingQuery<Any> ->
+external interface CouplingQueryProps<R> : Props {
+    var query: SuspendAction<CommandDispatcher, R?>
+    var toNode: (ReloadFunc, DispatchFunc<CommandDispatcher>, R) -> ReactNode?
+    var commander: Commander
+}
+
+@ReactFunc
+val CouplingQuery by nfc<CouplingQueryProps<Any>> { props ->
     val (query, toDataprops, commander) = props
 
     val getDataAsync: suspend (DataLoaderTools) -> ReactNode? = useCallback { tools ->

@@ -1,12 +1,15 @@
 package com.zegreatrob.coupling.client.integration
 
+import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
+import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.sdk.gql.graphQuery
-import com.zegreatrob.minreact.create
+import com.zegreatrob.react.dataloader.ReloadFunc
 
 val IntegrationPage = partyPageFunction { props, partyId ->
-    +CouplingQuery(
+    CouplingQuery(
         commander = props.commander,
         query = graphQuery {
             party(partyId) {
@@ -15,12 +18,13 @@ val IntegrationPage = partyPageFunction { props, partyId ->
             }
             addToSlackUrl()
         },
-        build = { _, _, result ->
-            IntegrationContent(
-                party = result.party?.details?.data ?: return@CouplingQuery,
+        toNode = { _: ReloadFunc, _: DispatchFunc<CommandDispatcher>, result: CouplingQueryResult ->
+            IntegrationContent.create(
+                party = result.party?.details?.data ?: return@CouplingQuery null,
                 integration = result.party?.integration?.data,
-                addToSlackUrl = result.addToSlackUrl ?: return@CouplingQuery,
+                addToSlackUrl = result.addToSlackUrl ?: return@CouplingQuery null,
             )
         },
-    ).create(key = partyId.value)
+        key = partyId.value,
+    )
 }
