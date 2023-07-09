@@ -19,10 +19,7 @@ kotlin {
 
 kotlin {
     sourceSets.jsMain {
-        kotlin.srcDir("build/generated/ksp/js/main/kotlin")
-    }
-    sourceSets.jsTest {
-        kotlin.srcDir("build/generated/ksp/js/test/kotlin")
+        kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
     }
 }
 

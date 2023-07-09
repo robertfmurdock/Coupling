@@ -35,6 +35,15 @@ kotlin {
     }
 }
 
+kotlin {
+    sourceSets.jsMain {
+        kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
+    }
+    sourceSets.jsTest {
+        kotlin.srcDir("build/generated/ksp/js/jsTest/kotlin")
+    }
+}
+
 val jsRuntimeClasspath: Configuration by configurations.getting
 val clientConfiguration: Configuration by configurations.creating
 val cdnLookupConfiguration: Configuration by configurations.creating
