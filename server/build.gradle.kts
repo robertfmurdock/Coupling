@@ -114,20 +114,21 @@ tasks {
         workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
     }
 
-//    register<NodeExec>("serverStats") {
-//        dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
-//        mustRunAfter(clean)
-//
-//        nodeCommand = "webpack"
-//        arguments = listOf(
-//            "--config",
-//            project.projectDir.resolve("webpack.config.js").absolutePath,
-//            "--profile",
-//            "--json=${rootDir.absolutePath}/compilation-stats.json"
-//        )
-//        environment("NODE_ENV" to "production")
-//        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
-//    }
+    register<NodeExec>("serverStats") {
+        setup(project)
+        dependsOn(compileKotlinJs, jsProcessResources, compileProductionExecutableKotlinJs)
+        mustRunAfter(clean)
+
+        nodeCommand = "webpack"
+        arguments = listOf(
+            "--config",
+            project.projectDir.resolve("webpack.config.js").absolutePath,
+            "--profile",
+            "--json=${rootDir.absolutePath}/compilation-stats.json"
+        )
+        environment("NODE_ENV" to "production")
+        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+    }
 
     val copyServerIcons by registering(Copy::class) {
         from("public")
