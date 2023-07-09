@@ -42,7 +42,7 @@ val spinAnimationPanel by ntmFC<SpinAnimationPanel> { (party, rosteredPairAssign
 
 private fun ChildrenBuilder.assignedPairs(party: PartyDetails, revealedPairs: List<PinnedCouplingPair>) = div {
     asDynamic()["data-testid"] = "assigned-pairs"
-    revealedPairs.forEachIndexed { index, it -> add(AssignedPair(party, it, false), key = "$index") }
+    revealedPairs.forEachIndexed { index, it -> AssignedPair(party, it, false, key = "$index") }
 }
 
 val playerSpotlightStyles = ClassName {

@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -49,13 +48,13 @@ class CurrentPairAssignmentsPanelTest {
                         },
                         jso {
                             path = "*"
-                            element = CurrentPairAssignmentsPanel(
+                            element = CurrentPairAssignmentsPanel.create(
                                 party,
                                 pairAssignments,
                                 setPairAssignments = { },
                                 allowSave = true,
                                 dispatchFunc = stubDispatcher.func(),
-                            ).create()
+                            )
                         },
                     ),
                 )
@@ -90,13 +89,13 @@ class CurrentPairAssignmentsPanelTest {
                             },
                             jso {
                                 path = "*"
-                                element = CurrentPairAssignmentsPanel(
+                                element = CurrentPairAssignmentsPanel.create(
                                     party,
                                     pairAssignments,
                                     setPairAssignments = { },
                                     allowSave = true,
                                     dispatchFunc = stubDispatcher.func(),
-                                ).create()
+                                )
                             },
                         ),
                     )

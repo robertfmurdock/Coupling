@@ -2,16 +2,19 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.CouplingSocketMessage
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 
-data class ServerMessage(val message: CouplingSocketMessage) :
-    DataPropsBind<ServerMessage>(serverMessage)
+external interface ServerMessageProps : Props {
+    var message: CouplingSocketMessage
+}
 
-val serverMessage by ntmFC<ServerMessage> { (message) ->
+@ReactFunc
+val ServerMessage by nfc<ServerMessageProps> { (message) ->
     div {
         span { +message.text }
         div {

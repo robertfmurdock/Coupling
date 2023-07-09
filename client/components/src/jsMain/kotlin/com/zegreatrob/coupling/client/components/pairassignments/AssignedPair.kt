@@ -13,11 +13,12 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.create
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
@@ -43,20 +44,21 @@ import web.cssom.rotatex
 import web.cssom.url
 import web.html.HTMLElement
 
-data class AssignedPair(
-    val party: PartyDetails,
-    val pair: PinnedCouplingPair,
-    val canDrag: Boolean,
-    val swapPlayersFunc: (PinnedPlayer, String) -> Unit = { _, _ -> },
-    val pinDropFunc: PinMoveCallback = {},
-) : DataPropsBind<AssignedPair>(assignedPair)
-
 typealias PinMoveCallback = (String) -> Unit
 
 val tiltLeft = (-8).deg
 val tiltRight = 8.deg
 
-val assignedPair by ntmFC<AssignedPair> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
+external interface AssignedPairProps : Props {
+    var party: PartyDetails
+    var pair: PinnedCouplingPair
+    var canDrag: Boolean
+    var swapPlayersFunc: ((PinnedPlayer, String) -> Unit)?
+    var pinDropFunc: PinMoveCallback?
+}
+
+@ReactFunc
+val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.callSign()
 
     val (isOver, drop) = usePinDrop(pinMoveCallback)
@@ -134,19 +136,19 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
     }
 }
 
-private fun usePinDrop(pinMoveCallback: PinMoveCallback) = useDrop(
+private fun usePinDrop(pinMoveCallback: PinMoveCallback?) = useDrop(
     acceptItemType = pinDragItemType,
-    drop = { item -> pinMoveCallback(item["id"].unsafeCast<String>()) },
+    drop = { item -> pinMoveCallback?.invoke(item["id"].unsafeCast<String>()) },
     collect = { monitor -> monitor.isOver() },
 )
 
 private fun playerCardComponent(
     canDrag: Boolean,
-    swap: (PinnedPlayer, String) -> Unit,
+    swap: ((PinnedPlayer, String) -> Unit)?,
 ): ChildrenBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) {
     { player, tilt ->
         playerFlipped(player.player) {
-            swappablePlayer(player, canDrag, tilt) { droppedPlayerId: String -> swap(player, droppedPlayerId) }
+            swappablePlayer(player, canDrag, tilt) { droppedPlayerId: String -> swap?.invoke(player, droppedPlayerId) }
                 .create()
         }
     }

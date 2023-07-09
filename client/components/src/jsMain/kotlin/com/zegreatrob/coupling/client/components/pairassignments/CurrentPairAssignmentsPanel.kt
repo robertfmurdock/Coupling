@@ -13,12 +13,13 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.router.Navigate
 import react.useState
@@ -26,15 +27,16 @@ import web.cssom.ClassName
 import web.cssom.WhiteSpace
 import web.cssom.px
 
-data class CurrentPairAssignmentsPanel(
-    val party: PartyDetails,
-    val pairAssignments: PairAssignmentDocument,
-    val setPairAssignments: (PairAssignmentDocument) -> Unit,
-    val allowSave: Boolean,
-    val dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommand.Dispatcher>,
-) : DataPropsBind<CurrentPairAssignmentsPanel>(currentPairAssignmentsPanel)
+external interface CurrentPairAssignmentsPanelProps : Props {
+    var party: PartyDetails
+    var pairAssignments: PairAssignmentDocument
+    var setPairAssignments: (PairAssignmentDocument) -> Unit
+    var allowSave: Boolean
+    var dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommand.Dispatcher>
+}
 
-val currentPairAssignmentsPanel by ntmFC<CurrentPairAssignmentsPanel> { props ->
+@ReactFunc
+val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props ->
     val (party, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToCurrentFunc = { setRedirectUrl(party.id.currentPairsPage()) }
@@ -75,16 +77,14 @@ private fun ChildrenBuilder.pairAssignmentList(
         whiteSpace = WhiteSpace.preLine
     }
     pairAssignments.pairs.mapIndexed { index, pair ->
-        add(
-            AssignedPair(
-                party,
-                pair,
-                canDrag = allowSave,
-                swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
-                    setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
-                },
-                pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) },
-            ),
+        AssignedPair(
+            party = party,
+            pair = pair,
+            canDrag = allowSave,
+            swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
+                setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
+            },
+            pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) },
             key = "$index",
         )
     }

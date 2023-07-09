@@ -1,10 +1,11 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.BoxShadow
 import web.cssom.Color
@@ -13,9 +14,12 @@ import web.cssom.Margin
 import web.cssom.px
 import web.cssom.rgb
 
-data class ControlPanel(val party: PartyDetails) : DataPropsBind<ControlPanel>(controlPanel)
+external interface ControlPanelProps : Props {
+    var party: PartyDetails
+}
 
-val controlPanel by ntmFC<ControlPanel> { (party) ->
+@ReactFunc
+val ControlPanel by nfc<ControlPanelProps> { (party) ->
     div {
         div {
             css {

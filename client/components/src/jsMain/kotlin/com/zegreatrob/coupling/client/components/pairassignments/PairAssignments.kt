@@ -57,9 +57,9 @@ private val pairAssignments by ntmFC<PairAssignments> { props ->
                 PartyBrowser(party)
                 add(PairSection(party, players, pairAssignments, allowSave, setPairs, controls))
             }
-            add(ControlPanel(party))
+            ControlPanel(party)
             add(PlayerRoster(label = "Unpaired players", partyId = party.id, players = notPairedPlayers))
-            add(ServerMessage(message), key = "${message.text} ${message.players.size}")
+            ServerMessage(message, key = "${message.text} ${message.players.size}")
         }
     }
 }

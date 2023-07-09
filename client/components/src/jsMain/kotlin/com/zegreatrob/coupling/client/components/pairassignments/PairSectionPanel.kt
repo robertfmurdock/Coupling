@@ -48,14 +48,12 @@ val pairSectionPanel by ntmFC<PairSectionPanel> { props ->
                     pairAssignments = pairAssignments,
                     enabled = party.animationEnabled && allowSave,
                 ) {
-                    add(
-                        CurrentPairAssignmentsPanel(
-                            party = party,
-                            pairAssignments = pairAssignments,
-                            setPairAssignments = setPairs,
-                            allowSave = allowSave,
-                            dispatchFunc = controls.dispatchFunc,
-                        ),
+                    CurrentPairAssignmentsPanel(
+                        party = party,
+                        pairAssignments = pairAssignments,
+                        setPairAssignments = setPairs,
+                        allowSave = allowSave,
+                        dispatchFunc = controls.dispatchFunc,
                     )
                 },
             )
