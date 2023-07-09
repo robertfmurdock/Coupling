@@ -8043,10 +8043,10 @@ graphlib@^2.1.8:
   dependencies:
     lodash "^4.17.15"
 
-graphql-http@^1.19.0:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.19.0.tgz#6f0fff0dbd9a8e797c99b5ac0ca160566e7927da"
-  integrity sha512-fOD3hfp/G+Lhx2FWW5HsfmtJSsw6CikcpOboG7/mFo/pPUzn3yOwKdTFRnJ8MVY4ru69MT1nSPr/1gI/iuGNlw==
+graphql-http@^1.20.0:
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.20.0.tgz#e832167c8e945d4df7c62ecbfdbc5642579f4784"
+  integrity sha512-XMTieJkI8NRugwuTjWlT8OQAYH7+DCIuworslawJwRwraq4laJwvWkngYDVBIrDHPhR2sgdL/Bh8Kw5IwDDeRg==
 
 graphql@^16.7.1:
   version "16.7.1"
