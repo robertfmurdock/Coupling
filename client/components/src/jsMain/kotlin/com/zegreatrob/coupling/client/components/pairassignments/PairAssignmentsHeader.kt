@@ -1,13 +1,16 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
+import react.Props
 
-data class PairAssignmentsHeader(val pairAssignments: PairAssignmentDocument) :
-    DataPropsBind<PairAssignmentsHeader>(pairAssignmentsHeader)
+external interface PairAssignmentsHeaderProps : Props {
+    var pairAssignments: PairAssignmentDocument
+}
 
-val pairAssignmentsHeader by ntmFC<PairAssignmentsHeader> { (pairAssignments) ->
+@ReactFunc
+val PairAssignmentsHeader by nfc<PairAssignmentsHeaderProps> { (pairAssignments) ->
     PairAssignmentBlock {
         +"Couples for ${pairAssignments.dateText()}"
     }

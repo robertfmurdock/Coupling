@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
@@ -61,11 +60,8 @@ val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props
     }
 }
 
-private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) = div {
-    div {
-        add(PairAssignmentsHeader(pairAssignments))
-    }
-}
+private fun ChildrenBuilder.dateHeader(pairAssignments: PairAssignmentDocument) =
+    div { div { PairAssignmentsHeader(pairAssignments) } }
 
 private fun ChildrenBuilder.pairAssignmentList(
     party: PartyDetails,

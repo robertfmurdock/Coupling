@@ -10,14 +10,15 @@ import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotlinx.browser.window
 import org.w3c.dom.DataTransfer
 import react.ChildrenBuilder
 import react.MutableRefObject
+import react.Props
 import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
@@ -32,16 +33,17 @@ import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
 
-data class PairSection(
-    val party: PartyDetails,
-    val players: List<Player>,
-    val pairAssignments: PairAssignmentDocument?,
-    val allowSave: Boolean,
-    val setPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
-) : DataPropsBind<PairSection>(pairSection)
+external interface PairSectionProps : Props {
+    var party: PartyDetails
+    var players: List<Player>
+    var pairAssignments: PairAssignmentDocument?
+    var allowSave: Boolean
+    var setPairs: (PairAssignmentDocument) -> Unit
+    var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
+}
 
-private val pairSection by ntmFC<PairSection> { (party, players, pairs, allowSave, setPairs, controls) ->
+@ReactFunc
+val PairSection by nfc<PairSectionProps> { (party, players, pairs, allowSave, setPairs, controls) ->
     val pairSectionNode = useRef<HTMLElement>(null)
 
     div {
@@ -49,7 +51,7 @@ private val pairSection by ntmFC<PairSection> { (party, players, pairs, allowSav
         div {
             ref = pairSectionNode
             css { display = Display.inlineBlock }
-            add(PairSectionPanel(party, players, pairs, allowSave, setPairs, controls))
+            PairSectionPanel(party, players, pairs, allowSave, setPairs, controls)
         }
         div {
             css { float = Float.right; width = 0.px }

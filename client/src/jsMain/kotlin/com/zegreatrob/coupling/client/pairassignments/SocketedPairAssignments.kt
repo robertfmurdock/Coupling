@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.components.CouplingWebsocket
 import com.zegreatrob.coupling.client.components.disconnectedMessage
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignments
-import com.zegreatrob.coupling.client.create
+import com.zegreatrob.coupling.client.components.pairassignments.create
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
@@ -51,19 +51,18 @@ where D : SavePairAssignmentsCommand.Dispatcher, D : DeletePairAssignmentsComman
 
         if (token.isNotBlank()) {
             CouplingWebsocket(
-                party.id,
+                partyId = party.id,
                 onMessage = onMessageFunc,
                 buildChild = {
-                    PairAssignments(
-                        party,
-                        players,
-                        pairAssignments,
-                        updatePairAssignments,
-                        controls,
-                        message,
-                        allowSave,
+                    PairAssignments.create(
+                        party = party,
+                        players = players,
+                        pairs = pairAssignments,
+                        setPairs = updatePairAssignments,
+                        controls = controls,
+                        message = message,
+                        allowSave = allowSave,
                     )
-                        .create()
                 },
                 token = token,
             )

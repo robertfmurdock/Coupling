@@ -6,12 +6,13 @@ import com.zegreatrob.coupling.client.components.pairassignments.spin.PairAssign
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Border
 import web.cssom.BoxShadow
@@ -25,16 +26,17 @@ import web.cssom.Padding
 import web.cssom.px
 import web.cssom.rgb
 
-data class PairSectionPanel(
-    val party: PartyDetails,
-    val players: List<Player>,
-    val pairAssignments: PairAssignmentDocument?,
-    val allowSave: Boolean,
-    val setPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
-) : DataPropsBind<PairSectionPanel>(pairSectionPanel)
+external interface PairSectionPanelProps : Props {
+    var party: PartyDetails
+    var players: List<Player>
+    var pairAssignments: PairAssignmentDocument?
+    var allowSave: Boolean
+    var setPairs: (PairAssignmentDocument) -> Unit
+    var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
+}
 
-val pairSectionPanel by ntmFC<PairSectionPanel> { props ->
+@ReactFunc
+val PairSectionPanel by nfc<PairSectionPanelProps> { props ->
     val (party, players, pairAssignments, allowSave, setPairs, controls) = props
     div {
         css { pairSectionCss() }

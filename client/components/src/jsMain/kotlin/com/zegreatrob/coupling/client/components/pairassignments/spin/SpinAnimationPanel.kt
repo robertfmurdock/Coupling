@@ -33,7 +33,7 @@ val spinAnimationPanel by ntmFC<SpinAnimationPanel> { (party, rosteredPairAssign
     val players = rosteredPairAssignments.selectedPlayers
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
     div {
-        add(PairAssignmentsHeader(pairAssignments))
+        PairAssignmentsHeader(pairAssignments)
         assignedPairs(party, revealedPairs)
         playerSpotlight(shownPlayer)
         playerRoster(rosterPlayers)

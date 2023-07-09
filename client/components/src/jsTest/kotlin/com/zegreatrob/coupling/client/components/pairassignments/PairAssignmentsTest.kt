@@ -12,7 +12,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
@@ -55,7 +54,7 @@ class PairAssignmentsTest {
         )
     }) exercise {
         render(
-            PairAssignments(
+            PairAssignments.create(
                 party,
                 players,
                 pairAssignments,
@@ -63,7 +62,7 @@ class PairAssignmentsTest {
                 controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
-            ).create(),
+            ),
             jso { wrapper = MemoryRouter },
         )
     } verify {
@@ -90,7 +89,7 @@ class PairAssignmentsTest {
         )
     }) exercise {
         render(
-            PairAssignments(
+            PairAssignments.create(
                 party,
                 players,
                 null,
@@ -98,7 +97,7 @@ class PairAssignmentsTest {
                 controls = Controls(StubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
-            ).create(),
+            ),
             jso { wrapper = MemoryRouter },
         )
     } verify {

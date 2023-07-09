@@ -13,16 +13,16 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
-import com.zegreatrob.minreact.ntmFC
 import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
 import csstype.PropertiesBuilder
 import emotion.css.ClassName
+import react.Props
 import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
@@ -32,19 +32,20 @@ import web.cssom.Padding
 import web.cssom.px
 import web.cssom.vh
 
-data class PairAssignments(
-    val party: PartyDetails,
-    val players: List<Player>,
-    val pairs: PairAssignmentDocument?,
-    val setPairs: (PairAssignmentDocument) -> Unit,
-    val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
-    val message: CouplingSocketMessage,
-    val allowSave: Boolean,
-) : DataPropsBind<PairAssignments>(pairAssignments)
-
 val pairAssignmentsClassName = ClassName { pairAssignmentStyles() }
 
-private val pairAssignments by ntmFC<PairAssignments> { props ->
+external interface PairAssignmentsProps : Props {
+    var party: PartyDetails
+    var players: List<Player>
+    var pairs: PairAssignmentDocument?
+    var setPairs: (PairAssignmentDocument) -> Unit
+    var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
+    var message: CouplingSocketMessage
+    var allowSave: Boolean
+}
+
+@ReactFunc
+val PairAssignments by nfc<PairAssignmentsProps> { props ->
     val (party, players, pairs, setPairs, controls, message, allowSave) = props
 
     val pairAssignments = pairs?.overlayUpdatedPlayers(players)
@@ -55,7 +56,7 @@ private val pairAssignments by ntmFC<PairAssignments> { props ->
             className = pairAssignmentsClassName
             div {
                 PartyBrowser(party)
-                add(PairSection(party, players, pairAssignments, allowSave, setPairs, controls))
+                PairSection(party, players, pairAssignments, allowSave, setPairs, controls)
             }
             ControlPanel(party)
             add(PlayerRoster(label = "Unpaired players", partyId = party.id, players = notPairedPlayers))

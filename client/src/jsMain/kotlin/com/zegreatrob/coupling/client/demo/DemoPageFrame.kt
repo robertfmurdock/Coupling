@@ -120,16 +120,14 @@ private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = add(
 private fun ChildrenBuilder.pinConfigFrame(state: AddPin) =
     PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {})
 
-private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = add(
-    PairAssignments(
-        state.party,
-        state.players,
-        state.pairAssignments,
-        { },
-        Controls(noOpDispatchFunc) {},
-        CouplingSocketMessage("", emptySet()),
-        state.allowSave,
-    ),
+private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = PairAssignments(
+    party = state.party,
+    players = state.players,
+    pairs = state.pairAssignments,
+    setPairs = { },
+    controls = Controls(noOpDispatchFunc) {},
+    message = CouplingSocketMessage("", emptySet()),
+    allowSave = state.allowSave,
 )
 
 private val noOpDispatchFunc = NoOpDispatcherDispatchFunc()
