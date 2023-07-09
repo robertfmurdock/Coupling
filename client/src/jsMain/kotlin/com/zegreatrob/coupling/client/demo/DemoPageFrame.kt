@@ -14,7 +14,6 @@ import com.zegreatrob.coupling.client.components.spin.PrepareSpinContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.testmints.action.async.SuspendAction
 import emotion.react.css
@@ -113,9 +112,8 @@ private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     PrepareSpinContent(party, players, pins, pins.map(Pin::id), {}, {}, {})
 }
 
-private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = add(
-    PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {}),
-)
+private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) =
+    PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {})
 
 private fun ChildrenBuilder.pinConfigFrame(state: AddPin) =
     PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {})

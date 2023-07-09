@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.stats.heatmap
 
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
 import js.import.import
@@ -12,6 +12,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.w3c.dom.Element
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.useLayoutEffect
 import react.useRef
@@ -81,9 +82,13 @@ suspend fun renderD3Heatmap(element: HTMLElement, data: List<Double?>, cellClass
         }
 }
 
-data class Heatmap(val data: List<List<Double?>>, val className: ClassName) : DataPropsBind<Heatmap>(heatmap)
+external interface HeatmapProps : Props {
+    var data: List<List<Double?>>
+    var className: ClassName
+}
 
-val heatmap by ntmFC<Heatmap> { (data, className) ->
+@ReactFunc
+val Heatmap by nfc<HeatmapProps> { (data, className) ->
     val rowSize = data.size * 90
     val rootRef = useRef<HTMLElement>(null)
     useLayoutEffect { MainScope().launch { rootRef.current?.renderD3Heatmap(data.flatten()) } }

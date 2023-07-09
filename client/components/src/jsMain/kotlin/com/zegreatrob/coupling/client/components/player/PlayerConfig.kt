@@ -15,7 +15,6 @@ import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import js.core.jso
 import react.Props
@@ -54,6 +53,6 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {
-        add(PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove))
+        PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove)
     }
 }

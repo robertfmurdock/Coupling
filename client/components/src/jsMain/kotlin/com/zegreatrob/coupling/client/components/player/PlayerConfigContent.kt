@@ -10,11 +10,12 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
+import csstype.PropertiesBuilder
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.a
@@ -30,7 +31,7 @@ import web.cssom.ClassName
 import web.cssom.Clear
 import web.cssom.Display
 import web.cssom.FontSize
-import web.cssom.LineStyle.Companion.outset
+import web.cssom.LineStyle
 import web.cssom.NamedColor
 import web.cssom.None
 import web.cssom.Position
@@ -40,18 +41,19 @@ import web.cssom.number
 import web.cssom.px
 import web.html.InputType
 
-data class PlayerConfigContent(
-    val party: PartyDetails,
-    val player: Player,
-    val players: List<Player>,
-    val onChange: (ChangeEvent<*>) -> Unit,
-    val onSubmit: () -> Unit,
-    val onRemove: () -> Unit,
-) : DataPropsBind<PlayerConfigContent>(playerConfigContent)
-
 val playerConfigContentClassName = ClassName("player-config-content")
 
-val playerConfigContent by ntmFC<PlayerConfigContent> { (party, player, players, onChange, onSubmit, onRemove) ->
+external interface PlayerConfigContentProps : Props {
+    var party: PartyDetails
+    var player: Player
+    var players: List<Player>
+    var onChange: (ChangeEvent<*>) -> Unit
+    var onSubmit: () -> Unit
+    var onRemove: () -> Unit
+}
+
+@ReactFunc
+val PlayerConfigContent by nfc<PlayerConfigContentProps> { (party, player, players, onChange, onSubmit, onRemove) ->
     ConfigFrame {
         css(playerConfigContentClassName) {
             "input[type=text]" {
@@ -84,15 +86,13 @@ val playerConfigContent by ntmFC<PlayerConfigContent> { (party, player, players,
             }
         }
         div {
-            add(
-                PlayerRoster(players = players, partyId = party.id) {
-                    display = Display.inlineBlock
-                    borderRadius = 20.px
-                    padding = 10.px
-                    border = Border(11.px, outset, NamedColor.tan)
-                    backgroundColor = NamedColor.wheat
-                },
-            )
+            PlayerRoster(players = players, partyId = party.id, cssOverrides = fun PropertiesBuilder.() {
+                display = Display.inlineBlock
+                borderRadius = 20.px
+                padding = 10.px
+                border = Border(11.px, LineStyle.outset, NamedColor.tan)
+                backgroundColor = NamedColor.wheat
+            })
         }
     }
 }

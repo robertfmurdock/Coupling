@@ -3,11 +3,8 @@ package com.zegreatrob.coupling.client.components.stats
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.stats.heatmap.Heatmap
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
-import com.zegreatrob.minreact.ntmFC
 import emotion.css.ClassName
 import emotion.react.css
 import react.Props
@@ -52,25 +49,28 @@ val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
                     width = 62.px
                 }
             }
-            players.forEach { player -> add(TopRowPlayer(player)) }
+            players.forEach { player -> TopRowPlayer(player) }
         }
         div {
             className = heatmapSideRow
-            players.forEach { player -> add(SidePlayer(player)) }
+            players.forEach { player -> SidePlayer(player) }
         }
-        add(
-            Heatmap(
-                heatmapData,
-                ClassName {
-                    display = Display.inlineBlock
-                    verticalAlign = VerticalAlign.top
-                },
-            ),
+        Heatmap(
+            heatmapData,
+            ClassName {
+                display = Display.inlineBlock
+                verticalAlign = VerticalAlign.top
+            },
         )
     }
 }
 
-val topRowPlayer by ntmFC<TopRowPlayer> { props ->
+external interface TopRowPlayerProps : Props {
+    var player: Player
+}
+
+@ReactFunc
+val TopRowPlayer by nfc<TopRowPlayerProps> { props ->
     val tweak = useMemo { Random.nextInt(6).toDouble() - 3.0 }
     div {
         css {
@@ -83,9 +83,12 @@ val topRowPlayer by ntmFC<TopRowPlayer> { props ->
     }
 }
 
-data class TopRowPlayer(val player: Player) : DataPropsBind<TopRowPlayer>(topRowPlayer)
+external interface SidePlayerProps : Props {
+    var player: Player
+}
 
-val sidePlayer by ntmFC<SidePlayer> { props ->
+@ReactFunc
+val SidePlayer by nfc<SidePlayerProps> { props ->
     val tweak = useMemo(props.player.id) { 1.5 - Random.nextInt(6).toDouble() }
     div {
         css {
@@ -99,5 +102,3 @@ val sidePlayer by ntmFC<SidePlayer> { props ->
         PlayerCard(props.player, size = 50, tilt = tweak.deg)
     }
 }
-
-data class SidePlayer(val player: Player) : DataPropsBind<SidePlayer>(sidePlayer)

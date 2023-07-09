@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotlinx.browser.window
@@ -56,7 +55,7 @@ val PairSection by nfc<PairSectionProps> { (party, players, pairs, allowSave, se
         div {
             css { float = Float.right; width = 0.px }
             div { copyToClipboardButton(pairSectionNode) }
-            add(TinyPlayerList(party, players))
+            TinyPlayerList(party, players)
         }
     }
 }
