@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.pairassignments.spin.placeholde
 import com.zegreatrob.coupling.client.components.pin.PinSection
 import com.zegreatrob.coupling.client.components.pin.pinDragItemType
 import com.zegreatrob.coupling.client.components.player.PlayerCard
+import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -14,7 +15,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
@@ -158,10 +158,7 @@ private fun playerCardComponent(
     }
 } else {
     { player, tilt ->
-        playerFlipped(player.player) {
-            notSwappablePlayer(player.player, tilt)
-                .create()
-        }
+        playerFlipped(player.player) { notSwappablePlayer(player.player, tilt) }
     }
 }
 
@@ -179,4 +176,4 @@ private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNo
     }
 }
 
-private fun notSwappablePlayer(player: Player, tilt: Angle) = PlayerCard(player, tilt = tilt)
+private fun notSwappablePlayer(player: Player, tilt: Angle) = PlayerCard.create(player, tilt = tilt)

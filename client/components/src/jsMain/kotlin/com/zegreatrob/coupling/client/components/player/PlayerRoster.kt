@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import csstype.PropertiesBuilder
 import emotion.react.css
@@ -52,7 +51,7 @@ val playerRoster by ntmFC { (label, players, partyId, className, overrides): Pla
                         draggable = false
                         key = player.id
                         val tilt = random.nextInt(7) - 3
-                        add(PlayerCard(player, tilt = tilt.deg))
+                        PlayerCard(player, tilt = tilt.deg)
                     }
                 }
             }

@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minreact.create
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.external.Result
@@ -62,7 +61,7 @@ class SpinAnimationTest {
         fun whenInStartStateWillShowAllPlayersExceptExcluded() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
+            render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
             result.apply {
                 playersInRoster().assertIsEqualTo(players.map(Player::id) - excludedPlayer.id)
@@ -93,7 +92,7 @@ class SpinAnimationTest {
         fun whenInStartStateWillShowAllPlayersAndNoPairs() = setup(object : Setup() {
             val state = Start
         }) exercise {
-            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
+            render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
             result.apply {
                 playersInRoster().assertIsEqualTo(players.map { it.id })
@@ -141,7 +140,7 @@ class SpinAnimationTest {
             val firstAssignedPlayer = players[1]
             val state = ShowPlayer(firstAssignedPlayer)
         }) exercise {
-            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
+            render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
             result.playerInSpotlight().assertIsEqualTo(firstAssignedPlayer.id)
             result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map { it.id })
@@ -158,7 +157,7 @@ class SpinAnimationTest {
             val midwayShownPlayer = pairAssignments.pairs[1].players[0]
             val state = ShowPlayer(midwayShownPlayer)
         }) exercise {
-            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
+            render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify {
             it.playerInSpotlight().assertIsEqualTo(midwayShownPlayer.id)
             it.playersInRoster().assertIsEqualTo(
@@ -186,7 +185,7 @@ class SpinAnimationTest {
             val firstAssignedPlayer = pairAssignments.pairs[0].players[0]
             val state = AssignedPlayer(firstAssignedPlayer)
         }) exercise {
-            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
+            render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
             result.playerInSpotlight().assertIsEqualTo(placeholderPlayer.id)
             result.playersInRoster().assertIsEqualTo((players - firstAssignedPlayer).map(Player::id))
@@ -203,7 +202,7 @@ class SpinAnimationTest {
             val midwayAssignedPlayer = pairAssignments.pairs[1].players[0]
             val state = AssignedPlayer(midwayAssignedPlayer)
         }) exercise {
-            render(SpinAnimationPanel(party, rosteredPairAssignments, state).create())
+            render(SpinAnimationPanel.create(party, rosteredPairAssignments, state))
         } verify { result ->
             result.playerInSpotlight().assertIsEqualTo(placeholderPlayer.id)
             result.playersInRoster().assertIsEqualTo(

@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import emotion.react.css
 import kotlinx.css.Color
@@ -49,7 +48,7 @@ val retiredPlayers by ntmFC<RetiredPlayers> { (party, players) ->
                     to = party.id.with(player).playerConfigPage()
                     draggable = false
                     key = player.id
-                    add(PlayerCard(player, deselected = true))
+                    PlayerCard(player, deselected = true)
                 }
             }
         }

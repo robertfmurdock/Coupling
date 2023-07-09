@@ -8,12 +8,12 @@ import com.zegreatrob.coupling.client.components.spin.RosteredPairAssignments
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
+import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Display
 import web.cssom.Position
@@ -22,13 +22,14 @@ import web.cssom.integer
 import web.cssom.pct
 import web.cssom.translate
 
-data class SpinAnimationPanel(
-    val party: PartyDetails,
-    val rosteredPairAssignments: RosteredPairAssignments,
-    val state: SpinAnimationState,
-) : DataPropsBind<SpinAnimationPanel>(spinAnimationPanel)
+external interface SpinAnimationPanelProps : Props {
+    var party: PartyDetails
+    var rosteredPairAssignments: RosteredPairAssignments
+    var state: SpinAnimationState
+}
 
-val spinAnimationPanel by ntmFC<SpinAnimationPanel> { (party, rosteredPairAssignments, state) ->
+@ReactFunc
+val SpinAnimationPanel by nfc<SpinAnimationPanelProps> { (party, rosteredPairAssignments, state) ->
     val pairAssignments = rosteredPairAssignments.pairAssignments
     val players = rosteredPairAssignments.selectedPlayers
     val (rosterPlayers, revealedPairs, shownPlayer) = state.stateData(players, pairAssignments)
@@ -75,7 +76,7 @@ private fun ChildrenBuilder.flippedPlayer(player: Player, key: String? = null) =
     div {
         this.key = key ?: ""
         css { display = Display.inlineBlock }
-        add(PlayerCard(player))
+        PlayerCard(player)
     }
 }
 

@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.css.ClassName
@@ -182,7 +181,7 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
             animationIterationCount = number(1.0)
             hover { cardZoom() }
         }
-        add(PlayerCard(pair.player1, leftCardStyles, 100, tilt = (-8).deg))
+        PlayerCard(pair.player1, leftCardStyles, size = 100, tilt = (-8).deg)
         val rightCardStyles = ClassName {
             transitionProperty = TransitionProperty.all
             transitionDuration = 0.25.s
@@ -192,7 +191,7 @@ private fun ChildrenBuilder.welcomePair(pair: CouplingPair.Double) = div {
             animationIterationCount = number(1.0)
             hover { cardZoom() }
         }
-        add(PlayerCard(pair.player2, rightCardStyles, 100, tilt = 8.deg))
+        PlayerCard(pair.player2, rightCardStyles, size = 100, tilt = 8.deg)
     }
 }
 

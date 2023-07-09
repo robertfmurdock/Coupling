@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.welcome.playerImage
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
@@ -80,14 +79,8 @@ private val backButton by nfc<Props> {
 private val playerHeader by nfc<Props> {
     div {
         val rob by playerImage()
-        add(
-            PlayerCard(Player("1", name = "RoB", imageURL = rob, avatarType = null), tilt = (-8).deg),
-            key = "1",
-        )
+        PlayerCard(Player("1", name = "RoB", imageURL = rob, avatarType = null), tilt = (-8).deg, key = "1")
         val autumn by playerImage()
-        add(
-            PlayerCard(Player("2", name = "Autumn", imageURL = autumn, avatarType = null), tilt = 8.deg),
-            key = "2",
-        )
+        PlayerCard(Player("2", name = "Autumn", imageURL = autumn, avatarType = null), tilt = 8.deg, key = "2")
     }
 }

@@ -80,7 +80,7 @@ val playerConfigContent by ntmFC<PlayerConfigContent> { (party, player, players,
                     }
                     playerConfigForm(player, party, onChange, onSubmit, onRemove)
                 }
-                add(PlayerCard(player, size = 250))
+                PlayerCard(player, size = 250)
             }
         }
         div {

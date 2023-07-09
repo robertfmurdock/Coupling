@@ -6,12 +6,13 @@ import com.zegreatrob.coupling.client.components.gravatar.myGravatarUrl
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
 import js.core.jso
 import react.ChildrenBuilder
+import react.Props
 import react.dom.events.MouseEvent
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.img
@@ -43,17 +44,22 @@ import web.cssom.s
 import web.cssom.url
 import kotlin.random.Random
 
-data class PlayerCard(
-    val player: Player,
-    val className: ClassName? = null,
-    val size: Int = 100,
-    val onClick: () -> Unit = {},
-    val deselected: Boolean = false,
-    val tilt: Angle = 0.deg,
-) : DataPropsBind<PlayerCard>(playerCard)
+external interface PlayerCardProps : Props {
+    var player: Player
+    var className: ClassName?
+    var onClick: (() -> Unit)?
+    var size: Int?
+    var deselected: Boolean?
+    var tilt: Angle?
+}
 
-val playerCard by ntmFC<PlayerCard> { (player, className, size, onClick, deselected, tilt) ->
-    val onClickFunc: (MouseEvent<*, *>) -> Unit = useCallback(onClick) { onClick() }
+@ReactFunc
+val PlayerCard by nfc<PlayerCardProps> { props ->
+    val (player, className, onClick) = props
+    val onClickFunc: (MouseEvent<*, *>) -> Unit = useCallback(onClick) { onClick?.invoke() }
+    val size = props.size ?: 100
+    val tilt = props.tilt ?: 0.deg
+    val deselected = props.deselected ?: false
     div {
         css(className) {
             playerCardStyles(tilt, deselected)

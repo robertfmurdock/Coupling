@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.client.components.player.PlayerCard
+import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.create
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import react.Props
@@ -33,7 +33,7 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { (pinnedPlayer, zoomOnHover, t
         itemId = pinnedPlayer.player.id,
         dropCallback = onPlayerDrop,
         handler = { isOver: Boolean ->
-            PlayerCard(
+            PlayerCard.create(
                 player = pinnedPlayer.player,
                 tilt = tilt,
                 className = ClassName {
@@ -57,7 +57,8 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { (pinnedPlayer, zoomOnHover, t
                         animationIterationCount = AnimationIterationCount.infinite
                     }
                 },
-            ).create(key = pinnedPlayer.player.id)
+                key = pinnedPlayer.player.id,
+            )
         },
     )
 }

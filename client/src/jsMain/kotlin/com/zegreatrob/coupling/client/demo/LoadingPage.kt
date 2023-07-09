@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.minreact.ntmFC
 import emotion.css.ClassName
@@ -38,11 +37,9 @@ val LoadingPage by nfc<PageProps> { props ->
     if (currentFrame != null) {
         child(LoadingPageFrame(currentFrame.data).create())
     } else {
-        add(
-            FrameRunner(loadingSequence, 1.0) { state: LoadingAnimationState ->
-                LoadingPageFrame(state).create()
-            },
-        )
+        FrameRunner(loadingSequence, 1.0, { state: LoadingAnimationState ->
+            LoadingPageFrame(state).create()
+        })
     }
 }
 
@@ -183,13 +180,11 @@ private fun flippedPlayer(
             this@css.top = top
             this@css.left = left
         }
-        add(
-            PlayerCard(
-                player = player,
-                className = leftCardStyles,
-                size = 50,
-                tilt = tilt,
-            ),
+        PlayerCard(
+            player = player,
+            className = leftCardStyles,
+            size = 50,
+            tilt = tilt,
         )
     }
 }

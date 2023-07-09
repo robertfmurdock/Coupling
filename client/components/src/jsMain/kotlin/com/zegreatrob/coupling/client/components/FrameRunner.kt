@@ -1,19 +1,13 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.TMFC
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import kotlinx.browser.window
+import react.Props
 import react.ReactNode
 import react.useEffectOnce
 import react.useState
 import kotlin.math.round
-
-data class FrameRunner<S>(
-    val sequence: Sequence<Frame<S>>,
-    val speed: Double,
-    val children: (value: S) -> ReactNode,
-) : DataPropsBind<FrameRunner<S>>(fR())
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second
 private fun <A, B, B2> Pair<A, B>.letSecond(transform: (B) -> B2) = first to transform(second)
@@ -23,16 +17,21 @@ private fun <I> ((I) -> Unit).curryOneArgToNoArgsFunc(): (I) -> () -> Unit = { i
 
 data class Frame<out T>(val data: T, val delay: Int)
 
-val frameRunnerCached by ntmFC<FrameRunner<Any>> { props ->
-    val (sequence, speed) = props
+external interface FrameRunnerProps<S> : Props {
+    var sequence: Sequence<Frame<S>>
+    var speed: Double
+    var child: (value: S) -> ReactNode
+}
+
+@ReactFunc
+val FrameRunner by nfc<FrameRunnerProps<Any>> { props ->
+    val (sequence, speed, children: (Nothing) -> ReactNode) = props
     var state by useState(sequence.first().data)
     val scheduleStateFunc: (Frame<Any>) -> Unit = scheduleStateFunc({ state = it }, speed)
 
     useEffectOnce { sequence.forEach(scheduleStateFunc) }
-    +props.children(state)
+    +children(state)
 }
-
-private fun fR(): TMFC = frameRunnerCached.unsafeCast<TMFC>()
 
 private fun scheduleStateFunc(setState: (Any) -> Unit, speed: Double) = setState.statePairToTimeoutArgsFunc()
     .join(pairTransformSecondFunc { it.applySpeed(speed) })

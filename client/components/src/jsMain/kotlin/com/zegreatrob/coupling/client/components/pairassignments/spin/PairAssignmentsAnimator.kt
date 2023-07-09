@@ -8,12 +8,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import react.ChildrenBuilder
 import react.Consumer
 import react.PropsWithChildren
-import react.ReactNode
 import react.create
 import react.dom.html.ReactHTML.div
 
@@ -48,36 +46,22 @@ private fun ChildrenBuilder.spinFrameRunner(
     players: List<Player>,
     props: PairAssignmentsAnimatorProps,
 ) {
-    add(
-        FrameRunner(SpinAnimationState.sequence(pairAssignments), speed = party.animationSpeed) { state ->
+    FrameRunner(
+        sequence = SpinAnimationState.sequence(pairAssignments),
+        speed = party.animationSpeed,
+        child = { state ->
             Flipper.create {
                 flipKey = state.toString()
                 if (state == End) {
                     +props.children
                 } else {
-                    add(
-                        SpinAnimationPanel(
-                            party,
-                            RosteredPairAssignments.rosteredPairAssignments(pairAssignments, players),
-                            state,
-                        ),
+                    SpinAnimationPanel(
+                        party,
+                        RosteredPairAssignments.rosteredPairAssignments(pairAssignments, players),
+                        state,
                     )
                 }
             }
         },
     )
-}
-
-private fun flipperSpinAnimation(
-    state: SpinAnimationState,
-    party: PartyDetails,
-    rosteredPairAssignments: RosteredPairAssignments,
-    children: ReactNode?,
-) = Flipper.create {
-    flipKey = state.toString()
-    if (state == End) {
-        +children
-    } else {
-        add(SpinAnimationPanel(party, rosteredPairAssignments, state))
-    }
 }

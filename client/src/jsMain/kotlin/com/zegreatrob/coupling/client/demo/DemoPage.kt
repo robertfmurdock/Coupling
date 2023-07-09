@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.components.FrameRunner
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 
 val demoSequence by lazy { DemoAnimationState.generateSequence() }
@@ -13,8 +12,6 @@ val DemoPage by nfc<PageProps> { props ->
     if (currentFrame != null) {
         DemoPageFrame(currentFrame.data)
     } else {
-        add(
-            FrameRunner(demoSequence, 1.0, DemoPageFrame::create),
-        )
+        FrameRunner(demoSequence, 1.0, DemoPageFrame::create)
     }
 }

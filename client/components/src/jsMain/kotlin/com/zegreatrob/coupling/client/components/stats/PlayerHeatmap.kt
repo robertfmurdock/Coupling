@@ -79,7 +79,7 @@ val topRowPlayer by ntmFC<TopRowPlayer> { props ->
             textAlign = TextAlign.center
         }
         key = props.player.id
-        add(PlayerCard(props.player, size = 50, tilt = tweak.deg))
+        PlayerCard(props.player, size = 50, tilt = tweak.deg)
     }
 }
 
@@ -96,7 +96,7 @@ val sidePlayer by ntmFC<SidePlayer> { props ->
             }
         }
         key = props.player.id
-        add(PlayerCard(props.player, size = 50, tilt = tweak.deg))
+        PlayerCard(props.player, size = 50, tilt = tweak.deg)
     }
 }
 

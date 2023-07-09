@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
@@ -92,5 +91,5 @@ private fun ChildrenBuilder.reportPlayerCard(player: Player, tilt: Angle) = div 
         display = Display.inlineBlock
     }
     key = player.id
-    add(PlayerCard(player, size = 50, tilt = tilt))
+    PlayerCard(player, size = 50, tilt = tilt)
 }

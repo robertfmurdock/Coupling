@@ -9,12 +9,12 @@ import com.zegreatrob.coupling.client.components.pin.PinButton
 import com.zegreatrob.coupling.client.components.pin.PinButtonScale
 import com.zegreatrob.coupling.client.components.pink
 import com.zegreatrob.coupling.client.components.player.PlayerCard
+import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.css.ClassName
@@ -242,7 +242,7 @@ private fun ChildrenBuilder.selectablePlayerCardList(
 ) = playerSelections.map { (player, isSelected) ->
     div {
         css { paddingBottom = 30.px; display = Display.inlineBlock }
-        add(playerCard(player, isSelected, setPlayerSelections, playerSelections))
+        +playerCard(player, isSelected, setPlayerSelections, playerSelections)
     }
 }
 
@@ -251,7 +251,7 @@ private fun playerCard(
     isSelected: Boolean,
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
     playerSelections: List<Pair<Player, Boolean>>,
-) = PlayerCard(
+) = PlayerCard.create(
     player,
     className = ClassName {
         transitionProperty = TransitionProperty.all
