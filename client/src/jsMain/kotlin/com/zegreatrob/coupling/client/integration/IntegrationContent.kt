@@ -8,9 +8,10 @@ import com.zegreatrob.coupling.client.components.integrations.slackTeam
 import com.zegreatrob.coupling.client.incubating.AddToSlackButton
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyIntegration
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
 import react.dom.html.ReactHTML.li
@@ -19,13 +20,14 @@ import web.cssom.Display
 import web.cssom.TextAlign
 import web.cssom.number
 
-data class IntegrationContent(
-    val party: PartyDetails,
-    val integration: PartyIntegration?,
-    val addToSlackUrl: String,
-) : DataPropsBind<IntegrationContent>(integrationContent)
+external interface IntegrationContentProps : Props {
+    var party: PartyDetails
+    var integration: PartyIntegration?
+    var addToSlackUrl: String
+}
 
-val integrationContent by ntmFC<IntegrationContent> { props ->
+@ReactFunc
+val IntegrationContent by nfc<IntegrationContentProps> { props ->
     val (party, integrations) = props
     ConfigFrame {
         div {

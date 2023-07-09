@@ -15,11 +15,11 @@ val IntegrationPage = partyPageFunction { props, partyId ->
             }
             addToSlackUrl()
         },
-        toDataprops = { _, _, result ->
+        build = { _, _, result ->
             IntegrationContent(
-                party = result.party?.details?.data ?: return@CouplingQuery null,
+                party = result.party?.details?.data ?: return@CouplingQuery,
                 integration = result.party?.integration?.data,
-                addToSlackUrl = result.addToSlackUrl ?: return@CouplingQuery null,
+                addToSlackUrl = result.addToSlackUrl ?: return@CouplingQuery,
             )
         },
     ).create(key = partyId.value)
