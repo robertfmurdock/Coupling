@@ -170,6 +170,9 @@ tasks {
         outputs.file(outputDirectory.file("client-ktor.js"))
         outputs.cacheIf { true }
     }
+    named("jsBrowserDevelopmentRun") {
+        dependsOn(lookupCdnUrls, jsProcessResources)
+    }
 
     val uploadToS3 by registering(Exec::class) {
         dependsOn(browserProductionWebpack)

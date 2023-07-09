@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
@@ -43,22 +42,20 @@ val PairSectionPanel by nfc<PairSectionPanelProps> { props ->
         if (pairAssignments == null) {
             noPairsHeader()
         } else {
-            add(
-                PairAssignmentsAnimator(
+            PairAssignmentsAnimator(
+                party = party,
+                players = players,
+                pairAssignments = pairAssignments,
+                enabled = party.animationEnabled && allowSave,
+            ) {
+                CurrentPairAssignmentsPanel(
                     party = party,
-                    players = players,
                     pairAssignments = pairAssignments,
-                    enabled = party.animationEnabled && allowSave,
-                ) {
-                    CurrentPairAssignmentsPanel(
-                        party = party,
-                        pairAssignments = pairAssignments,
-                        setPairAssignments = setPairs,
-                        allowSave = allowSave,
-                        dispatchFunc = controls.dispatchFunc,
-                    )
-                },
-            )
+                    setPairAssignments = setPairs,
+                    allowSave = allowSave,
+                    dispatchFunc = controls.dispatchFunc,
+                )
+            }
         }
     }
 }

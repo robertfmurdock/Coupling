@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipp
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipper
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.welcome.playerImage
+import com.zegreatrob.coupling.client.create
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
@@ -35,11 +36,11 @@ val LoadingPage by nfc<PageProps> { props ->
     val frameIndex = props.search["frame"]
     val currentFrame = frameIndex?.toIntOrNull()?.let { loadingSequence.toList()[it] }
     if (currentFrame != null) {
-        add(LoadingPageFrame(currentFrame.data))
+        child(LoadingPageFrame(currentFrame.data).create())
     } else {
         add(
             FrameRunner(loadingSequence, 1.0) { state: LoadingAnimationState ->
-                add(LoadingPageFrame(state))
+                LoadingPageFrame(state).create()
             },
         )
     }

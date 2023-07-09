@@ -49,6 +49,8 @@ val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
 
     val (referenceElement, setReferenceElement) = useState<ReferenceElement?>(null)
 
+    println("STATE IS $state")
+
     val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef, state))
 
     useLayoutEffect(state) {

@@ -4,7 +4,7 @@ import com.zegreatrob.minreact.DataPropsBind
 import com.zegreatrob.minreact.TMFC
 import com.zegreatrob.minreact.ntmFC
 import kotlinx.browser.window
-import react.ChildrenBuilder
+import react.ReactNode
 import react.useEffectOnce
 import react.useState
 import kotlin.math.round
@@ -12,7 +12,7 @@ import kotlin.math.round
 data class FrameRunner<S>(
     val sequence: Sequence<Frame<S>>,
     val speed: Double,
-    val children: ChildrenBuilder.(value: S) -> Unit,
+    val children: (value: S) -> ReactNode,
 ) : DataPropsBind<FrameRunner<S>>(fR())
 
 private fun <A, B, A2> Pair<A, B>.letFirst(transform: (A) -> A2) = transform(first) to second
@@ -29,7 +29,7 @@ val frameRunnerCached by ntmFC<FrameRunner<Any>> { props ->
     val scheduleStateFunc: (Frame<Any>) -> Unit = scheduleStateFunc({ state = it }, speed)
 
     useEffectOnce { sequence.forEach(scheduleStateFunc) }
-    props.children(this, state)
+    +props.children(state)
 }
 
 private fun fR(): TMFC = frameRunnerCached.unsafeCast<TMFC>()

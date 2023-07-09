@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
@@ -30,7 +29,7 @@ val ControlPanel by nfc<ControlPanelProps> { (party) ->
                 backgroundColor = Color("#d5cdc3")
                 boxShadow = BoxShadow(1.px, 1.px, 3.px, rgb(0, 0, 0, 0.6))
             }
-            div { add(PrepareToSpinButton(party)) }
+            div { PrepareToSpinButton(party) }
         }
     }
 }

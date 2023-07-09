@@ -14,9 +14,7 @@ val DemoPage by nfc<PageProps> { props ->
         DemoPageFrame(currentFrame.data)
     } else {
         add(
-            FrameRunner(demoSequence, 1.0) { state: DemoAnimationState ->
-                DemoPageFrame(state)
-            },
+            FrameRunner(demoSequence, 1.0, DemoPageFrame::create),
         )
     }
 }
