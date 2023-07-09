@@ -26,9 +26,10 @@ import com.zegreatrob.coupling.client.stats.StatisticsPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import js.core.jso
+import react.Props
 import react.create
 import react.router.Navigate
 import react.router.RouteObject
@@ -37,10 +38,13 @@ import react.router.dom.createBrowserRouter
 import react.router.useParams
 import react.useMemo
 
-data class CouplingRouter(val animationsDisabled: Boolean, val config: ClientConfig) :
-    DataPropsBind<CouplingRouter>(couplingRouter)
+external interface CouplingRouterProps : Props {
+    var animationsDisabled: Boolean
+    var config: ClientConfig
+}
 
-val couplingRouter by ntmFC<CouplingRouter> { (animationsDisabled, config) ->
+@ReactFunc
+val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, config) ->
     val (_, isSignedIn, isLoading) = useAuth0Data()
     val browserRouter = useMemo(isSignedIn, config) {
         createBrowserRouter(

@@ -9,6 +9,6 @@ val UserPage by nfc<PageProps> {
     CouplingQuery(
         commander = it.commander,
         query = graphQuery { user() },
-        toDataprops = { _, _, result -> UserConfig(result.user) },
+        toNode = { _, _, result -> UserConfig.create(result.user) },
     )
 }

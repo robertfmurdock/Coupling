@@ -11,6 +11,6 @@ val PartyListPage by nfc<PageProps> { props ->
     CouplingQuery(
         commander = props.commander,
         query = graphQuery { partyList() },
-        build = { _, _, result -> PartyList(result.partyList?.map(Record<PartyDetails>::data) ?: emptyList()) },
+        toNode = { _, _, result -> PartyList.create(result.partyList?.map(Record<PartyDetails>::data) ?: emptyList()) },
     )
 }

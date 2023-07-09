@@ -14,11 +14,7 @@ val IncubatingPage by nfc<PageProps> { props ->
     CouplingQuery(
         commander = props.commander,
         query = graphQuery { addToSlackUrl() },
-        build = { _, _, result ->
-            IncubatingContent(
-                addToSlackUrl = result.addToSlackUrl ?: return@CouplingQuery,
-            )
-        },
+        toNode = { _, _, result -> result.addToSlackUrl?.let(IncubatingContent::create) },
     )
 }
 

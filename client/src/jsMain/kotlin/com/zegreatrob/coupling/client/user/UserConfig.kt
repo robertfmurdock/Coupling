@@ -8,16 +8,18 @@ import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.coupling.client.party.AboutButton
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.minreact.DataProps
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
+import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
 
-data class UserConfig(val user: User?) : DataProps<UserConfig> {
-    override val component = userConfig
+external interface UserConfigProps : Props {
+    var user: User?
 }
 
-private val userConfig by ntmFC<UserConfig> { (user) ->
+@ReactFunc
+val UserConfig by nfc<UserConfigProps> { (user) ->
     PageFrame(
         borderColor = Color("rgb(94, 84, 102)"),
         backgroundColor = Color("floralwhite"),
