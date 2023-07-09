@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.plugins
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
-    kotlin("js")
+    kotlin("multiplatform")
     id("com.zegreatrob.jsmints.plugins.jspackage")
     id("com.zegreatrob.jsmints.plugins.ncu")
     id("com.zegreatrob.coupling.plugins.versioning")
@@ -43,7 +43,7 @@ configure<JsConstraintExtension> {
 }
 
 dependencies {
-    implementation(enforcedPlatform(project(":libraries:dependency-bom")))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    jsMainImplementation(enforcedPlatform(project(":libraries:dependency-bom")))
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 }

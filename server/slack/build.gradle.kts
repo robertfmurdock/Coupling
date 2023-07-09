@@ -10,13 +10,13 @@ kotlin {
 
 
 dependencies {
-    implementation(npmConstrained("@slack/webhook"))
-    implementation(npmConstrained("@slack/oauth"))
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-node")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-    testImplementation("com.zegreatrob.testmints:async")
-    testImplementation("com.zegreatrob.testmints:standard")
-    testImplementation("com.zegreatrob.testmints:minassert")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    jsMainImplementation(npmConstrained("@slack/webhook"))
+    jsMainImplementation(npmConstrained("@slack/oauth"))
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    jsTestImplementation("com.zegreatrob.testmints:async")
+    jsTestImplementation("com.zegreatrob.testmints:standard")
+    jsTestImplementation("com.zegreatrob.testmints:minassert")
+    jsTestImplementation("org.jetbrains.kotlin:kotlin-test")
 }

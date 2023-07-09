@@ -18,19 +18,19 @@ kotlin {
 }
 
 kotlin {
-    sourceSets.main {
+    sourceSets.jsMain {
         kotlin.srcDir("build/generated/ksp/js/main/kotlin")
     }
-    sourceSets.test {
+    sourceSets.jsTest {
         kotlin.srcDir("build/generated/ksp/js/test/kotlin")
     }
 }
 
 tasks {
-    formatKotlinMain {
+    formatKotlinJsMain {
         dependsOn("kspKotlinJs")
     }
-    lintKotlinMain {
+    lintKotlinJsMain {
         dependsOn("kspKotlinJs")
     }
     withType(FormatTask::class) {
@@ -42,33 +42,33 @@ tasks {
 }
 
 dependencies {
-    implementation(project("action"))
-    implementation(project(":libraries:action"))
-    implementation(project(":libraries:json"))
-    implementation(project(":libraries:model"))
-    implementation(project(":libraries:repository:core"))
-    implementation("com.zegreatrob.jsmints:minreact")
-    implementation("com.zegreatrob.jsmints:react-data-loader")
-    implementation("com.zegreatrob.testmints:action")
-    implementation("com.zegreatrob.testmints:action-async")
-    implementation("com.zegreatrob.testmints:minspy")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
-    implementation(npmConstrained("react-use-websocket"))
-    implementation(npmConstrained("fitty"))
-    implementation(npmConstrained("blueimp-md5"))
-    implementation(npmConstrained("date-fns"))
-    implementation(npmConstrained("react-dnd"))
-    implementation(npmConstrained("react-dnd-html5-backend"))
-    implementation(npmConstrained("html2canvas"))
+    jsMainImplementation(project("action"))
+    jsMainImplementation(project(":libraries:action"))
+    jsMainImplementation(project(":libraries:json"))
+    jsMainImplementation(project(":libraries:model"))
+    jsMainImplementation(project(":libraries:repository:core"))
+    jsMainImplementation("com.zegreatrob.jsmints:minreact")
+    jsMainImplementation("com.zegreatrob.jsmints:react-data-loader")
+    jsMainImplementation("com.zegreatrob.testmints:action")
+    jsMainImplementation("com.zegreatrob.testmints:action-async")
+    jsMainImplementation("com.zegreatrob.testmints:minspy")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
+    jsMainImplementation(npmConstrained("react-use-websocket"))
+    jsMainImplementation(npmConstrained("fitty"))
+    jsMainImplementation(npmConstrained("blueimp-md5"))
+    jsMainImplementation(npmConstrained("date-fns"))
+    jsMainImplementation(npmConstrained("react-dnd"))
+    jsMainImplementation(npmConstrained("react-dnd-html5-backend"))
+    jsMainImplementation(npmConstrained("html2canvas"))
 
-    testImplementation(project(":libraries:test-react"))
-    testImplementation(project(":libraries:stub-model"))
-    testImplementation(project(":libraries:test-logging"))
-    testImplementation("com.zegreatrob.testmints:async")
-    testImplementation(npmConstrained("jsdom"))
-    testImplementation(npmConstrained("global-jsdom"))
+    jsTestImplementation(project(":libraries:test-react"))
+    jsTestImplementation(project(":libraries:stub-model"))
+    jsTestImplementation(project(":libraries:test-logging"))
+    jsTestImplementation("com.zegreatrob.testmints:async")
+    jsTestImplementation(npmConstrained("jsdom"))
+    jsTestImplementation(npmConstrained("global-jsdom"))
 }

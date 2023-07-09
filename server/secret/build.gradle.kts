@@ -10,13 +10,13 @@ kotlin {
 
 
 dependencies {
-    implementation(project(":libraries:model"))
-    implementation(project(":server:action"))
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-node")
-    testImplementation(project(":libraries:stub-model"))
-    testImplementation(kotlin("test"))
-    testImplementation("com.zegreatrob.testmints:async")
-    testImplementation("com.zegreatrob.testmints:standard")
-    testImplementation("com.zegreatrob.testmints:minassert")
+    jsMainImplementation(project(":libraries:model"))
+    jsMainImplementation(project(":server:action"))
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
+    jsTestImplementation(project(":libraries:stub-model"))
+    jsTestImplementation(kotlin("test"))
+    jsTestImplementation("com.zegreatrob.testmints:async")
+    jsTestImplementation("com.zegreatrob.testmints:standard")
+    jsTestImplementation("com.zegreatrob.testmints:minassert")
 }

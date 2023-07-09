@@ -1,3 +1,4 @@
+
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
@@ -10,13 +11,13 @@ plugins {
 kotlin.js().nodejs()
 
 kotlin.sourceSets {
-    getByName("main") {
-        resources.srcDir("src/main/javascript")
+    getByName("jsMain") {
+        resources.srcDir("src/jsMain/javascript")
     }
 }
 
 val appConfiguration: Configuration by configurations.creating {
-    extendsFrom(configurations["implementation"])
+    extendsFrom(configurations["jsMainImplementation"])
 }
 
 val clientConfiguration: Configuration by configurations.creating
@@ -27,49 +28,49 @@ dependencies {
     clientConfiguration(
         project(mapOf("path" to ":client", "configuration" to "clientConfiguration"))
     )
-    implementation(kotlin("stdlib"))
-    implementation(project("action"))
-    implementation(project("secret"))
-    implementation(project("slack"))
-    implementation(project(":libraries:json"))
-    implementation(project(":libraries:repository:dynamo"))
-    implementation(project(":libraries:repository:memory"))
-    implementation("com.benasher44:uuid")
-    implementation("com.soywiz.korlibs.klock:klock")
-    implementation("com.zegreatrob.jsmints:minjson")
-    implementation("io.github.microutils:kotlin-logging")
-    implementation("io.ktor:ktor-client-logging")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-node")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-    implementation(npmConstrained("@aws-sdk/client-apigatewaymanagementapi"))
-    implementation(npmConstrained("@aws-sdk/client-lambda"))
-    implementation(npmConstrained("@graphql-tools/schema"))
-    implementation(npmConstrained("@graphql-tools/stitch"))
-    implementation(npmConstrained("body-parser"))
-    implementation(npmConstrained("compression"))
-    implementation(npmConstrained("cookie-parser"))
-    implementation(npmConstrained("express"))
-    implementation(npmConstrained("express-jwt"))
-    implementation(npmConstrained("express-statsd"))
-    implementation(npmConstrained("fs-extra"))
-    implementation(npmConstrained("graphql"))
-    implementation(npmConstrained("jose"))
-    implementation(npmConstrained("jwks-rsa"))
-    implementation(npmConstrained("method-override"))
-    implementation(npmConstrained("mime"))
-    implementation(npmConstrained("minimist"))
-    implementation(npmConstrained("node-fetch"))
-    implementation(npmConstrained("on-finished"))
-    implementation(npmConstrained("parse5"))
+    jsMainImplementation(kotlin("stdlib"))
+    jsMainImplementation(project("action"))
+    jsMainImplementation(project("secret"))
+    jsMainImplementation(project("slack"))
+    jsMainImplementation(project(":libraries:json"))
+    jsMainImplementation(project(":libraries:repository:dynamo"))
+    jsMainImplementation(project(":libraries:repository:memory"))
+    jsMainImplementation("com.benasher44:uuid")
+    jsMainImplementation("com.soywiz.korlibs.klock:klock")
+    jsMainImplementation("com.zegreatrob.jsmints:minjson")
+    jsMainImplementation("io.github.microutils:kotlin-logging")
+    jsMainImplementation("io.ktor:ktor-client-logging")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    jsMainImplementation(npmConstrained("@aws-sdk/client-apigatewaymanagementapi"))
+    jsMainImplementation(npmConstrained("@aws-sdk/client-lambda"))
+    jsMainImplementation(npmConstrained("@graphql-tools/schema"))
+    jsMainImplementation(npmConstrained("@graphql-tools/stitch"))
+    jsMainImplementation(npmConstrained("body-parser"))
+    jsMainImplementation(npmConstrained("compression"))
+    jsMainImplementation(npmConstrained("cookie-parser"))
+    jsMainImplementation(npmConstrained("express"))
+    jsMainImplementation(npmConstrained("express-jwt"))
+    jsMainImplementation(npmConstrained("express-statsd"))
+    jsMainImplementation(npmConstrained("fs-extra"))
+    jsMainImplementation(npmConstrained("graphql"))
+    jsMainImplementation(npmConstrained("jose"))
+    jsMainImplementation(npmConstrained("jwks-rsa"))
+    jsMainImplementation(npmConstrained("method-override"))
+    jsMainImplementation(npmConstrained("mime"))
+    jsMainImplementation(npmConstrained("minimist"))
+    jsMainImplementation(npmConstrained("node-fetch"))
+    jsMainImplementation(npmConstrained("on-finished"))
+    jsMainImplementation(npmConstrained("parse5"))
 
-    testImplementation(project(":libraries:stub-model"))
-    testImplementation("com.zegreatrob.testmints:async")
-    testImplementation("com.zegreatrob.testmints:standard")
-    testImplementation("com.zegreatrob.testmints:minassert")
-    testImplementation(npmConstrained("serverless"))
-    testImplementation(npmConstrained("serverless-offline"))
-    testImplementation(npmConstrained("serverless-offline-ssm"))
+    jsTestImplementation(project(":libraries:stub-model"))
+    jsTestImplementation("com.zegreatrob.testmints:async")
+    jsTestImplementation("com.zegreatrob.testmints:standard")
+    jsTestImplementation("com.zegreatrob.testmints:minassert")
+    jsTestImplementation(npmConstrained("serverless"))
+    jsTestImplementation(npmConstrained("serverless-offline"))
+    jsTestImplementation(npmConstrained("serverless-offline-ssm"))
 }
 
 tasks {
@@ -82,15 +83,15 @@ tasks {
 
     val serverCompile by registering(NodeExec::class) {
         dependsOn(
-            "packageJson",
+            "jsPackageJson",
             ":kotlinNpmInstall",
             compileKotlinJs,
-            processResources,
+            jsProcessResources,
             compileProductionExecutableKotlinJs,
-            "productionExecutableCompileSync",
+            "jsProductionExecutableCompileSync",
         )
         mustRunAfter(clean)
-        inputs.dir(processResources.map { it.destinationDir.path })
+        inputs.dir(jsProcessResources.map { it.destinationDir.path })
         inputs.file(compileProductionExecutableKotlinJs.map {
             it.destinationDirectory.file(it.compilerOptions.moduleName.map { "$it.js" })
         })
@@ -99,8 +100,7 @@ tasks {
         outputs.dir(file("build/webpack-output"))
         outputs.cacheIf { true }
         val compilationName = "main"
-        val jsProject: org.jetbrains.kotlin.gradle.dsl.KotlinJsProjectExtension = project.extensions.getByType()
-        val compilation = jsProject.js().compilations.named(compilationName).get()
+        val compilation = kotlin.js().compilations.named(compilationName).get()
 
         inputs.file(compilation.npmProject.packageJsonFile)
 
@@ -114,20 +114,20 @@ tasks {
         workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
     }
 
-    register<NodeExec>("serverStats") {
-        dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
-        mustRunAfter(clean)
-
-        nodeCommand = "webpack"
-        arguments = listOf(
-            "--config",
-            project.projectDir.resolve("webpack.config.js").absolutePath,
-            "--profile",
-            "--json=${rootDir.absolutePath}/compilation-stats.json"
-        )
-        environment("NODE_ENV" to "production")
-        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
-    }
+//    register<NodeExec>("serverStats") {
+//        dependsOn(compileKotlinJs, processResources, compileProductionExecutableKotlinJs)
+//        mustRunAfter(clean)
+//
+//        nodeCommand = "webpack"
+//        arguments = listOf(
+//            "--config",
+//            project.projectDir.resolve("webpack.config.js").absolutePath,
+//            "--profile",
+//            "--json=${rootDir.absolutePath}/compilation-stats.json"
+//        )
+//        environment("NODE_ENV" to "production")
+//        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+//    }
 
     val copyServerIcons by registering(Copy::class) {
         from("public")
@@ -187,7 +187,7 @@ tasks {
     }
 
     register<NodeExec>("serverlessStart") {
-        dependsOn(assemble, clientConfiguration, test, compileKotlinJs)
+        dependsOn(assemble, clientConfiguration, jsTest, compileKotlinJs)
         setup(project)
         val serverlessConfigFile = project.relativePath("serverless.yml")
         nodeCommand = "serverless"
@@ -203,7 +203,7 @@ tasks {
     fun NodeExec.configureBuild(stage: String) {
         val serverlessBuildDir = "${project.buildDir.absolutePath}/$stage/lambda-dist"
         setup(project)
-        dependsOn(assemble, test, compileKotlinJs, ":calculateVersion")
+        dependsOn(assemble, jsTest, compileKotlinJs, ":calculateVersion")
         val releaseVersion = rootProject.version
         environment("CLIENT_URL" to "https://assets.zegreatrob.com/coupling/$releaseVersion")
         enabled = "$releaseVersion".run { !(contains("SNAPSHOT") || isBlank()) }

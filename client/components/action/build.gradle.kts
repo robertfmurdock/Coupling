@@ -15,16 +15,16 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":libraries:action"))
-    implementation(project(":libraries:json"))
-    implementation(project(":libraries:model"))
-    implementation(project(":libraries:repository:core"))
-    implementation("com.zegreatrob.testmints:action")
-    implementation("com.zegreatrob.testmints:action-async")
-    implementation("com.zegreatrob.testmints:minspy")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    jsMainImplementation(project(":libraries:action"))
+    jsMainImplementation(project(":libraries:json"))
+    jsMainImplementation(project(":libraries:model"))
+    jsMainImplementation(project(":libraries:repository:core"))
+    jsMainImplementation("com.zegreatrob.testmints:action")
+    jsMainImplementation("com.zegreatrob.testmints:action-async")
+    jsMainImplementation("com.zegreatrob.testmints:minspy")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
 
-    testImplementation(project(":libraries:stub-model"))
-    testImplementation(project(":libraries:test-logging"))
-    testImplementation("com.zegreatrob.testmints:async")
+    jsTestImplementation(project(":libraries:stub-model"))
+    jsTestImplementation(project(":libraries:test-logging"))
+    jsTestImplementation("com.zegreatrob.testmints:async")
 }

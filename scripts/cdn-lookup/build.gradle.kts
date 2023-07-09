@@ -16,20 +16,20 @@ kotlin {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-    implementation("io.ktor:ktor-client-core")
-    implementation("io.ktor:ktor-client-content-negotiation")
-    implementation("io.ktor:ktor-serialization-kotlinx-json")
-    implementation("io.ktor:ktor-client-logging")
-    implementation("io.ktor:ktor-client-encoding")
-    implementation(npmConstrained("resolve-pkg"))
-    implementation(npmConstrained("read-pkg-up"))
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    jsMainImplementation("io.ktor:ktor-client-core")
+    jsMainImplementation("io.ktor:ktor-client-content-negotiation")
+    jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
+    jsMainImplementation("io.ktor:ktor-client-logging")
+    jsMainImplementation("io.ktor:ktor-client-encoding")
+    jsMainImplementation(npmConstrained("resolve-pkg"))
+    jsMainImplementation(npmConstrained("read-pkg-up"))
 
-    testImplementation(kotlin("test"))
-    testImplementation(npmConstrained("react"))
-    testImplementation("com.zegreatrob.testmints:standard")
-    testImplementation("com.zegreatrob.testmints:async")
-    testImplementation("com.zegreatrob.testmints:minassert")
+    jsTestImplementation(kotlin("test"))
+    jsTestImplementation(npmConstrained("react"))
+    jsTestImplementation("com.zegreatrob.testmints:standard")
+    jsTestImplementation("com.zegreatrob.testmints:async")
+    jsTestImplementation("com.zegreatrob.testmints:minassert")
 }
 
 val cdnLookupConfiguration: Configuration by configurations.creating
@@ -37,7 +37,7 @@ val cdnLookupConfiguration: Configuration by configurations.creating
 val outputFile: String? by project
 
 tasks {
-    named("nodeRun", NodeJsExec::class) {
+    named("jsNodeRun", NodeJsExec::class) {
         this.args("react")
         outputFile?.let {
             standardOutput = file("${System.getProperty("user.dir")}/$it").outputStream()

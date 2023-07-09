@@ -29,23 +29,23 @@ val clientConfiguration: Configuration by configurations.creating
 dependencies {
     clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
     appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
-    e2eTestImplementation(platform(project(":libraries:dependency-bom")))
-    e2eTestImplementation(project(":sdk"))
-    e2eTestImplementation(project(":libraries:test-logging"))
-    e2eTestImplementation(kotlin("test-js"))
-    e2eTestImplementation("com.zegreatrob.jsmints:wdio")
-    e2eTestImplementation("com.zegreatrob.jsmints:wdio-testing-library")
-    e2eTestImplementation("com.zegreatrob.testmints:async")
-    e2eTestImplementation("com.zegreatrob.testmints:minassert")
-    e2eTestImplementation("com.zegreatrob.testmints:standard")
-    e2eTestImplementation("io.github.microutils:kotlin-logging")
-    e2eTestImplementation("io.ktor:ktor-client-content-negotiation")
-    e2eTestImplementation("io.ktor:ktor-client-core")
-    e2eTestImplementation("io.ktor:ktor-client-logging")
-    e2eTestImplementation("io.ktor:ktor-serialization-kotlinx-json")
-    e2eTestImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-    e2eTestImplementation(npmConstrained("fs-extra"))
-    e2eTestImplementation(npmConstrained("jwt-decode"))
+    jsE2eTestImplementation(platform(project(":libraries:dependency-bom")))
+    jsE2eTestImplementation(project(":sdk"))
+    jsE2eTestImplementation(project(":libraries:test-logging"))
+    jsE2eTestImplementation(kotlin("test-js"))
+    jsE2eTestImplementation("com.zegreatrob.jsmints:wdio")
+    jsE2eTestImplementation("com.zegreatrob.jsmints:wdio-testing-library")
+    jsE2eTestImplementation("com.zegreatrob.testmints:async")
+    jsE2eTestImplementation("com.zegreatrob.testmints:minassert")
+    jsE2eTestImplementation("com.zegreatrob.testmints:standard")
+    jsE2eTestImplementation("io.github.microutils:kotlin-logging")
+    jsE2eTestImplementation("io.ktor:ktor-client-content-negotiation")
+    jsE2eTestImplementation("io.ktor:ktor-client-core")
+    jsE2eTestImplementation("io.ktor:ktor-client-logging")
+    jsE2eTestImplementation("io.ktor:ktor-serialization-kotlinx-json")
+    jsE2eTestImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    jsE2eTestImplementation(npmConstrained("fs-extra"))
+    jsE2eTestImplementation(npmConstrained("jwt-decode"))
 }
 
 wdioTest {
@@ -55,13 +55,13 @@ wdioTest {
 }
 
 tasks {
-    val e2eTestProcessResources = named<ProcessResources>("e2eTestProcessResources") {
+    jsE2eTestProcessResources {
         dependsOn("dependencyResources")
     }
 
     val dependencyResources by registering(Copy::class) {
         dependsOn(":sdk:jsProcessResources")
-        into(e2eTestProcessResources.map { it.destinationDir })
+        into(jsE2eTestProcessResources.map { it.destinationDir })
         from("$rootDir/sdk/build/processedResources/js/main")
     }
     e2eRun {

@@ -1,3 +1,4 @@
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
@@ -28,13 +29,13 @@ kotlin {
         }
     }
     sourceSets {
-        getByName("main") {
-            resources.srcDir("src/main/javascript")
+        getByName("jsMain") {
+            resources.srcDir("src/jsMain/javascript")
         }
     }
 }
 
-val runtimeClasspath: Configuration by configurations.getting
+val jsRuntimeClasspath: Configuration by configurations.getting
 val clientConfiguration: Configuration by configurations.creating
 val cdnLookupConfiguration: Configuration by configurations.creating
 
@@ -42,71 +43,71 @@ dependencies {
     cdnLookupConfiguration(
         project(mapOf("path" to ":scripts:cdn-lookup", "configuration" to "cdnLookupConfiguration"))
     )
-    implementation(kotlin("stdlib-js"))
-    implementation(project("components"))
-    implementation(project(":sdk"))
-    implementation(project(":libraries:model"))
-    implementation(project(":libraries:json"))
-    implementation(project(":libraries:action"))
-    implementation(project(":libraries:logging"))
-    implementation(project(":libraries:repository:core"))
-    implementation(project(":libraries:repository:memory"))
-    implementation("com.benasher44:uuid")
-    implementation("com.soywiz.korlibs.klock:klock")
-    implementation("com.zegreatrob.jsmints:minreact")
-    implementation("com.zegreatrob.jsmints:react-data-loader")
-    implementation("com.zegreatrob.testmints:action")
-    implementation("com.zegreatrob.testmints:action-async")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-css")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
-    implementation("io.ktor:ktor-client-core")
-    implementation("io.ktor:ktor-client-content-negotiation")
-    implementation("io.ktor:ktor-serialization-kotlinx-json")
-    implementation(npmConstrained("@auth0/auth0-react"))
-    implementation(npmConstrained("blueimp-md5"))
-    implementation(npmConstrained("core-js"))
-    implementation(npmConstrained("css-loader"))
-    implementation(npmConstrained("d3"))
-    implementation(npmConstrained("d3-color"))
-    implementation(npmConstrained("d3-selection"))
-    implementation(npmConstrained("date-fns"))
-    implementation(npmConstrained("drag-drop-webkit-mobile"))
-    implementation(npmConstrained("favicons"))
-    implementation(npmConstrained("file-loader"))
-    implementation(npmConstrained("fitty"))
-    implementation(npmConstrained("html-webpack-harddisk-plugin"))
-    implementation(npmConstrained("html-webpack-plugin"))
-    implementation(npmConstrained("karma"))
-    implementation(npmConstrained("mini-css-extract-plugin"))
-    implementation(npmConstrained("raw-loader"))
-    implementation(npmConstrained("react-dnd"))
-    implementation(npmConstrained("react-dnd-html5-backend"))
-    implementation(npmConstrained("react-flip-toolkit"))
-    implementation(npmConstrained("react-use-websocket"))
-    implementation(npmConstrained("reactjs-popup"))
-    implementation(npmConstrained("style-loader"))
-    implementation(npmConstrained("styled-components"))
-    implementation(npmConstrained("text-loader"))
-    implementation(npmConstrained("url-loader"))
-    implementation(npmConstrained("webpack"))
-    implementation(npmConstrained("webpack-cli"))
-    implementation(npmConstrained("webpack-favicons"))
+    jsMainImplementation(kotlin("stdlib-js"))
+    jsMainImplementation(project("components"))
+    jsMainImplementation(project(":sdk"))
+    jsMainImplementation(project(":libraries:model"))
+    jsMainImplementation(project(":libraries:json"))
+    jsMainImplementation(project(":libraries:action"))
+    jsMainImplementation(project(":libraries:logging"))
+    jsMainImplementation(project(":libraries:repository:core"))
+    jsMainImplementation(project(":libraries:repository:memory"))
+    jsMainImplementation("com.benasher44:uuid")
+    jsMainImplementation("com.soywiz.korlibs.klock:klock")
+    jsMainImplementation("com.zegreatrob.jsmints:minreact")
+    jsMainImplementation("com.zegreatrob.jsmints:react-data-loader")
+    jsMainImplementation("com.zegreatrob.testmints:action")
+    jsMainImplementation("com.zegreatrob.testmints:action-async")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-css")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-popper")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-styled-next")
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
+    jsMainImplementation("io.ktor:ktor-client-core")
+    jsMainImplementation("io.ktor:ktor-client-content-negotiation")
+    jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
+    jsMainImplementation(npmConstrained("@auth0/auth0-react"))
+    jsMainImplementation(npmConstrained("blueimp-md5"))
+    jsMainImplementation(npmConstrained("core-js"))
+    jsMainImplementation(npmConstrained("css-loader"))
+    jsMainImplementation(npmConstrained("d3"))
+    jsMainImplementation(npmConstrained("d3-color"))
+    jsMainImplementation(npmConstrained("d3-selection"))
+    jsMainImplementation(npmConstrained("date-fns"))
+    jsMainImplementation(npmConstrained("drag-drop-webkit-mobile"))
+    jsMainImplementation(npmConstrained("favicons"))
+    jsMainImplementation(npmConstrained("file-loader"))
+    jsMainImplementation(npmConstrained("fitty"))
+    jsMainImplementation(npmConstrained("html-webpack-harddisk-plugin"))
+    jsMainImplementation(npmConstrained("html-webpack-plugin"))
+    jsMainImplementation(npmConstrained("karma"))
+    jsMainImplementation(npmConstrained("mini-css-extract-plugin"))
+    jsMainImplementation(npmConstrained("raw-loader"))
+    jsMainImplementation(npmConstrained("react-dnd"))
+    jsMainImplementation(npmConstrained("react-dnd-html5-backend"))
+    jsMainImplementation(npmConstrained("react-flip-toolkit"))
+    jsMainImplementation(npmConstrained("react-use-websocket"))
+    jsMainImplementation(npmConstrained("reactjs-popup"))
+    jsMainImplementation(npmConstrained("style-loader"))
+    jsMainImplementation(npmConstrained("styled-components"))
+    jsMainImplementation(npmConstrained("text-loader"))
+    jsMainImplementation(npmConstrained("url-loader"))
+    jsMainImplementation(npmConstrained("webpack"))
+    jsMainImplementation(npmConstrained("webpack-cli"))
+    jsMainImplementation(npmConstrained("webpack-favicons"))
 
-    testImplementation(project(":libraries:stub-model"))
-    testImplementation(project(":libraries:test-logging"))
-    testImplementation("com.zegreatrob.testmints:async")
-    testImplementation("com.zegreatrob.testmints:minassert")
-    testImplementation("com.zegreatrob.testmints:minspy")
-    testImplementation("com.zegreatrob.testmints:standard")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-common")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-js")
+    jsTestImplementation(project(":libraries:stub-model"))
+    jsTestImplementation(project(":libraries:test-logging"))
+    jsTestImplementation("com.zegreatrob.testmints:async")
+    jsTestImplementation("com.zegreatrob.testmints:minassert")
+    jsTestImplementation("com.zegreatrob.testmints:minspy")
+    jsTestImplementation("com.zegreatrob.testmints:standard")
+    jsTestImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
+    jsTestImplementation("org.jetbrains.kotlin:kotlin-test-common")
+    jsTestImplementation("org.jetbrains.kotlin:kotlin-test-js")
 }
 
 val taggerExtension = TaggerExtension.apply(rootProject)
@@ -119,9 +120,9 @@ tasks {
     val cdnBuildOutput = "${project.buildDir.absolutePath}/cdn.json"
     val lookupCdnUrls by registering(NodeExec::class) {
         setup(project)
-        dependsOn(cdnLookupConfiguration, "publicPackageJson", ":kotlinNpmInstall")
+        dependsOn(cdnLookupConfiguration, "jsPublicPackageJson", ":kotlinNpmInstall")
         inputs.files(cdnLookupConfiguration)
-        inputs.files(runtimeClasspath)
+        inputs.files(jsRuntimeClasspath)
         val settingsFile = File(project.projectDir, "cdn.settings.json")
         inputs.file(settingsFile)
         val settings = ObjectMapper().readTree(settingsFile)
@@ -148,8 +149,8 @@ tasks {
     }
     compileProductionExecutableKotlinJs {}
 
-    val browserProductionWebpack = named("browserProductionWebpack", KotlinWebpack::class) {
-        dependsOn(lookupCdnUrls, "processResources")
+    val browserProductionWebpack = named("jsBrowserProductionWebpack", KotlinWebpack::class) {
+        dependsOn(lookupCdnUrls, jsProcessResources)
         inputs.file(cdnBuildOutput)
         inputs.file(File(project.projectDir, "cdn.settings.json"))
         outputs.dir(outputDirectory.dir("html"))
@@ -179,20 +180,20 @@ tasks {
         into("${project.buildDir.absolutePath}/additionalResources")
         from(provider { (findByPath(":sdk:jsProcessResources") as ProcessResources).destinationDir })
     }
-    named("processResources") {
+    jsProcessResources {
         dependsOn(additionalResources)
     }
 
-    named("browserTest") {
+    named("jsBrowserTest") {
         outputs.cacheIf { true }
     }
 }
 
 tasks {
-    formatKotlinMain {
+    formatKotlinJsMain {
         dependsOn("kspKotlinJs")
     }
-    lintKotlinMain {
+    lintKotlinJsMain {
         dependsOn("kspKotlinJs")
     }
     withType(FormatTask::class) {
@@ -207,8 +208,8 @@ artifacts {
     add(clientConfiguration.name, tasks.compileProductionExecutableKotlinJs.map { it.destinationDirectory }) {
         builtBy(tasks.compileProductionExecutableKotlinJs)
     }
-    val browserProductionWebpack = tasks.named("browserProductionWebpack", KotlinWebpack::class)
-    val browserDistribution = tasks.named("browserDistribution")
+    val browserProductionWebpack = tasks.named("jsBrowserProductionWebpack", KotlinWebpack::class)
+    val browserDistribution = tasks.named("jsBrowserDistribution")
     add(clientConfiguration.name, browserProductionWebpack.map { it.outputDirectory }) {
         builtBy(browserProductionWebpack, browserDistribution)
     }
