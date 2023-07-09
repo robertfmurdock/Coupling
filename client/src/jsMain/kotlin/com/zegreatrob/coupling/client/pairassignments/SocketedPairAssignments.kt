@@ -14,62 +14,62 @@ import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.tmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import react.Props
 import react.StateSetter
 import react.dom.html.ReactHTML.div
 import react.useCallback
 import react.useEffect
 import react.useState
 
-data class SocketedPairAssignments<D>(
-    val party: PartyDetails,
-    val players: List<Player>,
-    val pairAssignments: PairAssignmentDocument?,
-    val controls: Controls<D>,
-    val allowSave: Boolean,
-) : DataPropsBind<SocketedPairAssignments<D>>(socketedPairAssignments<D>())
-    where D : SavePairAssignmentsCommand.Dispatcher, D : DeletePairAssignmentsCommand.Dispatcher
+external interface SocketedPairAssignmentsProps<D> : Props
+    where D : SavePairAssignmentsCommand.Dispatcher, D : DeletePairAssignmentsCommand.Dispatcher {
+    var party: PartyDetails
+    var players: List<Player>
+    var pairAssignments: PairAssignmentDocument?
+    var controls: Controls<D>
+    var allowSave: Boolean
+}
 
-private fun <D> socketedPairAssignments()
-where D : SavePairAssignmentsCommand.Dispatcher, D : DeletePairAssignmentsCommand.Dispatcher =
-    tmFC<SocketedPairAssignments<D>> { (party, players, originalPairs, controls, allowSave) ->
-        val (pairAssignments, setPairAssignments) = useState(originalPairs)
-        val (message, setMessage) = useState(disconnectedMessage)
-        val onMessageFunc: (Message) -> Unit = useCallback { handleMessage(it, setMessage, setPairAssignments) }
-        val updatePairAssignments = useCallback(party.id, controls.dispatchFunc) { new: PairAssignmentDocument ->
-            setPairAssignments(new)
-            controls.dispatchFunc({ SavePairAssignmentsCommand(party.id, new) }, {}).invoke()
-        }
-        val auth0Data = useAuth0Data()
-        var token by useState("")
-        useEffect {
-            MainScope().launch { token = auth0Data.getAccessTokenSilently() }
-        }
-
-        if (token.isNotBlank()) {
-            CouplingWebsocket(
-                partyId = party.id,
-                onMessage = onMessageFunc,
-                buildChild = {
-                    PairAssignments.create(
-                        party = party,
-                        players = players,
-                        pairs = pairAssignments,
-                        setPairs = updatePairAssignments,
-                        controls = controls,
-                        message = message,
-                        allowSave = allowSave,
-                    )
-                },
-                token = token,
-            )
-        } else {
-            div()
-        }
+@ReactFunc
+val SocketedPairAssignments by nfc<SocketedPairAssignmentsProps<*>> { (party, players, originalPairs, controls, allowSave) ->
+    val (pairAssignments, setPairAssignments) = useState(originalPairs)
+    val (message, setMessage) = useState(disconnectedMessage)
+    val onMessageFunc: (Message) -> Unit = useCallback { handleMessage(it, setMessage, setPairAssignments) }
+    val updatePairAssignments = useCallback(party.id, controls.dispatchFunc) { new: PairAssignmentDocument ->
+        setPairAssignments(new)
+        controls.dispatchFunc({ SavePairAssignmentsCommand(party.id, new) }, {}).invoke()
     }
+    val auth0Data = useAuth0Data()
+    var token by useState("")
+    useEffect {
+        MainScope().launch { token = auth0Data.getAccessTokenSilently() }
+    }
+
+    if (token.isNotBlank()) {
+        CouplingWebsocket(
+            partyId = party.id,
+            onMessage = onMessageFunc,
+            buildChild = {
+                PairAssignments.create(
+                    party = party,
+                    players = players,
+                    pairs = pairAssignments,
+                    setPairs = updatePairAssignments,
+                    controls = controls,
+                    message = message,
+                    allowSave = allowSave,
+                )
+            },
+            token = token,
+        )
+    } else {
+        div()
+    }
+}
 
 private fun handleMessage(
     newMessage: Message,
