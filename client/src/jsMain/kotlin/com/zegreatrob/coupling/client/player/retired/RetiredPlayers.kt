@@ -7,10 +7,11 @@ import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotlinx.css.Color
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.router.dom.Link
 import web.cssom.BackgroundRepeat
@@ -20,10 +21,13 @@ import web.cssom.NamedColor
 import web.cssom.px
 import web.cssom.url
 
-data class RetiredPlayers(val party: PartyDetails, val retiredPlayers: List<Player>) :
-    DataPropsBind<RetiredPlayers>(com.zegreatrob.coupling.client.player.retired.retiredPlayers)
+external interface RetiredPlayersProps : Props {
+    var party: PartyDetails
+    var retiredPlayers: List<Player>
+}
 
-val retiredPlayers by ntmFC<RetiredPlayers> { (party, players) ->
+@ReactFunc
+val RetiredPlayers by nfc<RetiredPlayersProps> { (party, players) ->
     div {
         PartyBrowser(party)
         div {

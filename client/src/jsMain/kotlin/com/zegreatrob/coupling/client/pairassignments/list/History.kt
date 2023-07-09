@@ -7,9 +7,10 @@ import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignmentRow
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import web.cssom.Border
@@ -20,14 +21,15 @@ import web.cssom.Padding
 import web.cssom.px
 import web.cssom.vh
 
-data class History(
-    val party: PartyDetails,
-    val history: List<PairAssignmentDocument>,
-    val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
-    val windowFunctions: WindowFunctions = WindowFunctions,
-) : DataPropsBind<History>(com.zegreatrob.coupling.client.pairassignments.list.history)
+external interface HistoryProps : Props {
+    var party: PartyDetails
+    var history: List<PairAssignmentDocument>
+    var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
+    var windowFunctions: WindowFunctions?
+}
 
-private val history by ntmFC<History> { (party, history, controls, windowFuncs) ->
+@ReactFunc
+val History by nfc<HistoryProps> { (party, history, controls, windowFuncs) ->
     div {
         css {
             display = Display.inlineBlock
