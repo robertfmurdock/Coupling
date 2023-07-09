@@ -12,13 +12,14 @@ import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
 import korlibs.time.DateFormat
 import korlibs.time.DateTimeTz
 import react.ChildrenBuilder
+import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useCallback
@@ -41,16 +42,17 @@ import web.cssom.px
 import web.cssom.rgb
 import web.cssom.url
 
-data class PairAssignmentRow(
-    val party: PartyDetails,
-    val document: PairAssignmentDocument,
-    val controls: Controls<DeletePairAssignmentsCommand.Dispatcher>,
-    val windowFunctions: WindowFunctions = WindowFunctions,
+external interface PairAssignmentRowProps : Props {
+    var party: PartyDetails
+    var document: PairAssignmentDocument
+    var controls: Controls<DeletePairAssignmentsCommand.Dispatcher>
+    var windowFunctions: WindowFunctions?
+}
 
-) :
-    DataPropsBind<PairAssignmentRow>(pairAssignmentRow)
-
-private val pairAssignmentRow by ntmFC<PairAssignmentRow> { (party, document, controls, windowFuncs) ->
+@ReactFunc
+val PairAssignmentRow by nfc<PairAssignmentRowProps> { props ->
+    val (party, document, controls) = props
+    val windowFuncs = props.windowFunctions ?: WindowFunctions
     val (dispatchFunc, reload) = controls
     val onDeleteClick: () -> Unit = useCallback {
         val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(party.id, document.id) }, { reload() })

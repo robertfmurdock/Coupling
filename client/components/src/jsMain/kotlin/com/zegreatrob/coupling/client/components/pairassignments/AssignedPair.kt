@@ -148,8 +148,12 @@ private fun playerCardComponent(
 ): ChildrenBuilder.(PinnedPlayer, Angle) -> Unit = if (canDrag) {
     { player, tilt ->
         playerFlipped(player.player) {
-            swappablePlayer(player, canDrag, tilt) { droppedPlayerId: String -> swap?.invoke(player, droppedPlayerId) }
-                .create()
+            DraggablePlayer.create(
+                pinnedPlayer = player,
+                zoomOnHover = canDrag,
+                tilt = tilt,
+                onPlayerDrop = { droppedPlayerId: String -> swap?.invoke(player, droppedPlayerId) },
+            )
         }
     }
 } else {
@@ -176,10 +180,3 @@ private fun ChildrenBuilder.playerFlipped(player: Player, handler: () -> ReactNo
 }
 
 private fun notSwappablePlayer(player: Player, tilt: Angle) = PlayerCard(player, tilt = tilt)
-
-private fun swappablePlayer(
-    pinnedPlayer: PinnedPlayer,
-    zoomOnHover: Boolean,
-    tilt: Angle,
-    onDropSwap: (String) -> Unit,
-) = DraggablePlayer(pinnedPlayer, zoomOnHover, tilt, onDropSwap)

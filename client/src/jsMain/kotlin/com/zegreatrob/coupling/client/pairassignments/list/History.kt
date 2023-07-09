@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.client.components.pairassignments.PairAssignmentR
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.ntmFC
 import emotion.react.css
 import react.dom.html.ReactHTML.div
@@ -49,7 +48,7 @@ private val history by ntmFC<History> { (party, history, controls, windowFuncs) 
                 display = Display.inlineBlock
             }
             history.forEach {
-                add(PairAssignmentRow(party, it, controls, windowFuncs))
+                PairAssignmentRow(party, it, controls, windowFuncs)
             }
         }
     }

@@ -2,23 +2,25 @@ package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrop
-import com.zegreatrob.minreact.DataPropsBind
-import com.zegreatrob.minreact.ntmFC
+import com.zegreatrob.minreact.ReactFunc
+import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import react.ChildrenBuilder
+import react.Props
+import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.useRef
 import web.cssom.Display
 import web.html.HTMLElement
 
-data class DraggableThing(
-    val itemType: String,
-    val itemId: String,
-    val dropCallback: (String) -> Unit,
-    val handler: ChildrenBuilder.(isOver: Boolean) -> Unit,
-) : DataPropsBind<DraggableThing>(draggableThing)
+external interface DraggableThingProps : Props {
+    var itemType: String
+    var itemId: String
+    var dropCallback: (String) -> Unit
+    var handler: (isOver: Boolean) -> ReactNode
+}
 
-val draggableThing by ntmFC<DraggableThing> { (itemType, itemId, dropCallback, handler) ->
+@ReactFunc
+val DraggableThing by nfc<DraggableThingProps> { (itemType, itemId, dropCallback, handler) ->
     val draggableRef = useRef<HTMLElement>(null)
 
     val (_, drag) = useDrag<Unit>(itemType = itemType, itemId = itemId)
@@ -32,6 +34,6 @@ val draggableThing by ntmFC<DraggableThing> { (itemType, itemId, dropCallback, h
     div {
         css { display = Display.inlineBlock }
         ref = draggableRef
-        handler(isOver)
+        child(handler(isOver))
     }
 }

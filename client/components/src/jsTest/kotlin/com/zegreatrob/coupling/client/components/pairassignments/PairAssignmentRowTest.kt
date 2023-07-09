@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.minreact.create
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
@@ -36,17 +35,16 @@ class PairAssignmentRowTest {
         val actor = UserEvent.setup()
     }) {
         render(
-            PairAssignmentRow(
-                party,
-                document,
-                Controls(stubDispatcher.func(), reloadSpy::spyFunction),
-                this,
-            ).create {},
+            PairAssignmentRow.create(
+                party = party,
+                document = document,
+                controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
+                windowFunctions = this,
+            ),
             jso { wrapper = MemoryRouter },
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
-
         stubDispatcher.sendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted)
     } verify {
         stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
@@ -68,12 +66,12 @@ class PairAssignmentRowTest {
         val actor = UserEvent.setup()
     }) {
         render(
-            PairAssignmentRow(
-                party,
-                document,
-                Controls(stubDispatcher.func(), reloadSpy::spyFunction),
-                this,
-            ).create {},
+            PairAssignmentRow.create(
+                party = party,
+                document = document,
+                controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
+                windowFunctions = this,
+            ),
             jso { wrapper = MemoryRouter },
         )
     } exercise {
