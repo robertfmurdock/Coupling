@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.client.components.player.PlayerConfigContent
 import com.zegreatrob.coupling.client.components.spin.PrepareSpinContent
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pin.Pin
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.testmints.action.async.SuspendAction
@@ -43,14 +44,11 @@ external interface DemoPageFrameProps : Props {
     var state: DemoAnimationState
 }
 
+@ReactFunc
 val DemoPageFrame by nfc<DemoPageFrameProps> { (state) ->
     val popperRef = useRef<HTMLElement>()
     val arrowRef = useRef<HTMLElement>()
-
     val (referenceElement, setReferenceElement) = useState<ReferenceElement?>(null)
-
-    println("STATE IS $state")
-
     val popperInstance = usePopper(referenceElement, popperRef.current, popperOptions(arrowRef, state))
 
     useLayoutEffect(state) {
