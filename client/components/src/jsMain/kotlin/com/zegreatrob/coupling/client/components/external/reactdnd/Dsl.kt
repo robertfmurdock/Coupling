@@ -7,6 +7,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.await
 import react.ElementType
 import react.FC
+import react.create
 import kotlin.js.Json
 import kotlin.js.Promise
 import kotlin.js.json
@@ -22,7 +23,7 @@ val DndProvider: ElementType<DnDProvideProps> = FC { props ->
         +props.children
     } else {
         waitForAsyncReactComponent({ runCatching { reactDnd.getCompleted().dndProvider }.getOrNull() }) { component ->
-            component { +props }
+            component.create { +props }
         }
     }
 }

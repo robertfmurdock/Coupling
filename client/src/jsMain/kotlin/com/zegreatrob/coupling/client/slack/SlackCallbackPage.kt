@@ -7,13 +7,15 @@ import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.slack.ReturnToCouplingButton
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
+import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
 import com.zegreatrob.react.dataloader.ResolvedState
 import react.Props
+import react.PropsWithValue
+import react.create
 import react.router.dom.useSearchParams
 
 val SlackCallbackPage by nfc<PageProps> { props ->
@@ -24,27 +26,27 @@ val SlackCallbackPage by nfc<PageProps> { props ->
         if (code == null || state == null) {
             +"code and state missing"
         } else {
-            add(
-                DataLoader(
-                    getDataAsync = {
-                        props.commander.tracingDispatcher().sdk.perform(
-                            GrantSlackAccessCommand(code, state),
-                        )
-                    },
-                    errorData = { VoidResult.Rejected },
-                    children = {
-                        when (it) {
-                            is EmptyState -> +"Empty"
-                            is PendingState -> +"Pending"
-                            is ResolvedState -> when (it.result) {
-                                VoidResult.Accepted -> SlackInstallSuccess {}
-                                VoidResult.Rejected -> +"Rejected"
-                                CommandResult.Unauthorized -> +"Unauthorized"
-                            }
-                        }
-                    },
-                ),
+            DataLoader(
+                getDataAsync = {
+                    props.commander.tracingDispatcher().sdk.perform(
+                        GrantSlackAccessCommand(code, state),
+                    )
+                },
+                errorData = { VoidResult.Rejected },
+                child = SlackCallbackLoadContent::create,
             )
+        }
+    }
+}
+
+val SlackCallbackLoadContent by nfc<PropsWithValue<DataLoadState<VoidResult>>> { props ->
+    when (val data = props.value) {
+        is EmptyState -> +"Empty"
+        is PendingState -> +"Pending"
+        is ResolvedState -> when (data.result) {
+            VoidResult.Accepted -> SlackInstallSuccess {}
+            VoidResult.Rejected -> +"Rejected"
+            CommandResult.Unauthorized -> +"Unauthorized"
         }
     }
 }

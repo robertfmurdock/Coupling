@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmen
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.ServerMessage
 import com.zegreatrob.coupling.client.components.external.reactdnd.DndProvider
+import com.zegreatrob.coupling.client.components.external.reactdndhtml5backend.ReactDndHtml5BackendModule
 import com.zegreatrob.coupling.client.components.external.reactdndhtml5backend.html5BackendDeferred
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.player.PlayerRoster
@@ -14,8 +15,8 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
+import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.DataLoader
 import com.zegreatrob.react.dataloader.EmptyState
 import com.zegreatrob.react.dataloader.PendingState
@@ -24,6 +25,7 @@ import csstype.PropertiesBuilder
 import emotion.css.ClassName
 import react.Props
 import react.PropsWithChildren
+import react.PropsWithValue
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
 import web.cssom.Display
@@ -66,20 +68,29 @@ val PairAssignments by nfc<PairAssignmentsProps> { props ->
 }
 
 val Html5DndProvider by nfc<PropsWithChildren> { props ->
-    add(
-        DataLoader({ html5BackendDeferred.await() }, { null }) { state ->
-            when (state) {
-                is EmptyState -> div { +"Preparing component" }
-                is PendingState -> div { +"Pending component" }
-                is ResolvedState -> state.result?.let {
-                    DndProvider {
-                        backend = it.html5Backend
-                        +props.children
-                    }
-                }
-            }
-        },
+    DataLoader(
+        getDataAsync = { html5BackendDeferred.await() },
+        errorData = { null },
+        child = { state -> DndProviderLoading.create(value = state, children = { +props.children }) },
     )
+}
+
+external interface DndProviderLoadingProps :
+    PropsWithValue<DataLoadState<ReactDndHtml5BackendModule?>>,
+    PropsWithChildren
+
+@ReactFunc
+val DndProviderLoading by nfc<DndProviderLoadingProps> { props ->
+    when (val state = props.value) {
+        is EmptyState -> div { +"Preparing component" }
+        is PendingState -> div { +"Pending component" }
+        is ResolvedState -> state.result?.let {
+            DndProvider {
+                backend = it.html5Backend
+                +props.children
+            }
+        }
+    }
 }
 
 private fun PropertiesBuilder.pairAssignmentStyles() {

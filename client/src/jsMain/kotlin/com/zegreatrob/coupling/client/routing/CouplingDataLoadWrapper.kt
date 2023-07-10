@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.add
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.DataLoader
@@ -13,9 +12,10 @@ import com.zegreatrob.react.dataloader.ReloadFunc
 import com.zegreatrob.react.dataloader.ResolvedState
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.execute
-import react.ChildrenBuilder
 import react.Props
+import react.PropsWithValue
 import react.ReactNode
+import react.create
 import react.useCallback
 
 external interface CouplingQueryProps<R> : Props {
@@ -36,24 +36,18 @@ val CouplingQuery by nfc<CouplingQueryProps<Any>> { props ->
                 toNode(tools.reloadData, dispatchFunc, value)
             }
     }
-    add(
-        DataLoader(getDataAsync, { null }) { state: DataLoadState<ReactNode?> ->
-            animationFrame(state)
-        },
-    )
+    DataLoader(getDataAsync, { null }, child = CouplingQueryLoadState::create)
 }
 
-private fun ChildrenBuilder.animationFrame(state: DataLoadState<ReactNode?>) =
+val CouplingQueryLoadState by nfc<PropsWithValue<DataLoadState<ReactNode?>>> { props ->
+    val state = props.value
     animationFrame {
         this.state = state
         if (state is ResolvedState) {
-            resolvedComponent(state)
+            when (val result = state.result) {
+                null -> notFoundContent()
+                else -> +result
+            }
         }
-    }
-
-private fun ChildrenBuilder.resolvedComponent(state: ResolvedState<ReactNode?>) {
-    when (val result = state.result) {
-        null -> notFoundContent()
-        else -> +result
     }
 }
