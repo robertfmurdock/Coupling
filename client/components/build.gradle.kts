@@ -39,7 +39,6 @@ tasks {
 }
 
 dependencies {
-    jsMainImplementation(project("action"))
     jsMainImplementation(project(":libraries:action"))
     jsMainImplementation(project(":libraries:json"))
     jsMainImplementation(project(":libraries:model"))
