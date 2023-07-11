@@ -4152,10 +4152,10 @@
   dependencies:
     "@types/node" "*"
 
-"@wdio/cli@8.12.1":
-  version "8.12.1"
-  resolved "https://registry.yarnpkg.com/@wdio/cli/-/cli-8.12.1.tgz#2b6c83ca20de4bf1f0ab6715e1c248c42b411de7"
-  integrity sha512-BR2pbtugcI4g0FvQ7xOdZw9mzCRBUJS2pmZ6BWF3b/T1rN2E6ViJO0mPIjaSBnxH3Ceg+49ZyC5qvoj9l6uvUA==
+"@wdio/cli@8.12.2":
+  version "8.12.2"
+  resolved "https://registry.yarnpkg.com/@wdio/cli/-/cli-8.12.2.tgz#d8e702f0592dd1fa77986d779e495f6e514e9332"
+  integrity sha512-sBvDHxVrUQXW1ya4RS6qT23QO1W19rQ3QIXAI5iHYeHCbeBL61QDpXPstLDwlIVAjSIofU3ZzbfZzpepdBzQNA==
   dependencies:
     "@types/node" "^20.1.1"
     "@wdio/config" "8.12.1"
@@ -4209,12 +4209,12 @@
     import-meta-resolve "^3.0.0"
     read-pkg-up "^9.1.0"
 
-"@wdio/dot-reporter@8.12.1":
-  version "8.12.1"
-  resolved "https://registry.yarnpkg.com/@wdio/dot-reporter/-/dot-reporter-8.12.1.tgz#d12b8a2dfc233884cce3dade252666bcf4c627d3"
-  integrity sha512-7SzqTH/dTJvElkn4/PO+4B0bXD/UhQ6O/npIqS9AS2b+o+ULUwW4I2c2XmJXsRpWcg/sOvXb84SbFRdQniNfEw==
+"@wdio/dot-reporter@8.12.2":
+  version "8.12.2"
+  resolved "https://registry.yarnpkg.com/@wdio/dot-reporter/-/dot-reporter-8.12.2.tgz#9682cb1167988cfb7be51757cd31d3325670238c"
+  integrity sha512-umG4+tiAlGDr/DirJubE013/1JPTwz66Y4FuBYESEyDcGT89zoo0hLoWBzBjVJVyzfKhmnSO6ODz5KHHsZzy0g==
   dependencies:
-    "@wdio/reporter" "8.12.1"
+    "@wdio/reporter" "8.12.2"
     "@wdio/types" "8.10.4"
     chalk "^5.0.1"
 
@@ -4234,12 +4234,12 @@
     expect-webdriverio "^4.2.5"
     webdriverio "8.11.2"
 
-"@wdio/junit-reporter@8.12.1":
-  version "8.12.1"
-  resolved "https://registry.yarnpkg.com/@wdio/junit-reporter/-/junit-reporter-8.12.1.tgz#c2fc6b35a4819e9a41e618732974d243e403bda2"
-  integrity sha512-9U5RrfzF5Z1/sHAIXgiDohfOccOh9RxrAr17EZr2XDJJBHs120SiRNL6Qz4/0VcnoV0RnFiT4xnw/Dh7V4Sx6A==
+"@wdio/junit-reporter@8.12.2":
+  version "8.12.2"
+  resolved "https://registry.yarnpkg.com/@wdio/junit-reporter/-/junit-reporter-8.12.2.tgz#5a4d20cff1b85c011d6b449c2f467935fee648e4"
+  integrity sha512-b/Lpztdy6yCHIdhonPDaeo3lI8kJnp/E7xm+ZGe8KklmiZBwaVapOOZ4FiUnysMkclDMipcZFA7W6eYWWVpMZg==
   dependencies:
-    "@wdio/reporter" "8.12.1"
+    "@wdio/reporter" "8.12.2"
     "@wdio/types" "8.10.4"
     json-stringify-safe "^5.0.1"
     junit-report-builder "^3.0.0"
@@ -4292,17 +4292,17 @@
   dependencies:
     "@types/node" "^20.1.0"
 
-"@wdio/reporter@8.12.1":
-  version "8.12.1"
-  resolved "https://registry.yarnpkg.com/@wdio/reporter/-/reporter-8.12.1.tgz#dd5f70fa77143ba0fa09bcf545b1faa5332790a1"
-  integrity sha512-8oJAHTgtLxbCs/Mv5tZo6TYC/ADFE9SjCABjaFCdePATE4jb/7+VRl7lYLdQg6l+ooha86BbOJHYqgwzEbWruQ==
+"@wdio/reporter@8.12.2":
+  version "8.12.2"
+  resolved "https://registry.yarnpkg.com/@wdio/reporter/-/reporter-8.12.2.tgz#c494985a3f2936179c3bf57ba41f486e20cc081c"
+  integrity sha512-xCbppY74dm9jZIgC3Oo5eSMM6pnCXIytol4lFZV1l6LkqWl9WdhBj38cU3Y65XX6gwW+rGnFo36yitxvAXnTaA==
   dependencies:
     "@types/node" "^20.1.0"
     "@wdio/logger" "8.11.0"
     "@wdio/types" "8.10.4"
     diff "^5.0.0"
     object-inspect "^1.12.0"
-    supports-color "9.3.1"
+    supports-color "9.4.0"
 
 "@wdio/runner@8.12.1":
   version "8.12.1"
@@ -12846,10 +12846,10 @@ supports-color@8.1.1, supports-color@^8.0.0, supports-color@^8.1.1:
   dependencies:
     has-flag "^4.0.0"
 
-supports-color@9.3.1:
-  version "9.3.1"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-9.3.1.tgz#34e4ad3c71c9a39dae3254ecc46c9b74e89e15a6"
-  integrity sha512-knBY82pjmnIzK3NifMo3RxEIRD9E0kIzV4BKcyTZ9+9kWgLMxd4PrsTSMoFQUabgRBbF8KOLRDCyKgNV+iK44Q==
+supports-color@9.4.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-9.4.0.tgz#17bfcf686288f531db3dea3215510621ccb55954"
+  integrity sha512-VL+lNrEoIXww1coLPOmiEmK/0sGigko5COxI09KzHc2VJXJsQ37UaQ+8quuxjDeA7+KnLGTWRyOXSLLR2Wb4jw==
 
 supports-color@^2.0.0:
   version "2.0.0"
