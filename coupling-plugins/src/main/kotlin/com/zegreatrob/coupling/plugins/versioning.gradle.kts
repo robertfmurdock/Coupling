@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.plugins
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.zegreatrob.tools.TaggerPlugin
-import com.zegreatrob.tools.tagger.TaggerExtension
+import com.zegreatrob.tools.tagger.ReleaseVersion
 
 plugins {
     base
@@ -11,10 +11,11 @@ plugins {
 
 rootProject.apply<TaggerPlugin>()
 
-val taggerExtension = rootProject.extensions.getByType(TaggerExtension::class.java)
-
 tasks {
-    taggerExtension.releaseProvider.configure {
+    rootProject
+        .tasks
+        .withType(ReleaseVersion::class.java)
+        .named("release").configure {
         dependsOn(check)
     }
 

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.plugins
 
+import com.zegreatrob.tools.tagger.ReleaseVersion
 import com.zegreatrob.tools.tagger.TaggerExtension
 
 plugins {
@@ -15,7 +16,7 @@ kotlin {
 
 val serverProject: Project = project.project(":server")
 
-val taggerExtension = TaggerExtension.apply(rootProject)
+val taggerExtension: TaggerExtension = rootProject.extensions.getByType(TaggerExtension::class.java)
 
 val deployDir = buildDir.resolve("deploy")
 
@@ -40,9 +41,12 @@ tasks {
         mustRunAfter(":server:check")
         mustRunAfter(":e2e:check")
     }
-    taggerExtension.releaseProvider.configure {
-        finalizedBy(deploy)
-    }
+    rootProject
+        .tasks
+        .withType(ReleaseVersion::class.java)
+        .named("release").configure {
+            finalizedBy(deploy)
+        }
 }
 
 fun NodeExec.configureDeploy(stage: String) {

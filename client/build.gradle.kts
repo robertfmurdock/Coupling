@@ -2,6 +2,8 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
+import com.zegreatrob.tools.TaggerPlugin
+import com.zegreatrob.tools.tagger.ReleaseVersion
 import com.zegreatrob.tools.tagger.TaggerExtension
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
@@ -119,7 +121,7 @@ dependencies {
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test-js")
 }
 
-val taggerExtension = TaggerExtension.apply(rootProject)
+rootProject.apply<TaggerPlugin>()
 
 val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
@@ -182,7 +184,11 @@ tasks {
         val absolutePath = browserProductionWebpack.get().outputDirectory.get().asFile.absolutePath
         commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling/${rootProject.version}".split(" ")
     }
-    taggerExtension.releaseProvider.configure {
+    rootProject
+        .tasks
+        .withType(ReleaseVersion::class.java)
+        .named("release")
+        .configure {
         finalizedBy(uploadToS3)
     }
 
