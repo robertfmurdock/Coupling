@@ -1,22 +1,51 @@
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
+
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
+    id("com.zegreatrob.testmints.action-mint")
     kotlin("plugin.serialization")
 }
 
 kotlin {
-
     targets {
         js {
             nodejs { testTask(Action { useMocha { timeout = "10s" } } )}
         }
         jvm()
     }
+
+    sourceSets.named("jsMain") {
+        kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
+    }
+    sourceSets.named("jvmMain") {
+        kotlin.srcDir("build/generated/ksp/jvm/jvmMain/kotlin")
+    }
+
 }
 
 tasks {
     named("jvmTest", Test::class) {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
         useJUnitPlatform()
+    }
+    "formatKotlinJsMain" {
+        dependsOn("kspKotlinJs")
+    }
+    "formatKotlinJsTest" {
+        dependsOn("kspTestKotlinJs")
+    }
+    withType(FormatTask::class) {
+        exclude { spec -> spec.file.absolutePath.contains("generated") }
+    }
+    withType(LintTask::class) {
+        exclude { spec -> spec.file.absolutePath.contains("generated") }
+    }
+    "lintKotlinJsMain" {
+        dependsOn("kspKotlinJs")
+    }
+    "lintKotlinJsTest" {
+        dependsOn("kspTestKotlinJs")
     }
 }
 

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.graphql
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.minjson.at
+import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.execute
@@ -26,6 +27,30 @@ inline fun <D : SuspendActionExecuteSyntax, Q : SuspendAction<D, R>, reified R, 
             dispatcherFunc(context, entity, input)
                 ?.execute(command)
                 ?.let { encodeSuccessToJson(toSerializable, it) }
+        } catch (error: Throwable) {
+            error.printStackTrace()
+            throw error
+        }
+    }
+}
+
+inline fun <reified E, reified I, reified D, reified R, reified J> dispatchAction(
+    crossinline dispatcherFunc: GraphQLDispatcherProvider<E, I, D>,
+    crossinline fireCommand: suspend ActionCannon<D>.(_: E, input: I) -> R,
+    crossinline toSerializable: (R) -> J,
+) = { entityJson: Json, args: Json, context: CouplingContext, _: Json ->
+    context.scope.promise {
+        try {
+            val entity = couplingJsonFormat.decodeFromDynamic<E>(entityJson)
+            val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
+            val dispatcher = dispatcherFunc(context, entity, input) ?: return@promise null
+            val cannon = ActionCannon(dispatcher)
+            val result = cannon.fireCommand(entity, input)
+            if (result == null) {
+                result
+            } else {
+                encodeSuccessToJson(toSerializable, result)
+            }
         } catch (error: Throwable) {
             error.printStackTrace()
             throw error
