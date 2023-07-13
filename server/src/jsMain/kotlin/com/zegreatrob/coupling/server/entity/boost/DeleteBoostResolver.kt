@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val deleteBoostResolver = dispatch(
-    prereleaseCommand(),
-    { _: JsonNull, _: JsonNull -> DeleteBoostCommand() },
-    { true },
+    dispatcherFunc = prereleaseCommand(),
+    queryFunc = { _: JsonNull, _: JsonNull -> DeleteBoostCommand() },
+    toSerializable = { true },
 )
