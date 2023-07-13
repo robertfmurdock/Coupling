@@ -14,13 +14,10 @@ class DecoratedDispatchFunc<D : SuspendActionExecuteSyntax>(
 
     override fun <C : SuspendAction<D, R>, R> invoke(commandFunc: () -> C, response: (R) -> Unit) = fun() {
         val command = commandFunc()
-        dispatcher.asyncExecute(command, response)
-    }
-
-    private fun <C : SuspendAction<D, R>, R> D.asyncExecute(command: C, onResponse: (R) -> Unit) =
         tools.performAsyncWork(
-            { execute(command) },
+            { command.execute(dispatcher) },
             { handler: Throwable -> throw handler },
-            onResponse,
+            response,
         )
+    }
 }
