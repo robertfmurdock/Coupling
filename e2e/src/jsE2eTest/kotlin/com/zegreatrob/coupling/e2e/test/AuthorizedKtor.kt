@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.sdk.KtorCouplingSdk
+import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -13,7 +13,6 @@ import io.ktor.client.request.forms.submitForm
 import io.ktor.http.Parameters
 import io.ktor.http.Url
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.Deferred
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import mu.KotlinLogging
@@ -23,7 +22,7 @@ external val process: dynamic
 const val primaryAuthorizedUsername = "couplingtestuser.e2e@gmail.com"
 val primaryTestPassword = Process.getEnv("COUPLING_E2E_TEST_PASSWORD") ?: ""
 
-val primaryAuthorizedSdkDeferred: Deferred<KtorCouplingSdk> by lazyDeferred {
+val primaryAuthorizedSdkDeferred by lazyDeferred {
     authorizedKtorCouplingSdk(primaryAuthorizedUsername, primaryTestPassword)
 }
 
@@ -82,4 +81,4 @@ private suspend fun generateAccessToken(username: String, password: String): Str
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
-fun authorizedSdk(token: String) = KtorCouplingSdk({ token }, buildClientWithToken())
+fun authorizedSdk(token: String) = couplingSdk({ token }, buildClientWithToken())

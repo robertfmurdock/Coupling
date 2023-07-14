@@ -16,8 +16,8 @@ tasks {
         .tasks
         .withType(ReleaseVersion::class.java)
         .named("release").configure {
-        dependsOn(check)
-    }
+            dependsOn(check)
+        }
 
     withType<DependencyUpdatesTask> {
         checkForGradleUpdate = true

@@ -15,6 +15,7 @@ import web.cssom.ident
 import web.cssom.s
 
 val prepareToSpinButtonClassName = ClassName("prepare-to-spin")
+
 external interface PrepareToSpinButtonProps : Props {
     var party: PartyDetails
 }

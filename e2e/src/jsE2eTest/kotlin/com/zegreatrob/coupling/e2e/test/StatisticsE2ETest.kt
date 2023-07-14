@@ -16,8 +16,8 @@ class StatisticsE2ETest {
         val players = generateSequence { Player(id = "${randomInt()}-statsE2E", avatarType = null) }
             .take(6).toList()
     }) {
-        sdk.perform(SavePartyCommand(party))
-        players.forEach { player -> sdk.perform(SavePlayerCommand(party.id, player)) }
+        sdk.fire(SavePartyCommand(party))
+        players.forEach { player -> sdk.fire(SavePlayerCommand(party.id, player)) }
     } exercise {
         StatisticsPage.goTo(party.id)
     } verify {

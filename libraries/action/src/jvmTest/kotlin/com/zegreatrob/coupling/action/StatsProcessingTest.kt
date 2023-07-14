@@ -65,12 +65,14 @@ class StatsProcessingTest {
                 val sortedDates = pairRecordGroups.map { group -> group.value.first().dateRecord() }
                     .sorted()
 
-                val playerCount = pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair -> pair["players"].size() } }
-                    .average()
-                    .roundToInt()
+                val playerCount =
+                    pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair -> pair["players"].size() } }
+                        .average()
+                        .roundToInt()
 
-                val pinCount = pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair -> pair["pins"].size() } }
-                    .average()
+                val pinCount =
+                    pairRecordGroups.map { group -> group.value.first()["pairs"].sumOf { pair -> pair["pins"].size() } }
+                        .average()
 
                 println("started in ${sortedDates.first().month} and last spin in ${sortedDates.last().month}. average of $playerCount players, average of $pinCount pins")
             }

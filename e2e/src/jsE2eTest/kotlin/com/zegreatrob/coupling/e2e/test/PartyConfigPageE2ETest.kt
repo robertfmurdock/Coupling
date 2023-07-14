@@ -24,7 +24,7 @@ class PartyConfigPageE2ETest {
             val expectedBadgeSelection = "true"
             val page = PartyConfigPage
         }) {
-            sdk.perform(SavePartyCommand(party))
+            sdk.fire(SavePartyCommand(party))
             with(page) {
                 goTo(party.id)
 
@@ -61,7 +61,7 @@ class PartyConfigPageE2ETest {
             val party = buildParty().copy(email = "${randomInt()}-email")
             val page = PartyConfigPage
         }) {
-            sdk.perform(SavePartyCommand(party))
+            sdk.fire(SavePartyCommand(party))
         } exercise {
             PartyConfigPage.goTo(party.id)
         } verify {
@@ -77,7 +77,7 @@ class PartyConfigPageE2ETest {
         fun canDeleteParty() = sdkSetup(object : SdkContext() {
             val party = buildParty()
         }) {
-            sdk.perform(SavePartyCommand(party))
+            sdk.fire(SavePartyCommand(party))
             PartyConfigPage.goTo(party.id)
         } exercise {
             getDeleteButton().click()

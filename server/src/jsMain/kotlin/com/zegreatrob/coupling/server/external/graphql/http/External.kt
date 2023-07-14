@@ -1,4 +1,3 @@
-
 @file:JsModule("graphql-http/lib/use/express")
 
 package com.zegreatrob.coupling.server.external.graphql.http

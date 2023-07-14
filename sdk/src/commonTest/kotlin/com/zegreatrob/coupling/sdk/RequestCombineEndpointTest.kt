@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -19,7 +20,8 @@ class RequestCombineEndpointTest {
     @Test
     fun postPlayersAndPinsThenGet() = asyncSetup.with({
         val sdk = sdk()
-        object : CouplingSdk by sdk {
+        object {
+            val sdk = sdk
             val party = PartyDetails(id = PartyId("et-${uuid4()}"))
             val playersToSave = listOf(
                 Player(
@@ -33,12 +35,12 @@ class RequestCombineEndpointTest {
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))
         }
     }) {
-        perform(SavePartyCommand(party))
-        pinsToSave.forEach { perform(SavePinCommand(party.id, it)) }
-        playersToSave.forEach { perform(SavePlayerCommand(party.id, it)) }
+        sdk.fire(SavePartyCommand(party))
+        pinsToSave.forEach { fire(cannon = sdk, action = SavePinCommand(party.id, it)) }
+        playersToSave.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
     } exercise {
         coroutineScope {
-            perform(graphQuery { party(party.id) { playerList(); pinList() } })
+            sdk.fire(graphQuery { party(party.id) { playerList(); pinList() } })
                 ?.party
                 .let { it?.playerList?.elements to it?.pinList?.elements }
         }

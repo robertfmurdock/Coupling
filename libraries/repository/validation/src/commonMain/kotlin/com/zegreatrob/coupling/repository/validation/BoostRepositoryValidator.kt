@@ -1,4 +1,3 @@
-
 package com.zegreatrob.coupling.repository.validation
 
 import com.benasher44.uuid.uuid4

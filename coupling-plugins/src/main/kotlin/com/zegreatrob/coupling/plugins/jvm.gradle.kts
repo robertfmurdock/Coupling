@@ -1,8 +1,5 @@
 package com.zegreatrob.coupling.plugins
 
-import org.jetbrains.kotlin.gradle.plugin.mpp.MetadataDependencyTransformationTask
-import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
-
 plugins {
     kotlin("jvm")
     id("com.zegreatrob.coupling.plugins.versioning")

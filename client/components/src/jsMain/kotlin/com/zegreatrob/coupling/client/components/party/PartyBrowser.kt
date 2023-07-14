@@ -7,7 +7,6 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
-import web.authn.AuthenticatorTransport.Companion.nfc
 import web.cssom.Display
 import web.cssom.TextAlign
 import web.cssom.WhiteSpace

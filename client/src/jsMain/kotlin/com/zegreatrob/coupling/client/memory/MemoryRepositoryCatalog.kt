@@ -34,8 +34,9 @@ import com.zegreatrob.coupling.repository.pin.PinRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
-import com.zegreatrob.coupling.sdk.CouplingSdk
+import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
+import com.zegreatrob.testmints.action.ActionCannon
 import korlibs.time.TimeProvider
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -47,13 +48,13 @@ class MemoryRepositoryCatalog private constructor(
     override val playerRepository: PlayerEmailRepository,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
     override val pinRepository: PinRepository,
-) : CouplingSdk,
+) : CouplingSdkDispatcher,
     ClientDeletePairAssignmentsCommandDispatcher,
     ClientDeletePartyCommandDispatcher,
     ClientDeletePinCommandDispatcher,
     ClientDeletePlayerCommandDispatcher,
     ClientPartyListQueryDispatcher,
-    ClientPartyPlayerQueryDispatcher,
+//    ClientPartyPlayerQueryDispatcher,
     ClientSavePairAssignmentsCommandDispatcher,
     ClientSavePartyCommandDispatcher,
     ClientSavePinCommandDispatcher,
@@ -116,5 +117,5 @@ class MemoryRepositoryCatalog private constructor(
 
     override suspend fun perform(command: GrantSlackAccessCommand): VoidResult = VoidResult.Accepted
 
-    override val sdk: CouplingSdk get() = this
+    val sdk: ActionCannon<CouplingSdkDispatcher> get() = ActionCannon(this)
 }

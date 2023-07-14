@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.cli.Auth0Environment
 import com.zegreatrob.coupling.cli.getAccessToken
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
-import com.zegreatrob.coupling.sdk.KtorCouplingSdk
+import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import kotlinx.coroutines.runBlocking
@@ -26,12 +26,12 @@ class List : CliktCommand() {
                 return
             }
 
-            val sdk = KtorCouplingSdk(
+            val sdk = couplingSdk(
                 { accessToken },
                 defaultClient(environment.audienceHost() to ""),
             )
             runBlocking {
-                sdk.perform(graphQuery { partyList() })
+                sdk.fire(graphQuery { partyList() })
                     ?.partyList
                     ?.map(Record<PartyDetails>::data)
                     ?.joinToString("\n") { "Party: id = ${it.id.value}, name = ${it.name}" }

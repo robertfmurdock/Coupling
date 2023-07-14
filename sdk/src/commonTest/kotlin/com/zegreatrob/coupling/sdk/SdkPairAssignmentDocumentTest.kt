@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.model.PartyRecord
@@ -19,6 +20,7 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
+import com.zegreatrob.testmints.action.ActionCannon
 import korlibs.time.DateTime
 import korlibs.time.days
 import korlibs.time.seconds
@@ -29,18 +31,20 @@ class SdkPairAssignmentDocumentTest {
     private val repositorySetup = asyncSetup.extend(
         sharedSetup = { _ ->
             val sdk = sdk()
-            object : CouplingSdk by sdk {
+            object {
+                val sdk = sdk
                 val party = stubPartyDetails()
-            }.apply { perform(SavePartyCommand(party)) }
+            }.apply { sdk.fire(SavePartyCommand(party)) }
         },
         sharedTeardown = {
-            it.perform(DeletePartyCommand(it.party.id))
+            it.sdk.fire(DeletePartyCommand(it.party.id))
         },
     )
 
     @Test
     fun afterSavingUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() = repositorySetup.with({
-        object : CouplingSdk by it {
+        object {
+            val sdk = it.sdk
             val party = it.party
             val originalDateTime = DateTime.now()
             val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
@@ -48,11 +52,11 @@ class SdkPairAssignmentDocumentTest {
             val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
         }
     }) {
-        perform(SavePairAssignmentsCommand(party.id, pairAssignmentDocument))
+        fire(sdk, SavePairAssignmentsCommand(party.id, pairAssignmentDocument))
     } exercise {
-        perform(SavePairAssignmentsCommand(party.id, updatedDocument))
+        fire(sdk, SavePairAssignmentsCommand(party.id, updatedDocument))
     } verifyWithWait {
-        perform(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
+        sdk.fire(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
@@ -63,7 +67,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun deleteWhenDocumentDoesNotExistWillNotExplode() = repositorySetup().exercise {
-        runCatching { perform(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${uuid4()}"))) }
+        runCatching { fire(sdk, DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${uuid4()}"))) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)
@@ -71,7 +75,8 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun getCurrentPairAssignmentsOnlyReturnsTheNewest() = repositorySetup.with({
-        object : CouplingSdk by it {
+        object {
+            val sdk = it.sdk
             val partyId = it.party.id
             val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
             val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
@@ -79,9 +84,9 @@ class SdkPairAssignmentDocumentTest {
         }
     }) {
         listOf(middle, oldest, newest)
-            .forEach { perform(SavePairAssignmentsCommand(partyId, it)) }
+            .forEach { fire(sdk, SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        perform(graphQuery { party(partyId) { currentPairAssignments() } })
+        sdk.fire(graphQuery { party(partyId) { currentPairAssignments() } })
             ?.party
             ?.currentPairAssignmentDocument
     } verify { result: PartyRecord<PairAssignmentDocument>? ->
@@ -90,16 +95,17 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun saveAndDeleteThenGetWillReturnNothing() = repositorySetup.with({
-        object : CouplingSdk by it {
+        object {
+            val sdk = it.sdk
             val partyId = it.party.id
             val document = stubPairAssignmentDoc()
         }
     }) {
-        perform(SavePairAssignmentsCommand(partyId, document))
+        fire(sdk, SavePairAssignmentsCommand(partyId, document))
     } exercise {
-        perform(DeletePairAssignmentsCommand(partyId, document.id))
+        fire(sdk, DeletePairAssignmentsCommand(partyId, document.id))
     } verifyWithWait {
-        perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
+        sdk.fire(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
@@ -110,7 +116,8 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun saveMultipleThenGetListWillReturnSavedDocumentsNewestToOldest() = repositorySetup.with({
-        object : CouplingSdk by it {
+        object {
+            val sdk = it.sdk
             val partyId = it.party.id
             val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
             val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
@@ -118,9 +125,9 @@ class SdkPairAssignmentDocumentTest {
         }
     }) {
         listOf(middle, oldest, newest)
-            .forEach { perform(SavePairAssignmentsCommand(partyId, it)) }
+            .forEach { fire(sdk, SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
-        perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
+        sdk.fire(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
@@ -134,7 +141,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun whenNoHistoryGetWillReturnEmptyList() = repositorySetup() exercise {
-        perform(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
+        sdk.fire(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
@@ -149,32 +156,33 @@ class SdkPairAssignmentDocumentTest {
         object {
             val otherParty = stubPartyDetails()
             val sdk = sdk
-            val otherSdk = otherSdk
+            val otherSdk: ActionCannon<CouplingSdkDispatcher> = otherSdk
         }
     }) {
-        otherSdk.perform(SavePartyCommand(otherParty))
-        otherSdk.perform(SavePairAssignmentsCommand(otherParty.id, stubPairAssignmentDoc()))
+        otherSdk.fire(SavePartyCommand(otherParty))
+        fire(otherSdk, SavePairAssignmentsCommand(otherParty.id, stubPairAssignmentDoc()))
     } exercise {
-        sdk.perform(graphQuery { party(PartyId("someoneElseParty")) { pairAssignmentDocumentList() } })
+        sdk.fire(graphQuery { party(PartyId("someoneElseParty")) { pairAssignmentDocumentList() } })
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }
     } verifyAnd { result ->
         result.assertIsEqualTo(emptyList())
     } teardown {
-        otherSdk.perform(DeletePartyCommand(otherParty.id))
+        otherSdk.fire(DeletePartyCommand(otherParty.id))
     }
 
     @Test
     fun savedWillIncludeModificationDateAndUsername() = repositorySetup.with({
-        object : CouplingSdk by it {
+        object {
+            val sdk = it.sdk
             val partyId = it.party.id
             val pairAssignmentDoc = stubPairAssignmentDoc()
         }
     }) {
-        perform(SavePairAssignmentsCommand(partyId, pairAssignmentDoc))
+        fire(sdk, SavePairAssignmentsCommand(partyId, pairAssignmentDoc))
     } exercise {
-        perform(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
+        sdk.fire(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
             ?.party
             ?.pairAssignmentDocumentList
             .let { it ?: emptyList() }

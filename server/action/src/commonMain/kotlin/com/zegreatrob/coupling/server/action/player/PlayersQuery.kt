@@ -11,7 +11,8 @@ import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class PlayersQuery(val partyId: PartyId) : SimpleSuspendAction<PlayersQuery.Dispatcher, List<Record<PartyElement<Player>>>?> {
+data class PlayersQuery(val partyId: PartyId) :
+    SimpleSuspendAction<PlayersQuery.Dispatcher, List<Record<PartyElement<Player>>>?> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher :

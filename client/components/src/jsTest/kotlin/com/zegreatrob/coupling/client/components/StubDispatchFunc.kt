@@ -15,6 +15,7 @@ class StubDispatcher {
             ?.responseFunc
             ?.invoke(result)
     }
+
     fun <C, R> wrappedSendResult(result: R) {
         dispatchList.filterIsInstance<DispatchedFunc<ActionWrapper<C>, R>>()
             .firstOrNull()

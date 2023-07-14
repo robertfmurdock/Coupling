@@ -15,6 +15,7 @@ interface GqlSyntax {
         .jsonObject["data"]
         ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
         ?.toDomain()
+
     suspend fun String.perform() = performQuery()
         .jsonObject["data"]
         ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)

@@ -20,9 +20,9 @@ class RetiredPlayerConfigE2ETest {
             avatarType = null,
         )
     }) {
-        sdk.perform(SavePartyCommand(party))
-        sdk.perform(SavePlayerCommand(party.id, player))
-        sdk.perform(DeletePlayerCommand(party.id, player.id))
+        sdk.fire(SavePartyCommand(party))
+        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(DeletePlayerCommand(party.id, player.id))
     } exercise {
         RetiredPlayerConfig.goTo(party.id, player.id)
     } verify {

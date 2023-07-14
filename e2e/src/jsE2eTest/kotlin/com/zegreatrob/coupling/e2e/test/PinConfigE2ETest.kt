@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
@@ -29,7 +30,7 @@ class PinConfigE2ETest {
         private val partySetup = e2eSetup.extend(beforeAll = {
             val party = PartyDetails(PartyId("${randomInt()}-PinConfigE2ETest-test"))
             val sdk = sdk.await().apply {
-                perform(SavePartyCommand(party))
+                fire(SavePartyCommand(party))
             }
             sdk to party
         })
@@ -72,7 +73,7 @@ class PinConfigE2ETest {
                 val pin = randomPin()
             }.attachParty(),
         ) {
-            sdk.perform(SavePinCommand(party.id, pin))
+            fire(sdk, SavePinCommand(party.id, pin))
         } exercise {
             PinConfigPage.goTo(party.id, pin.id)
         } verify {
@@ -90,7 +91,7 @@ class PinConfigE2ETest {
                 val pin = randomPin()
             }.attachParty(),
         ) {
-            sdk.perform(SavePinCommand(party.id, pin))
+            fire(sdk, SavePinCommand(party.id, pin))
             PinConfigPage.goTo(party.id, pin.id)
         } exercise {
             getDeleteButton().click()

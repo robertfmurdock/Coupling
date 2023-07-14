@@ -16,6 +16,7 @@ interface SdkSavePinCommandDispatcher : SavePinCommand.Dispatcher, GqlSyntax {
         return VoidResult.Accepted
     }
 }
+
 private fun PartyElement<Pin>.savePinInput() =
     mapOf(
         "partyId" to partyId.value,
