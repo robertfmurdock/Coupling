@@ -18,8 +18,10 @@ jobs:
           cache-read-only: true
       - name: Update All NPM Deps
         run: ./gradlew ncuUpgrade --no-configuration-cache --scan
+      - name: Clean
+        run: ./gradlew clean
       - name: Update Yarn Lock
-        run: ./gradlew kotlinUpgradeYarnLock --scan
+        run: ./gradlew kotlinUpgradeYarnLock
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v5
