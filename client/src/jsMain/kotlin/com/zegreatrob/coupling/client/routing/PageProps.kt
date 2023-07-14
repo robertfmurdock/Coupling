@@ -32,8 +32,9 @@ interface Commander {
 
 class MasterCommander(private val getIdentityToken: suspend () -> String) : Commander {
     private val backend = LocalStorageRepositoryBackend()
-    override fun getDispatcher(traceId: Uuid): CommandDispatcher = CommandDispatcher(
-        if (window["inMemory"] == true) {
+    override fun getDispatcher(traceId: Uuid) = CommandDispatcher(
+        traceId = traceId,
+        sdk = if (window["inMemory"] == true) {
             MemoryRepositoryCatalog("test-user", backend, TimeProvider)
         } else {
             KtorCouplingSdk(getIdentityToken, defaultClient(getLocationAndBasename()))
