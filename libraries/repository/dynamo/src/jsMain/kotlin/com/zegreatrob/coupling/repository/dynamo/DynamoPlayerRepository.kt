@@ -123,8 +123,9 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         { asDynamoJson() },
     )
 
-    override suspend fun getDeleted(partyId: PartyId): List<Record<PartyElement<Player>>> = partyId.queryForDeletedItemList()
-        .mapNotNull { it.toPlayerRecord() }
+    override suspend fun getDeleted(partyId: PartyId): List<Record<PartyElement<Player>>> =
+        partyId.queryForDeletedItemList()
+            .mapNotNull { it.toPlayerRecord() }
 
     override suspend fun getPlayerIdsByEmail(email: String): List<PartyElement<String>> =
         logAsync("getPlayerIdsByEmail") {

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
@@ -12,8 +13,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.KtorCouplingSdk
+import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import korlibs.time.DateTime
 import kotlin.test.Test
@@ -30,7 +32,7 @@ class HistoryPageE2ETest {
             private val historyPageSetup = e2eSetup.extend(beforeAll = {
                 val party = buildParty()
                 val sdk = sdk.await().apply {
-                    perform(SavePartyCommand(party))
+                    fire(SavePartyCommand(party))
                 }
 
                 val pairAssignments = setupTwoPairAssignments(party, sdk)
@@ -39,7 +41,10 @@ class HistoryPageE2ETest {
                 Context(pairAssignments)
             })
 
-            private suspend fun setupTwoPairAssignments(party: PartyDetails, sdk: KtorCouplingSdk) = listOf(
+            private suspend fun setupTwoPairAssignments(
+                party: PartyDetails,
+                sdk: ActionCannon<CouplingSdkDispatcher>,
+            ) = listOf(
                 buildPairAssignmentDocument(
                     1,
                     listOf(
@@ -64,7 +69,7 @@ class HistoryPageE2ETest {
                         ),
                     ),
                 ),
-            ).onEach { sdk.perform(SavePairAssignmentsCommand(party.id, it)) }
+            ).onEach { fire(sdk, SavePairAssignmentsCommand(party.id, it)) }
 
             private fun buildPairAssignmentDocument(number: Int, pairs: List<CouplingPair>) = PairAssignmentDocument(
                 PairAssignmentDocumentId("${DateTime.now().milliseconds}-HistoryPageE2ETest-$number"),

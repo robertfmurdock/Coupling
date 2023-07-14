@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
@@ -17,21 +19,23 @@ class SdkGlobalStatsTest {
         val now = DateTime.now().year
         val party = stubPartyDetails()
     }) {
-        sdk().perform(SavePartyCommand(party))
-        sdk().perform(
+        sdk().fire(SavePartyCommand(party))
+        fire(
+            sdk(),
             SavePairAssignmentsCommand(
                 partyId = party.id,
                 pairAssignments = stubPairAssignmentDoc().copy(date = DateTime.now().minus(2.days)),
             ),
         )
-        sdk().perform(
+        fire(
+            sdk(),
             SavePairAssignmentsCommand(
                 partyId = party.id,
                 pairAssignments = stubPairAssignmentDoc().copy(date = DateTime.now()),
             ),
         )
     } exercise {
-        sdk().perform(
+        sdk().fire(
             graphQuery {
                 globalStats(now)
             },

@@ -15,6 +15,7 @@ interface SdkSavePartyCommandDispatcher : SavePartyCommand.Dispatcher, GqlSyntax
         return VoidResult.Accepted
     }
 }
+
 private fun PartyDetails.savePartyInput() = SavePartyInput(
     partyId = id,
     name = name,

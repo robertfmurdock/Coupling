@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.sdk.gql.graphQuery
 import kotlinx.coroutines.Deferred
 
 interface PartyLoadAllSyntax : SdkProviderSyntax {
-    suspend fun PartyId.loadAll(): PartyData? = sdk.perform(
+    suspend fun PartyId.loadAll(): PartyData? = sdk.fire(
         graphQuery {
             party(this@loadAll) {
                 party()

@@ -7,21 +7,18 @@ import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.PartyLoadAllSyntax
-import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 
 interface ClientStatisticsQueryDispatcher :
-    ExecutableActionExecuteSyntax,
     ComposeStatisticsAction.Dispatcher,
-    CalculateHeatMapAction.Dispatcher,
-    PartyLoadAllSyntax,
-    StatisticsQuery.Dispatcher {
+    CalculateHeatMapAction.Dispatcher {
 
-    override suspend fun perform(query: StatisticsQuery) = query.loadAll()
-
-    private suspend fun StatisticsQuery.loadAll() = partyId.loadAll()?.let { (party, players, history) ->
+    fun calculate(
+        party: PartyDetails,
+        players: List<Player>,
+        history: List<PairAssignmentDocument>,
+    ): StatisticsQuery.Results {
         val (report, heatmapData) = calculateStats(party, players, history)
-        StatisticsQuery.Results(party, players, history, report, heatmapData)
+        return StatisticsQuery.Results(party, players, history, report, heatmapData)
     }
 
     private fun calculateStats(

@@ -24,6 +24,7 @@ inline fun <V1, V2> Result<V1>.transform(transform: (V1) -> V2): Result<V2> = wh
     is NotFoundResult -> NotFoundResult(
         entityName,
     )
+
     is UnauthorizedResult -> UnauthorizedResult()
     is ErrorResult -> ErrorResult(
         message,

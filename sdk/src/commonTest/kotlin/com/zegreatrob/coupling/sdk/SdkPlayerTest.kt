@@ -27,29 +27,31 @@ class SdkPlayerTest {
     private val sdkSetup = asyncSetup.extend(
         sharedSetup = { _ ->
             val authorizedSdk = sdk()
-            object : CouplingSdk by authorizedSdk {
+            object {
+                val sdk = authorizedSdk
                 val party = stubPartyDetails()
             }.apply {
-                perform(SavePartyCommand(party))
+                sdk.fire(SavePartyCommand(party))
             }
         },
         sharedTeardown = {
-            it.perform(DeletePartyCommand(it.party.id))
+            it.sdk.fire(DeletePartyCommand(it.party.id))
         },
     )
 
     @Test
     fun afterSavingPlayerTwiceGetWillReturnOnlyTheUpdatedPlayer() = sdkSetup.with({
         object {
-            val sdk = it
+            val sdk = it.sdk
+            val party = it.party
             val player = stubPlayer()
             val updatedPlayer = player.copy(name = "Timmy!")
         }
     }) {
-        sdk.perform(SavePlayerCommand(sdk.party.id, player))
+        sdk.fire(SavePlayerCommand(party.id, player))
     } exercise {
-        sdk.perform(SavePlayerCommand(sdk.party.id, updatedPlayer))
-        sdk.perform(graphQuery { party(sdk.party.id) { playerList() } })
+        sdk.fire(SavePlayerCommand(party.id, updatedPlayer))
+        sdk.fire(graphQuery { party(party.id) { playerList() } })
             ?.party
             ?.playerList
             .let { it ?: emptyList() }
@@ -61,15 +63,15 @@ class SdkPlayerTest {
     @Test
     fun deleteWillRemoveAGivenPlayer() = sdkSetup.with({
         object {
-            val sdk = it
+            val sdk = it.sdk
             val partyId = it.party.id
             val player = stubPlayer()
         }
     }) {
-        sdk.perform(SavePlayerCommand(sdk.party.id, player))
+        sdk.fire(SavePlayerCommand(partyId, player))
     } exercise {
-        sdk.perform(DeletePlayerCommand(partyId, player.id))
-        sdk.perform(graphQuery { party(partyId) { playerList() } })
+        sdk.fire(DeletePlayerCommand(partyId, player.id))
+        sdk.fire(graphQuery { party(partyId) { playerList() } })
             ?.party
             ?.playerList
             .let { it ?: emptyList() }
@@ -82,11 +84,12 @@ class SdkPlayerTest {
     @Test
     fun deleteWithUnknownPlayerIdWillNotExplode() = sdkSetup.with({
         object {
-            val sdk = it
+            val sdk = it.sdk
+            val party = it.party
             val playerId = "${uuid4()}"
         }
     }) exercise {
-        runCatching { sdk.perform(DeletePlayerCommand(sdk.party.id, playerId)) }
+        runCatching { sdk.fire(DeletePlayerCommand(party.id, playerId)) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)
@@ -96,16 +99,16 @@ class SdkPlayerTest {
     fun deletedPlayersShowUpInGetDeleted() = sdkSetup.with(
         {
             object {
-                val sdk = it
-                val partyId = sdk.party.id
+                val sdk = it.sdk
+                val party = it.party
                 val player = stubPlayer()
             }
         },
     ) {
-        sdk.perform(SavePlayerCommand(sdk.party.id, player))
-        sdk.perform(DeletePlayerCommand(partyId, player.id))
+        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(DeletePlayerCommand(party.id, player.id))
     } exercise {
-        sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
+        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
             ?.party
             ?.retiredPlayers
             .let { it ?: emptyList() }
@@ -117,18 +120,18 @@ class SdkPlayerTest {
     @Test
     fun deletedThenBringBackThenDeletedWillShowUpOnceInGetDeleted() = sdkSetup.with({
         object {
-            val sdk = it
-            val partyId = it.party.id
+            val sdk = it.sdk
+            val party = it.party
             val player = stubPlayer()
             val playerId = player.id
         }
     }) exercise {
-        sdk.perform(SavePlayerCommand(sdk.party.id, player))
-        sdk.perform(DeletePlayerCommand(partyId, playerId))
-        sdk.perform(SavePlayerCommand(sdk.party.id, player))
-        sdk.perform(DeletePlayerCommand(partyId, playerId))
+        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(DeletePlayerCommand(party.id, playerId))
+        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(DeletePlayerCommand(party.id, playerId))
     } verifyWithWait {
-        sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
+        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
             ?.party
             ?.retiredPlayers
             .let { it ?: emptyList() }
@@ -139,14 +142,14 @@ class SdkPlayerTest {
     @Test
     fun saveMultipleInPartyThenGetListWillReturnSavedPlayers() = sdkSetup.with({
         object {
-            val sdk = it
+            val sdk = it.sdk
             val partyId = it.party.id
             val players = stubPlayers(3)
         }
     }) {
-        players.forEach { sdk.perform(SavePlayerCommand(partyId, it)) }
+        players.forEach { sdk.fire(SavePlayerCommand(partyId, it)) }
     } exercise {
-        sdk.perform(graphQuery { party(partyId) { playerList() } })
+        sdk.fire(graphQuery { party(partyId) { playerList() } })
             ?.party
             ?.playerList
             .let { it ?: emptyList() }
@@ -158,8 +161,8 @@ class SdkPlayerTest {
     @Test
     fun saveWorksWithNullableValuesAndAssignsIds() = sdkSetup.with({
         object {
-            val sdk = it
-            val partyId = it.party.id
+            val sdk = it.sdk
+            val party = it.party
             val player = Player(
                 name = "",
                 email = "",
@@ -170,9 +173,9 @@ class SdkPlayerTest {
             )
         }
     }) {
-        sdk.perform(SavePlayerCommand(sdk.party.id, player))
+        sdk.fire(SavePlayerCommand(party.id, player))
     } exercise {
-        sdk.perform(graphQuery { party(partyId) { playerList() } })
+        sdk.fire(graphQuery { party(party.id) { playerList() } })
             ?.party
             ?.playerList
             .let { it ?: emptyList() }
@@ -185,18 +188,18 @@ class SdkPlayerTest {
     @Test
     fun whenPlayerIdIsUsedInTwoDifferentPartiesTheyRemainDistinct() = sdkSetup.with({
         object {
-            val sdk = it
+            val sdk = it.sdk
             val partyId = it.party.id
             val player1 = stubPlayer()
             val partyId2 = stubPartyId()
             val player2 = player1.copy(id = player1.id)
         }
     }) {
-        sdk.perform(SavePartyCommand(stubPartyDetails().copy(id = partyId2)))
-        sdk.perform(SavePlayerCommand(partyId, player1))
-        sdk.perform(SavePlayerCommand(partyId2, player2))
+        sdk.fire(SavePartyCommand(stubPartyDetails().copy(id = partyId2)))
+        sdk.fire(SavePlayerCommand(partyId, player1))
+        sdk.fire(SavePlayerCommand(partyId2, player2))
     } exercise {
-        sdk.perform(graphQuery { party(partyId) { playerList() } })
+        sdk.fire(graphQuery { party(partyId) { playerList() } })
             ?.party
             ?.playerList
             .let { it ?: emptyList() }
@@ -204,20 +207,20 @@ class SdkPlayerTest {
         result.map { it.data.player }
             .assertIsEqualTo(listOf(player1))
     } teardown {
-        sdk.perform(DeletePartyCommand(partyId2))
+        sdk.fire(DeletePartyCommand(partyId2))
     }
 
     @Test
     fun deletedPlayersIncludeModificationDateAndUsername() = sdkSetup.with({
         object {
-            val sdk = it
-            val partyId = it.party.id
+            val sdk = it.sdk
+            val party = it.party
             val player = stubPlayer()
         }
     }) exercise {
-        sdk.perform(SavePlayerCommand(sdk.party.id, player))
-        sdk.perform(DeletePlayerCommand(partyId, player.id))
-        sdk.perform(graphQuery { party(partyId) { retiredPlayers() } })
+        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(DeletePlayerCommand(party.id, player.id))
+        sdk.fire(graphQuery { party(party.id) { retiredPlayers() } })
             ?.party
             ?.retiredPlayers
             .let { it ?: emptyList() }
@@ -233,13 +236,13 @@ class SdkPlayerTest {
     @Test
     fun savedPlayersIncludeModificationDateAndUsername() = sdkSetup.with({
         object {
-            val sdk = it
-            val partyId = it.party.id
+            val sdk = it.sdk
+            val party = it.party
             val player = stubPlayer()
         }
     }) exercise {
-        sdk.perform(SavePlayerCommand(sdk.party.id, player))
-        sdk.perform(graphQuery { party(partyId) { playerList() } })
+        sdk.fire(SavePlayerCommand(party.id, player))
+        sdk.fire(graphQuery { party(party.id) { playerList() } })
             ?.party
             ?.playerList
             .let { it ?: emptyList() }
@@ -261,17 +264,17 @@ class SdkPlayerTest {
                 asyncSetup(object {
                     val party = stubPartyDetails()
                 }) {
-                    otherSdk.perform(SavePartyCommand(party))
-                    otherSdk.perform(SavePlayerCommand(party.id, stubPlayer()))
+                    otherSdk.fire(SavePartyCommand(party))
+                    otherSdk.fire(SavePlayerCommand(party.id, stubPlayer()))
                 } exercise {
-                    sdk.perform(graphQuery { party(party.id) { playerList() } })
+                    sdk.fire(graphQuery { party(party.id) { playerList() } })
                         ?.party
                         ?.playerList
                         .let { it ?: emptyList() }
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.perform(DeletePartyCommand(party.id))
+                    otherSdk.fire(DeletePartyCommand(party.id))
                 }
             }
         }
@@ -291,17 +294,17 @@ class SdkPlayerTest {
                         avatarType = null,
                     )
                 }) {
-                    otherSdk.perform(SavePartyCommand(party))
+                    otherSdk.fire(SavePartyCommand(party))
                 } exercise {
-                    sdk.perform(SavePlayerCommand(party.id, player))
-                    otherSdk.perform(graphQuery { party(party.id) { playerList() } })
+                    sdk.fire(SavePlayerCommand(party.id, player))
+                    otherSdk.fire(graphQuery { party(party.id) { playerList() } })
                         ?.party
                         ?.playerList
                         .let { it ?: emptyList() }
                 } verifyAnd { result ->
                     result.assertIsEqualTo(emptyList())
                 } teardown {
-                    otherSdk.perform(DeletePartyCommand(party.id))
+                    otherSdk.fire(DeletePartyCommand(party.id))
                 }
             }
         }
@@ -310,7 +313,7 @@ class SdkPlayerTest {
         fun deleteIsNotAllowed() = asyncSetup(object {
             val party = stubPartyDetails()
         }) exercise {
-            sdk().perform(DeletePlayerCommand(party.id, "player id"))
+            sdk().fire(DeletePlayerCommand(party.id, "player id"))
         } verify { result ->
             result.assertIsEqualTo(CommandResult.Unauthorized)
         }

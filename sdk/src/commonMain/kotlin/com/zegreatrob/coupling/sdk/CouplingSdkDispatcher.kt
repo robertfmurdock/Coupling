@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
 
-interface CouplingSdk :
+interface CouplingSdkDispatcher :
     BoostQuery.Dispatcher,
     CreateSecretCommand.Dispatcher,
     DeleteSecretCommand.Dispatcher,

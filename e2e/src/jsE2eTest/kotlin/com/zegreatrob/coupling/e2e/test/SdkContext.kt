@@ -1,12 +1,13 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.sdk.KtorCouplingSdk
+import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
+import com.zegreatrob.testmints.action.ActionCannon
 
 abstract class SdkContext {
-    lateinit var sdk: KtorCouplingSdk
+    lateinit var sdk: ActionCannon<CouplingSdkDispatcher>
 }
 
-fun <C : SdkContext> C.attach(sdk: KtorCouplingSdk) = also {
+fun <C : SdkContext> C.attach(sdk: ActionCannon<CouplingSdkDispatcher>) = also {
     this.sdk = sdk
 }
 

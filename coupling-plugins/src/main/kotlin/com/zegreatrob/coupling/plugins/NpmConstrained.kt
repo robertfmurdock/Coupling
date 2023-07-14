@@ -13,5 +13,6 @@ fun DependencyHandlerScope.npmConstrained(name: String, jsConstraintExtension: J
         .let { npm(name, it.second.asText()) }
 }
 
-val DependencyHandler.npm: NpmDependencyExtension get() =
-    (this as ExtensionAware).extensions.getByName("npm") as NpmDependencyExtension
+val DependencyHandler.npm: NpmDependencyExtension
+    get() =
+        (this as ExtensionAware).extensions.getByName("npm") as NpmDependencyExtension

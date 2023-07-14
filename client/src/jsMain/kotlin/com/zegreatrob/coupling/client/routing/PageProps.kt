@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.CommandDispatcher
 import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.memory.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.sdk.KtorCouplingSdk
+import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import js.core.ReadonlyRecord
 import korlibs.time.TimeProvider
@@ -36,8 +36,9 @@ class MasterCommander(private val getIdentityToken: suspend () -> String) : Comm
         traceId = traceId,
         sdk = if (window["inMemory"] == true) {
             MemoryRepositoryCatalog("test-user", backend, TimeProvider)
+                .sdk
         } else {
-            KtorCouplingSdk(getIdentityToken, defaultClient(getLocationAndBasename()))
+            couplingSdk(getIdentityToken, defaultClient(getLocationAndBasename()))
         },
     )
 }

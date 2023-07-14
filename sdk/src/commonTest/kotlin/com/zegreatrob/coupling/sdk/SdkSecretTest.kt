@@ -3,8 +3,10 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
+import com.zegreatrob.coupling.action.secret.fire
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.data
 import com.zegreatrob.coupling.model.elements
@@ -28,21 +30,21 @@ class SdkSecretTest {
     fun canGenerateSecretThatCanBeUsedInSdk() = asyncSetup(object {
         val party = stubPartyDetails()
     }) {
-        sdk().perform(SavePartyCommand(party))
+        sdk().fire(SavePartyCommand(party))
     } exercise {
-        sdk().perform(CreateSecretCommand(party.id))
+        fire(sdk(), CreateSecretCommand(party.id))
     } verify { result ->
         val (secret, token) = result!!
         secret.assertIsNotEqualTo(null)
         token.assertIsValidToken(party.id)
-        sdk().perform(graphQuery { party(party.id) { secretList() } })
+        sdk().fire(graphQuery { party(party.id) { secretList() } })
             ?.party
             ?.secretList
             ?.elements
             .assertIsEqualTo(listOf(secret))
 
-        val tokenSdk = KtorCouplingSdk({ token }, buildClient())
-        tokenSdk.perform(graphQuery { party(party.id) { party() } })
+        val tokenSdk = couplingSdk({ token }, buildClient())
+        tokenSdk.fire(graphQuery { party(party.id) { party() } })
             ?.party
             ?.details
             ?.data
@@ -55,20 +57,20 @@ class SdkSecretTest {
         lateinit var secret: Secret
         lateinit var token: String
     }) {
-        sdk().perform(SavePartyCommand(party))
-        val result = sdk().perform(CreateSecretCommand(party.id))!!
+        sdk().fire(SavePartyCommand(party))
+        val result = fire(sdk(), CreateSecretCommand(party.id))!!
         secret = result.first
         token = result.second
     } exercise {
-        sdk().perform(DeleteSecretCommand(party.id, secret))
+        fire(sdk(), DeleteSecretCommand(party.id, secret))
     } verify {
-        sdk().perform(graphQuery { party(party.id) { secretList() } })
+        sdk().fire(graphQuery { party(party.id) { secretList() } })
             ?.party
             ?.secretList
             ?.elements
             .assertIsEqualTo(emptyList())
-        val tokenSdk = KtorCouplingSdk({ token }, buildClient())
-        runCatching { tokenSdk.perform(graphQuery { party(party.id) { party() } }) }
+        val tokenSdk = couplingSdk({ token }, buildClient())
+        runCatching { tokenSdk.fire(graphQuery { party(party.id) { party() } }) }
             .exceptionOrNull()
             .assertIsNotEqualTo(null, "Expect this to fail")
     }
@@ -81,13 +83,13 @@ class SdkSecretTest {
     }) {
         listOf(party1, party2, party3)
             .map { SavePartyCommand(it) }
-            .forEach { sdk().perform(it) }
+            .forEach { sdk().fire(it) }
     } exercise {
-        sdk().perform(CreateSecretCommand(party1.id))
+        fire(sdk(), CreateSecretCommand(party1.id))
     } verify { result ->
         val (_, token) = result!!
-        val tokenSdk = KtorCouplingSdk({ token }, buildClient())
-        val queryResult: CouplingQueryResult? = tokenSdk.perform(
+        val tokenSdk = couplingSdk({ token }, buildClient())
+        val queryResult: CouplingQueryResult? = tokenSdk.fire(
             graphQuery {
                 partyList()
                 party(party2.id) { party() }
@@ -105,7 +107,7 @@ class SdkSecretTest {
     fun canNotGenerateSecretForArbitraryParty() = asyncSetup(object {
         val partyId = stubPartyId()
     }) exercise {
-        sdk().perform(CreateSecretCommand(partyId))
+        fire(sdk(), CreateSecretCommand(partyId))
     } verify { result ->
         result.assertIsEqualTo(null)
     }

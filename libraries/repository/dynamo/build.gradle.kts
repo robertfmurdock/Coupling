@@ -9,7 +9,7 @@ plugins {
 kotlin {
     js {
         nodejs {
-            testTask (Action {
+            testTask(Action {
                 useMocha {
                     timeout = "20s"
                 }

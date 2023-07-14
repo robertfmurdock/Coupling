@@ -13,5 +13,6 @@ interface ClientDeletePairAssignmentsCommandDispatcher :
         .deleteIt()
         .voidResult()
 
-    private fun DeletePairAssignmentsCommand.compoundId() = PartyIdPairAssignmentDocumentId(partyId, pairAssignmentDocumentId)
+    private fun DeletePairAssignmentsCommand.compoundId() =
+        PartyIdPairAssignmentDocumentId(partyId, pairAssignmentDocumentId)
 }

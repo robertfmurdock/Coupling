@@ -18,7 +18,7 @@ class PartyListPageE2ETest {
                 "${randomInt()}-PartyListPageE2ETest-1".let { PartyDetails(it.let(::PartyId), name = it) },
                 "${randomInt()}-PartyListPageE2ETest-2".let { PartyDetails(it.let(::PartyId), name = it) },
             )
-            sdk.await().apply { parties.forEach { perform(SavePartyCommand(it)) } }
+            sdk.await().apply { parties.forEach { fire(SavePartyCommand(it)) } }
             object {
                 val parties = parties
             }

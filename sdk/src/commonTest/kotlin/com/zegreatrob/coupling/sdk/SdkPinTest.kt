@@ -3,8 +3,10 @@ package com.zegreatrob.coupling.sdk
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
@@ -16,6 +18,7 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
+import com.zegreatrob.testmints.action.ActionCannon
 import kotlin.test.Test
 
 class SdkPinTest {
@@ -23,17 +26,19 @@ class SdkPinTest {
     private val partySetup = asyncSetup.extend(
         sharedSetup = { _ ->
             val sdk = sdk()
-            object : CouplingSdk by sdk {
+            object {
+                val sdk = sdk
                 val party = stubPartyDetails()
-            }.apply { sdk.perform(SavePartyCommand(party)) }
+            }.apply { sdk.fire(SavePartyCommand(party)) }
         },
-        sharedTeardown = { it.perform(DeletePartyCommand(it.party.id)) },
+        sharedTeardown = { it.sdk.fire(DeletePartyCommand(it.party.id)) },
     )
 
     @Test
     fun canSaveAndGetPins() = partySetup.with(
         {
-            object : CouplingSdk by it {
+            object {
+                val sdk = it.sdk
                 val party = it.party
                 val pins = listOf(
                     stubPin(),
@@ -43,9 +48,9 @@ class SdkPinTest {
             }
         },
     ) exercise {
-        pins.forEach { perform(SavePinCommand(party.id, it)) }
+        pins.forEach { fire(sdk, SavePinCommand(party.id, it)) }
     } verifyWithWait {
-        perform(graphQuery { party(party.id) { pinList() } })
+        sdk.fire(graphQuery { party(party.id) { pinList() } })
             ?.party
             ?.pinList
             ?.map(PartyRecord<Pin>::data)
@@ -55,7 +60,7 @@ class SdkPinTest {
 
     @Test
     fun whenPinDoesNotExistDeleteWillDoNothing() = partySetup() exercise {
-        runCatching { perform(DeletePinCommand(party.id, "${uuid4()}")) }
+        runCatching { fire(sdk, DeletePinCommand(party.id, "${uuid4()}")) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)
@@ -63,7 +68,7 @@ class SdkPinTest {
 
     @Test
     fun givenNoPinsWillReturnEmptyList() = partySetup() exercise {
-        perform(graphQuery { party(party.id) { pinList() } })
+        sdk.fire(graphQuery { party(party.id) { pinList() } })
             ?.party
             ?.pinList
     } verify { result ->
@@ -72,7 +77,8 @@ class SdkPinTest {
 
     @Test
     fun saveThenDeleteWillNotShowThatPin() = partySetup.with({
-        object : CouplingSdk by it {
+        object {
+            val sdk = it.sdk
             val party = it.party
             val pins = listOf(
                 stubPin(),
@@ -81,10 +87,10 @@ class SdkPinTest {
             )
         }
     }) exercise {
-        pins.forEach { perform(SavePinCommand(party.id, it)) }
-        perform(DeletePinCommand(party.id, this.pins[1].id!!))
+        pins.forEach { fire(sdk, SavePinCommand(party.id, it)) }
+        fire(sdk, DeletePinCommand(party.id, this.pins[1].id!!))
     } verifyWithWait {
-        perform(graphQuery { party(party.id) { pinList() } })
+        sdk.fire(graphQuery { party(party.id) { pinList() } })
             ?.party
             ?.pinList
             .let { it ?: emptyList() }
@@ -97,7 +103,8 @@ class SdkPinTest {
 
     @Test
     fun saveWorksWithNullableValuesAndAssignsIds() = partySetup.with({
-        object : CouplingSdk by it {
+        object {
+            val sdk = it.sdk
             val partyId = it.party.id
             val pin = Pin(
                 id = null,
@@ -106,9 +113,9 @@ class SdkPinTest {
             )
         }
     }) exercise {
-        perform(SavePinCommand(partyId, pin))
+        fire(sdk, SavePinCommand(partyId, pin))
     } verifyWithWait {
-        perform(graphQuery { party(partyId) { pinList() } })
+        sdk.fire(graphQuery { party(partyId) { pinList() } })
             ?.party
             ?.pinList
             .let { it ?: emptyList() }
@@ -127,29 +134,29 @@ class SdkPinTest {
         val otherParty = stubPartyDetails()
         suspend fun otherSdk() = altAuthorizedSdkDeferred.await()
     }) {
-        otherSdk().perform(SavePartyCommand(otherParty))
-        otherSdk().perform(SavePinCommand(otherParty.id, stubPin()))
+        otherSdk().fire(SavePartyCommand(otherParty))
+        fire(otherSdk(), SavePinCommand(otherParty.id, stubPin()))
     } exercise {
-        sdk().perform(graphQuery { party(otherParty.id) { pinList() } })
+        sdk().fire(graphQuery { party(otherParty.id) { pinList() } })
             ?.party
             ?.pinList
     } verifyAnd { result ->
         result.assertIsEqualTo(null)
     } teardown {
-        otherSdk().perform(DeletePartyCommand(otherParty.id))
+        otherSdk().fire(DeletePartyCommand(otherParty.id))
     }
 
     @Test
     fun savedPinsIncludeModificationDateAndUsername() = asyncSetup(object {
         val party = stubPartyDetails()
         val pin = stubPin()
-        lateinit var sdk: CouplingSdk
+        lateinit var sdk: ActionCannon<CouplingSdkDispatcher>
     }) {
         sdk = sdk()
-        sdk.perform(SavePartyCommand(party))
-        sdk.perform(SavePinCommand(party.id, pin))
+        sdk.fire(SavePartyCommand(party))
+        fire(sdk, SavePinCommand(party.id, pin))
     } exercise {
-        sdk.perform(graphQuery { party(party.id) { pinList() } })
+        sdk.fire(graphQuery { party(party.id) { pinList() } })
             ?.party
             ?.pinList
             ?: emptyList()

@@ -11,7 +11,7 @@ plugins {
 
 kotlin {
     js {
-        nodejs { testTask(Action { enabled = false } )}
+        nodejs { testTask(Action { enabled = false }) }
     }
 }
 

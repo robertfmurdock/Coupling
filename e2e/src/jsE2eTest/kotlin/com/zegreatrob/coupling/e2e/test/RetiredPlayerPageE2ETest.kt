@@ -7,8 +7,9 @@ import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.sdk.KtorCouplingSdk
+import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.test.Test
@@ -16,9 +17,13 @@ import kotlin.test.Test
 class RetiredPlayerPageE2ETest {
 
     companion object {
-        private suspend fun delete(players: List<Player>, sdk: KtorCouplingSdk, party: PartyDetails) {
+        private suspend fun delete(
+            players: List<Player>,
+            sdk: ActionCannon<CouplingSdkDispatcher>,
+            party: PartyDetails,
+        ) {
             coroutineScope {
-                players.forEach { launch { sdk.perform(DeletePlayerCommand(party.id, it.id)) } }
+                players.forEach { launch { sdk.fire(DeletePlayerCommand(party.id, it.id)) } }
             }
         }
     }
@@ -34,8 +39,8 @@ class RetiredPlayerPageE2ETest {
         val notDeletedPlayer = players[2]
         val retiredPlayers = players - notDeletedPlayer
     }) {
-        sdk.perform(SavePartyCommand(party))
-        players.forEach { sdk.perform(SavePlayerCommand(party.id, it)) }
+        sdk.fire(SavePartyCommand(party))
+        players.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
         delete(retiredPlayers, sdk, party)
     } exercise {
         RetiredPlayersPage.goTo(party.id)

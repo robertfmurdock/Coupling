@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.slack
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
+import com.zegreatrob.coupling.action.fire
 import com.zegreatrob.coupling.client.components.external.reactmarkdown.Markdown
 import com.zegreatrob.coupling.client.components.loadMarkdownString
 import com.zegreatrob.coupling.client.components.slack.ReturnToCouplingButton
@@ -28,7 +29,8 @@ val SlackCallbackPage by nfc<PageProps> { props ->
         } else {
             DataLoader(
                 getDataAsync = {
-                    props.commander.tracingDispatcher().sdk.perform(
+                    fire(
+                        props.commander.tracingDispatcher().sdk,
                         GrantSlackAccessCommand(code, state),
                     )
                 },

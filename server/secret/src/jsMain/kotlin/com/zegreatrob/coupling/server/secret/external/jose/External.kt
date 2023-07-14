@@ -17,7 +17,11 @@ external class SignJWT(jwt: dynamic) {
     fun sign(secret: Uint8Array): Promise<String>
 }
 
-external fun jwtVerify(token: String, secret: Uint8Array, options: JWTVerifyOptions = definedExternally): Promise<JWTVerifyResult>
+external fun jwtVerify(
+    token: String,
+    secret: Uint8Array,
+    options: JWTVerifyOptions = definedExternally,
+): Promise<JWTVerifyResult>
 
 external interface JWTVerifyResult {
     val payload: JWTPayload

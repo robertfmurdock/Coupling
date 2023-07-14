@@ -26,8 +26,8 @@ class PlayerConfigPageE2ETest {
                 val party = buildParty()
                 val player = buildPlayer()
                 sdk.await().apply {
-                    perform(SavePartyCommand(party))
-                    perform(SavePlayerCommand(party.id, player))
+                    fire(SavePartyCommand(party))
+                    fire(SavePlayerCommand(party.id, player))
                 }
                 Triple(player, party, sdk.await())
             })
@@ -155,7 +155,7 @@ class PlayerConfigPageE2ETest {
                 val page = PlayerConfigPage
             }.attachPlayer(),
         ) {
-            sdk.perform(SavePartyCommand(party.copy(badgesEnabled = false)))
+            sdk.fire(SavePartyCommand(party.copy(badgesEnabled = false)))
         } exercise {
             PlayerConfigPage.goTo(party.id, player.id)
         } verify {
@@ -181,8 +181,8 @@ class PlayerConfigPageE2ETest {
             val page = PlayerConfigPage
         }) {
             sdk.await().apply {
-                perform(SavePartyCommand(party))
-                players.forEach { player -> perform(SavePlayerCommand(party.id, player)) }
+                fire(SavePartyCommand(party))
+                players.forEach { player -> fire(SavePlayerCommand(party.id, player)) }
             }
             PlayerConfigPage.goTo(party.id, players[0].id)
         } exercise {
@@ -315,7 +315,7 @@ class PlayerConfigPageE2ETest {
             )
         }) {
             sdk.await().apply {
-                perform(SavePartyCommand(party))
+                fire(SavePartyCommand(party))
             }
         } exercise {
             PlayerConfigPage.goToNew(party.id)

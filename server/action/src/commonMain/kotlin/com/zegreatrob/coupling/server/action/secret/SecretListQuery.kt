@@ -6,7 +6,8 @@ import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.repository.secret.SecretListGet
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
-data class SecretListQuery(val partyId: PartyId) : SimpleSuspendAction<SecretListQuery.Dispatcher, List<PartyRecord<Secret>>?> {
+data class SecretListQuery(val partyId: PartyId) :
+    SimpleSuspendAction<SecretListQuery.Dispatcher, List<PartyRecord<Secret>>?> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {

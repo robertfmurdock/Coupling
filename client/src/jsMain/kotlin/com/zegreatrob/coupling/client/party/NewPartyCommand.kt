@@ -10,11 +10,11 @@ class NewPartyCommand : SimpleSuspendAction<NewPartyCommandDispatcher, PartyDeta
 
 interface NewPartyCommandDispatcher {
     suspend fun perform(command: NewPartyCommand) = newParty()
-
-    private fun newParty() = PartyDetails(
-        id = PartyId(""),
-        defaultBadgeName = "Default",
-        alternateBadgeName = "Alternate",
-        name = "New Party",
-    )
 }
+
+fun newParty() = PartyDetails(
+    id = PartyId(""),
+    defaultBadgeName = "Default",
+    alternateBadgeName = "Alternate",
+    name = "New Party",
+)

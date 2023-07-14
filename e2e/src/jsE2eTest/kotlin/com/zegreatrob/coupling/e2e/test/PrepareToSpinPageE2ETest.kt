@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.e2e.test.AssignedPair.assignedPairElements
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
@@ -28,9 +29,9 @@ class PrepareToSpinPageE2ETest {
             val players = (1..5).map(Companion::buildPlayer)
             val pin = Pin("${randomInt()}-PairAssignmentsPageE2ETest", name = "e2e-pin")
             val sdk = sdk.await().apply {
-                perform(SavePartyCommand(party))
-                players.forEach { perform(SavePlayerCommand(party.id, it)) }
-                perform(SavePinCommand(party.id, pin))
+                fire(SavePartyCommand(party))
+                players.forEach { fire(SavePlayerCommand(party.id, it)) }
+                fire(sdk.await(), SavePinCommand(party.id, pin))
             }
 
             FullPartyData(players, listOf(pin), party, sdk)

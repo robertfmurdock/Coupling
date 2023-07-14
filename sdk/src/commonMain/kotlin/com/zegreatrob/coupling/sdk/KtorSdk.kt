@@ -2,12 +2,17 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.sdk.gql.KtorQueryPerformer
 import com.zegreatrob.coupling.sdk.gql.QueryPerformer
+import com.zegreatrob.testmints.action.ActionCannon
 import io.ktor.client.HttpClient
 
-class KtorCouplingSdk(
+fun couplingSdk(getIdTokenFunc: suspend () -> String, httpClient: HttpClient) = ActionCannon<CouplingSdkDispatcher>(
+    KtorCouplingSdkDispatcher(getIdTokenFunc, httpClient),
+)
+
+class KtorCouplingSdkDispatcher(
     val getIdTokenFunc: suspend () -> String,
     httpClient: HttpClient,
-) : CouplingSdk,
+) : CouplingSdkDispatcher,
     SdkBoost,
     SdkCreateSecretCommandDispatcher,
     SdkDeletePairAssignmentsCommandDispatcher,
@@ -33,5 +38,5 @@ class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String
 }
 
 interface SdkProviderSyntax {
-    val sdk: CouplingSdk
+    val sdk: ActionCannon<CouplingSdkDispatcher>
 }

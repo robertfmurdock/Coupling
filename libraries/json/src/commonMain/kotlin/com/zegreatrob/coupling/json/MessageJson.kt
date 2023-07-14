@@ -25,6 +25,7 @@ fun Message.toSerializable() = when (this) {
         players = players.map(Player::toSerializable).toSet(),
         currentPairAssignments = currentPairAssignments?.toSerializable(),
     )
+
     is PairAssignmentAdjustmentMessage -> JsonPairAssignmentAdjustmentMessage(currentPairAssignments.toSerializable())
 }
 
