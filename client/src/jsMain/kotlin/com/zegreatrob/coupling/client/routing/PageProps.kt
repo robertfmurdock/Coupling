@@ -36,7 +36,7 @@ class MasterCommander(private val getIdentityToken: suspend () -> String) : Comm
         if (window["inMemory"] == true) {
             MemoryRepositoryCatalog("test-user", backend, TimeProvider)
         } else {
-            KtorCouplingSdk(getIdentityToken, traceId, defaultClient(getLocationAndBasename()))
+            KtorCouplingSdk(getIdentityToken, defaultClient(getLocationAndBasename()))
         },
     )
 }

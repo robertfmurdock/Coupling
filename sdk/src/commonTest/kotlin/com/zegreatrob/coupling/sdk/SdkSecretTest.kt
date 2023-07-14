@@ -2,7 +2,6 @@
 
 package com.zegreatrob.coupling.sdk
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
@@ -42,7 +41,7 @@ class SdkSecretTest {
             ?.elements
             .assertIsEqualTo(listOf(secret))
 
-        val tokenSdk = KtorCouplingSdk({ token }, uuid4(), buildClient())
+        val tokenSdk = KtorCouplingSdk({ token }, buildClient())
         tokenSdk.perform(graphQuery { party(party.id) { party() } })
             ?.party
             ?.details
@@ -68,7 +67,7 @@ class SdkSecretTest {
             ?.secretList
             ?.elements
             .assertIsEqualTo(emptyList())
-        val tokenSdk = KtorCouplingSdk({ token }, uuid4(), buildClient())
+        val tokenSdk = KtorCouplingSdk({ token }, buildClient())
         runCatching { tokenSdk.perform(graphQuery { party(party.id) { party() } }) }
             .exceptionOrNull()
             .assertIsNotEqualTo(null, "Expect this to fail")
@@ -87,7 +86,7 @@ class SdkSecretTest {
         sdk().perform(CreateSecretCommand(party1.id))
     } verify { result ->
         val (_, token) = result!!
-        val tokenSdk = KtorCouplingSdk({ token }, uuid4(), buildClient())
+        val tokenSdk = KtorCouplingSdk({ token }, buildClient())
         val queryResult: CouplingQueryResult? = tokenSdk.perform(
             graphQuery {
                 partyList()

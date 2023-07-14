@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.graphql
 
+import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.TraceIdProvider
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.server.express.route.CouplingContext
@@ -42,7 +43,7 @@ suspend inline fun <D : TraceIdProvider, reified E, reified I> cannon(
 ): ActionCannon<D>? {
     val dispatcher = dispatcherFunc(context, entity, input)
         ?: return null
-    return ActionCannon(dispatcher, ServerActionPipe(dispatcher.traceId))
+    return ActionCannon(dispatcher, LoggingActionPipe(dispatcher.traceId))
 }
 
 inline fun <reified E, reified I, reified D : TraceIdProvider, reified C, reified R, reified J> dispatchAction(

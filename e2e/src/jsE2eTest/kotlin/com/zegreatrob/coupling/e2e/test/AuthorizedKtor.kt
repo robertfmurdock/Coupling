@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.sdk.KtorCouplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import io.ktor.client.HttpClient
@@ -83,4 +82,4 @@ private suspend fun generateAccessToken(username: String, password: String): Str
     return result["access_token"]?.jsonPrimitive?.content ?: ""
 }
 
-fun authorizedSdk(token: String) = KtorCouplingSdk({ token }, uuid4(), buildClientWithToken())
+fun authorizedSdk(token: String) = KtorCouplingSdk({ token }, buildClientWithToken())

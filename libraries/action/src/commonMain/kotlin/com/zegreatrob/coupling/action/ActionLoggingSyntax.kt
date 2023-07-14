@@ -5,7 +5,7 @@ import korlibs.time.PerformanceCounter
 import korlibs.time.TimeSpan
 import korlibs.time.microseconds
 
-interface ActionLoggingSyntax : LoggingSyntax, TraceIdProvider {
+interface ActionLoggingSyntax : LoggingProvider, TraceIdProvider {
 
     fun <I : Action, O> log(action: I, block: (I) -> O) = action.logBlock { block(action) }
 

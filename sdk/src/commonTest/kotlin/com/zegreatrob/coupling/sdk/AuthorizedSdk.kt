@@ -52,7 +52,7 @@ private suspend fun KtorCouplingSdk.deleteAnyDisplayedParties() = perform(graphQ
     ?.forEach { perform(DeletePartyCommand(it.data.id)) }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
-    .let { token -> KtorCouplingSdk({ token }, uuid4(), buildClient()) }
+    .let { token -> KtorCouplingSdk({ token }, buildClient()) }
 
 suspend fun sdk(): CouplingSdk = primaryAuthorizedSdkDeferred.await()
 

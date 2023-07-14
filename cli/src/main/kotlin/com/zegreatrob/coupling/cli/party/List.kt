@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.cli.party
 
-import com.benasher44.uuid.uuid4
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
@@ -29,7 +28,6 @@ class List : CliktCommand() {
 
             val sdk = KtorCouplingSdk(
                 { accessToken },
-                traceId = uuid4(),
                 defaultClient(environment.audienceHost() to ""),
             )
             runBlocking {
