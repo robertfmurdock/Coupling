@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.action
 
 import com.benasher44.uuid.Uuid
 
-interface TraceIdSyntax {
-
+interface TraceIdProvider {
     val traceId: Uuid
 }

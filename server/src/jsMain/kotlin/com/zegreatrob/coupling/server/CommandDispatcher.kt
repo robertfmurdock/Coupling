@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
-import com.zegreatrob.coupling.action.LoggingActionExecuteSyntax
+import com.zegreatrob.coupling.action.TraceIdProvider
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyId
@@ -53,6 +53,7 @@ import kotlinx.coroutines.async
 import kotlin.js.json
 
 interface ICommandDispatcher :
+    TraceIdProvider,
     AwsManagementApiSyntax,
     AwsSocketCommunicator,
     BroadcastAction.Dispatcher,
@@ -83,7 +84,7 @@ class CommandDispatcher(
     override val scope: CoroutineScope,
     override val traceId: Uuid,
     override val managementApiClient: ApiGatewayManagementApiClient = apiGatewayManagementApiClient(),
-) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog, LoggingActionExecuteSyntax {
+) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog, TraceIdProvider {
     override val execute = this
     override val actionDispatcher = this
 
@@ -103,7 +104,6 @@ class CommandDispatcher(
 
     private fun nonCachingPlayerQueryDispatcher() = object :
         PlayersQuery.Dispatcher,
-        LoggingActionExecuteSyntax by this,
         RepositoryCatalog by this {}
 
     private val playersQueryCache = mutableMapOf<PartyId, Deferred<List<PartyRecord<Player>>>>()
