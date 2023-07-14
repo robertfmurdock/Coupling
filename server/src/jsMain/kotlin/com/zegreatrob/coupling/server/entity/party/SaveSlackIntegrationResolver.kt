@@ -13,7 +13,7 @@ import kotlinx.serialization.json.JsonNull
 val saveSlackIntegrationResolver = dispatchAction(
     dispatcherFunc = { request, _: JsonNull, args -> authorizedPartyDispatcher(request, args.partyId) },
     commandFunc = { _, input: SaveSlackIntegrationInput -> input.toCommand() },
-    fireCommand = ::fire,
+    fireFunc = ::fire,
     toSerializable = VoidResult::toJson,
 )
 

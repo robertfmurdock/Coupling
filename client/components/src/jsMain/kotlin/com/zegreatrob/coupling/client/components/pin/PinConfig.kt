@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.components.pin
 
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.pin.SavePinCommand
+import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.pinListPath
 import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
@@ -37,9 +38,17 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
-    val onSubmit = dispatchFunc({ SavePinCommand(party.id, updatedPin) }) { reload() }
+    val onSubmit = dispatchFunc(
+        commandFunc = { SavePinCommand(party.id, updatedPin) },
+        fireCommand = ::fire,
+        response = { reload() },
+    )
     val onRemove = pin.id?.let { pinId ->
-        dispatchFunc({ DeletePinCommand(party.id, pinId) }) { setRedirectUrl(party.id.pinListPath()) }
+        dispatchFunc(
+            commandFunc = { DeletePinCommand(party.id, pinId) },
+            fireCommand = ::fire,
+            response = { setRedirectUrl(party.id.pinListPath()) },
+        )
             .requireConfirmation("Are you sure you want to delete this pin?")
     }
     usePrompt(

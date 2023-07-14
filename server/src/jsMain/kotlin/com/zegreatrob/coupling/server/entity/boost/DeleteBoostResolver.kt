@@ -9,6 +9,6 @@ import kotlinx.serialization.json.JsonNull
 val deleteBoostResolver = dispatchAction(
     dispatcherFunc = prereleaseCommand(),
     commandFunc = { _: JsonNull, _: JsonNull -> DeleteBoostCommand() },
-    fireCommand = ::fire,
+    fireFunc = ::fire,
     toSerializable = { true },
 )

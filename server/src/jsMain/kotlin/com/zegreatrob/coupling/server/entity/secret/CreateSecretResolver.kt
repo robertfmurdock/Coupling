@@ -12,7 +12,7 @@ import kotlinx.serialization.json.JsonNull
 val createSecretResolver = dispatchAction(
     dispatcherFunc = { request, _: JsonNull, args -> authorizedPartyDispatcher(request, args.partyId) },
     commandFunc = { _, input: CreateSecretInput -> input.toCommand() },
-    fireCommand = ::fire,
+    fireFunc = ::fire,
     toSerializable = { it?.toModel() },
 )
 

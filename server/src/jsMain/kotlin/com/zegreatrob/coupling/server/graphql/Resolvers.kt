@@ -37,7 +37,7 @@ inline fun <D : SuspendActionExecuteSyntax, Q : SuspendAction<D, R>, reified R, 
 inline fun <reified E, reified I, reified D, reified C, reified R, reified J> dispatchAction(
     crossinline dispatcherFunc: GraphQLDispatcherProvider<E, I, D>,
     crossinline commandFunc: (_: E, input: I) -> C,
-    crossinline fireCommand: suspend ActionCannon<D>.(C) -> R,
+    crossinline fireFunc: suspend ActionCannon<D>.(C) -> R,
     crossinline toSerializable: (R) -> J,
 ) = { entityJson: Json, args: Json, context: CouplingContext, _: Json ->
     context.scope.promise {
@@ -46,7 +46,7 @@ inline fun <reified E, reified I, reified D, reified C, reified R, reified J> di
             val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
             val dispatcher = dispatcherFunc(context, entity, input) ?: return@promise null
             val cannon = ActionCannon(dispatcher)
-            val result = cannon.fireCommand(commandFunc(entity, input))
+            val result = cannon.fireFunc(commandFunc(entity, input))
             if (result == null) {
                 result
             } else {

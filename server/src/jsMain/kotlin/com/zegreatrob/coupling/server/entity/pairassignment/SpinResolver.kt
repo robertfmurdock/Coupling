@@ -16,7 +16,7 @@ val spinResolver: Resolver = dispatchAction(
         )
     },
     commandFunc = { _, args: SpinInput -> args.command() },
-    fireCommand = ::fire,
+    fireFunc = ::fire,
     toSerializable = { true },
 )
 

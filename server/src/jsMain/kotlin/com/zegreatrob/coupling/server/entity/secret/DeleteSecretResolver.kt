@@ -17,6 +17,6 @@ val deleteSecretResolver = dispatchAction(
         )
     },
     commandFunc = { _, args: DeleteSecretInput -> DeleteSecretCommand(PartyId(args.partyId), Secret(args.secretId)) },
-    fireCommand = ::fire,
+    fireFunc = ::fire,
     toSerializable = { true },
 )

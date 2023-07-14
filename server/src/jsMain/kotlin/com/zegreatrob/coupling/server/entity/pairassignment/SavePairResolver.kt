@@ -16,7 +16,7 @@ val savePairsResolver = dispatchAction(
         )
     },
     commandFunc = { _, input: SavePairAssignmentsInput -> input.command() },
-    fireCommand = ::fire,
+    fireFunc = ::fire,
     toSerializable = { true },
 )
 

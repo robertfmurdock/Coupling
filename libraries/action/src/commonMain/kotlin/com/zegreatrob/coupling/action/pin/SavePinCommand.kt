@@ -3,12 +3,10 @@ package com.zegreatrob.coupling.action.pin
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.annotation.MintAction
 
-data class SavePinCommand(val id: PartyId, val pin: Pin) :
-    SimpleSuspendAction<SavePinCommand.Dispatcher, VoidResult> {
-    override val performFunc = link(Dispatcher::perform)
-
+@MintAction
+data class SavePinCommand(val id: PartyId, val pin: Pin) {
     interface Dispatcher {
         suspend fun perform(command: SavePinCommand): VoidResult
     }

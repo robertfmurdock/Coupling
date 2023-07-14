@@ -11,7 +11,7 @@ import kotlinx.serialization.json.JsonNull
 val deletePairsResolver = dispatchAction(
     dispatcherFunc = { request, _: JsonNull, args -> authorizedPartyDispatcher(request, args.partyId.value) },
     commandFunc = { _, entity: DeletePairAssignmentsInput -> entity.toModel() },
-    fireCommand = ::fire,
+    fireFunc = ::fire,
     toSerializable = { true },
 )
 

@@ -10,6 +10,6 @@ import kotlinx.serialization.json.JsonNull
 val saveBoostResolver = dispatchAction(
     dispatcherFunc = prereleaseCommand(),
     commandFunc = { _: JsonNull, args: SaveBoostInput -> SaveBoostCommand(args.partyIds) },
-    fireCommand = ::fire,
+    fireFunc = ::fire,
     toSerializable = { true },
 )
