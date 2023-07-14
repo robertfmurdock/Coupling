@@ -1,11 +1,10 @@
 package com.zegreatrob.coupling.action.boost
 
 import com.zegreatrob.coupling.action.VoidResult
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.annotation.MintAction
 
-class DeleteBoostCommand : SimpleSuspendAction<DeleteBoostCommand.Dispatcher, VoidResult> {
-    override val performFunc = link(Dispatcher::perform)
-
+@MintAction
+class DeleteBoostCommand {
     interface Dispatcher {
         suspend fun perform(command: DeleteBoostCommand): VoidResult
     }

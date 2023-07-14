@@ -12,8 +12,9 @@ import kotlinx.serialization.json.JsonNull
 
 val grantSlackAccessResolver: Resolver = dispatchAction(
     DispatcherProviders.command(),
-    fireCommand = { _: JsonNull, input: GrantSlackAccessInput -> fire(input.command()) },
-    toSerializable = { result: VoidResult -> result.toJson() },
+    commandFunc = { _: JsonNull, input: GrantSlackAccessInput -> input.command() },
+    fireCommand = ::fire,
+    toSerializable = VoidResult::toJson,
 )
 
 private fun GrantSlackAccessInput.command() = GrantSlackAccessCommand(code, state)
