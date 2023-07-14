@@ -12,8 +12,6 @@ plugins {
 rootProject.name = "Coupling"
 
 includeBuild("coupling-plugins")
-includeBuild("../testmints/libraries") { name = "testmints-libraries" }
-includeBuild("../testmints/plugins") { name = "testmints-plugins" }
 
 include("cli")
 include("client")

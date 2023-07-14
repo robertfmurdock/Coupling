@@ -6,6 +6,12 @@
       <module name="com.zegreatrob.testmints.plugins.action-mint-plugin.functionalTest" target="11" />
       <module name="com.zegreatrob.testmints.plugins.action-mint-plugin.main" target="11" />
       <module name="com.zegreatrob.testmints.plugins.action-mint-plugin.test" target="11" />
+      <module name="com.zegreatrob.testmints.testmints.action-annotation" target="11" />
+      <module name="git.testmints.libraries.testmints.kotest-example" target="11" />
+      <module name="git.testmints.plugins.mint-logs-plugin" target="11" />
+      <module name="git.testmints.plugins.mint-logs-plugin.functionalTest" target="11" />
+      <module name="git.testmints.plugins.mint-logs-plugin.main" target="11" />
+      <module name="git.testmints.plugins.mint-logs-plugin.test" target="11" />
       <module name="jsmints-plugins.plugins" target="11" />
       <module name="jsmints-plugins.plugins.functionalTest" target="11" />
       <module name="jsmints-plugins.plugins.main" target="11" />
@@ -20,7 +26,20 @@
       <module name="libraries.testmints.report" target="11" />
       <module name="libraries.testmints.standard" target="11" />
       <module name="testmints.action-annotation" target="11" />
+      <module name="testmints.libraries.testmints.action" target="11" />
+      <module name="testmints.libraries.testmints.action-async" target="11" />
+      <module name="testmints.libraries.testmints.async" target="11" />
       <module name="testmints.libraries.testmints.kotest-example" target="11" />
+      <module name="testmints.libraries.testmints.minassert" target="11" />
+      <module name="testmints.libraries.testmints.mindiff" target="11" />
+      <module name="testmints.libraries.testmints.minspy" target="11" />
+      <module name="testmints.libraries.testmints.mint-logs" target="11" />
+      <module name="testmints.libraries.testmints.report" target="11" />
+      <module name="testmints.libraries.testmints.standard" target="11" />
+      <module name="testmints.plugins.action-mint-plugin" target="11" />
+      <module name="testmints.plugins.action-mint-plugin.functionalTest" target="11" />
+      <module name="testmints.plugins.action-mint-plugin.main" target="11" />
+      <module name="testmints.plugins.action-mint-plugin.test" target="11" />
       <module name="testmints.plugins.mint-logs-plugin" target="11" />
       <module name="testmints.plugins.mint-logs-plugin.functionalTest" target="11" />
       <module name="testmints.plugins.mint-logs-plugin.main" target="11" />

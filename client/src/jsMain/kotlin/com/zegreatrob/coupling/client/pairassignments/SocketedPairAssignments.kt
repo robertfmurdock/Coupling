@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.CouplingWebsocket
 import com.zegreatrob.coupling.client.components.disconnectedMessage
@@ -41,7 +42,11 @@ val SocketedPairAssignments by nfc<SocketedPairAssignmentsProps<*>> { (party, pl
     val onMessageFunc: (Message) -> Unit = useCallback { handleMessage(it, setMessage, setPairAssignments) }
     val updatePairAssignments = useCallback(party.id, controls.dispatchFunc) { new: PairAssignmentDocument ->
         setPairAssignments(new)
-        controls.dispatchFunc({ SavePairAssignmentsCommand(party.id, new) }, {}).invoke()
+        controls.dispatchFunc(
+            commandFunc = { SavePairAssignmentsCommand(party.id, new) },
+            fireCommand = ::fire,
+            response = {},
+        ).invoke()
     }
     val auth0Data = useAuth0Data()
     var token by useState("")

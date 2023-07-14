@@ -62,7 +62,7 @@ class CurrentPairAssignmentsPanelTest {
         )
     } exercise {
         actor.click(screen.getByText("Save!"))
-        stubDispatcher.sendResult<SavePairAssignmentsCommand, _>(VoidResult.Accepted)
+        stubDispatcher.wrappedSendResult<SavePairAssignmentsCommand, _>(VoidResult.Accepted)
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePairAssignmentsCommand>().size
@@ -104,7 +104,7 @@ class CurrentPairAssignmentsPanelTest {
         )
     } exercise {
         actor.click(screen.findByText("Cancel"))
-        act { stubDispatcher.sendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.wrappedSendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()

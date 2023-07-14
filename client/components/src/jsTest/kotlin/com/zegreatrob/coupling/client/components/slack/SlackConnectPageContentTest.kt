@@ -52,7 +52,7 @@ class SlackConnectPageContentTest {
             .assertIsEqualTo(null, "Return button showed up unexpectedly early")
     } exercise {
         actor.click(saveButton)
-        act { stubber.sendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
+        act { stubber.wrappedSendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
     } verify {
         stubber.commandsDispatched<SaveSlackIntegrationCommand>()
             .assertIsEqualTo(
@@ -113,7 +113,7 @@ class SlackConnectPageContentTest {
             },
         )
         actor.click(saveButton)
-        act { stubDispatcher.sendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.wrappedSendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
     } exercise {
         actor.click(returnButton)
     } verify {
