@@ -12,7 +12,8 @@ import kotlinx.serialization.json.JsonNull
 
 val boostResolver = dispatchAction(
     dispatcherFunc = prereleaseCommand(),
-    fireCommand = { _: JsonParty, _: JsonNull -> fire(BoostQuery()) },
+    commandFunc = { _: JsonParty, _: JsonNull -> BoostQuery() },
+    fireCommand = ::fire,
     toSerializable = ::jsonBoostRecord,
 )
 
