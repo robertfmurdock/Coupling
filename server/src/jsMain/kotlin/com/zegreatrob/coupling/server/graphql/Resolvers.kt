@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.minjson.at
 import com.zegreatrob.testmints.action.ActionCannon
+import com.zegreatrob.testmints.action.ActionPipe
 import com.zegreatrob.testmints.action.async.SuspendAction
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
-import com.zegreatrob.testmints.action.async.execute
 import kotlinx.coroutines.promise
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
@@ -14,24 +14,44 @@ import kotlin.js.Json
 
 typealias GraphQLDispatcherProvider<E, I, D> = suspend (CouplingContext, E, I) -> D?
 
-inline fun <D : SuspendActionExecuteSyntax, Q : SuspendAction<D, R>, reified R, reified J, reified I, reified E> dispatch(
+inline fun <D : SuspendActionExecuteSyntax, C : SuspendAction<D, R>, reified R, reified J, reified I, reified E> dispatch(
     crossinline dispatcherFunc: GraphQLDispatcherProvider<E, I, D>,
-    crossinline queryFunc: (E, I) -> Q,
+    crossinline queryFunc: (E, I) -> C,
     crossinline toSerializable: (R) -> J,
 ) = { entityJson: Json, args: Json, context: CouplingContext, _: Json ->
     context.scope.promise {
         try {
-            val entity = couplingJsonFormat.decodeFromDynamic<E>(entityJson)
-            val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
-            val command = queryFunc(entity, input)
-            dispatcherFunc(context, entity, input)
-                ?.execute(command)
+            val (entity, input) = parseGraphJsons<E, I>(entityJson, args)
+            val cannon = cannon(context, entity, input, dispatcherFunc)
+                ?: return@promise null
+
+            val command: C = queryFunc(entity, input)
+            cannon.fire(command)
                 ?.let { encodeSuccessToJson(toSerializable, it) }
         } catch (error: Throwable) {
             error.printStackTrace()
             throw error
         }
     }
+}
+
+suspend inline fun <D, reified E, reified I> cannon(
+    context: CouplingContext,
+    entity: E,
+    input: I,
+    dispatcherFunc: GraphQLDispatcherProvider<E, I, D>,
+): ActionCannon<D>? {
+    val dispatcher = dispatcherFunc(context, entity, input)
+        ?: return null
+    return ActionCannon(
+        dispatcher,
+        object : ActionPipe {
+            override suspend fun <D, R> execute(dispatcher: D, action: SuspendAction<D, R>): R {
+                println("PIPE TIME! $action")
+                return super.execute(dispatcher, action)
+            }
+        },
+    )
 }
 
 inline fun <reified E, reified I, reified D, reified C, reified R, reified J> dispatchAction(
@@ -42,10 +62,9 @@ inline fun <reified E, reified I, reified D, reified C, reified R, reified J> di
 ) = { entityJson: Json, args: Json, context: CouplingContext, _: Json ->
     context.scope.promise {
         try {
-            val entity = couplingJsonFormat.decodeFromDynamic<E>(entityJson)
-            val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
-            val dispatcher = dispatcherFunc(context, entity, input) ?: return@promise null
-            val cannon = ActionCannon(dispatcher)
+            val (entity, input) = parseGraphJsons<E, I>(entityJson, args)
+            val cannon = cannon(context, entity, input, dispatcherFunc)
+                ?: return@promise null
             val result = cannon.fireFunc(commandFunc(entity, input))
             if (result == null) {
                 result
@@ -57,6 +76,12 @@ inline fun <reified E, reified I, reified D, reified C, reified R, reified J> di
             throw error
         }
     }
+}
+
+inline fun <reified E, reified I> parseGraphJsons(entityJson: Json, args: Json): Pair<E, I> {
+    val entity = couplingJsonFormat.decodeFromDynamic<E>(entityJson)
+    val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
+    return Pair(entity, input)
 }
 
 inline fun <reified J, reified R> encodeSuccessToJson(toSerializable: (R) -> J, it: R): dynamic {
