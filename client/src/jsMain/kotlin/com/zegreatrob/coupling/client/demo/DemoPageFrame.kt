@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.action.async.SuspendAction
 import emotion.react.css
 import js.core.jso
@@ -135,6 +136,12 @@ class NoOpDispatcherDispatchFunc : DispatchFunc<NoOpDispatcher> {
         commandFunc: () -> C,
         response: (R) -> Unit,
     ): () -> Unit = {}
+
+    override fun <C, R> invoke(
+        commandFunc: () -> C,
+        fireCommand: suspend ActionCannon<NoOpDispatcher>.(C) -> R,
+        response: (R) -> Unit,
+    ) = {}
 }
 
 interface NoOpDispatcher :

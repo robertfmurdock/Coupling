@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
@@ -55,7 +56,11 @@ val PairAssignmentRow by nfc<PairAssignmentRowProps> { props ->
     val windowFuncs = props.windowFunctions ?: WindowFunctions
     val (dispatchFunc, reload) = controls
     val onDeleteClick: () -> Unit = useCallback {
-        val deleteFunc = dispatchFunc({ DeletePairAssignmentsCommand(party.id, document.id) }, { reload() })
+        val deleteFunc = dispatchFunc(
+            commandFunc = { DeletePairAssignmentsCommand(party.id, document.id) },
+            fireCommand = ::fire,
+            response = { reload() },
+        )
         if (windowFuncs.window.confirm("Are you sure you want to delete these pair assignments?")) {
             deleteFunc.invoke()
         }

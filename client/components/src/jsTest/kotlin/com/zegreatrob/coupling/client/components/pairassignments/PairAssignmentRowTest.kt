@@ -45,7 +45,7 @@ class PairAssignmentRowTest {
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
-        stubDispatcher.sendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted)
+        stubDispatcher.wrappedSendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted)
     } verify {
         stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
             .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, document.id)))
