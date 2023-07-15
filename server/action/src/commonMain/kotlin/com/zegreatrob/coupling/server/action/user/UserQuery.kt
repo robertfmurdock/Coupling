@@ -1,12 +1,10 @@
 package com.zegreatrob.coupling.server.action.user
 
 import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
-import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.annotation.MintAction
 
-object UserQuery : SimpleSuspendAction<UserQuery.Dispatcher, User> {
-    override val performFunc = link(Dispatcher::perform)
-
+@MintAction
+object UserQuery {
     interface Dispatcher : AuthenticatedUserSyntax {
         suspend fun perform(query: UserQuery) = user
     }

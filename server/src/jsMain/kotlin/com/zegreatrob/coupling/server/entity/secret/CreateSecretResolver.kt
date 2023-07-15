@@ -6,10 +6,10 @@ import com.zegreatrob.coupling.json.CreateSecretInput
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
-import com.zegreatrob.coupling.server.graphql.dispatchAction
+import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
-val createSecretResolver = dispatchAction(
+val createSecretResolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args -> authorizedPartyDispatcher(request, args.partyId) },
     commandFunc = { _, input: CreateSecretInput -> input.toCommand() },
     fireFunc = ::perform,

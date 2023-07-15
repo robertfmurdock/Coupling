@@ -15,15 +15,15 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.annotation.MintAction
 import korlibs.time.minutes
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 
-data class GlobalStatsQuery(val year: Int) : SimpleSuspendAction<GlobalStatsQuery.Dispatcher, GlobalStats> {
-    override val performFunc = link(Dispatcher::perform)
+@MintAction
+data class GlobalStatsQuery(val year: Int) {
 
     interface Dispatcher {
 

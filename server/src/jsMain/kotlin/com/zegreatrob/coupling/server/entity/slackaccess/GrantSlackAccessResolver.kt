@@ -7,10 +7,10 @@ import com.zegreatrob.coupling.json.GrantSlackAccessInput
 import com.zegreatrob.coupling.server.entity.toJson
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders
-import com.zegreatrob.coupling.server.graphql.dispatchAction
+import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
-val grantSlackAccessResolver: Resolver = dispatchAction(
+val grantSlackAccessResolver: Resolver = dispatch(
     DispatcherProviders.command(),
     commandFunc = { _: JsonNull, input: GrantSlackAccessInput -> input.command() },
     fireFunc = ::perform,

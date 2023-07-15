@@ -4,12 +4,12 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.repository.party.PartyRecordSyntax
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.annotation.MintAction
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-object PartyListQuery : SimpleSuspendAction<PartyListQuery.Dispatcher, List<Record<PartyDetails>>?> {
-    override val performFunc = link(Dispatcher::perform)
+@MintAction
+object PartyListQuery {
 
     interface Dispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax, PartyRecordSyntax {
 

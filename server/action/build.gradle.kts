@@ -1,5 +1,6 @@
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
+    id("com.zegreatrob.testmints.action-mint")
 }
 kotlin {
     targets {
@@ -9,7 +10,6 @@ kotlin {
             useCommonJs()
         }
     }
-
     sourceSets {
         getByName("commonMain") {
             dependencies {
@@ -45,5 +45,19 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-js")
             }
         }
+    }
+
+    sourceSets.named("jsMain") {
+        kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
+    }
+
+}
+
+tasks {
+    "formatKotlinJsMain" {
+        dependsOn("kspKotlinJs")
+    }
+    "lintKotlinJsMain" {
+        dependsOn("kspKotlinJs")
     }
 }

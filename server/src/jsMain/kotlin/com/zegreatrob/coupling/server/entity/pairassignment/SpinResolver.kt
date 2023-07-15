@@ -5,10 +5,10 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.perform
 import com.zegreatrob.coupling.json.SpinInput
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
-import com.zegreatrob.coupling.server.graphql.dispatchAction
+import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
-val spinResolver: Resolver = dispatchAction(
+val spinResolver: Resolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args ->
         authorizedPartyDispatcher(
             context = request,

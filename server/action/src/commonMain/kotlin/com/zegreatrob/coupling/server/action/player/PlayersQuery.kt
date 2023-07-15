@@ -9,11 +9,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.annotation.MintAction
 
-data class PlayersQuery(val partyId: PartyId) :
-    SimpleSuspendAction<PlayersQuery.Dispatcher, List<Record<PartyElement<Player>>>?> {
-    override val performFunc = link(Dispatcher::perform)
+@MintAction
+data class PlayersQuery(val partyId: PartyId) {
 
     interface Dispatcher :
         PartyIdLoadPlayersSyntax,

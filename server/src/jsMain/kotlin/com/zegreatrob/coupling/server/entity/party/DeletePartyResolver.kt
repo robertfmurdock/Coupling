@@ -5,10 +5,10 @@ import com.zegreatrob.coupling.action.party.perform
 import com.zegreatrob.coupling.json.DeletePartyInput
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
-import com.zegreatrob.coupling.server.graphql.dispatchAction
+import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
-val deletePartyResolver: Resolver = dispatchAction(
+val deletePartyResolver: Resolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args ->
         authorizedPartyDispatcher(
             context = request,

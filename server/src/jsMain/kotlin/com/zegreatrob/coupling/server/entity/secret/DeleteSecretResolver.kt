@@ -6,10 +6,10 @@ import com.zegreatrob.coupling.json.DeleteSecretInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders
-import com.zegreatrob.coupling.server.graphql.dispatchAction
+import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
-val deleteSecretResolver = dispatchAction(
+val deleteSecretResolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args ->
         DispatcherProviders.authorizedPartyDispatcher(
             context = request,

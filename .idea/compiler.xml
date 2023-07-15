@@ -60,8 +60,11 @@
       <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin.test" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1.functionalTest" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1.functionalTest~1" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1.main" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1.main~1" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1.test" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1.test~1" target="11" />
       <module name="testmints.action-annotation" target="11" />
       <module name="testmints.libraries.testmints.action" target="11" />
       <module name="testmints.libraries.testmints.action-annotation" target="11" />

@@ -5,10 +5,15 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
+import com.zegreatrob.coupling.server.action.player.perform
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.partyCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
 
-val retiredPlayerListResolve =
-    dispatch(partyCommand, { data, _ -> RetiredPlayersQuery(PartyId(data.id)) }, ::toJsonArray)
+val retiredPlayerListResolve = dispatch(
+    dispatcherFunc = partyCommand,
+    commandFunc = { data, _ -> RetiredPlayersQuery(PartyId(data.id)) },
+    fireFunc = ::perform,
+    toSerializable = ::toJsonArray,
+)
 
 private fun toJsonArray(list: List<PartyRecord<Player>>?) = list?.map(PartyRecord<Player>::toSerializable)

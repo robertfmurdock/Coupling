@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.action.pin.DeletePinCommand
 import com.zegreatrob.coupling.action.pin.perform
 import com.zegreatrob.coupling.json.DeletePinInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
-import com.zegreatrob.coupling.server.graphql.dispatchAction
+import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
-val deletePinResolver = dispatchAction(
+val deletePinResolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args: DeletePinInput ->
         authorizedPartyDispatcher(
             context = request,

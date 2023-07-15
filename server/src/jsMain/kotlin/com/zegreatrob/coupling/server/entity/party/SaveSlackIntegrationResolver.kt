@@ -7,10 +7,10 @@ import com.zegreatrob.coupling.json.SaveSlackIntegrationInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.toJson
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
-import com.zegreatrob.coupling.server.graphql.dispatchAction
+import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
-val saveSlackIntegrationResolver = dispatchAction(
+val saveSlackIntegrationResolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args -> authorizedPartyDispatcher(request, args.partyId) },
     commandFunc = { _, input: SaveSlackIntegrationInput -> input.toCommand() },
     fireFunc = ::perform,

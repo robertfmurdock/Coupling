@@ -7,10 +7,10 @@ import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.prereleaseCommand
-import com.zegreatrob.coupling.server.graphql.dispatchAction
+import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
-val boostResolver = dispatchAction(
+val boostResolver = dispatch(
     dispatcherFunc = prereleaseCommand(),
     commandFunc = { _: JsonParty, _: JsonNull -> BoostQuery() },
     fireFunc = ::perform,

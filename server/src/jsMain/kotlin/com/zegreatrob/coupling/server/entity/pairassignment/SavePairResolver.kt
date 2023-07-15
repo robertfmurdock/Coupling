@@ -5,10 +5,10 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.perform
 import com.zegreatrob.coupling.json.SavePairAssignmentsInput
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
-import com.zegreatrob.coupling.server.graphql.dispatchAction
+import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
-val savePairsResolver = dispatchAction(
+val savePairsResolver = dispatch(
     dispatcherFunc = { request, _: JsonNull, args ->
         authorizedPartyDispatcher(
             context = request,
