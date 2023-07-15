@@ -141,7 +141,7 @@ class PlayerConfigTest {
         actor.type(screen.getByLabelText("Name"), "nonsense")
 
         fireEvent.submit(screen.getByRole("form"))
-        act { stubDispatcher.sendResult<SavePlayerCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.wrappedSendResult<SavePlayerCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePlayerCommand>()
@@ -183,7 +183,7 @@ class PlayerConfigTest {
         )
     } exercise {
         actor.click(screen.getByText("Retire"))
-        act { stubDispatcher.sendResult<DeletePlayerCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.wrappedSendResult<DeletePlayerCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<DeletePlayerCommand>()

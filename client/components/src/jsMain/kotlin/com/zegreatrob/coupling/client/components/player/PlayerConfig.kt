@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.components.player
 
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
+import com.zegreatrob.coupling.action.player.perform
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
@@ -45,10 +46,15 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
             message = "You have unsaved data. Press OK to leave without saving."
         },
     )
-    val onSubmit = dispatchFunc({ SavePlayerCommand(party.id, updatedPlayer) }, { reload() })
+    val onSubmit = dispatchFunc(
+        commandFunc = { SavePlayerCommand(party.id, updatedPlayer) },
+        fireFunc = ::perform,
+        response = { reload() },
+    )
     val onRemove = dispatchFunc(
-        { DeletePlayerCommand(party.id, player.id) },
-        { setRedirectUrl(party.id.currentPairsPage()) },
+        commandFunc = { DeletePlayerCommand(party.id, player.id) },
+        fireFunc = ::perform,
+        response = { setRedirectUrl(party.id.currentPairsPage()) },
     ).requireConfirmation("Are you sure you want to delete this player?", windowFuncs ?: WindowFunctions)
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }

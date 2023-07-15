@@ -1,14 +1,11 @@
 package com.zegreatrob.coupling.action.player.callsign
 
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
-import com.zegreatrob.testmints.action.SimpleExecutableAction
+import com.zegreatrob.testmints.action.annotation.MintAction
 
-data class FindCallSignAction(val players: List<Player>, val email: String) :
-    SimpleExecutableAction<FindCallSignAction.Dispatcher, CallSign> {
-    override val performFunc = link(Dispatcher::perform)
-
+@MintAction
+data class FindCallSignAction(val players: List<Player>, val email: String) {
     interface Dispatcher :
         GenerateCallSignAction.Dispatcher,
         ExecutableActionExecuteSyntax {
