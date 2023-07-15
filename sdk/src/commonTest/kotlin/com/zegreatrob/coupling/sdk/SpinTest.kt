@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand

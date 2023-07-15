@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignments
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.json.JsonCouplingSocketMessage
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString

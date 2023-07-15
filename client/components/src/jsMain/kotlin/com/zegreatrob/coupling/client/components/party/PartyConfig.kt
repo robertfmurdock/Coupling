@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.components.party
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.perform
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths
 import com.zegreatrob.coupling.client.components.useForm
@@ -34,7 +35,15 @@ val PartyConfig by nfc<PartyConfigProps<*>> { (party, commandFunc) ->
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToPartyList = { setRedirectUrl(Paths.partyList()) }
     val onSave = commandFunc({ SavePartyCommand(updatedParty) }, { redirectToPartyList() })
-    val onDelete = if (isNew) null else commandFunc({ DeletePartyCommand(party.id) }, { redirectToPartyList() })
+    val onDelete = if (isNew) {
+        null
+    } else {
+        commandFunc(
+            commandFunc = { DeletePartyCommand(party.id) },
+            fireFunc = ::perform,
+            response = { redirectToPartyList() },
+        )
+    }
 
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
