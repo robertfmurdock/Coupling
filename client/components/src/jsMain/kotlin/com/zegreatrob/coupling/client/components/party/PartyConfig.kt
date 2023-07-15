@@ -34,7 +34,11 @@ val PartyConfig by nfc<PartyConfigProps<*>> { (party, commandFunc) ->
     val updatedParty = values.correctTypes().fromJsonDynamic<JsonPartyDetails>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToPartyList = { setRedirectUrl(Paths.partyList()) }
-    val onSave = commandFunc({ SavePartyCommand(updatedParty) }, { redirectToPartyList() })
+    val onSave = commandFunc(
+        commandFunc = { SavePartyCommand(updatedParty) },
+        fireFunc = ::perform,
+        response = { redirectToPartyList() },
+    )
     val onDelete = if (isNew) {
         null
     } else {

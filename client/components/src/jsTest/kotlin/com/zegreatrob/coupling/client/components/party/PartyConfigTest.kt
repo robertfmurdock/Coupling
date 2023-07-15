@@ -82,7 +82,7 @@ class PartyConfigTest {
         )
     } exercise {
         fireEvent.submit(screen.getByRole("form"))
-        act { stubDispatcher.sendResult<SavePartyCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.wrappedSendResult<SavePartyCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePartyCommand>()
