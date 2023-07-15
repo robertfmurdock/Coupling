@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.client.components.StubDispatchFunc
-import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.OldStubDispatchFunc
+import com.zegreatrob.coupling.client.components.OldStubDispatcher
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -36,7 +36,7 @@ class PartyConfigTest {
         val party = PartyDetails(PartyId("1"), name = "1")
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyConfig(party, StubDispatchFunc())
+            PartyConfig(party, OldStubDispatchFunc())
         }
     } verify {
         within(screen.getByLabelText("Pairing Rule"))
@@ -64,7 +64,7 @@ class PartyConfigTest {
             email = "email-y",
             name = "1",
         )
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = OldStubDispatcher()
     }) {
         render(
             MemoryRouter.create {
@@ -82,7 +82,7 @@ class PartyConfigTest {
         )
     } exercise {
         fireEvent.submit(screen.getByRole("form"))
-        act { stubDispatcher.wrappedSendResult<SavePartyCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.sendResult<SavePartyCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePartyCommand>()
@@ -95,7 +95,7 @@ class PartyConfigTest {
     @Test
     fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = asyncSetup(object {
         val party = PartyDetails(PartyId(""))
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = OldStubDispatcher()
     }) {
         render(jso { wrapper = MemoryRouter }) {
             PartyConfig(party, stubDispatcher.func())

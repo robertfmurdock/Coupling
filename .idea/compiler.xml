@@ -9,15 +9,25 @@
       <module name="com.zegreatrob.testmints.testmints.action-annotation" target="11" />
       <module name="git.testmints.libraries.testmints.action" target="11" />
       <module name="git.testmints.libraries.testmints.action-async" target="11" />
+      <module name="git.testmints.libraries.testmints.action-async~1" target="11" />
+      <module name="git.testmints.libraries.testmints.action~1" target="11" />
       <module name="git.testmints.libraries.testmints.async" target="11" />
+      <module name="git.testmints.libraries.testmints.async~1" target="11" />
       <module name="git.testmints.libraries.testmints.kotest-example" target="11" />
       <module name="git.testmints.libraries.testmints.kotest-example~1" target="11" />
+      <module name="git.testmints.libraries.testmints.kotest-example~2" target="11" />
       <module name="git.testmints.libraries.testmints.minassert" target="11" />
+      <module name="git.testmints.libraries.testmints.minassert~1" target="11" />
       <module name="git.testmints.libraries.testmints.mindiff" target="11" />
+      <module name="git.testmints.libraries.testmints.mindiff~1" target="11" />
       <module name="git.testmints.libraries.testmints.minspy" target="11" />
+      <module name="git.testmints.libraries.testmints.minspy~1" target="11" />
       <module name="git.testmints.libraries.testmints.mint-logs" target="11" />
+      <module name="git.testmints.libraries.testmints.mint-logs~1" target="11" />
       <module name="git.testmints.libraries.testmints.report" target="11" />
+      <module name="git.testmints.libraries.testmints.report~1" target="11" />
       <module name="git.testmints.libraries.testmints.standard" target="11" />
+      <module name="git.testmints.libraries.testmints.standard~1" target="11" />
       <module name="git.testmints.plugins.action-mint-plugin" target="11" />
       <module name="git.testmints.plugins.action-mint-plugin.functionalTest" target="11" />
       <module name="git.testmints.plugins.action-mint-plugin.main" target="11" />
@@ -40,12 +50,21 @@
       <module name="libraries.testmints.mint-logs" target="11" />
       <module name="libraries.testmints.report" target="11" />
       <module name="libraries.testmints.standard" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.action-mint-plugin" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.action-mint-plugin.functionalTest" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.action-mint-plugin.main" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.action-mint-plugin.test" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin.functionalTest" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin.main" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin.test" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1.functionalTest" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1.main" target="11" />
+      <module name="robertfmurdock.git.testmints.plugins.mint-logs-plugin~1.test" target="11" />
       <module name="testmints.action-annotation" target="11" />
       <module name="testmints.libraries.testmints.action" target="11" />
+      <module name="testmints.libraries.testmints.action-annotation" target="11" />
       <module name="testmints.libraries.testmints.action-async" target="11" />
       <module name="testmints.libraries.testmints.async" target="11" />
       <module name="testmints.libraries.testmints.kotest-example" target="11" />

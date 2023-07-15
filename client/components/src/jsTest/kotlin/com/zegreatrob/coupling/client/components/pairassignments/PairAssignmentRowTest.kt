@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
-import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.OldStubDispatcher
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -31,7 +31,7 @@ class PairAssignmentRowTest {
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList())
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = OldStubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -45,7 +45,7 @@ class PairAssignmentRowTest {
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
-        stubDispatcher.wrappedSendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted)
+        stubDispatcher.sendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted)
     } verify {
         stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
             .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, document.id)))
@@ -62,7 +62,7 @@ class PairAssignmentRowTest {
             DateTime.now(),
             emptyList(),
         )
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = OldStubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(

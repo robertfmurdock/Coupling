@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.components.player
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.client.components.StubDispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -17,7 +16,6 @@ import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
@@ -43,12 +41,20 @@ class PlayerConfigTest {
     fun selectingAvatarTypeWillAffectSavedPlayer() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
         val player = Player(id = "blarg", avatarType = null)
-        val stubber = StubDispatcher()
         val actor = UserEvent.setup()
+        val stubDispatcher = StubDispatcher()
     }) {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, stubber.func()) }
+                router = singleRouteRouter {
+                    PlayerConfig(
+                        party = party,
+                        player = player,
+                        players = emptyList(),
+                        reload = {},
+                        dispatchFunc = stubDispatcher.func(),
+                    )
+                }
             },
         )
         val element = screen.getByRole("combobox", RoleOptions(name = "Avatar Type"))
@@ -60,7 +66,7 @@ class PlayerConfigTest {
             partyId = party.id,
             player = player.copy(avatarType = AvatarType.DicebearAdventurer),
         )
-        stubber.commandsDispatched<SavePlayerCommand>()
+        stubDispatcher.receivedActions
             .assertIsEqualTo(listOf(expectedCommand))
     }
 
@@ -68,12 +74,20 @@ class PlayerConfigTest {
     fun deselectingAvatarTypeWillRemoveIt() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
         val player = Player(id = "blarg", avatarType = AvatarType.BoringBeam)
-        val stubber = StubDispatcher()
+        val altStubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, stubber.func()) }
+                router = singleRouteRouter {
+                    PlayerConfig(
+                        party = party,
+                        player = player,
+                        players = emptyList(),
+                        reload = {},
+                        dispatchFunc = altStubDispatcher.func(),
+                    )
+                }
             },
         )
     } exercise {
@@ -84,7 +98,7 @@ class PlayerConfigTest {
             partyId = party.id,
             player = player.copy(avatarType = null),
         )
-        stubber.commandsDispatched<SavePlayerCommand>()
+        altStubDispatcher.receivedActions
             .assertIsEqualTo(listOf(expectedCommand))
     }
 
@@ -95,7 +109,7 @@ class PlayerConfigTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()) }
+                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, dispatchFunc { {} }) }
             },
         )
     } verify { wrapper ->
@@ -112,7 +126,7 @@ class PlayerConfigTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, StubDispatchFunc()) }
+                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, dispatchFunc { {} }) }
             },
         )
     } verify { wrapper ->
@@ -127,13 +141,19 @@ class PlayerConfigTest {
         val party = PartyDetails(PartyId("party"))
         val player = Player(id = "blarg", badge = Badge.Default.value, avatarType = null)
         val reloaderSpy = SpyData<Unit, Unit>()
-        val stubDispatcher = StubDispatcher()
+        val altStubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
             RouterProvider.create {
                 router = singleRouteRouter {
-                    PlayerConfig(party, player, emptyList(), { reloaderSpy.spyFunction() }, stubDispatcher.func())
+                    PlayerConfig(
+                        party = party,
+                        player = player,
+                        players = emptyList(),
+                        reload = { reloaderSpy.spyFunction() },
+                        dispatchFunc = altStubDispatcher.func(),
+                    )
                 }
             },
         )
@@ -141,10 +161,10 @@ class PlayerConfigTest {
         actor.type(screen.getByLabelText("Name"), "nonsense")
 
         fireEvent.submit(screen.getByRole("form"))
-        act { stubDispatcher.wrappedSendResult<SavePlayerCommand, _>(VoidResult.Accepted) }
+        altStubDispatcher.resultChannel.send(VoidResult.Accepted)
     } verify {
         waitFor {
-            stubDispatcher.commandsDispatched<SavePlayerCommand>()
+            altStubDispatcher.receivedActions
                 .assertIsEqualTo(
                     listOf(SavePlayerCommand(party.id, player.copy(name = "nonsense"))),
                 )
@@ -160,7 +180,7 @@ class PlayerConfigTest {
         val pathSetterSpy = SpyData<String, Unit>()
         val party = PartyDetails(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
-        val stubDispatcher = StubDispatcher()
+        val altStubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -174,7 +194,14 @@ class PlayerConfigTest {
                         jso {
                             path = "*"
                             element = Fragment.create {
-                                PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFuncs)
+                                PlayerConfig(
+                                    party = party,
+                                    player = player,
+                                    players = emptyList(),
+                                    reload = { },
+                                    dispatchFunc = altStubDispatcher.func(),
+                                    windowFuncs = windowFuncs,
+                                )
                             }
                         },
                     ),
@@ -183,10 +210,10 @@ class PlayerConfigTest {
         )
     } exercise {
         actor.click(screen.getByText("Retire"))
-        act { stubDispatcher.wrappedSendResult<DeletePlayerCommand, _>(VoidResult.Accepted) }
+        altStubDispatcher.resultChannel.send(VoidResult.Accepted)
     } verify {
         waitFor {
-            stubDispatcher.commandsDispatched<DeletePlayerCommand>()
+            altStubDispatcher.receivedActions
                 .assertIsEqualTo(
                     listOf(DeletePlayerCommand(party.id, player.id)),
                 )
@@ -209,14 +236,21 @@ class PlayerConfigTest {
         render(
             RouterProvider.create {
                 router = singleRouteRouter {
-                    PlayerConfig(party, player, emptyList(), { }, stubDispatcher.func(), windowFunctions)
+                    PlayerConfig(
+                        party = party,
+                        player = player,
+                        players = emptyList(),
+                        reload = { },
+                        dispatchFunc = stubDispatcher.func(),
+                        windowFuncs = windowFunctions,
+                    )
                 }
             },
         )
     } exercise {
         actor.click(screen.getByText("Retire"))
     } verify {
-        stubDispatcher.dispatchList.isEmpty().assertIsEqualTo(true)
+        stubDispatcher.receivedActions.isEmpty().assertIsEqualTo(true)
     }
 
     @Test
@@ -240,7 +274,7 @@ class PlayerConfigTest {
                             path = "*"
                             element = Fragment.create {
                                 Link { to = "elsewhere"; button { +"Leave" } }
-                                PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc())
+                                PlayerConfig(party, player, emptyList(), { }, dispatchFunc { {} })
                             }
                         },
                     ),
@@ -268,7 +302,7 @@ class PlayerConfigTest {
     } exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), { }, StubDispatchFunc()) }
+                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), { }, dispatchFunc { {} }) }
             },
         )
     } verifyAnd { _ ->

@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components.slack
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
-import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.OldStubDispatcher
 import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
@@ -32,7 +32,7 @@ class SlackConnectPageContentTest {
 
     @Test
     fun willSendSaveCommandOnSave() = asyncSetup(object {
-        val stubber = StubDispatcher()
+        val stubber = OldStubDispatcher()
         val actor = UserEvent.setup()
         val parties = stubParties(6)
         val targetParty = parties.random()
@@ -52,7 +52,7 @@ class SlackConnectPageContentTest {
             .assertIsEqualTo(null, "Return button showed up unexpectedly early")
     } exercise {
         actor.click(saveButton)
-        act { stubber.wrappedSendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
+        act { stubber.sendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
     } verify {
         stubber.commandsDispatched<SaveSlackIntegrationCommand>()
             .assertIsEqualTo(
@@ -75,7 +75,7 @@ class SlackConnectPageContentTest {
                 parties = stubParties(2),
                 slackTeam = uuidString(),
                 slackChannel = uuidString(),
-                dispatchFunc = StubDispatcher().func(),
+                dispatchFunc = OldStubDispatcher().func(),
             )
         }
     } verify {
@@ -87,7 +87,7 @@ class SlackConnectPageContentTest {
     fun afterSaveReturnButtonTakesYouToParty() = asyncSetup(object {
         val actor = UserEvent.setup()
         val party = stubPartyDetails()
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = OldStubDispatcher()
     }) {
         render(
             RouterProvider.create {
@@ -113,7 +113,7 @@ class SlackConnectPageContentTest {
             },
         )
         actor.click(saveButton)
-        act { stubDispatcher.wrappedSendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.sendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
     } exercise {
         actor.click(returnButton)
     } verify {

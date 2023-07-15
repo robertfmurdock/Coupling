@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.components.pin
 
 import com.zegreatrob.coupling.action.pin.SavePinCommand
-import com.zegreatrob.coupling.client.components.StubDispatchFunc
-import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.OldStubDispatchFunc
+import com.zegreatrob.coupling.client.components.OldStubDispatcher
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.client.components.player.singleRouteRouter
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -34,7 +34,7 @@ class PinConfigEditorTest {
                         pin = pin,
                         pinList = emptyList(),
                         reload = {},
-                        dispatchFunc = StubDispatchFunc(),
+                        dispatchFunc = OldStubDispatchFunc(),
                     )
                 }
             },
@@ -51,7 +51,7 @@ class PinConfigEditorTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, StubDispatchFunc()) }
+                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, OldStubDispatchFunc()) }
             },
         )
     } verify {
@@ -66,7 +66,7 @@ class PinConfigEditorTest {
         val newName = "pin new name"
         val newIcon = "pin new icon"
 
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = OldStubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(

@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.components.Controls
-import com.zegreatrob.coupling.client.components.StubDispatchFunc
+import com.zegreatrob.coupling.client.components.OldStubDispatchFunc
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -59,7 +59,7 @@ class PairAssignmentsTest {
                 players,
                 pairAssignments,
                 { pairAssignments = it },
-                controls = Controls(StubDispatchFunc()) {},
+                controls = Controls(OldStubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
             ),
@@ -94,7 +94,7 @@ class PairAssignmentsTest {
                 players,
                 null,
                 {},
-                controls = Controls(StubDispatchFunc()) {},
+                controls = Controls(OldStubDispatchFunc()) {},
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
             ),

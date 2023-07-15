@@ -135,13 +135,15 @@ class NoOpDispatcherDispatchFunc : DispatchFunc<NoOpDispatcher> {
     override fun <C : SuspendAction<NoOpDispatcher, R>, R> invoke(
         commandFunc: () -> C,
         response: (R) -> Unit,
-    ): () -> Unit = {}
+    ) = fun() {}
 
     override fun <C, R> invoke(
         commandFunc: () -> C,
         fireFunc: suspend ActionCannon<NoOpDispatcher>.(C) -> R,
         response: (R) -> Unit,
-    ) = {}
+    ) = fun() {}
+
+    override fun invoke(block: suspend ActionCannon<NoOpDispatcher>.() -> Unit): () -> Unit = fun() {}
 }
 
 interface NoOpDispatcher :

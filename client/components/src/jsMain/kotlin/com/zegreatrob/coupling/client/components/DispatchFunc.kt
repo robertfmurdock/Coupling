@@ -1,9 +1,10 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.coupling.client.components.player.DispatchFunc
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.action.async.SuspendAction
 
-interface DispatchFunc<D> {
+interface DispatchFunc<D> : DispatchFunc<D> {
     operator fun <C : SuspendAction<D, R>, R> invoke(
         commandFunc: () -> C,
         response: (R) -> Unit,

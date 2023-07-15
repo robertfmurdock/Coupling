@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.action.DispatcherPipeCannon
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.client.plugins.websocket.webSocketSession
 import io.ktor.client.request.url
@@ -56,7 +57,7 @@ class WebsocketTest {
     }
 
     private suspend fun SdkContext.couplingSocketSession(partyId: PartyId): DefaultClientWebSocketSession {
-        val token = (sdk.dispatcher as KtorCouplingSdkDispatcher).getIdTokenFunc()
+        val token = ((sdk as DispatcherPipeCannon).dispatcher as KtorCouplingSdkDispatcher).getIdTokenFunc()
         return generalPurposeClient.webSocketSession {
             url("wss://$socketHost/api/websocket?partyId=${partyId.value}&token=$token")
         }

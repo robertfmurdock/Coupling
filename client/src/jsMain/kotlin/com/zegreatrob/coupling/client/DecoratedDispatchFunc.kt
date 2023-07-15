@@ -28,9 +28,18 @@ class DecoratedDispatchFunc<D>(
         val cannon = cannonFunc()
         val command = commandFunc()
         tools.performAsyncWork(
-            { fireFunc(cannon, command) },
-            { handler: Throwable -> throw handler },
-            response,
+            work = { fireFunc(cannon, command) },
+            errorResult = { handler: Throwable -> throw handler },
+            onWorkComplete = response,
+        )
+    }
+
+    override fun invoke(block: suspend ActionCannon<D>.() -> Unit): () -> Unit = fun() {
+        val cannon = cannonFunc()
+        tools.performAsyncWork(
+            work = { block(cannon) },
+            errorResult = { handler: Throwable -> throw handler },
+            onWorkComplete = {},
         )
     }
 }

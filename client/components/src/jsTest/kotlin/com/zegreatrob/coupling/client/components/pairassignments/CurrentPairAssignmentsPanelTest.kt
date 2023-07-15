@@ -4,7 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
-import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.OldStubDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -35,7 +35,7 @@ class CurrentPairAssignmentsPanelTest {
             date = DateTime.now(),
             pairs = emptyList(),
         )
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = OldStubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -62,7 +62,7 @@ class CurrentPairAssignmentsPanelTest {
         )
     } exercise {
         actor.click(screen.getByText("Save!"))
-        stubDispatcher.wrappedSendResult<SavePairAssignmentsCommand, _>(VoidResult.Accepted)
+        stubDispatcher.sendResult<SavePairAssignmentsCommand, _>(VoidResult.Accepted)
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<SavePairAssignmentsCommand>().size
@@ -75,7 +75,7 @@ class CurrentPairAssignmentsPanelTest {
     fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = asyncSetup(object {
         val party = stubPartyDetails()
         val pairAssignments = stubPairAssignmentDoc()
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = OldStubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -104,7 +104,7 @@ class CurrentPairAssignmentsPanelTest {
         )
     } exercise {
         actor.click(screen.findByText("Cancel"))
-        act { stubDispatcher.wrappedSendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.sendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted) }
     } verify {
         waitFor {
             stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
