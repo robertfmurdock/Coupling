@@ -1,7 +1,7 @@
 [libraries]
 com-benasher44-uuid = "com.benasher44:uuid:0.7.1"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.2"
-com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:4.0.0"
+com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:4.1.0"
 com-soywiz-korlibs-klock = "com.soywiz.korlibs.klock:klock:4.0.9"
 com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:4.3.14"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:10.1.0"
