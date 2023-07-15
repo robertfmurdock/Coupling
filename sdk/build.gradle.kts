@@ -13,6 +13,14 @@ kotlin {
         }
         jvm()
     }
+
+    sourceSets {
+        named("jsTest") {
+            kotlin {
+                srcDir(projectDir.resolve("src/commonTest/kotlin"))
+            }
+        }
+    }
 }
 
 dependencies {
