@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.entity.party
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
-import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.action.party.perform
 import com.zegreatrob.coupling.json.SaveSlackIntegrationInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.toJson
@@ -13,7 +13,7 @@ import kotlinx.serialization.json.JsonNull
 val saveSlackIntegrationResolver = dispatchAction(
     dispatcherFunc = { request, _: JsonNull, args -> authorizedPartyDispatcher(request, args.partyId) },
     commandFunc = { _, input: SaveSlackIntegrationInput -> input.toCommand() },
-    fireFunc = ::fire,
+    fireFunc = ::perform,
     toSerializable = VoidResult::toJson,
 )
 

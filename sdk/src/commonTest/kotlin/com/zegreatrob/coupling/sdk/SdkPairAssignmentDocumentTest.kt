@@ -52,9 +52,9 @@ class SdkPairAssignmentDocumentTest {
             val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
         }
     }) {
-        fire(sdk, SavePairAssignmentsCommand(party.id, pairAssignmentDocument))
+        sdk.fire(SavePairAssignmentsCommand(party.id, pairAssignmentDocument))
     } exercise {
-        fire(sdk, SavePairAssignmentsCommand(party.id, updatedDocument))
+        sdk.fire(SavePairAssignmentsCommand(party.id, updatedDocument))
     } verifyWithWait {
         sdk.fire(graphQuery { party(party.id) { pairAssignmentDocumentList() } })
             ?.party
@@ -67,7 +67,7 @@ class SdkPairAssignmentDocumentTest {
 
     @Test
     fun deleteWhenDocumentDoesNotExistWillNotExplode() = repositorySetup().exercise {
-        runCatching { fire(sdk, DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${uuid4()}"))) }
+        runCatching { sdk.fire(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${uuid4()}"))) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)
@@ -84,7 +84,7 @@ class SdkPairAssignmentDocumentTest {
         }
     }) {
         listOf(middle, oldest, newest)
-            .forEach { fire(sdk, SavePairAssignmentsCommand(partyId, it)) }
+            .forEach { sdk.fire(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
         sdk.fire(graphQuery { party(partyId) { currentPairAssignments() } })
             ?.party
@@ -101,9 +101,9 @@ class SdkPairAssignmentDocumentTest {
             val document = stubPairAssignmentDoc()
         }
     }) {
-        fire(sdk, SavePairAssignmentsCommand(partyId, document))
+        sdk.fire(SavePairAssignmentsCommand(partyId, document))
     } exercise {
-        fire(sdk, DeletePairAssignmentsCommand(partyId, document.id))
+        sdk.fire(DeletePairAssignmentsCommand(partyId, document.id))
     } verifyWithWait {
         sdk.fire(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
             ?.party
@@ -125,7 +125,7 @@ class SdkPairAssignmentDocumentTest {
         }
     }) {
         listOf(middle, oldest, newest)
-            .forEach { fire(sdk, SavePairAssignmentsCommand(partyId, it)) }
+            .forEach { sdk.fire(SavePairAssignmentsCommand(partyId, it)) }
     } exercise {
         sdk.fire(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
             ?.party
@@ -160,7 +160,7 @@ class SdkPairAssignmentDocumentTest {
         }
     }) {
         otherSdk.fire(SavePartyCommand(otherParty))
-        fire(otherSdk, SavePairAssignmentsCommand(otherParty.id, stubPairAssignmentDoc()))
+        otherSdk.fire(SavePairAssignmentsCommand(otherParty.id, stubPairAssignmentDoc()))
     } exercise {
         sdk.fire(graphQuery { party(PartyId("someoneElseParty")) { pairAssignmentDocumentList() } })
             ?.party
@@ -180,7 +180,7 @@ class SdkPairAssignmentDocumentTest {
             val pairAssignmentDoc = stubPairAssignmentDoc()
         }
     }) {
-        fire(sdk, SavePairAssignmentsCommand(partyId, pairAssignmentDoc))
+        sdk.fire(SavePairAssignmentsCommand(partyId, pairAssignmentDoc))
     } exercise {
         sdk.fire(graphQuery { party(partyId) { pairAssignmentDocumentList() } })
             ?.party

@@ -32,7 +32,7 @@ class SdkSecretTest {
     }) {
         sdk().fire(SavePartyCommand(party))
     } exercise {
-        fire(sdk(), CreateSecretCommand(party.id))
+        sdk().fire(CreateSecretCommand(party.id))
     } verify { result ->
         val (secret, token) = result!!
         secret.assertIsNotEqualTo(null)
@@ -58,11 +58,11 @@ class SdkSecretTest {
         lateinit var token: String
     }) {
         sdk().fire(SavePartyCommand(party))
-        val result = fire(sdk(), CreateSecretCommand(party.id))!!
+        val result = sdk().fire(CreateSecretCommand(party.id))!!
         secret = result.first
         token = result.second
     } exercise {
-        fire(sdk(), DeleteSecretCommand(party.id, secret))
+        sdk().fire(DeleteSecretCommand(party.id, secret))
     } verify {
         sdk().fire(graphQuery { party(party.id) { secretList() } })
             ?.party
@@ -85,7 +85,7 @@ class SdkSecretTest {
             .map { SavePartyCommand(it) }
             .forEach { sdk().fire(it) }
     } exercise {
-        fire(sdk(), CreateSecretCommand(party1.id))
+        sdk().fire(CreateSecretCommand(party1.id))
     } verify { result ->
         val (_, token) = result!!
         val tokenSdk = couplingSdk({ token }, buildClient())
@@ -107,7 +107,7 @@ class SdkSecretTest {
     fun canNotGenerateSecretForArbitraryParty() = asyncSetup(object {
         val partyId = stubPartyId()
     }) exercise {
-        fire(sdk(), CreateSecretCommand(partyId))
+        sdk().fire(CreateSecretCommand(partyId))
     } verify { result ->
         result.assertIsEqualTo(null)
     }

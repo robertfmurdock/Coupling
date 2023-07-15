@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.fire
+import com.zegreatrob.coupling.action.pairassignmentdocument.perform
 import com.zegreatrob.coupling.json.SpinInput
 import com.zegreatrob.coupling.server.external.graphql.Resolver
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
@@ -16,7 +16,7 @@ val spinResolver: Resolver = dispatchAction(
         )
     },
     commandFunc = { _, args: SpinInput -> args.command() },
-    fireFunc = ::fire,
+    fireFunc = ::perform,
     toSerializable = { true },
 )
 

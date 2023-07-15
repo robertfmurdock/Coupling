@@ -29,10 +29,8 @@ val SlackCallbackPage by nfc<PageProps> { props ->
         } else {
             DataLoader(
                 getDataAsync = {
-                    fire(
-                        props.commander.tracingDispatcher().sdk,
-                        GrantSlackAccessCommand(code, state),
-                    )
+                    props.commander.tracingDispatcher().sdk
+                        .fire(GrantSlackAccessCommand(code, state))
                 },
                 errorData = { VoidResult.Rejected },
                 child = SlackCallbackLoadContent::create,

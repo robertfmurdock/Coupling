@@ -22,13 +22,13 @@ class DecoratedDispatchFunc<D>(
 
     override fun <C, R> invoke(
         commandFunc: () -> C,
-        fireCommand: suspend ActionCannon<D>.(C) -> R,
+        fireFunc: suspend ActionCannon<D>.(C) -> R,
         response: (R) -> Unit,
     ): () -> Unit = fun() {
         val cannon = cannonFunc()
         val command = commandFunc()
         tools.performAsyncWork(
-            { fireCommand(cannon, command) },
+            { fireFunc(cannon, command) },
             { handler: Throwable -> throw handler },
             response,
         )

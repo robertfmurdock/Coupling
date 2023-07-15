@@ -133,7 +133,7 @@ class WebsocketTest {
         sdk.fire(SavePartyCommand(party))
         sockets.add(couplingSocketSession(party.id).alsoWaitForFirstFrame())
     } exercise {
-        fire(sdk, SavePairAssignmentsCommand(party.id, expectedPairDoc))
+        sdk.fire(SavePairAssignmentsCommand(party.id, expectedPairDoc))
     } verifyAnd {
         sockets.first()
             .readTextFrame()

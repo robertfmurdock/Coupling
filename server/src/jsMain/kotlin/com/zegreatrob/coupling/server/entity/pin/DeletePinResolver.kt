@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.pin
 
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
-import com.zegreatrob.coupling.action.pin.fire
+import com.zegreatrob.coupling.action.pin.perform
 import com.zegreatrob.coupling.json.DeletePinInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
 import com.zegreatrob.coupling.server.graphql.dispatchAction
@@ -15,7 +15,7 @@ val deletePinResolver = dispatchAction(
         )
     },
     commandFunc = { _, input -> input.toCommand() },
-    fireFunc = ::fire,
+    fireFunc = ::perform,
     toSerializable = { true },
 )
 

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.pin
 
 import com.zegreatrob.coupling.action.pin.SavePinCommand
-import com.zegreatrob.coupling.action.pin.fire
+import com.zegreatrob.coupling.action.pin.perform
 import com.zegreatrob.coupling.json.SavePinInput
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
@@ -16,7 +16,7 @@ val savePinResolver = dispatchAction(
         )
     },
     commandFunc = { _, input -> input.toCommand() },
-    fireFunc = ::fire,
+    fireFunc = ::perform,
     toSerializable = { true },
 )
 

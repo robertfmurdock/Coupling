@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.slack
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
-import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.action.party.perform
 import com.zegreatrob.coupling.client.components.ConfigForm
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
@@ -52,7 +52,7 @@ val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
     var result by useState<VoidResult?>(null)
     val onSave = props.dispatchFunc(
         commandFunc = { command },
-        fireCommand = ::fire,
+        fireFunc = ::perform,
         response = { result = it },
     )
 

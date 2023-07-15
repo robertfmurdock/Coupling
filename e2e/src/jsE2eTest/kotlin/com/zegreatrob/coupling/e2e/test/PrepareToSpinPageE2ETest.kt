@@ -31,7 +31,7 @@ class PrepareToSpinPageE2ETest {
             val sdk = sdk.await().apply {
                 fire(SavePartyCommand(party))
                 players.forEach { fire(SavePlayerCommand(party.id, it)) }
-                fire(sdk.await(), SavePinCommand(party.id, pin))
+                sdk.await().fire(SavePinCommand(party.id, pin))
             }
 
             FullPartyData(players, listOf(pin), party, sdk)

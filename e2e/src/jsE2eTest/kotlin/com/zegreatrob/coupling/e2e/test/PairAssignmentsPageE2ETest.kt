@@ -185,7 +185,7 @@ class PairAssignmentsPageE2ETest {
                     fire(SavePartyCommand(party))
                     coroutineScope {
                         launch { players.forEach { fire(SavePlayerCommand(party.id, it)) } }
-                        launch { fire(sdk.await(), SavePairAssignmentsCommand(party.id, pairAssignmentDocument)) }
+                        launch { sdk.await().fire(SavePairAssignmentsCommand(party.id, pairAssignmentDocument)) }
                     }
                 }
             })

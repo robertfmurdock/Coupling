@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.secret
 
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
-import com.zegreatrob.coupling.action.secret.fire
+import com.zegreatrob.coupling.action.secret.perform
 import com.zegreatrob.coupling.json.DeleteSecretInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
@@ -17,6 +17,6 @@ val deleteSecretResolver = dispatchAction(
         )
     },
     commandFunc = { _, args: DeleteSecretInput -> DeleteSecretCommand(PartyId(args.partyId), Secret(args.secretId)) },
-    fireFunc = ::fire,
+    fireFunc = ::perform,
     toSerializable = { true },
 )

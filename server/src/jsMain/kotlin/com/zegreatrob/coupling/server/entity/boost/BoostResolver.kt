@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.boost
 
 import com.zegreatrob.coupling.action.boost.BoostQuery
-import com.zegreatrob.coupling.action.boost.fire
+import com.zegreatrob.coupling.action.boost.perform
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Boost
@@ -13,7 +13,7 @@ import kotlinx.serialization.json.JsonNull
 val boostResolver = dispatchAction(
     dispatcherFunc = prereleaseCommand(),
     commandFunc = { _: JsonParty, _: JsonNull -> BoostQuery() },
-    fireFunc = ::fire,
+    fireFunc = ::perform,
     toSerializable = ::jsonBoostRecord,
 )
 

@@ -171,7 +171,7 @@ class SdkPartyTest {
     }) {
         sdk().fire(SavePartyCommand(party))
     } exercise {
-        fire(sdk(), SaveSlackIntegrationCommand(partyId = party.id, team = slackTeam, channel = slackChannel))
+        sdk().fire(SaveSlackIntegrationCommand(partyId = party.id, team = slackTeam, channel = slackChannel))
     } verifyAnd { result ->
         result.assertIsEqualTo(VoidResult.Accepted)
         val queryResult = sdk().fire(graphQuery { party(party.id) { integration() } })
@@ -194,7 +194,7 @@ class SdkPartyTest {
         val slackTeam = uuidString()
         val slackChannel = uuidString()
     }) exercise {
-        fire(sdk(), SaveSlackIntegrationCommand(partyId = party.id, team = slackTeam, channel = slackChannel))
+        sdk().fire(SaveSlackIntegrationCommand(partyId = party.id, team = slackTeam, channel = slackChannel))
     } verify { result ->
         result.assertIsEqualTo(CommandResult.Unauthorized)
         sdk().fire(graphQuery { party(party.id) { integration() } })

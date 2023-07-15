@@ -139,7 +139,7 @@ class NoOpDispatcherDispatchFunc : DispatchFunc<NoOpDispatcher> {
 
     override fun <C, R> invoke(
         commandFunc: () -> C,
-        fireCommand: suspend ActionCannon<NoOpDispatcher>.(C) -> R,
+        fireFunc: suspend ActionCannon<NoOpDispatcher>.(C) -> R,
         response: (R) -> Unit,
     ) = {}
 }

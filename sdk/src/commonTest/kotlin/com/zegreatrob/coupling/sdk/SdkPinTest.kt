@@ -48,7 +48,7 @@ class SdkPinTest {
             }
         },
     ) exercise {
-        pins.forEach { fire(sdk, SavePinCommand(party.id, it)) }
+        pins.forEach { sdk.fire(SavePinCommand(party.id, it)) }
     } verifyWithWait {
         sdk.fire(graphQuery { party(party.id) { pinList() } })
             ?.party
@@ -60,7 +60,7 @@ class SdkPinTest {
 
     @Test
     fun whenPinDoesNotExistDeleteWillDoNothing() = partySetup() exercise {
-        runCatching { fire(sdk, DeletePinCommand(party.id, "${uuid4()}")) }
+        runCatching { sdk.fire(DeletePinCommand(party.id, "${uuid4()}")) }
     } verify { result ->
         result.exceptionOrNull()
             .assertIsEqualTo(null)
@@ -87,8 +87,8 @@ class SdkPinTest {
             )
         }
     }) exercise {
-        pins.forEach { fire(sdk, SavePinCommand(party.id, it)) }
-        fire(sdk, DeletePinCommand(party.id, this.pins[1].id!!))
+        pins.forEach { sdk.fire(SavePinCommand(party.id, it)) }
+        sdk.fire(DeletePinCommand(party.id, this.pins[1].id!!))
     } verifyWithWait {
         sdk.fire(graphQuery { party(party.id) { pinList() } })
             ?.party
@@ -113,7 +113,7 @@ class SdkPinTest {
             )
         }
     }) exercise {
-        fire(sdk, SavePinCommand(partyId, pin))
+        sdk.fire(SavePinCommand(partyId, pin))
     } verifyWithWait {
         sdk.fire(graphQuery { party(partyId) { pinList() } })
             ?.party
@@ -135,7 +135,7 @@ class SdkPinTest {
         suspend fun otherSdk() = altAuthorizedSdkDeferred.await()
     }) {
         otherSdk().fire(SavePartyCommand(otherParty))
-        fire(otherSdk(), SavePinCommand(otherParty.id, stubPin()))
+        otherSdk().fire(SavePinCommand(otherParty.id, stubPin()))
     } exercise {
         sdk().fire(graphQuery { party(otherParty.id) { pinList() } })
             ?.party
@@ -154,7 +154,7 @@ class SdkPinTest {
     }) {
         sdk = sdk()
         sdk.fire(SavePartyCommand(party))
-        fire(sdk, SavePinCommand(party.id, pin))
+        sdk.fire(SavePinCommand(party.id, pin))
     } exercise {
         sdk.fire(graphQuery { party(party.id) { pinList() } })
             ?.party

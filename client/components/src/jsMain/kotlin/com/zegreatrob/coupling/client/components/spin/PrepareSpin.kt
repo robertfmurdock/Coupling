@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.spin
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.fire
+import com.zegreatrob.coupling.action.pairassignmentdocument.perform
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.newPairAssignmentsPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -69,6 +69,6 @@ private fun onSpin(
     setRedirectUrl: (String) -> Unit,
 ) = dispatchFunc(
     commandFunc = { SpinCommand(party.id, playerSelections.playerIds(), pinSelections.filterNotNull()) },
-    fireCommand = ::fire,
+    fireFunc = ::perform,
     response = { setRedirectUrl(party.newPairAssignmentsPath()) },
 )

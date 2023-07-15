@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.fire
+import com.zegreatrob.coupling.action.pairassignmentdocument.perform
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.CouplingWebsocket
 import com.zegreatrob.coupling.client.components.disconnectedMessage
@@ -44,7 +44,7 @@ val SocketedPairAssignments by nfc<SocketedPairAssignmentsProps<*>> { (party, pl
         setPairAssignments(new)
         controls.dispatchFunc(
             commandFunc = { SavePairAssignmentsCommand(party.id, new) },
-            fireCommand = ::fire,
+            fireFunc = ::perform,
             response = {},
         ).invoke()
     }

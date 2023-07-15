@@ -20,15 +20,13 @@ class SdkGlobalStatsTest {
         val party = stubPartyDetails()
     }) {
         sdk().fire(SavePartyCommand(party))
-        fire(
-            sdk(),
+        sdk().fire(
             SavePairAssignmentsCommand(
                 partyId = party.id,
                 pairAssignments = stubPairAssignmentDoc().copy(date = DateTime.now().minus(2.days)),
             ),
         )
-        fire(
-            sdk(),
+        sdk().fire(
             SavePairAssignmentsCommand(
                 partyId = party.id,
                 pairAssignments = stubPairAssignmentDoc().copy(date = DateTime.now()),

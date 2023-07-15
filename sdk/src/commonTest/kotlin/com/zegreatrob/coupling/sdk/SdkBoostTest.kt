@@ -29,19 +29,19 @@ class SdkBoostTest {
     @Test
     fun deleteWillMakeBoostNotRecoverableThroughGet() = setupWithUser {
     } exercise {
-        fire(sdk, SaveBoostCommand(setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))))
-        fire(sdk, DeleteBoostCommand())
+        sdk.fire(SaveBoostCommand(setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))))
+        sdk.fire(DeleteBoostCommand())
     } verifyWithWait {
-        fire(sdk, BoostQuery())
+        sdk.fire(BoostQuery())
             .assertIsEqualTo(null)
     }
 
     @Test
     fun getBoostWhenThereIsNoneReturnsNull() = setupWithUser {
     } exercise {
-        fire(sdk, DeleteBoostCommand())
+        sdk.fire(DeleteBoostCommand())
     } verifyWithWait {
-        fire(sdk, BoostQuery())
+        sdk.fire(BoostQuery())
             .assertIsEqualTo(null)
     }
 
@@ -53,9 +53,9 @@ class SdkBoostTest {
             val partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))
         }
     }) exercise {
-        fire(sdk, SaveBoostCommand(partyIds))
+        sdk.fire(SaveBoostCommand(partyIds))
     } verifyWithWait {
-        fire(sdk, BoostQuery())
+        sdk.fire(BoostQuery())
             ?.data
             .assertIsEqualTo(
                 Boost(
@@ -75,11 +75,11 @@ class SdkBoostTest {
             val updatedBoostParties2 = setOf(PartyId("${uuid4()}"))
         }
     }) exercise {
-        fire(sdk, SaveBoostCommand(initialBoostParties))
-        fire(sdk, SaveBoostCommand(updatedBoostParties1))
-        fire(sdk, SaveBoostCommand(updatedBoostParties2))
+        sdk.fire(SaveBoostCommand(initialBoostParties))
+        sdk.fire(SaveBoostCommand(updatedBoostParties1))
+        sdk.fire(SaveBoostCommand(updatedBoostParties2))
     } verifyWithWait {
-        fire(sdk, BoostQuery())
+        sdk.fire(BoostQuery())
             ?.data
             .assertIsEqualTo(
                 Boost(

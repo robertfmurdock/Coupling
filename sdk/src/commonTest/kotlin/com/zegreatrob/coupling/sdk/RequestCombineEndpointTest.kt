@@ -36,7 +36,7 @@ class RequestCombineEndpointTest {
         }
     }) {
         sdk.fire(SavePartyCommand(party))
-        pinsToSave.forEach { fire(cannon = sdk, action = SavePinCommand(party.id, it)) }
+        pinsToSave.forEach { sdk.fire(SavePinCommand(party.id, it)) }
         playersToSave.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
     } exercise {
         coroutineScope {

@@ -11,7 +11,7 @@ interface DispatchFunc<D> {
 
     operator fun <C, R> invoke(
         commandFunc: () -> C,
-        fireCommand: suspend ActionCannon<D>.(C) -> R,
+        fireFunc: suspend ActionCannon<D>.(C) -> R,
         response: (R) -> Unit,
     ): () -> Unit
 }

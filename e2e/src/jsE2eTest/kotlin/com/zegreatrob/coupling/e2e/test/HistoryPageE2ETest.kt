@@ -69,7 +69,7 @@ class HistoryPageE2ETest {
                         ),
                     ),
                 ),
-            ).onEach { fire(sdk, SavePairAssignmentsCommand(party.id, it)) }
+            ).onEach { sdk.fire(SavePairAssignmentsCommand(party.id, it)) }
 
             private fun buildPairAssignmentDocument(number: Int, pairs: List<CouplingPair>) = PairAssignmentDocument(
                 PairAssignmentDocumentId("${DateTime.now().milliseconds}-HistoryPageE2ETest-$number"),

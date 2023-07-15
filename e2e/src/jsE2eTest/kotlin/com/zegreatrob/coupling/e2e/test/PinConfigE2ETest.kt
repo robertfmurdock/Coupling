@@ -73,7 +73,7 @@ class PinConfigE2ETest {
                 val pin = randomPin()
             }.attachParty(),
         ) {
-            fire(sdk, SavePinCommand(party.id, pin))
+            sdk.fire(SavePinCommand(party.id, pin))
         } exercise {
             PinConfigPage.goTo(party.id, pin.id)
         } verify {
@@ -91,7 +91,7 @@ class PinConfigE2ETest {
                 val pin = randomPin()
             }.attachParty(),
         ) {
-            fire(sdk, SavePinCommand(party.id, pin))
+            sdk.fire(SavePinCommand(party.id, pin))
             PinConfigPage.goTo(party.id, pin.id)
         } exercise {
             getDeleteButton().click()

@@ -54,7 +54,7 @@ class SpinTest {
         sdk.fire(SavePartyCommand(party))
         players.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
     } exercise {
-        fire(sdk, SpinCommand(party.id, players.map { it.id }, emptyList()))
+        sdk.fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
         result.assertIsEqualTo(VoidResult.Accepted)
         queryCurrentPairs(party.id, sdk)
@@ -96,7 +96,7 @@ class SpinTest {
     }) {
         setupScenario(sdk, party, players, history)
     } exercise {
-        fire(sdk, SpinCommand(party.id, players.map { it.id }, emptyList()))
+        sdk.fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
         result.assertIsEqualTo(VoidResult.Accepted)
         queryCurrentPairs(party.id, sdk)
@@ -137,7 +137,7 @@ class SpinTest {
     }) {
         setupScenario(sdk.await(), party, players, history)
     } exercise {
-        fire(sdk.await(), SpinCommand(party.id, players.map { it.id }, emptyList()))
+        sdk.await().fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
         result.assertIsEqualTo(VoidResult.Accepted)
         queryCurrentPairs(party.id, sdk.await())
@@ -167,7 +167,7 @@ class SpinTest {
         fun whenAPinExistsWillAssignOnePinToPair() = asyncSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            fire(sdk, SpinCommand(party.id, players.map { it.id }, listOf(pin.id!!)))
+            sdk.fire(SpinCommand(party.id, players.map { it.id }, listOf(pin.id!!)))
         } verifyAnd { result ->
             result.assertIsEqualTo(VoidResult.Accepted)
             queryCurrentPairs(party.id, sdk)
@@ -183,7 +183,7 @@ class SpinTest {
         fun whenAPinExistsButIsDeselectedWillNotAssign() = asyncSetup.with({ pinExistsSetup(it) }) {
             setupScenario(sdk, party, players, pins = listOf(pin))
         } exercise {
-            fire(sdk, SpinCommand(party.id, players.map { it.id }, emptyList()))
+            sdk.fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
         } verifyAnd { result ->
             result.assertIsEqualTo(VoidResult.Accepted)
             queryCurrentPairs(party.id, sdk)
@@ -214,8 +214,8 @@ class SpinTest {
             with(sdk) {
                 fire(SavePartyCommand(party))
                 players.forEach { fire(SavePlayerCommand(party.id, it)) }
-                history.forEach { launch { fire(sdk, SavePairAssignmentsCommand(party.id, it)) } }
-                pins.forEach { launch { fire(sdk, SavePinCommand(party.id, it)) } }
+                history.forEach { launch { sdk.fire(SavePairAssignmentsCommand(party.id, it)) } }
+                pins.forEach { launch { sdk.fire(SavePinCommand(party.id, it)) } }
             }
         }
     }

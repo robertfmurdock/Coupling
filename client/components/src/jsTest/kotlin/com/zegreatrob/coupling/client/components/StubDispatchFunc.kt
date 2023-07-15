@@ -46,7 +46,7 @@ class StubDispatchFunc<D>(private val stubber: StubDispatcher = StubDispatcher()
 
     override fun <C, R> invoke(
         commandFunc: () -> C,
-        fireCommand: suspend ActionCannon<D>.(C) -> R,
+        fireFunc: suspend ActionCannon<D>.(C) -> R,
         response: (R) -> Unit,
     ): () -> Unit = {
         stubber.dispatchList.add(DispatchedFunc(commandFunc(), response))
