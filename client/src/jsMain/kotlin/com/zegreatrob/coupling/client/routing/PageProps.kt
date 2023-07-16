@@ -38,7 +38,8 @@ class MasterCommander(private val getIdentityToken: suspend () -> String) : Comm
         MemoryRepositoryCatalog("test-user", backend, Clock.System)
             .sdk
     } else {
-        couplingSdk(getIdentityToken, defaultClient(getLocationAndBasename()), LoggingActionPipe(traceId))
+        val locationAndBasename = getLocationAndBasename()
+        couplingSdk(getIdentityToken, defaultClient(locationAndBasename, traceId), LoggingActionPipe(traceId))
     }
 }
 

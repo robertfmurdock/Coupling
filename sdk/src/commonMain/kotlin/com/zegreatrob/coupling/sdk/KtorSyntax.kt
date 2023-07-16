@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -13,7 +14,7 @@ import io.ktor.http.Url
 import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 
-fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
+fun defaultClient(locationAndBasename: Pair<String, String>?, traceId: Uuid? = null) = HttpClient {
     install(ContentNegotiation) {
         json()
     }
@@ -23,7 +24,7 @@ fun defaultClient(locationAndBasename: Pair<String, String>?) = HttpClient {
     expectSuccess = false
     defaultRequest {
         header(UserAgent, "CouplingSdk")
-        header("X-Request-ID", uuid4())
+        header("X-Request-ID", traceId ?: uuid4())
         locationAndBasename
             ?.let { (location, basename) ->
                 url {

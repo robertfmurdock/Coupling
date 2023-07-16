@@ -83,7 +83,7 @@ private val ktorLogger = KotlinLogging.logger("ktor")
 fun buildClient(): HttpClient {
     setupPlatformSpecificKtorSettings()
 
-    val client = defaultClient(null).config {
+    val client = defaultClient(null, uuid4()).config {
         followRedirects = false
         expectSuccess = false
         defaultRequest { url("$baseUrl") }
