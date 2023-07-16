@@ -1,3 +1,4 @@
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
@@ -5,8 +6,6 @@ import com.zegreatrob.tools.TaggerPlugin
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
-import org.jmailen.gradle.kotlinter.tasks.FormatTask
-import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
     id("com.zegreatrob.jsmints.plugins.minreact")
