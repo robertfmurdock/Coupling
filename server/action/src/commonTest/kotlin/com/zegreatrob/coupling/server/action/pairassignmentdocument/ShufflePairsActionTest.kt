@@ -15,7 +15,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.setup
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 
 class ShufflePairsActionTest {
@@ -26,7 +26,7 @@ class ShufflePairsActionTest {
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 
-        val expectedDate = DateTime.now()
+        val expectedDate = Clock.System.now()
         override fun currentDate() = expectedDate
         val party = PartyDetails(PartyId("1"), PairingRule.LongestTime)
         val players = emptyList<Player>()

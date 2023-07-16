@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 
 class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlayerRepository> {
@@ -40,8 +40,8 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
     fun saveWillWriteToSecondRepository() = asyncSetup(object {
         val stubUser = stubUser()
 
-        val repository1 = MemoryPlayerRepository(stubUser.email, TimeProvider)
-        val repository2 = MemoryPlayerRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPlayerRepository(stubUser.email, Clock.System)
+        val repository2 = MemoryPlayerRepository(stubUser.email, Clock.System)
 
         val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 
@@ -58,8 +58,8 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
     fun deleteWillWriteToSecondRepository() = asyncSetup(object {
         val stubUser = stubUser()
 
-        val repository1 = MemoryPlayerRepository(stubUser.email, TimeProvider)
-        val repository2 = MemoryPlayerRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPlayerRepository(stubUser.email, Clock.System)
+        val repository2 = MemoryPlayerRepository(stubUser.email, Clock.System)
 
         val compoundRepo = CompoundPlayerRepository(repository1, repository2)
 

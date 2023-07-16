@@ -12,7 +12,6 @@ kotlin {
 dependencies {
     commonMainApi(project(":libraries:model"))
     commonMainImplementation(kotlin("stdlib"))
-    commonMainImplementation("com.soywiz.korlibs.klock:klock")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     commonMainImplementation("io.ktor:ktor-client-core")

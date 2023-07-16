@@ -7,11 +7,11 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 
 class MemoryPlayerRepository(
     override val userId: String,
-    override val clock: TimeProvider,
+    override val clock: Clock,
     private val recordBackend: RecordBackend<PartyElement<Player>> = SimpleRecordBackend(),
 ) : PlayerEmailRepository,
     TypeRecordSyntax<PartyElement<Player>>,

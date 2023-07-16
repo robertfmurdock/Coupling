@@ -5,7 +5,7 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -23,7 +23,7 @@ data class JsonUserRecord(
     val authorizedPartyIds: Set<PartyId>,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
-    val timestamp: DateTime,
+    val timestamp: Instant,
 )
 
 fun User.toSerializable() = JsonUser(

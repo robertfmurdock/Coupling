@@ -11,7 +11,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 
 class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyRepository> {
@@ -32,8 +32,8 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
     fun saveWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
         val stubUser = stubUser()
 
-        val repository1 = MemoryPartyRepository(stubUser.email, TimeProvider)
-        val repository2 = MemoryPartyRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPartyRepository(stubUser.email, Clock.System)
+        val repository2 = MemoryPartyRepository(stubUser.email, Clock.System)
 
         val compoundRepo = CompoundPartyRepository(repository1, repository2)
 
@@ -50,8 +50,8 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
     fun deleteWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
         val stubUser = stubUser()
 
-        val repository1 = MemoryPartyRepository(stubUser.email, TimeProvider)
-        val repository2 = MemoryPartyRepository(stubUser.email, TimeProvider)
+        val repository1 = MemoryPartyRepository(stubUser.email, Clock.System)
+        val repository2 = MemoryPartyRepository(stubUser.email, Clock.System)
 
         val compoundRepo = CompoundPartyRepository(repository1, repository2)
 

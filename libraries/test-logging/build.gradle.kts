@@ -17,13 +17,13 @@ kotlin {
     sourceSets {
         getByName("commonMain") {
             dependencies {
-                api(project(":libraries:logging"))
-                api("com.zegreatrob.testmints:standard")
-                api("com.zegreatrob.testmints:report")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-                implementation("io.github.microutils:kotlin-logging")
-                implementation("com.soywiz.korlibs.klock:klock")
-                implementation("org.jetbrains.kotlin:kotlin-test")
+
+
+
+
+
+
+
             }
         }
         getByName("commonTest") {
@@ -54,6 +54,16 @@ tasks {
     named("jsJar") {
         dependsOn("compileProductionExecutableKotlinJs")
     }
+}
+
+dependencies {
+    commonMainApi(project(":libraries:logging"))
+    commonMainApi("com.zegreatrob.testmints:standard")
+    commonMainApi("com.zegreatrob.testmints:report")
+    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-datetime")
+    commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-common")
+    commonMainImplementation("io.github.microutils:kotlin-logging")
+    commonMainImplementation("org.jetbrains.kotlin:kotlin-test")
 }
 
 artifacts {

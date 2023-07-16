@@ -25,11 +25,11 @@ import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.secret.SecretRepository
 import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 
 class MemoryRepositoryCatalog private constructor(
     override val userId: String,
-    override val clock: TimeProvider,
+    override val clock: Clock,
     override val partyRepository: PartyRepository,
     override val playerRepository: PlayerEmailRepository,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
@@ -44,7 +44,7 @@ class MemoryRepositoryCatalog private constructor(
     ClockSyntax {
 
     companion object {
-        operator fun invoke(userEmail: String, backend: MemoryRepositoryBackend, clock: TimeProvider) =
+        operator fun invoke(userEmail: String, backend: MemoryRepositoryBackend, clock: Clock) =
             MemoryRepositoryCatalog(
                 userEmail,
                 clock,

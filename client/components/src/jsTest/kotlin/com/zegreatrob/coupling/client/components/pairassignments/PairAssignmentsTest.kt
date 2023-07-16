@@ -16,7 +16,7 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import js.core.jso
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import react.router.MemoryRouter
@@ -39,7 +39,7 @@ class PairAssignmentsTest {
 
         var pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
-            date = DateTime.now(),
+            date = Clock.System.now(),
             pairs = listOf(
                 pairOf(
                     Player(id = "0", name = "Tom", avatarType = null),

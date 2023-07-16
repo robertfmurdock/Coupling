@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 
 class CalculateHeatMapCommandTest {
@@ -20,7 +20,7 @@ class CalculateHeatMapCommandTest {
         private fun pairAssignmentDocument(player1: Player, player2: Player) =
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId(""),
-                date = DateTime.now(),
+                date = Clock.System.now(),
                 pairs = perform(
                     AssignPinsAction(listOf(pairOf(player1, player2)), emptyList(), emptyList()),
                 ),

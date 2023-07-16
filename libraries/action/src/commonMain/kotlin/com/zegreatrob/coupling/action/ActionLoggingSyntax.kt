@@ -1,9 +1,8 @@
 package com.zegreatrob.coupling.action
 
 import com.zegreatrob.testmints.action.Action
-import korlibs.time.PerformanceCounter
-import korlibs.time.TimeSpan
-import korlibs.time.microseconds
+import kotlin.time.Duration
+import kotlin.time.measureTimedValue
 
 interface ActionLoggingSyntax : LoggingProvider, TraceIdProvider {
 
@@ -24,12 +23,10 @@ interface ActionLoggingSyntax : LoggingProvider, TraceIdProvider {
     }
 
     private inline fun <O> runBlock(block: () -> O, className: String?): O {
-        val start = PerformanceCounter.microseconds
-        val result = block()
-        val end = PerformanceCounter.microseconds
-        val duration = (end - start).microseconds
+        val result = measureTimedValue { block() }
+        val duration = result.duration
         logEnd(className, duration)
-        return result
+        return result.value
     }
 
     private fun logStart(className: String?) = logger.info {
@@ -40,7 +37,7 @@ interface ActionLoggingSyntax : LoggingProvider, TraceIdProvider {
         )
     }
 
-    private fun logEnd(className: String?, duration: TimeSpan) = logger.info {
+    private fun logEnd(className: String?, duration: Duration) = logger.info {
         mapOf(
             "action" to className,
             "type" to "End",

@@ -53,7 +53,7 @@ val PartyStatistics by nfc<PartyStatisticsProps> { props ->
                             spinsUntilFullRotation = spinsUntilFullRotation,
                             activePlayerCount = players.size,
                             medianSpinDuration = medianSpinDuration?.let {
-                                formatDistance(medianSpinDuration.millisecondsInt, 0)
+                                formatDistance(medianSpinDuration.inWholeMilliseconds.toInt(), 0)
                             } ?: "",
                         )
                     }

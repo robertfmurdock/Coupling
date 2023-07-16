@@ -22,7 +22,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
@@ -140,7 +140,7 @@ class PrepareSpinTest {
         val user = UserEvent.setup()
         val currentPairs = PairAssignmentDocument(
             PairAssignmentDocumentId(""),
-            DateTime.now(),
+            Clock.System.now(),
             listOf(
                 pairOf(players[0], players[1]).withPins(emptySet()),
                 pairOf(players[2]).withPins(emptySet()),
@@ -194,7 +194,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val currentPairs = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
-            date = DateTime.now(),
+            date = Clock.System.now(),
             pairs = players.map { pairOf(it).withPins(emptySet()) },
         )
         val context = render(jso { wrapper = MemoryRouter }) {

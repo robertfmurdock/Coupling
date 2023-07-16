@@ -2,8 +2,9 @@ package com.zegreatrob.coupling.action
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import korlibs.time.DateTime
-import korlibs.time.Year
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import java.io.File
 import kotlin.math.roundToInt
 import kotlin.test.Ignore
@@ -82,8 +83,8 @@ class StatsProcessingTest {
         .groupBy { pairAssignmentRecord -> pairAssignmentRecord["id"].textValue() }
         .filter { group ->
             val date = group.value.first().dateRecord()
-            date.year == Year(year)
+            date.year == year
         }
 
-    private fun JsonNode.dateRecord() = DateTime.parse(this["date"].textValue())
+    private fun JsonNode.dateRecord() = this["date"].textValue().toInstant().toLocalDateTime(TimeZone.UTC)
 }

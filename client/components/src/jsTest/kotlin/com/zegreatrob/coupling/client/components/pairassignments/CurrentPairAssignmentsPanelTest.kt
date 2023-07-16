@@ -18,7 +18,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import react.ReactNode
 import react.create
 import react.router.RouterProvider
@@ -32,7 +32,7 @@ class CurrentPairAssignmentsPanelTest {
         val party = stubPartyDetails()
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
-            date = DateTime.now(),
+            date = Clock.System.now(),
             pairs = emptyList(),
         )
         val stubDispatcher = OldStubDispatcher()

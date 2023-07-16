@@ -9,8 +9,8 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import js.core.ReadonlyRecord
-import korlibs.time.TimeProvider
 import kotlinx.browser.window
+import kotlinx.datetime.Clock
 import org.w3c.dom.get
 import react.Props
 import web.url.URLSearchParams
@@ -35,7 +35,7 @@ class MasterCommander(private val getIdentityToken: suspend () -> String) : Comm
     override fun getDispatcher(traceId: Uuid) = CommandDispatcher(
         traceId = traceId,
         sdk = if (window["inMemory"] == true) {
-            MemoryRepositoryCatalog("test-user", backend, TimeProvider)
+            MemoryRepositoryCatalog("test-user", backend, Clock.System)
                 .sdk
         } else {
             couplingSdk(getIdentityToken, defaultClient(getLocationAndBasename()))

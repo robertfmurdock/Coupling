@@ -15,7 +15,9 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import korlibs.time.DateTime
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlin.test.Test
 
 class GameExamplesTest {
@@ -92,22 +94,22 @@ class GameExamplesTest {
             val history = listOf(
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 10),
+                    date = dateTime(2014, 1, 10),
                     pairs = listOf(pairOf(bruce, clark)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 9),
+                    date = dateTime(2014, 1, 9),
                     pairs = listOf(pairOf(bruce, diana)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 8),
+                    date = dateTime(2014, 1, 8),
                     pairs = listOf(pairOf(bruce, hal)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 7),
+                    date = dateTime(2014, 1, 7),
                     pairs = listOf(pairOf(bruce, barry)).withNoPins(),
                 ),
             )
@@ -140,22 +142,22 @@ class GameExamplesTest {
             val history = listOf(
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 10),
+                    date = dateTime(2014, 1, 10),
                     pairs = listOf(pairOf(bruce, clark)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 9),
+                    date = dateTime(2014, 1, 9),
                     pairs = listOf(pairOf(bruce, diana)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 8),
+                    date = dateTime(2014, 1, 8),
                     pairs = listOf(pairOf(bruce, hal)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 7),
+                    date = dateTime(2014, 1, 7),
                     pairs = listOf(pairOf(bruce, barry)).withNoPins(),
                 ),
             )
@@ -181,17 +183,17 @@ class GameExamplesTest {
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime(2014, 1, 10),
+                date = dateTime(2014, 1, 10),
                 pairs = listOf(pairOf(kamala, thor)).withNoPins(),
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime(2014, 1, 9),
+                date = dateTime(2014, 1, 9),
                 pairs = listOf(pairOf(kamala, steve)).withNoPins(),
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime(2014, 1, 8),
+                date = dateTime(2014, 1, 8),
                 pairs = listOf(pairOf(kamala, logan)).withNoPins(),
             ),
         )
@@ -207,3 +209,6 @@ private fun List<CouplingPair>.withNoPins() = map { pair -> pair.toPinnedPair() 
 private fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
 
 private fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }
+
+private fun dateTime(year: Int, month: Int, day: Int) =
+    LocalDateTime(year, month, day, 0, 0, 0).toInstant(TimeZone.currentSystemDefault())

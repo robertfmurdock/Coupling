@@ -19,7 +19,11 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import js.core.jso
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import react.router.MemoryRouter
@@ -41,7 +45,7 @@ class PartyStatisticsTest :
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime.now(),
+                date = Clock.System.now(),
                 pairs = listOf<CouplingPair>(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3]),
@@ -95,7 +99,7 @@ class PartyStatisticsTest :
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime.now(),
+                date = Clock.System.now(),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3]),
@@ -158,7 +162,7 @@ class PartyStatisticsTest :
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime(2017, 3, 14),
+                date = dateTime(2017, 3, 14),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3]),
@@ -166,7 +170,7 @@ class PartyStatisticsTest :
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime(2017, 3, 12),
+                date = dateTime(2017, 3, 12),
                 pairs = listOf(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3]),
@@ -183,6 +187,9 @@ class PartyStatisticsTest :
             .getByText("2 days")
     }
 }
+
+private fun dateTime(year: Int, month: Int, day: Int): Instant =
+    LocalDateTime(year, month, day, 0, 0, 0).toInstant(TimeZone.currentSystemDefault())
 
 private fun List<CouplingPair>.withNoPins() = map { pair -> pair.toPinnedPair() }
 

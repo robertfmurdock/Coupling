@@ -5,7 +5,7 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -15,7 +15,7 @@ data class JsonBoostRecord(
     val partyIds: Set<PartyId>,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
-    val timestamp: DateTime,
+    val timestamp: Instant,
 )
 
 fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(

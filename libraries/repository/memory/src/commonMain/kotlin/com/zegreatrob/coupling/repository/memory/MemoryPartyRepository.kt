@@ -6,11 +6,11 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.repository.party.PartyRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 
 class MemoryPartyRepository(
     override val userId: String,
-    override val clock: TimeProvider = TimeProvider,
+    override val clock: Clock = Clock.System,
     private val recordBackend: RecordBackend<PartyDetails> = SimpleRecordBackend(),
     private val integrationRecordBackend: RecordBackend<PartyElement<PartyIntegration>> = SimpleRecordBackend(),
 ) : PartyRepository, TypeRecordSyntax<PartyDetails>, RecordBackend<PartyDetails> by recordBackend {

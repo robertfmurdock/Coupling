@@ -31,10 +31,12 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.async.ScopeMint
-import korlibs.time.DateTime
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlin.test.Test
 
 class SpinTest {
@@ -79,7 +81,7 @@ class SpinTest {
             val history = listOf(
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 10),
+                    date = dateTime(2014, 1, 10),
                     pairs = listOf(
                         pairOf(players[0], players[2]).withPins(),
                         pairOf(players[1], players[3]).withPins(),
@@ -87,7 +89,7 @@ class SpinTest {
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(2014, 1, 9),
+                    date = dateTime(2014, 1, 9),
                     pairs = listOf(
                         pairOf(players[0], players[3]).withPins(),
                         pairOf(players[1], players[2]).withPins(),
@@ -113,6 +115,9 @@ class SpinTest {
         sdk.fire(DeletePartyCommand(party.id))
     }
 
+    private fun dateTime(year: Int, month: Int, day: Int) = LocalDateTime(year, month, day, 0, 0, 0)
+        .toInstant(TimeZone.UTC)
+
     @Test
     fun givenTheLongestPairRuleItWillIgnoreBadges() = asyncSetup(object : ScopeMint() {
         val sdk = setupScope.async { sdk() }
@@ -121,7 +126,7 @@ class SpinTest {
         val history = listOf(
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime(2014, 2, 10),
+                date = dateTime(2014, 2, 10),
                 pairs = listOf(
                     pairOf(players[0], players[3]).withPins(),
                     pairOf(players[1], players[2]).withPins(),
@@ -129,7 +134,7 @@ class SpinTest {
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
-                date = DateTime(2014, 2, 9),
+                date = dateTime(2014, 2, 9),
                 pairs = listOf(
                     pairOf(players[0], players[2]).withPins(),
                     pairOf(players[1], players[3]).withPins(),

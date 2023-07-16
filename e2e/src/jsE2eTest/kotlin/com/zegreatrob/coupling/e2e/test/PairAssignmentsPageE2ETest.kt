@@ -27,9 +27,11 @@ import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElement
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
-import korlibs.time.DateTime
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -170,7 +172,7 @@ class PairAssignmentsPageE2ETest {
             private val pairAssignmentDocument by lazy {
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
-                    date = DateTime(year = 2015, month = 5, day = 30),
+                    date = LocalDateTime(2015, 5, 30, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
                     pairs = listOf(
                         pairOf(players[0], players[2]).withPins(emptySet()),
                         pairOf(players[4]).withPins(emptySet()),

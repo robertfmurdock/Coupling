@@ -13,7 +13,7 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 
 class PlayersQueryTest {
@@ -51,7 +51,7 @@ class PlayersQueryTest {
             authorizedPartyId.with(it),
             "${uuid4()}@email.com",
             false,
-            DateTime.now(),
+            Clock.System.now(),
         )
 
     @Test

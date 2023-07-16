@@ -21,8 +21,7 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
-import korlibs.time.DateTime
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 
 class SavePairAssignmentDocumentCommandTest {
@@ -32,11 +31,15 @@ class SavePairAssignmentDocumentCommandTest {
         val party = stubPartyDetails()
         override val liveInfoRepository: LiveInfoRepository get() = TODO("Not yet implemented")
         override suspend fun PartyId.loadConnections(): List<CouplingConnection> = emptyList()
-        override val partyRepository = MemoryPartyRepository("", TimeProvider)
+        override val partyRepository = MemoryPartyRepository("", Clock.System)
         override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? = null
 
         val pairAssignmentDocument = party.id.with(
-            PairAssignmentDocument(PairAssignmentDocumentId("${uuid4()}"), date = DateTime.now(), pairs = emptyList()),
+            PairAssignmentDocument(
+                PairAssignmentDocumentId("${uuid4()}"),
+                date = Clock.System.now(),
+                pairs = emptyList(),
+            ),
         )
         override val slackRepository = SlackUpdateSpin { _, _, _ -> }
         override val slackAccessRepository = SlackAccessGet { null }

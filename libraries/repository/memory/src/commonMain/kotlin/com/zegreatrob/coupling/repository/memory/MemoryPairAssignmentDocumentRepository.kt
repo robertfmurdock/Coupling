@@ -7,11 +7,11 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 
 class MemoryPairAssignmentDocumentRepository(
     override val userId: String,
-    override val clock: TimeProvider,
+    override val clock: Clock,
     private val recordBackend: RecordBackend<PartyElement<PairAssignmentDocument>> = SimpleRecordBackend(),
 ) :
     PairAssignmentDocumentRepository,

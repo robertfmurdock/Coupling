@@ -8,11 +8,11 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoPlayerRepository private constructor(override val userId: String, override val clock: TimeProvider) :
+class DynamoPlayerRepository private constructor(override val userId: String, override val clock: Clock) :
     PlayerEmailRepository,
     UserIdSyntax,
     DynamoPlayerJsonMapping,

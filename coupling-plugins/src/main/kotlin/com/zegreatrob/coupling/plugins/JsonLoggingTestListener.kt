@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.TextNode
-import korlibs.time.TimeSpan
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -14,6 +13,8 @@ import org.gradle.api.tasks.testing.TestListener
 import org.gradle.api.tasks.testing.TestOutputEvent
 import org.gradle.api.tasks.testing.TestOutputListener
 import org.gradle.api.tasks.testing.TestResult
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 class JsonLoggingTestListener(private val taskName: String, val testRunIdentifier: String) :
     TestListener,
@@ -39,7 +40,7 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
     private fun Map<String, String?>.asMessage() = ObjectMessage(this)
 
     override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) {
-        val durationLong = TimeSpan((result.endTime - result.startTime).toDouble())
+        val durationLong = (result.endTime - result.startTime).milliseconds
         logger.info {
             testInfo(testDescriptor)
                 .plus(afterTestInfo(result, durationLong))
@@ -47,7 +48,7 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
         }
     }
 
-    private fun afterTestInfo(result: TestResult, duration: TimeSpan?) = mapOf(
+    private fun afterTestInfo(result: TestResult, duration: Duration) = mapOf(
         "type" to "TestEnd",
         "status" to "${result.resultType}",
         "duration" to "$duration",

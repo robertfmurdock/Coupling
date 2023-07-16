@@ -15,8 +15,8 @@ import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
-import korlibs.time.DateTime
-import korlibs.time.minutes
+import kotlinx.datetime.Clock
+import kotlin.time.Duration.Companion.minutes
 
 fun stubParties(number: Int) = generateSequence(::stubPartyDetails).take(number).toList()
 
@@ -40,7 +40,7 @@ fun stubPartyIntegration() = PartyIntegration(
     slackChannel = uuidString(),
 )
 
-private fun stubPairingRule() = PairingRule.values()[partyCounter % PairingRule.values().size]
+private fun stubPairingRule() = PairingRule.entries[partyCounter % PairingRule.entries.size]
 
 fun stubPartyId() = PartyId(uuidString())
 
@@ -55,7 +55,7 @@ fun stubPlayer() = Player(
     callSignAdjective = "Spicy $playerCounter",
     callSignNoun = "Meatball $playerCounter",
     imageURL = "italian$playerCounter.jpg",
-    avatarType = AvatarType.values().randomOrNull(),
+    avatarType = AvatarType.entries.randomOrNull(),
 ).also { playerCounter++ }
 
 fun stubPlayers(number: Int) = generateSequence { stubPlayer() }.take(number).toList()
@@ -66,15 +66,15 @@ fun stubPin() = Pin(uuidString(), "pin $pinCounter", "icon time", stubPinTarget(
 
 var pinTargetCounter = 1
 fun stubPinTarget(): PinTarget {
-    val index = pinTargetCounter % PinTarget.values().size
-    return PinTarget.values()[index]
+    val index = pinTargetCounter % PinTarget.entries.size
+    return PinTarget.entries[index]
         .also { pinTargetCounter++ }
 }
 
 var pairAssignmentDocumentCounter = 1
 fun stubPairAssignmentDoc() = PairAssignmentDocument(
     id = PairAssignmentDocumentId(uuidString()),
-    date = DateTime.now().plus(pairAssignmentDocumentCounter.minutes),
+    date = Clock.System.now().plus(pairAssignmentDocumentCounter.minutes),
     pairs = listOf(
         PinnedCouplingPair(
             listOf(stubPlayer().withPins()),

@@ -21,12 +21,15 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import korlibs.time.DateTime
-import korlibs.time.days
-import korlibs.time.hours
-import korlibs.time.months
-import korlibs.time.years
 import kotlin.test.Test
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
+
+val Int.years: Duration get() = (this * 365).toDuration(DurationUnit.DAYS)
+val Int.months: Duration get() = (this * 30).toDuration(DurationUnit.DAYS)
 
 @Suppress("unused")
 class DynamoPairAssignmentDocumentRepositoryTest :
@@ -45,7 +48,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
             object : Context by context {
                 val partyId = stubPartyId()
                 val pairAssignmentDocument = stubPairAssignmentDoc()
-                val initialSaveTime = DateTime.now().minus(3.days)
+                val initialSaveTime = now().minus(3.days)
                 val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
                     pairs = listOf(pairOf(stubPlayer()).withPins(emptySet())),
                 )
@@ -73,8 +76,8 @@ class DynamoPairAssignmentDocumentRepositoryTest :
             object : Context by context {
                 val partyId = stubPartyId()
                 val records = listOf(
-                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString(), false, DateTime.now().minus(3.months)),
-                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString(), true, DateTime.now().minus(2.years)),
+                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString(), false, now().minus(3.months)),
+                    partyRecord(partyId, stubPairAssignmentDoc(), uuidString(), true, now().minus(2.years)),
                 )
             }
         },

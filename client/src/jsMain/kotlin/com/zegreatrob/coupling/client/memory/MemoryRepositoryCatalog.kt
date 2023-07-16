@@ -37,13 +37,13 @@ import com.zegreatrob.coupling.repository.player.PlayerListGetDeleted
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import com.zegreatrob.testmints.action.ActionCannon
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 
 class MemoryRepositoryCatalog private constructor(
     override val userId: String,
-    override val clock: TimeProvider,
+    override val clock: Clock,
     override val partyRepository: PartyRepository,
     override val playerRepository: PlayerEmailRepository,
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository,
@@ -71,7 +71,7 @@ class MemoryRepositoryCatalog private constructor(
     UserIdSyntax,
     ClockSyntax {
 
-    constructor(userEmail: String, backend: LocalStorageRepositoryBackend, clock: TimeProvider) : this(
+    constructor(userEmail: String, backend: LocalStorageRepositoryBackend, clock: Clock) : this(
         userEmail,
         clock,
         MemoryPartyRepository(userEmail, clock, backend.party),

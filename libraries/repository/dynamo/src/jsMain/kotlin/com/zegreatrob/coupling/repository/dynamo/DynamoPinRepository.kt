@@ -9,10 +9,10 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pin.PinRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlin.js.Json
 
-class DynamoPinRepository private constructor(override val userId: String, override val clock: TimeProvider) :
+class DynamoPinRepository private constructor(override val userId: String, override val clock: Clock) :
     PinRepository,
     UserIdSyntax,
     DynamoPinJsonMapping,

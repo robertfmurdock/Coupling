@@ -41,7 +41,6 @@ dependencies {
     jsMainApi("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     jsMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-js")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    jsMainImplementation("com.soywiz.korlibs.klock:klock")
     jsMainImplementation("com.benasher44:uuid")
     jsMainImplementation("io.github.microutils:kotlin-logging")
     jsMainImplementation(npmConstrained("@aws-sdk/client-dynamodb"))

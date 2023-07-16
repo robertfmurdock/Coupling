@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyElement
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -17,7 +17,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
 
     private fun PairAssignmentDocument.toDynamoJson() = json(
         "id" to id.value,
-        "date" to "${date.unixMillisLong}",
+        "date" to "${date.toEpochMilliseconds()}",
         "pairs" to pairs.map { it.toDynamoJson() }
             .toTypedArray(),
     )
@@ -43,7 +43,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
 
     fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
         id = PairAssignmentDocumentId(getDynamoStringValue("id") ?: ""),
-        date = getDynamoStringValue("date")?.toLong()?.let { DateTime(it) } ?: DateTime.EPOCH,
+        date = getDynamoStringValue("date")?.toLong()?.let { Instant.fromEpochMilliseconds(it) } ?: Instant.DISTANT_PAST,
         pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) } ?: emptyList(),
     )
 

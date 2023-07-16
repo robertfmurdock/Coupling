@@ -2,13 +2,14 @@ package com.zegreatrob.coupling.model
 
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 data class Record<T>(
     val data: T,
     val modifyingUserId: String,
     val isDeleted: Boolean = false,
-    val timestamp: DateTime = DateTime.now(),
+    val timestamp: Instant = Clock.System.now(),
 )
 
 fun <T> List<Record<T>>.data() = map { it.data }
@@ -20,7 +21,7 @@ fun <T> partyRecord(
     data: T,
     modifyingUserEmail: String,
     isDeleted: Boolean = false,
-    timestamp: DateTime = DateTime.now(),
+    timestamp: Instant = Clock.System.now(),
 ) = PartyRecord(PartyElement(partyId, data), modifyingUserEmail, isDeleted, timestamp)
 
 val <T> PartyRecord<T>.element get() = this.data.element

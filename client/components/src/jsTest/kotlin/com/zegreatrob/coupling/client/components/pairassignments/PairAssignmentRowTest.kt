@@ -17,7 +17,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import org.w3c.dom.Window
 import react.router.MemoryRouter
 import kotlin.js.json
@@ -30,7 +30,7 @@ class PairAssignmentRowTest {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
-        val document = PairAssignmentDocument(PairAssignmentDocumentId("RealId"), DateTime.now(), emptyList())
+        val document = PairAssignmentDocument(PairAssignmentDocumentId("RealId"), Clock.System.now(), emptyList())
         val stubDispatcher = OldStubDispatcher()
         val actor = UserEvent.setup()
     }) {
@@ -59,7 +59,7 @@ class PairAssignmentRowTest {
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(
             PairAssignmentDocumentId("RealId"),
-            DateTime.now(),
+            Clock.System.now(),
             emptyList(),
         )
         val stubDispatcher = OldStubDispatcher()

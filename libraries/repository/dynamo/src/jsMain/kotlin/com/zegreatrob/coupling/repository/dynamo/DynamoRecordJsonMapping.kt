@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.ClockSyntax
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.UserIdSyntax
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -15,7 +15,7 @@ interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserIdSyntax, ClockSyn
         "isDeleted" to isDeleted,
     )
 
-    fun recordJson(timestamp: DateTime) = json(
+    fun recordJson(timestamp: Instant) = json(
         "timestamp" to timestamp.isoWithMillis(),
         "modifyingUserEmail" to userId,
     )
@@ -24,6 +24,6 @@ interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserIdSyntax, ClockSyn
         data,
         getDynamoStringValue("modifyingUserEmail") ?: "",
         getDynamoBoolValue("isDeleted") ?: false,
-        getDynamoDateTimeValue("timestamp")?.utc!!,
+        getDynamoDateTimeValue("timestamp")!!,
     )
 }

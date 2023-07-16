@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.logging
 
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 import mu.Formatter
 import mu.KotlinLoggingLevel
@@ -17,7 +17,7 @@ class JsonFormatter : Formatter {
                 name = loggerName,
                 message = message,
                 properties = properties,
-                timestamp = DateTime.now().logFormat(),
+                timestamp = Clock.System.now().toString(),
             ),
         )
     }
@@ -36,7 +36,7 @@ class JsonFormatter : Formatter {
                 name = loggerName,
                 message = message,
                 properties = properties,
-                timestamp = DateTime.now().logFormat(),
+                timestamp = Clock.System.now().toString(),
                 stackTrace = t.throwableToString(),
             ),
         )
@@ -56,7 +56,7 @@ class JsonFormatter : Formatter {
                 name = loggerName,
                 message = message,
                 properties = properties,
-                timestamp = DateTime.now().logFormat(),
+                timestamp = Clock.System.now().toString(),
                 marker = marker?.getName(),
             ),
         )
@@ -77,7 +77,7 @@ class JsonFormatter : Formatter {
                 name = loggerName,
                 message = message,
                 properties = properties,
-                timestamp = DateTime.now().logFormat(),
+                timestamp = Clock.System.now().toString(),
                 marker = marker?.getName(),
                 stackTrace = t.throwableToString(),
             ),

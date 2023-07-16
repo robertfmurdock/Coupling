@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 import kotlin.js.Json
 
 interface DynamoItemPutDeleteRecordSyntax :
@@ -15,7 +15,7 @@ interface DynamoItemPutDeleteRecordSyntax :
     suspend fun <T> performDelete(
         id: String,
         partyId: PartyId? = null,
-        now: DateTime,
+        now: Instant,
         toRecord: Json.() -> Record<T>?,
         recordToJson: Record<T>.() -> Json,
     ) = logAsync("deleteItem") {

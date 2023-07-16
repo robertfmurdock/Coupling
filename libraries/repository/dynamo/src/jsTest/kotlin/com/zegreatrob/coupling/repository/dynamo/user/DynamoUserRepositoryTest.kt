@@ -7,6 +7,9 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
+import com.zegreatrob.coupling.repository.dynamo.now
+import com.zegreatrob.coupling.repository.dynamo.pairs.months
+import com.zegreatrob.coupling.repository.dynamo.pairs.years
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
@@ -17,20 +20,18 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import korlibs.time.DateTime
-import korlibs.time.TimeProvider
-import korlibs.time.days
-import korlibs.time.hours
-import korlibs.time.measureTimeWithResult
-import korlibs.time.months
-import korlibs.time.seconds
-import korlibs.time.years
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlin.js.json
 import kotlin.test.Ignore
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
+import kotlin.time.measureTimedValue
 
 @Suppress("unused")
 class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
@@ -51,7 +52,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         val user = User(userId, "${uuid4()}", emptySet())
         lateinit var repository: DynamoUserRepository
     }) {
-        repository = DynamoUserRepository(userId, TimeProvider)
+        repository = DynamoUserRepository(userId, Clock.System)
         coroutineScope {
             (1..5000).forEach { number ->
                 launch {
@@ -60,7 +61,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                             data = user.copy(authorizedPartyIds = setOf(PartyId("party-$number"))),
                             modifyingUserId = "",
                             isDeleted = false,
-                            timestamp = DateTime.now().minus(1.days).plus(number.seconds),
+                            timestamp = now().minus(1.days).plus(number.seconds),
                         ),
                     )
                 }
@@ -71,22 +72,22 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
             user.copy(authorizedPartyIds = setOf(PartyId("party-infinity"))),
         )
     } exercise {
-        measureTimeWithResult {
+        measureTimedValue {
             repository.getUsersWithEmail(user.email)
         }
-    } verify { timed ->
-        val user = timed.result.first().data
+    } verify { (result, duration) ->
+        val user = result.first().data
         user.authorizedPartyIds.contains(PartyId("party-infinity"))
             .assertIsEqualTo(true, "Oops, got ${user.authorizedPartyIds}")
-        (timed.time.seconds < 0.1)
-            .assertIsEqualTo(true, "Too slow, ${timed.time}")
+        (duration.toDouble(DurationUnit.SECONDS) < 0.1)
+            .assertIsEqualTo(true, "Too slow, $duration")
     }
 
     @Test
     fun getUserRecordsWillReturnAllRecordsForAllUsers() = asyncSetup.with(
         buildRepository { context ->
             object : Context by context {
-                val initialSaveTime = DateTime.now().minus(3.days)
+                val initialSaveTime = now().minus(3.days)
                 val updatedUser = user.copy(authorizedPartyIds = setOf(PartyId("clone!")))
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val altUser = stubUser()
@@ -112,8 +113,8 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         buildRepository { context ->
             object : Context by context {
                 val records = listOf(
-                    Record(stubUser(), uuidString(), false, DateTime.now().minus(3.months)),
-                    Record(stubUser(), uuidString(), true, DateTime.now().minus(2.years)),
+                    Record(stubUser(), uuidString(), false, now().minus(3.months)),
+                    Record(stubUser(), uuidString(), true, now().minus(2.years)),
                 )
             }
         },
@@ -131,7 +132,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
             object : Context by context, DynamoUserJsonMapping by context.repository {
                 override val clock: MagicClock = context.clock
                 override val userId = uuidString()
-                val record = Record(stubUser(), uuidString(), false, DateTime.now().minus(3.months))
+                val record = Record(stubUser(), uuidString(), false, now().minus(3.months))
             }
         },
     ) {

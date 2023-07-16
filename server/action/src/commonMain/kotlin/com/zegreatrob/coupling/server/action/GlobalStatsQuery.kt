@@ -16,11 +16,13 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.testmints.action.annotation.MintAction
-import korlibs.time.minutes
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Duration.Companion.minutes
 
 @MintAction
 data class GlobalStatsQuery(val year: Int) {
@@ -60,7 +62,7 @@ data class GlobalStatsQuery(val year: Int) {
 }
 
 private fun yearMatcher(year: Int) = { record: PartyRecord<PairAssignmentDocument> ->
-    record.data.element.date.year.year == year
+    record.data.element.date.toLocalDateTime(TimeZone.currentSystemDefault()).year == year
 }
 
 private fun partyStats(

@@ -6,6 +6,9 @@ import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
+import com.zegreatrob.coupling.repository.dynamo.now
+import com.zegreatrob.coupling.repository.dynamo.pairs.months
+import com.zegreatrob.coupling.repository.dynamo.pairs.years
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
@@ -17,13 +20,10 @@ import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import korlibs.time.DateTime
-import korlibs.time.days
-import korlibs.time.hours
-import korlibs.time.months
-import korlibs.time.years
 import kotlin.js.json
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 @Suppress("unused")
 class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRepository> {
@@ -46,7 +46,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
             object : Context by context {
                 val partyId = stubPartyId()
                 val player = stubPlayer()
-                val initialSaveTime = DateTime.now().minus(3.days)
+                val initialSaveTime = now().minus(3.days)
                 val updatedPlayer = player.copy(name = "CLONE")
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val updatedSaveTime2 = initialSaveTime.plus(4.hours)
@@ -75,8 +75,8 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
             object : Context by context {
                 val partyId = stubPartyId()
                 val records = listOf(
-                    partyRecord(partyId, stubPlayer(), uuidString(), false, DateTime.now().minus(3.months)),
-                    partyRecord(partyId, stubPlayer(), uuidString(), true, DateTime.now().minus(2.years)),
+                    partyRecord(partyId, stubPlayer(), uuidString(), false, now().minus(3.months)),
+                    partyRecord(partyId, stubPlayer(), uuidString(), true, now().minus(2.years)),
                 )
             }
         },
@@ -98,7 +98,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         },
     ) {
         DynamoPlayerRepository.performPutItem(
-            recordJson(DateTime.now())
+            recordJson(now())
                 .add(
                     json(
                         "tribeId" to partyId.value,
@@ -123,7 +123,7 @@ class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRe
         },
     ) {
         DynamoPlayerRepository.performPutItem(
-            recordJson(DateTime.now())
+            recordJson(now())
                 .add(
                     json(
                         "tribeId" to partyId.value,

@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.repository.validation
 
-import korlibs.time.DateTime
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
-class MagicClock : TimeProvider {
-    var currentTime: DateTime? = null
-    override fun now() = currentTime ?: TimeProvider.now()
+class MagicClock : Clock {
+    var currentTime: Instant? = null
+    override fun now() = currentTime ?: Clock.System.now()
 }

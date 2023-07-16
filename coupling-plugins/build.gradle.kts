@@ -22,7 +22,6 @@ dependencies {
     implementation(kotlin("gradle-plugin", libs.versions.kotlin.get()))
     implementation(libs.com.fasterxml.jackson.core.jackson.databind)
     implementation(libs.com.github.ben.manes.gradle.versions.plugin)
-    implementation(libs.com.soywiz.korlibs.klock)
     implementation(libs.org.ajoberstar.grgit.gradle.plugin)
     implementation(libs.org.apache.logging.log4j.log4j.core)
     implementation(libs.org.apache.logging.log4j.log4j.iostreams)

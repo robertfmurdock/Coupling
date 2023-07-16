@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -61,7 +61,7 @@ data class JsonPlayerRecord(
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
-    override val timestamp: DateTime,
+    override val timestamp: Instant,
 ) : JsonPartyRecordInfo, JsonPlayer
 
 fun Player.toSerializable() = JsonPlayerData(

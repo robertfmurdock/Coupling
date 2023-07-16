@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.model.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.party.PartyElement
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 
 data class PairAssignmentDocument(
     val id: PairAssignmentDocumentId,
-    val date: DateTime,
+    val date: Instant,
     val pairs: List<PinnedCouplingPair>,
 )
 

@@ -12,8 +12,8 @@ import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import com.zegreatrob.coupling.repository.secret.SecretRepository
 import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
-import korlibs.time.TimeProvider
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.datetime.Clock
 
 interface RepositoryCatalog {
     val partyRepository: PartyRepository
@@ -32,23 +32,23 @@ suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid) 
 private suspend fun repositoryCatalog(user: User): RepositoryCatalog = if (useInMemory()) {
     memoryRepositoryCatalog(user.id)
 } else {
-    DynamoRepositoryCatalog(user.id, TimeProvider)
+    DynamoRepositoryCatalog(user.id, Clock.System)
 }
 
 val memoryBackend by lazy { MemoryRepositoryBackend() }
 
-private fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(userId, memoryBackend, TimeProvider)
+private fun memoryRepositoryCatalog(userId: String) = MemoryRepositoryCatalog(userId, memoryBackend, Clock.System)
 
 suspend fun userRepository(userId: String): UserRepository = if (useInMemory()) {
     memoryRepositoryCatalog(userId).userRepository
 } else {
-    DynamoUserRepository(userId, TimeProvider)
+    DynamoUserRepository(userId, Clock.System)
 }
 
 suspend fun secretRepository(userId: String): SecretRepository = if (useInMemory()) {
     memoryRepositoryCatalog(userId).secretRepository
 } else {
-    DynamoSecretRepository(userId, TimeProvider)
+    DynamoSecretRepository(userId, Clock.System)
 }
 
 fun useInMemory() = Process.getEnv("COUPLING_IN_MEMORY") == "true"

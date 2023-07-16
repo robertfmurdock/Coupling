@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -32,9 +32,7 @@ class HistoryPageE2ETest {
         companion object {
             private val historyPageSetup = e2eSetup.extend(beforeAll = {
                 val party = buildParty()
-                val sdk = sdk.await().apply {
-                    fire(SavePartyCommand(party))
-                }
+                val sdk = sdk.await().apply { fire(SavePartyCommand(party)) }
 
                 val pairAssignments = setupTwoPairAssignments(party, sdk)
 
@@ -73,8 +71,8 @@ class HistoryPageE2ETest {
             ).onEach { sdk.fire(SavePairAssignmentsCommand(party.id, it)) }
 
             private fun buildPairAssignmentDocument(number: Int, pairs: List<CouplingPair>) = PairAssignmentDocument(
-                PairAssignmentDocumentId("${DateTime.now().milliseconds}-HistoryPageE2ETest-$number"),
-                DateTime.now(),
+                PairAssignmentDocumentId("${Clock.System.now().toEpochMilliseconds()}-HistoryPageE2ETest-$number"),
+                Clock.System.now(),
                 pairs.map { it.withPins(emptySet()) },
             )
 

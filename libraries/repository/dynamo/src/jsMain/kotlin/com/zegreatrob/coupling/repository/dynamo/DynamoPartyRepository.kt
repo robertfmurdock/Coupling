@@ -8,10 +8,10 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.party.PartyRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlin.js.Json
 
-class DynamoPartyRepository private constructor(override val userId: String, override val clock: TimeProvider) :
+class DynamoPartyRepository private constructor(override val userId: String, override val clock: Clock) :
     PartyRepository,
     DynamoRecordJsonMapping,
     UserIdSyntax,

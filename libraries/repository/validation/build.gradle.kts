@@ -16,6 +16,7 @@ kotlin {
                 api(project(":libraries:repository:core"))
                 api(project(":libraries:test-logging"))
                 api(project(":libraries:stub-model"))
+                api("org.jetbrains.kotlinx:kotlinx-datetime")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
                 api("org.jetbrains.kotlin:kotlin-test")
                 api("com.zegreatrob.testmints:standard")

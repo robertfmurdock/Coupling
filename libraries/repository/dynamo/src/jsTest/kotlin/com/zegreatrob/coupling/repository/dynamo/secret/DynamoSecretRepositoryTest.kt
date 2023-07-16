@@ -4,6 +4,9 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
+import com.zegreatrob.coupling.repository.dynamo.now
+import com.zegreatrob.coupling.repository.dynamo.pairs.months
+import com.zegreatrob.coupling.repository.dynamo.pairs.years
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.stubmodel.stubPartyId
@@ -13,12 +16,9 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import korlibs.time.DateTime
-import korlibs.time.days
-import korlibs.time.hours
-import korlibs.time.months
-import korlibs.time.years
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 @Suppress("unused")
 class DynamoSecretRepositoryTest {
@@ -100,7 +100,7 @@ class DynamoSecretRepositoryTest {
     }) {
         repository = DynamoSecretRepository(user.email, clock)
     } exercise {
-        clock.currentTime = DateTime.now().plus(4.hours)
+        clock.currentTime = now().plus(4.hours)
         repository.save(partyId.with(secret))
     } verifyWithWait {
         val result = repository.getSecrets(partyId)
@@ -118,7 +118,7 @@ class DynamoSecretRepositoryTest {
         val user = stubUser()
         lateinit var repository: DynamoSecretRepository
         val secret = stubSecret()
-        val initialSaveTime = DateTime.now().minus(3.days)
+        val initialSaveTime = now().minus(3.days)
         val updatedSecret = secret
         val updatedSaveTime = initialSaveTime.plus(2.hours)
         val updatedSaveTime2 = initialSaveTime.plus(4.hours)
@@ -143,8 +143,8 @@ class DynamoSecretRepositoryTest {
         val partyId = stubPartyId()
         lateinit var repository: DynamoSecretRepository
         val records = listOf(
-            partyRecord(partyId, stubSecret(), uuidString(), false, DateTime.now().minus(3.months)),
-            partyRecord(partyId, stubSecret(), uuidString(), true, DateTime.now().minus(2.years)),
+            partyRecord(partyId, stubSecret(), uuidString(), false, now().minus(3.months)),
+            partyRecord(partyId, stubSecret(), uuidString(), true, now().minus(2.years)),
         )
     }) {
         repository = DynamoSecretRepository("userId", MagicClock())

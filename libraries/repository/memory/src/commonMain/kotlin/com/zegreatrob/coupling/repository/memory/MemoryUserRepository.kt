@@ -2,11 +2,11 @@ package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.user.UserRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 
 class MemoryUserRepository(
     override val userId: String,
-    override val clock: TimeProvider,
+    override val clock: Clock,
     private val recordBackend: RecordBackend<User> = SimpleRecordBackend(),
 ) : UserRepository,
     TypeRecordSyntax<User>,

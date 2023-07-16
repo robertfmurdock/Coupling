@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.testlogging
 
 import com.zegreatrob.coupling.logging.initializeLogging
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import mu.KotlinLogging
 
 @Suppress("unused")
@@ -17,7 +18,7 @@ class JasmineJsonLoggingReporter {
     }
 
     private val logger by lazy { KotlinLogging.logger("JasmineJsonLoggingReporter") }
-    private var lastStart: DateTime? = null
+    private var lastStart: Instant? = null
 
     init {
         initialize()
@@ -39,11 +40,11 @@ class JasmineJsonLoggingReporter {
 
     @JsName("startTest")
     fun startTest(testName: String) = logger.info { mapOf("type" to "TestStart", "test" to testName) }
-        .also { lastStart = DateTime.now() }
+        .also { lastStart = Clock.System.now() }
 
     @JsName("endTest")
     fun endTest(testName: String, status: String, failed: Array<dynamic>?) {
-        val duration = lastStart?.let { DateTime.now() - it }
+        val duration = lastStart?.let { Clock.System.now() - it }
         logger.info {
             mapOf(
                 "type" to "TestEnd",

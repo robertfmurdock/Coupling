@@ -28,7 +28,6 @@ dependencies {
     "commonMainApi"(project(":libraries:model"))
     "commonMainImplementation"(project(":libraries:json"))
     "commonMainImplementation"(project(":libraries:repository:core"))
-    "commonMainImplementation"("com.soywiz.korlibs.klock:klock")
     "commonMainImplementation"("io.ktor:ktor-client-content-negotiation")
     "commonMainImplementation"("io.ktor:ktor-client-core")
     "commonMainImplementation"("io.ktor:ktor-client-logging")

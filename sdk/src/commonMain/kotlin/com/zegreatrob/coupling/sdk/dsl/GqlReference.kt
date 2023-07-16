@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.json.JsonSecretRecord
 import com.zegreatrob.coupling.json.JsonUser
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 
 object GqlReference {
     val globalStats = JsonGlobalStats(
@@ -60,26 +60,26 @@ object GqlReference {
     )
     val pairAssignmentRecord = JsonPairAssignmentDocumentRecord(
         id = "",
-        date = DateTime.EPOCH,
+        date = Instant.DISTANT_PAST,
         pairs = listOf(pinnedCouplingPair),
         partyId = PartyId(""),
         modifyingUserEmail = "",
         isDeleted = false,
-        timestamp = DateTime.EPOCH,
+        timestamp = Instant.DISTANT_PAST,
     )
     val integrationRecord = JsonIntegrationRecord(
         slackTeam = "",
         slackChannel = "",
         modifyingUserEmail = "",
         isDeleted = false,
-        timestamp = DateTime.EPOCH,
+        timestamp = Instant.DISTANT_PAST,
     )
     val secretRecord = JsonSecretRecord(
         id = "",
         partyId = PartyId(""),
         modifyingUserEmail = "",
         isDeleted = false,
-        timestamp = DateTime.EPOCH,
+        timestamp = Instant.DISTANT_PAST,
     )
     val partyRecord = JsonPartyDetailsRecord(
         id = PartyId(""),
@@ -94,7 +94,7 @@ object GqlReference {
         animationSpeed = 0.0,
         modifyingUserEmail = "",
         isDeleted = false,
-        timestamp = DateTime.EPOCH,
+        timestamp = Instant.DISTANT_PAST,
     )
 
     val pinRecord = JsonPinRecord(
@@ -104,7 +104,7 @@ object GqlReference {
         partyId = PartyId(""),
         modifyingUserEmail = "",
         isDeleted = false,
-        timestamp = DateTime.EPOCH,
+        timestamp = Instant.DISTANT_PAST,
     )
 
     val playerRecord = JsonPlayerRecord(
@@ -119,6 +119,6 @@ object GqlReference {
         partyId = PartyId(""),
         modifyingUserEmail = "",
         isDeleted = false,
-        timestamp = DateTime.EPOCH,
+        timestamp = Instant.DISTANT_PAST,
     )
 }

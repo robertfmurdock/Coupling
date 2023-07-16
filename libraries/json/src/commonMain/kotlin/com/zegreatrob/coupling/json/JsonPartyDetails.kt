@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -39,7 +39,7 @@ data class JsonPartyDetailsRecord(
     val animationSpeed: Double = 1.0,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
-    val timestamp: DateTime,
+    val timestamp: Instant,
 )
 
 fun PartyDetails.toSerializable() = JsonPartyDetails(

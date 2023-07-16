@@ -11,12 +11,9 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import korlibs.time.DateFormat
-import korlibs.time.parse
+import kotlinx.datetime.toInstant
 
 val mapper = ObjectMapper()
-
-private val dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
 
 actual fun loadJsonPartySetup(fileResource: String): PartySetup {
     val fileJson = mapper.readTree(PartySetup::class.java.classLoader.getResource(fileResource))
@@ -39,7 +36,7 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup {
         history = fileJson["history"].map {
             PairAssignmentDocument(
                 id = it["id"].textValue().let(::PairAssignmentDocumentId),
-                date = it["date"].textValue().let { text -> dateFormat.parse(text).local },
+                date = it["date"].textValue().toInstant(),
                 pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() },
             )
         },

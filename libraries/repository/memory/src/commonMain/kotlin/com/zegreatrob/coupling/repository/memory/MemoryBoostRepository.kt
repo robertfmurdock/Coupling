@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 
 class MemoryBoostRepository(
     override val userId: String,
-    override val clock: TimeProvider,
+    override val clock: Clock,
     private val recordBackend: RecordBackend<Boost> = SimpleRecordBackend(),
 ) : TypeRecordSyntax<Boost>, RecordBackend<Boost> by recordBackend, ExtendedBoostRepository {
 

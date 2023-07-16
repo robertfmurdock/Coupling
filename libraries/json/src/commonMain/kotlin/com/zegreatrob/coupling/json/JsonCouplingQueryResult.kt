@@ -5,9 +5,9 @@ import com.zegreatrob.coupling.model.GlobalStats
 import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.party.PartyId
-import korlibs.time.TimeSpan
-import korlibs.time.toTimeString
 import kotlinx.serialization.Serializable
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.DurationUnit
 
 @Serializable
 data class JsonCouplingQueryResult(
@@ -106,7 +106,7 @@ fun JsonPartyStats.toModel() = PartyStats(
     id = PartyId(id),
     playerCount = playerCount,
     spins = spins,
-    medianSpinDuration = medianSpinDurationMillis?.let(::TimeSpan),
+    medianSpinDuration = medianSpinDurationMillis?.milliseconds,
     appliedPinCount = appliedPinCount,
     uniquePinCount = uniquePinCount,
 )
@@ -118,6 +118,6 @@ fun PartyStats.toJson() = JsonPartyStats(
     appliedPinCount = appliedPinCount,
     uniquePinCount = uniquePinCount,
     spins = spins,
-    medianSpinDuration = medianSpinDuration?.toTimeString(components = 4),
-    medianSpinDurationMillis = medianSpinDuration?.milliseconds,
+    medianSpinDuration = medianSpinDuration?.toString(),
+    medianSpinDurationMillis = medianSpinDuration?.toDouble(DurationUnit.MILLISECONDS),
 )

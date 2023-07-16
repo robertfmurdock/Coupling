@@ -10,7 +10,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import korlibs.time.DateTime
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlin.test.Test
 
 class CalculatePairHeatActionTest {
@@ -24,7 +26,7 @@ class CalculatePairHeatActionTest {
         fun List<CouplingPair>.pairAssignmentDocument() =
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId(""),
-                date = DateTime(2016, 3, 1),
+                date = LocalDateTime(2016, 3, 1, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
                 pairs = perform(AssignPinsAction(this, emptyList(), emptyList())),
             )
     }

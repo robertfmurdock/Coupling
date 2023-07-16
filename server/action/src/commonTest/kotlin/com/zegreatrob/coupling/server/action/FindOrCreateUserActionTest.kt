@@ -13,7 +13,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 import kotlin.test.fail
 
@@ -44,7 +44,7 @@ class FindOrCreateUserActionTest {
             override val userId = "test@test.tes"
 
             val expectedUser = User("${uuid4()}", userId, setOf(PartyId("Best party")))
-            override suspend fun getUser() = Record(expectedUser, "", false, DateTime.now())
+            override suspend fun getUser() = Record(expectedUser, "", false, Clock.System.now())
             override suspend fun getUsersWithEmail(email: String): List<Record<User>> = emptyList()
             override suspend fun save(user: User) = fail("Should not save")
         },
@@ -63,7 +63,7 @@ class FindOrCreateUserActionTest {
         val expectedUser = User("${uuid4()}", userId, setOf(PartyId("Best party")))
         override suspend fun getUser(): Nothing? = null
         override suspend fun getUsersWithEmail(email: String): List<Record<User>> =
-            listOf(Record(expectedUser, "", false, DateTime.now()))
+            listOf(Record(expectedUser, "", false, Clock.System.now()))
 
         override suspend fun save(user: User) = fail("Should not save")
     }) exercise {

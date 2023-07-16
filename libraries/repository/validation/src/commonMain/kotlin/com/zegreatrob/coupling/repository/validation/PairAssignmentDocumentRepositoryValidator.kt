@@ -11,38 +11,39 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
-import korlibs.time.DateTime
-import korlibs.time.days
-import korlibs.time.hours
+import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRepository> :
     RepositoryValidator<R, PartyContext<R>> {
 
+    fun now() = Clock.System.now()
+
     @Test
-    fun saveMultipleThenGetListWillReturnSavedDocumentsNewestToOldest() =
-        repositorySetup.with(
-            object : PartyContextMint<R>() {
-                val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
-                val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
-                val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
-            }.bind(),
-        ) {
-            partyId.with(listOf(middle, oldest, newest))
-                .forEach { repository.save(it) }
-        } exercise {
-            repository.loadPairAssignments(partyId)
-        } verifyWithWait { result ->
-            result.data().map { it.document }
-                .assertIsEqualTo(listOf(newest, middle, oldest))
-        }
+    fun saveMultipleThenGetListWillReturnSavedDocumentsNewestToOldest() = repositorySetup.with(
+        object : PartyContextMint<R>() {
+            val oldest = stubPairAssignmentDoc().copy(date = now().minus(3.days))
+            val middle = stubPairAssignmentDoc().copy(date = now())
+            val newest = stubPairAssignmentDoc().copy(date = now().plus(2.days))
+        }.bind(),
+    ) {
+        partyId.with(listOf(middle, oldest, newest))
+            .forEach { repository.save(it) }
+    } exercise {
+        repository.loadPairAssignments(partyId)
+    } verifyWithWait { result ->
+        result.data().map { it.document }
+            .assertIsEqualTo(listOf(newest, middle, oldest))
+    }
 
     @Test
     fun getCurrentPairAssignmentsOnlyReturnsTheNewest() = repositorySetup.with(
         object : PartyContextMint<R>() {
-            val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
-            val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
-            val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
+            val oldest = stubPairAssignmentDoc().copy(date = now().minus(3.days))
+            val middle = stubPairAssignmentDoc().copy(date = now())
+            val newest = stubPairAssignmentDoc().copy(date = now().plus(2.days))
         }.bind(),
     ) {
         partyId.with(listOf(middle, oldest, newest))
@@ -66,7 +67,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
             val pairAssignmentDoc = stubPairAssignmentDoc()
         }.bind(),
     ) {
-        clock.currentTime = DateTime.now().plus(4.hours)
+        clock.currentTime = now().plus(4.hours)
         repository.save(partyId.with(pairAssignmentDoc))
     } exercise {
         repository.loadPairAssignments(partyId)
@@ -109,7 +110,7 @@ interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRe
     fun afterSavingUpdatedDocumentGetWillOnlyReturnTheUpdatedDocument() =
         repositorySetup.with(
             object : PartyContextMint<R>() {
-                val originalDateTime = DateTime.now()
+                val originalDateTime = now()
                 val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
                 val updatedDateTime = originalDateTime.plus(3.days)
                 val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)

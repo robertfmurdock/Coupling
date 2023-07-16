@@ -9,12 +9,12 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlin.js.Json
 
 class DynamoPairAssignmentDocumentRepository private constructor(
     override val userId: String,
-    override val clock: TimeProvider,
+    override val clock: Clock,
 ) : PairAssignmentDocumentRepository, UserIdSyntax, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
 
     companion object :

@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPartyIntegration
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
-import korlibs.time.DateTime
-import korlibs.time.days
+import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
 
 interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R, SharedContext<R>> {
 
@@ -52,7 +52,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
             val party = stubPartyDetails()
         }.bind(),
     ) {
-        clock.currentTime = DateTime.now().minus(3.days)
+        clock.currentTime = Clock.System.now().minus(3.days)
         repository.save(party)
     } exercise {
         repository.loadParties()
@@ -73,7 +73,7 @@ interface PartyRepositoryValidator<R : PartyRepository> : RepositoryValidator<R,
             val partyIntegration = stubPartyIntegration()
         }.bind(),
     ) {
-        clock.currentTime = DateTime.now().minus(3.days)
+        clock.currentTime = Clock.System.now().minus(3.days)
         repository.save(partyDetails)
         repository.save(partyId.with(partyIntegration))
     } exercise {

@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.minassert.assertIsEqualTo
-import korlibs.time.DateTime
-import korlibs.time.days
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 import kotlin.test.fail
+import kotlin.time.Duration.Companion.days
 
 interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, SharedContext<R>> {
 
@@ -50,7 +50,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
             val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
         }.bind(),
     ) exercise {
-        clock.currentTime = DateTime.now().plus(10.days)
+        clock.currentTime = Clock.System.now().plus(10.days)
         repository.save(updatedUser)
     } verifyWithWait {
         val result = repository.getUser() ?: fail()

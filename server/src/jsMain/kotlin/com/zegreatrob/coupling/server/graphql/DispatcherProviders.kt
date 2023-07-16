@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.server.ICommandDispatcher
 import com.zegreatrob.coupling.server.PrereleaseDispatcher
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlinx.serialization.json.JsonNull
 
 object DispatcherProviders {
@@ -32,7 +32,7 @@ object DispatcherProviders {
         if (dispatcher == null || !Config.prereleaseMode) {
             null
         } else {
-            val boostRepo = DynamoBoostRepository(dispatcher.user.id, TimeProvider)
+            val boostRepo = DynamoBoostRepository(dispatcher.user.id, Clock.System)
             object : PrereleaseDispatcher, ICommandDispatcher by dispatcher {
                 override val boostRepository = boostRepo
                 override val userId = dispatcher.user.id

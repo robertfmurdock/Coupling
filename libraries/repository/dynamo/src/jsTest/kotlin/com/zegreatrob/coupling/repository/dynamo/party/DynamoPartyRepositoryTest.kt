@@ -2,6 +2,9 @@ package com.zegreatrob.coupling.repository.dynamo.party
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
+import com.zegreatrob.coupling.repository.dynamo.now
+import com.zegreatrob.coupling.repository.dynamo.pairs.months
+import com.zegreatrob.coupling.repository.dynamo.pairs.years
 import com.zegreatrob.coupling.repository.validation.ContextMint
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PartyRepositoryValidator
@@ -14,12 +17,9 @@ import com.zegreatrob.coupling.stubmodel.stubUser
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import korlibs.time.DateTime
-import korlibs.time.days
-import korlibs.time.hours
-import korlibs.time.months
-import korlibs.time.years
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 typealias PartyMint = ContextMint<DynamoPartyRepository>
 
@@ -36,7 +36,7 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
     @Test
     fun getPartyRecordsWillReturnAllRecordsForAllUsers() = repositorySetup.with(
         object : PartyMint() {
-            val initialSaveTime = DateTime.now().minus(3.days)
+            val initialSaveTime = now().minus(3.days)
             val tribe = stubPartyDetails()
             val updatedParty = tribe.copy(name = "CLONE!")
             val updatedSaveTime = initialSaveTime.plus(2.hours)
@@ -64,8 +64,8 @@ class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository
     fun canSaveRawRecord() = repositorySetup.with(
         object : PartyMint() {
             val records = listOf(
-                Record(stubPartyDetails(), uuidString(), false, DateTime.now().minus(3.months)),
-                Record(stubPartyDetails(), uuidString(), true, DateTime.now().minus(2.years)),
+                Record(stubPartyDetails(), uuidString(), false, now().minus(3.months)),
+                Record(stubPartyDetails(), uuidString(), true, now().minus(2.years)),
             )
         }.bind(),
     ) exercise {

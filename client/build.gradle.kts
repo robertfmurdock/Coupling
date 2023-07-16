@@ -62,7 +62,6 @@ dependencies {
     jsMainImplementation(project(":libraries:repository:core"))
     jsMainImplementation(project(":libraries:repository:memory"))
     jsMainImplementation("com.benasher44:uuid")
-    jsMainImplementation("com.soywiz.korlibs.klock:klock")
     jsMainImplementation("com.zegreatrob.jsmints:minreact")
     jsMainImplementation("com.zegreatrob.jsmints:react-data-loader")
     jsMainImplementation("com.zegreatrob.testmints:action")

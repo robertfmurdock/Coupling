@@ -57,7 +57,6 @@ dependencies {
     commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-common")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     commonMainImplementation("com.benasher44:uuid")
-    commonMainImplementation("com.soywiz.korlibs.klock:klock")
     commonMainImplementation("io.github.microutils:kotlin-logging")
 
     commonTestImplementation(project(":libraries:json"))

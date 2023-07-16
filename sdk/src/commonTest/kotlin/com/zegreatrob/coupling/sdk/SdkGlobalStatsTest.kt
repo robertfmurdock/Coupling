@@ -8,28 +8,30 @@ import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import korlibs.time.DateTime
-import korlibs.time.days
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
 
 class SdkGlobalStatsTest {
 
     @Test
     fun canGetGlobalStats() = asyncSetup(object {
-        val now = DateTime.now().year
+        val now = Clock.System.now().toLocalDateTime(TimeZone.UTC).year
         val party = stubPartyDetails()
     }) {
         sdk().fire(SavePartyCommand(party))
         sdk().fire(
             SavePairAssignmentsCommand(
                 partyId = party.id,
-                pairAssignments = stubPairAssignmentDoc().copy(date = DateTime.now().minus(2.days)),
+                pairAssignments = stubPairAssignmentDoc().copy(date = Clock.System.now().minus(2.days)),
             ),
         )
         sdk().fire(
             SavePairAssignmentsCommand(
                 partyId = party.id,
-                pairAssignments = stubPairAssignmentDoc().copy(date = DateTime.now()),
+                pairAssignments = stubPairAssignmentDoc().copy(date = Clock.System.now()),
             ),
         )
     } exercise {

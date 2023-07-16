@@ -21,10 +21,10 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
-import korlibs.time.TimeProvider
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlinx.serialization.json.decodeFromDynamic
 import mu.KotlinLogging
 import mu.KotlinLoggingConfiguration
@@ -38,7 +38,7 @@ private val logger = KotlinLogging.logger("import")
 fun main() {
     KotlinLoggingConfiguration.LOG_LEVEL = KotlinLoggingLevel.WARN
     MainScope().launch {
-        val catalog = DynamoRepositoryCatalog(user.email, TimeProvider)
+        val catalog = DynamoRepositoryCatalog(user.email, Clock.System)
 
         val reader = inputReader()
         reader.onNewLine { line ->
@@ -107,7 +107,7 @@ private suspend fun loadUser(userJson: Json, userRepository: DynamoUserRepositor
 
 class DynamoRepositoryCatalog private constructor(
     override val userId: String,
-    override val clock: TimeProvider,
+    override val clock: Clock,
     val partyRepository: DynamoPartyRepository,
     val playerRepository: DynamoPlayerRepository,
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
@@ -116,7 +116,7 @@ class DynamoRepositoryCatalog private constructor(
 ) : UserIdSyntax, ClockSyntax {
 
     companion object {
-        suspend operator fun invoke(userEmail: String, clock: TimeProvider): DynamoRepositoryCatalog {
+        suspend operator fun invoke(userEmail: String, clock: Clock): DynamoRepositoryCatalog {
             val partyRepository = DynamoPartyRepository(userEmail, clock)
             val playerRepository = DynamoPlayerRepository(userEmail, clock)
             val pairAssignmentDocumentRepository = DynamoPairAssignmentDocumentRepository(userEmail, clock)

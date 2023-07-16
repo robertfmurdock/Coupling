@@ -1,9 +1,8 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import korlibs.time.PerformanceCounter
-import korlibs.time.TimeSpan
-import korlibs.time.microseconds
 import mu.KotlinLogging
+import kotlin.time.Duration
+import kotlin.time.measureTimedValue
 
 private val theLogger by lazy { KotlinLogging.logger("DynamoLogger") }
 
@@ -27,17 +26,14 @@ interface DynamoLoggingSyntax {
     }
 
     private inline fun <O> runBlock(block: () -> O, className: String?): O {
-        val start = PerformanceCounter.microseconds
-        val result = block()
-        val end = PerformanceCounter.microseconds
-        val duration = (end - start).microseconds
+        val (result, duration) = measureTimedValue(block)
         logEnd(className, duration)
         return result
     }
 
     private fun logStart(className: String?) = logger.info { mapOf("func" to className, "type" to "Start") }
 
-    private fun logEnd(className: String?, duration: TimeSpan) =
+    private fun logEnd(className: String?, duration: Duration) =
         logger.info { mapOf("func" to className, "type" to "End", "duration" to "$duration") }
 
     private fun logException(exception: Exception, className: String?) =

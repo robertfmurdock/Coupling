@@ -5,15 +5,15 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdSyntax
 import com.zegreatrob.coupling.repository.user.UserRepository
-import korlibs.time.TimeProvider
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoUserRepository private constructor(override val userId: String, override val clock: TimeProvider) :
+class DynamoUserRepository private constructor(override val userId: String, override val clock: Clock) :
     UserRepository,
     UserIdSyntax,
     DynamoUserJsonMapping,
@@ -32,7 +32,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
             MainScope().async { ensureTableExists() }
         }
 
-        suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoUserRepository(userId, clock)
+        suspend operator fun invoke(userId: String, clock: Clock) = DynamoUserRepository(userId, clock)
             .also { ensure.await() }
 
         override val createTableParams: Json

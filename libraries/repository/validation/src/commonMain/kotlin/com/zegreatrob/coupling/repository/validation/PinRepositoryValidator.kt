@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
-import korlibs.time.DateTime
-import korlibs.time.hours
+import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.hours
 
 interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, PartyContext<R>> {
 
@@ -101,7 +101,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
             val pin = stubPin()
         }.bind(),
     ) exercise {
-        clock.currentTime = DateTime.now().plus(4.hours)
+        clock.currentTime = Clock.System.now().plus(4.hours)
         repository.save(partyId.with(pin))
     } verifyWithWait {
         val result = repository.getPins(partyId)

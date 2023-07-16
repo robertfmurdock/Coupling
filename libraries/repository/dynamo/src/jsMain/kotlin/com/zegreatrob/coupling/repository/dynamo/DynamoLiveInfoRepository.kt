@@ -3,13 +3,13 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.LiveInfoRepository
-import korlibs.time.TimeProvider
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
+import kotlinx.datetime.Clock
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoLiveInfoRepository private constructor(override val userId: String, override val clock: TimeProvider) :
+class DynamoLiveInfoRepository private constructor(override val userId: String, override val clock: Clock) :
     LiveInfoRepository, DynamoPlayerJsonMapping {
 
     override suspend fun connectionList(partyId: PartyId) = partyId.logAsync("connectionList") {
@@ -85,7 +85,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
             MainScope().async { ensureTableExists() }
         }
 
-        suspend operator fun invoke(userId: String, clock: TimeProvider) = DynamoLiveInfoRepository(userId, clock)
+        suspend operator fun invoke(userId: String, clock: Clock) = DynamoLiveInfoRepository(userId, clock)
             .also { ensure.await() }
 
         override val createTableParams: Json

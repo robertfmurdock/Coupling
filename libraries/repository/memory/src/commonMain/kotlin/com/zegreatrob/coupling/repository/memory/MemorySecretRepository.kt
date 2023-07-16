@@ -5,11 +5,11 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.repository.secret.SecretRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 
 class MemorySecretRepository(
     override val userId: String = "test-user",
-    override val clock: TimeProvider = TimeProvider,
+    override val clock: Clock = Clock.System,
     private val recordBackend: RecordBackend<PartyElement<Secret>> = SimpleRecordBackend(),
 ) : SecretRepository,
     TypeRecordSyntax<PartyElement<Secret>>,

@@ -13,11 +13,11 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoRecordJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.DynamoRepositoryCreatorSyntax
 import com.zegreatrob.coupling.repository.dynamo.RecordSyntax
 import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 import kotlin.js.Json
 import kotlin.js.json
 
-class DynamoSlackRepository private constructor(override val userId: String, override val clock: TimeProvider) :
+class DynamoSlackRepository private constructor(override val userId: String, override val clock: Clock) :
     RecordSyntax,
     DynamoRecordJsonMapping,
     UserIdSyntax,

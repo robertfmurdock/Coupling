@@ -10,9 +10,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.SimpleExecutableAction
-import korlibs.time.DateTime
-import korlibs.time.TimeSpan
+import kotlinx.datetime.Instant
 import kotlin.math.floor
+import kotlin.time.Duration
 
 data class ComposeStatisticsAction(
     val party: PartyDetails,
@@ -61,7 +61,7 @@ data class ComposeStatisticsAction(
 data class StatisticsReport(
     val spinsUntilFullRotation: Int,
     val pairReports: List<PairReport>,
-    val medianSpinDuration: TimeSpan?,
+    val medianSpinDuration: Duration?,
 )
 
 data class PairReport(val pair: CouplingPair.Double, val timeSinceLastPair: TimeResult)
@@ -73,8 +73,8 @@ fun List<PairAssignmentDocument>.medianSpinDuration() = asDateTimes()
 
 fun List<PairAssignmentDocument>.asDateTimes() = map(PairAssignmentDocument::date)
 
-fun List<DateTime>.toDeltas() = zipWithNext { a, b -> a - b }
+fun List<Instant>.toDeltas() = zipWithNext { a: Instant, b: Instant -> a - b }
 
-fun List<TimeSpan>.halfwayValue() = getOrNull(indexOfMedian())
+fun List<Duration>.halfwayValue() = getOrNull(indexOfMedian())
 
-fun List<TimeSpan>.indexOfMedian() = floor(size / 2.0).toInt()
+fun List<Duration>.indexOfMedian() = floor(size / 2.0).toInt()

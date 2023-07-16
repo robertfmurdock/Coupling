@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.model
 
-import korlibs.time.TimeProvider
+import kotlinx.datetime.Clock
 
 interface ClockSyntax {
-    val clock: TimeProvider
+    val clock: Clock
     fun now() = clock.now()
 }

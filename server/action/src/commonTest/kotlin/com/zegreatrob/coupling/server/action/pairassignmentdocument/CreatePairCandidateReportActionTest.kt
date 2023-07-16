@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import korlibs.time.DateTime
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -18,7 +18,7 @@ class CreatePairCandidateReportActionTest {
     companion object :
         CreatePairCandidateReportAction.Dispatcher {
         fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
-            PairAssignmentDocument(date = DateTime.now(), pairs = pairs, id = PairAssignmentDocumentId(""))
+            PairAssignmentDocument(date = Clock.System.now(), pairs = pairs, id = PairAssignmentDocumentId(""))
 
         fun pinnedPair(player1: Player, player2: Player) =
             PinnedCouplingPair(

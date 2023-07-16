@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.logging
 
-import korlibs.time.DateFormat
-import korlibs.time.DateTime
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,4 +14,4 @@ data class Message(
     val stackTrace: List<String>? = null,
 )
 
-fun DateTime.logFormat() = toString(DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX"))
+fun LocalDateTime.logFormat() = toString()

@@ -17,8 +17,9 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
-import korlibs.time.DateFormat
-import korlibs.time.DateTimeTz
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import react.ChildrenBuilder
 import react.Props
 import react.dom.html.ReactHTML.div
@@ -152,6 +153,6 @@ private fun ChildrenBuilder.showPlayer(pinnedPlayer: PinnedPlayer) = span {
     }
 }
 
-fun PairAssignmentDocument.dateText() = date.local.dateText()
+fun PairAssignmentDocument.dateText() = date.toLocalDateTime(TimeZone.currentSystemDefault()).dateText()
 
-private fun DateTimeTz.dateText() = "${format(DateFormat("MM/dd/YYYY"))} - ${format(DateFormat("HH:mm:ss"))}"
+private fun LocalDateTime.dateText() = "$date - $time"

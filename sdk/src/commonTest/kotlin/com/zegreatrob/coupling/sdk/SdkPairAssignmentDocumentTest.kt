@@ -22,10 +22,11 @@ import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
-import korlibs.time.DateTime
-import korlibs.time.days
-import korlibs.time.seconds
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.seconds
 
 class SdkPairAssignmentDocumentTest {
 
@@ -47,7 +48,7 @@ class SdkPairAssignmentDocumentTest {
         object {
             val sdk = it.sdk
             val party = it.party
-            val originalDateTime = DateTime.now()
+            val originalDateTime = Clock.System.now().roundToMillis()
             val pairAssignmentDocument = stubPairAssignmentDoc().copy(date = originalDateTime)
             val updatedDateTime = originalDateTime.plus(3.days)
             val updatedDocument = pairAssignmentDocument.copy(date = updatedDateTime)
@@ -66,6 +67,8 @@ class SdkPairAssignmentDocumentTest {
             .assertIsEqualTo(listOf(this.updatedDocument))
     }
 
+    private fun Instant.roundToMillis() = toEpochMilliseconds().let(Instant::fromEpochMilliseconds)
+
     @Test
     fun deleteWhenDocumentDoesNotExistWillNotExplode() = repositorySetup().exercise {
         runCatching { sdk.fire(DeletePairAssignmentsCommand(party.id, PairAssignmentDocumentId("${uuid4()}"))) }
@@ -79,9 +82,9 @@ class SdkPairAssignmentDocumentTest {
         object {
             val sdk = it.sdk
             val partyId = it.party.id
-            val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
-            val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
-            val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
+            val oldest = stubPairAssignmentDoc().copy(date = Clock.System.now().roundToMillis().minus(3.days))
+            val middle = stubPairAssignmentDoc().copy(date = Clock.System.now().roundToMillis())
+            val newest = stubPairAssignmentDoc().copy(date = Clock.System.now().roundToMillis().plus(2.days))
         }
     }) {
         listOf(middle, oldest, newest)
@@ -120,9 +123,9 @@ class SdkPairAssignmentDocumentTest {
         object {
             val sdk = it.sdk
             val partyId = it.party.id
-            val oldest = stubPairAssignmentDoc().copy(date = DateTime.now().minus(3.days))
-            val middle = stubPairAssignmentDoc().copy(date = DateTime.now())
-            val newest = stubPairAssignmentDoc().copy(date = DateTime.now().plus(2.days))
+            val oldest = stubPairAssignmentDoc().copy(date = Clock.System.now().roundToMillis().minus(3.days))
+            val middle = stubPairAssignmentDoc().copy(date = Clock.System.now().roundToMillis())
+            val newest = stubPairAssignmentDoc().copy(date = Clock.System.now().roundToMillis().plus(2.days))
         }
     }) {
         listOf(middle, oldest, newest)
@@ -195,7 +198,7 @@ class SdkPairAssignmentDocumentTest {
         }
     }
 
-    private fun DateTime.assertIsRecentDateTime() = (DateTime.now() - this)
+    private fun Instant.assertIsRecentDateTime() = (Clock.System.now() - this)
         .compareTo(2.seconds)
         .assertIsEqualTo(-1)
 }

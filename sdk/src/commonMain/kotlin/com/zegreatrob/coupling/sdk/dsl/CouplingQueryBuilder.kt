@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.json.toGqlQueryFields
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.partyRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.user
-import korlibs.time.Year
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -60,11 +59,11 @@ class CouplingQueryBuilder {
             InputSettings(PartyInput(id.value), "input", "PartyInput"),
         )
 
-    fun globalStats(year: Year) {
+    fun globalStats(year: Int) {
         GqlReference.globalStats.addToQuery(
             queryKey = "globalStats",
             inputSettings = InputSettings(
-                input = JsonGlobalStatsInput(year = year.year),
+                input = JsonGlobalStatsInput(year = year),
                 inputName = "input",
                 inputType = "GlobalStatsInput",
             ),

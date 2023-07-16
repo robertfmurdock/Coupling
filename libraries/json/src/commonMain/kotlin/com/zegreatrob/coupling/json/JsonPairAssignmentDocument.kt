@@ -15,26 +15,26 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import korlibs.time.DateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class JsonPairAssignmentDocument(
     val id: String,
-    val date: DateTime,
+    val date: Instant,
     val pairs: List<JsonPinnedCouplingPair>,
 )
 
 @Serializable
 data class JsonPairAssignmentDocumentRecord(
     val id: String,
-    val date: DateTime,
+    val date: Instant,
     val pairs: List<JsonPinnedCouplingPair>,
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
-    override val timestamp: DateTime,
+    override val timestamp: Instant,
 ) : JsonPartyRecordInfo
 
 @Serializable
@@ -43,7 +43,7 @@ data class JsonIntegrationRecord(
     val slackChannel: String?,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
-    val timestamp: DateTime,
+    val timestamp: Instant,
 )
 
 @Serializable
@@ -52,7 +52,7 @@ data class JsonSecretRecord(
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
-    override val timestamp: DateTime,
+    override val timestamp: Instant,
 ) : JsonPartyRecordInfo
 
 fun JsonSecretRecord.toModel(): PartyRecord<Secret> = PartyRecord(
@@ -74,7 +74,7 @@ fun PartyRecord<Secret>.toSerializable() = JsonSecretRecord(
 data class SavePairAssignmentsInput(
     override val partyId: PartyId,
     val pairAssignmentsId: String,
-    val date: DateTime,
+    val date: Instant,
     val pairs: List<JsonPinnedCouplingPair>,
 ) : IPartyInput
 

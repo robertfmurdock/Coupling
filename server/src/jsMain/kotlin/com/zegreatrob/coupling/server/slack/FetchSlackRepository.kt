@@ -10,8 +10,9 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.slack.SlackGrantAccess
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.coupling.server.express.Config
-import korlibs.time.DateFormat
-import korlibs.time.DateTimeTz
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.js.json
 import kotlin.math.abs
@@ -65,7 +66,7 @@ class FetchSlackRepository : SlackRepository {
         channel: String,
         pairs: PairAssignmentDocument,
     ): String? {
-        val pairTimestamp = pairs.date.unixMillisDouble
+        val pairTimestamp = pairs.date.toEpochMilliseconds().toDouble()
         val conversationHistory = client.getConversationHistory(
             channel = channel,
             accessToken = token,
@@ -130,6 +131,6 @@ private fun PinnedCouplingPair.pairFieldText() = listOfNotNull(
         ?.let { "📍 $it" },
 ).joinToString("\n")
 
-fun PairAssignmentDocument.dateText() = date.local.dateText()
+fun PairAssignmentDocument.dateText() = date.toLocalDateTime(TimeZone.currentSystemDefault()).dateText()
 
-private fun DateTimeTz.dateText() = "${format(DateFormat("MM/dd/YYYY"))} - ${format(DateFormat("HH:mm:ss"))}"
+private fun LocalDateTime.dateText() = "$date - $time"

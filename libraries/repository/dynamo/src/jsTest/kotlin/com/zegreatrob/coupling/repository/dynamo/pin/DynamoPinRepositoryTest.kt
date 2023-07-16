@@ -5,6 +5,9 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
+import com.zegreatrob.coupling.repository.dynamo.now
+import com.zegreatrob.coupling.repository.dynamo.pairs.months
+import com.zegreatrob.coupling.repository.dynamo.pairs.years
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PartyContextData
@@ -17,12 +20,9 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
-import korlibs.time.DateTime
-import korlibs.time.days
-import korlibs.time.hours
-import korlibs.time.months
-import korlibs.time.years
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 @Suppress("unused")
 class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
@@ -39,7 +39,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
             object : Context by context {
                 val partyId = stubPartyId()
                 val pin = stubPin()
-                val initialSaveTime = DateTime.now().minus(3.days)
+                val initialSaveTime = now().minus(3.days)
                 val updatedPin = pin.copy(name = "CLONE")
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val updatedSaveTime2 = initialSaveTime.plus(4.hours)
@@ -65,8 +65,8 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
             object : Context by context {
                 val partyId = stubPartyId()
                 val records = listOf(
-                    partyRecord(partyId, stubPin(), uuidString(), false, DateTime.now().minus(3.months)),
-                    partyRecord(partyId, stubPin(), uuidString(), true, DateTime.now().minus(2.years)),
+                    partyRecord(partyId, stubPin(), uuidString(), false, now().minus(3.months)),
+                    partyRecord(partyId, stubPin(), uuidString(), true, now().minus(2.years)),
                 )
             }
         },
