@@ -35,11 +35,9 @@ interface Commander {
 class MasterCommander(private val getIdentityToken: suspend () -> String) : Commander {
     private val backend = LocalStorageRepositoryBackend()
     override fun getDispatcher(traceId: Uuid) = if (window["inMemory"] == true) {
-        MemoryRepositoryCatalog("test-user", backend, Clock.System)
-            .sdk
+        ActionCannon(MemoryRepositoryCatalog("test-user", backend, Clock.System))
     } else {
-        val locationAndBasename = getLocationAndBasename()
-        couplingSdk(getIdentityToken, defaultClient(locationAndBasename, traceId), LoggingActionPipe(traceId))
+        couplingSdk(getIdentityToken, defaultClient(getLocationAndBasename(), traceId), LoggingActionPipe(traceId))
     }
 }
 
