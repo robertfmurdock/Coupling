@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.components.pin
 
 import com.zegreatrob.coupling.action.pin.SavePinCommand
-import com.zegreatrob.coupling.client.components.OldStubDispatchFunc
-import com.zegreatrob.coupling.client.components.OldStubDispatcher
+import com.zegreatrob.coupling.client.components.DispatchFunc
+import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.client.components.player.singleRouteRouter
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -14,6 +14,7 @@ import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import react.create
 import react.router.RouterProvider
@@ -34,7 +35,7 @@ class PinConfigEditorTest {
                         pin = pin,
                         pinList = emptyList(),
                         reload = {},
-                        dispatchFunc = OldStubDispatchFunc(),
+                        dispatchFunc = DispatchFunc { {} },
                     )
                 }
             },
@@ -51,7 +52,7 @@ class PinConfigEditorTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, OldStubDispatchFunc()) }
+                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, DispatchFunc { {} }) }
             },
         )
     } verify {
@@ -66,7 +67,7 @@ class PinConfigEditorTest {
         val newName = "pin new name"
         val newIcon = "pin new icon"
 
-        val stubDispatcher = OldStubDispatcher()
+        val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -79,7 +80,9 @@ class PinConfigEditorTest {
     } exercise {
         fireEvent.submit(screen.getByRole("form"))
     } verify {
-        stubDispatcher.commandsDispatched<SavePinCommand>()
-            .assertIsEqualTo(listOf(SavePinCommand(party.id, Pin(name = newName, icon = newIcon))))
+        waitFor {
+            stubDispatcher.receivedActions
+                .assertIsEqualTo(listOf(SavePinCommand(party.id, Pin(name = newName, icon = newIcon))))
+        }
     }
 }

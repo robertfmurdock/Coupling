@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.coupling.client.components.player.DispatchFunc
 import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise

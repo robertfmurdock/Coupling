@@ -53,7 +53,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
         val wrapper = render(jso { wrapper = MemoryRouter }) {
-            PrepareSpin(party, players, null, pins, OldStubDispatchFunc())
+            PrepareSpin(party, players, null, pins, { {} })
         }
     }) exercise {
         user.click(
@@ -83,7 +83,7 @@ class PrepareSpinTest {
         val firstPin = pins[0]
 
         val render = render(jso { wrapper = MemoryRouter }) {
-            PrepareSpin(party, players, null, pins, OldStubDispatchFunc())
+            PrepareSpin(party, players, null, pins, { {} })
         }
     }) {
         user.click(
@@ -118,7 +118,7 @@ class PrepareSpinTest {
         val currentPairs = null
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PrepareSpin(party, players, currentPairs, emptyList(), OldStubDispatchFunc())
+            PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     } verify { result ->
         result.container.querySelectorAll("[data-player-id]")
@@ -147,7 +147,7 @@ class PrepareSpinTest {
             ),
         )
         val result = render(jso { wrapper = MemoryRouter }) {
-            PrepareSpin(party, players, currentPairs, emptyList(), OldStubDispatchFunc())
+            PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     }) exercise {
         result.container.querySelectorAll("[data-player-id]")
@@ -173,7 +173,7 @@ class PrepareSpinTest {
         val user = UserEvent.setup()
         val currentPairs = null
         val context = render(jso { wrapper = MemoryRouter }) {
-            PrepareSpin(party, players, currentPairs, emptyList(), OldStubDispatchFunc())
+            PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     }) exercise {
         user.click(screen.getByText("All in!"))
@@ -198,7 +198,7 @@ class PrepareSpinTest {
             pairs = players.map { pairOf(it).withPins(emptySet()) },
         )
         val context = render(jso { wrapper = MemoryRouter }) {
-            PrepareSpin(party, players, currentPairs, emptyList(), OldStubDispatchFunc())
+            PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     }) {
     } exercise {

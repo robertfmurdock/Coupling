@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.dispatchFunc
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId

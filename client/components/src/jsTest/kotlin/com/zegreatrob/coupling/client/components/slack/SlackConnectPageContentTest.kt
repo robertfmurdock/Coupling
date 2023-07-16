@@ -2,12 +2,13 @@ package com.zegreatrob.coupling.client.components.slack
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
-import com.zegreatrob.coupling.client.components.OldStubDispatcher
+import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
+import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
@@ -16,7 +17,6 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
-import react.Fragment
 import react.ReactNode
 import react.create
 import react.router.MemoryRouter
@@ -32,7 +32,7 @@ class SlackConnectPageContentTest {
 
     @Test
     fun willSendSaveCommandOnSave() = asyncSetup(object {
-        val stubber = OldStubDispatcher()
+        val stubber = StubDispatcher()
         val actor = UserEvent.setup()
         val parties = stubParties(6)
         val targetParty = parties.random()
@@ -52,9 +52,9 @@ class SlackConnectPageContentTest {
             .assertIsEqualTo(null, "Return button showed up unexpectedly early")
     } exercise {
         actor.click(saveButton)
-        act { stubber.sendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
+        act { stubber.resultChannel.send(VoidResult.Accepted) }
     } verify {
-        stubber.commandsDispatched<SaveSlackIntegrationCommand>()
+        stubber.receivedActions
             .assertIsEqualTo(
                 listOf(
                     SaveSlackIntegrationCommand(
@@ -75,7 +75,7 @@ class SlackConnectPageContentTest {
                 parties = stubParties(2),
                 slackTeam = uuidString(),
                 slackChannel = uuidString(),
-                dispatchFunc = OldStubDispatcher().func(),
+                dispatchFunc = { {} },
             )
         }
     } verify {
@@ -84,40 +84,38 @@ class SlackConnectPageContentTest {
     }
 
     @Test
-    fun afterSaveReturnButtonTakesYouToParty() = asyncSetup(object {
+    fun afterSaveReturnButtonTakesYouToParty() = asyncSetup(object : ScopeMint() {
         val actor = UserEvent.setup()
         val party = stubPartyDetails()
-        val stubDispatcher = OldStubDispatcher()
+        val stubDispatcher = StubDispatcher()
     }) {
         render(
             RouterProvider.create {
                 router = createMemoryRouter(
                     arrayOf(
                         jso {
-                            path = "*"
-                            element = Fragment.create {
-                                SlackConnectPageContent(
-                                    parties = listOf(party),
-                                    slackTeam = uuidString(),
-                                    slackChannel = uuidString(),
-                                    dispatchFunc = stubDispatcher.func(),
-                                )
-                            }
-                        },
-                        jso {
                             path = "/${party.id.value}/pairAssignments/current/"
                             element = ReactNode("Party Time")
+                        },
+                        jso {
+                            path = "*"
+                            element = SlackConnectPageContent.create(
+                                parties = listOf(party),
+                                slackTeam = uuidString(),
+                                slackChannel = uuidString(),
+                                dispatchFunc = stubDispatcher.func(),
+                            )
                         },
                     ),
                 )
             },
         )
         actor.click(saveButton)
-        act { stubDispatcher.sendResult<SaveSlackIntegrationCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.resultChannel.send(VoidResult.Accepted) }
     } exercise {
         actor.click(returnButton)
     } verify {
-        screen.getByText("Party Time")
+        screen.queryByText("Party Time")
             .assertIsNotEqualTo(null, "Didn't end up at party page")
     }
 }

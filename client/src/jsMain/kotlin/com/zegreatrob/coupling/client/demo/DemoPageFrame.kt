@@ -16,7 +16,6 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.testmints.action.ActionCannon
-import com.zegreatrob.testmints.action.async.SuspendAction
 import emotion.react.css
 import js.core.jso
 import kotlinx.browser.document
@@ -132,17 +131,6 @@ private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = PairAssi
 private val noOpDispatchFunc = NoOpDispatcherDispatchFunc()
 
 class NoOpDispatcherDispatchFunc : DispatchFunc<NoOpDispatcher> {
-    override fun <C : SuspendAction<NoOpDispatcher, R>, R> invoke(
-        commandFunc: () -> C,
-        response: (R) -> Unit,
-    ) = fun() {}
-
-    override fun <C, R> invoke(
-        commandFunc: () -> C,
-        fireFunc: suspend ActionCannon<NoOpDispatcher>.(C) -> R,
-        response: (R) -> Unit,
-    ) = fun() {}
-
     override fun invoke(block: suspend ActionCannon<NoOpDispatcher>.() -> Unit): () -> Unit = fun() {}
 }
 

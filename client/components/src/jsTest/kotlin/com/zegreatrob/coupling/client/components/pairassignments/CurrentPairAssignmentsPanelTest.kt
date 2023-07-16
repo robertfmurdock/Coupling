@@ -3,8 +3,7 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
-import com.zegreatrob.coupling.client.components.OldStubDispatcher
+import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
@@ -35,7 +34,7 @@ class CurrentPairAssignmentsPanelTest {
             date = Clock.System.now(),
             pairs = emptyList(),
         )
-        val stubDispatcher = OldStubDispatcher()
+        val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -62,10 +61,9 @@ class CurrentPairAssignmentsPanelTest {
         )
     } exercise {
         actor.click(screen.getByText("Save!"))
-        stubDispatcher.sendResult<SavePairAssignmentsCommand, _>(VoidResult.Accepted)
     } verify {
         waitFor {
-            stubDispatcher.commandsDispatched<SavePairAssignmentsCommand>().size
+            stubDispatcher.receivedActions.size
                 .assertIsEqualTo(0)
             screen.getByText("current pairs")
         }
@@ -75,7 +73,7 @@ class CurrentPairAssignmentsPanelTest {
     fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = asyncSetup(object {
         val party = stubPartyDetails()
         val pairAssignments = stubPairAssignmentDoc()
-        val stubDispatcher = OldStubDispatcher()
+        val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -104,10 +102,10 @@ class CurrentPairAssignmentsPanelTest {
         )
     } exercise {
         actor.click(screen.findByText("Cancel"))
-        act { stubDispatcher.sendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted) }
+        act { stubDispatcher.resultChannel.send(VoidResult.Accepted) }
     } verify {
         waitFor {
-            stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
+            stubDispatcher.receivedActions
                 .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, pairAssignments.id)))
             screen.getByText("current pairs")
         }

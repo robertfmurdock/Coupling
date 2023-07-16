@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
-import com.zegreatrob.coupling.client.components.OldStubDispatcher
+import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -13,6 +13,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
@@ -31,7 +32,7 @@ class PairAssignmentRowTest {
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(PairAssignmentDocumentId("RealId"), Clock.System.now(), emptyList())
-        val stubDispatcher = OldStubDispatcher()
+        val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -45,9 +46,9 @@ class PairAssignmentRowTest {
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
-        stubDispatcher.sendResult<DeletePairAssignmentsCommand, _>(VoidResult.Accepted)
+        act { stubDispatcher.resultChannel.send(VoidResult.Accepted) }
     } verify {
-        stubDispatcher.commandsDispatched<DeletePairAssignmentsCommand>()
+        stubDispatcher.receivedActions
             .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, document.id)))
         reloadSpy.callCount.assertIsEqualTo(1)
     }
@@ -62,7 +63,7 @@ class PairAssignmentRowTest {
             Clock.System.now(),
             emptyList(),
         )
-        val stubDispatcher = OldStubDispatcher()
+        val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -77,7 +78,7 @@ class PairAssignmentRowTest {
     } exercise {
         actor.click(screen.getByText("DELETE"))
     } verify {
-        stubDispatcher.dispatchList.isEmpty()
+        stubDispatcher.receivedActions.isEmpty()
             .assertIsEqualTo(true)
         reloadSpy.callCount.assertIsEqualTo(0)
     }

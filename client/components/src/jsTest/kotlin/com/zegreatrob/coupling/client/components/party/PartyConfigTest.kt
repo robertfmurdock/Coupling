@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.client.components.OldStubDispatchFunc
-import com.zegreatrob.coupling.client.components.OldStubDispatcher
+import com.zegreatrob.coupling.client.components.DispatchFunc
+import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -12,7 +12,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
@@ -36,7 +35,7 @@ class PartyConfigTest {
         val party = PartyDetails(PartyId("1"), name = "1")
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyConfig(party, OldStubDispatchFunc())
+            PartyConfig(party, DispatchFunc { {} })
         }
     } verify {
         within(screen.getByLabelText("Pairing Rule"))
@@ -64,7 +63,7 @@ class PartyConfigTest {
             email = "email-y",
             name = "1",
         )
-        val stubDispatcher = OldStubDispatcher()
+        val stubDispatcher = StubDispatcher()
     }) {
         render(
             MemoryRouter.create {
@@ -82,10 +81,10 @@ class PartyConfigTest {
         )
     } exercise {
         fireEvent.submit(screen.getByRole("form"))
-        act { stubDispatcher.sendResult<SavePartyCommand, _>(VoidResult.Accepted) }
+        stubDispatcher.resultChannel.send(VoidResult.Accepted)
     } verify {
         waitFor {
-            stubDispatcher.commandsDispatched<SavePartyCommand>()
+            stubDispatcher.receivedActions
                 .assertIsEqualTo(listOf(SavePartyCommand(party)))
             screen.getByText("Parties!")
                 .assertNotNull()
@@ -95,7 +94,7 @@ class PartyConfigTest {
     @Test
     fun whenPartyIsNewWillSuggestIdAutomaticallyAndWillRetainIt() = asyncSetup(object {
         val party = PartyDetails(PartyId(""))
-        val stubDispatcher = OldStubDispatcher()
+        val stubDispatcher = StubDispatcher()
     }) {
         render(jso { wrapper = MemoryRouter }) {
             PartyConfig(party, stubDispatcher.func())
@@ -105,7 +104,8 @@ class PartyConfigTest {
             .also { fireEvent.submit(screen.getByRole("form")) }
     } verify { automatedPartyId ->
         waitFor {
-            stubDispatcher.commandsDispatched<SavePartyCommand>()
+            stubDispatcher.receivedActions
+                .filterIsInstance<SavePartyCommand>()
                 .first()
                 .party.id.value.run {
                     assertIsNotEqualTo("")

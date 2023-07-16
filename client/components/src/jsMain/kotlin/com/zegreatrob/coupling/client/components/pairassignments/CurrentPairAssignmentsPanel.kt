@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.perform
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
@@ -40,11 +40,10 @@ val CurrentPairAssignmentsPanel by nfc<CurrentPairAssignmentsPanelProps> { props
     val (party, pairAssignments, setPairAssignments, allowSave, dispatchFunc) = props
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val redirectToCurrentFunc = { setRedirectUrl(party.id.currentPairsPage()) }
-    val onCancel = dispatchFunc(
-        commandFunc = { DeletePairAssignmentsCommand(party.id, pairAssignments.id) },
-        fireFunc = ::perform,
-        response = { redirectToCurrentFunc() },
-    )
+    val onCancel = dispatchFunc {
+        fire(DeletePairAssignmentsCommand(party.id, pairAssignments.id))
+        redirectToCurrentFunc()
+    }
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {

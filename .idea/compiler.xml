@@ -50,6 +50,10 @@
       <module name="libraries.testmints.mint-logs" target="11" />
       <module name="libraries.testmints.report" target="11" />
       <module name="libraries.testmints.standard" target="11" />
+      <module name="plugins.jsmints-plugins.plugins" target="11" />
+      <module name="plugins.jsmints-plugins.plugins.functionalTest" target="11" />
+      <module name="plugins.jsmints-plugins.plugins.main" target="11" />
+      <module name="plugins.jsmints-plugins.plugins.test" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.action-mint-plugin" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.action-mint-plugin.functionalTest" target="11" />
       <module name="robertfmurdock.git.testmints.plugins.action-mint-plugin.main" target="11" />

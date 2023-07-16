@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.components.player
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
+import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
