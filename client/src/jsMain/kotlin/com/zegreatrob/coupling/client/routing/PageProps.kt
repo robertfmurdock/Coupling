@@ -2,12 +2,14 @@ package com.zegreatrob.coupling.client.routing
 
 import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.client.CommandDispatcher
+import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.memory.MemoryRepositoryCatalog
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
+import com.zegreatrob.testmints.action.ActionCannon
 import js.core.ReadonlyRecord
 import kotlinx.browser.window
 import kotlinx.datetime.Clock
@@ -26,21 +28,18 @@ val PageProps.playerId: String? get() = pathParams["playerId"]
 val PageProps.pinId: String? get() = pathParams["pinId"]
 
 interface Commander {
-    fun getDispatcher(traceId: Uuid): CommandDispatcher
-    fun tracingDispatcher() = getDispatcher(uuid4())
+    fun getDispatcher(traceId: Uuid): ActionCannon<CouplingSdkDispatcher>
+    fun tracingCannon() = getDispatcher(uuid4())
 }
 
 class MasterCommander(private val getIdentityToken: suspend () -> String) : Commander {
     private val backend = LocalStorageRepositoryBackend()
-    override fun getDispatcher(traceId: Uuid) = CommandDispatcher(
-        traceId = traceId,
-        sdk = if (window["inMemory"] == true) {
-            MemoryRepositoryCatalog("test-user", backend, Clock.System)
-                .sdk
-        } else {
-            couplingSdk(getIdentityToken, defaultClient(getLocationAndBasename()))
-        },
-    )
+    override fun getDispatcher(traceId: Uuid) = if (window["inMemory"] == true) {
+        MemoryRepositoryCatalog("test-user", backend, Clock.System)
+            .sdk
+    } else {
+        couplingSdk(getIdentityToken, defaultClient(getLocationAndBasename()), LoggingActionPipe(traceId))
+    }
 }
 
 fun getLocationAndBasename(): Pair<String, String> {

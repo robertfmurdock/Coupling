@@ -28,11 +28,14 @@ val CouplingQuery by nfc<CouplingQueryProps<Any>> { props ->
     val (query, toNode, commander) = props
 
     val getDataAsync: suspend (DataLoaderTools) -> ReactNode? = useCallback { tools ->
-        val dispatchFunc = DecoratedDispatchFunc({ commander.tracingDispatcher().sdk }, tools)
-        commander.tracingDispatcher().sdk
+        commander.tracingCannon()
             .fire(query)
             ?.let { value ->
-                toNode(tools.reloadData, dispatchFunc, value)
+                toNode(
+                    tools.reloadData,
+                    DecoratedDispatchFunc({ commander.tracingCannon() }, tools),
+                    value,
+                )
             }
     }
     DataLoader(getDataAsync, { null }, child = CouplingQueryLoadState::create)

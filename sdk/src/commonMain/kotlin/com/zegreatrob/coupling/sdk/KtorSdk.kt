@@ -3,10 +3,16 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.sdk.gql.KtorQueryPerformer
 import com.zegreatrob.coupling.sdk.gql.QueryPerformer
 import com.zegreatrob.testmints.action.ActionCannon
+import com.zegreatrob.testmints.action.ActionPipe
 import io.ktor.client.HttpClient
 
-fun couplingSdk(getIdTokenFunc: suspend () -> String, httpClient: HttpClient) = ActionCannon<CouplingSdkDispatcher>(
+fun couplingSdk(
+    getIdTokenFunc: suspend () -> String,
+    httpClient: HttpClient,
+    pipe: ActionPipe = ActionPipe,
+) = ActionCannon<CouplingSdkDispatcher>(
     KtorCouplingSdkDispatcher(getIdTokenFunc, httpClient),
+    pipe = pipe,
 )
 
 class KtorCouplingSdkDispatcher(

@@ -29,7 +29,7 @@ val SlackCallbackPage by nfc<PageProps> { props ->
         } else {
             DataLoader(
                 getDataAsync = {
-                    props.commander.tracingDispatcher().sdk
+                    props.commander.tracingCannon()
                         .fire(GrantSlackAccessCommand(code, state))
                 },
                 errorData = { VoidResult.Rejected },

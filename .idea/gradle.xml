@@ -7,38 +7,9 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="$PROJECT_DIR$/../jsmints/convention-plugins" name="jsmints-convention-plugins">
-                <projects>
-                  <project path="$PROJECT_DIR$/../jsmints/convention-plugins" />
-                </projects>
-              </build>
               <build path="$PROJECT_DIR$/coupling-plugins" name="coupling-plugins">
                 <projects>
                   <project path="$PROJECT_DIR$/coupling-plugins" />
-                </projects>
-              </build>
-              <build path="$PROJECT_DIR$/../jsmints/libraries" name="jsmints">
-                <projects>
-                  <project path="$PROJECT_DIR$/../jsmints/libraries" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/dependency-bom" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/jsmints-bom" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/minenzyme" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/minjson" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/minreact" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/minreact-plugin-test" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/minreact-processor" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/react-data-loader" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/react-testing-library" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/user-event-testing-library" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/wdio" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/wdio-testing-library" />
-                  <project path="$PROJECT_DIR$/../jsmints/libraries/wdiorunner" />
-                </projects>
-              </build>
-              <build path="$PROJECT_DIR$/../jsmints/plugins" name="jsmints-plugins">
-                <projects>
-                  <project path="$PROJECT_DIR$/../jsmints/plugins" />
-                  <project path="$PROJECT_DIR$/../jsmints/plugins/plugins" />
                 </projects>
               </build>
             </builds>
@@ -86,23 +57,6 @@
             <option value="$PROJECT_DIR$/server/base" />
             <option value="$PROJECT_DIR$/server/secret" />
             <option value="$PROJECT_DIR$/server/slack" />
-            <option value="$PROJECT_DIR$/../jsmints/convention-plugins" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/dependency-bom" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/jsmints-bom" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/minenzyme" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/minjson" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/minreact" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/minreact-plugin-test" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/minreact-processor" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/react-data-loader" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/react-testing-library" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/user-event-testing-library" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/wdio" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/wdio-testing-library" />
-            <option value="$PROJECT_DIR$/../jsmints/libraries/wdiorunner" />
-            <option value="$PROJECT_DIR$/../jsmints/plugins" />
-            <option value="$PROJECT_DIR$/../jsmints/plugins/plugins" />
           </set>
         </option>
       </GradleProjectSettings>
