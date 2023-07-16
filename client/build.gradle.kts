@@ -211,12 +211,6 @@ tasks {
     lintKotlinJsMain {
         dependsOn("kspKotlinJs")
     }
-    withType(FormatTask::class) {
-        exclude { spec -> spec.file.absolutePath.contains("generated") }
-    }
-    withType(LintTask::class) {
-        exclude { spec -> spec.file.absolutePath.contains("generated") }
-    }
 }
 
 artifacts {

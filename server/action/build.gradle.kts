@@ -13,59 +13,39 @@ kotlin {
             useCommonJs()
         }
     }
-    sourceSets {
-        getByName("commonMain") {
-            dependencies {
-                api(project(":libraries:repository:core"))
-                api(project(":libraries:model"))
-                api(project(":libraries:action"))
-                api("com.zegreatrob.testmints:action")
-                api("com.zegreatrob.testmints:action-async")
-                implementation("com.benasher44:uuid")
-                implementation("io.github.microutils:kotlin-logging")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-            }
-        }
-        getByName("commonTest") {
-            dependencies {
-                api(project(":libraries:stub-model"))
-                api(project(":libraries:test-action"))
-                implementation(project(":libraries:repository:memory"))
-                implementation("com.zegreatrob.testmints:async")
-                implementation("com.zegreatrob.testmints:minassert")
-                implementation("com.zegreatrob.testmints:minspy")
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-                implementation("org.jetbrains.kotlin:kotlin-test-common")
-            }
-        }
-
-        getByName("jsTest") {
-            dependencies {
-                api(project(":libraries:logging"))
-                implementation("org.jetbrains.kotlin:kotlin-test-js")
-            }
-        }
-    }
-
     sourceSets.named("jsMain") {
         kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
     }
-
 }
+dependencies {
+    commonMainApi(project(":libraries:repository:core"))
+    commonMainApi(project(":libraries:model"))
+    commonMainApi(project(":libraries:action"))
+    commonMainApi("com.zegreatrob.testmints:action")
+    commonMainApi("com.zegreatrob.testmints:action-async")
+    commonMainImplementation("com.benasher44:uuid")
+    commonMainImplementation("io.github.microutils:kotlin-logging")
+    commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-js")
+    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
+    commonTestApi(project(":libraries:stub-model"))
+    commonTestApi(project(":libraries:test-action"))
+    commonTestImplementation(project(":libraries:repository:memory"))
+    commonTestImplementation("com.zegreatrob.testmints:async")
+    commonTestImplementation("com.zegreatrob.testmints:minassert")
+    commonTestImplementation("com.zegreatrob.testmints:minspy")
+    commonTestImplementation("com.zegreatrob.testmints:standard")
+    commonTestImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
+    commonTestImplementation("org.jetbrains.kotlin:kotlin-test-common")
+
+    "jsTestApi"(project(":libraries:logging"))
+    "jsTestImplementation"("org.jetbrains.kotlin:kotlin-test-js")
+}
 tasks {
     "formatKotlinJsMain" {
         dependsOn("kspKotlinJs")
     }
     "lintKotlinJsMain" {
         dependsOn("kspKotlinJs")
-    }
-    withType(FormatTask::class) {
-        exclude { spec -> spec.file.absolutePath.contains("generated") }
-    }
-    withType(LintTask::class) {
-        exclude { spec -> spec.file.absolutePath.contains("generated") }
     }
 }
