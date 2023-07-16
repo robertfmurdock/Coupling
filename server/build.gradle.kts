@@ -217,13 +217,13 @@ tasks {
             stage
         )
     }
-    register("serverlessBuild", NodeExec::class) {
+    register<NodeExec>("serverlessBuild") {
         configureBuild("prod")
     }
-    register("serverlessBuildSandbox", NodeExec::class) {
+    register<NodeExec>("serverlessBuildSandbox") {
         configureBuild("sandbox")
     }
-    register("serverlessBuildPrerelease", NodeExec::class) {
+    register<NodeExec>("serverlessBuildPrerelease") {
         configureBuild("prerelease")
     }
 }

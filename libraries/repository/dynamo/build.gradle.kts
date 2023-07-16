@@ -18,13 +18,6 @@ kotlin {
     }
 }
 
-tasks {
-    named("jsNodeTest", KotlinJsTest::class) {
-        dependsOn("composeUp")
-        environment("LOCAL_DYNAMO", "true")
-    }
-}
-
 dockerCompose {
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
     setProjectName("Coupling-root")
@@ -54,4 +47,11 @@ dependencies {
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test-common")
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test-js")
+}
+
+tasks {
+    named("jsNodeTest", KotlinJsTest::class) {
+        dependsOn("composeUp")
+        environment("LOCAL_DYNAMO", "true")
+    }
 }

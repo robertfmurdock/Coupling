@@ -9,33 +9,20 @@ kotlin {
             useCommonJs()
         }
     }
+}
 
-    sourceSets {
-        getByName("commonMain") {
-            dependencies {
-                api(project(":libraries:repository:core"))
-                api(project(":libraries:test-logging"))
-                api(project(":libraries:stub-model"))
-                api("org.jetbrains.kotlinx:kotlinx-datetime")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                api("org.jetbrains.kotlin:kotlin-test")
-                api("com.zegreatrob.testmints:standard")
-                api("com.zegreatrob.testmints:async")
-                api("com.zegreatrob.testmints:minassert")
-            }
-        }
+dependencies {
+    commonMainApi(project(":libraries:repository:core"))
+    commonMainApi(project(":libraries:test-logging"))
+    commonMainApi(project(":libraries:stub-model"))
+    commonMainApi("org.jetbrains.kotlinx:kotlinx-datetime")
+    commonMainApi("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    commonMainApi("org.jetbrains.kotlin:kotlin-test")
+    commonMainApi("com.zegreatrob.testmints:standard")
+    commonMainApi("com.zegreatrob.testmints:async")
+    commonMainApi("com.zegreatrob.testmints:minassert")
 
-        getByName("jvmMain") {
-            dependencies {
-                api(kotlin("reflect"))
-                implementation(kotlin("reflect"))
-                implementation("org.jetbrains.kotlin:kotlin-test-junit")
-            }
-        }
-        getByName("jsMain") {
-            dependencies {
-                api("org.jetbrains.kotlin:kotlin-stdlib-js")
-            }
-        }
-    }
+    "jvmMainApi"(kotlin("reflect"))
+    "jvmMainImplementation"(kotlin("reflect"))
+    "jvmMainImplementation"("org.jetbrains.kotlin:kotlin-test-junit")
 }

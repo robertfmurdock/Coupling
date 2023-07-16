@@ -1,6 +1,3 @@
-import org.jmailen.gradle.kotlinter.tasks.FormatTask
-import org.jmailen.gradle.kotlinter.tasks.LintTask
-
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.testmints.action-mint")

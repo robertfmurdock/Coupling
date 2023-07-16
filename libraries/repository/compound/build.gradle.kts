@@ -7,7 +7,6 @@ kotlin {
         js { nodejs() }
     }
 }
-
 dependencies {
     commonMainApi(project(":libraries:model"))
     commonMainApi(project(":libraries:repository:core"))

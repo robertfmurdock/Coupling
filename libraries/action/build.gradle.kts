@@ -18,26 +18,6 @@ kotlin {
     sourceSets.named("jvmMain") {
         kotlin.srcDir("build/generated/ksp/jvm/jvmMain/kotlin")
     }
-
-}
-
-tasks {
-    named("jvmTest", Test::class) {
-        systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
-        useJUnitPlatform()
-    }
-    "formatKotlinJsMain" {
-        dependsOn("kspKotlinJs")
-    }
-    "formatKotlinJsTest" {
-        dependsOn("kspTestKotlinJs")
-    }
-    "lintKotlinJsMain" {
-        dependsOn("kspKotlinJs")
-    }
-    "lintKotlinJsTest" {
-        dependsOn("kspTestKotlinJs")
-    }
 }
 
 dependencies {
@@ -66,4 +46,23 @@ dependencies {
     "jvmTestImplementation"("org.slf4j:slf4j-simple")
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
+}
+
+tasks {
+    named<Test>("jvmTest") {
+        systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
+        useJUnitPlatform()
+    }
+    "formatKotlinJsMain" {
+        dependsOn("kspKotlinJs")
+    }
+    "formatKotlinJsTest" {
+        dependsOn("kspTestKotlinJs")
+    }
+    "lintKotlinJsMain" {
+        dependsOn("kspKotlinJs")
+    }
+    "lintKotlinJsTest" {
+        dependsOn("kspTestKotlinJs")
+    }
 }

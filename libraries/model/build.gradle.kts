@@ -1,7 +1,6 @@
 plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
-
 kotlin {
     targets {
         jvm()
@@ -11,7 +10,6 @@ kotlin {
         }
     }
 }
-
 dependencies {
     commonMainApi(enforcedPlatform(project(":libraries:dependency-bom")))
     commonMainApi(kotlin("stdlib"))

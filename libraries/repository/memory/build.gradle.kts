@@ -9,47 +9,25 @@ kotlin {
             useCommonJs()
         }
     }
+}
 
-    sourceSets {
-        getByName("commonMain") {
-            dependencies {
-                implementation(project(":libraries:model"))
-                implementation(project(":libraries:repository:core"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-                implementation("com.benasher44:uuid")
-            }
-        }
-        getByName("commonTest") {
-            dependencies {
-                implementation(project(":libraries:test-logging"))
-                implementation(project(":libraries:repository:validation"))
-                implementation("com.zegreatrob.testmints:standard")
-                implementation("com.zegreatrob.testmints:minassert")
-                implementation("org.jetbrains.kotlin:kotlin-test")
-            }
-        }
-        getByName("jvmMain") {
-            dependencies {
-                api(kotlin("reflect"))
-            }
-        }
-        getByName("jvmTest") {
-            dependencies {
-                implementation(kotlin("reflect"))
-                implementation("org.junit.jupiter:junit-jupiter-api")
-                implementation("org.junit.jupiter:junit-jupiter-engine")
-            }
-        }
+dependencies {
+    commonMainImplementation(project(":libraries:model"))
+    commonMainImplementation(project(":libraries:repository:core"))
+    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    commonMainImplementation("com.benasher44:uuid")
 
-        getByName("jsMain") {
-            dependencies {
-                api("org.jetbrains.kotlin:kotlin-stdlib-js")
-            }
-        }
-        getByName("jsTest") {
-            dependencies {
-                implementation("com.zegreatrob.testmints:async")
-            }
-        }
-    }
+    commonTestImplementation(project(":libraries:test-logging"))
+    commonTestImplementation(project(":libraries:repository:validation"))
+    commonTestImplementation("com.zegreatrob.testmints:standard")
+    commonTestImplementation("com.zegreatrob.testmints:minassert")
+    commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
+
+    "jvmMainApi"(kotlin("reflect"))
+
+    "jvmTestImplementation"(kotlin("reflect"))
+    "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
+    "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
+
+    "jsTestImplementation"("com.zegreatrob.testmints:async")
 }
