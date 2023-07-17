@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportsAction
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.GameSpin
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairCandidateReport
@@ -16,7 +16,7 @@ import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class NextPlayerActionTest : NextPlayerAction.Dispatcher {
-    override val execute = stubActionExecutor(CreatePairCandidateReportsAction::class)
+    override val execute = stubActionExecutor(CreatePairCandidateReportListAction::class)
 
     private val bill = Player(id = "Bill", avatarType = null)
     private val ted = Player(id = "Ted", avatarType = null)
@@ -109,5 +109,5 @@ class NextPlayerActionTest : NextPlayerAction.Dispatcher {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
-    private fun longestTimeSpin(players: NotEmptyList<Player>) = GameSpin(emptyList(), players, PairingRule.LongestTime)
+    private fun longestTimeSpin(players: NotEmptyList<Player>) = GameSpin(players, emptyList(), PairingRule.LongestTime)
 }

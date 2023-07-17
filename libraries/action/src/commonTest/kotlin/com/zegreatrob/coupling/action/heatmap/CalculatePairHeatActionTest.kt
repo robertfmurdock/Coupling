@@ -13,7 +13,8 @@ import com.zegreatrob.testmints.setup
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import kotools.types.collection.toNotEmptyList
+import kotools.types.collection.NotEmptyList
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class CalculatePairHeatActionTest {
@@ -21,16 +22,14 @@ class CalculatePairHeatActionTest {
     companion object :
         CalculatePairHeatAction.Dispatcher,
         AssignPinsActionDispatcher {
-        private fun List<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
+        private fun NotEmptyList<CouplingPair>.buildHistoryByRepeating(repetitions: Int) = (0 until repetitions)
             .map { pairAssignmentDocument() }
 
-        fun List<CouplingPair>.pairAssignmentDocument() =
+        fun NotEmptyList<CouplingPair>.pairAssignmentDocument() =
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId(""),
                 date = LocalDateTime(2016, 3, 1, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
-                pairs = perform(AssignPinsAction(this, emptyList(), emptyList()))
-                    .toNotEmptyList()
-                    .getOrThrow(),
+                pairs = perform(AssignPinsAction(this, emptyList(), emptyList())),
             )
     }
 
@@ -52,7 +51,7 @@ class CalculatePairHeatActionTest {
         private val player2 = Player(id = "fred", avatarType = null)
         val pair = pairOf(player1, player2)
         val history = listOf(
-            listOf(pairOf(player2, player1)).pairAssignmentDocument(),
+            notEmptyListOf(pairOf(player2, player1)).pairAssignmentDocument(),
         )
         val rotationPeriod = 60
         val action = CalculatePairHeatAction(pair, history, rotationPeriod)
@@ -67,7 +66,7 @@ class CalculatePairHeatActionTest {
         private fun makeActionWithMultipleSpinsOfSamePair(numberOfHistoryDocs: Int): CalculatePairHeatAction {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 1
-            val history = listOf(pair).buildHistoryByRepeating(numberOfHistoryDocs)
+            val history = notEmptyListOf(pair).buildHistoryByRepeating(numberOfHistoryDocs)
             return CalculatePairHeatAction(pair, history, rotationPeriod)
         }
 
@@ -129,9 +128,9 @@ class CalculatePairHeatActionTest {
 
         @Test
         fun willReturn1WithOnePairingInFullRotation() = setup(object {
-            val expectedPairing = listOf(pair, pairOf(player3))
-            val alternatePairing1 = listOf(pairOf(player1, player3), pairOf(player2))
-            val alternatePairing2 = listOf(pairOf(player2, player3), pairOf(player1))
+            val expectedPairing = notEmptyListOf(pair, pairOf(player3))
+            val alternatePairing1 = notEmptyListOf(pairOf(player1, player3), pairOf(player2))
+            val alternatePairing2 = notEmptyListOf(pairOf(player2, player3), pairOf(player1))
 
             val history = listOf(
                 alternatePairing1,
@@ -149,8 +148,8 @@ class CalculatePairHeatActionTest {
         fun willReturn0WithLastPairingIsOlderThanFiveRotations() = setup(object {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
-            val expectedPairing = listOf(pair, pairOf(player3))
-            val history = listOf(pairOf(player2, player3), pairOf(player1))
+            val expectedPairing = notEmptyListOf(pair, pairOf(player3))
+            val history = notEmptyListOf(pairOf(player2, player3), pairOf(player1))
                 .buildHistoryByRepeating(intervalsUntilCooling)
                 .plus(expectedPairing.pairAssignmentDocument())
 
@@ -165,9 +164,9 @@ class CalculatePairHeatActionTest {
         fun willNotGoHigherThanTenWhenPairingMoreThanOncePerRotation() = setup(object {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
-            val expectedPairing = listOf(pair, pairOf(player3))
+            val expectedPairing = notEmptyListOf(pair, pairOf(player3))
                 .buildHistoryByRepeating(rotationHeatWindow + 1)
-            val history = listOf(pairOf(player2, player3), pairOf(player1))
+            val history = notEmptyListOf(pairOf(player2, player3), pairOf(player1))
                 .buildHistoryByRepeating(intervalsUntilCooling - expectedPairing.size)
                 .plus(expectedPairing)
 
@@ -192,10 +191,10 @@ class CalculatePairHeatActionTest {
 
         @Test
         fun willReturn1WhenLastPairingIsAlmostOlderThanFiveRotations() = setup(object {
-            val expectedPairing = listOf(pair, pairOf(player3)).pairAssignmentDocument()
+            val expectedPairing = notEmptyListOf(pair, pairOf(player3)).pairAssignmentDocument()
             val rotationHeatWindow = 5
             val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
-            val history = listOf(
+            val history = notEmptyListOf(
                 pairOf(player2, player3),
                 pairOf(player1, player4),
                 pairOf(player5),
@@ -212,8 +211,8 @@ class CalculatePairHeatActionTest {
 
         @Test
         fun willReturn7WhenSkippingOneRotationOutOfFive() = setup(object {
-            val intervalWithIntendedPair = listOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
-            val assignmentsWithoutIntendedPair = listOf(
+            val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
+            val assignmentsWithoutIntendedPair = notEmptyListOf(
                 pairOf(player1, player3),
                 pairOf(player3, player4),
             )
@@ -233,8 +232,8 @@ class CalculatePairHeatActionTest {
 
         @Test
         fun willReturnTwoAndHalfWhenSkippingThreeRotationOutOfFive() = setup(object {
-            val intervalWithIntendedPair = listOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
-            val assignmentsWithoutIntendedPair = listOf(
+            val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
+            val assignmentsWithoutIntendedPair = notEmptyListOf(
                 pairOf(player1, player3),
                 pairOf(player3, player4),
             )

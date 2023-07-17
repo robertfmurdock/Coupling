@@ -31,7 +31,7 @@ class GameExamplesTest {
         FindNewPairsAction.Dispatcher,
         NextPlayerAction.Dispatcher,
         CreatePairCandidateReportAction.Dispatcher,
-        CreatePairCandidateReportsAction.Dispatcher,
+        CreatePairCandidateReportListAction.Dispatcher,
         DispatchingActionExecutor<Companion>,
         Wheel {
         override val wheel = this

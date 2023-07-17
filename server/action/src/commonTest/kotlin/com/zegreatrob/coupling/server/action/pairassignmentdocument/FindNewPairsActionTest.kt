@@ -29,12 +29,12 @@ class FindNewPairsActionTest {
         wheel.spyReturnValues.add(bill)
         execute.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)))
     } exercise {
-        perform(FindNewPairsAction(Game(listOf(), players, PairingRule.LongestTime)))
+        perform(FindNewPairsAction(Game(players, listOf(), PairingRule.LongestTime)))
     } verify { result ->
+        result.assertIsEqualTo(notEmptyListOf(pairOf(ted, bill)))
         execute.spyReceivedValues.getOrNull(0)
-            .assertIsEqualTo(NextPlayerAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
+            .assertIsEqualTo(NextPlayerAction(GameSpin(players, listOf(), PairingRule.LongestTime)))
         wheel.spyReceivedValues.assertContains(listOf(bill))
-        result.assertIsEqualTo(listOf(pairOf(ted, bill)))
     }
 
     @Test
@@ -46,7 +46,7 @@ class FindNewPairsActionTest {
         val ted: Player = Player(id = "Ted", avatarType = null)
         val mozart: Player = Player(id = "Mozart", avatarType = null)
         val players = notEmptyListOf(bill, ted, mozart)
-        val pairCandidateReports = listOf<PairCandidateReport?>(
+        val pairCandidateReports = listOf(
             PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
             PairCandidateReport(ted, emptyList(), TimeResultValue(0)),
         )
@@ -55,16 +55,16 @@ class FindNewPairsActionTest {
         execute.spyWillReturn(pairCandidateReports)
         wheel.spyWillReturn(bill)
     } exercise {
-        perform(FindNewPairsAction(Game(history, players, PairingRule.LongestTime)))
+        perform(FindNewPairsAction(Game(players, history, PairingRule.LongestTime)))
     } verify { result ->
         result.assertIsEqualTo(
-            listOf(pairOf(mozart, bill), pairOf(ted)),
+            notEmptyListOf(pairOf(mozart, bill), pairOf(ted)),
         )
         execute.spyReceivedValues
             .assertIsEqualTo(
                 listOf(
-                    NextPlayerAction(GameSpin(history, players, PairingRule.LongestTime)),
-                    NextPlayerAction(GameSpin(history, notEmptyListOf(ted), PairingRule.LongestTime)),
+                    NextPlayerAction(GameSpin(players, history, PairingRule.LongestTime)),
+                    NextPlayerAction(GameSpin(notEmptyListOf(ted), history, PairingRule.LongestTime)),
                 ),
             )
         wheel.spyReceivedValues

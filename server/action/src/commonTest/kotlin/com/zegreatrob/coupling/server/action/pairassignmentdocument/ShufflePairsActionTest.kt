@@ -18,6 +18,7 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.setup
 import kotlinx.datetime.Clock
+import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
@@ -39,11 +40,11 @@ class ShufflePairsActionTest {
             pairOf(Player(avatarType = null)),
             pairOf(Player(avatarType = null)),
         )
-        val spy = SpyData<FindNewPairsAction, List<CouplingPair>>().apply {
-            spyReturnValues.add(expectedPairingAssignments.toList())
+        val spy = SpyData<FindNewPairsAction, NotEmptyList<CouplingPair>>().apply {
+            spyReturnValues.add(expectedPairingAssignments)
         }
 
-        override fun perform(action: FindNewPairsAction): List<CouplingPair> = spy.spyFunction(action)
+        override fun perform(action: FindNewPairsAction): NotEmptyList<CouplingPair> = spy.spyFunction(action)
     }) exercise {
         perform(ShufflePairsAction(party, players, pins, history))
     } verify { result ->

@@ -8,10 +8,11 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecutor
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotools.types.collection.NotEmptyList
+import kotools.types.collection.notEmptyListOf
 import kotools.types.collection.toNotEmptyList
 
 data class FindNewPairsAction(val game: Game) :
-    SimpleExecutableAction<FindNewPairsAction.Dispatcher, List<CouplingPair>> {
+    SimpleExecutableAction<FindNewPairsAction.Dispatcher, NotEmptyList<CouplingPair>> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {
@@ -20,21 +21,23 @@ data class FindNewPairsAction(val game: Game) :
 
         val wheel: Wheel
 
-        fun perform(action: FindNewPairsAction) = action.firstRound()
-            .spinForNextPair()
-
-        private fun FindNewPairsAction.firstRound() = Round(
-            pairs = listOf(),
-            gameSpin = game.spinWith(game.players),
-        )
+        fun perform(action: FindNewPairsAction): NotEmptyList<CouplingPair> = with(action) {
+            val firstGameSpin = game.spinWith(game.players)
+            val firstPlayerReport = firstGameSpin.getNextPlayer()
+            val newPair = firstPlayerReport.spinForPartner()
+            val nextSpin = firstGameSpin.copyWithout(newPair)
+            val pairs = notEmptyListOf(newPair)
+            return Round(pairs, nextSpin).spinForNextPair()
+        }
 
         private fun Game.spinWith(remainingPlayers: NotEmptyList<Player>) = GameSpin(
-            history = history,
             remainingPlayers = remainingPlayers,
+            history = history,
             rule = rule,
         )
 
-        private fun Round.spinForNextPair(): List<CouplingPair> = getNextPlayer()
+        private fun Round.spinForNextPair(): NotEmptyList<CouplingPair> = gameSpin
+            ?.getNextPlayer()
             ?.let { playerReport ->
                 val newPair = playerReport.spinForPartner()
                 val updatedPairs = pairs.plus(newPair)
@@ -44,12 +47,12 @@ data class FindNewPairsAction(val game: Game) :
             }
             ?: pairs
 
-        private fun Round.getNextPlayer() = execute(NextPlayerAction(gameSpin))
+        private fun GameSpin.getNextPlayer() = this@Dispatcher.execute(NextPlayerAction(this))
 
-        private fun Pair<Round, CouplingPair>.nextRound(): Round? = let { (round, newPair) ->
+        private fun Pair<Round, CouplingPair>.nextRound(): Round = let { (round, newPair) ->
             Round(
                 round.pairs.plus(newPair),
-                round.gameSpin.copyWithout(newPair) ?: return null,
+                round.gameSpin?.copyWithout(newPair),
             )
         }
 
@@ -71,12 +74,16 @@ data class FindNewPairsAction(val game: Game) :
     }
 }
 
-data class Game(val history: List<PairAssignmentDocument>, val players: NotEmptyList<Player>, val rule: PairingRule)
+private fun <E> NotEmptyList<E>.plus(entry: E): NotEmptyList<E> {
+    return notEmptyListOf(head, tail = tail?.let { it.toList() + entry }?.toTypedArray() ?: arrayOf(entry))
+}
+
+data class Game(val players: NotEmptyList<Player>, val history: List<PairAssignmentDocument>, val rule: PairingRule)
 
 data class GameSpin(
-    val history: List<PairAssignmentDocument>,
     val remainingPlayers: NotEmptyList<Player>,
+    val history: List<PairAssignmentDocument>,
     val rule: PairingRule,
 )
 
-private data class Round(val pairs: List<CouplingPair>, val gameSpin: GameSpin)
+private data class Round(val pairs: NotEmptyList<CouplingPair>, val gameSpin: GameSpin?)

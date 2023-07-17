@@ -7,20 +7,20 @@ import com.zegreatrob.testmints.action.ExecutableActionExecutor
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotools.types.collection.NotEmptyList
 
-data class CreatePairCandidateReportsAction(val game: GameSpin) :
-    SimpleExecutableAction<CreatePairCandidateReportsAction.Dispatcher, NotEmptyList<PairCandidateReport>> {
+data class CreatePairCandidateReportListAction(val game: GameSpin) :
+    SimpleExecutableAction<CreatePairCandidateReportListAction.Dispatcher, NotEmptyList<PairCandidateReport>> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher : PlayerCandidatesFinder {
 
         val execute: ExecutableActionExecutor<CreatePairCandidateReportAction.Dispatcher>
 
-        fun perform(action: CreatePairCandidateReportsAction) = action.createReports()
+        fun perform(action: CreatePairCandidateReportListAction) = action.createReports()
 
-        private fun CreatePairCandidateReportsAction.createReportsUsingLongestRule() =
+        private fun CreatePairCandidateReportListAction.createReportsUsingLongestRule() =
             game.createReports(PairingRule.LongestTime)
 
-        private fun CreatePairCandidateReportsAction.createReports() = game.createReports(game.rule)
+        private fun CreatePairCandidateReportListAction.createReports() = game.createReports(game.rule)
 
         private fun GameSpin.createReports(rule: PairingRule) =
             remainingPlayers.map { player -> pairCandidateReport(rule, player) }
@@ -34,8 +34,8 @@ data class CreatePairCandidateReportsAction(val game: GameSpin) :
             }
         }
 
-        private fun GameSpin.createReport(player: Player, candidates: Array<Player>) = execute(
-            CreatePairCandidateReportAction(player, history, candidates.toList()),
+        private fun GameSpin.createReport(player: Player, candidates: List<Player>) = execute(
+            CreatePairCandidateReportAction(player, history, candidates),
         )
     }
 }

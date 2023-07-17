@@ -13,7 +13,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotools.types.collection.NotEmptyList
-import kotools.types.collection.toNotEmptyList
 
 data class ShufflePairsAction(
     val party: PartyDetails,
@@ -32,19 +31,19 @@ data class ShufflePairsAction(
         fun perform(action: ShufflePairsAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 
         private fun ShufflePairsAction.assignPinsToPairs() = assignPins(findNewPairs())
-        private fun ShufflePairsAction.assignPins(pairs: List<CouplingPair>) = execute(assignPinsAction(pairs))
+        private fun ShufflePairsAction.assignPins(pairs: NotEmptyList<CouplingPair>) = execute(assignPinsAction(pairs))
         private fun ShufflePairsAction.findNewPairs() = execute(findNewPairsAction())
 
-        private fun ShufflePairsAction.assignPinsAction(pairs: List<CouplingPair>) =
+        private fun ShufflePairsAction.assignPinsAction(pairs: NotEmptyList<CouplingPair>) =
             AssignPinsAction(pairs, pins, history)
 
         private fun ShufflePairsAction.findNewPairsAction() =
-            FindNewPairsAction(Game(history, players, party.pairingRule))
+            FindNewPairsAction(Game(players, history, party.pairingRule))
 
-        private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
+        private fun pairAssignmentDocument(pairAssignments: NotEmptyList<PinnedCouplingPair>) = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = currentDate(),
-            pairs = pairAssignments.toNotEmptyList().getOrThrow(),
+            pairs = pairAssignments,
         )
     }
 }

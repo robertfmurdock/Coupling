@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -9,17 +10,18 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.SimpleExecutableAction
+import kotools.types.collection.NotEmptyList
 
 data class AssignPinsAction(
-    val pairs: List<CouplingPair>,
+    val pairs: NotEmptyList<CouplingPair>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-) : SimpleExecutableAction<AssignPinsActionDispatcher, List<PinnedCouplingPair>> {
+) : SimpleExecutableAction<AssignPinsActionDispatcher, NotEmptyList<PinnedCouplingPair>> {
     override val performFunc = link(AssignPinsActionDispatcher::perform)
 }
 
 interface AssignPinsActionDispatcher {
-    fun perform(action: AssignPinsAction): List<PinnedCouplingPair> {
+    fun perform(action: AssignPinsAction): NotEmptyList<PinnedCouplingPair> {
         var pinnedPairs = action.pairs.map { it.withPins() }
 
         action.pins.filter { it.target == PinTarget.Pair }
@@ -42,10 +44,10 @@ interface AssignPinsActionDispatcher {
 
     private fun findPairCandidates(
         pin: Pin,
-        pinnedPairs: List<PinnedCouplingPair>,
+        pinnedPairs: NotEmptyList<PinnedCouplingPair>,
         history: List<PairAssignmentDocument>,
     ): List<PinnedCouplingPair> {
-        val pairsGroupedByLastTime = pinnedPairs.groupBy { pair ->
+        val pairsGroupedByLastTime = pinnedPairs.toList().groupBy { pair ->
             lastTimePlayerInPairHadPin(pin, history, pair.players)
         }
 

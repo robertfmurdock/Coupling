@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlinx.datetime.Clock
-import kotools.types.collection.toNotEmptyList
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class CalculateHeatMapCommandTest {
@@ -23,8 +23,8 @@ class CalculateHeatMapCommandTest {
                 id = PairAssignmentDocumentId(""),
                 date = Clock.System.now(),
                 pairs = perform(
-                    AssignPinsAction(listOf(pairOf(player1, player2)), emptyList(), emptyList()),
-                ).toNotEmptyList().getOrThrow(),
+                    AssignPinsAction(notEmptyListOf(pairOf(player1, player2)), emptyList(), emptyList()),
+                ),
             )
     }
 

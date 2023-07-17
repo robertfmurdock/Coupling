@@ -16,7 +16,7 @@ import kotlin.test.Test
 class CreatePairCandidateReportsActionTest {
 
     class WhenThePartyPrefersPairingWithDifferentBadges :
-        CreatePairCandidateReportsAction.Dispatcher {
+        CreatePairCandidateReportListAction.Dispatcher {
         override val execute = stubActionExecutor(CreatePairCandidateReportAction::class)
 
         @Test
@@ -35,13 +35,13 @@ class CreatePairCandidateReportsActionTest {
             val expectedReports = notEmptyListOf(billReport, tedReport, amadeusReport, shortyReport)
 
             val history = emptyList<PairAssignmentDocument>()
-            val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
+            val gameSpin = GameSpin(players, history, PairingRule.PreferDifferentBadge)
         }) {
             expectedReports.toList().forEach { report ->
                 execute.givenPlayerReturnReport(report, players.without(report.player), history)
             }
         } exercise {
-            perform(CreatePairCandidateReportsAction(gameSpin))
+            perform(CreatePairCandidateReportListAction(gameSpin))
         } verify { result ->
             result.assertIsEqualTo(expectedReports)
         }
@@ -61,7 +61,7 @@ class CreatePairCandidateReportsActionTest {
             val shortyReport = PairCandidateReport(altShorty, emptyList(), TimeResultValue(1))
             val expectedReports = notEmptyListOf(billReport, tedReport, amadeusReport, shortyReport)
 
-            val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
+            val gameSpin = GameSpin(players, history, PairingRule.PreferDifferentBadge)
         }) {
             execute.run {
                 givenPlayerReturnReport(billReport, listOf(altAmadeus, altShorty), history)
@@ -70,7 +70,7 @@ class CreatePairCandidateReportsActionTest {
                 givenPlayerReturnReport(shortyReport, listOf(bill, ted), history)
             }
         } exercise {
-            perform(CreatePairCandidateReportsAction(gameSpin))
+            perform(CreatePairCandidateReportListAction(gameSpin))
         } verify { result ->
             result.assertIsEqualTo(expectedReports)
         }
@@ -81,11 +81,11 @@ class CreatePairCandidateReportsActionTest {
             val bill = Player(id = "Bill", badge = 1, avatarType = null)
             val players = notEmptyListOf(bill)
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
-            val gameSpin = GameSpin(history, players, PairingRule.PreferDifferentBadge)
+            val gameSpin = GameSpin(players, history, PairingRule.PreferDifferentBadge)
         }) {
             execute.givenPlayerReturnReport(billReport, emptyList(), history)
         } exercise {
-            perform(CreatePairCandidateReportsAction(gameSpin))
+            perform(CreatePairCandidateReportListAction(gameSpin))
         } verify {
             it.assertIsEqualTo(notEmptyListOf(billReport))
         }
@@ -93,7 +93,7 @@ class CreatePairCandidateReportsActionTest {
 
     @Test
     fun whenThePartyPrefersPairingByLongestTime() = setup(object :
-        CreatePairCandidateReportsAction.Dispatcher {
+        CreatePairCandidateReportListAction.Dispatcher {
         override val execute = stubActionExecutor(CreatePairCandidateReportAction::class)
         val history = listOf<PairAssignmentDocument>()
         val bill = Player(id = "Bill", badge = 1, avatarType = null)
@@ -115,7 +115,7 @@ class CreatePairCandidateReportsActionTest {
             givenPlayerReturnReport(shortyReport, players.without(altShorty), history)
         }
     } exercise {
-        perform(CreatePairCandidateReportsAction(GameSpin(history, players, PairingRule.LongestTime)))
+        perform(CreatePairCandidateReportListAction(GameSpin(players, history, PairingRule.LongestTime)))
     } verify {
         it.assertIsEqualTo(expectedReports)
     }
