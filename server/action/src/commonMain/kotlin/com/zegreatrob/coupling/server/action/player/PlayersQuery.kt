@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
-import com.zegreatrob.testmints.action.annotation.MintAction
+import com.zegreatrob.testmints.action.annotation.ActionMint
 
-@MintAction
+@ActionMint
 data class PlayersQuery(val partyId: PartyId) {
 
     interface Dispatcher :

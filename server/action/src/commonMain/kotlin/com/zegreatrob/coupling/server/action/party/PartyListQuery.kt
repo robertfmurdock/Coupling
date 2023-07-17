@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.repository.party.PartyRecordSyntax
-import com.zegreatrob.testmints.action.annotation.MintAction
+import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-@MintAction
+@ActionMint
 object PartyListQuery {
 
     interface Dispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax, PartyRecordSyntax {

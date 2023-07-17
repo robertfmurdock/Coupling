@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.party.PartyRepository
-import com.zegreatrob.testmints.action.annotation.MintAction
+import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -24,7 +24,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.minutes
 
-@MintAction
+@ActionMint
 data class GlobalStatsQuery(val year: Int) {
 
     interface Dispatcher {

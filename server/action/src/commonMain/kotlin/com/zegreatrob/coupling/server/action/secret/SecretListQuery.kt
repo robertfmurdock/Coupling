@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.server.action.secret
 
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.secret.SecretListGet
-import com.zegreatrob.testmints.action.annotation.MintAction
+import com.zegreatrob.testmints.action.annotation.ActionMint
 
-@MintAction
+@ActionMint
 data class SecretListQuery(val partyId: PartyId) {
     interface Dispatcher {
         val secretRepository: SecretListGet

@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.action.player.callsign
 
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
-import com.zegreatrob.testmints.action.annotation.MintAction
+import com.zegreatrob.testmints.action.annotation.ActionMint
 
-@MintAction
+@ActionMint
 data class FindCallSignAction(val players: List<Player>, val email: String) {
     interface Dispatcher :
         GenerateCallSignAction.Dispatcher,
