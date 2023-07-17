@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
+import kotools.types.collection.toNotEmptyList
 
 data class ShufflePairsAction(
     val party: PartyDetails,
@@ -42,7 +43,7 @@ data class ShufflePairsAction(
         private fun pairAssignmentDocument(pairAssignments: List<PinnedCouplingPair>) = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = currentDate(),
-            pairs = pairAssignments,
+            pairs = pairAssignments.toNotEmptyList().getOrThrow(),
         )
     }
 }

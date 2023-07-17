@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class AssignPinsActionTest {
@@ -105,7 +106,7 @@ class AssignPinsActionTest {
         val pairs = listOf(alternatePair, expectedPair)
 
         val history = listOf(
-            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1).withPins(setOf(pin)))),
+            stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(player1).withPins(setOf(pin)))),
         )
     }) exercise {
         perform(
@@ -136,7 +137,7 @@ class AssignPinsActionTest {
         val pairs = listOf(expectedPair, alternatePair)
 
         val history = listOf(
-            stubPairAssignmentDoc().copy(pairs = listOf(pairOf(player1, player3).withPins(setOf(pin)))),
+            stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(player1, player3).withPins(setOf(pin)))),
         )
     }) exercise {
         perform(

@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
@@ -19,6 +20,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import kotlinx.datetime.Clock
+import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.Window
 import react.router.MemoryRouter
 import kotlin.js.json
@@ -31,7 +33,11 @@ class PairAssignmentRowTest {
         override val window: Window get() = json("confirm" to { true }).unsafeCast<Window>()
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
-        val document = PairAssignmentDocument(PairAssignmentDocumentId("RealId"), Clock.System.now(), emptyList())
+        val document = PairAssignmentDocument(
+            id = PairAssignmentDocumentId("RealId"),
+            date = Clock.System.now(),
+            pairs = notEmptyListOf(stubPinnedCouplingPair()),
+        )
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
@@ -59,9 +65,9 @@ class PairAssignmentRowTest {
         val party = PartyDetails(PartyId("me"))
         val reloadSpy = SpyData<Unit, Unit>()
         val document = PairAssignmentDocument(
-            PairAssignmentDocumentId("RealId"),
-            Clock.System.now(),
-            emptyList(),
+            id = PairAssignmentDocumentId("RealId"),
+            date = Clock.System.now(),
+            pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()

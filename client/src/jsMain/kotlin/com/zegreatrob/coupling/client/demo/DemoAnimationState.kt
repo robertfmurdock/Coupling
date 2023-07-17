@@ -19,6 +19,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import kotlinx.datetime.Clock
+import kotools.types.collection.notEmptyListOf
 import popper.core.Placement
 import web.cssom.ClassName
 
@@ -58,7 +59,7 @@ private val pins = listOf(
 private val pairAssignments = PairAssignmentDocument(
     id = PairAssignmentDocumentId(""),
     date = Clock.System.now(),
-    pairs = listOf(
+    pairs = notEmptyListOf(
         pairOf(player1, player4).withPins(emptySet()),
         pairOf(player2, player5).withPins(pins.toSet()),
         pairOf(player6).withPins(emptySet()),
@@ -95,7 +96,7 @@ private fun <T> List<T>.pairWithDurations(firstDuration: Int, duration: Int) = m
     it to if (index == 0) firstDuration else duration
 }
 
-object Start : DemoAnimationState() {
+data object Start : DemoAnimationState() {
     val text = """
         # A Demo of Coupling
         
@@ -106,7 +107,7 @@ object Start : DemoAnimationState() {
     """.trimIndent()
 }
 
-object ShowIntro : DemoAnimationState() {
+data object ShowIntro : DemoAnimationState() {
     val text = """
         # A Demo of Coupling
         

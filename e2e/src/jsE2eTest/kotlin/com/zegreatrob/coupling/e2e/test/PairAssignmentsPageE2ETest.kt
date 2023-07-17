@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.e2e.test.ConfigHeader.getRetiredPlayersButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getStatisticsButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getViewHistoryButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
+import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -32,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -173,7 +175,7 @@ class PairAssignmentsPageE2ETest {
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = LocalDateTime(2015, 5, 30, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
-                    pairs = listOf(
+                    pairs = notEmptyListOf(
                         pairOf(players[0], players[2]).withPins(emptySet()),
                         pairOf(players[4]).withPins(emptySet()),
                     ),
@@ -210,14 +212,14 @@ class PairAssignmentsPageE2ETest {
 
         private suspend fun WebdriverElementArray.assertTheMostRecentPairsAreShown() {
             get(0).getPairPlayerNames()
-                .assertIsEqualTo(pairAssignmentDocument.pairs[0].players().map { it.name })
+                .assertIsEqualTo(pairAssignmentDocument.pairs.toList()[0].players().map(Player::name))
             get(1).getPairPlayerNames()
-                .assertIsEqualTo(pairAssignmentDocument.pairs[1].players().map { it.name })
+                .assertIsEqualTo(pairAssignmentDocument.pairs.toList()[1].players().map(Player::name))
         }
 
         private suspend fun WebdriverElementArray.assertOnlyUnpairedPlayersAreShown() {
-            map { it.text() }.toList()
-                .assertIsEqualTo(unpairedPlayers.map { it.name })
+            map(WebdriverElement::text).toList()
+                .assertIsEqualTo(unpairedPlayers.map(Player::name))
         }
 
         @Test

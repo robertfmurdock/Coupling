@@ -2,6 +2,8 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
+import com.zegreatrob.coupling.model.flatMap
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -18,6 +20,8 @@ import com.zegreatrob.testmints.setup
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotools.types.collection.NotEmptyList
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class GameExamplesTest {
@@ -70,8 +74,7 @@ class GameExamplesTest {
         }) exercise {
             perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
         } verify { result ->
-            result.pairs.map { pair -> pair.players.size.assertIsEqualTo(2); pair.pinnedPlayers }
-                .flatten()
+            result.pairs.flatMap { pair -> pair.players.size.assertIsEqualTo(2); pair.pinnedPlayers }
                 .size
                 .assertIsEqualTo(allPlayers.size)
         }
@@ -86,7 +89,7 @@ class GameExamplesTest {
         }) exercise {
             perform(ShufflePairsAction(party, listOf(clark, bruce, diana), emptyList(), history))
         } verify { result ->
-            result.pairs.size.assertIsEqualTo(2)
+            result.pairs.size.toInt().assertIsEqualTo(2)
         }
 
         @Test
@@ -95,28 +98,28 @@ class GameExamplesTest {
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 10),
-                    pairs = listOf(pairOf(bruce, clark)).withNoPins(),
+                    pairs = notEmptyListOf(pairOf(bruce, clark)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 9),
-                    pairs = listOf(pairOf(bruce, diana)).withNoPins(),
+                    pairs = notEmptyListOf(pairOf(bruce, diana)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 8),
-                    pairs = listOf(pairOf(bruce, hal)).withNoPins(),
+                    pairs = notEmptyListOf(pairOf(bruce, hal)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 7),
-                    pairs = listOf(pairOf(bruce, barry)).withNoPins(),
+                    pairs = notEmptyListOf(pairOf(bruce, barry)).withNoPins(),
                 ),
             )
         }) exercise {
             perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
         } verify { result ->
-            result.pairs.contains(pairOf(bruce, john).toPinnedPair())
+            result.pairs.toList().contains(pairOf(bruce, john).toPinnedPair())
         }
     }
 
@@ -143,28 +146,28 @@ class GameExamplesTest {
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 10),
-                    pairs = listOf(pairOf(bruce, clark)).withNoPins(),
+                    pairs = notEmptyListOf(pairOf(bruce, clark)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 9),
-                    pairs = listOf(pairOf(bruce, diana)).withNoPins(),
+                    pairs = notEmptyListOf(pairOf(bruce, diana)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 8),
-                    pairs = listOf(pairOf(bruce, hal)).withNoPins(),
+                    pairs = notEmptyListOf(pairOf(bruce, hal)).withNoPins(),
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 7),
-                    pairs = listOf(pairOf(bruce, barry)).withNoPins(),
+                    pairs = notEmptyListOf(pairOf(bruce, barry)).withNoPins(),
                 ),
             )
         }) exercise {
             perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
         } verify { result ->
-            result.pairs.contains(pairOf(bruce, john).toPinnedPair())
+            result.pairs.toList().contains(pairOf(bruce, john).toPinnedPair())
         }
     }
 
@@ -184,27 +187,27 @@ class GameExamplesTest {
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = dateTime(2014, 1, 10),
-                pairs = listOf(pairOf(kamala, thor)).withNoPins(),
+                pairs = notEmptyListOf(pairOf(kamala, thor)).withNoPins(),
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = dateTime(2014, 1, 9),
-                pairs = listOf(pairOf(kamala, steve)).withNoPins(),
+                pairs = notEmptyListOf(pairOf(kamala, steve)).withNoPins(),
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = dateTime(2014, 1, 8),
-                pairs = listOf(pairOf(kamala, logan)).withNoPins(),
+                pairs = notEmptyListOf(pairOf(kamala, logan)).withNoPins(),
             ),
         )
     }) exercise {
         perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
     } verify { result ->
-        result.pairs.contains(pairOf(kamala, logan).toPinnedPair())
+        result.pairs.toList().contains(pairOf(kamala, logan).toPinnedPair())
     }
 }
 
-private fun List<CouplingPair>.withNoPins() = map { pair -> pair.toPinnedPair() }
+private fun NotEmptyList<CouplingPair>.withNoPins() = map(CouplingPair::toPinnedPair)
 
 private fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
 

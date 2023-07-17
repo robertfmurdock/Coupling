@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -16,6 +17,7 @@ import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.setup
 import kotlinx.datetime.Clock
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class ShufflePairsActionTest {
@@ -32,12 +34,12 @@ class ShufflePairsActionTest {
         val players = emptyList<Player>()
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()
-        val expectedPairingAssignments = listOf(
+        val expectedPairingAssignments = notEmptyListOf(
             pairOf(Player(avatarType = null)),
             pairOf(Player(avatarType = null)),
         )
         val spy = SpyData<FindNewPairsAction, List<CouplingPair>>().apply {
-            spyReturnValues.add(expectedPairingAssignments)
+            spyReturnValues.add(expectedPairingAssignments.toList())
         }
 
         override fun perform(action: FindNewPairsAction): List<CouplingPair> = spy.spyFunction(action)

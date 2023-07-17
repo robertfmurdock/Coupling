@@ -82,5 +82,5 @@ interface AssignPinsActionDispatcher {
         ?.players
 
     private fun pairWithPin(pairAssignmentDocument: PairAssignmentDocument, pin: Pin) =
-        pairAssignmentDocument.pairs.find { docPair -> docPair.pins.contains(pin) }
+        pairAssignmentDocument.pairs.toList().find { docPair -> docPair.pins.contains(pin) }
 }

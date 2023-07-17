@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotools.types.collection.NotEmptyList
 import kotlin.time.Duration.Companion.minutes
 
 @ActionMint
@@ -83,13 +84,14 @@ private fun partyStats(
 }
 
 private fun List<PairAssignmentDocument>.allPins(): List<Pin> = flatMap {
-    it.pairs.flatMap(PinnedCouplingPair::allPins)
+    it.pairs.toList().flatMap(PinnedCouplingPair::allPins)
 }
 
 private fun PinnedCouplingPair.allPins(): List<Pin> = pins.toList()
     .plus(pinnedPlayers.flatMap(PinnedPlayer::pins))
 
-private fun List<PairAssignmentDocument>.distinctPlayersPairedThisYear() = flatMap(PairAssignmentDocument::pairs)
+private fun List<PairAssignmentDocument>.distinctPlayersPairedThisYear() = map(PairAssignmentDocument::pairs)
+    .flatMap(NotEmptyList<PinnedCouplingPair>::toList)
     .flatMap(PinnedCouplingPair::players)
     .map(Player::id)
     .distinct()

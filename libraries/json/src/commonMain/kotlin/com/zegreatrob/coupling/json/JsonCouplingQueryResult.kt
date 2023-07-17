@@ -31,7 +31,7 @@ private fun JsonParty.toModel() = Party(
     playerList = playerList?.map(JsonPlayerRecord::toModel),
     retiredPlayers = retiredPlayers?.map(JsonPlayerRecord::toModel),
     secretList = secretList?.map(JsonSecretRecord::toModel),
-    pairAssignmentDocumentList = pairAssignmentDocumentList?.map(JsonPairAssignmentDocumentRecord::toModel),
+    pairAssignmentDocumentList = pairAssignmentDocumentList?.mapNotNull(JsonPairAssignmentDocumentRecord::toModel),
     currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
 )
 

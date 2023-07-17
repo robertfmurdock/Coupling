@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.green
 import com.zegreatrob.coupling.client.components.red
 import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.client.components.supersize
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -18,6 +19,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
+import kotools.types.collection.NotEmptyList
 import react.ChildrenBuilder
 import react.Props
 import react.dom.html.ReactHTML.div
@@ -73,7 +75,7 @@ private fun ChildrenBuilder.pairAssignmentList(
     css {
         whiteSpace = WhiteSpace.preLine
     }
-    pairAssignments.pairs.mapIndexed { index, pair ->
+    pairAssignments.pairs.toList().mapIndexed { index, pair ->
         AssignedPair(
             party = party,
             pair = pair,
@@ -92,11 +94,12 @@ private fun PairAssignmentDocument.copyWithDroppedPin(pinId: String, pair: Pinne
 
 private fun findDroppedPin(id: String, pairAssignments: PairAssignmentDocument) = pairAssignments
     .pairs
+    .toList()
     .map(PinnedCouplingPair::pins)
     .flatten()
     .first { it.id == id }
 
-private fun List<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
+private fun NotEmptyList<PinnedCouplingPair>.movePinTo(pin: Pin, droppedPair: PinnedCouplingPair) = map { pair ->
     when {
         pair == droppedPair -> pair.addPin(pin)
         pair.pins.contains(pin) -> pair.removePin(pin)
@@ -131,20 +134,20 @@ private fun PairAssignmentDocument.copyWithSwappedPlayers(
     )
 }
 
-private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, replacement: PinnedPlayer) =
-    copy(
-        pinnedPlayers = pinnedPlayers.map { pinnedPlayer ->
-            if (pinnedPlayer == playerToReplace) {
-                replacement
-            } else {
-                pinnedPlayer
-            }
-        },
-    )
+private fun PinnedCouplingPair.replacePlayer(playerToReplace: PinnedPlayer, replacement: PinnedPlayer) = copy(
+    pinnedPlayers = pinnedPlayers.map { pinnedPlayer ->
+        if (pinnedPlayer == playerToReplace) {
+            replacement
+        } else {
+            pinnedPlayer
+        }
+    },
+)
 
-private fun List<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = firstOrNull { pair ->
-    pair.pinnedPlayers.any { player -> player.player.id == droppedPlayerId }
-}
+private fun NotEmptyList<PinnedCouplingPair>.findPairContainingPlayer(droppedPlayerId: String) = toList()
+    .firstOrNull { pair ->
+        pair.pinnedPlayers.any { player -> player.player.id == droppedPlayerId }
+    }
 
 private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = CouplingButton(
     sizeRuleSet = supersize,

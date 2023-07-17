@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlinx.datetime.Clock
+import kotools.types.collection.NotEmptyList
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -17,7 +19,7 @@ class CreatePairCandidateReportActionTest {
 
     companion object :
         CreatePairCandidateReportAction.Dispatcher {
-        fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
+        fun pairAssignmentDocument(pairs: NotEmptyList<PinnedCouplingPair>) =
             PairAssignmentDocument(date = Clock.System.now(), pairs = pairs, id = PairAssignmentDocumentId(""))
 
         fun pinnedPair(player1: Player, player2: Player) =
@@ -71,25 +73,10 @@ class CreatePairCandidateReportActionTest {
             }
 
             @Test
-            fun withHistoryDocumentThatHasNoPairs() = setup(object {
-                val history = listOf(pairAssignmentDocument(emptyList()))
-            }) exercise {
-                perform(createPairCandidateReportAction(history, availableOtherPlayers))
-            } verify {
-                it.assertIsEqualTo(
-                    PairCandidateReport(
-                        bruce,
-                        availableOtherPlayers,
-                        NeverPaired,
-                    ),
-                )
-            }
-
-            @Test
             fun withPlentyOfHistory() = setup(object {
                 val history = listOf(
                     pairAssignmentDocument(
-                        listOf(
+                        notEmptyListOf(
                             pinnedPair(
                                 bruce,
                                 Player(id = "Batgirl", avatarType = null),
@@ -97,7 +84,7 @@ class CreatePairCandidateReportActionTest {
                         ),
                     ),
                     pairAssignmentDocument(
-                        listOf(
+                        notEmptyListOf(
                             pinnedPair(
                                 bruce,
                                 Player(id = "Robin", avatarType = null),
@@ -121,7 +108,7 @@ class CreatePairCandidateReportActionTest {
             fun onlyThePersonYouWereWithLastTime() = setup(object {
                 val history = listOf(
                     pairAssignmentDocument(
-                        listOf(
+                        notEmptyListOf(
                             pinnedPair(bruce, selena),
                         ),
                     ),
@@ -144,9 +131,9 @@ class CreatePairCandidateReportActionTest {
             fun whenThereIsClearlySomeoneWhoHasBeenTheLongest() = setup(object {
                 val expectedPartner = jezebel
                 val history = listOf(
-                    pairAssignmentDocument(listOf(pinnedPair(bruce, selena))),
-                    pairAssignmentDocument(listOf(pinnedPair(bruce, talia))),
-                    pairAssignmentDocument(listOf(pinnedPair(expectedPartner, bruce))),
+                    pairAssignmentDocument(notEmptyListOf(pinnedPair(bruce, selena))),
+                    pairAssignmentDocument(notEmptyListOf(pinnedPair(bruce, talia))),
+                    pairAssignmentDocument(notEmptyListOf(pinnedPair(expectedPartner, bruce))),
                 )
             }) exercise {
                 perform(CreatePairCandidateReportAction(bruce, history, availableOtherPlayers))
@@ -163,7 +150,7 @@ class CreatePairCandidateReportActionTest {
             @Test
             fun whenThereIsOnePersonWhoHasPairedButNoOneElse() = setup(object {
                 val history = listOf(
-                    pairAssignmentDocument(listOf(pinnedPair(bruce, selena))),
+                    pairAssignmentDocument(notEmptyListOf(pinnedPair(bruce, selena))),
                 )
             }) exercise {
                 perform(CreatePairCandidateReportAction(bruce, history, availableOtherPlayers))

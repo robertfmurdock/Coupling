@@ -16,7 +16,7 @@ interface PairingTimeCalculationSyntax : CouplingComparisionSyntax {
     }
 
     private fun pairingExistsInDocument(historyDocument: PairAssignmentDocument, pair: CouplingPair) =
-        historyDocument.pairs.any { areEqualPairs(pair, it.toPair()) }
+        historyDocument.pairs.toList().any { areEqualPairs(pair, it.toPair()) }
 }
 
 interface CouplingComparisionSyntax {

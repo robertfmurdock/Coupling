@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
 import kotlinx.datetime.Clock
+import kotools.types.collection.notEmptyListOf
 import kotlin.time.Duration.Companion.minutes
 
 fun stubParties(number: Int) = generateSequence(::stubPartyDetails).take(number).toList()
@@ -75,7 +76,7 @@ var pairAssignmentDocumentCounter = 1
 fun stubPairAssignmentDoc() = PairAssignmentDocument(
     id = PairAssignmentDocumentId(uuidString()),
     date = Clock.System.now().plus(pairAssignmentDocumentCounter.minutes),
-    pairs = listOf(
+    pairs = notEmptyListOf(
         PinnedCouplingPair(
             listOf(stubPlayer().withPins()),
             setOf(stubPin()),
@@ -91,3 +92,5 @@ fun stubUser() = User(
     email = "$userCounter-${uuidString()}@gmail.com",
     authorizedPartyIds = setOf(stubPartyId()),
 ).also { userCounter++ }
+
+fun stubPinnedCouplingPair() = PinnedCouplingPair(listOf())

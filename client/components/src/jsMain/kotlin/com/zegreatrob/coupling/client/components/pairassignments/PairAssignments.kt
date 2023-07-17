@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.external.reactdndhtml5backend.h
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.player.PlayerRoster
 import com.zegreatrob.coupling.model.CouplingSocketMessage
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
@@ -129,5 +130,5 @@ private fun notPairedPlayers(players: List<Player>, pairAssignments: PairAssignm
     }
 
 private fun PairAssignmentDocument.currentlyPairedPlayerIds() =
-    pairs.flatMap(PinnedCouplingPair::players)
+    pairs.toList().flatMap(PinnedCouplingPair::players)
         .map(Player::id)

@@ -4,6 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.components.spin.PrepareSpin
 import com.zegreatrob.coupling.client.components.spin.deselectedPinsClass
 import com.zegreatrob.coupling.client.components.spin.selectedPinsClass
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -23,6 +24,8 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import kotlinx.datetime.Clock
+import kotools.types.collection.notEmptyListOf
+import kotools.types.collection.toNotEmptyList
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
@@ -141,7 +144,7 @@ class PrepareSpinTest {
         val currentPairs = PairAssignmentDocument(
             PairAssignmentDocumentId(""),
             Clock.System.now(),
-            listOf(
+            notEmptyListOf(
                 pairOf(players[0], players[1]).withPins(emptySet()),
                 pairOf(players[2]).withPins(emptySet()),
             ),
@@ -191,14 +194,14 @@ class PrepareSpinTest {
     fun whenTheNoneButtonIsClickedAllPlayersBecomeDeselected() = asyncSetup(object {
         val party = stubPartyDetails()
         val user = UserEvent.setup()
-        val players = stubPlayers(3)
+        val players = stubPlayers(3).toNotEmptyList().getOrThrow()
         val currentPairs = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = Clock.System.now(),
             pairs = players.map { pairOf(it).withPins(emptySet()) },
         )
         val context = render(jso { wrapper = MemoryRouter }) {
-            PrepareSpin(party, players, currentPairs, emptyList(), { {} })
+            PrepareSpin(party, players.toList(), currentPairs, emptyList(), { {} })
         }
     }) {
     } exercise {

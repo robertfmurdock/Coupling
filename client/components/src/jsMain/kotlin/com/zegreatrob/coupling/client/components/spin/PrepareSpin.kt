@@ -53,6 +53,7 @@ private fun defaultSelections(players: List<Player>, currentPairsDoc: PairAssign
 
 private fun isInLastSetOfPairs(player: Player, currentPairsDoc: PairAssignmentDocument?) = currentPairsDoc
     ?.pairs
+    ?.toList()
     ?.map(PinnedCouplingPair::players)
     ?.flatten()
     ?.map(Player::id)

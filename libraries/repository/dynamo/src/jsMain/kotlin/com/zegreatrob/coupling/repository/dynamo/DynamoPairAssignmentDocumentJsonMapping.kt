@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyElement
 import kotlinx.datetime.Instant
+import kotools.types.collection.toNotEmptyList
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -18,7 +19,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
     private fun PairAssignmentDocument.toDynamoJson() = json(
         "id" to id.value,
         "date" to "${date.toEpochMilliseconds()}",
-        "pairs" to pairs.map { it.toDynamoJson() }
+        "pairs" to pairs.toList().map { it.toDynamoJson() }
             .toTypedArray(),
     )
 
@@ -41,11 +42,17 @@ interface DynamoPairAssignmentDocumentJsonMapping :
         "player" to player.toDynamoJson(),
     )
 
-    fun Json.toPairAssignmentDocument() = PairAssignmentDocument(
-        id = PairAssignmentDocumentId(getDynamoStringValue("id") ?: ""),
-        date = getDynamoStringValue("date")?.toLong()?.let { Instant.fromEpochMilliseconds(it) } ?: Instant.DISTANT_PAST,
-        pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) } ?: emptyList(),
-    )
+    fun Json.toPairAssignmentDocument(): PairAssignmentDocument? {
+        return PairAssignmentDocument(
+            id = PairAssignmentDocumentId(getDynamoStringValue("id") ?: ""),
+            date = getDynamoStringValue("date")?.toLong()?.let { Instant.fromEpochMilliseconds(it) }
+                ?: Instant.DISTANT_PAST,
+            pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) }
+                ?.toNotEmptyList()
+                ?.getOrNull()
+                ?: return null,
+        )
+    }
 
     private fun toPinnedCouplingPair(pair: Json) = PinnedCouplingPair(
         pinnedPlayers = pair.getDynamoListValue("players")

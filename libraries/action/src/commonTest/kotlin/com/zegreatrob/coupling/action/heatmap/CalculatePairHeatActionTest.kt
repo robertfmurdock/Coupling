@@ -13,6 +13,7 @@ import com.zegreatrob.testmints.setup
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotools.types.collection.toNotEmptyList
 import kotlin.test.Test
 
 class CalculatePairHeatActionTest {
@@ -27,7 +28,9 @@ class CalculatePairHeatActionTest {
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId(""),
                 date = LocalDateTime(2016, 3, 1, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
-                pairs = perform(AssignPinsAction(this, emptyList(), emptyList())),
+                pairs = perform(AssignPinsAction(this, emptyList(), emptyList()))
+                    .toNotEmptyList()
+                    .getOrThrow(),
             )
     }
 

@@ -12,10 +12,9 @@ kotlin {
 }
 dependencies {
     commonMainApi(enforcedPlatform(project(":libraries:dependency-bom")))
-    commonMainApi(kotlin("stdlib"))
-    commonMainApi(kotlin("stdlib-common"))
-    commonMainApi("org.jetbrains.kotlinx:kotlinx-datetime")
     commonMainApi("com.benasher44:uuid")
+    commonMainApi("org.jetbrains.kotlinx:kotlinx-datetime")
+    commonMainApi("org.kotools:types")
     commonTestImplementation(project(":libraries:test-logging"))
     commonTestImplementation(kotlin("test"))
     commonTestImplementation("com.zegreatrob.testmints:standard")

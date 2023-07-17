@@ -31,6 +31,7 @@ dependencies {
     commonMainImplementation("io.github.microutils:kotlin-logging")
 
     commonTestImplementation(project(":libraries:json"))
+    commonTestImplementation(project(":libraries:stub-model"))
     commonTestImplementation(project(":libraries:test-logging"))
     commonTestImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     commonTestImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")

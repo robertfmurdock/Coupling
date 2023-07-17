@@ -16,6 +16,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import js.core.jso
 import kotlinx.datetime.Clock
+import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import react.router.MemoryRouter
@@ -39,7 +40,7 @@ class PairAssignmentsTest {
         var pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = Clock.System.now(),
-            pairs = listOf(
+            pairs = notEmptyListOf(
                 pairOf(
                     Player(id = "0", name = "Tom", avatarType = null),
                     Player(

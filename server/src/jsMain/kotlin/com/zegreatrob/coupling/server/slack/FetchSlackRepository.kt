@@ -114,7 +114,7 @@ private fun PairAssignmentDocument.toSlackBlocks() = arrayOf(
     ),
     json(
         "type" to "section",
-        "fields" to pairs.map {
+        "fields" to pairs.toList().map {
             json(
                 "type" to "mrkdwn",
                 "text" to it.pairFieldText(),

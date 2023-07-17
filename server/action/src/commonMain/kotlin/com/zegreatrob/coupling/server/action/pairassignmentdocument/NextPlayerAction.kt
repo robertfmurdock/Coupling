@@ -13,7 +13,7 @@ data class NextPlayerAction(val gameSpin: GameSpin) :
 
         val execute: ExecutableActionExecutor<CreatePairCandidateReportsAction.Dispatcher>
 
-        fun perform(action: NextPlayerAction) = action.createPairCandidateReports()
+        fun perform(action: NextPlayerAction): PairCandidateReport? = action.createPairCandidateReports()
             .fold<PairCandidateReport, PairCandidateReport?>(null) { reportWithLongestTime, report ->
                 when {
                     reportWithLongestTime == null -> report

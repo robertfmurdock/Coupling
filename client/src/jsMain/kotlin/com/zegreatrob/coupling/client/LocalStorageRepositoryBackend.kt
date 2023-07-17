@@ -35,7 +35,7 @@ fun String.toPlayerRecords(): List<PartyRecord<Player>> = fromJsonString<List<Js
 
 fun List<PartyRecord<PairAssignmentDocument>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPairAssignmentRecords(): List<PartyRecord<PairAssignmentDocument>> =
-    fromJsonString<List<JsonPairAssignmentDocumentRecord>>().map { it.toModel() }
+    fromJsonString<List<JsonPairAssignmentDocumentRecord>>().mapNotNull { it.toModel() }
 
 fun List<PartyRecord<Pin>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPinRecords(): List<PartyRecord<Pin>> = fromJsonString<List<JsonPinRecord>>().map { it.toModel() }

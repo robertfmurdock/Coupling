@@ -7,12 +7,11 @@ import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.withNoPins
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -24,6 +23,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import react.router.MemoryRouter
@@ -46,7 +46,7 @@ class PartyStatisticsTest :
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = Clock.System.now(),
-                pairs = listOf<CouplingPair>(
+                pairs = notEmptyListOf<CouplingPair>(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3]),
                 ).withNoPins(),
@@ -100,7 +100,7 @@ class PartyStatisticsTest :
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = Clock.System.now(),
-                pairs = listOf(
+                pairs = notEmptyListOf(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3]),
                 ).withNoPins(),
@@ -163,7 +163,7 @@ class PartyStatisticsTest :
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = dateTime(2017, 3, 14),
-                pairs = listOf(
+                pairs = notEmptyListOf(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3]),
                 ).withNoPins(),
@@ -171,7 +171,7 @@ class PartyStatisticsTest :
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = dateTime(2017, 3, 12),
-                pairs = listOf(
+                pairs = notEmptyListOf(
                     pairOf(players[0], players[1]),
                     pairOf(players[2], players[3]),
                 ).withNoPins(),
@@ -190,9 +190,3 @@ class PartyStatisticsTest :
 
 private fun dateTime(year: Int, month: Int, day: Int): Instant =
     LocalDateTime(year, month, day, 0, 0, 0).toInstant(TimeZone.currentSystemDefault())
-
-private fun List<CouplingPair>.withNoPins() = map { pair -> pair.toPinnedPair() }
-
-private fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
-
-private fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }

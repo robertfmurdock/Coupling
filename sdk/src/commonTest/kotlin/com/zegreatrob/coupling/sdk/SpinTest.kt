@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class SpinTest {
@@ -64,7 +65,7 @@ class SpinTest {
         queryCurrentPairs(party.id, sdk)
             ?.pairs
             .assertIsEqualTo(
-                listOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) })),
+                notEmptyListOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) })),
             )
     } teardown {
         sdk.fire(DeletePartyCommand(party.id))
@@ -82,7 +83,7 @@ class SpinTest {
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 10),
-                    pairs = listOf(
+                    pairs = notEmptyListOf(
                         pairOf(players[0], players[2]).withPins(),
                         pairOf(players[1], players[3]).withPins(),
                     ),
@@ -90,7 +91,7 @@ class SpinTest {
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
                     date = dateTime(2014, 1, 9),
-                    pairs = listOf(
+                    pairs = notEmptyListOf(
                         pairOf(players[0], players[3]).withPins(),
                         pairOf(players[1], players[2]).withPins(),
                     ),
@@ -106,7 +107,7 @@ class SpinTest {
         queryCurrentPairs(party.id, sdk)
             ?.pairs
             .assertIsEqualTo(
-                listOf(
+                notEmptyListOf(
                     pairOf(players[0], players[3]).withPins(),
                     pairOf(players[1], players[2]).withPins(),
                 ),
@@ -127,7 +128,7 @@ class SpinTest {
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = dateTime(2014, 2, 10),
-                pairs = listOf(
+                pairs = notEmptyListOf(
                     pairOf(players[0], players[3]).withPins(),
                     pairOf(players[1], players[2]).withPins(),
                 ),
@@ -135,7 +136,7 @@ class SpinTest {
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
                 date = dateTime(2014, 2, 9),
-                pairs = listOf(
+                pairs = notEmptyListOf(
                     pairOf(players[0], players[2]).withPins(),
                     pairOf(players[1], players[3]).withPins(),
                 ),
@@ -150,7 +151,7 @@ class SpinTest {
         queryCurrentPairs(party.id, sdk.await())
             ?.pairs
             .assertIsEqualTo(
-                listOf(
+                notEmptyListOf(
                     pairOf(players[0], players[1]).withPins(),
                     pairOf(players[2], players[3]).withPins(),
                 ),
@@ -180,7 +181,7 @@ class SpinTest {
             queryCurrentPairs(party.id, sdk)
                 ?.pairs
                 .assertIsEqualTo(
-                    listOf(PinnedCouplingPair(listOf(players[0].withPins()), setOf(pin))),
+                    notEmptyListOf(PinnedCouplingPair(listOf(players[0].withPins()), setOf(pin))),
                 )
         } teardown {
             sdk.fire(DeletePartyCommand(party.id))
@@ -196,7 +197,7 @@ class SpinTest {
             queryCurrentPairs(party.id, sdk)
                 ?.pairs
                 .assertIsEqualTo(
-                    listOf(PinnedCouplingPair(listOf(players[0].withPins()), emptySet())),
+                    notEmptyListOf(PinnedCouplingPair(listOf(players[0].withPins()), emptySet())),
                 )
         } teardown {
             sdk.fire(DeletePartyCommand(party.id))

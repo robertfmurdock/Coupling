@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair.Compani
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.testmints.action.SimpleExecutableAction
+import kotools.types.collection.NotEmptyList
 import kotlin.math.min
 
 const val rotationHeatWindow = 5
@@ -31,9 +32,8 @@ data class CalculatePairHeatAction(
 
         private val CalculatePairHeatAction.lastRelevantRotation get() = rotationPeriod * rotationHeatWindow
 
-        private fun List<PairAssignmentDocument>.flattenedPairings() = map(
-            PairAssignmentDocument::pairs,
-        )
+        private fun List<PairAssignmentDocument>.flattenedPairings() = map(PairAssignmentDocument::pairs)
+            .map(NotEmptyList<PinnedCouplingPair>::toList)
             .flatten()
             .map(PinnedCouplingPair::toPair)
 

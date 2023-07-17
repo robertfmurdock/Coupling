@@ -93,7 +93,7 @@ private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = CouplingButt
 }
 
 private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
-    document.pairs.mapIndexed { index, pair ->
+    document.pairs.toList().mapIndexed { index, pair ->
         span {
             css {
                 border = Border(3.px, LineStyle.double, NamedColor.dimgray)

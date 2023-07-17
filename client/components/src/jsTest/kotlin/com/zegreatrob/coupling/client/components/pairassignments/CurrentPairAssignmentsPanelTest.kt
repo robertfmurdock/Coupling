@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
+import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -18,6 +19,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import kotlinx.datetime.Clock
+import kotools.types.collection.notEmptyListOf
 import react.ReactNode
 import react.create
 import react.router.RouterProvider
@@ -32,7 +34,7 @@ class CurrentPairAssignmentsPanelTest {
         val pairAssignments = PairAssignmentDocument(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = Clock.System.now(),
-            pairs = emptyList(),
+            pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()

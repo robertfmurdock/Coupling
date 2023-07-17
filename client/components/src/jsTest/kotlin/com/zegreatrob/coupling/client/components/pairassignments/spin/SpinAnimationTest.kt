@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.pairassignments.spin
 
 import com.zegreatrob.coupling.client.components.spin.RosteredPairAssignments
+import com.zegreatrob.coupling.model.get
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -12,6 +13,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.external.Result
+import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
@@ -24,9 +26,7 @@ class SpinAnimationTest {
         open class Setup {
             val player = stubPlayer()
             val pairAssignments = stubPairAssignmentDoc().copy(
-                pairs = listOf(
-                    pairOf(player).withPins(emptySet()),
-                ),
+                pairs = notEmptyListOf(pairOf(player).withPins(emptySet())),
             )
         }
 
@@ -50,9 +50,7 @@ class SpinAnimationTest {
                 stubPlayer(),
             )
             private val pairAssignments = stubPairAssignmentDoc().copy(
-                pairs = listOf(
-                    pairOf(players[0], players[2]).withPins(emptySet()),
-                ),
+                pairs = notEmptyListOf(pairOf(players[0], players[2]).withPins(emptySet())),
             )
             val rosteredPairAssignments = RosteredPairAssignments.rosteredPairAssignments(pairAssignments, players)
         }
@@ -79,7 +77,7 @@ class SpinAnimationTest {
                 stubPlayer(),
             )
             val pairAssignments = stubPairAssignmentDoc().copy(
-                pairs = listOf(
+                pairs = notEmptyListOf(
                     pairOf(players[1], players[3]).withPins(emptySet()),
                     pairOf(players[0], players[2]).withPins(emptySet()),
                 ),
@@ -111,7 +109,7 @@ class SpinAnimationTest {
         }) exercise {
             Start.next(pairAssignments)
         } verify { result ->
-            result.assertIsEqualTo(Shuffle(target = pairAssignments.pairs[0].players[0], step = 0))
+            result.assertIsEqualTo(Shuffle(target = pairAssignments.pairs.head.players[0], step = 0))
         }
 
         @Test
@@ -132,7 +130,7 @@ class SpinAnimationTest {
         }) exercise {
             state.nextUntilNotShuffle()
         } verify { result ->
-            result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs[0].players[0]))
+            result.assertIsEqualTo(ShowPlayer(pairAssignments.pairs.head.players[0]))
         }
 
         @Test

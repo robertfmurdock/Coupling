@@ -21,6 +21,7 @@ import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
@@ -50,7 +51,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
                 val pairAssignmentDocument = stubPairAssignmentDoc()
                 val initialSaveTime = now().minus(3.days)
                 val updatedPairAssignmentDocument = pairAssignmentDocument.copy(
-                    pairs = listOf(pairOf(stubPlayer()).withPins(emptySet())),
+                    pairs = notEmptyListOf(pairOf(stubPlayer()).withPins(emptySet())),
                 )
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
                 val updatedSaveTime2 = initialSaveTime.plus(4.hours)

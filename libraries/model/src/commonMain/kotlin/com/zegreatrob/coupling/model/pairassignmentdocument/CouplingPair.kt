@@ -1,8 +1,10 @@
 package com.zegreatrob.coupling.model.pairassignmentdocument
 
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
+import kotools.types.collection.NotEmptyList
 
 fun pairOf(player1: Player) = CouplingPair.Single(player1)
 
@@ -12,7 +14,7 @@ sealed class CouplingPair {
 
     abstract fun asArray(): Array<Player>
 
-    object Empty : CouplingPair() {
+    data object Empty : CouplingPair() {
         override fun asArray() = arrayOf<Player>()
     }
 
@@ -44,7 +46,7 @@ data class PinnedCouplingPair(val pinnedPlayers: List<PinnedPlayer>, val pins: S
 
 val PinnedCouplingPair.players get() = pinnedPlayers.map(PinnedPlayer::player)
 
-fun List<CouplingPair>.withPins() = map { it.withPins() }
+fun NotEmptyList<CouplingPair>.withPins() = map(CouplingPair::withPins)
 
 fun CouplingPair.withPins(pins: Set<Pin> = emptySet()) = PinnedCouplingPair(
     asArray().map { player -> player.withPins() },

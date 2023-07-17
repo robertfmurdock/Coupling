@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class RosteredPairAssignmentsTest {
@@ -19,7 +20,7 @@ class RosteredPairAssignmentsTest {
             stubPlayer(),
         )
         val pairAssignments = stubPairAssignmentDoc().copy(
-            pairs = listOf(
+            pairs = notEmptyListOf(
                 pairOf(players[0], players[2]).withPins(emptySet()),
             ),
         )

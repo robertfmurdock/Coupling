@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlinx.datetime.Clock
@@ -21,6 +22,8 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotools.types.collection.NotEmptyList
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -184,7 +187,7 @@ class ComposeStatisticsActionTest {
             val stubDate = Clock.System.now()
             val history = listOf(
                 pairAssignmentDocument(
-                    listOf(
+                    notEmptyListOf(
                         PinnedCouplingPair(
                             listOf(
                                 player1.withPins(
@@ -206,7 +209,7 @@ class ComposeStatisticsActionTest {
                     ),
                 ),
                 pairAssignmentDocument(
-                    listOf(
+                    notEmptyListOf(
                         PinnedCouplingPair(
                             listOf(
                                 player1.withPins(
@@ -229,7 +232,7 @@ class ComposeStatisticsActionTest {
                 ),
             )
 
-            private fun pairAssignmentDocument(pairs: List<PinnedCouplingPair>) =
+            private fun pairAssignmentDocument(pairs: NotEmptyList<PinnedCouplingPair>) =
                 PairAssignmentDocument(date = stubDate, pairs = pairs, id = PairAssignmentDocumentId(""))
         }) exercise {
             perform(ComposeStatisticsAction(party, players, history))
@@ -275,7 +278,15 @@ class ComposeStatisticsActionTest {
 
         companion object {
             private fun pairAssignmentDocument(dateTime: Instant) =
-                PairAssignmentDocument(id = PairAssignmentDocumentId(""), date = dateTime, pairs = emptyList())
+                PairAssignmentDocument(
+                    id = PairAssignmentDocumentId(""),
+                    date = dateTime,
+                    pairs = stubPinnedPairs(),
+                )
+
+            private fun stubPinnedPairs() = notEmptyListOf(
+                PinnedCouplingPair(listOf(stubPlayer().withPins(emptyList())), emptySet()),
+            )
         }
 
         @Test
@@ -347,7 +358,7 @@ class ComposeStatisticsActionTest {
                 PairAssignmentDocument(
                     date = dateTime(2017, 2, 17),
                     id = PairAssignmentDocumentId(""),
-                    pairs = emptyList(),
+                    pairs = stubPinnedPairs(),
                 ),
             )
         }) exercise {

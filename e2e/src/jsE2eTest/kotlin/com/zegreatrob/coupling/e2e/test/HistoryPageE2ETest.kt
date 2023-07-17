@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -19,6 +20,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import kotlinx.datetime.Clock
+import kotools.types.collection.NotEmptyList
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 @Suppress("unused")
@@ -46,7 +49,7 @@ class HistoryPageE2ETest {
             ) = listOf(
                 buildPairAssignmentDocument(
                     1,
-                    listOf(
+                    notEmptyListOf(
                         pairOf(
                             Player(
                                 name = "Ollie",
@@ -58,7 +61,7 @@ class HistoryPageE2ETest {
                 ),
                 buildPairAssignmentDocument(
                     2,
-                    listOf(
+                    notEmptyListOf(
                         pairOf(
                             Player(
                                 name = "Arthur",
@@ -70,11 +73,12 @@ class HistoryPageE2ETest {
                 ),
             ).onEach { sdk.fire(SavePairAssignmentsCommand(party.id, it)) }
 
-            private fun buildPairAssignmentDocument(number: Int, pairs: List<CouplingPair>) = PairAssignmentDocument(
-                PairAssignmentDocumentId("${Clock.System.now().toEpochMilliseconds()}-HistoryPageE2ETest-$number"),
-                Clock.System.now(),
-                pairs.map { it.withPins(emptySet()) },
-            )
+            private fun buildPairAssignmentDocument(number: Int, pairs: NotEmptyList<CouplingPair>) =
+                PairAssignmentDocument(
+                    PairAssignmentDocumentId("${Clock.System.now().toEpochMilliseconds()}-HistoryPageE2ETest-$number"),
+                    Clock.System.now(),
+                    pairs.map { it.withPins(emptySet()) },
+                )
 
             private fun buildParty() = "${randomInt()}-HistoryPageE2ETest".let {
                 PartyDetails(it.let(::PartyId), name = it)

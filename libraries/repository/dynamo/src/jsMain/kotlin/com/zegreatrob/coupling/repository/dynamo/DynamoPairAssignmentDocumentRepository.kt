@@ -39,11 +39,11 @@ class DynamoPairAssignmentDocumentRepository private constructor(
     )
 
     override suspend fun loadPairAssignments(partyId: PartyId) = partyId.queryForItemList()
-        .map { toRecord(it) }
+        .mapNotNull { toRecord(it) }
         .sortedByDescending { it.data.document.date }
 
     override suspend fun getCurrentPairAssignments(partyId: PartyId) = partyId.queryForItemList()
-        .map { toRecord(it) }
+        .mapNotNull { toRecord(it) }
         .maxByOrNull { it.data.document.date }
 
     override suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId) =
@@ -58,12 +58,12 @@ class DynamoPairAssignmentDocumentRepository private constructor(
         partyId.logAsync("getPairAssignmentRecords") {
             queryAllRecords(partyId.itemListQueryParams())
         }
-            .map { toRecord(it) }
+            .mapNotNull { toRecord(it) }
             .sortedByDescending { it.timestamp }
 
-    private fun toRecord(json: Json): PartyRecord<PairAssignmentDocument> = json.toRecord(
-        json.tribeId().with(json.toPairAssignmentDocument()),
-    )
+    private fun toRecord(json: Json): PartyRecord<PairAssignmentDocument>? = json.toPairAssignmentDocument()
+        ?.let { json.tribeId().with(it) }
+        ?.let { json.toRecord(it) }
 
     private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::PartyId)
 }

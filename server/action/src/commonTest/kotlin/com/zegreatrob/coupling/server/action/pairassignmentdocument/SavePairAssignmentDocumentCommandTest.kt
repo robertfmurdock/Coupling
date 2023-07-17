@@ -16,12 +16,14 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentD
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.slack.SlackUpdateSpin
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
+import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class SavePairAssignmentDocumentCommandTest {
@@ -38,7 +40,7 @@ class SavePairAssignmentDocumentCommandTest {
             PairAssignmentDocument(
                 PairAssignmentDocumentId("${uuid4()}"),
                 date = Clock.System.now(),
-                pairs = emptyList(),
+                pairs = notEmptyListOf(stubPinnedCouplingPair()),
             ),
         )
         override val slackRepository = SlackUpdateSpin { _, _, _ -> }
