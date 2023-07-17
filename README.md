@@ -1,9 +1,7 @@
 Coupling ![Build](https://github.com/robertfmurdock/Coupling/actions/workflows/main.yml/badge.svg?branch=master) ![Website](https://img.shields.io/website?down_message=dead...%20uh%20oh&up_message=live&url=https%3A%2F%2Fcoupling.zegreatrob.com)
 ========
 
-![JS Updates](https://github.com/robertfmurdock/Coupling/actions/workflows/all-js-update.yml/badge.svg?branch=master)
-![Gradle Lib Updates](https://github.com/robertfmurdock/Coupling/actions/workflows/gradle-update.yml/badge.svg?branch=master)
-
+![Library Updates](https://github.com/robertfmurdock/Coupling/actions/workflows/gradle-update.yml/badge.svg?branch=master)
 
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/robertfmurdock/Coupling?label=Release)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/robertfmurdock/coupling)
