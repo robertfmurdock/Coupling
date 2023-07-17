@@ -35,7 +35,7 @@
     "fs-extra": "^11.1.1",
     "global-jsdom": "9.0.1",
     "graphql": "^16.7.1",
-    "graphql-http": "^1.20.0",
+    "graphql-http": "^1.21.0",
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.5.3",
     "html2canvas": "^1.4.1",
