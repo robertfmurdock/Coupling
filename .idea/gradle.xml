@@ -57,25 +57,6 @@
             <option value="$PROJECT_DIR$/server/base" />
             <option value="$PROJECT_DIR$/server/secret" />
             <option value="$PROJECT_DIR$/server/slack" />
-            <option value="$PROJECT_DIR$/../testmints/convention-plugins" />
-            <option value="$PROJECT_DIR$/../testmints/libraries" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/action" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/action-annotation" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/action-async" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/action-processor" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/async" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/dependency-bom" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/kotest-example" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/minassert" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/mindiff" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/minspy" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/mint-logs" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/report" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/standard" />
-            <option value="$PROJECT_DIR$/../testmints/libraries/testmints-bom" />
-            <option value="$PROJECT_DIR$/../testmints/plugins" />
-            <option value="$PROJECT_DIR$/../testmints/plugins/action-mint-plugin" />
-            <option value="$PROJECT_DIR$/../testmints/plugins/mint-logs-plugin" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -46,4 +46,9 @@ tasks {
         )
         isIgnoreExitValue = true
     }
+
+    "versionCatalogUpdate" {
+        dependsOn("libraries:js-dependencies:ncuUpgrade")
+        dependsOn(provider { gradle.includedBuilds.map { it.task(":versionCatalogUpdate") } })
+    }
 }
