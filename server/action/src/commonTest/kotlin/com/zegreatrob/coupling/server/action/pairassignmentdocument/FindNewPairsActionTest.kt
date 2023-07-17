@@ -12,19 +12,10 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.setup
+import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class FindNewPairsActionTest {
-
-    @Test
-    fun withNoPlayersShouldReturnNoPairs() = setup(object :
-        FindNewPairsAction.Dispatcher, Wheel {
-        override val execute = stubActionExecutor(NextPlayerAction::class)
-        override val wheel = this
-    }) exercise {
-        perform(FindNewPairsAction(Game(listOf(), listOf(), PairingRule.LongestTime)))
-    } verify { assertEquals(it, listOf()) }
 
     @Test
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = setup(object :
@@ -33,17 +24,17 @@ class FindNewPairsActionTest {
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill", avatarType = null)
         val ted: Player = Player(id = "Ted", avatarType = null)
-        val players = listOf(bill, ted)
+        val players = notEmptyListOf(bill, ted)
     }) {
         wheel.spyReturnValues.add(bill)
         execute.spyReturnValues.add(PairCandidateReport(ted, listOf(bill), TimeResultValue(0)))
     } exercise {
         perform(FindNewPairsAction(Game(listOf(), players, PairingRule.LongestTime)))
     } verify { result ->
-        result.assertIsEqualTo(listOf(pairOf(ted, bill)))
         execute.spyReceivedValues.getOrNull(0)
             .assertIsEqualTo(NextPlayerAction(GameSpin(listOf(), players, PairingRule.LongestTime)))
         wheel.spyReceivedValues.assertContains(listOf(bill))
+        result.assertIsEqualTo(listOf(pairOf(ted, bill)))
     }
 
     @Test
@@ -54,7 +45,7 @@ class FindNewPairsActionTest {
         val bill: Player = Player(id = "Bill", avatarType = null)
         val ted: Player = Player(id = "Ted", avatarType = null)
         val mozart: Player = Player(id = "Mozart", avatarType = null)
-        val players = listOf(bill, ted, mozart)
+        val players = notEmptyListOf(bill, ted, mozart)
         val pairCandidateReports = listOf<PairCandidateReport?>(
             PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),
             PairCandidateReport(ted, emptyList(), TimeResultValue(0)),
@@ -73,7 +64,7 @@ class FindNewPairsActionTest {
             .assertIsEqualTo(
                 listOf(
                     NextPlayerAction(GameSpin(history, players, PairingRule.LongestTime)),
-                    NextPlayerAction(GameSpin(history, listOf(ted), PairingRule.LongestTime)),
+                    NextPlayerAction(GameSpin(history, notEmptyListOf(ted), PairingRule.LongestTime)),
                 ),
             )
         wheel.spyReceivedValues

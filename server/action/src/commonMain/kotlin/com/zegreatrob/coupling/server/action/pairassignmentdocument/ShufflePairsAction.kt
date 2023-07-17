@@ -12,11 +12,12 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
+import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList
 
 data class ShufflePairsAction(
     val party: PartyDetails,
-    val players: List<Player>,
+    val players: NotEmptyList<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
 ) : SimpleExecutableAction<ShufflePairsAction.Dispatcher, PairAssignmentDocument> {

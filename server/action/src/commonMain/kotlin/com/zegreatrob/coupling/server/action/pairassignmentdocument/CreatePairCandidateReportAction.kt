@@ -49,5 +49,3 @@ data class CreatePairCandidateReportAction(
             maxByOrNull { (key, _) -> if (key is TimeResultValue) key.time else -1 }
     }
 }
-
-data class PairCandidateReport(val player: Player, val partners: List<Player>, val timeResult: TimeResult)

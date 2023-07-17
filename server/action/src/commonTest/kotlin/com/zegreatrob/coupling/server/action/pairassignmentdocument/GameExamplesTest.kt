@@ -54,7 +54,7 @@ class GameExamplesTest {
             val clark = Player(id = "5", badge = 0, name = "Superman", avatarType = null)
             val diana = Player(id = "6", badge = 0, name = "Wonder Woman", avatarType = null)
 
-            val allPlayers = listOf(
+            val allPlayers = notEmptyListOf(
                 clark,
                 bruce,
                 diana,
@@ -76,7 +76,7 @@ class GameExamplesTest {
         } verify { result ->
             result.pairs.flatMap { pair -> pair.players.size.assertIsEqualTo(2); pair.pinnedPlayers }
                 .size
-                .assertIsEqualTo(allPlayers.size)
+                .assertIsEqualTo(allPlayers.size.toInt())
         }
 
         @Test
@@ -87,7 +87,7 @@ class GameExamplesTest {
                 PairingRule.LongestTime,
             )
         }) exercise {
-            perform(ShufflePairsAction(party, listOf(clark, bruce, diana), emptyList(), history))
+            perform(ShufflePairsAction(party, notEmptyListOf(clark, bruce, diana), emptyList(), history))
         } verify { result ->
             result.pairs.size.toInt().assertIsEqualTo(2)
         }
@@ -137,7 +137,7 @@ class GameExamplesTest {
             val clark = Player(id = "5", badge = 0, name = "Superman", avatarType = null)
             val diana = Player(id = "6", badge = 1, name = "Wonder Woman", avatarType = null)
 
-            val allPlayers = listOf(clark, bruce, diana, hal, barry, john)
+            val allPlayers = notEmptyListOf(clark, bruce, diana, hal, barry, john)
         }
 
         @Test
@@ -181,7 +181,7 @@ class GameExamplesTest {
         val logan = Player(badge = 1, name = "Wolverine", avatarType = null)
         val steve = Player(badge = 1, name = "Captain America", avatarType = null)
         val thor = Player(badge = 1, name = "Thor", avatarType = null)
-        val allPlayers = listOf(kamala, logan, steve, thor)
+        val allPlayers = notEmptyListOf(kamala, logan, steve, thor)
 
         val history = listOf(
             PairAssignmentDocument(

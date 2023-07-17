@@ -21,6 +21,7 @@ import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotools.types.collection.toNotEmptyList
 
 interface ServerSpinCommandDispatcher :
     SpinCommand.Dispatcher,
@@ -57,10 +58,14 @@ interface ServerSpinCommandDispatcher :
         val playersDeferred = async { partyId.loadPlayers().elements }
         val pinsDeferred = async { partyId.loadPins().elements }
         val historyDeferred = async { partyId.loadHistory() }
+        val players = filterSelectedPlayers(playersDeferred.await(), playerIds)
+            .toNotEmptyList()
+            .getOrNull()
+            ?: return@coroutineScope null
         ShufflePairsAction(
             party = partyDeferred.await()
                 ?: return@coroutineScope null,
-            players = filterSelectedPlayers(playersDeferred.await(), playerIds),
+            players = players,
             pins = filterSelectedPins(pinsDeferred.await(), pinIds),
             history = historyDeferred.await(),
         ) to partyIntegrationDeferred.await()

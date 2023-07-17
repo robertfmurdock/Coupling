@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.stubActionExecutor
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
@@ -31,7 +32,7 @@ class ShufflePairsActionTest {
         val expectedDate = Clock.System.now()
         override fun currentDate() = expectedDate
         val party = PartyDetails(PartyId("1"), PairingRule.LongestTime)
-        val players = emptyList<Player>()
+        val players = notEmptyListOf(stubPlayer())
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()
         val expectedPairingAssignments = notEmptyListOf(
