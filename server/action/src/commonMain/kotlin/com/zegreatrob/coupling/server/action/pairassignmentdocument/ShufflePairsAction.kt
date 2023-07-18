@@ -12,17 +12,16 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 
+@ActionMint
 data class ShufflePairsAction(
     val party: PartyDetails,
     val players: NotEmptyList<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-) : SimpleSuspendAction<ShufflePairsAction.Dispatcher<*>, PairAssignmentDocument> {
-    override val performFunc = link(Dispatcher<*>::perform)
-
+) {
     interface Dispatcher<out D> :
         Clock,
         CannonProvider<D>,
