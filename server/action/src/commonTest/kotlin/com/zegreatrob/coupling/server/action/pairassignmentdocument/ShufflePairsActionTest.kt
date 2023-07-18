@@ -17,7 +17,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.action.ActionCannon
-import com.zegreatrob.testmints.setup
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
@@ -26,9 +26,9 @@ import kotlin.test.Test
 class ShufflePairsActionTest {
 
     @Test
-    fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = setup(object :
-        ShufflePairsAction.Dispatcher<Any> {
-        override val cannon: ActionCannon<Any> get() = TODO("Not yet implemented")
+    fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = asyncSetup(object :
+        ShufflePairsAction.Dispatcher<FindNewPairsAction.Dispatcher>, FindNewPairsAction.Dispatcher {
+        override val cannon: ActionCannon<FindNewPairsAction.Dispatcher> get() = ActionCannon.invoke(this)
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 

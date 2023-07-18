@@ -32,7 +32,7 @@ interface ServerSpinCommandDispatcher<out D> :
     PartyIdLoadPlayersSyntax,
     PartyIdHistorySyntax,
     PartyIdPinRecordsSyntax,
-    CannonProvider<D> where D : ShufflePairsAction.Dispatcher<D> {
+    CannonProvider<D> where D : FindNewPairsAction.Dispatcher, D : ShufflePairsAction.Dispatcher<D> {
 
     val slackRepository: SlackRepository
     val slackAccessRepository: SlackAccessGet

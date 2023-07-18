@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
-import com.zegreatrob.testmints.setup
+import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -29,7 +29,7 @@ import kotlin.test.Test
 class GameExamplesTest {
 
     companion object :
-        ShufflePairsAction.Dispatcher<Any>,
+        ShufflePairsAction.Dispatcher<FindNewPairsAction.Dispatcher>,
         FindNewPairsAction.Dispatcher,
         NextPlayerAction.Dispatcher,
         CreatePairCandidateReportAction.Dispatcher,
@@ -68,7 +68,7 @@ class GameExamplesTest {
         }
 
         @Test
-        fun worksWithNoHistory() = setup(object {
+        fun worksWithNoHistory() = asyncSetup(object {
             val history = emptyList<PairAssignmentDocument>()
             val party = PartyDetails(
                 PartyId("Best party ever"),
@@ -84,7 +84,7 @@ class GameExamplesTest {
         }
 
         @Test
-        fun worksWithAnOddNumberOfPlayersAndNoHistory() = setup(object {
+        fun worksWithAnOddNumberOfPlayersAndNoHistory() = asyncSetup(object {
             val history = emptyList<PairAssignmentDocument>()
             val party = PartyDetails(
                 PartyId("Best party ever"),
@@ -97,7 +97,7 @@ class GameExamplesTest {
         }
 
         @Test
-        fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = setup(object {
+        fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = asyncSetup(object {
             val history = listOf(
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
@@ -145,7 +145,7 @@ class GameExamplesTest {
         }
 
         @Test
-        fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = setup(object {
+        fun willAlwaysPairSomeoneWhoHasPairedWithEveryoneButOnePersonWithThatPerson() = asyncSetup(object {
             val history = listOf(
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
@@ -176,7 +176,7 @@ class GameExamplesTest {
     }
 
     @Test
-    fun willNotGetStuckWhenPairingPeopleWithDifferentBadges() = setup(object {
+    fun willNotGetStuckWhenPairingPeopleWithDifferentBadges() = asyncSetup(object {
         val party = PartyDetails(
             PartyId("Avengers"),
             PairingRule.PreferDifferentBadge,

@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecutor
-import com.zegreatrob.testmints.action.SimpleExecutableAction
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotools.types.collection.toNotEmptyList
 
 data class FindNewPairsAction(val game: Game) :
-    SimpleExecutableAction<FindNewPairsAction.Dispatcher, NotEmptyList<CouplingPair>> {
+    SimpleSuspendAction<FindNewPairsAction.Dispatcher, NotEmptyList<CouplingPair>> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {

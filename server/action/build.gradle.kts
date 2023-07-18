@@ -12,6 +12,7 @@ kotlin {
     }
     sourceSets.named("jsMain") {
         kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
+        kotlin.srcDir("src/commonMain/kotlin")
     }
 }
 dependencies {

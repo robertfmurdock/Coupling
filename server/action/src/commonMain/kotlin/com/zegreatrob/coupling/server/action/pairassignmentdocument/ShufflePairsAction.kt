@@ -26,14 +26,13 @@ data class ShufflePairsAction(
         Clock,
         CannonProvider<D>,
         ExecutableActionExecuteSyntax,
-        FindNewPairsAction.Dispatcher,
-        AssignPinsActionDispatcher {
+        AssignPinsActionDispatcher where D : FindNewPairsAction.Dispatcher {
 
-        fun perform(action: ShufflePairsAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
+        suspend fun perform(action: ShufflePairsAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 
-        private fun ShufflePairsAction.assignPinsToPairs() = assignPins(findNewPairs())
+        private suspend fun ShufflePairsAction.assignPinsToPairs() = assignPins(findNewPairs())
         private fun ShufflePairsAction.assignPins(pairs: NotEmptyList<CouplingPair>) = execute(assignPinsAction(pairs))
-        private fun ShufflePairsAction.findNewPairs() = execute(findNewPairsAction())
+        private suspend fun ShufflePairsAction.findNewPairs() = cannon.fire(findNewPairsAction())
 
         private fun ShufflePairsAction.assignPinsAction(pairs: NotEmptyList<CouplingPair>) =
             AssignPinsAction(pairs, pins, history)

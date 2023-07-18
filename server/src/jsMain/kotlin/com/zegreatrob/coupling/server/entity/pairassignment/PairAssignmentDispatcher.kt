@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.ShufflePairs
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.Wheel
 import com.zegreatrob.testmints.action.ExecutableActionExecutor
 
-interface PairAssignmentDispatcher<D> :
+interface PairAssignmentDispatcher<D : FindNewPairsAction.Dispatcher> :
     ShufflePairsAction.Dispatcher<D>,
     FindNewPairsAction.Dispatcher,
     NextPlayerAction.Dispatcher,
