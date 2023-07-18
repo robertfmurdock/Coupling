@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
-import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -26,7 +25,7 @@ class ShufflePairsActionTest {
 
     interface ShufflePairsActionInner :
         FindNewPairsAction.Dispatcher<ShufflePairsActionInner>,
-        AssignPinsActionDispatcher,
+        AssignPinsAction.Dispatcher,
         NextPlayerAction.Dispatcher
 
     @Test

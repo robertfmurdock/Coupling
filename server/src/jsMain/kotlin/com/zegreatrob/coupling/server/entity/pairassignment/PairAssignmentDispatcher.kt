@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.pairassignment
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.FindNewPairsAction
@@ -16,7 +16,7 @@ interface PairAssignmentDispatcher<D> :
     CreatePairCandidateReportListAction.Dispatcher,
     CreatePairCandidateReportAction.Dispatcher,
     Wheel where D : NextPlayerAction.Dispatcher,
-      D : AssignPinsActionDispatcher,
+      D : AssignPinsAction.Dispatcher,
       D : FindNewPairsAction.Dispatcher<D> {
     override val execute: ExecutableActionExecutor<PairAssignmentDispatcher<D>>
     override val wheel: Wheel get() = this

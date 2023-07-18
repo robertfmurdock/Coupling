@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
-import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -32,7 +32,7 @@ class GameExamplesTest {
     companion object :
         ShufflePairsAction.Dispatcher<Companion>,
         FindNewPairsAction.Dispatcher<Companion>,
-        AssignPinsActionDispatcher,
+        AssignPinsAction.Dispatcher,
         NextPlayerAction.Dispatcher,
         CreatePairCandidateReportAction.Dispatcher,
         CreatePairCandidateReportListAction.Dispatcher,

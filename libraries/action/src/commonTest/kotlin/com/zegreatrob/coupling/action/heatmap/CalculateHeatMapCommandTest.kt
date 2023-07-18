@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.action.heatmap
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
-import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
@@ -15,10 +15,8 @@ import kotlin.test.Test
 
 class CalculateHeatMapCommandTest {
 
-    companion object :
-        CalculateHeatMapAction.Dispatcher,
-        AssignPinsActionDispatcher {
-        private fun pairAssignmentDocument(player1: Player, player2: Player) =
+    companion object : CalculateHeatMapAction.Dispatcher, AssignPinsAction.Dispatcher {
+        private suspend fun pairAssignmentDocument(player1: Player, player2: Player) =
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId(""),
                 date = Clock.System.now(),
@@ -81,16 +79,17 @@ class CalculateHeatMapCommandTest {
     }
 
     @Test
-    fun withTwoPlayersAndShortHistoryProducesTwoRowsWithHeatValues() = setup(object {
+    fun withTwoPlayersAndShortHistoryProducesTwoRowsWithHeatValues() = asyncSetup(object {
         val players = listOf(
             Player(id = "0", avatarType = null),
             Player(id = "1", avatarType = null),
         )
-        val history = listOf(pairAssignmentDocument(players[0], players[1]))
         val rotationPeriod = 1
-        val action =
-            CalculateHeatMapAction(players, history, rotationPeriod)
-    }) exercise {
+        lateinit var action: CalculateHeatMapAction
+    }) {
+        val history = listOf(pairAssignmentDocument(players[0], players[1]))
+        action = CalculateHeatMapAction(players, history, rotationPeriod)
+    } exercise {
         perform(action)
     } verify { result ->
         result.assertIsEqualTo(
@@ -102,11 +101,14 @@ class CalculateHeatMapCommandTest {
     }
 
     @Test
-    fun withTwoPlayersAndFullHistoryProducesTwoRowsWithHeatValues() = setup(object {
+    fun withTwoPlayersAndFullHistoryProducesTwoRowsWithHeatValues() = asyncSetup(object {
         val players = listOf(
             Player(id = "0", avatarType = null),
             Player(id = "1", avatarType = null),
         )
+        val rotationPeriod = 1
+        lateinit var action: CalculateHeatMapAction
+    }) {
         val history = listOf(
             pairAssignmentDocument(players[0], players[1]),
             pairAssignmentDocument(players[0], players[1]),
@@ -114,10 +116,8 @@ class CalculateHeatMapCommandTest {
             pairAssignmentDocument(players[0], players[1]),
             pairAssignmentDocument(players[0], players[1]),
         )
-        val rotationPeriod = 1
-        val action =
-            CalculateHeatMapAction(players, history, rotationPeriod)
-    }) exercise {
+        action = CalculateHeatMapAction(players, history, rotationPeriod)
+    } exercise {
         perform(action)
     } verify { result ->
         result.assertIsEqualTo(
@@ -129,12 +129,15 @@ class CalculateHeatMapCommandTest {
     }
 
     @Test
-    fun withThreePlayersAndInterestingHistoryProducesThreeRowsWithHeatValues() = setup(object {
+    fun withThreePlayersAndInterestingHistoryProducesThreeRowsWithHeatValues() = asyncSetup(object {
         val players = listOf(
             Player(id = "0", avatarType = null),
             Player(id = "1", avatarType = null),
             Player(id = "2", avatarType = null),
         )
+        val rotationPeriod = 3
+        lateinit var action: CalculateHeatMapAction
+    }) {
         val history = listOf(
             pairAssignmentDocument(players[0], players[1]),
             pairAssignmentDocument(players[0], players[1]),
@@ -152,10 +155,8 @@ class CalculateHeatMapCommandTest {
             pairAssignmentDocument(players[0], players[1]),
             pairAssignmentDocument(players[0], players[2]),
         )
-        val rotationPeriod = 3
-        val action =
-            CalculateHeatMapAction(players, history, rotationPeriod)
-    }) exercise {
+        action = CalculateHeatMapAction(players, history, rotationPeriod)
+    } exercise {
         perform(action)
     } verify { result ->
         result.assertIsEqualTo(

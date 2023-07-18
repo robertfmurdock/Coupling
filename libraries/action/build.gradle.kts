@@ -37,6 +37,7 @@ dependencies {
     commonTestImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
     commonTestImplementation("com.zegreatrob.testmints:standard")
+    commonTestImplementation("com.zegreatrob.testmints:async")
     commonTestImplementation("com.zegreatrob.testmints:minassert")
 
     "jvmMainImplementation"(kotlin("reflect"))

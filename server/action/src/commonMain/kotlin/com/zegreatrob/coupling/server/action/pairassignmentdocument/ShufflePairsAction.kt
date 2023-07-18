@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
-import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -24,7 +24,7 @@ data class ShufflePairsAction(
     interface Dispatcher<out D> : Clock, CannonProvider<D>
         where D : NextPlayerAction.Dispatcher,
               D : FindNewPairsAction.Dispatcher<D>,
-              D : AssignPinsActionDispatcher {
+              D : AssignPinsAction.Dispatcher {
 
         suspend fun perform(action: ShufflePairsAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 

@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
-import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -10,16 +9,16 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPin
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.setup
+import com.zegreatrob.testmints.async.asyncSetup
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class AssignPinsActionTest {
 
-    companion object : AssignPinsActionDispatcher
+    companion object : AssignPinsAction.Dispatcher
 
     @Test
-    fun givenOnePinForAssigningToPairHasNeverBeenUsedWillAssignToFirstPair() = setup(object {
+    fun givenOnePinForAssigningToPairHasNeverBeenUsedWillAssignToFirstPair() = asyncSetup(object {
         val pin = stubPin().copy(target = PinTarget.Pair)
         val expectedPair = pairOf(stubPlayer(), stubPlayer())
         val alternatePair = pairOf(stubPlayer(), stubPlayer())
@@ -42,7 +41,7 @@ class AssignPinsActionTest {
     }
 
     @Test
-    fun givenTwoPinsForAssigningToPairHasNeverBeenUsedWillAssignToEachPair() = setup(object {
+    fun givenTwoPinsForAssigningToPairHasNeverBeenUsedWillAssignToEachPair() = asyncSetup(object {
         val pins = listOf(
             stubPin().copy(target = PinTarget.Pair),
             stubPin().copy(target = PinTarget.Pair),
@@ -69,7 +68,7 @@ class AssignPinsActionTest {
     }
 
     @Test
-    fun givenTwoPinsAndOnlyOnePairWillAssignBothToThatPair() = setup(object {
+    fun givenTwoPinsAndOnlyOnePairWillAssignBothToThatPair() = asyncSetup(object {
         val pins = listOf(
             stubPin().copy(target = PinTarget.Pair),
             stubPin().copy(target = PinTarget.Pair),
@@ -93,7 +92,7 @@ class AssignPinsActionTest {
     }
 
     @Test
-    fun givenOnePinForAssigningToPairThatHasBeenUsedOnMemberOfFirstPairWillAssignToSecondPair() = setup(object {
+    fun givenOnePinForAssigningToPairThatHasBeenUsedOnMemberOfFirstPairWillAssignToSecondPair() = asyncSetup(object {
         val pin = stubPin().copy(target = PinTarget.Pair)
         val player1 = stubPlayer()
         val player2 = stubPlayer()
@@ -124,7 +123,7 @@ class AssignPinsActionTest {
     }
 
     @Test
-    fun givenOnePinForAssigningToPairThatHasBeenUsedOnMembersOfBothPairsWillAssignToFirstPair() = setup(object {
+    fun givenOnePinForAssigningToPairThatHasBeenUsedOnMembersOfBothPairsWillAssignToFirstPair() = asyncSetup(object {
         val pin = stubPin().copy(target = PinTarget.Pair)
         val player1 = stubPlayer()
         val player2 = stubPlayer()
@@ -138,13 +137,7 @@ class AssignPinsActionTest {
             stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(player1, player3).withPins(setOf(pin)))),
         )
     }) exercise {
-        perform(
-            AssignPinsAction(
-                pairs,
-                listOf(pin),
-                history,
-            ),
-        )
+        perform(AssignPinsAction(pairs, listOf(pin), history))
     } verify { result ->
         result.assertIsEqualTo(
             notEmptyListOf(
@@ -155,7 +148,7 @@ class AssignPinsActionTest {
     }
 
     @Test
-    fun givenTwoPinsWillPreferToDistributePins() = setup(object {
+    fun givenTwoPinsWillPreferToDistributePins() = asyncSetup(object {
         val pin1 = stubPin().copy(target = PinTarget.Pair)
         val pin2 = stubPin().copy(target = PinTarget.Pair)
         val player1 = stubPlayer()
