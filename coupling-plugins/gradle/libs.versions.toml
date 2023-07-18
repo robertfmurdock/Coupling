@@ -7,8 +7,8 @@ org-jlleitschuh-gradle-ktlint = "11.0.0"
 [libraries]
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.2"
 com-github-ben-manes-gradle-versions-plugin = "com.github.ben-manes:gradle-versions-plugin:0.47.0"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:4.3.18"
-com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:10.1.4"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:4.3.19"
+com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:10.1.5"
 com-zegreatrob-tools-tools-bom = "com.zegreatrob.tools:tools-bom:0.5.6"
 org-ajoberstar-grgit-gradle-plugin = "org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:5.0.0"
 org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
@@ -21,5 +21,5 @@ org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.7"
 
 [plugins]
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.47.0"
-nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"
+nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.1"
 org-jmailen-kotlinter = "org.jmailen.kotlinter:3.15.0"
