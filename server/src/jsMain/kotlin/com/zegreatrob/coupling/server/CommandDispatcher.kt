@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
+import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.TraceIdProvider
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PartyRecord
@@ -11,6 +12,7 @@ import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.server.action.BroadcastAction
+import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.coupling.server.action.GlobalStatsQuery
 import com.zegreatrob.coupling.server.action.SecretGenerator
 import com.zegreatrob.coupling.server.action.ServerCreateSecretCommandDispatcher
@@ -47,6 +49,7 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.secret.JwtSecretGenerator
 import com.zegreatrob.coupling.server.secret.ServerDeleteSecretCommandDispatcher
 import com.zegreatrob.coupling.server.slack.FetchSlackRepository
+import com.zegreatrob.testmints.action.ActionCannon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -118,7 +121,7 @@ class CurrentPartyDispatcher(
     private val commandDispatcher: CommandDispatcher,
 ) :
     ICommandDispatcher by commandDispatcher,
-    ServerSpinCommandDispatcher,
+    ServerSpinCommandDispatcher<CurrentPartyDispatcher>,
     ServerSaveSlackIntegrationCommandDispatcher,
     ServerCreateSecretCommandDispatcher,
     ServerSavePlayerCommandDispatcher,
@@ -129,8 +132,11 @@ class CurrentPartyDispatcher(
     ServerDeletePairAssignmentsCommandDispatcher,
     ServerDeletePartyCommandDispatcher,
     ServerDeletePinCommandDispatcher,
-    ServerSavePinCommandDispatcher {
+    ServerSavePinCommandDispatcher,
+    CannonProvider<CurrentPartyDispatcher> {
     override val userId: String get() = commandDispatcher.userId
+
+    override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
 
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
 

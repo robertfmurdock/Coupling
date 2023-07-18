@@ -17,23 +17,22 @@ import com.zegreatrob.coupling.repository.party.PartyIdLoadSyntax
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
+import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
-import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList
 
-interface ServerSpinCommandDispatcher :
+interface ServerSpinCommandDispatcher<D> :
     SpinCommand.Dispatcher,
-    ShufflePairsAction.Dispatcher,
-    SuspendActionExecuteSyntax,
     PartyIdPairAssignmentDocumentSaveSyntax,
     PartyIdLoadSyntax,
     PartyIdLoadIntegrationSyntax,
     PartyIdLoadPlayersSyntax,
     PartyIdHistorySyntax,
-    PartyIdPinRecordsSyntax {
+    PartyIdPinRecordsSyntax,
+    CannonProvider<D> where D : ShufflePairsAction.Dispatcher {
 
     val slackRepository: SlackRepository
     val slackAccessRepository: SlackAccessGet
@@ -44,7 +43,7 @@ interface ServerSpinCommandDispatcher :
         val (shufflePairsAction, integration) = command.shufflePairsAction()
             ?: return VoidResult.Rejected
 
-        val newPairs = execute(shufflePairsAction)
+        val newPairs = cannon.fire(shufflePairsAction)
 
         command.partyId.with(newPairs)
             .save()

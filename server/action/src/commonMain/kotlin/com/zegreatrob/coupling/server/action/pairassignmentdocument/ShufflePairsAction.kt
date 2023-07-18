@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
-import com.zegreatrob.testmints.action.SimpleExecutableAction
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotools.types.collection.NotEmptyList
 
 data class ShufflePairsAction(
@@ -19,7 +19,7 @@ data class ShufflePairsAction(
     val players: NotEmptyList<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-) : SimpleExecutableAction<ShufflePairsAction.Dispatcher, PairAssignmentDocument> {
+) : SimpleSuspendAction<ShufflePairsAction.Dispatcher, PairAssignmentDocument> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher :
