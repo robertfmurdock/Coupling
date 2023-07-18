@@ -32,10 +32,10 @@ object DispatcherProviders {
         if (dispatcher == null || !Config.prereleaseMode) {
             null
         } else {
-            val boostRepo = DynamoBoostRepository(dispatcher.user.id, Clock.System)
+            val boostRepo = DynamoBoostRepository(dispatcher.currentUser.id, Clock.System)
             object : PrereleaseDispatcher, ICommandDispatcher by dispatcher {
                 override val boostRepository = boostRepo
-                override val userId = dispatcher.user.id
+                override val userId = dispatcher.currentUser.id
 
                 override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message) =
                     dispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)

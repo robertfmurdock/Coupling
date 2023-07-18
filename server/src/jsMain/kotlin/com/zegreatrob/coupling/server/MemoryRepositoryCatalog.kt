@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.memory.MemoryLiveInfoRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
@@ -40,8 +40,8 @@ class MemoryRepositoryCatalog private constructor(
     override val slackAccessRepository: SlackAccessRepository,
 ) :
     RepositoryCatalog,
-    UserIdSyntax,
-    ClockSyntax {
+    UserIdProvider,
+    ClockProvider {
 
     companion object {
         operator fun invoke(userEmail: String, backend: MemoryRepositoryBackend, clock: Clock) =

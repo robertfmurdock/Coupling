@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server
 
-import com.zegreatrob.coupling.model.ClockSyntax
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.ClockProvider
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoLiveInfoRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPairAssignmentDocumentRepository
@@ -33,8 +33,8 @@ class DynamoRepositoryCatalog private constructor(
     override val slackAccessRepository: SlackAccessRepository,
 ) :
     RepositoryCatalog,
-    UserIdSyntax,
-    ClockSyntax {
+    UserIdProvider,
+    ClockProvider {
     companion object {
         suspend operator fun invoke(userId: String, clock: Clock) = DynamoRepositoryCatalog(
             userId,

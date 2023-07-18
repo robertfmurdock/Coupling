@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.model
 
 import kotlinx.datetime.Clock
 
-interface ClockSyntax {
+interface ClockProvider {
     val clock: Clock
     fun now() = clock.now()
 }

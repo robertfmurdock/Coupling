@@ -12,23 +12,6 @@
                   <project path="$PROJECT_DIR$/coupling-plugins" />
                 </projects>
               </build>
-              <build path="$PROJECT_DIR$/../ze-great-tools" name="ze-great-tools">
-                <projects>
-                  <project path="$PROJECT_DIR$/../ze-great-tools" />
-                </projects>
-              </build>
-              <build path="$PROJECT_DIR$/../ze-great-tools/tools" name="tools">
-                <projects>
-                  <project path="$PROJECT_DIR$/../ze-great-tools/tools" />
-                  <project path="$PROJECT_DIR$/../ze-great-tools/tools/tagger-plugin" />
-                  <project path="$PROJECT_DIR$/../ze-great-tools/tools/tools-bom" />
-                </projects>
-              </build>
-              <build path="$PROJECT_DIR$/../ze-great-tools/tools-plugins" name="tools-plugins">
-                <projects>
-                  <project path="$PROJECT_DIR$/../ze-great-tools/tools-plugins" />
-                </projects>
-              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
@@ -74,11 +57,6 @@
             <option value="$PROJECT_DIR$/server/base" />
             <option value="$PROJECT_DIR$/server/secret" />
             <option value="$PROJECT_DIR$/server/slack" />
-            <option value="$PROJECT_DIR$/../ze-great-tools" />
-            <option value="$PROJECT_DIR$/../ze-great-tools/tools" />
-            <option value="$PROJECT_DIR$/../ze-great-tools/tools-plugins" />
-            <option value="$PROJECT_DIR$/../ze-great-tools/tools/tagger-plugin" />
-            <option value="$PROJECT_DIR$/../ze-great-tools/tools/tools-bom" />
           </set>
         </option>
       </GradleProjectSettings>

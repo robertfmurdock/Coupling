@@ -25,7 +25,7 @@ sealed class CouplingPair : Iterable<Player> {
         override fun toNotEmptyList() = notEmptyListOf(player1, player2)
     }
 
-    companion object : CouplingComparisonSyntax {
+    companion object {
         fun equivalent(pair1: CouplingPair, pair2: CouplingPair) = areEqualPairs(pair1, pair2)
     }
 }

@@ -12,10 +12,10 @@ import com.zegreatrob.coupling.json.JsonUserRecord
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toModelRecord
-import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.dynamo.DynamoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
@@ -113,7 +113,7 @@ class DynamoRepositoryCatalog private constructor(
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
     val pinRepository: DynamoPinRepository,
     val userRepository: DynamoUserRepository,
-) : UserIdSyntax, ClockSyntax {
+) : UserIdProvider, ClockProvider {
 
     companion object {
         suspend operator fun invoke(userEmail: String, clock: Clock): DynamoRepositoryCatalog {

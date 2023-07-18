@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import kotlinx.datetime.Instant
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserIdSyntax, ClockSyntax {
+interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserIdProvider, ClockProvider {
 
     fun <T> Record<T>.recordJson() = json(
         "timestamp" to timestamp.isoWithMillis(),

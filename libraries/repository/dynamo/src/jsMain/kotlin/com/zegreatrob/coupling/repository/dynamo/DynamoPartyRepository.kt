@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import kotlinx.datetime.Clock
 import kotlin.js.Json
@@ -14,8 +14,8 @@ import kotlin.js.Json
 class DynamoPartyRepository private constructor(override val userId: String, override val clock: Clock) :
     PartyRepository,
     DynamoRecordJsonMapping,
-    UserIdSyntax,
-    ClockSyntax,
+    UserIdProvider,
+    ClockProvider,
     RecordSyntax,
     DynamoPartyJsonMapping {
 

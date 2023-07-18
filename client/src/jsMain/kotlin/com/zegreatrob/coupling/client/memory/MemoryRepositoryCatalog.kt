@@ -12,13 +12,13 @@ import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
 import com.zegreatrob.coupling.client.party.NewPartyCommandDispatcher
 import com.zegreatrob.coupling.json.PartyInput
-import com.zegreatrob.coupling.model.ClockSyntax
+import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPinRepository
@@ -68,8 +68,8 @@ class MemoryRepositoryCatalog private constructor(
     PinGet by pinRepository,
     PairAssignmentDocumentGetCurrent by pairAssignmentDocumentRepository,
     PairAssignmentDocumentGet by pairAssignmentDocumentRepository,
-    UserIdSyntax,
-    ClockSyntax {
+    UserIdProvider,
+    ClockProvider {
 
     constructor(userEmail: String, backend: LocalStorageRepositoryBackend, clock: Clock) : this(
         userEmail,

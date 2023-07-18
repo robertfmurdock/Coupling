@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.action.player.callsign
 
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
-import com.zegreatrob.coupling.model.player.callsign.PredictableWordPicker
+import com.zegreatrob.coupling.model.player.callsign.pickForGiven
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotlin.random.Random
@@ -15,7 +15,7 @@ data class GenerateCallSignAction(
 ) : SimpleExecutableAction<GenerateCallSignAction.Dispatcher, CallSign> {
     override val performFunc = link(Dispatcher::perform)
 
-    interface Dispatcher : PredictableWordPicker, ExecutableActionExecuteSyntax {
+    interface Dispatcher : ExecutableActionExecuteSyntax {
 
         fun perform(action: GenerateCallSignAction) = action.callSign()
 

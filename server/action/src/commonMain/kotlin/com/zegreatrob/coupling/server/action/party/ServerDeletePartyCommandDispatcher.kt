@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.action.party
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.voidResult
-import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
+import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.party.PartyIdDeleteSyntax
 import com.zegreatrob.coupling.server.action.connection.CurrentPartyIdSyntax
@@ -13,20 +13,20 @@ interface ServerDeletePartyCommandDispatcher :
     DeletePartyCommand.Dispatcher,
     PartyIdDeleteSyntax,
     CurrentPartyIdSyntax,
-    AuthenticatedUserSyntax,
+    CurrentUserProvider,
     UserSaveSyntax {
     override suspend fun perform(command: DeletePartyCommand) = currentPartyId.deleteIt()
         .voidResult()
         .also {
             if (it is VoidResult.Accepted) {
-                user
-                    .copy(authorizedPartyIds = user.authorizedPartyIds.filter { id -> id != currentPartyId }.toSet())
+                currentUser
+                    .copy(authorizedPartyIds = currentUser.authorizedPartyIds.filter { id -> id != currentPartyId }.toSet())
                     .saveIfChanged()
             }
         }
 
     private suspend fun User.saveIfChanged() {
-        if (this != user) {
+        if (this != currentUser) {
             save()
         }
     }

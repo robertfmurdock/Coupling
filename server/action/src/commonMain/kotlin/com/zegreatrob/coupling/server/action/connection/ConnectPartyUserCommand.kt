@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
+import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataActionDispatcher
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
@@ -20,11 +20,11 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
         SuspendActionExecuteSyntax,
         CouplingConnectionSaveSyntax,
         CouplingConnectionGetSyntax,
-        AuthenticatedUserSyntax {
+        CurrentUserProvider {
 
         suspend fun perform(command: ConnectPartyUserCommand) = with(command) {
             partyId.getAuthorizationData()?.let { (_, players) ->
-                CouplingConnection(connectionId, partyId, userPlayer(players, user.email))
+                CouplingConnection(connectionId, partyId, userPlayer(players, currentUser.email))
                     .also { it.save() }
                     .let { partyId.loadConnections() }
                     .let { it to couplingSocketMessage(it, null) }

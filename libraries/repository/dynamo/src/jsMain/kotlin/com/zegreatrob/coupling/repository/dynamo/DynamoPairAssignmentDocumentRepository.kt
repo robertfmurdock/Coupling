@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.document
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import kotlinx.datetime.Clock
 import kotlin.js.Json
@@ -15,7 +15,7 @@ import kotlin.js.Json
 class DynamoPairAssignmentDocumentRepository private constructor(
     override val userId: String,
     override val clock: Clock,
-) : PairAssignmentDocumentRepository, UserIdSyntax, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
+) : PairAssignmentDocumentRepository, UserIdProvider, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
 
     companion object :
         DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>(),

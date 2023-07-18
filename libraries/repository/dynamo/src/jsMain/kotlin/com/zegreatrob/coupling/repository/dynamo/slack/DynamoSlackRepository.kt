@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo.slack
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.SlackTeamAccess
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.dynamo.CreateTableParamProvider
 import com.zegreatrob.coupling.repository.dynamo.DynamoDBSyntax
 import com.zegreatrob.coupling.repository.dynamo.DynamoDbProvider
@@ -20,7 +20,7 @@ import kotlin.js.json
 class DynamoSlackRepository private constructor(override val userId: String, override val clock: Clock) :
     RecordSyntax,
     DynamoRecordJsonMapping,
-    UserIdSyntax,
+    UserIdProvider,
     SlackAccessRepository {
 
     override suspend fun save(slackTeamAccess: SlackTeamAccess) = performPutItem(

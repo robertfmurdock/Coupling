@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.model.player.callsign.PredictableWordPicker
+import com.zegreatrob.coupling.model.player.callsign.pickForGiven
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -9,8 +9,6 @@ import kotlin.test.Test
 class PredictableWordPickerTest {
 
     class ChoosesTheNameUsingTheValueOfGivenString {
-
-        companion object : PredictableWordPicker
 
         @Test
         fun consistently() = setup(object {

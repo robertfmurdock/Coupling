@@ -79,7 +79,7 @@ interface ICommandDispatcher :
     UserQuery.Dispatcher
 
 class CommandDispatcher(
-    override val user: User,
+    override val currentUser: User,
     private val repositoryCatalog: RepositoryCatalog,
     override val scope: CoroutineScope,
     override val traceId: Uuid,
@@ -136,12 +136,12 @@ class CurrentPartyDispatcher(
 
     private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
 
-    private suspend fun userIsAuthorized(partyId: PartyId) = user.authorizedPartyIds.contains(partyId) ||
+    private suspend fun userIsAuthorized(partyId: PartyId) = currentUser.authorizedPartyIds.contains(partyId) ||
         userIsAlsoPlayer()
 
     private suspend fun userIsAlsoPlayer() = players()
         .map { it.email }
-        .contains(user.email)
+        .contains(currentUser.email)
 
     private suspend fun players() = perform(PlayersQuery(currentPartyId)).map { it.data.element }
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? =

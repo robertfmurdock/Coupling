@@ -3,9 +3,9 @@ package com.zegreatrob.coupling.action.stats
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairingTimeCalculationSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.model.pairassignmentdocument.calculateTimeSinceLastPartnership
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
@@ -21,7 +21,7 @@ data class ComposeStatisticsAction(
 ) : SimpleExecutableAction<ComposeStatisticsAction.Dispatcher, StatisticsReport> {
     override val performFunc = link(Dispatcher::perform)
 
-    interface Dispatcher : PairingTimeCalculationSyntax {
+    interface Dispatcher {
 
         fun perform(action: ComposeStatisticsAction) = StatisticsReport(
             spinsUntilFullRotation = action.players.calculateFullRotation(),

@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairingTimeCalculationSyntax
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.model.pairassignmentdocument.calculateTimeSinceLastPartnership
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.SimpleExecutableAction
@@ -16,7 +16,7 @@ data class CreatePairCandidateReportAction(
 ) : SimpleExecutableAction<CreatePairCandidateReportAction.Dispatcher, PairCandidateReport> {
     override val performFunc = link(Dispatcher::perform)
 
-    interface Dispatcher : PairingTimeCalculationSyntax {
+    interface Dispatcher {
 
         fun perform(action: CreatePairCandidateReportAction) = action.pairTimeMap()
             .candidateReport()

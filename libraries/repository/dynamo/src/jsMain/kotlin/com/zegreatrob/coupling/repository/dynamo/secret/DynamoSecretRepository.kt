@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.with
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.dynamo.DynamoDBSyntax
 import com.zegreatrob.coupling.repository.dynamo.DynamoDbProvider
 import com.zegreatrob.coupling.repository.dynamo.DynamoItemPutDeleteRecordSyntax
@@ -25,7 +25,7 @@ class DynamoSecretRepository private constructor(override val userId: String, ov
     SecretRepository,
     SecretDelete,
     RecordSyntax,
-    UserIdSyntax {
+    UserIdProvider {
 
     companion object :
         DynamoRepositoryCreatorSyntax<DynamoSecretRepository>(),

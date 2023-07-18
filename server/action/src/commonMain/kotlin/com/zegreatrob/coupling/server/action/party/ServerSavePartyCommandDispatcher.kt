@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.user.AuthenticatedUserSyntax
+import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
@@ -26,7 +26,7 @@ interface ServerSavePartyCommandDispatcher :
     PartySaveSyntax,
     UserPlayerIdsSyntax,
     UserSaveSyntax,
-    AuthenticatedUserSyntax {
+    CurrentUserProvider {
 
     override val partyRepository: PartyRepository
 
@@ -36,12 +36,12 @@ interface ServerSavePartyCommandDispatcher :
     private suspend fun SavePartyCommand.savePartyAndUser() = withContext(coroutineContext) {
         launch { party.save() }
         launch {
-            user.copy(authorizedPartyIds = user.authorizedPartyIds + party.id)
+            currentUser.copy(authorizedPartyIds = currentUser.authorizedPartyIds + party.id)
                 .saveIfUserChanged()
         }
     }
 
-    private suspend fun User.saveIfUserChanged() = if (this != user) save() else Unit
+    private suspend fun User.saveIfUserChanged() = if (this != currentUser) save() else Unit
 
     private suspend fun SavePartyCommand.isAuthorizedToSave() = getPartyAndUserPlayerIds()
         .let { (loadedParty, players) -> shouldSave(party.id, loadedParty, players) }

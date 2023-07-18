@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.User
-import com.zegreatrob.coupling.model.user.UserIdSyntax
+import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
@@ -15,7 +15,7 @@ import kotlin.js.json
 
 class DynamoUserRepository private constructor(override val userId: String, override val clock: Clock) :
     UserRepository,
-    UserIdSyntax,
+    UserIdProvider,
     DynamoUserJsonMapping,
     RecordSyntax {
 

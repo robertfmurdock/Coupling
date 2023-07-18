@@ -8,8 +8,8 @@ import kotlinx.datetime.Instant
 data class Record<T>(
     val data: T,
     val modifyingUserId: String,
-    val isDeleted: Boolean = false,
-    val timestamp: Instant = Clock.System.now(),
+    val isDeleted: Boolean,
+    val timestamp: Instant,
 )
 
 fun <T> List<Record<T>>.data() = map { it.data }
