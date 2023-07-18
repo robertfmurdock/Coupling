@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.json.JsonUser
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
 import kotlinx.datetime.Instant
+import kotools.types.collection.notEmptyListOf
 
 object GqlReference {
     val globalStats = JsonGlobalStats(
@@ -55,13 +56,13 @@ object GqlReference {
         pins = listOf(pinData),
     )
     private val pinnedCouplingPair = JsonPinnedCouplingPair(
-        players = listOf(pinnedPlayer),
+        players = notEmptyListOf(pinnedPlayer),
         pins = setOf(pinData),
     )
     val pairAssignmentRecord = JsonPairAssignmentDocumentRecord(
         id = "",
         date = Instant.DISTANT_PAST,
-        pairs = listOf(pinnedCouplingPair),
+        pairs = notEmptyListOf(pinnedCouplingPair),
         partyId = PartyId(""),
         modifyingUserEmail = "",
         isDeleted = false,

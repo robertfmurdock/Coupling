@@ -13,7 +13,6 @@ import com.zegreatrob.coupling.e2e.test.ConfigHeader.getRetiredPlayersButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getStatisticsButton
 import com.zegreatrob.coupling.e2e.test.ConfigHeader.getViewHistoryButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
-import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -182,9 +181,10 @@ class PairAssignmentsPageE2ETest {
                 )
             }
 
-            private fun PinnedCouplingPair.players() = toPair().asArray().toList()
+            private fun PinnedCouplingPair.players() = toPair()
 
-            private val unpairedPlayers = players - (pairAssignmentDocument.pairs.flatMap { it.players() }).toSet()
+            private val unpairedPlayers = players - (pairAssignmentDocument.pairs.toList().flatMap { it.players() })
+                .toSet()
 
             private val setup = e2eSetup.extend(beforeAll = {
                 sdk.await().apply {

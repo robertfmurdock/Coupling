@@ -4,6 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -78,7 +79,7 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
     date = Clock.System.now().plus(pairAssignmentDocumentCounter.minutes),
     pairs = notEmptyListOf(
         PinnedCouplingPair(
-            listOf(stubPlayer().withPins()),
+            notEmptyListOf(stubPlayer().withPins()),
             setOf(stubPin()),
         ),
     ),
@@ -93,4 +94,6 @@ fun stubUser() = User(
     authorizedPartyIds = setOf(stubPartyId()),
 ).also { userCounter++ }
 
-fun stubPinnedCouplingPair() = PinnedCouplingPair(listOf())
+fun stubPinnedPlayer() = PinnedPlayer(stubPlayer(), listOf(stubPin()))
+
+fun stubPinnedCouplingPair() = PinnedCouplingPair(notEmptyListOf(stubPinnedPlayer()))

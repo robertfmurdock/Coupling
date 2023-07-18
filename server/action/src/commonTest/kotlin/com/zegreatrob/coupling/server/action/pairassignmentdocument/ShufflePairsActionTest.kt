@@ -53,7 +53,7 @@ class ShufflePairsActionTest {
                 id = result.id,
                 date = expectedDate,
                 pairs = expectedPairingAssignments.map {
-                    PinnedCouplingPair(it.asArray().map { player -> player.withPins() })
+                    PinnedCouplingPair(it.toNotEmptyList().map { player -> player.withPins() })
                 },
             ),
         )

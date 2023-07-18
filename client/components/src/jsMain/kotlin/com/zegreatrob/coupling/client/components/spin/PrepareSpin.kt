@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.newPairAssignmentsPath
+import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
@@ -55,9 +56,7 @@ private fun defaultSelections(players: List<Player>, currentPairsDoc: PairAssign
 
 private fun isInLastSetOfPairs(player: Player, currentPairsDoc: PairAssignmentDocument?) = currentPairsDoc
     ?.pairs
-    ?.toList()
-    ?.map(PinnedCouplingPair::players)
-    ?.flatten()
+    ?.flatMap(PinnedCouplingPair::players)
     ?.map(Player::id)
     ?.contains(player.id)
     ?: false

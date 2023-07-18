@@ -68,7 +68,7 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
     val playerCard = playerCardComponent(canDrag, swapCallback)
 
     span {
-        asDynamic()["data-assigned-pair"] = pair.toPair().asArray().joinToString("-") { it.id }
+        asDynamic()["data-assigned-pair"] = pair.toPair().joinToString("-") { it.id }
         css {
             padding = 5.px
             display = Display.inlineFlex
@@ -101,12 +101,12 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
             }
         }
         div {
-            if (party.callSignsEnabled && callSign != null) {
+            if (party.callSignsEnabled) {
                 callSign(callSign)
             }
         }
         div {
-            pair.pinnedPlayers.mapIndexed { index, player ->
+            pair.pinnedPlayers.toList().mapIndexed { index, player ->
                 playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
             }
         }

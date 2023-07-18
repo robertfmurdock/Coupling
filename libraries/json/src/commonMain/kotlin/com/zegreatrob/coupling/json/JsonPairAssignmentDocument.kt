@@ -3,6 +3,7 @@
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -19,20 +20,19 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import kotools.types.collection.NotEmptyList
-import kotools.types.collection.toNotEmptyList
 
 @Serializable
 data class JsonPairAssignmentDocument(
     val id: String,
     val date: Instant,
-    val pairs: List<JsonPinnedCouplingPair>,
+    val pairs: NotEmptyList<JsonPinnedCouplingPair>,
 )
 
 @Serializable
 data class JsonPairAssignmentDocumentRecord(
     val id: String,
     val date: Instant,
-    val pairs: List<JsonPinnedCouplingPair>,
+    val pairs: NotEmptyList<JsonPinnedCouplingPair>,
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
@@ -77,11 +77,11 @@ data class SavePairAssignmentsInput(
     override val partyId: PartyId,
     val pairAssignmentsId: String,
     val date: Instant,
-    val pairs: List<JsonPinnedCouplingPair>,
+    val pairs: NotEmptyList<JsonPinnedCouplingPair>,
 ) : IPartyInput
 
 @Serializable
-data class JsonPinnedCouplingPair(val players: List<JsonPinnedPlayer>, val pins: Set<JsonPinData> = emptySet())
+data class JsonPinnedCouplingPair(val players: NotEmptyList<JsonPinnedPlayer>, val pins: Set<JsonPinData> = emptySet())
 
 @Serializable
 data class JsonPinnedPlayer(
@@ -112,13 +112,13 @@ data class GrantSlackAccessInput(
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     id = id.value,
     date = date,
-    pairs = pairs.toList().map(PinnedCouplingPair::toSerializable),
+    pairs = pairs.map(PinnedCouplingPair::toSerializable),
 )
 
 fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDocumentRecord(
     id = data.element.id.value,
     date = data.element.date,
-    pairs = data.element.pairs.toList().map(PinnedCouplingPair::toSerializable),
+    pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable),
     partyId = data.partyId,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
@@ -147,28 +147,28 @@ fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
         partyId = partyId,
         pairAssignmentsId = element.id.value,
         date = element.date,
-        pairs = element.pairs.toList().map(PinnedCouplingPair::toSerializable),
+        pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
     )
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     id = id.let(::PairAssignmentDocumentId),
     date = date,
-    pairs = pairs.map(JsonPinnedCouplingPair::toModel).toNotEmptyList().getOrThrow(),
+    pairs = pairs.map(JsonPinnedCouplingPair::toModel),
 )
 
 fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
     id = pairAssignmentsId.let(::PairAssignmentDocumentId),
     date = date,
-    pairs = pairs.map(JsonPinnedCouplingPair::toModel).toNotEmptyList().getOrThrow(),
+    pairs = pairs.map(JsonPinnedCouplingPair::toModel),
 )
 
-fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocument>? {
+fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocument> {
     return PartyRecord(
         partyId.with(
             PairAssignmentDocument(
                 id = id.let(::PairAssignmentDocumentId),
                 date = date,
-                pairs = pairs.map(JsonPinnedCouplingPair::toModel).toNotEmptyList().getOrNull() ?: return null,
+                pairs = pairs.map(JsonPinnedCouplingPair::toModel),
             ),
         ),
         modifyingUserId = modifyingUserEmail,

@@ -163,7 +163,7 @@ class SpinAnimationTest {
             )
             it.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairAssignments.pairs[0].players.joinToString("-", transform = Player::id),
+                    pairAssignments.pairs[0].players.toList().joinToString("-", transform = Player::id),
                     listOf(placeholderPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
                 ),
             )
@@ -208,7 +208,7 @@ class SpinAnimationTest {
             )
             result.shownPairAssignments().assertIsEqualTo(
                 listOf(
-                    pairAssignments.pairs[0].players.joinToString("-", transform = Player::id),
+                    pairAssignments.pairs[0].players.toList().joinToString("-", transform = Player::id),
                     listOf(midwayAssignedPlayer, placeholderPlayer).joinToString("-", transform = Player::id),
                 ),
             )

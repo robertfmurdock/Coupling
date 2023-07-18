@@ -60,7 +60,7 @@ val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
             backgroundColor = Color("#ffffff")
             margin = 2.px
         }
-        asDynamic()["data-pair-report"] = pairReport.pair.asArray().joinToString("-") { it.name }
+        asDynamic()["data-pair-report"] = pairReport.pair.joinToString("-") { it.name }
         reportPlayerCard(pairReport.pair.player1, (-tweak).deg)
         reportPlayerCard(pairReport.pair.player2, (tweak).deg)
 

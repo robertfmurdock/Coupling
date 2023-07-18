@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 
-inline fun <I, reified O> NotEmptyList<I>.map(crossinline function: (I) -> O): NotEmptyList<O> = notEmptyListOf(
+inline fun <I, reified O> NotEmptyList<I>.map(function: (I) -> O): NotEmptyList<O> = notEmptyListOf(
     head = function(head),
     tail = tail?.toList()?.map(function)?.toTypedArray<O>() ?: emptyArray<O>(),
 )
@@ -20,6 +20,6 @@ fun NotEmptyList<CouplingPair>.withNoPins() = map(CouplingPair::toPinnedPair)
 
 fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
 
-fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }
+fun CouplingPair.toPinnedPlayers() = toNotEmptyList().map { player -> player.withPins(emptyList()) }
 
 inline fun <E> NotEmptyList<E>.forEach(function: (e: E) -> Unit) = toList().forEach(function)

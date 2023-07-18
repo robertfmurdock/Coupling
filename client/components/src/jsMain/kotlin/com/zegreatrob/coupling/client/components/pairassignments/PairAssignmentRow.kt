@@ -105,7 +105,7 @@ private fun ChildrenBuilder.showPairs(document: PairAssignmentDocument) = div {
                 position = Position.relative
             }
             key = "$index"
-            pair.pinnedPlayers.map(::showPlayer)
+            pair.pinnedPlayers.toList().map(::showPlayer)
             PinSection(
                 pinList = pair.pins.toList(),
                 scale = PinButtonScale.ExtraSmall,

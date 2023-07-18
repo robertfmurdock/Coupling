@@ -34,7 +34,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
 
     private fun PinnedCouplingPair.toDynamoJson() = json(
         "pins" to pins.map { it.toDynamoJson() }.toTypedArray(),
-        "players" to pinnedPlayers.map { it.toDynamoJson() }.toTypedArray(),
+        "players" to pinnedPlayers.toList().map { it.toDynamoJson() }.toTypedArray(),
     )
 
     private fun PinnedPlayer.toDynamoJson() = json(
@@ -47,21 +47,24 @@ interface DynamoPairAssignmentDocumentJsonMapping :
             id = PairAssignmentDocumentId(getDynamoStringValue("id") ?: ""),
             date = getDynamoStringValue("date")?.toLong()?.let { Instant.fromEpochMilliseconds(it) }
                 ?: Instant.DISTANT_PAST,
-            pairs = getDynamoListValue("pairs")?.map { pair -> toPinnedCouplingPair(pair) }
+            pairs = getDynamoListValue("pairs")?.mapNotNull { pair -> toPinnedCouplingPair(pair) }
                 ?.toNotEmptyList()
                 ?.getOrNull()
                 ?: return null,
         )
     }
 
-    private fun toPinnedCouplingPair(pair: Json) = PinnedCouplingPair(
-        pinnedPlayers = pair.getDynamoListValue("players")
-            ?.mapNotNull { pinnedPlayerJson -> pinnedPlayerJson.toPinnedPlayer() } ?: emptyList(),
-        pins = pair.getDynamoListValue("pins")
-            ?.map { pinJson -> pinJson.toPin() }
-            ?.toSet()
-            ?: emptySet(),
-    )
+    private fun toPinnedCouplingPair(pair: Json): PinnedCouplingPair? {
+        return PinnedCouplingPair(
+            pinnedPlayers = pair.getDynamoListValue("players")
+                ?.mapNotNull { pinnedPlayerJson -> pinnedPlayerJson.toPinnedPlayer() }
+                ?.toNotEmptyList()?.getOrNull() ?: return null,
+            pins = pair.getDynamoListValue("pins")
+                ?.map { pinJson -> pinJson.toPin() }
+                ?.toSet()
+                ?: emptySet(),
+        )
+    }
 
     private fun Json.toPinnedPlayer() = this["player"].unsafeCast<Json>().toPlayer()?.let {
         PinnedPlayer(

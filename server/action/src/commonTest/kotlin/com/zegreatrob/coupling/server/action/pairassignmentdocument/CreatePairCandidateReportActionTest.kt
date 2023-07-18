@@ -24,7 +24,7 @@ class CreatePairCandidateReportActionTest {
 
         fun pinnedPair(player1: Player, player2: Player) =
             PinnedCouplingPair(
-                listOf(
+                notEmptyListOf(
                     player1.withPins(emptyList()),
                     player2.withPins(emptyList()),
                 ),

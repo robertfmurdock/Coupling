@@ -124,8 +124,8 @@ private fun PairAssignmentDocument.toSlackBlocks() = arrayOf(
 ).let(JSON::stringify)
 
 private fun PinnedCouplingPair.pairFieldText() = listOfNotNull(
-    callSign()?.let { "*$it*" },
-    players.joinToString(" & ", transform = Player::name),
+    callSign().let { "*$it*" },
+    players.toList().joinToString(" & ", transform = Player::name),
     pins.joinToString(" / ", transform = Pin::name)
         .ifEmpty { null }
         ?.let { "📍 $it" },

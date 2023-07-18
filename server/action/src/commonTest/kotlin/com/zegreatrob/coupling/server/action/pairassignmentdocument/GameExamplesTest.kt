@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -74,7 +75,8 @@ class GameExamplesTest {
         }) exercise {
             perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
         } verify { result ->
-            result.pairs.flatMap { pair -> pair.players.size.assertIsEqualTo(2); pair.pinnedPlayers }
+            result.pairs.map { pair -> pair.players.size.toInt().assertIsEqualTo(2); pair.pinnedPlayers }
+                .flatMap(NotEmptyList<PinnedPlayer>::toList)
                 .size
                 .assertIsEqualTo(allPlayers.size.toInt())
         }
@@ -211,7 +213,7 @@ private fun NotEmptyList<CouplingPair>.withNoPins() = map(CouplingPair::toPinned
 
 private fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
 
-private fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }
+private fun CouplingPair.toPinnedPlayers() = toNotEmptyList().map { player -> player.withPins(emptyList()) }
 
 private fun dateTime(year: Int, month: Int, day: Int) =
     LocalDateTime(year, month, day, 0, 0, 0).toInstant(TimeZone.currentSystemDefault())

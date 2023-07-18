@@ -81,7 +81,6 @@ suspend fun loadPartyData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     }
     jsonLine.getArray("pairAssignmentRecords").forEach { recordJson ->
         val record = format.decodeFromDynamic<JsonPairAssignmentDocumentRecord>(recordJson).toModel()
-            ?: return@forEach
         tryToImport({ "Failed to save player ${record.data.partyId} in party $partyId" }) {
             catalog.pairAssignmentDocumentRepository.saveRawRecord(record)
         }

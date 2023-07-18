@@ -46,7 +46,7 @@ class ComposeStatisticsActionTest {
             )
         }
 
-        private fun List<CouplingPair>.describe() = map { it.asArray().map { player -> player.id } }
+        private fun List<CouplingPair>.describe() = map { it.map { player -> player.id } }
             .joinToString(", ").let { "[ $it ]" }
     }
 
@@ -189,7 +189,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(
                     notEmptyListOf(
                         PinnedCouplingPair(
-                            listOf(
+                            notEmptyListOf(
                                 player1.withPins(
                                     emptyList(),
                                 ),
@@ -198,7 +198,7 @@ class ComposeStatisticsActionTest {
                             emptySet(),
                         ),
                         PinnedCouplingPair(
-                            listOf(
+                            notEmptyListOf(
                                 player2.withPins(
                                     emptyList(),
                                 ),
@@ -211,7 +211,7 @@ class ComposeStatisticsActionTest {
                 pairAssignmentDocument(
                     notEmptyListOf(
                         PinnedCouplingPair(
-                            listOf(
+                            notEmptyListOf(
                                 player1.withPins(
                                     emptyList(),
                                 ),
@@ -220,7 +220,7 @@ class ComposeStatisticsActionTest {
                             emptySet(),
                         ),
                         PinnedCouplingPair(
-                            listOf(
+                            notEmptyListOf(
                                 player3.withPins(
                                     emptyList(),
                                 ),
@@ -285,7 +285,7 @@ class ComposeStatisticsActionTest {
                 )
 
             private fun stubPinnedPairs() = notEmptyListOf(
-                PinnedCouplingPair(listOf(stubPlayer().withPins(emptyList())), emptySet()),
+                PinnedCouplingPair(notEmptyListOf(stubPlayer().withPins(emptyList())), emptySet()),
             )
         }
 

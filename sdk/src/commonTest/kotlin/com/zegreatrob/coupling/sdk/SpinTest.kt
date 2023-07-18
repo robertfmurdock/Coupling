@@ -69,7 +69,7 @@ class SpinTest {
         queryCurrentPairs(party.id, sdk)
             ?.pairs
             .assertIsEqualTo(
-                notEmptyListOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }.toList())),
+                notEmptyListOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) })),
             )
     } teardown {
         sdk.fire(DeletePartyCommand(party.id))
@@ -185,7 +185,7 @@ class SpinTest {
             queryCurrentPairs(party.id, sdk)
                 ?.pairs
                 .assertIsEqualTo(
-                    notEmptyListOf(PinnedCouplingPair(listOf(players[0].withPins()), setOf(pin))),
+                    notEmptyListOf(PinnedCouplingPair(notEmptyListOf(players[0].withPins()), setOf(pin))),
                 )
         } teardown {
             sdk.fire(DeletePartyCommand(party.id))
@@ -201,7 +201,7 @@ class SpinTest {
             queryCurrentPairs(party.id, sdk)
                 ?.pairs
                 .assertIsEqualTo(
-                    notEmptyListOf(PinnedCouplingPair(listOf(players[0].withPins()), emptySet())),
+                    notEmptyListOf(PinnedCouplingPair(notEmptyListOf(players[0].withPins()), emptySet())),
                 )
         } teardown {
             sdk.fire(DeletePartyCommand(party.id))

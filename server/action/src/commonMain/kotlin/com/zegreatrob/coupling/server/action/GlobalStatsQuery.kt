@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
@@ -92,6 +93,10 @@ private fun PinnedCouplingPair.allPins(): List<Pin> = pins.toList()
 
 private fun List<PairAssignmentDocument>.distinctPlayersPairedThisYear() = map(PairAssignmentDocument::pairs)
     .flatMap(NotEmptyList<PinnedCouplingPair>::toList)
-    .flatMap(PinnedCouplingPair::players)
+    .asSequence()
+    .map(PinnedCouplingPair::players)
+    .map(NotEmptyList<Player>::toList)
+    .flatten()
     .map(Player::id)
     .distinct()
+    .toList()

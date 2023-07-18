@@ -67,18 +67,17 @@ interface AssignPinsActionDispatcher {
     private fun lastTimePlayerInPairHadPin(
         pin: Pin,
         history: List<PairAssignmentDocument>,
-        players: List<Player>,
+        players: NotEmptyList<Player>,
     ) = history.indexOfFirst { pairAssignmentDocument ->
         val pairWithPinPlayers = pairWithPinPlayers(pairAssignmentDocument, pin)
-        players.fold(false) { foundOne, player ->
-            foundOne || pairWithPinPlayers.contains(player)
+        players.toList().fold(false) { foundOne, player ->
+            foundOne || pairWithPinPlayers?.toList()?.contains(player) == true
         }
     }
 
     private fun Map<Int, List<PinnedCouplingPair>>.minKeyValue() = this[keys.minOrNull()]
 
     private fun pairWithPinPlayers(doc: PairAssignmentDocument, pin: Pin) = playersWithPin(doc, pin)
-        ?: emptyList()
 
     private fun playersWithPin(doc: PairAssignmentDocument, pin: Pin) = pairWithPin(doc, pin)
         ?.players

@@ -58,7 +58,7 @@ data class FindNewPairsAction(val game: Game) :
 
         private fun GameSpin.copyWithout(newPair: CouplingPair): GameSpin? {
             return copy(
-                remainingPlayers = remainingPlayers.toList().minus(newPair.asArray().toSet()).toNotEmptyList()
+                remainingPlayers = remainingPlayers.toList().minus(newPair.toSet()).toNotEmptyList()
                     .getOrNull()
                     ?: return null,
             )

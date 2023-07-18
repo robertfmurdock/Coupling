@@ -56,7 +56,7 @@ private fun JsonNode.toPinnedCouplingPair(): PinnedCouplingPair {
             )
     }
     return PinnedCouplingPair(
-        pinnedPlayers = players,
+        pinnedPlayers = players.toNotEmptyList().getOrThrow(),
     )
 }
 
