@@ -33,7 +33,8 @@ interface ServerSpinCommandDispatcher<out D> :
     PartyIdLoadPlayersSyntax,
     PartyIdHistorySyntax,
     PartyIdPinRecordsSyntax,
-    CannonProvider<D> where D : FindNewPairsAction.Dispatcher,
+    CannonProvider<D> where D : NextPlayerAction.Dispatcher,
+      D : FindNewPairsAction.Dispatcher<D>,
       D : AssignPinsActionDispatcher,
       D : ShufflePairsAction.Dispatcher<D> {
 

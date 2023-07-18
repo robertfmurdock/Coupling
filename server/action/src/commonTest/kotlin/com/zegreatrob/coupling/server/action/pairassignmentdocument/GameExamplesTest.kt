@@ -31,7 +31,7 @@ class GameExamplesTest {
 
     companion object :
         ShufflePairsAction.Dispatcher<Companion>,
-        FindNewPairsAction.Dispatcher,
+        FindNewPairsAction.Dispatcher<Companion>,
         AssignPinsActionDispatcher,
         NextPlayerAction.Dispatcher,
         CreatePairCandidateReportAction.Dispatcher,
@@ -40,7 +40,7 @@ class GameExamplesTest {
         Wheel {
         override val wheel = this
         override val actionDispatcher = this
-        override val cannon = ActionCannon.invoke(this)
+        override val cannon = ActionCannon(this)
         override val execute = this
     }
 

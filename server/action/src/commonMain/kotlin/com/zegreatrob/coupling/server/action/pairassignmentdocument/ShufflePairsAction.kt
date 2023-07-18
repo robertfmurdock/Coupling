@@ -21,9 +21,10 @@ data class ShufflePairsAction(
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
 ) {
-    interface Dispatcher<out D> :
-        Clock,
-        CannonProvider<D> where D : FindNewPairsAction.Dispatcher, D : AssignPinsActionDispatcher {
+    interface Dispatcher<out D> : Clock, CannonProvider<D>
+        where D : NextPlayerAction.Dispatcher,
+              D : FindNewPairsAction.Dispatcher<D>,
+              D : AssignPinsActionDispatcher {
 
         suspend fun perform(action: ShufflePairsAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 

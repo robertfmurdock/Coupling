@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.testmints.action.ExecutableActionExecutor
-import com.zegreatrob.testmints.action.SimpleExecutableAction
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotools.types.collection.NotEmptyList
 
 data class NextPlayerAction(val gameSpin: GameSpin) :
-    SimpleExecutableAction<NextPlayerAction.Dispatcher, PairCandidateReport> {
+    SimpleSuspendAction<NextPlayerAction.Dispatcher, PairCandidateReport> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {

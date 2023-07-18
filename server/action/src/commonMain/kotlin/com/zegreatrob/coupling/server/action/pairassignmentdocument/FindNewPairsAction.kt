@@ -5,23 +5,19 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.testmints.action.ExecutableActionExecutor
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.coupling.server.action.CannonProvider
+import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotools.types.collection.toNotEmptyList
 
-data class FindNewPairsAction(val game: Game) :
-    SimpleSuspendAction<FindNewPairsAction.Dispatcher, NotEmptyList<CouplingPair>> {
-    override val performFunc = link(Dispatcher::perform)
-
-    interface Dispatcher {
-
-        val execute: ExecutableActionExecutor<NextPlayerAction.Dispatcher>
+@ActionMint
+data class FindNewPairsAction(val game: Game) {
+    interface Dispatcher<out D : NextPlayerAction.Dispatcher> : CannonProvider<D> {
 
         val wheel: Wheel
 
-        fun perform(action: FindNewPairsAction): NotEmptyList<CouplingPair> = with(action) {
+        suspend fun perform(action: FindNewPairsAction): NotEmptyList<CouplingPair> = with(action) {
             val firstGameSpin = game.spinWith(game.players)
             val firstPlayerReport = firstGameSpin.getNextPlayer()
             val newPair = firstPlayerReport.spinForPartner()
@@ -36,7 +32,7 @@ data class FindNewPairsAction(val game: Game) :
             rule = rule,
         )
 
-        private fun Round.spinForNextPair(): NotEmptyList<CouplingPair> = gameSpin
+        private suspend fun Round.spinForNextPair(): NotEmptyList<CouplingPair> = gameSpin
             ?.getNextPlayer()
             ?.let { playerReport ->
                 val newPair = playerReport.spinForPartner()
@@ -47,7 +43,7 @@ data class FindNewPairsAction(val game: Game) :
             }
             ?: pairs
 
-        private fun GameSpin.getNextPlayer() = this@Dispatcher.execute(NextPlayerAction(this))
+        private suspend fun GameSpin.getNextPlayer() = cannon.fire(NextPlayerAction(this))
 
         private fun Pair<Round, CouplingPair>.nextRound(): Round = let { (round, newPair) ->
             Round(

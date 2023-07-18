@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.coupling.testaction.StubCannon
 import kotlinx.coroutines.channels.Channel
 
 class StubDispatcher {
