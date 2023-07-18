@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotools.types.collection.NotEmptyList
@@ -19,11 +20,12 @@ data class ShufflePairsAction(
     val players: NotEmptyList<Player>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-) : SimpleSuspendAction<ShufflePairsAction.Dispatcher, PairAssignmentDocument> {
-    override val performFunc = link(Dispatcher::perform)
+) : SimpleSuspendAction<ShufflePairsAction.Dispatcher<*>, PairAssignmentDocument> {
+    override val performFunc = link(Dispatcher<*>::perform)
 
-    interface Dispatcher :
+    interface Dispatcher<out D> :
         Clock,
+        CannonProvider<D>,
         ExecutableActionExecuteSyntax,
         FindNewPairsAction.Dispatcher,
         AssignPinsActionDispatcher {

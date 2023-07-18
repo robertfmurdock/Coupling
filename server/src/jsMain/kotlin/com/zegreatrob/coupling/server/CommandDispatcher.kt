@@ -28,6 +28,7 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignme
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerDeletePairAssignmentsCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSavePairAssignmentDocumentCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerSpinCommandDispatcher
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.ShufflePairsAction
 import com.zegreatrob.coupling.server.action.party.PartyIntegrationQuery
 import com.zegreatrob.coupling.server.action.party.ServerDeletePartyCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
@@ -50,6 +51,7 @@ import com.zegreatrob.coupling.server.secret.JwtSecretGenerator
 import com.zegreatrob.coupling.server.secret.ServerDeleteSecretCommandDispatcher
 import com.zegreatrob.coupling.server.slack.FetchSlackRepository
 import com.zegreatrob.testmints.action.ActionCannon
+import com.zegreatrob.testmints.action.ExecutableActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -64,9 +66,7 @@ interface ICommandDispatcher :
     ConnectionsQuery.Dispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
     DisconnectPartyUserCommand.Dispatcher,
-    DispatchingActionExecutor<CommandDispatcher>,
     GlobalStatsQuery.Dispatcher,
-    PairAssignmentDispatcher,
     PairAssignmentDocumentListQuery.Dispatcher,
     PartyDispatcher,
     PinsQuery.Dispatcher,
@@ -88,9 +88,6 @@ class CommandDispatcher(
     override val traceId: Uuid,
     override val managementApiClient: ApiGatewayManagementApiClient = apiGatewayManagementApiClient(),
 ) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog, TraceIdProvider {
-    override val execute = this
-    override val actionDispatcher = this
-
     override val slackRepository: SlackRepository by lazy { FetchSlackRepository() }
 
     private var authorizedPartyIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
@@ -121,6 +118,9 @@ class CurrentPartyDispatcher(
     private val commandDispatcher: CommandDispatcher,
 ) :
     ICommandDispatcher by commandDispatcher,
+    DispatchingActionExecutor<CurrentPartyDispatcher>,
+    ShufflePairsAction.Dispatcher<CurrentPartyDispatcher>,
+    PairAssignmentDispatcher<CurrentPartyDispatcher>,
     ServerSpinCommandDispatcher<CurrentPartyDispatcher>,
     ServerSaveSlackIntegrationCommandDispatcher,
     ServerCreateSecretCommandDispatcher,
@@ -135,11 +135,10 @@ class CurrentPartyDispatcher(
     ServerSavePinCommandDispatcher,
     CannonProvider<CurrentPartyDispatcher> {
     override val userId: String get() = commandDispatcher.userId
-
+    override val execute: ExecutableActionExecutor<PairAssignmentDispatcher<CurrentPartyDispatcher>> = this
     override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
-
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
-
+    override val actionDispatcher = this
     private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
 
     private suspend fun userIsAuthorized(partyId: PartyId) = currentUser.authorizedPartyIds.contains(partyId) ||

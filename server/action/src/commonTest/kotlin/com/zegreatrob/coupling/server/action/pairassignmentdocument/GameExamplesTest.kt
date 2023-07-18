@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.setup
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -28,7 +29,7 @@ import kotlin.test.Test
 class GameExamplesTest {
 
     companion object :
-        ShufflePairsAction.Dispatcher,
+        ShufflePairsAction.Dispatcher<Any>,
         FindNewPairsAction.Dispatcher,
         NextPlayerAction.Dispatcher,
         CreatePairCandidateReportAction.Dispatcher,
@@ -37,6 +38,7 @@ class GameExamplesTest {
         Wheel {
         override val wheel = this
         override val actionDispatcher = this
+        override val cannon = ActionCannon.invoke(this)
         override val execute = this
     }
 

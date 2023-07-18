@@ -24,7 +24,7 @@ import kotlinx.coroutines.coroutineScope
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList
 
-interface ServerSpinCommandDispatcher<D> :
+interface ServerSpinCommandDispatcher<out D> :
     SpinCommand.Dispatcher,
     PartyIdPairAssignmentDocumentSaveSyntax,
     PartyIdLoadSyntax,
@@ -32,7 +32,7 @@ interface ServerSpinCommandDispatcher<D> :
     PartyIdLoadPlayersSyntax,
     PartyIdHistorySyntax,
     PartyIdPinRecordsSyntax,
-    CannonProvider<D> where D : ShufflePairsAction.Dispatcher {
+    CannonProvider<D> where D : ShufflePairsAction.Dispatcher<D> {
 
     val slackRepository: SlackRepository
     val slackAccessRepository: SlackAccessGet

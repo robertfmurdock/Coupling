@@ -102,7 +102,7 @@ fun serverlessSocketConnect(event: dynamic, context: dynamic) = js("require('ser
 private suspend fun handleConnect(request: Request, connectionId: String, event: Any?): Int {
     val commandDispatcher = with(request) { commandDispatcher(user, scope, traceId) }
     val partyId = request.query["partyId"].toString().let(::PartyId)
-    val result = commandDispatcher.execute(ConnectPartyUserCommand(partyId, connectionId))
+    val result = commandDispatcher.perform(ConnectPartyUserCommand(partyId, connectionId))
     return if (result == null) {
         403
     } else {
@@ -148,7 +148,7 @@ fun serverlessSocketMessage(event: Json): dynamic {
     return MainScope().promise {
         val socketDispatcher = socketDispatcher()
         if (message is PairAssignmentAdjustmentMessage) {
-            socketDispatcher.execute(
+            socketDispatcher.perform(
                 ReportDocCommand(connectionId, message.currentPairAssignments),
             )?.broadcast(socketDispatcher)
         }
@@ -162,7 +162,7 @@ fun notifyConnect(event: Json) = MainScope().promise {
     val connectionId = event.at<String>("/requestContext/connectionId") ?: ""
     println("notifyConnect $connectionId")
     val socketDispatcher = socketDispatcher()
-    socketDispatcher.execute(ConnectionsQuery(connectionId))
+    socketDispatcher.perform(ConnectionsQuery(connectionId))
         ?.let { results ->
             socketDispatcher.managementApiClient.send(
                 PostToConnectionCommand(
@@ -185,7 +185,7 @@ fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
     val socketDispatcher = socketDispatcher()
 
     socketDispatcher
-        .execute(DisconnectPartyUserCommand(connectionId))
+        .perform(DisconnectPartyUserCommand(connectionId))
         ?.broadcast(socketDispatcher)
         .let { json("statusCode" to 200) }
 }
@@ -197,7 +197,7 @@ private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
 )
 
 private suspend fun Pair<List<CouplingConnection>, CouplingSocketMessage>.broadcast(socketDispatcher: CommandDispatcher) =
-    socketDispatcher.execute(BroadcastAction(first, second))
+    socketDispatcher.perform(BroadcastAction(first, second))
 
 private fun delete(connectionId: String, managementApi: ApiGatewayManagementApiClient) = managementApi.send(
     DeleteConnectionCommand(json("ConnectionId" to connectionId)),
