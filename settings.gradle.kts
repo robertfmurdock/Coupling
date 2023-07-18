@@ -12,7 +12,6 @@ plugins {
 rootProject.name = "Coupling"
 
 includeBuild("coupling-plugins")
-includeBuild("../ze-great-tools")
 
 include("cli")
 include("client")
