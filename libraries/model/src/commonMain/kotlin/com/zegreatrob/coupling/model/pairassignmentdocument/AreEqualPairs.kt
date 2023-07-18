@@ -7,7 +7,7 @@ fun areEqualPairs(pair1: CouplingPair, pair2: CouplingPair) =
 
 private fun areEqualPairArrays(pair1Array: Array<Player>, pair2Array: Array<Player>) =
     fullyEqualPlayers(pair1Array, pair2Array) ||
-            equalPlayerIds(pair1Array, pair2Array)
+        equalPlayerIds(pair1Array, pair2Array)
 
 private fun equalPlayerIds(pair1Array: Array<Player>, pair2Array: Array<Player>) =
     pair1Array.map { it.id }.toSet() == pair2Array.map { it.id }.toSet()
