@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.VoidResult
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -32,7 +33,9 @@ interface ServerSpinCommandDispatcher<out D> :
     PartyIdLoadPlayersSyntax,
     PartyIdHistorySyntax,
     PartyIdPinRecordsSyntax,
-    CannonProvider<D> where D : FindNewPairsAction.Dispatcher, D : ShufflePairsAction.Dispatcher<D> {
+    CannonProvider<D> where D : FindNewPairsAction.Dispatcher,
+      D : AssignPinsActionDispatcher,
+      D : ShufflePairsAction.Dispatcher<D> {
 
     val slackRepository: SlackRepository
     val slackAccessRepository: SlackAccessGet

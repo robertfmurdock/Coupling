@@ -9,14 +9,14 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.testmints.action.SimpleExecutableAction
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotools.types.collection.NotEmptyList
 
 data class AssignPinsAction(
     val pairs: NotEmptyList<CouplingPair>,
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
-) : SimpleExecutableAction<AssignPinsActionDispatcher, NotEmptyList<PinnedCouplingPair>> {
+) : SimpleSuspendAction<AssignPinsActionDispatcher, NotEmptyList<PinnedCouplingPair>> {
     override val performFunc = link(AssignPinsActionDispatcher::perform)
 }
 

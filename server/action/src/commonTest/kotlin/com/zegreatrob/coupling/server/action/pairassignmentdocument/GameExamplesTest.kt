@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -29,8 +30,9 @@ import kotlin.test.Test
 class GameExamplesTest {
 
     companion object :
-        ShufflePairsAction.Dispatcher<FindNewPairsAction.Dispatcher>,
+        ShufflePairsAction.Dispatcher<Companion>,
         FindNewPairsAction.Dispatcher,
+        AssignPinsActionDispatcher,
         NextPlayerAction.Dispatcher,
         CreatePairCandidateReportAction.Dispatcher,
         CreatePairCandidateReportListAction.Dispatcher,

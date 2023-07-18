@@ -4,6 +4,7 @@ import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.TraceIdProvider
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyId
@@ -120,6 +121,7 @@ class CurrentPartyDispatcher(
     ICommandDispatcher by commandDispatcher,
     DispatchingActionExecutor<CurrentPartyDispatcher>,
     ShufflePairsAction.Dispatcher<CurrentPartyDispatcher>,
+    AssignPinsActionDispatcher,
     PairAssignmentDispatcher<CurrentPartyDispatcher>,
     ServerSpinCommandDispatcher<CurrentPartyDispatcher>,
     ServerSaveSlackIntegrationCommandDispatcher,

@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.CannonProvider
-import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 
@@ -24,14 +23,11 @@ data class ShufflePairsAction(
 ) {
     interface Dispatcher<out D> :
         Clock,
-        CannonProvider<D>,
-        ExecutableActionExecuteSyntax,
-        AssignPinsActionDispatcher where D : FindNewPairsAction.Dispatcher {
+        CannonProvider<D> where D : FindNewPairsAction.Dispatcher, D : AssignPinsActionDispatcher {
 
         suspend fun perform(action: ShufflePairsAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 
-        private suspend fun ShufflePairsAction.assignPinsToPairs() = assignPins(findNewPairs())
-        private fun ShufflePairsAction.assignPins(pairs: NotEmptyList<CouplingPair>) = execute(assignPinsAction(pairs))
+        private suspend fun ShufflePairsAction.assignPinsToPairs() = cannon.fire(assignPinsAction(findNewPairs()))
         private suspend fun ShufflePairsAction.findNewPairs() = cannon.fire(findNewPairsAction())
 
         private fun ShufflePairsAction.assignPinsAction(pairs: NotEmptyList<CouplingPair>) =

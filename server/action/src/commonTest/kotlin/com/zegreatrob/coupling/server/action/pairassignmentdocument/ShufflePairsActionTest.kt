@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsActionDispatcher
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -25,10 +26,12 @@ import kotlin.test.Test
 
 class ShufflePairsActionTest {
 
+    interface ShufflePairsActionInner : FindNewPairsAction.Dispatcher, AssignPinsActionDispatcher
+
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = asyncSetup(object :
-        ShufflePairsAction.Dispatcher<FindNewPairsAction.Dispatcher>, FindNewPairsAction.Dispatcher {
-        override val cannon: ActionCannon<FindNewPairsAction.Dispatcher> get() = ActionCannon.invoke(this)
+        ShufflePairsAction.Dispatcher<ShufflePairsActionInner>, ShufflePairsActionInner {
+        override val cannon = ActionCannon(this)
         override val execute = stubActionExecutor(NextPlayerAction::class)
         override val wheel: Wheel get() = throw NotImplementedError("Stubbed")
 
