@@ -21,3 +21,5 @@ fun NotEmptyList<CouplingPair>.withNoPins() = map(CouplingPair::toPinnedPair)
 fun CouplingPair.toPinnedPair() = PinnedCouplingPair(toPinnedPlayers())
 
 fun CouplingPair.toPinnedPlayers() = asArray().map { player -> player.withPins(emptyList()) }
+
+inline fun <E> NotEmptyList<E>.forEach(function: (e: E) -> Unit) = toList().forEach(function)

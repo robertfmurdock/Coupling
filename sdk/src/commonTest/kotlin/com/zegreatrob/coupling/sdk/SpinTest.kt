@@ -13,6 +13,9 @@ import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.element
+import com.zegreatrob.coupling.model.forEach
+import com.zegreatrob.coupling.model.get
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -37,6 +40,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
@@ -50,7 +54,7 @@ class SpinTest {
                 pairingRule = PairingRule.LongestTime,
                 name = "commonTest",
             )
-            val players = listOf(
+            val players = notEmptyListOf(
                 Player(name = "dude1", avatarType = null),
                 Player(name = "dude2", avatarType = null),
             )
@@ -65,7 +69,7 @@ class SpinTest {
         queryCurrentPairs(party.id, sdk)
             ?.pairs
             .assertIsEqualTo(
-                notEmptyListOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) })),
+                notEmptyListOf(PinnedCouplingPair(players.map { it.withPins(emptyList()) }.toList())),
             )
     } teardown {
         sdk.fire(DeletePartyCommand(party.id))
@@ -166,7 +170,7 @@ class SpinTest {
             get() = { context: SdkContext ->
                 object : SdkContext by context {
                     val party = stubPartyDetails()
-                    val players = listOf(stubPlayer())
+                    val players = notEmptyListOf(stubPlayer())
                     val pin = stubPin()
                 }
             }
@@ -204,7 +208,7 @@ class SpinTest {
         }
     }
 
-    private fun fourPlayersTwoDefaultTwoAlternate() = listOf(
+    private fun fourPlayersTwoDefaultTwoAlternate() = notEmptyListOf(
         Player(id = uuid4().toString(), badge = Badge.Default.value, name = "One", avatarType = null),
         Player(id = uuid4().toString(), badge = Badge.Default.value, name = "Two", avatarType = null),
         Player(id = uuid4().toString(), badge = Badge.Alternate.value, name = "Three", avatarType = null),
@@ -215,7 +219,7 @@ class SpinTest {
         private suspend fun setupScenario(
             sdk: ActionCannon<CouplingSdkDispatcher>,
             party: PartyDetails,
-            players: List<Player> = emptyList(),
+            players: NotEmptyList<Player>,
             history: List<PairAssignmentDocument> = emptyList(),
             pins: List<Pin> = emptyList(),
         ) = coroutineScope {

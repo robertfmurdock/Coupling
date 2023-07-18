@@ -50,22 +50,20 @@ external interface PrepareSpinContentProps : Props {
     var pinSelections: List<String?>
     var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
     var setPinSelections: (List<String?>) -> Unit
-    var onSpin: () -> Unit
+    var onSpin: (() -> Unit)?
 }
 
 @ReactFunc
 val PrepareSpinContent by nfc<PrepareSpinContentProps> { props ->
     val (party, playerSelections, pins, pinSelections, setPlayerSelections, setPinSelections, onSpin) = props
 
-    val enabled = playerSelections.any { it.second }
-
     div {
         PageFrame(Color("#ff8c00"), backgroundColor = Color("#faf0d2")) {
             div { PartyBrowser(party) }
             div {
                 div {
-                    spinButton(onSpin, enabled = enabled)
-                    if (!enabled) {
+                    spinButton(onSpin)
+                    if (onSpin == null) {
                         span {
                             css {
                                 position = Position.absolute
@@ -221,11 +219,11 @@ private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {})
 
 private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 
-private fun ChildrenBuilder.spinButton(generateNewPairsFunc: () -> Unit, enabled: Boolean) = CouplingButton(
+private fun ChildrenBuilder.spinButton(generateNewPairsFunc: (() -> Unit)?) = CouplingButton(
     supersize,
     pink,
     onClick = generateNewPairsFunc,
-    attrs = fun ButtonHTMLAttributes<*>.() { disabled = !enabled },
+    attrs = fun ButtonHTMLAttributes<*>.() { disabled = (generateNewPairsFunc == null) },
     css = fun PropertiesBuilder.() {
         marginBottom = 10.px
         animationName = ident("pulsate")

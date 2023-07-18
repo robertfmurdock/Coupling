@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
+import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList
 
 @Serializable
@@ -98,7 +99,7 @@ data class JsonPinnedPlayer(
 @Serializable
 data class SpinInput(
     override val partyId: PartyId,
-    val playerIds: List<String>,
+    val playerIds: NotEmptyList<String>,
     val pinIds: List<String>,
 ) : IPartyInput
 

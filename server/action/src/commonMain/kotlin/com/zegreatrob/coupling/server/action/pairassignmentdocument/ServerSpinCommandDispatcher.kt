@@ -21,6 +21,7 @@ import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList
 
 interface ServerSpinCommandDispatcher :
@@ -71,9 +72,8 @@ interface ServerSpinCommandDispatcher :
         ) to partyIntegrationDeferred.await()
     }
 
-    private fun filterSelectedPlayers(players: List<Player>, playerIds: List<String>) = players.filter {
-        playerIds.contains(it.id)
-    }
+    private fun filterSelectedPlayers(players: List<Player>, playerIds: NotEmptyList<String>) =
+        playerIds.toList().mapNotNull { id -> players.find { player -> player.id == id } }
 
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
 
