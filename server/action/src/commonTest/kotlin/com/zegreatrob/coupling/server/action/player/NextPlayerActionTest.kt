@@ -8,16 +8,16 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCa
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.GameSpin
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairCandidateReport
-import com.zegreatrob.coupling.server.action.stubActionExecutor
+import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
+import kotlinx.coroutines.channels.produce
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
-class NextPlayerActionTest : NextPlayerAction.Dispatcher<CreatePairCandidateReportListAction.Dispatcher> {
-
-    override val execute = stubActionExecutor(CreatePairCandidateReportListAction::class)
+class NextPlayerActionTest {
 
     private val bill = Player(id = "Bill", avatarType = null)
     private val ted = Player(id = "Ted", avatarType = null)
@@ -25,36 +25,52 @@ class NextPlayerActionTest : NextPlayerAction.Dispatcher<CreatePairCandidateRepo
     private val shorty = Player(id = "Napoleon", avatarType = null)
 
     @Test
-    fun willUseHistoryToProduceSequenceInOrderOfLongestTimeSinceLastPairedToShortest() = asyncSetup(object {
+    fun willUseHistoryToProduceSequenceInOrderOfLongestTimeSinceLastPairedToShortest() = asyncSetup(object :
+        NextPlayerAction.Dispatcher<CreatePairCandidateReportListAction.Dispatcher>, ScopeMint() {
         val players = notEmptyListOf(bill, ted, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
         val tedsPairCandidates = PairCandidateReport(ted, emptyList(), TimeResultValue(7))
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(5))
-    }) {
-        execute.spyWillReturn(
-            notEmptyListOf(billsPairCandidates, tedsPairCandidates, amadeusPairCandidates, shortyPairCandidates),
+        override val cannon = StubCannon<CreatePairCandidateReportListAction.Dispatcher>(
+            receivedActions = mutableListOf(),
+            resultChannel = exerciseScope.produce<Any> {
+                send(
+                    notEmptyListOf(
+                        billsPairCandidates,
+                        tedsPairCandidates,
+                        amadeusPairCandidates,
+                        shortyPairCandidates,
+                    ),
+                )
+            },
         )
-    } exercise {
+    }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { result ->
         result.assertIsEqualTo(tedsPairCandidates)
     }
 
     @Test
-    fun aPersonWhoJustPairedHasLowerPriorityThanSomeoneWhoHasNotPairedInALongTime() = asyncSetup(object {
+    fun aPersonWhoJustPairedHasLowerPriorityThanSomeoneWhoHasNotPairedInALongTime() = asyncSetup(object :
+        NextPlayerAction.Dispatcher<CreatePairCandidateReportListAction.Dispatcher>, ScopeMint() {
         val players = notEmptyListOf(bill, ted, amadeus, shorty)
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(5))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(0))
-    }) {
-        execute.spyWillReturn(notEmptyListOf(amadeusPairCandidates, shortyPairCandidates))
-    } exercise {
+        override val cannon = StubCannon<CreatePairCandidateReportListAction.Dispatcher>(
+            receivedActions = mutableListOf(),
+            resultChannel = exerciseScope.produce<Any> {
+                send(notEmptyListOf(amadeusPairCandidates, shortyPairCandidates))
+            },
+        )
+    }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
     @Test
-    fun sequenceWillBeFromLongestToShortest() = asyncSetup(object {
+    fun sequenceWillBeFromLongestToShortest() = asyncSetup(object :
+        NextPlayerAction.Dispatcher<CreatePairCandidateReportListAction.Dispatcher>, ScopeMint() {
         val players = notEmptyListOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
@@ -62,29 +78,35 @@ class NextPlayerActionTest : NextPlayerAction.Dispatcher<CreatePairCandidateRepo
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(5))
 
         val pairCandidates = notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-    }) {
-        execute.spyWillReturn(pairCandidates)
-    } exercise {
+        override val cannon = StubCannon<CreatePairCandidateReportListAction.Dispatcher>(
+            receivedActions = mutableListOf(),
+            resultChannel = exerciseScope.produce<Any> { send(pairCandidates) },
+        )
+    }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
     @Test
-    fun sequenceWillPreferPlayerWhoHasNeverPaired() = asyncSetup(object {
+    fun sequenceWillPreferPlayerWhoHasNeverPaired() = asyncSetup(object :
+        NextPlayerAction.Dispatcher<CreatePairCandidateReportListAction.Dispatcher>, ScopeMint() {
         val players = notEmptyListOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), NeverPaired)
-    }) {
-        execute.spyWillReturn(
-            notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates),
+        override val cannon = StubCannon<CreatePairCandidateReportListAction.Dispatcher>(
+            receivedActions = mutableListOf(),
+            resultChannel = exerciseScope.produce<Any> {
+                send(notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates))
+            },
         )
-    } exercise {
+    }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
     @Test
-    fun willPrioritizeTheReportWithFewestPlayersGivenEqualAmountsOfTime() = asyncSetup(object {
+    fun willPrioritizeTheReportWithFewestPlayersGivenEqualAmountsOfTime() = asyncSetup(object :
+        NextPlayerAction.Dispatcher<CreatePairCandidateReportListAction.Dispatcher>, ScopeMint() {
         val players = notEmptyListOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(
@@ -102,11 +124,13 @@ class NextPlayerActionTest : NextPlayerAction.Dispatcher<CreatePairCandidateRepo
             listOf(Player(avatarType = null), Player(avatarType = null)),
             NeverPaired,
         )
-    }) {
-        execute.spyWillReturn(
-            notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates),
+        override val cannon = StubCannon<CreatePairCandidateReportListAction.Dispatcher>(
+            receivedActions = mutableListOf(),
+            resultChannel = exerciseScope.produce<Any> {
+                send(notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates))
+            },
         )
-    } exercise {
+    }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 

@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecutor
-import com.zegreatrob.testmints.action.SimpleExecutableAction
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotools.types.collection.NotEmptyList
 
 data class CreatePairCandidateReportListAction(val game: GameSpin) :
-    SimpleExecutableAction<CreatePairCandidateReportListAction.Dispatcher, NotEmptyList<PairCandidateReport>> {
+    SimpleSuspendAction<CreatePairCandidateReportListAction.Dispatcher, NotEmptyList<PairCandidateReport>> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher : PlayerCandidatesFinder {

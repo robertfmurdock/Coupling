@@ -3,11 +3,11 @@ package com.zegreatrob.coupling.testaction
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.action.ActionWrapper
 import com.zegreatrob.testmints.action.async.SuspendAction
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
 
 class StubCannon<D>(
     private val receivedActions: MutableList<Any?>,
-    private val resultChannel: Channel<*>,
+    private val resultChannel: ReceiveChannel<*>,
 ) : ActionCannon<D> {
 
     val immediateReturn = mutableMapOf<Any, Any?>()
