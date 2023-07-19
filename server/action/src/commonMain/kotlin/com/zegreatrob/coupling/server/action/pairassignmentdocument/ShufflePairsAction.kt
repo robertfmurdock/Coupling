@@ -22,7 +22,8 @@ data class ShufflePairsAction(
     val history: List<PairAssignmentDocument>,
 ) {
     interface Dispatcher<out D> : Clock, CannonProvider<D>
-        where D : CreatePairCandidateReportListAction.Dispatcher,
+        where D : CreatePairCandidateReportAction.Dispatcher,
+              D : CreatePairCandidateReportListAction.Dispatcher<D>,
               D : NextPlayerAction.Dispatcher<D>,
               D : FindNewPairsAction.Dispatcher<D>,
               D : AssignPinsAction.Dispatcher {

@@ -8,7 +8,9 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 @ActionMint
 data class NextPlayerAction(val gameSpin: GameSpin) {
 
-    interface Dispatcher<out D> : CannonProvider<D> where D : CreatePairCandidateReportListAction.Dispatcher {
+    interface Dispatcher<out D> : CannonProvider<D>
+        where D : CreatePairCandidateReportAction.Dispatcher,
+              D : CreatePairCandidateReportListAction.Dispatcher<D> {
 
         suspend fun perform(action: NextPlayerAction): PairCandidateReport = with(action.createPairCandidateReports()) {
             toList().fold(head) { reportWithLongestTime, report ->

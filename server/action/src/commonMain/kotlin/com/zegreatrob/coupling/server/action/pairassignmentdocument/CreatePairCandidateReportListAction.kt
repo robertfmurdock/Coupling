@@ -4,23 +4,23 @@ import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecutor
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 
-data class CreatePairCandidateReportListAction(val game: GameSpin) :
-    SimpleSuspendAction<CreatePairCandidateReportListAction.Dispatcher, NotEmptyList<PairCandidateReport>> {
-    override val performFunc = link(Dispatcher::perform)
+@ActionMint
+data class CreatePairCandidateReportListAction(val game: GameSpin) {
 
-    interface Dispatcher : PlayerCandidatesFinder {
+    interface Dispatcher<out D> : PlayerCandidatesFinder where D : CreatePairCandidateReportAction.Dispatcher {
 
         val execute: ExecutableActionExecutor<CreatePairCandidateReportAction.Dispatcher>
 
-        fun perform(action: CreatePairCandidateReportListAction) = action.createReports()
+        suspend fun perform(action: CreatePairCandidateReportListAction) = action.createReports()
 
         private fun CreatePairCandidateReportListAction.createReportsUsingLongestRule() =
             game.createReports(PairingRule.LongestTime)
 
-        private fun CreatePairCandidateReportListAction.createReports() = game.createReports(game.rule)
+        private fun CreatePairCandidateReportListAction.createReports(): NotEmptyList<PairCandidateReport> =
+            game.createReports(game.rule)
 
         private fun GameSpin.createReports(rule: PairingRule) =
             remainingPlayers.map { player -> pairCandidateReport(rule, player) }

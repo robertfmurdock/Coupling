@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.StubActionExecutor
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.setup
+import com.zegreatrob.testmints.async.asyncSetup
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
@@ -16,11 +16,11 @@ import kotlin.test.Test
 class CreatePairCandidateReportsActionTest {
 
     class WhenThePartyPrefersPairingWithDifferentBadges :
-        CreatePairCandidateReportListAction.Dispatcher {
+        CreatePairCandidateReportListAction.Dispatcher<CreatePairCandidateReportAction.Dispatcher> {
         override val execute = stubActionExecutor(CreatePairCandidateReportAction::class)
 
         @Test
-        fun willReturnAllReportsForPlayersWithTheSameBadge() = setup(object {
+        fun willReturnAllReportsForPlayersWithTheSameBadge() = asyncSetup(object {
             val bill = Player(id = "Bill", badge = 1, avatarType = null)
             val ted = Player(id = "Ted", badge = 1, avatarType = null)
             val amadeus = Player(id = "Mozart", badge = 1, avatarType = null)
@@ -47,7 +47,7 @@ class CreatePairCandidateReportsActionTest {
         }
 
         @Test
-        fun willReturnFilterCandidatesByUnlikeBadge() = setup(object {
+        fun willReturnFilterCandidatesByUnlikeBadge() = asyncSetup(object {
             val history = emptyList<PairAssignmentDocument>()
             val bill = Player(id = "Bill", badge = 1, avatarType = null)
             val ted = Player(id = "Ted", badge = 1, avatarType = null)
@@ -76,7 +76,7 @@ class CreatePairCandidateReportsActionTest {
         }
 
         @Test
-        fun willReturnReportForOnePlayer() = setup(object {
+        fun willReturnReportForOnePlayer() = asyncSetup(object {
             val history = emptyList<PairAssignmentDocument>()
             val bill = Player(id = "Bill", badge = 1, avatarType = null)
             val players = notEmptyListOf(bill)
@@ -92,8 +92,8 @@ class CreatePairCandidateReportsActionTest {
     }
 
     @Test
-    fun whenThePartyPrefersPairingByLongestTime() = setup(object :
-        CreatePairCandidateReportListAction.Dispatcher {
+    fun whenThePartyPrefersPairingByLongestTime() = asyncSetup(object :
+        CreatePairCandidateReportListAction.Dispatcher<CreatePairCandidateReportAction.Dispatcher> {
         override val execute = stubActionExecutor(CreatePairCandidateReportAction::class)
         val history = listOf<PairAssignmentDocument>()
         val bill = Player(id = "Bill", badge = 1, avatarType = null)
@@ -131,8 +131,7 @@ class CreatePairCandidateReportsActionTest {
             players: List<Player>,
             history: List<PairAssignmentDocument>,
         ) = whenever(
-            receive = CreatePairCandidateReportAction(pairCandidateReport.player, history, players)
-                .also { println("expecting $it") },
+            receive = CreatePairCandidateReportAction(pairCandidateReport.player, history, players),
             returnValue = pairCandidateReport,
         )
 

@@ -27,7 +27,7 @@ class ShufflePairsActionTest {
     interface ShufflePairsActionInner :
         FindNewPairsAction.Dispatcher<ShufflePairsActionInner>,
         NextPlayerAction.Dispatcher<ShufflePairsActionInner>,
-        CreatePairCandidateReportListAction.Dispatcher,
+        CreatePairCandidateReportListAction.Dispatcher<ShufflePairsActionInner>,
         CreatePairCandidateReportAction.Dispatcher,
         AssignPinsAction.Dispatcher {
         override val execute: ExecutableActionExecutor<ShufflePairsActionInner>

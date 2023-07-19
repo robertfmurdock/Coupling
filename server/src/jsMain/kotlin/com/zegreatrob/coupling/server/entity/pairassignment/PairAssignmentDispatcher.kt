@@ -13,9 +13,10 @@ interface PairAssignmentDispatcher<D> :
     ShufflePairsAction.Dispatcher<D>,
     FindNewPairsAction.Dispatcher<D>,
     NextPlayerAction.Dispatcher<D>,
-    CreatePairCandidateReportListAction.Dispatcher,
+    CreatePairCandidateReportListAction.Dispatcher<D>,
     CreatePairCandidateReportAction.Dispatcher,
-    Wheel where D : CreatePairCandidateReportListAction.Dispatcher,
+    Wheel where D : CreatePairCandidateReportAction.Dispatcher,
+      D : CreatePairCandidateReportListAction.Dispatcher<D>,
       D : NextPlayerAction.Dispatcher<D>,
       D : AssignPinsAction.Dispatcher,
       D : FindNewPairsAction.Dispatcher<D> {

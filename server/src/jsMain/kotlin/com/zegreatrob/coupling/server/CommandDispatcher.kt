@@ -24,6 +24,7 @@ import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
@@ -121,6 +122,7 @@ class CurrentPartyDispatcher(
 ) :
     ICommandDispatcher by commandDispatcher,
     DispatchingActionExecutor<CurrentPartyDispatcher>,
+    CreatePairCandidateReportListAction.Dispatcher<CurrentPartyDispatcher>,
     ShufflePairsAction.Dispatcher<CurrentPartyDispatcher>,
     AssignPinsAction.Dispatcher,
     NextPlayerAction.Dispatcher<CurrentPartyDispatcher>,

@@ -21,7 +21,7 @@ class FindNewPairsActionTest {
 
     interface FindNewPairsActionTestDispatcher :
         NextPlayerAction.Dispatcher<FindNewPairsActionTestDispatcher>,
-        CreatePairCandidateReportListAction.Dispatcher,
+        CreatePairCandidateReportListAction.Dispatcher<FindNewPairsActionTestDispatcher>,
         CreatePairCandidateReportAction.Dispatcher {
         override val execute: ExecutableActionExecutor<FindNewPairsActionTestDispatcher>
             get() = TODO("Not yet implemented")

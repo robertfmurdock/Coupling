@@ -30,13 +30,13 @@ import kotlin.test.Test
 class GameExamplesTest {
 
     companion object :
+        CreatePairCandidateReportListAction.Dispatcher<Companion>,
         ShufflePairsAction.Dispatcher<Companion>,
         FindNewPairsAction.Dispatcher<Companion>,
-        AssignPinsAction.Dispatcher,
-        NextPlayerAction.Dispatcher<Companion>,
-        CreatePairCandidateReportAction.Dispatcher,
-        CreatePairCandidateReportListAction.Dispatcher,
         DispatchingActionExecutor<Companion>,
+        NextPlayerAction.Dispatcher<Companion>,
+        AssignPinsAction.Dispatcher,
+        CreatePairCandidateReportAction.Dispatcher,
         Wheel {
         override val wheel = this
         override val actionDispatcher = this
