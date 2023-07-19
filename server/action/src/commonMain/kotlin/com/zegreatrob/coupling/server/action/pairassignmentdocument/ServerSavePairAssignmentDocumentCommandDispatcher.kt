@@ -10,17 +10,16 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssi
 import com.zegreatrob.coupling.repository.party.PartyIdLoadIntegrationSyntax
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.BroadcastAction
+import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.coupling.server.action.connection.CouplingConnectionGetSyntax
 import com.zegreatrob.coupling.server.action.slack.SlackUpdateSpin
-import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
-interface ServerSavePairAssignmentDocumentCommandDispatcher :
+interface ServerSavePairAssignmentDocumentCommandDispatcher<out D> :
     SavePairAssignmentsCommand.Dispatcher,
     PartyIdPairAssignmentDocumentSaveSyntax,
     CouplingConnectionGetSyntax,
-    PartyIdLoadIntegrationSyntax,
-    SuspendActionExecuteSyntax,
-    BroadcastAction.Dispatcher {
+    CannonProvider<D>,
+    PartyIdLoadIntegrationSyntax where D : BroadcastAction.Dispatcher {
 
     val slackRepository: SlackUpdateSpin
     val slackAccessRepository: SlackAccessGet
@@ -28,7 +27,7 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher :
     override suspend fun perform(command: SavePairAssignmentsCommand) = with(command) {
         partyId.with(pairAssignments)
             .apply { save() }
-            .apply { execute(broadcastAction()) }
+            .apply { cannon.fire(broadcastAction()) }
             .let { VoidResult.Accepted }
             .also { partyId.loadIntegration()?.updateMessage(pairAssignments) }
     }

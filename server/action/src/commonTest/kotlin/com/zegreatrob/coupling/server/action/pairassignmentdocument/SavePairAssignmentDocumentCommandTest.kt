@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
+import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.slack.SlackUpdateSpin
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
@@ -21,15 +22,20 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
+import com.zegreatrob.testmints.action.ActionCannon
+import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
 class SavePairAssignmentDocumentCommandTest {
+    interface SavePairAssignmentDocumentCommandTestDispatcher :
+        ServerSavePairAssignmentDocumentCommandDispatcher<SavePairAssignmentDocumentCommandTestDispatcher>,
+        BroadcastAction.Dispatcher
 
     @Test
-    fun willSendToRepository() = asyncSetup(object : ServerSavePairAssignmentDocumentCommandDispatcher {
+    fun willSendToRepository() = asyncSetup(object : SavePairAssignmentDocumentCommandTestDispatcher, ScopeMint() {
         val party = stubPartyDetails()
         override val liveInfoRepository: LiveInfoRepository get() = TODO("Not yet implemented")
         override suspend fun PartyId.loadConnections(): List<CouplingConnection> = emptyList()
@@ -48,6 +54,7 @@ class SavePairAssignmentDocumentCommandTest {
 
         override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
             .apply { whenever(pairAssignmentDocument, Unit) }
+        override val cannon = ActionCannon(this)
     }) {
         partyRepository.save(party)
     } exercise {

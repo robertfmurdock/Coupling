@@ -133,7 +133,7 @@ class CurrentPartyDispatcher(
     ServerDeletePlayerCommandDispatcher,
     ServerDeleteSecretCommandDispatcher,
     RetiredPlayersQuery.Dispatcher,
-    ServerSavePairAssignmentDocumentCommandDispatcher,
+    ServerSavePairAssignmentDocumentCommandDispatcher<CurrentPartyDispatcher>,
     ServerDeletePairAssignmentsCommandDispatcher,
     ServerDeletePartyCommandDispatcher,
     ServerDeletePinCommandDispatcher,
