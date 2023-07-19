@@ -5,19 +5,18 @@ import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
+import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.testmints.action.annotation.ActionMint
-import com.zegreatrob.testmints.action.async.SuspendActionExecuteSyntax
 
 @ActionMint
 data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: String) {
 
-    interface Dispatcher :
-        UserIsAuthorizedWithDataAction.Dispatcher,
-        SuspendActionExecuteSyntax,
+    interface Dispatcher<out D> :
+        CannonProvider<D>,
         CouplingConnectionSaveSyntax,
         CouplingConnectionGetSyntax,
-        CurrentUserProvider {
+        CurrentUserProvider where D : UserIsAuthorizedWithDataAction.Dispatcher {
 
         suspend fun perform(command: ConnectPartyUserCommand) = with(command) {
             partyId.getAuthorizationData()?.let { (_, players) ->
@@ -28,7 +27,8 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
             }
         }
 
-        private suspend fun PartyId.getAuthorizationData() = execute(UserIsAuthorizedWithDataAction(this)).valueOrNull()
+        private suspend fun PartyId.getAuthorizationData() = cannon.fire(UserIsAuthorizedWithDataAction(this))
+            .valueOrNull()
 
         private fun userPlayer(players: List<Player>, email: String): Player {
             val existingPlayer = players.find { it.email == email }

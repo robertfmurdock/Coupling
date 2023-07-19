@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.TraceIdProvider
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
@@ -44,6 +43,7 @@ import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispa
 import com.zegreatrob.coupling.server.action.secret.SecretListQuery
 import com.zegreatrob.coupling.server.action.slack.ServerGrantSlackAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
+import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserQuery
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
 import com.zegreatrob.coupling.server.entity.party.PartyDispatcher
@@ -60,26 +60,26 @@ import kotlinx.coroutines.async
 import kotlin.js.json
 
 interface ICommandDispatcher :
-    TraceIdProvider,
     AwsManagementApiSyntax,
     AwsSocketCommunicator,
-    ConnectPartyUserCommand.Dispatcher,
     ConnectionsQuery.Dispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
     DisconnectPartyUserCommand.Dispatcher,
     GlobalStatsQuery.Dispatcher,
     PairAssignmentDocumentListQuery.Dispatcher,
     PartyDispatcher,
-    PinsQuery.Dispatcher,
     PartyIntegrationQuery.Dispatcher,
+    PinsQuery.Dispatcher,
     PlayersQuery.Dispatcher,
     ReportDocCommand.Dispatcher,
     RepositoryCatalog,
     RetiredPlayersQuery.Dispatcher,
-    ServerGrantSlackAccessCommandDispatcher,
     ScopeSyntax,
     SecretListQuery.Dispatcher,
+    ServerGrantSlackAccessCommandDispatcher,
+    TraceIdProvider,
     UserDispatcher,
+    UserIsAuthorizedWithDataAction.Dispatcher,
     UserQuery.Dispatcher
 
 class CommandDispatcher(
@@ -91,7 +91,8 @@ class CommandDispatcher(
 ) : ICommandDispatcher,
     RepositoryCatalog by repositoryCatalog,
     TraceIdProvider,
-    BroadcastAction.Dispatcher<ICommandDispatcher> {
+    BroadcastAction.Dispatcher<ICommandDispatcher>,
+    ConnectPartyUserCommand.Dispatcher<ICommandDispatcher> {
     override val cannon: ActionCannon<ICommandDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
 
     override val slackRepository: SlackRepository by lazy { FetchSlackRepository() }
@@ -124,7 +125,6 @@ class CurrentPartyDispatcher(
     private val commandDispatcher: CommandDispatcher,
 ) :
     ICommandDispatcher by commandDispatcher,
-    DispatchingActionExecutor<CurrentPartyDispatcher>,
     CreatePairCandidateReportListAction.Dispatcher<CurrentPartyDispatcher>,
     ShufflePairsAction.Dispatcher<CurrentPartyDispatcher>,
     AssignPinsAction.Dispatcher,
@@ -147,7 +147,6 @@ class CurrentPartyDispatcher(
     override val userId: String get() = commandDispatcher.userId
     override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
-    override val actionDispatcher = this
     private suspend fun PartyId.validateAuthorized() = if (userIsAuthorized(this)) this else null
 
     private suspend fun userIsAuthorized(partyId: PartyId) = currentUser.authorizedPartyIds.contains(partyId) ||

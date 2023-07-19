@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.express.route
 
-import com.benasher44.uuid.uuid4
+import com.benasher44.uuid.Uuid
+import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
@@ -12,6 +13,7 @@ import com.zegreatrob.coupling.server.express.async
 import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.secretRepository
+import com.zegreatrob.testmints.action.ActionCannon
 
 fun userLoadingMiddleware(): Handler = { request, _, next ->
     val auth = request.auth
@@ -30,14 +32,19 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
                     null
                 }
             } else {
-                UserDataService.authActionDispatcher("$userEmail", uuid4())
-                    .invoke(FindOrCreateUserAction)
+                authCannon(userEmail, request.traceId)
+                    .fire(FindOrCreateUserAction)
                     .valueOrNull()
             }
                 .let(request::setUser)
         }
     }
 }
+
+private suspend fun authCannon(userEmail: Any?, traceId: Uuid) = ActionCannon(
+    UserDataService.authActionDispatcher("$userEmail", traceId),
+    LoggingActionPipe(traceId),
+)
 
 private suspend fun secretIsNotDeleted(secretId: String, partyId: PartyId): Boolean = secretRepository(secretId)
     .getSecrets(partyId)
