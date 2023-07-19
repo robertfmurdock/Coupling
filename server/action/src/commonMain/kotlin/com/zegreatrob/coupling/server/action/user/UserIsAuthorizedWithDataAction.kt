@@ -15,38 +15,38 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 data class UserIsAuthorizedWithDataAction(val partyId: PartyId) :
-    SimpleSuspendResultAction<UserIsAuthorizedWithDataActionDispatcher, Pair<PartyDetails, List<Player>>?> {
-    override val performFunc = link(UserIsAuthorizedWithDataActionDispatcher::perform)
-}
+    SimpleSuspendResultAction<UserIsAuthorizedWithDataAction.Dispatcher, Pair<PartyDetails, List<Player>>?> {
+    override val performFunc = link(Dispatcher::perform)
 
-interface UserIsAuthorizedWithDataActionDispatcher :
-    UserAuthenticatedPartyIdSyntax,
-    UserPlayerIdsSyntax,
-    PartyIdGetSyntax,
-    PartyPlayersSyntax {
-    override val playerRepository: PlayerEmailRepository
+    interface Dispatcher :
+        UserAuthenticatedPartyIdSyntax,
+        UserPlayerIdsSyntax,
+        PartyIdGetSyntax,
+        PartyPlayersSyntax {
+        override val playerRepository: PlayerEmailRepository
 
-    suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.skdjflskdjf().successResult()
+        suspend fun perform(action: UserIsAuthorizedWithDataAction) = action.skdjflskdjf().successResult()
 
-    private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf(): Pair<PartyDetails, List<Player>>? {
-        val contains = getUserPlayerIds()
-            .authenticatedPartyIds()
-            .contains(partyId)
+        private suspend fun UserIsAuthorizedWithDataAction.skdjflskdjf(): Pair<PartyDetails, List<Player>>? {
+            val contains = getUserPlayerIds()
+                .authenticatedPartyIds()
+                .contains(partyId)
 
-        if (contains) {
-            val (party, players) = loadPartyAndPlayers()
+            if (contains) {
+                val (party, players) = loadPartyAndPlayers()
 
-            if (party != null) {
-                return party to players
+                if (party != null) {
+                    return party to players
+                }
             }
+            return null
         }
-        return null
-    }
 
-    private suspend fun UserIsAuthorizedWithDataAction.loadPartyAndPlayers() = coroutineScope {
-        await(
-            async { partyId.get() },
-            async { partyId.getPlayerList() },
-        )
+        private suspend fun UserIsAuthorizedWithDataAction.loadPartyAndPlayers() = coroutineScope {
+            await(
+                async { partyId.get() },
+                async { partyId.getPlayerList() },
+            )
+        }
     }
 }
