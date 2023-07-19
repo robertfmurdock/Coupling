@@ -12,6 +12,8 @@ import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.coupling.server.action.connection.CouplingConnectionGetSyntax
+import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
+import com.zegreatrob.coupling.server.action.fire
 import com.zegreatrob.coupling.server.action.slack.SlackUpdateSpin
 
 interface ServerSavePairAssignmentDocumentCommandDispatcher<out D> :
@@ -19,7 +21,8 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher<out D> :
     PartyIdPairAssignmentDocumentSaveSyntax,
     CouplingConnectionGetSyntax,
     CannonProvider<D>,
-    PartyIdLoadIntegrationSyntax where D : BroadcastAction.Dispatcher {
+    PartyIdLoadIntegrationSyntax
+    where D : DisconnectPartyUserCommand.Dispatcher, D : BroadcastAction.Dispatcher<D> {
 
     val slackRepository: SlackUpdateSpin
     val slackAccessRepository: SlackAccessGet

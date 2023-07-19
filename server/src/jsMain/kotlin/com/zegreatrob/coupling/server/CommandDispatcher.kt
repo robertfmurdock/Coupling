@@ -63,7 +63,6 @@ interface ICommandDispatcher :
     TraceIdProvider,
     AwsManagementApiSyntax,
     AwsSocketCommunicator,
-    BroadcastAction.Dispatcher,
     ConnectPartyUserCommand.Dispatcher,
     ConnectionsQuery.Dispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
@@ -89,7 +88,12 @@ class CommandDispatcher(
     override val scope: CoroutineScope,
     override val traceId: Uuid,
     override val managementApiClient: ApiGatewayManagementApiClient = apiGatewayManagementApiClient(),
-) : ICommandDispatcher, RepositoryCatalog by repositoryCatalog, TraceIdProvider {
+) : ICommandDispatcher,
+    RepositoryCatalog by repositoryCatalog,
+    TraceIdProvider,
+    BroadcastAction.Dispatcher<ICommandDispatcher> {
+    override val cannon: ActionCannon<ICommandDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
+
     override val slackRepository: SlackRepository by lazy { FetchSlackRepository() }
 
     private var authorizedPartyIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
@@ -126,6 +130,7 @@ class CurrentPartyDispatcher(
     AssignPinsAction.Dispatcher,
     NextPlayerAction.Dispatcher<CurrentPartyDispatcher>,
     PairAssignmentDispatcher<CurrentPartyDispatcher>,
+    BroadcastAction.Dispatcher<CurrentPartyDispatcher>,
     ServerSpinCommandDispatcher<CurrentPartyDispatcher>,
     ServerSaveSlackIntegrationCommandDispatcher,
     ServerCreateSecretCommandDispatcher,

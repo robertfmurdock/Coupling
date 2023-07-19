@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.BroadcastAction
+import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.slack.SlackUpdateSpin
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
@@ -32,7 +33,8 @@ import kotlin.test.Test
 class SavePairAssignmentDocumentCommandTest {
     interface SavePairAssignmentDocumentCommandTestDispatcher :
         ServerSavePairAssignmentDocumentCommandDispatcher<SavePairAssignmentDocumentCommandTestDispatcher>,
-        BroadcastAction.Dispatcher
+        BroadcastAction.Dispatcher<SavePairAssignmentDocumentCommandTestDispatcher>,
+        DisconnectPartyUserCommand.Dispatcher
 
     @Test
     fun willSendToRepository() = asyncSetup(object : SavePairAssignmentDocumentCommandTestDispatcher, ScopeMint() {
