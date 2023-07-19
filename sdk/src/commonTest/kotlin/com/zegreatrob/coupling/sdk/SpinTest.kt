@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.VoidResult
+import com.zegreatrob.coupling.action.SpinCommand
+import com.zegreatrob.coupling.action.fire
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
@@ -65,7 +65,7 @@ class SpinTest {
     } exercise {
         sdk.fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
-        result.assertIsEqualTo(VoidResult.Accepted)
+        result.assertIsEqualTo(SpinCommand.Result.Success)
         queryCurrentPairs(party.id, sdk)
             ?.pairs
             .assertIsEqualTo(
@@ -107,7 +107,7 @@ class SpinTest {
     } exercise {
         sdk.fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
-        result.assertIsEqualTo(VoidResult.Accepted)
+        result.assertIsEqualTo(SpinCommand.Result.Success)
         queryCurrentPairs(party.id, sdk)
             ?.pairs
             .assertIsEqualTo(
@@ -151,7 +151,7 @@ class SpinTest {
     } exercise {
         sdk.await().fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
-        result.assertIsEqualTo(VoidResult.Accepted)
+        result.assertIsEqualTo(SpinCommand.Result.Success)
         queryCurrentPairs(party.id, sdk.await())
             ?.pairs
             .assertIsEqualTo(
@@ -181,7 +181,7 @@ class SpinTest {
         } exercise {
             sdk.fire(SpinCommand(party.id, players.map { it.id }, listOf(pin.id!!)))
         } verifyAnd { result ->
-            result.assertIsEqualTo(VoidResult.Accepted)
+            result.assertIsEqualTo(SpinCommand.Result.Success)
             queryCurrentPairs(party.id, sdk)
                 ?.pairs
                 .assertIsEqualTo(
@@ -197,7 +197,7 @@ class SpinTest {
         } exercise {
             sdk.fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
         } verifyAnd { result ->
-            result.assertIsEqualTo(VoidResult.Accepted)
+            result.assertIsEqualTo(SpinCommand.Result.Success)
             queryCurrentPairs(party.id, sdk)
                 ?.pairs
                 .assertIsEqualTo(

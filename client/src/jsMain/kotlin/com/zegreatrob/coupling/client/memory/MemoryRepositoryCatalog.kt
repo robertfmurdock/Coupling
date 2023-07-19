@@ -1,11 +1,11 @@
 package com.zegreatrob.coupling.client.memory
 
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
+import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
@@ -78,7 +78,7 @@ class MemoryRepositoryCatalog private constructor(
         MemoryPinRepository(userEmail, clock, backend.pin),
     )
 
-    override suspend fun perform(command: SpinCommand): VoidResult {
+    override suspend fun perform(command: SpinCommand): SpinCommand.Result {
         TODO("Not yet implemented")
     }
 

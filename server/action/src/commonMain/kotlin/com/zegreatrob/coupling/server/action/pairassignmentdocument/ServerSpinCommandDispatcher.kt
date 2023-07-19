@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
-import com.zegreatrob.coupling.action.VoidResult
+import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
-import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
@@ -46,40 +46,57 @@ interface ServerSpinCommandDispatcher<out D> :
     override val partyRepository: PartyRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 
-    override suspend fun perform(command: SpinCommand): VoidResult {
-        val (shufflePairsAction, integration) = command.shufflePairsAction()
-            ?: return VoidResult.Rejected
+    override suspend fun perform(command: SpinCommand): SpinCommand.Result = coroutineScope {
+        with(command) {
+            val partyDeferred = async { partyId.load()?.data }
+            val partyIntegrationDeferred = async { partyId.loadIntegration() }
+            val playersDeferred = async { partyId.loadPlayers().elements }
+            val pinsDeferred = async { partyId.loadPins().elements }
+            val historyDeferred = async { partyId.loadHistory() }
+            return@coroutineScope performSpin(
+                partyDeferred.await(),
+                partyIntegrationDeferred.await(),
+                playersDeferred.await(),
+                pinsDeferred.await(),
+                historyDeferred.await(),
+            )
+        }
+    }
 
-        val newPairs = cannon.fire(shufflePairsAction)
+    private suspend fun SpinCommand.performSpin(
+        partyDetails: PartyDetails?,
+        partyIntegration: PartyIntegration?,
+        allPlayers: List<Player>,
+        pins: List<Pin>,
+        history: List<PairAssignmentDocument>,
+    ): SpinCommand.Result {
+        partyDetails ?: return SpinCommand.Result.PartyDoesNotExist(partyId)
 
-        command.partyId.with(newPairs)
+        val playersMap = selectedPlayersMap(allPlayers, playerIds)
+        if (playersMap.values.any { it == null }) {
+            return SpinCommand.Result.CouldNotFindPlayers(
+                playersMap.filter { it.value == null }.keys.toNotEmptyList().getOrThrow(),
+            )
+        }
+        val selectedPlayers = playersMap.values.filterNotNull().toNotEmptyList().getOrThrow()
+        val action = ShufflePairsAction(
+            party = partyDetails,
+            players = selectedPlayers,
+            pins = filterSelectedPins(pins, pinIds),
+            history = history,
+        )
+
+        val newPairs = cannon.fire(action)
+
+        partyId.with(newPairs)
             .save()
 
-        integration?.sendMessage(newPairs)
-        return VoidResult.Accepted
+        partyIntegration?.sendMessage(newPairs)
+        return SpinCommand.Result.Success
     }
 
-    private suspend fun SpinCommand.shufflePairsAction() = coroutineScope {
-        val partyDeferred = async { partyId.load()?.data }
-        val partyIntegrationDeferred = async { partyId.loadIntegration() }
-        val playersDeferred = async { partyId.loadPlayers().elements }
-        val pinsDeferred = async { partyId.loadPins().elements }
-        val historyDeferred = async { partyId.loadHistory() }
-        val players = filterSelectedPlayers(playersDeferred.await(), playerIds)
-            .toNotEmptyList()
-            .getOrNull()
-            ?: return@coroutineScope null
-        ShufflePairsAction(
-            party = partyDeferred.await()
-                ?: return@coroutineScope null,
-            players = players,
-            pins = filterSelectedPins(pinsDeferred.await(), pinIds),
-            history = historyDeferred.await(),
-        ) to partyIntegrationDeferred.await()
-    }
-
-    private fun filterSelectedPlayers(players: List<Player>, playerIds: NotEmptyList<String>) =
-        playerIds.toList().mapNotNull { id -> players.find { player -> player.id == id } }
+    private fun selectedPlayersMap(players: List<Player>, playerIds: NotEmptyList<String>) = playerIds.toList()
+        .associateWith { id -> players.find { player -> player.id == id } }
 
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
 

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.action
 
 sealed interface CommandResult :
+    SpinCommand.Result,
     VoidResult {
     data object Unauthorized : CommandResult
 }

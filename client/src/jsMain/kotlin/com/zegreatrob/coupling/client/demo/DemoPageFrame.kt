@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.demo
 
+import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
 import com.zegreatrob.coupling.client.aboutPageContent
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.DispatchFunc

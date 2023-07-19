@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components.spin
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.fire
+import com.zegreatrob.coupling.action.SpinCommand
+import com.zegreatrob.coupling.action.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.newPairAssignmentsPath
 import com.zegreatrob.coupling.model.flatMap

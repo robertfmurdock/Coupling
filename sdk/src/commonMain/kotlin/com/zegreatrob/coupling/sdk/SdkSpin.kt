@@ -1,8 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.CommandResult
-import com.zegreatrob.coupling.action.VoidResult
-import com.zegreatrob.coupling.action.pairassignmentdocument.SpinCommand
+import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.json.SpinInput
 import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
@@ -13,12 +12,12 @@ interface SdkSpin :
     SpinCommand.Dispatcher,
     GqlSyntax {
 
-    override suspend fun perform(command: SpinCommand): VoidResult =
+    override suspend fun perform(command: SpinCommand): SpinCommand.Result =
         doQuery(
             mutation = Mutation.spin,
             input = command.spinInput(),
             resultName = "spin",
-            toOutput = { _: JsonElement -> VoidResult.Accepted },
+            toOutput = { _: JsonElement -> SpinCommand.Result.Success },
         ) ?: CommandResult.Unauthorized
 }
 
