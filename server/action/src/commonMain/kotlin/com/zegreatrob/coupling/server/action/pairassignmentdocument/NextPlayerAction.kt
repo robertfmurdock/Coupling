@@ -7,14 +7,14 @@ import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 import kotools.types.collection.NotEmptyList
 
 data class NextPlayerAction(val gameSpin: GameSpin) :
-    SimpleSuspendAction<NextPlayerAction.Dispatcher, PairCandidateReport> {
-    override val performFunc = link(Dispatcher::perform)
+    SimpleSuspendAction<NextPlayerAction.Dispatcher<*>, PairCandidateReport> {
+    override val performFunc = link(Dispatcher<*>::perform)
 
-    interface Dispatcher {
+    interface Dispatcher<out D> {
 
         val execute: ExecutableActionExecutor<CreatePairCandidateReportListAction.Dispatcher>
 
-        fun perform(action: NextPlayerAction): PairCandidateReport = with(action.createPairCandidateReports()) {
+        suspend fun perform(action: NextPlayerAction): PairCandidateReport = with(action.createPairCandidateReports()) {
             toList().fold(head) { reportWithLongestTime, report ->
                 when {
                     reportWithLongestTime.timeResult == report.timeResult ->

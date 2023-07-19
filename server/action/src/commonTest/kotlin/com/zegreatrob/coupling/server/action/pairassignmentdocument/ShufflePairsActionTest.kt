@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.action.ExecutableActionExecutor
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.channels.Channel
@@ -25,8 +26,13 @@ class ShufflePairsActionTest {
 
     interface ShufflePairsActionInner :
         FindNewPairsAction.Dispatcher<ShufflePairsActionInner>,
-        AssignPinsAction.Dispatcher,
-        NextPlayerAction.Dispatcher
+        NextPlayerAction.Dispatcher<ShufflePairsActionInner>,
+        CreatePairCandidateReportListAction.Dispatcher,
+        CreatePairCandidateReportAction.Dispatcher,
+        AssignPinsAction.Dispatcher {
+        override val execute: ExecutableActionExecutor<ShufflePairsActionInner>
+            get() = TODO("Not yet implemented")
+    }
 
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = asyncSetup(object :

@@ -11,6 +11,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
+import com.zegreatrob.testmints.action.ExecutableActionExecutor
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.channels.Channel
 import kotools.types.collection.notEmptyListOf
@@ -18,11 +19,19 @@ import kotlin.test.Test
 
 class FindNewPairsActionTest {
 
+    interface FindNewPairsActionTestDispatcher :
+        NextPlayerAction.Dispatcher<FindNewPairsActionTestDispatcher>,
+        CreatePairCandidateReportListAction.Dispatcher,
+        CreatePairCandidateReportAction.Dispatcher {
+        override val execute: ExecutableActionExecutor<FindNewPairsActionTestDispatcher>
+            get() = TODO("Not yet implemented")
+    }
+
     @Test
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = asyncSetup(object :
-        FindNewPairsAction.Dispatcher<NextPlayerAction.Dispatcher> {
+        FindNewPairsAction.Dispatcher<FindNewPairsActionTestDispatcher> {
         override val wheel = StubWheel()
-        override val cannon = StubCannon<NextPlayerAction.Dispatcher>(mutableListOf(), Channel<Any>())
+        override val cannon = StubCannon<FindNewPairsActionTestDispatcher>(mutableListOf(), Channel<Any>())
         val bill: Player = Player(id = "Bill", avatarType = null)
         val ted: Player = Player(id = "Ted", avatarType = null)
         val players = notEmptyListOf(bill, ted)
@@ -39,8 +48,8 @@ class FindNewPairsActionTest {
 
     @Test
     fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = asyncSetup(object :
-        FindNewPairsAction.Dispatcher<NextPlayerAction.Dispatcher> {
-        override val cannon = StubCannon<NextPlayerAction.Dispatcher>(mutableListOf(), Channel<Any>())
+        FindNewPairsAction.Dispatcher<FindNewPairsActionTestDispatcher> {
+        override val cannon = StubCannon<FindNewPairsActionTestDispatcher>(mutableListOf(), Channel<Any>())
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill", avatarType = null)
         val ted: Player = Player(id = "Ted", avatarType = null)

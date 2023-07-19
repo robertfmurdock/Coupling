@@ -10,12 +10,13 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAc
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairCandidateReport
 import com.zegreatrob.coupling.server.action.stubActionExecutor
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.setup
+import com.zegreatrob.testmints.async.asyncSetup
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
-class NextPlayerActionTest : NextPlayerAction.Dispatcher {
+class NextPlayerActionTest : NextPlayerAction.Dispatcher<CreatePairCandidateReportListAction.Dispatcher> {
+
     override val execute = stubActionExecutor(CreatePairCandidateReportListAction::class)
 
     private val bill = Player(id = "Bill", avatarType = null)
@@ -24,7 +25,7 @@ class NextPlayerActionTest : NextPlayerAction.Dispatcher {
     private val shorty = Player(id = "Napoleon", avatarType = null)
 
     @Test
-    fun willUseHistoryToProduceSequenceInOrderOfLongestTimeSinceLastPairedToShortest() = setup(object {
+    fun willUseHistoryToProduceSequenceInOrderOfLongestTimeSinceLastPairedToShortest() = asyncSetup(object {
         val players = notEmptyListOf(bill, ted, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
@@ -42,7 +43,7 @@ class NextPlayerActionTest : NextPlayerAction.Dispatcher {
     }
 
     @Test
-    fun aPersonWhoJustPairedHasLowerPriorityThanSomeoneWhoHasNotPairedInALongTime() = setup(object {
+    fun aPersonWhoJustPairedHasLowerPriorityThanSomeoneWhoHasNotPairedInALongTime() = asyncSetup(object {
         val players = notEmptyListOf(bill, ted, amadeus, shorty)
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(5))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(0))
@@ -53,7 +54,7 @@ class NextPlayerActionTest : NextPlayerAction.Dispatcher {
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
 
     @Test
-    fun sequenceWillBeFromLongestToShortest() = setup(object {
+    fun sequenceWillBeFromLongestToShortest() = asyncSetup(object {
         val players = notEmptyListOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
@@ -68,7 +69,7 @@ class NextPlayerActionTest : NextPlayerAction.Dispatcher {
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
     @Test
-    fun sequenceWillPreferPlayerWhoHasNeverPaired() = setup(object {
+    fun sequenceWillPreferPlayerWhoHasNeverPaired() = asyncSetup(object {
         val players = notEmptyListOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
@@ -83,7 +84,7 @@ class NextPlayerActionTest : NextPlayerAction.Dispatcher {
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
 
     @Test
-    fun willPrioritizeTheReportWithFewestPlayersGivenEqualAmountsOfTime() = setup(object {
+    fun willPrioritizeTheReportWithFewestPlayersGivenEqualAmountsOfTime() = asyncSetup(object {
         val players = notEmptyListOf(bill, amadeus, shorty)
 
         val billsPairCandidates = PairCandidateReport(

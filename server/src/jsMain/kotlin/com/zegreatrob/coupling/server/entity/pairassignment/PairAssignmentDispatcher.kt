@@ -12,10 +12,11 @@ import com.zegreatrob.testmints.action.ExecutableActionExecutor
 interface PairAssignmentDispatcher<D> :
     ShufflePairsAction.Dispatcher<D>,
     FindNewPairsAction.Dispatcher<D>,
-    NextPlayerAction.Dispatcher,
+    NextPlayerAction.Dispatcher<D>,
     CreatePairCandidateReportListAction.Dispatcher,
     CreatePairCandidateReportAction.Dispatcher,
-    Wheel where D : NextPlayerAction.Dispatcher,
+    Wheel where D : CreatePairCandidateReportListAction.Dispatcher,
+      D : NextPlayerAction.Dispatcher<D>,
       D : AssignPinsAction.Dispatcher,
       D : FindNewPairsAction.Dispatcher<D> {
     override val execute: ExecutableActionExecutor<PairAssignmentDispatcher<D>>

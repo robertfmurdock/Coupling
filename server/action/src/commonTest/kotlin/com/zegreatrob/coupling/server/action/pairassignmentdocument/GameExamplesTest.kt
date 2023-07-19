@@ -33,7 +33,7 @@ class GameExamplesTest {
         ShufflePairsAction.Dispatcher<Companion>,
         FindNewPairsAction.Dispatcher<Companion>,
         AssignPinsAction.Dispatcher,
-        NextPlayerAction.Dispatcher,
+        NextPlayerAction.Dispatcher<Companion>,
         CreatePairCandidateReportAction.Dispatcher,
         CreatePairCandidateReportListAction.Dispatcher,
         DispatchingActionExecutor<Companion>,

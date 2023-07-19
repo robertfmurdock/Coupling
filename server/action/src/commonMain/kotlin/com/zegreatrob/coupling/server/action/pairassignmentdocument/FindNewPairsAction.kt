@@ -13,7 +13,9 @@ import kotools.types.collection.toNotEmptyList
 
 @ActionMint
 data class FindNewPairsAction(val game: Game) {
-    interface Dispatcher<out D : NextPlayerAction.Dispatcher> : CannonProvider<D> {
+    interface Dispatcher<out D> : CannonProvider<D>
+        where D : CreatePairCandidateReportListAction.Dispatcher,
+              D : NextPlayerAction.Dispatcher<D> {
 
         val wheel: Wheel
 
