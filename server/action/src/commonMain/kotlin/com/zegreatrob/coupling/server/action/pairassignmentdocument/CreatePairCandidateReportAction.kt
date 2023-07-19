@@ -7,13 +7,13 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.calculateTimeSinceLastPartnership
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.testmints.action.SimpleExecutableAction
+import com.zegreatrob.testmints.action.async.SimpleSuspendAction
 
 data class CreatePairCandidateReportAction(
     val player: Player,
     val history: List<PairAssignmentDocument>,
     val allPlayers: List<Player>,
-) : SimpleExecutableAction<CreatePairCandidateReportAction.Dispatcher, PairCandidateReport> {
+) : SimpleSuspendAction<CreatePairCandidateReportAction.Dispatcher, PairCandidateReport> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {

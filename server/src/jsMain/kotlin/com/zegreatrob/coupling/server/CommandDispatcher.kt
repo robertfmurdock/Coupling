@@ -54,7 +54,6 @@ import com.zegreatrob.coupling.server.secret.JwtSecretGenerator
 import com.zegreatrob.coupling.server.secret.ServerDeleteSecretCommandDispatcher
 import com.zegreatrob.coupling.server.slack.FetchSlackRepository
 import com.zegreatrob.testmints.action.ActionCannon
-import com.zegreatrob.testmints.action.ExecutableActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -141,7 +140,6 @@ class CurrentPartyDispatcher(
     ServerSavePinCommandDispatcher,
     CannonProvider<CurrentPartyDispatcher> {
     override val userId: String get() = commandDispatcher.userId
-    override val execute: ExecutableActionExecutor<PairAssignmentDispatcher<CurrentPartyDispatcher>> = this
     override val cannon: ActionCannon<CurrentPartyDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
     suspend fun isAuthorized() = currentPartyId.validateAuthorized() != null
     override val actionDispatcher = this

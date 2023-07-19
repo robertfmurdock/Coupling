@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.FindNewPairs
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ShufflePairsAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.Wheel
-import com.zegreatrob.testmints.action.ExecutableActionExecutor
 
 interface PairAssignmentDispatcher<D> :
     ShufflePairsAction.Dispatcher<D>,
@@ -20,6 +19,5 @@ interface PairAssignmentDispatcher<D> :
       D : NextPlayerAction.Dispatcher<D>,
       D : AssignPinsAction.Dispatcher,
       D : FindNewPairsAction.Dispatcher<D> {
-    override val execute: ExecutableActionExecutor<PairAssignmentDispatcher<D>>
     override val wheel: Wheel get() = this
 }
