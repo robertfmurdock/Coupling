@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.DispatchingActionExecutor
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
 import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.map
@@ -33,13 +32,11 @@ class GameExamplesTest {
         CreatePairCandidateReportListAction.Dispatcher<Companion>,
         ShufflePairsAction.Dispatcher<Companion>,
         FindNewPairsAction.Dispatcher<Companion>,
-        DispatchingActionExecutor<Companion>,
         NextPlayerAction.Dispatcher<Companion>,
         AssignPinsAction.Dispatcher,
         CreatePairCandidateReportAction.Dispatcher,
         Wheel {
         override val wheel = this
-        override val actionDispatcher = this
         override val cannon = ActionCannon(this)
     }
 
