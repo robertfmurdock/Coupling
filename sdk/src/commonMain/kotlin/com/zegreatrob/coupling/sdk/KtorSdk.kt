@@ -4,13 +4,14 @@ import com.zegreatrob.coupling.sdk.gql.KtorQueryPerformer
 import com.zegreatrob.coupling.sdk.gql.QueryPerformer
 import com.zegreatrob.testmints.action.ActionCannon
 import com.zegreatrob.testmints.action.ActionPipe
+import com.zegreatrob.testmints.action.DispatcherPipeCannon
 import io.ktor.client.HttpClient
 
 fun couplingSdk(
     getIdTokenFunc: suspend () -> String,
     httpClient: HttpClient,
     pipe: ActionPipe = ActionPipe,
-) = ActionCannon<CouplingSdkDispatcher>(
+) = DispatcherPipeCannon<CouplingSdkDispatcher>(
     KtorCouplingSdkDispatcher(getIdTokenFunc, httpClient),
     pipe = pipe,
 )

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.client.routing
 
+import com.zegreatrob.coupling.client.ClientDispatcher
 import com.zegreatrob.coupling.client.DecoratedDispatchFunc
 import com.zegreatrob.coupling.client.components.DispatchFunc
-import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.react.dataloader.DataLoadState
@@ -18,8 +18,8 @@ import react.create
 import react.useCallback
 
 external interface CouplingQueryProps<R> : Props {
-    var query: SuspendAction<CouplingSdkDispatcher, R?>
-    var toNode: (ReloadFunc, DispatchFunc<CouplingSdkDispatcher>, R) -> ReactNode?
+    var query: SuspendAction<ClientDispatcher, R?>
+    var toNode: (ReloadFunc, DispatchFunc<ClientDispatcher>, R) -> ReactNode?
     var commander: Commander
 }
 
