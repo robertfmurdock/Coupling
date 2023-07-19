@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAc
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairCandidateReport
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.action.ExecutableActionExecutor
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.channels.produce
@@ -53,8 +52,6 @@ class NextPlayerActionTest {
                 )
             },
         )
-        override val execute: ExecutableActionExecutor<CreatePairCandidateReportAction.Dispatcher>
-            get() = TODO("Not yet implemented")
     }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { result ->

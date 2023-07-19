@@ -11,7 +11,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
-import com.zegreatrob.testmints.action.ExecutableActionExecutor
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.coroutines.channels.Channel
 import kotools.types.collection.notEmptyListOf
@@ -22,10 +21,7 @@ class FindNewPairsActionTest {
     interface FindNewPairsActionTestDispatcher :
         NextPlayerAction.Dispatcher<FindNewPairsActionTestDispatcher>,
         CreatePairCandidateReportListAction.Dispatcher<FindNewPairsActionTestDispatcher>,
-        CreatePairCandidateReportAction.Dispatcher {
-        override val execute: ExecutableActionExecutor<FindNewPairsActionTestDispatcher>
-            get() = TODO("Not yet implemented")
-    }
+        CreatePairCandidateReportAction.Dispatcher
 
     @Test
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = asyncSetup(object :

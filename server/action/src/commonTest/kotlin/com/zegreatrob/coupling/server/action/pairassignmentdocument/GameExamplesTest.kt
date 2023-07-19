@@ -41,7 +41,6 @@ class GameExamplesTest {
         override val wheel = this
         override val actionDispatcher = this
         override val cannon = ActionCannon(this)
-        override val execute = this
     }
 
     class WithUniformBadgesAndLongestTimeRule {
