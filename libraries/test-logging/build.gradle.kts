@@ -13,39 +13,6 @@ kotlin {
             binaries.executable()
         }
     }
-
-    sourceSets {
-        getByName("commonMain") {
-            dependencies {
-
-
-
-
-
-
-
-            }
-        }
-        getByName("commonTest") {
-            dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-test")
-            }
-        }
-        getByName("jvmMain") {
-            dependencies {
-                api("io.github.microutils:kotlin-logging")
-                implementation(kotlin("reflect"))
-                implementation("org.junit.jupiter:junit-jupiter-api")
-                implementation("org.junit.jupiter:junit-jupiter-engine")
-                implementation("org.slf4j:slf4j-simple")
-            }
-        }
-        getByName("jsMain") {
-            dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
-            }
-        }
-    }
 }
 
 val testLoggingLib: Configuration by configurations.creating {}
@@ -61,9 +28,15 @@ dependencies {
     commonMainApi("com.zegreatrob.testmints:standard")
     commonMainApi("com.zegreatrob.testmints:report")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-datetime")
-    commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-    commonMainImplementation("io.github.microutils:kotlin-logging")
     commonMainImplementation("org.jetbrains.kotlin:kotlin-test")
+
+    commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
+
+    "jvmMainApi"("io.github.oshai:kotlin-logging")
+    "jvmMainImplementation"(kotlin("reflect"))
+    "jvmMainImplementation"("org.junit.jupiter:junit-jupiter-api")
+    "jvmMainImplementation"("org.junit.jupiter:junit-jupiter-engine")
+    "jvmMainImplementation"("org.slf4j:slf4j-simple")
 }
 
 artifacts {

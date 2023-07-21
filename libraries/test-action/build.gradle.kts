@@ -37,7 +37,7 @@ kotlin {
                 implementation("org.junit.jupiter:junit-jupiter-engine")
 
                 implementation(kotlin("reflect"))
-                implementation("io.github.microutils:kotlin-logging")
+                implementation("io.github.oshai:kotlin-logging")
                 implementation("com.fasterxml.jackson.core:jackson-databind")
             }
         }

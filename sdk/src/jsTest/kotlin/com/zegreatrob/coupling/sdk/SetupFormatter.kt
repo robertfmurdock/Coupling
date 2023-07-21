@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.logging.JsonFormatter
 import com.zegreatrob.coupling.sdk.js.Process
-import mu.KotlinLoggingConfiguration
+import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
 
 actual fun getEnv(name: String): String? = Process.getEnv(name)
 

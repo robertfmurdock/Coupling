@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.testlogging
 
 import com.zegreatrob.testmints.report.MintReporter
 import com.zegreatrob.testmints.report.MintReporterConfig
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 class JsonLoggingTestMintsReporter private constructor() : MintReporter {
 

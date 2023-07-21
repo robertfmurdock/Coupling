@@ -1,85 +1,31 @@
 package com.zegreatrob.coupling.logging
 
+import io.github.oshai.kotlinlogging.Formatter
+import io.github.oshai.kotlinlogging.Level
+import io.github.oshai.kotlinlogging.Marker
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
-import mu.Formatter
-import mu.KotlinLoggingLevel
-import mu.Marker
 
 class JsonFormatter : Formatter {
 
-    override fun formatMessage(level: KotlinLoggingLevel, loggerName: String, msg: () -> Any?): Any {
-        val (message, properties) = extractProperties(msg)
-        return Json.encodeToString(
-            Message.serializer(),
-            Message(
-                level = level.name,
-                name = loggerName,
-                message = message,
-                properties = properties,
-                timestamp = Clock.System.now().toString(),
-            ),
-        )
-    }
-
     override fun formatMessage(
-        level: KotlinLoggingLevel,
-        loggerName: String,
-        t: Throwable?,
-        msg: () -> Any?,
-    ): Any {
-        val (message, properties) = extractProperties(msg)
-        return Json.encodeToString(
-            Message.serializer(),
-            Message(
-                level = level.name,
-                name = loggerName,
-                message = message,
-                properties = properties,
-                timestamp = Clock.System.now().toString(),
-                stackTrace = t.throwableToString(),
-            ),
-        )
-    }
-
-    override fun formatMessage(
-        level: KotlinLoggingLevel,
+        level: Level,
         loggerName: String,
         marker: Marker?,
-        msg: () -> Any?,
+        throwable: Throwable?,
+        message: () -> Any?,
     ): Any {
-        val (message, properties) = extractProperties(msg)
+        val (msg, properties) = extractProperties(message)
         return Json.encodeToString(
             Message.serializer(),
             Message(
                 level = level.name,
                 name = loggerName,
-                message = message,
+                message = msg,
                 properties = properties,
                 timestamp = Clock.System.now().toString(),
                 marker = marker?.getName(),
-            ),
-        )
-    }
-
-    override fun formatMessage(
-        level: KotlinLoggingLevel,
-        loggerName: String,
-        marker: Marker?,
-        t: Throwable?,
-        msg: () -> Any?,
-    ): Any {
-        val (message, properties) = extractProperties(msg)
-        return Json.encodeToString(
-            Message.serializer(),
-            Message(
-                level = level.name,
-                name = loggerName,
-                message = message,
-                properties = properties,
-                timestamp = Clock.System.now().toString(),
-                marker = marker?.getName(),
-                stackTrace = t.throwableToString(),
+                stackTrace = throwable.throwableToString(),
             ),
         )
     }

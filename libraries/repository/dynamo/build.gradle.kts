@@ -35,7 +35,7 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-js")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     jsMainImplementation("com.benasher44:uuid")
-    jsMainImplementation("io.github.microutils:kotlin-logging")
+    jsMainImplementation("io.github.oshai:kotlin-logging")
     jsMainImplementation(npmConstrained("@aws-sdk/client-dynamodb"))
     jsMainImplementation(npmConstrained("@aws-sdk/lib-dynamodb"))
 

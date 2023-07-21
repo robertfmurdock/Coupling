@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.server.express.middleware
 
 import com.zegreatrob.coupling.server.external.express.Request
 import com.zegreatrob.coupling.server.external.express.Response
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.launch
-import mu.KotlinLogging
 import kotlin.time.measureTime
 
 private val logger by lazy { KotlinLogging.logger("RequestLogger") }

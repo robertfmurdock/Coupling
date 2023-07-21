@@ -38,7 +38,7 @@ dependencies {
     jsE2eTestImplementation("com.zegreatrob.testmints:async")
     jsE2eTestImplementation("com.zegreatrob.testmints:minassert")
     jsE2eTestImplementation("com.zegreatrob.testmints:standard")
-    jsE2eTestImplementation("io.github.microutils:kotlin-logging")
+    jsE2eTestImplementation("io.github.oshai:kotlin-logging")
     jsE2eTestImplementation("io.ktor:ktor-client-content-negotiation")
     jsE2eTestImplementation("io.ktor:ktor-client-core")
     jsE2eTestImplementation("io.ktor:ktor-client-logging")

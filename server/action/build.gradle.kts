@@ -22,7 +22,7 @@ dependencies {
     commonMainApi("com.zegreatrob.testmints:action")
     commonMainApi("com.zegreatrob.testmints:action-async")
     commonMainImplementation("com.benasher44:uuid")
-    commonMainImplementation("io.github.microutils:kotlin-logging")
+    commonMainImplementation("io.github.oshai:kotlin-logging")
     commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-js")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 

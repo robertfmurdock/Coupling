@@ -28,7 +28,6 @@ dependencies {
     commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-common")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     commonMainImplementation("com.benasher44:uuid")
-    commonMainImplementation("io.github.microutils:kotlin-logging")
 
     commonTestImplementation(project(":libraries:json"))
     commonTestImplementation(project(":libraries:stub-model"))
@@ -41,7 +40,6 @@ dependencies {
     commonTestImplementation("com.zegreatrob.testmints:minassert")
 
     "jvmMainImplementation"(kotlin("reflect"))
-    "jvmMainImplementation"("io.github.microutils:kotlin-logging")
     "jvmMainImplementation"("com.fasterxml.jackson.core:jackson-databind")
 
     "jvmTestImplementation"(kotlin("reflect"))

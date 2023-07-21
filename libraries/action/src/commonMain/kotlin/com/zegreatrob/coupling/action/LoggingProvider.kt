@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action
 
-import mu.KLogger
+import io.github.oshai.kotlinlogging.KLogger
 
 interface LoggingProvider {
     val logger: KLogger

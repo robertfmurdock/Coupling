@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.repository.dynamo.external.DynamoDBClient
 import com.zegreatrob.coupling.repository.dynamo.external.awsdynamoclient.DynamoDB
 import com.zegreatrob.coupling.repository.dynamo.external.awslibdynamodb.DynamoDBDocumentClient
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlin.js.Json
 import kotlin.js.json
 

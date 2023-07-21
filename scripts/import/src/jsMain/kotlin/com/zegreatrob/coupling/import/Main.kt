@@ -21,14 +21,14 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPinRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPlayerRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
+import io.github.oshai.kotlinlogging.Level
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.decodeFromDynamic
-import mu.KotlinLogging
-import mu.KotlinLoggingConfiguration
-import mu.KotlinLoggingLevel
 import kotlin.js.Json
 
 val user = User("IMPORT_USER", "robert.f.murdock@gmail.com", emptySet())
@@ -36,7 +36,7 @@ val user = User("IMPORT_USER", "robert.f.murdock@gmail.com", emptySet())
 private val logger = KotlinLogging.logger("import")
 
 fun main() {
-    KotlinLoggingConfiguration.LOG_LEVEL = KotlinLoggingLevel.WARN
+    KotlinLoggingConfiguration.LOG_LEVEL = Level.WARN
     MainScope().launch {
         val catalog = DynamoRepositoryCatalog(user.email, Clock.System)
 

@@ -1,15 +1,15 @@
 package com.zegreatrob.coupling.logging
 
-import mu.KotlinLoggingConfiguration
-import mu.KotlinLoggingLevel
+import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
+import io.github.oshai.kotlinlogging.Level
 
 @Suppress("unused")
 @JsName("initializeLogging")
 fun initializeLogging(developmentMode: Boolean) {
     KotlinLoggingConfiguration.LOG_LEVEL = if (developmentMode) {
-        KotlinLoggingLevel.DEBUG
+        Level.DEBUG
     } else {
-        KotlinLoggingLevel.INFO
+        Level.INFO
     }
 
     KotlinLoggingConfiguration.FORMATTER = JsonFormatter()

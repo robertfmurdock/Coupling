@@ -36,7 +36,7 @@ dependencies {
     jsMainImplementation(project(":libraries:repository:memory"))
     jsMainImplementation("com.benasher44:uuid")
     jsMainImplementation("com.zegreatrob.jsmints:minjson")
-    jsMainImplementation("io.github.microutils:kotlin-logging")
+    jsMainImplementation("io.github.oshai:kotlin-logging")
     jsMainImplementation("io.ktor:ktor-client-logging")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-node")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")

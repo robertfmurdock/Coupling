@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlin.time.Duration
 import kotlin.time.measureTimedValue
 

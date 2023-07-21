@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.action
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.testmints.action.ActionPipe
 import com.zegreatrob.testmints.action.async.SuspendAction
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val theLogger by lazy { KotlinLogging.logger("ActionLogger") }
 

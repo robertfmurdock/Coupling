@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.logging.JsonFormatter
-import mu.KotlinLoggingConfiguration
+import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
 
 fun main() {
     KotlinLoggingConfiguration.FORMATTER = JsonFormatter()

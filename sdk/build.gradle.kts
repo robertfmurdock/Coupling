@@ -45,7 +45,7 @@ dependencies {
     "commonTestImplementation"("com.zegreatrob.testmints:async")
     "commonTestImplementation"("com.zegreatrob.testmints:minassert")
     "commonTestImplementation"("com.zegreatrob.testmints:standard")
-    "commonTestImplementation"("io.github.microutils:kotlin-logging")
+    "commonTestImplementation"("io.github.oshai:kotlin-logging")
     "commonTestImplementation"("org.jetbrains.kotlin:kotlin-test")
 
     "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")

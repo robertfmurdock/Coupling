@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val logger by lazy { KotlinLogging.logger("StartupLogger") }
 
