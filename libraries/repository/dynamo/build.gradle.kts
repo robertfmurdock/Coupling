@@ -32,7 +32,6 @@ dependencies {
     jsMainApi(project(":libraries:repository:core"))
     jsMainApi(project(":libraries:logging"))
     jsMainApi("org.jetbrains.kotlin-wrappers:kotlin-extensions")
-    jsMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-js")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     jsMainImplementation("com.benasher44:uuid")
     jsMainImplementation("io.github.oshai:kotlin-logging")
@@ -41,12 +40,11 @@ dependencies {
 
     jsTestImplementation(project(":libraries:repository:validation"))
     jsTestImplementation(project(":libraries:stub-model"))
-    jsTestImplementation("com.zegreatrob.testmints:standard")
-    jsTestImplementation("com.zegreatrob.testmints:minassert")
     jsTestImplementation("com.zegreatrob.testmints:async")
-    jsTestImplementation("org.jetbrains.kotlin:kotlin-test-common")
+    jsTestImplementation("com.zegreatrob.testmints:minassert")
+    jsTestImplementation("com.zegreatrob.testmints:standard")
+    jsTestImplementation("org.jetbrains.kotlin:kotlin-test")
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    jsTestImplementation("org.jetbrains.kotlin:kotlin-test-js")
 }
 
 tasks {

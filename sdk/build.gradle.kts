@@ -33,8 +33,6 @@ dependencies {
     "commonMainImplementation"("io.ktor:ktor-client-logging")
     "commonMainImplementation"("io.ktor:ktor-client-websockets")
     "commonMainImplementation"("io.ktor:ktor-serialization-kotlinx-json")
-    "commonMainImplementation"("org.jetbrains.kotlin:kotlin-stdlib")
-    "commonMainImplementation"("org.jetbrains.kotlin:kotlin-stdlib-common")
     "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     "commonMainImplementation"("org.jetbrains.kotlinx:kotlinx-serialization-json")
 

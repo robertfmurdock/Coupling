@@ -22,5 +22,4 @@ dependencies {
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
     "jsTestImplementation"("com.zegreatrob.testmints:async")
-    "jsMainApi"("org.jetbrains.kotlin:kotlin-stdlib-js")
 }

@@ -23,21 +23,19 @@ dependencies {
     commonMainApi("com.zegreatrob.testmints:action-async")
     commonMainImplementation("com.benasher44:uuid")
     commonMainImplementation("io.github.oshai:kotlin-logging")
-    commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-js")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
-    commonTestApi(project(":libraries:stub-model"))
-    commonTestApi(project(":libraries:test-action"))
+    commonTestImplementation(project(":libraries:stub-model"))
+    commonTestImplementation(project(":libraries:test-action"))
     commonTestImplementation(project(":libraries:repository:memory"))
     commonTestImplementation("com.zegreatrob.testmints:async")
     commonTestImplementation("com.zegreatrob.testmints:minassert")
     commonTestImplementation("com.zegreatrob.testmints:minspy")
     commonTestImplementation("com.zegreatrob.testmints:standard")
+    commonTestImplementation("org.jetbrains.kotlin:kotlin-test")
     commonTestImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    commonTestImplementation("org.jetbrains.kotlin:kotlin-test-common")
 
-    "jsTestApi"(project(":libraries:logging"))
-    "jsTestImplementation"("org.jetbrains.kotlin:kotlin-test-js")
+    "jsTestImplementation"(project(":libraries:logging"))
 }
 tasks {
     "formatKotlinJsMain" {

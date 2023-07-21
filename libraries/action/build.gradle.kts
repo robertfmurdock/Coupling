@@ -25,7 +25,6 @@ dependencies {
     commonMainImplementation(project(":libraries:logging"))
     commonMainApi("com.zegreatrob.testmints:action")
     commonMainApi("com.zegreatrob.testmints:action-async")
-    commonMainImplementation("org.jetbrains.kotlin:kotlin-stdlib-common")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     commonMainImplementation("com.benasher44:uuid")
 

@@ -51,7 +51,6 @@ dependencies {
     cdnLookupConfiguration(
         project(mapOf("path" to ":scripts:cdn-lookup", "configuration" to "cdnLookupConfiguration"))
     )
-    jsMainImplementation(kotlin("stdlib-js"))
     jsMainImplementation(project("components"))
     jsMainImplementation(project(":sdk"))
     jsMainImplementation(project(":libraries:model"))
@@ -112,9 +111,8 @@ dependencies {
     jsTestImplementation("com.zegreatrob.testmints:minassert")
     jsTestImplementation("com.zegreatrob.testmints:minspy")
     jsTestImplementation("com.zegreatrob.testmints:standard")
+    jsTestImplementation("org.jetbrains.kotlin:kotlin-test")
     jsTestImplementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
-    jsTestImplementation("org.jetbrains.kotlin:kotlin-test-common")
-    jsTestImplementation("org.jetbrains.kotlin:kotlin-test-js")
 }
 
 rootProject.apply<TaggerPlugin>()

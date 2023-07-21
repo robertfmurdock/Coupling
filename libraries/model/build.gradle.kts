@@ -21,6 +21,5 @@ dependencies {
     commonTestImplementation("com.zegreatrob.testmints:minassert")
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
-    "jsMainApi"(kotlin("stdlib-js"))
     "jsTestImplementation"(kotlin("test-js"))
 }

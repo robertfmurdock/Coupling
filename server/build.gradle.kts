@@ -27,7 +27,6 @@ dependencies {
     clientConfiguration(
         project(mapOf("path" to ":client", "configuration" to "clientConfiguration"))
     )
-    jsMainImplementation(kotlin("stdlib"))
     jsMainImplementation(project("action"))
     jsMainImplementation(project("secret"))
     jsMainImplementation(project("slack"))

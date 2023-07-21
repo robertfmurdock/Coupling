@@ -25,6 +25,4 @@ dependencies {
     "jvmTestImplementation"(kotlin("reflect"))
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
-
-    "jsMainApi"("org.jetbrains.kotlin:kotlin-stdlib-js")
 }
