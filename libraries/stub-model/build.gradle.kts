@@ -9,20 +9,9 @@ kotlin {
             useCommonJs()
         }
     }
+}
 
-    sourceSets {
-        getByName("commonMain") {
-            dependencies {
-                api(project(":libraries:model"))
-                api(kotlin("stdlib"))
-                api(kotlin("stdlib-common"))
-                api("com.benasher44:uuid")
-            }
-        }
-        getByName("jsMain") {
-            dependencies {
-                api(kotlin("stdlib-js"))
-            }
-        }
-    }
+dependencies {
+    commonMainApi(project(":libraries:model"))
+    commonMainApi("com.benasher44:uuid")
 }

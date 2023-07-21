@@ -14,26 +14,16 @@ kotlin {
             useCommonJs()
         }
     }
+}
 
-    sourceSets {
-        getByName("commonMain") {
-            dependencies {
-                api(project(":libraries:model"))
-                api(kotlin("stdlib"))
-                api(kotlin("stdlib-common"))
-                api("com.benasher44:uuid")
-                api("io.github.oshai:kotlin-logging")
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json")
-            }
-        }
-        getByName("jsMain") {
-            dependencies {
-                api(project(":libraries:json"))
-                api(project(":libraries:repository:dynamo"))
-                api(kotlin("stdlib-js"))
-            }
-        }
-    }
+dependencies {
+    commonMainApi(project(":libraries:model"))
+    commonMainApi("com.benasher44:uuid")
+    commonMainApi("io.github.oshai:kotlin-logging")
+    commonMainApi("org.jetbrains.kotlinx:kotlinx-serialization-json")
+
+    "jsMainApi"(project(":libraries:json"))
+    "jsMainApi"(project(":libraries:repository:dynamo"))
 }
 
 val inputFile: String? by project
