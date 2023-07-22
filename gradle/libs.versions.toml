@@ -1,5 +1,5 @@
 [libraries]
-com-benasher44-uuid = "com.benasher44:uuid:0.7.1"
+com-benasher44-uuid = "com.benasher44:uuid:0.8.0"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.2"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:4.1.0"
 com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:4.3.25"
