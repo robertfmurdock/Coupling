@@ -11,10 +11,10 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import react.create
 import react.router.RouterProvider
@@ -72,17 +72,15 @@ class PinConfigEditorTest {
     }) {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, stubDispatcher.synchFunc()) }
+                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, stubDispatcher.func()) }
             },
         )
         actor.type(screen.getByLabelText("Name"), newName)
         actor.type(screen.getByLabelText("Icon"), newIcon)
     } exercise {
-        fireEvent.submit(screen.getByRole("form"))
+        act { fireEvent.submit(screen.getByRole("form")) }
     } verify {
-        waitFor {
-            stubDispatcher.receivedActions
-                .assertIsEqualTo(listOf(SavePinCommand(party.id, Pin(name = newName, icon = newIcon))))
-        }
+        stubDispatcher.receivedActions
+            .assertIsEqualTo(listOf(SavePinCommand(party.id, Pin(name = newName, icon = newIcon))))
     }
 }

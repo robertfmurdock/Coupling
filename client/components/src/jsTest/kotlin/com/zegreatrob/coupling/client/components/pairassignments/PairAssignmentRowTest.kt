@@ -75,7 +75,7 @@ class PairAssignmentRowTest {
             PairAssignmentRow.create(
                 party = party,
                 document = document,
-                controls = Controls(stubDispatcher.synchFunc(), reloadSpy::spyFunction),
+                controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
                 windowFunctions = this,
             ),
             jso { wrapper = MemoryRouter },

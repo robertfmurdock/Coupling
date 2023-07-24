@@ -20,7 +20,6 @@ import com.zegreatrob.testmints.async.asyncTestTemplate
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import kotlinx.datetime.Clock
@@ -67,14 +66,12 @@ class PrepareSpinTest {
                 ?.firstOrNull(),
         )
     } verify {
-        waitFor {
-            wrapper.container.querySelector(".$deselectedPinsClass")
-                ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
-                ?.asList()
-                ?.map { it as? HTMLElement }
-                ?.firstOrNull()
-                .assertIsNotEqualTo(null)
-        }
+        wrapper.container.querySelector(".$deselectedPinsClass")
+            ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+            ?.asList()
+            ?.map { it as? HTMLElement }
+            ?.firstOrNull()
+            .assertIsNotEqualTo(null)
     }
 
     @Test
@@ -104,14 +101,12 @@ class PrepareSpinTest {
                 ?.first(),
         )
     } verify {
-        waitFor {
-            render.container.querySelector(".$selectedPinsClass")
-                ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
-                ?.asList()
-                ?.map { it as? HTMLElement }
-                ?.firstOrNull()
-                .assertIsNotEqualTo(null)
-        }
+        render.container.querySelector(".$selectedPinsClass")
+            ?.querySelectorAll("[data-pin-button='${firstPin.id}']")
+            ?.asList()
+            ?.map { it as? HTMLElement }
+            ?.firstOrNull()
+            .assertIsNotEqualTo(null)
     }
 
     @Test
@@ -162,11 +157,9 @@ class PrepareSpinTest {
                 }
             }
     } verify {
-        waitFor {
-            screen.getByText("Spin!")
-                .attributes["disabled"]
-                .assertIsNotEqualTo(null)
-        }
+        screen.getByText("Spin!")
+            .attributes["disabled"]
+            .assertIsNotEqualTo(null)
     }
 
     @Test
@@ -181,13 +174,11 @@ class PrepareSpinTest {
     }) exercise {
         user.click(screen.getByText("All in!"))
     } verify {
-        waitFor {
-            context.baseElement.querySelectorAll("[data-player-id]")
-                .asList()
-                .mapNotNull { it as? HTMLElement }
-                .map { it.getAttribute("data-selected") }
-                .assertIsEqualTo(listOf("true", "true", "true"))
-        }
+        context.baseElement.querySelectorAll("[data-player-id]")
+            .asList()
+            .mapNotNull { it as? HTMLElement }
+            .map { it.getAttribute("data-selected") }
+            .assertIsEqualTo(listOf("true", "true", "true"))
     }
 
     @Test
@@ -207,12 +198,10 @@ class PrepareSpinTest {
     } exercise {
         user.click(screen.getByText("All out!"))
     } verify {
-        waitFor {
-            context.baseElement.querySelectorAll("[data-player-id]")
-                .asList()
-                .mapNotNull { it as? HTMLElement }
-                .map { it.getAttribute("data-selected") }
-                .assertIsEqualTo(listOf("false", "false", "false"))
-        }
+        context.baseElement.querySelectorAll("[data-player-id]")
+            .asList()
+            .mapNotNull { it as? HTMLElement }
+            .map { it.getAttribute("data-selected") }
+            .assertIsEqualTo(listOf("false", "false", "false"))
     }
 }

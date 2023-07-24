@@ -14,7 +14,6 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import react.ReactNode
@@ -61,7 +60,7 @@ class SlackConnectPageContentTest {
                 channel = slackChannel,
             ),
         )
-        waitFor { returnButton.assertIsNotEqualTo(null) }
+        returnButton.assertIsNotEqualTo(null)
     }
 
     @Test

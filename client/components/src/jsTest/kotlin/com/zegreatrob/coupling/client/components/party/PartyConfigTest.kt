@@ -12,10 +12,10 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import js.core.jso
 import org.w3c.dom.HTMLInputElement
@@ -81,14 +81,12 @@ class PartyConfigTest {
         )
     } exercise {
         fireEvent.submit(screen.getByRole("form"))
-        stubDispatcher.onActionReturn(VoidResult.Accepted)
+        act { stubDispatcher.onActionReturn(VoidResult.Accepted) }
     } verify { action ->
         action.assertIsEqualTo(SavePartyCommand(party))
 
-        waitFor {
-            screen.getByText("Parties!")
-                .assertNotNull()
-        }
+        screen.getByText("Parties!")
+            .assertNotNull()
     }
 
     @Test
@@ -97,21 +95,19 @@ class PartyConfigTest {
         val stubDispatcher = StubDispatcher()
     }) {
         render(jso { wrapper = MemoryRouter }) {
-            PartyConfig(party, stubDispatcher.synchFunc())
+            PartyConfig(party, stubDispatcher.func())
         }
     } exercise {
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value
-            .also { fireEvent.submit(screen.getByRole("form")) }
+            .also { act { fireEvent.submit(screen.getByRole("form")) } }
     } verify { automatedPartyId ->
-        waitFor {
-            stubDispatcher.receivedActions
-                .filterIsInstance<SavePartyCommand>()
-                .first()
-                .party.id.value.run {
-                    assertIsNotEqualTo("")
-                    assertIsEqualTo(automatedPartyId)
-                }
-        }
+        stubDispatcher.receivedActions
+            .filterIsInstance<SavePartyCommand>()
+            .first()
+            .party.id.value.run {
+                assertIsNotEqualTo("")
+                assertIsEqualTo(automatedPartyId)
+            }
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value
             .assertIsEqualTo(automatedPartyId)
     }

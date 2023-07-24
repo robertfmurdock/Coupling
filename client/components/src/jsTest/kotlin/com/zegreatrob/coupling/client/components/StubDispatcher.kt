@@ -7,9 +7,14 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 
-class StubDispatcher {
-    val receivedActions = mutableListOf<Any?>()
-    fun <T> synchFunc() = stubDispatchFunc<T>(StubCannon.Synchronous(receivedActions))
+object StubDispatcher {
+
+    operator fun invoke() = SynchronousStubDispatcher()
+
+    class SynchronousStubDispatcher {
+        val receivedActions = mutableListOf<Any?>()
+        fun <T> func() = stubDispatchFunc<T>(StubCannon.Synchronous(receivedActions))
+    }
 
     class Channel {
         val resultChannel = Channel<Any?>()

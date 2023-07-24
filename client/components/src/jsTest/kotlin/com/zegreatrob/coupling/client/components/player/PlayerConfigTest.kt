@@ -21,7 +21,6 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import kotlinx.browser.window
@@ -54,7 +53,7 @@ class PlayerConfigTest {
                         player = player,
                         players = emptyList(),
                         reload = {},
-                        dispatchFunc = stubDispatcher.synchFunc(),
+                        dispatchFunc = stubDispatcher.func(),
                     )
                 }
             },
@@ -87,7 +86,7 @@ class PlayerConfigTest {
                         player = player,
                         players = emptyList(),
                         reload = {},
-                        dispatchFunc = altStubDispatcher.synchFunc(),
+                        dispatchFunc = altStubDispatcher.func(),
                     )
                 }
             },
@@ -163,10 +162,10 @@ class PlayerConfigTest {
         actor.type(screen.getByLabelText("Name"), "nonsense")
 
         fireEvent.submit(screen.getByRole("form"))
-        altStubDispatcher.onActionReturn(VoidResult.Accepted)
+        act { altStubDispatcher.onActionReturn(VoidResult.Accepted) }
     } verify { action ->
         action.assertIsEqualTo(SavePlayerCommand(party.id, player.copy(name = "nonsense")))
-        waitFor { reloaderSpy.callCount.assertIsEqualTo(1) }
+        reloaderSpy.callCount.assertIsEqualTo(1)
     }
 
     @Test
@@ -209,12 +208,10 @@ class PlayerConfigTest {
         actor.click(screen.getByText("Retire"))
         act { altStubDispatcher.onActionReturn(VoidResult.Accepted) }
     } verify { action ->
-        waitFor {
-            action.assertIsEqualTo(DeletePlayerCommand(party.id, player.id))
-            pathSetterSpy.spyReceivedValues.contains(
-                "/${party.id.value}/pairAssignments/current/",
-            )
-        }
+        action.assertIsEqualTo(DeletePlayerCommand(party.id, player.id))
+        pathSetterSpy.spyReceivedValues.contains(
+            "/${party.id.value}/pairAssignments/current/",
+        )
     }
 
     @Test
@@ -235,7 +232,7 @@ class PlayerConfigTest {
                         player = player,
                         players = emptyList(),
                         reload = { },
-                        dispatchFunc = stubDispatcher.synchFunc(),
+                        dispatchFunc = stubDispatcher.func(),
                         windowFuncs = windowFunctions,
                     )
                 }

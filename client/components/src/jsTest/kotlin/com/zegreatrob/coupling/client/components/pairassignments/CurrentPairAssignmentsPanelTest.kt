@@ -15,7 +15,6 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
-import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.waitFor
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import kotlinx.datetime.Clock
@@ -54,7 +53,7 @@ class CurrentPairAssignmentsPanelTest {
                                 pairAssignments,
                                 setPairAssignments = { },
                                 allowSave = true,
-                                dispatchFunc = stubDispatcher.synchFunc(),
+                                dispatchFunc = stubDispatcher.func(),
                             )
                         },
                     ),
@@ -64,11 +63,9 @@ class CurrentPairAssignmentsPanelTest {
     } exercise {
         actor.click(screen.getByText("Save!"))
     } verify {
-        waitFor {
-            stubDispatcher.receivedActions.size
-                .assertIsEqualTo(0)
-            screen.getByText("current pairs")
-        }
+        stubDispatcher.receivedActions.size
+            .assertIsEqualTo(0)
+        screen.getByText("current pairs")
     }
 
     @Test
@@ -108,9 +105,7 @@ class CurrentPairAssignmentsPanelTest {
     } verify { receivedAction ->
         receivedAction
             .assertIsEqualTo(DeletePairAssignmentsCommand(party.id, pairAssignments.id))
-        waitFor {
-            screen.getByText("current pairs")
-        }
+        screen.getByText("current pairs")
     }
 }
 
