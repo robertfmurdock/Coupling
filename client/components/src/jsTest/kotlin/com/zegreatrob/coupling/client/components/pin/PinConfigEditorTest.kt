@@ -72,7 +72,7 @@ class PinConfigEditorTest {
     }) {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, stubDispatcher.func()) }
+                router = singleRouteRouter { PinConfig(party, pin, emptyList(), {}, stubDispatcher.synchFunc()) }
             },
         )
         actor.type(screen.getByLabelText("Name"), newName)

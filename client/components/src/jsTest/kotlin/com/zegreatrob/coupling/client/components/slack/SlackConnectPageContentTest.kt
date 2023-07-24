@@ -32,7 +32,7 @@ class SlackConnectPageContentTest {
 
     @Test
     fun willSendSaveCommandOnSave() = asyncSetup(object {
-        val stubber = StubDispatcher()
+        val stubber = StubDispatcher.Channel()
         val actor = UserEvent.setup()
         val parties = stubParties(6)
         val targetParty = parties.random()
@@ -52,18 +52,15 @@ class SlackConnectPageContentTest {
             .assertIsEqualTo(null, "Return button showed up unexpectedly early")
     } exercise {
         actor.click(saveButton)
-        act { stubber.resultChannel.send(VoidResult.Accepted) }
-    } verify {
-        stubber.receivedActions
-            .assertIsEqualTo(
-                listOf(
-                    SaveSlackIntegrationCommand(
-                        partyId = targetParty.id,
-                        team = slackTeam,
-                        channel = slackChannel,
-                    ),
-                ),
-            )
+        act { stubber.onActionReturn(VoidResult.Accepted) }
+    } verify { action ->
+        action.assertIsEqualTo(
+            SaveSlackIntegrationCommand(
+                partyId = targetParty.id,
+                team = slackTeam,
+                channel = slackChannel,
+            ),
+        )
         waitFor { returnButton.assertIsNotEqualTo(null) }
     }
 
@@ -87,7 +84,7 @@ class SlackConnectPageContentTest {
     fun afterSaveReturnButtonTakesYouToParty() = asyncSetup(object : ScopeMint() {
         val actor = UserEvent.setup()
         val party = stubPartyDetails()
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = StubDispatcher.Channel()
     }) {
         render(
             RouterProvider.create {
@@ -111,7 +108,7 @@ class SlackConnectPageContentTest {
             },
         )
         actor.click(saveButton)
-        act { stubDispatcher.resultChannel.send(VoidResult.Accepted) }
+        act { stubDispatcher.onActionReturn(VoidResult.Accepted) }
     } exercise {
         actor.click(returnButton)
     } verify {

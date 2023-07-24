@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.forEach
-import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
@@ -11,7 +10,6 @@ import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.coroutines.channels.produce
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
@@ -43,19 +41,21 @@ class CreatePairCandidateReportsActionTest {
 
             val history = emptyList<PairAssignmentDocument>()
             val gameSpin = GameSpin(players, history, PairingRule.PreferDifferentBadge)
-            val receivedActions = mutableListOf<Any?>()
-            override val cannon = StubCannon<CreatePairCandidateReportsActionTestDispatcher>(
-                receivedActions,
-                exerciseScope.produce { expectedReports.forEach { report -> send(report) } },
-            )
+            override val cannon = StubCannon.Synchronous<CreatePairCandidateReportsActionTestDispatcher>().apply {
+                expectedReports.forEach { report ->
+                    CreatePairCandidateReportAction(report.player, history, players.without(report.player))
+                        .let(this::given)
+                        .thenReturn(report)
+                }
+            }
+
+//            val actionChannel = Channel<SuspendAction<CreatePairCandidateReportsActionTestDispatcher, *>>()
+//                actionChannel,
+//                exerciseScope.produce { expectedReports.forEach { report -> actionChannel.receive(); send(report) } },
         }) exercise {
             perform(CreatePairCandidateReportListAction(gameSpin))
         } verify { result ->
             result.assertIsEqualTo(expectedReports)
-            receivedActions.assertIsEqualTo(
-                expectedReports.map { CreatePairCandidateReportAction(it.player, history, players.without(it.player)) }
-                    .toList(),
-            )
         }
 
         @Test
@@ -76,25 +76,20 @@ class CreatePairCandidateReportsActionTest {
             val expectedReports = notEmptyListOf(billReport, tedReport, amadeusReport, shortyReport)
 
             val gameSpin = GameSpin(players, history, PairingRule.PreferDifferentBadge)
-            val receivedActions = mutableListOf<Any?>()
-            override val cannon = StubCannon<CreatePairCandidateReportsActionTestDispatcher>(
-                receivedActions,
-                exerciseScope.produce {
-                    expectedReports.forEach { report -> send(report) }
-                },
-            )
+            override val cannon = StubCannon.Synchronous<CreatePairCandidateReportsActionTestDispatcher>().apply {
+                CreatePairCandidateReportAction(bill, history, listOf(altAmadeus, altShorty))
+                    .let(::given).thenReturn(billReport)
+                CreatePairCandidateReportAction(ted, history, listOf(altAmadeus, altShorty))
+                    .let(::given).thenReturn(tedReport)
+                CreatePairCandidateReportAction(altAmadeus, history, listOf(bill, ted))
+                    .let(::given).thenReturn(amadeusReport)
+                CreatePairCandidateReportAction(altShorty, history, listOf(bill, ted))
+                    .let(::given).thenReturn(shortyReport)
+            }
         }) exercise {
             perform(CreatePairCandidateReportListAction(gameSpin))
         } verify { result ->
             result.assertIsEqualTo(expectedReports)
-            receivedActions.assertIsEqualTo(
-                listOf(
-                    CreatePairCandidateReportAction(bill, history, listOf(altAmadeus, altShorty)),
-                    CreatePairCandidateReportAction(ted, history, listOf(altAmadeus, altShorty)),
-                    CreatePairCandidateReportAction(altAmadeus, history, listOf(bill, ted)),
-                    CreatePairCandidateReportAction(altShorty, history, listOf(bill, ted)),
-                ),
-            )
         }
 
         @Test
@@ -106,16 +101,14 @@ class CreatePairCandidateReportsActionTest {
             val players = notEmptyListOf(bill)
             val billReport = PairCandidateReport(bill, emptyList(), TimeResultValue(1))
             val gameSpin = GameSpin(players, history, PairingRule.PreferDifferentBadge)
-            val receivedActions = mutableListOf<Any?>()
-            override val cannon = StubCannon<CreatePairCandidateReportsActionTestDispatcher>(
-                receivedActions,
-                exerciseScope.produce { send(billReport) },
-            )
+            override val cannon = StubCannon.Synchronous<CreatePairCandidateReportsActionTestDispatcher>().apply {
+                CreatePairCandidateReportAction(bill, history, emptyList())
+                    .let(::given).thenReturn(billReport)
+            }
         }) exercise {
             perform(CreatePairCandidateReportListAction(gameSpin))
         } verify {
             it.assertIsEqualTo(notEmptyListOf(billReport))
-            receivedActions.assertIsEqualTo(listOf(CreatePairCandidateReportAction(bill, history, emptyList())))
         }
     }
 
@@ -135,23 +128,20 @@ class CreatePairCandidateReportsActionTest {
         val amadeusReport = PairCandidateReport(altAmadeus, emptyList(), NeverPaired)
         val shortyReport = PairCandidateReport(altShorty, emptyList(), NeverPaired)
         val expectedReports = notEmptyListOf(billReport, tedReport, amadeusReport, shortyReport)
-        val receivedActions = mutableListOf<Any?>()
-        override val cannon = StubCannon<CreatePairCandidateReportsActionTestDispatcher>(
-            receivedActions,
-            exerciseScope.produce { expectedReports.forEach { report -> send(report) } },
-        )
+        override val cannon = StubCannon.Synchronous<CreatePairCandidateReportsActionTestDispatcher>().apply {
+            CreatePairCandidateReportAction(bill, history, players.without(bill))
+                .let(::given).thenReturn(billReport)
+            CreatePairCandidateReportAction(ted, history, players.without(ted))
+                .let(::given).thenReturn(tedReport)
+            CreatePairCandidateReportAction(altAmadeus, history, players.without(altAmadeus))
+                .let(::given).thenReturn(amadeusReport)
+            CreatePairCandidateReportAction(altShorty, history, players.without(altShorty))
+                .let(::given).thenReturn(shortyReport)
+        }
     }) exercise {
         perform(CreatePairCandidateReportListAction(GameSpin(players, history, PairingRule.LongestTime)))
     } verify {
         it.assertIsEqualTo(expectedReports)
-        receivedActions.assertIsEqualTo(
-            listOf(
-                CreatePairCandidateReportAction(bill, history, players.without(bill)),
-                CreatePairCandidateReportAction(ted, history, players.without(ted)),
-                CreatePairCandidateReportAction(altAmadeus, history, players.without(altAmadeus)),
-                CreatePairCandidateReportAction(altShorty, history, players.without(altShorty)),
-            ),
-        )
     }
 
     companion object {

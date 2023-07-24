@@ -17,6 +17,7 @@ import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
@@ -53,7 +54,7 @@ class PlayerConfigTest {
                         player = player,
                         players = emptyList(),
                         reload = {},
-                        dispatchFunc = stubDispatcher.func(),
+                        dispatchFunc = stubDispatcher.synchFunc(),
                     )
                 }
             },
@@ -86,7 +87,7 @@ class PlayerConfigTest {
                         player = player,
                         players = emptyList(),
                         reload = {},
-                        dispatchFunc = altStubDispatcher.func(),
+                        dispatchFunc = altStubDispatcher.synchFunc(),
                     )
                 }
             },
@@ -142,7 +143,7 @@ class PlayerConfigTest {
         val party = PartyDetails(PartyId("party"))
         val player = Player(id = "blarg", badge = Badge.Default.value, avatarType = null)
         val reloaderSpy = SpyData<Unit, Unit>()
-        val altStubDispatcher = StubDispatcher()
+        val altStubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -162,15 +163,10 @@ class PlayerConfigTest {
         actor.type(screen.getByLabelText("Name"), "nonsense")
 
         fireEvent.submit(screen.getByRole("form"))
-        altStubDispatcher.resultChannel.send(VoidResult.Accepted)
-    } verify {
-        waitFor {
-            altStubDispatcher.receivedActions
-                .assertIsEqualTo(
-                    listOf(SavePlayerCommand(party.id, player.copy(name = "nonsense"))),
-                )
-            reloaderSpy.callCount.assertIsEqualTo(1)
-        }
+        altStubDispatcher.onActionReturn(VoidResult.Accepted)
+    } verify { action ->
+        action.assertIsEqualTo(SavePlayerCommand(party.id, player.copy(name = "nonsense")))
+        waitFor { reloaderSpy.callCount.assertIsEqualTo(1) }
     }
 
     @Test
@@ -181,7 +177,7 @@ class PlayerConfigTest {
         val pathSetterSpy = SpyData<String, Unit>()
         val party = PartyDetails(PartyId("party"))
         val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
-        val altStubDispatcher = StubDispatcher()
+        val altStubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -211,13 +207,10 @@ class PlayerConfigTest {
         )
     } exercise {
         actor.click(screen.getByText("Retire"))
-        altStubDispatcher.resultChannel.send(VoidResult.Accepted)
-    } verify {
+        act { altStubDispatcher.onActionReturn(VoidResult.Accepted) }
+    } verify { action ->
         waitFor {
-            altStubDispatcher.receivedActions
-                .assertIsEqualTo(
-                    listOf(DeletePlayerCommand(party.id, player.id)),
-                )
+            action.assertIsEqualTo(DeletePlayerCommand(party.id, player.id))
             pathSetterSpy.spyReceivedValues.contains(
                 "/${party.id.value}/pairAssignments/current/",
             )
@@ -242,7 +235,7 @@ class PlayerConfigTest {
                         player = player,
                         players = emptyList(),
                         reload = { },
-                        dispatchFunc = stubDispatcher.func(),
+                        dispatchFunc = stubDispatcher.synchFunc(),
                         windowFuncs = windowFunctions,
                     )
                 }

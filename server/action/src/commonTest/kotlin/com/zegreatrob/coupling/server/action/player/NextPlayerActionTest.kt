@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListAction
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListActionWrapper
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.GameSpin
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairCandidateReport
@@ -13,7 +14,6 @@ import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.coroutines.channels.produce
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
@@ -39,19 +39,17 @@ class NextPlayerActionTest {
         val tedsPairCandidates = PairCandidateReport(ted, emptyList(), TimeResultValue(7))
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(5))
-        override val cannon = StubCannon<NextPlayerActionTestDispatcher>(
-            receivedActions = mutableListOf(),
-            resultChannel = exerciseScope.produce<Any> {
-                send(
-                    notEmptyListOf(
-                        billsPairCandidates,
-                        tedsPairCandidates,
-                        amadeusPairCandidates,
-                        shortyPairCandidates,
-                    ),
-                )
-            },
-        )
+        override val cannon = StubCannon.Synchronous<NextPlayerActionTestDispatcher>().apply {
+            givenAny(
+                CreatePairCandidateReportListActionWrapper::class,
+                notEmptyListOf(
+                    billsPairCandidates,
+                    tedsPairCandidates,
+                    amadeusPairCandidates,
+                    shortyPairCandidates,
+                ),
+            )
+        }
     }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { result ->
@@ -64,12 +62,12 @@ class NextPlayerActionTest {
         val players = notEmptyListOf(bill, ted, amadeus, shorty)
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(5))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(0))
-        override val cannon = StubCannon<NextPlayerActionTestDispatcher>(
-            receivedActions = mutableListOf(),
-            resultChannel = exerciseScope.produce<Any> {
-                send(notEmptyListOf(amadeusPairCandidates, shortyPairCandidates))
-            },
-        )
+        override val cannon = StubCannon.Synchronous<NextPlayerActionTestDispatcher>().apply {
+            givenAny(
+                CreatePairCandidateReportListActionWrapper::class,
+                notEmptyListOf(amadeusPairCandidates, shortyPairCandidates),
+            )
+        }
     }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }
@@ -83,11 +81,12 @@ class NextPlayerActionTest {
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), TimeResultValue(5))
 
-        val pairCandidates = notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates)
-        override val cannon = StubCannon<NextPlayerActionTestDispatcher>(
-            receivedActions = mutableListOf(),
-            resultChannel = exerciseScope.produce<Any> { send(pairCandidates) },
-        )
+        override val cannon = StubCannon.Synchronous<NextPlayerActionTestDispatcher>().apply {
+            givenAny(
+                CreatePairCandidateReportListActionWrapper::class,
+                notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates),
+            )
+        }
     }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
@@ -100,12 +99,12 @@ class NextPlayerActionTest {
         val billsPairCandidates = PairCandidateReport(bill, emptyList(), TimeResultValue(3))
         val amadeusPairCandidates = PairCandidateReport(amadeus, emptyList(), TimeResultValue(4))
         val shortyPairCandidates = PairCandidateReport(shorty, emptyList(), NeverPaired)
-        override val cannon = StubCannon<NextPlayerActionTestDispatcher>(
-            receivedActions = mutableListOf(),
-            resultChannel = exerciseScope.produce<Any> {
-                send(notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates))
-            },
-        )
+        override val cannon = StubCannon.Synchronous<NextPlayerActionTestDispatcher>().apply {
+            givenAny(
+                CreatePairCandidateReportListActionWrapper::class,
+                notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates),
+            )
+        }
     }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(shortyPairCandidates) }
@@ -130,12 +129,12 @@ class NextPlayerActionTest {
             listOf(Player(avatarType = null), Player(avatarType = null)),
             NeverPaired,
         )
-        override val cannon = StubCannon<NextPlayerActionTestDispatcher>(
-            receivedActions = mutableListOf(),
-            resultChannel = exerciseScope.produce<Any> {
-                send(notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates))
-            },
-        )
+        override val cannon = StubCannon.Synchronous<NextPlayerActionTestDispatcher>().apply {
+            givenAny(
+                CreatePairCandidateReportListActionWrapper::class,
+                notEmptyListOf(billsPairCandidates, amadeusPairCandidates, shortyPairCandidates),
+            )
+        }
     }) exercise {
         perform(NextPlayerAction(longestTimeSpin(players)))
     } verify { it.assertIsEqualTo(amadeusPairCandidates) }

@@ -38,7 +38,7 @@ class PairAssignmentRowTest {
             date = Clock.System.now(),
             pairs = notEmptyListOf(stubPinnedCouplingPair()),
         )
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -52,10 +52,9 @@ class PairAssignmentRowTest {
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
-        act { stubDispatcher.resultChannel.send(VoidResult.Accepted) }
-    } verify {
-        stubDispatcher.receivedActions
-            .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, document.id)))
+        act { stubDispatcher.onActionReturn(VoidResult.Accepted) }
+    } verify { action ->
+        action.assertIsEqualTo(DeletePairAssignmentsCommand(party.id, document.id))
         reloadSpy.callCount.assertIsEqualTo(1)
     }
 
@@ -76,7 +75,7 @@ class PairAssignmentRowTest {
             PairAssignmentRow.create(
                 party = party,
                 document = document,
-                controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
+                controls = Controls(stubDispatcher.synchFunc(), reloadSpy::spyFunction),
                 windowFunctions = this,
             ),
             jso { wrapper = MemoryRouter },

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.call
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -16,7 +17,6 @@ import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.coroutines.channels.Channel
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
@@ -34,9 +34,8 @@ class ShufflePairsActionTest {
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = asyncSetup(object :
         ScopeMint(),
         ShufflePairsAction.Dispatcher<ShufflePairsActionInner> {
-        val resultChannel = Channel<Any>()
         val receivedActions = mutableListOf<Any?>()
-        override val cannon = StubCannon<ShufflePairsActionInner>(receivedActions, resultChannel)
+        override val cannon = StubCannon<ShufflePairsActionInner>(receivedActions)
 
         val expectedDate = Clock.System.now()
         override fun currentDate() = expectedDate
@@ -52,9 +51,10 @@ class ShufflePairsActionTest {
             PinnedCouplingPair(it.toNotEmptyList().map { player -> player.withPins() })
         }
     }) {
-        cannon.immediateReturn[FindNewPairsAction(Game(players, history, party.pairingRule))] =
-            expectedPairingAssignments
-        cannon.immediateReturn[AssignPinsAction(expectedPairingAssignments, pins, history)] = expectedPinnedPairs
+        call(cannon::given, FindNewPairsAction(Game(players, history, party.pairingRule)))
+            .thenReturn(expectedPairingAssignments)
+        call(cannon::given, AssignPinsAction(expectedPairingAssignments, pins, history))
+            .thenReturn(expectedPinnedPairs)
     } exercise {
         perform(ShufflePairsAction(party, players, pins, history))
     } verify { result ->

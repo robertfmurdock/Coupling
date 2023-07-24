@@ -63,7 +63,7 @@ class PartyConfigTest {
             email = "email-y",
             name = "1",
         )
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = StubDispatcher.Channel()
     }) {
         render(
             MemoryRouter.create {
@@ -81,11 +81,11 @@ class PartyConfigTest {
         )
     } exercise {
         fireEvent.submit(screen.getByRole("form"))
-        stubDispatcher.resultChannel.send(VoidResult.Accepted)
-    } verify {
+        stubDispatcher.onActionReturn(VoidResult.Accepted)
+    } verify { action ->
+        action.assertIsEqualTo(SavePartyCommand(party))
+
         waitFor {
-            stubDispatcher.receivedActions
-                .assertIsEqualTo(listOf(SavePartyCommand(party)))
             screen.getByText("Parties!")
                 .assertNotNull()
         }
@@ -97,7 +97,7 @@ class PartyConfigTest {
         val stubDispatcher = StubDispatcher()
     }) {
         render(jso { wrapper = MemoryRouter }) {
-            PartyConfig(party, stubDispatcher.func())
+            PartyConfig(party, stubDispatcher.synchFunc())
         }
     } exercise {
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value

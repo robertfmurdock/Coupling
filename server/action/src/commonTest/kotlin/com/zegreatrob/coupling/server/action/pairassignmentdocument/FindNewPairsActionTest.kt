@@ -12,7 +12,6 @@ import com.zegreatrob.minspy.Spy
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
-import kotlinx.coroutines.channels.Channel
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 
@@ -27,14 +26,16 @@ class FindNewPairsActionTest {
     fun withTwoPlayersEachShouldBeRemovedFromWheelBeforeEachPlay() = asyncSetup(object :
         FindNewPairsAction.Dispatcher<FindNewPairsActionTestDispatcher> {
         override val wheel = StubWheel()
-        override val cannon = StubCannon<FindNewPairsActionTestDispatcher>(mutableListOf(), Channel<Any>())
+        override val cannon = StubCannon<FindNewPairsActionTestDispatcher>(mutableListOf())
         val bill: Player = Player(id = "Bill", avatarType = null)
         val ted: Player = Player(id = "Ted", avatarType = null)
         val players = notEmptyListOf(bill, ted)
     }) {
         wheel.spyReturnValues.add(bill)
-        cannon.immediateReturn[NextPlayerAction(GameSpin(players, listOf(), PairingRule.LongestTime))] =
-            PairCandidateReport(ted, listOf(bill), TimeResultValue(0))
+        cannon.given(
+            action = NextPlayerAction(GameSpin(players, listOf(), PairingRule.LongestTime)).wrap(),
+            returnValue = PairCandidateReport(ted, listOf(bill), TimeResultValue(0)),
+        )
     } exercise {
         perform(FindNewPairsAction(Game(players, listOf(), PairingRule.LongestTime)))
     } verify { result ->
@@ -45,7 +46,7 @@ class FindNewPairsActionTest {
     @Test
     fun shouldRemoveAPlayerFromTheWheelBeforeEachPlay() = asyncSetup(object :
         FindNewPairsAction.Dispatcher<FindNewPairsActionTestDispatcher> {
-        override val cannon = StubCannon<FindNewPairsActionTestDispatcher>(mutableListOf(), Channel<Any>())
+        override val cannon = StubCannon<FindNewPairsActionTestDispatcher>(mutableListOf())
         override val wheel = StubWheel()
         val bill: Player = Player(id = "Bill", avatarType = null)
         val ted: Player = Player(id = "Ted", avatarType = null)
@@ -57,10 +58,14 @@ class FindNewPairsActionTest {
         )
         val history: List<PairAssignmentDocument> = emptyList()
     }) {
-        cannon.immediateReturn[NextPlayerAction(GameSpin(players, history, PairingRule.LongestTime))] =
-            pairCandidateReports[0]
-        cannon.immediateReturn[NextPlayerAction(GameSpin(notEmptyListOf(ted), history, PairingRule.LongestTime))] =
-            pairCandidateReports[1]
+        NextPlayerAction(GameSpin(players, history, PairingRule.LongestTime))
+            .let(cannon::given)
+            .thenReturn(pairCandidateReports[0])
+        call(
+            function = cannon::given,
+            action = NextPlayerAction(GameSpin(notEmptyListOf(ted), history, PairingRule.LongestTime)),
+        ).thenReturn(pairCandidateReports[1])
+
         wheel.spyWillReturn(bill)
     } exercise {
         perform(FindNewPairsAction(Game(players, history, PairingRule.LongestTime)))

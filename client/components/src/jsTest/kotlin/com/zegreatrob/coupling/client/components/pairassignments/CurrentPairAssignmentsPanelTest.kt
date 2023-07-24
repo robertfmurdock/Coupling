@@ -54,7 +54,7 @@ class CurrentPairAssignmentsPanelTest {
                                 pairAssignments,
                                 setPairAssignments = { },
                                 allowSave = true,
-                                dispatchFunc = stubDispatcher.func(),
+                                dispatchFunc = stubDispatcher.synchFunc(),
                             )
                         },
                     ),
@@ -75,7 +75,7 @@ class CurrentPairAssignmentsPanelTest {
     fun clickingDeleteButtonWillPerformDeleteCommandAndReload() = asyncSetup(object {
         val party = stubPartyDetails()
         val pairAssignments = stubPairAssignmentDoc()
-        val stubDispatcher = StubDispatcher()
+        val stubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -104,11 +104,11 @@ class CurrentPairAssignmentsPanelTest {
         )
     } exercise {
         actor.click(screen.findByText("Cancel"))
-        act { stubDispatcher.resultChannel.send(VoidResult.Accepted) }
-    } verify {
+        act { stubDispatcher.onActionReturn(VoidResult.Accepted) }
+    } verify { receivedAction ->
+        receivedAction
+            .assertIsEqualTo(DeletePairAssignmentsCommand(party.id, pairAssignments.id))
         waitFor {
-            stubDispatcher.receivedActions
-                .assertIsEqualTo(listOf(DeletePairAssignmentsCommand(party.id, pairAssignments.id)))
             screen.getByText("current pairs")
         }
     }
