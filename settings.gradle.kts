@@ -44,6 +44,7 @@ include("server")
 include("server:action")
 include("server:secret")
 include("server:slack")
+include("server:discord")
 include("server:base")
 
 gradleEnterprise {

@@ -55,6 +55,7 @@
             <option value="$PROJECT_DIR$/server" />
             <option value="$PROJECT_DIR$/server/action" />
             <option value="$PROJECT_DIR$/server/base" />
+            <option value="$PROJECT_DIR$/server/discord" />
             <option value="$PROJECT_DIR$/server/secret" />
             <option value="$PROJECT_DIR$/server/slack" />
           </set>
