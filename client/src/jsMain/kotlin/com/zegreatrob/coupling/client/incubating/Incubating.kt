@@ -10,6 +10,9 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import io.ktor.http.Parameters
+import io.ktor.http.URLBuilder
+import io.ktor.http.formUrlEncode
 import react.Props
 import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
@@ -80,8 +83,13 @@ val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
                 }
             }
             a {
-                href =
-                    "https://discord.com/api/oauth2/authorize?client_id=1133538666661281862&redirect_uri=https%3A%2F%2Fsandbox.coupling.zegreatrob.com%2Fapi%2Fdiscord&response_type=code&scope=webhook.incoming&state=${selectedParty?.value}"
+                href = URLBuilder("https://discord.com/api/oauth2/authorize").apply {
+                    parameters.append("client_id", "1133538666661281862")
+                    parameters.append("redirect_uri", "https://sandbox.coupling.zegreatrob.com/api/discord")
+                    parameters.append("response_type", "code")
+                    parameters.append("scope", "webhook.incoming")
+                    parameters.append("state", Parameters.build { append("partyId", selectedParty?.value ?: "") }.formUrlEncode())
+                }.toString()
                 CouplingButton {
                     +"Onward to Discord!"
                 }
