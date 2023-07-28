@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.animationsDisabledContext
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.demo.DemoPage
 import com.zegreatrob.coupling.client.demo.LoadingPage
+import com.zegreatrob.coupling.client.discord.DiscordCallbackPage
 import com.zegreatrob.coupling.client.graphql.GraphIQLPage
 import com.zegreatrob.coupling.client.incubating.IncubatingPage
 import com.zegreatrob.coupling.client.integration.IntegrationPage
@@ -107,8 +108,9 @@ private fun authenticatedRoutes(config: ClientConfig): Array<RouteObject> = list
     couplingRoute("/:partyId/players/retired", "Retired Player List", RetiredPlayersPage),
     couplingRoute("/:partyId/statistics", "Statistics", StatisticsPage),
     couplingRoute("/incubating", "Incubating", IncubatingPage),
-    couplingRoute("/integration/slack/connect", "SlackCallback", SlackConnectPage),
-    couplingRoute("/integration/slack/callback", "SlackCallback", SlackCallbackPage),
+    couplingRoute("/integration/slack/connect", "Slack Connect", SlackConnectPage),
+    couplingRoute("/integration/slack/callback", "Slack Callback", SlackCallbackPage),
+    couplingRoute("/integration/discord/callback", "Discord Callback", DiscordCallbackPage),
 ).toTypedArray()
 
 private fun redirectToParties() = Navigate.create { to = "/parties/" }

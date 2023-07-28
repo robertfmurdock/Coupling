@@ -13,12 +13,14 @@ import com.zegreatrob.minreact.nfc
 import io.ktor.http.Parameters
 import io.ktor.http.URLBuilder
 import io.ktor.http.formUrlEncode
+import kotlinx.browser.window
 import react.Props
 import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
+import react.router.useHref
 import react.useState
 import web.cssom.Color
 
@@ -60,6 +62,7 @@ external interface AddToDiscordButtonProps : Props {
 val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
     var showTools by useState(false)
     var selectedParty by useState<PartyId?>(null)
+    val discordCallbackHref = useHref("/integration/discord/callback")
 
     if (!showTools) {
         CouplingButton(onClick = { showTools = true }) {
@@ -85,7 +88,7 @@ val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
             a {
                 href = URLBuilder("https://discord.com/api/oauth2/authorize").apply {
                     parameters.append("client_id", "1133538666661281862")
-                    parameters.append("redirect_uri", "https://sandbox.coupling.zegreatrob.com/api/discord")
+                    parameters.append("redirect_uri", "https://${window.location.host}$discordCallbackHref")
                     parameters.append("response_type", "code")
                     parameters.append("scope", "webhook.incoming")
                     parameters.append("state", Parameters.build { append("partyId", selectedParty?.value ?: "") }.formUrlEncode())

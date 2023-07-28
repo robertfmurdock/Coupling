@@ -11,16 +11,20 @@ import react.PropsWithChildren
 import react.create
 import web.cssom.Color
 
-val SlackInstallPageFrame by nfc<PropsWithChildren> {
+external interface InstallPageFrameProps : PropsWithChildren {
+    var title: String
+}
+
+val InstallPageFrame by nfc<InstallPageFrameProps> { props ->
     ConfigFrame {
         backgroundColor = Color("hsla(45, 80%, 96%, 1)")
         borderColor = Color("#ff8c00")
         GeneralControlBar {
-            title = "Slack Install"
+            title = props.title
             splashComponent = Fragment.create { CouplingLogo(width = 72.0, height = 48.0) }
             LogoutButton()
             GqlButton()
         }
-        +it.children
+        +props.children
     }
 }

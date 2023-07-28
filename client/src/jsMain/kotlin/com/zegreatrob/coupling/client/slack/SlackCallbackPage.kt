@@ -23,7 +23,8 @@ val SlackCallbackPage by nfc<PageProps> { props ->
     val (urlSearchParams) = useSearchParams()
     val code = urlSearchParams["code"]
     val state = urlSearchParams["state"]
-    SlackInstallPageFrame {
+    InstallPageFrame {
+        title = "Slack Install"
         if (code == null || state == null) {
             +"code and state missing"
         } else {
