@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.memory
 
+import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
 import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.VoidResult
@@ -112,6 +113,8 @@ class MemoryRepositoryCatalog private constructor(
             )
         },
     )
+
+    override suspend fun perform(command: GrantDiscordAccessCommand): VoidResult = VoidResult.Rejected
 
     override suspend fun perform(command: GrantSlackAccessCommand): VoidResult = VoidResult.Accepted
 
