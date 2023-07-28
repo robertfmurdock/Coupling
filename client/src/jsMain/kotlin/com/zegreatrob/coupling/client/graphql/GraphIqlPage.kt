@@ -30,7 +30,7 @@ val GraphIQLPage by nfc<PageProps> {
         DataLoader(
             getDataAsync = { auth0Data.getAccessTokenSilently() },
             errorData = { "" },
-            child = GraphIQLPageLoader::create,
+            child = { GraphIQLPageLoader.create { value = it } },
         )
     }
 }

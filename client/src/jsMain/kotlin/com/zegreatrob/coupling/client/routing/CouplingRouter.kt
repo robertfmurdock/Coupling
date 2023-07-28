@@ -57,7 +57,7 @@ val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, config) ->
             opts = jso { basename = config.basename },
         )
     }
-    animationsDisabledContext.Provider(animationsDisabled) {
+    animationsDisabledContext(animationsDisabled) {
         if (!isLoading) {
             RouterProvider {
                 router = browserRouter

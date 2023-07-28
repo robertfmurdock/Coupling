@@ -25,7 +25,7 @@ val StatisticsPage = partyPageFunction { props, partyId ->
             val players = queryResult.party?.playerList?.elements ?: return@CouplingQuery null
             val history = queryResult.party?.pairAssignmentDocumentList?.elements ?: return@CouplingQuery null
             val action = ClientStatisticsAction(party, players, history)
-            Fragment.create { CalculatingPartyStats(action to dispatchFunc) }
+            Fragment.create { CalculatingPartyStats { value = action to dispatchFunc } }
         },
         key = partyId.value,
     )

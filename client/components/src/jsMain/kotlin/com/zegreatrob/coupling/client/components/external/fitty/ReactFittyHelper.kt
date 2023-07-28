@@ -7,7 +7,7 @@ fun HTMLElement.fitty(maxFontHeight: Double, minFontHeight: Double, multiLine: B
     if (js("global.IS_JSDOM") == true) {
         return
     }
-    val fitty = kotlinext.js.require("fitty")
+    val fitty = kotlinext.js.require<dynamic>("fitty")
     fitty.default(
         this,
         json(
