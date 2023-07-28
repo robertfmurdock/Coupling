@@ -8,8 +8,8 @@ fun main() {
     if (isTestRun()) {
         return
     }
-    require("com/zegreatrob/coupling/client/animations.css")
-    require("com/zegreatrob/coupling/client/style.css")
+    require<Unit>("com/zegreatrob/coupling/client/animations.css")
+    require<Unit>("com/zegreatrob/coupling/client/style.css")
 
     configureDragDropWebkitMobile()
 
@@ -17,6 +17,6 @@ fun main() {
 }
 
 private fun configureDragDropWebkitMobile() {
-    val ddwm = require("drag-drop-webkit-mobile").unsafeCast<(Json) -> Unit>()
+    val ddwm = require<(Json) -> Unit>("drag-drop-webkit-mobile")
     ddwm(json("enableEnterLeave" to true))
 }

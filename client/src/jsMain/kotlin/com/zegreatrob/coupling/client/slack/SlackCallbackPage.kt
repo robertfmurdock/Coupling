@@ -33,7 +33,7 @@ val SlackCallbackPage by nfc<PageProps> { props ->
                         .fire(GrantSlackAccessCommand(code, state))
                 },
                 errorData = { VoidResult.Rejected },
-                child = SlackCallbackLoadContent::create,
+                child = { SlackCallbackLoadContent.create { value = it } },
             )
         }
     }

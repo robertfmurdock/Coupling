@@ -38,7 +38,7 @@ val CouplingQuery by nfc<CouplingQueryProps<Any>> { props ->
                 )
             }
     }
-    DataLoader(getDataAsync, { null }, child = CouplingQueryLoadState::create)
+    DataLoader(getDataAsync, { null }, child = { CouplingQueryLoadState.create { value = it } })
 }
 
 val CouplingQueryLoadState by nfc<PropsWithValue<DataLoadState<ReactNode?>>> { props ->
