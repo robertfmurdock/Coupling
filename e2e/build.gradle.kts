@@ -52,6 +52,7 @@ wdioTest {
     baseUrl.set("https://localhost/local/")
     htmlReporter.set(true)
     allureReporter.set(false)
+    chromeBinary.set(System.getenv("WDIO_CHROME_BINARY"))
 }
 
 tasks {
