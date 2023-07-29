@@ -4,6 +4,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.Parameters
@@ -22,6 +24,9 @@ class DiscordClient(
         install(ContentNegotiation) {
             json()
         }
+        install(Logging) {
+            level = LogLevel.ALL
+        }
         defaultRequest {
             url("https://discord.com/api/")
         }
@@ -33,7 +38,7 @@ class DiscordClient(
             Parameters.build {
                 append("grant_type", "authorization_code")
                 append("code", code)
-                append("redirect_uri", "https://$host/api/discord")
+                append("redirect_uri", "$host/api/discord")
             },
         ) {
             basicAuth(clientId, clientSecret)
@@ -66,7 +71,7 @@ data class SuccessfulAccessResponse(
 data class ErrorAccessResponse(
     val error: String,
     @SerialName("error_description")
-    val errorDescription: String,
+    val errorDescription: String? = null,
 ) : AccessResponse
 
 @Serializable

@@ -5,6 +5,8 @@ frameworkVersion: '3'
 package:
   patterns:
     - '!**'
+    - '!node_modules/**'
+    - 'node_modules/abort-controller/**'
     - 'build/executable/**'
 plugins:
   - serverless-offline

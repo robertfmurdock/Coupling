@@ -5,7 +5,7 @@ interface DiscordRepository {
 
     sealed interface ExchangeResult {
         data class Success(val webhook: DiscordWebhook) : ExchangeResult
-        data class Error(val error: String, val description: String) : ExchangeResult
+        data class Error(val error: String, val description: String?) : ExchangeResult
     }
 }
 

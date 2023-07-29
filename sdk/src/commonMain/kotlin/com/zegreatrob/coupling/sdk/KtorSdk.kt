@@ -1,7 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
-import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.sdk.gql.KtorQueryPerformer
 import com.zegreatrob.coupling.sdk.gql.QueryPerformer
 import com.zegreatrob.testmints.action.ActionCannon
@@ -30,6 +28,7 @@ class KtorCouplingSdkDispatcher(
     SdkDeletePlayerCommandDispatcher,
     SdkDeleteSecretCommandDispatcher,
     SdkGrantSlackAccess,
+    SdkGrantDiscordAccess,
     SdkGraphQueryDispatcher,
     SdkSavePairAssignmentsCommandDispatcher,
     SdkSavePartyCommandDispatcher,
@@ -38,7 +37,6 @@ class KtorCouplingSdkDispatcher(
     SdkSaveSlackIntegrationCommandDispatcher,
     SdkSpin {
     override val performer: QueryPerformer = StandardPartyGQLPerformer(getIdTokenFunc, httpClient)
-    override suspend fun perform(command: GrantDiscordAccessCommand): VoidResult = VoidResult.Rejected
 }
 
 class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String, httpClient: HttpClient) :

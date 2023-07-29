@@ -1,5 +1,6 @@
 FROM ghcr.io/robertfmurdock/coupling-serverless-base:latest
 
+RUN npm install abort-controller
 COPY executable /serverless/build/executable
 COPY serverless.yml /serverless/
 COPY deploy /serverless/deploy

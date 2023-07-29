@@ -16,4 +16,5 @@ object Mutation {
     val deletePairAssignments by GqlFileLoader
     val deletePlayer by GqlFileLoader
     val grantSlackAccess by GqlFileLoader
+    val grantDiscordAccess by GqlFileLoader
 }
