@@ -1,0 +1,26 @@
+{
+  "id": "1134929065095217202",
+  "type": 0,
+  "content": "5680ee98-4793-4f24-8d44-7326fc953bab",
+  "channel_id": "1133765536904392776",
+  "author": {
+    "bot": true,
+    "id": "1134900271768666125",
+    "username": "coupling-sandbox",
+    "avatar": null,
+    "discriminator": "0000"
+  },
+  "attachments": [],
+  "embeds": [],
+  "mentions": [],
+  "mention_roles": [],
+  "pinned": false,
+  "mention_everyone": false,
+  "tts": false,
+  "timestamp": "2023-07-29T19:22:55.081000+00:00",
+  "edited_timestamp": null,
+  "flags": 0,
+  "components": [],
+  "application_id": "1133538666661281862",
+  "webhook_id": "1134900271768666125"
+}

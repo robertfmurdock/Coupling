@@ -18,10 +18,3 @@ data class SuccessfulAccessResponse(
     val scope: String,
     val webhook: WebhookInformation,
 ) : AccessResponse
-
-@Serializable
-data class ErrorAccessResponse(
-    val error: String,
-    @SerialName("error_description")
-    val errorDescription: String? = null,
-) : AccessResponse

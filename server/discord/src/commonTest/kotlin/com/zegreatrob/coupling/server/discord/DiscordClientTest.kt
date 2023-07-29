@@ -19,6 +19,8 @@ import io.ktor.http.headersOf
 import io.ktor.http.parseUrlEncodedParameters
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import node.crypto.randomUUID
 import kotlin.test.Test
 
@@ -78,11 +80,12 @@ class DiscordClientTest {
     @Test
     fun canSendMessage() = asyncSetup(object : ScopeMint() {
         var lastRequestData: HttpRequestData? = null
+        val responseJson = JSON.stringify(kotlinext.js.require("./expected-message-response.json"))
         val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
             lastRequestData = request
             respond(
-                status = HttpStatusCode.NoContent,
-                content = "",
+                content = responseJson,
+                headers = headersOf("Content-Type", "application/json"),
             )
         }
         val httpClient = HttpClient(engine = MockEngine(handler = handle)) {
@@ -96,17 +99,57 @@ class DiscordClientTest {
             host = "sandbox.coupling.zegreatrob.com",
             httpClient = httpClient,
         )
-        val webhookId = "1234234234"
-        val webhookToken = "54656567567"
+        val webhookId = "1134900271768666125"
+        val webhookToken = "asdfsdgfdfgdfsdf"
         val message = randomUUID()
     }) exercise {
         client.sendWebhookMessage(message, webhookId, webhookToken)
     } verify { result ->
-        result.assertIsEqualTo(null)
+        result.assertIsEqualTo(Json.decodeFromString<MessageResponseData>(responseJson))
         lastRequestData?.body?.toByteArray()
             ?.decodeToString()
             ?.parseUrlEncodedParameters()
             ?.get("content")
+            .assertIsEqualTo(message)
+    }
+
+    @Test
+    fun canUpdateMessage() = asyncSetup(object : ScopeMint() {
+        var lastRequestData: HttpRequestData? = null
+        val responseJson = JSON.stringify(kotlinext.js.require("./expected-message-response.json"))
+        val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
+            lastRequestData = request
+            respond(
+                content = responseJson,
+                headers = headersOf("Content-Type", "application/json"),
+            )
+        }
+        val httpClient = HttpClient(engine = MockEngine(handler = handle)) {
+            install(Logging) {
+                level = LogLevel.ALL
+            }
+        }
+        val client = DiscordClient(
+            clientId = "1234567",
+            clientSecret = "7654321",
+            host = "sandbox.coupling.zegreatrob.com",
+            httpClient = httpClient,
+        )
+        val messageId = "1134900625847623740"
+        val webhookId = "1134900271768666125"
+        val webhookToken = "asdfsdfsdfsdf"
+        val message = "updated-" + randomUUID()
+    }) exercise {
+        client.updateWebhookMessage(messageId, message, webhookId, webhookToken)
+    } verify { result ->
+        result.assertIsEqualTo(Json.decodeFromString<MessageResponseData>(responseJson))
+        lastRequestData?.body?.toByteArray()
+            ?.decodeToString()
+            ?.let { Json.parseToJsonElement(it) }
+            ?.jsonObject
+            ?.get("content")
+            ?.jsonPrimitive
+            ?.content
             .assertIsEqualTo(message)
     }
 

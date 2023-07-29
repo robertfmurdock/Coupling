@@ -8,10 +8,15 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.patch
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
 import io.ktor.http.Parameters
+import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 class DiscordClient(
     private val clientId: String,
@@ -49,17 +54,40 @@ class DiscordClient(
         }
     }
 
-    suspend fun sendWebhookMessage(message: String, webhookId: String, webhookToken: String): JsonElement? {
+    suspend fun sendWebhookMessage(message: String, webhookId: String, webhookToken: String): MessageResponse {
         val response = httpClient.submitForm(
-            "webhooks/$webhookId/$webhookToken",
+            "webhooks/$webhookId/$webhookToken?wait=true",
             Parameters.build {
                 append("content", message)
             },
         )
         return if (response.status.isSuccess()) {
-            return null
+            response.body<MessageResponseData>()
         } else {
-            response.body<JsonElement>()
+            response.body<ErrorAccessResponse>()
+        }
+    }
+
+    suspend fun updateWebhookMessage(
+        messageId: String,
+        message: String,
+        webhookId: String,
+        webhookToken: String,
+    ): MessageResponse {
+        val response = httpClient.patch(
+            "webhooks/$webhookId/$webhookToken/messages/$messageId",
+        ) {
+            contentType(ContentType.Application.Json)
+            setBody(
+                buildJsonObject {
+                    put("content", message)
+                },
+            )
+        }
+        return if (response.status.isSuccess()) {
+            response.body<MessageResponseData>()
+        } else {
+            response.body<ErrorAccessResponse>()
         }
     }
 }
