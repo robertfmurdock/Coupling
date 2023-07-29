@@ -11,8 +11,7 @@ import io.ktor.client.request.forms.submitForm
 import io.ktor.http.Parameters
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 class DiscordClient(
     private val clientId: String,
@@ -49,43 +48,18 @@ class DiscordClient(
             response.body<ErrorAccessResponse>()
         }
     }
+
+    suspend fun sendWebhookMessage(message: String, webhookId: String, webhookToken: String): JsonElement? {
+        val response = httpClient.submitForm(
+            "webhooks/$webhookId/$webhookToken",
+            Parameters.build {
+                append("content", message)
+            },
+        )
+        return if (response.status.isSuccess()) {
+            return null
+        } else {
+            response.body<JsonElement>()
+        }
+    }
 }
-
-sealed interface AccessResponse
-
-@Serializable
-data class SuccessfulAccessResponse(
-    @SerialName("access_token")
-    val accessToken: String,
-    @SerialName("token_type")
-    val tokenType: String,
-    @SerialName("expires_in")
-    val expiresIn: Int,
-    @SerialName("refresh_token")
-    val refreshToken: String,
-    val scope: String,
-    val webhook: WebhookInformation,
-) : AccessResponse
-
-@Serializable
-data class ErrorAccessResponse(
-    val error: String,
-    @SerialName("error_description")
-    val errorDescription: String? = null,
-) : AccessResponse
-
-@Serializable
-data class WebhookInformation(
-    val token: String,
-    val id: String,
-    @SerialName("application_id")
-    val applicationId: String,
-    val name: String?,
-    val url: String,
-    @SerialName("channel_id")
-    val channelId: String,
-    val type: Int,
-    val avatar: String?,
-    @SerialName("guild_id")
-    val guildId: String?,
-)

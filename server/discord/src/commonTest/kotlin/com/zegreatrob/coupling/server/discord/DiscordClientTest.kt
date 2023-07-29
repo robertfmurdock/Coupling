@@ -7,6 +7,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.MockRequestHandleScope
 import io.ktor.client.engine.mock.respond
+import io.ktor.client.engine.mock.toByteArray
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -15,8 +16,10 @@ import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
+import io.ktor.http.parseUrlEncodedParameters
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import node.crypto.randomUUID
 import kotlin.test.Test
 
 class DiscordClientTest {
@@ -70,6 +73,41 @@ class DiscordClientTest {
                 ),
             ),
         )
+    }
+
+    @Test
+    fun canSendMessage() = asyncSetup(object : ScopeMint() {
+        var lastRequestData: HttpRequestData? = null
+        val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
+            lastRequestData = request
+            respond(
+                status = HttpStatusCode.NoContent,
+                content = "",
+            )
+        }
+        val httpClient = HttpClient(engine = MockEngine(handler = handle)) {
+            install(Logging) {
+                level = LogLevel.ALL
+            }
+        }
+        val client = DiscordClient(
+            clientId = "1234567",
+            clientSecret = "7654321",
+            host = "sandbox.coupling.zegreatrob.com",
+            httpClient = httpClient,
+        )
+        val webhookId = "1234234234"
+        val webhookToken = "54656567567"
+        val message = randomUUID()
+    }) exercise {
+        client.sendWebhookMessage(message, webhookId, webhookToken)
+    } verify { result ->
+        result.assertIsEqualTo(null)
+        lastRequestData?.body?.toByteArray()
+            ?.decodeToString()
+            ?.parseUrlEncodedParameters()
+            ?.get("content")
+            .assertIsEqualTo(message)
     }
 
     @Test
