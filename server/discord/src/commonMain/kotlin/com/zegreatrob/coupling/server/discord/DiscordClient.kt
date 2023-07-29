@@ -38,7 +38,7 @@ class DiscordClient(
             Parameters.build {
                 append("grant_type", "authorization_code")
                 append("code", code)
-                append("redirect_uri", "$host/api/discord")
+                append("redirect_uri", "$host/integration/discord/callback")
             },
         ) {
             basicAuth(clientId, clientSecret)

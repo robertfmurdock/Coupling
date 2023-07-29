@@ -40,6 +40,8 @@ provider:
     SLACK_CLIENT_ID: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_CLIENT_ID, env:SLACK_CLIENT_ID, ssm:/${opt:stage, 'local'}_slack_client_id}
     SLACK_CLIENT_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_CLIENT_SECRET, env:SLACK_CLIENT_SECRET, ssm:/${opt:stage, 'local'}_slack_client_secret}
     SLACK_SIGNING_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):SLACK_SIGNING_SECRET, env:SLACK_SIGNING_SECRET, ssm:/$${opt:stage, 'local'}_slack_signing_secret}
+    DISCORD_CLIENT_ID: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):DISCORD_CLIENT_ID, env:DISCORD_CLIENT_ID, ssm:/${opt:stage, 'local'}_discord_client_id}
+    DISCORD_CLIENT_SECRET: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):DISCORD_CLIENT_SECRET, env:DISCORD_CLIENT_SECRET, ssm:/${opt:stage, 'local'}_discord_client_secret}
     DYNAMO_PREFIX: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):DYNAMO_PREFIX}
     ENABLE_PRERELEASE_FEATURES: ${file(${env:SERVER_DIR, '.'}/deploy/config.${opt:stage, 'local'}.json):ENABLE_PRERELEASE_FEATURES, 'false'}
     CLIENT_URL: ${env:CLIENT_URL, "https://static.localhost"}
