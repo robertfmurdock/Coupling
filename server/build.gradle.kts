@@ -30,6 +30,7 @@ dependencies {
     jsMainImplementation(project("action"))
     jsMainImplementation(project("secret"))
     jsMainImplementation(project("slack"))
+    jsMainImplementation(project("discord"))
     jsMainImplementation(project(":libraries:json"))
     jsMainImplementation(project(":libraries:repository:dynamo"))
     jsMainImplementation(project(":libraries:repository:memory"))

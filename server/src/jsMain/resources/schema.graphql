@@ -269,11 +269,18 @@ type Mutation {
     createSecret(input: CreateSecretInput!) : SecretToken
     deleteSecret(input: DeleteSecretInput!) : Boolean
     grantSlackAccess(input: GrantSlackAccessInput!): Boolean
+    grantDiscordAccess(input: GrantDiscordAccessInput!): Boolean
 }
 
 input GrantSlackAccessInput {
     code: String!
     state: String!
+}
+
+input GrantDiscordAccessInput {
+    code: String!
+    partyId: String!
+    guildId: String!
 }
 
 input CreateSecretInput {

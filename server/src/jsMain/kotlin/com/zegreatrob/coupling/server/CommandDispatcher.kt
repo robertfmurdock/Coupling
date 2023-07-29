@@ -23,6 +23,8 @@ import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
+import com.zegreatrob.coupling.server.action.discord.DiscordRepository
+import com.zegreatrob.coupling.server.action.discord.ServerGrantDiscordAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
@@ -76,6 +78,7 @@ interface ICommandDispatcher :
     RetiredPlayersQuery.Dispatcher,
     ScopeSyntax,
     SecretListQuery.Dispatcher,
+    ServerGrantDiscordAccessCommandDispatcher,
     ServerGrantSlackAccessCommandDispatcher,
     TraceIdProvider,
     UserDispatcher,
@@ -96,6 +99,7 @@ class CommandDispatcher(
     override val cannon: ActionCannon<ICommandDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
 
     override val slackRepository: SlackRepository by lazy { FetchSlackRepository() }
+    override val discordRepository: DiscordRepository by lazy { discordRepositoryImpl() }
 
     private var authorizedPartyIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
 

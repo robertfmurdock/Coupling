@@ -13,10 +13,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 class DiscordClient(
-    httpClient: HttpClient,
     private val clientId: String,
     private val clientSecret: String,
     private val host: String,
+    httpClient: HttpClient = HttpClient(),
 ) {
     private val httpClient = httpClient.config {
         install(ContentNegotiation) {

@@ -109,6 +109,13 @@ data class GrantSlackAccessInput(
     val state: String,
 )
 
+@Serializable
+data class GrantDiscordAccessInput(
+    val code: String,
+    val partyId: String,
+    val guildId: String,
+)
+
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     id = id.value,
     date = date,

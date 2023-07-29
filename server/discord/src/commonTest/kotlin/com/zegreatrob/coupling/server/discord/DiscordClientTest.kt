@@ -40,10 +40,10 @@ class DiscordClientTest {
         val discordClientSecret = "7654321"
         val code = "INguEoKmDrGNcSLKOHQ0N1xFwgz9vt"
         val client = DiscordClient(
-            httpClient = httpClient,
             clientId = discordClientId,
             clientSecret = discordClientSecret,
             host = "sandbox.coupling.zegreatrob.com",
+            httpClient = httpClient,
         )
     }) exercise {
         client.getAccessToken(code)
@@ -97,10 +97,10 @@ class DiscordClientTest {
         val discordClientSecret = "7654321"
         val code = "8675309"
         val client = DiscordClient(
-            httpClient = httpClient,
             clientId = discordClientId,
             clientSecret = discordClientSecret,
             host = "sandbox.coupling.zegreatrob.com",
+            httpClient = httpClient,
         )
     }) exercise {
         client.getAccessToken(code)
