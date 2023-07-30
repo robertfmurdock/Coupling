@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
+import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
 import com.zegreatrob.coupling.repository.memory.MemoryLiveInfoRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
@@ -38,6 +39,7 @@ class MemoryRepositoryCatalog private constructor(
     override val liveInfoRepository: LiveInfoRepository,
     override val secretRepository: SecretRepository,
     override val slackAccessRepository: SlackAccessRepository,
+    override val discordAccessRepository: DiscordAccessRepository,
 ) :
     RepositoryCatalog,
     UserIdProvider,
@@ -56,6 +58,7 @@ class MemoryRepositoryCatalog private constructor(
                 MemoryLiveInfoRepository(),
                 MemorySecretRepository(),
                 MemorySlackRepository(),
+                MemoryDiscordRepository(),
             )
     }
 }

@@ -1,7 +1,8 @@
 package com.zegreatrob.coupling.server
 
+import com.zegreatrob.coupling.model.DiscordTeamAccess
+import com.zegreatrob.coupling.model.DiscordWebhook
 import com.zegreatrob.coupling.server.action.discord.DiscordRepository
-import com.zegreatrob.coupling.server.action.discord.DiscordWebhook
 import com.zegreatrob.coupling.server.discord.DiscordClient
 import com.zegreatrob.coupling.server.discord.ErrorAccessResponse
 import com.zegreatrob.coupling.server.discord.SuccessfulAccessResponse
@@ -19,7 +20,11 @@ class DiscordRepositoryImpl(private val discordClient: DiscordClient) : DiscordR
 
     override suspend fun exchangeForWebhook(code: String) = when (val result = discordClient.getAccessToken(code)) {
         is SuccessfulAccessResponse -> DiscordRepository.ExchangeResult.Success(
-            result.webhook.let { DiscordWebhook(it.id, it.token) },
+            DiscordTeamAccess(
+                webhook = result.webhook.let { DiscordWebhook(it.id, it.token) },
+                result.accessToken,
+                result.refreshToken,
+            ),
         )
 
         is ErrorAccessResponse -> DiscordRepository.ExchangeResult.Error(result.error, result.errorDescription)

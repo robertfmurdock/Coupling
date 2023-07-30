@@ -7,3 +7,11 @@ data class SlackTeamAccess(
     val slackUserId: String,
     val slackBotUserId: String,
 )
+
+data class DiscordTeamAccess(
+    val webhook: DiscordWebhook,
+    val accessToken: String,
+    val refreshToken: String,
+)
+
+data class DiscordWebhook(val id: String, val token: String)
