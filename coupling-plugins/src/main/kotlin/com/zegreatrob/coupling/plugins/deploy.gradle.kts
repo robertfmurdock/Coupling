@@ -29,8 +29,13 @@ tasks {
         into(deployDir.resolve("deploy"))
         from(serverProject.projectDir.resolve("deploy"))
     }
+    val copyNodeModules by registering(Copy::class) {
+        dependsOn(":kotlinNpmInstall")
+        into(deployDir.resolve("node_modules/abort-controller"))
+        from(rootProject.buildDir.resolve("js/node_modules/abort-controller"))
+    }
     val copyDeployResources by registering(Copy::class) {
-        dependsOn(copyServerYml, copyDeployConfigs, ":server:assemble")
+        dependsOn(copyServerYml, copyDeployConfigs, copyNodeModules, ":server:assemble")
         into(buildDir.resolve("deploy/build/executable"))
         from(serverProject.buildDir.resolve("executable"))
     }
