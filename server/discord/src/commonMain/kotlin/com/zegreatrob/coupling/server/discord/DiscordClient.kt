@@ -16,6 +16,7 @@ import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.addJsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -30,7 +31,7 @@ class DiscordClient(
 ) {
     private val httpClient = httpClient.config {
         install(ContentNegotiation) {
-            json()
+            json(json = Json { ignoreUnknownKeys = true })
         }
         install(Logging) {
             level = LogLevel.ALL
