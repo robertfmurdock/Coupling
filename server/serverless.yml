@@ -8,6 +8,7 @@ package:
     - '!node_modules/**'
     - 'node_modules/abort-controller/**'
     - 'node_modules/event-target-shim/**'
+    - 'node_modules/node-fetch/**'
     - 'build/executable/**'
 plugins:
   - serverless-offline
