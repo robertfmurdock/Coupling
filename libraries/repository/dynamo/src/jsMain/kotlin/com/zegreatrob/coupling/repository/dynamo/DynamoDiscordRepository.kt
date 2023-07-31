@@ -25,7 +25,7 @@ class DynamoDiscordRepository private constructor(override val userId: String, o
             .asDynamoJson(),
     )
 
-    suspend fun get(partyId: PartyId): PartyRecord<DiscordTeamAccess>? =
+    override suspend fun get(partyId: PartyId): PartyRecord<DiscordTeamAccess>? =
         performGetSingleItemQuery(partyId.value, partyId)
             ?.toRecord()
 

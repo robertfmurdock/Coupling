@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.DiscordTeamAccess
 import com.zegreatrob.coupling.model.DiscordWebhook
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.server.action.discord.DiscordRepository
 import com.zegreatrob.coupling.server.discord.DiscordClient
 import com.zegreatrob.coupling.server.discord.ErrorAccessResponse
@@ -28,5 +29,13 @@ class DiscordRepositoryImpl(private val discordClient: DiscordClient) : DiscordR
         )
 
         is ErrorAccessResponse -> DiscordRepository.ExchangeResult.Error(result.error, result.errorDescription)
+    }
+
+    override suspend fun sendSpinMessage(webhook: DiscordWebhook, newPairs: PairAssignmentDocument) {
+        discordClient.sendWebhookMessage(
+            message = "New Pairs! ${newPairs.date}",
+            webhookId = webhook.id,
+            webhookToken = webhook.token,
+        )
     }
 }

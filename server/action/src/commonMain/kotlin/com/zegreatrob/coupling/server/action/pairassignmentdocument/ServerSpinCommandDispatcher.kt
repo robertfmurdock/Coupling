@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.repository.discord.DiscordAccessGet
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistorySyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
@@ -19,9 +20,11 @@ import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.CannonProvider
+import com.zegreatrob.coupling.server.action.discord.DiscordRepository
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.toNotEmptyList
 
@@ -43,6 +46,8 @@ interface ServerSpinCommandDispatcher<out D> :
 
     val slackRepository: SlackRepository
     val slackAccessRepository: SlackAccessGet
+    val discordRepository: DiscordRepository
+    val discordAccessRepository: DiscordAccessGet
     override val partyRepository: PartyRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository
 
@@ -90,8 +95,13 @@ interface ServerSpinCommandDispatcher<out D> :
 
         partyId.with(newPairs)
             .save()
-
-        partyIntegration?.sendMessage(newPairs)
+        coroutineScope {
+            launch { partyIntegration?.sendMessage(newPairs) }
+            launch {
+                val discordAccess = discordAccessRepository.get(partyId)?.data?.element
+                discordAccess?.webhook?.let { discordRepository.sendSpinMessage(it, newPairs) }
+            }
+        }
         return SpinCommand.Result.Success
     }
 
