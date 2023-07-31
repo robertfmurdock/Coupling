@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
+import com.zegreatrob.coupling.repository.dynamo.DynamoDiscordRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoLiveInfoRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository

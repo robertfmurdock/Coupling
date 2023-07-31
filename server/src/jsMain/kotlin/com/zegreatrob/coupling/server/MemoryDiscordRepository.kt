@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
 
 class MemoryDiscordRepository : DiscordAccessRepository {
-    override suspend fun save(discordTeamAccess: PartyElement<DiscordTeamAccess>) {
+    override suspend fun save(partyDiscordAccess: PartyElement<DiscordTeamAccess>) {
         TODO("Not yet implemented")
     }
 }
