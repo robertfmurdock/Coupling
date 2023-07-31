@@ -99,7 +99,7 @@ class CommandDispatcher(
     override val cannon: ActionCannon<ICommandDispatcher> = ActionCannon(this, LoggingActionPipe(traceId))
 
     override val slackRepository: SlackRepository by lazy { FetchSlackRepository() }
-    override val discordRepository: DiscordRepository by lazy { discordRepositoryImpl() }
+    override val discordRepository: DiscordRepository by lazy { clientDiscordRepository() }
 
     private var authorizedPartyIdDispatcherJob: Deferred<CurrentPartyDispatcher>? = null
 

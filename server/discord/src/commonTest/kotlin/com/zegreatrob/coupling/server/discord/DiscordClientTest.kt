@@ -16,7 +16,6 @@ import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
-import io.ktor.http.parseUrlEncodedParameters
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -103,13 +102,16 @@ class DiscordClientTest {
         val webhookToken = "asdfsdgfdfgdfsdf"
         val message = randomUUID()
     }) exercise {
-        client.sendWebhookMessage(message, webhookId, webhookToken)
+        client.sendWebhookMessage(message, webhookId, webhookToken, emptyList())
     } verify { result ->
         result.assertIsEqualTo(Json.decodeFromString<MessageResponseData>(responseJson))
         lastRequestData?.body?.toByteArray()
             ?.decodeToString()
-            ?.parseUrlEncodedParameters()
+            ?.let { Json.parseToJsonElement(it) }
+            ?.jsonObject
             ?.get("content")
+            ?.jsonPrimitive
+            ?.content
             .assertIsEqualTo(message)
     }
 
