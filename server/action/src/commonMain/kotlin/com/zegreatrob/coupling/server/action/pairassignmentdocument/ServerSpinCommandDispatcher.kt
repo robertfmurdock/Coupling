@@ -20,8 +20,8 @@ import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.CannonProvider
-import com.zegreatrob.coupling.server.action.discord.DiscordRepository
-import com.zegreatrob.coupling.server.action.slack.SlackRepository
+import com.zegreatrob.coupling.server.action.discord.DiscordSendSpin
+import com.zegreatrob.coupling.server.action.slack.SlackSendSpin
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -44,9 +44,9 @@ interface ServerSpinCommandDispatcher<out D> :
       D : AssignPinsAction.Dispatcher,
       D : CreatePairCandidateReportAction.Dispatcher {
 
-    val slackRepository: SlackRepository
+    val slackRepository: SlackSendSpin
     val slackAccessRepository: SlackAccessGet
-    val discordRepository: DiscordRepository
+    val discordRepository: DiscordSendSpin
     val discordAccessRepository: DiscordAccessGet
     override val partyRepository: PartyRepository
     override val pairAssignmentDocumentRepository: PairAssignmentDocumentRepository

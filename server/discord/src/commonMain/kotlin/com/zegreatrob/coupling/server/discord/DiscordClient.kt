@@ -9,14 +9,18 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.patch
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.addJsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonArray
+import kotlinx.serialization.json.putJsonObject
 
 class DiscordClient(
     private val clientId: String,
@@ -54,13 +58,35 @@ class DiscordClient(
         }
     }
 
-    suspend fun sendWebhookMessage(message: String, webhookId: String, webhookToken: String): MessageResponse {
-        val response = httpClient.submitForm(
+    suspend fun sendWebhookMessage(
+        message: String,
+        webhookId: String,
+        webhookToken: String,
+        embeds: List<DiscordEmbed>,
+    ): MessageResponse {
+        val response = httpClient.post(
             "webhooks/$webhookId/$webhookToken?wait=true",
-            Parameters.build {
-                append("content", message)
-            },
-        )
+        ) {
+            contentType(ContentType.Application.Json)
+            setBody(
+                buildJsonObject {
+                    put("content", message)
+                    putJsonArray("embeds") {
+                        embeds.forEach { embed ->
+                            addJsonObject {
+                                put("title", embed.title)
+                                put("description", embed.description)
+                                if (embed.imageUrl != null) {
+                                    putJsonObject("image") {
+                                        put("url", embed.imageUrl)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            )
+        }
         return if (response.status.isSuccess()) {
             response.body<MessageResponseData>()
         } else {
@@ -91,3 +117,9 @@ class DiscordClient(
         }
     }
 }
+
+data class DiscordEmbed(
+    val title: String,
+    val description: String,
+    val imageUrl: String?,
+)
