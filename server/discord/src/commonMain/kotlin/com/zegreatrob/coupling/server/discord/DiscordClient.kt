@@ -8,6 +8,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.basicAuth
+import io.ktor.client.request.delete
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
@@ -116,6 +117,10 @@ class DiscordClient(
             response.body<ErrorAccessResponse>()
         }
     }
+
+    suspend fun deleteWebhookMessage(messageId: String, webhookId: String, webhookToken: String): Boolean =
+        httpClient.delete("webhooks/$webhookId/$webhookToken/messages/$messageId")
+            .status.isSuccess()
 }
 
 data class DiscordEmbed(

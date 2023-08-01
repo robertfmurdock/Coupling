@@ -60,6 +60,16 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
         }
     }
 
+    override suspend fun deleteMessage(webhook: DiscordWebhook, deadPairs: PairAssignmentDocument) {
+        deadPairs.discordMessageId?.let {
+            discordClient.deleteWebhookMessage(
+                messageId = it,
+                webhookId = webhook.id,
+                webhookToken = webhook.token,
+            )
+        }
+    }
+
     private suspend fun sendMessage(
         pairs: PairAssignmentDocument,
         webhook: DiscordWebhook,

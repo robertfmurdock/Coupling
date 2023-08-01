@@ -42,7 +42,7 @@ class DiscordClientTest {
         }
         val discordClientId = "1234567"
         val discordClientSecret = "7654321"
-        val code = "INguEoKmDrGNcSLKOHQ0N1xFwgz9vt"
+        val code = "sdfsdfsdfsdfsdf"
         val client = DiscordClient(
             clientId = discordClientId,
             clientSecret = discordClientSecret,
@@ -153,6 +153,35 @@ class DiscordClientTest {
             ?.jsonPrimitive
             ?.content
             .assertIsEqualTo(message)
+    }
+
+    @Test
+    fun canDeleteMessage() = asyncSetup(object : ScopeMint() {
+        var lastRequestData: HttpRequestData? = null
+        val handle: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { request ->
+            lastRequestData = request
+            respond(
+                status = HttpStatusCode.NoContent,
+                content = "",
+                headers = headersOf("Content-Type", "application/json"),
+            )
+        }
+        val httpClient = HttpClient(engine = MockEngine(handler = handle)) {
+            install(Logging) { level = LogLevel.ALL }
+        }
+        val client = DiscordClient(
+            clientId = "1234567",
+            clientSecret = "7654321",
+            host = "sandbox.coupling.zegreatrob.com",
+            httpClient = httpClient,
+        )
+        val messageId = "1134900625847623740"
+        val webhookId = "1134900271768666125"
+        val webhookToken = "asdfsdfsdfsdf"
+    }) exercise {
+        client.deleteWebhookMessage(messageId, webhookId, webhookToken)
+    } verify { result ->
+        result.assertIsEqualTo(true)
     }
 
     @Test
