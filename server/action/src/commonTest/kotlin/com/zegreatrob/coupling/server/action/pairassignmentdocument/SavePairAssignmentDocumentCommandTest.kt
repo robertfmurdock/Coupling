@@ -55,7 +55,7 @@ class SavePairAssignmentDocumentCommandTest {
         )
         override val slackRepository = SlackUpdateSpin { _, _, _ -> }
         override val slackAccessRepository = SlackAccessGet { null }
-        override val discordRepository = DiscordSendSpin { _, _, _ -> null }
+        override val discordRepository = DiscordSendSpin { _, _ -> null }
         override val discordAccessRepository = DiscordAccessGet { null }
 
         override val pairAssignmentDocumentRepository = SpyPairAssignmentDocumentRepository()
