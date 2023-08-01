@@ -91,6 +91,7 @@ class SpinTest {
                         pairOf(players[0], players[2]).withPins(),
                         pairOf(players[1], players[3]).withPins(),
                     ),
+                    null,
                 ),
                 PairAssignmentDocument(
                     id = PairAssignmentDocumentId("${uuid4()}"),
@@ -99,6 +100,7 @@ class SpinTest {
                         pairOf(players[0], players[3]).withPins(),
                         pairOf(players[1], players[2]).withPins(),
                     ),
+                    null,
                 ),
             )
         }
@@ -136,6 +138,7 @@ class SpinTest {
                     pairOf(players[0], players[3]).withPins(),
                     pairOf(players[1], players[2]).withPins(),
                 ),
+                null,
             ),
             PairAssignmentDocument(
                 id = PairAssignmentDocumentId("${uuid4()}"),
@@ -144,6 +147,7 @@ class SpinTest {
                     pairOf(players[0], players[2]).withPins(),
                     pairOf(players[1], players[3]).withPins(),
                 ),
+                null,
             ),
         )
     }) {

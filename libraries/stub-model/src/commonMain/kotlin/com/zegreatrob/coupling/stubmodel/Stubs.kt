@@ -83,6 +83,7 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
             setOf(stubPin()),
         ),
     ),
+    discordMessageId = uuidString(),
 ).also { pairAssignmentDocumentCounter++ }
 
 fun uuidString() = uuid4().toString()

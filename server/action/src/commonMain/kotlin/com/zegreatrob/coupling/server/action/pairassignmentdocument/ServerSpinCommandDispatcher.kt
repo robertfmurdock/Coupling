@@ -101,6 +101,9 @@ interface ServerSpinCommandDispatcher<out D> :
                 val discordAccess = discordAccessRepository.get(partyId)?.data?.element
                 discordAccess?.webhook
                     ?.let { discordRepository.sendSpinMessage(it, newPairs) }
+                    ?.let { newPairs.copy(discordMessageId = it) }
+                    ?.let { partyId.with(it) }
+                    ?.save()
             }
         }
         return SpinCommand.Result.Success

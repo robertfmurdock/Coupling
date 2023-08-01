@@ -43,6 +43,7 @@ data class ShufflePairsAction(
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = currentDate(),
             pairs = pairAssignments,
+            discordMessageId = null,
         )
     }
 }

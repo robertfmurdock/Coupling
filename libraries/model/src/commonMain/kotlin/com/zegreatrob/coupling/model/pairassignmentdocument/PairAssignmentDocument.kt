@@ -10,6 +10,7 @@ data class PairAssignmentDocument(
     val id: PairAssignmentDocumentId,
     val date: Instant,
     val pairs: NotEmptyList<PinnedCouplingPair>,
+    val discordMessageId: String? = null,
 )
 
 fun PairAssignmentDocument.orderedPairedPlayers(): List<Player> = pairs

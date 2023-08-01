@@ -78,9 +78,10 @@ type PinnedPair {
 
 type PairAssignmentDocumentDetails {
     id: String!
+    partyId: String
     date: String!
     pairs: [PinnedPair]!
-    partyId: String
+    discordMessageId: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
@@ -194,6 +195,7 @@ input SavePairAssignmentsInput {
     pairAssignmentsId: String!
     date: String!
     pairs: [PinnedPairInput]!
+    discordMessageId: String
 }
 
 input PinnedPairInput {

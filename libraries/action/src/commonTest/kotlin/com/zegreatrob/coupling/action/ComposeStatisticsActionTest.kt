@@ -233,7 +233,7 @@ class ComposeStatisticsActionTest {
             )
 
             private fun pairAssignmentDocument(pairs: NotEmptyList<PinnedCouplingPair>) =
-                PairAssignmentDocument(id = PairAssignmentDocumentId(""), date = stubDate, pairs = pairs)
+                PairAssignmentDocument(id = PairAssignmentDocumentId(""), date = stubDate, pairs = pairs, null)
         }) exercise {
             perform(ComposeStatisticsAction(party, players, history))
         } verify { (_, pairReports) ->
@@ -282,6 +282,7 @@ class ComposeStatisticsActionTest {
                     id = PairAssignmentDocumentId(""),
                     date = dateTime,
                     pairs = stubPinnedPairs(),
+                    null,
                 )
 
             private fun stubPinnedPairs() = notEmptyListOf(
@@ -359,6 +360,7 @@ class ComposeStatisticsActionTest {
                     id = PairAssignmentDocumentId(""),
                     date = dateTime(2017, 2, 17),
                     pairs = stubPinnedPairs(),
+                    null,
                 ),
             )
         }) exercise {

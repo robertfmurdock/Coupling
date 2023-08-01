@@ -64,6 +64,7 @@ private val pairAssignments = PairAssignmentDocument(
         pairOf(player2, player5).withPins(pins.toSet()),
         pairOf(player6).withPins(emptySet()),
     ),
+    discordMessageId = null,
 )
 
 sealed class DemoAnimationState {

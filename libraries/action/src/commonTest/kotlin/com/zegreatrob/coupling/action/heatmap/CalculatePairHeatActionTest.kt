@@ -30,6 +30,7 @@ class CalculatePairHeatActionTest {
                 id = PairAssignmentDocumentId(""),
                 date = LocalDateTime(2016, 3, 1, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
                 pairs = perform(AssignPinsAction(this, emptyList(), emptyList())),
+                null,
             )
     }
 

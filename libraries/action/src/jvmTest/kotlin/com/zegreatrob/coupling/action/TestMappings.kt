@@ -39,6 +39,7 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup {
                 id = it["id"].textValue().let(::PairAssignmentDocumentId),
                 date = it["date"].textValue().toInstant(),
                 pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() }.toNotEmptyList().getOrThrow(),
+                null,
             )
         },
     )

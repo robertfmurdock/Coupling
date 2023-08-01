@@ -64,6 +64,7 @@ object GqlReference {
         date = Instant.DISTANT_PAST,
         pairs = notEmptyListOf(pinnedCouplingPair),
         partyId = PartyId(""),
+        discordMessageId = "",
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,

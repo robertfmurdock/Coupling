@@ -143,6 +143,7 @@ class PrepareSpinTest {
                 pairOf(players[0], players[1]).withPins(emptySet()),
                 pairOf(players[2]).withPins(emptySet()),
             ),
+            null,
         )
         val result = render(jso { wrapper = MemoryRouter }) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
@@ -190,12 +191,12 @@ class PrepareSpinTest {
             id = PairAssignmentDocumentId("${uuid4()}"),
             date = Clock.System.now(),
             pairs = players.map { pairOf(it).withPins(emptySet()) },
+            null,
         )
         val context = render(jso { wrapper = MemoryRouter }) {
             PrepareSpin(party, players.toList(), currentPairs, emptyList(), { {} })
         }
-    }) {
-    } exercise {
+    }) exercise {
         user.click(screen.getByText("All out!"))
     } verify {
         context.baseElement.querySelectorAll("[data-player-id]")

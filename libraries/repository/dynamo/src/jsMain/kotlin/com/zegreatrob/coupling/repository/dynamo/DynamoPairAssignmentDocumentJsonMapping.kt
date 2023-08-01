@@ -21,6 +21,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
         "date" to "${date.toEpochMilliseconds()}",
         "pairs" to pairs.toList().map { it.toDynamoJson() }
             .toTypedArray(),
+        "discordMessageId" to discordMessageId,
     )
 
     fun Record<PartyElement<PairAssignmentDocument>>.asDynamoJson() = recordJson()
@@ -51,6 +52,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
                 ?.toNotEmptyList()
                 ?.getOrNull()
                 ?: return null,
+            discordMessageId = getDynamoStringValue("discordMessageId"),
         )
     }
 

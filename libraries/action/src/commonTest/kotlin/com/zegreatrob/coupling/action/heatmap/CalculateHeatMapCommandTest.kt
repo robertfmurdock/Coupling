@@ -23,6 +23,7 @@ class CalculateHeatMapCommandTest {
                 pairs = perform(
                     AssignPinsAction(notEmptyListOf(pairOf(player1, player2)), emptyList(), emptyList()),
                 ),
+                null,
             )
     }
 
