@@ -82,6 +82,7 @@ type PairAssignmentDocumentDetails {
     date: String!
     pairs: [PinnedPair]!
     discordMessageId: String
+    slackMessageId: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
@@ -196,6 +197,7 @@ input SavePairAssignmentsInput {
     date: String!
     pairs: [PinnedPairInput]!
     discordMessageId: String
+    slackMessageId: String
 }
 
 input PinnedPairInput {

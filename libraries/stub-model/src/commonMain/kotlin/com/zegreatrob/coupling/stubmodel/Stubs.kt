@@ -84,6 +84,7 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
         ),
     ),
     discordMessageId = uuidString(),
+    slackMessageId = uuidString(),
 ).also { pairAssignmentDocumentCounter++ }
 
 fun uuidString() = uuid4().toString()

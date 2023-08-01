@@ -15,7 +15,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.js.json
-import kotlin.math.abs
 
 @OptIn(ExperimentalEncodingApi::class)
 class FetchSlackRepository : SlackRepository {
@@ -45,46 +44,27 @@ class FetchSlackRepository : SlackRepository {
             )
     }
 
-    override suspend fun updateSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
-        val messageTs = findExistingMessage(token, channel, pairs)
-        if (messageTs != null) {
-            val response = client.updateMessage(
-                accessToken = token,
-                channel = channel,
-                ts = messageTs,
-                text = "Update!",
-                blocks = pairs.toSlackBlocks(),
-            )
-            if (response.ok == false) {
-                throw Exception("Update Message error: " + response.error)
-            }
-        }
-    }
-
-    private suspend fun findExistingMessage(
+    private suspend fun updateMessage(
         token: String,
         channel: String,
+        messageTs: String?,
         pairs: PairAssignmentDocument,
-    ): String? {
-        val pairTimestamp = pairs.date.toEpochMilliseconds().toDouble()
-        val conversationHistory = client.getConversationHistory(
-            channel = channel,
+    ): MessageResponse {
+        val response = client.updateMessage(
             accessToken = token,
-            oldest = pairTimestamp - 1000,
-            latest = pairTimestamp + 2000,
+            channel = channel,
+            ts = messageTs,
+            text = "Update!",
+            blocks = pairs.toSlackBlocks(),
         )
-
-        if (conversationHistory.ok == false) {
-            throw Exception("Conversation History error: " + conversationHistory.error)
+        if (response.ok == false) {
+            throw Exception("Update Message error: " + response.error)
         }
-
-        return conversationHistory.messages
-            ?.minByOrNull { abs(pairTimestamp - it.ts.toDouble()) }
-            ?.ts
+        return response
     }
 
     override suspend fun deleteSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
-        findExistingMessage(token, channel, pairs)
+        pairs.slackMessageId
             ?.let { messageTs ->
                 val response = client.deleteMessage(accessToken = token, channel = channel, ts = messageTs)
                 if (response.ok == false) {
@@ -93,13 +73,17 @@ class FetchSlackRepository : SlackRepository {
             }
     }
 
-    override suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument) {
-        client.postMessage(
-            blocks = pairs.toSlackBlocks(),
-            text = "Spin!",
-            channel = channel,
-            accessToken = token,
-        )
+    override suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument): String? {
+        return (
+            pairs.slackMessageId
+                ?.let { slackMessageId -> updateMessage(token, channel, slackMessageId, pairs) }
+                ?: client.postMessage(
+                    blocks = pairs.toSlackBlocks(),
+                    text = "Spin!",
+                    channel = channel,
+                    accessToken = token,
+                )
+            ).ts
     }
 }
 

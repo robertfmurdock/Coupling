@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.discord.DiscordSendSpin
-import com.zegreatrob.coupling.server.action.slack.SlackUpdateSpin
+import com.zegreatrob.coupling.server.action.slack.SlackSendSpin
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPinnedCouplingPair
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -53,7 +53,7 @@ class SavePairAssignmentDocumentCommandTest {
                 pairs = notEmptyListOf(stubPinnedCouplingPair()),
             ),
         )
-        override val slackRepository = SlackUpdateSpin { _, _, _ -> }
+        override val slackRepository = SlackSendSpin { _, _, _ -> null }
         override val slackAccessRepository = SlackAccessGet { null }
         override val discordRepository = DiscordSendSpin { _, _ -> null }
         override val discordAccessRepository = DiscordAccessGet { null }

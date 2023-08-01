@@ -17,7 +17,9 @@ import com.zegreatrob.coupling.server.action.connection.CouplingConnectionGetSyn
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.discord.DiscordSendSpin
 import com.zegreatrob.coupling.server.action.fire
-import com.zegreatrob.coupling.server.action.slack.SlackUpdateSpin
+import com.zegreatrob.coupling.server.action.slack.SlackSendSpin
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 interface ServerSavePairAssignmentDocumentCommandDispatcher<out D> :
     SavePairAssignmentsCommand.Dispatcher,
@@ -27,7 +29,7 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher<out D> :
     PartyIdLoadIntegrationSyntax
     where D : DisconnectPartyUserCommand.Dispatcher, D : BroadcastAction.Dispatcher<D> {
 
-    val slackRepository: SlackUpdateSpin
+    val slackRepository: SlackSendSpin
     val slackAccessRepository: SlackAccessGet
     val discordRepository: DiscordSendSpin
     val discordAccessRepository: DiscordAccessGet
@@ -45,12 +47,20 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher<out D> :
         val channel = slackChannel ?: return
         val accessRecord = slackAccessRepository.get(team) ?: return
         val token = accessRecord.data.accessToken
-        runCatching { slackRepository.updateSpinMessage(channel, token, pairs) }
-            .onFailure { it.printStackTrace() }
 
-        if (pairs.discordMessageId != null) {
-            discordAccessRepository.get(partyId)?.data?.element?.let { discordTeamAccess ->
-                discordRepository.sendSpinMessage(discordTeamAccess.webhook, pairs)
+        coroutineScope {
+            launch {
+                if (pairs.slackMessageId != null) {
+                    slackRepository.sendSpinMessage(channel, token, pairs)
+                }
+            }
+
+            launch {
+                if (pairs.discordMessageId != null) {
+                    discordAccessRepository.get(partyId)?.data?.element?.let { discordTeamAccess ->
+                        discordRepository.sendSpinMessage(discordTeamAccess.webhook, pairs)
+                    }
+                }
             }
         }
     }

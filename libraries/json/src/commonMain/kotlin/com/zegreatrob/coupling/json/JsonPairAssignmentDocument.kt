@@ -27,6 +27,7 @@ data class JsonPairAssignmentDocument(
     val date: Instant,
     val pairs: NotEmptyList<JsonPinnedCouplingPair>,
     val discordMessageId: String? = null,
+    val slackMessageId: String? = null,
 )
 
 @Serializable
@@ -35,6 +36,7 @@ data class JsonPairAssignmentDocumentRecord(
     val date: Instant,
     val pairs: NotEmptyList<JsonPinnedCouplingPair>,
     val discordMessageId: String?,
+    val slackMessageId: String?,
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
@@ -81,6 +83,7 @@ data class SavePairAssignmentsInput(
     val date: Instant,
     val pairs: NotEmptyList<JsonPinnedCouplingPair>,
     val discordMessageId: String?,
+    val slackMessageId: String?,
 ) : IPartyInput
 
 @Serializable
@@ -124,6 +127,7 @@ fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     date = date,
     pairs = pairs.map(PinnedCouplingPair::toSerializable),
     discordMessageId = discordMessageId,
+    slackMessageId = slackMessageId,
 )
 
 fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDocumentRecord(
@@ -132,6 +136,7 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDoc
     date = data.element.date,
     pairs = data.element.pairs.map(PinnedCouplingPair::toSerializable),
     discordMessageId = data.element.discordMessageId,
+    slackMessageId = data.element.slackMessageId,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -161,6 +166,7 @@ fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
         date = element.date,
         pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
         discordMessageId = element.discordMessageId,
+        slackMessageId = element.slackMessageId,
     )
 
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
@@ -168,6 +174,7 @@ fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     date = date,
     pairs = pairs.map(JsonPinnedCouplingPair::toModel),
     discordMessageId = discordMessageId,
+    slackMessageId = slackMessageId,
 )
 
 fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
@@ -175,6 +182,7 @@ fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
     date = date,
     pairs = pairs.map(JsonPinnedCouplingPair::toModel),
     discordMessageId = discordMessageId,
+    slackMessageId = slackMessageId,
 )
 
 fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocument> {
@@ -185,6 +193,7 @@ fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocume
                 date = date,
                 pairs = pairs.map(JsonPinnedCouplingPair::toModel),
                 discordMessageId = discordMessageId,
+                slackMessageId = slackMessageId,
             ),
         ),
         modifyingUserId = modifyingUserEmail,

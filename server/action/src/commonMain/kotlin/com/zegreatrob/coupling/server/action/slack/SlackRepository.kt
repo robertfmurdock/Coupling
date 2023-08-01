@@ -3,18 +3,14 @@ package com.zegreatrob.coupling.server.action.slack
 import com.zegreatrob.coupling.model.SlackTeamAccess
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 
-interface SlackRepository : SlackGrantAccess, SlackSendSpin, SlackUpdateSpin, SlackDeleteSpin
-
-fun interface SlackUpdateSpin {
-    suspend fun updateSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument)
-}
+interface SlackRepository : SlackGrantAccess, SlackSendSpin, SlackDeleteSpin
 
 fun interface SlackDeleteSpin {
     suspend fun deleteSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument)
 }
 
 fun interface SlackSendSpin {
-    suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument)
+    suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument): String?
 }
 
 fun interface SlackGrantAccess {

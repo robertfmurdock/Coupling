@@ -22,6 +22,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
         "pairs" to pairs.toList().map { it.toDynamoJson() }
             .toTypedArray(),
         "discordMessageId" to discordMessageId,
+        "slackMessageId" to slackMessageId,
     )
 
     fun Record<PartyElement<PairAssignmentDocument>>.asDynamoJson() = recordJson()
@@ -53,6 +54,7 @@ interface DynamoPairAssignmentDocumentJsonMapping :
                 ?.getOrNull()
                 ?: return null,
             discordMessageId = getDynamoStringValue("discordMessageId"),
+            slackMessageId = getDynamoStringValue("slackMessageId"),
         )
     }
 

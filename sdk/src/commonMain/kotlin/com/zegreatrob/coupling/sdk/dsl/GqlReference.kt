@@ -65,6 +65,7 @@ object GqlReference {
         pairs = notEmptyListOf(pinnedCouplingPair),
         partyId = PartyId(""),
         discordMessageId = "",
+        slackMessageId = "",
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
