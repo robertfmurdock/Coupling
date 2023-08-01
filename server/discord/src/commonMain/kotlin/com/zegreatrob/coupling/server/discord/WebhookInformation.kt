@@ -16,5 +16,5 @@ data class WebhookInformation(
     val type: Int,
     val avatar: String?,
     @SerialName("guild_id")
-    val guildId: String?,
+    val guildId: String,
 )

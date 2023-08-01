@@ -24,6 +24,8 @@ class DynamoDiscordRepositoryTest {
             webhook = DiscordWebhook(
                 id = uuidString(),
                 token = uuidString(),
+                channelId = uuidString(),
+                guildId = uuidString(),
             ),
         )
         lateinit var repository: DynamoDiscordRepository

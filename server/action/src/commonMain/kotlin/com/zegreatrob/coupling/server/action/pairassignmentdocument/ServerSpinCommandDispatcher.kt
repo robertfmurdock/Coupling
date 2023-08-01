@@ -99,7 +99,8 @@ interface ServerSpinCommandDispatcher<out D> :
             launch { partyIntegration?.sendMessage(newPairs) }
             launch {
                 val discordAccess = discordAccessRepository.get(partyId)?.data?.element
-                discordAccess?.webhook?.let { discordRepository.sendSpinMessage(it, newPairs) }
+                discordAccess?.webhook
+                    ?.let { discordRepository.sendSpinMessage(it, newPairs) }
             }
         }
         return SpinCommand.Result.Success

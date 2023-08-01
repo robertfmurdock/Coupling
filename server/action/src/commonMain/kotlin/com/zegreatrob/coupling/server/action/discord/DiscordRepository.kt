@@ -14,5 +14,5 @@ interface DiscordRepository : DiscordSendSpin {
 }
 
 interface DiscordSendSpin {
-    suspend fun sendSpinMessage(webhook: DiscordWebhook, newPairs: PairAssignmentDocument)
+    suspend fun sendSpinMessage(webhook: DiscordWebhook, newPairs: PairAssignmentDocument): String?
 }

@@ -14,4 +14,9 @@ data class DiscordTeamAccess(
     val refreshToken: String,
 )
 
-data class DiscordWebhook(val id: String, val token: String)
+data class DiscordWebhook(
+    val id: String,
+    val token: String,
+    val channelId: String,
+    val guildId: String,
+)

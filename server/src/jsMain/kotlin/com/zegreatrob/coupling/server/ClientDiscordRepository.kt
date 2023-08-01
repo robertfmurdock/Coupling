@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.server.discord.DiscordEmbed
 import com.zegreatrob.coupling.server.discord.ErrorAccessResponse
 import com.zegreatrob.coupling.server.discord.MessageResponseData
 import com.zegreatrob.coupling.server.discord.SuccessfulAccessResponse
+import com.zegreatrob.coupling.server.discord.WebhookInformation
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.slack.dateText
 import com.zegreatrob.coupling.server.slack.pairFieldText
@@ -25,12 +26,13 @@ fun clientDiscordRepository() = ClientDiscordRepository(
 
 private val theLogger by lazy { KotlinLogging.logger("DiscordLogger") }
 
-class ClientDiscordRepository(private val discordClient: DiscordClient, private val clientUrl: String) : DiscordRepository {
+class ClientDiscordRepository(private val discordClient: DiscordClient, private val clientUrl: String) :
+    DiscordRepository {
 
     override suspend fun exchangeForWebhook(code: String) = when (val result = discordClient.getAccessToken(code)) {
         is SuccessfulAccessResponse -> DiscordRepository.ExchangeResult.Success(
             DiscordTeamAccess(
-                webhook = result.webhook.let { DiscordWebhook(it.id, it.token) },
+                webhook = result.webhook.toDomain(),
                 result.accessToken,
                 result.refreshToken,
             ),
@@ -39,23 +41,30 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
         is ErrorAccessResponse -> DiscordRepository.ExchangeResult.Error(result.error, result.errorDescription)
     }
 
-    override suspend fun sendSpinMessage(webhook: DiscordWebhook, newPairs: PairAssignmentDocument) {
-        when (
-            val result = discordClient.sendWebhookMessage(
-                message = "",
-                webhookId = webhook.id,
-                webhookToken = webhook.token,
-                embeds = listOf(
-                    DiscordEmbed(
-                        title = "**Couples for ${newPairs.dateText()}**",
-                        description = newPairs.pairs.toList().joinToString("\n\n") { " - " + it.pairFieldText() },
-                        imageUrl = "$clientUrl/images/logo.png",
-                    ),
+    private fun WebhookInformation.toDomain() = DiscordWebhook(
+        id = id,
+        token = token,
+        channelId = channelId,
+        guildId = guildId,
+    )
+
+    override suspend fun sendSpinMessage(webhook: DiscordWebhook, newPairs: PairAssignmentDocument): String? = when (
+        val result = discordClient.sendWebhookMessage(
+            message = "",
+            webhookId = webhook.id,
+            webhookToken = webhook.token,
+            embeds = listOf(
+                DiscordEmbed(
+                    title = "**Couples for ${newPairs.dateText()}**",
+                    description = newPairs.pairs.toList().joinToString("\n\n") { " - " + it.pairFieldText() },
+                    imageUrl = "$clientUrl/images/logo.png",
                 ),
-            )
-        ) {
-            is MessageResponseData -> Unit
-            is ErrorAccessResponse -> theLogger.error {
+            ),
+        )
+    ) {
+        is MessageResponseData -> result.id
+        is ErrorAccessResponse -> null.also {
+            theLogger.error {
                 mapOf("error" to result.error, "description" to result.errorDescription)
             }
         }

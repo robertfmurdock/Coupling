@@ -64,6 +64,8 @@ class DynamoDiscordRepository private constructor(override val userId: String, o
         "refreshToken" to element.refreshToken,
         "webhookId" to element.webhook.id,
         "webhookToken" to element.webhook.token,
+        "webhookChannelId" to element.webhook.channelId,
+        "webhookGuildId" to element.webhook.guildId,
     )
 
     private fun Json.toAccess(): DiscordTeamAccess = DiscordTeamAccess(
@@ -72,6 +74,8 @@ class DynamoDiscordRepository private constructor(override val userId: String, o
         webhook = DiscordWebhook(
             id = getDynamoStringValue("webhookId") ?: "",
             token = getDynamoStringValue("webhookToken") ?: "",
+            channelId = getDynamoStringValue("webhookChannelId") ?: "",
+            guildId = getDynamoStringValue("webhookGuildId") ?: "",
         ),
     )
 }
