@@ -13,6 +13,6 @@ interface DiscordRepository : DiscordSendSpin {
     }
 }
 
-interface DiscordSendSpin {
+fun interface DiscordSendSpin {
     suspend fun sendSpinMessage(webhook: DiscordWebhook, newPairs: PairAssignmentDocument): String?
 }

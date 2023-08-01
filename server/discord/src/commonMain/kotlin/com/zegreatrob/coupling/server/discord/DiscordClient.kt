@@ -6,6 +6,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.patch
@@ -67,27 +68,8 @@ class DiscordClient(
     ): MessageResponse {
         val response = httpClient.post(
             "webhooks/$webhookId/$webhookToken?wait=true",
-        ) {
-            contentType(ContentType.Application.Json)
-            setBody(
-                buildJsonObject {
-                    put("content", message)
-                    putJsonArray("embeds") {
-                        embeds.forEach { embed ->
-                            addJsonObject {
-                                put("title", embed.title)
-                                put("description", embed.description)
-                                if (embed.imageUrl != null) {
-                                    putJsonObject("image") {
-                                        put("url", embed.imageUrl)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-            )
-        }
+            webhookMessageRequest(message, embeds),
+        )
         return if (response.status.isSuccess()) {
             response.body<MessageResponseData>()
         } else {
@@ -95,22 +77,39 @@ class DiscordClient(
         }
     }
 
+    private fun webhookMessageRequest(message: String, embeds: List<DiscordEmbed>): HttpRequestBuilder.() -> Unit = {
+        contentType(ContentType.Application.Json)
+        setBody(
+            buildJsonObject {
+                put("content", message)
+                putJsonArray("embeds") {
+                    embeds.forEach { embed ->
+                        addJsonObject {
+                            put("title", embed.title)
+                            put("description", embed.description)
+                            if (embed.imageUrl != null) {
+                                putJsonObject("image") {
+                                    put("url", embed.imageUrl)
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+        )
+    }
+
     suspend fun updateWebhookMessage(
         messageId: String,
         message: String,
         webhookId: String,
         webhookToken: String,
+        embeds: List<DiscordEmbed>,
     ): MessageResponse {
         val response = httpClient.patch(
             "webhooks/$webhookId/$webhookToken/messages/$messageId",
-        ) {
-            contentType(ContentType.Application.Json)
-            setBody(
-                buildJsonObject {
-                    put("content", message)
-                },
-            )
-        }
+            webhookMessageRequest(message, embeds),
+        )
         return if (response.status.isSuccess()) {
             response.body<MessageResponseData>()
         } else {

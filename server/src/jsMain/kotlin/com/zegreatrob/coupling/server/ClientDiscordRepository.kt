@@ -48,20 +48,10 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
         guildId = guildId,
     )
 
-    override suspend fun sendSpinMessage(webhook: DiscordWebhook, newPairs: PairAssignmentDocument): String? = when (
-        val result = discordClient.sendWebhookMessage(
-            message = "",
-            webhookId = webhook.id,
-            webhookToken = webhook.token,
-            embeds = listOf(
-                DiscordEmbed(
-                    title = "**Couples for ${newPairs.dateText()}**",
-                    description = newPairs.pairs.toList().joinToString("\n\n") { " - " + it.pairFieldText() },
-                    imageUrl = "$clientUrl/images/logo.png",
-                ),
-            ),
-        )
-    ) {
+    override suspend fun sendSpinMessage(
+        webhook: DiscordWebhook,
+        newPairs: PairAssignmentDocument,
+    ): String? = when (val result = sendMessage(newPairs, webhook)) {
         is MessageResponseData -> result.id
         is ErrorAccessResponse -> null.also {
             theLogger.error {
@@ -69,4 +59,30 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
             }
         }
     }
+
+    private suspend fun sendMessage(
+        pairs: PairAssignmentDocument,
+        webhook: DiscordWebhook,
+    ) = pairs.discordMessageId?.let {
+        discordClient.updateWebhookMessage(
+            messageId = it,
+            message = "",
+            webhookId = webhook.id,
+            webhookToken = webhook.token,
+            embeds = pairs.toDiscordEmbeds(),
+        )
+    } ?: discordClient.sendWebhookMessage(
+        message = "",
+        webhookId = webhook.id,
+        webhookToken = webhook.token,
+        embeds = pairs.toDiscordEmbeds(),
+    )
+
+    private fun PairAssignmentDocument.toDiscordEmbeds() = listOf(
+        DiscordEmbed(
+            title = "**Couples for ${dateText()}**",
+            description = pairs.toList().joinToString("\n\n") { " - ${it.pairFieldText()}" },
+            imageUrl = "$clientUrl/images/logo.png",
+        ),
+    )
 }

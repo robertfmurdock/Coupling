@@ -142,7 +142,7 @@ class DiscordClientTest {
         val webhookToken = "asdfsdfsdfsdf"
         val message = "updated-" + randomUUID()
     }) exercise {
-        client.updateWebhookMessage(messageId, message, webhookId, webhookToken)
+        client.updateWebhookMessage(messageId, message, webhookId, webhookToken, listOf())
     } verify { result ->
         result.assertIsEqualTo(Json.decodeFromString<MessageResponseData>(responseJson))
         lastRequestData?.body?.toByteArray()
