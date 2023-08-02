@@ -38,7 +38,10 @@ class ClientDiscordRepository(private val discordClient: DiscordClient, private 
             ),
         )
 
-        is ErrorAccessResponse -> DiscordRepository.ExchangeResult.Error(result.error, result.errorDescription)
+        is ErrorAccessResponse -> DiscordRepository.ExchangeResult.Error(
+            error = result.error ?: result.message ?: "Unknown",
+            description = result.errorDescription,
+        )
     }
 
     private fun WebhookInformation.toDomain() = DiscordWebhook(
