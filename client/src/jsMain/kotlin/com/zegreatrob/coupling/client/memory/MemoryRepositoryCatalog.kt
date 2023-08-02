@@ -99,8 +99,8 @@ class MemoryRepositoryCatalog private constructor(
     }
 
     override suspend fun perform(query: GraphQuery) = CouplingQueryResult(
-        user = User(userId, "???", setOf(PartyId("Kind of fake"))),
         partyList = partyRepository.loadParties(),
+        user = User(userId, "???", setOf(PartyId("Kind of fake"))),
         party = query.variables?.get("input")?.let { Json.decodeFromJsonElement<PartyInput>(it) }?.partyId?.let {
             val id = PartyId(it)
             Party(
@@ -112,6 +112,7 @@ class MemoryRepositoryCatalog private constructor(
                 currentPairAssignmentDocument = pairAssignmentDocumentRepository.getCurrentPairAssignments(id),
             )
         },
+        config = null,
     )
 
     override suspend fun perform(command: GrantDiscordAccessCommand): VoidResult = VoidResult.Rejected

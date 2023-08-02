@@ -26,6 +26,7 @@ import com.zegreatrob.coupling.server.entity.secret.deleteSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.secretListResolve
 import com.zegreatrob.coupling.server.entity.slackaccess.grantSlackAccessResolver
 import com.zegreatrob.coupling.server.entity.user.userResolve
+import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
@@ -50,7 +51,7 @@ fun couplingResolvers() = json(
             }
         },
         "globalStats" to globalStatsResolve,
-        "addToSlackUrl" to addToSlackUrlResolve,
+        "config" to fun() = json(),
     ),
     "Mutation" to json(
         "createSecret" to createSecretResolver,
@@ -77,5 +78,9 @@ fun couplingResolvers() = json(
         "pairAssignmentDocumentList" to pairAssignmentListResolve,
         "secretList" to secretListResolve,
         "currentPairAssignmentDocument" to currentPairAssignmentResolve,
+    ),
+    "Configuration" to json(
+        "addToSlackUrl" to addToSlackUrlResolve,
+        "discordClientId" to fun() = Config.discordClientId,
     ),
 )

@@ -8,5 +8,5 @@ data class CouplingQueryResult(
     val user: User? = null,
     val party: Party? = null,
     val globalStats: GlobalStats? = null,
-    val addToSlackUrl: String? = null,
+    val config: CouplingConfig? = null,
 )

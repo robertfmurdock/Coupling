@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.JsonConfig
 import com.zegreatrob.coupling.json.JsonGlobalStatsInput
 import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.json.nestedKeys
@@ -70,7 +71,20 @@ class CouplingQueryBuilder {
         )
     }
 
+    fun config(block: ConfigQueryBuilder.() -> Unit) = ConfigQueryBuilder()
+        .also(block)
+        .output
+        .addToQuery("config")
+}
+
+class ConfigQueryBuilder : QueryBuilder<JsonConfig> {
+    override var output: JsonConfig = JsonConfig()
+
     fun addToSlackUrl() {
-        queries.add("addToSlackUrl")
+        output = output.copy(addToSlackUrl = "")
+    }
+
+    fun discordClientId() {
+        output = output.copy(discordClientId = "")
     }
 }

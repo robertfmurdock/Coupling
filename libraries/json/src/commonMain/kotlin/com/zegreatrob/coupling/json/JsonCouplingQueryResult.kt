@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.json
 
+import com.zegreatrob.coupling.model.CouplingConfig
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.GlobalStats
 import com.zegreatrob.coupling.model.Party
@@ -15,7 +16,7 @@ data class JsonCouplingQueryResult(
     val user: JsonUser? = null,
     val party: JsonParty? = null,
     val globalStats: JsonGlobalStats? = null,
-    val addToSlackUrl: String? = null,
+    val config: JsonConfig? = null,
 )
 
 @Serializable
@@ -31,7 +32,7 @@ private fun JsonParty.toModel() = Party(
     playerList = playerList?.map(JsonPlayerRecord::toModel),
     retiredPlayers = retiredPlayers?.map(JsonPlayerRecord::toModel),
     secretList = secretList?.map(JsonSecretRecord::toModel),
-    pairAssignmentDocumentList = pairAssignmentDocumentList?.mapNotNull(JsonPairAssignmentDocumentRecord::toModel),
+    pairAssignmentDocumentList = pairAssignmentDocumentList?.map(JsonPairAssignmentDocumentRecord::toModel),
     currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
 )
 
@@ -40,8 +41,10 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
     user = user?.toModel(),
     party = party?.toModel(),
     globalStats = globalStats?.toModel(),
-    addToSlackUrl = addToSlackUrl,
+    config = config?.toModel(),
 )
+
+private fun JsonConfig.toModel() = CouplingConfig(discordClientId, addToSlackUrl)
 
 @Serializable
 data class JsonParty(
@@ -54,6 +57,12 @@ data class JsonParty(
     val retiredPlayers: List<JsonPlayerRecord>? = null,
     val pairAssignmentDocumentList: List<JsonPairAssignmentDocumentRecord>? = null,
     val currentPairAssignmentDocument: JsonPairAssignmentDocumentRecord? = null,
+)
+
+@Serializable
+data class JsonConfig(
+    val discordClientId: String? = null,
+    val addToSlackUrl: String? = null,
 )
 
 @Serializable

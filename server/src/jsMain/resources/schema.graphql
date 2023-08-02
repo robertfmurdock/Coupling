@@ -237,6 +237,11 @@ type PartyStats {
     medianSpinDurationMillis: String
 }
 
+type Configuration {
+    discordClientId: String
+    addToSlackUrl: String
+}
+
 input GlobalStatsInput {
     year: Int
 }
@@ -253,7 +258,7 @@ type Query {
     party(input: PartyInput!): Party
     user: User
     globalStats(input: GlobalStatsInput!) : GlobalStats!
-    addToSlackUrl: String
+    config: Configuration
 }
 
 """

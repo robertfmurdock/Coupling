@@ -27,16 +27,25 @@ import web.cssom.Color
 val IncubatingPage by nfc<PageProps> { props ->
     CouplingQuery(
         commander = props.commander,
-        query = graphQuery { partyList(); addToSlackUrl() },
+        query = graphQuery { partyList(); config { addToSlackUrl(); discordClientId() } },
         toNode = { _, _, result ->
-            result.addToSlackUrl?.let {
-                IncubatingContent.create(it, result.partyList?.map(Record<PartyDetails>::data) ?: emptyList())
+            val addToSlackUrl = result.config?.addToSlackUrl
+            val discordClientId = result.config?.discordClientId
+            if (addToSlackUrl == null || discordClientId == null) {
+                null
+            } else {
+                IncubatingContent.create(
+                    discordClientId = discordClientId,
+                    addToSlackUrl = addToSlackUrl,
+                    partyList = result.partyList?.map(Record<PartyDetails>::data) ?: emptyList(),
+                )
             }
         },
     )
 }
 
 external interface IncubatingContentProps : Props {
+    var discordClientId: String
     var addToSlackUrl: String
     var partyList: List<PartyDetails>
 }
@@ -49,13 +58,14 @@ val IncubatingContent by nfc<IncubatingContentProps> { props ->
             AddToSlackButton { url = props.addToSlackUrl }
         }
         div {
-            AddToDiscordButton { partyList = props.partyList }
+            AddToDiscordButton(props.partyList, props.discordClientId)
         }
     }
 }
 
 external interface AddToDiscordButtonProps : Props {
     var partyList: List<PartyDetails>
+    var discordClientId: String
 }
 
 @ReactFunc
@@ -87,11 +97,14 @@ val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
             }
             a {
                 href = URLBuilder("https://discord.com/api/oauth2/authorize").apply {
-                    parameters.append("client_id", "1133538666661281862")
+                    parameters.append("client_id", props.discordClientId)
                     parameters.append("redirect_uri", "https://${window.location.host}$discordCallbackHref")
                     parameters.append("response_type", "code")
                     parameters.append("scope", "webhook.incoming")
-                    parameters.append("state", Parameters.build { append("partyId", selectedParty?.value ?: "") }.formUrlEncode())
+                    parameters.append(
+                        "state",
+                        Parameters.build { append("partyId", selectedParty?.value ?: "") }.formUrlEncode(),
+                    )
                 }.toString()
                 CouplingButton {
                     +"Onward to Discord!"
