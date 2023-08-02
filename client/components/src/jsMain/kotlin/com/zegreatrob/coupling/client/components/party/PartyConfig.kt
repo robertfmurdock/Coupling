@@ -38,14 +38,10 @@ val PartyConfig by nfc<PartyConfigProps<*>> { (party, commandFunc) ->
         fire(SavePartyCommand(updatedParty))
         redirectToPartyList()
     }
-    val onDelete = if (isNew) {
-        null
-    } else {
-        commandFunc {
-            fire(DeletePartyCommand(party.id))
-            redirectToPartyList()
-        }
-    }
+    val onDelete = commandFunc {
+        fire(DeletePartyCommand(party.id))
+        redirectToPartyList()
+    }.takeUnless { isNew }
 
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
