@@ -3,6 +3,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.sdk.gql.graphQuery
@@ -54,7 +55,7 @@ private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedPartie
     ?.forEach { fire(DeletePartyCommand(it.data.id)) }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
-    .let { token -> couplingSdk({ token }, buildClient()) }
+    .let { token -> couplingSdk({ token }, buildClient(), LoggingActionPipe(uuid4())) }
 
 suspend fun sdk(): ActionCannon<CouplingSdkDispatcher> = primaryAuthorizedSdkDeferred.await()
 

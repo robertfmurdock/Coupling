@@ -34,12 +34,12 @@ class SdkPartyTest {
     } exercise {
         with(sdk()) {
             fire(DeletePartyCommand(party.id))
-            Pair(
-                fire(graphQuery { partyList() })?.partyList,
-                fire(graphQuery { party(party.id) { party() } })
-                    ?.party
-                    ?.details?.data,
-            )
+            fire(graphQuery { partyList(); party(party.id) { party() } }).let {
+                Pair(
+                    it?.partyList,
+                    it?.party?.details?.data,
+                )
+            }
         }
     } verifyAnd { (listResult, getResult) ->
         listResult?.find { it.data.id == this.party.id }
