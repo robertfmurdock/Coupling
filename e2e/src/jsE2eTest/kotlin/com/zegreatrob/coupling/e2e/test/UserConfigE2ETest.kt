@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 import kotlin.test.Test
@@ -12,8 +13,11 @@ class UserConfigE2ETest {
     }) exercise {
         page.goTo()
     } verify {
+        val emailInput = TestingLibraryBrowser.findByLabelText("User Email")
         WebdriverBrowser.waitUntil({
-            TestingLibraryBrowser.findByText("User Email: $primaryAuthorizedUsername").isDisplayed()
+            emailInput.isDisplayed()
         })
+        emailInput.attribute("value")
+            .assertIsEqualTo(primaryAuthorizedUsername)
     }
 }
