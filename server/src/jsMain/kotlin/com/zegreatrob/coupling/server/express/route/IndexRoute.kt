@@ -76,7 +76,7 @@ private fun Express.injectVariablesForClient() = """<script>
 """.trimIndent()
 
 fun healthRoute(): Handler = { request, response, _ ->
-    request.setUser(User("HealthCheck", "", emptySet()))
+    request.setUser(User("HealthCheck", "", emptySet(), null))
     request.scope.launch {
         request.commandDispatcher()
     }.invokeOnCompletion { error ->

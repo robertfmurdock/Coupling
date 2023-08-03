@@ -31,7 +31,7 @@ import kotlinx.datetime.Clock
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlin.js.Json
 
-val user = User("IMPORT_USER", "robert.f.murdock@gmail.com", emptySet())
+val user = User("IMPORT_USER", "robert.f.murdock@gmail.com", emptySet(), null)
 
 private val logger = KotlinLogging.logger("import")
 

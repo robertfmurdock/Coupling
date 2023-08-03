@@ -191,7 +191,7 @@ fun serverlessSocketDisconnect(event: dynamic) = MainScope().promise {
 }
 
 private suspend fun CoroutineScope.socketDispatcher() = commandDispatcher(
-    User("websocket", "websocket", emptySet()),
+    User("websocket", "websocket", emptySet(), null),
     this,
     uuid4(),
 )

@@ -13,6 +13,7 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
     fun User.asDynamoJson() = json(
         "id" to id,
         "email" to email,
+        "stripeCustomerId" to stripeCustomerId,
         "authorizedTribeIds" to authorizedPartyIds.map { it.value }.toTypedArray(),
     )
 
@@ -23,6 +24,7 @@ interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
             .unsafeCast<Array<String?>>()
             .mapNotNull { it?.let(::PartyId) }
             .toSet(),
+        getDynamoStringValue("stripeCustomerId"),
     )
 
     fun Json.toUserRecord() = toRecord(

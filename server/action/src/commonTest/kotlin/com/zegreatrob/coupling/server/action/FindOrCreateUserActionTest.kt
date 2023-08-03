@@ -43,7 +43,7 @@ class FindOrCreateUserActionTest {
             override val userRepository = this
             override val userId = "test@test.tes"
 
-            val expectedUser = User("${uuid4()}", userId, setOf(PartyId("Best party")))
+            val expectedUser = User("${uuid4()}", userId, setOf(PartyId("Best party")), null)
             override suspend fun getUser() = Record(expectedUser, "", false, Clock.System.now())
             override suspend fun getUsersWithEmail(email: String): List<Record<User>> = emptyList()
             override suspend fun save(user: User) = fail("Should not save")
@@ -60,7 +60,7 @@ class FindOrCreateUserActionTest {
         override val userRepository = this
         override val userId = "test@test.tes"
 
-        val expectedUser = User("${uuid4()}", userId, setOf(PartyId("Best party")))
+        val expectedUser = User("${uuid4()}", userId, setOf(PartyId("Best party")), null)
         override suspend fun getUser(): Nothing? = null
         override suspend fun getUsersWithEmail(email: String): List<Record<User>> =
             listOf(Record(expectedUser, "", false, Clock.System.now()))

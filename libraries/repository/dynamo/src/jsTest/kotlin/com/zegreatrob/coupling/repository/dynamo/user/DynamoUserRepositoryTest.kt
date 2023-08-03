@@ -39,7 +39,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoUserRepository>>(sharedSetup = {
         val clock = MagicClock()
         val userId = "${uuid4()}"
-        val user = User(userId, "${uuid4()}", emptySet())
+        val user = User(userId, "${uuid4()}", emptySet(), uuidString())
         val repository = DynamoUserRepository(userId, clock)
         SharedContextData(repository, clock, user)
     })
@@ -49,7 +49,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     @Ignore
     fun canHandleLargeNumberOfRecordRevisionsAndGetLatestOneFast() = asyncSetup(object {
         val userId = "${uuid4()}"
-        val user = User(userId, "${uuid4()}", emptySet())
+        val user = User(userId, "${uuid4()}", emptySet(), null)
         lateinit var repository: DynamoUserRepository
     }) {
         repository = DynamoUserRepository(userId, Clock.System)

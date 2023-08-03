@@ -9,8 +9,6 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.js.Json
 import kotlin.js.json
 
-// private val dateFormat = PatternDateFormat("YYYYMMddHHmmss.SSS")
-
 interface DynamoDatatypeSyntax {
 
     fun Json.itemsNode() = this["Items"].unsafeCast<Array<Json>>()

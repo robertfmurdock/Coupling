@@ -17,7 +17,7 @@ class MemoryUserRepositoryTest : UserRepositoryValidator<MemoryUserRepository> {
             val clock = MagicClock()
             val email = "${uuid4()}@mail.com"
             val id = "${uuid4()}"
-            val user = User(id, email, emptySet())
+            val user = User(id, email, emptySet(), null)
             val repository = MemoryUserRepository(id, clock)
             SharedContextData(repository, clock, user)
         })

@@ -47,7 +47,9 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     @Test
     fun saveUserThenGetWillIncludeMarkingInformation() = repositorySetup.with(
         object : ContextMint<R>() {
-            val updatedUser by lazy { user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId())) }
+            val updatedUser by lazy {
+                user.copy(authorizedPartyIds = setOf(stubPartyId(), stubPartyId()), stripeCustomerId = null)
+            }
         }.bind(),
     ) exercise {
         clock.currentTime = Clock.System.now().plus(10.days)

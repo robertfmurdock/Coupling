@@ -133,6 +133,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
             .unsafeCast<Array<String?>>()
             .mapNotNull { it?.let(::PartyId) }
             .toSet(),
+        null,
     )
 
     private fun queryParams(id: String) = json(

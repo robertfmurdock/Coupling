@@ -22,6 +22,11 @@ interface FindOrCreateUserActionDispatcher : UserIdProvider, UserSaveSyntax, Use
         .firstOrNull()
         ?.data
 
-    private suspend fun newUser() = User(id = "${uuid4()}", email = userId, authorizedPartyIds = emptySet())
+    private suspend fun newUser() = User(
+        id = "${uuid4()}",
+        email = userId,
+        authorizedPartyIds = emptySet(),
+        stripeCustomerId = null,
+    )
         .apply { save() }
 }

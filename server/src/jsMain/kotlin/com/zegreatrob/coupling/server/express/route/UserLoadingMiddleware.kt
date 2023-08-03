@@ -27,7 +27,7 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
                 val secretId = "${auth["https://zegreatrob.com/secret-id"]}"
                 val partyId = PartyId("${auth["sub"]}")
                 if (secretIsNotDeleted(secretId, partyId)) {
-                    User(id = secretId, email = secretId, authorizedPartyIds = setOf(partyId))
+                    User(id = secretId, email = secretId, authorizedPartyIds = setOf(partyId), stripeCustomerId = null)
                 } else {
                     null
                 }

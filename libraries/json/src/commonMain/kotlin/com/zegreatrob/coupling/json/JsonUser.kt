@@ -45,6 +45,7 @@ fun JsonUser.toModel() = User(
     id = id,
     email = email,
     authorizedPartyIds = authorizedPartyIds,
+    stripeCustomerId = null,
 )
 
 fun JsonUserRecord.toModel() = Record(
@@ -52,6 +53,7 @@ fun JsonUserRecord.toModel() = Record(
         id = id,
         email = email,
         authorizedPartyIds = authorizedPartyIds,
+        stripeCustomerId = null,
     ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
