@@ -63,6 +63,7 @@ data class JsonParty(
 data class JsonConfig(
     val discordClientId: String? = null,
     val addToSlackUrl: String? = null,
+    val addCreditCardSecret: String? = null,
 )
 
 @Serializable
