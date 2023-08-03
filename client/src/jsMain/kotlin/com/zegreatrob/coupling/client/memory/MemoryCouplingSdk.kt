@@ -42,7 +42,7 @@ import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 
-class MemoryRepositoryCatalog private constructor(
+class MemoryCouplingSdk private constructor(
     override val userId: String,
     override val clock: Clock,
     override val partyRepository: PartyRepository,
@@ -79,9 +79,7 @@ class MemoryRepositoryCatalog private constructor(
         MemoryPinRepository(userEmail, clock, backend.pin),
     )
 
-    override suspend fun perform(command: SpinCommand): SpinCommand.Result {
-        TODO("Not yet implemented")
-    }
+    override suspend fun perform(command: SpinCommand) = SpinCommand.Result.Success
 
     override suspend fun perform(command: BoostQuery) = TODO("Not yet implemented")
     override suspend fun perform(command: CreateSecretCommand): Pair<Secret, String> {
@@ -100,7 +98,7 @@ class MemoryRepositoryCatalog private constructor(
 
     override suspend fun perform(query: GraphQuery) = CouplingQueryResult(
         partyList = partyRepository.loadParties(),
-        user = User(userId, "???", setOf(PartyId("Kind of fake"))),
+        user = User(userId, "$userId@test.fake.io", partyRepository.loadParties().map { it.data.id }.toSet()),
         party = query.variables?.get("input")?.let { Json.decodeFromJsonElement<PartyInput>(it) }?.partyId?.let {
             val id = PartyId(it)
             Party(

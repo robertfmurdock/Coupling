@@ -5,7 +5,7 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.LoggingActionPipe
 import com.zegreatrob.coupling.client.ClientDispatcher
 import com.zegreatrob.coupling.client.LocalStorageRepositoryBackend
-import com.zegreatrob.coupling.client.memory.MemoryRepositoryCatalog
+import com.zegreatrob.coupling.client.memory.MemoryCouplingSdk
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.couplingSdk
@@ -36,7 +36,7 @@ interface Commander {
 class MasterCommander(private val getIdentityToken: suspend () -> String) : Commander {
     private val backend = LocalStorageRepositoryBackend()
     override fun tracingCannon(traceId: Uuid) = if (window["inMemory"] == true) {
-        DispatcherPipeCannon(MemoryRepositoryCatalog("test-user", backend, Clock.System))
+        DispatcherPipeCannon(MemoryCouplingSdk("test-user", backend, Clock.System))
     } else {
         couplingSdk(getIdentityToken, defaultClient(getLocationAndBasename(), traceId), LoggingActionPipe(traceId))
     }

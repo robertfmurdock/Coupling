@@ -107,7 +107,7 @@ if (config.devServer) {
     config.devServer.port = 3001
     config.devServer.hot = true
     config.devServer.historyApiFallback = {index: 'html/index.html'}
-    let distributionPath = path.resolve(__dirname, '../../../../client/build/distributions');
+    let distributionPath = path.resolve(__dirname, 'dist');
     config.devServer.static.push({
         directory: distributionPath,
         publicPath: '/app/build',
@@ -140,14 +140,18 @@ config.plugins.push(
         } : {}
     }),
     new HtmlWebpackHarddiskPlugin(),
-    new WebpackFavicons({
-        src: path.resolve(resourcesPath, 'images/logo.png'),
-        path: 'html/assets/',
-        icons: {
-            favicons: true
-        }
-    }),
     new MiniCssExtractPlugin({
         filename: 'html/styles.css',
     }),
 );
+if(!config.devServer) {
+    config.plugins.push(
+        new WebpackFavicons({
+            src: path.resolve(resourcesPath, 'images/logo.png'),
+            path: 'html/assets/',
+            icons: {
+                favicons: true
+            }
+        }),
+    )
+}
