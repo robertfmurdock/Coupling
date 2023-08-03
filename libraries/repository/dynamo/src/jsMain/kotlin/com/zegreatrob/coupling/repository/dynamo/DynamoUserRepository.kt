@@ -126,14 +126,14 @@ class DynamoUserRepository private constructor(override val userId: String, over
             ?.let { listOf(it) }
     }
 
-    private fun emailIdRecordToUser(firstOrNull: Json) = User(
-        firstOrNull["user_id"].toString(),
-        firstOrNull["email"].toString(),
-        firstOrNull["authorizedTribeIds"]
+    private fun emailIdRecordToUser(json: Json) = User(
+        json["user_id"].toString(),
+        json["email"].toString(),
+        json["authorizedTribeIds"]
             .unsafeCast<Array<String?>>()
             .mapNotNull { it?.let(::PartyId) }
             .toSet(),
-        null,
+        json.getDynamoStringValue("stripeCustomerId"),
     )
 
     private fun queryParams(id: String) = json(
@@ -159,6 +159,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
         "id" to emailId(data.email),
         "user_id" to data.id,
         "email" to data.email,
+        "stripeCustomerId" to data.stripeCustomerId,
         "authorizedTribeIds" to data.authorizedPartyIds.map { it.value }.toTypedArray(),
     )
 

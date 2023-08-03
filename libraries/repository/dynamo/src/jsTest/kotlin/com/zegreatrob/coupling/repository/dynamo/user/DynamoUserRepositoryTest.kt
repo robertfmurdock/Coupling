@@ -141,6 +141,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                 json(
                     "id" to record.data.id,
                     "email" to record.data.email,
+                    "stripeCustomerId" to record.data.stripeCustomerId,
                     "authorizedTribeIds" to record.data.authorizedPartyIds.map { it.value }
                         .plus(null)
                         .toTypedArray(),

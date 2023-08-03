@@ -10,8 +10,6 @@ import com.zegreatrob.coupling.client.components.LogoutButton
 import com.zegreatrob.coupling.client.components.NotificationButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.blue
-import com.zegreatrob.coupling.client.components.external.stripe.Elements
-import com.zegreatrob.coupling.client.components.external.stripe.loadStripe
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.coupling.client.components.player.PlayerCard
@@ -24,6 +22,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
+import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
@@ -121,25 +120,29 @@ external interface SponsorCouplingButtonProps : Props {
 val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
     val (stripePk, setStripePk) = useState<String?>(null)
     var addSecret by useState<String?>(null)
+    var user by useState<User?>(null)
 
     val getSecretFunc = props.dispatchFunc {
-        val config = fire(
+        val result = fire(
             graphQuery {
+                user()
                 config {
                     stripePublishableKey()
                     addCreditCardSecret()
                 }
             },
-        )?.config
+        )
+        val config = result?.config
         setStripePk(config?.stripePublishableKey)
+        user = result?.user
         addSecret = config?.addCreditCardSecret
     }
 
     if (addSecret != null && stripePk != null) {
-        +"Enter credit card information to sponsor."
 
-        Elements {
-            stripe = loadStripe(stripePk)
+        a {
+            href = "https://buy.stripe.com/test_fZe5kta5OcHOfkI7ss?prefilled_email=${user?.email}"
+            +"Click for ongoing sponsorship via subscription."
         }
 
         +addSecret

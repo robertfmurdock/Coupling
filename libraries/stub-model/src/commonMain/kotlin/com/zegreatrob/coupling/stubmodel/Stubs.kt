@@ -94,7 +94,7 @@ fun stubUser() = User(
     id = uuidString(),
     email = "$userCounter-${uuidString()}@gmail.com",
     authorizedPartyIds = setOf(stubPartyId()),
-    stripeCustomerId = null,
+    stripeCustomerId = uuidString(),
 ).also { userCounter++ }
 
 fun stubPinnedPlayer() = PinnedPlayer(stubPlayer(), listOf(stubPin()))
