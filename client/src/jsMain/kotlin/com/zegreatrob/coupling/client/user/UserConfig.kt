@@ -127,6 +127,8 @@ val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
 
     if (addSecret != null) {
         +"Enter credit card information to sponsor."
+
+        +addSecret
     } else {
         CouplingButton(large, blue, onClick = getSecretFunc) {
             span { +"Sponsor Coupling!" }

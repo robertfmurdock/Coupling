@@ -44,7 +44,11 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
     config = config?.toModel(),
 )
 
-private fun JsonConfig.toModel() = CouplingConfig(discordClientId, addToSlackUrl)
+private fun JsonConfig.toModel() = CouplingConfig(
+    discordClientId = discordClientId,
+    addToSlackUrl = addToSlackUrl,
+    addCreditCardSecret = addCreditCardSecret,
+)
 
 @Serializable
 data class JsonParty(

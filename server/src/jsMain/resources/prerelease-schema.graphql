@@ -27,3 +27,8 @@ type Mutation {
 }
 
 type Query { _: String }
+
+type Configuration {
+    stripePublishableKey: String
+    addCreditCardSecret: String
+}

@@ -21,6 +21,10 @@ object Config {
     val slackSigningSecret = Process.getEnv("SLACK_SIGNING_SECRET") ?: ""
     val discordClientId = Process.getEnv("DISCORD_CLIENT_ID") ?: ""
     val discordClientSecret = Process.getEnv("DISCORD_CLIENT_SECRET") ?: ""
+
+    val stripePublishableKey = Process.getEnv("STRIPE_PUBLISHABLE_KEY") ?: ""
+    val stripeSecretKey = Process.getEnv("STRIPE_SECRET_KEY") ?: ""
+
     val websocketHost = Process.getEnv("WEBSOCKET_HOST") ?: "${URL(publicUrl).host}/api/websocket"
     val apiGatewayManagementApiHost =
         Process.getEnv("API_GATEWAY_MANAGEMENT_API_HOST") ?: "${URL(publicUrl).protocol}//$websocketHost"
