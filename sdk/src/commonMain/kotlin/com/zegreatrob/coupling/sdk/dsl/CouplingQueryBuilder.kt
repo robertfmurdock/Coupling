@@ -91,4 +91,8 @@ class ConfigQueryBuilder : QueryBuilder<JsonConfig> {
     fun addCreditCardSecret() {
         output = output.copy(addCreditCardSecret = "")
     }
+
+    fun stripePublishableKey() {
+        output = output.copy(stripePublishableKey = "")
+    }
 }

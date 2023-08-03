@@ -2,13 +2,14 @@
 
 package com.zegreatrob.coupling.client.components.external.stripe
 
+import react.FC
 import react.Props
-import react.ReactElement
+import kotlin.js.Promise
 
-external val Elements: ReactElement<ElementsProps>
+external val Elements: FC<ElementsProps>
 
 external interface ElementsProps : Props {
-    var stripe: Stripe
+    var stripe: Promise<Stripe>
     var options: ElementsOptions
 }
 

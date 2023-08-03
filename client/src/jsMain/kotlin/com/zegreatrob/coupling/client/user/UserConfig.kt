@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.client.components.LogoutButton
 import com.zegreatrob.coupling.client.components.NotificationButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.blue
+import com.zegreatrob.coupling.client.components.external.stripe.Elements
+import com.zegreatrob.coupling.client.components.external.stripe.loadStripe
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.coupling.client.components.player.PlayerCard
@@ -117,16 +119,28 @@ external interface SponsorCouplingButtonProps : Props {
 
 @ReactFunc
 val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
+    val (stripePk, setStripePk) = useState<String?>(null)
     var addSecret by useState<String?>(null)
 
     val getSecretFunc = props.dispatchFunc {
-        addSecret = fire(graphQuery { config { addCreditCardSecret() } })
-            ?.config
-            ?.addCreditCardSecret
+        val config = fire(
+            graphQuery {
+                config {
+                    stripePublishableKey()
+                    addCreditCardSecret()
+                }
+            },
+        )?.config
+        setStripePk(config?.stripePublishableKey)
+        addSecret = config?.addCreditCardSecret
     }
 
-    if (addSecret != null) {
+    if (addSecret != null && stripePk != null) {
         +"Enter credit card information to sponsor."
+
+        Elements {
+            stripe = loadStripe(stripePk)
+        }
 
         +addSecret
     } else {
