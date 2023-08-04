@@ -16,9 +16,10 @@ import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.coupling.server.action.GlobalStatsQuery
 import com.zegreatrob.coupling.server.action.SecretGenerator
 import com.zegreatrob.coupling.server.action.ServerCreateSecretCommandDispatcher
-import com.zegreatrob.coupling.server.action.boost.ServerBoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerDeleteBoostCommandDispatcher
+import com.zegreatrob.coupling.server.action.boost.ServerPartyBoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.boost.ServerSaveBoostCommandDispatcher
+import com.zegreatrob.coupling.server.action.boost.ServerUserBoostQueryDispatcher
 import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
@@ -193,7 +194,8 @@ fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(
 interface PrereleaseDispatcher :
     ICommandDispatcher,
     ServerSaveBoostCommandDispatcher,
-    ServerBoostQueryDispatcher,
+    ServerUserBoostQueryDispatcher,
+    ServerPartyBoostQueryDispatcher,
     ServerDeleteBoostCommandDispatcher {
     override val boostRepository: BoostRepository
 }

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.JsonBoostRecord
 import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonIntegrationRecord
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
@@ -38,6 +39,7 @@ object GqlReference {
         totalUniquePins = 0,
     )
     val user = JsonUserDetails("", "", emptySet())
+    val boost = JsonBoostRecord("", emptySet(), "", false, Instant.DISTANT_FUTURE)
 
     private val pinData = JsonPinData(
         id = "",

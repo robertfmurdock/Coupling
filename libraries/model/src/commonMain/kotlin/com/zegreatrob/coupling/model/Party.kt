@@ -18,4 +18,5 @@ data class Party(
     val secretList: List<PartyRecord<Secret>>? = null,
     val pairAssignmentDocumentList: List<PartyRecord<PairAssignmentDocument>>? = null,
     val currentPairAssignmentDocument: PartyRecord<PairAssignmentDocument>? = null,
+    val boost: Record<Boost>? = null,
 )

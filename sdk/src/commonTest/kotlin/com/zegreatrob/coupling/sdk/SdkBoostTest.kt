@@ -4,10 +4,13 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.boost.fire
+import com.zegreatrob.coupling.action.party.SavePartyCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlin.test.Test
 
@@ -49,7 +52,7 @@ class SdkBoostTest {
     }
 
     @Test
-    fun getSavedBoostWillReturnSuccessfully() = setupWithUser.with({
+    fun getSavedBoostViaUserWillReturnSuccessfully() = setupWithUser.with({
         object {
             val sdk = it.sdk
             val userId = it.user.id
@@ -60,6 +63,28 @@ class SdkBoostTest {
     } verifyWithWait {
         sdk.fire(graphQuery { user { boost() } })
             ?.user?.boost?.data
+            .assertIsEqualTo(
+                Boost(
+                    userId = userId,
+                    partyIds = partyIds,
+                ),
+            )
+    }
+
+    @Test
+    fun getSavedBoostViaPartyWillReturnSuccessfully() = setupWithUser.with({
+        object {
+            val sdk = it.sdk
+            val userId = it.user.id
+            val party = stubPartyDetails()
+            val partyIds = setOf(party.id)
+        }
+    }) exercise {
+        sdk.fire(SavePartyCommand(party))
+        sdk.fire(SaveBoostCommand(partyIds))
+    } verifyWithWait {
+        sdk.fire(graphQuery { party(party.id) { boost() } })
+            ?.party?.boost?.data
             .assertIsEqualTo(
                 Boost(
                     userId = userId,

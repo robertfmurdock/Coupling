@@ -15,6 +15,9 @@ fun prereleaseResolvers() = json(
     "User" to json(
         "boost" to userBoostResolver,
     ),
+    "Party" to json(
+        "boost" to userBoostResolver,
+    ),
     "Configuration" to json(
         "stripePublishableKey" to { Config.stripePublishableKey },
         "addCreditCardSecret" to addCreditCardSecretResolver,

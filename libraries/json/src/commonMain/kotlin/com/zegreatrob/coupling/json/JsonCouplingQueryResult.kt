@@ -34,6 +34,7 @@ private fun JsonParty.toModel() = Party(
     secretList = secretList?.map(JsonSecretRecord::toModel),
     pairAssignmentDocumentList = pairAssignmentDocumentList?.map(JsonPairAssignmentDocumentRecord::toModel),
     currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
+    boost = boost?.toModelRecord(),
 )
 
 fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
@@ -62,6 +63,7 @@ data class JsonParty(
     val retiredPlayers: List<JsonPlayerRecord>? = null,
     val pairAssignmentDocumentList: List<JsonPairAssignmentDocumentRecord>? = null,
     val currentPairAssignmentDocument: JsonPairAssignmentDocumentRecord? = null,
+    val boost: JsonBoostRecord? = null,
 )
 
 @Serializable
