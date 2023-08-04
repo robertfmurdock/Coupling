@@ -15,7 +15,7 @@ val PinPage = partyPageFunction { props, partyId ->
         commander = props.commander,
         query = graphQuery {
             party(partyId) {
-                party()
+                details()
                 pinList()
             }
         },

@@ -5,8 +5,6 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.zegreatrob.coupling.cli.Auth0Environment
 import com.zegreatrob.coupling.cli.getAccessToken
-import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.coupling.sdk.gql.graphQuery
@@ -31,9 +29,9 @@ class List : CliktCommand() {
                 httpClient = defaultClient(environment.audienceHost() to ""),
             )
             runBlocking {
-                sdk.fire(graphQuery { partyList() })
+                sdk.fire(graphQuery { partyList { details() } })
                     ?.partyList
-                    ?.map(Record<PartyDetails>::data)
+                    ?.mapNotNull { it.details?.data }
                     ?.joinToString("\n") { "Party: id = ${it.id.value}, name = ${it.name}" }
                     .let { it ?: "" }
                     .let { echo(it) }

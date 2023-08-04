@@ -29,7 +29,7 @@ private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: Party
         commander = props.commander,
         query = graphQuery {
             party(partyId) {
-                party()
+                details()
                 retiredPlayers()
             }
         },

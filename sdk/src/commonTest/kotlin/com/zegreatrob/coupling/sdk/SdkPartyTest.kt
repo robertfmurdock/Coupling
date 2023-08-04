@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
+import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
@@ -34,15 +35,15 @@ class SdkPartyTest {
     } exercise {
         with(sdk()) {
             fire(DeletePartyCommand(party.id))
-            fire(graphQuery { partyList(); party(party.id) { party() } }).let {
+            fire(graphQuery { partyList { details() }; party(party.id) { details() } }).let {
                 Pair(
-                    it?.partyList,
+                    it?.partyList?.mapNotNull(Party::details)?.map(Record<PartyDetails>::data),
                     it?.party?.details?.data,
                 )
             }
         }
     } verifyAnd { (listResult, getResult) ->
-        listResult?.find { it.data.id == this.party.id }
+        listResult?.find { it.id == this.party.id }
             .assertIsEqualTo(null)
         getResult.assertIsEqualTo(null)
     } teardown {
@@ -56,7 +57,7 @@ class SdkPartyTest {
         parties.forEach { sdk().fire(SavePartyCommand(it)) }
     } exercise {
         parties.map {
-            sdk().fire(graphQuery { party(it.id) { party() } })
+            sdk().fire(graphQuery { party(it.id) { details() } })
                 ?.party
                 ?.details?.data
         }
@@ -70,12 +71,12 @@ class SdkPartyTest {
     }) {
         parties.forEach { sdk().fire(SavePartyCommand(it)) }
     } exercise {
-        sdk().fire(graphQuery { partyList() })?.partyList
+        sdk().fire(graphQuery { partyList { details() } })?.partyList
     } verify { result ->
         result?.parties().assertContainsAll(parties)
     }
 
-    private fun List<Record<PartyDetails>>.parties() = map(Record<PartyDetails>::data)
+    private fun List<Party>.parties() = mapNotNull { it.details?.data }
 
     private fun List<PartyDetails>?.assertContainsAll(expectedParties: List<PartyDetails>) {
         assertNotNull(this, "List was null.")
@@ -102,9 +103,9 @@ class SdkPartyTest {
             fire(SavePlayerCommand(party.id, playerMatchingSdkUser))
         }
     } exercise {
-        sdk().fire(graphQuery { partyList() })?.partyList ?: emptyList()
+        sdk().fire(graphQuery { partyList { details() } })?.partyList ?: emptyList()
     } verify { result ->
-        result.map(Record<PartyDetails>::data)
+        result.map { it.details?.data }
             .assertContains(party)
     }
 
@@ -116,9 +117,9 @@ class SdkPartyTest {
             fire(SavePlayerCommand(party.id, playerMatchingSdkUser.copy(email = "something else")))
         }
     } exercise {
-        sdk().fire(graphQuery { partyList() })?.partyList ?: emptyList()
+        sdk().fire(graphQuery { partyList { details() } })?.partyList ?: emptyList()
     } verify { result ->
-        result.map { it.data }.contains(party)
+        result.map { it.details?.data }.contains(party)
             .assertIsEqualTo(false)
     }
 
@@ -130,9 +131,9 @@ class SdkPartyTest {
             fire(DeletePlayerCommand(party.id, playerMatchingSdkUser.id))
         }
     } exercise {
-        sdk().fire(graphQuery { partyList() })?.partyList ?: emptyList()
+        sdk().fire(graphQuery { partyList { details() } })?.partyList ?: emptyList()
     } verify { result ->
-        result.map { it.data }.contains(party)
+        result.map { it.details?.data }.contains(party)
             .assertIsEqualTo(false)
     }
 
@@ -141,7 +142,7 @@ class SdkPartyTest {
         altSdk().fire(SavePartyCommand(party))
     } exercise {
         sdk().fire(SavePartyCommand(party.copy(name = "changed name")))
-        altSdk().fire(graphQuery { party(party.id) { party() } })
+        altSdk().fire(graphQuery { party(party.id) { details() } })
             ?.party
             ?.details
     } verify { result ->
@@ -154,9 +155,9 @@ class SdkPartyTest {
     }) {
         sdk().fire(SavePartyCommand(party))
     } exercise {
-        sdk().fire(graphQuery { partyList() })?.partyList ?: emptyList()
+        sdk().fire(graphQuery { partyList { details() } })?.partyList ?: emptyList()
     } verifyAnd { result ->
-        result.first { it.data.id == party.id }.apply {
+        result.first { it.id == party.id }.details!!.apply {
             modifyingUserId.assertIsNotEqualTo(null, "As long as an id exists, we're good.")
             timestamp.isWithinOneSecondOfNow()
         }

@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.server.action.party.perform
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonElement
 
-val partyResolve = dispatch(
+val partyDetailsResolve = dispatch(
     dispatcherFunc = { r, _, _ -> r.commandDispatcher },
     commandFunc = { entity: JsonParty, _: JsonElement -> PartyQuery(PartyId(entity.id)) },
     fireFunc = ::perform,

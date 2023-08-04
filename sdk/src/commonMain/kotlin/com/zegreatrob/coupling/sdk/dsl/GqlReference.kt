@@ -85,7 +85,7 @@ object GqlReference {
         timestamp = Instant.DISTANT_PAST,
     )
     val partyRecord = JsonPartyDetailsRecord(
-        id = PartyId(""),
+        id = "",
         pairingRule = 0,
         badgesEnabled = false,
         defaultBadgeName = "",

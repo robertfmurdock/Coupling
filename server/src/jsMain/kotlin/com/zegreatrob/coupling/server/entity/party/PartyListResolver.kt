@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.entity.party
 
+import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -17,3 +18,4 @@ val partyListResolve = dispatch(
 )
 
 private fun toJson(records: List<Record<PartyDetails>>?) = records?.map(Record<PartyDetails>::toSerializable)
+    ?.map { JsonParty(id = it.id, details = it) }

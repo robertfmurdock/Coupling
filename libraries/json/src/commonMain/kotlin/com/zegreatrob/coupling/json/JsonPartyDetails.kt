@@ -27,7 +27,7 @@ data class JsonPartyDetails(
 
 @Serializable
 data class JsonPartyDetailsRecord(
-    val id: PartyId,
+    val id: String,
     val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
     val badgesEnabled: Boolean = false,
     val defaultBadgeName: String = "Default",
@@ -56,7 +56,7 @@ fun PartyDetails.toSerializable() = JsonPartyDetails(
 )
 
 fun Record<PartyDetails>.toSerializable() = JsonPartyDetailsRecord(
-    id = data.id,
+    id = data.id.value,
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
     defaultBadgeName = data.defaultBadgeName,
@@ -104,7 +104,7 @@ fun JsonPartyDetails.toModel(): PartyDetails = PartyDetails(
 
 fun JsonPartyDetailsRecord.toModelRecord(): Record<PartyDetails> = Record(
     data = PartyDetails(
-        id = id,
+        id = PartyId(id),
         pairingRule = PairingRule.fromValue(pairingRule),
         badgesEnabled = badgesEnabled,
         defaultBadgeName = defaultBadgeName,

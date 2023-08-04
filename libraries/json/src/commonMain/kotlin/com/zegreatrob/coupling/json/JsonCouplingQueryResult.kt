@@ -12,7 +12,7 @@ import kotlin.time.DurationUnit
 
 @Serializable
 data class JsonCouplingQueryResult(
-    val partyList: List<JsonPartyDetailsRecord>? = null,
+    val partyList: List<JsonParty>? = null,
     val user: JsonUser? = null,
     val party: JsonParty? = null,
     val globalStats: JsonGlobalStats? = null,
@@ -37,7 +37,7 @@ private fun JsonParty.toModel() = Party(
 )
 
 fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
-    partyList = partyList?.map(JsonPartyDetailsRecord::toModelRecord),
+    partyList = partyList?.map(JsonParty::toModel),
     user = user?.toModel(),
     party = party?.toModel(),
     globalStats = globalStats?.toModel(),

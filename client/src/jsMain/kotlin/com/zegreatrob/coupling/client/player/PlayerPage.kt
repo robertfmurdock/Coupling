@@ -17,7 +17,7 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
     val playerId = props.playerId
     CouplingQuery(
         commander = props.commander,
-        query = graphQuery { party(partyId) { party(); playerList() } },
+        query = graphQuery { party(partyId) { details(); playerList() } },
         toNode = { reload, commandFunc, data ->
             val partyDetails = data.party?.details?.data ?: return@CouplingQuery null
             val playerList = data.party?.playerList?.elements ?: return@CouplingQuery null

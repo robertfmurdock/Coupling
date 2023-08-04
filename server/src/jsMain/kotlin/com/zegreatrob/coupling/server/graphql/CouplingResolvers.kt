@@ -9,9 +9,9 @@ import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListRe
 import com.zegreatrob.coupling.server.entity.pairassignment.savePairsResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
 import com.zegreatrob.coupling.server.entity.party.deletePartyResolver
+import com.zegreatrob.coupling.server.entity.party.partyDetailsResolve
 import com.zegreatrob.coupling.server.entity.party.partyIntegrationResolve
 import com.zegreatrob.coupling.server.entity.party.partyListResolve
-import com.zegreatrob.coupling.server.entity.party.partyResolve
 import com.zegreatrob.coupling.server.entity.party.savePartyResolver
 import com.zegreatrob.coupling.server.entity.party.saveSlackIntegrationResolver
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
@@ -70,7 +70,7 @@ fun couplingResolvers() = json(
         "grantDiscordAccess" to grantDiscordAccessResolver,
     ),
     "Party" to json(
-        "details" to partyResolve,
+        "details" to partyDetailsResolve,
         "integration" to partyIntegrationResolve,
         "pinList" to pinListResolve,
         "playerList" to playerListResolve,

@@ -29,9 +29,14 @@ inline fun <reified E, reified I, reified D : TraceIdProvider, reified C, reifie
     crossinline commandFunc: (_: E, input: I) -> C,
     crossinline fireFunc: suspend ActionCannon<D>.(C) -> R,
     crossinline toSerializable: (R) -> J,
-) = { entityJson: Json, args: Json, context: CouplingContext, _: Json ->
+) = { entityJson: Json?, args: Json, context: CouplingContext, queryInfo: Json ->
     context.scope.promise {
         try {
+            val targetField = queryInfo["fieldName"].toString()
+            val alreadyLoadedField = entityJson?.get(targetField)
+            if (alreadyLoadedField != null) {
+                return@promise alreadyLoadedField
+            }
             val (entity, input) = parseGraphJsons<E, I>(entityJson, args)
             val cannon = cannon(context, entity, input, dispatcherFunc)
                 ?: return@promise null
@@ -48,7 +53,7 @@ inline fun <reified E, reified I, reified D : TraceIdProvider, reified C, reifie
     }
 }
 
-inline fun <reified E, reified I> parseGraphJsons(entityJson: Json, args: Json): Pair<E, I> {
+inline fun <reified E, reified I> parseGraphJsons(entityJson: Json?, args: Json): Pair<E, I> {
     val entity = couplingJsonFormat.decodeFromDynamic<E>(entityJson)
     val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
     return Pair(entity, input)

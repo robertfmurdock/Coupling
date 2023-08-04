@@ -18,7 +18,7 @@ class PartyQueryBuilder : QueryBuilder<JsonParty> {
         )
     }
 
-    fun party() {
+    fun details() {
         output = output.copy(
             details = partyRecord,
         )

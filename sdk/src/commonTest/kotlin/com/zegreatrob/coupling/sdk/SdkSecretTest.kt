@@ -44,7 +44,7 @@ class SdkSecretTest {
             .assertIsEqualTo(listOf(secret))
 
         val tokenSdk = couplingSdk({ token }, buildClient())
-        tokenSdk.fire(graphQuery { party(party.id) { party() } })
+        tokenSdk.fire(graphQuery { party(party.id) { details() } })
             ?.party
             ?.details
             ?.data
@@ -70,7 +70,7 @@ class SdkSecretTest {
             ?.elements
             .assertIsEqualTo(emptyList())
         val tokenSdk = couplingSdk({ token }, buildClient())
-        runCatching { tokenSdk.fire(graphQuery { party(party.id) { party() } }) }
+        runCatching { tokenSdk.fire(graphQuery { party(party.id) { details() } }) }
             .exceptionOrNull()
             .assertIsNotEqualTo(null, "Expect this to fail")
     }
@@ -91,12 +91,13 @@ class SdkSecretTest {
         val tokenSdk = couplingSdk({ token }, buildClient())
         val queryResult: CouplingQueryResult? = tokenSdk.fire(
             graphQuery {
-                partyList()
-                party(party2.id) { party() }
+                partyList { details() }
+                party(party2.id) { details() }
             },
         )
         queryResult
             ?.partyList
+            ?.mapNotNull { it.details }
             ?.data()
             .assertIsEqualTo(listOf(party1))
         queryResult?.party

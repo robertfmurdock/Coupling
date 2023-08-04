@@ -13,7 +13,7 @@ val PrepareSpinPage = partyPageFunction { props, partyId ->
         commander = props.commander,
         query = graphQuery {
             party(partyId) {
-                party()
+                details()
                 playerList()
                 currentPairAssignments()
                 pinList()

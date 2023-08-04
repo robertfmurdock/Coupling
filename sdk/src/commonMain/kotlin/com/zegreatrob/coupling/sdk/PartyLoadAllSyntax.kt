@@ -13,7 +13,7 @@ interface PartyLoadAllSyntax : SdkProviderSyntax {
     suspend fun PartyId.loadAll(): PartyData? = sdk.fire(
         graphQuery {
             party(this@loadAll) {
-                party()
+                details()
                 playerList()
                 pairAssignmentDocumentList()
                 pinList()

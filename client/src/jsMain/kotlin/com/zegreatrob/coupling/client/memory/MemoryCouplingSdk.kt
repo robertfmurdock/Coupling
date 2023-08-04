@@ -97,7 +97,7 @@ class MemoryCouplingSdk private constructor(
     }
 
     override suspend fun perform(query: GraphQuery) = CouplingQueryResult(
-        partyList = partyRepository.loadParties(),
+        partyList = partyRepository.loadParties().map { Party(it.data.id, details = it) },
         user = User(userId, "$userId@test.fake.io", partyRepository.loadParties().map { it.data.id }.toSet(), null),
         party = query.variables?.get("input")?.let { Json.decodeFromJsonElement<PartyInput>(it) }?.partyId?.let {
             val id = PartyId(it)

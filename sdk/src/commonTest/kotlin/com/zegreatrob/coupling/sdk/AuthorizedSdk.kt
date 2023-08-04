@@ -50,9 +50,11 @@ val altAuthorizedSdkDeferred by lazy {
     }
 }
 
-private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedParties() = fire(graphQuery { partyList() })
-    ?.partyList
-    ?.forEach { fire(DeletePartyCommand(it.data.id)) }
+private suspend fun ActionCannon<CouplingSdkDispatcher>.deleteAnyDisplayedParties() =
+    fire(graphQuery { partyList { details() } })
+        ?.partyList
+        ?.mapNotNull { it.id }
+        ?.forEach { fire(DeletePartyCommand(it)) }
 
 private suspend fun sdk(username: String, password: String) = generateAccessToken(username, password)
     .let { token -> couplingSdk({ token }, buildClient(), LoggingActionPipe(uuid4())) }

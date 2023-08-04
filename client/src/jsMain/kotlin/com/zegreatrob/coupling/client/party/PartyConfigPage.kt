@@ -13,7 +13,7 @@ val PartyConfigPage by nfc<PageProps> { props ->
     if (partyId != null) {
         CouplingQuery(
             commander = props.commander,
-            query = graphQuery { party(partyId) { party() } },
+            query = graphQuery { party(partyId) { details() } },
             toNode = { _, commandFunc, result ->
                 PartyConfig.create(
                     party = result.party?.details?.data ?: return@CouplingQuery null,

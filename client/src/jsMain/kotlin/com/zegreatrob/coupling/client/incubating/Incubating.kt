@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.gql.graphQuery
@@ -27,7 +26,7 @@ import web.cssom.Color
 val IncubatingPage by nfc<PageProps> { props ->
     CouplingQuery(
         commander = props.commander,
-        query = graphQuery { partyList(); config { addToSlackUrl(); discordClientId() } },
+        query = graphQuery { partyList { details() }; config { addToSlackUrl(); discordClientId() } },
         toNode = { _, _, result ->
             val addToSlackUrl = result.config?.addToSlackUrl
             val discordClientId = result.config?.discordClientId
@@ -37,7 +36,7 @@ val IncubatingPage by nfc<PageProps> { props ->
                 IncubatingContent.create(
                     discordClientId = discordClientId,
                     addToSlackUrl = addToSlackUrl,
-                    partyList = result.partyList?.map(Record<PartyDetails>::data) ?: emptyList(),
+                    partyList = result.partyList?.mapNotNull { it.details?.data } ?: emptyList(),
                 )
             }
         },

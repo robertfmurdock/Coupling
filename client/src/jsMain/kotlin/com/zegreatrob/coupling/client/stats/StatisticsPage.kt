@@ -19,7 +19,7 @@ import react.useState
 val StatisticsPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
-        query = graphQuery { party(partyId) { party(); playerList(); pairAssignmentDocumentList() } },
+        query = graphQuery { party(partyId) { details(); playerList(); pairAssignmentDocumentList() } },
         toNode = { _, dispatchFunc, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
             val players = queryResult.party?.playerList?.elements ?: return@CouplingQuery null
