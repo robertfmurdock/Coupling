@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.express.route
 
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.env
 import com.zegreatrob.coupling.server.external.express.Express
@@ -76,7 +76,7 @@ private fun Express.injectVariablesForClient() = """<script>
 """.trimIndent()
 
 fun healthRoute(): Handler = { request, response, _ ->
-    request.setUser(User("HealthCheck", "", emptySet(), null))
+    request.setUser(UserDetails("HealthCheck", "", emptySet(), null))
     request.scope.launch {
         request.commandDispatcher()
     }.invokeOnCompletion { error ->

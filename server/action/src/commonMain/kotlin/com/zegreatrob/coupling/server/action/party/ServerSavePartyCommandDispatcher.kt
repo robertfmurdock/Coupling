@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.await
 import com.zegreatrob.coupling.repository.party.PartyIdGetSyntax
 import com.zegreatrob.coupling.repository.party.PartyRepository
@@ -41,7 +41,7 @@ interface ServerSavePartyCommandDispatcher :
         }
     }
 
-    private suspend fun User.saveIfUserChanged() = if (this != currentUser) save() else Unit
+    private suspend fun UserDetails.saveIfUserChanged() = if (this != currentUser) save() else Unit
 
     private suspend fun SavePartyCommand.isAuthorizedToSave() = getPartyAndUserPlayerIds()
         .let { (loadedParty, players) -> shouldSave(party.id, loadedParty, players) }

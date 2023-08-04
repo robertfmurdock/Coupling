@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
 import com.zegreatrob.coupling.json.JsonPinnedPlayer
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonSecretRecord
-import com.zegreatrob.coupling.json.JsonUser
+import com.zegreatrob.coupling.json.JsonUserDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
 import kotlinx.datetime.Instant
@@ -37,7 +37,7 @@ object GqlReference {
         totalAppliedPins = 0,
         totalUniquePins = 0,
     )
-    val user = JsonUser("", "", emptySet())
+    val user = JsonUserDetails("", "", emptySet())
 
     private val pinData = JsonPinData(
         id = "",

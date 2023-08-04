@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.validation.LiveInfoRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
@@ -17,7 +17,7 @@ class MemoryLiveInfoRepositoryTest : LiveInfoRepositoryValidator<MemoryLiveInfoR
             SharedContextData(
                 MemoryLiveInfoRepository(),
                 MagicClock(),
-                User("${uuid4()}", "${uuid4()}@mail.com", emptySet(), null),
+                UserDetails("${uuid4()}", "${uuid4()}@mail.com", emptySet(), null),
             )
         })
 }

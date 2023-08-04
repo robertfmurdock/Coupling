@@ -4,7 +4,6 @@ import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
 import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.VoidResult
-import com.zegreatrob.coupling.action.boost.BoostQuery
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
@@ -19,6 +18,7 @@ import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
@@ -81,7 +81,6 @@ class MemoryCouplingSdk private constructor(
 
     override suspend fun perform(command: SpinCommand) = SpinCommand.Result.Success
 
-    override suspend fun perform(command: BoostQuery) = TODO("Not yet implemented")
     override suspend fun perform(command: CreateSecretCommand): Pair<Secret, String> {
         TODO("Not yet implemented")
     }
@@ -98,7 +97,16 @@ class MemoryCouplingSdk private constructor(
 
     override suspend fun perform(query: GraphQuery) = CouplingQueryResult(
         partyList = partyRepository.loadParties().map { Party(it.data.id, details = it) },
-        user = User(userId, "$userId@test.fake.io", partyRepository.loadParties().map { it.data.id }.toSet(), null),
+        user = User(
+            id = userId,
+            details = UserDetails(
+                userId,
+                "$userId@test.fake.io",
+                partyRepository.loadParties().map { it.data.id }.toSet(),
+                null,
+            ),
+            boost = null,
+        ),
         party = query.variables?.get("input")?.let { Json.decodeFromJsonElement<PartyInput>(it) }?.partyId?.let {
             val id = PartyId(it)
             Party(

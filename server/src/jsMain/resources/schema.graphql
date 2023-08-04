@@ -24,6 +24,11 @@ type PartyIntegration {
 
 type User {
     id: String!
+    details: UserDetails
+}
+
+type UserDetails {
+    id: String!
     email: String!
     authorizedPartyIds: [String]!
 }

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.zegreatrob.coupling.server.entity.boost.boostResolver
 import com.zegreatrob.coupling.server.entity.boost.deleteBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.saveBoostResolver
+import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.graphql.stripe.addCreditCardSecretResolver
 import kotlin.js.json
@@ -13,7 +13,7 @@ fun prereleaseResolvers() = json(
         "deleteBoost" to deleteBoostResolver,
     ),
     "User" to json(
-        "boost" to boostResolver,
+        "boost" to userBoostResolver,
     ),
     "Configuration" to json(
         "stripePublishableKey" to { Config.stripePublishableKey },

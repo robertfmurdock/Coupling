@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.repository.dynamo
 
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.validation.ExtendedBoostRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContextData
@@ -16,5 +16,5 @@ class DynamoBoostRepositoryTest :
         SharedContextData(buildRepository(user, clock = clock), clock, user)
     })
 
-    override suspend fun buildRepository(user: User, clock: MagicClock) = DynamoBoostRepository(user.id, clock)
+    override suspend fun buildRepository(user: UserDetails, clock: MagicClock) = DynamoBoostRepository(user.id, clock)
 }

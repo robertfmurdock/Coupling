@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo.user
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserJsonMapping
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.repository.dynamo.RepositoryContext
@@ -39,7 +39,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoUserRepository>>(sharedSetup = {
         val clock = MagicClock()
         val userId = "${uuid4()}"
-        val user = User(userId, "${uuid4()}", emptySet(), uuidString())
+        val user = UserDetails(userId, "${uuid4()}", emptySet(), uuidString())
         val repository = DynamoUserRepository(userId, clock)
         SharedContextData(repository, clock, user)
     })
@@ -49,7 +49,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
     @Ignore
     fun canHandleLargeNumberOfRecordRevisionsAndGetLatestOneFast() = asyncSetup(object {
         val userId = "${uuid4()}"
-        val user = User(userId, "${uuid4()}", emptySet(), null)
+        val user = UserDetails(userId, "${uuid4()}", emptySet(), null)
         lateinit var repository: DynamoUserRepository
     }) {
         repository = DynamoUserRepository(userId, Clock.System)

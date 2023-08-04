@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.repository.memory
 
 import com.zegreatrob.coupling.model.Boost
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.validation.ExtendedBoostRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContextData
@@ -21,6 +21,6 @@ class MemoryBoostRepositoryTest :
         SharedContextData(buildRepository(user, clock = clock), clock, user)
     })
 
-    override suspend fun buildRepository(user: User, clock: MagicClock) =
+    override suspend fun buildRepository(user: UserDetails, clock: MagicClock) =
         MemoryBoostRepository(user.id, clock, recordBackend)
 }

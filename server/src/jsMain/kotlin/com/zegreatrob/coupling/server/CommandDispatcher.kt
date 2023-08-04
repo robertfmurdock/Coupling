@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.BoostRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.server.action.BroadcastAction
@@ -86,7 +86,7 @@ interface ICommandDispatcher :
     UserQuery.Dispatcher
 
 class CommandDispatcher(
-    override val currentUser: User,
+    override val currentUser: UserDetails,
     private val repositoryCatalog: RepositoryCatalog,
     override val scope: CoroutineScope,
     override val traceId: Uuid,

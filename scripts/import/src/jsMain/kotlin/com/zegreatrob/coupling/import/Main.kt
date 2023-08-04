@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toModelRecord
 import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.dynamo.DynamoPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoPartyRepository
@@ -31,7 +31,7 @@ import kotlinx.datetime.Clock
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlin.js.Json
 
-val user = User("IMPORT_USER", "robert.f.murdock@gmail.com", emptySet(), null)
+val user = UserDetails("IMPORT_USER", "robert.f.murdock@gmail.com", emptySet(), null)
 
 private val logger = KotlinLogging.logger("import")
 

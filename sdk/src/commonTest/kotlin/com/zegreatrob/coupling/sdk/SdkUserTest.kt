@@ -10,9 +10,9 @@ class SdkUserTest {
 
     @Test
     fun canPerformUserQuery() = asyncSetup() exercise {
-        sdk().fire(graphQuery { user() })
+        sdk().fire(graphQuery { user { details() } })
     } verify { result: CouplingQueryResult? ->
-        result?.user.let {
+        result?.user?.details.let {
             it?.email.assertIsEqualTo(primaryAuthorizedUsername)
             it?.id.assertIsNotEqualTo(null)
             it?.authorizedPartyIds.assertIsNotEqualTo(null)

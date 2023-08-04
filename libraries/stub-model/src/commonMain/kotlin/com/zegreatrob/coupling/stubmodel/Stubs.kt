@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotlin.time.Duration.Companion.minutes
@@ -90,7 +90,7 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
 fun uuidString() = uuid4().toString()
 
 var userCounter = 1
-fun stubUser() = User(
+fun stubUser() = UserDetails(
     id = uuidString(),
     email = "$userCounter-${uuidString()}@gmail.com",
     authorizedPartyIds = setOf(stubPartyId()),

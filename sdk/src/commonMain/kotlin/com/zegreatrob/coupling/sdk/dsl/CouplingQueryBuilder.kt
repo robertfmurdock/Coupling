@@ -6,7 +6,6 @@ import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.json.nestedKeys
 import com.zegreatrob.coupling.json.toGqlQueryFields
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.sdk.dsl.GqlReference.user
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -47,7 +46,10 @@ class CouplingQueryBuilder {
         variables[inputName] = Json.encodeToJsonElement(input)
     }
 
-    fun user() = apply { user.addToQuery("user") }
+    fun user(block: UserQueryBuilder.() -> Unit) = UserQueryBuilder()
+        .also(block)
+        .output
+        .addToQuery("user")
 
     fun partyList(block: PartyQueryBuilder.() -> Unit) = PartyQueryBuilder()
         .also(block)

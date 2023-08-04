@@ -8,7 +8,7 @@ import com.zegreatrob.minreact.nfc
 val UserPage by nfc<PageProps> {
     CouplingQuery(
         commander = it.commander,
-        query = graphQuery { user() },
-        toNode = { _, dispatcher, result -> UserConfig.create(result.user, dispatcher) },
+        query = graphQuery { user { details() } },
+        toNode = { _, dispatcher, result -> UserConfig.create(result.user?.details, dispatcher) },
     )
 }

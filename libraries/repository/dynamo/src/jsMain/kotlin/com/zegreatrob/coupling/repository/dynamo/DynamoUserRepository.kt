@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.coroutines.MainScope
@@ -90,7 +90,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
             )
     }
 
-    override suspend fun save(user: User) = logAsync("saveUser") { saveRawRecord(user.toRecord()) }
+    override suspend fun save(user: UserDetails) = logAsync("saveUser") { saveRawRecord(user.toRecord()) }
 
     override suspend fun getUser() = logAsync("getUser") { queryAllRecords(queryParams(userId)) }
         .sortByRecordTimestamp()
@@ -126,7 +126,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
             ?.let { listOf(it) }
     }
 
-    private fun emailIdRecordToUser(json: Json) = User(
+    private fun emailIdRecordToUser(json: Json) = UserDetails(
         json["user_id"].toString(),
         json["email"].toString(),
         json["authorizedTribeIds"]
@@ -149,13 +149,13 @@ class DynamoUserRepository private constructor(override val userId: String, over
         "KeyConditionExpression" to "email = :email",
     )
 
-    suspend fun saveRawRecord(record: Record<User>) = coroutineScope {
+    suspend fun saveRawRecord(record: Record<UserDetails>) = coroutineScope {
         val recordJson = record.recordJson()
         launch { performPutItem(recordJson.add(record.data.asDynamoJson())) }
         launch { performPutItem(recordJson.add(record.asEmailIdDynamoJson())) }
     }.let { }
 
-    private fun Record<User>.asEmailIdDynamoJson() = json(
+    private fun Record<UserDetails>.asEmailIdDynamoJson() = json(
         "id" to emailId(data.email),
         "user_id" to data.id,
         "email" to data.email,

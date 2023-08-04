@@ -2,22 +2,22 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import kotlin.js.Json
 import kotlin.js.json
 
 interface DynamoUserJsonMapping : DynamoRecordJsonMapping {
 
-    fun Record<User>.asDynamoJson() = recordJson().add(data.asDynamoJson())
+    fun Record<UserDetails>.asDynamoJson() = recordJson().add(data.asDynamoJson())
 
-    fun User.asDynamoJson() = json(
+    fun UserDetails.asDynamoJson() = json(
         "id" to id,
         "email" to email,
         "stripeCustomerId" to stripeCustomerId,
         "authorizedTribeIds" to authorizedPartyIds.map { it.value }.toTypedArray(),
     )
 
-    fun Json.toUser() = User(
+    fun Json.toUser() = UserDetails(
         this["id"].toString(),
         this["email"].toString(),
         this["authorizedTribeIds"]

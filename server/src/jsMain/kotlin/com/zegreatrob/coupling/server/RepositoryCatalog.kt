@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
@@ -28,10 +28,10 @@ interface RepositoryCatalog {
     val discordAccessRepository: DiscordAccessRepository
 }
 
-suspend fun commandDispatcher(user: User, scope: CoroutineScope, traceId: Uuid) =
+suspend fun commandDispatcher(user: UserDetails, scope: CoroutineScope, traceId: Uuid) =
     CommandDispatcher(user, repositoryCatalog(user), scope, traceId)
 
-private suspend fun repositoryCatalog(user: User): RepositoryCatalog = if (useInMemory()) {
+private suspend fun repositoryCatalog(user: UserDetails): RepositoryCatalog = if (useInMemory()) {
     memoryRepositoryCatalog(user.id)
 } else {
     DynamoRepositoryCatalog(user.id, Clock.System)

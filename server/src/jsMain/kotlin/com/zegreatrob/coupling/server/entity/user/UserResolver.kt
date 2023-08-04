@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.entity.user
 
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.server.action.user.UserQuery
 import com.zegreatrob.coupling.server.action.user.perform
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.command
@@ -15,4 +16,4 @@ val userResolve = dispatch(
     toSerializable = ::toJson,
 )
 
-private fun toJson(records: User) = records.toSerializable()
+private fun toJson(records: UserDetails) = records.let { User(it.id, details = it, boost = null) }.toSerializable()

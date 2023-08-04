@@ -5,7 +5,7 @@ interface UserIdProvider {
 }
 
 interface CurrentUserProvider {
-    val currentUser: User
+    val currentUser: UserDetails
 }
 
 interface CurrentUserIdProvider : CurrentUserProvider, UserIdProvider {

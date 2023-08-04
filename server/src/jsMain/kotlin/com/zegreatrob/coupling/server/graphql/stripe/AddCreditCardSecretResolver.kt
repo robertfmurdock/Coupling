@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.graphql.stripe
 
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
@@ -34,7 +34,7 @@ val addCreditCardSecretResolver: (Json, Json, CouplingContext, Json) -> Promise<
     }
 }
 
-private suspend fun CommandDispatcher.createStripeCustomer(user: User): String =
+private suspend fun CommandDispatcher.createStripeCustomer(user: UserDetails): String =
     stripe.customers.create(jso { email = user.email }).await()
         .id
         .also {

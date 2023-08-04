@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.server.UserDataService
 import com.zegreatrob.coupling.server.action.user.FindOrCreateUserAction
 import com.zegreatrob.coupling.server.express.async
@@ -27,7 +27,7 @@ fun userLoadingMiddleware(): Handler = { request, _, next ->
                 val secretId = "${auth["https://zegreatrob.com/secret-id"]}"
                 val partyId = PartyId("${auth["sub"]}")
                 if (secretIsNotDeleted(secretId, partyId)) {
-                    User(id = secretId, email = secretId, authorizedPartyIds = setOf(partyId), stripeCustomerId = null)
+                    UserDetails(id = secretId, email = secretId, authorizedPartyIds = setOf(partyId), stripeCustomerId = null)
                 } else {
                     null
                 }
@@ -51,7 +51,7 @@ private suspend fun secretIsNotDeleted(secretId: String, partyId: PartyId): Bool
     .elements
     .contains(Secret(secretId))
 
-fun Request.setUser(user: User?) {
+fun Request.setUser(user: UserDetails?) {
     with(asDynamic()) {
         this.user = user
         this.isAuthenticated = user != null

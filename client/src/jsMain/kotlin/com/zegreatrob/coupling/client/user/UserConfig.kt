@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.party.AboutButton
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.ReactFunc
@@ -34,7 +34,7 @@ import web.cssom.Display
 import web.html.InputType
 
 external interface UserConfigProps : Props {
-    var user: User?
+    var user: UserDetails?
     var dispatcher: DispatchFunc<out GraphQuery.Dispatcher>
 }
 
@@ -120,12 +120,12 @@ external interface SponsorCouplingButtonProps : Props {
 val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
     val (stripePk, setStripePk) = useState<String?>(null)
     var addSecret by useState<String?>(null)
-    var user by useState<User?>(null)
+    var user by useState<UserDetails?>(null)
 
     val getSecretFunc = props.dispatchFunc {
         val result = fire(
             graphQuery {
-                user()
+                user { details() }
                 config {
                     stripePublishableKey()
                     addCreditCardSecret()
@@ -134,7 +134,7 @@ val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
         )
         val config = result?.config
         setStripePk(config?.stripePublishableKey)
-        user = result?.user
+        user = result?.user?.details
         addSecret = config?.addCreditCardSecret
     }
 

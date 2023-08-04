@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.repository.validation
 
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 
 abstract class PartyContextMint<R : Any> : PartyContext<R> {
     override lateinit var repository: R
     override lateinit var clock: MagicClock
-    override lateinit var user: User
+    override lateinit var user: UserDetails
     override var partyId: PartyId = PartyId("NO INIT")
 }
 
@@ -18,7 +18,7 @@ data class PartyContextData<R>(
     override val repository: R,
     override val partyId: PartyId,
     override val clock: MagicClock,
-    override val user: User,
+    override val user: UserDetails,
 ) : PartyContext<R>
 
 fun <C : PartyContextMint<R>, R> C.bind(): suspend (PartyContext<R>) -> C = { parent: PartyContext<R> ->

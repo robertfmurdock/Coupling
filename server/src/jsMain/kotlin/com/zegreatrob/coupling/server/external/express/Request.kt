@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.external.express
 
 import com.benasher44.uuid.Uuid
-import com.zegreatrob.coupling.model.user.User
+import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.server.CommandDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlin.js.Json
@@ -18,7 +18,7 @@ external interface Request {
     val connectionId: String
     val event: Json?
     val commandDispatcher: CommandDispatcher
-    val user: User
+    val user: UserDetails
     val traceId: Uuid
     val scope: CoroutineScope
     var statsdkey: String?
