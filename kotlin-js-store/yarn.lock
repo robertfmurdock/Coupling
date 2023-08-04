@@ -2905,14 +2905,14 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-5.5.0.tgz#70af51f38ef3b624eb08eb02a2ed70f117fa19d7"
   integrity sha512-3rO1QIz6mL0MvFVTOxqhDJRVsLfG/vK2VSlKKPghALA6FhJqU7L+RUHnFvH5BP5HhkWiMQqq514i9ZFTcqoGCQ==
 
-"@slack/bolt@^3.13.2":
-  version "3.13.2"
-  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-3.13.2.tgz#7611e2cd49241643baf6d53201de06296cc5adfb"
-  integrity sha512-k7gj2oUS0B9H/lWPm9P1dcpKY5gvM/9usU+vCGvIylqlsVgFNY0Im2JySpQR3iLKuW+FwxtjRmsj1dt1BKNggw==
+"@slack/bolt@^3.13.3":
+  version "3.13.3"
+  resolved "https://registry.yarnpkg.com/@slack/bolt/-/bolt-3.13.3.tgz#bd06891675dd7a5de3bd6586b7a8d8b801e28a80"
+  integrity sha512-1rgPTJGpiT/RNeZ0neOAMQKzydX+CcwjObc5Eeq+3z7df8OiI3mqimj9N9Pjg6WePv4kpekvq1TdJIg+TyhINw==
   dependencies:
     "@slack/logger" "^3.0.0"
     "@slack/oauth" "^2.6.1"
-    "@slack/socket-mode" "^1.3.0"
+    "@slack/socket-mode" "^1.3.2"
     "@slack/types" "^2.8.0"
     "@slack/web-api" "^6.7.1"
     "@types/express" "^4.16.1"
@@ -2945,7 +2945,7 @@
     jsonwebtoken "^9.0.0"
     lodash.isstring "^4.0.1"
 
-"@slack/socket-mode@^1.3.0":
+"@slack/socket-mode@^1.3.2":
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/@slack/socket-mode/-/socket-mode-1.3.2.tgz#b3c4db146779cb63ec240a10de722deadd907305"
   integrity sha512-6LiwYE6k4DNbnctZZSLfERiOzWngAvXogxQEYzUkxeZgh2GC6EdmRq6OEbZXOBe71/K66YVx05VfR7B4b1ScTQ==
@@ -4627,7 +4627,7 @@ abbrev@^1.0.0:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-abort-controller@3.0.0:
+abort-controller@3.0.0, abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"
   integrity sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==
@@ -12658,14 +12658,15 @@ serverless-offline@^12.0.4:
     velocityjs "^2.0.6"
     ws "^8.11.0"
 
-serverless@^3.33.0:
-  version "3.33.0"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.33.0.tgz#7d4aacfacb5f122a24e8c6a8d2972cce99746c0c"
-  integrity sha512-qmG0RMelsWmnS5Smxoy0CbjpecgnJlM89wzSIgJqfkGlmOo2nJdd8y0/E6KlaTsaozlPKkjUBDzis2nF8VNO2g==
+serverless@^3.34.0:
+  version "3.34.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.34.0.tgz#d60d7c6fc4c6e8634106f22d1e7d52f2a4d4d46c"
+  integrity sha512-xtWAg78NGgboolP/GArdorx+UHyESJgriGSE6Qpgg9trTYsKMyd8YKaMIM3sidy89e45XZopRSpvnPYoQCJOBA==
   dependencies:
     "@serverless/dashboard-plugin" "^6.2.3"
     "@serverless/platform-client" "^4.3.2"
     "@serverless/utils" "^6.11.1"
+    abort-controller "^3.0.0"
     ajv "^8.12.0"
     ajv-formats "^2.1.1"
     archiver "^5.3.1"
@@ -12688,7 +12689,6 @@ serverless@^3.33.0:
     fs-extra "^10.1.0"
     get-stdin "^8.0.0"
     globby "^11.1.0"
-    got "^11.8.6"
     graceful-fs "^4.2.11"
     https-proxy-agent "^5.0.1"
     is-docker "^2.2.1"
@@ -13295,10 +13295,10 @@ strip-outer@^1.0.1:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-stripe@^12.16.0:
-  version "12.16.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-12.16.0.tgz#a52f3ab9480b10435dd1e9792820c65bfd406506"
-  integrity sha512-iwVkyZsS9KsWmEVK5qnbPeX/m94+Z3fXIRU7Q4iNBS2Zuj1spGIjLKMN3tejUs/ZZ2o7dCYFJvVdC2aZMYo8GA==
+stripe@^12.17.0:
+  version "12.17.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-12.17.0.tgz#4036240ca1c318e4e4a18bd2b04b9478bc6f8191"
+  integrity sha512-f8GhS2LQlGCDZ1Akyu57txgSWyLUEYf0yZYS7x2aTKJXVua5lLmmgfJFFYHfTgEdS5P6rurf0Ghcf/HVLggv5g==
   dependencies:
     "@types/node" ">=8.1.0"
     qs "^6.11.0"
