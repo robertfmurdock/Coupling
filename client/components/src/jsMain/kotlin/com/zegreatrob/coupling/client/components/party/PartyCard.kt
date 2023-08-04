@@ -2,9 +2,13 @@ package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.components.gravatar.gravatarImage
+import com.zegreatrob.coupling.client.components.pin.PinButton
+import com.zegreatrob.coupling.client.components.pin.PinButtonScale
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.visuallyHidden
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
@@ -22,10 +26,12 @@ import web.cssom.BoxShadow
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.Flex
+import web.cssom.Float
 import web.cssom.LineStyle
 import web.cssom.Margin
 import web.cssom.NamedColor
 import web.cssom.None
+import web.cssom.Position
 import web.cssom.TextAlign
 import web.cssom.integer
 import web.cssom.number
@@ -35,7 +41,10 @@ import web.cssom.rgb
 external interface PartyCardProps : Props {
     var party: PartyDetails
     var size: Int?
+    var boost: Boost?
 }
+
+private val boostPin = Pin(name = "Boost!", icon = "fa-bolt-lightning")
 
 @ReactFunc
 val PartyCard by nfc<PartyCardProps> { props ->
@@ -55,10 +64,20 @@ val PartyCard by nfc<PartyCardProps> { props ->
             div {
                 css { margin = ((size * 0.02).px) }
                 PartyCardHeader(party, size)
+                if (props.boost != null) {
+                    span {
+                        css { float = Float.right; zIndex = integer(100); position = Position.relative }
+                        boostPinButton()
+                    }
+                }
                 partyGravatar(party, size)
             }
         }
     }
+}
+
+private fun ChildrenBuilder.boostPinButton() {
+    PinButton(boostPin, scale = PinButtonScale.Small)
 }
 
 private fun PropertiesBuilder.staticCardStyles() {
