@@ -7,8 +7,8 @@ object Config {
     val prereleaseMode: Boolean = Process.getEnv("ENABLE_PRERELEASE_FEATURES")?.toBoolean() ?: false
     val port get() = Process.getEnv("PORT")?.toIntOrNull() ?: 3000
     val disableLogging get() = Process.getEnv("DISABLE_LOGGING")?.toBoolean() ?: false
-    const val buildDate: String = "None"
-    const val gitRev: String = "None"
+    const val BUILD_DATE: String = "None"
+    const val GIT_REV: String = "None"
 
     val clientBasename: String = Process.getEnv("CLIENT_BASENAME") ?: ""
     val appTitle: String = Process.getEnv("APP_TITLE") ?: ""

@@ -43,11 +43,11 @@ interface DynamoPartyJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping
     fun Record<PartyElement<PartyIntegration>>.asDynamoJson() = recordJson().add(data.asDynamoJson())
 
     companion object {
-        const val integrationConstant = "INTEGRATION-"
+        const val INTEGRATION_CONSTANT = "INTEGRATION-"
     }
 
     fun PartyElement<PartyIntegration>.asDynamoJson() = json(
-        "id" to "$integrationConstant${partyId.value}",
+        "id" to "$INTEGRATION_CONSTANT${partyId.value}",
         "slackChannel" to this.element.slackChannel,
         "slackTeam" to this.element.slackTeam,
     )

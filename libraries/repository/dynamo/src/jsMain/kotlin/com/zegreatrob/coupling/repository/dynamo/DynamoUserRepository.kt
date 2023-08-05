@@ -27,7 +27,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
         DynamoItemSyntax,
         DynamoScanSyntax {
         override val tableName = "USER"
-        const val userEmailIndex = "USER_EMAIL_INDEX"
+        const val USER_EMAIL_INDEX = "USER_EMAIL_INDEX"
         private val ensure by lazy {
             MainScope().async { ensureTableExists() }
         }
@@ -67,7 +67,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
                 json(
                     "GlobalSecondaryIndexes" to arrayOf(
                         json(
-                            "IndexName" to userEmailIndex,
+                            "IndexName" to USER_EMAIL_INDEX,
                             "KeySchema" to arrayOf(
                                 json(
                                     "AttributeName" to "email",
@@ -144,7 +144,7 @@ class DynamoUserRepository private constructor(override val userId: String, over
 
     private fun emailQueryParams(email: String) = json(
         "TableName" to prefixedTableName,
-        "IndexName" to userEmailIndex,
+        "IndexName" to USER_EMAIL_INDEX,
         "ExpressionAttributeValues" to json(":email" to email),
         "KeyConditionExpression" to "email = :email",
     )

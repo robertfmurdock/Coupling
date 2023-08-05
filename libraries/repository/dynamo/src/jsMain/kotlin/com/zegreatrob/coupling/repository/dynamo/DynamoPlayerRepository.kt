@@ -29,7 +29,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
         DynamoLoggingSyntax {
         override val construct = ::DynamoPlayerRepository
         override val tableName: String = "PLAYER"
-        const val playerEmailIndex = "PlayerEmailIndex"
+        const val PLAYER_EMAIL_INDEX = "PlayerEmailIndex"
         override val createTableParams: Json
             get() = json(
                 "TableName" to prefixedTableName,
@@ -66,7 +66,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
                 json(
                     "GlobalSecondaryIndexes" to arrayOf(
                         json(
-                            "IndexName" to playerEmailIndex,
+                            "IndexName" to PLAYER_EMAIL_INDEX,
                             "KeySchema" to arrayOf(
                                 json(
                                     "AttributeName" to "email",
@@ -157,7 +157,7 @@ class DynamoPlayerRepository private constructor(override val userId: String, ov
 
     private fun emailQueryParams(email: String) = json(
         "TableName" to prefixedTableName,
-        "IndexName" to playerEmailIndex,
+        "IndexName" to PLAYER_EMAIL_INDEX,
         "ExpressionAttributeValues" to json(":email" to email),
         "KeyConditionExpression" to "email = :email",
     )

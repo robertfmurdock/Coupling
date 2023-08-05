@@ -253,7 +253,7 @@ class PairAssignmentsPageE2ETest {
             }
         }
 
-        private suspend fun WebdriverElement.getPairPlayerNames() = all(PlayerCard.playerLocator).map { it.text() }
+        private suspend fun WebdriverElement.getPairPlayerNames() = all(PlayerCard.PLAYER_LOCATOR).map { it.text() }
     }
 }
 

@@ -16,7 +16,7 @@ object PrepareToSpinPage : BrowserSyntax {
 
     private val selectedPins = WebdriverElement("[data-selected-pins]")
 
-    val selectedPinElements get() = selectedPins.all(PinButton.pinButtonLocator)
+    val selectedPinElements get() = selectedPins.all(PinButton.PIN_BUTTON_LOCATOR)
 
     suspend fun goTo(partyId: PartyId) {
         WebdriverBrowser.setLocation("/${partyId.value}/prepare/")

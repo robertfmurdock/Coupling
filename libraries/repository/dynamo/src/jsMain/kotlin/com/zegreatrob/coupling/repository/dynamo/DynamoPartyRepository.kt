@@ -41,7 +41,7 @@ class DynamoPartyRepository private constructor(override val userId: String, ove
     )
 
     override suspend fun getIntegration(partyId: PartyId): Record<PartyIntegration>? = performGetSingleItemQuery(
-        "${DynamoPartyJsonMapping.integrationConstant}${partyId.value}",
+        "${DynamoPartyJsonMapping.INTEGRATION_CONSTANT}${partyId.value}",
     )?.let { it.toRecord(it.toIntegration()) }
 
     override suspend fun loadParties() = scanAllRecords()

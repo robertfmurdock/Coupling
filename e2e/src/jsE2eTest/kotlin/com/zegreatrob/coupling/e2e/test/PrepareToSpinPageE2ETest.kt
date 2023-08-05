@@ -218,8 +218,8 @@ class PrepareToSpinPageE2ETest {
         PrepareToSpinPage.goTo(party.id)
         with(PlayerCard) {
             getSelectNoneButton().click()
-            playerElements[1].element(iconLocator).click()
-            playerElements[4].element(iconLocator).click()
+            playerElements[1].element(ICON_LOCATOR).click()
+            playerElements[4].element(ICON_LOCATOR).click()
         }
     } exercise {
         getSpinButton().click()

@@ -116,7 +116,7 @@ class CalculatePairHeatActionTest {
     class WithThreePlayers {
 
         companion object {
-            const val rotationPeriod = 3
+            const val ROTATION_PERIOD = 3
             val player1 = Player(id = "bob", avatarType = null)
             val player2 = Player(id = "fred", avatarType = null)
             val player3 = Player(id = "latisha", avatarType = null)
@@ -137,7 +137,7 @@ class CalculatePairHeatActionTest {
                 alternatePairing2,
             ).map { it.pairAssignmentDocument() }
         } exercise {
-            perform(CalculatePairHeatAction(pair, history, rotationPeriod))
+            perform(CalculatePairHeatAction(pair, history, ROTATION_PERIOD))
         } verify { result ->
             result.assertIsEqualTo(1.0)
         }
@@ -145,7 +145,7 @@ class CalculatePairHeatActionTest {
         @Test
         fun willReturn0WithLastPairingIsOlderThanFiveRotations() = asyncSetup(object {
             val rotationHeatWindow = 5
-            val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
+            val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
             val expectedPairing = notEmptyListOf(pair, pairOf(player3))
             lateinit var history: List<PairAssignmentDocument>
         }) {
@@ -159,7 +159,7 @@ class CalculatePairHeatActionTest {
                 .buildHistoryByRepeating(intervalsUntilCooling)
                 .plus(expectedPairing.pairAssignmentDocument())
         } exercise {
-            perform(CalculatePairHeatAction(pair, history, rotationPeriod))
+            perform(CalculatePairHeatAction(pair, history, ROTATION_PERIOD))
         } verify { result ->
             result.assertIsEqualTo(0.0)
         }
@@ -167,7 +167,7 @@ class CalculatePairHeatActionTest {
         @Test
         fun willNotGoHigherThanTenWhenPairingMoreThanOncePerRotation() = asyncSetup(object {
             val rotationHeatWindow = 5
-            val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
+            val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
             lateinit var expectedPairing: List<PairAssignmentDocument>
             lateinit var history: List<PairAssignmentDocument>
         }) {
@@ -177,7 +177,7 @@ class CalculatePairHeatActionTest {
                 .buildHistoryByRepeating(intervalsUntilCooling - expectedPairing.size)
                 .plus(expectedPairing)
         } exercise {
-            perform(CalculatePairHeatAction(pair, history, rotationPeriod))
+            perform(CalculatePairHeatAction(pair, history, ROTATION_PERIOD))
         } verify { result ->
             result.assertIsEqualTo(10.0)
         }
@@ -185,7 +185,7 @@ class CalculatePairHeatActionTest {
 
     class WithFivePlayers {
         companion object {
-            const val rotationPeriod = 5
+            const val ROTATION_PERIOD = 5
             val player1 = Player(id = "bob", avatarType = null)
             val player2 = Player(id = "fred", avatarType = null)
             val pair = pairOf(player1, player2)
@@ -198,7 +198,7 @@ class CalculatePairHeatActionTest {
         fun willReturn1WhenLastPairingIsAlmostOlderThanFiveRotations() = asyncSetup(object {
             lateinit var expectedPairing: PairAssignmentDocument
             val rotationHeatWindow = 5
-            val intervalsUntilCooling = rotationPeriod * rotationHeatWindow
+            val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
             lateinit var history: List<PairAssignmentDocument>
         }) {
             expectedPairing = notEmptyListOf(pair, pairOf(player3)).pairAssignmentDocument()
@@ -210,7 +210,7 @@ class CalculatePairHeatActionTest {
                 .buildHistoryByRepeating(intervalsUntilCooling - 1)
                 .plus(expectedPairing)
         } exercise {
-            perform(CalculatePairHeatAction(pair, history, rotationPeriod))
+            perform(CalculatePairHeatAction(pair, history, ROTATION_PERIOD))
         } verify { result ->
             result.assertIsEqualTo(1.0)
         }
@@ -225,14 +225,14 @@ class CalculatePairHeatActionTest {
         }) {
             val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
             val otherIntervals: List<PairAssignmentDocument> =
-                assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod - 1)
+                assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD - 1)
 
             val goodRotation = otherIntervals + intervalWithIntendedPair
             val absenteeRotation: List<PairAssignmentDocument> =
-                assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod)
+                assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD)
             history = goodRotation + absenteeRotation + goodRotation + goodRotation + goodRotation
         } exercise {
-            perform(CalculatePairHeatAction(pair, history, rotationPeriod))
+            perform(CalculatePairHeatAction(pair, history, ROTATION_PERIOD))
         } verify { result ->
             result.assertIsEqualTo(7.0)
         }
@@ -246,13 +246,13 @@ class CalculatePairHeatActionTest {
             lateinit var history: List<PairAssignmentDocument>
         }) {
             val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
-            val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod - 1)
+            val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD - 1)
 
             val goodRotation = otherIntervals + intervalWithIntendedPair
-            val absenteeRotation = assignmentsWithoutIntendedPair.buildHistoryByRepeating(rotationPeriod)
+            val absenteeRotation = assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD)
             history = goodRotation + absenteeRotation + absenteeRotation + goodRotation + absenteeRotation
         } exercise {
-            perform(CalculatePairHeatAction(pair, history, rotationPeriod))
+            perform(CalculatePairHeatAction(pair, history, ROTATION_PERIOD))
         } verify { result ->
             result.assertIsEqualTo(2.5)
         }

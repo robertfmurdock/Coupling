@@ -37,7 +37,7 @@ fun buildApp(): Express {
 private suspend fun Express.startListening() = CompletableDeferred<Unit>()
     .apply {
         listen(port) {
-            logStartup(port, Config.buildDate, Config.gitRev, env)
+            logStartup(port, Config.BUILD_DATE, Config.GIT_REV, env)
             complete(Unit)
         }
     }.await()

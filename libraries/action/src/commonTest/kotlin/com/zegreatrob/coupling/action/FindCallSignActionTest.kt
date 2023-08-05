@@ -10,7 +10,7 @@ import kotlin.test.Test
 class FindCallSignActionTest {
 
     companion object : FindCallSignAction.Dispatcher {
-        const val email = "robert.f.murdock@accenture.com"
+        const val EMAIL = "robert.f.murdock@accenture.com"
         val expectedCallSign = CallSign(adjective = "Swift", noun = "Wildebeest")
     }
 
@@ -21,7 +21,7 @@ class FindCallSignActionTest {
             Player(callSignAdjective = "Intense", callSignNoun = "Mongoose", avatarType = null),
         )
     }) exercise {
-        perform(FindCallSignAction(players, email))
+        perform(FindCallSignAction(players, EMAIL))
     } verify { result ->
         result.assertIsEqualTo(expectedCallSign)
     }
@@ -32,7 +32,7 @@ class FindCallSignActionTest {
             Player(callSignAdjective = "Intense", callSignNoun = "Mongoose", avatarType = null),
         )
     }) exercise {
-        perform(FindCallSignAction(players, email))
+        perform(FindCallSignAction(players, EMAIL))
     } verify { result ->
         result.assertIsEqualTo(expectedCallSign)
     }
@@ -47,7 +47,7 @@ class FindCallSignActionTest {
             ),
         )
     }) exercise {
-        perform(FindCallSignAction(players, email))
+        perform(FindCallSignAction(players, EMAIL))
     } verify { result ->
         result.assertIsEqualTo(
             CallSign(
@@ -67,7 +67,7 @@ class FindCallSignActionTest {
             ),
         )
     }) exercise {
-        perform(FindCallSignAction(players, email))
+        perform(FindCallSignAction(players, EMAIL))
     } verify { result ->
         result.assertIsEqualTo(
             CallSign(

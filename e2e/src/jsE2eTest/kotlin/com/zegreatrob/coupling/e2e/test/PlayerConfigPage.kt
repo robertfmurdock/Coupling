@@ -40,7 +40,7 @@ object PlayerConfigPage : BrowserSyntax, ByRole by TestingLibraryBrowser {
         )
 
         WebdriverBrowser.waitUntil({
-            val playerName = PlayerRoster.element().all(PlayerCard.playerLocator)
+            val playerName = PlayerRoster.element().all(PlayerCard.PLAYER_LOCATOR)
                 .first()
                 .text()
             (playerName == expectedName)
@@ -49,9 +49,9 @@ object PlayerConfigPage : BrowserSyntax, ByRole by TestingLibraryBrowser {
 }
 
 object PlayerCard : BrowserSyntax {
-    const val playerLocator = "[data-player-id]"
-    val playerElements get() = WebdriverElementArray(playerLocator)
-    const val iconLocator = "[alt=player-icon]"
+    const val PLAYER_LOCATOR = "[data-player-id]"
+    val playerElements get() = WebdriverElementArray(PLAYER_LOCATOR)
+    const val ICON_LOCATOR = "[alt=player-icon]"
 }
 
 object PlayerRoster {
