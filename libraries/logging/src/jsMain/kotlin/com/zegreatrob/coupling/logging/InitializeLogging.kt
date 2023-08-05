@@ -12,5 +12,5 @@ fun initializeLogging(developmentMode: Boolean) {
         Level.INFO
     }
 
-    KotlinLoggingConfiguration.FORMATTER = JsonFormatter()
+    KotlinLoggingConfiguration.FORMATTER = JsonFormatter
 }

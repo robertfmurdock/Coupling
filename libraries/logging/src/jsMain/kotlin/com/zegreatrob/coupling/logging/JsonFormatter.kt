@@ -6,7 +6,7 @@ import io.github.oshai.kotlinlogging.Marker
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 
-class JsonFormatter : Formatter {
+data object JsonFormatter : Formatter {
 
     override fun formatMessage(
         level: Level,
