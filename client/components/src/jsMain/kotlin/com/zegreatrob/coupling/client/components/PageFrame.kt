@@ -37,6 +37,6 @@ val PageFrame by nfc<PageFrameProps> { props ->
             this.borderColor = props.borderColor
             this.backgroundColor = props.backgroundColor
         }
-        props.children?.let { child(it) }
+        +props.children
     }
 }
