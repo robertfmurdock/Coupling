@@ -8219,10 +8219,10 @@ global-dirs@^3.0.0:
   dependencies:
     ini "2.0.0"
 
-global-jsdom@9.0.1:
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/global-jsdom/-/global-jsdom-9.0.1.tgz#3c9bd2694ab9f0fbddb4a9395cee17066bee7380"
-  integrity sha512-hIZj+wtgjFThNcPP+NouiEg/L3e86lfqnu+RiRGmgTN/Q8rsaqzBkNqsXERZqjXIne0PfaV13B/3lHqUn5sy7A==
+global-jsdom@9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/global-jsdom/-/global-jsdom-9.1.0.tgz#1adbc6df906ca95f3d4f265e4353026dda789704"
+  integrity sha512-mNjpiQBgCTApFeRZxU3L01pjzulHIbwtk+5rGDdqUDACTupvhHywpgaZtXNMn/97HofZzHEoXdNR5qFNgjZCSg==
 
 globals@^11.1.0:
   version "11.12.0"
@@ -10715,10 +10715,10 @@ npm-bundled@^3.0.0:
   dependencies:
     npm-normalize-package-bin "^3.0.0"
 
-npm-check-updates@16.10.17:
-  version "16.10.17"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.10.17.tgz#1f28b024235c2ecc34ce7361c0376d61953b556c"
-  integrity sha512-ZoIbWYJhlgMDoByq1WC6Ys3E76IvNCxgS54tPUFbK5J/nqf/BCJt6xiMPAEa7G1HuyAruG+orUF9uTsTGUZl8g==
+npm-check-updates@16.10.18:
+  version "16.10.18"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.10.18.tgz#6f6fcbc57c519e7ad12d370a18de8afdf021b597"
+  integrity sha512-dmfhCMX7+UNrBeftBGb1rMX4Qi6+FOI5cuu1VkLeE4LIazbiEYsdgTG+GQywYry+BR9R3EfOXITYPfgRhcdznw==
   dependencies:
     chalk "^5.3.0"
     cli-table3 "^0.6.3"
