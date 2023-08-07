@@ -43,7 +43,13 @@ kotlin {
 }
 
 val jsRuntimeClasspath: Configuration by configurations.getting
-val clientConfiguration: Configuration by configurations.creating
+val clientConfiguration: Configuration by configurations.creating {
+    isCanBeConsumed = true
+    isCanBeResolved = false
+    attributes {
+        attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "client")
+    }
+}
 val cdnLookupConfiguration: Configuration by configurations.creating {
     isCanBeConsumed = false
     isCanBeResolved = true

@@ -17,16 +17,25 @@ kotlin.sourceSets {
 
 val appConfiguration: Configuration by configurations.creating {
     extendsFrom(configurations["jsMainImplementation"])
+    isCanBeConsumed = true
+    isCanBeResolved = false
+    attributes {
+        attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "server")
+    }
 }
 
-val clientConfiguration: Configuration by configurations.creating
+val clientConfiguration: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+    attributes {
+        attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "client")
+    }
+}
 
 inline fun <reified T : Named> Project.namedAttribute(value: String) = objects.named(T::class.java, value)
 
 dependencies {
-    clientConfiguration(
-        project(mapOf("path" to ":client", "configuration" to "clientConfiguration"))
-    )
+    clientConfiguration(project(":client"))
     jsMainImplementation(project("action"))
     jsMainImplementation(project("discord"))
     jsMainImplementation(project("secret"))

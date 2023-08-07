@@ -1,9 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
-import org.jetbrains.kotlin.gradle.plugin.ProjectLocalConfigurations
-import org.jetbrains.kotlin.gradle.targets.js.KotlinJsCompilerAttribute
-
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.jsmints.plugins.wdiotest")
@@ -16,19 +12,32 @@ kotlin {
 }
 
 val appConfiguration: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
     attributes {
-        attribute(KotlinJsCompilerAttribute.jsCompilerAttribute, KotlinJsCompilerAttribute.ir)
-        attribute(ProjectLocalConfigurations.ATTRIBUTE, ProjectLocalConfigurations.PUBLIC_VALUE)
-        attribute(KotlinPlatformType.attribute, KotlinPlatformType.js)
+        attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "server")
     }
 }
 
-val testLoggingLib: Configuration by configurations.creating
-val clientConfiguration: Configuration by configurations.creating
+val testLoggingLib: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+    attributes {
+        attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "test-logging")
+    }
+}
+
+val clientConfiguration: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+    attributes {
+        attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "client")
+    }
+}
 
 dependencies {
-    clientConfiguration(project(mapOf("path" to ":client", "configuration" to "clientConfiguration")))
-    appConfiguration(project(mapOf("path" to ":server", "configuration" to "appConfiguration")))
+    clientConfiguration(project(":client"))
+    appConfiguration(project(":server"))
     jsE2eTestImplementation(platform(project(":libraries:dependency-bom")))
     jsE2eTestImplementation(project(":sdk"))
     jsE2eTestImplementation(project(":libraries:test-logging"))

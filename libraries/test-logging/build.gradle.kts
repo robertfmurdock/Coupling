@@ -15,7 +15,13 @@ kotlin {
     }
 }
 
-val testLoggingLib: Configuration by configurations.creating {}
+val testLoggingLib: Configuration by configurations.creating {
+    isCanBeConsumed = true
+    isCanBeResolved = false
+    attributes {
+        attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "test-logging")
+    }
+}
 
 tasks {
     named("jsJar") {
