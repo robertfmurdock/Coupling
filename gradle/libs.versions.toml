@@ -2,7 +2,7 @@
 com-benasher44-uuid = "com.benasher44:uuid:0.8.0"
 com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.2"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:4.2.0"
-com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:4.3.41"
+com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:4.3.44"
 com-zegreatrob-testmints-testmints-bom = "com.zegreatrob.testmints:testmints-bom:10.1.16"
 io-github-oshai-kotlin-logging = "io.github.oshai:kotlin-logging:5.0.2"
 io-ktor-ktor-bom = "io.ktor:ktor-bom:2.3.3"
