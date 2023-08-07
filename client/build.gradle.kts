@@ -1,4 +1,3 @@
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zegreatrob.coupling.plugins.NodeExec
 import com.zegreatrob.coupling.plugins.setup
@@ -45,12 +44,16 @@ kotlin {
 
 val jsRuntimeClasspath: Configuration by configurations.getting
 val clientConfiguration: Configuration by configurations.creating
-val cdnLookupConfiguration: Configuration by configurations.creating
+val cdnLookupConfiguration: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+    attributes {
+        attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "cdnLookupConfiguration")
+    }
+}
 
 dependencies {
-    cdnLookupConfiguration(
-        project(mapOf("path" to ":scripts:cdn-lookup", "configuration" to "cdnLookupConfiguration"))
-    )
+    cdnLookupConfiguration(project(":scripts:cdn-lookup"))
     jsMainImplementation(project("components"))
     jsMainImplementation(project(":sdk"))
     jsMainImplementation(project(":libraries:model"))
@@ -131,7 +134,6 @@ tasks {
         val settingsFile = File(project.projectDir, "cdn.settings.json")
         inputs.file(settingsFile)
         val settings = ObjectMapper().readTree(settingsFile)
-
         val cdnLookupFile = cdnLookupConfiguration.resolve().first()
 
         arguments = listOf(cdnLookupFile.absolutePath) + settings.fieldNames().asSequence().toList()

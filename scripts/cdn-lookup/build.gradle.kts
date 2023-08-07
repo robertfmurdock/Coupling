@@ -32,7 +32,13 @@ dependencies {
     jsTestImplementation("com.zegreatrob.testmints:minassert")
 }
 
-val cdnLookupConfiguration: Configuration by configurations.creating
+val cdnLookupConfiguration: Configuration by configurations.creating {
+    isCanBeConsumed = true
+    isCanBeResolved = false
+    attributes {
+        attribute(Attribute.of("com.zegreatrob.executable", String::class.java), "cdnLookupConfiguration")
+    }
+}
 
 val outputFile: String? by project
 
@@ -48,6 +54,8 @@ tasks {
 artifacts {
     val task = tasks.named("compileProductionExecutableKotlinJs", KotlinJsIrLink::class)
     add(cdnLookupConfiguration.name, task.map {
-        it.destinationDirectory.file(it.compilerOptions.moduleName.map { "$it.js" })
-    }) { builtBy(task) }
+        it.destinationDirectory.file(it.compilerOptions.moduleName.map { moduleName -> "$moduleName.js" })
+    }) {
+        builtBy(task)
+    }
 }
