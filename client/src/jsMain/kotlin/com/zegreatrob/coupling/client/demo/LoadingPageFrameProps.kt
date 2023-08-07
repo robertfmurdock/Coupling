@@ -77,7 +77,7 @@ val LoadingPageFrame by nfc<LoadingPageFrameProps> { (state) ->
                             } else {
                                 it
                             }
-                        }.forEach { child(it) }
+                        }.forEach { +it }
                     }
                 }
             }

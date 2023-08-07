@@ -42,7 +42,7 @@ val AsyncReactComponent by nfc<AsyncReactComponentProps<Props>> { props ->
         is PendingState -> div { +"Pending component" }
         is ResolvedState ->
             state.result
-                ?.let { Fragment { child(useComponent(it)) } }
+                ?.let { +useComponent(it) }
                 ?: div { +"Error finding component." }
     }
 }

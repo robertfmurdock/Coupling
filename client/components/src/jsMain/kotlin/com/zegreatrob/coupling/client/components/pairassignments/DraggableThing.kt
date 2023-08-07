@@ -34,6 +34,6 @@ val DraggableThing by nfc<DraggableThingProps> { (itemType, itemId, dropCallback
     div {
         css { display = Display.inlineBlock }
         ref = draggableRef
-        child(handler(isOver))
+        +handler(isOver)
     }
 }
