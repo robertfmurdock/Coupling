@@ -65,6 +65,7 @@ wdioTest {
 }
 
 tasks {
+
     jsE2eTestProcessResources {
         dependsOn("dependencyResources")
     }
