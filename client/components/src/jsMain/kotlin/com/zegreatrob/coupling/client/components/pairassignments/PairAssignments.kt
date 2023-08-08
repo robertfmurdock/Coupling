@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.client.components.external.reactdndhtml5backend.R
 import com.zegreatrob.coupling.client.components.external.reactdndhtml5backend.html5BackendDeferred
 import com.zegreatrob.coupling.client.components.party.PartyBrowser
 import com.zegreatrob.coupling.client.components.player.PlayerRoster
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.map
@@ -40,6 +41,7 @@ val pairAssignmentsClassName = ClassName { pairAssignmentStyles() }
 
 external interface PairAssignmentsProps : Props {
     var party: PartyDetails
+    var boost: Boost?
     var players: List<Player>
     var pairs: PairAssignmentDocument?
     var setPairs: (PairAssignmentDocument) -> Unit
@@ -50,7 +52,7 @@ external interface PairAssignmentsProps : Props {
 
 @ReactFunc
 val PairAssignments by nfc<PairAssignmentsProps> { props ->
-    val (party, players, pairs, setPairs, controls, message, allowSave) = props
+    val (party, boost, players, pairs, setPairs, controls, message, allowSave) = props
 
     val pairAssignments = pairs?.overlayUpdatedPlayers(players)
     val notPairedPlayers = notPairedPlayers(players, pairs)
@@ -59,7 +61,7 @@ val PairAssignments by nfc<PairAssignmentsProps> { props ->
         div {
             className = pairAssignmentsClassName
             div {
-                PartyBrowser(party)
+                PartyBrowser(party, boost)
                 PairSection(party, players, pairAssignments, allowSave, setPairs, controls)
             }
             ControlPanel(party)

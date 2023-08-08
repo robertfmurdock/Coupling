@@ -21,6 +21,7 @@ import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
+import web.cssom.AnimationIterationCount
 import web.cssom.Auto
 import web.cssom.BoxShadow
 import web.cssom.Color
@@ -33,10 +34,12 @@ import web.cssom.NamedColor
 import web.cssom.None
 import web.cssom.Position
 import web.cssom.TextAlign
+import web.cssom.ident
 import web.cssom.integer
 import web.cssom.number
 import web.cssom.px
 import web.cssom.rgb
+import web.cssom.s
 
 external interface PartyCardProps : Props {
     var party: PartyDetails
@@ -64,20 +67,36 @@ val PartyCard by nfc<PartyCardProps> { props ->
             div {
                 css { margin = ((size * 0.02).px) }
                 PartyCardHeader(party, size)
-                if (props.boost != null) {
-                    span {
-                        css { float = Float.right; zIndex = integer(100); position = Position.relative }
-                        boostPinButton()
-                    }
-                }
+                props.boost?.let { boostIndicator(it) }
                 partyGravatar(party, size)
             }
         }
     }
 }
 
-private fun ChildrenBuilder.boostPinButton() {
-    PinButton(boostPin, scale = PinButtonScale.Small)
+private fun ChildrenBuilder.boostIndicator(boost: Boost) {
+    span {
+        css {
+            float = Float.right
+            zIndex = integer(100)
+            position = Position.relative
+            animationName = ident("pulsate")
+            animationDuration = 0.75.s
+            animationIterationCount = AnimationIterationCount.infinite
+            hover {
+                animationDuration = 0.25.s
+            }
+        }
+        boostPinButton(boost)
+    }
+}
+
+private fun ChildrenBuilder.boostPinButton(boost: Boost) {
+    PinButton(
+        pin = boostPin,
+        scale = PinButtonScale.Small,
+        tooltipMessage = "You've been boosted by user ${boost.userId}!",
+    )
 }
 
 private fun PropertiesBuilder.staticCardStyles() {

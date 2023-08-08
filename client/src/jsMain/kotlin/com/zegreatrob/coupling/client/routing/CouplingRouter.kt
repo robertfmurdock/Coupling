@@ -50,10 +50,10 @@ val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, config) ->
     val browserRouter = useMemo(isSignedIn, config) {
         createBrowserRouter(
             routes = arrayOf(
-                couplingRoute("/welcome/", "Welcome", WelcomePage),
-                couplingRoute("/about", "About", AboutPage),
-                couplingRoute("/demo", "Demo", DemoPage),
-                couplingRoute("/loading", "Loading Test", LoadingPage),
+                config.couplingRoute("/welcome/", "Welcome", WelcomePage),
+                config.couplingRoute("/about", "About", AboutPage),
+                config.couplingRoute("/demo", "Demo", DemoPage),
+                config.couplingRoute("/loading", "Loading Test", LoadingPage),
             ).plus(routes(isSignedIn, config)),
             opts = jso { basename = config.basename },
         )
@@ -69,7 +69,7 @@ val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, config) ->
 
 private fun routes(isSignedIn: Boolean, config: ClientConfig) = (
     if (isSignedIn) {
-        authenticatedRoutes(config)
+        config.authenticatedRoutes()
     } else {
         arrayOf(redirectUnauthenticated())
     }
@@ -81,9 +81,9 @@ private fun redirectUnauthenticated(): RouteObject = jso {
     element = RedirectUnauthenticated.create()
 }
 
-private fun authenticatedRoutes(config: ClientConfig): Array<RouteObject> = listOfNotNull(
+private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNull(
     jso { path = "/"; element = redirectToParties() },
-    if (config.prereleaseMode) {
+    if (prereleaseMode) {
         couplingRoute("/user", "User", UserPage)
     } else {
         null

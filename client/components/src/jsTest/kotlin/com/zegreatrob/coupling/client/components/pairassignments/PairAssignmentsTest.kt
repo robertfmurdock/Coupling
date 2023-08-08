@@ -55,10 +55,11 @@ class PairAssignmentsTest {
     }) exercise {
         render(
             PairAssignments.create(
-                party,
-                players,
-                pairAssignments,
-                { pairAssignments = it },
+                party = party,
+                boost = null,
+                players = players,
+                pairs = pairAssignments,
+                setPairs = { pairAssignments = it },
                 controls = Controls({ {} }) {},
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
@@ -90,10 +91,11 @@ class PairAssignmentsTest {
     }) exercise {
         render(
             PairAssignments.create(
-                party,
-                players,
-                null,
-                {},
+                party = party,
+                boost = null,
+                players = players,
+                pairs = null,
+                setPairs = {},
                 controls = Controls({ { } }) {},
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,

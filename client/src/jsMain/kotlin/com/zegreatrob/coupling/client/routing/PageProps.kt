@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.routing
 import com.benasher44.uuid.Uuid
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.LoggingActionPipe
+import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.ClientDispatcher
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
@@ -19,6 +20,7 @@ external interface PageProps : Props {
     var pathParams: ReadonlyRecord<String, String>
     var commander: Commander
     var search: URLSearchParams
+    var config: ClientConfig
 }
 
 val PageProps.partyId: PartyId? get() = pathParams["partyId"]?.let(::PartyId)

@@ -43,6 +43,7 @@ external interface PinButtonProps : Props {
     var scale: PinButtonScale?
     var className: String?
     var showTooltip: Boolean?
+    var tooltipMessage: String?
     var onClick: (() -> Unit)?
 }
 
@@ -63,7 +64,7 @@ val PinButton by nfc<PinButtonProps> { props ->
         if (showTooltip) {
             span {
                 this.className = tooltipStyles
-                +pin.name
+                +(props.tooltipMessage ?: pin.name)
             }
         }
         i { this.className = ClassName("${scale.faTag} ${targetIcon(pin)}") }

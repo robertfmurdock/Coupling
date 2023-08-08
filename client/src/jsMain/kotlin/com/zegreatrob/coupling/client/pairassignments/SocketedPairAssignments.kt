@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.disconnectedMessage
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.components.pairassignments.PairAssignments
 import com.zegreatrob.coupling.client.components.pairassignments.create
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
@@ -29,6 +30,7 @@ import react.useState
 external interface SocketedPairAssignmentsProps<D> : Props
     where D : SavePairAssignmentsCommand.Dispatcher, D : DeletePairAssignmentsCommand.Dispatcher {
     var party: PartyDetails
+    var boost: Boost?
     var players: List<Player>
     var pairAssignments: PairAssignmentDocument?
     var controls: Controls<D>
@@ -36,7 +38,7 @@ external interface SocketedPairAssignmentsProps<D> : Props
 }
 
 @ReactFunc
-val SocketedPairAssignments by nfc<SocketedPairAssignmentsProps<*>> { (party, players, originalPairs, controls, allowSave) ->
+val SocketedPairAssignments by nfc<SocketedPairAssignmentsProps<*>> { (party, boost, players, originalPairs, controls, allowSave) ->
     val (pairAssignments, setPairAssignments) = useState(originalPairs)
     val (message, setMessage) = useState(disconnectedMessage)
     val onMessageFunc: (Message) -> Unit = useCallback { handleMessage(it, setMessage, setPairAssignments) }
@@ -58,6 +60,7 @@ val SocketedPairAssignments by nfc<SocketedPairAssignmentsProps<*>> { (party, pl
             buildChild = {
                 PairAssignments.create(
                     party = party,
+                    boost = boost,
                     players = players,
                     pairs = pairAssignments,
                     setPairs = updatePairAssignments,
