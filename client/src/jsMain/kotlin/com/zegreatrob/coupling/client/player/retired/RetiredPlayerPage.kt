@@ -37,6 +37,7 @@ private fun ChildrenBuilder.loadedRetiredPlayer(props: PageProps, partyId: Party
             val players = result.party?.retiredPlayers?.elements ?: return@CouplingQuery null
             PlayerConfig.create(
                 party = result.party?.details?.data ?: return@CouplingQuery null,
+                boost = result.party?.boost?.data,
                 player = players.first { it.id == playerId },
                 players = players,
                 reload = reload,

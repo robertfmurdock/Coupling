@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -27,6 +28,7 @@ import kotlin.js.Json
 external interface PlayerConfigProps<P> : Props
     where P : SavePlayerCommand.Dispatcher, P : DeletePlayerCommand.Dispatcher {
     var party: PartyDetails
+    var boost: Boost?
     var player: Player
     var players: List<Player>
     var reload: () -> Unit
@@ -36,7 +38,7 @@ external interface PlayerConfigProps<P> : Props
 
 @ReactFunc
 val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
-    val (party, player, players, reload, dispatchFunc, windowFuncs) = props
+    val (party, boost, player, players, reload, dispatchFunc, windowFuncs) = props
     val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
@@ -58,6 +60,6 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {
-        PlayerConfigContent(party, updatedPlayer, players, onChange, onSubmit, onRemove)
+        PlayerConfigContent(party, boost, updatedPlayer, players, onChange, onSubmit, onRemove)
     }
 }

@@ -25,6 +25,7 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
                 ?: playerList.defaultWithCallSign()
             PlayerConfig.create(
                 party = partyDetails,
+                boost = data.party?.boost?.data,
                 player = player,
                 players = playerList,
                 reload = reload,

@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.components.ConfigFrame
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.configInput
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.pin.PinTarget
@@ -34,6 +35,7 @@ import web.html.InputType
 
 external interface PinConfigContentProps : Props {
     var party: PartyDetails
+    var boost: Boost?
     var pin: Pin
     var pinList: List<Pin>
     var onChange: (ChangeEvent<*>) -> Unit
@@ -44,13 +46,12 @@ external interface PinConfigContentProps : Props {
 val pinConfigContentClassName = ClassName("pin-config-content")
 
 @ReactFunc
-val PinConfigContent by nfc<PinConfigContentProps> { (party, pin, pinList, onChange, onSubmit, onRemove) ->
+val PinConfigContent by nfc<PinConfigContentProps> { (party, boost, pin, pinList, onChange, onSubmit, onRemove) ->
     ConfigFrame {
         className = pinConfigContentClassName
         span {
             css { display = Display.inlineBlock }
-            ConfigHeader {
-                this.party = party
+            ConfigHeader(party = party, boost = boost) {
                 +"Pin Configuration"
             }
             span {

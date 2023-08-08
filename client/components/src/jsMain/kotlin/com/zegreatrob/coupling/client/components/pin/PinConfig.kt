@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
@@ -25,6 +26,7 @@ import kotlin.js.Json
 
 external interface PinConfigProps<D> : Props where D : DeletePinCommand.Dispatcher, D : SavePinCommand.Dispatcher {
     var party: PartyDetails
+    var boost: Boost?
     var pin: Pin
     var pinList: List<Pin>
     var reload: () -> Unit
@@ -33,7 +35,7 @@ external interface PinConfigProps<D> : Props where D : DeletePinCommand.Dispatch
 
 @ReactFunc
 val PinConfig by nfc<PinConfigProps<*>> { props ->
-    val (party, pin, pinList, reload, dispatchFunc) = props
+    val (party, boost, pin, pinList, reload, dispatchFunc) = props
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
     val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
@@ -57,6 +59,6 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {
-        PinConfigContent(party, updatedPin, pinList, onChange, onSubmit, onRemove)
+        PinConfigContent(party, boost, updatedPin, pinList, onChange, onSubmit, onRemove)
     }
 }

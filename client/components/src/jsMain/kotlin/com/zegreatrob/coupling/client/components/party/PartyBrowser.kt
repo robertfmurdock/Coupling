@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.client.components.ConfigHeader
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -14,10 +15,11 @@ import web.cssom.px
 
 external interface PartyBrowserProps : Props {
     var party: PartyDetails
+    var boost: Boost?
 }
 
 @ReactFunc
-val PartyBrowser by nfc<PartyBrowserProps> { (party) ->
+val PartyBrowser by nfc<PartyBrowserProps> { (party, boost) ->
     div {
         css {
             whiteSpace = WhiteSpace.normal
@@ -25,8 +27,7 @@ val PartyBrowser by nfc<PartyBrowserProps> { (party) ->
             margin = 5.px
             textAlign = TextAlign.left
         }
-        ConfigHeader {
-            this.party = party
+        ConfigHeader(party = party, boost = boost) {
             +(party.name ?: "")
         }
     }

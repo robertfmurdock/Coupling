@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.client.components.gravatarLink
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
@@ -30,6 +31,7 @@ import web.html.InputType
 
 external interface PartyConfigContentProps : Props {
     var party: PartyDetails
+    var boost: Boost?
     var isNew: Boolean?
     var onChange: (ChangeEvent<*>) -> Unit
     var onSave: () -> Unit
@@ -39,14 +41,13 @@ external interface PartyConfigContentProps : Props {
 val partyConfigContentClassName = ClassName("party-config-content")
 
 @ReactFunc
-val PartyConfigContent by nfc<PartyConfigContentProps> { (party, isNew, onChange, onSave, onDelete) ->
+val PartyConfigContent by nfc<PartyConfigContentProps> { (party, boost, isNew, onChange, onSave, onDelete) ->
     ConfigFrame {
         className = partyConfigContentClassName
         backgroundColor = Color("hsla(45, 80%, 96%, 1)")
         borderColor = Color("#ff8c00")
 
-        ConfigHeader {
-            this.party = party
+        ConfigHeader(party = party, boost = boost) {
             +"Party Configuration"
         }
         div {

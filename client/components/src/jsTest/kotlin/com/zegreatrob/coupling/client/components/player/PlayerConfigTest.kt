@@ -110,7 +110,16 @@ class PlayerConfigTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, dispatchFunc { {} }) }
+                router = singleRouteRouter {
+                    PlayerConfig(
+                        party = party,
+                        boost = null,
+                        player = player,
+                        players = emptyList(),
+                        reload = {},
+                        dispatchFunc = dispatchFunc { {} },
+                    )
+                }
             },
         )
     } verify { wrapper ->
@@ -127,7 +136,16 @@ class PlayerConfigTest {
     }) exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), {}, dispatchFunc { {} }) }
+                router = singleRouteRouter {
+                    PlayerConfig(
+                        party = party,
+                        boost = null,
+                        player = player,
+                        players = emptyList(),
+                        reload = {},
+                        dispatchFunc = dispatchFunc { {} },
+                    )
+                }
             },
         )
     } verify { wrapper ->
@@ -265,7 +283,14 @@ class PlayerConfigTest {
                             path = "*"
                             element = Fragment.create {
                                 Link { to = "elsewhere"; button { +"Leave" } }
-                                PlayerConfig(party, player, emptyList(), { }, dispatchFunc { {} })
+                                PlayerConfig(
+                                    party = party,
+                                    boost = null,
+                                    player = player,
+                                    players = emptyList(),
+                                    reload = { },
+                                    dispatchFunc = dispatchFunc { {} },
+                                )
                             }
                         },
                     ),
@@ -293,7 +318,16 @@ class PlayerConfigTest {
     } exercise {
         render(
             RouterProvider.create {
-                router = singleRouteRouter { PlayerConfig(party, player, emptyList(), { }, dispatchFunc { {} }) }
+                router = singleRouteRouter {
+                    PlayerConfig(
+                        party = party,
+                        boost = null,
+                        player = player,
+                        players = emptyList(),
+                        reload = { },
+                        dispatchFunc = dispatchFunc { {} },
+                    )
+                }
             },
         )
     } verifyAnd { _ ->

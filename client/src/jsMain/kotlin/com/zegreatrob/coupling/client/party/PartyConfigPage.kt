@@ -17,6 +17,7 @@ val PartyConfigPage by nfc<PageProps> { props ->
             toNode = { _, commandFunc, result ->
                 PartyConfig.create(
                     party = result.party?.details?.data ?: return@CouplingQuery null,
+                    boost = result.party?.boost?.data,
                     dispatchFunc = commandFunc,
                 )
             },
@@ -26,7 +27,7 @@ val PartyConfigPage by nfc<PageProps> { props ->
         CouplingQuery(
             commander = props.commander,
             query = graphQuery { user { details() } },
-            toNode = { _, commandFunc, _ -> PartyConfig.create(newParty(), commandFunc) },
+            toNode = { _, commandFunc, _ -> PartyConfig.create(newParty(), null, commandFunc) },
             key = props.partyId?.value,
         )
     }

@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.client.components.gravatarLink
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
@@ -45,6 +46,7 @@ val playerConfigContentClassName = ClassName("player-config-content")
 
 external interface PlayerConfigContentProps : Props {
     var party: PartyDetails
+    var boost: Boost?
     var player: Player
     var players: List<Player>
     var onChange: (ChangeEvent<*>) -> Unit
@@ -53,7 +55,7 @@ external interface PlayerConfigContentProps : Props {
 }
 
 @ReactFunc
-val PlayerConfigContent by nfc<PlayerConfigContentProps> { (party, player, players, onChange, onSubmit, onRemove) ->
+val PlayerConfigContent by nfc<PlayerConfigContentProps> { (party, boost, player, players, onChange, onSubmit, onRemove) ->
     ConfigFrame {
         css(playerConfigContentClassName) {
             "input[type=text]" {
@@ -64,8 +66,7 @@ val PlayerConfigContent by nfc<PlayerConfigContentProps> { (party, player, playe
             }
         }
         span {
-            ConfigHeader {
-                this.party = party
+            ConfigHeader(party = party, boost = boost) {
                 +"Player Configuration"
             }
             div {

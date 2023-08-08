@@ -23,6 +23,7 @@ val PinPage = partyPageFunction { props, partyId ->
             val pinList = result.party?.pinList?.elements ?: return@CouplingQuery null
             PinConfig.create(
                 party = result.party?.details?.data ?: return@CouplingQuery null,
+                boost = result.party?.boost?.data,
                 pinList = pinList,
                 pin = pinList.firstOrNull { it.id == pinId } ?: Pin(),
                 reload = reload,

@@ -35,7 +35,7 @@ class PartyConfigTest {
         val party = PartyDetails(PartyId("1"), name = "1")
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyConfig(party, DispatchFunc { {} })
+            PartyConfig(party = party, boost = null, dispatchFunc = DispatchFunc { {} })
         }
     } verify {
         within(screen.getByLabelText("Pairing Rule"))
@@ -74,7 +74,13 @@ class PartyConfigTest {
                     }
                     PathRoute {
                         path = "*"
-                        element = Fragment.create { PartyConfig(party, stubDispatcher.func()) }
+                        element = Fragment.create {
+                            PartyConfig(
+                                party = party,
+                                boost = null,
+                                dispatchFunc = stubDispatcher.func(),
+                            )
+                        }
                     }
                 }
             },
@@ -95,7 +101,7 @@ class PartyConfigTest {
         val stubDispatcher = StubDispatcher()
     }) {
         render(jso { wrapper = MemoryRouter }) {
-            PartyConfig(party, stubDispatcher.func())
+            PartyConfig(party = party, boost = null, dispatchFunc = stubDispatcher.func())
         }
     } exercise {
         screen.getByLabelText("Unique Id").let { it as? HTMLInputElement }?.value

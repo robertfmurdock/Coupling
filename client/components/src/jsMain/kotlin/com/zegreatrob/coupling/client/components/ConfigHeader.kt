@@ -7,7 +7,9 @@ import com.zegreatrob.coupling.client.components.pin.pinListButton
 import com.zegreatrob.coupling.client.components.player.addPlayerButton
 import com.zegreatrob.coupling.client.components.player.viewRetireesButton
 import com.zegreatrob.coupling.client.components.stats.statisticsButton
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.PropsWithChildren
@@ -36,8 +38,10 @@ import web.cssom.rgb
 
 external interface ConfigHeaderProps : PropsWithChildren {
     var party: PartyDetails
+    var boost: Boost?
 }
 
+@ReactFunc
 val ConfigHeader by nfc<ConfigHeaderProps> { props ->
     val party = props.party
     div {
@@ -59,7 +63,7 @@ val ConfigHeader by nfc<ConfigHeaderProps> { props ->
                     gridRowStart = integer(1)
                     gridRowEnd = integer(3)
                 }
-                PartyCard(party, 75)
+                PartyCard(party = party, size = 75, boost = props.boost)
             }
             div {
                 css {

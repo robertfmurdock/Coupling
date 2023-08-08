@@ -104,19 +104,41 @@ private fun popperOptions(arrowRef: MutableRefObject<HTMLElement>, state: DemoAn
 }
 
 private fun ChildrenBuilder.partyConfigFrame(state: MakeParty) {
-    PartyConfigContent(state.party, true, {}, {}, {})
+    PartyConfigContent(party = state.party, boost = null, isNew = true, onChange = {}, onSave = {}, onDelete = {})
 }
 
 private fun ChildrenBuilder.prepareSpinFrame(state: PrepareToSpin) {
     val (party, players, pins) = state
-    PrepareSpinContent(party, players, pins, pins.map(Pin::id), {}, {}, {})
+    PrepareSpinContent(
+        party = party,
+        playerSelections = players,
+        pins = pins,
+        pinSelections = pins.map(Pin::id),
+        setPlayerSelections = {},
+        setPinSelections = {},
+        onSpin = {},
+    )
 }
 
-private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) =
-    PlayerConfigContent(state.party, state.newPlayer, state.players, {}, {}, {})
+private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = PlayerConfigContent(
+    party = state.party,
+    boost = null,
+    player = state.newPlayer,
+    players = state.players,
+    onChange = {},
+    onSubmit = {},
+    onRemove = {},
+)
 
-private fun ChildrenBuilder.pinConfigFrame(state: AddPin) =
-    PinConfigContent(state.party, state.newPin, state.pins, {}, {}, {})
+private fun ChildrenBuilder.pinConfigFrame(state: AddPin) = PinConfigContent(
+    party = state.party,
+    boost = null,
+    pin = state.newPin,
+    pinList = state.pins,
+    onChange = {},
+    onSubmit = {},
+    onRemove = {},
+)
 
 private fun ChildrenBuilder.pairAssignmentsFrame(state: CurrentPairs) = PairAssignments(
     party = state.party,
