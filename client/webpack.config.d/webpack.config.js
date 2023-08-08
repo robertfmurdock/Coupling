@@ -104,6 +104,7 @@ config.performance = {
 config.externals = {"cheerio": "window", "fs": "empty", ...cdnSettings}
 
 if (config.devServer) {
+    config.devServer.open = ['/local/']
     config.devServer.port = 3001
     config.devServer.hot = true
     config.devServer.historyApiFallback = {index: 'html/index.html'}
