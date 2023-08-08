@@ -86,10 +86,9 @@ private val ktorLogger = KotlinLogging.logger("ktor")
 fun buildClient(): HttpClient {
     setupPlatformSpecificKtorSettings()
 
-    val client = defaultClient(null, uuid4()).config {
+    val client = defaultClient("$baseUrl", uuid4()).config {
         followRedirects = false
         expectSuccess = false
-        defaultRequest { url("$baseUrl") }
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) = ktorLogger.info { message }

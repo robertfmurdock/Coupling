@@ -6,13 +6,11 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.Parameters
-import io.ktor.http.Url
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -46,14 +44,9 @@ private val generalPurposeClient = HttpClient {
 private val ktorLogger = KotlinLogging.logger("ktor")
 
 private fun buildClientWithToken(): HttpClient {
-    val client = defaultClient(null).config {
+    val client = defaultClient("${process.env.BASEURL}").config {
         followRedirects = false
         expectSuccess = false
-        val baseUrl = Url("${process.env.BASEURL}")
-
-        defaultRequest {
-            url(baseUrl.toString())
-        }
         install(Logging) {
             level = LogLevel.INFO
             logger = object : Logger {

@@ -26,7 +26,7 @@ class List : CliktCommand() {
 
             val sdk = couplingSdk(
                 getIdTokenFunc = { accessToken },
-                httpClient = defaultClient(environment.audienceHost() to ""),
+                httpClient = defaultClient(environment.audienceHost()),
             )
             runBlocking {
                 sdk.fire(graphQuery { partyList { details() } })

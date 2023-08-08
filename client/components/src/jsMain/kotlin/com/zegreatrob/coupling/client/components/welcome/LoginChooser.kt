@@ -63,8 +63,8 @@ val LoginChooser by nfc<Props> {
         }
         div {
             CouplingButton(
-                supersize,
-                white,
+                sizeRuleSet = supersize,
+                colorRuleSet = white,
                 onClick = signInFunc,
             ) { +"Login" }
         }
