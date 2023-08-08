@@ -19,7 +19,6 @@ kotlin {
 }
 
 dockerCompose {
-    useDockerComposeV2.set(true)
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
     setProjectName("Coupling-root")
     startedServices.set(listOf("dynamo"))

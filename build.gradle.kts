@@ -13,12 +13,12 @@ plugins {
 
 dockerCompose {
     setProjectName("Coupling-root")
-    useDockerComposeV2.set(true)
     tcpPortsToIgnoreWhenWaiting.set(listOf(5555))
     startedServices.set(listOf("serverless", "caddy", "dynamo"))
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
     waitForTcpPorts.set(false)
     waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
+
 
     nested("caddy").apply {
         setProjectName("Coupling-root")
