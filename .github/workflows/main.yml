@@ -45,13 +45,13 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (Deploy)
         uses: aws-actions/configure-aws-credentials@v2
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
           role-to-assume: arn:aws:iam::174159267544:role/CouplingDeploy
           aws-region: us-east-1
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (Local)
         uses: aws-actions/configure-aws-credentials@v2
         if: ${{ github.ref != 'refs/heads/master' }}
         with:
