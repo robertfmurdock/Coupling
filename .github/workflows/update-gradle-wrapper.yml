@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "0 14 * * *"
   workflow_dispatch:
+permissions:
+  id-token: write
+  contents: write
 jobs:
   update-gradle-wrapper:
     runs-on: ubuntu-latest
