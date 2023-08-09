@@ -21,21 +21,19 @@ dockerCompose {
     containerLogToDir.set(project.file("build/test-output/containers-logs"))
     waitForTcpPorts.set(false)
     waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
-    val stripeKeys = provider {
-        val outputStream = ByteArrayOutputStream()
-        exec {
-            commandLine(
-                "/bin/bash",
-                "-c",
-                "aws ssm get-parameters --names /prerelease/stripe_pk /prerelease/stripe_sk --with-decryption | jq '[.Parameters[].Value']"
-            )
-            standardOutput = outputStream
-        }
-        val (pk, sk) = outputStream.toByteArray().let { ObjectMapper().readValue(it, List::class.java) }
-        pk to sk
+
+    val outputStream = ByteArrayOutputStream()
+    exec {
+        commandLine(
+            "/bin/bash",
+            "-c",
+            "aws ssm get-parameters --names /prerelease/stripe_pk /prerelease/stripe_sk --with-decryption | jq '[.Parameters[].Value']"
+        )
+        standardOutput = outputStream
     }
-    environment.put("STRIPE_PUBLISHABLE_KEY", stripeKeys.map { it.first.toString() })
-    environment.put("STRIPE_SECRET_KEY", stripeKeys.map { it.second.toString() })
+    val (pk, sk) = outputStream.toByteArray().let { ObjectMapper().readValue(it, List::class.java) }
+    environment.put("STRIPE_PUBLISHABLE_KEY", pk.toString())
+    environment.put("STRIPE_SECRET_KEY", sk.toString())
 
     nested("caddy").apply {
         setProjectName("Coupling-root")
