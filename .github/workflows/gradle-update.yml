@@ -12,6 +12,12 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           fetch-depth: '25'
+      - name: Configure AWS credentials (Local)
+        uses: aws-actions/configure-aws-credentials@v2
+        if: ${{ github.ref != 'refs/heads/master' }}
+        with:
+          role-to-assume: arn:aws:iam::174159267544:role/LocalDevelopment
+          aws-region: us-east-1
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
         with:
