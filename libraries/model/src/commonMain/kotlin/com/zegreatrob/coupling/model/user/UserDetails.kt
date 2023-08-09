@@ -8,6 +8,11 @@ data class User(
     val id: String,
     val details: UserDetails?,
     val boost: Record<Boost>?,
+    val subscription: SubscriptionDetails?,
+)
+
+data class SubscriptionDetails(
+    val stripeCustomerId: String?,
 )
 
 data class UserDetails(

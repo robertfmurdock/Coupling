@@ -12,8 +12,10 @@ import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.blue
 import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.party.GeneralControlBar
+import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.party.AboutButton
+import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
@@ -35,12 +37,13 @@ import web.html.InputType
 
 external interface UserConfigProps : Props {
     var user: UserDetails?
+    var partyList: List<PartyDetails>
     var dispatcher: DispatchFunc<out GraphQuery.Dispatcher>
 }
 
 @ReactFunc
 val UserConfig by nfc<UserConfigProps> { props ->
-    val (user) = props
+    val (user, partyList) = props
     PageFrame(
         borderColor = Color("rgb(94, 84, 102)"),
         backgroundColor = Color("floralwhite"),
@@ -89,12 +92,6 @@ val UserConfig by nfc<UserConfigProps> { props ->
                             value = user.email
                         }
                     }
-                    div { +"You are authorized for these parties:" }
-                    user.authorizedPartyIds
-                        .map { it.value }
-                        .forEach { id ->
-                            div { +"Party ID: $id" }
-                        }
                 }
                 PlayerCard(
                     Player(
@@ -104,6 +101,12 @@ val UserConfig by nfc<UserConfigProps> { props ->
                         avatarType = null,
                     ),
                 )
+            }
+            div {
+                div { +"You can see these parties:" }
+                partyList.forEach { party ->
+                    PartyCard(party = party, size = 50)
+                }
             }
             div {
                 SponsorCouplingButton(props.dispatcher)

@@ -105,6 +105,7 @@ class MemoryCouplingSdk private constructor(
                 partyRepository.loadParties().map { it.data.id }.toSet(),
                 null,
             ),
+            subscription = null,
             boost = null,
         ),
         party = query.variables?.get("input")?.let { Json.decodeFromJsonElement<PartyInput>(it) }?.partyId?.let {

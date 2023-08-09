@@ -37,6 +37,7 @@ fun JsonUser.toModel() = User(
     id = id,
     details = details?.toModel(),
     boost = boost?.toModelRecord(),
+    subscription = null,
 )
 
 fun UserDetails.toSerializable() = JsonUserDetails(

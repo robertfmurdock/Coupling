@@ -15,6 +15,13 @@ type Party {
 type User {
     id: String!
     boost: BoostDetails
+    subscription: SubscriptionDetails
+}
+
+type SubscriptionDetails {
+    stripeCustomerId: String
+    stripeSubscriptionId: String
+    isActive: String
 }
 
 input SaveBoostInput {
