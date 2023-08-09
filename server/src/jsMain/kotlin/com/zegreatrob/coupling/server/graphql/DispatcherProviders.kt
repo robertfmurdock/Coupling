@@ -2,10 +2,12 @@ package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.model.Message
+import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
 import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.ICommandDispatcher
 import com.zegreatrob.coupling.server.PrereleaseDispatcher
+import com.zegreatrob.coupling.server.action.subscription.StripeRepository
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import kotlinx.datetime.Clock
@@ -33,8 +35,12 @@ object DispatcherProviders {
             null
         } else {
             val boostRepo = DynamoBoostRepository(dispatcher.currentUser.id, Clock.System)
+            val stripeRepository = object : StripeRepository {
+                override fun findSubscriptionDetails(email: String): SubscriptionDetails? = null
+            }
             object : PrereleaseDispatcher, ICommandDispatcher by dispatcher {
                 override val boostRepository = boostRepo
+                override val stripeRepository = stripeRepository
                 override val userId = dispatcher.currentUser.id
 
                 override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message) =

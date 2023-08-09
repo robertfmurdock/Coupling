@@ -46,6 +46,7 @@ import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispa
 import com.zegreatrob.coupling.server.action.secret.SecretListQuery
 import com.zegreatrob.coupling.server.action.slack.ServerGrantSlackAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
+import com.zegreatrob.coupling.server.action.subscription.ServerSubscriptionQueryDispatcher
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
 import com.zegreatrob.coupling.server.action.user.UserQuery
 import com.zegreatrob.coupling.server.entity.pairassignment.PairAssignmentDispatcher
@@ -193,9 +194,10 @@ fun apiGatewayManagementApiClient() = ApiGatewayManagementApiClient(
 
 interface PrereleaseDispatcher :
     ICommandDispatcher,
-    ServerSaveBoostCommandDispatcher,
-    ServerUserBoostQueryDispatcher,
+    ServerDeleteBoostCommandDispatcher,
     ServerPartyBoostQueryDispatcher,
-    ServerDeleteBoostCommandDispatcher {
+    ServerSaveBoostCommandDispatcher,
+    ServerSubscriptionQueryDispatcher,
+    ServerUserBoostQueryDispatcher {
     override val boostRepository: BoostRepository
 }

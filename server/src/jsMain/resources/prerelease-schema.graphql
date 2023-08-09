@@ -21,7 +21,7 @@ type User {
 type SubscriptionDetails {
     stripeCustomerId: String
     stripeSubscriptionId: String
-    isActive: String
+    isActive: Boolean!
 }
 
 input SaveBoostInput {

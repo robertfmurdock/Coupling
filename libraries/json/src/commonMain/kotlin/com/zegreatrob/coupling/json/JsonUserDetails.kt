@@ -4,6 +4,7 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.model.user.UserDetails
 import kotlinx.datetime.Instant
@@ -15,6 +16,15 @@ data class JsonUserDetails(
     val id: String,
     val email: String,
     val authorizedPartyIds: Set<PartyId>,
+)
+
+@Serializable
+data class JsonSubscriptionDetails(
+    val stripeCustomerId: String?,
+)
+
+fun SubscriptionDetails.toJson() = JsonSubscriptionDetails(
+    stripeCustomerId = stripeCustomerId,
 )
 
 @Serializable
