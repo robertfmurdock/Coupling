@@ -27,7 +27,7 @@ dockerCompose {
         commandLine(
             "/bin/bash",
             "-c",
-            "aws ssm get-parameters --names prerelease_stripe_pk prerelease_stripe_sk --with-decryption | jq '[.Parameters[].Value']"
+            "aws ssm get-parameters --names /prerelease/stripe_pk /prerelease/stripe_sk --with-decryption | jq '[.Parameters[].Value']"
         )
         standardOutput = outputStream
     }
