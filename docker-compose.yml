@@ -14,6 +14,8 @@ services:
       - API_GATEWAY_MANAGEMENT_API_HOST=http://127.0.0.1:3001
       - NODE_ENV=production
       - ENABLE_PRERELEASE_FEATURES=true
+      - STRIPE_PUBLISHABLE_KEY
+      - STRIPE_SECRET_KEY
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/local/api/health"]
       interval: 2s
