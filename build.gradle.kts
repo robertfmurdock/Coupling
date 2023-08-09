@@ -1,3 +1,6 @@
+import com.avast.gradle.dockercompose.tasks.ComposeUp
+import com.gradle.scan.plugin.internal.dep.com.fasterxml.jackson.databind.ObjectMapper
+import java.io.ByteArrayOutputStream
 import java.time.Duration
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -19,6 +22,18 @@ dockerCompose {
     waitForTcpPorts.set(false)
     waitAfterHealthyStateProbeFailure.set(Duration.ofMillis(100))
 
+    val outputStream = ByteArrayOutputStream()
+    exec {
+        commandLine(
+            "/bin/bash",
+            "-c",
+            "aws ssm get-parameters --names prerelease_stripe_pk prerelease_stripe_sk --with-decryption | jq '[.Parameters[].Value']"
+        )
+        standardOutput = outputStream
+    }
+    val (pk, sk) = outputStream.toByteArray().let { ObjectMapper().readValue(it, List::class.java) }
+    environment.put("STRIPE_PUBLISHABLE_KEY", pk.toString())
+    environment.put("STRIPE_SECRET_KEY", sk.toString())
 
     nested("caddy").apply {
         setProjectName("Coupling-root")
@@ -33,7 +48,7 @@ tagger {
 }
 
 tasks {
-    named("composeUp") {
+    named<ComposeUp>("composeUp") {
         mustRunAfter("caddyComposeUp", "libraries:repository:dynamo:composeUp")
         dependsOn(":server:buildImage")
     }
