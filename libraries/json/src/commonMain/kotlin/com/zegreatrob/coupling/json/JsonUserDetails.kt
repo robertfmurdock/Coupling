@@ -21,10 +21,12 @@ data class JsonUserDetails(
 @Serializable
 data class JsonSubscriptionDetails(
     val stripeCustomerId: String?,
+    val stripeSubscriptionId: String?,
 )
 
 fun SubscriptionDetails.toJson() = JsonSubscriptionDetails(
     stripeCustomerId = stripeCustomerId,
+    stripeSubscriptionId = stripeSubscriptionId,
 )
 
 @Serializable

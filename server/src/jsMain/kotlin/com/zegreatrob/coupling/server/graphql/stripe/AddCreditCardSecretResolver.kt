@@ -19,9 +19,7 @@ val addCreditCardSecretResolver: (Json, Json, CouplingContext, Json) -> Promise<
         val commandDispatcher = context.commandDispatcher
         val user = commandDispatcher.currentUser
 
-        val stripeCustomerId = user.stripeCustomerId ?: commandDispatcher.createStripeCustomer(user)
-
-        println("stripe customer id is $stripeCustomerId")
+        val stripeCustomerId = user.stripeCustomerId ?: commandDispatcher.stripeCustomerId(user)
 
         stripe.setupIntents.create(
             jso {
@@ -34,11 +32,13 @@ val addCreditCardSecretResolver: (Json, Json, CouplingContext, Json) -> Promise<
     }
 }
 
-private suspend fun CommandDispatcher.createStripeCustomer(user: UserDetails): String =
-    stripe.customers.create(jso { email = user.email }).await()
-        .id
-        .also {
-            userRepository.save(
-                user.copy(stripeCustomerId = it),
-            )
-        }
+private suspend fun CommandDispatcher.stripeCustomerId(user: UserDetails) = user.findOrCreateStripeCustomer().id
+    .also { userRepository.save(user.copy(stripeCustomerId = it)) }
+
+private suspend fun UserDetails.findOrCreateStripeCustomer() =
+    stripe.customers.list(jso { email = this@findOrCreateStripeCustomer.email })
+        .await()
+        .data
+        .firstOrNull()
+        ?: stripe.customers.create(jso { email = this@findOrCreateStripeCustomer.email })
+            .await()

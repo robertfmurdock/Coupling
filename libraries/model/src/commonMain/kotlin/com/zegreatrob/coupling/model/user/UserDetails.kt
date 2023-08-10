@@ -13,6 +13,7 @@ data class User(
 
 data class SubscriptionDetails(
     val stripeCustomerId: String?,
+    val stripeSubscriptionId: String?,
 )
 
 data class UserDetails(
