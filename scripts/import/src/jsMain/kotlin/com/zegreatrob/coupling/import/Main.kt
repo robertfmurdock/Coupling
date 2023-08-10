@@ -36,7 +36,7 @@ val user = UserDetails("IMPORT_USER", "robert.f.murdock@gmail.com", emptySet(), 
 private val logger = KotlinLogging.logger("import")
 
 fun main() {
-    KotlinLoggingConfiguration.LOG_LEVEL = Level.WARN
+    KotlinLoggingConfiguration.logLevel = Level.WARN
     MainScope().launch {
         val catalog = DynamoRepositoryCatalog(user.email, Clock.System)
 

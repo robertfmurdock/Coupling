@@ -6,11 +6,11 @@ import io.github.oshai.kotlinlogging.Level
 @Suppress("unused")
 @JsName("initializeLogging")
 fun initializeLogging(developmentMode: Boolean) {
-    KotlinLoggingConfiguration.LOG_LEVEL = if (developmentMode) {
+    KotlinLoggingConfiguration.logLevel = if (developmentMode) {
         Level.DEBUG
     } else {
         Level.INFO
     }
 
-    KotlinLoggingConfiguration.FORMATTER = JsonFormatter
+    KotlinLoggingConfiguration.formatter = JsonFormatter
 }
