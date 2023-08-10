@@ -22,11 +22,15 @@ data class JsonUserDetails(
 data class JsonSubscriptionDetails(
     val stripeCustomerId: String?,
     val stripeSubscriptionId: String?,
+    val isActive: Boolean,
+    val currentPeriodEnd: Instant?,
 )
 
 fun SubscriptionDetails.toJson() = JsonSubscriptionDetails(
     stripeCustomerId = stripeCustomerId,
     stripeSubscriptionId = stripeSubscriptionId,
+    isActive = isActive,
+    currentPeriodEnd = currentPeriodEnd,
 )
 
 @Serializable

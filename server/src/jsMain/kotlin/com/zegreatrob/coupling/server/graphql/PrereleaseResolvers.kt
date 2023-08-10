@@ -5,8 +5,6 @@ import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.saveBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.subscription.subscriptionResolver
-import com.zegreatrob.coupling.server.express.Config
-import com.zegreatrob.coupling.server.graphql.stripe.addCreditCardSecretResolver
 import kotlin.js.json
 
 fun prereleaseResolvers() = json(
@@ -20,9 +18,5 @@ fun prereleaseResolvers() = json(
     ),
     "Party" to json(
         "boost" to partyBoostResolver,
-    ),
-    "Configuration" to json(
-        "stripePublishableKey" to { Config.stripePublishableKey },
-        "addCreditCardSecret" to addCreditCardSecretResolver,
     ),
 )

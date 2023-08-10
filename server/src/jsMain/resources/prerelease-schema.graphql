@@ -22,6 +22,7 @@ type SubscriptionDetails {
     stripeCustomerId: String
     stripeSubscriptionId: String
     isActive: Boolean!
+    currentPeriodEnd: String
 }
 
 input SaveBoostInput {

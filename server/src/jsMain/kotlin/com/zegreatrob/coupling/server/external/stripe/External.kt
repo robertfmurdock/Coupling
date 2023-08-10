@@ -43,6 +43,12 @@ external interface StripeCustomer {
 external interface StripeSubscription {
     val id: String
     val status: String
+
+    @JsName("current_period_end")
+    val currentPeriodEnd: Int
+
+    @JsName("current_period_start")
+    val currentPeriodStart: Int
 }
 
 external interface StripeSetupIntentsApi {

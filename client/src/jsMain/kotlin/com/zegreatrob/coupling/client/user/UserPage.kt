@@ -11,7 +11,7 @@ import com.zegreatrob.minreact.nfc
 val UserPage by nfc<PageProps> {
     CouplingQuery(
         commander = it.commander,
-        query = graphQuery { user { details() }; partyList { details() } },
+        query = graphQuery { user { details(); }; partyList { details() } },
         toNode = { _, dispatcher, result ->
             UserConfig.create(
                 user = result.user?.details,

@@ -48,8 +48,6 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
 private fun JsonConfig.toModel() = CouplingConfig(
     discordClientId = discordClientId,
     addToSlackUrl = addToSlackUrl,
-    addCreditCardSecret = addCreditCardSecret,
-    stripePublishableKey = stripePublishableKey,
 )
 
 @Serializable
@@ -70,8 +68,6 @@ data class JsonParty(
 data class JsonConfig(
     val discordClientId: String? = null,
     val addToSlackUrl: String? = null,
-    val addCreditCardSecret: String? = null,
-    val stripePublishableKey: String? = null,
 )
 
 @Serializable

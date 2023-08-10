@@ -19,7 +19,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
-import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -109,48 +108,27 @@ val UserConfig by nfc<UserConfigProps> { props ->
                 }
             }
             div {
-                SponsorCouplingButton(props.dispatcher)
+                SponsorCouplingButton(user)
             }
         }
     }
 }
 
 external interface SponsorCouplingButtonProps : Props {
-    var dispatchFunc: DispatchFunc<out GraphQuery.Dispatcher>
+    var user: UserDetails
 }
 
 @ReactFunc
 val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
-    val (stripePk, setStripePk) = useState<String?>(null)
-    var addSecret by useState<String?>(null)
-    var user by useState<UserDetails?>(null)
+    var showSubscriptionLink by useState(false)
 
-    val getSecretFunc = props.dispatchFunc {
-        val result = fire(
-            graphQuery {
-                user { details() }
-                config {
-                    stripePublishableKey()
-                    addCreditCardSecret()
-                }
-            },
-        )
-        val config = result?.config
-        setStripePk(config?.stripePublishableKey)
-        user = result?.user?.details
-        addSecret = config?.addCreditCardSecret
-    }
-
-    if (addSecret != null && stripePk != null) {
-
+    if (showSubscriptionLink) {
         a {
-            href = "https://buy.stripe.com/test_fZe5kta5OcHOfkI7ss?prefilled_email=${user?.email}"
+            href = "https://buy.stripe.com/test_fZe5kta5OcHOfkI7ss?prefilled_email=${props.user.email}"
             +"Click for ongoing sponsorship via subscription."
         }
-
-        +addSecret
     } else {
-        CouplingButton(large, blue, onClick = getSecretFunc) {
+        CouplingButton(large, blue, onClick = { showSubscriptionLink = true }) {
             span { +"Sponsor Coupling!" }
         }
     }
