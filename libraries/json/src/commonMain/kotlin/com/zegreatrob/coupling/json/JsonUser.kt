@@ -7,4 +7,5 @@ data class JsonUser(
     val id: String,
     val details: JsonUserDetails? = null,
     val boost: JsonBoostRecord? = null,
+    val subscription: JsonSubscriptionDetails? = null,
 )

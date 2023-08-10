@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
 import com.zegreatrob.coupling.json.JsonPinnedPlayer
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonSecretRecord
+import com.zegreatrob.coupling.json.JsonSubscriptionDetails
 import com.zegreatrob.coupling.json.JsonUserDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
@@ -40,6 +41,7 @@ object GqlReference {
     )
     val user = JsonUserDetails("", "", emptySet())
     val boost = JsonBoostRecord("", emptySet(), "", false, Instant.DISTANT_FUTURE)
+    val subscription = JsonSubscriptionDetails("", "", false, Instant.DISTANT_FUTURE)
 
     private val pinData = JsonPinData(
         id = "",

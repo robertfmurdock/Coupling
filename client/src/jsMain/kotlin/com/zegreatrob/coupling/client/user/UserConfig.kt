@@ -17,14 +17,18 @@ import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.party.AboutButton
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import react.Props
 import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h3
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.li
@@ -36,13 +40,14 @@ import web.html.InputType
 
 external interface UserConfigProps : Props {
     var user: UserDetails?
+    var subscription: SubscriptionDetails?
     var partyList: List<PartyDetails>
     var dispatcher: DispatchFunc<out GraphQuery.Dispatcher>
 }
 
 @ReactFunc
 val UserConfig by nfc<UserConfigProps> { props ->
-    val (user, partyList) = props
+    val (user, subscription, partyList) = props
     PageFrame(
         borderColor = Color("rgb(94, 84, 102)"),
         backgroundColor = Color("floralwhite"),
@@ -108,7 +113,7 @@ val UserConfig by nfc<UserConfigProps> { props ->
                 }
             }
             div {
-                SponsorCouplingButton(user)
+                SponsorCouplingButton(user, subscription)
             }
         }
     }
@@ -116,13 +121,25 @@ val UserConfig by nfc<UserConfigProps> { props ->
 
 external interface SponsorCouplingButtonProps : Props {
     var user: UserDetails
+    var subscription: SubscriptionDetails?
 }
 
 @ReactFunc
 val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
     var showSubscriptionLink by useState(false)
 
-    if (showSubscriptionLink) {
+    val subscription = props.subscription
+    if (subscription?.isActive == true) {
+        h3 { +"Subscription Live!" }
+        val nextBillDate = subscription.currentPeriodEnd?.toLocalDateTime(TimeZone.currentSystemDefault())?.date
+        div { +"You will be billed next on $nextBillDate." }
+        div {
+            a {
+                href = "https://billing.stripe.com/p/login/test_4gw9BcbgqaeYaRybII?prefilled_email=${props.user.email}"
+                +"Click here to administrate your subscription."
+            }
+        }
+    } else if (showSubscriptionLink) {
         a {
             href = "https://buy.stripe.com/test_fZe5kta5OcHOfkI7ss?prefilled_email=${props.user.email}"
             +"Click for ongoing sponsorship via subscription."

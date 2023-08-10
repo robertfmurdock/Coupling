@@ -33,6 +33,13 @@ fun SubscriptionDetails.toJson() = JsonSubscriptionDetails(
     currentPeriodEnd = currentPeriodEnd,
 )
 
+fun JsonSubscriptionDetails.toModel() = SubscriptionDetails(
+    stripeCustomerId = stripeCustomerId,
+    stripeSubscriptionId = stripeSubscriptionId,
+    isActive = isActive,
+    currentPeriodEnd = currentPeriodEnd,
+)
+
 @Serializable
 data class JsonUserRecord(
     val id: String,
@@ -47,13 +54,14 @@ fun User.toSerializable() = JsonUser(
     id = id,
     details = details?.toSerializable(),
     boost = boost?.toSerializable(),
+    subscription = subscription?.toJson(),
 )
 
 fun JsonUser.toModel() = User(
     id = id,
     details = details?.toModel(),
     boost = boost?.toModelRecord(),
-    subscription = null,
+    subscription = subscription?.toModel(),
 )
 
 fun UserDetails.toSerializable() = JsonUserDetails(

@@ -11,11 +11,13 @@ import com.zegreatrob.minreact.nfc
 val UserPage by nfc<PageProps> {
     CouplingQuery(
         commander = it.commander,
-        query = graphQuery { user { details(); }; partyList { details() } },
+        query = graphQuery { user { details(); subscription() }; partyList { details() } },
         toNode = { _, dispatcher, result ->
             UserConfig.create(
                 user = result.user?.details,
-                partyList = result.partyList?.mapNotNull(Party::details)?.map(Record<PartyDetails>::data) ?: emptyList(),
+                subscription = result.user?.subscription,
+                partyList = result.partyList?.mapNotNull(Party::details)?.map(Record<PartyDetails>::data)
+                    ?: emptyList(),
                 dispatcher = dispatcher,
             )
         },
