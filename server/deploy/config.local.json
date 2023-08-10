@@ -12,7 +12,5 @@
   "SLACK_SIGNING_SECRET": "fake",
   "DISCORD_CLIENT_ID": "fake",
   "DISCORD_CLIENT_SECRET": "fake",
-  "STRIPE_PUBLISHABLE_KEY": "fake",
-  "STRIPE_SECRET_KEY": "fake",
   "WEBSOCKET_HOST": "socket.local"
 }

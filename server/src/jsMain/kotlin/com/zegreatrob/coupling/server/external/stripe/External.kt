@@ -7,19 +7,42 @@ external fun stripe(secretKey: String): Stripe
 
 external interface Stripe {
     val customers: StripeCustomersApi
+    val subscriptions: StripeSubscriptionsApi
     val setupIntents: StripeSetupIntentsApi
 }
 
 external interface StripeCustomersApi {
     fun create(options: StripeCustomersCreateOptions): Promise<StripeCustomer>
+    fun list(options: StripeCustomersListOptions): Promise<StripeListResult<StripeCustomer>>
+}
+
+external interface StripeListResult<T> {
+    val data: Array<T>
+}
+
+external interface StripeSubscriptionsApi {
+    fun list(options: StripeSubscriptionsListOptions): Promise<StripeListResult<StripeSubscription>>
 }
 
 external interface StripeCustomersCreateOptions {
     var email: String
 }
 
+external interface StripeCustomersListOptions {
+    var email: String
+}
+
+external interface StripeSubscriptionsListOptions {
+    var customer: String
+}
+
 external interface StripeCustomer {
     val id: String
+}
+
+external interface StripeSubscription {
+    val id: String
+    val status: String
 }
 
 external interface StripeSetupIntentsApi {

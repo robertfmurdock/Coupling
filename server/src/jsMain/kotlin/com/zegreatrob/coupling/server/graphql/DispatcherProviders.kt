@@ -7,9 +7,12 @@ import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
 import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.ICommandDispatcher
 import com.zegreatrob.coupling.server.PrereleaseDispatcher
-import com.zegreatrob.coupling.server.action.subscription.StripeRepository
+import com.zegreatrob.coupling.server.action.subscription.SubscriptionRepository
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
+import com.zegreatrob.coupling.server.graphql.stripe.stripe
+import js.core.jso
+import kotlinx.coroutines.await
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.JsonNull
 
@@ -35,17 +38,23 @@ object DispatcherProviders {
             null
         } else {
             val boostRepo = DynamoBoostRepository(dispatcher.currentUser.id, Clock.System)
-            val stripeRepository = object : StripeRepository {
-                override fun findSubscriptionDetails(email: String): SubscriptionDetails? = null
-            }
             object : PrereleaseDispatcher, ICommandDispatcher by dispatcher {
                 override val boostRepository = boostRepo
-                override val stripeRepository = stripeRepository
+                override val subscriptionRepository by lazy { StripeSubscriptionRepository() }
                 override val userId = dispatcher.currentUser.id
 
                 override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message) =
                     dispatcher.sendMessageAndReturnIdWhenFail(connectionId, message)
             }
+        }
+    }
+}
+
+class StripeSubscriptionRepository : SubscriptionRepository {
+    override suspend fun findSubscriptionDetails(email: String): SubscriptionDetails? {
+        val customers = stripe.customers.list(jso { this.email = email }).await()
+        return customers.data.firstOrNull()?.let {
+            SubscriptionDetails(it.id)
         }
     }
 }

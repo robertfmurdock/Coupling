@@ -6,13 +6,13 @@ import com.zegreatrob.coupling.model.user.SubscriptionDetails
 
 interface ServerSubscriptionQueryDispatcher : SubscriptionQuery.Dispatcher, CurrentUserProvider {
 
-    val stripeRepository: StripeRepository
+    val subscriptionRepository: SubscriptionRepository
 
     override suspend fun perform(query: SubscriptionQuery): SubscriptionDetails? {
-        return stripeRepository.findSubscriptionDetails(currentUser.email)
+        return subscriptionRepository.findSubscriptionDetails(currentUser.email)
     }
 }
 
-interface StripeRepository {
-    fun findSubscriptionDetails(email: String): SubscriptionDetails?
+interface SubscriptionRepository {
+    suspend fun findSubscriptionDetails(email: String): SubscriptionDetails?
 }
