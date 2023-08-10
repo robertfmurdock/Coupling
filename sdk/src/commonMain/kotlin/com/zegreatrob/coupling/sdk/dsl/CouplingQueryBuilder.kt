@@ -91,4 +91,12 @@ class ConfigQueryBuilder : QueryBuilder<JsonConfig> {
     fun discordClientId() {
         output = output.copy(discordClientId = "")
     }
+
+    fun stripeAdminCode() {
+        output = output.copy(stripeAdminCode = "")
+    }
+
+    fun stripePurchaseCode() {
+        output = output.copy(stripePurchaseCode = "")
+    }
 }

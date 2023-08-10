@@ -19,4 +19,8 @@ fun prereleaseResolvers() = json(
     "Party" to json(
         "boost" to partyBoostResolver,
     ),
+    "Configuration" to json(
+        "stripeAdminCode" to { "test_4gw9BcbgqaeYaRybII" },
+        "stripePurchaseCode" to { "test_fZe5kta5OcHOfkI7ss" },
+    ),
 )

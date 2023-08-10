@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.user
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DemoButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Editor
@@ -9,8 +8,6 @@ import com.zegreatrob.coupling.client.components.GqlButton
 import com.zegreatrob.coupling.client.components.LogoutButton
 import com.zegreatrob.coupling.client.components.NotificationButton
 import com.zegreatrob.coupling.client.components.PageFrame
-import com.zegreatrob.coupling.client.components.blue
-import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.player.PlayerCard
@@ -23,17 +20,11 @@ import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import react.Props
-import react.dom.html.ReactHTML.a
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.h3
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.li
-import react.dom.html.ReactHTML.span
-import react.useState
 import web.cssom.Color
 import web.cssom.Display
 import web.html.InputType
@@ -43,6 +34,8 @@ external interface UserConfigProps : Props {
     var subscription: SubscriptionDetails?
     var partyList: List<PartyDetails>
     var dispatcher: DispatchFunc<out GraphQuery.Dispatcher>
+    var stripeAdminCode: String
+    var stripePurchaseCode: String
 }
 
 @ReactFunc
@@ -113,40 +106,13 @@ val UserConfig by nfc<UserConfigProps> { props ->
                 }
             }
             div {
-                SponsorCouplingButton(user, subscription)
+                SponsorCouplingButton(
+                    user = user,
+                    subscription = subscription,
+                    stripeAdminCode = props.stripeAdminCode,
+                    stripePurchaseCode = props.stripePurchaseCode,
+                )
             }
-        }
-    }
-}
-
-external interface SponsorCouplingButtonProps : Props {
-    var user: UserDetails
-    var subscription: SubscriptionDetails?
-}
-
-@ReactFunc
-val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
-    var showSubscriptionLink by useState(false)
-
-    val subscription = props.subscription
-    if (subscription?.isActive == true) {
-        h3 { +"Subscription Live!" }
-        val nextBillDate = subscription.currentPeriodEnd?.toLocalDateTime(TimeZone.currentSystemDefault())?.date
-        div { +"You will be billed next on $nextBillDate." }
-        div {
-            a {
-                href = "https://billing.stripe.com/p/login/test_4gw9BcbgqaeYaRybII?prefilled_email=${props.user.email}"
-                +"Click here to administrate your subscription."
-            }
-        }
-    } else if (showSubscriptionLink) {
-        a {
-            href = "https://buy.stripe.com/test_fZe5kta5OcHOfkI7ss?prefilled_email=${props.user.email}"
-            +"Click for ongoing sponsorship via subscription."
-        }
-    } else {
-        CouplingButton(large, blue, onClick = { showSubscriptionLink = true }) {
-            span { +"Sponsor Coupling!" }
         }
     }
 }

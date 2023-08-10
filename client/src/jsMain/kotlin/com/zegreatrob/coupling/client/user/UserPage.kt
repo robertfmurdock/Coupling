@@ -11,7 +11,17 @@ import com.zegreatrob.minreact.nfc
 val UserPage by nfc<PageProps> {
     CouplingQuery(
         commander = it.commander,
-        query = graphQuery { user { details(); subscription() }; partyList { details() } },
+        query = graphQuery {
+            user {
+                details()
+                subscription()
+            }
+            config {
+                stripeAdminCode()
+                stripePurchaseCode()
+            }
+            partyList { details() }
+        },
         toNode = { _, dispatcher, result ->
             UserConfig.create(
                 user = result.user?.details,
@@ -19,6 +29,8 @@ val UserPage by nfc<PageProps> {
                 partyList = result.partyList?.mapNotNull(Party::details)?.map(Record<PartyDetails>::data)
                     ?: emptyList(),
                 dispatcher = dispatcher,
+                stripeAdminCode = result.config?.stripeAdminCode ?: return@CouplingQuery null,
+                stripePurchaseCode = result.config?.stripePurchaseCode ?: return@CouplingQuery null,
             )
         },
     )
