@@ -34,7 +34,7 @@ val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
         div { +"You will be billed next on $nextBillDate." }
         div {
             a {
-                href = stripeAdminUrl(props.user.email, props.stripeAdminCode)
+                href = stripeAdminUrl(props.stripeAdminCode, props.user.email)
                 +"Click here to administrate your subscription."
             }
         }
@@ -53,5 +53,5 @@ val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
 private fun stripePurchaseUrl(purchaseCode: String, email: String) =
     "https://buy.stripe.com/$purchaseCode?prefilled_email=$email"
 
-private fun stripeAdminUrl(userEmail: String, adminCode: String) =
+private fun stripeAdminUrl(adminCode: String, userEmail: String) =
     "https://billing.stripe.com/p/login/$adminCode?prefilled_email=$userEmail"
