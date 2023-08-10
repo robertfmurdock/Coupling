@@ -2,18 +2,13 @@ package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.model.Message
-import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.coupling.repository.dynamo.DynamoBoostRepository
 import com.zegreatrob.coupling.server.CommandDispatcher
 import com.zegreatrob.coupling.server.ICommandDispatcher
 import com.zegreatrob.coupling.server.PrereleaseDispatcher
-import com.zegreatrob.coupling.server.action.subscription.SubscriptionRepository
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
-import com.zegreatrob.coupling.server.external.stripe.StripeCustomer
-import com.zegreatrob.coupling.server.graphql.stripe.stripe
-import js.core.jso
-import kotlinx.coroutines.await
+import com.zegreatrob.coupling.server.graphql.stripe.StripeSubscriptionRepository
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.JsonNull
 
@@ -49,21 +44,4 @@ object DispatcherProviders {
             }
         }
     }
-}
-
-class StripeSubscriptionRepository : SubscriptionRepository {
-    override suspend fun findSubscriptionDetails(email: String): SubscriptionDetails? {
-        val customers = stripe.customers.list(jso { this.email = email }).await()
-        return customers.data.firstOrNull()?.let {
-            SubscriptionDetails(
-                stripeCustomerId = it.id,
-                stripeSubscriptionId = it.findSubscription()?.id,
-            )
-        }
-    }
-
-    private suspend fun StripeCustomer.findSubscription() = stripe.subscriptions.list(jso { this.customer = id })
-        .await()
-        .data
-        .firstOrNull()
 }
