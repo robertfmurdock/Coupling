@@ -1,47 +1,26 @@
 package com.zegreatrob.coupling.logging
 
 import io.github.oshai.kotlinlogging.Formatter
-import io.github.oshai.kotlinlogging.Level
-import io.github.oshai.kotlinlogging.Marker
+import io.github.oshai.kotlinlogging.KLoggingEvent
 import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 
 data object JsonFormatter : Formatter {
 
-    override fun formatMessage(
-        level: Level,
-        loggerName: String,
-        marker: Marker?,
-        throwable: Throwable?,
-        message: () -> Any?,
-    ): Any {
-        val (msg, properties) = extractProperties(message)
-        return Json.encodeToString(
-            Message.serializer(),
-            Message(
-                level = level.name,
-                name = loggerName,
-                message = msg,
-                properties = properties,
-                timestamp = Clock.System.now().toString(),
-                marker = marker?.getName(),
-                stackTrace = throwable.throwableToString(),
-            ),
-        )
-    }
+    override fun formatMessage(loggingEvent: KLoggingEvent): String = loggingEvent.formatMessage()
 
-    private fun extractProperties(msg: () -> Any?): Pair<String?, Map<String, String>?> {
-        val result = msg()
-        return if (result is Map<*, *>) {
-            val map = result.unsafeCast<Map<String, Any>>()
-            val propertyGroupName = map["message"]?.toString()
-            val propertyMap = map.filterKeys { it != "message" }
-                .mapValues { entry -> entry.value.toString() }
-            propertyGroupName to propertyMap
-        } else {
-            result.toString() to null
-        }
-    }
+    private fun KLoggingEvent.formatMessage() = Json.encodeToString(
+        Message.serializer(),
+        Message(
+            level = level.name,
+            name = loggerName,
+            message = message,
+            properties = payload?.mapValues { it.toString() },
+            timestamp = Clock.System.now().toString(),
+            marker = marker?.getName(),
+            stackTrace = cause.throwableToString(),
+        ),
+    )
 
     private fun Throwable?.throwableToString(): List<String> {
         if (this == null) {

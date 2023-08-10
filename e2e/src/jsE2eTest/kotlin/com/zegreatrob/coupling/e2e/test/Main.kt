@@ -5,6 +5,6 @@ import com.zegreatrob.coupling.testlogging.JsonLoggingTestMintsReporter
 import io.github.oshai.kotlinlogging.KotlinLoggingConfiguration
 
 fun main() {
-    KotlinLoggingConfiguration.FORMATTER = JsonFormatter
+    KotlinLoggingConfiguration.formatter = JsonFormatter
     JsonLoggingTestMintsReporter.initialize()
 }
