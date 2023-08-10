@@ -255,6 +255,12 @@ input PartyInput {
     partyId: String!
 }
 
+type Pair {
+    players: [PlayerDetails]
+    count: Int
+    spinsSinceLastPaired: Int
+}
+
 """
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
@@ -262,6 +268,7 @@ type Query {
     partyList: [Party]
     party(input: PartyInput!): Party
     user: User
+    pairs: [Pair]
     globalStats(input: GlobalStatsInput!) : GlobalStats!
     config: Configuration
 }
