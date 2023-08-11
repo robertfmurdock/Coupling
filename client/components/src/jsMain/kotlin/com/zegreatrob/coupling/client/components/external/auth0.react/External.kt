@@ -3,13 +3,13 @@
 package com.zegreatrob.coupling.client.components.external.auth0.react
 
 import react.ElementType
-import react.Props
+import react.PropsWithChildren
 import kotlin.js.Json
 import kotlin.js.Promise
 
 external val Auth0Provider: ElementType<Auth0ProviderProps>
 
-external interface Auth0ProviderProps : Props {
+external interface Auth0ProviderProps : PropsWithChildren {
     var domain: String
     var clientId: String
     var cacheLocation: String

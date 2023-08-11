@@ -6,9 +6,10 @@ import org.w3c.dom.get
 import react.ElementType
 import react.FC
 import react.Props
+import react.PropsWithChildren
 import react.create
 
-val Markdown: ElementType<Props> = FC { props ->
+val Markdown: ElementType<PropsWithChildren> = FC { props ->
     waitForAsyncReactComponent({ window["ReactMarkdown"].unsafeCast<ElementType<Props>?>() }) { component ->
         component.create { +props }
     }
