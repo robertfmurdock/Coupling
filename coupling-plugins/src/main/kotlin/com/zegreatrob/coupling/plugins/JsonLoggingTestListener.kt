@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.plugins
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.node.TextNode
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
@@ -65,7 +66,7 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
     override fun onOutput(testDescriptor: TestDescriptor?, outputEvent: TestOutputEvent?) {
         if (outputEvent != null) {
             try {
-                val tree = mapper.readTree(outputEvent.message)
+                val tree = mapper.readTree(correctForPrefix(outputEvent.message))
                 val level = Level.getLevel(tree["level"].level())
                 logger.log(level) {
                     ObjectMessage(
@@ -76,6 +77,9 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
                             set<JsonNode>("testName", TextNode(testDescriptor?.name ?: ""))
                             set<JsonNode>("originalLogger", tree["name"])
                             set<JsonNode>("originalMessage", tree["message"])
+
+                            (tree["properties"] as? ObjectNode)
+                                ?.let { setAll<ObjectNode>(it) }
                         }
                     )
                 }
@@ -92,6 +96,15 @@ class JsonLoggingTestListener(private val taskName: String, val testRunIdentifie
                     )
                 }
             }
+        }
+    }
+
+    private fun correctForPrefix(message: String): String {
+        val infoPrefix = "[info]"
+        return if (message.startsWith(infoPrefix)) {
+            message.substring(infoPrefix.lastIndex + 2)
+        } else {
+            message
         }
     }
 
