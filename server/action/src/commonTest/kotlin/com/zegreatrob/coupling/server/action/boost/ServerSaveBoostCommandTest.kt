@@ -12,6 +12,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
 import com.zegreatrob.testmints.async.asyncSetup
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 
 class ServerSaveBoostCommandTest {
@@ -38,11 +39,12 @@ class ServerSaveBoostCommandTest {
     fun whenSubscriptionIsActiveCanSaveBoost() = asyncSetup(object : ServerSaveBoostCommandDispatcher {
         override val currentUser = stubUserDetails()
         val partyId = stubPartyId()
+        val currentPeriodEnd = Clock.System.now()
         val subscriptionDetails = SubscriptionDetails(
             stripeCustomerId = null,
             stripeSubscriptionId = null,
             isActive = true,
-            currentPeriodEnd = null,
+            currentPeriodEnd = currentPeriodEnd,
         )
         val subscriptionSpyData = SpyData<String, SubscriptionDetails?>().apply { spyWillReturn(subscriptionDetails) }
         override val subscriptionRepository = SubscriptionRepository(subscriptionSpyData::spyFunction)
@@ -52,7 +54,15 @@ class ServerSaveBoostCommandTest {
         perform(SaveBoostCommand(setOf(partyId)))
     } verify { result ->
         boostSpyData.spyReceivedValues
-            .assertIsEqualTo(listOf(Boost(currentUser.id, setOf(partyId))))
+            .assertIsEqualTo(
+                listOf(
+                    Boost(
+                        userId = currentUser.id,
+                        partyIds = setOf(partyId),
+                        expirationDate = currentPeriodEnd,
+                    ),
+                ),
+            )
         result.assertIsEqualTo(
             SaveBoostCommand.Result.Success,
         )

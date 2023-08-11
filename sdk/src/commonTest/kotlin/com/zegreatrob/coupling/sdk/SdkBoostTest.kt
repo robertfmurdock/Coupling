@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
+import kotlinx.datetime.Instant
 import kotlin.test.Test
 
 class SdkBoostTest {
@@ -63,11 +64,12 @@ class SdkBoostTest {
         sdk.fire(SaveBoostCommand(partyIds))
     } verifyWithWait {
         sdk.fire(graphQuery { user { boost() } })
-            ?.user?.boost?.data
+            ?.user?.boost?.data?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
                     partyIds = partyIds,
+                    expirationDate = Instant.DISTANT_FUTURE,
                 ),
             )
     }
@@ -85,11 +87,12 @@ class SdkBoostTest {
         sdk.fire(SaveBoostCommand(partyIds))
     } verifyWithWait {
         sdk.fire(graphQuery { party(party.id) { boost() } })
-            ?.party?.boost?.data
+            ?.party?.boost?.data?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
                     partyIds = partyIds,
+                    expirationDate = Instant.DISTANT_FUTURE,
                 ),
             )
     }
@@ -109,11 +112,12 @@ class SdkBoostTest {
         sdk.fire(SaveBoostCommand(updatedBoostParties2))
     } verifyWithWait {
         sdk.fire(graphQuery { user { boost() } })
-            ?.user?.boost?.data
+            ?.user?.boost?.data?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
                     partyIds = updatedBoostParties2,
+                    expirationDate = Instant.DISTANT_FUTURE,
                 ),
             )
     }

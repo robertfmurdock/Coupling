@@ -40,7 +40,7 @@ object GqlReference {
         totalUniquePins = 0,
     )
     val user = JsonUserDetails("", "", emptySet())
-    val boost = JsonBoostRecord("", emptySet(), "", false, Instant.DISTANT_FUTURE)
+    val boost = JsonBoostRecord("", emptySet(), Instant.DISTANT_PAST, "", false, Instant.DISTANT_FUTURE)
     val subscription = JsonSubscriptionDetails("", "", false, Instant.DISTANT_FUTURE)
 
     private val pinData = JsonPinData(

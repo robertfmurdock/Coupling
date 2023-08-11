@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
+import kotlinx.datetime.Instant
+import kotlinx.datetime.toInstant
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -16,6 +18,7 @@ interface DynamoBoostJsonMapping : DynamoRecordJsonMapping {
         "pk" to "user-$userId",
         "userId" to userId,
         "tribeIds" to partyIds.map { it.value }.toTypedArray(),
+        "expirationDate" to expirationDate.toString(),
     )
 
     fun Json.toBoost() = Boost(
@@ -24,6 +27,7 @@ interface DynamoBoostJsonMapping : DynamoRecordJsonMapping {
             .unsafeCast<Array<String?>>()
             .mapNotNull { it?.let(::PartyId) }
             .toSet(),
+        this["expirationDate"]?.toString()?.toInstant() ?: Instant.DISTANT_PAST,
     )
 
     fun Json.toBoostRecord() = toRecord(

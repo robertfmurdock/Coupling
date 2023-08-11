@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.datetime.Clock
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 
@@ -34,7 +35,13 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
     @Test
     fun getSavedBoostWillReturnSuccessfully() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
-            val boost by lazy { Boost(user.id, setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))) }
+            val boost by lazy {
+                Boost(
+                    userId = user.id,
+                    partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}")),
+                    expirationDate = Clock.System.now(),
+                )
+            }
         }
     }) exercise {
         repository.save(boost)
@@ -46,7 +53,13 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
     @Test
     fun deleteWillMakeBoostNotRecoverableThroughGet() = repositorySetup {
     } exercise {
-        repository.save(Boost(user.id, setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))))
+        repository.save(
+            Boost(
+                userId = user.id,
+                partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}")),
+                expirationDate = Clock.System.now(),
+            ),
+        )
         repository.deleteIt()
     } verifyWithWait {
         repository.get()
@@ -56,7 +69,11 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
     @Test
     fun saveBoostRepeatedlyGetsLatest() = repositorySetup.with({ parent: SharedContext<R> ->
         object : SharedContext<R> by parent {
-            val boost = Boost(user.id, setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}")))
+            val boost = Boost(
+                userId = user.id,
+                partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}")),
+                expirationDate = Clock.System.now(),
+            )
             val updatedBoost1 = boost.copy(partyIds = emptySet())
             val updatedBoost2 = updatedBoost1.copy(partyIds = setOf(PartyId("${uuid4()}")))
         }
@@ -79,7 +96,11 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
     fun saveBoostRepeatedlyGetByPartyGetsLatest() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
             val partyId = PartyId("${uuid4()}")
-            val boost = Boost(user.id, setOf(partyId, PartyId("${uuid4()}")))
+            val boost = Boost(
+                userId = user.id,
+                partyIds = setOf(partyId, PartyId("${uuid4()}")),
+                expirationDate = Clock.System.now(),
+            )
             val updatedBoost1 = boost.copy(partyIds = emptySet())
             val updatedBoost2 = updatedBoost1.copy(partyIds = setOf(partyId))
         }
@@ -100,7 +121,11 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
         object : SharedContext<R> by sharedContext {
             val altRepository = altRepository
             val partyId = PartyId("${uuid4()}")
-            val boost = Boost(user.id, setOf(PartyId("${uuid4()}"), partyId, PartyId("${uuid4()}")))
+            val boost = Boost(
+                userId = user.id,
+                partyIds = setOf(PartyId("${uuid4()}"), partyId, PartyId("${uuid4()}")),
+                expirationDate = Clock.System.now(),
+            )
         }
     }) {
     } exercise {
@@ -114,7 +139,11 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
     fun getSavedBoostByPartyIdForBoostRemovedBoostWillReturnNull() = repositorySetup.with({ sharedContext ->
         object : SharedContext<R> by sharedContext {
             val partyId = PartyId("${uuid4()}")
-            val boost = Boost(user.id, setOf(PartyId("${uuid4()}"), partyId, PartyId("${uuid4()}")))
+            val boost = Boost(
+                userId = user.id,
+                partyIds = setOf(PartyId("${uuid4()}"), partyId, PartyId("${uuid4()}")),
+                expirationDate = Clock.System.now(),
+            )
         }
     }) exercise {
         repository.save(boost)

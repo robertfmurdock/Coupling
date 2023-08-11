@@ -13,13 +13,18 @@ import kotlinx.serialization.UseSerializers
 data class JsonBoostRecord(
     val userId: String,
     val partyIds: Set<PartyId>,
+    val expirationDate: Instant,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
     val timestamp: Instant,
 )
 
 fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(
-    data = Boost(userId, partyIds),
+    data = Boost(
+        userId = userId,
+        partyIds = partyIds,
+        expirationDate = expirationDate,
+    ),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -28,6 +33,7 @@ fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(
 fun Record<Boost>.toSerializable() = JsonBoostRecord(
     userId = data.userId,
     partyIds = data.partyIds,
+    expirationDate = data.expirationDate,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
