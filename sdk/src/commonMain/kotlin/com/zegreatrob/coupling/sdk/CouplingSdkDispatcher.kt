@@ -2,9 +2,9 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
+import com.zegreatrob.coupling.action.SaveBoostCommand
 import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
-import com.zegreatrob.coupling.action.boost.SaveBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.party.DeletePartyCommand

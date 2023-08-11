@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.validation.ExtendedBoostRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContextData
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
 class MemoryBoostRepositoryTest :
@@ -16,7 +16,7 @@ class MemoryBoostRepositoryTest :
     }
 
     override val repositorySetup = asyncTestTemplate(sharedSetup = {
-        val user = stubUser()
+        val user = stubUserDetails()
         val clock = MagicClock()
         SharedContextData(buildRepository(user, clock = clock), clock, user)
     })

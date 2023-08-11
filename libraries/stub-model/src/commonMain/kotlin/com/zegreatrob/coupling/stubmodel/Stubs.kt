@@ -90,7 +90,7 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
 fun uuidString() = uuid4().toString()
 
 var userCounter = 1
-fun stubUser() = UserDetails(
+fun stubUserDetails() = UserDetails(
     id = uuidString(),
     email = "$userCounter-${uuidString()}@gmail.com",
     authorizedPartyIds = setOf(stubPartyId()),

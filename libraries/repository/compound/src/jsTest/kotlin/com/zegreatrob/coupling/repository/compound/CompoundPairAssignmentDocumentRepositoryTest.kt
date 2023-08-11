@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PartyContextData
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyId
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
@@ -19,7 +19,7 @@ class CompoundPairAssignmentDocumentRepositoryTest :
 
     private val compoundRepositorySetup = asyncTestTemplate(sharedSetup = {
         object {
-            val stubUser = stubUser()
+            val stubUser = stubUserDetails()
             val clock = MagicClock()
 
             val repository1 = MemoryPairAssignmentDocumentRepository(stubUser.email, clock)

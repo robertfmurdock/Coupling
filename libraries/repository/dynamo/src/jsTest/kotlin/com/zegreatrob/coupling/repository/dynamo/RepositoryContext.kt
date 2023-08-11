@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.validation.MagicClock
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 
 interface RepositoryContext<T> {
     val repository: T
@@ -15,7 +15,7 @@ interface RepositoryContext<T> {
             repoBuilder: suspend (UserDetails, MagicClock) -> R,
         ): suspend () -> T = {
             val clock = MagicClock()
-            val user = stubUser()
+            val user = stubUserDetails()
             val repository = repoBuilder(user, clock)
             setupContext(object : RepositoryContext<R> {
                 override val repository = repository

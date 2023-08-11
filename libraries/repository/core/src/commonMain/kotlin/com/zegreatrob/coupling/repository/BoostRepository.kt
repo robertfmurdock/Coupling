@@ -12,7 +12,7 @@ interface BoostGetByPartyId {
     suspend fun getByPartyId(partyId: PartyId): Record<Boost>?
 }
 
-interface BoostSave {
+fun interface BoostSave {
     suspend fun save(boost: Boost)
 }
 

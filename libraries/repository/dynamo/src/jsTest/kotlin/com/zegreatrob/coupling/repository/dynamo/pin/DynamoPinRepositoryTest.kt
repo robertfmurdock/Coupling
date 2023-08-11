@@ -15,7 +15,7 @@ import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPin
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
@@ -29,7 +29,7 @@ class DynamoPinRepositoryTest : PinRepositoryValidator<DynamoPinRepository> {
 
     override val repositorySetup = asyncTestTemplate<PartyContext<DynamoPinRepository>>(sharedSetup = {
         val clock = MagicClock()
-        val user = stubUser()
+        val user = stubUserDetails()
         PartyContextData(DynamoPinRepository(user.email, clock), stubPartyId(), clock, user)
     })
 

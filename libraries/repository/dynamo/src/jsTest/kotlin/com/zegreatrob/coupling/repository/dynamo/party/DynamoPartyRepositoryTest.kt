@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.bind
 import com.zegreatrob.coupling.repository.validation.verifyWithWaitAnd
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncTestTemplate
@@ -27,7 +27,7 @@ typealias PartyMint = ContextMint<DynamoPartyRepository>
 class DynamoPartyRepositoryTest : PartyRepositoryValidator<DynamoPartyRepository> {
 
     override val repositorySetup = asyncTestTemplate<SharedContext<DynamoPartyRepository>>(sharedSetup = {
-        val user = stubUser()
+        val user = stubUserDetails()
         val clock = MagicClock()
         val repository = DynamoPartyRepository(user.email, clock)
         SharedContextData(repository, clock, user)

@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.repository.validation
 
 import com.zegreatrob.coupling.repository.user.UserRepository
 import com.zegreatrob.coupling.stubmodel.stubPartyId
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.datetime.Clock
 import kotlin.test.Test
@@ -21,7 +21,7 @@ interface UserRepositoryValidator<R : UserRepository> : RepositoryValidator<R, S
     @Test
     fun getUsersWithEmailWillShowAllUsersWithEmail() = repositorySetup.with(
         object : ContextMint<R>() {
-            val userWithEmail = stubUser()
+            val userWithEmail = stubUserDetails()
         }.bind(),
     ) exercise {
         repository.save(userWithEmail)

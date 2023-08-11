@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -90,7 +90,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
                 val initialSaveTime = now().minus(3.days)
                 val updatedUser = user.copy(authorizedPartyIds = setOf(PartyId("clone!")))
                 val updatedSaveTime = initialSaveTime.plus(2.hours)
-                val altUser = stubUser()
+                val altUser = stubUserDetails()
             }
         },
     ) {
@@ -113,8 +113,8 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
         buildRepository { context ->
             object : Context by context {
                 val records = listOf(
-                    Record(stubUser(), uuidString(), false, now().minus(3.months)),
-                    Record(stubUser(), uuidString(), true, now().minus(2.years)),
+                    Record(stubUserDetails(), uuidString(), false, now().minus(3.months)),
+                    Record(stubUserDetails(), uuidString(), true, now().minus(2.years)),
                 )
             }
         },
@@ -132,7 +132,7 @@ class DynamoUserRepositoryTest : UserRepositoryValidator<DynamoUserRepository> {
             object : Context by context, DynamoUserJsonMapping by context.repository {
                 override val clock: MagicClock = context.clock
                 override val userId = uuidString()
-                val record = Record(stubUser(), uuidString(), false, now().minus(3.months))
+                val record = Record(stubUserDetails(), uuidString(), false, now().minus(3.months))
             }
         },
     ) {

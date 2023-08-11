@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.repository.validation.UserRepositoryValidator
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
@@ -17,7 +17,7 @@ class CompoundUserRepositoryTest : UserRepositoryValidator<CompoundUserRepositor
 
     override val repositorySetup = asyncTestTemplate<SharedContext<CompoundUserRepository>>(sharedSetup = {
         val clock = MagicClock()
-        val stubUser = stubUser()
+        val stubUser = stubUserDetails()
 
         val repository1 = MemoryUserRepository(stubUser.id, clock)
         val repository2 = MemoryUserRepository(stubUser.id, clock)
@@ -28,7 +28,7 @@ class CompoundUserRepositoryTest : UserRepositoryValidator<CompoundUserRepositor
 
     @Test
     fun saveWillSaveToSecondRepositoryAsWell() = asyncSetup(object {
-        val user = stubUser()
+        val user = stubUserDetails()
 
         val repository1 = MemoryUserRepository(user.id, Clock.System)
         val repository2 = MemoryUserRepository(user.id, Clock.System)

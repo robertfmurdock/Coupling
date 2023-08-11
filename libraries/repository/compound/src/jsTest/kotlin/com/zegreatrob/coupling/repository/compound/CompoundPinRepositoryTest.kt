@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.repository.validation.PartyContextData
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPin
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
@@ -19,7 +19,7 @@ class CompoundPinRepositoryTest : PinRepositoryValidator<CompoundPinRepository> 
     private val compoundRepositorySetup = asyncTestTemplate(sharedSetup = {
         object {
             val clock = MagicClock()
-            val stubUser = stubUser()
+            val stubUser = stubUserDetails()
 
             val repository1 = MemoryPinRepository(stubUser.email, clock)
             val repository2 = MemoryPinRepository(stubUser.email, clock)

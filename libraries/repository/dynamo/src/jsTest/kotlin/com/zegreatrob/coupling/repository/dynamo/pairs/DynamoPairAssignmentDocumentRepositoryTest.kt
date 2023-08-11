@@ -16,7 +16,7 @@ import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.testmints.async.asyncSetup
@@ -39,7 +39,7 @@ class DynamoPairAssignmentDocumentRepositoryTest :
     override val repositorySetup =
         asyncTestTemplate<PartyContext<DynamoPairAssignmentDocumentRepository>>(sharedSetup = {
             val clock = MagicClock()
-            val user = stubUser()
+            val user = stubUserDetails()
             PartyContextData(DynamoPairAssignmentDocumentRepository(user.email, clock), stubPartyId(), clock, user)
         })
 

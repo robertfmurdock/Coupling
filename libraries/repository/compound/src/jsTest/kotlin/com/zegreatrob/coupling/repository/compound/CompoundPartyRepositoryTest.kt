@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.repository.validation.PartyRepositoryValidator
 import com.zegreatrob.coupling.repository.validation.SharedContext
 import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.testmints.async.asyncSetup
@@ -18,7 +18,7 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
 
     override val repositorySetup: TestTemplate<SharedContext<CompoundPartyRepository>>
         get() = asyncTestTemplate(sharedSetup = {
-            val stubUser = stubUser()
+            val stubUser = stubUserDetails()
             val clock = MagicClock()
 
             val repository1 = MemoryPartyRepository(stubUser.email, clock)
@@ -30,7 +30,7 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
 
     @Test
     fun saveWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
-        val stubUser = stubUser()
+        val stubUser = stubUserDetails()
 
         val repository1 = MemoryPartyRepository(stubUser.email, Clock.System)
         val repository2 = MemoryPartyRepository(stubUser.email, Clock.System)
@@ -48,7 +48,7 @@ class CompoundPartyRepositoryTest : PartyRepositoryValidator<CompoundPartyReposi
 
     @Test
     fun deleteWillWriteToSecondRepositoryAsWell() = asyncSetup(object {
-        val stubUser = stubUser()
+        val stubUser = stubUserDetails()
 
         val repository1 = MemoryPartyRepository(stubUser.email, Clock.System)
         val repository2 = MemoryPartyRepository(stubUser.email, Clock.System)

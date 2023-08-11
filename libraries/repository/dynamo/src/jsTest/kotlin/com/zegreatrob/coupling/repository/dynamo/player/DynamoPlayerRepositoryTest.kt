@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -29,7 +29,7 @@ import kotlin.time.Duration.Companion.hours
 class DynamoPlayerRepositoryTest : PlayerEmailRepositoryValidator<DynamoPlayerRepository> {
 
     override val repositorySetup = asyncTestTemplate<PartyContext<DynamoPlayerRepository>>(sharedSetup = {
-        val user = stubUser()
+        val user = stubUserDetails()
         val clock = MagicClock()
         val repo = DynamoPlayerRepository(user.email, clock)
         object : PartyContext<DynamoPlayerRepository> {

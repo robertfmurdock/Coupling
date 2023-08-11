@@ -13,6 +13,6 @@ interface ServerSubscriptionQueryDispatcher : SubscriptionQuery.Dispatcher, Curr
     }
 }
 
-interface SubscriptionRepository {
+fun interface SubscriptionRepository {
     suspend fun findSubscriptionDetails(email: String): SubscriptionDetails?
 }

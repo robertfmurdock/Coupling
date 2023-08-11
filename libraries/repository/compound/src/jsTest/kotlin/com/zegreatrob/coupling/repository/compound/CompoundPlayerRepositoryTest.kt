@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PlayerEmailRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.testmints.async.asyncTestTemplate
@@ -20,7 +20,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
     override val repositorySetup = asyncTestTemplate<PartyContext<CompoundPlayerRepository>>(
         sharedSetup = {
             val clock = MagicClock()
-            val stubUser = stubUser()
+            val stubUser = stubUserDetails()
 
             val repository1 = MemoryPlayerRepository(stubUser.email, clock)
             val repository2 = MemoryPlayerRepository(stubUser.email, clock)
@@ -38,7 +38,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
 
     @Test
     fun saveWillWriteToSecondRepository() = asyncSetup(object {
-        val stubUser = stubUser()
+        val stubUser = stubUserDetails()
 
         val repository1 = MemoryPlayerRepository(stubUser.email, Clock.System)
         val repository2 = MemoryPlayerRepository(stubUser.email, Clock.System)
@@ -56,7 +56,7 @@ class CompoundPlayerRepositoryTest : PlayerEmailRepositoryValidator<CompoundPlay
 
     @Test
     fun deleteWillWriteToSecondRepository() = asyncSetup(object {
-        val stubUser = stubUser()
+        val stubUser = stubUserDetails()
 
         val repository1 = MemoryPlayerRepository(stubUser.email, Clock.System)
         val repository2 = MemoryPlayerRepository(stubUser.email, Clock.System)

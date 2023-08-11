@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.repository.BoostDelete
 import com.zegreatrob.coupling.repository.BoostGet
 import com.zegreatrob.coupling.repository.BoostSave
 import com.zegreatrob.coupling.repository.ExtendedBoostRepository
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -96,7 +96,7 @@ interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : Sha
 
     @Test
     fun getSavedBoostByPartyIdForBoostFromDifferentUserWillReturnContent() = repositorySetup.with({ sharedContext ->
-        val altRepository = buildRepository(stubUser(), sharedContext.clock)
+        val altRepository = buildRepository(stubUserDetails(), sharedContext.clock)
         object : SharedContext<R> by sharedContext {
             val altRepository = altRepository
             val partyId = PartyId("${uuid4()}")

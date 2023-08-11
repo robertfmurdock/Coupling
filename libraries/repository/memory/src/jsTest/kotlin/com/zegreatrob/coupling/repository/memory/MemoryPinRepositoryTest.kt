@@ -5,14 +5,14 @@ import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PartyContextData
 import com.zegreatrob.coupling.repository.validation.PinRepositoryValidator
 import com.zegreatrob.coupling.stubmodel.stubPartyId
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
 @Suppress("unused")
 class MemoryPinRepositoryTest : PinRepositoryValidator<MemoryPinRepository> {
 
     override val repositorySetup = asyncTestTemplate<PartyContext<MemoryPinRepository>>(sharedSetup = {
-        val user = stubUser()
+        val user = stubUserDetails()
         val clock = MagicClock()
         PartyContextData(MemoryPinRepository(user.email, clock), stubPartyId(), clock, user)
     })

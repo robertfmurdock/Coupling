@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.repository.validation.verifyWithWait
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubSecret
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -93,7 +93,7 @@ class DynamoSecretRepositoryTest {
     @Test
     fun savedSecretsIncludeModificationDateAndUsername() = asyncSetup(object {
         val clock = MagicClock()
-        val user = stubUser()
+        val user = stubUserDetails()
         val partyId = stubPartyId()
         lateinit var repository: DynamoSecretRepository
         val secret = stubSecret()
@@ -115,7 +115,7 @@ class DynamoSecretRepositoryTest {
     fun getSecretRecordsWillShowAllRecordsIncludingDeletions() = asyncSetup(object {
         val partyId = stubPartyId()
         val clock = MagicClock()
-        val user = stubUser()
+        val user = stubUserDetails()
         lateinit var repository: DynamoSecretRepository
         val secret = stubSecret()
         val initialSaveTime = now().minus(3.days)

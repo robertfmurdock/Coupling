@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.repository.validation.PairAssignmentDocumentRepos
 import com.zegreatrob.coupling.repository.validation.PartyContext
 import com.zegreatrob.coupling.repository.validation.PartyContextData
 import com.zegreatrob.coupling.stubmodel.stubPartyId
-import com.zegreatrob.coupling.stubmodel.stubUser
+import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
 @Suppress("unused")
@@ -15,7 +15,7 @@ class MemoryPairAssignmentDocumentRepositoryTest :
     override val repositorySetup =
         asyncTestTemplate<PartyContext<MemoryPairAssignmentDocumentRepository>>(sharedSetup = {
             val clock = MagicClock()
-            val user = stubUser()
+            val user = stubUserDetails()
             PartyContextData(MemoryPairAssignmentDocumentRepository(user.email, clock), stubPartyId(), clock, user)
         })
 }
