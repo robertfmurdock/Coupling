@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.PlayerPair
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import kotlinx.serialization.Serializable
@@ -68,14 +69,18 @@ data class JsonParty(
 @Serializable
 data class JsonPair(
     val players: List<JsonPlayerRecord>? = null,
+    val count: Int? = null,
+    val partyId: String? = null,
 )
 
 fun JsonPair.toModel() = PlayerPair(
     players = players?.map(JsonPlayerRecord::toModel),
+    count = count,
 )
 
-fun PlayerPair.toJson() = JsonPair(
-    players = players?.map(PartyRecord<Player>::toSerializable),
+fun PartyElement<PlayerPair>.toJson() = JsonPair(
+    players = element.players?.map(PartyRecord<Player>::toSerializable),
+    partyId = partyId.value,
 )
 
 @Serializable

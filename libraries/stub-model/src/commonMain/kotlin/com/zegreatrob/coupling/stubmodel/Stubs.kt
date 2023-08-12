@@ -75,7 +75,7 @@ fun stubPinTarget(): PinTarget {
 
 var pairAssignmentDocumentCounter = 1
 fun stubPairAssignmentDoc() = PairAssignmentDocument(
-    id = PairAssignmentDocumentId(uuidString()),
+    id = stubPairAssignmentId(),
     date = Clock.System.now().plus(pairAssignmentDocumentCounter.minutes),
     pairs = notEmptyListOf(
         PinnedCouplingPair(
@@ -86,6 +86,8 @@ fun stubPairAssignmentDoc() = PairAssignmentDocument(
     discordMessageId = uuidString(),
     slackMessageId = uuidString(),
 ).also { pairAssignmentDocumentCounter++ }
+
+fun stubPairAssignmentId() = PairAssignmentDocumentId(uuidString())
 
 fun uuidString() = uuid4().toString()
 

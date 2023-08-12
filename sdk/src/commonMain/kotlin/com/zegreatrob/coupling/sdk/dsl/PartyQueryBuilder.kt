@@ -35,4 +35,5 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
     override var output: JsonPair = JsonPair(null)
 
     fun players() = also { output = output.copy(players = listOf(playerRecord)) }
+    fun count() = also { output = output.copy(count = 0) }
 }

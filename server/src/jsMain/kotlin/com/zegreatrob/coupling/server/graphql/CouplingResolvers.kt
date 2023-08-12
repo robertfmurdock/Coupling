@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.pin.savePinResolver
 import com.zegreatrob.coupling.server.entity.player.deletePlayerResolver
+import com.zegreatrob.coupling.server.entity.player.pairCountResolve
 import com.zegreatrob.coupling.server.entity.player.pairsResolve
 import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
@@ -84,5 +85,8 @@ fun couplingResolvers() = json(
     "Configuration" to json(
         "addToSlackUrl" to addToSlackUrlResolve,
         "discordClientId" to fun() = Config.discordClientId,
+    ),
+    "Pair" to json(
+        "count" to pairCountResolve,
     ),
 )
