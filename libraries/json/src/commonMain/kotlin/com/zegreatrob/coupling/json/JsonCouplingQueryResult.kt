@@ -4,8 +4,11 @@ import com.zegreatrob.coupling.model.CouplingConfig
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.GlobalStats
 import com.zegreatrob.coupling.model.Party
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PartyStats
+import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
@@ -17,6 +20,7 @@ data class JsonCouplingQueryResult(
     val party: JsonParty? = null,
     val globalStats: JsonGlobalStats? = null,
     val config: JsonConfig? = null,
+    val pairs: List<JsonPair>? = null,
 )
 
 @Serializable
@@ -35,6 +39,7 @@ private fun JsonParty.toModel() = Party(
     pairAssignmentDocumentList = pairAssignmentDocumentList?.map(JsonPairAssignmentDocumentRecord::toModel),
     currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
     boost = boost?.toModelRecord(),
+    pairs = pairs?.map(JsonPair::toModel),
 )
 
 fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
@@ -57,6 +62,20 @@ data class JsonParty(
     val pairAssignmentDocumentList: List<JsonPairAssignmentDocumentRecord>? = null,
     val currentPairAssignmentDocument: JsonPairAssignmentDocumentRecord? = null,
     val boost: JsonBoostRecord? = null,
+    val pairs: List<JsonPair>? = null,
+)
+
+@Serializable
+data class JsonPair(
+    val players: List<JsonPlayerRecord>? = null,
+)
+
+fun JsonPair.toModel() = PlayerPair(
+    players = players?.map(JsonPlayerRecord::toModel),
+)
+
+fun PlayerPair.toJson() = JsonPair(
+    players = players?.map(PartyRecord<Player>::toSerializable),
 )
 
 @Serializable

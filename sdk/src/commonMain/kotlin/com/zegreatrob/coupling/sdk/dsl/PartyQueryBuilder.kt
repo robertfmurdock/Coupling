@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.JsonPair
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignmentRecord
@@ -23,4 +24,15 @@ class PartyQueryBuilder : QueryBuilder<JsonParty> {
     fun pairAssignmentDocumentList() = also {
         output = output.copy(pairAssignmentDocumentList = listOf(pairAssignmentRecord))
     }
+
+    fun pairs(block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()
+        .also(block)
+        .output
+        .let { output = output.copy(pairs = listOf(it)) }
+}
+
+class PairQueryBuilder : QueryBuilder<JsonPair> {
+    override var output: JsonPair = JsonPair(null)
+
+    fun players() = also { output = output.copy(players = listOf(playerRecord)) }
 }

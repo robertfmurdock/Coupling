@@ -19,4 +19,5 @@ data class Party(
     val pairAssignmentDocumentList: List<PartyRecord<PairAssignmentDocument>>? = null,
     val currentPairAssignmentDocument: PartyRecord<PairAssignmentDocument>? = null,
     val boost: Record<Boost>? = null,
+    val pairs: List<PlayerPair>? = null,
 )

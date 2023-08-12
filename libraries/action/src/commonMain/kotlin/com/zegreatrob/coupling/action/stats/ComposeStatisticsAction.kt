@@ -41,20 +41,6 @@ data class ComposeStatisticsAction(
                 is TimeResultValue -> b.time.compareTo(a.time)
             }
         }
-
-        private fun List<Player>.allPairCombinations() = mapIndexed { index, player ->
-            slice(index + 1..lastIndex).toPairsWith(player)
-        }.flatten()
-
-        private fun List<Player>.toPairsWith(player: Player) = map { otherPlayer -> pairOf(player, otherPlayer) }
-
-        private fun List<Player>.calculateFullRotation() = size.ifEvenSubtractOne()
-
-        private fun Int.ifEvenSubtractOne() = if (this % 2 == 0) {
-            this - 1
-        } else {
-            this
-        }
     }
 }
 
@@ -78,3 +64,17 @@ fun List<Instant>.toDeltas() = zipWithNext { a: Instant, b: Instant -> a - b }
 fun List<Duration>.halfwayValue() = getOrNull(indexOfMedian())
 
 fun List<Duration>.indexOfMedian() = floor(size / 2.0).toInt()
+
+fun List<Player>.allPairCombinations() = mapIndexed { index, player ->
+    slice(index + 1..lastIndex).toPairsWith(player)
+}.flatten()
+
+private fun List<Player>.toPairsWith(player: Player) = map { otherPlayer -> pairOf(player, otherPlayer) }
+
+fun List<Player>.calculateFullRotation() = size.ifEvenSubtractOne()
+
+private fun Int.ifEvenSubtractOne() = if (this % 2 == 0) {
+    this - 1
+} else {
+    this
+}

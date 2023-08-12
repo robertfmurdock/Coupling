@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.pin.savePinResolver
 import com.zegreatrob.coupling.server.entity.player.deletePlayerResolver
+import com.zegreatrob.coupling.server.entity.player.pairsResolve
 import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
 import com.zegreatrob.coupling.server.entity.player.savePlayerResolver
@@ -78,6 +79,7 @@ fun couplingResolvers() = json(
         "pairAssignmentDocumentList" to pairAssignmentListResolve,
         "secretList" to secretListResolve,
         "currentPairAssignmentDocument" to currentPairAssignmentResolve,
+        "pairs" to pairsResolve,
     ),
     "Configuration" to json(
         "addToSlackUrl" to addToSlackUrlResolve,

@@ -108,6 +108,7 @@ type Party {
     pinList: [PinDetails]
     playerList: [PlayerDetails]
     retiredPlayers: [PlayerDetails]
+    pairs: [Pair]
     pairAssignmentDocumentList: [PairAssignmentDocumentDetails]
     secretList: [PartySecret]
     currentPairAssignmentDocument: PairAssignmentDocumentDetails
@@ -268,7 +269,6 @@ type Query {
     partyList: [Party]
     party(input: PartyInput!): Party
     user: User
-    pairs: [Pair]
     globalStats(input: GlobalStatsInput!) : GlobalStats!
     config: Configuration
 }
