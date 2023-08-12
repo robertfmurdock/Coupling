@@ -34,7 +34,7 @@ suspend fun commandDispatcher(user: UserDetails, scope: CoroutineScope, traceId:
 private suspend fun repositoryCatalog(user: UserDetails): RepositoryCatalog = if (useInMemory()) {
     memoryRepositoryCatalog(user.id)
 } else {
-    DynamoRepositoryCatalog(user.id, Clock.System)
+    CachedRepositoryCatalog(DynamoRepositoryCatalog(user.id, Clock.System))
 }
 
 val memoryBackend by lazy { MemoryRepositoryBackend() }
