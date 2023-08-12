@@ -14,8 +14,10 @@ import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
+import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
 
 class SdkPairsTest {
 
@@ -73,6 +75,52 @@ class SdkPairsTest {
         result?.party?.pairs?.map { it.count }
             .assertIsEqualTo(
                 listOf(3, 1, 1),
+            )
+    }
+
+    @Test
+    fun willShowSpinsSinceLastPaired() = asyncSetup(object : ScopeMint() {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val now = Clock.System.now()
+        val pairAssignmentDocs = listOf(
+            stubPairAssignmentDoc().copy(
+                date = now.minus(5.days),
+                pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()),
+            ),
+            stubPairAssignmentDoc().copy(
+                date = now.minus(4.days),
+                pairs = notEmptyListOf(pairOf(players[1], players[2]).withPins()),
+            ),
+            stubPairAssignmentDoc().copy(
+                date = now.minus(3.days),
+                pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()),
+            ),
+            stubPairAssignmentDoc().copy(
+                date = now.minus(2.days),
+                pairs = notEmptyListOf(pairOf(players[0], players[2]).withPins()),
+            ),
+            stubPairAssignmentDoc().copy(
+                date = now.minus(1.days),
+                pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()),
+            ),
+        )
+    }) {
+        with(sdk()) {
+            fire(SavePartyCommand(party))
+            players.forEach {
+                fire(SavePlayerCommand(party.id, it))
+            }
+            pairAssignmentDocs.forEach {
+                fire(SavePairAssignmentsCommand(party.id, it))
+            }
+        }
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { pairs { spinsSinceLastPaired() } } })
+    } verify { result ->
+        result?.party?.pairs?.map { it.spinsSinceLastPaired }
+            .assertIsEqualTo(
+                listOf(0, 1, 3),
             )
     }
 }

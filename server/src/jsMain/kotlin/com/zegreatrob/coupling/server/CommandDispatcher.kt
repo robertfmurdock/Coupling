@@ -45,6 +45,7 @@ import com.zegreatrob.coupling.server.action.player.ServerDeletePlayerCommandDis
 import com.zegreatrob.coupling.server.action.player.ServerPairCountQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerPairsQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispatcher
+import com.zegreatrob.coupling.server.action.player.ServerSpinsSinceLastPairedQueryDispatcher
 import com.zegreatrob.coupling.server.action.secret.SecretListQuery
 import com.zegreatrob.coupling.server.action.slack.ServerGrantSlackAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
@@ -84,8 +85,9 @@ interface ICommandDispatcher :
     SecretListQuery.Dispatcher,
     ServerGrantDiscordAccessCommandDispatcher,
     ServerGrantSlackAccessCommandDispatcher,
-    ServerPairsQueryDispatcher,
     ServerPairCountQueryDispatcher,
+    ServerPairsQueryDispatcher,
+    ServerSpinsSinceLastPairedQueryDispatcher,
     TraceIdProvider,
     UserDispatcher,
     UserIsAuthorizedWithDataAction.Dispatcher,
