@@ -67,7 +67,10 @@ private fun ChildrenBuilder.playerSpotlight(shownPlayer: Player?) = div {
 
 private fun ChildrenBuilder.placeholderPlayerCard() =
     div {
-        css { visibility = Visibility.hidden; display = Display.inlineBlock }
+        css {
+            visibility = Visibility.hidden
+            display = Display.inlineBlock
+        }
         flippedPlayer(placeholderPlayer)
     }
 

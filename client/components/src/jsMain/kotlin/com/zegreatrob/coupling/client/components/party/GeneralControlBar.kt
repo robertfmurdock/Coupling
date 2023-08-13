@@ -44,7 +44,10 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
                 +props.splashComponent
             }
             h1 {
-                css { flexGrow = number(2.0); display = Display.inlineBlock }
+                css {
+                    flexGrow = number(2.0)
+                    display = Display.inlineBlock
+                }
                 div {
                     css {
                         display = Display.flex
@@ -54,7 +57,10 @@ val GeneralControlBar by nfc<GeneralControlBarProps> { props ->
                         }
                     }
                     span {
-                        css { flexGrow = number(2.0); textAlign = TextAlign.left }
+                        css {
+                            flexGrow = number(2.0)
+                            textAlign = TextAlign.left
+                        }
                         +props.title
                     }
                     span {

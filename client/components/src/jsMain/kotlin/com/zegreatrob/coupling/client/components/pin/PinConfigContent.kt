@@ -137,7 +137,10 @@ private fun ChildrenBuilder.nameInput(pin: Pin, onChange: (ChangeEvent<*>) -> Un
 }
 
 private fun ChildrenBuilder.targetInput(onChange: (ChangeEvent<*>) -> Unit) {
-    label { htmlFor = "pinTarget"; +"Target" }
+    label {
+        htmlFor = "pinTarget"
+        +"Target"
+    }
     select {
         id = "pinTarget"
         name = "target"

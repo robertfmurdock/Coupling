@@ -14,7 +14,13 @@ import web.cssom.Color
 val IncubatingPage by nfc<PageProps> { props ->
     CouplingQuery(
         commander = props.commander,
-        query = graphQuery { partyList { details() }; config { addToSlackUrl(); discordClientId() } },
+        query = graphQuery {
+            partyList { details() }
+            config {
+                addToSlackUrl()
+                discordClientId()
+            }
+        },
         toNode = { _, _, result ->
             val addToSlackUrl = result.config?.addToSlackUrl
             val discordClientId = result.config?.discordClientId

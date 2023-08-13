@@ -239,7 +239,10 @@ private fun ChildrenBuilder.selectablePlayerCardList(
     setPlayerSelections: (List<Pair<Player, Boolean>>) -> Unit,
 ) = playerSelections.map { (player, isSelected) ->
     div {
-        css { paddingBottom = 30.px; display = Display.inlineBlock }
+        css {
+            paddingBottom = 30.px
+            display = Display.inlineBlock
+        }
         +playerCard(player, isSelected, setPlayerSelections, playerSelections)
     }
 }

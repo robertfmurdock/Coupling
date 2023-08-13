@@ -82,7 +82,10 @@ private fun redirectUnauthenticated(): RouteObject = jso {
 }
 
 private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNull(
-    jso { path = "/"; element = redirectToParties() },
+    jso {
+        path = "/"
+        element = redirectToParties()
+    },
     if (prereleaseMode) {
         couplingRoute("/user", "User", UserPage)
     } else {
@@ -92,7 +95,10 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
     couplingRoute("/logout/", "Logout", Logout),
     couplingRoute("/graphiql/", "Graph IQL", GraphIQLPage),
     couplingRoute("/new-party/", "New Party", PartyConfigPage),
-    jso { path = "/:partyId"; element = redirectToCurrentPairs() },
+    jso {
+        path = "/:partyId"
+        element = redirectToCurrentPairs()
+    },
     couplingRoute("/:partyId/prepare/", "Prepare to Spin", PrepareSpinPage),
     couplingRoute("/:partyId/edit/", "Party Config", PartyConfigPage),
     couplingRoute("/:partyId/history", "History", HistoryPage),

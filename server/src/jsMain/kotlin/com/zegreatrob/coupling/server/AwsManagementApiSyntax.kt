@@ -20,6 +20,9 @@ interface AwsSocketCommunicator : SocketCommunicator, AwsManagementApiSyntax {
                 json("ConnectionId" to connectionId, "Data" to message.toSerializable().toJsonString()),
             ),
         )
-            .then({ null }, { oops -> println("oops $oops"); connectionId })
+            .then({ null }, { oops ->
+                println("oops $oops")
+                connectionId
+            })
             .await()
 }

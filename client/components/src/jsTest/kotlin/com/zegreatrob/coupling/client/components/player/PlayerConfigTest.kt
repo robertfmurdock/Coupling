@@ -282,7 +282,10 @@ class PlayerConfigTest {
                         jso {
                             path = "*"
                             element = Fragment.create {
-                                Link { to = "elsewhere"; button { +"Leave" } }
+                                Link {
+                                    to = "elsewhere"
+                                    button { +"Leave" }
+                                }
                                 PlayerConfig(
                                     party = party,
                                     boost = null,

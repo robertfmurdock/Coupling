@@ -46,7 +46,10 @@ fun ChildrenBuilder.configInput(
     checked: Boolean = false,
     autoFocus: Boolean? = false,
 ) {
-    label { htmlFor = id; +labelText }
+    label {
+        htmlFor = id
+        +labelText
+    }
     input {
         this.ariaLabel = labelText
         this.name = name
