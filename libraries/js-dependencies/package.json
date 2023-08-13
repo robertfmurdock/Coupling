@@ -31,7 +31,7 @@
     "express-jwt": "8.4.1",
     "express-statsd": "^0.3.0",
     "favicons": "~7.1.4",
-    "favicons-webpack-plugin": "~6.0.0",
+    "favicons-webpack-plugin": "~6.0.1",
     "file-loader": "^6.2.0",
     "fitty": "^2.3.7",
     "fs-extra": "^11.1.1",
