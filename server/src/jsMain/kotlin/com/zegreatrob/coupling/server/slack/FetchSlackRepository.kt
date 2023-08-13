@@ -30,7 +30,7 @@ class FetchSlackRepository : SlackRepository {
     private fun AccessResponse.toResult(): SlackGrantAccess.Result {
         return if (ok == false) {
             SlackGrantAccess.Result.RemoteError(error)
-        } else
+        } else {
             SlackGrantAccess.Result.Success(
                 SlackTeamAccess(
                     teamId = team?.id ?: return SlackGrantAccess.Result.Unknown(Exception("Missing team id")),
@@ -42,6 +42,7 @@ class FetchSlackRepository : SlackRepository {
                         ?: return SlackGrantAccess.Result.Unknown(Exception("Missing bot user")),
                 ),
             )
+        }
     }
 
     private suspend fun updateMessage(

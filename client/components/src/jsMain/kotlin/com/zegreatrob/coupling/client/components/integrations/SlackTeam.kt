@@ -7,7 +7,10 @@ import react.dom.html.ReactHTML.label
 import web.html.InputType
 
 fun ChildrenBuilder.slackTeam(slackTeam: String?) {
-    label { this.htmlFor = "slack-team-id"; +"Slack Team ID" }
+    label {
+        this.htmlFor = "slack-team-id"
+        +"Slack Team ID"
+    }
     input {
         value = slackTeam
         ariaLabel = "Slack Team ID"

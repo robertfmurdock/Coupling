@@ -53,7 +53,10 @@ val PairSection by nfc<PairSectionProps> { (party, players, pairs, allowSave, se
             PairSectionPanel(party, players, pairs, allowSave, setPairs, controls)
         }
         div {
-            css { float = Float.right; width = 0.px }
+            css {
+                float = Float.right
+                width = 0.px
+            }
             div { copyToClipboardButton(pairSectionNode) }
             TinyPlayerList(party, players)
         }

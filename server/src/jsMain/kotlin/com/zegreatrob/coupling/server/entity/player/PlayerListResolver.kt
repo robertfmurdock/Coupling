@@ -67,5 +67,6 @@ val spinsSinceLastPairedResolve = dispatch(
 
 private fun List<Player>.toCouplingPair() = if (size == 1) {
     CouplingPair.Single(first())
-} else
+} else {
     CouplingPair.Double(this[0], this[1])
+}

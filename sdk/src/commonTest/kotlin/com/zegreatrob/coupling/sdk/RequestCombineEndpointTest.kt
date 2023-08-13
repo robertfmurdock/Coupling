@@ -42,7 +42,14 @@ class RequestCombineEndpointTest {
         playersToSave.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
     } exercise {
         coroutineScope {
-            sdk.fire(graphQuery { party(party.id) { playerList(); pinList() } })
+            sdk.fire(
+                graphQuery {
+                    party(party.id) {
+                        playerList()
+                        pinList()
+                    }
+                },
+            )
                 ?.party
                 .let { it?.playerList?.elements to it?.pinList?.elements }
         }

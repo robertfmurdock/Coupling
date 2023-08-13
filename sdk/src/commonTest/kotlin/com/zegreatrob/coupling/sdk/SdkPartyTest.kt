@@ -35,7 +35,12 @@ class SdkPartyTest {
     } exercise {
         with(sdk()) {
             fire(DeletePartyCommand(party.id))
-            fire(graphQuery { partyList { details() }; party(party.id) { details() } }).let {
+            fire(
+                graphQuery {
+                    partyList { details() }
+                    party(party.id) { details() }
+                },
+            ).let {
                 Pair(
                     it?.partyList?.mapNotNull(Party::details)?.map(Record<PartyDetails>::data),
                     it?.party?.details?.data,

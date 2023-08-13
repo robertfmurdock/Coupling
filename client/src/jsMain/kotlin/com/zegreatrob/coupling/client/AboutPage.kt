@@ -53,7 +53,12 @@ private val backButtonSection by nfc<Props> {
     div {
         css { position = Position.relative }
         ReactHTML.span {
-            css { float = Float.left; position = Position.absolute; right = (-15).px; top = 20.px }
+            css {
+                float = Float.left
+                position = Position.absolute
+                right = (-15).px
+                top = 20.px
+            }
             backButton()
         }
     }

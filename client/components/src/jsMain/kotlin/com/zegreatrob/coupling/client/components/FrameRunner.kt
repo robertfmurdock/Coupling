@@ -35,7 +35,10 @@ val FrameRunner by nfc<FrameRunnerProps<Any>> { props ->
 
 private fun scheduleStateFunc(setState: (Any) -> Unit, speed: Double) = setState.statePairToTimeoutArgsFunc()
     .join(pairTransformSecondFunc { it.applySpeed(speed) })
-    .join { args -> args.let(::setTimeout); Unit }
+    .join { args ->
+        args.let(::setTimeout)
+        Unit
+    }
 
 private fun Int.applySpeed(speed: Double): Int = round(this / speed).toInt()
 

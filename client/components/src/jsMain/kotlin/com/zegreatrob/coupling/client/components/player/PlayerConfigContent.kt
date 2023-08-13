@@ -198,7 +198,10 @@ private fun ChildrenBuilder.badgeConfig(
             display = Display.inlineBlock
         }
     }
-    label { htmlFor = "badge"; +"Badge" }
+    label {
+        htmlFor = "badge"
+        +"Badge"
+    }
     select {
         id = "badge"
         name = "badge"
@@ -235,7 +238,10 @@ private fun ChildrenBuilder.avatarTypeConfig(
             display = Display.inlineBlock
         }
     }
-    label { htmlFor = "avatarType"; +"Avatar Type" }
+    label {
+        htmlFor = "avatarType"
+        +"Avatar Type"
+    }
     select {
         id = "avatarType"
         name = "avatarType"
@@ -260,7 +266,12 @@ private fun ChildrenBuilder.avatarTypeConfig(
         player.avatarType?.let {
             it.attribution?.let { attribution ->
                 div { +"${it.name} comes from " }
-                div { a { href = attribution; +attribution } }
+                div {
+                    a {
+                        href = attribution
+                        +attribution
+                    }
+                }
                 div { +"Send them love if you like!" }
             }
         }

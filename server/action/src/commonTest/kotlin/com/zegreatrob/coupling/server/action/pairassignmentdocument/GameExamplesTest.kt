@@ -75,7 +75,10 @@ class GameExamplesTest {
         }) exercise {
             perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
         } verify { result ->
-            result.pairs.map { pair -> pair.players.size.toInt().assertIsEqualTo(2); pair.pinnedPlayers }
+            result.pairs.map { pair ->
+                pair.players.size.toInt().assertIsEqualTo(2)
+                pair.pinnedPlayers
+            }
                 .flatMap(NotEmptyList<PinnedPlayer>::toList)
                 .size
                 .assertIsEqualTo(allPlayers.size.toInt())

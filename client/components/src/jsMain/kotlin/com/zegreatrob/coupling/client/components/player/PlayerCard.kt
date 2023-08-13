@@ -151,11 +151,25 @@ private fun Player.getGravatarSafeAvatarImageUrl(size: Int, avatarType: AvatarTy
     AvatarType.DicebearCroodles -> gravatarDicebearUrl("croodles", size)
     AvatarType.DicebearThumbs -> gravatarDicebearUrl("thumbs", size)
     AvatarType.DicebearLorelei -> gravatarDicebearUrl("lorelei", size)
-    else -> myGravatarUrl(jso { this.size = size; this.default = "retro" }, emailWithFallback(), null)
+    else -> myGravatarUrl(
+        jso {
+            this.size = size
+            this.default = "retro"
+        },
+        emailWithFallback(),
+        null,
+    )
 }
 
 private fun Player.getDirectAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
-    AvatarType.Retro -> myGravatarUrl(jso { this.size = size; this.default = "retro" }, emailWithFallback(), null)
+    AvatarType.Retro -> myGravatarUrl(
+        jso {
+            this.size = size
+            this.default = "retro"
+        },
+        emailWithFallback(),
+        null,
+    )
     AvatarType.RobohashSet1 -> getRobohashImageUrl("set1")
     AvatarType.RobohashSet2 -> getRobohashImageUrl("set2")
     AvatarType.RobohashSet3 -> getRobohashImageUrl("set3")
