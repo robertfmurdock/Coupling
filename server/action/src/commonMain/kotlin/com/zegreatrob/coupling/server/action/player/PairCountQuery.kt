@@ -25,8 +25,9 @@ interface ServerPairCountQueryDispatcher : PairCountQuery.Dispatcher {
     }
 }
 
-fun PairAssignmentDocument.hasPair(couplingPair: CouplingPair) =
-    pairs.map(PinnedCouplingPair::toPair).toList().contains(couplingPair)
+fun PairAssignmentDocument.hasPair(couplingPair: CouplingPair) = pairs
+    .map(PinnedCouplingPair::toPair).toList()
+    .contains(couplingPair)
 
 @ActionMint
 data class SpinsSinceLastPairedQuery(val partyId: PartyId, val pair: CouplingPair) {

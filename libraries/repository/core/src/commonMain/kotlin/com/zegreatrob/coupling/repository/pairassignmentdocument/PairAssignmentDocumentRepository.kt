@@ -16,7 +16,7 @@ interface PairAssignmentDocumentDelete {
     suspend fun deleteIt(partyId: PartyId, pairAssignmentDocumentId: PairAssignmentDocumentId): Boolean
 }
 
-interface PairAssignmentDocumentGet {
+fun interface PairAssignmentDocumentGet {
     suspend fun loadPairAssignments(partyId: PartyId): List<PartyRecord<PairAssignmentDocument>>
 }
 

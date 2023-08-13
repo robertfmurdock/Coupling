@@ -26,7 +26,7 @@ suspend inline fun <D : TraceIdProvider, reified E, reified I> cannon(
 
 inline fun <reified E, reified I, reified D : TraceIdProvider, reified C, reified R, reified J> dispatch(
     crossinline dispatcherFunc: GraphQLDispatcherProvider<E, I, D>,
-    crossinline commandFunc: (_: E, input: I) -> C,
+    crossinline commandFunc: (_: E, input: I) -> C?,
     crossinline fireFunc: suspend ActionCannon<D>.(C) -> R,
     crossinline toSerializable: (R) -> J,
 ) = { entityJson: Json?, args: Json, context: CouplingContext, queryInfo: Json ->
@@ -40,7 +40,7 @@ inline fun <reified E, reified I, reified D : TraceIdProvider, reified C, reifie
             val (entity, input) = parseGraphJsons<E, I>(entityJson, args)
             val cannon = cannon(context, entity, input, dispatcherFunc)
                 ?: return@promise null
-            val result = cannon.fireFunc(commandFunc(entity, input))
+            val result = commandFunc(entity, input)?.let { cannon.fireFunc(it) }
             if (result == null) {
                 result
             } else {

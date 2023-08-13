@@ -39,11 +39,11 @@ val pairCountResolve = dispatch(
     dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull -> context.commandDispatcher },
     commandFunc = { data, _ ->
         val model = data.toModel()
-        val partyId = PartyId(data.partyId!!)
-        val players = model.players!!.elements
+        val partyId = PartyId(data.partyId ?: return@dispatch null)
+        val players = model.players?.elements ?: return@dispatch null
         PairCountQuery(
             partyId = partyId,
-            pair = CouplingPair.Double(players[0], players[1]),
+            pair = players.toCouplingPair(),
         )
     },
     fireFunc = ::perform,
@@ -54,13 +54,18 @@ val spinsSinceLastPairedResolve = dispatch(
     dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull -> context.commandDispatcher },
     commandFunc = { data, _ ->
         val model = data.toModel()
-        val partyId = PartyId(data.partyId!!)
-        val players = model.players!!.elements
+        val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
+        val players = model.players?.elements ?: return@dispatch null
         SpinsSinceLastPairedQuery(
             partyId = partyId,
-            pair = CouplingPair.Double(players[0], players[1]),
+            pair = players.toCouplingPair(),
         )
     },
     fireFunc = ::perform,
     toSerializable = { it },
 )
+
+private fun List<Player>.toCouplingPair() = if (size == 1) {
+    CouplingPair.Single(first())
+} else
+    CouplingPair.Double(this[0], this[1])

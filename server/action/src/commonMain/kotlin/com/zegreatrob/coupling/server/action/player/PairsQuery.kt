@@ -25,6 +25,7 @@ interface ServerPairsQueryDispatcher : PairsQuery.Dispatcher, PartyIdLoadPlayers
     private fun List<PartyRecord<Player>>.allPairCombinations() = mapIndexed { index, player ->
         slice(index + 1..lastIndex).toPairsWith(player)
     }.flatten()
+        .plus(map { PlayerPair(listOf(it)) })
 
     private fun List<PartyRecord<Player>>.toPairsWith(player: PartyRecord<Player>) = map {
         PlayerPair(listOf(player, it))
