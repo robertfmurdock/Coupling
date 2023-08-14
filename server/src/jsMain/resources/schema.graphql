@@ -112,6 +112,8 @@ type Party {
     pairAssignmentDocumentList: [PairAssignmentDocumentDetails]
     secretList: [PartySecret]
     currentPairAssignmentDocument: PairAssignmentDocumentDetails
+    spinsUntilFullRotation: Int!
+    medianSpinDuration: String
 }
 
 input PlayerInput {
