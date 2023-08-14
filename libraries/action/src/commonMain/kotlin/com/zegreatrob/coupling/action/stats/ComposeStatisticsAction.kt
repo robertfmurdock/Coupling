@@ -6,9 +6,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.calculateTimeSinceLastPartnership
-import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.toPairCombinations
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotlinx.datetime.Instant
 import kotlin.math.floor
@@ -25,11 +25,10 @@ data class ComposeStatisticsAction(
 
         fun perform(action: ComposeStatisticsAction) = StatisticsReport(
             spinsUntilFullRotation = action.players.calculateFullRotation(),
-            pairReports = action.pairReports(),
             medianSpinDuration = action.history.medianSpinDuration(),
         )
 
-        private fun ComposeStatisticsAction.pairReports() = players.allPairCombinations()
+        private fun ComposeStatisticsAction.pairReports() = players.toPairCombinations()
             .map { PairReport(it, calculateTimeSinceLastPartnership(it, history)) }
             .sortedWith { a, b -> compare(a.timeSinceLastPair, b.timeSinceLastPair) }
 
@@ -46,7 +45,6 @@ data class ComposeStatisticsAction(
 
 data class StatisticsReport(
     val spinsUntilFullRotation: Int,
-    val pairReports: List<PairReport>,
     val medianSpinDuration: Duration?,
 )
 
@@ -64,12 +62,6 @@ fun List<Instant>.toDeltas() = zipWithNext { a: Instant, b: Instant -> a - b }
 fun List<Duration>.halfwayValue() = getOrNull(indexOfMedian())
 
 fun List<Duration>.indexOfMedian() = floor(size / 2.0).toInt()
-
-fun List<Player>.allPairCombinations() = mapIndexed { index, player ->
-    slice(index + 1..lastIndex).toPairsWith(player)
-}.flatten()
-
-private fun List<Player>.toPairsWith(player: Player) = map { otherPlayer -> pairOf(player, otherPlayer) }
 
 fun List<Player>.calculateFullRotation() = size.ifEvenSubtractOne()
 

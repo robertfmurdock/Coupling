@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
@@ -64,9 +64,3 @@ val spinsSinceLastPairedResolve = dispatch(
     fireFunc = ::perform,
     toSerializable = { it },
 )
-
-private fun List<Player>.toCouplingPair() = if (size == 1) {
-    CouplingPair.Single(first())
-} else {
-    CouplingPair.Double(this[0], this[1])
-}

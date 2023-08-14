@@ -1,14 +1,10 @@
 package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
-import com.zegreatrob.coupling.action.stats.PairReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
-import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -17,12 +13,10 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
@@ -111,167 +105,6 @@ class ComposeStatisticsActionTest {
         } verify { (spinsUntilFullRotation) ->
             spinsUntilFullRotation.assertIsEqualTo(7)
         }
-    }
-
-    class WillGeneratePairReports {
-
-        class WithNoHistory {
-            companion object {
-                val history = emptyList<PairAssignmentDocument>()
-            }
-
-            @Test
-            fun withNoPlayersNoPairReportsWillBeCreated() = setup(object {
-                val players = makePlayers(0)
-            }) exercise {
-                perform(ComposeStatisticsAction(party, players, history))
-            } verify { (_, pairReports) ->
-                pairReports.assertIsEqualTo(emptyList())
-            }
-
-            @Test
-            fun withOnePlayersNoPairReportsWillBeCreated() = setup(object {
-                val players = makePlayers(1)
-            }) exercise {
-                perform(ComposeStatisticsAction(party, players, history))
-            } verify { (_, pairReports) ->
-                pairReports.assertIsEqualTo(emptyList())
-            }
-
-            @Test
-            fun withTwoPlayersOnePairReportWillBeCreated() = setup(object {
-                val players = makePlayers(2)
-            }) exercise {
-                perform(ComposeStatisticsAction(party, players, history))
-            } verify { (_, pairReports) ->
-                pairReports.assertIsEqualTo(
-                    listOf(
-                        PairReport(pairOf(players[0], players[1]), NeverPaired),
-                    ),
-                )
-            }
-
-            @Test
-            fun withFivePlayersOnePairReportWillBeCreated() = setup(object {
-                val players = makePlayers(5)
-            }) exercise {
-                perform(ComposeStatisticsAction(party, players, history))
-            } verify { (_, pairReports) ->
-                val (player1, player2, player3, player4, player5) = players
-                pairReports.map { it.pair }
-                    .assertMatch(
-                        listOf(
-                            pairOf(player1, player2),
-                            pairOf(player1, player3),
-                            pairOf(player1, player4),
-                            pairOf(player1, player5),
-
-                            pairOf(player2, player3),
-                            pairOf(player2, player4),
-                            pairOf(player2, player5),
-                            pairOf(player3, player4),
-                            pairOf(player3, player5),
-                            pairOf(player4, player5),
-                        ),
-                    )
-            }
-        }
-
-        @Test
-        fun withFourPlayersThePairReportsAreOrderedByLongestTimeSinceLastPairing() = setup(object {
-            val players = makePlayers(4)
-            val player1 = players[0]
-            val player2 = players[1]
-            val player3 = players[2]
-            val player4 = players[3]
-            val stubDate = Clock.System.now()
-            val history = listOf(
-                pairAssignmentDocument(
-                    notEmptyListOf(
-                        PinnedCouplingPair(
-                            notEmptyListOf(
-                                player1.withPins(
-                                    emptyList(),
-                                ),
-                                player3.withPins(emptyList()),
-                            ),
-                            emptySet(),
-                        ),
-                        PinnedCouplingPair(
-                            notEmptyListOf(
-                                player2.withPins(
-                                    emptyList(),
-                                ),
-                                player4.withPins(emptyList()),
-                            ),
-                            emptySet(),
-                        ),
-                    ),
-                ),
-                pairAssignmentDocument(
-                    notEmptyListOf(
-                        PinnedCouplingPair(
-                            notEmptyListOf(
-                                player1.withPins(
-                                    emptyList(),
-                                ),
-                                player2.withPins(emptyList()),
-                            ),
-                            emptySet(),
-                        ),
-                        PinnedCouplingPair(
-                            notEmptyListOf(
-                                player3.withPins(
-                                    emptyList(),
-                                ),
-                                player4.withPins(emptyList()),
-                            ),
-                            emptySet(),
-                        ),
-                    ),
-                ),
-            )
-
-            private fun pairAssignmentDocument(pairs: NotEmptyList<PinnedCouplingPair>) =
-                PairAssignmentDocument(id = PairAssignmentDocumentId(""), date = stubDate, pairs = pairs, null)
-        }) exercise {
-            perform(ComposeStatisticsAction(party, players, history))
-        } verify { (_, pairReports) ->
-            pairReports.map { it.timeSinceLastPair }
-                .assertIsEqualTo(
-                    listOf(
-                        NeverPaired,
-                        NeverPaired,
-                        TimeResultValue(1),
-                        TimeResultValue(1),
-                        TimeResultValue(0),
-                        TimeResultValue(0),
-                    ),
-                )
-            pairReports.map { it.pair }
-                .assertMatch(
-                    listOf(
-                        pairOf(player1, player4),
-                        pairOf(player2, player3),
-                        pairOf(player1, player2),
-                        pairOf(player3, player4),
-                        pairOf(player1, player3),
-                        pairOf(player2, player4),
-                    ),
-                )
-        }
-
-        @Test
-        fun stillSortsCorrectlyWithLargeRealisticHistory() =
-            setup(loadJsonPartySetup("realistic-sort-test-data/inputs.json")) {
-            } exercise {
-                perform(ComposeStatisticsAction(party, players, history))
-            } verify { result ->
-                val expectedTimesResults = loadResource<Array<Int>>("realistic-sort-test-data/expectResults.json")
-                    .map { TimeResultValue(it) }
-                result.pairReports.map { it.timeSinceLastPair }
-                    .assertIsEqualTo(expectedTimesResults)
-            }
     }
 
     class WillCalculateTheMedianSpinTime {

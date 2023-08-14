@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.action.stats.StatisticsReport
 import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
+import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
@@ -13,6 +14,7 @@ data class ClientStatisticsAction(
     val party: PartyDetails,
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
+    val pairs: List<PlayerPair>,
 ) : SimpleSuspendAction<ClientStatisticsAction.Dispatcher, StatisticsQuery.Results> {
     override val performFunc = link(Dispatcher::calculate)
 
@@ -22,7 +24,7 @@ data class ClientStatisticsAction(
 
         fun calculate(query: ClientStatisticsAction): StatisticsQuery.Results = with(query) {
             val (report, heatmapData) = calculateStats(party, players, history)
-            return StatisticsQuery.Results(party, players, history, report, heatmapData)
+            return StatisticsQuery.Results(party, players, history, query.pairs, report, heatmapData)
         }
 
         private fun calculateStats(
@@ -38,8 +40,7 @@ data class ClientStatisticsAction(
             party: PartyDetails,
             players: List<Player>,
             history: List<PairAssignmentDocument>,
-        ) =
-            execute(ComposeStatisticsAction(party, players, history))
+        ) = execute(ComposeStatisticsAction(party, players, history))
 
         private fun calculateHeatMap(
             players: List<Player>,

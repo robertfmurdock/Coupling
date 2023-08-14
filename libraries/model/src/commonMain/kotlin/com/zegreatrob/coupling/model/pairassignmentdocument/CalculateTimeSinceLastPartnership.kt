@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.model.pairassignmentdocument
 
 fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<PairAssignmentDocument>): TimeResult {
     val documentsSinceLastPartnership =
-        history.indexOfFirst { historyDocument -> pairingExistsInDocument(historyDocument, pair) }
+        history.indexOfFirst { historyDocument -> historyDocument.hasPair(pair) }
 
     return if (documentsSinceLastPartnership < 0) {
         NeverPaired
@@ -10,6 +10,3 @@ fun calculateTimeSinceLastPartnership(pair: CouplingPair, history: List<PairAssi
         TimeResultValue(documentsSinceLastPartnership)
     }
 }
-
-private fun pairingExistsInDocument(historyDocument: PairAssignmentDocument, pair: CouplingPair) =
-    historyDocument.pairs.toList().any { areEqualPairs(pair, it.toPair()) }

@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.nfc
-import react.Fragment
 import react.PropsWithValue
 import react.create
 import react.useEffectOnce
@@ -24,14 +23,19 @@ val StatisticsPage = partyPageFunction { props, partyId ->
                 details()
                 playerList()
                 pairAssignmentDocumentList()
+                pairs {
+                    players()
+                    spinsSinceLastPaired()
+                }
             }
         },
         toNode = { _, dispatchFunc, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
             val players = queryResult.party?.playerList?.elements ?: return@CouplingQuery null
             val history = queryResult.party?.pairAssignmentDocumentList?.elements ?: return@CouplingQuery null
-            val action = ClientStatisticsAction(party, players, history)
-            Fragment.create { CalculatingPartyStats { value = action to dispatchFunc } }
+            val pairs = queryResult.party?.pairs ?: return@CouplingQuery null
+            val action = ClientStatisticsAction(party, players, history, pairs)
+            CalculatingPartyStats.create { value = action to dispatchFunc }
         },
         key = partyId.value,
     )

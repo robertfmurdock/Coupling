@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.model.pairassignmentdocument
 
+import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.Player
@@ -21,3 +23,9 @@ fun PairAssignmentDocument.orderedPairedPlayers(): List<Player> = pairs
     .flatten()
 
 val PartyElement<PairAssignmentDocument>.document get() = element
+
+fun List<PartyRecord<PairAssignmentDocument>>.spinsSinceLastPair(couplingPair: CouplingPair) =
+    indexOfFirst { it.element.hasPair(couplingPair) }
+        .takeIf { it != -1 }
+
+fun PairAssignmentDocument.hasPair(pair: CouplingPair) = pairs.toList().any { areEqualPairs(pair, it.toPair()) }

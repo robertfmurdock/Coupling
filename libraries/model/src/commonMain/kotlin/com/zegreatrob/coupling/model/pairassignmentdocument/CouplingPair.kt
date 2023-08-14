@@ -30,6 +30,12 @@ sealed class CouplingPair : Iterable<Player> {
     }
 }
 
+fun List<Player>.toCouplingPair() = if (size == 1) {
+    CouplingPair.Single(first())
+} else {
+    CouplingPair.Double(this[0], this[1])
+}
+
 fun Player.withPins(pins: List<Pin> = emptyList()) = PinnedPlayer(this, pins)
 
 data class PinnedPlayer(val player: Player, val pins: List<Pin>)

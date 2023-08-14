@@ -1,8 +1,15 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.action.stats.PairReport
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
+import com.zegreatrob.coupling.action.timeSincePairSort
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
+import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
+import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
+import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -29,8 +36,8 @@ external interface PartyStatisticsProps : Props {
 
 @ReactFunc
 val PartyStatistics by nfc<PartyStatisticsProps> { props ->
-    val (party, players, _, allStats, heatmapData) = props.queryResults
-    val (spinsUntilFullRotation, pairReports, medianSpinDuration) = allStats
+    val (party, players, _, pairs, allStats, heatmapData) = props.queryResults
+    val (spinsUntilFullRotation, medianSpinDuration) = allStats
     div {
         PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9")) {
             ConfigHeader {
@@ -57,7 +64,17 @@ val PartyStatistics by nfc<PartyStatisticsProps> { props ->
                             } ?: "",
                         )
                     }
-                    PairReportTable(pairReports)
+                    PairReportTable(
+                        pairs.map {
+                            it.players?.elements?.toCouplingPair() to it.spinsSinceLastPaired
+                        }.mapNotNull {
+                            val pair = it.first as? (CouplingPair.Double)
+                                ?: return@mapNotNull null
+                            val spins = it.second?.let(::TimeResultValue) ?: NeverPaired
+                            pair to spins
+                        }.map { PairReport(it.first, it.second) }
+                            .sortedByDescending(::timeSincePairSort),
+                    )
                 }
                 PlayerHeatmap(players, heatmapData)
             }

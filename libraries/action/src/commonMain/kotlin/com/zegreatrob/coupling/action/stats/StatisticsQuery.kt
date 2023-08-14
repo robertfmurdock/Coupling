@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.action.stats
 
+import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
@@ -18,6 +19,7 @@ data class StatisticsQuery(val partyId: PartyId) :
         val party: PartyDetails,
         val players: List<Player>,
         val history: List<PairAssignmentDocument>,
+        val pairs: List<PlayerPair>,
         val report: StatisticsReport,
         val heatmapData: List<List<Double?>>,
     )

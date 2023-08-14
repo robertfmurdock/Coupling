@@ -4,14 +4,18 @@ import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
+import com.zegreatrob.coupling.model.PlayerPair
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.withNoPins
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -55,7 +59,23 @@ class PartyStatisticsTest :
         val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyStatistics(StatisticsQuery.Results(party, players, history, report, emptyList()))
+            PartyStatistics(
+                StatisticsQuery.Results(
+                    party,
+                    players,
+                    history,
+                    pairs = listOf(
+                        PlayerPair(pairList(players[0], players[2]), spinsSinceLastPaired = null),
+                        PlayerPair(pairList(players[0], players[3]), spinsSinceLastPaired = null),
+                        PlayerPair(pairList(players[0], players[1]), spinsSinceLastPaired = 0),
+                        PlayerPair(pairList(players[1], players[2]), spinsSinceLastPaired = null),
+                        PlayerPair(pairList(players[1], players[3]), spinsSinceLastPaired = null),
+                        PlayerPair(pairList(players[2], players[3]), spinsSinceLastPaired = 0),
+                    ),
+                    report,
+                    emptyList(),
+                ),
+            )
         }
     } verify { result ->
         result.baseElement.querySelectorAll("[data-pair-report]")
@@ -88,6 +108,10 @@ class PartyStatisticsTest :
             )
     }
 
+    private fun pairList(player1: Player, player2: Player): List<Record<PartyElement<Player>>> =
+        listOf(player1, player2)
+            .map { Record(PartyElement(stubPartyId(), it), "test", false, Instant.DISTANT_PAST) }
+
     @Test
     fun sendsPlayerHeatDataToSubComponent() = setup(object {
         val players = listOf(
@@ -111,7 +135,7 @@ class PartyStatisticsTest :
         val heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation))
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyStatistics(StatisticsQuery.Results(party, players, history, report, heatmapData))
+            PartyStatistics(StatisticsQuery.Results(party, players, history, emptyList(), report, heatmapData))
         }
     } verify { wrapper ->
         wrapper.baseElement.querySelector("[data-heatmap]")
@@ -141,7 +165,7 @@ class PartyStatisticsTest :
         val report = perform(ComposeStatisticsAction(party, players, emptyList()))
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyStatistics(StatisticsQuery.Results(party, players, emptyList(), report, emptyList()))
+            PartyStatistics(StatisticsQuery.Results(party, players, emptyList(), emptyList(), report, emptyList()))
         }
     } verify {
         within(screen.getByText("Spins Until Full Rotation:").parentElement)
@@ -180,7 +204,7 @@ class PartyStatisticsTest :
         val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyStatistics(StatisticsQuery.Results(party, players, history, report, emptyList()))
+            PartyStatistics(StatisticsQuery.Results(party, players, history, emptyList(), report, emptyList()))
         }
     } verify {
         within(screen.getByText("Median Spin Duration:").parentElement)
