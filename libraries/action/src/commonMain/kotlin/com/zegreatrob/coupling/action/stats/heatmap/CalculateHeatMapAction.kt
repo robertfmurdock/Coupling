@@ -5,7 +5,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.ExecutableActionExecuteSyntax
 import com.zegreatrob.testmints.action.SimpleExecutableAction
+import com.zegreatrob.testmints.action.annotation.ActionMint
 
+@ActionMint
 data class CalculateHeatMapAction(
     val players: List<Player>,
     val history: List<PairAssignmentDocument>,
