@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPinRecor
 import com.zegreatrob.coupling.repository.party.PartyIdLoadIntegrationSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdLoadSyntax
 import com.zegreatrob.coupling.repository.party.PartyRepository
-import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
+import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
 import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.coupling.server.action.discord.DiscordSendSpin
@@ -34,7 +34,7 @@ interface ServerSpinCommandDispatcher<out D> :
     PartyIdPairAssignmentDocumentSaveSyntax,
     PartyIdLoadSyntax,
     PartyIdLoadIntegrationSyntax,
-    PartyIdLoadPlayersSyntax,
+    PartyIdLoadPlayersTrait,
     PartyIdHistorySyntax,
     PartyIdPinRecordsSyntax,
     CannonProvider<D> where

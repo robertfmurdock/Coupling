@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.server.action.player.PairCountQuery
 import com.zegreatrob.coupling.server.action.player.PairsQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.SpinsSinceLastPairedQuery
+import com.zegreatrob.coupling.server.action.player.SpinsUntilFullRotationQuery
 import com.zegreatrob.coupling.server.action.player.perform
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.partyCommand
@@ -26,6 +27,13 @@ val playerListResolve = dispatch(
     commandFunc = { data, _ -> PlayersQuery(PartyId(data.id)) },
     fireFunc = ::perform,
     toSerializable = { it.map(Record<PartyElement<Player>>::toSerializable) },
+)
+
+val spinsUntilFullRotationResolve = dispatch(
+    dispatcherFunc = partyCommand,
+    commandFunc = { data, _ -> SpinsUntilFullRotationQuery(PartyId(data.id)) },
+    fireFunc = ::perform,
+    toSerializable = { it },
 )
 
 val pairsResolve = dispatch(

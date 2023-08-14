@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import kotlin.time.Duration
 
 data class Party(
     val id: PartyId? = null,
@@ -20,4 +21,6 @@ data class Party(
     val currentPairAssignmentDocument: PartyRecord<PairAssignmentDocument>? = null,
     val boost: Record<Boost>? = null,
     val pairs: List<PlayerPair>? = null,
+    val medianSpinDuration: Duration? = null,
+    val spinsUntilFullRotation: Int? = null,
 )

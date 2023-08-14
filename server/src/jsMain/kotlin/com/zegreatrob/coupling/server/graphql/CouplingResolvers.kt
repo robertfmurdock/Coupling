@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.server.entity.discord.grantDiscordAccessResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.currentPairAssignmentResolve
 import com.zegreatrob.coupling.server.entity.pairassignment.deletePairsResolver
+import com.zegreatrob.coupling.server.entity.pairassignment.medianSpinDurationResolve
 import com.zegreatrob.coupling.server.entity.pairassignment.pairAssignmentListResolve
 import com.zegreatrob.coupling.server.entity.pairassignment.savePairsResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.spinResolver
@@ -24,6 +25,7 @@ import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
 import com.zegreatrob.coupling.server.entity.player.savePlayerResolver
 import com.zegreatrob.coupling.server.entity.player.spinsSinceLastPairedResolve
+import com.zegreatrob.coupling.server.entity.player.spinsUntilFullRotationResolve
 import com.zegreatrob.coupling.server.entity.secret.createSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.deleteSecretResolver
 import com.zegreatrob.coupling.server.entity.secret.secretListResolve
@@ -82,6 +84,8 @@ fun couplingResolvers() = json(
         "secretList" to secretListResolve,
         "currentPairAssignmentDocument" to currentPairAssignmentResolve,
         "pairs" to pairsResolve,
+        "medianSpinDuration" to medianSpinDurationResolve,
+        "spinsUntilFullRotation" to spinsUntilFullRotationResolve,
     ),
     "Configuration" to json(
         "addToSlackUrl" to addToSlackUrlResolve,

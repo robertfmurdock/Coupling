@@ -28,6 +28,7 @@ import com.zegreatrob.coupling.server.action.discord.DiscordRepository
 import com.zegreatrob.coupling.server.action.discord.ServerGrantDiscordAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CurrentPairAssignmentDocumentQuery
+import com.zegreatrob.coupling.server.action.pairassignmentdocument.MedianSpinDurationQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairAssignmentDocumentListQuery
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.ServerDeletePairAssignmentsCommandDispatcher
@@ -46,6 +47,7 @@ import com.zegreatrob.coupling.server.action.player.ServerPairCountQueryDispatch
 import com.zegreatrob.coupling.server.action.player.ServerPairsQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerSpinsSinceLastPairedQueryDispatcher
+import com.zegreatrob.coupling.server.action.player.SpinsUntilFullRotationQuery
 import com.zegreatrob.coupling.server.action.secret.SecretListQuery
 import com.zegreatrob.coupling.server.action.slack.ServerGrantSlackAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
@@ -73,7 +75,9 @@ interface ICommandDispatcher :
     CurrentPairAssignmentDocumentQuery.Dispatcher,
     DisconnectPartyUserCommand.Dispatcher,
     GlobalStatsQuery.Dispatcher,
+    MedianSpinDurationQuery.Dispatcher,
     PairAssignmentDocumentListQuery.Dispatcher,
+    SpinsUntilFullRotationQuery.Dispatcher,
     PartyDispatcher,
     PartyIntegrationQuery.Dispatcher,
     PinsQuery.Dispatcher,

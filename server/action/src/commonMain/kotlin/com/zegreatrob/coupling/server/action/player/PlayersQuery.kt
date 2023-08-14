@@ -1,21 +1,23 @@
 package com.zegreatrob.coupling.server.action.player
 
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
+import com.zegreatrob.coupling.action.stats.calculateFullRotation
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
 import com.zegreatrob.coupling.model.player.player
-import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
+import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class PlayersQuery(val partyId: PartyId) {
 
     interface Dispatcher :
-        PartyIdLoadPlayersSyntax,
+        PartyIdLoadPlayersTrait,
         FindCallSignAction.Dispatcher {
 
         suspend fun perform(query: PlayersQuery) = query.partyId.loadPlayers().populateMissingCallSigns()
@@ -59,5 +61,13 @@ data class PlayersQuery(val partyId: PartyId) {
 
         private fun playersWithNamesSoFar(updatedPlayers: List<Player>, players: List<Player>, index: Int) =
             updatedPlayers + players.subList(index, players.lastIndex)
+    }
+}
+
+@ActionMint
+data class SpinsUntilFullRotationQuery(val partyId: PartyId) {
+    interface Dispatcher : PartyIdLoadPlayersTrait {
+        suspend fun perform(query: SpinsUntilFullRotationQuery) = query.partyId.loadPlayers().elements
+            .calculateFullRotation()
     }
 }

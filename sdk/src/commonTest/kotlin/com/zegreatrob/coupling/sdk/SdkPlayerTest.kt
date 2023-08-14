@@ -161,6 +161,23 @@ class SdkPlayerTest {
     }
 
     @Test
+    fun canQueryFullRotation() = sdkSetup.with({
+        object {
+            val sdk = it.sdk
+            val partyId = it.party.id
+            val players = stubPlayers(4)
+        }
+    }) {
+        players.forEach { sdk.fire(SavePlayerCommand(partyId, it)) }
+    } exercise {
+        sdk.fire(graphQuery { party(partyId) { spinsUntilFullRotation() } })
+            ?.party
+            ?.spinsUntilFullRotation
+    } verify { result ->
+        result.assertIsEqualTo(3)
+    }
+
+    @Test
     fun saveWorksWithNullableValuesAndAssignsIds() = sdkSetup.with({
         object {
             val sdk = it.sdk

@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.pairCombinations
-import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersSyntax
+import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
@@ -15,7 +15,7 @@ data class PairsQuery(val partyId: PartyId) {
     }
 }
 
-interface ServerPairsQueryDispatcher : PairsQuery.Dispatcher, PartyIdLoadPlayersSyntax {
+interface ServerPairsQueryDispatcher : PairsQuery.Dispatcher, PartyIdLoadPlayersTrait {
     override suspend fun perform(query: PairsQuery): List<PartyElement<PlayerPair>> = query.partyId.with(
         query.partyId.loadPlayers()
             .pairCombinations(),

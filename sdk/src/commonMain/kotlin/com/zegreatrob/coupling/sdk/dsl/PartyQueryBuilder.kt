@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.sdk.dsl.GqlReference.partyRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pinRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.playerRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.secretRecord
+import kotlin.time.Duration
 
 class PartyQueryBuilder : QueryBuilder<JsonParty> {
 
@@ -24,6 +25,8 @@ class PartyQueryBuilder : QueryBuilder<JsonParty> {
     fun pairAssignmentDocumentList() = also {
         output = output.copy(pairAssignmentDocumentList = listOf(pairAssignmentRecord))
     }
+    fun medianSpinDuration() = also { output = output.copy(medianSpinDuration = Duration.INFINITE) }
+    fun spinsUntilFullRotation() = also { output = output.copy(spinsUntilFullRotation = Int.MAX_VALUE) }
 
     fun pairs(block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()
         .also(block)

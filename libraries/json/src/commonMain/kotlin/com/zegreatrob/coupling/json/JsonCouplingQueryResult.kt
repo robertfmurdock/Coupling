@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import kotlinx.serialization.Serializable
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
 
@@ -41,6 +42,8 @@ private fun JsonParty.toModel() = Party(
     currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
     boost = boost?.toModelRecord(),
     pairs = pairs?.map(JsonPair::toModel),
+    medianSpinDuration = medianSpinDuration,
+    spinsUntilFullRotation = spinsUntilFullRotation,
 )
 
 fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
@@ -64,6 +67,8 @@ data class JsonParty(
     val currentPairAssignmentDocument: JsonPairAssignmentDocumentRecord? = null,
     val boost: JsonBoostRecord? = null,
     val pairs: List<JsonPair>? = null,
+    val medianSpinDuration: Duration? = null,
+    val spinsUntilFullRotation: Int? = null,
 )
 
 @Serializable
