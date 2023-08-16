@@ -146,11 +146,12 @@ class SdkPairAssignmentDocumentTest {
     @Test
     fun canQueryMedianSpinDuration() = repositorySetup.with({
         object {
+            val nowish = Clock.System.now().roundToMillis()
             val sdk = it.sdk
             val partyId = it.party.id
-            val oldest = stubPairAssignmentDoc().copy(date = Clock.System.now().roundToMillis().minus(3.days))
-            val middle = stubPairAssignmentDoc().copy(date = Clock.System.now().roundToMillis())
-            val newest = stubPairAssignmentDoc().copy(date = Clock.System.now().roundToMillis().plus(2.days))
+            val oldest = stubPairAssignmentDoc().copy(date = nowish.minus(3.days))
+            val middle = stubPairAssignmentDoc().copy(date = nowish)
+            val newest = stubPairAssignmentDoc().copy(date = nowish.plus(2.days))
         }
     }) {
         listOf(middle, oldest, newest)
