@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.discord.DiscordAccessGet
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
-import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistorySyntax
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdHistoryTrait
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentDocumentSaveSyntax
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPinRecordsSyntax
 import com.zegreatrob.coupling.repository.party.PartyIdLoadIntegrationSyntax
@@ -35,7 +35,7 @@ interface ServerSpinCommandDispatcher<out D> :
     PartyIdLoadSyntax,
     PartyIdLoadIntegrationSyntax,
     PartyIdLoadPlayersTrait,
-    PartyIdHistorySyntax,
+    PartyIdHistoryTrait,
     PartyIdPinRecordsSyntax,
     CannonProvider<D> where
       D : CreatePairCandidateReportListAction.Dispatcher<D>,

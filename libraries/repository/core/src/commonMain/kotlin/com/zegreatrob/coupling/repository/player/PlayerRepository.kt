@@ -21,7 +21,7 @@ interface PlayerSave {
     suspend fun save(partyPlayer: PartyElement<Player>)
 }
 
-interface PlayerListGet {
+fun interface PlayerListGet {
     suspend fun getPlayers(partyId: PartyId): List<PartyRecord<Player>>
 }
 

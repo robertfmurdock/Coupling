@@ -7,9 +7,13 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
+import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.stubmodel.stubPartyId
+import com.zegreatrob.coupling.stubmodel.stubPlayer
+import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Instant
@@ -38,9 +42,10 @@ class PairHeatQueryTest {
 
     @Test
     fun willReturnZeroWhenPairHasNeverOccurred() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        val partyId = stubPartyId()
         val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
-        val rotationPeriod = 60
-        val action = PairHeatQuery(stubPartyId(), pair, rotationPeriod)
+        val action = PairHeatQuery(partyId, pair)
+        override val playerRepository = PlayerListGet { stubPlayers(61).map { record(partyId, it) } }
         override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { emptyList() }
     }) exercise {
         perform(action)
@@ -56,13 +61,13 @@ class PairHeatQueryTest {
         var history = listOf(
             notEmptyListOf(pairOf(player2, player1)).pairAssignmentDocument(),
         )
-        val rotationPeriod = 60
+        override val playerRepository = PlayerListGet { stubPlayers(61).map { record(partyId, it) } }
         override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
             history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
         }
         val partyId = stubPartyId()
     }) exercise {
-        perform(PairHeatQuery(partyId, pair, rotationPeriod))
+        perform(PairHeatQuery(partyId, pair))
     } verify { result ->
         result.assertIsEqualTo(1.0)
     }
@@ -74,11 +79,13 @@ class PairHeatQueryTest {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 1
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
+            val partyId = stubPartyId()
+            override val playerRepository = PlayerListGet { pair.asArray().map { record(partyId, it) } }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, rotationPeriod))
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(1.0)
         }
@@ -88,40 +95,47 @@ class PairHeatQueryTest {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 2
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
+            val partyId = stubPartyId()
+            override val playerRepository = PlayerListGet {
+                pair.asArray().plus(stubPlayer()).map { record(partyId, it) }
+            }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, rotationPeriod))
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(2.5)
         }
 
         @Test
-        fun willReturnFourAndHalfWhenThePairHasThreeConsecutivePairings() =
-            asyncSetup(object : PairHeatQuery.Dispatcher {
-                val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
-                val rotationPeriod = 3
-                val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
-                override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                    history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
-                }
-            }) exercise {
-                perform(PairHeatQuery(stubPartyId(), pair, rotationPeriod))
-            } verify { result ->
-                result.assertIsEqualTo(4.5)
-            }
-
-        @Test
-        fun willReturnSevenWhenThePairHasFourConsecutivePairings() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun willReturnFourAndHalfWhenThePairHasThreeConsecutivePairings() = asyncSetup(object :
+            PairHeatQuery.Dispatcher {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
-            val rotationPeriod = 4
+            val rotationPeriod = 3
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
+            val partyId = stubPartyId()
+            override val playerRepository = PlayerListGet { stubPlayers(4).map { record(partyId, it) } }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, rotationPeriod))
+            perform(PairHeatQuery(stubPartyId(), pair))
+        } verify { result ->
+            result.assertIsEqualTo(4.5)
+        }
+
+        @Test
+        fun willReturnSevenWhenThePairHasFourConsecutivePairings() = asyncSetup(object : PairHeatQuery.Dispatcher {
+            val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
+            val history = notEmptyListOf(pair).buildHistoryByRepeating(4)
+            val partyId = stubPartyId()
+            override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
+            override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
+                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+            }
+        }) exercise {
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(7.toDouble())
         }
@@ -131,11 +145,13 @@ class PairHeatQueryTest {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 5
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
+            val partyId = stubPartyId()
+            override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, rotationPeriod))
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(10.toDouble())
         }
@@ -148,7 +164,9 @@ class PairHeatQueryTest {
             val player1 = Player(id = "bob", avatarType = null)
             val player2 = Player(id = "fred", avatarType = null)
             val player3 = Player(id = "latisha", avatarType = null)
+            val partyId = stubPartyId()
             val pair = pairOf(player1, player2)
+            val playerRecords = listOf(player1, player2, player3).map { record(partyId, it) }
         }
 
         @Test
@@ -162,11 +180,12 @@ class PairHeatQueryTest {
                 expectedPairing,
                 alternatePairing2,
             ).map { it.pairAssignmentDocument() }
+            override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, ROTATION_PERIOD))
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(1.0)
         }
@@ -185,11 +204,12 @@ class PairHeatQueryTest {
             )
                 .buildHistoryByRepeating(intervalsUntilCooling)
                 .plus(expectedPairing.pairAssignmentDocument())
+            override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, ROTATION_PERIOD))
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(0.0)
         }
@@ -203,11 +223,12 @@ class PairHeatQueryTest {
             val history = notEmptyListOf(pairOf(player2, player3), pairOf(player1))
                 .buildHistoryByRepeating(intervalsUntilCooling - expectedPairing.size)
                 .plus(expectedPairing)
+            override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, ROTATION_PERIOD))
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(10.0)
         }
@@ -216,12 +237,14 @@ class PairHeatQueryTest {
     class WithFivePlayers {
         companion object {
             const val ROTATION_PERIOD = 5
+            val partyId = stubPartyId()
             val player1 = Player(id = "bob", avatarType = null)
             val player2 = Player(id = "fred", avatarType = null)
             val pair = pairOf(player1, player2)
             val player3 = Player(id = "latisha", avatarType = null)
             val player4 = Player(id = "jane", avatarType = null)
             val player5 = Player(id = "fievel", avatarType = null)
+            val playerRecords = listOf(player1, player2, player3, player4, player5).map { record(partyId, it) }
         }
 
         @Test
@@ -236,11 +259,12 @@ class PairHeatQueryTest {
             )
                 .buildHistoryByRepeating(intervalsUntilCooling - 1)
                 .plus(expectedPairing)
+            override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, ROTATION_PERIOD))
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(1.0)
         }
@@ -259,11 +283,12 @@ class PairHeatQueryTest {
             val absenteeRotation: List<PairAssignmentDocument> =
                 assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD)
             val history = goodRotation + absenteeRotation + goodRotation + goodRotation + goodRotation
+            override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, ROTATION_PERIOD))
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(7.0)
         }
@@ -280,13 +305,21 @@ class PairHeatQueryTest {
             val goodRotation = otherIntervals + intervalWithIntendedPair
             val absenteeRotation = assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD)
             val history = goodRotation + absenteeRotation + absenteeRotation + goodRotation + absenteeRotation
+            override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, ROTATION_PERIOD))
+            perform(PairHeatQuery(stubPartyId(), pair))
         } verify { result ->
             result.assertIsEqualTo(2.5)
         }
     }
 }
+
+fun record(partyId: PartyId, player: Player) = Record(
+    PartyElement(partyId, player),
+    "test",
+    false,
+    Instant.DISTANT_PAST,
+)
