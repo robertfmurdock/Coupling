@@ -68,25 +68,24 @@ val PartyStatistics by nfc<PartyStatisticsProps> { props ->
                         TeamStatistics(
                             spinsUntilFullRotation = spinsUntilFullRotation,
                             activePlayerCount = players.size,
-                            medianSpinDuration = medianSpinDuration?.let {
-                                formatDistance(medianSpinDuration.inWholeMilliseconds.toInt(), 0)
-                            } ?: "",
+                            medianSpinDuration = medianSpinDuration,
                         )
                     }
-                    PairReportTable(
-                        pairs.map {
-                            it.players?.elements?.toCouplingPair() to it.spinsSinceLastPaired
-                        }.mapNotNull {
-                            val pair = it.first as? (CouplingPair.Double)
-                                ?: return@mapNotNull null
-                            val spins = it.second?.let(::TimeResultValue) ?: NeverPaired
-                            pair to spins
-                        }.map { PairReport(it.first, it.second) }
-                            .sortedByDescending(::timeSincePairSort),
-                    )
+                    PairReportTable(pairs.pairReports())
                 }
                 PlayerHeatmap(players, heatmapData(players, pairs))
             }
         }
     }
 }
+
+private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCouplingPair() to it.spinsSinceLastPaired }
+    .mapNotNull { (pair, spins) ->
+        (pair as? CouplingPair.Double)?.let {
+            PairReport(
+                pair = it,
+                timeSinceLastPair = spins?.let(::TimeResultValue) ?: NeverPaired,
+            )
+        }
+    }
+    .sortedByDescending(::timeSincePairSort)

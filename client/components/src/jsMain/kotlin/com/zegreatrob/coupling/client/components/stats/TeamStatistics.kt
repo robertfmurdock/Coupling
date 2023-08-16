@@ -11,11 +11,14 @@ import web.cssom.Display
 import web.cssom.LineStyle
 import web.cssom.VerticalAlign
 import web.cssom.px
+import kotlin.time.Duration
 
 external interface TeamStatisticsProps : Props {
     var spinsUntilFullRotation: Int
     var activePlayerCount: Int
-    var medianSpinDuration: String
+
+    @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
+    var medianSpinDuration: Duration?
 }
 
 @ReactFunc
@@ -43,7 +46,9 @@ val TeamStatistics by nfc<TeamStatisticsProps> { (spinsUntilFullRotation, active
         }
         div {
             StatLabel { +"Median Spin Duration:" }
-            span { +medianSpinDuration }
+            span { +medianSpinDuration?.format() }
         }
     }
 }
+
+private fun Duration.format() = formatDistance(inWholeMilliseconds.toInt(), 0)
