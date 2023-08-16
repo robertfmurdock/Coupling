@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.stubmodel
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -8,6 +9,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
 import com.zegreatrob.coupling.model.party.Secret
@@ -17,6 +19,7 @@ import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserDetails
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
 import kotlin.time.Duration.Companion.minutes
 
@@ -102,3 +105,10 @@ fun stubUserDetails() = UserDetails(
 fun stubPinnedPlayer() = PinnedPlayer(stubPlayer(), listOf(stubPin()))
 
 fun stubPinnedCouplingPair() = PinnedCouplingPair(notEmptyListOf(stubPinnedPlayer()))
+
+fun <E> record(partyId: PartyId, player: E) = Record(
+    PartyElement(partyId, player),
+    "test",
+    false,
+    Instant.DISTANT_PAST,
+)

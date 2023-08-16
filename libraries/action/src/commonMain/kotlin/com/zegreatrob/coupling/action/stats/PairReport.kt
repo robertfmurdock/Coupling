@@ -3,32 +3,10 @@ package com.zegreatrob.coupling.action.stats
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
-import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.testmints.action.SimpleExecutableAction
 import kotlinx.datetime.Instant
 import kotlin.math.floor
 import kotlin.time.Duration
-
-data class ComposeStatisticsAction(
-    val party: PartyDetails,
-    val players: List<Player>,
-    val history: List<PairAssignmentDocument>,
-) : SimpleExecutableAction<ComposeStatisticsAction.Dispatcher, StatisticsReport> {
-    override val performFunc = link(Dispatcher::perform)
-
-    interface Dispatcher {
-        fun perform(action: ComposeStatisticsAction) = StatisticsReport(
-            spinsUntilFullRotation = action.players.spinsUntilFullRotation(),
-            medianSpinDuration = action.history.medianSpinDuration(),
-        )
-    }
-}
-
-data class StatisticsReport(
-    val spinsUntilFullRotation: Int,
-    val medianSpinDuration: Duration?,
-)
 
 data class PairReport(val pair: CouplingPair.Double, val timeSinceLastPair: TimeResult)
 

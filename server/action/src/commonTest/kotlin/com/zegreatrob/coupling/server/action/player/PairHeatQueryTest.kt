@@ -7,10 +7,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
+import com.zegreatrob.coupling.stubmodel.record
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
@@ -177,7 +177,7 @@ class PairHeatQueryTest {
             val player1 = Player(id = "bob", avatarType = null)
             val player2 = Player(id = "fred", avatarType = null)
             val player3 = Player(id = "latisha", avatarType = null)
-            val partyId = stubPartyId()
+            private val partyId = stubPartyId()
             val pair = pairOf(player1, player2)
             val playerRecords = listOf(player1, player2, player3).map { record(partyId, it) }
         }
@@ -250,7 +250,7 @@ class PairHeatQueryTest {
     class WithFivePlayers {
         companion object {
             const val ROTATION_PERIOD = 5
-            val partyId = stubPartyId()
+            private val partyId = stubPartyId()
             val player1 = Player(id = "bob", avatarType = null)
             val player2 = Player(id = "fred", avatarType = null)
             val pair = pairOf(player1, player2)
@@ -329,10 +329,3 @@ class PairHeatQueryTest {
         }
     }
 }
-
-fun record(partyId: PartyId, player: Player) = Record(
-    PartyElement(partyId, player),
-    "test",
-    false,
-    Instant.DISTANT_PAST,
-)

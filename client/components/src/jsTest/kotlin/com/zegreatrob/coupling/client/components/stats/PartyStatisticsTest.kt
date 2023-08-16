@@ -1,19 +1,12 @@
 package com.zegreatrob.coupling.client.components.stats
 
-import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
-import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.Record
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
-import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.model.withNoPins
+import com.zegreatrob.coupling.stubmodel.record
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
@@ -21,18 +14,14 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import js.core.jso
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
-import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import react.router.MemoryRouter
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
 
-class PartyStatisticsTest : ComposeStatisticsAction.Dispatcher {
+class PartyStatisticsTest {
 
     @Test
     fun willShowPairings() = setup(object {
@@ -43,35 +32,21 @@ class PartyStatisticsTest : ComposeStatisticsAction.Dispatcher {
             Player("moe", name = "Moe", avatarType = null),
         )
         val party = PartyDetails(PartyId("1"), name = "Mathematica")
-        val history = listOf(
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"),
-                date = Clock.System.now(),
-                pairs = notEmptyListOf<CouplingPair>(
-                    pairOf(players[0], players[1]),
-                    pairOf(players[2], players[3]),
-                ).withNoPins(),
-            ),
-        )
-        val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
             PartyStatistics(
-                StatisticsQuery.Results(
-                    party,
-                    players,
-                    history,
-                    pairs = listOf(
-                        PlayerPair(pairList(players[0], players[2]), spinsSinceLastPaired = null),
-                        PlayerPair(pairList(players[0], players[3]), spinsSinceLastPaired = null),
-                        PlayerPair(pairList(players[0], players[1]), spinsSinceLastPaired = 0),
-                        PlayerPair(pairList(players[1], players[2]), spinsSinceLastPaired = null),
-                        PlayerPair(pairList(players[1], players[3]), spinsSinceLastPaired = null),
-                        PlayerPair(pairList(players[2], players[3]), spinsSinceLastPaired = 0),
-                    ),
-                    report,
-                    emptyList(),
+                party = party,
+                players = players,
+                pairs = listOf(
+                    PlayerPair(pairList(players[0], players[2]), spinsSinceLastPaired = null),
+                    PlayerPair(pairList(players[0], players[3]), spinsSinceLastPaired = null),
+                    PlayerPair(pairList(players[0], players[1]), spinsSinceLastPaired = 0),
+                    PlayerPair(pairList(players[1], players[2]), spinsSinceLastPaired = null),
+                    PlayerPair(pairList(players[1], players[3]), spinsSinceLastPaired = null),
+                    PlayerPair(pairList(players[2], players[3]), spinsSinceLastPaired = 0),
                 ),
+                spinsUntilFullRotation = 0,
+                medianSpinDuration = null,
             )
         }
     } verify { result ->
@@ -117,27 +92,24 @@ class PartyStatisticsTest : ComposeStatisticsAction.Dispatcher {
             Player("curry", name = "Curly", avatarType = null),
             Player("moe", name = "Moe", avatarType = null),
         )
-        val history = listOf(
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"),
-                date = Clock.System.now(),
-                pairs = notEmptyListOf(
-                    pairOf(players[0], players[1]),
-                    pairOf(players[2], players[3]),
-                ).withNoPins(),
-            ),
-        )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
-        val report = perform(ComposeStatisticsAction(party, players, history))
         val heatmapData = listOf(
             listOf(null, 1.0, 0.0, 0.0),
             listOf(1.0, null, 0.0, 0.0),
             listOf(0.0, 0.0, null, 1.0),
             listOf(0.0, 0.0, 1.0, null),
         )
+        val pairs = listOf(
+            PlayerPair(listOf(players[0], players[1]).toRecords(party.id), heat = 1.0),
+            PlayerPair(listOf(players[0], players[2]).toRecords(party.id), heat = 0.0),
+            PlayerPair(listOf(players[0], players[3]).toRecords(party.id), heat = 0.0),
+            PlayerPair(listOf(players[1], players[2]).toRecords(party.id), heat = 0.0),
+            PlayerPair(listOf(players[1], players[3]).toRecords(party.id), heat = 0.0),
+            PlayerPair(listOf(players[2], players[3]).toRecords(party.id), heat = 1.0),
+        )
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyStatistics(StatisticsQuery.Results(party, players, history, emptyList(), report, heatmapData))
+            PartyStatistics(party, players, pairs, 0, null)
         }
     } verify { wrapper ->
         wrapper.baseElement.querySelector("[data-heatmap]")
@@ -159,10 +131,9 @@ class PartyStatisticsTest : ComposeStatisticsAction.Dispatcher {
             Player("moe", name = "Moe", avatarType = null),
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
-        val report = perform(ComposeStatisticsAction(party, players, emptyList()))
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyStatistics(StatisticsQuery.Results(party, players, emptyList(), emptyList(), report, emptyList()))
+            PartyStatistics(party, players, emptyList(), 3, null)
         }
     } verify {
         within(screen.getByText("Spins Until Full Rotation:").parentElement)
@@ -180,28 +151,9 @@ class PartyStatisticsTest : ComposeStatisticsAction.Dispatcher {
             Player("moe", name = "Moe", avatarType = null),
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
-        val history = listOf(
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"),
-                date = dateTime(2017, 3, 14),
-                pairs = notEmptyListOf(
-                    pairOf(players[0], players[1]),
-                    pairOf(players[2], players[3]),
-                ).withNoPins(),
-            ),
-            PairAssignmentDocument(
-                id = PairAssignmentDocumentId("${uuid4()}"),
-                date = dateTime(2017, 3, 12),
-                pairs = notEmptyListOf(
-                    pairOf(players[0], players[1]),
-                    pairOf(players[2], players[3]),
-                ).withNoPins(),
-            ),
-        )
-        val report = perform(ComposeStatisticsAction(party, players, history))
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
-            PartyStatistics(StatisticsQuery.Results(party, players, history, emptyList(), report, emptyList()))
+            PartyStatistics(party, players, emptyList(), 0, 2.days)
         }
     } verify {
         within(screen.getByText("Median Spin Duration:").parentElement)
@@ -209,5 +161,4 @@ class PartyStatisticsTest : ComposeStatisticsAction.Dispatcher {
     }
 }
 
-private fun dateTime(year: Int, month: Int, day: Int): Instant =
-    LocalDateTime(year, month, day, 0, 0, 0).toInstant(TimeZone.currentSystemDefault())
+private fun <E> List<E>.toRecords(id: PartyId): List<Record<PartyElement<E>>> = map { record(id, it) }

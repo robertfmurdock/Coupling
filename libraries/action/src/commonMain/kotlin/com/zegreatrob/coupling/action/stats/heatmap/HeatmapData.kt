@@ -13,6 +13,6 @@ private fun findPair(
     player1: Player,
     player2: Player,
     playerPairs: List<PlayerPair>?,
-) = playerPairs?.first { pair ->
+) = playerPairs?.firstOrNull { pair ->
     pair.players?.elements?.map { it.id }?.toSet() == setOf(player1.id, player2.id)
 }

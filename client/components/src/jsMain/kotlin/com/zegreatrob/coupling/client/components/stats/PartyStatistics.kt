@@ -1,15 +1,18 @@
 package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.action.stats.PairReport
-import com.zegreatrob.coupling.action.stats.StatisticsQuery
+import com.zegreatrob.coupling.action.stats.heatmap.heatmapData
 import com.zegreatrob.coupling.action.timeSincePairSort
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
+import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
+import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -20,6 +23,7 @@ import web.cssom.Display
 import web.cssom.VerticalAlign
 import web.cssom.WhiteSpace
 import web.cssom.number
+import kotlin.time.Duration
 
 @JsModule("date-fns/formatDistance")
 external val formatDistanceModule: dynamic
@@ -31,13 +35,18 @@ val formatDistance: (Int?, Int) -> String = if (formatDistanceModule.default != 
 }
 
 external interface PartyStatisticsProps : Props {
-    var queryResults: StatisticsQuery.Results
+    var party: PartyDetails
+    var players: List<Player>
+    var pairs: List<PlayerPair>
+    var spinsUntilFullRotation: Int
+
+    @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
+    var medianSpinDuration: Duration?
 }
 
 @ReactFunc
 val PartyStatistics by nfc<PartyStatisticsProps> { props ->
-    val (party, players, _, pairs, allStats, heatmapData) = props.queryResults
-    val (spinsUntilFullRotation, medianSpinDuration) = allStats
+    val (party, players, pairs, spinsUntilFullRotation, medianSpinDuration) = props
     div {
         PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9")) {
             ConfigHeader {
@@ -76,7 +85,7 @@ val PartyStatistics by nfc<PartyStatisticsProps> { props ->
                             .sortedByDescending(::timeSincePairSort),
                     )
                 }
-                PlayerHeatmap(players, heatmapData)
+                PlayerHeatmap(players, heatmapData(players, pairs))
             }
         }
     }
