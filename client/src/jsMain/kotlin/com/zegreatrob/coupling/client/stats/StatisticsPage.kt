@@ -2,21 +2,14 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
 import com.zegreatrob.coupling.action.stats.StatisticsReport
-import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
-import com.zegreatrob.coupling.action.stats.heatmap.fire
-import com.zegreatrob.coupling.client.ClientDispatcher
-import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.stats.PartyStatistics
+import com.zegreatrob.coupling.client.components.stats.create
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.model.CouplingQueryResult
+import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.gql.graphQuery
-import com.zegreatrob.minreact.nfc
-import react.PropsWithValue
-import react.create
-import react.useEffectOnce
-import react.useState
 
 val StatisticsPage = partyPageFunction { props, partyId ->
     CouplingQuery(
@@ -29,45 +22,43 @@ val StatisticsPage = partyPageFunction { props, partyId ->
                 pairs {
                     players()
                     spinsSinceLastPaired()
+                    heat()
                 }
                 medianSpinDuration()
                 spinsUntilFullRotation()
             }
         },
-        toNode = { _, dispatchFunc, queryResult ->
+        toNode = { _, _, queryResult ->
             val party = queryResult.party ?: return@CouplingQuery null
-            val action = CalculateHeatMapAction(
-                players = party.playerList?.elements ?: return@CouplingQuery null,
-                history = party.pairAssignmentDocumentList?.elements ?: return@CouplingQuery null,
-                rotationPeriod = party.spinsUntilFullRotation ?: return@CouplingQuery null,
+            val players = party.playerList?.elements ?: return@CouplingQuery null
+            val pairs = party.pairs ?: return@CouplingQuery null
+            PartyStatistics.create(
+                StatisticsQuery.Results(
+                    party = party.details?.data ?: return@CouplingQuery null,
+                    players = players,
+                    history = party.pairAssignmentDocumentList?.elements ?: return@CouplingQuery null,
+                    pairs = pairs,
+                    report = StatisticsReport(
+                        spinsUntilFullRotation = party.spinsUntilFullRotation ?: return@CouplingQuery null,
+                        medianSpinDuration = party.medianSpinDuration,
+                    ),
+                    heatmapData = heatmapData(players, pairs),
+                ),
             )
-            CalculatingPartyStats.create { value = Triple(action, dispatchFunc, queryResult) }
         },
         key = partyId.value,
     )
 }
 
-val CalculatingPartyStats by
-    nfc<PropsWithValue<Triple<CalculateHeatMapAction, DispatchFunc<ClientDispatcher>, CouplingQueryResult>>> { props ->
-        var results by useState<List<List<Double?>>?>(null)
-        val calculate = props.value.second { results = fire(props.value.first) }
-        val queryResult = props.value.third
-        useEffectOnce { calculate() }
+private fun heatmapData(players: List<Player>, pairs: List<PlayerPair>) = players.map { player1 ->
+    players.map { player2 -> findPair(player1, player2, pairs) }
+        .map { it?.heat }
+}
 
-        val party = queryResult.party ?: return@nfc
-        val partyDetails = party.details?.data ?: return@nfc
-
-        PartyStatistics(
-            StatisticsQuery.Results(
-                party = partyDetails,
-                players = party.playerList?.elements ?: return@nfc,
-                history = party.pairAssignmentDocumentList?.elements ?: return@nfc,
-                pairs = party.pairs ?: return@nfc,
-                report = StatisticsReport(
-                    spinsUntilFullRotation = party.spinsUntilFullRotation ?: return@nfc,
-                    medianSpinDuration = party.medianSpinDuration,
-                ),
-                heatmapData = results ?: return@nfc,
-            ),
-        )
-    }
+private fun findPair(
+    player1: Player,
+    player2: Player,
+    playerPairs: List<PlayerPair>?,
+) = playerPairs?.first { pair ->
+    pair.players?.elements?.map { it.id }?.toSet() == setOf(player1.id, player2.id)
+}
