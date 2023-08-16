@@ -1,11 +1,5 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
-import com.zegreatrob.coupling.action.pairassignmentdocument.fire
-import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.action.party.fire
-import com.zegreatrob.coupling.action.player.SavePlayerCommand
-import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
@@ -29,12 +23,7 @@ class SdkPairsTest {
         val party = stubPartyDetails()
         val players = stubPlayers(4)
     }) {
-        with(sdk()) {
-            fire(SavePartyCommand(party))
-            players.forEach {
-                fire(SavePlayerCommand(party.id, it))
-            }
-        }
+        savePartyState(party, players, emptyList())
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { players() } } })
     } verify { result ->
@@ -63,15 +52,7 @@ class SdkPairsTest {
             stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins())),
         )
     }) {
-        with(sdk()) {
-            fire(SavePartyCommand(party))
-            players.forEach {
-                fire(SavePlayerCommand(party.id, it))
-            }
-            pairAssignmentDocs.forEach {
-                fire(SavePairAssignmentsCommand(party.id, it))
-            }
-        }
+        savePartyState(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { count() } } })
     } verify { result ->
@@ -92,21 +73,13 @@ class SdkPairsTest {
             stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins())),
         )
     }) {
-        with(sdk()) {
-            fire(SavePartyCommand(party))
-            players.forEach {
-                fire(SavePlayerCommand(party.id, it))
-            }
-            pairAssignmentDocs.forEach {
-                fire(SavePairAssignmentsCommand(party.id, it))
-            }
-        }
+        savePartyState(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { heat() } } })
     } verify { result ->
         result?.party?.pairs?.map { it.heat }
             .assertIsEqualTo(
-                listOf(7.0, 0.0, 0.0, 10.0, 10.0, 10.0),
+                listOf(7.0, 0.0, 0.0, null, null, null),
             )
     }
 
@@ -138,15 +111,7 @@ class SdkPairsTest {
             ),
         )
     }) {
-        with(sdk()) {
-            fire(SavePartyCommand(party))
-            players.forEach {
-                fire(SavePlayerCommand(party.id, it))
-            }
-            pairAssignmentDocs.forEach {
-                fire(SavePairAssignmentsCommand(party.id, it))
-            }
-        }
+        savePartyState(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { spinsSinceLastPaired() } } })
     } verify { result ->

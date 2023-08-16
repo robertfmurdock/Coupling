@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.client.components.stats
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.stats.ComposeStatisticsAction
 import com.zegreatrob.coupling.action.stats.StatisticsQuery
-import com.zegreatrob.coupling.action.stats.heatmap.CalculateHeatMapAction
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -33,9 +32,7 @@ import org.w3c.dom.asList
 import react.router.MemoryRouter
 import kotlin.test.Test
 
-class PartyStatisticsTest :
-    CalculateHeatMapAction.Dispatcher,
-    ComposeStatisticsAction.Dispatcher {
+class PartyStatisticsTest : ComposeStatisticsAction.Dispatcher {
 
     @Test
     fun willShowPairings() = setup(object {
@@ -132,7 +129,12 @@ class PartyStatisticsTest :
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
         val report = perform(ComposeStatisticsAction(party, players, history))
-        val heatmapData = perform(CalculateHeatMapAction(players, history, report.spinsUntilFullRotation))
+        val heatmapData = listOf(
+            listOf(null, 1.0, 0.0, 0.0),
+            listOf(1.0, null, 0.0, 0.0),
+            listOf(0.0, 0.0, null, 1.0),
+            listOf(0.0, 0.0, 1.0, null),
+        )
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {
             PartyStatistics(StatisticsQuery.Results(party, players, history, emptyList(), report, heatmapData))
@@ -142,12 +144,7 @@ class PartyStatisticsTest :
             .let { it as HTMLElement }
             .getAttribute("data-heatmap")
             .assertIsEqualTo(
-                listOf(
-                    listOf(null, 1, 0, 0),
-                    listOf(1, null, 0, 0),
-                    listOf(0, 0, null, 1),
-                    listOf(0, 0, 1, null),
-                ).joinToString(",") {
+                heatmapData.joinToString(",") {
                     "[${it.joinToString(",")}]"
                 },
             )

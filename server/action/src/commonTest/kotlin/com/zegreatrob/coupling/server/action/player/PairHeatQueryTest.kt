@@ -41,7 +41,7 @@ class PairHeatQueryTest {
     }
 
     @Test
-    fun alwaysReturnsMaxForSolos() = asyncSetup(object : PairHeatQuery.Dispatcher {
+    fun alwaysReturnsNullForSolos() = asyncSetup(object : PairHeatQuery.Dispatcher {
         val partyId = stubPartyId()
         val player1 = Player(id = "bob", avatarType = null)
         val player2 = Player(id = "fred", avatarType = null)
@@ -50,7 +50,7 @@ class PairHeatQueryTest {
     }) exercise {
         perform(PairHeatQuery(partyId, pairOf(player2)))
     } verify { result ->
-        result.assertIsEqualTo(10.0)
+        result.assertIsEqualTo(null)
     }
 
     @Test

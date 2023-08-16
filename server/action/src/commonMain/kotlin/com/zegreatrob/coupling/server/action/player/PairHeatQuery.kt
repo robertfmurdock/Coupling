@@ -20,10 +20,10 @@ val heatIncrements = listOf(0.0, 1.0, 2.5, 4.5, 7.0, 10.0)
 data class PairHeatQuery(val partyId: PartyId, val pair: CouplingPair) {
     interface Dispatcher : PartyIdHistoryTrait, PartyIdLoadPlayersTrait {
         suspend fun perform(action: PairHeatQuery) = action.timesPaired()
-            .toHeatIncrement()
+            ?.toHeatIncrement()
 
         private suspend fun PairHeatQuery.timesPaired() = when (pair) {
-            is CouplingPair.Single -> Int.MAX_VALUE
+            is CouplingPair.Single -> null
             is CouplingPair.Double -> historyInHeatWindow()
                 .flattenedPairings()
                 .count { equivalent(it, pair) }
