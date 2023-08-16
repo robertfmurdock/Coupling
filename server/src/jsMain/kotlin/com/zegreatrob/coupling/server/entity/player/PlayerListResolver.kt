@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
+import com.zegreatrob.coupling.server.action.player.PairHeatQuery
 import com.zegreatrob.coupling.server.action.player.PairsQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.SpinsSinceLastPairedQuery
@@ -65,6 +66,21 @@ val spinsSinceLastPairedResolve = dispatch(
         val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null
         SpinsSinceLastPairedQuery(
+            partyId = partyId,
+            pair = players.toCouplingPair(),
+        )
+    },
+    fireFunc = ::perform,
+    toSerializable = { it },
+)
+
+val pairHeatResolve = dispatch(
+    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull -> context.commandDispatcher },
+    commandFunc = { data, _ ->
+        val model = data.toModel()
+        val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
+        val players = model.players?.elements ?: return@dispatch null
+        PairHeatQuery(
             partyId = partyId,
             pair = players.toCouplingPair(),
         )

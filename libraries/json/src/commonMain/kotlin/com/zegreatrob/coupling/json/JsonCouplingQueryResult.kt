@@ -77,12 +77,14 @@ data class JsonPair(
     val count: Int? = null,
     val partyId: String? = null,
     val spinsSinceLastPaired: Int? = null,
+    val heat: Double? = null,
 )
 
 fun JsonPair.toModel() = PlayerPair(
     players = players?.map(JsonPlayerRecord::toModel),
     count = count,
     spinsSinceLastPaired = spinsSinceLastPaired,
+    heat = heat,
 )
 
 fun PartyElement<PlayerPair>.toJson() = JsonPair(

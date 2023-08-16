@@ -262,6 +262,7 @@ type Pair {
     players: [PlayerDetails]
     count: Int
     spinsSinceLastPaired: Int
+    heat: Float
 }
 
 """

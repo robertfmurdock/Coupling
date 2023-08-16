@@ -41,6 +41,19 @@ class PairHeatQueryTest {
     }
 
     @Test
+    fun alwaysReturnsMaxForSolos() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        val partyId = stubPartyId()
+        val player1 = Player(id = "bob", avatarType = null)
+        val player2 = Player(id = "fred", avatarType = null)
+        override val playerRepository = PlayerListGet { listOf(player1, player2).map { record(partyId, it) } }
+        override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { emptyList() }
+    }) exercise {
+        perform(PairHeatQuery(partyId, pairOf(player2)))
+    } verify { result ->
+        result.assertIsEqualTo(10.0)
+    }
+
+    @Test
     fun willReturnZeroWhenPairHasNeverOccurred() = asyncSetup(object : PairHeatQuery.Dispatcher {
         val partyId = stubPartyId()
         val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))

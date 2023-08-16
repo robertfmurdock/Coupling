@@ -20,6 +20,7 @@ import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.pin.savePinResolver
 import com.zegreatrob.coupling.server.entity.player.deletePlayerResolver
 import com.zegreatrob.coupling.server.entity.player.pairCountResolve
+import com.zegreatrob.coupling.server.entity.player.pairHeatResolve
 import com.zegreatrob.coupling.server.entity.player.pairsResolve
 import com.zegreatrob.coupling.server.entity.player.playerListResolve
 import com.zegreatrob.coupling.server.entity.player.retiredPlayerListResolve
@@ -94,5 +95,6 @@ fun couplingResolvers() = json(
     "Pair" to json(
         "count" to pairCountResolve,
         "spinsSinceLastPaired" to spinsSinceLastPairedResolve,
+        "heat" to pairHeatResolve,
     ),
 )

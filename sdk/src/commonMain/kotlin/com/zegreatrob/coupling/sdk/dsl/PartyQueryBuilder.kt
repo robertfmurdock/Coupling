@@ -39,5 +39,6 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
 
     fun players() = also { output = output.copy(players = listOf(playerRecord)) }
     fun count() = also { output = output.copy(count = 0) }
+    fun heat() = also { output = output.copy(heat = 0.0) }
     fun spinsSinceLastPaired() = also { output = output.copy(spinsSinceLastPaired = 0) }
 }
