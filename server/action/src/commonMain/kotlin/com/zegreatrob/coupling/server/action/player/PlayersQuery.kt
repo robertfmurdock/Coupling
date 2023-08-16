@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.action.player
 
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
-import com.zegreatrob.coupling.action.stats.calculateFullRotation
+import com.zegreatrob.coupling.action.stats.spinsUntilFullRotation
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
@@ -68,6 +68,6 @@ data class PlayersQuery(val partyId: PartyId) {
 data class SpinsUntilFullRotationQuery(val partyId: PartyId) {
     interface Dispatcher : PartyIdLoadPlayersTrait {
         suspend fun perform(query: SpinsUntilFullRotationQuery) = query.partyId.loadPlayers().elements
-            .calculateFullRotation()
+            .spinsUntilFullRotation()
     }
 }

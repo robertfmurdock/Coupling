@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.action
 
-import com.zegreatrob.coupling.action.stats.calculateFullRotation
+import com.zegreatrob.coupling.action.stats.spinsUntilFullRotation
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
@@ -19,7 +19,7 @@ class CalculateFullRotationTest {
     fun whenGivenOnePlayerWillReturnOne() = setup(object {
         val players = makePlayers(1)
     }) exercise {
-        players.calculateFullRotation()
+        players.spinsUntilFullRotation()
     } verify { spinsUntilFullRotation ->
         spinsUntilFullRotation.assertIsEqualTo(1)
     }
@@ -28,7 +28,7 @@ class CalculateFullRotationTest {
     fun whenGivenTwoPlayersWillReturnOne() = setup(object {
         val players = makePlayers(2)
     }) exercise {
-        players.calculateFullRotation()
+        players.spinsUntilFullRotation()
     } verify { spinsUntilFullRotation ->
         spinsUntilFullRotation.assertIsEqualTo(1)
     }
@@ -37,7 +37,7 @@ class CalculateFullRotationTest {
     fun whenGivenThreePlayersWillReturnThree() = setup(object {
         val players = makePlayers(3)
     }) exercise {
-        players.calculateFullRotation()
+        players.spinsUntilFullRotation()
     } verify { spinsUntilFullRotation ->
         spinsUntilFullRotation.assertIsEqualTo(3)
     }
@@ -46,7 +46,7 @@ class CalculateFullRotationTest {
     fun whenGivenFourPlayersWillReturnThree() = setup(object {
         val players = makePlayers(4)
     }) exercise {
-        players.calculateFullRotation()
+        players.spinsUntilFullRotation()
     } verify { spinsUntilFullRotation ->
         spinsUntilFullRotation.assertIsEqualTo(3)
     }
@@ -55,7 +55,7 @@ class CalculateFullRotationTest {
     fun whenGivenSevenPlayersWillReturnSeven() = setup(object {
         val players = makePlayers(7)
     }) exercise {
-        players.calculateFullRotation()
+        players.spinsUntilFullRotation()
     } verify { spinsUntilFullRotation ->
         spinsUntilFullRotation.assertIsEqualTo(7)
     }
@@ -64,7 +64,7 @@ class CalculateFullRotationTest {
     fun whenGivenEightPlayersWillReturnSeven() = setup(object {
         val players = makePlayers(8)
     }) exercise {
-        players.calculateFullRotation()
+        players.spinsUntilFullRotation()
     } verify { spinsUntilFullRotation ->
         spinsUntilFullRotation.assertIsEqualTo(7)
     }

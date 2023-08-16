@@ -19,7 +19,7 @@ data class ComposeStatisticsAction(
 
     interface Dispatcher {
         fun perform(action: ComposeStatisticsAction) = StatisticsReport(
-            spinsUntilFullRotation = action.players.calculateFullRotation(),
+            spinsUntilFullRotation = action.players.spinsUntilFullRotation(),
             medianSpinDuration = action.history.medianSpinDuration(),
         )
     }
@@ -45,7 +45,7 @@ fun List<Duration>.halfwayValue() = getOrNull(indexOfMedian())
 
 fun List<Duration>.indexOfMedian() = floor(size / 2.0).toInt()
 
-fun List<Player>.calculateFullRotation() = size.ifEvenSubtractOne()
+fun List<Player>.spinsUntilFullRotation() = size.ifEvenSubtractOne()
 
 private fun Int.ifEvenSubtractOne() = if (this % 2 == 0) {
     this - 1
