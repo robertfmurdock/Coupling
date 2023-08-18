@@ -104,9 +104,10 @@ private fun ChildrenBuilder.playerConfigForm(
     onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
     onRemoveFunc: (() -> Unit)?,
-) = ConfigForm {
-    this.onSubmit = onSubmit
-    this.onRemove = onRemoveFunc
+) = ConfigForm(
+    onSubmit = onSubmit,
+    onRemove = onRemoveFunc,
+) {
     editorDiv(party, player, onChange)
 }
 
@@ -251,7 +252,7 @@ private fun ChildrenBuilder.avatarTypeConfig(
             value = ""
             this.label = "No avatar currently selected."
         }
-        AvatarType.values().forEach { avatarType ->
+        AvatarType.entries.forEach { avatarType ->
             option {
                 id = avatarType.name
                 key = avatarType.name

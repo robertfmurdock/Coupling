@@ -69,9 +69,10 @@ private fun ChildrenBuilder.partyConfigEditor(
         display = Display.inlineBlock
         flexGrow = number(2.0)
     }
-    ConfigForm {
-        this.onSubmit = onSave
-        this.onRemove = onDelete
+    ConfigForm(
+        onSubmit = onSave,
+        onRemove = onDelete,
+    ) {
         editorDiv(updatedParty, onChange, isNew)
     }
 }

@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.client.pairassignments.list.HistoryPage
 import com.zegreatrob.coupling.client.pairassignments.spin.PrepareSpinPage
 import com.zegreatrob.coupling.client.party.PartyConfigPage
 import com.zegreatrob.coupling.client.party.PartyListPage
+import com.zegreatrob.coupling.client.party.PartySecretsPage
 import com.zegreatrob.coupling.client.pin.PinListPage
 import com.zegreatrob.coupling.client.pin.PinPage
 import com.zegreatrob.coupling.client.player.PlayerPage
@@ -84,7 +85,7 @@ private fun redirectUnauthenticated(): RouteObject = jso {
 private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNull(
     jso {
         path = "/"
-        element = redirectToParties()
+        element = navigateToPartyList()
     },
     if (prereleaseMode) {
         couplingRoute("/user", "User", UserPage)
@@ -101,6 +102,7 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
     },
     couplingRoute("/:partyId/prepare/", "Prepare to Spin", PrepareSpinPage),
     couplingRoute("/:partyId/edit/", "Party Config", PartyConfigPage),
+    couplingRoute("/:partyId/secrets/", "Party Secrets", PartySecretsPage),
     couplingRoute("/:partyId/history", "History", HistoryPage),
     couplingRoute("/:partyId/integrations", "Pin List", IntegrationPage),
     couplingRoute("/:partyId/pins", "Pin List", PinListPage),
@@ -119,7 +121,7 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
     couplingRoute("/integration/discord/callback", "Discord Callback", DiscordCallbackPage),
 ).toTypedArray()
 
-private fun redirectToParties() = Navigate.create { to = "/parties/" }
+fun navigateToPartyList() = Navigate.create { to = "/parties/" }
 
 private fun redirectToCurrentPairs() = Navigate.create {
     val params = useParams()

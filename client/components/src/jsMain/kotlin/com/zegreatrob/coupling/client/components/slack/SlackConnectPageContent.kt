@@ -53,9 +53,7 @@ val SlackConnectPageContent by nfc<SlackConnectPageContentProps> { props ->
     val onSave = props.dispatchFunc { result = fire(command) }
 
     if (result == null) {
-        ConfigForm {
-            onSubmit = onSave
-
+        ConfigForm(onSubmit = onSave) {
             div {
                 Editor {
                     li {

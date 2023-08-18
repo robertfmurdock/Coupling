@@ -88,9 +88,10 @@ private fun ChildrenBuilder.pinConfigForm(
     onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
     onRemove: (() -> Unit)?,
-) = ConfigForm {
-    this.onSubmit = onSubmit
-    this.onRemove = onRemove
+) = ConfigForm(
+    onSubmit = onSubmit,
+    onRemove = onRemove,
+) {
     editorDiv(pin, onChange)
 }
 
