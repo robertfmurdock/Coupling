@@ -18,7 +18,7 @@ val serverProject: Project = project.project(":server")
 
 val taggerExtension: TaggerExtension = rootProject.extensions.getByType(TaggerExtension::class.java)
 
-val deployDir = buildDir.resolve("deploy")
+val deployDir: Provider<Directory> = layout.buildDirectory.dir("deploy")
 
 tasks {
     val copyServerYml by registering(Copy::class) {
@@ -26,13 +26,13 @@ tasks {
         from("${serverProject.projectDir.absolutePath}/serverless.yml")
     }
     val copyDeployConfigs by registering(Copy::class) {
-        into(deployDir.resolve("deploy"))
+        into(deployDir)
         from(serverProject.projectDir.resolve("deploy"))
     }
     val copyDeployResources by registering(Copy::class) {
         dependsOn(copyServerYml, copyDeployConfigs, ":server:assemble")
-        into(buildDir.resolve("deploy/build/executable"))
-        from(serverProject.buildDir.resolve("executable"))
+        into(layout.buildDirectory.dir("deploy/build/executable"))
+        from(serverProject.layout.buildDirectory.dir("executable"))
     }
 
     val deploy by registering(NodeExec::class) {
@@ -58,14 +58,14 @@ fun NodeExec.configureDeploy(stage: String) {
     if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
         enabled = false
     }
-    workingDir = deployDir
+    workingDir = deployDir.get().asFile
     nodeCommand = "serverless"
     arguments = listOf(
         "deploy",
         "--config",
-        deployDir.resolve("serverless.yml").absolutePath,
+        deployDir.get().file("serverless.yml").asFile.absolutePath,
         "--package",
-        serverProject.buildDir.resolve("${project.name}/lambda-dist").absolutePath,
+        serverProject.layout.buildDirectory.dir("${project.name}/lambda-dist").get().asFile.absolutePath,
         "--stage",
         stage
     )

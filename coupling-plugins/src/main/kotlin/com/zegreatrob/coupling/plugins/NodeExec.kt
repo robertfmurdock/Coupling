@@ -70,4 +70,4 @@ fun NodeExec.setup(project: Project) {
 }
 
 
-val Project.nodeModulesDir get() = rootProject.buildDir.resolve("js/node_modules")
+val Project.nodeModulesDir: File get() = rootProject.layout.buildDirectory.dir("js/node_modules").get().asFile

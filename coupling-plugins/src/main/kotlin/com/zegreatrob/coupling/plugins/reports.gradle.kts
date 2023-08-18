@@ -5,7 +5,8 @@ repositories {
 }
 
 tasks {
-    val projectResultPath = "${rootProject.buildDir.path}/test-output/${project.path}/results".replace(":", "/")
+    val projectResultPath = rootProject.layout.buildDirectory
+        .dir("test-output/${project.path}/results".replace(":", "/"))
 
     val check = named("check")
     val copyReportsToCircleCIDirectory by registering(Copy::class) {
@@ -21,8 +22,4 @@ tasks {
     register("collectResults") {
         dependsOn(copyReportsToCircleCIDirectory, copyTestResultsToCircleCIDirectory)
     }
-}
-
-afterEvaluate {
-    mkdir(file(rootProject.buildDir.toPath().resolve("test-output")))
 }
