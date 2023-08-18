@@ -40,3 +40,14 @@ type Configuration {
     stripeAdminCode: String
     stripePurchaseCode: String
 }
+
+type Pair {
+    commits: [Commit!]
+}
+
+type Commit {
+    id: String!
+    instant: String!
+    ease: Int
+    story: String
+}
