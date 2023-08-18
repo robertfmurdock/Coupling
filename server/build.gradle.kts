@@ -119,7 +119,7 @@ tasks {
         nodeCommand = "webpack"
         arguments = listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
         environment("NODE_ENV" to "production")
-        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+        workingDir = rootProject.layout.buildDirectory.file("js/packages/Coupling-server").get().asFile
     }
 
     register<NodeExec>("serverStats") {
@@ -135,7 +135,7 @@ tasks {
             "--json=${rootDir.absolutePath}/compilation-stats.json"
         )
         environment("NODE_ENV" to "production")
-        workingDir = file("${rootProject.buildDir.resolve("js").resolve("packages/Coupling-server")}")
+        workingDir = rootProject.layout.buildDirectory.file("js/packages/Coupling-server").get().asFile
     }
 
     val copyServerIcons by registering(Copy::class) {
@@ -210,7 +210,7 @@ tasks {
     }
 
     fun NodeExec.configureBuild(stage: String) {
-        val serverlessBuildDir = "${project.buildDir.absolutePath}/$stage/lambda-dist"
+        val serverlessBuildDir = project.layout.buildDirectory.file("$stage/lambda-dist")
         setup(project)
         dependsOn(assemble, jsTest, compileKotlinJs, ":calculateVersion")
         val releaseVersion = rootProject.version
@@ -222,7 +222,7 @@ tasks {
             "--config",
             project.relativePath("serverless.yml"),
             "--package",
-            serverlessBuildDir,
+            serverlessBuildDir.get().asFile.absolutePath,
             "--stage",
             stage
         )

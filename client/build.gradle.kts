@@ -21,7 +21,8 @@ kotlin {
                 val profile: String? by project
                 if (!profile.isNullOrBlank()) {
                     this.args.add("--profile")
-                    this.args.add("--json=$buildDir/reports/stats.json")
+                    val statsFilePath = project.layout.buildDirectory.file("/reports/stats.json").get().asFile.path
+                    this.args.add("--json=$statsFilePath")
                 }
             })
         }
@@ -131,7 +132,7 @@ val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 rootProject.yarn.ignoreScripts = false
 
 tasks {
-    val cdnBuildOutput = "${project.buildDir.absolutePath}/cdn.json"
+    val cdnBuildOutput = project.layout.buildDirectory.file("cdn.json")
     val lookupCdnUrls by registering(NodeExec::class) {
         setup(project)
         dependsOn(cdnLookupConfiguration, "jsPublicPackageJson", ":kotlinNpmInstall")
@@ -147,7 +148,8 @@ tasks {
         outputFile = cdnOutputFile
         outputs.cacheIf { true }
     }
-    val projectResultPath = "${rootProject.buildDir.path}/test-output/${project.path}/results".replace(":", "/")
+    val projectResultPath = rootProject.layout.buildDirectory
+        .file("test-output/${project.path}/results".replace(":", "/"))
     val copyCdnJsonToResultDirectory by registering(Copy::class) {
         mustRunAfter(check)
         from(cdnBuildOutput)
@@ -197,7 +199,7 @@ tasks {
     val additionalResources by registering(Copy::class) {
         outputs.cacheIf { true }
         dependsOn(":sdk:jsProcessResources")
-        into("${project.buildDir.absolutePath}/additionalResources")
+        into(project.layout.buildDirectory.file("additionalResources"))
         from(provider { (findByPath(":sdk:jsProcessResources") as ProcessResources).destinationDir })
     }
     jsProcessResources {
