@@ -26,7 +26,7 @@ tasks {
         from("${serverProject.projectDir.absolutePath}/serverless.yml")
     }
     val copyDeployConfigs by registering(Copy::class) {
-        into(deployDir)
+        into(deployDir.map { it.dir("deploy") })
         from(serverProject.projectDir.resolve("deploy"))
     }
     val copyDeployResources by registering(Copy::class) {
