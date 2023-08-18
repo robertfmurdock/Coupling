@@ -30,7 +30,7 @@ external interface PinConfigProps<D> : Props where D : DeletePinCommand.Dispatch
     var pin: Pin
     var pinList: List<Pin>
     var reload: () -> Unit
-    var dispatchFunc: DispatchFunc<out D>
+    var dispatchFunc: DispatchFunc<D>
 }
 
 @ReactFunc

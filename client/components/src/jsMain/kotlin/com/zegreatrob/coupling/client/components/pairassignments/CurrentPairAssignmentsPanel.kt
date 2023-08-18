@@ -34,7 +34,7 @@ external interface CurrentPairAssignmentsPanelProps : Props {
     var pairAssignments: PairAssignmentDocument
     var setPairAssignments: (PairAssignmentDocument) -> Unit
     var allowSave: Boolean
-    var dispatchFunc: DispatchFunc<out DeletePairAssignmentsCommand.Dispatcher>
+    var dispatchFunc: DispatchFunc<DeletePairAssignmentsCommand.Dispatcher>
 }
 
 @ReactFunc

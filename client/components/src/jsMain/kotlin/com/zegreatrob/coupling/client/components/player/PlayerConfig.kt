@@ -32,7 +32,7 @@ external interface PlayerConfigProps<P> : Props
     var player: Player
     var players: List<Player>
     var reload: () -> Unit
-    var dispatchFunc: DispatchFunc<out P>
+    var dispatchFunc: DispatchFunc<P>
     var windowFuncs: WindowFunctions?
 }
 

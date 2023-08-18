@@ -35,7 +35,7 @@ external interface SlackConnectPageContentProps : Props {
     var parties: List<PartyDetails>
     var slackTeam: String
     var slackChannel: String
-    var dispatchFunc: DispatchFunc<out SaveSlackIntegrationCommand.Dispatcher>
+    var dispatchFunc: DispatchFunc<SaveSlackIntegrationCommand.Dispatcher>
 }
 
 @ReactFunc

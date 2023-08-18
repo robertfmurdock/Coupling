@@ -26,7 +26,7 @@ external interface PartyConfigProps<D> : Props
     where D : SavePartyCommand.Dispatcher, D : DeletePartyCommand.Dispatcher {
     var party: PartyDetails
     var boost: Boost?
-    var dispatchFunc: DispatchFunc<out D>
+    var dispatchFunc: DispatchFunc<D>
 }
 
 @ReactFunc

@@ -33,7 +33,7 @@ external interface UserConfigProps : Props {
     var user: UserDetails?
     var subscription: SubscriptionDetails?
     var partyList: List<PartyDetails>
-    var dispatcher: DispatchFunc<out GraphQuery.Dispatcher>
+    var dispatcher: DispatchFunc<GraphQuery.Dispatcher>
     var stripeAdminCode: String
     var stripePurchaseCode: String
 }

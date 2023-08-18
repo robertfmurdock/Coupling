@@ -23,7 +23,7 @@ external interface PrepareSpinProps : Props {
     var players: List<Player>
     var currentPairsDoc: PairAssignmentDocument?
     var pins: List<Pin>
-    var dispatchFunc: DispatchFunc<out SpinCommand.Dispatcher>
+    var dispatchFunc: DispatchFunc<SpinCommand.Dispatcher>
 }
 
 @ReactFunc
