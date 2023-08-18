@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.client.party
 
-import com.zegreatrob.coupling.client.components.ConfigForm
 import com.zegreatrob.coupling.client.components.ConfigFrame
 import com.zegreatrob.coupling.client.components.ConfigHeader
+import com.zegreatrob.coupling.client.components.CouplingButton
+import com.zegreatrob.coupling.client.components.large
 import com.zegreatrob.coupling.client.components.party.PartyCard
+import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.client.routing.navigateToPartyList
@@ -17,8 +19,16 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
-import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h2
+import react.dom.html.ReactHTML.i
+import react.dom.html.ReactHTML.p
+import react.dom.html.ReactHTML.span
+import react.dom.html.ReactHTML.table
+import react.dom.html.ReactHTML.td
+import react.dom.html.ReactHTML.th
+import react.dom.html.ReactHTML.tr
+import web.cssom.ClassName
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.number
@@ -66,21 +76,43 @@ val PartySecretLayout by nfc<PartySecretsLayoutProps> { props ->
         }
         div {
             css { display = Display.flex }
-            ReactHTML.span {
+            span {
                 css {
                     display = Display.inlineBlock
                     flexGrow = number(2.0)
                 }
-                ConfigForm {
-                    +"Secret List"
-                    props.secrets.forEach {
-                        div {
-                            +"Secret: ${it.id}"
+                h2 {
+                    +"These are secrets associated with this party."
+                }
+                p { +"The 'id' here is not the secret itself, which is only revealed at the moment of its creation." }
+                p { +"If you know a secret is no longer in use, then you should remove it." }
+                p { +"This ensures no nefarious agents mess with your party." }
+                div {
+                    css { display = Display.flex }
+                    table {
+                        css { flexGrow = number(1.0) }
+                        th { +"Index" }
+                        th { +"Id" }
+                        th { +"Delete" }
+                        props.secrets.forEachIndexed { index, secret ->
+                            tr {
+                                td { +"$index" }
+                                td { +secret.id }
+                                td { DeleteSecretButton() }
+                            }
                         }
                     }
                 }
             }
             PartyCard(party)
+        }
+    }
+}
+
+val DeleteSecretButton by nfc<Props> {
+    CouplingButton(large, white) {
+        i {
+            className = ClassName("fa fa-trash")
         }
     }
 }
