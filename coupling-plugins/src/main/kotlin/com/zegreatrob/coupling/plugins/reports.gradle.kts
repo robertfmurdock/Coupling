@@ -23,3 +23,7 @@ tasks {
         dependsOn(copyReportsToCircleCIDirectory, copyTestResultsToCircleCIDirectory)
     }
 }
+
+afterEvaluate {
+    mkdir(rootProject.layout.buildDirectory.dir("test-output").get().asFile)
+}
