@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.PartyInput
+import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.discord.grantDiscordAccessResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.currentPairAssignmentResolve
 import com.zegreatrob.coupling.server.entity.pairassignment.deletePairsResolver
@@ -87,6 +88,7 @@ fun couplingResolvers() = json(
         "pairs" to pairsResolve,
         "medianSpinDuration" to medianSpinDurationResolve,
         "spinsUntilFullRotation" to spinsUntilFullRotationResolve,
+        "boost" to partyBoostResolver,
     ),
     "Configuration" to json(
         "addToSlackUrl" to addToSlackUrlResolve,

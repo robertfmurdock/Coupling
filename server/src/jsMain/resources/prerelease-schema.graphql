@@ -1,21 +1,11 @@
-type BoostDetails {
-    userId: ID!
-    partyIds: [ID]!
-    expirationDate: String
-    modifyingUserEmail: String
-    timestamp: String
-    isDeleted: Boolean
-}
-
-type Party {
-    id: ID!
-    boost: BoostDetails
-}
-
 type User {
     id: ID!
     boost: BoostDetails
     subscription: SubscriptionDetails
+}
+
+type BoostDetails {
+    userId: ID!
 }
 
 type SubscriptionDetails {

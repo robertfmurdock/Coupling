@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.server.graphql
 
 import com.zegreatrob.coupling.server.entity.boost.deleteBoostResolver
-import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.saveBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.subscription.subscriptionResolver
@@ -15,9 +14,6 @@ fun prereleaseResolvers() = json(
     "User" to json(
         "boost" to userBoostResolver,
         "subscription" to subscriptionResolver,
-    ),
-    "Party" to json(
-        "boost" to partyBoostResolver,
     ),
     "Configuration" to json(
         "stripeAdminCode" to { "test_4gw9BcbgqaeYaRybII" },

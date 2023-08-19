@@ -102,6 +102,15 @@ type PartySecret {
     isDeleted: Boolean
 }
 
+type BoostDetails {
+    userId: ID!
+    partyIds: [ID]!
+    expirationDate: String
+    modifyingUserEmail: String
+    timestamp: String
+    isDeleted: Boolean
+}
+
 type Party {
     id: ID!
     details: PartyDetails
@@ -115,6 +124,7 @@ type Party {
     currentPairAssignmentDocument: PairAssignmentDocumentDetails
     spinsUntilFullRotation: Int!
     medianSpinDuration: String
+    boost: BoostDetails
 }
 
 input PlayerInput {
