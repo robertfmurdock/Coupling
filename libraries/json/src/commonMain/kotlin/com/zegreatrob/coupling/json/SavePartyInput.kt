@@ -3,6 +3,7 @@
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.party.PartyId
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -30,5 +31,6 @@ data class SaveSlackIntegrationInput(
 @Serializable
 data class JsonSecretToken(
     val secretId: String,
+    val createdTimestamp: Instant,
     val secretToken: String,
 )

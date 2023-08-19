@@ -1,5 +1,5 @@
 type PartyDetails {
-    id: String!
+    id: ID!
     name: String
     email: String
     pairingRule: Int
@@ -23,24 +23,24 @@ type PartyIntegration {
 }
 
 type User {
-    id: String!
+    id: ID!
     details: UserDetails
 }
 
 type UserDetails {
-    id: String!
+    id: ID!
     email: String!
     authorizedPartyIds: [String]!
 }
 
 type Pin {
-    id: String!
+    id: ID!
     icon: String
     name: String
 }
 
 type PinDetails {
-    id: String!
+    id: ID!
     icon: String
     name: String
     partyId: String
@@ -50,7 +50,7 @@ type PinDetails {
 }
 
 type PlayerDetails {
-    id: String!
+    id: ID!
     name: String
     email: String
     badge: String
@@ -65,7 +65,7 @@ type PlayerDetails {
 }
 
 type PinnedPlayer {
-    id: String!
+    id: ID!
     name: String
     email: String
     badge: String
@@ -82,7 +82,7 @@ type PinnedPair {
 }
 
 type PairAssignmentDocumentDetails {
-    id: String!
+    id: ID!
     partyId: String
     date: String!
     pairs: [PinnedPair]!
@@ -94,15 +94,16 @@ type PairAssignmentDocumentDetails {
 }
 
 type PartySecret {
-    id: String!
+    id: ID!
     partyId: String
+    createdTimestamp: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
 }
 
 type Party {
-    id: String!
+    id: ID!
     details: PartyDetails
     integration: PartyIntegration
     pinList: [PinDetails]
@@ -117,7 +118,7 @@ type Party {
 }
 
 input PlayerInput {
-    id: String!
+    id: ID!
     name: String
     email: String
     badge: String
@@ -128,15 +129,15 @@ input PlayerInput {
 }
 
 input PinInput {
-    id: String!
+    id: ID!
     icon: String
     name: String
 }
 
 input SpinInput {
-    partyId: String!
-    playerIds: [String]!
-    pinIds: [String]!
+    partyId: ID!
+    playerIds: [ID]!
+    pinIds: [ID]!
 }
 
 type SpinOutput {
@@ -144,38 +145,38 @@ type SpinOutput {
 }
 
 input DeletePartyInput {
-    partyId: String!
+    partyId: ID!
 }
 input DeletePinInput {
-    partyId: String!
-    pinId: String!
+    partyId: ID!
+    pinId: ID!
 }
 
 input DeletePlayerInput {
-    partyId: String!
-    playerId: String!
+    partyId: ID!
+    playerId: ID!
 }
 
 input DeletePairAssignmentsInput {
-    partyId: String!
-    pairAssignmentsId: String!
+    partyId: ID!
+    pairAssignmentsId: ID!
 }
 
 input SavePinInput {
-    partyId: String!
-    pinId: String
+    partyId: ID!
+    pinId: ID
     icon: String
     name: String
 }
 
 input SaveSlackIntegrationInput {
-    partyId: String
+    partyId: ID
     team: String
     channel: String
 }
 
 input SavePartyInput {
-    partyId: String!
+    partyId: ID!
     name: String
     email: String
     pairingRule: Int
@@ -188,8 +189,8 @@ input SavePartyInput {
 }
 
 input SavePlayerInput {
-    partyId: String!
-    playerId: String!
+    partyId: ID!
+    playerId: ID!
     name: String
     email: String
     badge: String
@@ -200,8 +201,8 @@ input SavePlayerInput {
 }
 
 input SavePairAssignmentsInput {
-    partyId: String
-    pairAssignmentsId: String!
+    partyId: ID
+    pairAssignmentsId: ID!
     date: String!
     pairs: [PinnedPairInput]!
     discordMessageId: String
@@ -214,7 +215,7 @@ input PinnedPairInput {
 }
 
 input PinnedPlayerInput {
-    id: String!
+    id: ID!
     name: String
     email: String
     badge: String
@@ -236,7 +237,7 @@ type GlobalStats {
 
 type PartyStats {
     name: String!
-    id: String!
+    id: ID!
     playerCount: Int!
     appliedPinCount: Int!
     uniquePinCount: Int!
@@ -255,7 +256,7 @@ input GlobalStatsInput {
 }
 
 input PartyInput {
-    partyId: String!
+    partyId: ID!
 }
 
 type Pair {
@@ -303,20 +304,21 @@ input GrantSlackAccessInput {
 
 input GrantDiscordAccessInput {
     code: String!
-    partyId: String!
+    partyId: ID!
     guildId: String!
 }
 
 input CreateSecretInput {
-    partyId: String!
+    partyId: ID!
 }
 
 type SecretToken {
-    secretId: String!
+    secretId: ID!
+    createdTimestamp: String
     secretToken: String!
 }
 
 input DeleteSecretInput {
-    partyId: String!
-    secretId: String!
+    partyId: ID!
+    secretId: ID!
 }

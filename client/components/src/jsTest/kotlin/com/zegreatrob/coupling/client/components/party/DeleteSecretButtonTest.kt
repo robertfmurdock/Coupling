@@ -25,6 +25,6 @@ class DeleteSecretButtonTest {
         actor.click(screen.findByRole("button"))
     } verify {
         dispatcher.receivedActions
-            .assertIsEqualTo(listOf(DeleteSecretCommand(partyId, secret)))
+            .assertIsEqualTo(listOf(DeleteSecretCommand(partyId, secret.id)))
     }
 }

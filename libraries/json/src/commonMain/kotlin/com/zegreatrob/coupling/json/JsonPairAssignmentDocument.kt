@@ -55,6 +55,7 @@ data class JsonIntegrationRecord(
 @Serializable
 data class JsonSecretRecord(
     val id: String,
+    val createdTimestamp: Instant,
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
@@ -62,7 +63,7 @@ data class JsonSecretRecord(
 ) : JsonPartyRecordInfo
 
 fun JsonSecretRecord.toModel(): PartyRecord<Secret> = PartyRecord(
-    partyId.with(Secret(id = id)),
+    partyId.with(Secret(id = id, createdTimestamp = createdTimestamp)),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -70,6 +71,7 @@ fun JsonSecretRecord.toModel(): PartyRecord<Secret> = PartyRecord(
 
 fun PartyRecord<Secret>.toSerializable() = JsonSecretRecord(
     id = data.element.id,
+    createdTimestamp = data.element.createdTimestamp,
     partyId = data.partyId,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,

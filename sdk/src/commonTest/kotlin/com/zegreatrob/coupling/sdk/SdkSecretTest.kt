@@ -62,7 +62,7 @@ class SdkSecretTest {
         secret = result.first
         token = result.second
     } exercise {
-        sdk().fire(DeleteSecretCommand(party.id, secret))
+        sdk().fire(DeleteSecretCommand(party.id, secret.id))
     } verify {
         sdk().fire(graphQuery { party(party.id) { secretList() } })
             ?.party

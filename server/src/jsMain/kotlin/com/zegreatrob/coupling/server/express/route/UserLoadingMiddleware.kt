@@ -49,7 +49,8 @@ private suspend fun authCannon(userEmail: Any?, traceId: Uuid) = ActionCannon(
 private suspend fun secretIsNotDeleted(secretId: String, partyId: PartyId): Boolean = secretRepository(secretId)
     .getSecrets(partyId)
     .elements
-    .contains(Secret(secretId))
+    .map(Secret::id)
+    .contains(secretId)
 
 fun Request.setUser(user: UserDetails?) {
     with(asDynamic()) {

@@ -1,6 +1,6 @@
 type BoostDetails {
-    userId: String!
-    partyIds: [String]!
+    userId: ID!
+    partyIds: [ID]!
     expirationDate: String
     modifyingUserEmail: String
     timestamp: String
@@ -8,12 +8,12 @@ type BoostDetails {
 }
 
 type Party {
-    id: String!
+    id: ID!
     boost: BoostDetails
 }
 
 type User {
-    id: String!
+    id: ID!
     boost: BoostDetails
     subscription: SubscriptionDetails
 }
@@ -26,7 +26,7 @@ type SubscriptionDetails {
 }
 
 input SaveBoostInput {
-    partyIds: [String]!
+    partyIds: [ID]!
 }
 
 type Mutation {
@@ -46,7 +46,7 @@ type Pair {
 }
 
 type Commit {
-    id: String!
+    id: ID!
     instant: String!
     ease: Int
     story: String

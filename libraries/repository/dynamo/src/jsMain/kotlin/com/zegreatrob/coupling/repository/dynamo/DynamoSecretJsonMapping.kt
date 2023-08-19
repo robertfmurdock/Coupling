@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.with
+import kotlinx.datetime.Instant
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -19,10 +20,14 @@ interface DynamoSecretJsonMapping : PartyIdDynamoRecordJsonMapping {
         )
         .add(data.element.toDynamoJson())
 
-    fun Secret.toDynamoJson() = nullFreeJson("id" to id)
+    fun Secret.toDynamoJson() = nullFreeJson(
+        "id" to id,
+        "createdDate" to createdTimestamp.isoWithMillis(),
+    )
 
     fun Json.toSecret() = Secret(
         id = getDynamoStringValue("id") ?: "",
+        createdTimestamp = getDynamoDateTimeValue("createdDate") ?: Instant.DISTANT_PAST,
     )
 
     fun Json.toRecord(): Record<PartyElement<Secret>> {

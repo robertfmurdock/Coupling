@@ -10,6 +10,6 @@ interface ServerDeleteSecretCommandDispatcher : DeleteSecretCommand.Dispatcher {
 
     override suspend fun perform(command: DeleteSecretCommand) = secretRepository.deleteSecret(
         partyId = command.partyId,
-        secretId = command.secret.id,
+        secretId = command.secretId,
     ).voidResult()
 }

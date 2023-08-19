@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.secret.SecretSave
+import kotlinx.datetime.Clock
 
 interface ServerCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher {
     val secretRepository: SecretSave
@@ -17,5 +18,5 @@ interface ServerCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher {
         return (secret to secretGenerator.createSecret(partyId.with(secret)))
     }
 
-    private fun newSecret() = Secret("${uuid4()}")
+    private fun newSecret() = Secret("${uuid4()}", Clock.System.now())
 }

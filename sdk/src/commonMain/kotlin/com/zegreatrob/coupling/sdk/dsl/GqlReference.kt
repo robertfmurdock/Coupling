@@ -86,6 +86,7 @@ object GqlReference {
         partyId = PartyId(""),
         modifyingUserEmail = "",
         isDeleted = false,
+        createdTimestamp = Instant.DISTANT_FUTURE,
         timestamp = Instant.DISTANT_PAST,
     )
     val partyRecord = JsonPartyDetailsRecord(

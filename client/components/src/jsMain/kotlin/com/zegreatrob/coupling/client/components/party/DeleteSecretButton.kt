@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.secret.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.large
-import com.zegreatrob.coupling.client.components.white
+import com.zegreatrob.coupling.client.components.red
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.minreact.ReactFunc
@@ -25,8 +25,8 @@ external interface DeleteSecretButtonProps : Props {
 val DeleteSecretButton by nfc<DeleteSecretButtonProps> { props ->
     CouplingButton(
         sizeRuleSet = large,
-        colorRuleSet = white,
-        onClick = props.dispatcher { fire(DeleteSecretCommand(props.partyId, props.secret)) },
+        colorRuleSet = red,
+        onClick = props.dispatcher { fire(DeleteSecretCommand(props.partyId, props.secret.id)) },
     ) {
         i { className = ClassName("fa fa-trash") }
     }
