@@ -52,4 +52,7 @@ tasks {
         dependsOn("composeUp")
         environment("LOCAL_DYNAMO", "true")
     }
+    named("composeUp") {
+        mustRunAfter(":caddyComposeUp")
+    }
 }
