@@ -41,6 +41,7 @@ external interface UserConfigProps<D> : Props where D : GraphQuery.Dispatcher, D
     var stripeAdminCode: String
     var stripePurchaseCode: String
     var boost: Boost?
+    var reload: () -> Unit
 }
 
 @ReactFunc
@@ -131,6 +132,7 @@ val UserConfig by nfc<UserConfigProps<*>> { props ->
                     boost = props.boost,
                     parties = props.partyList,
                     dispatchFunc = dispatcher,
+                    reload = props.reload,
                 )
             }
         }

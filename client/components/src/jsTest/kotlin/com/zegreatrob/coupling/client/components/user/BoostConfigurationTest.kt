@@ -31,6 +31,7 @@ class BoostConfigurationTest {
                 boost = boost,
                 parties = parties,
                 dispatchFunc = StubDispatcher().func(),
+                reload = {},
             )
         }
     } verify {
@@ -53,6 +54,7 @@ class BoostConfigurationTest {
                 boost = null,
                 parties = parties,
                 dispatchFunc = StubDispatcher().func(),
+                reload = {},
             )
         }
     } exercise {
@@ -80,6 +82,7 @@ class BoostConfigurationTest {
                 boost = null,
                 parties = parties,
                 dispatchFunc = dispatcher.func(),
+                reload = {},
             )
         }
         actor.selectOptions(partyCombobox(), boostedParty.id.value)

@@ -23,7 +23,7 @@ val UserPage by nfc<PageProps> {
             }
             partyList { details() }
         },
-        toNode = { _, dispatcher, result ->
+        toNode = { reload, dispatcher, result ->
             UserConfig.create(
                 user = result.user?.details,
                 subscription = result.user?.subscription,
@@ -33,6 +33,7 @@ val UserPage by nfc<PageProps> {
                 stripeAdminCode = result.config?.stripeAdminCode ?: return@CouplingQuery null,
                 stripePurchaseCode = result.config?.stripePurchaseCode ?: return@CouplingQuery null,
                 boost = result.user?.boost?.data,
+                reload = reload,
             )
         },
     )

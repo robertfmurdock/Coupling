@@ -24,6 +24,7 @@ external interface BoostConfigurationProps : Props {
     var boost: Boost?
     var parties: List<PartyDetails>
     var dispatchFunc: DispatchFunc<ApplyBoostCommand.Dispatcher>
+    var reload: () -> Unit
 }
 
 @ReactFunc
@@ -36,12 +37,21 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
         Markdown { +loadMarkdownString("Boost") }
 
         h4 { +"Currently Boosting:" }
-        p { +boostedParty?.name }
+        p { +(boostedParty?.name ?: "No party") }
 
         select {
             name = "party"
             value = boostedParty?.id?.value ?: ""
             onChange = { event -> boostedParty = props.parties.firstOrNull { it.id.value == event.target.value } }
+
+            if (boostedParty == null) {
+                option {
+                    key = "placeholder"
+                    value = ""
+                    label = "Select a party to boost"
+                }
+            }
+
             props.parties.map { party ->
                 val partyName = party.name
                 option {
@@ -56,7 +66,12 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
         }
 
         CouplingButton(
-            onClick = props.dispatchFunc { boostedParty?.id?.let { fire(ApplyBoostCommand(it)) } },
+            onClick = props.dispatchFunc {
+                boostedParty?.id?.let {
+                    fire(ApplyBoostCommand(it))
+                    props.reload()
+                }
+            },
         ) {
             +"Apply Boost"
         }
