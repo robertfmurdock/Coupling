@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.party.AboutButton
+import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
@@ -27,6 +28,7 @@ import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.li
 import web.cssom.Color
 import web.cssom.Display
+import web.cssom.number
 import web.html.InputType
 
 external interface UserConfigProps : Props {
@@ -36,6 +38,7 @@ external interface UserConfigProps : Props {
     var dispatcher: DispatchFunc<GraphQuery.Dispatcher>
     var stripeAdminCode: String
     var stripePurchaseCode: String
+    var boost: Boost?
 }
 
 @ReactFunc
@@ -57,36 +60,43 @@ val UserConfig by nfc<UserConfigProps> { props ->
             div { +"User not found." }
         } else {
             div {
-                css { display = Display.flex }
+                css {
+                    display = Display.flex
+                }
 
-                Editor {
-                    li {
-                        val inputId = uuid4().toString()
-                        label {
-                            +"User Id"
-                            htmlFor = inputId
-                        }
-                        input {
-                            name = "id"
-                            id = inputId
-                            type = InputType.text
-                            disabled = true
-                            value = user.id
-                            autoFocus = true
-                        }
+                div {
+                    css {
+                        flexGrow = number(1.0)
                     }
-                    li {
-                        val inputId = uuid4().toString()
-                        label {
-                            +"User Email"
-                            htmlFor = inputId
+                    Editor {
+                        li {
+                            val inputId = uuid4().toString()
+                            label {
+                                +"User Id"
+                                htmlFor = inputId
+                            }
+                            input {
+                                name = "id"
+                                id = inputId
+                                type = InputType.text
+                                disabled = true
+                                value = user.id
+                                autoFocus = true
+                            }
                         }
-                        input {
-                            name = "email"
-                            id = inputId
-                            type = InputType.text
-                            disabled = true
-                            value = user.email
+                        li {
+                            val inputId = uuid4().toString()
+                            label {
+                                +"User Email"
+                                htmlFor = inputId
+                            }
+                            input {
+                                name = "email"
+                                id = inputId
+                                type = InputType.text
+                                disabled = true
+                                value = user.email
+                            }
                         }
                     }
                 }
@@ -111,6 +121,12 @@ val UserConfig by nfc<UserConfigProps> { props ->
                     subscription = subscription,
                     stripeAdminCode = props.stripeAdminCode,
                     stripePurchaseCode = props.stripePurchaseCode,
+                )
+            }
+            div {
+                BoostConfiguration(
+                    subscription = subscription,
+                    boost = props.boost,
                 )
             }
         }

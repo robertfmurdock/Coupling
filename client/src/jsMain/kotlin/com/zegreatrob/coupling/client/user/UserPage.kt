@@ -15,6 +15,7 @@ val UserPage by nfc<PageProps> {
             user {
                 details()
                 subscription()
+                boost()
             }
             config {
                 stripeAdminCode()
@@ -31,6 +32,7 @@ val UserPage by nfc<PageProps> {
                 dispatcher = dispatcher,
                 stripeAdminCode = result.config?.stripeAdminCode ?: return@CouplingQuery null,
                 stripePurchaseCode = result.config?.stripePurchaseCode ?: return@CouplingQuery null,
+                boost = result.user?.boost?.data,
             )
         },
     )
