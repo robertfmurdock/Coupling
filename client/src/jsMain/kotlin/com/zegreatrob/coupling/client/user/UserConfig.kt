@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.party.GeneralControlBar
 import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.client.components.player.PlayerCard
+import com.zegreatrob.coupling.client.components.user.BoostConfiguration
 import com.zegreatrob.coupling.client.party.AboutButton
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -127,6 +128,7 @@ val UserConfig by nfc<UserConfigProps> { props ->
                 BoostConfiguration(
                     subscription = subscription,
                     boost = props.boost,
+                    parties = props.partyList,
                 )
             }
         }
