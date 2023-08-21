@@ -11,11 +11,7 @@ import com.zegreatrob.coupling.sdk.gql.graphQuery
 val CurrentPairsPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
-        query = if (props.config.prereleaseMode) {
-            prereleaseCurrentPairsQuery(partyId)
-        } else {
-            currentPairsQuery(partyId)
-        },
+        query = currentPairsQuery(partyId),
         toNode = { reload, dispatchFunc, result ->
             SocketedPairAssignments.create(
                 party = result.party?.details?.data ?: return@CouplingQuery null,
@@ -31,14 +27,6 @@ val CurrentPairsPage = partyPageFunction { props, partyId ->
 }
 
 private fun currentPairsQuery(partyId: PartyId) = graphQuery {
-    party(partyId) {
-        details()
-        playerList()
-        currentPairAssignments()
-    }
-}
-
-private fun prereleaseCurrentPairsQuery(partyId: PartyId) = graphQuery {
     party(partyId) {
         details()
         playerList()

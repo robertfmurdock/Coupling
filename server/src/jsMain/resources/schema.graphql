@@ -25,6 +25,7 @@ type PartyIntegration {
 type User {
     id: ID!
     details: UserDetails
+    boost: BoostDetails
 }
 
 type UserDetails {

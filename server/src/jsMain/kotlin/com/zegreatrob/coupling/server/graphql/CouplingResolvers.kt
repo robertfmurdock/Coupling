@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.graphql
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
+import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.discord.grantDiscordAccessResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.currentPairAssignmentResolve
 import com.zegreatrob.coupling.server.entity.pairassignment.deletePairsResolver
@@ -98,5 +99,8 @@ fun couplingResolvers() = json(
         "count" to pairCountResolve,
         "spinsSinceLastPaired" to spinsSinceLastPairedResolve,
         "heat" to pairHeatResolve,
+    ),
+    "User" to json(
+        "boost" to userBoostResolver,
     ),
 )
