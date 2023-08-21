@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.user
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.SaveBoostCommand
 import com.zegreatrob.coupling.client.components.DemoButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Editor
@@ -32,19 +33,19 @@ import web.cssom.Display
 import web.cssom.number
 import web.html.InputType
 
-external interface UserConfigProps : Props {
+external interface UserConfigProps<D> : Props where D : GraphQuery.Dispatcher, D : SaveBoostCommand.Dispatcher {
     var user: UserDetails?
     var subscription: SubscriptionDetails?
     var partyList: List<PartyDetails>
-    var dispatcher: DispatchFunc<GraphQuery.Dispatcher>
+    var dispatcher: DispatchFunc<D>
     var stripeAdminCode: String
     var stripePurchaseCode: String
     var boost: Boost?
 }
 
 @ReactFunc
-val UserConfig by nfc<UserConfigProps> { props ->
-    val (user, subscription, partyList) = props
+val UserConfig by nfc<UserConfigProps<*>> { props ->
+    val (user, subscription, partyList, dispatcher) = props
     PageFrame(
         borderColor = Color("rgb(94, 84, 102)"),
         backgroundColor = Color("floralwhite"),
@@ -129,6 +130,7 @@ val UserConfig by nfc<UserConfigProps> { props ->
                     subscription = subscription,
                     boost = props.boost,
                     parties = props.partyList,
+                    dispatchFunc = dispatcher,
                 )
             }
         }
