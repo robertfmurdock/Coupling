@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.GrantSlackAccessCommand
-import com.zegreatrob.coupling.action.SaveBoostCommand
 import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
@@ -29,7 +29,7 @@ interface CouplingSdkDispatcher :
     GrantDiscordAccessCommand.Dispatcher,
     GrantSlackAccessCommand.Dispatcher,
     GraphQuery.Dispatcher,
-    SaveBoostCommand.Dispatcher,
+    ApplyBoostCommand.Dispatcher,
     SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommand.Dispatcher,
     SavePinCommand.Dispatcher,

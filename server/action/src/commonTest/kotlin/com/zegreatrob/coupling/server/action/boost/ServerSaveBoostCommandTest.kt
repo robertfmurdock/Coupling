@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.boost
 
-import com.zegreatrob.coupling.action.SaveBoostCommand
+import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.SubscriptionCommandResult
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
@@ -26,7 +26,7 @@ class ServerSaveBoostCommandTest {
         val boostSpyData = SpyData<Boost, Unit>().apply { spyWillReturn(Unit) }
         override val boostRepository = BoostSave(boostSpyData::spyFunction)
     }) exercise {
-        perform(SaveBoostCommand(setOf(partyId)))
+        perform(ApplyBoostCommand(partyId))
     } verify { result ->
         boostSpyData.spyReceivedValues.size
             .assertIsEqualTo(0)
@@ -51,7 +51,7 @@ class ServerSaveBoostCommandTest {
         val boostSpyData = SpyData<Boost, Unit>().apply { spyWillReturn(Unit) }
         override val boostRepository = BoostSave(boostSpyData::spyFunction)
     }) exercise {
-        perform(SaveBoostCommand(setOf(partyId)))
+        perform(ApplyBoostCommand(partyId))
     } verify { result ->
         boostSpyData.spyReceivedValues
             .assertIsEqualTo(
@@ -64,7 +64,7 @@ class ServerSaveBoostCommandTest {
                 ),
             )
         result.assertIsEqualTo(
-            SaveBoostCommand.Result.Success,
+            ApplyBoostCommand.Result.Success,
         )
     }
 }

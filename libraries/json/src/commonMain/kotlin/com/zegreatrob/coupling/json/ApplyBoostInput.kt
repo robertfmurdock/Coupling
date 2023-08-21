@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class SaveBoostInput(val partyIds: Set<PartyId>)
+data class ApplyBoostInput(val partyId: PartyId)

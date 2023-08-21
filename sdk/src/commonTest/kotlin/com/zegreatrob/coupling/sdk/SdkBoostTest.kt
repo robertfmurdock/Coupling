@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.SaveBoostCommand
+import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.boost.fire
 import com.zegreatrob.coupling.action.fire
@@ -33,7 +33,7 @@ class SdkBoostTest {
     @Test
     fun deleteWillMakeBoostNotRecoverableThroughGet() = setupWithUser {
     } exercise {
-        sdk.fire(SaveBoostCommand(setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))))
+        sdk.fire(ApplyBoostCommand(PartyId("${uuid4()}")))
         sdk.fire(DeleteBoostCommand())
     } verifyWithWait {
         sdk.fire(graphQuery { user { boost() } })
@@ -58,17 +58,17 @@ class SdkBoostTest {
         object {
             val sdk = it.sdk
             val userId = it.user.id
-            val partyIds = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))
+            val partyId = PartyId("${uuid4()}")
         }
     }) exercise {
-        sdk.fire(SaveBoostCommand(partyIds))
+        sdk.fire(ApplyBoostCommand(partyId))
     } verifyWithWait {
         sdk.fire(graphQuery { user { boost() } })
             ?.user?.boost?.data?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
-                    partyIds = partyIds,
+                    partyIds = setOf(partyId),
                     expirationDate = Instant.DISTANT_FUTURE,
                 ),
             )
@@ -80,18 +80,17 @@ class SdkBoostTest {
             val sdk = it.sdk
             val userId = it.user.id
             val party = stubPartyDetails()
-            val partyIds = setOf(party.id)
         }
     }) exercise {
         sdk.fire(SavePartyCommand(party))
-        sdk.fire(SaveBoostCommand(partyIds))
+        sdk.fire(ApplyBoostCommand(party.id))
     } verifyWithWait {
         sdk.fire(graphQuery { party(party.id) { boost() } })
             ?.party?.boost?.data?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
-                    partyIds = partyIds,
+                    partyIds = setOf(party.id),
                     expirationDate = Instant.DISTANT_FUTURE,
                 ),
             )
@@ -102,21 +101,21 @@ class SdkBoostTest {
         object {
             val sdk = it.sdk
             val userId = it.user.id
-            val initialBoostParties = setOf(PartyId("${uuid4()}"), PartyId("${uuid4()}"))
-            val updatedBoostParties1 = emptySet<PartyId>()
-            val updatedBoostParties2 = setOf(PartyId("${uuid4()}"))
+            val initialBoostParty = PartyId("${uuid4()}")
+            val updatedBoostParty1 = PartyId("${uuid4()}")
+            val updatedBoostParty2 = PartyId("${uuid4()}")
         }
     }) exercise {
-        sdk.fire(SaveBoostCommand(initialBoostParties))
-        sdk.fire(SaveBoostCommand(updatedBoostParties1))
-        sdk.fire(SaveBoostCommand(updatedBoostParties2))
+        sdk.fire(ApplyBoostCommand(initialBoostParty))
+        sdk.fire(ApplyBoostCommand(updatedBoostParty1))
+        sdk.fire(ApplyBoostCommand(updatedBoostParty2))
     } verifyWithWait {
         sdk.fire(graphQuery { user { boost() } })
             ?.user?.boost?.data?.copy(expirationDate = Instant.DISTANT_FUTURE)
             .assertIsEqualTo(
                 Boost(
                     userId = userId,
-                    partyIds = updatedBoostParties2,
+                    partyIds = setOf(updatedBoostParty2),
                     expirationDate = Instant.DISTANT_FUTURE,
                 ),
             )

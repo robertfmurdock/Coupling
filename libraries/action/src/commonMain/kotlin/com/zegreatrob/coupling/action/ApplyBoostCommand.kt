@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
-data class SaveBoostCommand(val partyIds: Set<PartyId>) {
+data class ApplyBoostCommand(val partyId: PartyId) {
     interface Dispatcher {
-        suspend fun perform(command: SaveBoostCommand): Result
+        suspend fun perform(command: ApplyBoostCommand): Result
     }
 
     sealed interface Result {

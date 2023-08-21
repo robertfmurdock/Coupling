@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.action.boost
 
-import com.zegreatrob.coupling.action.SaveBoostCommand
+import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.SubscriptionCommandResult
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
@@ -11,17 +11,17 @@ interface ServerSaveBoostCommandDispatcher :
     BoostSaveSyntax,
     CurrentUserProvider,
     UserDetailsSubscriptionTrait,
-    SaveBoostCommand.Dispatcher {
+    ApplyBoostCommand.Dispatcher {
 
-    override suspend fun perform(command: SaveBoostCommand) = command.save()
+    override suspend fun perform(command: ApplyBoostCommand) = command.save()
 
-    private suspend fun SaveBoostCommand.save(): SaveBoostCommand.Result {
+    private suspend fun ApplyBoostCommand.save(): ApplyBoostCommand.Result {
         val expiration = currentUser.subscriptionDetails()
             .activeExpiration()
             ?: return SubscriptionCommandResult.SubscriptionNotActive
 
-        Boost(currentUser.id, partyIds, expiration)
+        Boost(currentUser.id, setOf(partyId), expiration)
             .apply { save() }
-        return SaveBoostCommand.Result.Success
+        return ApplyBoostCommand.Result.Success
     }
 }

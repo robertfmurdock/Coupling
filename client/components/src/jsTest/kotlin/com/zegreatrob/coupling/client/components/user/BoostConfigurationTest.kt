@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.user
 
-import com.zegreatrob.coupling.action.SaveBoostCommand
+import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
@@ -87,6 +87,6 @@ class BoostConfigurationTest {
         actor.click(boostButton)
     } verify {
         dispatcher.receivedActions
-            .assertIsEqualTo(listOf(SaveBoostCommand(setOf(boostedParty.id))))
+            .assertIsEqualTo(listOf(ApplyBoostCommand(boostedParty.id)))
     }
 }

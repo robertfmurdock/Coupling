@@ -15,7 +15,7 @@ type SubscriptionDetails {
 }
 
 input SaveBoostInput {
-    partyIds: [ID]!
+    partyId: ID!
 }
 
 type Mutation {

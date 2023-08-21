@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.user
 
-import com.zegreatrob.coupling.action.SaveBoostCommand
+import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.fire
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DispatchFunc
@@ -23,7 +23,7 @@ external interface BoostConfigurationProps : Props {
     var subscription: SubscriptionDetails?
     var boost: Boost?
     var parties: List<PartyDetails>
-    var dispatchFunc: DispatchFunc<SaveBoostCommand.Dispatcher>
+    var dispatchFunc: DispatchFunc<ApplyBoostCommand.Dispatcher>
 }
 
 @ReactFunc
@@ -56,7 +56,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
         }
 
         CouplingButton(
-            onClick = props.dispatchFunc { boostedParty?.id?.let { fire(SaveBoostCommand(setOf(it))) } },
+            onClick = props.dispatchFunc { boostedParty?.id?.let { fire(ApplyBoostCommand(it)) } },
         ) {
             +"Apply Boost"
         }

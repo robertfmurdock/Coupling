@@ -8,8 +8,8 @@ sealed interface CommandResult :
 }
 
 sealed interface SubscriptionCommandResult :
-    SaveBoostCommand.Result {
-    data object SubscriptionNotActive : SaveBoostCommand.Result
+    ApplyBoostCommand.Result {
+    data object SubscriptionNotActive : ApplyBoostCommand.Result
 }
 
 sealed interface VoidResult {

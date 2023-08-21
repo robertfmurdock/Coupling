@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.action.SaveBoostCommand
+import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
-import com.zegreatrob.coupling.json.SaveBoostInput
+import com.zegreatrob.coupling.json.ApplyBoostInput
 import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
@@ -12,17 +12,17 @@ import kotlinx.serialization.json.put
 
 interface SdkBoost :
     GqlSyntax,
-    SaveBoostCommand.Dispatcher,
+    ApplyBoostCommand.Dispatcher,
     DeleteBoostCommand.Dispatcher {
 
-    override suspend fun perform(command: SaveBoostCommand) = doQuery(
+    override suspend fun perform(command: ApplyBoostCommand) = doQuery(
         query = Mutation.saveBoost,
         input = command.saveBoostInput(),
-    ).let { SaveBoostCommand.Result.Unknown("whoops") }
+    ).let { ApplyBoostCommand.Result.Unknown("whoops") }
 
     override suspend fun perform(command: DeleteBoostCommand) = deleteIt().let { VoidResult.Accepted }
 
-    private fun SaveBoostCommand.saveBoostInput() = SaveBoostInput(partyIds)
+    private fun ApplyBoostCommand.saveBoostInput() = ApplyBoostInput(partyId)
 
     private suspend fun deleteIt() {
         performQuery(buildJsonObject { put("query", Mutation.deleteBoost) })
