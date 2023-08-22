@@ -20,7 +20,7 @@ class DynamoDiscordRepository private constructor(override val userId: String, o
     PartyIdDynamoRecordJsonMapping,
     DiscordAccessRepository {
     override suspend fun save(partyDiscordAccess: PartyElement<DiscordTeamAccess>) = performPutItem(
-        partyDiscordAccess.copy(element = partyDiscordAccess.element)
+        partyDiscordAccess
             .toRecord()
             .asDynamoJson(),
     )

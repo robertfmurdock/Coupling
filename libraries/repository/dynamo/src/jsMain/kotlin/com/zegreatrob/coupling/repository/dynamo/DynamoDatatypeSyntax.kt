@@ -45,6 +45,7 @@ interface DynamoDatatypeSyntax {
     fun Json.getDynamoBoolValue(property: String) = this[property].unsafeCast<Boolean?>()
 
     fun Json.getDynamoListValue(property: String) = this[property].unsafeCast<Array<Json>?>()
+    fun Json.getDynamoStringListValue(property: String) = this[property].unsafeCast<Array<String>?>()
 
     fun nullFreeJson(vararg pairs: Pair<String, Any?>) = json(
         *pairs.toMap()
