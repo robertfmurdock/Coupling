@@ -35,7 +35,7 @@ class DynamoContributionRepositoryTest {
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
             partyContributions
-                .sortedByDescending { it.element.dateTime }
+                .sortedByDescending { "${it.element.dateTime} ${it.element.id}" }
                 .map {
                     Record(
                         data = it,

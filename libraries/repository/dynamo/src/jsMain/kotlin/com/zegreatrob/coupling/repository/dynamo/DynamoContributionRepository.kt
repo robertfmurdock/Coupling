@@ -48,7 +48,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
     override suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>> {
         return partyId.queryForItemList()
             .mapNotNull { toRecord(it) }
-            .sortedByDescending { it.data.element.dateTime }
+            .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
     }
 
     private fun toRecord(json: Json): PartyRecord<Contribution>? = json.toContribution()
