@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.BoostRepository
+import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.dynamo.external.awsgatewaymanagement.ApiGatewayManagementApiClient
 import com.zegreatrob.coupling.server.action.BroadcastAction
 import com.zegreatrob.coupling.server.action.CannonProvider
@@ -24,6 +25,8 @@ import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
+import com.zegreatrob.coupling.server.action.contribution.PartyContributionQuery
+import com.zegreatrob.coupling.server.action.contribution.ServerSaveContributionCommandDispatcher
 import com.zegreatrob.coupling.server.action.discord.DiscordRepository
 import com.zegreatrob.coupling.server.action.discord.ServerGrantDiscordAccessCommandDispatcher
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListAction
@@ -93,6 +96,7 @@ interface ICommandDispatcher :
     ServerPairCountQueryDispatcher,
     ServerPairsQueryDispatcher,
     ServerSpinsSinceLastPairedQueryDispatcher,
+    PartyContributionQuery.Dispatcher,
     SpinsUntilFullRotationQuery.Dispatcher,
     TraceIdProvider,
     UserDispatcher,
@@ -210,6 +214,8 @@ interface PrereleaseDispatcher :
     ServerPartyBoostQueryDispatcher,
     ServerSaveBoostCommandDispatcher,
     ServerSubscriptionQueryDispatcher,
+    ServerSaveContributionCommandDispatcher,
     ServerUserBoostQueryDispatcher {
     override val boostRepository: BoostRepository
+    override val contributionRepository: ContributionRepository
 }

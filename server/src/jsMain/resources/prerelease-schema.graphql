@@ -20,7 +20,7 @@ input SaveBoostInput {
 
 type Mutation {
     saveBoost(input: SaveBoostInput!): Boolean
-    saveContribution(input: SaveContribution!): Boolean
+    saveContribution(input: SaveContributionInput!): Boolean
     deleteBoost: Boolean
 }
 
@@ -31,11 +31,7 @@ type Configuration {
     stripePurchaseCode: String
 }
 
-type Pair {
-    contribution: [Contribution!]
-}
-
-input SaveContribution {
+input SaveContributionInput {
     partyId: ID!
     contributionId: ID!
     hash: String
@@ -43,16 +39,5 @@ input SaveContribution {
     ease: Int
     story: String
     link: String
-    playerEmails: [String!]
-}
-
-type Contribution {
-    id: ID!
-    timestamp: String!
-    dateTime: String!
-    hash: String
-    ease: Int
-    story: String
-    link: String
-    playerEmails: [String!]
+    participantEmails: [String!]
 }

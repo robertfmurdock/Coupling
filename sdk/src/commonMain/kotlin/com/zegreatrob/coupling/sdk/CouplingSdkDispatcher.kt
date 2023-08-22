@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.SavePairAssignmentsCommand
 import com.zegreatrob.coupling.action.party.DeletePartyCommand
+import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.action.pin.DeletePinCommand
@@ -25,14 +26,15 @@ interface CouplingSdkDispatcher :
     DeletePartyCommand.Dispatcher,
     DeletePinCommand.Dispatcher,
     DeletePlayerCommand.Dispatcher,
+    ApplyBoostCommand.Dispatcher,
     DeleteSecretCommand.Dispatcher,
     GrantDiscordAccessCommand.Dispatcher,
     GrantSlackAccessCommand.Dispatcher,
     GraphQuery.Dispatcher,
-    ApplyBoostCommand.Dispatcher,
+    SaveContributionCommand.Dispatcher,
     SavePairAssignmentsCommand.Dispatcher,
     SavePartyCommand.Dispatcher,
     SavePinCommand.Dispatcher,
     SavePlayerCommand.Dispatcher,
-    SpinCommand.Dispatcher,
-    SaveSlackIntegrationCommand.Dispatcher
+    SaveSlackIntegrationCommand.Dispatcher,
+    SpinCommand.Dispatcher

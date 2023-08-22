@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server
 import com.benasher44.uuid.Uuid
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.repository.LiveInfoRepository
+import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
 import com.zegreatrob.coupling.repository.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.repository.dynamo.secret.DynamoSecretRepository
@@ -26,6 +27,7 @@ interface RepositoryCatalog {
     val secretRepository: SecretRepository
     val slackAccessRepository: SlackAccessRepository
     val discordAccessRepository: DiscordAccessRepository
+    val contributionRepository: ContributionRepository
 }
 
 suspend fun commandDispatcher(user: UserDetails, scope: CoroutineScope, traceId: Uuid) =

@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk.gql
 
 object Mutation {
+    val saveContribution by GqlFileLoader
     val spin by GqlFileLoader
     val savePin by GqlFileLoader
     val saveBoost by GqlFileLoader

@@ -1,14 +1,18 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.ClockProvider
+import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserDetails
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
+import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
 import com.zegreatrob.coupling.repository.memory.MemoryLiveInfoRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
@@ -40,6 +44,7 @@ class MemoryRepositoryCatalog private constructor(
     override val secretRepository: SecretRepository,
     override val slackAccessRepository: SlackAccessRepository,
     override val discordAccessRepository: DiscordAccessRepository,
+    override val contributionRepository: ContributionRepository,
 ) :
     RepositoryCatalog,
     UserIdProvider,
@@ -59,7 +64,15 @@ class MemoryRepositoryCatalog private constructor(
                 MemorySecretRepository(),
                 MemorySlackRepository(),
                 MemoryDiscordRepository(),
+                MemoryContributionRepository(),
             )
+    }
+}
+
+class MemoryContributionRepository : ContributionRepository {
+    override suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>> = emptyList()
+    override suspend fun save(partyContribution: PartyElement<Contribution>) {
+        TODO("Not yet implemented")
     }
 }
 

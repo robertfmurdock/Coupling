@@ -44,6 +44,7 @@ private fun JsonParty.toModel() = Party(
     pairs = pairs?.map(JsonPair::toModel),
     medianSpinDuration = medianSpinDuration,
     spinsUntilFullRotation = spinsUntilFullRotation,
+    contributions = contributions?.map(JsonContributionRecord::toModel),
 )
 
 fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
@@ -69,6 +70,7 @@ data class JsonParty(
     val pairs: List<JsonPair>? = null,
     val medianSpinDuration: Duration? = null,
     val spinsUntilFullRotation: Int? = null,
+    val contributions: List<JsonContributionRecord>? = null,
 )
 
 @Serializable

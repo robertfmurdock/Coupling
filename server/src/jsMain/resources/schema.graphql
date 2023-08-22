@@ -112,6 +112,22 @@ type BoostDetails {
     isDeleted: Boolean
 }
 
+type Contribution {
+    id: ID!
+    createdAt: String!
+    dateTime: String!
+    hash: String
+    ease: Int
+    story: String
+    link: String
+    partyId: String
+    participantEmails: [String!]!
+    expirationDate: String
+    modifyingUserEmail: String
+    timestamp: String
+    isDeleted: Boolean
+}
+
 type Party {
     id: ID!
     details: PartyDetails
@@ -126,6 +142,7 @@ type Party {
     spinsUntilFullRotation: Int!
     medianSpinDuration: String
     boost: BoostDetails
+    contributions: [Contribution!]
 }
 
 input PlayerInput {
@@ -275,6 +292,7 @@ type Pair {
     count: Int
     spinsSinceLastPaired: Int
     heat: Float
+    contributions: [Contribution!]
 }
 
 """

@@ -1,0 +1,3 @@
+mutation saveBoost($input: SaveContributionInput!) {
+    saveContribution(input: $input)
+}

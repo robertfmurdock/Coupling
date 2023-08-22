@@ -6,18 +6,20 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdProvider
+import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.js.Json
 import kotlin.js.json
 
 class DynamoContributionRepository private constructor(override val userId: String, override val clock: Clock) :
+    ContributionRepository,
     RecordSyntax,
     DynamoRecordJsonMapping,
     UserIdProvider,
     PartyIdDynamoRecordJsonMapping {
 
-    suspend fun save(partyContribution: PartyElement<Contribution>) = performPutItem(
+    override suspend fun save(partyContribution: PartyElement<Contribution>) = performPutItem(
         partyContribution
             .toRecord()
             .asDynamoJson(),
@@ -28,22 +30,22 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         .add(
             json(
                 "tribeId" to data.partyId.value,
-                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.partyId.value}",
+                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id}",
             ),
         )
 
     private fun PartyElement<Contribution>.toJson() = json(
         "id" to element.id,
-        "dateTime" to element.dateTime.isoWithMillis(),
+        "dateTime" to element.dateTime?.isoWithMillis(),
         "ease" to element.ease,
         "hash" to element.hash,
         "link" to element.link,
         "participantEmails" to element.participantEmails.toTypedArray(),
         "story" to element.story,
-        "contributionTimestamp" to element.timestamp.isoWithMillis(),
+        "createdAt" to element.createdAt.isoWithMillis(),
     )
 
-    suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>> {
+    override suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>> {
         return partyId.queryForItemList()
             .mapNotNull { toRecord(it) }
             .sortedByDescending { it.data.element.dateTime }
@@ -53,18 +55,18 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         ?.let { json.tribeId().with(it) }
         ?.let { json.toRecord(it) }
 
-    private fun Json.toContribution(): Contribution? = Contribution(
-        id = getDynamoStringValue("id") ?: "",
-        dateTime = getDynamoStringValue("date")?.toLong()?.let { Instant.fromEpochMilliseconds(it) }
-            ?: Instant.DISTANT_PAST,
-        timestamp = getDynamoStringValue("date")?.toLong()?.let { Instant.fromEpochMilliseconds(it) }
-            ?: Instant.DISTANT_PAST,
-        hash = getDynamoStringValue("hash"),
-        ease = getDynamoNumberValue("ease")?.toInt(),
-        story = getDynamoStringValue("story"),
-        link = getDynamoStringValue("link"),
-        participantEmails = getDynamoStringListValue("pairs")?.toList() ?: emptyList(),
-    )
+    private fun Json.toContribution(): Contribution? {
+        return Contribution(
+            id = getDynamoStringValue("id") ?: return null,
+            dateTime = getDynamoDateTimeValue("dateTime") ?: Instant.DISTANT_PAST,
+            createdAt = getDynamoDateTimeValue("createdAt") ?: Instant.DISTANT_PAST,
+            hash = getDynamoStringValue("hash"),
+            ease = getDynamoNumberValue("ease")?.toInt(),
+            story = getDynamoStringValue("story"),
+            link = getDynamoStringValue("link"),
+            participantEmails = getDynamoStringListValue("participantEmails")?.toList() ?: emptyList(),
+        )
+    }
 
     private fun Json.tribeId() = this["tribeId"].unsafeCast<String>().let(::PartyId)
 

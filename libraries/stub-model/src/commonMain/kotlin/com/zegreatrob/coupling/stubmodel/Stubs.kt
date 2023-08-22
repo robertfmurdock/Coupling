@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.stubmodel
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -21,6 +22,7 @@ import com.zegreatrob.coupling.model.user.UserDetails
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
+import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
 
 fun stubParties(number: Int) = generateSequence(::stubPartyDetails).take(number).toList()
@@ -111,4 +113,15 @@ fun <E> record(partyId: PartyId, player: E) = Record(
     "test",
     false,
     Instant.DISTANT_PAST,
+)
+
+fun stubContribution() = Contribution(
+    id = uuidString(),
+    createdAt = Clock.System.now().minus(2.days),
+    dateTime = Clock.System.now().minus(3.days),
+    hash = uuidString(),
+    ease = 99,
+    story = uuidString(),
+    link = uuidString(),
+    participantEmails = listOf(uuidString(), uuidString()),
 )

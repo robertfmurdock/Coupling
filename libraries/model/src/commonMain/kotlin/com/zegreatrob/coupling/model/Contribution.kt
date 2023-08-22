@@ -4,8 +4,8 @@ import kotlinx.datetime.Instant
 
 data class Contribution(
     val id: String,
-    val timestamp: Instant,
-    val dateTime: Instant,
+    val createdAt: Instant,
+    val dateTime: Instant?,
     val hash: String?,
     val ease: Int?,
     val story: String?,

@@ -13,6 +13,7 @@ import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.test.Test
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<R, PartyContext<R>> {
@@ -188,8 +189,8 @@ fun List<Player>.assertHasIds() {
     forEach { player -> player.id.assertIsNotEqualTo(null) }
 }
 
-fun Instant.assertIsCloseToNow() {
+fun Instant.assertIsCloseToNow(allowedDelta: Duration = 5.seconds) {
     val distanceFromNow = Clock.System.now() - this
-    (distanceFromNow < 5.seconds)
+    (distanceFromNow < allowedDelta)
         .assertIsEqualTo(true, "Distance from now was $distanceFromNow, but was expected to be < 5")
 }

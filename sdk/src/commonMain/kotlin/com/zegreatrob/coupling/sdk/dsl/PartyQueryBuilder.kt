@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.JsonPair
 import com.zegreatrob.coupling.json.JsonParty
+import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignmentRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.partyRecord
@@ -32,6 +33,8 @@ class PartyQueryBuilder : QueryBuilder<JsonParty> {
         .also(block)
         .output
         .let { output = output.copy(pairs = listOf(it)) }
+
+    fun contributions() = also { output = output.copy(contributions = listOf(contributionRecord)) }
 }
 
 class PairQueryBuilder : QueryBuilder<JsonPair> {

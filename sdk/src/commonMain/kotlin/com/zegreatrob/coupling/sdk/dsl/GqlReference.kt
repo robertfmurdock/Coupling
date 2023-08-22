@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.JsonBoostRecord
+import com.zegreatrob.coupling.json.JsonContributionRecord
 import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonIntegrationRecord
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
@@ -87,6 +88,20 @@ object GqlReference {
         modifyingUserEmail = "",
         isDeleted = false,
         createdTimestamp = Instant.DISTANT_FUTURE,
+        timestamp = Instant.DISTANT_PAST,
+    )
+    val contributionRecord = JsonContributionRecord(
+        id = "",
+        createdAt = Instant.DISTANT_FUTURE,
+        dateTime = Instant.DISTANT_PAST,
+        hash = "",
+        ease = 99,
+        story = "",
+        link = "",
+        participantEmails = listOf(""),
+        partyId = PartyId(""),
+        modifyingUserEmail = "",
+        isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
     )
     val partyRecord = JsonPartyDetailsRecord(
