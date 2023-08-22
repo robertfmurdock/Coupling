@@ -20,6 +20,7 @@ input SaveBoostInput {
 
 type Mutation {
     saveBoost(input: SaveBoostInput!): Boolean
+    saveContribution(input: SaveContribution!): Boolean
     deleteBoost: Boolean
 }
 
@@ -31,12 +32,27 @@ type Configuration {
 }
 
 type Pair {
-    commits: [Commit!]
+    contribution: [Contribution!]
 }
 
-type Commit {
-    id: ID!
-    instant: String!
+input SaveContribution {
+    partyId: ID!
+    contributionId: ID!
+    hash: String
+    dateTime: String
     ease: Int
     story: String
+    link: String
+    playerEmails: [String!]
+}
+
+type Contribution {
+    id: ID!
+    timestamp: String!
+    dateTime: String!
+    hash: String
+    ease: Int
+    story: String
+    link: String
+    playerEmails: [String!]
 }
