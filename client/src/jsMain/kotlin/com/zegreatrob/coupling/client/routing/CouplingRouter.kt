@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.components.animationsDisabledContext
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.demo.DemoPage
+import com.zegreatrob.coupling.client.demo.GraphPage
 import com.zegreatrob.coupling.client.demo.LoadingPage
 import com.zegreatrob.coupling.client.discord.DiscordCallbackPage
 import com.zegreatrob.coupling.client.graphql.GraphIQLPage
@@ -55,6 +56,7 @@ val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, config) ->
                 config.couplingRoute("/about", "About", AboutPage),
                 config.couplingRoute("/demo", "Demo", DemoPage),
                 config.couplingRoute("/loading", "Loading Test", LoadingPage),
+                config.couplingRoute("/graph", "Graph Test", GraphPage),
             ).plus(routes(isSignedIn, config)),
             opts = jso { basename = config.basename },
         )

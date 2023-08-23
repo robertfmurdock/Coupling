@@ -70,6 +70,18 @@ config.module.rules.push(
         include: [resourcesPath, additionalResourcesPath],
     },
     {
+        test: /\.(?:js|mjs|cjs|jsx)$/,
+        include: [resourcesPath],
+        use: {
+            loader: 'babel-loader',
+            options: {
+                presets: [
+                    ['@babel/preset-react', {targets: "defaults"}]
+                ]
+            }
+        }
+    },
+    {
         test: /\.(sa|sc|c)ss$/,
         include: [resourcesPath, nodeModules],
         use: [
@@ -145,7 +157,7 @@ config.plugins.push(
         filename: 'html/styles.css',
     }),
 );
-if(!config.devServer) {
+if (!config.devServer) {
     config.plugins.push(
         new WebpackFavicons({
             src: path.resolve(resourcesPath, 'images/logo.png'),
