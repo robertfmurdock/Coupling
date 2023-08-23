@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.json.JsonBoostRecord
 import com.zegreatrob.coupling.json.JsonContributionRecord
 import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonIntegrationRecord
+import com.zegreatrob.coupling.json.JsonPairAssignment
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonPartyDetailsRecord
 import com.zegreatrob.coupling.json.JsonPartyStats
@@ -60,11 +61,22 @@ object GqlReference {
         avatarType = AvatarType.BoringBeam,
         pins = listOf(pinData),
     )
-    private val pinnedCouplingPair = JsonPinnedCouplingPair(
+    val pinnedCouplingPair = JsonPinnedCouplingPair(
         players = notEmptyListOf(pinnedPlayer),
         pins = setOf(pinData),
     )
     val pairAssignmentRecord = JsonPairAssignmentDocumentRecord(
+        id = "",
+        date = Instant.DISTANT_PAST,
+        pairs = notEmptyListOf(pinnedCouplingPair),
+        partyId = PartyId(""),
+        discordMessageId = "",
+        slackMessageId = "",
+        modifyingUserEmail = "",
+        isDeleted = false,
+        timestamp = Instant.DISTANT_PAST,
+    )
+    val pairAssignment = JsonPairAssignment(
         id = "",
         date = Instant.DISTANT_PAST,
         pairs = notEmptyListOf(pinnedCouplingPair),

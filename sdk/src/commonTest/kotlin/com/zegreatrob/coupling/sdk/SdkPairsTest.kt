@@ -65,7 +65,7 @@ class SdkPairsTest {
     }
 
     @Test
-    fun willReturnPairAssignmentsForPair() = asyncSetup(object : ScopeMint() {
+    fun willReturnPairAssignmentRecordsForPair() = asyncSetup(object : ScopeMint() {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val pair12 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[1], players[2]).withPins()))
@@ -89,6 +89,34 @@ class SdkPairsTest {
                     listOf(pair01_1, pair01_2, pair01_3).sortedByDescending { it.date },
                     listOf(pair02),
                     listOf(pair12),
+                    emptyList(),
+                    emptyList(),
+                    emptyList(),
+                ),
+            )
+    }
+
+    @Test
+    fun willSupportPartialPairAssignmentQueries() = asyncSetup(object : ScopeMint() {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val pair12 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[1], players[2]).withPins()))
+        val pair02 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[2]).withPins()))
+        val pair01_1 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pair01_2 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pair01_3 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pairAssignmentDocs = listOf(pair01_1, pair12, pair01_2, pair02, pair01_3)
+    }) {
+        savePartyState(party, players, pairAssignmentDocs)
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory { date() } } } })
+    } verify { result ->
+        result?.party?.pairs?.map { it.pairAssignmentHistory?.mapNotNull(PairAssignment::date) }
+            .assertIsEqualTo(
+                listOf(
+                    listOf(pair01_1, pair01_2, pair01_3).map { it.date }.sortedDescending(),
+                    listOf(pair02.date),
+                    listOf(pair12.date),
                     emptyList(),
                     emptyList(),
                     emptyList(),

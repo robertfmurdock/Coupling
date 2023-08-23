@@ -32,6 +32,19 @@ data class JsonPairAssignmentDocument(
 )
 
 @Serializable
+data class JsonPairAssignment(
+    val id: String,
+    val date: Instant? = null,
+    val pairs: NotEmptyList<JsonPinnedCouplingPair>? = null,
+    val discordMessageId: String? = null,
+    val slackMessageId: String? = null,
+    val partyId: PartyId? = null,
+    val modifyingUserEmail: String? = null,
+    val isDeleted: Boolean? = null,
+    val timestamp: Instant? = null,
+)
+
+@Serializable
 data class JsonPairAssignmentDocumentRecord(
     val id: String,
     val date: Instant,

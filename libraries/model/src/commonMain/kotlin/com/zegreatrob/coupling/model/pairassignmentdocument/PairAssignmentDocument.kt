@@ -33,4 +33,6 @@ fun PairAssignmentDocument.hasPair(pair: CouplingPair) = pairs.toList().any { ar
 data class PairAssignment(
     val id: PairAssignmentDocumentId,
     val document: PartyRecord<PairAssignmentDocument>? = null,
+    val date: Instant? = null,
+    val pairs: NotEmptyList<PinnedCouplingPair>? = null,
 )

@@ -7,7 +7,10 @@ import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.PlayerPair
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
@@ -81,7 +84,7 @@ data class JsonPair(
     val partyId: String? = null,
     val spinsSinceLastPaired: Int? = null,
     val heat: Double? = null,
-    val pairAssignmentHistory: List<JsonPairAssignmentDocumentRecord>? = null,
+    val pairAssignmentHistory: List<JsonPairAssignment>? = null,
 )
 
 fun JsonPair.toModel() = PlayerPair(
@@ -89,9 +92,34 @@ fun JsonPair.toModel() = PlayerPair(
     count = count,
     spinsSinceLastPaired = spinsSinceLastPaired,
     heat = heat,
-    pairAssignmentHistory = pairAssignmentHistory?.map(JsonPairAssignmentDocumentRecord::toModel)
-        ?.map { PairAssignment(it.data.element.id, it) },
+    pairAssignmentHistory = pairAssignmentHistory?.map { json ->
+        val pairAssignmentDocumentId = PairAssignmentDocumentId(json.id)
+        PairAssignment(
+            id = pairAssignmentDocumentId,
+            document = json.toFullPartyDocumentRecord(),
+            date = json.date,
+            pairs = json.pairs?.map(JsonPinnedCouplingPair::toModel),
+        )
+    },
 )
+
+private fun JsonPairAssignment.toFullPartyDocumentRecord(): PartyRecord<PairAssignmentDocument>? {
+    return PartyRecord(
+        PartyElement(
+            partyId ?: return null,
+            element = PairAssignmentDocument(
+                id = PairAssignmentDocumentId(id),
+                date = date ?: return null,
+                pairs = pairs?.map { it.toModel() } ?: return null,
+                discordMessageId = discordMessageId,
+                slackMessageId = slackMessageId,
+            ),
+        ),
+        modifyingUserId = modifyingUserEmail ?: return null,
+        isDeleted = isDeleted ?: return null,
+        timestamp = timestamp ?: return null,
+    )
+}
 
 fun PartyElement<PlayerPair>.toJson() = JsonPair(
     players = element.players?.map(PartyRecord<Player>::toSerializable),

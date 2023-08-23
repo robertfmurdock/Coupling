@@ -1,14 +1,19 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.JsonPair
+import com.zegreatrob.coupling.json.JsonPairAssignment
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
+import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignment
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignmentRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.partyRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pinRecord
+import com.zegreatrob.coupling.sdk.dsl.GqlReference.pinnedCouplingPair
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.playerRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.secretRecord
+import kotlinx.datetime.Instant
+import kotools.types.collection.notEmptyListOf
 import kotlin.time.Duration
 
 class PartyQueryBuilder : QueryBuilder<JsonParty> {
@@ -26,6 +31,7 @@ class PartyQueryBuilder : QueryBuilder<JsonParty> {
     fun pairAssignmentDocumentList() = also {
         output = output.copy(pairAssignmentDocumentList = listOf(pairAssignmentRecord))
     }
+
     fun medianSpinDuration() = also { output = output.copy(medianSpinDuration = Duration.INFINITE) }
     fun spinsUntilFullRotation() = also { output = output.copy(spinsUntilFullRotation = Int.MAX_VALUE) }
 
@@ -44,5 +50,15 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
     fun count() = also { output = output.copy(count = 0) }
     fun heat() = also { output = output.copy(heat = 0.0) }
     fun spinsSinceLastPaired() = also { output = output.copy(spinsSinceLastPaired = 0) }
-    fun pairAssignmentHistory() = also { output = output.copy(pairAssignmentHistory = listOf(pairAssignmentRecord)) }
+    fun pairAssignmentHistory() = also { output = output.copy(pairAssignmentHistory = listOf(pairAssignment)) }
+    fun pairAssignmentHistory(block: PairAssignmentQueryBuilder.() -> Unit) = PairAssignmentQueryBuilder()
+        .also(block)
+        .output
+        .let { output = output.copy(pairAssignmentHistory = listOf(it)) }
+}
+
+class PairAssignmentQueryBuilder : QueryBuilder<JsonPairAssignment> {
+    override var output: JsonPairAssignment = JsonPairAssignment(id = "")
+    fun date() = also { output = output.copy(date = Instant.DISTANT_PAST) }
+    fun pairs() = also { output = output.copy(pairs = notEmptyListOf(pinnedCouplingPair)) }
 }
