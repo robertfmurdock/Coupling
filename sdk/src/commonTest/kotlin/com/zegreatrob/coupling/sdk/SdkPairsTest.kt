@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -59,6 +61,38 @@ class SdkPairsTest {
         result?.party?.pairs?.map { it.count }
             .assertIsEqualTo(
                 listOf(3, 1, 1, 0, 0, 0),
+            )
+    }
+
+    @Test
+    fun willReturnPairAssignmentsForPair() = asyncSetup(object : ScopeMint() {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val pair12 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[1], players[2]).withPins()))
+        val pair02 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[2]).withPins()))
+        val pair01_1 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pair01_2 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pair01_3 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pairAssignmentDocs = listOf(pair01_1, pair12, pair01_2, pair02, pair01_3)
+    }) {
+        savePartyState(party, players, pairAssignmentDocs)
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory() } } })
+    } verify { result ->
+        result?.party?.pairs?.map {
+            it.pairAssignmentHistory?.mapNotNull(PairAssignment::document)
+                ?.map(PartyRecord<PairAssignmentDocument>::data)
+                ?.map(PartyElement<PairAssignmentDocument>::element)
+        }
+            .assertIsEqualTo(
+                listOf(
+                    listOf(pair01_1, pair01_2, pair01_3).sortedByDescending { it.date },
+                    listOf(pair02),
+                    listOf(pair12),
+                    emptyList(),
+                    emptyList(),
+                    emptyList(),
+                ),
             )
     }
 

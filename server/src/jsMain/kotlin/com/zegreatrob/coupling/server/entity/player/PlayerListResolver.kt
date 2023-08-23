@@ -4,13 +4,16 @@ import com.zegreatrob.coupling.json.JsonPair
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
+import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
 import com.zegreatrob.coupling.server.action.player.PairHeatQuery
 import com.zegreatrob.coupling.server.action.player.PairsQuery
@@ -57,6 +60,21 @@ val pairCountResolve = dispatch(
     },
     fireFunc = ::perform,
     toSerializable = { it },
+)
+
+val pairAssignmentHistoryResolve = dispatch(
+    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull -> context.commandDispatcher },
+    commandFunc = { data, _ ->
+        val model = data.toModel()
+        val partyId = PartyId(data.partyId ?: return@dispatch null)
+        val players = model.players?.elements ?: return@dispatch null
+        PairAssignmentHistoryQuery(
+            partyId = partyId,
+            pair = players.toCouplingPair(),
+        )
+    },
+    fireFunc = ::perform,
+    toSerializable = { it.map(PartyRecord<PairAssignmentDocument>::toSerializable) },
 )
 
 val spinsSinceLastPairedResolve = dispatch(

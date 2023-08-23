@@ -78,10 +78,12 @@ fun stubPinTarget(): PinTarget {
         .also { pinTargetCounter++ }
 }
 
+fun Instant.roundToMillis(): Instant = Instant.fromEpochMilliseconds(toEpochMilliseconds())
+
 var pairAssignmentDocumentCounter = 1
 fun stubPairAssignmentDoc() = PairAssignmentDocument(
     id = stubPairAssignmentId(),
-    date = Clock.System.now().plus(pairAssignmentDocumentCounter.minutes),
+    date = Clock.System.now().plus(pairAssignmentDocumentCounter.minutes).roundToMillis(),
     pairs = notEmptyListOf(
         PinnedCouplingPair(
             notEmptyListOf(stubPlayer().withPins()),

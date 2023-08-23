@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.PlayerPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
@@ -80,6 +81,7 @@ data class JsonPair(
     val partyId: String? = null,
     val spinsSinceLastPaired: Int? = null,
     val heat: Double? = null,
+    val pairAssignmentHistory: List<JsonPairAssignmentDocumentRecord>? = null,
 )
 
 fun JsonPair.toModel() = PlayerPair(
@@ -87,6 +89,8 @@ fun JsonPair.toModel() = PlayerPair(
     count = count,
     spinsSinceLastPaired = spinsSinceLastPaired,
     heat = heat,
+    pairAssignmentHistory = pairAssignmentHistory?.map(JsonPairAssignmentDocumentRecord::toModel)
+        ?.map { PairAssignment(it.data.element.id, it) },
 )
 
 fun PartyElement<PlayerPair>.toJson() = JsonPair(

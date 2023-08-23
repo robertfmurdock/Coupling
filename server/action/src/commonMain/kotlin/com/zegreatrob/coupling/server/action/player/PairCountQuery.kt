@@ -6,12 +6,21 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.hasPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.spinsSinceLastPair
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
+import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentRecordsSyntax
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class PairCountQuery(val partyId: PartyId, val pair: CouplingPair) {
     interface Dispatcher {
         suspend fun perform(query: PairCountQuery): Int
+    }
+}
+
+@ActionMint
+data class PairAssignmentHistoryQuery(val partyId: PartyId, val pair: CouplingPair) {
+    interface Dispatcher : PartyIdPairAssignmentRecordsSyntax {
+        suspend fun perform(query: PairAssignmentHistoryQuery) = query.partyId.loadPairAssignmentRecords()
+            .filter { it.data.element.hasPair(query.pair) }
     }
 }
 

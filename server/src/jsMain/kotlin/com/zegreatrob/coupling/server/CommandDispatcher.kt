@@ -43,6 +43,7 @@ import com.zegreatrob.coupling.server.action.party.ServerDeletePartyCommandDispa
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.action.pin.ServerDeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.ServerSavePinCommandDispatcher
+import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
 import com.zegreatrob.coupling.server.action.player.PairHeatQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
@@ -81,7 +82,9 @@ interface ICommandDispatcher :
     GlobalStatsQuery.Dispatcher,
     MedianSpinDurationQuery.Dispatcher,
     PairAssignmentDocumentListQuery.Dispatcher,
+    PairAssignmentHistoryQuery.Dispatcher,
     PairHeatQuery.Dispatcher,
+    PartyContributionQuery.Dispatcher,
     PartyDispatcher,
     PartyIntegrationQuery.Dispatcher,
     PinsQuery.Dispatcher,
@@ -96,7 +99,6 @@ interface ICommandDispatcher :
     ServerPairCountQueryDispatcher,
     ServerPairsQueryDispatcher,
     ServerSpinsSinceLastPairedQueryDispatcher,
-    PartyContributionQuery.Dispatcher,
     SpinsUntilFullRotationQuery.Dispatcher,
     TraceIdProvider,
     UserDispatcher,

@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.stubmodel.roundToMillis
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -49,8 +50,6 @@ class SdkContributionTest {
         }
     }
 }
-
-private fun Instant.roundToMillis(): Instant = Instant.fromEpochMilliseconds(toEpochMilliseconds())
 
 private fun List<Contribution>.withoutCreatedAt(): List<Contribution> = map {
     it.copy(createdAt = Instant.DISTANT_PAST)
