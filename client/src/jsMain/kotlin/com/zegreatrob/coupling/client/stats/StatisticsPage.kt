@@ -18,6 +18,7 @@ val StatisticsPage = partyPageFunction { props, partyId ->
                     players()
                     spinsSinceLastPaired()
                     heat()
+                    pairAssignmentHistory { date() }
                 }
                 medianSpinDuration()
                 spinsUntilFullRotation()

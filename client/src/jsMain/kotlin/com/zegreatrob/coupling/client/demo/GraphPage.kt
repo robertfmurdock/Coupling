@@ -2,19 +2,15 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
+import com.zegreatrob.coupling.client.components.stats.MyResponsiveLine
 import com.zegreatrob.coupling.client.routing.PageProps
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import react.FC
-import react.Props
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
 import web.cssom.px
-
-val MyResponsiveLine = kotlinext.js.require<dynamic>("com/zegreatrob/coupling/client/ResponsiveLine.jsx")
-    .MyResponsiveLine.unsafeCast<FC<Props>>()
 
 val GraphPage by nfc<PageProps> {
     div {
