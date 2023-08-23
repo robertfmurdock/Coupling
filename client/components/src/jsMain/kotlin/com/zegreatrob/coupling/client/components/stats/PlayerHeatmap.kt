@@ -13,9 +13,7 @@ import react.useMemo
 import web.cssom.Display
 import web.cssom.TextAlign
 import web.cssom.VerticalAlign
-import web.cssom.WhiteSpace
 import web.cssom.deg
-import web.cssom.number
 import web.cssom.px
 import kotlin.random.Random
 
@@ -34,35 +32,26 @@ external interface PlayerHeatmapProps : Props {
 @ReactFunc
 val PlayerHeatmap by nfc<PlayerHeatmapProps> { (players, heatmapData) ->
     div {
-        css {
+        className = heatmapTopRowClass
+        div {
+            css {
+                display = Display.inlineBlock
+                width = 62.px
+            }
+        }
+        players.forEach { player -> TopRowPlayer(player) }
+    }
+    div {
+        className = heatmapSideRow
+        players.forEach { player -> SidePlayer(player) }
+    }
+    Heatmap(
+        heatmapData,
+        ClassName {
             display = Display.inlineBlock
             verticalAlign = VerticalAlign.top
-            marginLeft = 20.px
-            whiteSpace = WhiteSpace.nowrap
-            flexShrink = number(0.0)
-        }
-        div {
-            className = heatmapTopRowClass
-            div {
-                css {
-                    display = Display.inlineBlock
-                    width = 62.px
-                }
-            }
-            players.forEach { player -> TopRowPlayer(player) }
-        }
-        div {
-            className = heatmapSideRow
-            players.forEach { player -> SidePlayer(player) }
-        }
-        Heatmap(
-            heatmapData,
-            ClassName {
-                display = Display.inlineBlock
-                verticalAlign = VerticalAlign.top
-            },
-        )
-    }
+        },
+    )
 }
 
 external interface TopRowPlayerProps : Props {

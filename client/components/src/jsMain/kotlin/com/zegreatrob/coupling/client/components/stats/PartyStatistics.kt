@@ -4,8 +4,10 @@ import com.zegreatrob.coupling.action.stats.PairReport
 import com.zegreatrob.coupling.action.stats.heatmap.heatmapData
 import com.zegreatrob.coupling.action.timeSincePairSort
 import com.zegreatrob.coupling.client.components.ConfigHeader
+import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.model.PlayerPair
+import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
@@ -16,13 +18,18 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.core.jso
+import kotlinx.datetime.toJSDate
+import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
+import react.useState
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.VerticalAlign
 import web.cssom.WhiteSpace
 import web.cssom.number
+import web.cssom.px
 import kotlin.time.Duration
 
 @JsModule("date-fns/formatDistance")
@@ -53,30 +60,101 @@ val PartyStatistics by nfc<PartyStatisticsProps> { props ->
                 this.party = party
                 +"Statistics"
             }
+            PartyStatisticsContent(spinsUntilFullRotation, players, medianSpinDuration, pairs)
+        }
+    }
+}
+
+external interface PartyStatisticsContentProps : Props {
+    var spinsUntilFullRotation: Int
+    var players: List<Player>
+
+    @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
+    var medianSpinDuration: Duration?
+    var pairs: List<PlayerPair>
+}
+
+@ReactFunc
+val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
+    val (spinsUntilFullRotation, players, medianSpinDuration, pairs) = props
+
+    var showPlot by useState(false)
+
+    div {
+        css {
+            whiteSpace = WhiteSpace.nowrap
+            display = Display.inlineFlex
+        }
+        div {
+            css {
+                display = Display.inlineBlock
+                verticalAlign = VerticalAlign.top
+                flexGrow = number(0.0)
+            }
             div {
-                css {
-                    whiteSpace = WhiteSpace.nowrap
-                    display = Display.inlineFlex
-                }
+                TeamStatistics(
+                    spinsUntilFullRotation = spinsUntilFullRotation,
+                    activePlayerCount = players.size,
+                    medianSpinDuration = medianSpinDuration,
+                )
+            }
+            PairReportTable(pairs.pairReports())
+        }
+        div {
+            css {
+                display = Display.inlineBlock
+                marginLeft = 20.px
+            }
+            div {
+                CouplingButton(onClick = { showPlot = false }) { +"Heatmap" }
+                CouplingButton(onClick = { showPlot = true }) { +"Pair Dates" }
+            }
+
+            if (showPlot) {
                 div {
                     css {
-                        display = Display.inlineBlock
-                        verticalAlign = VerticalAlign.top
-                        flexGrow = number(0.0)
+                        width = 400.px
+                        height = 400.px
                     }
-                    div {
-                        TeamStatistics(
-                            spinsUntilFullRotation = spinsUntilFullRotation,
-                            activePlayerCount = players.size,
-                            medianSpinDuration = medianSpinDuration,
-                        )
+
+                    MyResponsiveLine {
+                        data = props.pairs.map {
+                            jso<NivoLineData> {
+                                id = it.players?.joinToString("-") { it.element.name } ?: "unknown"
+//                                color = "red"
+                                data = it.pairAssignmentHistory?.reversed()
+                                    ?.mapIndexed { index, pairAssignment ->
+                                        jso<NinoLinePoint> {
+                                            x = pairAssignment.date?.toJSDate() ?: 0
+                                            y = index
+                                        }
+                                    }
+                                    ?.toTypedArray() ?: emptyArray()
+                            }
+                        }.filter { it.data.isNotEmpty() }
+                            .toTypedArray()
+                            .also {
+                                println("data")
+                                println(JSON.stringify(it))
+                            }
                     }
-                    PairReportTable(pairs.pairReports())
                 }
+            } else {
                 PlayerHeatmap(players, heatmapData(players, pairs))
             }
         }
     }
+}
+
+sealed external interface NivoLineData {
+    var id: String
+    var color: String
+    var data: Array<NinoLinePoint>
+}
+
+sealed external interface NinoLinePoint {
+    var x: Any
+    var y: Any
 }
 
 private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCouplingPair() to it.spinsSinceLastPaired }
@@ -89,3 +167,11 @@ private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCoupl
         }
     }
     .sortedByDescending(::timeSincePairSort)
+
+external interface MyResponsiveLineProps : Props {
+    var data: Array<NivoLineData>
+}
+
+val MyResponsiveLine = kotlinext.js.require<dynamic>("com/zegreatrob/coupling/client/ResponsiveLine.jsx")
+    .MyResponsiveLine.unsafeCast<FC<MyResponsiveLineProps>>()
+
