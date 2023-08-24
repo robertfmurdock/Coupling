@@ -296,6 +296,15 @@ type Pair {
     pairAssignmentHistory: [PairAssignmentDocumentDetails]
 }
 
+type PairAssignment {
+    playerIds: [ID!]!
+    documentId: ID!
+    details: PairAssignmentDocumentDetails!
+    date: String!
+    allPairs: [PinnedPair]!
+    heat: Float
+}
+
 """
 All Queries and Mutations are subject to change. If you want to program an integration that depends on the Graph being stable, please open an issue on the [the github page](https://www.github.com/robertfmurdock/coupling), so we can plan accordingly. :)
 """
