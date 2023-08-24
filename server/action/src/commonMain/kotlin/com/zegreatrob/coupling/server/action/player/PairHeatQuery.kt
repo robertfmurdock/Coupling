@@ -31,7 +31,9 @@ data class PairHeatQuery(val partyId: PartyId, val pair: CouplingPair, val lastA
         }
 
         private suspend fun PairHeatQuery.historyInHeatWindow(): List<PairAssignmentDocument> {
-            val history = partyId.loadHistory().limitHistory(lastAssignments)
+            val history = partyId.loadHistory()
+                .sortedBy { it.date }
+                .limitHistory(lastAssignments)
             val rotationPeriod = partyId.loadPlayers().elements.spinsUntilFullRotation()
             return history.slice(
                 0 until min(getLastRelevantRotation(rotationPeriod), history.size),
@@ -40,7 +42,7 @@ data class PairHeatQuery(val partyId: PartyId, val pair: CouplingPair, val lastA
 
         private fun List<PairAssignmentDocument>.limitHistory(pairAssignmentDocumentId: PairAssignmentDocumentId?) =
             if (pairAssignmentDocumentId != null) {
-                slice(0..map(PairAssignmentDocument::id).indexOf(pairAssignmentDocumentId))
+                slice(0..map(PairAssignmentDocument::id).indexOf(pairAssignmentDocumentId).also { println("index is $it") })
             } else {
                 this
             }

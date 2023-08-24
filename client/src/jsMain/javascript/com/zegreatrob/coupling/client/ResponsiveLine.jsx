@@ -282,26 +282,23 @@ const data = [
 export const MyResponsiveLine = (props) => (
     <ResponsiveLine
         animate
-        // axisBottom={{
-        //     format: '.%L',
-        //     legend: 'time scale',
-        //     legendOffset: -12,
-        //     tickValues: 'every 10 milliseconds'
-        // }}
+        axisBottom={{
+            format: '',
+            legend: 'Time',
+            legendOffset: -12,
+        }}
         axisLeft={{
-            legend: 'linear scale',
-            // legendOffset: 12
+            legend: 'Heat',
+            legendOffset: 12
         }}
         curve="monotoneX"
         data={props.data}
-        // enablePointLabel
-        // height={400}
-        // margin={{
-        //     bottom: 60,
-        //     left: 80,
-        //     right: 20,
-        //     top: 20
-        // }}
+        margin={{
+            bottom: 60,
+            left: 80,
+            right: 20,
+            top: 20
+        }}
         pointBorderColor={{
             from: 'color',
             modifiers: [
@@ -315,16 +312,39 @@ export const MyResponsiveLine = (props) => (
         pointSize={16}
         pointSymbol={function noRefCheck(){}}
         useMesh
-        // width={900}
-        // xFormat="time:%Y-%m-%d %H:%M:%S.%L"
         xScale={{
             format: '%Y-%m-%d %H:%M:%S.%L',
-            // precision: 'millisecond',
             type: 'time',
             useUTC: false
         }}
         yScale={{
             type: 'linear'
         }}
+        legends={[
+            {
+                anchor: 'bottom-right',
+                direction: 'column',
+                justify: false,
+                translateX: 100,
+                translateY: 0,
+                itemsSpacing: 0,
+                itemDirection: 'left-to-right',
+                itemWidth: 80,
+                itemHeight: 20,
+                itemOpacity: 0.75,
+                symbolSize: 12,
+                symbolShape: 'circle',
+                symbolBorderColor: 'rgba(0, 0, 0, .5)',
+                effects: [
+                    {
+                        on: 'hover',
+                        style: {
+                            itemBackground: 'rgba(0, 0, 0, .03)',
+                            itemOpacity: 1
+                        }
+                    }
+                ]
+            }
+        ]}
     />
 )

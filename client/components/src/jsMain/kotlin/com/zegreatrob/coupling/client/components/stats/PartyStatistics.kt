@@ -78,7 +78,7 @@ external interface PartyStatisticsContentProps : Props {
 val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
     val (spinsUntilFullRotation, players, medianSpinDuration, pairs) = props
 
-    var showPlot by useState(false)
+    var showPlot by useState(true)
 
     div {
         css {
@@ -113,30 +113,25 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
             if (showPlot) {
                 div {
                     css {
-                        width = 400.px
-                        height = 400.px
+                        width = 600.px
+                        height = 600.px
+                        backgroundColor = Color("white")
                     }
-
                     MyResponsiveLine {
                         data = props.pairs.map {
                             jso<NivoLineData> {
                                 id = it.players?.joinToString("-") { it.element.name } ?: "unknown"
-//                                color = "red"
-                                data = it.pairAssignmentHistory?.reversed()
-                                    ?.mapIndexed { index, pairAssignment ->
+                                data = it.pairAssignmentHistory
+                                    ?.map { pairAssignment ->
                                         jso<NinoLinePoint> {
                                             x = pairAssignment.date?.toJSDate() ?: 0
-                                            y = index
+                                            y = pairAssignment.heat ?: 0
                                         }
                                     }
                                     ?.toTypedArray() ?: emptyArray()
                             }
                         }.filter { it.data.isNotEmpty() }
                             .toTypedArray()
-                            .also {
-                                println("data")
-                                println(JSON.stringify(it))
-                            }
                     }
                 }
             } else {
