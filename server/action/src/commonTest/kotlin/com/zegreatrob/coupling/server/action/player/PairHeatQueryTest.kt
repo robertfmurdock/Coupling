@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.action.player
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -11,6 +10,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.stubmodel.record
+import com.zegreatrob.coupling.stubmodel.stubPairAssignmentId
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
@@ -23,18 +23,20 @@ import kotlinx.datetime.toInstant
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.minutes
 
 class PairHeatQueryTest {
 
     companion object {
         private fun NotEmptyList<CouplingPair>.buildHistoryByRepeating(repetitions: Int) =
             (0 until repetitions)
-                .map { pairAssignmentDocument() }
+                .map { pairAssignmentDocument(index = it) }
 
-        fun NotEmptyList<CouplingPair>.pairAssignmentDocument() =
+        fun NotEmptyList<CouplingPair>.pairAssignmentDocument(index: Int = 0) =
             PairAssignmentDocument(
-                id = PairAssignmentDocumentId(""),
-                date = LocalDateTime(2016, 3, 1, 0, 0, 0).toInstant(TimeZone.currentSystemDefault()),
+                id = stubPairAssignmentId(),
+                date = LocalDateTime(2016, 3, 1, 0, 0, 0).toInstant(TimeZone.currentSystemDefault())
+                    .plus(index.minutes),
                 pairs = withPins(),
                 null,
             )
@@ -154,6 +156,22 @@ class PairHeatQueryTest {
         }
 
         @Test
+        fun whenLimitedToAllWillReturnSevenWhenThePairHasFourConsecutivePairings() =
+            asyncSetup(object : PairHeatQuery.Dispatcher {
+                val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
+                val history = notEmptyListOf(pair).buildHistoryByRepeating(4)
+                val partyId = stubPartyId()
+                override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
+                override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
+                    history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                }
+            }) exercise {
+                perform(PairHeatQuery(stubPartyId(), pair, history.maxByOrNull { it.date }!!.id))
+            } verify { result ->
+                result.assertIsEqualTo(7.toDouble())
+            }
+
+        @Test
         fun willReturnTenWhenThePairHasFiveConsecutivePairings() = asyncSetup(object : PairHeatQuery.Dispatcher {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 5
@@ -192,7 +210,7 @@ class PairHeatQueryTest {
                 alternatePairing1,
                 expectedPairing,
                 alternatePairing2,
-            ).map { it.pairAssignmentDocument() }
+            ).mapIndexed { index, pairing -> pairing.pairAssignmentDocument(index) }
             override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
@@ -216,7 +234,7 @@ class PairHeatQueryTest {
                 pairOf(player1),
             )
                 .buildHistoryByRepeating(intervalsUntilCooling)
-                .plus(expectedPairing.pairAssignmentDocument())
+                .plus(expectedPairing.pairAssignmentDocument(100))
             override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
@@ -264,7 +282,7 @@ class PairHeatQueryTest {
         fun willReturn1WhenLastPairingIsAlmostOlderThanFiveRotations() = asyncSetup(object : PairHeatQuery.Dispatcher {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
-            val expectedPairing = notEmptyListOf(pair, pairOf(player3)).pairAssignmentDocument()
+            val expectedPairing = notEmptyListOf(pair, pairOf(player3)).pairAssignmentDocument(3)
             val history = notEmptyListOf(
                 pairOf(player2, player3),
                 pairOf(player1, player4),
@@ -288,7 +306,7 @@ class PairHeatQueryTest {
                 pairOf(player1, player3),
                 pairOf(player3, player4),
             )
-            val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
+            val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument(4)
             val otherIntervals: List<PairAssignmentDocument> =
                 assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD - 1)
 
@@ -312,7 +330,7 @@ class PairHeatQueryTest {
                 pairOf(player1, player3),
                 pairOf(player3, player4),
             )
-            val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument()
+            val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument(4)
             val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD - 1)
 
             val goodRotation = otherIntervals + intervalWithIntendedPair

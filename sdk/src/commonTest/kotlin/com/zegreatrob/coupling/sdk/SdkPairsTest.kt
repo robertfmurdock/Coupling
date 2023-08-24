@@ -163,7 +163,7 @@ class SdkPairsTest {
         result?.party?.pairs?.map { it.pairAssignmentHistory?.map(PairAssignment::heat) }
             .assertIsEqualTo(
                 listOf(
-                    listOf(1.0, 2.5, 4.5, 7.0),
+                    listOf(7.0, 4.5, 2.5, 1.0),
                     emptyList(),
                     emptyList(),
                     emptyList(),
