@@ -14,7 +14,7 @@ data class Player(
     val callSignAdjective: String = "",
     val callSignNoun: String = "",
     val imageURL: String? = null,
-    val avatarType: AvatarType?,
+    val avatarType: AvatarType? = null,
 )
 
 val defaultPlayer = Player(id = "DEFAULT", avatarType = null)

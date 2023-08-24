@@ -97,6 +97,7 @@ fun JsonPair.toModel() = PlayerPair(
             details = json.details?.toModel(),
             date = json.date,
             allPairs = json.allPairs?.map(JsonPinnedCouplingPair::toModel),
+            heat = json.heat,
         )
     },
 )

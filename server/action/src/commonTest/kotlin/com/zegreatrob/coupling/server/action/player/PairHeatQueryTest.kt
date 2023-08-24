@@ -48,7 +48,7 @@ class PairHeatQueryTest {
         override val playerRepository = PlayerListGet { listOf(player1, player2).map { record(partyId, it) } }
         override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { emptyList() }
     }) exercise {
-        perform(PairHeatQuery(partyId, pairOf(player2)))
+        perform(PairHeatQuery(partyId, pairOf(player2), null))
     } verify { result ->
         result.assertIsEqualTo(null)
     }
@@ -57,7 +57,7 @@ class PairHeatQueryTest {
     fun willReturnZeroWhenPairHasNeverOccurred() = asyncSetup(object : PairHeatQuery.Dispatcher {
         val partyId = stubPartyId()
         val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
-        val action = PairHeatQuery(partyId, pair)
+        val action = PairHeatQuery(partyId, pair, null)
         override val playerRepository = PlayerListGet { stubPlayers(61).map { record(partyId, it) } }
         override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { emptyList() }
     }) exercise {
@@ -80,7 +80,7 @@ class PairHeatQueryTest {
         }
         val partyId = stubPartyId()
     }) exercise {
-        perform(PairHeatQuery(partyId, pair))
+        perform(PairHeatQuery(partyId, pair, null))
     } verify { result ->
         result.assertIsEqualTo(1.0)
     }
@@ -98,7 +98,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(1.0)
         }
@@ -116,7 +116,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(2.5)
         }
@@ -133,7 +133,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(4.5)
         }
@@ -148,7 +148,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(7.toDouble())
         }
@@ -164,7 +164,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(10.toDouble())
         }
@@ -198,7 +198,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(1.0)
         }
@@ -222,7 +222,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(0.0)
         }
@@ -241,7 +241,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(10.0)
         }
@@ -277,7 +277,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(1.0)
         }
@@ -301,7 +301,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(7.0)
         }
@@ -323,7 +323,7 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair))
+            perform(PairHeatQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(2.5)
         }

@@ -146,6 +146,34 @@ class SdkPairsTest {
     }
 
     @Test
+    fun willCalculatePairHeatOverTime() = asyncSetup(object : ScopeMint() {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val pairAssignmentDocs = listOf(
+            stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins())),
+            stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins())),
+            stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins())),
+            stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins())),
+        )
+    }) {
+        savePartyState(party, players, pairAssignmentDocs)
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory { heat() } } } })
+    } verify { result ->
+        result?.party?.pairs?.map { it.pairAssignmentHistory?.map(PairAssignment::heat) }
+            .assertIsEqualTo(
+                listOf(
+                    listOf(1.0, 2.5, 4.5, 7.0),
+                    emptyList(),
+                    emptyList(),
+                    emptyList(),
+                    emptyList(),
+                    emptyList(),
+                ),
+            )
+    }
+
+    @Test
     fun willShowSpinsSinceLastPaired() = asyncSetup(object : ScopeMint() {
         val party = stubPartyDetails()
         val players = stubPlayers(3)

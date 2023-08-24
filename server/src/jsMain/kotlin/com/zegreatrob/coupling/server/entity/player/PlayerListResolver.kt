@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.entity.player
 
 import com.zegreatrob.coupling.json.JsonPair
+import com.zegreatrob.coupling.json.JsonPairAssignment
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
@@ -93,6 +94,22 @@ private fun pairAssignment(
     heat = null,
 )
 
+val pairAssignmentHeatResolve = dispatch(
+    dispatcherFunc = { context: CouplingContext, _: JsonPairAssignment, _: JsonNull -> context.commandDispatcher },
+    commandFunc = { data, _ ->
+        val model = data.toModel()
+        val partyId = model.details?.data?.partyId ?: return@dispatch null
+        val pair = model.playerIds?.map { Player(id = it) }?.toCouplingPair() ?: return@dispatch null
+        PairHeatQuery(
+            partyId = partyId,
+            pair = pair,
+            lastAssignments = model.documentId,
+        )
+    },
+    fireFunc = ::perform,
+    toSerializable = { it },
+)
+
 val spinsSinceLastPairedResolve = dispatch(
     dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull -> context.commandDispatcher },
     commandFunc = { data, _ ->
@@ -117,6 +134,7 @@ val pairHeatResolve = dispatch(
         PairHeatQuery(
             partyId = partyId,
             pair = players.toCouplingPair(),
+            lastAssignments = null,
         )
     },
     fireFunc = ::perform,
