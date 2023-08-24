@@ -120,22 +120,7 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
                         backgroundColor = Color("white")
                     }
                     props.chartComponent?.invoke {
-                        data = props.pairs
-                            .filter { it.players?.size == 2 }
-                            .map {
-                                jso<NivoLineData> {
-                                    id = it.players?.joinToString("-") { it.element.name } ?: "unknown"
-                                    data = it.pairAssignmentHistory
-                                        ?.map { pairAssignment ->
-                                            jso<NinoLinePoint> {
-                                                x = pairAssignment.date?.toJSDate() ?: 0
-                                                y = pairAssignment.heat ?: 0
-                                            }
-                                        }
-                                        ?.toTypedArray() ?: emptyArray()
-                                }
-                            }.filter { it.data.isNotEmpty() }
-                            .toTypedArray()
+                        data = props.pairs.nivoPairHeatLineData()
                     }
                 }
             } else {
@@ -144,6 +129,22 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
         }
     }
 }
+
+private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players?.size == 2 }
+    .map {
+        jso<NivoLineData> {
+            id = it.players?.joinToString("-") { it.element.name } ?: "unknown"
+            data = it.pairAssignmentHistory
+                ?.map { pairAssignment ->
+                    jso<NinoLinePoint> {
+                        x = pairAssignment.date?.toJSDate() ?: 0
+                        y = pairAssignment.heat ?: 0
+                    }
+                }
+                ?.toTypedArray() ?: emptyArray()
+        }
+    }.filter { it.data.isNotEmpty() }
+    .toTypedArray()
 
 sealed external interface NivoLineData {
     var id: String
