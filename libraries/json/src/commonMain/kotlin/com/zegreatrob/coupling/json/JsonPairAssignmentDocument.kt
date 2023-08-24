@@ -51,6 +51,15 @@ fun PairAssignment.toSerializable() = JsonPairAssignment(
     heat = heat,
 )
 
+fun JsonPairAssignment.toModel() = PairAssignment(
+    playerIds = playerIds,
+    documentId = documentId?.let(::PairAssignmentDocumentId),
+    date = date,
+    allPairs = allPairs?.map(JsonPinnedCouplingPair::toModel),
+    details = details?.toModel(),
+    heat = heat,
+)
+
 @Serializable
 data class JsonPairAssignmentDocumentRecord(
     val id: String,

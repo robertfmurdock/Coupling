@@ -58,6 +58,7 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
 class PairAssignmentQueryBuilder : QueryBuilder<JsonPairAssignment> {
     override var output: JsonPairAssignment = JsonPairAssignment(documentId = "")
     fun date() = also { output = output.copy(date = Instant.DISTANT_PAST) }
+    fun heat() = also { output = output.copy(heat = Double.MAX_VALUE) }
     fun pairs() = also { output = output.copy(allPairs = notEmptyListOf(pinnedCouplingPair)) }
     fun details() = also { output = output.copy(details = pairAssignmentRecord) }
 }
