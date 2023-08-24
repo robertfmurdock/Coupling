@@ -174,4 +174,3 @@ external interface MyResponsiveLineProps : Props {
 
 val MyResponsiveLine = kotlinext.js.require<dynamic>("com/zegreatrob/coupling/client/ResponsiveLine.jsx")
     .MyResponsiveLine.unsafeCast<FC<MyResponsiveLineProps>>()
-
