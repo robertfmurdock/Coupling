@@ -35,14 +35,13 @@ data class PairHeatQuery(val partyId: PartyId, val pair: CouplingPair, val lastA
                 .sortedBy { it.date }
                 .limitHistory(lastAssignments)
             val rotationPeriod = partyId.loadPlayers().elements.spinsUntilFullRotation()
-            return history.slice(
-                0 until min(getLastRelevantRotation(rotationPeriod), history.size),
-            )
+            return history.reversed()
+                .slice(0 until min(getLastRelevantRotation(rotationPeriod), history.size))
         }
 
         private fun List<PairAssignmentDocument>.limitHistory(pairAssignmentDocumentId: PairAssignmentDocumentId?) =
             if (pairAssignmentDocumentId != null) {
-                slice(0..map(PairAssignmentDocument::id).indexOf(pairAssignmentDocumentId).also { println("index is $it") })
+                slice(0..map(PairAssignmentDocument::id).indexOf(pairAssignmentDocumentId))
             } else {
                 this
             }

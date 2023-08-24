@@ -49,18 +49,19 @@ external interface PartyStatisticsProps : Props {
 
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
     var medianSpinDuration: Duration?
+    var chartComponent: FC<GraphProps>?
 }
 
 @ReactFunc
 val PartyStatistics by nfc<PartyStatisticsProps> { props ->
-    val (party, players, pairs, spinsUntilFullRotation, medianSpinDuration) = props
+    val (party, players, pairs, spinsUntilFullRotation, medianSpinDuration, chartComponent) = props
     div {
         PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9")) {
             ConfigHeader {
                 this.party = party
                 +"Statistics"
             }
-            PartyStatisticsContent(spinsUntilFullRotation, players, medianSpinDuration, pairs)
+            PartyStatisticsContent(spinsUntilFullRotation, players, medianSpinDuration, pairs, chartComponent)
         }
     }
 }
@@ -72,13 +73,14 @@ external interface PartyStatisticsContentProps : Props {
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
     var medianSpinDuration: Duration?
     var pairs: List<PlayerPair>
+    var chartComponent: FC<GraphProps>?
 }
 
 @ReactFunc
 val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
     val (spinsUntilFullRotation, players, medianSpinDuration, pairs) = props
 
-    var showPlot by useState(true)
+    var showPlot by useState(false)
 
     div {
         css {
@@ -117,20 +119,22 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
                         height = 600.px
                         backgroundColor = Color("white")
                     }
-                    MyResponsiveLine {
-                        data = props.pairs.map {
-                            jso<NivoLineData> {
-                                id = it.players?.joinToString("-") { it.element.name } ?: "unknown"
-                                data = it.pairAssignmentHistory
-                                    ?.map { pairAssignment ->
-                                        jso<NinoLinePoint> {
-                                            x = pairAssignment.date?.toJSDate() ?: 0
-                                            y = pairAssignment.heat ?: 0
+                    props.chartComponent?.invoke {
+                        data = props.pairs
+                            .filter { it.players?.size == 2 }
+                            .map {
+                                jso<NivoLineData> {
+                                    id = it.players?.joinToString("-") { it.element.name } ?: "unknown"
+                                    data = it.pairAssignmentHistory
+                                        ?.map { pairAssignment ->
+                                            jso<NinoLinePoint> {
+                                                x = pairAssignment.date?.toJSDate() ?: 0
+                                                y = pairAssignment.heat ?: 0
+                                            }
                                         }
-                                    }
-                                    ?.toTypedArray() ?: emptyArray()
-                            }
-                        }.filter { it.data.isNotEmpty() }
+                                        ?.toTypedArray() ?: emptyArray()
+                                }
+                            }.filter { it.data.isNotEmpty() }
                             .toTypedArray()
                     }
                 }
@@ -163,9 +167,6 @@ private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCoupl
     }
     .sortedByDescending(::timeSincePairSort)
 
-external interface MyResponsiveLineProps : Props {
+external interface GraphProps : Props {
     var data: Array<NivoLineData>
 }
-
-val MyResponsiveLine = kotlinext.js.require<dynamic>("com/zegreatrob/coupling/client/ResponsiveLine.jsx")
-    .MyResponsiveLine.unsafeCast<FC<MyResponsiveLineProps>>()

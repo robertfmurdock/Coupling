@@ -28,18 +28,13 @@ kotlin {
         }
     }
     sourceSets {
-        getByName("jsMain") {
+        jsMain {
             resources.srcDir("src/jsMain/javascript")
+            kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
         }
-    }
-}
-
-kotlin {
-    sourceSets.jsMain {
-        kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
-    }
-    sourceSets.jsTest {
-        kotlin.srcDir("build/generated/ksp/js/jsTest/kotlin")
+        jsTest {
+            kotlin.srcDir("build/generated/ksp/js/jsTest/kotlin")
+        }
     }
 }
 

@@ -234,7 +234,8 @@ class PairHeatQueryTest {
                 pairOf(player1),
             )
                 .buildHistoryByRepeating(intervalsUntilCooling)
-                .plus(expectedPairing.pairAssignmentDocument(100))
+                .plus(expectedPairing.pairAssignmentDocument(-1))
+                .shuffled()
             override val playerRepository = PlayerListGet { playerRecords }
             override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
