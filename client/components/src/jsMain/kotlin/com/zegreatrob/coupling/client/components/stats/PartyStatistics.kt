@@ -109,7 +109,7 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
             }
             div {
                 CouplingButton(onClick = { showPlot = false }) { +"Heatmap" }
-                CouplingButton(onClick = { showPlot = true }) { +"Pair Dates" }
+                CouplingButton(onClick = { showPlot = true }) { +"Heat over time" }
             }
 
             if (showPlot) {
