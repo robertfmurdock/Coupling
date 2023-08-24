@@ -5,6 +5,7 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.map
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
@@ -33,15 +34,21 @@ data class JsonPairAssignmentDocument(
 
 @Serializable
 data class JsonPairAssignment(
-    val id: String,
+    val playerIds: List<String>? = null,
+    val documentId: String? = null,
     val date: Instant? = null,
-    val pairs: NotEmptyList<JsonPinnedCouplingPair>? = null,
-    val discordMessageId: String? = null,
-    val slackMessageId: String? = null,
-    val partyId: PartyId? = null,
-    val modifyingUserEmail: String? = null,
-    val isDeleted: Boolean? = null,
-    val timestamp: Instant? = null,
+    val allPairs: NotEmptyList<JsonPinnedCouplingPair>? = null,
+    val details: JsonPairAssignmentDocumentRecord? = null,
+    val heat: Double? = null,
+)
+
+fun PairAssignment.toSerializable() = JsonPairAssignment(
+    playerIds = playerIds,
+    documentId = documentId?.value,
+    date = date,
+    allPairs = allPairs?.map(PinnedCouplingPair::toSerializable),
+    details = details?.toSerializable(),
+    heat = heat,
 )
 
 @Serializable

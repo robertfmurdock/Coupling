@@ -5,7 +5,6 @@ import com.zegreatrob.coupling.json.JsonPairAssignment
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
-import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignment
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignmentRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.partyRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pinRecord
@@ -50,7 +49,6 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
     fun count() = also { output = output.copy(count = 0) }
     fun heat() = also { output = output.copy(heat = 0.0) }
     fun spinsSinceLastPaired() = also { output = output.copy(spinsSinceLastPaired = 0) }
-    fun pairAssignmentHistory() = also { output = output.copy(pairAssignmentHistory = listOf(pairAssignment)) }
     fun pairAssignmentHistory(block: PairAssignmentQueryBuilder.() -> Unit) = PairAssignmentQueryBuilder()
         .also(block)
         .output
@@ -58,7 +56,8 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
 }
 
 class PairAssignmentQueryBuilder : QueryBuilder<JsonPairAssignment> {
-    override var output: JsonPairAssignment = JsonPairAssignment(id = "")
+    override var output: JsonPairAssignment = JsonPairAssignment(documentId = "")
     fun date() = also { output = output.copy(date = Instant.DISTANT_PAST) }
-    fun pairs() = also { output = output.copy(pairs = notEmptyListOf(pinnedCouplingPair)) }
+    fun pairs() = also { output = output.copy(allPairs = notEmptyListOf(pinnedCouplingPair)) }
+    fun details() = also { output = output.copy(details = pairAssignmentRecord) }
 }
