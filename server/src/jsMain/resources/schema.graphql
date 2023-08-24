@@ -293,7 +293,7 @@ type Pair {
     spinsSinceLastPaired: Int
     heat: Float
     contributions: [Contribution!]
-    pairAssignmentHistory: [PairAssignmentDocumentDetails]
+    pairAssignmentHistory: [PairAssignment]
 }
 
 type PairAssignment {

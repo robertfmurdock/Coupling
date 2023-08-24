@@ -8,6 +8,8 @@ import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -74,7 +76,21 @@ val pairAssignmentHistoryResolve = dispatch(
         )
     },
     fireFunc = ::perform,
-    toSerializable = { it.map(PartyRecord<PairAssignmentDocument>::toSerializable) },
+    toSerializable = { (pair, history) ->
+        history.map { doc -> pairAssignment(pair, doc) }.map(PairAssignment::toSerializable)
+    },
+)
+
+private fun pairAssignment(
+    pair: CouplingPair,
+    doc: PartyRecord<PairAssignmentDocument>,
+) = PairAssignment(
+    playerIds = pair.map { it.id },
+    details = doc,
+    documentId = doc.data.element.id,
+    allPairs = doc.data.element.pairs,
+    date = doc.data.element.date,
+    heat = null,
 )
 
 val spinsSinceLastPairedResolve = dispatch(

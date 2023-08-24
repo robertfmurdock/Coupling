@@ -21,6 +21,7 @@ data class PairAssignmentHistoryQuery(val partyId: PartyId, val pair: CouplingPa
     interface Dispatcher : PartyIdPairAssignmentRecordsSyntax {
         suspend fun perform(query: PairAssignmentHistoryQuery) = query.partyId.loadPairAssignmentRecords()
             .filter { it.data.element.hasPair(query.pair) }
+            .let { query.pair to it }
     }
 }
 

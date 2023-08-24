@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.model.PartyStats
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
@@ -93,33 +92,14 @@ fun JsonPair.toModel() = PlayerPair(
     spinsSinceLastPaired = spinsSinceLastPaired,
     heat = heat,
     pairAssignmentHistory = pairAssignmentHistory?.map { json ->
-        val pairAssignmentDocumentId = PairAssignmentDocumentId(json.id)
         PairAssignment(
-            documentId = pairAssignmentDocumentId,
-            details = json.toFullPartyDocumentRecord(),
+            documentId = json.documentId?.let(::PairAssignmentDocumentId),
+            details = json.details?.toModel(),
             date = json.date,
-            allPairs = json.pairs?.map(JsonPinnedCouplingPair::toModel),
+            allPairs = json.allPairs?.map(JsonPinnedCouplingPair::toModel),
         )
     },
 )
-
-private fun JsonPairAssignment.toFullPartyDocumentRecord(): PartyRecord<PairAssignmentDocument>? {
-    return PartyRecord(
-        PartyElement(
-            partyId ?: return null,
-            element = PairAssignmentDocument(
-                id = PairAssignmentDocumentId(id),
-                date = date ?: return null,
-                pairs = pairs?.map { it.toModel() } ?: return null,
-                discordMessageId = discordMessageId,
-                slackMessageId = slackMessageId,
-            ),
-        ),
-        modifyingUserId = modifyingUserEmail ?: return null,
-        isDeleted = isDeleted ?: return null,
-        timestamp = timestamp ?: return null,
-    )
-}
 
 fun PartyElement<PlayerPair>.toJson() = JsonPair(
     players = element.players?.map(PartyRecord<Player>::toSerializable),

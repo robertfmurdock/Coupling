@@ -77,7 +77,7 @@ class SdkPairsTest {
     }) {
         savePartyState(party, players, pairAssignmentDocs)
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory() } } })
+        sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory { details() } } } })
     } verify { result ->
         result?.party?.pairs?.map {
             it.pairAssignmentHistory?.mapNotNull(PairAssignment::details)
