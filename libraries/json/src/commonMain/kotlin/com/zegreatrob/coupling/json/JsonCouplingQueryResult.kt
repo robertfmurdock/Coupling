@@ -95,10 +95,10 @@ fun JsonPair.toModel() = PlayerPair(
     pairAssignmentHistory = pairAssignmentHistory?.map { json ->
         val pairAssignmentDocumentId = PairAssignmentDocumentId(json.id)
         PairAssignment(
-            id = pairAssignmentDocumentId,
-            document = json.toFullPartyDocumentRecord(),
+            documentId = pairAssignmentDocumentId,
+            details = json.toFullPartyDocumentRecord(),
             date = json.date,
-            pairs = json.pairs?.map(JsonPinnedCouplingPair::toModel),
+            allPairs = json.pairs?.map(JsonPinnedCouplingPair::toModel),
         )
     },
 )

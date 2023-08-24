@@ -80,7 +80,7 @@ class SdkPairsTest {
         sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory() } } })
     } verify { result ->
         result?.party?.pairs?.map {
-            it.pairAssignmentHistory?.mapNotNull(PairAssignment::document)
+            it.pairAssignmentHistory?.mapNotNull(PairAssignment::details)
                 ?.map(PartyRecord<PairAssignmentDocument>::data)
                 ?.map(PartyElement<PairAssignmentDocument>::element)
         }
