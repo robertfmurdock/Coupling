@@ -40,15 +40,15 @@ export const MyResponsiveLine = (props) => {
                 tickRotation: 85,
             }}
             axisLeft={{
-                legend: 'Heat',
+                legend: 'Recent Pair Count',
                 legendOffset: 12
             }}
             curve="monotoneX"
             data={props.data}
             margin={{
                 bottom: 60,
-                left: 80,
-                right: 20,
+                left: 40,
+                right: 80,
                 top: 20
             }}
             pointSize={6}
@@ -56,6 +56,10 @@ export const MyResponsiveLine = (props) => {
             pointBorderWidth={1}
             pointBorderColor={{from: 'serieColor'}}
             pointLabelYOffset={-12}
+            // tooltip={function () {
+            //     console.log("tooltip args", arguments)
+            //     return 'lol'
+            // }}
             useMesh
             xScale={{
                 format: '%Y-%m-%d %H:%M:%S.%L',
@@ -66,6 +70,32 @@ export const MyResponsiveLine = (props) => {
             yScale={{
                 type: 'linear'
             }}
+            legends={[
+                {
+                    anchor: 'bottom-right',
+                    direction: 'column',
+                    justify: false,
+                    translateX: 85,
+                    translateY: 0,
+                    itemsSpacing: 0,
+                    itemDirection: 'left-to-right',
+                    itemWidth: 80,
+                    itemHeight: 20,
+                    itemOpacity: 0.75,
+                    symbolSize: 12,
+                    symbolShape: 'circle',
+                    symbolBorderColor: 'rgba(0, 0, 0, .5)',
+                    effects: [
+                        {
+                            on: 'hover',
+                            style: {
+                                itemBackground: 'rgba(0, 0, 0, .03)',
+                                itemOpacity: 1
+                            }
+                        }
+                    ]
+                }
+            ]}
         />
     )
 }
