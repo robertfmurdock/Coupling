@@ -29,12 +29,3 @@ fun List<PartyRecord<PairAssignmentDocument>>.spinsSinceLastPair(couplingPair: C
         .takeIf { it != -1 }
 
 fun PairAssignmentDocument.hasPair(pair: CouplingPair) = pairs.toList().any { areEqualPairs(pair, it.toPair()) }
-
-data class PairAssignment(
-    val playerIds: List<String>? = null,
-    val documentId: PairAssignmentDocumentId? = null,
-    val details: PartyRecord<PairAssignmentDocument>? = null,
-    val date: Instant? = null,
-    val allPairs: NotEmptyList<PinnedCouplingPair>? = null,
-    val heat: Double? = null,
-)

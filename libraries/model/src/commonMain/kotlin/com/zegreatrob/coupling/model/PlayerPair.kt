@@ -7,6 +7,6 @@ data class PlayerPair(
     val players: List<PartyRecord<Player>>? = null,
     val count: Int? = null,
     val spinsSinceLastPaired: Int? = null,
-    val heat: Double? = null,
+    val recentTimesPaired: Int? = null,
     val pairAssignmentHistory: List<PairAssignment>? = null,
 )

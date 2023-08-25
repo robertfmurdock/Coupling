@@ -47,7 +47,7 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
 
     fun players() = also { output = output.copy(players = listOf(playerRecord)) }
     fun count() = also { output = output.copy(count = 0) }
-    fun heat() = also { output = output.copy(heat = 0.0) }
+    fun recentTimesPaired() = also { output = output.copy(recentTimesPaired = 0) }
     fun spinsSinceLastPaired() = also { output = output.copy(spinsSinceLastPaired = 0) }
     fun pairAssignmentHistory(block: PairAssignmentQueryBuilder.() -> Unit) = PairAssignmentQueryBuilder()
         .also(block)
@@ -58,7 +58,7 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
 class PairAssignmentQueryBuilder : QueryBuilder<JsonPairAssignment> {
     override var output: JsonPairAssignment = JsonPairAssignment(documentId = "")
     fun date() = also { output = output.copy(date = Instant.DISTANT_PAST) }
-    fun heat() = also { output = output.copy(heat = Double.MAX_VALUE) }
+    fun recentTimesPaired() = also { output = output.copy(recentTimesPaired = Int.MAX_VALUE) }
     fun pairs() = also { output = output.copy(allPairs = notEmptyListOf(pinnedCouplingPair)) }
     fun details() = also { output = output.copy(details = pairAssignmentRecord) }
 }

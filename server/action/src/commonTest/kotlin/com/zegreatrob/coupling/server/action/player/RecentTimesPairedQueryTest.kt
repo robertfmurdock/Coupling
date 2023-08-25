@@ -25,7 +25,7 @@ import kotools.types.collection.notEmptyListOf
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
 
-class PairHeatQueryTest {
+class RecentTimesPairedQueryTest {
 
     companion object {
         private fun NotEmptyList<CouplingPair>.buildHistoryByRepeating(repetitions: Int) =
@@ -43,23 +43,23 @@ class PairHeatQueryTest {
     }
 
     @Test
-    fun alwaysReturnsNullForSolos() = asyncSetup(object : PairHeatQuery.Dispatcher {
+    fun alwaysReturnsNullForSolos() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
         val partyId = stubPartyId()
         val player1 = Player(id = "bob", avatarType = null)
         val player2 = Player(id = "fred", avatarType = null)
         override val playerRepository = PlayerListGet { listOf(player1, player2).map { record(partyId, it) } }
         override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { emptyList() }
     }) exercise {
-        perform(PairHeatQuery(partyId, pairOf(player2), null))
+        perform(RecentTimesPairedQuery(partyId, pairOf(player2), null))
     } verify { result ->
         result.assertIsEqualTo(null)
     }
 
     @Test
-    fun willReturnZeroWhenPairHasNeverOccurred() = asyncSetup(object : PairHeatQuery.Dispatcher {
+    fun willReturnZeroWhenPairHasNeverOccurred() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
         val partyId = stubPartyId()
         val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
-        val action = PairHeatQuery(partyId, pair, null)
+        val action = RecentTimesPairedQuery(partyId, pair, null)
         override val playerRepository = PlayerListGet { stubPlayers(61).map { record(partyId, it) } }
         override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { emptyList() }
     }) exercise {
@@ -69,7 +69,7 @@ class PairHeatQueryTest {
     }
 
     @Test
-    fun willReturnOneWhenPairHasOccurredButDifferentPositions() = asyncSetup(object : PairHeatQuery.Dispatcher {
+    fun willReturnOneWhenPairHasOccurredButDifferentPositions() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
         val player1 = Player(id = "bob", avatarType = null)
         val player2 = Player(id = "fred", avatarType = null)
         val pair = pairOf(player1, player2)
@@ -82,7 +82,7 @@ class PairHeatQueryTest {
         }
         val partyId = stubPartyId()
     }) exercise {
-        perform(PairHeatQuery(partyId, pair, null))
+        perform(RecentTimesPairedQuery(partyId, pair, null))
     } verify { result ->
         result.assertIsEqualTo(1.0)
     }
@@ -90,7 +90,7 @@ class PairHeatQueryTest {
     class WhenThereIsOnlyOnePossiblePair {
 
         @Test
-        fun willReturn1WhenThePairHasOnePairing() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun whenThePairHasOnePairingCountsCorrectly() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 1
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
@@ -100,13 +100,13 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
-            result.assertIsEqualTo(1.0)
+            result.assertIsEqualTo(1)
         }
 
         @Test
-        fun willReturnTwoAndHalfWhenThePairHasTwoConsecutivePairings() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun whenThePairHasTwoConsecutivePairingsShowsCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 2
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
@@ -118,14 +118,14 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
-            result.assertIsEqualTo(2.5)
+            result.assertIsEqualTo(2)
         }
 
         @Test
-        fun willReturnFourAndHalfWhenThePairHasThreeConsecutivePairings() = asyncSetup(object :
-            PairHeatQuery.Dispatcher {
+        fun whenThePairHasThreeConsecutivePairingsShowsCount() = asyncSetup(object :
+            RecentTimesPairedQuery.Dispatcher {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 3
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
@@ -135,13 +135,13 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
-            result.assertIsEqualTo(4.5)
+            result.assertIsEqualTo(3)
         }
 
         @Test
-        fun willReturnSevenWhenThePairHasFourConsecutivePairings() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun whenThePairHasFourConsecutivePairingsShowsCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val history = notEmptyListOf(pair).buildHistoryByRepeating(4)
             val partyId = stubPartyId()
@@ -150,14 +150,14 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
-            result.assertIsEqualTo(7.toDouble())
+            result.assertIsEqualTo(4)
         }
 
         @Test
-        fun whenLimitedToAllWillReturnSevenWhenThePairHasFourConsecutivePairings() =
-            asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun whenLimitedWithFourConsecutivePairingsWillReturnCount() =
+            asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
                 val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
                 val history = notEmptyListOf(pair).buildHistoryByRepeating(4)
                 val partyId = stubPartyId()
@@ -166,13 +166,13 @@ class PairHeatQueryTest {
                     history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
                 }
             }) exercise {
-                perform(PairHeatQuery(stubPartyId(), pair, history.maxByOrNull { it.date }!!.id))
+                perform(RecentTimesPairedQuery(stubPartyId(), pair, history.maxByOrNull { it.date }!!.id))
             } verify { result ->
-                result.assertIsEqualTo(7.toDouble())
+                result.assertIsEqualTo(4)
             }
 
         @Test
-        fun willReturnTenWhenThePairHasFiveConsecutivePairings() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun whenThePairHasFiveConsecutivePairingsWillReturnCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
             val rotationPeriod = 5
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
@@ -182,9 +182,9 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
-            result.assertIsEqualTo(10.toDouble())
+            result.assertIsEqualTo(5)
         }
     }
 
@@ -201,7 +201,7 @@ class PairHeatQueryTest {
         }
 
         @Test
-        fun willReturn1WithOnePairingInFullRotation() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun willReturn1WithOnePairingInFullRotation() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val expectedPairing = notEmptyListOf(pair, pairOf(player3))
             val alternatePairing1 = notEmptyListOf(pairOf(player1, player3), pairOf(player2))
             val alternatePairing2 = notEmptyListOf(pairOf(player2, player3), pairOf(player1))
@@ -216,13 +216,13 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(1.0)
         }
 
         @Test
-        fun willReturn0WithLastPairingIsOlderThanFiveRotations() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun willReturn0WithLastPairingIsOlderThanFiveRotations() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
             val expectedPairing = notEmptyListOf(pair, pairOf(player3))
@@ -241,13 +241,13 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
             result.assertIsEqualTo(0.0)
         }
 
         @Test
-        fun willNotGoHigherThanTenWhenPairingMoreThanOncePerRotation() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun whenManyPairingsInWindowShowsCountCorrectly() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
             val expectedPairing = notEmptyListOf(pair, pairOf(player3))
@@ -260,9 +260,9 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
-            result.assertIsEqualTo(10.0)
+            result.assertIsEqualTo(6)
         }
     }
 
@@ -280,7 +280,7 @@ class PairHeatQueryTest {
         }
 
         @Test
-        fun willReturn1WhenLastPairingIsAlmostOlderThanFiveRotations() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun willReturn1WhenLastPairingIsAlmostOlderThanFiveRotations() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val rotationHeatWindow = 5
             val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
             val expectedPairing = notEmptyListOf(pair, pairOf(player3)).pairAssignmentDocument(3)
@@ -296,13 +296,13 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
-            result.assertIsEqualTo(1.0)
+            result.assertIsEqualTo(1)
         }
 
         @Test
-        fun willReturn7WhenSkippingOneRotationOutOfFive() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun whenSkippingOneRotationOutOfFiveReturnsCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val assignmentsWithoutIntendedPair = notEmptyListOf(
                 pairOf(player1, player3),
                 pairOf(player3, player4),
@@ -320,13 +320,13 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
-            result.assertIsEqualTo(7.0)
+            result.assertIsEqualTo(4)
         }
 
         @Test
-        fun willReturnTwoAndHalfWhenSkippingThreeRotationOutOfFive() = asyncSetup(object : PairHeatQuery.Dispatcher {
+        fun whenSkippingThreeRotationOutOfFiveWillReturnCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
             val assignmentsWithoutIntendedPair = notEmptyListOf(
                 pairOf(player1, player3),
                 pairOf(player3, player4),
@@ -342,9 +342,9 @@ class PairHeatQueryTest {
                 history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
             }
         }) exercise {
-            perform(PairHeatQuery(stubPartyId(), pair, null))
+            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
         } verify { result ->
-            result.assertIsEqualTo(2.5)
+            result.assertIsEqualTo(2)
         }
     }
 }

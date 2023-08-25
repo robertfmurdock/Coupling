@@ -19,10 +19,10 @@ val StatisticsPage = partyPageFunction { props, partyId ->
                 pairs {
                     players()
                     spinsSinceLastPaired()
-                    heat()
+                    recentTimesPaired()
                     pairAssignmentHistory {
                         date()
-                        heat()
+                        recentTimesPaired()
                     }
                 }
                 medianSpinDuration()

@@ -36,7 +36,7 @@ class SdkHeatMapDataTest {
     }) {
         savePartyState(party, players, history)
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs { heat() } } })
+        sdk().fire(graphQuery { party(party.id) { pairs { recentTimesPaired() } } })
     } verify { result ->
         heatmapData(players, result?.party?.pairs!!)
             .assertIsEqualTo(emptyList<List<Int?>>())
@@ -55,7 +55,7 @@ class SdkHeatMapDataTest {
                 party(party.id) {
                     pairs {
                         players()
-                        heat()
+                        recentTimesPaired()
                     }
                 }
             },
@@ -86,7 +86,7 @@ class SdkHeatMapDataTest {
                 party(party.id) {
                     pairs {
                         players()
-                        heat()
+                        recentTimesPaired()
                     }
                 }
             },
@@ -118,7 +118,7 @@ class SdkHeatMapDataTest {
                 party(party.id) {
                     pairs {
                         players()
-                        heat()
+                        recentTimesPaired()
                     }
                 }
             },
@@ -155,7 +155,7 @@ class SdkHeatMapDataTest {
                 party(party.id) {
                     pairs {
                         players()
-                        heat()
+                        recentTimesPaired()
                     }
                 }
             },
@@ -204,7 +204,7 @@ class SdkHeatMapDataTest {
                     spinsUntilFullRotation()
                     pairs {
                         players()
-                        heat()
+                        recentTimesPaired()
                     }
                 }
             },

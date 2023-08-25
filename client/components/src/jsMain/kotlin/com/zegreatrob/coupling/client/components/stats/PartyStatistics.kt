@@ -109,7 +109,7 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
             }
             div {
                 CouplingButton(onClick = { showPlot = false }) { +"Heatmap" }
-                CouplingButton(onClick = { showPlot = true }) { +"Heat over time" }
+                CouplingButton(onClick = { showPlot = true }) { +"Recent Pairing" }
             }
 
             if (showPlot) {
@@ -138,7 +138,7 @@ private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players?.size 
                 ?.map { pairAssignment ->
                     jso<NinoLinePoint> {
                         x = pairAssignment.date?.toJSDate() ?: 0
-                        y = pairAssignment.heat ?: 0
+                        y = pairAssignment.recentTimesPaired ?: 0
                     }
                 }
                 ?.toTypedArray() ?: emptyArray()

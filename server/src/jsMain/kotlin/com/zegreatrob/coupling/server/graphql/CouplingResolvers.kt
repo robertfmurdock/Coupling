@@ -102,11 +102,11 @@ fun couplingResolvers() = json(
     "Pair" to json(
         "count" to pairCountResolve,
         "spinsSinceLastPaired" to spinsSinceLastPairedResolve,
-        "heat" to pairHeatResolve,
+        "recentTimesPaired" to pairHeatResolve,
         "pairAssignmentHistory" to pairAssignmentHistoryResolve,
     ),
     "PairAssignment" to json(
-        "heat" to pairAssignmentHeatResolve,
+        "recentTimesPaired" to pairAssignmentHeatResolve,
     ),
     "User" to json(
         "boost" to userBoostResolver,

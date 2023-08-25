@@ -39,7 +39,7 @@ data class JsonPairAssignment(
     val date: Instant? = null,
     val allPairs: NotEmptyList<JsonPinnedCouplingPair>? = null,
     val details: JsonPairAssignmentDocumentRecord? = null,
-    val heat: Double? = null,
+    val recentTimesPaired: Int? = null,
 )
 
 fun PairAssignment.toSerializable() = JsonPairAssignment(
@@ -48,7 +48,7 @@ fun PairAssignment.toSerializable() = JsonPairAssignment(
     date = date,
     allPairs = allPairs?.map(PinnedCouplingPair::toSerializable),
     details = details?.toSerializable(),
-    heat = heat,
+    recentTimesPaired = recentTimesPaired,
 )
 
 fun JsonPairAssignment.toModel() = PairAssignment(
@@ -57,7 +57,7 @@ fun JsonPairAssignment.toModel() = PairAssignment(
     date = date,
     allPairs = allPairs?.map(JsonPinnedCouplingPair::toModel),
     details = details?.toModel(),
-    heat = heat,
+    recentTimesPaired = recentTimesPaired,
 )
 
 @Serializable

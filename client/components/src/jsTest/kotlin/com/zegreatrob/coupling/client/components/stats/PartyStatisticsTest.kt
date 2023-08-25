@@ -100,12 +100,12 @@ class PartyStatisticsTest {
             listOf(0.0, 0.0, 1.0, null),
         )
         val pairs = listOf(
-            PlayerPair(listOf(players[0], players[1]).toRecords(party.id), heat = 1.0),
-            PlayerPair(listOf(players[0], players[2]).toRecords(party.id), heat = 0.0),
-            PlayerPair(listOf(players[0], players[3]).toRecords(party.id), heat = 0.0),
-            PlayerPair(listOf(players[1], players[2]).toRecords(party.id), heat = 0.0),
-            PlayerPair(listOf(players[1], players[3]).toRecords(party.id), heat = 0.0),
-            PlayerPair(listOf(players[2], players[3]).toRecords(party.id), heat = 1.0),
+            PlayerPair(listOf(players[0], players[1]).toRecords(party.id), recentTimesPaired = 1),
+            PlayerPair(listOf(players[0], players[2]).toRecords(party.id), recentTimesPaired = 0),
+            PlayerPair(listOf(players[0], players[3]).toRecords(party.id), recentTimesPaired = 0),
+            PlayerPair(listOf(players[1], players[2]).toRecords(party.id), recentTimesPaired = 0),
+            PlayerPair(listOf(players[1], players[3]).toRecords(party.id), recentTimesPaired = 0),
+            PlayerPair(listOf(players[2], players[3]).toRecords(party.id), recentTimesPaired = 1),
         )
     }) exercise {
         render(jso { wrapper = MemoryRouter }) {

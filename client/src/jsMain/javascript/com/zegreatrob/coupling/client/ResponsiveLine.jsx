@@ -20,9 +20,9 @@ export const MyResponsiveLine = (props) => (
             right: 20,
             top: 20
         }}
-        pointSize={10}
+        pointSize={6}
         pointColor="#FFFFFF"
-        pointBorderWidth={2}
+        pointBorderWidth={1}
         pointBorderColor={{ from: 'serieColor' }}
         pointLabelYOffset={-12}
         useMesh

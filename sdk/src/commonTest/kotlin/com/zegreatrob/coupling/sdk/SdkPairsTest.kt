@@ -125,7 +125,7 @@ class SdkPairsTest {
     }
 
     @Test
-    fun willCalculatePairHeat() = asyncSetup(object : ScopeMint() {
+    fun willCalculatePairRecentTimesPaired() = asyncSetup(object : ScopeMint() {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val pairAssignmentDocs = listOf(
@@ -137,16 +137,16 @@ class SdkPairsTest {
     }) {
         savePartyState(party, players, pairAssignmentDocs)
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs { heat() } } })
+        sdk().fire(graphQuery { party(party.id) { pairs { recentTimesPaired() } } })
     } verify { result ->
-        result?.party?.pairs?.map { it.heat }
+        result?.party?.pairs?.map { it.recentTimesPaired }
             .assertIsEqualTo(
-                listOf(7.0, 0.0, 0.0, null, null, null),
+                listOf(4, 0, 0, null, null, null),
             )
     }
 
     @Test
-    fun willCalculatePairHeatOverTime() = asyncSetup(object : ScopeMint() {
+    fun willCalculatePairRecentTimesPairedOverTime() = asyncSetup(object : ScopeMint() {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val pairAssignmentDocs = listOf(
@@ -158,12 +158,12 @@ class SdkPairsTest {
     }) {
         savePartyState(party, players, pairAssignmentDocs)
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory { heat() } } } })
+        sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory { recentTimesPaired() } } } })
     } verify { result ->
-        result?.party?.pairs?.map { it.pairAssignmentHistory?.map(PairAssignment::heat) }
+        result?.party?.pairs?.map { it.pairAssignmentHistory?.map(PairAssignment::recentTimesPaired) }
             .assertIsEqualTo(
                 listOf(
-                    listOf(7.0, 4.5, 2.5, 1.0),
+                    listOf(4, 3, 2, 1),
                     emptyList(),
                     emptyList(),
                     emptyList(),

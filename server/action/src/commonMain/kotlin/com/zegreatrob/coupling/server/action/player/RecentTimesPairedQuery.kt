@@ -15,22 +15,20 @@ import kotools.types.collection.NotEmptyList
 import kotlin.math.min
 
 const val rotationHeatWindow = 5
-val heatIncrements = listOf(0.0, 1.0, 2.5, 4.5, 7.0, 10.0)
 
 @ActionMint
-data class PairHeatQuery(val partyId: PartyId, val pair: CouplingPair, val lastAssignments: PairAssignmentDocumentId?) {
+data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, val lastAssignments: PairAssignmentDocumentId?) {
     interface Dispatcher : PartyIdHistoryTrait, PartyIdLoadPlayersTrait {
-        suspend fun perform(action: PairHeatQuery) = action.timesPaired()
-            ?.toHeatIncrement()
+        suspend fun perform(action: RecentTimesPairedQuery) = action.timesPaired()
 
-        private suspend fun PairHeatQuery.timesPaired() = when (pair) {
+        private suspend fun RecentTimesPairedQuery.timesPaired() = when (pair) {
             is CouplingPair.Single -> null
             is CouplingPair.Double -> historyInHeatWindow()
                 .flattenedPairings()
                 .count { equivalent(it, pair) }
         }
 
-        private suspend fun PairHeatQuery.historyInHeatWindow(): List<PairAssignmentDocument> {
+        private suspend fun RecentTimesPairedQuery.historyInHeatWindow(): List<PairAssignmentDocument> {
             val history = partyId.loadHistory()
                 .sortedBy { it.date }
                 .limitHistory(lastAssignments)
@@ -52,9 +50,5 @@ data class PairHeatQuery(val partyId: PartyId, val pair: CouplingPair, val lastA
             .map(NotEmptyList<PinnedCouplingPair>::toList)
             .flatten()
             .map(PinnedCouplingPair::toPair)
-
-        private fun Int.toHeatIncrement() = heatIncrements[incrementIndex(this)]
-
-        private fun incrementIndex(timesPaired: Int) = min(timesPaired, heatIncrements.size - 1)
     }
 }

@@ -291,7 +291,7 @@ type Pair {
     players: [PlayerDetails]
     count: Int
     spinsSinceLastPaired: Int
-    heat: Float
+    recentTimesPaired: Int
     contributions: [Contribution!]
     pairAssignmentHistory: [PairAssignment]
 }
@@ -302,7 +302,7 @@ type PairAssignment {
     details: PairAssignmentDocumentDetails!
     date: String!
     allPairs: [PinnedPair]!
-    heat: Float
+    recentTimesPaired: Int
 }
 
 """

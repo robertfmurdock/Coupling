@@ -82,7 +82,7 @@ data class JsonPair(
     val count: Int? = null,
     val partyId: String? = null,
     val spinsSinceLastPaired: Int? = null,
-    val heat: Double? = null,
+    val recentTimesPaired: Int? = null,
     val pairAssignmentHistory: List<JsonPairAssignment>? = null,
 )
 
@@ -90,14 +90,14 @@ fun JsonPair.toModel() = PlayerPair(
     players = players?.map(JsonPlayerRecord::toModel),
     count = count,
     spinsSinceLastPaired = spinsSinceLastPaired,
-    heat = heat,
+    recentTimesPaired = recentTimesPaired,
     pairAssignmentHistory = pairAssignmentHistory?.map { json ->
         PairAssignment(
             documentId = json.documentId?.let(::PairAssignmentDocumentId),
             details = json.details?.toModel(),
             date = json.date,
             allPairs = json.allPairs?.map(JsonPinnedCouplingPair::toModel),
-            heat = json.heat,
+            recentTimesPaired = json.recentTimesPaired,
         )
     },
 )

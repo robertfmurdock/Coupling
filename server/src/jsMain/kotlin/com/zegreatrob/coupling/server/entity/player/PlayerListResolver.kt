@@ -18,9 +18,9 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
-import com.zegreatrob.coupling.server.action.player.PairHeatQuery
 import com.zegreatrob.coupling.server.action.player.PairsQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
+import com.zegreatrob.coupling.server.action.player.RecentTimesPairedQuery
 import com.zegreatrob.coupling.server.action.player.SpinsSinceLastPairedQuery
 import com.zegreatrob.coupling.server.action.player.SpinsUntilFullRotationQuery
 import com.zegreatrob.coupling.server.action.player.perform
@@ -91,7 +91,7 @@ private fun pairAssignment(
     documentId = doc.data.element.id,
     allPairs = doc.data.element.pairs,
     date = doc.data.element.date,
-    heat = null,
+    recentTimesPaired = null,
 )
 
 val pairAssignmentHeatResolve = dispatch(
@@ -100,7 +100,7 @@ val pairAssignmentHeatResolve = dispatch(
         val model = data.toModel()
         val partyId = model.details?.data?.partyId ?: return@dispatch null
         val pair = model.playerIds?.map { Player(id = it) }?.toCouplingPair() ?: return@dispatch null
-        PairHeatQuery(
+        RecentTimesPairedQuery(
             partyId = partyId,
             pair = pair,
             lastAssignments = model.documentId,
@@ -131,7 +131,7 @@ val pairHeatResolve = dispatch(
         val model = data.toModel()
         val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null
-        PairHeatQuery(
+        RecentTimesPairedQuery(
             partyId = partyId,
             pair = players.toCouplingPair(),
             lastAssignments = null,
