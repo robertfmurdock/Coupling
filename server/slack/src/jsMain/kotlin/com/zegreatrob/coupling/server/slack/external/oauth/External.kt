@@ -13,12 +13,12 @@ external class InstallProvider(options: InstallProviderOptions) {
     fun handleInstallPath(request: Request, response: Response)
 }
 
-external interface InstallUrlOptions {
+sealed external interface InstallUrlOptions {
     var scopes: Array<String>
     var redirectUri: String
 }
 
-external interface InstallProviderOptions {
+sealed external interface InstallProviderOptions {
     var clientId: String
     var clientSecret: String
     var stateSecret: String
@@ -27,13 +27,13 @@ external interface InstallProviderOptions {
     var installUrlOptions: InstallUrlOptions
 }
 
-external interface InstallationStore {
+sealed external interface InstallationStore {
     var storeInstallation: (Installation) -> Unit
     var fetchInstallation: (InstallationQuery) -> Installation
     var deleteInstallation: (InstallationQuery) -> Unit
 }
 
-external interface InstallationQuery {
+sealed external interface InstallationQuery {
     var teamId: String
     var enterpriseId: String
     var userId: String
@@ -41,7 +41,7 @@ external interface InstallationQuery {
     var isEnterpriseInstall: Boolean
 }
 
-external interface Installation {
+sealed external interface Installation {
     var botToken: String?
     var userToken: String?
     var botId: String?

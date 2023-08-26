@@ -8,11 +8,11 @@ external class IncomingWebhook(url: String, arguments: WebhookArguments = define
     fun send(message: WebhookMessage): Promise<Unit>
 }
 
-external interface WebhookMessage {
+sealed external interface WebhookMessage {
     var text: String
 }
 
-external interface WebhookArguments {
+sealed external interface WebhookArguments {
     @JsName("icon_url")
     var iconUrl: String
 }

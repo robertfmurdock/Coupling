@@ -15,12 +15,12 @@ external class RewritingStream : Stream {
     override fun pipe(stream: Any): Stream
 }
 
-external interface Tag {
+sealed external interface Tag {
     var attrs: Array<Attribute>
     val tagName: String
 }
 
-external interface Attribute {
+sealed external interface Attribute {
     val name: String
     val namespace: String
     var value: String

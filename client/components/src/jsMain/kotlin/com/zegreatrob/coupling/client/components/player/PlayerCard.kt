@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.player
 
 import com.zegreatrob.coupling.client.components.encodeURIComponent
+import com.zegreatrob.coupling.client.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.components.gravatar.gravatarUrl
 import com.zegreatrob.coupling.client.components.gravatar.myGravatarUrl
 import com.zegreatrob.coupling.client.components.pngPath
@@ -10,7 +11,6 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
-import js.core.jso
 import react.ChildrenBuilder
 import react.Props
 import react.dom.events.MouseEvent
@@ -127,10 +127,10 @@ private fun ChildrenBuilder.playerGravatarImage(player: Player, size: Int) = img
 
 private fun String.gravatarWrapper(email: String, size: Int) = gravatarUrl(
     email,
-    jso {
-        this.size = size
-        this.default = encodeURIComponent(this@gravatarWrapper)
-    },
+    GravatarOptions(
+        size = size,
+        default = encodeURIComponent(this@gravatarWrapper),
+    ),
 )
 
 private fun Player.hashedRandomAvatar() = emailWithFallback()
@@ -152,24 +152,22 @@ private fun Player.getGravatarSafeAvatarImageUrl(size: Int, avatarType: AvatarTy
     AvatarType.DicebearThumbs -> gravatarDicebearUrl("thumbs", size)
     AvatarType.DicebearLorelei -> gravatarDicebearUrl("lorelei", size)
     else -> myGravatarUrl(
-        jso {
-            this.size = size
-            this.default = "retro"
-        },
-        emailWithFallback(),
-        null,
+        options = GravatarOptions(size = size, default = "retro"),
+        email = emailWithFallback(),
+        fallback = null,
     )
 }
 
 private fun Player.getDirectAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
     AvatarType.Retro -> myGravatarUrl(
-        jso {
-            this.size = size
-            this.default = "retro"
-        },
+        GravatarOptions(
+            size = size,
+            default = "retro",
+        ),
         emailWithFallback(),
         null,
     )
+
     AvatarType.RobohashSet1 -> getRobohashImageUrl("set1")
     AvatarType.RobohashSet2 -> getRobohashImageUrl("set2")
     AvatarType.RobohashSet3 -> getRobohashImageUrl("set3")

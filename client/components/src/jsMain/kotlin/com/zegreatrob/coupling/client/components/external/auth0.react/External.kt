@@ -19,7 +19,7 @@ external interface Auth0ProviderProps : PropsWithChildren {
     var authorizationParams: Auth0AuthorizationParams
 }
 
-external interface Auth0AuthorizationParams {
+sealed external interface Auth0AuthorizationParams {
     @JsName("redirect_uri")
     var redirectUri: String
     var audience: String
@@ -39,20 +39,20 @@ external interface Auth0Hook {
     fun logout(json: Auth0LogoutStructure = definedExternally)
 }
 
-external interface RedirectLoginOptions {
+sealed external interface RedirectLoginOptions {
     var appState: TAppState
 }
 
-external interface TAppState {
+sealed external interface TAppState {
     var returnTo: String
 }
 
-external interface Auth0LogoutStructure {
-    var clientId: String
-    var logoutParams: Auth0LogoutParams
+sealed external interface Auth0LogoutStructure {
+    var clientId: String?
+    var logoutParams: Auth0LogoutParams?
 }
 
-external interface Auth0LogoutParams {
+sealed external interface Auth0LogoutParams {
     var returnTo: String
 }
 

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.components.welcome
 
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.DemoButton
+import com.zegreatrob.coupling.client.components.external.auth0.react.RedirectLoginOptions
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.client.components.supersize
@@ -37,9 +38,9 @@ val LoginChooser by nfc<Props> {
     val returnPath = params["path"] ?: ""
     val signInFunc = {
         auth0Data.loginWithRedirect(
-            jso {
-                appState = jso { returnTo = "${window.asDynamic()["basename"]}$returnPath" }
-            },
+            RedirectLoginOptions(
+                appState = jso { returnTo = "${window.asDynamic()["basename"]}$returnPath" },
+            ),
         )
     }
     div {

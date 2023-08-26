@@ -18,7 +18,6 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.core.jso
 import kotlinx.datetime.toJSDate
 import react.FC
 import react.Props
@@ -132,24 +131,24 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
 
 private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players?.size == 2 }
     .map {
-        jso<NivoLineData> {
-            id = it.players?.joinToString("-") { it.element.name } ?: "unknown"
+        NivoLineData(
+            id = it.players?.joinToString("-") { it.element.name } ?: "unknown",
             data = it.pairAssignmentHistory
                 ?.map { pairAssignment ->
-                    jso<NinoLinePoint> {
-                        x = pairAssignment.date?.toJSDate() ?: 0
-                        y = pairAssignment.recentTimesPaired ?: 0
-                    }
+                    NinoLinePoint(
+                        x = pairAssignment.date?.toJSDate() ?: 0,
+                        y = pairAssignment.recentTimesPaired ?: 0,
+                    )
                 }
-                ?.toTypedArray() ?: emptyArray()
-        }
+                ?.toTypedArray() ?: emptyArray(),
+        )
     }.filter { it.data.isNotEmpty() }
     .toTypedArray()
 
 sealed external interface NivoLineData {
     var id: String
-    var color: String
     var data: Array<NinoLinePoint>
+    var color: String?
 }
 
 sealed external interface NinoLinePoint {

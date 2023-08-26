@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.party
 
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.components.gravatar.GravatarOptions
 import com.zegreatrob.coupling.client.components.gravatar.gravatarImage
 import com.zegreatrob.coupling.client.components.pin.PinButton
 import com.zegreatrob.coupling.client.components.pin.PinButtonScale
@@ -13,7 +14,6 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
-import js.core.jso
 import react.ChildrenBuilder
 import react.Props
 import react.dom.aria.ariaHidden
@@ -139,9 +139,9 @@ private fun ChildrenBuilder.partyGravatar(party: PartyDetails, size: Int) = if (
         email = party.email,
         alt = "party-img",
         fallback = noPartyImagePath,
-        options = jso {
-            this.size = size
-            this.default = "identicon"
-        },
+        options = GravatarOptions(
+            size = size,
+            default = "identicon",
+        ),
     )
 }

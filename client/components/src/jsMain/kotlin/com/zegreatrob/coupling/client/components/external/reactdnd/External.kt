@@ -7,7 +7,7 @@ external interface DnDProvideProps : PropsWithChildren {
     var backend: DnDBackend
 }
 
-external interface DragOptions {
+sealed external interface DragOptions {
     fun collect(monitor: DragSourceMonitor)
 }
 

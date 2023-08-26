@@ -16,7 +16,7 @@ external interface StripeCustomersApi {
     fun list(options: StripeCustomersListOptions): Promise<StripeListResult<StripeCustomer>>
 }
 
-external interface StripeListResult<T> {
+sealed external interface StripeListResult<T> {
     val data: Array<T>
 }
 
@@ -24,23 +24,23 @@ external interface StripeSubscriptionsApi {
     fun list(options: StripeSubscriptionsListOptions): Promise<StripeListResult<StripeSubscription>>
 }
 
-external interface StripeCustomersCreateOptions {
+sealed external interface StripeCustomersCreateOptions {
     var email: String
 }
 
-external interface StripeCustomersListOptions {
+sealed external interface StripeCustomersListOptions {
     var email: String
 }
 
-external interface StripeSubscriptionsListOptions {
+sealed external interface StripeSubscriptionsListOptions {
     var customer: String
 }
 
-external interface StripeCustomer {
+sealed external interface StripeCustomer {
     val id: String
 }
 
-external interface StripeSubscription {
+sealed external interface StripeSubscription {
     val id: String
     val status: String
 
@@ -55,14 +55,14 @@ external interface StripeSetupIntentsApi {
     fun create(options: StripeSetupIntentCreateOptions): Promise<StripeSetupIntent>
 }
 
-external interface StripeSetupIntentCreateOptions {
+sealed external interface StripeSetupIntentCreateOptions {
     var customer: String
 
     @JsName("payment_method_types")
     var paymentMethodTypes: Array<String>
 }
 
-external interface StripeSetupIntent {
+sealed external interface StripeSetupIntent {
     @JsName("client_secret")
     var clientSecret: String?
 }

@@ -18,7 +18,7 @@ external interface Route {
     fun delete(handler: (Request, Response) -> Unit): Route
 }
 
-external interface RouterParams {
+sealed external interface RouterParams {
     val mergeParams: Boolean?
 }
 

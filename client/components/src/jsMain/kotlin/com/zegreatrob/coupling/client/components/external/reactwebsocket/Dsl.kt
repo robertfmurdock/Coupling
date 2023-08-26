@@ -13,22 +13,22 @@ import kotlin.js.Json
 @JsName("default")
 external fun useWebSocket(url: String, options: UseWebSocketOptions): UseWebSocket
 
-external interface UseWebSocketOptions {
-    var fromSocketIO: Boolean
-    var queryParams: Json
-    var protocols: Array<String>
-    var share: Boolean
-    var reconnectIntervar: Int
-    var reconnectAttempts: Int
-    var retryOnError: Boolean
-    var onOpen: (event: Event) -> Unit
-    var onClose: (event: CloseEvent) -> Unit
-    var onMessage: (event: MessageEvent) -> Unit
-    var onError: (event: ErrorEvent) -> Unit
-    var onReconnectStop: (numAttempts: Int) -> Unit
-    var shouldReconnect: (event: CloseEvent) -> Boolean
-    var filter: (message: MessageEvent) -> Boolean
-    var eventSourceOptions: EventSourceInit
+sealed external interface UseWebSocketOptions {
+    var fromSocketIO: Boolean?
+    var queryParams: Json?
+    var protocols: Array<String>?
+    var share: Boolean?
+    var reconnectIntervar: Int?
+    var reconnectAttempts: Int?
+    var retryOnError: Boolean?
+    var onOpen: ((event: Event) -> Unit)?
+    var onClose: ((event: CloseEvent) -> Unit)?
+    var onMessage: ((event: MessageEvent) -> Unit)?
+    var onError: ((event: ErrorEvent) -> Unit)?
+    var onReconnectStop: ((numAttempts: Int) -> Unit)?
+    var shouldReconnect: ((event: CloseEvent) -> Boolean)?
+    var filter: ((message: MessageEvent) -> Boolean)?
+    var eventSourceOptions: EventSourceInit?
 }
 
 external interface UseWebSocket {

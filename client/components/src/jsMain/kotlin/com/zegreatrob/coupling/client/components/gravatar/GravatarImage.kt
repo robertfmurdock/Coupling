@@ -10,7 +10,7 @@ fun gravatarUrl(email: String, options: GravatarOptions): String {
     return "https://www.gravatar.com/avatar/$codedEmail?default=${options.default}&s=${options.size}"
 }
 
-external interface GravatarOptions {
+sealed external interface GravatarOptions {
     var default: String
     var size: Int
 }

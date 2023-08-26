@@ -13,6 +13,6 @@ external interface ElementsProps : Props {
     var options: ElementsOptions
 }
 
-external interface ElementsOptions {
-    val clientSecret: String
+sealed external interface ElementsOptions {
+    var clientSecret: String
 }

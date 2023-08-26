@@ -23,15 +23,15 @@ external fun jwtVerify(
     options: JWTVerifyOptions = definedExternally,
 ): Promise<JWTVerifyResult>
 
-external interface JWTVerifyResult {
+sealed external interface JWTVerifyResult {
     val payload: JWTPayload
 }
 
-external interface JWTPayload {
+sealed external interface JWTPayload {
     val sub: String
 }
 
-external interface JWTVerifyOptions {
+sealed external interface JWTVerifyOptions {
     var algorithms: Array<String>?
     var audience: Array<String>?
     var clockTolerance: Int?

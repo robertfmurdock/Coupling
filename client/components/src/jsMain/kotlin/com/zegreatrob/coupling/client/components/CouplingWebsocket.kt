@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components
 
+import com.zegreatrob.coupling.client.components.external.reactwebsocket.UseWebSocketOptions
 import com.zegreatrob.coupling.client.components.external.reactwebsocket.useWebSocket
 import com.zegreatrob.coupling.json.JsonMessage
 import com.zegreatrob.coupling.json.fromJsonString
@@ -10,7 +11,6 @@ import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.core.jso
 import kotlinx.browser.window
 import org.w3c.dom.get
 import org.w3c.dom.url.URL
@@ -43,11 +43,11 @@ val CouplingWebsocket by nfc<CouplingWebsocketProps> { props ->
 
     val socketHook = useWebSocket(
         url = buildSocketUrl(partyId, useSsl, token).href,
-        jso {
-            onMessage = { (it.data as? String)?.fromJsonString<JsonMessage>()?.toModel()?.let(onMessageFunc) }
-            onOpen = { connected = true }
-            onClose = { onMessageFunc(disconnectedMessage) }
-        },
+        UseWebSocketOptions(
+            onMessage = { (it.data as? String)?.fromJsonString<JsonMessage>()?.toModel()?.let(onMessageFunc) },
+            onOpen = { connected = true },
+            onClose = { onMessageFunc(disconnectedMessage) },
+        ),
     )
 
     val sendMessageFunc: (Message) -> Unit = useMemo { sendMessageWithSocketFunc(socketHook.sendMessage) }
