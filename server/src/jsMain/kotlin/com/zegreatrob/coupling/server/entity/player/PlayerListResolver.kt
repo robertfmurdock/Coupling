@@ -31,21 +31,21 @@ import kotlinx.serialization.json.JsonNull
 
 val playerListResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> PlayersQuery(PartyId(data.id)) },
+    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { PlayersQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it.map(Record<PartyElement<Player>>::toSerializable) },
 )
 
 val spinsUntilFullRotationResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> SpinsUntilFullRotationQuery(PartyId(data.id)) },
+    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { SpinsUntilFullRotationQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it },
 )
 
 val pairsResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> PairsQuery(PartyId(data.id)) },
+    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { PairsQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it.map(PartyElement<PlayerPair>::toJson) },
 )

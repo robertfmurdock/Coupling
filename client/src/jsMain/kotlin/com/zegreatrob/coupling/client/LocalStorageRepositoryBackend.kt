@@ -28,14 +28,14 @@ class LocalStorageRepositoryBackend {
 
 fun List<Record<PartyDetails>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPartyRecords(): List<Record<PartyDetails>> =
-    fromJsonString<List<JsonPartyDetailsRecord>>().map { it.toModelRecord() }
+    fromJsonString<List<JsonPartyDetailsRecord>>().mapNotNull { it.toModelRecord() }
 
 fun List<PartyRecord<Player>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPlayerRecords(): List<PartyRecord<Player>> = fromJsonString<List<JsonPlayerRecord>>().map { it.toModel() }
 
 fun List<PartyRecord<PairAssignmentDocument>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPairAssignmentRecords(): List<PartyRecord<PairAssignmentDocument>> =
-    fromJsonString<List<JsonPairAssignmentDocumentRecord>>().mapNotNull { it.toModel() }
+    fromJsonString<List<JsonPairAssignmentDocumentRecord>>().map { it.toModel() }
 
 fun List<PartyRecord<Pin>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPinRecords(): List<PartyRecord<Pin>> = fromJsonString<List<JsonPinRecord>>().map { it.toModel() }

@@ -62,9 +62,10 @@ suspend fun loadPartyData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     val partyId = jsonLine["partyId"].unsafeCast<String>().let(::PartyId)
     jsonLine.getArray("partyRecords").forEach { recordJson ->
         tryToImport({ "Failed to save party $partyId" }) {
-            catalog.partyRepository.saveRawRecord(
-                format.decodeFromDynamic<JsonPartyDetailsRecord>(recordJson).toModelRecord(),
-            )
+            val record = format.decodeFromDynamic<JsonPartyDetailsRecord>(recordJson).toModelRecord()
+            if (record != null) {
+                catalog.partyRepository.saveRawRecord(record)
+            }
         }
     }
     jsonLine.getArray("playerRecords").forEach { recordJson ->

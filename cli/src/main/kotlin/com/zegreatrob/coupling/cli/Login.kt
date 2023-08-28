@@ -37,7 +37,7 @@ class Login : CliktCommand() {
                     }.toString(),
                 )
 
-                echo("Login complete! $pollResult")
+                echo("Login complete!")
             }
         } else {
             echo("Could not find client_id for environment $env")

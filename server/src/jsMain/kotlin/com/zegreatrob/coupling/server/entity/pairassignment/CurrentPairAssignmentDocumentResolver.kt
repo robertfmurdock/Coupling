@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val currentPairAssignmentResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> CurrentPairAssignmentDocumentQuery(PartyId(data.id)) },
+    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { CurrentPairAssignmentDocumentQuery(it) } },
     fireFunc = ::perform,
 
 ) { it?.toSerializable() }

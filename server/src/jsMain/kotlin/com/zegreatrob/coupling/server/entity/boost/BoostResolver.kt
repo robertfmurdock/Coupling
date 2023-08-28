@@ -21,7 +21,7 @@ val userBoostResolver = dispatch(
 
 val partyBoostResolver = dispatch(
     dispatcherFunc = prereleaseCommand(),
-    commandFunc = { partyJson: JsonParty, _: JsonNull -> PartyBoostQuery(PartyId(partyJson.id)) },
+    commandFunc = { partyJson: JsonParty, _: JsonNull -> partyJson.id?.let { PartyBoostQuery(PartyId(it)) } },
     fireFunc = ::perform,
     toSerializable = ::jsonBoostRecord,
 )

@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val secretListResolve = dispatch(
     dispatcherFunc = DispatcherProviders.partyCommand,
-    commandFunc = { data, _ -> SecretListQuery(PartyId(data.id)) },
+    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { SecretListQuery(it) } },
     fireFunc = ::perform,
     toSerializable = ::toSerializable,
 )

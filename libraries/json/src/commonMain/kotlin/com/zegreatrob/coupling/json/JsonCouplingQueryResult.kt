@@ -14,6 +14,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
@@ -33,25 +34,28 @@ data class PartyInput(
     val partyId: String,
 )
 
-private fun JsonParty.toModel() = Party(
-    id = id.let(::PartyId),
-    details = details?.toModelRecord(),
-    integration = integration?.toModelRecord(),
-    pinList = pinList?.map(JsonPinRecord::toModel),
-    playerList = playerList?.map(JsonPlayerRecord::toModel),
-    retiredPlayers = retiredPlayers?.map(JsonPlayerRecord::toModel),
-    secretList = secretList?.map(JsonSecretRecord::toModel),
-    pairAssignmentDocumentList = pairAssignmentDocumentList?.map(JsonPairAssignmentDocumentRecord::toModel),
-    currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
-    boost = boost?.toModelRecord(),
-    pairs = pairs?.map(JsonPair::toModel),
-    medianSpinDuration = medianSpinDuration,
-    spinsUntilFullRotation = spinsUntilFullRotation,
-    contributions = contributions?.map(JsonContributionRecord::toModel),
-)
+private fun JsonParty.toModel(): Party? {
+    return Party(
+        id = id?.let(::PartyId) ?: return null,
+        details = details?.toModelRecord(),
+        integration = integration?.toModelRecord(),
+        pinList = pinList?.map(JsonPinRecord::toModel),
+        playerList = playerList?.map(JsonPlayerRecord::toModel),
+        retiredPlayers = retiredPlayers?.map(JsonPlayerRecord::toModel),
+        secretList = secretList?.map(JsonSecretRecord::toModel),
+        pairAssignmentDocumentList = pairAssignmentDocumentList?.map(JsonPairAssignmentDocumentRecord::toModel),
+        currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
+        boost = boost?.toModelRecord(),
+        pairs = pairs?.map(JsonPair::toModel),
+        medianSpinDuration = medianSpinDuration,
+        spinsUntilFullRotation = spinsUntilFullRotation,
+        contributions = contributions?.map(JsonContributionRecord::toModel),
+    )
+}
 
-fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
-    partyList = partyList?.map(JsonParty::toModel),
+fun JsonCouplingQueryResult.toDomain(raw: JsonElement) = CouplingQueryResult(
+    raw = raw.toString(),
+    partyList = partyList?.mapNotNull(JsonParty::toModel),
     user = user?.toModel(),
     party = party?.toModel(),
     globalStats = globalStats?.toModel(),
@@ -60,7 +64,7 @@ fun JsonCouplingQueryResult.toDomain() = CouplingQueryResult(
 
 @Serializable
 data class JsonParty(
-    val id: String,
+    val id: String? = null,
     val details: JsonPartyDetailsRecord? = null,
     val integration: JsonIntegrationRecord? = null,
     val pinList: List<JsonPinRecord>? = null,

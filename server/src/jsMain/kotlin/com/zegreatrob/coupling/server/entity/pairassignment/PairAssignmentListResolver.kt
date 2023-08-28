@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val pairAssignmentListResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> PairAssignmentDocumentListQuery(PartyId(data.id)) },
+    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { PairAssignmentDocumentListQuery(it) } },
     fireFunc = ::perform,
     toSerializable = ::toSerializable,
 )
@@ -22,7 +22,7 @@ private fun toSerializable(result: List<PartyRecord<PairAssignmentDocument>>?) =
 
 val medianSpinDurationResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> MedianSpinDurationQuery(PartyId(data.id)) },
+    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { MedianSpinDurationQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it },
 )

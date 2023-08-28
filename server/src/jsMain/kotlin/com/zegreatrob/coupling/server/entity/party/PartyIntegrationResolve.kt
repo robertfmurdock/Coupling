@@ -12,7 +12,7 @@ import kotlinx.serialization.json.JsonElement
 
 val partyIntegrationResolve = dispatch(
     dispatcherFunc = { r, _, _ -> r.commandDispatcher },
-    commandFunc = { entity: JsonParty, _: JsonElement -> PartyIntegrationQuery(PartyId(entity.id)) },
+    commandFunc = { entity: JsonParty, _: JsonElement -> entity.id?.let(::PartyId)?.let { PartyIntegrationQuery(it) } },
     fireFunc = ::perform,
     toSerializable = ::toJson,
 )

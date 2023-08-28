@@ -12,12 +12,14 @@ interface GqlSyntax {
     suspend fun String.performQuery(): JsonElement = performer.doQuery(this)
     suspend fun performQuery(body: JsonElement): JsonElement = performer.doQuery(body)
     suspend fun JsonElement.perform() = performQuery(this)
-        .jsonObject["data"]
-        ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
-        ?.toDomain()
+        .let { response ->
+            response.jsonObject["data"]
+                ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
+                ?.toDomain(response)
+        }
 
-    suspend fun String.perform() = performQuery()
-        .jsonObject["data"]
-        ?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
-        ?.toDomain()
+    suspend fun String.perform() = performQuery().let { jsonResult ->
+        jsonResult.jsonObject["data"]?.let<JsonElement, JsonCouplingQueryResult>(Json.Default::decodeFromJsonElement)
+            ?.toDomain(jsonResult)
+    }
 }

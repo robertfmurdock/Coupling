@@ -15,7 +15,7 @@ import kotlinx.serialization.json.JsonElement
 
 val pinListResolve = dispatch(
     dispatcherFunc = command(),
-    commandFunc = { entity: JsonParty, _: JsonElement -> PinsQuery(PartyId(entity.id)) },
+    commandFunc = { entity: JsonParty, _: JsonElement -> entity.id?.let(::PartyId)?.let { PinsQuery(it) } },
     fireFunc = ::perform,
     toSerializable = ::toSerializable,
 )

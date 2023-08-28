@@ -27,7 +27,7 @@ data class JsonPartyDetails(
 
 @Serializable
 data class JsonPartyDetailsRecord(
-    val id: String,
+    val id: String? = null,
     val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
     val badgesEnabled: Boolean = false,
     val defaultBadgeName: String = "Default",
@@ -37,9 +37,9 @@ data class JsonPartyDetailsRecord(
     val callSignsEnabled: Boolean = false,
     val animationsEnabled: Boolean = true,
     val animationSpeed: Double = 1.0,
-    val modifyingUserEmail: String,
-    val isDeleted: Boolean,
-    val timestamp: Instant,
+    val modifyingUserEmail: String? = null,
+    val isDeleted: Boolean? = null,
+    val timestamp: Instant? = null,
 )
 
 fun PartyDetails.toSerializable() = JsonPartyDetails(
@@ -102,20 +102,22 @@ fun JsonPartyDetails.toModel(): PartyDetails = PartyDetails(
     animationSpeed = animationSpeed,
 )
 
-fun JsonPartyDetailsRecord.toModelRecord(): Record<PartyDetails> = Record(
-    data = PartyDetails(
-        id = PartyId(id),
-        pairingRule = PairingRule.fromValue(pairingRule),
-        badgesEnabled = badgesEnabled,
-        defaultBadgeName = defaultBadgeName,
-        alternateBadgeName = alternateBadgeName,
-        email = email,
-        name = name,
-        callSignsEnabled = callSignsEnabled,
-        animationEnabled = animationsEnabled,
-        animationSpeed = animationSpeed,
-    ),
-    modifyingUserId = modifyingUserEmail,
-    isDeleted = isDeleted,
-    timestamp = timestamp,
-)
+fun JsonPartyDetailsRecord.toModelRecord(): Record<PartyDetails>? {
+    return Record(
+        data = PartyDetails(
+            id = PartyId(id ?: return null),
+            pairingRule = PairingRule.fromValue(pairingRule),
+            badgesEnabled = badgesEnabled,
+            defaultBadgeName = defaultBadgeName,
+            alternateBadgeName = alternateBadgeName,
+            email = email,
+            name = name,
+            callSignsEnabled = callSignsEnabled,
+            animationEnabled = animationsEnabled,
+            animationSpeed = animationSpeed,
+        ),
+        modifyingUserId = modifyingUserEmail ?: return null,
+        isDeleted = isDeleted ?: return null,
+        timestamp = timestamp ?: return null,
+    )
+}

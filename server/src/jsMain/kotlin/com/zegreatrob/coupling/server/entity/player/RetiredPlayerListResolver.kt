@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val retiredPlayerListResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> RetiredPlayersQuery(PartyId(data.id)) },
+    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { RetiredPlayersQuery(it) } },
     fireFunc = ::perform,
     toSerializable = ::toJsonArray,
 )

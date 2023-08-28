@@ -12,7 +12,7 @@ import kotlinx.serialization.json.JsonNull
 
 val contributionResolver = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _: JsonNull -> PartyContributionQuery(PartyId(data.id)) },
+    commandFunc = { data, _: JsonNull -> data.id?.let(::PartyId)?.let { PartyContributionQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it.map(PartyRecord<Contribution>::toJson) },
 )
