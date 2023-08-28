@@ -9536,10 +9536,10 @@ graphlib@^2.1.8:
   dependencies:
     lodash "^4.17.15"
 
-graphql-http@^1.21.0:
-  version "1.21.0"
-  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.21.0.tgz#04d1606e663acd3f422e86e2e85f4ae7a8b0881b"
-  integrity sha512-yrItPfHj5WeT4n7iusbVin+vGSQjXFAX6U/GnYytdCJRXVad1TWGtYFDZ2ROjCKpXQzIwvfbiWCEwfuXgR3B6A==
+graphql-http@^1.22.0:
+  version "1.22.0"
+  resolved "https://registry.yarnpkg.com/graphql-http/-/graphql-http-1.22.0.tgz#967bad279747ba5e1c9dd85b644c6b4f3dfa88f2"
+  integrity sha512-9RBUlGJWBFqz9LwfpmAbjJL/8j/HCNkZwPBU5+Bfmwez+1Ay43DocMNQYpIWsWqH0Ftv6PTNAh2aRnnMCBJgLw==
 
 graphql@^16.8.0:
   version "16.8.0"
