@@ -20,7 +20,6 @@ input SaveBoostInput {
 
 type Mutation {
     saveBoost(input: SaveBoostInput!): Boolean
-    saveContribution(input: SaveContributionInput!): Boolean
     deleteBoost: Boolean
 }
 
@@ -29,15 +28,4 @@ type Query { _: String }
 type Configuration {
     stripeAdminCode: String
     stripePurchaseCode: String
-}
-
-input SaveContributionInput {
-    partyId: ID!
-    contributionId: ID!
-    hash: String
-    dateTime: String
-    ease: Int
-    story: String
-    link: String
-    participantEmails: [String!]
 }

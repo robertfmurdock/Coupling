@@ -332,9 +332,23 @@ type Mutation {
     deletePairAssignments(input: DeletePairAssignmentsInput!): Boolean
     createSecret(input: CreateSecretInput!) : SecretToken
     deleteSecret(input: DeleteSecretInput!) : Boolean
+    saveContribution(input: SaveContributionInput!): Boolean
     grantSlackAccess(input: GrantSlackAccessInput!): Boolean
     grantDiscordAccess(input: GrantDiscordAccessInput!): Boolean
 }
+
+
+input SaveContributionInput {
+    partyId: ID!
+    contributionId: ID!
+    hash: String
+    dateTime: String
+    ease: Int
+    story: String
+    link: String
+    participantEmails: [String!]
+}
+
 
 input GrantSlackAccessInput {
     code: String!

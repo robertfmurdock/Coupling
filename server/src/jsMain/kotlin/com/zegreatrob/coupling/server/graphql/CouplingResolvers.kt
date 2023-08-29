@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.contribution.contributionResolver
+import com.zegreatrob.coupling.server.entity.contribution.saveContributionResolver
 import com.zegreatrob.coupling.server.entity.discord.grantDiscordAccessResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.currentPairAssignmentResolve
 import com.zegreatrob.coupling.server.entity.pairassignment.deletePairsResolver
@@ -68,19 +69,20 @@ fun couplingResolvers() = json(
     ),
     "Mutation" to json(
         "createSecret" to createSecretResolver,
-        "saveSlackIntegration" to saveSlackIntegrationResolver,
-        "deleteSecret" to deleteSecretResolver,
         "deletePairAssignments" to deletePairsResolver,
         "deleteParty" to deletePartyResolver,
         "deletePin" to deletePinResolver,
         "deletePlayer" to deletePlayerResolver,
+        "deleteSecret" to deleteSecretResolver,
+        "grantDiscordAccess" to grantDiscordAccessResolver,
+        "grantSlackAccess" to grantSlackAccessResolver,
+        "saveContribution" to saveContributionResolver,
         "savePairAssignments" to savePairsResolver,
         "saveParty" to savePartyResolver,
         "savePin" to savePinResolver,
         "savePlayer" to savePlayerResolver,
+        "saveSlackIntegration" to saveSlackIntegrationResolver,
         "spin" to spinResolver,
-        "grantSlackAccess" to grantSlackAccessResolver,
-        "grantDiscordAccess" to grantDiscordAccessResolver,
     ),
     "Party" to json(
         "details" to partyDetailsResolve,
