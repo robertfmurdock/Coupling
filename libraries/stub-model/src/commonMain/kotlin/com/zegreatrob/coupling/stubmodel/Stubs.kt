@@ -125,5 +125,5 @@ fun stubContribution() = Contribution(
     ease = 99,
     story = uuidString(),
     link = uuidString(),
-    participantEmails = listOf(uuidString(), uuidString()),
+    participantEmails = setOf(uuidString(), uuidString()),
 )

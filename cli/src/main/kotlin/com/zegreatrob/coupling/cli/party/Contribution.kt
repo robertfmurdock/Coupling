@@ -47,7 +47,7 @@ class SaveContribution : CliktCommand(name = "save") {
                 SaveContributionCommand(
                     partyId = partyId,
                     contributionId = contributionId,
-                    participantEmails = participantEmail,
+                    participantEmails = participantEmail.toSet(),
                     hash = hash,
                     dateTime = dateTime.ifBlank { null }?.toInstant(),
                     ease = ease.ifBlank { null }?.toInt(),
@@ -96,7 +96,7 @@ class BatchContribution : CliktCommand(name = "batch") {
             SaveContributionCommand(
                 partyId = partyId,
                 contributionId = contributionId,
-                participantEmails = authors,
+                participantEmails = authors.toSet(),
                 hash = contributionId,
                 dateTime = dateTime.ifBlank { null }?.let { ZonedDateTime.parse(it) }?.toInstant()?.toKotlinInstant(),
                 ease = ease?.ifBlank { null }?.toIntOrNull(),

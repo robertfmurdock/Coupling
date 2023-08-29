@@ -98,7 +98,7 @@ object GqlReference {
         ease = 99,
         story = "",
         link = "",
-        participantEmails = listOf(""),
+        participantEmails = setOf(""),
         partyId = PartyId(""),
         modifyingUserEmail = "",
         isDeleted = false,

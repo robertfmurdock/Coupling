@@ -9,7 +9,7 @@ import kotlinx.datetime.Instant
 data class SaveContributionCommand(
     val partyId: PartyId,
     val contributionId: String,
-    val participantEmails: List<String>,
+    val participantEmails: Set<String>,
     val hash: String? = null,
     val dateTime: Instant? = null,
     val ease: Int? = null,

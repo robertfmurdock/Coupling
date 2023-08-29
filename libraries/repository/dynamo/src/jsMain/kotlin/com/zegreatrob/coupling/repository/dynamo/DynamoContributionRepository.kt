@@ -64,7 +64,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
             ease = getDynamoNumberValue("ease")?.toInt(),
             story = getDynamoStringValue("story"),
             link = getDynamoStringValue("link"),
-            participantEmails = getDynamoStringListValue("participantEmails")?.toList() ?: emptyList(),
+            participantEmails = getDynamoStringListValue("participantEmails")?.toSet() ?: emptySet(),
         )
     }
 

@@ -10,5 +10,5 @@ data class Contribution(
     val ease: Int?,
     val story: String?,
     val link: String?,
-    val participantEmails: List<String>,
+    val participantEmails: Set<String>,
 )

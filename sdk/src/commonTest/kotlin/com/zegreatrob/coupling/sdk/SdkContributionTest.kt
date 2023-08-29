@@ -28,7 +28,7 @@ class SdkContributionTest {
             SaveContributionCommand(
                 partyId = party.id,
                 contributionId = uuidString(),
-                participantEmails = listOf(uuidString(), uuidString(), uuidString()),
+                participantEmails = setOf(uuidString(), uuidString(), uuidString()),
                 hash = uuidString(),
                 dateTime = Clock.System.now().minus(Random.nextInt(60).minutes).roundToMillis(),
                 ease = Random.nextInt(),
@@ -58,7 +58,7 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val contributionCommand = stubSaveContributionCommand(party.id)
-            .copy(participantEmails = listOf(players[1].email))
+            .copy(participantEmails = setOf(players[1].email))
         val saveContributionCommands = listOf(
             stubSaveContributionCommand(party.id),
             contributionCommand,
@@ -94,7 +94,7 @@ class SdkContributionTest {
     private fun stubSaveContributionCommand(partyId: PartyId) = SaveContributionCommand(
         partyId = partyId,
         contributionId = uuidString(),
-        participantEmails = emptyList(),
+        participantEmails = emptySet(),
         hash = uuidString(),
         dateTime = Clock.System.now().minus(Random.nextInt(60).minutes).roundToMillis(),
         ease = Random.nextInt(),

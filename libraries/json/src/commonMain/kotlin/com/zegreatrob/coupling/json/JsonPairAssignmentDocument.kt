@@ -101,7 +101,7 @@ data class JsonContributionRecord(
     val ease: Int?,
     val story: String?,
     val link: String?,
-    val participantEmails: List<String>,
+    val participantEmails: Set<String>,
     override val partyId: PartyId?,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
