@@ -98,6 +98,7 @@ interface ICommandDispatcher :
     ServerGrantSlackAccessCommandDispatcher,
     ServerPairCountQueryDispatcher,
     ServerPairsQueryDispatcher,
+    ServerSaveContributionCommandDispatcher,
     ServerSpinsSinceLastPairedQueryDispatcher,
     SpinsUntilFullRotationQuery.Dispatcher,
     TraceIdProvider,
@@ -216,7 +217,6 @@ interface PrereleaseDispatcher :
     ServerPartyBoostQueryDispatcher,
     ServerSaveBoostCommandDispatcher,
     ServerSubscriptionQueryDispatcher,
-    ServerSaveContributionCommandDispatcher,
     ServerUserBoostQueryDispatcher {
     override val boostRepository: BoostRepository
     override val contributionRepository: ContributionRepository

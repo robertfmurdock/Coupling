@@ -10,4 +10,8 @@ private class Party : CliktCommand() {
 
 fun party(): CliktCommand = Party()
     .subcommands(List())
-    .subcommands(Contribution())
+    .subcommands(
+        Contribution()
+            .subcommands(SaveContribution())
+            .subcommands(BatchContribution()),
+    )

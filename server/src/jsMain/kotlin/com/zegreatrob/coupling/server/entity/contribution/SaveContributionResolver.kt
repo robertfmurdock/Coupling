@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val saveContributionResolver = dispatch(
-    dispatcherFunc = DispatcherProviders.prereleaseCommand(),
+    dispatcherFunc = DispatcherProviders.command(),
     commandFunc = { _: JsonNull, args: SaveContributionInput -> args.toCommand() },
     fireFunc = ::perform,
     toSerializable = { true },
