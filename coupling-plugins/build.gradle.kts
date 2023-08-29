@@ -25,6 +25,7 @@ dependencies {
     implementation("com.zegreatrob.testmints:mint-logs-plugin")
     implementation("com.zegreatrob.testmints:action-mint-plugin")
     implementation("com.zegreatrob.tools:tagger-plugin")
+    implementation("com.zegreatrob.tools:digger-plugin")
     implementation(kotlin("gradle-plugin", libs.versions.kotlin.get()))
     implementation(libs.com.fasterxml.jackson.core.jackson.databind)
     implementation(libs.com.github.ben.manes.gradle.versions.plugin)
