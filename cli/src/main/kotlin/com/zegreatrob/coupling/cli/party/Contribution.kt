@@ -61,7 +61,6 @@ class BatchContribution : CliktCommand(name = "batch") {
     private val env by option().default("production")
     private val inputJson by option().prompt()
     override fun run() {
-        echo("hi!")
         val partyId = currentContext.findObject<PartyId>()!!
         val jsonElement = Json.parseToJsonElement(inputJson.trim())
 

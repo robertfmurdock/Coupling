@@ -6,8 +6,6 @@ import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.testmints.action.ActionCannon
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
 import kotlinx.coroutines.runBlocking
 import java.net.URL
 
@@ -28,11 +26,7 @@ fun withSdk(
 
         val sdk: ActionCannon<CouplingSdkDispatcher> = couplingSdk(
             getIdTokenFunc = { accessToken },
-            httpClient = defaultClient(environment.audienceHost()).config {
-                install(Logging) {
-                    level = LogLevel.ALL
-                }
-            },
+            httpClient = defaultClient(environment.audienceHost()),
             pipe = LoggingActionPipe(uuid4()),
         )
         runBlocking {
