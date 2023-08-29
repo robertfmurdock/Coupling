@@ -49,6 +49,7 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
     fun count() = also { output = output.copy(count = 0) }
     fun recentTimesPaired() = also { output = output.copy(recentTimesPaired = 0) }
     fun spinsSinceLastPaired() = also { output = output.copy(spinsSinceLastPaired = 0) }
+    fun contributions() = also { output = output.copy(contributions = listOf(contributionRecord)) }
     fun pairAssignmentHistory(block: PairAssignmentQueryBuilder.() -> Unit) = PairAssignmentQueryBuilder()
         .also(block)
         .output

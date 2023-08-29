@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.server
 
+import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlinx.coroutines.sync.Mutex
@@ -28,6 +30,18 @@ class CachedPairAssignmentDocumentRepository(private val repository: PairAssignm
     override suspend fun loadPairAssignments(partyId: PartyId) = mutex.withLock {
         cache.getOrPut(partyId) {
             repository.loadPairAssignments(partyId)
+        }
+    }
+}
+
+class CachedContributionRepository(private val repository: ContributionRepository) :
+    ContributionRepository by repository {
+    private val mutex = Mutex()
+    private val cache = mutableMapOf<PartyId, List<PartyRecord<Contribution>>>()
+
+    override suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>> = mutex.withLock {
+        cache.getOrPut(partyId) {
+            repository.get(partyId)
         }
     }
 }

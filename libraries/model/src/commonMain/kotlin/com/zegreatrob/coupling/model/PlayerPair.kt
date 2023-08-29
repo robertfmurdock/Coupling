@@ -9,4 +9,5 @@ data class PlayerPair(
     val spinsSinceLastPaired: Int? = null,
     val recentTimesPaired: Int? = null,
     val pairAssignmentHistory: List<PairAssignment>? = null,
+    val contributions: List<PartyRecord<Contribution>>? = null,
 )

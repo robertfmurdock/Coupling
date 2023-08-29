@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.contribution.contributionResolver
+import com.zegreatrob.coupling.server.entity.contribution.pairContributionResolver
 import com.zegreatrob.coupling.server.entity.contribution.saveContributionResolver
 import com.zegreatrob.coupling.server.entity.discord.grantDiscordAccessResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.currentPairAssignmentResolve
@@ -108,6 +109,7 @@ fun couplingResolvers() = json(
         "spinsSinceLastPaired" to spinsSinceLastPairedResolve,
         "recentTimesPaired" to pairHeatResolve,
         "pairAssignmentHistory" to pairAssignmentHistoryResolve,
+        "contributions" to pairContributionResolver,
     ),
     "PairAssignment" to json(
         "recentTimesPaired" to pairAssignmentHeatResolve,

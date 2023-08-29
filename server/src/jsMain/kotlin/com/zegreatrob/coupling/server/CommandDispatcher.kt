@@ -25,6 +25,7 @@ import com.zegreatrob.coupling.server.action.connection.ConnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ConnectionsQuery
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
+import com.zegreatrob.coupling.server.action.contribution.PairContributionQuery
 import com.zegreatrob.coupling.server.action.contribution.PartyContributionQuery
 import com.zegreatrob.coupling.server.action.contribution.ServerSaveContributionCommandDispatcher
 import com.zegreatrob.coupling.server.action.discord.DiscordRepository
@@ -83,12 +84,13 @@ interface ICommandDispatcher :
     MedianSpinDurationQuery.Dispatcher,
     PairAssignmentDocumentListQuery.Dispatcher,
     PairAssignmentHistoryQuery.Dispatcher,
-    RecentTimesPairedQuery.Dispatcher,
+    PairContributionQuery.Dispatcher,
     PartyContributionQuery.Dispatcher,
     PartyDispatcher,
     PartyIntegrationQuery.Dispatcher,
     PinsQuery.Dispatcher,
     PlayersQuery.Dispatcher,
+    RecentTimesPairedQuery.Dispatcher,
     ReportDocCommand.Dispatcher,
     RepositoryCatalog,
     RetiredPlayersQuery.Dispatcher,
