@@ -12,6 +12,8 @@ import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toKotlinInstant
 import kotlinx.serialization.json.Json
@@ -67,8 +69,10 @@ class BatchContribution : CliktCommand(name = "batch") {
         val array = jsonElement.jsonArray
 
         withSdk(env, ::echo) { sdk ->
-            array.forEach { contribution ->
-                saveContribution(sdk, partyId, contribution)
+            coroutineScope {
+                array.forEach { contribution ->
+                    launch { saveContribution(sdk, partyId, contribution) }
+                }
             }
         }
     }
