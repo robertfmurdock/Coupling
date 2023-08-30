@@ -18,6 +18,7 @@ import kotlinx.datetime.Instant
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 class SdkContributionTest {
 
@@ -30,7 +31,7 @@ class SdkContributionTest {
                 contributionId = uuidString(),
                 participantEmails = setOf(uuidString(), uuidString(), uuidString()),
                 hash = uuidString(),
-                dateTime = Clock.System.now().minus(Random.nextInt(60).minutes).roundToMillis(),
+                dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
                 ease = Random.nextInt(),
                 story = uuidString(),
                 link = uuidString(),
