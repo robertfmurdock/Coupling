@@ -17,6 +17,7 @@ custom:
     allowCache: true
     useInProcess: true
     localEnvironment: true
+    noPrependStageInUrl: true
     host: 0.0.0.0
 provider:
   name: aws

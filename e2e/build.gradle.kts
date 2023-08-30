@@ -58,9 +58,8 @@ dependencies {
 }
 
 wdioTest {
-    baseUrl.set("https://localhost/local/")
+    baseUrl.set("https://localhost/")
     htmlReporter.set(true)
-    allureReporter.set(false)
     chromeBinary.set(System.getenv("WDIO_CHROME_BINARY"))
 }
 
@@ -90,7 +89,6 @@ tasks {
         )
         environment(
             "NODE_TLS_REJECT_UNAUTHORIZED" to 0,
-            "CLIENT_BASENAME" to "local",
         )
     }
 

@@ -23,16 +23,17 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.time.ZonedDateTime
 
+data class ContributionContext(val partyId: PartyId, val env: String)
+
 class Contribution : CliktCommand() {
     private val env by option().default("production")
     private val partyId by option().required()
     override fun run() {
-        currentContext.findOrSetObject { PartyId(partyId) }
+        currentContext.findOrSetObject { ContributionContext(PartyId(partyId), env) }
     }
 }
 
 class SaveContribution : CliktCommand(name = "save") {
-    private val env by option().default("production")
     private val contributionId by option().required()
     private val participantEmail by option().multiple(required = true)
     private val hash by option().default("")
@@ -41,8 +42,9 @@ class SaveContribution : CliktCommand(name = "save") {
     private val story by option().default("")
     private val link by option().default("")
     override fun run() {
-        val partyId = currentContext.findObject<PartyId>()!!
-        withSdk(env, ::echo) { sdk ->
+        val contributionContext = currentContext.findObject<ContributionContext>()
+        val partyId = contributionContext!!.partyId
+        withSdk(contributionContext.env, ::echo) { sdk ->
             sdk.fire(
                 SaveContributionCommand(
                     partyId = partyId,
@@ -63,12 +65,12 @@ class BatchContribution : CliktCommand(name = "batch") {
     private val env by option().default("production")
     private val inputJson by option().prompt()
     override fun run() {
-        val partyId = currentContext.findObject<PartyId>()!!
         val jsonElement = Json.parseToJsonElement(inputJson.trim())
-
         val array = jsonElement.jsonArray
 
-        withSdk(env, ::echo) { sdk ->
+        val contributionContext = currentContext.findObject<ContributionContext>()
+        val partyId = contributionContext!!.partyId
+        withSdk(contributionContext.env, ::echo) { sdk ->
             coroutineScope {
                 array.forEach { contribution ->
                     launch { saveContribution(sdk, partyId, contribution) }

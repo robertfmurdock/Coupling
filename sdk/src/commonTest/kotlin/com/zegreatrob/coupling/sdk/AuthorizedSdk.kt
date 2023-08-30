@@ -79,7 +79,7 @@ val generalPurposeClient = HttpClient {
 
 expect fun setupPlatformSpecificKtorSettings()
 
-private val baseUrl = Url("https://localhost/local/")
+private val baseUrl = Url("https://localhost/")
 
 private val ktorLogger = KotlinLogging.logger("ktor")
 

@@ -17,7 +17,7 @@ services:
       - STRIPE_PUBLISHABLE_KEY
       - STRIPE_SECRET_KEY
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/local/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 2s
       timeout: 1s
       retries: 20

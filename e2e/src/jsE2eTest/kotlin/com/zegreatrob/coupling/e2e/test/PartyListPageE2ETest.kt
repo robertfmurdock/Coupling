@@ -42,7 +42,7 @@ class PartyListPageE2ETest {
         PairAssignmentsPage.waitForPage()
     } verify {
         WebdriverBrowser.currentUrl().pathname
-            .assertIsEqualTo(resolve(clientBasename, "${parties[0].id.value}/pairAssignments/current/"))
+            .assertIsEqualTo(("/${parties[0].id.value}/pairAssignments/current/"))
     }
 
     @Test
@@ -51,6 +51,6 @@ class PartyListPageE2ETest {
         PartyConfigPage.waitForPage()
     } verify {
         WebdriverBrowser.currentUrl().pathname
-            .assertIsEqualTo(resolve(clientBasename, "new-party/"))
+            .assertIsEqualTo(("/new-party/"))
     }
 }

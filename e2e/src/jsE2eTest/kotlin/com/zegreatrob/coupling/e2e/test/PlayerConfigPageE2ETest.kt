@@ -67,7 +67,7 @@ class PlayerConfigPageE2ETest {
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
+                .assertIsEqualTo(("/${party.id.value}/pairAssignments/current/"))
         }
 
         @Test
@@ -107,7 +107,7 @@ class PlayerConfigPageE2ETest {
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
+                .assertIsEqualTo(("/${party.id.value}/pairAssignments/current/"))
             PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().attribute("value")
                 .assertIsEqualTo(newName)
@@ -130,7 +130,7 @@ class PlayerConfigPageE2ETest {
             PairAssignmentsPage.waitForPage()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
+                .assertIsEqualTo(("/${party.id.value}/pairAssignments/current/"))
             PlayerConfigPage.goTo(party.id, player.id)
             playerElements.first()
                 .text()
@@ -148,7 +148,7 @@ class PlayerConfigPageE2ETest {
             getDeleteButton().click()
             WebdriverBrowser.acceptAlert()
         } verify {
-            page.waitToArriveAt(resolve(clientBasename, "${party.id.value}/pairAssignments/current/"))
+            page.waitToArriveAt(("/${party.id.value}/pairAssignments/current/"))
         }
 
         @Test

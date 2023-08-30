@@ -95,7 +95,7 @@ class PairAssignmentsPageE2ETest {
             PlayerRoster.getAddPlayerButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/player/new/"))
+                .assertIsEqualTo(("/${party.id.value}/player/new/"))
         }
 
         @Test
@@ -105,7 +105,7 @@ class PairAssignmentsPageE2ETest {
             PlayerRoster.getPlayerElements("Unpaired players").first().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/player/${players[0].id}/"))
+                .assertIsEqualTo(("/${party.id.value}/player/${players[0].id}/"))
         }
 
         @Test
@@ -115,7 +115,7 @@ class PairAssignmentsPageE2ETest {
             getViewHistoryButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/history/"))
+                .assertIsEqualTo(("/${party.id.value}/history/"))
         }
 
         @Test
@@ -125,7 +125,7 @@ class PairAssignmentsPageE2ETest {
             getNewPairsButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/prepare/"))
+                .assertIsEqualTo(("/${party.id.value}/prepare/"))
         }
 
         @Test
@@ -135,7 +135,7 @@ class PairAssignmentsPageE2ETest {
             getStatisticsButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/statistics"))
+                .assertIsEqualTo(("/${party.id.value}/statistics"))
         }
 
         @Test
@@ -145,7 +145,7 @@ class PairAssignmentsPageE2ETest {
             getRetiredPlayersButton().click()
         } verify {
             WebdriverBrowser.currentUrl().pathname
-                .assertIsEqualTo(resolve(clientBasename, "${party.id.value}/players/retired"))
+                .assertIsEqualTo(("/${party.id.value}/players/retired"))
         }
     }
 
@@ -256,11 +256,3 @@ class PairAssignmentsPageE2ETest {
         private suspend fun WebdriverElement.getPairPlayerNames() = all(PlayerCard.PLAYER_LOCATOR).map { it.text() }
     }
 }
-
-fun resolve(base: String, path: String) = if (base == "") {
-    "/$path"
-} else {
-    "$base/$path"
-}
-
-val clientBasename get() = "${process.env.CLIENT_BASENAME}".let { if (it.isNotEmpty()) "/$it" else "" }

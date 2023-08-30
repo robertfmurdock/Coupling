@@ -116,7 +116,6 @@ config.performance = {
 config.externals = {"cheerio": "window", "fs": "empty", ...cdnSettings}
 
 if (config.devServer) {
-    config.devServer.open = ['/local/']
     config.devServer.port = 3001
     config.devServer.hot = true
     config.devServer.historyApiFallback = {index: 'html/index.html'}
@@ -148,7 +147,6 @@ config.plugins.push(
             inMemory: true,
             auth0ClientId: "rchtRQh3yX5akg1xHMq7OomWyXBhJOYg",
             auth0Domain: "zegreatrob.us.auth0.com",
-            basename: '/local',
             prereleaseMode: true,
         } : {}
     }),

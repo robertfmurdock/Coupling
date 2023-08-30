@@ -23,7 +23,7 @@ features:
 oauth_config:
   redirect_urls:
     - https://sandbox.coupling.zegreatrob.com/integration/slack/callback
-    - https://localhost/local/integration/slack/callback
+    - https://localhost/integration/slack/callback
   scopes:
     bot:
       - channels:history
