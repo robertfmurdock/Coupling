@@ -36,7 +36,7 @@ data class PartyInput(
 
 @Serializable
 data class PairInput(
-    val playerIdList: List<String>,
+    val playerIdList: Set<String>,
 )
 
 private fun JsonParty.toModel(): Party? {

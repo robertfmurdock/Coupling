@@ -125,6 +125,33 @@ class SdkPairsTest {
     }
 
     @Test
+    fun willReturnPairAssignmentRecordsForPairWithAlternateIdOrder() = asyncSetup(object : ScopeMint() {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val pair12 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[1], players[2]).withPins()))
+        val pair02 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[2]).withPins()))
+        val pair01_1 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pair01_2 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pair01_3 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pairAssignmentDocs = listOf(pair01_1, pair12, pair01_2, pair02, pair01_3)
+    }) {
+        savePartyState(party, players, pairAssignmentDocs)
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) { pair(players[1].id, players[0].id) { players() } }
+            },
+        )
+    } verify { result ->
+        result?.party?.pair?.players
+            ?.map { it.data.element.id }
+            ?.toSet()
+            .assertIsEqualTo(
+                setOf(players[0].id, players[1].id),
+            )
+    }
+
+    @Test
     fun willSupportPartialPairAssignmentQueries() = asyncSetup(object : ScopeMint() {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
