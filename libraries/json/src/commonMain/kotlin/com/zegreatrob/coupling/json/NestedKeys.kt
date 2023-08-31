@@ -31,12 +31,14 @@ fun JsonObject.nestedKeys(): Map<String, Entry?> = keys.mapNotNull { key ->
 fun Map<String, Entry?>.toGqlQueryFields(): String = if (isEmpty()) {
     ""
 } else {
-    map { (key, value) ->
-        if (value == null) {
-            key
-        } else {
-            "$key ${value.content.toGqlQueryFields()} "
-        }
-    }.joinToString(", ")
+    toQueryLines().joinToString(", ")
         .let { "{ $it }" }
+}
+
+fun Map<String, Entry?>.toQueryLines(): List<String> = map { (key, value) ->
+    if (value == null) {
+        key
+    } else {
+        "$key ${value.content.toGqlQueryFields()} "
+    }
 }

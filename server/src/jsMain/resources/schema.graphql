@@ -143,6 +143,11 @@ type Party {
     medianSpinDuration: String
     boost: BoostDetails
     contributions: [Contribution!]
+    pair(input: PairInput) : Pair
+}
+
+input PairInput {
+    playerIdList: [ID]
 }
 
 input PlayerInput {

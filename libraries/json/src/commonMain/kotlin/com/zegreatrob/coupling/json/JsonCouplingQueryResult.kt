@@ -34,6 +34,11 @@ data class PartyInput(
     val partyId: String,
 )
 
+@Serializable
+data class PairInput(
+    val playerIdList: List<String>,
+)
+
 private fun JsonParty.toModel(): Party? {
     return Party(
         id = id?.let(::PartyId) ?: return null,
@@ -47,6 +52,7 @@ private fun JsonParty.toModel(): Party? {
         currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
         boost = boost?.toModelRecord(),
         pairs = pairs?.map(JsonPair::toModel),
+        pair = pair?.let(JsonPair::toModel),
         medianSpinDuration = medianSpinDuration,
         spinsUntilFullRotation = spinsUntilFullRotation,
         contributions = contributions?.map(JsonContributionRecord::toModel),
@@ -75,6 +81,7 @@ data class JsonParty(
     val currentPairAssignmentDocument: JsonPairAssignmentDocumentRecord? = null,
     val boost: JsonBoostRecord? = null,
     val pairs: List<JsonPair>? = null,
+    val pair: JsonPair? = null,
     val medianSpinDuration: Duration? = null,
     val spinsUntilFullRotation: Int? = null,
     val contributions: List<JsonContributionRecord>? = null,

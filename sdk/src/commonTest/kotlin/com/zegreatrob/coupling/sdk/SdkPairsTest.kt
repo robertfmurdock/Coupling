@@ -65,7 +65,7 @@ class SdkPairsTest {
     }
 
     @Test
-    fun willReturnPairAssignmentRecordsForPair() = asyncSetup(object : ScopeMint() {
+    fun willReturnPairAssignmentRecordsForPairList() = asyncSetup(object : ScopeMint() {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val pair12 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[1], players[2]).withPins()))
@@ -93,6 +93,34 @@ class SdkPairsTest {
                     emptyList(),
                     emptyList(),
                 ),
+            )
+    }
+
+    @Test
+    fun willReturnPairAssignmentRecordsForPair() = asyncSetup(object : ScopeMint() {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val pair12 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[1], players[2]).withPins()))
+        val pair02 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[2]).withPins()))
+        val pair01_1 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pair01_2 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pair01_3 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
+        val pairAssignmentDocs = listOf(pair01_1, pair12, pair01_2, pair02, pair01_3)
+    }) {
+        savePartyState(party, players, pairAssignmentDocs)
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) { pair(players[0].id, players[1].id) { pairAssignmentHistory { details() } } }
+            },
+        )
+    } verify { result ->
+        result?.party?.pair?.pairAssignmentHistory
+            ?.mapNotNull(PairAssignment::details)
+            ?.map(PartyRecord<PairAssignmentDocument>::data)
+            ?.map(PartyElement<PairAssignmentDocument>::element)
+            .assertIsEqualTo(
+                listOf(pair01_1, pair01_2, pair01_3).sortedByDescending { it.date },
             )
     }
 

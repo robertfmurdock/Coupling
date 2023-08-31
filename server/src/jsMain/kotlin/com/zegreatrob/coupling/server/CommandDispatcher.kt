@@ -45,6 +45,7 @@ import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.action.pin.ServerDeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.ServerSavePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
+import com.zegreatrob.coupling.server.action.player.PairQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.RecentTimesPairedQuery
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
@@ -85,6 +86,7 @@ interface ICommandDispatcher :
     PairAssignmentDocumentListQuery.Dispatcher,
     PairAssignmentHistoryQuery.Dispatcher,
     PairContributionQuery.Dispatcher,
+    PairQuery.Dispatcher,
     PartyContributionQuery.Dispatcher,
     PartyDispatcher,
     PartyIntegrationQuery.Dispatcher,

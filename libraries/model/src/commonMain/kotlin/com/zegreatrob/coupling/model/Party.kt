@@ -21,6 +21,7 @@ data class Party(
     val currentPairAssignmentDocument: PartyRecord<PairAssignmentDocument>? = null,
     val boost: Record<Boost>? = null,
     val pairs: List<PlayerPair>? = null,
+    val pair: PlayerPair? = null,
     val medianSpinDuration: Duration? = null,
     val spinsUntilFullRotation: Int? = null,
     val contributions: List<PartyRecord<Contribution>>? = null,
