@@ -48,7 +48,7 @@
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.5.3",
     "html2canvas": "^1.4.1",
-    "jose": "^4.14.4",
+    "jose": "^4.14.5",
     "jsdom": "22.1.0",
     "jwks-rsa": "3.0.1",
     "jwt-decode": "3.1.2",
