@@ -24,6 +24,7 @@ jobs:
       GRGIT_USER: ${{ secrets.GITHUB_TOKEN }}
       S3_BUILD_CACHE_ACCESS_KEY_ID: ${{ secrets.S3_BUILD_CACHE_ACCESS_KEY_ID }}
       S3_BUILD_CACHE_SECRET_KEY: ${{ secrets.S3_BUILD_CACHE_SECRET_KEY }}
+      COUPLING_CLI_ACCESS_TOKEN: ${{ secrets.COUPLING_API_PARTY_SECRET }}
     steps:
       - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
       - uses: browser-actions/setup-chrome@latest
@@ -79,8 +80,13 @@ jobs:
             kotlin-js-store/yarn.lock
       - name: Generate Version 🧮
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
-      - name: Build Coupling
+      - name: Build + Release Coupling
         run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --no-configuration-cache --scan
+      - name: Update Contributions
+        run: |-
+          ./gradlew :currentContributionData
+          ./gradlew :cli:installDist
+          cat build/digger/current.json | ./cli/build/install/cli/bin/cli party contribution --party-id 9df8b8ef-f10f-4b75-bde1-d691c148378c save
       - name: Collect Results
         if: ${{ always() }}
         run: ./gradlew :composeLogs collectResults
