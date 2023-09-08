@@ -26,9 +26,12 @@ dependencies {
     implementation("org.slf4j:slf4j-simple")
 }
 
+version = rootProject.version
+
 tasks {
     distTar {
         compression = Compression.GZIP
+        archiveFileName.set("coupling-cli.tgz")
     }
     val uploadToS3 by registering(Exec::class) {
         dependsOn(distTar)
