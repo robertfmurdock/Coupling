@@ -10,17 +10,11 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
-import com.zegreatrob.testmints.action.ActionCannon
+import com.zegreatrob.tools.digger.json.ContributionParser
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toKotlinInstant
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import java.time.ZonedDateTime
 
 data class ContributionContext(val partyId: PartyId, val env: String)
@@ -62,49 +56,33 @@ class SaveContribution : CliktCommand(name = "save") {
 }
 
 class BatchContribution : CliktCommand(name = "batch") {
-    private val env by option().default("production")
     private val inputJson by option().prompt()
     override fun run() {
-        val jsonElement = Json.parseToJsonElement(inputJson.trim())
-        val array = jsonElement.jsonArray
+        val contributions = ContributionParser.parseContributions(inputJson.trim())
 
         val contributionContext = currentContext.findObject<ContributionContext>()
         val partyId = contributionContext!!.partyId
         withSdk(contributionContext.env, ::echo) { sdk ->
             coroutineScope {
-                array.forEach { contribution ->
-                    launch { saveContribution(sdk, partyId, contribution) }
+                contributions.forEach { contribution ->
+                    launch {
+                        sdk.fire(
+                            SaveContributionCommand(
+                                partyId = partyId,
+                                contributionId = contribution.lastCommit,
+                                participantEmails = contribution.authors.toSet(),
+                                hash = contribution.lastCommit,
+                                dateTime = contribution.dateTime?.ifBlank { null }?.let { ZonedDateTime.parse(it) }
+                                    ?.toInstant()
+                                    ?.toKotlinInstant(),
+                                ease = contribution.ease,
+                                story = contribution.storyId?.ifBlank { null },
+                                link = null,
+                            ),
+                        )
+                    }
                 }
             }
         }
-    }
-
-    private suspend fun saveContribution(
-        sdk: ActionCannon<CouplingSdkDispatcher>,
-        partyId: PartyId,
-        contribution: JsonElement,
-    ) {
-        val contributionId = contribution.jsonObject["lastCommit"]?.jsonPrimitive?.content
-            ?: return echo("No last commit")
-        val authors = contribution.jsonObject["authors"]?.jsonArray?.map { it.jsonPrimitive.content }
-            ?: return echo("No authors")
-        val dateTime = contribution.jsonObject["dateTime"]?.jsonPrimitive?.content
-            ?: return echo("No dateTime")
-        val ease = contribution.jsonObject["ease"]?.jsonPrimitive?.content
-        val story = contribution.jsonObject["story"]?.jsonPrimitive?.content
-        val link = contribution.jsonObject["link"]?.jsonPrimitive?.content
-
-        sdk.fire(
-            SaveContributionCommand(
-                partyId = partyId,
-                contributionId = contributionId,
-                participantEmails = authors.toSet(),
-                hash = contributionId,
-                dateTime = dateTime.ifBlank { null }?.let { ZonedDateTime.parse(it) }?.toInstant()?.toKotlinInstant(),
-                ease = ease?.ifBlank { null }?.toIntOrNull(),
-                story = story?.ifBlank { null },
-                link = link?.ifBlank { null },
-            ),
-        )
     }
 }
