@@ -1,3 +1,5 @@
+import com.zegreatrob.tools.tagger.ReleaseVersion
+
 plugins {
     application
     id("com.zegreatrob.coupling.plugins.jvm")
@@ -22,4 +24,25 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     implementation("org.slf4j:slf4j-api")
     implementation("org.slf4j:slf4j-simple")
+}
+
+tasks {
+    distTar {
+        compression = Compression.GZIP
+    }
+    val uploadToS3 by registering(Exec::class) {
+        dependsOn(distTar)
+        if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
+            enabled = false
+        }
+        val absolutePath = distTar.get().destinationDirectory.get().asFile.absolutePath
+        commandLine = "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling-cli/${rootProject.version}".split(" ")
+    }
+    rootProject
+        .tasks
+        .withType(ReleaseVersion::class.java)
+        .named("release")
+        .configure {
+            finalizedBy(uploadToS3)
+        }
 }
