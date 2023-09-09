@@ -26,7 +26,7 @@ jobs:
       S3_BUILD_CACHE_SECRET_KEY: ${{ secrets.S3_BUILD_CACHE_SECRET_KEY }}
       COUPLING_CLI_ACCESS_TOKEN: ${{ secrets.COUPLING_API_PARTY_SECRET }}
     steps:
-      - run: echo '127.0.0.1 static.localhost socket.localhost' | sudo tee -a /etc/hosts
+      - run: echo '127.0.0.1 static.localhost cli.localhost socket.localhost' | sudo tee -a /etc/hosts
       - uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: stable

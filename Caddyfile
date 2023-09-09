@@ -8,6 +8,12 @@ static.localhost {
     header Access-Control-Allow-Origin "https://localhost"
 }
 
+cli.localhost {
+    root * /cli/build/distributions
+    file_server browse
+    header Access-Control-Allow-Origin "https://localhost"
+}
+
 socket.localhost {
     reverse_proxy serverless:3001
 }

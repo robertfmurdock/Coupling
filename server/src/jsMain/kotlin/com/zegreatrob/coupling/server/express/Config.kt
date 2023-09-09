@@ -13,6 +13,7 @@ object Config {
     val clientBasename: String = Process.getEnv("CLIENT_BASENAME") ?: ""
     val appTitle: String = Process.getEnv("APP_TITLE") ?: ""
     val clientUrl: String = Process.getEnv("CLIENT_URL")?.ifEmpty { null } ?: "/no-client-url-found"
+    val cliUrl: String = Process.getEnv("CLI_URL")?.ifEmpty { null } ?: "/no-cli-url-found"
     val publicUrl = Process.getEnv("PUBLIC_URL") ?: "http://localhost:3000"
     val secretSigningSecret =
         Process.getEnv("SECRET_SIGNING_SECRET") ?: throw Exception("Missing secret signing secret")

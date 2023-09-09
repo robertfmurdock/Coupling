@@ -13,6 +13,7 @@ import kotlin.js.json
 
 fun Express.routes() {
     get("/", indexRoute())
+    get("/latest-cli", cliRoute())
     get("/api/health", healthRoute())
     use(userLoadingMiddleware())
     post(
