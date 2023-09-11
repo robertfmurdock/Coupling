@@ -215,7 +215,7 @@ tasks {
         dependsOn(assemble, jsTest, compileKotlinJs, ":calculateVersion")
         val releaseVersion = rootProject.version
         environment("CLIENT_URL" to "https://assets.zegreatrob.com/coupling/$releaseVersion")
-        environment("CLI_URL" to "https://assets.zegreatrob.com/coupling-cli/$releaseVersion/coupling-cli.tgz")
+        environment("CLI_URL" to "https://assets.zegreatrob.com/coupling-cli/$releaseVersion")
         enabled = "$releaseVersion".run { !(contains("SNAPSHOT") || isBlank()) }
         nodeCommand = "serverless"
         arguments = listOf(
