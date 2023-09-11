@@ -82,6 +82,8 @@ jobs:
         run: ./gradlew calculateVersion -PexportToGithub=true --scan
       - name: Build + Release Coupling
         run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --no-configuration-cache --scan
+      - name: Download Coupling CLI
+        run: wget -c https://coupling.zegreatrob.com/latest-cli -O - | tar -xz
       - name: Update Contributions
         if: ${{ github.ref == 'refs/heads/master' }}
         run: |-
