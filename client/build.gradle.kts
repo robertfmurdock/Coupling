@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
 plugins {
     id("com.zegreatrob.jsmints.plugins.minreact")
     id("com.zegreatrob.coupling.plugins.jstools")
+    id("com.zegreatrob.testmints.action-mint")
     kotlin("plugin.serialization")
 }
 
