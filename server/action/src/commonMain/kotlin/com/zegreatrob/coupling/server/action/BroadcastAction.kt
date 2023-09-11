@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.server.action
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand
+import com.zegreatrob.coupling.server.action.connection.fire
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint

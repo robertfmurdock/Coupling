@@ -3,12 +3,10 @@ package com.zegreatrob.coupling.server.action.connection
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
-import com.zegreatrob.testmints.action.async.SimpleSuspendAction
+import com.zegreatrob.testmints.action.annotation.ActionMint
 
-data class ReportDocCommand(val connectionId: String, val doc: PairAssignmentDocument?) :
-    SimpleSuspendAction<ReportDocCommand.Dispatcher, Pair<List<CouplingConnection>, CouplingSocketMessage>?> {
-
-    override val performFunc = link(Dispatcher::perform)
+@ActionMint
+data class ReportDocCommand(val connectionId: String, val doc: PairAssignmentDocument?) {
 
     interface Dispatcher : CouplingConnectionGetSyntax {
         suspend fun perform(command: ReportDocCommand) = with(command) {
