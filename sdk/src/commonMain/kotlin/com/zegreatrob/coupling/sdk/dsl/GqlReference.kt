@@ -87,6 +87,7 @@ object GqlReference {
         partyId = PartyId(""),
         modifyingUserEmail = "",
         isDeleted = false,
+        description = "",
         createdTimestamp = Instant.DISTANT_FUTURE,
         timestamp = Instant.DISTANT_PAST,
     )

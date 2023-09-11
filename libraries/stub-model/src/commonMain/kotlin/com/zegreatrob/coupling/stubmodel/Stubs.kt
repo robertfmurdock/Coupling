@@ -51,7 +51,7 @@ private fun stubPairingRule() = PairingRule.entries[partyCounter % PairingRule.e
 
 fun stubPartyId() = PartyId(uuidString())
 
-fun stubSecret() = Secret(id = uuidString(), Clock.System.now())
+fun stubSecret() = Secret(id = uuidString(), description = uuidString(), createdTimestamp = Clock.System.now())
 
 var playerCounter = 1
 fun stubPlayer() = Player(

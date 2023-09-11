@@ -20,7 +20,10 @@ interface SdkCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher, Gql
             .toDomain()
             .createSecret
 
-    private fun createSecretInput(command: CreateSecretCommand) = CreateSecretInput(command.partyId.value)
+    private fun createSecretInput(command: CreateSecretCommand) = CreateSecretInput(
+        partyId = command.partyId.value,
+        description = command.description,
+    )
 }
 
 fun JsonElement.parseMutationResult() = Json.decodeFromJsonElement<JsonCouplingMutationResult>(

@@ -25,11 +25,13 @@ class CreateSecretCommandTest {
         }
         override val secretGenerator = SecretGenerator(spy::spyFunction)
         val partyId = stubPartyId()
+        val description = uuidString()
     }) exercise {
-        perform(CreateSecretCommand(partyId))
+        perform(CreateSecretCommand(partyId, description))
     } verify { result ->
         val (secret, token) = result
         token.assertIsEqualTo(expectedSecretToken)
+        secret.description.assertIsEqualTo(description)
         secretRepository.getSecrets(partyId).elements
             .assertIsEqualTo(listOf(secret))
         spy.spyReceivedValues

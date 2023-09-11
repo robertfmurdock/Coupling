@@ -17,5 +17,5 @@ fun JsonCouplingMutationResult.toDomain() = CouplingMutationResult(
     saveSlackIntegration = saveSlackIntegration,
 )
 
-fun JsonSecretToken.toDomain(): Pair<Secret, String> = Secret(secretId, createdTimestamp) to secretToken
-fun Pair<Secret, String>.toModel() = JsonSecretToken(first.id, first.createdTimestamp, second)
+fun JsonSecretToken.toDomain(): Pair<Secret, String> = Secret(secretId, description, createdTimestamp) to secretToken
+fun Pair<Secret, String>.toModel() = JsonSecretToken(first.id, first.description, first.createdTimestamp, second)

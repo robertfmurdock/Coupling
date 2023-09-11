@@ -96,7 +96,8 @@ type PairAssignmentDocumentDetails {
 
 type PartySecret {
     id: ID!
-    partyId: String
+    partyId: String!
+    description: String!
     createdTimestamp: String
     modifyingUserEmail: String
     timestamp: String
@@ -368,11 +369,13 @@ input GrantDiscordAccessInput {
 
 input CreateSecretInput {
     partyId: ID!
+    description: String!
 }
 
 type SecretToken {
     secretId: ID!
-    createdTimestamp: String
+    description: String!,
+    createdTimestamp: String!
     secretToken: String!
 }
 

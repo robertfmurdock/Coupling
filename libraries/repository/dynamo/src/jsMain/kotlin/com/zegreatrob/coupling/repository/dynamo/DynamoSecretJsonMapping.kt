@@ -22,11 +22,13 @@ interface DynamoSecretJsonMapping : PartyIdDynamoRecordJsonMapping {
 
     fun Secret.toDynamoJson() = nullFreeJson(
         "id" to id,
+        "description" to description,
         "createdDate" to createdTimestamp.isoWithMillis(),
     )
 
     fun Json.toSecret() = Secret(
         id = getDynamoStringValue("id") ?: "",
+        description = getDynamoStringValue("description") ?: "",
         createdTimestamp = getDynamoDateTimeValue("createdDate") ?: Instant.DISTANT_PAST,
     )
 

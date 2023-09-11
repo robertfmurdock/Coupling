@@ -31,6 +31,7 @@ data class SaveSlackIntegrationInput(
 @Serializable
 data class JsonSecretToken(
     val secretId: String,
+    val description: String,
     val createdTimestamp: Instant,
     val secretToken: String,
 )

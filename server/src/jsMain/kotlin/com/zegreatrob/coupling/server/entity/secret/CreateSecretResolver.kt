@@ -16,4 +16,4 @@ val createSecretResolver = dispatch(
     toSerializable = { it?.toModel() },
 )
 
-private fun CreateSecretInput.toCommand() = CreateSecretCommand(PartyId(partyId))
+private fun CreateSecretInput.toCommand() = CreateSecretCommand(PartyId(partyId), description)

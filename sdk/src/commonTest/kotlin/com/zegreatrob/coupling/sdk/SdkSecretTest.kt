@@ -15,6 +15,7 @@ import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPartyId
+import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlinx.serialization.json.Json
@@ -29,10 +30,11 @@ class SdkSecretTest {
     @Test
     fun canGenerateSecretThatCanBeUsedInSdk() = asyncSetup(object {
         val party = stubPartyDetails()
+        val secretDescription = uuidString()
     }) {
         sdk().fire(SavePartyCommand(party))
     } exercise {
-        sdk().fire(CreateSecretCommand(party.id))
+        sdk().fire(CreateSecretCommand(party.id, secretDescription))
     } verify { result ->
         val (secret, token) = result!!
         secret.assertIsNotEqualTo(null)
@@ -54,11 +56,12 @@ class SdkSecretTest {
     @Test
     fun deletingSecretWillPreventTokenFromBeingUsed() = asyncSetup(object {
         val party = stubPartyDetails()
+        val secretDescription = uuidString()
         lateinit var secret: Secret
         lateinit var token: String
     }) {
         sdk().fire(SavePartyCommand(party))
-        val result = sdk().fire(CreateSecretCommand(party.id))!!
+        val result = sdk().fire(CreateSecretCommand(party.id, secretDescription))!!
         secret = result.first
         token = result.second
     } exercise {
@@ -80,12 +83,13 @@ class SdkSecretTest {
         val party1 = stubPartyDetails()
         val party2 = stubPartyDetails()
         val party3 = stubPartyDetails()
+        val secretDescription = uuidString()
     }) {
         listOf(party1, party2, party3)
             .map { SavePartyCommand(it) }
             .forEach { sdk().fire(it) }
     } exercise {
-        sdk().fire(CreateSecretCommand(party1.id))
+        sdk().fire(CreateSecretCommand(party1.id, secretDescription))
     } verify { result ->
         val (_, token) = result!!
         val tokenSdk = couplingSdk({ token }, buildClient())
@@ -107,8 +111,9 @@ class SdkSecretTest {
     @Test
     fun canNotGenerateSecretForArbitraryParty() = asyncSetup(object {
         val partyId = stubPartyId()
+        val secretDescription = uuidString()
     }) exercise {
-        sdk().fire(CreateSecretCommand(partyId))
+        sdk().fire(CreateSecretCommand(partyId, secretDescription))
     } verify { result ->
         result.assertIsEqualTo(null)
     }
