@@ -85,7 +85,8 @@ jobs:
       - name: Download Coupling CLI
         run: |-
           wget -c https://coupling.zegreatrob.com/latest-cli -O - | tar -xz
-          ./bin/cli help
+          ls -ltr
+          ./coupling-cli/bin/cli help
       - name: Update Contributions
         if: ${{ github.ref == 'refs/heads/master' }}
         run: |-
