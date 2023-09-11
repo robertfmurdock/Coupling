@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/deploy/prod" />
             <option value="$PROJECT_DIR$/deploy/sandbox" />
             <option value="$PROJECT_DIR$/e2e" />
+            <option value="$PROJECT_DIR$/konsist" />
             <option value="$PROJECT_DIR$/libraries" />
             <option value="$PROJECT_DIR$/libraries/action" />
             <option value="$PROJECT_DIR$/libraries/auth0-management" />
