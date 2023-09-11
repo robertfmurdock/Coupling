@@ -10,7 +10,7 @@ data class SaveSlackIntegrationCommand(
     val channel: String,
     val team: String,
 ) {
-    interface Dispatcher {
+    fun interface Dispatcher {
         suspend fun perform(command: SaveSlackIntegrationCommand): VoidResult
     }
 }

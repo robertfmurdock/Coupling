@@ -6,7 +6,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 class UserBoostQuery {
-    interface Dispatcher {
+    fun interface Dispatcher {
         suspend fun perform(query: UserBoostQuery): Record<Boost>?
     }
 }

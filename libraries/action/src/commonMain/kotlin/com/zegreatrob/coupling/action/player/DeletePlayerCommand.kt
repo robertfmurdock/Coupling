@@ -6,7 +6,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class DeletePlayerCommand(val partyId: PartyId, val playerId: String) {
-    interface Dispatcher {
+    fun interface Dispatcher {
         suspend fun perform(command: DeletePlayerCommand): VoidResult
     }
 }

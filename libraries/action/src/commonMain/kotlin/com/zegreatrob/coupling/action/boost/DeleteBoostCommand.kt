@@ -5,7 +5,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 class DeleteBoostCommand {
-    interface Dispatcher {
+    fun interface Dispatcher {
         suspend fun perform(command: DeleteBoostCommand): VoidResult
     }
 }

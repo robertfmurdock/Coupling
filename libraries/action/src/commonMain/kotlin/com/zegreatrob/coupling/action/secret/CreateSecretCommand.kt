@@ -6,7 +6,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class CreateSecretCommand(val partyId: PartyId) {
-    interface Dispatcher {
+    fun interface Dispatcher {
         suspend fun perform(command: CreateSecretCommand): Pair<Secret, String>?
     }
 }

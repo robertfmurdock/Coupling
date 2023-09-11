@@ -1,4 +1,5 @@
 import com.lemonappdev.konsist.api.Konsist
+import com.lemonappdev.konsist.api.declaration.KoInterfaceDeclaration
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.verify.assert
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -21,6 +22,10 @@ class SampleKonsistTest {
         .run {
             assert { it.isTopLevel }
             assert { it.hasAnnotations("ActionMint") }
-            assert { it.containsInterface { dispatcher -> dispatcher.name == "Dispatcher" } }
+            assert { it.containsInterface(predicate = ::isConsistentDispatcher) }
         }
+
+    private fun isConsistentDispatcher(dispatcher: KoInterfaceDeclaration): Boolean {
+        return dispatcher.name == "Dispatcher"
+    }
 }

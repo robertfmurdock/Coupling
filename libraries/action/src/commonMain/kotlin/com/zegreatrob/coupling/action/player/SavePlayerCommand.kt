@@ -7,7 +7,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class SavePlayerCommand(val partyId: PartyId, val player: Player) {
-    interface Dispatcher {
+    fun interface Dispatcher {
         suspend fun perform(command: SavePlayerCommand): VoidResult
     }
 }

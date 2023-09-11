@@ -7,7 +7,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class PartyBoostQuery(val partyId: PartyId) {
-    interface Dispatcher {
+    fun interface Dispatcher {
         suspend fun perform(query: PartyBoostQuery): Record<Boost>?
     }
 }

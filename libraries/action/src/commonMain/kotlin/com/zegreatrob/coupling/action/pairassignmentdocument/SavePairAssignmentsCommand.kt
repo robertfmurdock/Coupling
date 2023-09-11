@@ -10,7 +10,7 @@ data class SavePairAssignmentsCommand(
     val partyId: PartyId,
     val pairAssignments: PairAssignmentDocument,
 ) {
-    interface Dispatcher {
+    fun interface Dispatcher {
         suspend fun perform(command: SavePairAssignmentsCommand): VoidResult
     }
 }

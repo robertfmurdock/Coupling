@@ -16,7 +16,7 @@ data class SaveContributionCommand(
     val story: String? = null,
     val link: String? = null,
 ) {
-    interface Dispatcher {
+    fun interface Dispatcher {
         suspend fun perform(command: SaveContributionCommand): VoidResult
     }
 }
