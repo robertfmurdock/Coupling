@@ -89,9 +89,9 @@ private fun saveContributionCommand(
     contribution: Contribution,
 ) = SaveContributionCommand(
     partyId = partyId,
-    contributionId = contribution.lastCommit,
+    contributionId = contribution.firstCommit,
     participantEmails = contribution.authors.toSet(),
-    hash = contribution.lastCommit,
+    hash = contribution.firstCommit,
     dateTime = contribution.dateTime?.ifBlank { null }?.let { ZonedDateTime.parse(it) }
         ?.toInstant()
         ?.toKotlinInstant(),
