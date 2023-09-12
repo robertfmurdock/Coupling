@@ -62,7 +62,9 @@ tasks {
         )
         isIgnoreExitValue = true
     }
-
+    assemble {
+        dependsOn(currentContributionData)
+    }
     "versionCatalogUpdate" {
         dependsOn("libraries:js-dependencies:ncuUpgrade")
         dependsOn(provider { gradle.includedBuilds.map { it.task(":versionCatalogUpdate") } })
