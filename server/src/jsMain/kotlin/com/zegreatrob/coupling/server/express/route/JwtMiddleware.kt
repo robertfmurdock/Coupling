@@ -12,19 +12,7 @@ fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler {
 
     return expressjwt(
         json(
-            "secret" to { request: Request, token: dynamic ->
-                when (token.payload.iss) {
-                    Config.publicUrl -> Config.secretSigningSecret
-                    else -> expressJwtSecret(
-                        json(
-                            "cache" to true,
-                            "rateLimit" to true,
-                            "jwksRequestsPerMinute" to 5,
-                            "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json",
-                        ),
-                    )(request, token)
-                }
-            },
+            "secret" to ::signingSecret,
             "issuer" to arrayOf(auth0Issuer, Config.publicUrl),
             "audience" to "${Config.publicUrl}/api",
             "algorithms" to arrayOf("RS256", "HS256"),
@@ -39,3 +27,17 @@ fun jwtMiddleware(getToken: ((Request) -> dynamic)? = null): Handler {
         },
     )
 }
+
+private fun signingSecret(request: Request, token: dynamic): dynamic = when (token.payload.iss) {
+    Config.publicUrl -> Config.secretSigningSecret
+    else -> auth0Secret(request, token)
+}
+
+private fun auth0Secret(request: Request, token: Any?): dynamic = expressJwtSecret(
+    json(
+        "cache" to true,
+        "rateLimit" to true,
+        "jwksRequestsPerMinute" to 5,
+        "jwksUri" to "https://${Config.AUTH0_DOMAIN}/.well-known/jwks.json",
+    ),
+)(request, token)
