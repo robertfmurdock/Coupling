@@ -19,6 +19,7 @@ kotlin {
             }
         }
     }
+    jvmToolchain(17)
     sourceSets {
         all {
             languageSettings {
