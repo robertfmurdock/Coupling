@@ -11,3 +11,5 @@ actual fun makeDirectory(couplingHomeDirectory: String) {
 actual fun writeDataToFile(configFilePath: String, text: String) {
     File(configFilePath).writeText(text)
 }
+
+actual fun platformArgCorrection(args: Array<String>): Array<String> = args

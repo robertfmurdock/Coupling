@@ -14,9 +14,11 @@ suspend fun main(args: Array<String>) {
         .subcommands(Login())
         .subcommands(party())
         .subcommands(query())
-        .main(args)
+        .main(platformArgCorrection(args))
     cliScope.joinAll()
 }
+
+expect fun platformArgCorrection(args: Array<String>): Array<String>
 
 expect fun getEnv(variableName: String): String?
 expect fun readFileText(filePath: String): String

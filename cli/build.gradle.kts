@@ -1,4 +1,8 @@
+import com.zegreatrob.coupling.plugins.NodeExec
+import com.zegreatrob.coupling.plugins.setup
 import com.zegreatrob.tools.tagger.ReleaseVersion
+import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
+import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
     application
@@ -56,4 +60,58 @@ tasks {
         .configure {
             finalizedBy(uploadToS3)
         }
+
+    val compileProductionExecutableKotlinJs by named<KotlinJsIrLink>("compileProductionExecutableKotlinJs")
+
+    val mainNpmProjectDir = kotlin.js().compilations.getByName("main").npmProject.dir
+
+    val copyWebpackConfig by registering(Copy::class) {
+        from(project.projectDir.resolve("webpack.config.js"))
+        into(mainNpmProjectDir)
+    }
+    rootProject.tasks.named("rootPackageJson").configure {
+        mustRunAfter(copyWebpackConfig)
+    }
+
+
+    val jsProcessResources by named<ProcessResources>("jsProcessResources") {
+        dependsOn("dependencyResources")
+    }
+
+    val dependencyResources by registering(Copy::class) {
+        dependsOn(":sdk:jsProcessResources")
+        into(jsProcessResources.destinationDir)
+        from("$rootDir/sdk/build/processedResources/js/main")
+    }
+
+    val webpack by registering(NodeExec::class) {
+        dependsOn(
+            copyWebpackConfig,
+            "jsPackageJson",
+            ":kotlinNpmInstall",
+            "compileKotlinJs",
+            jsProcessResources,
+            "compileProductionExecutableKotlinJs",
+            "jsProductionExecutableCompileSync",
+        )
+        mustRunAfter(clean)
+        inputs.file(file("webpack.config.js"))
+        inputs.dir(jsProcessResources.destinationDir.path)
+        inputs.file(compileProductionExecutableKotlinJs.let {
+            it.destinationDirectory.file(it.compilerOptions.moduleName.map { name -> "$name.js" })
+        })
+        outputs.dir(mainNpmProjectDir.resolve("webpack-output"))
+        val compilationName = "main"
+        val compilation = kotlin.js().compilations.named(compilationName).get()
+
+        inputs.file(compilation.npmProject.packageJsonFile)
+
+        setup(project)
+        nodeModulesDir = compilation?.npmProject?.nodeModulesDir
+        npmProjectDir = compilation?.npmProject?.dir
+
+        nodeCommand = "webpack"
+        arguments = listOf("--config", mainNpmProjectDir.resolve("webpack.config.js").absolutePath)
+    }
+    assemble { dependsOn(webpack) }
 }

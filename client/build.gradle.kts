@@ -202,8 +202,8 @@ tasks {
     val additionalResources by registering(Copy::class) {
         outputs.cacheIf { true }
         dependsOn(":sdk:jsProcessResources")
-        into(project.layout.buildDirectory.file("additionalResources"))
         from(provider { (findByPath(":sdk:jsProcessResources") as ProcessResources).destinationDir })
+        into(project.layout.buildDirectory.file("additionalResources"))
     }
     jsProcessResources {
         dependsOn(additionalResources)
