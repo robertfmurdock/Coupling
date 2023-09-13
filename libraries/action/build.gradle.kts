@@ -11,7 +11,6 @@ kotlin {
         }
         jvm()
     }
-
     sourceSets.named("jsMain") {
         kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
     }

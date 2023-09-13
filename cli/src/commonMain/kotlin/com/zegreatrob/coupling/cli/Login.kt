@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.zegreatrob.coupling.auth0.management.KtorAuth0Client
 import com.zegreatrob.coupling.auth0.management.PollResult
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlin.time.Duration.Companion.seconds
@@ -19,7 +19,7 @@ class Login : CliktCommand() {
         val environment = Auth0Environment.map[env]
 
         if (environment != null) {
-            runBlocking {
+            cliScope.launch {
                 val client = KtorAuth0Client()
                 val result = client.getDeviceCodeRequest(environment.audience, environment.clientId)
 
@@ -28,9 +28,10 @@ class Login : CliktCommand() {
 
                 val pollResult = client.pollForSuccess(environment, result.deviceCode, result.interval)
 
-                configFile.parentFile.mkdirs()
+                makeDirectory(couplingHomeDirectory)
 
-                configFile.writeText(
+                writeDataToFile(
+                    configFilePath,
                     text = buildJsonObject {
                         put("accessToken", pollResult?.accessToken)
                         put("refreshToken", pollResult?.refreshToken)

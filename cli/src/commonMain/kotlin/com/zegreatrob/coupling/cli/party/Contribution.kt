@@ -10,13 +10,12 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.tools.digger.core.Contribution
 import com.zegreatrob.tools.digger.json.ContributionParser
+import com.zegreatrob.tools.digger.model.Contribution
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toKotlinInstant
-import java.time.ZonedDateTime
 
 data class ContributionContext(val partyId: PartyId, val env: String)
 
@@ -92,9 +91,7 @@ private fun saveContributionCommand(
     contributionId = contribution.firstCommit,
     participantEmails = contribution.authors.toSet(),
     hash = contribution.firstCommit,
-    dateTime = contribution.dateTime?.ifBlank { null }?.let { ZonedDateTime.parse(it) }
-        ?.toInstant()
-        ?.toKotlinInstant(),
+    dateTime = contribution.dateTime?.ifBlank { null }?.let { Instant.parse(it) },
     ease = contribution.ease,
     story = contribution.storyId?.ifBlank { null },
     link = null,

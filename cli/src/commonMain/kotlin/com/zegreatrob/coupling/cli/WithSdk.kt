@@ -1,3 +1,5 @@
+@file:OptIn(DelicateCoroutinesApi::class)
+
 package com.zegreatrob.coupling.cli
 
 import com.benasher44.uuid.uuid4
@@ -7,8 +9,8 @@ import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.testmints.action.ActionCannon
 import io.ktor.client.plugins.HttpRequestRetry
-import kotlinx.coroutines.runBlocking
-import java.net.URL
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.launch
 
 fun withSdk(
     env: String,
@@ -35,10 +37,12 @@ fun withSdk(
             },
             pipe = LoggingActionPipe(uuid4()),
         )
-        runBlocking {
+        cliScope.launch {
             doWork(sdk)
         }
     }
 }
 
-private fun Auth0Environment.audienceHost() = "https://${URL(audience).host}"
+private fun Auth0Environment.audienceHost() = "https://${getHost(audience)}"
+
+expect fun getHost(url: String): String
