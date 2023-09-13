@@ -77,7 +77,7 @@
     "source-map-loader": "^4.0.1",
     "stripe": "^13.5.0",
     "style-loader": "^3.3.3",
-    "styled-components": "^6.0.7",
+    "styled-components": "^6.0.8",
     "text-loader": "0.0.1",
     "url-loader": "^4.1.1",
     "webpack": "5.88.2",
