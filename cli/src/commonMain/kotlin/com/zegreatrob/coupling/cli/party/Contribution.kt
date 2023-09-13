@@ -14,7 +14,6 @@ import com.zegreatrob.tools.digger.json.ContributionParser
 import com.zegreatrob.tools.digger.model.Contribution
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
 import kotlinx.datetime.toInstant
 
 data class ContributionContext(val partyId: PartyId, val env: String)
@@ -91,7 +90,7 @@ private fun saveContributionCommand(
     contributionId = contribution.firstCommit,
     participantEmails = contribution.authors.toSet(),
     hash = contribution.firstCommit,
-    dateTime = contribution.dateTime?.ifBlank { null }?.let { Instant.parse(it) },
+    dateTime = contribution.dateTime,
     ease = contribution.ease,
     story = contribution.storyId?.ifBlank { null },
     link = null,
