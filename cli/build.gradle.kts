@@ -105,7 +105,7 @@ tasks {
         archiveFileName.set("coupling-cli-js.tgz")
     }
     val uploadToS3 by registering(Exec::class) {
-        dependsOn(jsCliTar)
+        dependsOn(jsCliTar, distTar)
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
             enabled = false
         }
