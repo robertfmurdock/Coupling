@@ -44,23 +44,6 @@ tasks {
         compression = Compression.GZIP
         archiveFileName.set("coupling-cli.tgz")
     }
-    val uploadToS3 by registering(Exec::class) {
-        dependsOn(distTar)
-        if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
-            enabled = false
-        }
-        val absolutePath = distTar.get().destinationDirectory.get().asFile.absolutePath
-        commandLine =
-            "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling-cli/${rootProject.version}".split(" ")
-    }
-    rootProject
-        .tasks
-        .withType(ReleaseVersion::class.java)
-        .named("release")
-        .configure {
-            finalizedBy(uploadToS3)
-        }
-
     val compileProductionExecutableKotlinJs by named<KotlinJsIrLink>("compileProductionExecutableKotlinJs")
 
     val mainNpmProjectDir = kotlin.js().compilations.getByName("main").npmProject.dir
@@ -114,4 +97,28 @@ tasks {
         arguments = listOf("--config", mainNpmProjectDir.resolve("webpack.config.js").absolutePath)
     }
     assemble { dependsOn(webpack) }
+
+    val jsCliTar by registering(Tar::class) {
+        dependsOn(webpack)
+        from(mainNpmProjectDir.resolve("webpack-output").path)
+        compression = Compression.GZIP
+        archiveFileName.set("coupling-cli-js.tgz")
+    }
+    val uploadToS3 by registering(Exec::class) {
+        dependsOn(jsCliTar)
+        if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {
+            enabled = false
+        }
+        val absolutePath = jsCliTar.get().destinationDirectory.get().asFile.absolutePath
+        commandLine =
+            "aws s3 sync $absolutePath s3://assets.zegreatrob.com/coupling-cli/${rootProject.version}".split(" ")
+    }
+    rootProject
+        .tasks
+        .withType(ReleaseVersion::class.java)
+        .named("release")
+        .configure {
+            finalizedBy(uploadToS3)
+        }
+
 }
