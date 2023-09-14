@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.cli.party
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
@@ -8,6 +9,7 @@ import com.github.ajalt.clikt.parameters.options.prompt
 import com.github.ajalt.clikt.parameters.options.required
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.cli.readFileText
 import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.tools.digger.json.ContributionParser
@@ -27,7 +29,7 @@ class Contribution : CliktCommand() {
 }
 
 class SaveContribution : CliktCommand(name = "save") {
-    private val input by option().prompt()
+    val file by option().convert { readFileText(it) }
     private val contributionId by option().default("")
     private val participantEmail by option().multiple()
     private val hash by option().default("")
@@ -39,9 +41,11 @@ class SaveContribution : CliktCommand(name = "save") {
         val contributionContext = currentContext.findObject<ContributionContext>()
         val partyId = contributionContext!!.partyId
 
+        val data = file ?: readLineFromStandardIn()
+
         withSdk(contributionContext.env, ::echo) { sdk ->
-            if (input.isNotBlank()) {
-                val contribution = ContributionParser.parseContribution(input.trim())
+            if (data.isNotBlank()) {
+                val contribution = ContributionParser.parseContribution(data.trim())
                 if (contribution != null) {
                     sdk.fire(saveContributionCommand(partyId, contribution))
                 } else {
@@ -64,6 +68,8 @@ class SaveContribution : CliktCommand(name = "save") {
         }
     }
 }
+
+expect fun readLineFromStandardIn(): String
 
 class BatchContribution : CliktCommand(name = "batch") {
     private val inputJson by option().prompt()
