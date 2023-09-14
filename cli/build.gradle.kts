@@ -1,5 +1,4 @@
-import com.zegreatrob.coupling.plugins.NodeExec
-import com.zegreatrob.coupling.plugins.setup
+
 import com.zegreatrob.tools.tagger.ReleaseVersion
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrLink
 import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
@@ -16,7 +15,16 @@ application {
 
 kotlin {
     jvm { withJava() }
-    js { nodejs { binaries.executable() } }
+    js {
+        nodejs { binaries.executable() }
+        compilations {
+            "main" {
+                packageJson {
+                    customField("bin", mapOf("coupling" to "./kotlin/bin/coupling"))
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -33,6 +41,7 @@ dependencies {
     commonMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-node")
+    "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     "jvmMainImplementation"("org.slf4j:slf4j-api")
     "jvmMainImplementation"("org.slf4j:slf4j-simple")
 }
@@ -67,9 +76,8 @@ tasks {
         from("$rootDir/sdk/build/processedResources/js/main")
     }
 
-    val webpack by registering(NodeExec::class) {
+    val jsCliTar by registering(Tar::class) {
         dependsOn(
-            copyWebpackConfig,
             "jsPackageJson",
             ":kotlinNpmInstall",
             "compileKotlinJs",
@@ -77,30 +85,7 @@ tasks {
             "compileProductionExecutableKotlinJs",
             "jsProductionExecutableCompileSync",
         )
-        mustRunAfter(clean)
-        inputs.file(file("webpack.config.js"))
-        inputs.dir(jsProcessResources.destinationDir.path)
-        inputs.file(compileProductionExecutableKotlinJs.let {
-            it.destinationDirectory.file(it.compilerOptions.moduleName.map { name -> "$name.js" })
-        })
-        outputs.dir(mainNpmProjectDir.resolve("webpack-output"))
-        val compilationName = "main"
-        val compilation = kotlin.js().compilations.named(compilationName).get()
-
-        inputs.file(compilation.npmProject.packageJsonFile)
-
-        setup(project)
-        nodeModulesDir = compilation?.npmProject?.nodeModulesDir
-        npmProjectDir = compilation?.npmProject?.dir
-
-        nodeCommand = "webpack"
-        arguments = listOf("--config", mainNpmProjectDir.resolve("webpack.config.js").absolutePath)
-    }
-    assemble { dependsOn(webpack) }
-
-    val jsCliTar by registering(Tar::class) {
-        dependsOn(webpack)
-        from(mainNpmProjectDir.resolve("webpack-output").path)
+        from(mainNpmProjectDir)
         compression = Compression.GZIP
         archiveFileName.set("coupling-cli-js.tgz")
     }
