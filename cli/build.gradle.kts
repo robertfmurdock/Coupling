@@ -49,6 +49,9 @@ dependencies {
 version = rootProject.version
 
 tasks {
+    withType<CreateStartScripts> {
+        applicationName = "coupling"
+    }
     distTar {
         compression = Compression.GZIP
         archiveFileName.set("coupling-cli.tgz")
