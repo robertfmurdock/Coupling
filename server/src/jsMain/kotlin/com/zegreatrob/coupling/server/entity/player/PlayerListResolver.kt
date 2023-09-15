@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.entity.player
 
+import com.zegreatrob.coupling.json.JsonContributor
 import com.zegreatrob.coupling.json.JsonPair
 import com.zegreatrob.coupling.json.JsonPairAssignment
 import com.zegreatrob.coupling.json.JsonParty
@@ -18,6 +19,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.server.action.player.ContributorPlayerQuery
 import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
 import com.zegreatrob.coupling.server.action.player.PairQuery
@@ -73,6 +75,20 @@ val pairCountResolve = dispatch(
     },
     fireFunc = ::perform,
     toSerializable = { it },
+)
+
+val contributorPlayerResolve = dispatch(
+    dispatcherFunc = { context: CouplingContext, _: JsonContributor, _: JsonNull -> context.commandDispatcher },
+    commandFunc = { data, _ ->
+        val model = data.toModel()
+        val partyId = PartyId(data.partyId ?: return@dispatch null)
+        ContributorPlayerQuery(
+            partyId = partyId,
+            email = model.email ?: return@dispatch null,
+        )
+    },
+    fireFunc = ::perform,
+    toSerializable = { it?.toSerializable() },
 )
 
 val pairAssignmentHistoryResolve = dispatch(

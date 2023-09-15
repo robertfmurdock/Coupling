@@ -27,6 +27,7 @@ import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserComma
 import com.zegreatrob.coupling.server.action.connection.ReportDocCommand
 import com.zegreatrob.coupling.server.action.contribution.PairContributionQuery
 import com.zegreatrob.coupling.server.action.contribution.PartyContributionQuery
+import com.zegreatrob.coupling.server.action.contribution.PartyContributorQuery
 import com.zegreatrob.coupling.server.action.contribution.ServerSaveContributionCommandDispatcher
 import com.zegreatrob.coupling.server.action.discord.DiscordRepository
 import com.zegreatrob.coupling.server.action.discord.ServerGrantDiscordAccessCommandDispatcher
@@ -44,6 +45,7 @@ import com.zegreatrob.coupling.server.action.party.ServerDeletePartyCommandDispa
 import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.action.pin.ServerDeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.ServerSavePinCommandDispatcher
+import com.zegreatrob.coupling.server.action.player.ContributorPlayerQuery
 import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
 import com.zegreatrob.coupling.server.action.player.PairQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
@@ -79,6 +81,7 @@ interface ICommandDispatcher :
     AwsManagementApiSyntax,
     AwsSocketCommunicator,
     ConnectionsQuery.Dispatcher,
+    ContributorPlayerQuery.Dispatcher,
     CurrentPairAssignmentDocumentQuery.Dispatcher,
     DisconnectPartyUserCommand.Dispatcher,
     GlobalStatsQuery.Dispatcher,
@@ -88,6 +91,7 @@ interface ICommandDispatcher :
     PairContributionQuery.Dispatcher,
     PairQuery.Dispatcher,
     PartyContributionQuery.Dispatcher,
+    PartyContributorQuery.Dispatcher,
     PartyDispatcher,
     PartyIntegrationQuery.Dispatcher,
     PinsQuery.Dispatcher,

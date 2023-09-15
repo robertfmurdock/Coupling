@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.contribution.contributionResolver
+import com.zegreatrob.coupling.server.entity.contribution.contributorResolver
 import com.zegreatrob.coupling.server.entity.contribution.pairContributionResolver
 import com.zegreatrob.coupling.server.entity.contribution.saveContributionResolver
 import com.zegreatrob.coupling.server.entity.discord.grantDiscordAccessResolver
@@ -23,6 +24,7 @@ import com.zegreatrob.coupling.server.entity.party.saveSlackIntegrationResolver
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.pin.savePinResolver
+import com.zegreatrob.coupling.server.entity.player.contributorPlayerResolve
 import com.zegreatrob.coupling.server.entity.player.deletePlayerResolver
 import com.zegreatrob.coupling.server.entity.player.pairAssignmentHeatResolve
 import com.zegreatrob.coupling.server.entity.player.pairAssignmentHistoryResolve
@@ -101,10 +103,14 @@ fun couplingResolvers() = json(
         "spinsUntilFullRotation" to spinsUntilFullRotationResolve,
         "boost" to partyBoostResolver,
         "contributions" to contributionResolver,
+        "contributors" to contributorResolver,
     ),
     "Configuration" to json(
         "addToSlackUrl" to addToSlackUrlResolve,
         "discordClientId" to fun() = Config.discordClientId,
+    ),
+    "Contributor" to json(
+        "details" to contributorPlayerResolve,
     ),
     "Pair" to json(
         "count" to pairCountResolve,

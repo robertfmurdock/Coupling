@@ -3,7 +3,9 @@
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import kotlinx.datetime.Instant
@@ -45,6 +47,19 @@ fun PartyRecord<Contribution>.toJson() = JsonContributionRecord(
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
+)
+
+fun PartyElement<Contributor>.toJson() = JsonContributor(
+    partyId = partyId.value,
+    email = element.email,
+    playerId = element.playerId,
+    details = element.details?.toSerializable(),
+)
+
+fun JsonContributor.toModel() = Contributor(
+    email = email,
+    playerId = playerId,
+    details = details?.toModel(),
 )
 
 fun JsonContributionRecord.toModel() = PartyRecord(

@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
@@ -92,10 +93,73 @@ class SdkContributionTest {
             )
     }
 
+    @Test
+    fun canQueryContributorsThatAreNotPlayers() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val saveContributionCommands = listOf(
+            stubSaveContributionCommand(party.id),
+            stubSaveContributionCommand(party.id),
+            stubSaveContributionCommand(party.id),
+        )
+    }) {
+        savePartyState(party, players, emptyList())
+        saveContributionCommands.forEach { sdk().fire(it) }
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) {
+                    contributors {
+                        email()
+                        details()
+                    }
+                }
+            },
+        )
+    } verify { result ->
+        result?.party?.contributors
+            .assertIsEqualTo(
+                saveContributionCommands.flatMap { it.participantEmails }
+                    .toSet()
+                    .sorted()
+                    .map { Contributor(it) },
+            )
+    }
+
+    @Test
+    fun canQueryContributorsThatArePlayers() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val saveContributionCommands = listOf(
+            stubSaveContributionCommand(party.id).copy(participantEmails = players.map { it.email }.toSet()),
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(players.random().email)),
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(players.random().email)),
+        )
+    }) {
+        savePartyState(party, players, emptyList())
+        saveContributionCommands.forEach { sdk().fire(it) }
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) {
+                    contributors {
+                        email()
+                        details()
+                    }
+                }
+            },
+        )
+    } verify { result ->
+        result?.party?.contributors?.map { it.details?.data?.element }
+            .assertIsEqualTo(
+                players.sortedBy { it.email },
+            )
+    }
+
     private fun stubSaveContributionCommand(partyId: PartyId) = SaveContributionCommand(
         partyId = partyId,
         contributionId = uuidString(),
-        participantEmails = emptySet(),
+        participantEmails = setOf(uuidString()),
         hash = uuidString(),
         dateTime = Clock.System.now().minus(Random.nextInt(60).minutes).roundToMillis(),
         ease = Random.nextInt(),

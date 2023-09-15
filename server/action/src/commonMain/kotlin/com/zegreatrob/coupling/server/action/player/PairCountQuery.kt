@@ -1,18 +1,30 @@
 package com.zegreatrob.coupling.server.action.player
 
+import com.zegreatrob.coupling.model.PartyRecord
+import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.hasPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.spinsSinceLastPair
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PartyIdPairAssignmentRecordsSyntax
+import com.zegreatrob.coupling.repository.player.PartyPlayersSyntax
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class PairCountQuery(val partyId: PartyId, val pair: CouplingPair) {
     interface Dispatcher {
         suspend fun perform(query: PairCountQuery): Int
+    }
+}
+
+@ActionMint
+data class ContributorPlayerQuery(val partyId: PartyId, val email: String) {
+    interface Dispatcher : PartyPlayersSyntax {
+        suspend fun perform(query: ContributorPlayerQuery): PartyRecord<Player>? = query.partyId.loadPlayers()
+            .find { it.element.email.equals(query.email, ignoreCase = true) }
     }
 }
 

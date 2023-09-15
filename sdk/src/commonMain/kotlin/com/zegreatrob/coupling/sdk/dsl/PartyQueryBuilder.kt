@@ -44,4 +44,8 @@ class PartyQueryBuilder : QueryBuilder<JsonParty>, BuilderWithInput() {
     fun secretList() = also { output = output.copy(secretList = listOf(secretRecord)) }
     fun medianSpinDuration() = also { output = output.copy(medianSpinDuration = Duration.INFINITE) }
     fun spinsUntilFullRotation() = also { output = output.copy(spinsUntilFullRotation = Int.MAX_VALUE) }
+    fun contributors(block: ContributorQueryBuilder.() -> Unit) = ContributorQueryBuilder()
+        .also(block)
+        .output
+        .let { output = output.copy(contributors = listOf(it)) }
 }

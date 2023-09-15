@@ -25,4 +25,11 @@ data class Party(
     val medianSpinDuration: Duration? = null,
     val spinsUntilFullRotation: Int? = null,
     val contributions: List<PartyRecord<Contribution>>? = null,
+    val contributors: List<Contributor>? = null,
+)
+
+data class Contributor(
+    val email: String? = null,
+    val playerId: String? = null,
+    val details: PartyRecord<Player>? = null,
 )

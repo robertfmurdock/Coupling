@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.JsonContributor
 import com.zegreatrob.coupling.json.JsonPair
 
 class PairQueryBuilder : QueryBuilder<JsonPair> {
@@ -14,4 +15,10 @@ class PairQueryBuilder : QueryBuilder<JsonPair> {
         .also(block)
         .output
         .let { output = output.copy(pairAssignmentHistory = listOf(it)) }
+}
+
+class ContributorQueryBuilder : QueryBuilder<JsonContributor> {
+    override var output: JsonContributor = JsonContributor()
+    fun email() = also { output = output.copy(email = "") }
+    fun details() = also { output = output.copy(details = GqlReference.playerRecord) }
 }
