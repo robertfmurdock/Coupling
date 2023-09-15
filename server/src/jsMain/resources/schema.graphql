@@ -121,6 +121,9 @@ type Contribution {
     ease: Int
     story: String
     link: String
+    label: String
+    firstCommit: String
+    semver: String
     partyId: String
     participantEmails: [String!]!
     expirationDate: String
@@ -343,7 +346,6 @@ type Mutation {
     grantDiscordAccess(input: GrantDiscordAccessInput!): Boolean
 }
 
-
 input SaveContributionInput {
     partyId: ID!
     contributionId: ID!
@@ -352,9 +354,11 @@ input SaveContributionInput {
     ease: Int
     story: String
     link: String
+    label: String
+    semver: String
+    firstCommit: String
     participantEmails: [String!]
 }
-
 
 input GrantSlackAccessInput {
     code: String!

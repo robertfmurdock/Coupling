@@ -15,6 +15,9 @@ data class SaveContributionCommand(
     val ease: Int? = null,
     val story: String? = null,
     val link: String? = null,
+    val semver: String? = null,
+    val label: String? = null,
+    val firstCommit: String? = null,
 ) {
     fun interface Dispatcher {
         suspend fun perform(command: SaveContributionCommand): VoidResult

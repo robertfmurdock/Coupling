@@ -40,6 +40,9 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         "ease" to element.ease,
         "hash" to element.hash,
         "link" to element.link,
+        "label" to element.label,
+        "semver" to element.semver,
+        "firstCommit" to element.firstCommit,
         "participantEmails" to element.participantEmails.toTypedArray(),
         "story" to element.story,
         "createdAt" to element.createdAt.isoWithMillis(),
@@ -58,13 +61,16 @@ class DynamoContributionRepository private constructor(override val userId: Stri
     private fun Json.toContribution(): Contribution? {
         return Contribution(
             id = getDynamoStringValue("id") ?: return null,
-            dateTime = getDynamoDateTimeValue("dateTime") ?: Instant.DISTANT_PAST,
             createdAt = getDynamoDateTimeValue("createdAt") ?: Instant.DISTANT_PAST,
+            dateTime = getDynamoDateTimeValue("dateTime") ?: Instant.DISTANT_PAST,
             hash = getDynamoStringValue("hash"),
             ease = getDynamoNumberValue("ease")?.toInt(),
             story = getDynamoStringValue("story"),
             link = getDynamoStringValue("link"),
             participantEmails = getDynamoStringListValue("participantEmails")?.toSet() ?: emptySet(),
+            label = getDynamoStringValue("label"),
+            semver = getDynamoStringValue("semver"),
+            firstCommit = getDynamoStringValue("firstCommit"),
         )
     }
 

@@ -7,8 +7,11 @@ data class Contribution(
     val createdAt: Instant,
     val dateTime: Instant?,
     val hash: String?,
+    val firstCommit: String?,
     val ease: Int?,
     val story: String?,
     val link: String?,
     val participantEmails: Set<String>,
+    val label: String?,
+    val semver: String?,
 )

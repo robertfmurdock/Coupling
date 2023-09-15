@@ -120,4 +120,7 @@ private fun SaveContributionCommand.toExpectedContribution() = Contribution(
     story = story,
     link = link,
     participantEmails = participantEmails,
+    label = label,
+    firstCommit = firstCommit,
+    semver = semver,
 )

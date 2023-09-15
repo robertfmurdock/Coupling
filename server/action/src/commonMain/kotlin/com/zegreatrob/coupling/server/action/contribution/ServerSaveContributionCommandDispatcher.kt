@@ -21,6 +21,9 @@ interface ServerSaveContributionCommandDispatcher : SaveContributionCommand.Disp
                     story = command.story,
                     link = command.link,
                     participantEmails = command.participantEmails,
+                    label = command.label,
+                    semver = command.semver,
+                    firstCommit = command.firstCommit,
                 ),
             ),
         )

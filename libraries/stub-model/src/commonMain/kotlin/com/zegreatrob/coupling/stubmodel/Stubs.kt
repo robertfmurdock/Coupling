@@ -126,4 +126,7 @@ fun stubContribution() = Contribution(
     story = uuidString(),
     link = uuidString(),
     participantEmails = setOf(uuidString(), uuidString()),
+    label = uuidString(),
+    semver = uuidString(),
+    firstCommit = uuidString(),
 )

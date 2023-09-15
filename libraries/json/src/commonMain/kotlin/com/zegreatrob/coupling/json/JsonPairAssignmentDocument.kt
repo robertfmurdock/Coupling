@@ -2,7 +2,6 @@
 
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
@@ -12,7 +11,6 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.AvatarType
@@ -80,83 +78,6 @@ data class JsonIntegrationRecord(
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
     val timestamp: Instant,
-)
-
-@Serializable
-data class JsonSecretRecord(
-    val id: String,
-    val description: String,
-    val createdTimestamp: Instant,
-    override val partyId: PartyId,
-    override val modifyingUserEmail: String,
-    override val isDeleted: Boolean,
-    override val timestamp: Instant,
-) : JsonPartyRecordInfo
-
-@Serializable
-data class JsonContributionRecord(
-    val id: String,
-    val createdAt: Instant,
-    val dateTime: Instant?,
-    val hash: String?,
-    val ease: Int?,
-    val story: String?,
-    val link: String?,
-    val participantEmails: Set<String>,
-    override val partyId: PartyId?,
-    override val modifyingUserEmail: String,
-    override val isDeleted: Boolean,
-    override val timestamp: Instant,
-) : JsonPartyRecordInfo
-
-fun PartyRecord<Contribution>.toJson() = JsonContributionRecord(
-    id = data.element.id,
-    createdAt = data.element.createdAt,
-    dateTime = data.element.dateTime,
-    hash = data.element.hash,
-    ease = data.element.ease,
-    story = data.element.story,
-    link = data.element.link,
-    participantEmails = data.element.participantEmails,
-    partyId = data.partyId,
-    modifyingUserEmail = modifyingUserId,
-    isDeleted = isDeleted,
-    timestamp = timestamp,
-)
-
-fun JsonContributionRecord.toModel() = PartyRecord(
-    data = PartyId(id).with(
-        Contribution(
-            id = id,
-            createdAt = createdAt,
-            dateTime = dateTime,
-            hash = hash,
-            ease = ease,
-            story = story,
-            link = link,
-            participantEmails = participantEmails,
-        ),
-    ),
-    modifyingUserId = modifyingUserEmail,
-    isDeleted = isDeleted,
-    timestamp = timestamp,
-)
-
-fun JsonSecretRecord.toModel(): PartyRecord<Secret> = PartyRecord(
-    partyId.with(Secret(id = id, createdTimestamp = createdTimestamp, description = description)),
-    modifyingUserId = modifyingUserEmail,
-    isDeleted = isDeleted,
-    timestamp = timestamp,
-)
-
-fun PartyRecord<Secret>.toSerializable() = JsonSecretRecord(
-    id = data.element.id,
-    createdTimestamp = data.element.createdTimestamp,
-    description = data.element.description,
-    partyId = data.partyId,
-    modifyingUserEmail = modifyingUserId,
-    isDeleted = isDeleted,
-    timestamp = timestamp,
 )
 
 @Serializable
