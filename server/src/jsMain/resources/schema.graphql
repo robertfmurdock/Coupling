@@ -146,8 +146,14 @@ type Party {
     spinsUntilFullRotation: Int!
     medianSpinDuration: String
     boost: BoostDetails
-    contributions: [Contribution!]
+    contributions: [Contribution!]!
+    contributors: [Contributor!]!
     pair(input: PairInput) : Pair
+}
+
+type Contributor {
+    email: String
+    player: PlayerDetails
 }
 
 input PairInput {
