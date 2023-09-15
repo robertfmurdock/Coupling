@@ -44,6 +44,12 @@ dependencies {
     "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     "jvmMainImplementation"("org.slf4j:slf4j-api")
     "jvmMainImplementation"("org.slf4j:slf4j-simple")
+
+    commonTestImplementation(kotlin("test"))
+    commonTestImplementation(project(":libraries:test-action"))
+    commonTestImplementation(project(":libraries:stub-model"))
+    commonTestImplementation("com.zegreatrob.testmints:standard")
+    commonTestImplementation("com.zegreatrob.testmints:async")
 }
 
 version = rootProject.version
@@ -92,6 +98,12 @@ tasks {
         compression = Compression.GZIP
         archiveFileName.set("coupling-cli-js.tgz")
     }
+    val jsLink by registering(Exec::class) {
+        dependsOn(jsCliTar)
+        workingDir(mainNpmProjectDir)
+        commandLine("npm", "link")
+    }
+
     val uploadToS3 by registering(Exec::class) {
         dependsOn(jsCliTar, distTar)
         if (("${rootProject.version}").run { contains("SNAPSHOT") || isBlank() }) {

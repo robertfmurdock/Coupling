@@ -21,7 +21,7 @@ private class Query : CliktCommand() {
     override fun run() {
         cliScope.launch {
             val variables = Json.parseToJsonElement(variableJson).jsonObject
-            withSdk(env, ::echo) { sdk ->
+            withSdk(cliScope, env, ::echo) { sdk ->
                 echo(sdk.fire(GraphQuery(query, variables))?.raw ?: "No response.")
             }
         }

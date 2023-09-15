@@ -3,13 +3,14 @@ package com.zegreatrob.coupling.cli.party
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
+import com.zegreatrob.coupling.cli.cliScope
 import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 
 class List : CliktCommand() {
     private val env by option().default("production")
     override fun run() {
-        withSdk(env, ::echo) { sdk ->
+        withSdk(cliScope, env, ::echo) { sdk ->
             sdk.fire(graphQuery { partyList { details() } })
                 ?.partyList
                 ?.mapNotNull { it.details?.data }
