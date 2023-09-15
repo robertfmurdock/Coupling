@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.action
 
 import com.zegreatrob.testmints.action.Action
+import com.zegreatrob.testmints.action.ActionWrapper
 import kotlin.time.Duration
 import kotlin.time.measureTimedValue
 
@@ -11,13 +12,13 @@ interface ActionLoggingSyntax : LoggingProvider, TraceIdProvider {
     suspend fun <I : Action, O> logAsync(action: I, block: suspend (I) -> O) = action.logBlock { block(action) }
 
     private inline fun <I : Action, O> I.logBlock(anotherBlock: () -> O): O {
-        val className = this::class.simpleName
-        logStart(className)
+        val actionName = if (this is ActionWrapper<*, *>) action::class.simpleName else this::class.simpleName
+        logStart(actionName)
 
         return try {
-            runBlock(anotherBlock, className)
+            runBlock(anotherBlock, actionName)
         } catch (exception: Exception) {
-            logException(exception, className)
+            logException(exception, actionName)
             throw exception
         }
     }
