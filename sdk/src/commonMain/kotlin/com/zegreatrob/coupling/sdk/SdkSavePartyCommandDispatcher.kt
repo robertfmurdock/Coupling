@@ -47,4 +47,7 @@ private fun SaveContributionCommand.saveContributionInput() = SaveContributionIn
     story = story,
     link = link,
     participantEmails = participantEmails,
+    semver = semver,
+    label = label,
+    firstCommit = firstCommit,
 )

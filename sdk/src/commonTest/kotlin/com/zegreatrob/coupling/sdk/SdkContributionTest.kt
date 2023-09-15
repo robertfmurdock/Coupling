@@ -101,6 +101,9 @@ class SdkContributionTest {
         ease = Random.nextInt(),
         story = uuidString(),
         link = uuidString(),
+        label = uuidString(),
+        semver = uuidString(),
+        firstCommit = uuidString(),
     )
 }
 

@@ -24,4 +24,7 @@ private fun SaveContributionInput.toCommand(): SaveContributionCommand = SaveCon
     ease = ease,
     story = story,
     link = link,
+    semver = semver,
+    label = label,
+    firstCommit = firstCommit,
 )

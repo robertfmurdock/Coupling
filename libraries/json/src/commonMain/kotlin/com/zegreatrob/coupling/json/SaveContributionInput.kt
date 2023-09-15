@@ -13,4 +13,7 @@ data class SaveContributionInput(
     val story: String?,
     val link: String?,
     val participantEmails: Set<String>,
+    val semver: String?,
+    val label: String?,
+    val firstCommit: String?,
 )
