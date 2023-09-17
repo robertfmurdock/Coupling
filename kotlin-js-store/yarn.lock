@@ -3941,15 +3941,15 @@
   resolved "https://registry.yarnpkg.com/@rpii/wdio-report-events/-/wdio-report-events-8.0.2.tgz#8a3209b1855a1d5148a6f08048e2e515de3de039"
   integrity sha512-XgvShdjbsPL7qRLLVXeTQdE5l0vxLjQx9jNdOCF344HTHHdMzqQdGML5AWvwAQuBwPmXA0bGJgolzkgEkj7kTQ==
 
-"@serverless/dashboard-plugin@^7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@serverless/dashboard-plugin/-/dashboard-plugin-7.0.1.tgz#eeeec98e591ec58a85ede8a94c6e4fa07eee0662"
-  integrity sha512-jibw3yqKU0s/VoRmetp/nlI5qQIcMWALYBlSpHgajBXUWo80mm75bRlZZxFPeZtj/+yQBLDdoKW2C3a+dYZf0g==
+"@serverless/dashboard-plugin@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@serverless/dashboard-plugin/-/dashboard-plugin-7.0.2.tgz#48881a0aad6459aa135bcdbc634dd2772010bcf4"
+  integrity sha512-VdS+VJO68whLggpe6SCExolOE8oGgrCtbSzot9USq7vpc0AQFn3AekLvcnuSsRLCzQqFfwJ/c6GA7dY/5bxSpQ==
   dependencies:
     "@aws-sdk/client-cloudformation" "^3.410.0"
     "@aws-sdk/client-sts" "^3.410.0"
     "@serverless/event-mocks" "^1.1.1"
-    "@serverless/platform-client" "^4.3.2"
+    "@serverless/platform-client" "^4.4.0"
     "@serverless/utils" "^6.8.2"
     child-process-ext "^3.0.1"
     chokidar "^3.5.3"
@@ -3977,27 +3977,6 @@
   dependencies:
     "@types/lodash" "^4.14.123"
     lodash "^4.17.11"
-
-"@serverless/platform-client@^4.3.2":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@serverless/platform-client/-/platform-client-4.3.2.tgz#10cd3ad8cf452a33528cfb14bbb6003d30a74805"
-  integrity sha512-DAa5Z0JAZc6UfrTZLYwqoZxgAponZpFwaqd7WzzMA+loMCkYWyJNwxrAmV6cr2UUJpkko4toPZuJ3vM9Ie+NDA==
-  dependencies:
-    adm-zip "^0.5.5"
-    archiver "^5.3.0"
-    axios "^0.21.1"
-    fast-glob "^3.2.7"
-    https-proxy-agent "^5.0.0"
-    ignore "^5.1.8"
-    isomorphic-ws "^4.0.1"
-    js-yaml "^3.14.1"
-    jwt-decode "^2.2.0"
-    minimatch "^3.0.4"
-    querystring "^0.2.1"
-    run-parallel-limit "^1.1.0"
-    throat "^5.0.0"
-    traverse "^0.6.6"
-    ws "^7.5.3"
 
 "@serverless/platform-client@^4.4.0":
   version "4.4.0"
@@ -12394,10 +12373,10 @@ npm-bundled@^3.0.0:
   dependencies:
     npm-normalize-package-bin "^3.0.0"
 
-npm-check-updates@16.14.3:
-  version "16.14.3"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.14.3.tgz#c2fdf1fe438a96e6258ceeb38f835024cf55d732"
-  integrity sha512-iviPM0LiTFGUtk+kMtcMVLNeGuSORThj9Cho7GV/Z2l5dMdXFrcgIarMSr6d6f1wYJJBIthuNdJWXZ4NH5VPEg==
+npm-check-updates@16.14.4:
+  version "16.14.4"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.14.4.tgz#561e97e92079ae4dbab9d9cbeb424d292ca01bae"
+  integrity sha512-PKg1wv3vno75/9qgRLqV2huBO7eukOlW+PmIGl7LPXjElfYTUTWUtaMOdOckImaSj4Uqe46W/zMbMFZQp5dHRQ==
   dependencies:
     chalk "^5.3.0"
     cli-table3 "^0.6.3"
@@ -14389,12 +14368,12 @@ serverless-offline@^12.0.4:
     velocityjs "^2.0.6"
     ws "^8.11.0"
 
-serverless@^3.35.1:
-  version "3.35.1"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.35.1.tgz#12f0e7194090f3568d8f4ed0bb6b8cd401fcf5e3"
-  integrity sha512-NwtfrGv6bmERYoQEfipQzI0v+XRZ5vIrenQnz3Lqludb8/8ieNhopVcMsxXX/JN7AzNK+LxNR3rsZ2U+rCTKqg==
+serverless@^3.35.2:
+  version "3.35.2"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.35.2.tgz#8f0e24ba0814ffb9a3a5937fbd3dbea9802f44be"
+  integrity sha512-1RZ4eHl2OaGG2Rzw0l0ZD3byCk2JMCL9/+btzGQGQruuQWu9HwRZGJI7l4A2ghW3Mu6DVwLYLfceNpmEWBZoag==
   dependencies:
-    "@serverless/dashboard-plugin" "^7.0.1"
+    "@serverless/dashboard-plugin" "^7.0.2"
     "@serverless/platform-client" "^4.4.0"
     "@serverless/utils" "^6.13.1"
     abort-controller "^3.0.0"
