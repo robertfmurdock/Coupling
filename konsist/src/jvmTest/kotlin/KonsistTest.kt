@@ -21,12 +21,12 @@ class KonsistTest {
         .scopeFromModule("libraries/action", "server/action", "client", "server")
         .classes()
         .withNameEndingWith("Command", "Query")
-        .filter { !it.hasModifiers(KoModifier.EXTERNAL) }
+        .filter { !it.hasModifier(KoModifier.EXTERNAL) }
         .run {
             assert { it.isTopLevel }
-            assert { it.hasAnnotations("ActionMint") }
+            assert { it.hasAnnotationWithName("ActionMint") }
             assert { it.containsInterface(predicate = ::isNamedDispatcher) }
-            assert(::dispatcherHasPerformFunction)
+            assert(function = ::dispatcherHasPerformFunction)
         }
 
     private fun dispatcherHasPerformFunction(classDeclaration: KoClassDeclaration) =

@@ -8,7 +8,7 @@ kotlin {
 
 dependencies {
     "jvmTestImplementation"(kotlin("test"))
-    "jvmTestImplementation"("com.lemonappdev:konsist:0.11.0")
+    "jvmTestImplementation"("com.lemonappdev:konsist")
     "jvmTestImplementation"("com.zegreatrob.testmints:minassert")
     "jvmTestImplementation"("com.zegreatrob.testmints:standard")
 }
