@@ -37,7 +37,11 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
                 existingPlayer
             } else {
                 val atIndex = email.indexOf("@")
-                Player("-1", name = email.substring(0, atIndex), email = email, avatarType = null)
+                com.zegreatrob.coupling.model.player.defaultPlayer.copy(
+                    "-1",
+                    name = email.substring(0, atIndex),
+                    email = email,
+                )
             }
         }
     }

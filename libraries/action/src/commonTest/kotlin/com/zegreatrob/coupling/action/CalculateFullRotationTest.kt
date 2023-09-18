@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.stats.spinsUntilFullRotation
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -12,7 +12,7 @@ class CalculateFullRotationTest {
         fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
             .map { number -> makePlayer("$number") }
 
-        private fun makePlayer(id: String) = Player(id = id, avatarType = null)
+        private fun makePlayer(id: String) = defaultPlayer.copy(id = id)
     }
 
     @Test

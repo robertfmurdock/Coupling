@@ -21,6 +21,7 @@ interface JsonPlayer {
     val callSignNoun: String
     val imageURL: String?
     val avatarType: String?
+    val unvalidatedEmails: Set<String>
 }
 
 @Serializable
@@ -33,6 +34,7 @@ data class JsonPlayerData(
     override val callSignNoun: String = defaultPlayer.callSignNoun,
     override val imageURL: String? = defaultPlayer.imageURL,
     override val avatarType: String? = defaultPlayer.avatarType?.name,
+    override val unvalidatedEmails: Set<String> = defaultPlayer.unvalidatedEmails,
 ) : JsonPlayer
 
 @Serializable
@@ -46,6 +48,7 @@ data class SavePlayerInput(
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
     val avatarType: String? = defaultPlayer.avatarType?.name,
+    val unvalidatedEmails: Set<String> = defaultPlayer.unvalidatedEmails,
 ) : IPartyInput
 
 @Serializable
@@ -58,6 +61,7 @@ data class JsonPlayerRecord(
     override val callSignNoun: String = defaultPlayer.callSignNoun,
     override val imageURL: String? = defaultPlayer.imageURL,
     override val avatarType: String? = defaultPlayer.avatarType?.name,
+    override val unvalidatedEmails: Set<String> = defaultPlayer.unvalidatedEmails,
     override val partyId: PartyId,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
@@ -84,6 +88,7 @@ fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
     callSignNoun = data.element.callSignNoun,
     imageURL = data.element.imageURL,
     avatarType = data.element.avatarType?.name,
+    unvalidatedEmails = data.element.unvalidatedEmails,
     partyId = data.partyId,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
@@ -99,6 +104,7 @@ fun SavePlayerInput.toModel(): Player = Player(
     callSignNoun = callSignNoun,
     imageURL = imageURL,
     avatarType = avatarType?.let(AvatarType::valueOf),
+    unvalidatedEmails = unvalidatedEmails,
 )
 
 fun JsonPlayer.toModel(): Player = Player(
@@ -110,6 +116,7 @@ fun JsonPlayer.toModel(): Player = Player(
     callSignNoun = callSignNoun,
     imageURL = imageURL,
     avatarType = avatarType.takeUnless(String?::isNullOrEmpty)?.let(AvatarType::valueOf),
+    unvalidatedEmails = unvalidatedEmails,
 )
 
 fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(
@@ -123,6 +130,7 @@ fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(
             callSignNoun = callSignNoun,
             imageURL = imageURL,
             avatarType = avatarType?.let(AvatarType::valueOf),
+            unvalidatedEmails = unvalidatedEmails,
         ),
     ),
     modifyingUserId = modifyingUserEmail,

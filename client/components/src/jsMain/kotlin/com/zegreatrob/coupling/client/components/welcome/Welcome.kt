@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
@@ -154,7 +154,7 @@ private fun WelcomeCardSet.toPairAndProverb() = pairOf(
 
 private fun RandomProvider.chooseWelcomeCardSet() = candidates.random()
 
-private fun Card.toPlayer() = Player(id = name, name = name, imageURL = imagePath, avatarType = null)
+private fun Card.toPlayer() = defaultPlayer.copy(id = name, name = name, imageURL = imagePath)
 
 private fun ChildrenBuilder.welcomeTitle(welcomeTitleRef: MutableRefObject<HTMLDivElement>) = div {
     css {

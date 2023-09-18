@@ -14,7 +14,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
@@ -51,11 +51,8 @@ class HistoryPageE2ETest {
                     1,
                     notEmptyListOf(
                         pairOf(
-                            Player(
-                                name = "Ollie",
-                                avatarType = null,
-                            ),
-                            Player(name = "Speedy", avatarType = null),
+                            defaultPlayer.copy(name = "Ollie"),
+                            defaultPlayer.copy(name = "Speedy"),
                         ),
                     ),
                 ),
@@ -63,11 +60,8 @@ class HistoryPageE2ETest {
                     2,
                     notEmptyListOf(
                         pairOf(
-                            Player(
-                                name = "Arthur",
-                                avatarType = null,
-                            ),
-                            Player(name = "Garth", avatarType = null),
+                            defaultPlayer.copy(name = "Arthur"),
+                            defaultPlayer.copy(name = "Garth"),
                         ),
                     ),
                 ),

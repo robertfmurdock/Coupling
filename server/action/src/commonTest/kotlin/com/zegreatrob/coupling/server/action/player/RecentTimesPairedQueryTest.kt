@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
 import com.zegreatrob.coupling.stubmodel.record
@@ -45,8 +45,8 @@ class RecentTimesPairedQueryTest {
     @Test
     fun alwaysReturnsNullForSolos() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
         val partyId = stubPartyId()
-        val player1 = Player(id = "bob", avatarType = null)
-        val player2 = Player(id = "fred", avatarType = null)
+        val player1 = defaultPlayer.copy(id = "bob")
+        val player2 = defaultPlayer.copy(id = "fred")
         override val playerRepository = PlayerListGet { listOf(player1, player2).map { record(partyId, it) } }
         override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { emptyList() }
     }) exercise {
@@ -58,7 +58,7 @@ class RecentTimesPairedQueryTest {
     @Test
     fun willReturnZeroWhenPairHasNeverOccurred() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
         val partyId = stubPartyId()
-        val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
+        val pair = pairOf(defaultPlayer.copy(id = "bob"), defaultPlayer.copy(id = "fred"))
         val action = RecentTimesPairedQuery(partyId, pair, null)
         override val playerRepository = PlayerListGet { stubPlayers(61).map { record(partyId, it) } }
         override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { emptyList() }
@@ -69,29 +69,30 @@ class RecentTimesPairedQueryTest {
     }
 
     @Test
-    fun willReturnOneWhenPairHasOccurredButDifferentPositions() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
-        val player1 = Player(id = "bob", avatarType = null)
-        val player2 = Player(id = "fred", avatarType = null)
-        val pair = pairOf(player1, player2)
-        var history = listOf(
-            notEmptyListOf(pairOf(player2, player1)).pairAssignmentDocument(),
-        )
-        override val playerRepository = PlayerListGet { stubPlayers(61).map { record(partyId, it) } }
-        override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-            history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+    fun willReturnOneWhenPairHasOccurredButDifferentPositions() =
+        asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
+            val player1 = defaultPlayer.copy(id = "bob")
+            val player2 = defaultPlayer.copy(id = "fred")
+            val pair = pairOf(player1, player2)
+            var history = listOf(
+                notEmptyListOf(pairOf(player2, player1)).pairAssignmentDocument(),
+            )
+            override val playerRepository = PlayerListGet { stubPlayers(61).map { record(partyId, it) } }
+            override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
+                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+            }
+            val partyId = stubPartyId()
+        }) exercise {
+            perform(RecentTimesPairedQuery(partyId, pair, null))
+        } verify { result ->
+            result.assertIsEqualTo(1.0)
         }
-        val partyId = stubPartyId()
-    }) exercise {
-        perform(RecentTimesPairedQuery(partyId, pair, null))
-    } verify { result ->
-        result.assertIsEqualTo(1.0)
-    }
 
     class WhenThereIsOnlyOnePossiblePair {
 
         @Test
         fun whenThePairHasOnePairingCountsCorrectly() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
-            val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
+            val pair = pairOf(defaultPlayer.copy(id = "bob"), defaultPlayer.copy(id = "fred"))
             val rotationPeriod = 1
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
             val partyId = stubPartyId()
@@ -107,7 +108,7 @@ class RecentTimesPairedQueryTest {
 
         @Test
         fun whenThePairHasTwoConsecutivePairingsShowsCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
-            val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
+            val pair = pairOf(defaultPlayer.copy(id = "bob"), defaultPlayer.copy(id = "fred"))
             val rotationPeriod = 2
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
             val partyId = stubPartyId()
@@ -126,7 +127,7 @@ class RecentTimesPairedQueryTest {
         @Test
         fun whenThePairHasThreeConsecutivePairingsShowsCount() = asyncSetup(object :
             RecentTimesPairedQuery.Dispatcher {
-            val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
+            val pair = pairOf(defaultPlayer.copy(id = "bob"), defaultPlayer.copy(id = "fred"))
             val rotationPeriod = 3
             val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
             val partyId = stubPartyId()
@@ -142,7 +143,7 @@ class RecentTimesPairedQueryTest {
 
         @Test
         fun whenThePairHasFourConsecutivePairingsShowsCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
-            val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
+            val pair = pairOf(defaultPlayer.copy(id = "bob"), defaultPlayer.copy(id = "fred"))
             val history = notEmptyListOf(pair).buildHistoryByRepeating(4)
             val partyId = stubPartyId()
             override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
@@ -158,7 +159,7 @@ class RecentTimesPairedQueryTest {
         @Test
         fun whenLimitedWithFourConsecutivePairingsWillReturnCount() =
             asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
-                val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
+                val pair = pairOf(defaultPlayer.copy(id = "bob"), defaultPlayer.copy(id = "fred"))
                 val history = notEmptyListOf(pair).buildHistoryByRepeating(4)
                 val partyId = stubPartyId()
                 override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
@@ -172,29 +173,30 @@ class RecentTimesPairedQueryTest {
             }
 
         @Test
-        fun whenThePairHasFiveConsecutivePairingsWillReturnCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
-            val pair = pairOf(Player(id = "bob", avatarType = null), Player(id = "fred", avatarType = null))
-            val rotationPeriod = 5
-            val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
-            val partyId = stubPartyId()
-            override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
-            override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+        fun whenThePairHasFiveConsecutivePairingsWillReturnCount() =
+            asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
+                val pair = pairOf(defaultPlayer.copy(id = "bob"), defaultPlayer.copy(id = "fred"))
+                val rotationPeriod = 5
+                val history = notEmptyListOf(pair).buildHistoryByRepeating(rotationPeriod)
+                val partyId = stubPartyId()
+                override val playerRepository = PlayerListGet { stubPlayers(5).map { record(partyId, it) } }
+                override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
+                    history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                }
+            }) exercise {
+                perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
+            } verify { result ->
+                result.assertIsEqualTo(5)
             }
-        }) exercise {
-            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
-        } verify { result ->
-            result.assertIsEqualTo(5)
-        }
     }
 
     class WithThreePlayers {
 
         companion object {
             const val ROTATION_PERIOD = 3
-            val player1 = Player(id = "bob", avatarType = null)
-            val player2 = Player(id = "fred", avatarType = null)
-            val player3 = Player(id = "latisha", avatarType = null)
+            val player1 = defaultPlayer.copy(id = "bob")
+            val player2 = defaultPlayer.copy(id = "fred")
+            val player3 = defaultPlayer.copy(id = "latisha")
             private val partyId = stubPartyId()
             val pair = pairOf(player1, player2)
             val playerRecords = listOf(player1, player2, player3).map { record(partyId, it) }
@@ -222,29 +224,30 @@ class RecentTimesPairedQueryTest {
         }
 
         @Test
-        fun willReturn0WithLastPairingIsOlderThanFiveRotations() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
-            val rotationHeatWindow = 5
-            val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
-            val expectedPairing = notEmptyListOf(pair, pairOf(player3))
-            val history = notEmptyListOf(
-                pairOf(
-                    player2,
-                    player3,
-                ),
-                pairOf(player1),
-            )
-                .buildHistoryByRepeating(intervalsUntilCooling)
-                .plus(expectedPairing.pairAssignmentDocument(-1))
-                .shuffled()
-            override val playerRepository = PlayerListGet { playerRecords }
-            override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+        fun willReturn0WithLastPairingIsOlderThanFiveRotations() =
+            asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
+                val rotationHeatWindow = 5
+                val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
+                val expectedPairing = notEmptyListOf(pair, pairOf(player3))
+                val history = notEmptyListOf(
+                    pairOf(
+                        player2,
+                        player3,
+                    ),
+                    pairOf(player1),
+                )
+                    .buildHistoryByRepeating(intervalsUntilCooling)
+                    .plus(expectedPairing.pairAssignmentDocument(-1))
+                    .shuffled()
+                override val playerRepository = PlayerListGet { playerRecords }
+                override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
+                    history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                }
+            }) exercise {
+                perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
+            } verify { result ->
+                result.assertIsEqualTo(0.0)
             }
-        }) exercise {
-            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
-        } verify { result ->
-            result.assertIsEqualTo(0.0)
-        }
 
         @Test
         fun whenManyPairingsInWindowShowsCountCorrectly() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
@@ -270,36 +273,37 @@ class RecentTimesPairedQueryTest {
         companion object {
             const val ROTATION_PERIOD = 5
             private val partyId = stubPartyId()
-            val player1 = Player(id = "bob", avatarType = null)
-            val player2 = Player(id = "fred", avatarType = null)
+            val player1 = defaultPlayer.copy(id = "bob")
+            val player2 = defaultPlayer.copy(id = "fred")
             val pair = pairOf(player1, player2)
-            val player3 = Player(id = "latisha", avatarType = null)
-            val player4 = Player(id = "jane", avatarType = null)
-            val player5 = Player(id = "fievel", avatarType = null)
+            val player3 = defaultPlayer.copy(id = "latisha")
+            val player4 = defaultPlayer.copy(id = "jane")
+            val player5 = defaultPlayer.copy(id = "fievel")
             val playerRecords = listOf(player1, player2, player3, player4, player5).map { record(partyId, it) }
         }
 
         @Test
-        fun willReturn1WhenLastPairingIsAlmostOlderThanFiveRotations() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
-            val rotationHeatWindow = 5
-            val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
-            val expectedPairing = notEmptyListOf(pair, pairOf(player3)).pairAssignmentDocument(3)
-            val history = notEmptyListOf(
-                pairOf(player2, player3),
-                pairOf(player1, player4),
-                pairOf(player5),
-            )
-                .buildHistoryByRepeating(intervalsUntilCooling - 1)
-                .plus(expectedPairing)
-            override val playerRepository = PlayerListGet { playerRecords }
-            override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+        fun willReturn1WhenLastPairingIsAlmostOlderThanFiveRotations() =
+            asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
+                val rotationHeatWindow = 5
+                val intervalsUntilCooling = ROTATION_PERIOD * rotationHeatWindow
+                val expectedPairing = notEmptyListOf(pair, pairOf(player3)).pairAssignmentDocument(3)
+                val history = notEmptyListOf(
+                    pairOf(player2, player3),
+                    pairOf(player1, player4),
+                    pairOf(player5),
+                )
+                    .buildHistoryByRepeating(intervalsUntilCooling - 1)
+                    .plus(expectedPairing)
+                override val playerRepository = PlayerListGet { playerRecords }
+                override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
+                    history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                }
+            }) exercise {
+                perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
+            } verify { result ->
+                result.assertIsEqualTo(1)
             }
-        }) exercise {
-            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
-        } verify { result ->
-            result.assertIsEqualTo(1)
-        }
 
         @Test
         fun whenSkippingOneRotationOutOfFiveReturnsCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
@@ -326,25 +330,26 @@ class RecentTimesPairedQueryTest {
         }
 
         @Test
-        fun whenSkippingThreeRotationOutOfFiveWillReturnCount() = asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
-            val assignmentsWithoutIntendedPair = notEmptyListOf(
-                pairOf(player1, player3),
-                pairOf(player3, player4),
-            )
-            val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument(4)
-            val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD - 1)
+        fun whenSkippingThreeRotationOutOfFiveWillReturnCount() =
+            asyncSetup(object : RecentTimesPairedQuery.Dispatcher {
+                val assignmentsWithoutIntendedPair = notEmptyListOf(
+                    pairOf(player1, player3),
+                    pairOf(player3, player4),
+                )
+                val intervalWithIntendedPair = notEmptyListOf(pair, pairOf(player3, player4)).pairAssignmentDocument(4)
+                val otherIntervals = assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD - 1)
 
-            val goodRotation = otherIntervals + intervalWithIntendedPair
-            val absenteeRotation = assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD)
-            val history = goodRotation + absenteeRotation + absenteeRotation + goodRotation + absenteeRotation
-            override val playerRepository = PlayerListGet { playerRecords }
-            override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
-                history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                val goodRotation = otherIntervals + intervalWithIntendedPair
+                val absenteeRotation = assignmentsWithoutIntendedPair.buildHistoryByRepeating(ROTATION_PERIOD)
+                val history = goodRotation + absenteeRotation + absenteeRotation + goodRotation + absenteeRotation
+                override val playerRepository = PlayerListGet { playerRecords }
+                override val pairAssignmentDocumentRepository = PairAssignmentDocumentGet { partyId ->
+                    history.map { Record(PartyElement(partyId, it), "test", false, Instant.DISTANT_PAST) }
+                }
+            }) exercise {
+                perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
+            } verify { result ->
+                result.assertIsEqualTo(2)
             }
-        }) exercise {
-            perform(RecentTimesPairedQuery(stubPartyId(), pair, null))
-        } verify { result ->
-            result.assertIsEqualTo(2)
-        }
     }
 }

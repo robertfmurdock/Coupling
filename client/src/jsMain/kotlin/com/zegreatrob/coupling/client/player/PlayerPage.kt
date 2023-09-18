@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 
 val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
@@ -43,10 +44,9 @@ val PlayerPage = partyPageFunction { props: PageProps, partyId: PartyId ->
 
 private fun List<Player>.defaultWithCallSign() = object : FindCallSignAction.Dispatcher {}
     .perform(FindCallSignAction(this, ""))
-    .let(::defaultPlayer)
+    .let(::defaultWith)
 
-private fun defaultPlayer(callSign: CallSign) = Player(
+private fun defaultWith(callSign: CallSign) = defaultPlayer.copy(
     callSignAdjective = callSign.adjective,
     callSignNoun = callSign.noun,
-    avatarType = null,
 )

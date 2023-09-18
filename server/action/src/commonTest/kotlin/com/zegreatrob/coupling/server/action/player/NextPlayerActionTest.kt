@@ -4,12 +4,14 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListActionWrapper
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.GameSpin
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairCandidateReport
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
@@ -20,10 +22,10 @@ import kotlin.test.Test
 
 class NextPlayerActionTest {
 
-    private val bill = Player(id = "Bill", avatarType = null)
-    private val ted = Player(id = "Ted", avatarType = null)
-    private val amadeus = Player(id = "Mozart", avatarType = null)
-    private val shorty = Player(id = "Napoleon", avatarType = null)
+    private val bill = defaultPlayer.copy(id = "Bill")
+    private val ted = defaultPlayer.copy(id = "Ted")
+    private val amadeus = defaultPlayer.copy(id = "Mozart")
+    private val shorty = defaultPlayer.copy(id = "Napoleon")
 
     interface NextPlayerActionTestDispatcher :
         NextPlayerAction.Dispatcher<NextPlayerActionTestDispatcher>,
@@ -116,17 +118,17 @@ class NextPlayerActionTest {
 
         val billsPairCandidates = PairCandidateReport(
             bill,
-            listOf(Player(avatarType = null), Player(avatarType = null), Player(avatarType = null)),
+            listOf(stubPlayer(), stubPlayer(), stubPlayer()),
             NeverPaired,
         )
         val amadeusPairCandidates = PairCandidateReport(
             amadeus,
-            listOf(Player(avatarType = null)),
+            listOf(stubPlayer()),
             NeverPaired,
         )
         val shortyPairCandidates = PairCandidateReport(
             shorty,
-            listOf(Player(avatarType = null), Player(avatarType = null)),
+            listOf(stubPlayer(), stubPlayer()),
             NeverPaired,
         )
         override val cannon = StubCannon.Synchronous<NextPlayerActionTestDispatcher>().apply {

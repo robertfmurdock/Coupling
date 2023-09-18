@@ -18,6 +18,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import popper.core.Placement
@@ -36,12 +37,12 @@ private val lisa by playerImage()
 private val maggie by playerImage()
 private val slh by playerImage()
 
-private val player1 = Player(name = "Homer", imageURL = homer, avatarType = null)
-private val player2 = Player(name = "Marge", imageURL = marge, avatarType = null)
-private val player3 = Player(name = "Bart", imageURL = bart, avatarType = null)
-private val player4 = Player(name = "Lisa", imageURL = lisa, avatarType = null)
-private val player5 = Player(name = "Maggie", imageURL = maggie, avatarType = null)
-private val player6 = Player(name = "Santa's Lil Helper", imageURL = slh, avatarType = null)
+private val player1 = defaultPlayer.copy(name = "Homer", imageURL = homer)
+private val player2 = defaultPlayer.copy(name = "Marge", imageURL = marge)
+private val player3 = defaultPlayer.copy(name = "Bart", imageURL = bart)
+private val player4 = defaultPlayer.copy(name = "Lisa", imageURL = lisa)
+private val player5 = defaultPlayer.copy(name = "Maggie", imageURL = maggie)
+private val player6 = defaultPlayer.copy(name = "Santa's Lil Helper", imageURL = slh)
 
 private val players = listOf(
     player1,

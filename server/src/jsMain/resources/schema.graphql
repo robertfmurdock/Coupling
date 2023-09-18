@@ -59,6 +59,7 @@ type PlayerDetails {
     callSignNoun: String
     imageURL: String
     avatarType: String
+    unvalidatedEmails: [String]
     partyId: String
     modifyingUserEmail: String
     timestamp: String
@@ -75,6 +76,7 @@ type PinnedPlayer {
     callSignNoun: String
     imageURL: String
     pins: [Pin]!
+    unvalidatedEmails: [String]!
 }
 
 type PinnedPair {
@@ -241,6 +243,7 @@ input SavePlayerInput {
     callSignNoun: String
     imageURL: String
     avatarType: String
+    unvalidatedEmails: [String]
 }
 
 input SavePairAssignmentsInput {
@@ -266,6 +269,7 @@ input PinnedPlayerInput {
     callSignNoun: String
     imageURL: String
     avatarType: String
+    unvalidatedEmails: [String]!
     pins: [PinInput]!
 }
 

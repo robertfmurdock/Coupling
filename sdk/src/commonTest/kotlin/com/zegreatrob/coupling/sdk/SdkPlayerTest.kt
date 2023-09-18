@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.DeletePlayerCommand
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.validation.assertHasIds
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
@@ -182,13 +182,12 @@ class SdkPlayerTest {
         object {
             val sdk = it.sdk
             val party = it.party
-            val player = Player(
+            val player = defaultPlayer.copy(
                 name = "",
                 email = "",
                 callSignAdjective = "1",
                 callSignNoun = "2",
                 imageURL = null,
-                avatarType = null,
             )
         }
     }) {
@@ -305,12 +304,11 @@ class SdkPlayerTest {
             waitForTest {
                 asyncSetup(object {
                     val party = stubPartyDetails()
-                    val player = Player(
+                    val player = defaultPlayer.copy(
                         id = "${uuid4()}",
                         name = "Awesome-O",
                         callSignAdjective = "Awesome",
                         callSignNoun = "Sauce",
-                        avatarType = null,
                     )
                 }) {
                     otherSdk.fire(SavePartyCommand(party))

@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertContains
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -27,8 +28,8 @@ class FindNewPairsActionTest {
         FindNewPairsAction.Dispatcher<FindNewPairsActionTestDispatcher> {
         override val wheel = StubWheel()
         override val cannon = StubCannon<FindNewPairsActionTestDispatcher>(mutableListOf())
-        val bill: Player = Player(id = "Bill", avatarType = null)
-        val ted: Player = Player(id = "Ted", avatarType = null)
+        val bill: Player = defaultPlayer.copy(id = "Bill")
+        val ted: Player = defaultPlayer.copy(id = "Ted")
         val players = notEmptyListOf(bill, ted)
     }) {
         wheel.spyReturnValues.add(bill)
@@ -48,9 +49,9 @@ class FindNewPairsActionTest {
         FindNewPairsAction.Dispatcher<FindNewPairsActionTestDispatcher> {
         override val cannon = StubCannon<FindNewPairsActionTestDispatcher>(mutableListOf())
         override val wheel = StubWheel()
-        val bill: Player = Player(id = "Bill", avatarType = null)
-        val ted: Player = Player(id = "Ted", avatarType = null)
-        val mozart: Player = Player(id = "Mozart", avatarType = null)
+        val bill: Player = defaultPlayer.copy(id = "Bill")
+        val ted: Player = defaultPlayer.copy(id = "Ted")
+        val mozart: Player = defaultPlayer.copy(id = "Mozart")
         val players = notEmptyListOf(bill, ted, mozart)
         val pairCandidateReports = listOf(
             PairCandidateReport(mozart, listOf(bill, ted), TimeResultValue(0)),

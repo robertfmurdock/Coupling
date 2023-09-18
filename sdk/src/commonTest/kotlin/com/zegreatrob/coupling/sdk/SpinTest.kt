@@ -27,6 +27,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPin
@@ -55,8 +56,8 @@ class SpinTest {
                 name = "commonTest",
             )
             val players = notEmptyListOf(
-                Player(name = "dude1", avatarType = null),
-                Player(name = "dude2", avatarType = null),
+                stubPlayer().copy(name = "dude1"),
+                stubPlayer().copy(name = "dude2"),
             )
         }
     }) {
@@ -213,10 +214,10 @@ class SpinTest {
     }
 
     private fun fourPlayersTwoDefaultTwoAlternate() = notEmptyListOf(
-        Player(id = uuid4().toString(), badge = Badge.Default.value, name = "One", avatarType = null),
-        Player(id = uuid4().toString(), badge = Badge.Default.value, name = "Two", avatarType = null),
-        Player(id = uuid4().toString(), badge = Badge.Alternate.value, name = "Three", avatarType = null),
-        Player(id = uuid4().toString(), badge = Badge.Alternate.value, name = "Four", avatarType = null),
+        defaultPlayer.copy(id = uuid4().toString(), badge = Badge.Default.value, name = "One"),
+        defaultPlayer.copy(id = uuid4().toString(), badge = Badge.Default.value, name = "Two"),
+        defaultPlayer.copy(id = uuid4().toString(), badge = Badge.Alternate.value, name = "Three"),
+        defaultPlayer.copy(id = uuid4().toString(), badge = Badge.Alternate.value, name = "Four"),
     )
 
     companion object {

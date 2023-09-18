@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.repository.player.PlayerSave
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.Spy
@@ -19,7 +20,7 @@ class SavePlayerCommandTest {
     @Test
     fun willSaveToRepository() = asyncSetup(object : ServerSavePlayerCommandDispatcher {
         override val currentPartyId = PartyId("woo")
-        val player = Player(
+        val player = defaultPlayer.copy(
             id = "1",
             badge = 1,
             name = "Tim",

@@ -103,7 +103,8 @@ data class JsonPinnedPlayer(
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
     val avatarType: AvatarType? = defaultPlayer.avatarType,
-    val pins: List<JsonPinData>,
+    val pins: List<JsonPinData> = emptyList(),
+    val unvalidatedEmails: Set<String> = emptySet(),
 )
 
 @Serializable
@@ -160,6 +161,7 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
     callSignNoun = player.callSignNoun,
     imageURL = player.imageURL,
     avatarType = player.avatarType,
+    unvalidatedEmails = player.unvalidatedEmails,
     pins = pins.map(Pin::toSerializable),
 )
 
@@ -221,6 +223,7 @@ private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
         callSignNoun = callSignNoun,
         imageURL = imageURL,
         avatarType = avatarType,
+        unvalidatedEmails = unvalidatedEmails,
     ),
     pins = pins.map(JsonPinData::toModel),
 )

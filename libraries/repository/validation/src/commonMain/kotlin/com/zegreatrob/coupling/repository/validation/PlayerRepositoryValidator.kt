@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.repository.player.PlayerRepository
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
+import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import kotlinx.datetime.Clock
@@ -36,12 +37,15 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
     fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val player = Player(
+                id = uuidString(),
                 name = "",
                 email = "",
                 callSignAdjective = "1",
                 callSignNoun = "2",
                 imageURL = null,
                 avatarType = null,
+                badge = 0,
+                unvalidatedEmails = emptySet(),
             )
         }.bind(),
     ) {

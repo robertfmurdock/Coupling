@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
@@ -26,12 +26,11 @@ class RequestCombineEndpointTest {
             val sdk = sdk
             val party = PartyDetails(id = PartyId("et-${uuid4()}"))
             val playersToSave = listOf(
-                Player(
+                defaultPlayer.copy(
                     id = "${uuid4()}",
                     name = "Awesome-O",
                     callSignAdjective = "Awesome",
                     callSignNoun = "Sauce",
-                    avatarType = null,
                 ),
             )
             val pinsToSave = listOf(Pin(uuid4().toString(), "1"))

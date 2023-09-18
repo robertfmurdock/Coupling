@@ -11,7 +11,6 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -44,8 +43,8 @@ class ShufflePairsActionTest {
         val pins = emptyList<Pin>()
         val history = emptyList<PairAssignmentDocument>()
         val expectedPairingAssignments = notEmptyListOf(
-            pairOf(Player(avatarType = null)),
-            pairOf(Player(avatarType = null)),
+            pairOf(stubPlayer()),
+            pairOf(stubPlayer()),
         )
         val expectedPinnedPairs = expectedPairingAssignments.map {
             PinnedCouplingPair(it.toNotEmptyList().map { player -> player.withPins() })

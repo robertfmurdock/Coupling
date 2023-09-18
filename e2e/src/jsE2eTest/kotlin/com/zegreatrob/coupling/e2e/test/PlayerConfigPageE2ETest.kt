@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
@@ -46,10 +47,9 @@ class PlayerConfigPageE2ETest {
                     )
                 },
                 buildPlayer = {
-                    Player(
-                        "${randomInt()}-PlayerConfigPageE2E",
+                    defaultPlayer.copy(
+                        id = "${randomInt()}-PlayerConfigPageE2E",
                         name = "${randomInt()}-PlayerConfigPageE2E",
-                        avatarType = null,
                     )
                 },
             )
@@ -174,10 +174,9 @@ class PlayerConfigPageE2ETest {
         fun willShowAllPlayers() = e2eSetup(object {
             val party = PartyDetails(PartyId("${randomInt()}-PlayerConfigPageE2E"))
             val players = generateSequence {
-                Player(
+                defaultPlayer.copy(
                     id = "${randomInt()}-PlayerConfigPageE2E",
                     name = "${randomInt()}-PlayerConfigPageE2E",
-                    avatarType = null,
                 )
             }.take(5).toList()
             val page = PlayerConfigPage
@@ -207,8 +206,8 @@ class PlayerConfigPageE2ETest {
                     )
                 },
                 buildPlayer = {
-                    Player(
-                        "${randomInt()}-PlayerConfigPageE2E",
+                    defaultPlayer.copy(
+                        id = "${randomInt()}-PlayerConfigPageE2E",
                         name = "${randomInt()}-PlayerConfigPageE2E",
                         avatarType = null,
                     )
@@ -277,10 +276,9 @@ class PlayerConfigPageE2ETest {
                     )
                 },
                 buildPlayer = {
-                    Player(
-                        "${randomInt()}-PlayerConfigPageE2E",
+                    defaultPlayer.copy(
+                        id = "${randomInt()}-PlayerConfigPageE2E",
                         name = "${randomInt()}-PlayerConfigPageE2E",
-                        avatarType = null,
                     )
                 },
             )

@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.action
 
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlin.test.Test
@@ -17,8 +17,8 @@ class FindCallSignActionTest {
     @Test
     fun withSimpleSetupWillReturnCallSign() = setup(object {
         val players = listOf(
-            Player(callSignAdjective = "Modest", callSignNoun = "Tiger", avatarType = null),
-            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose", avatarType = null),
+            defaultPlayer.copy(callSignAdjective = "Modest", callSignNoun = "Tiger"),
+            defaultPlayer.copy(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
         )
     }) exercise {
         perform(FindCallSignAction(players, EMAIL))
@@ -29,7 +29,7 @@ class FindCallSignActionTest {
     @Test
     fun givenNoCollisionTheNumberOfUsedCallSignsWillNotAffectTheGeneratedResult() = setup(object {
         val players = listOf(
-            Player(callSignAdjective = "Intense", callSignNoun = "Mongoose", avatarType = null),
+            defaultPlayer.copy(callSignAdjective = "Intense", callSignNoun = "Mongoose"),
         )
     }) exercise {
         perform(FindCallSignAction(players, EMAIL))
@@ -40,7 +40,7 @@ class FindCallSignActionTest {
     @Test
     fun whenTheAdjectiveIsAlreadyUsedAnotherOneWillBeGenerated() = setup(object {
         val players = listOf(
-            Player(
+            defaultPlayer.copy(
                 callSignAdjective = expectedCallSign.adjective,
                 callSignNoun = "Mongoose",
                 avatarType = null,
@@ -60,10 +60,9 @@ class FindCallSignActionTest {
     @Test
     fun whenTheNounIsAlreadyUsedAnotherOneWillBeGenerated() = setup(object {
         val players = listOf(
-            Player(
+            defaultPlayer.copy(
                 callSignAdjective = "Intense",
                 callSignNoun = expectedCallSign.noun,
-                avatarType = null,
             ),
         )
     }) exercise {

@@ -19,6 +19,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.server.action.player.ContributorPlayerQuery
 import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
@@ -125,7 +126,7 @@ val pairAssignmentHeatResolve = dispatch(
     commandFunc = { data, _ ->
         val model = data.toModel()
         val partyId = model.details?.data?.partyId ?: return@dispatch null
-        val pair = model.playerIds?.map { Player(id = it) }?.toCouplingPair() ?: return@dispatch null
+        val pair = model.playerIds?.map { defaultPlayer.copy(id = it) }?.toCouplingPair() ?: return@dispatch null
         RecentTimesPairedQuery(
             partyId = partyId,
             pair = pair,

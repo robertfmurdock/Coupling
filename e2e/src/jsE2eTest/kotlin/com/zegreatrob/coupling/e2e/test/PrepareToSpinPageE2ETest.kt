@@ -17,6 +17,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.TestTemplate
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
@@ -52,10 +53,9 @@ class PrepareToSpinPageE2ETest {
             name = "Funkytown",
         )
 
-        private fun buildPlayer(it: Int) = Player(
+        private fun buildPlayer(it: Int) = defaultPlayer.copy(
             id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
             name = "Player$it",
-            avatarType = null,
         )
     }
 

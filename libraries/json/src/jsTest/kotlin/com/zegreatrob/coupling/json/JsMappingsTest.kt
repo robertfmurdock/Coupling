@@ -19,6 +19,7 @@ class JsMappingsTest {
                 "email" to "nfebbrar@gmail.com",
                 "callSignAdjective" to "",
                 "callSignNoun" to "",
+                "unvalidatedEmails" to emptyArray<String>(),
             )
         }) exercise {
             original.fromJsonDynamic<JsonPlayerData>().toModel().toSerializable().toJsonDynamic().unsafeCast<Json>()
@@ -34,6 +35,7 @@ class JsMappingsTest {
                 "callSignAdjective" to "Furious",
                 "callSignNoun" to "Squirrel",
                 "imageURL" to "batman.png",
+                "unvalidatedEmails" to emptyArray<String>(),
             )
         }) exercise {
             original.fromJsonDynamic<JsonPlayerData>().toModel().toSerializable().toJsonDynamic().unsafeCast<Json>()

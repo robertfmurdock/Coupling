@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import kotlinx.datetime.toInstant
 import kotools.types.collection.toNotEmptyList
 
@@ -66,9 +66,8 @@ private fun JsonNode.toPin() = Pin(
     name = this["name"].textValue(),
 )
 
-private fun JsonNode.toPlayer() = Player(
+private fun JsonNode.toPlayer() = defaultPlayer.copy(
     id = this["id"].textValue(),
     badge = this["badge"].intValue(),
     name = this["name"].textValue(),
-    avatarType = null,
 )

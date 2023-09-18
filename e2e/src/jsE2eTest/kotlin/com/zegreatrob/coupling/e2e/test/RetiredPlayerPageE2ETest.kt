@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
@@ -36,7 +37,7 @@ class RetiredPlayerPageE2ETest {
             .let { PartyDetails(it.let(::PartyId), name = "$it-name") }
         val players = (1..4)
             .map { "${randomInt()}-RetiredPlayerPageE2ETest-$it" }
-            .map { id -> Player(id, name = "$id-name", avatarType = null) }
+            .map { id -> defaultPlayer.copy(id, name = "$id-name") }
             .toList()
         val notDeletedPlayer = players[2]
         val retiredPlayers = players - notDeletedPlayer

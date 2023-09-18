@@ -21,6 +21,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.action.ActionCannon
@@ -59,12 +60,11 @@ class PairAssignmentsPageE2ETest {
 
             val players by lazy {
                 (1..5).map {
-                    Player(
+                    defaultPlayer.copy(
                         id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
                         name = "player$it",
                         callSignAdjective = "nimble",
                         callSignNoun = "thimble",
-                        avatarType = null,
                     )
                 }
             }
@@ -161,12 +161,11 @@ class PairAssignmentsPageE2ETest {
 
             private val players by lazy {
                 (1..5).map {
-                    Player(
+                    defaultPlayer.copy(
                         id = "${randomInt()}-PairAssignmentsPageE2ETest-$it",
                         name = "player$it",
                         callSignAdjective = "nimble",
                         callSignNoun = "thimble",
-                        avatarType = null,
                     )
                 }
             }

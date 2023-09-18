@@ -59,6 +59,7 @@ object GqlReference {
         imageURL = "",
         avatarType = AvatarType.BoringBeam,
         pins = listOf(pinData),
+        unvalidatedEmails = setOf(""),
     )
     val pinnedCouplingPair = JsonPinnedCouplingPair(
         players = notEmptyListOf(pinnedPlayer),

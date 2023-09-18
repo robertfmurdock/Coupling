@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.stubmodel.record
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -26,10 +27,10 @@ class PartyStatisticsTest {
     @Test
     fun willShowPairings() = setup(object {
         val players = listOf(
-            Player("harry", name = "Harry", avatarType = null),
-            Player("larry", name = "Larry", avatarType = null),
-            Player("curry", name = "Curly", avatarType = null),
-            Player("moe", name = "Moe", avatarType = null),
+            defaultPlayer.copy("harry", name = "Harry"),
+            defaultPlayer.copy("larry", name = "Larry"),
+            defaultPlayer.copy("curry", name = "Curly"),
+            defaultPlayer.copy("moe", name = "Moe"),
         )
         val party = PartyDetails(PartyId("1"), name = "Mathematica")
     }) exercise {
@@ -87,10 +88,10 @@ class PartyStatisticsTest {
     @Test
     fun sendsPlayerHeatDataToSubComponent() = setup(object {
         val players = listOf(
-            Player("harry", name = "Harry", avatarType = null),
-            Player("larry", name = "Larry", avatarType = null),
-            Player("curry", name = "Curly", avatarType = null),
-            Player("moe", name = "Moe", avatarType = null),
+            defaultPlayer.copy("harry", name = "Harry"),
+            defaultPlayer.copy("larry", name = "Larry"),
+            defaultPlayer.copy("curry", name = "Curly"),
+            defaultPlayer.copy("moe", name = "Moe"),
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
         val heatmapData = listOf(
@@ -125,10 +126,10 @@ class PartyStatisticsTest {
     @Test
     fun willShowBasicStatisticsOnSubComponent() = setup(object {
         val players = listOf(
-            Player("harry", name = "Harry", avatarType = null),
-            Player("larry", name = "Larry", avatarType = null),
-            Player("curry", name = "Curly", avatarType = null),
-            Player("moe", name = "Moe", avatarType = null),
+            defaultPlayer.copy("harry", name = "Harry"),
+            defaultPlayer.copy("larry", name = "Larry"),
+            defaultPlayer.copy("curry", name = "Curly"),
+            defaultPlayer.copy("moe", name = "Moe"),
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
     }) exercise {
@@ -145,10 +146,10 @@ class PartyStatisticsTest {
     @Test
     fun willShowTheMedianSpinTimeOnSubComponent() = setup(object {
         val players = listOf(
-            Player("harry", name = "Harry", avatarType = null),
-            Player("larry", name = "Larry", avatarType = null),
-            Player("curry", name = "Curly", avatarType = null),
-            Player("moe", name = "Moe", avatarType = null),
+            defaultPlayer.copy("harry", name = "Harry"),
+            defaultPlayer.copy("larry", name = "Larry"),
+            defaultPlayer.copy("curry", name = "Curly"),
+            defaultPlayer.copy("moe", name = "Moe"),
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
     }) exercise {

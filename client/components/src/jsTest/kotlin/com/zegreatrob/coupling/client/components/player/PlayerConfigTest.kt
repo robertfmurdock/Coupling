@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
@@ -41,7 +41,7 @@ class PlayerConfigTest {
     @Test
     fun selectingAvatarTypeWillAffectSavedPlayer() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = Player(id = "blarg", avatarType = null)
+        val player = defaultPlayer.copy(id = "blarg")
         val actor = UserEvent.setup()
         val stubDispatcher = StubDispatcher()
     }) {
@@ -74,7 +74,7 @@ class PlayerConfigTest {
     @Test
     fun deselectingAvatarTypeWillRemoveIt() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = Player(id = "blarg", avatarType = AvatarType.BoringBeam)
+        val player = defaultPlayer.copy(id = "blarg", avatarType = AvatarType.BoringBeam)
         val altStubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
@@ -106,7 +106,7 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasNoBadgeWillUseTheDefaultBadge() = setup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = Player(id = "blarg", avatarType = null)
+        val player = defaultPlayer.copy(id = "blarg")
     }) exercise {
         render(
             RouterProvider.create {
@@ -132,7 +132,7 @@ class PlayerConfigTest {
     @Test
     fun whenTheGivenPlayerHasAltBadgeWillNotModifyPlayer() = setup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = Player(id = "blarg", badge = Badge.Alternate.value, avatarType = null)
+        val player = defaultPlayer.copy(id = "blarg", badge = Badge.Alternate.value)
     }) exercise {
         render(
             RouterProvider.create {
@@ -158,7 +158,7 @@ class PlayerConfigTest {
     @Test
     fun submitWillSaveAndReload() = asyncSetup(object {
         val party = PartyDetails(PartyId("party"))
-        val player = Player(id = "blarg", badge = Badge.Default.value, avatarType = null)
+        val player = defaultPlayer.copy(id = "blarg", badge = Badge.Default.value)
         val reloaderSpy = SpyData<Unit, Unit>()
         val altStubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
@@ -193,7 +193,7 @@ class PlayerConfigTest {
         }
         val pathSetterSpy = SpyData<String, Unit>()
         val party = PartyDetails(PartyId("party"))
-        val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
+        val player = defaultPlayer.copy("blarg", badge = Badge.Alternate.value)
         val altStubDispatcher = StubDispatcher.Channel()
         val actor = UserEvent.setup()
     }) {
@@ -238,7 +238,7 @@ class PlayerConfigTest {
             override val window: Window get() = json("confirm" to { false }).unsafeCast<Window>()
         }
         val party = PartyDetails(PartyId("party"))
-        val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
+        val player = defaultPlayer.copy("blarg", badge = Badge.Alternate.value)
         val actor = UserEvent.setup()
         val stubDispatcher = StubDispatcher()
     }) {
@@ -265,7 +265,7 @@ class PlayerConfigTest {
     @Test
     fun whenThePlayerIsModifiedLocationChangeWillPromptTheUserToSave() = asyncSetup(object {
         val party = PartyDetails(PartyId("party"))
-        val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
+        val player = defaultPlayer.copy("blarg", badge = Badge.Alternate.value)
         val actor = UserEvent.setup()
         val spy = SpyData<String, Boolean>().apply { spyWillReturn(true) }
         val confirmFunc: (message: String) -> Boolean = window::confirm
@@ -313,7 +313,7 @@ class PlayerConfigTest {
     @Test
     fun whenThePlayerIsNotModifiedLocationChangeWillNotPromptTheUserToSave() = asyncSetup(object {
         val party = PartyDetails(PartyId("party"))
-        val player = Player("blarg", badge = Badge.Alternate.value, avatarType = null)
+        val player = defaultPlayer.copy("blarg", badge = Badge.Alternate.value)
         val spy = SpyData<String, Boolean>().apply { spyWillReturn(true) }
         val confirmFunc: (message: String) -> Boolean = window::confirm
     }) {

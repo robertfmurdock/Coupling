@@ -63,6 +63,7 @@ fun stubPlayer() = Player(
     callSignNoun = "Meatball $playerCounter",
     imageURL = "italian$playerCounter.jpg",
     avatarType = AvatarType.entries.randomOrNull(),
+    unvalidatedEmails = setOf(uuidString()),
 ).also { playerCounter++ }
 
 fun stubPlayers(number: Int) = generateSequence { stubPlayer() }.take(number).toList()

@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlinx.datetime.Clock
@@ -36,7 +37,7 @@ class CreatePairCandidateReportActionTest {
         val players: List<Player> = emptyList()
         val history: List<PairAssignmentDocument> = emptyList()
     }) exercise {
-        perform(CreatePairCandidateReportAction(Player(id = "player", avatarType = null), history, players))
+        perform(CreatePairCandidateReportAction(defaultPlayer.copy(id = "player"), history, players))
     } verify {
         assertTrue(it.partners.isEmpty())
     }
@@ -44,10 +45,10 @@ class CreatePairCandidateReportActionTest {
     @Suppress("unused")
     class ShouldDeterminePossiblePartnersForPlayerByChoosingPartner {
         companion object {
-            val bruce = Player(id = "Batman", avatarType = null)
-            val jezebel = Player(id = "Jezebel Jett", avatarType = null)
-            val talia = Player(id = "Talia", avatarType = null)
-            val selena = Player(id = "Catwoman", avatarType = null)
+            val bruce = defaultPlayer.copy(id = "Batman")
+            val jezebel = defaultPlayer.copy(id = "Jezebel Jett")
+            val talia = defaultPlayer.copy(id = "Talia")
+            val selena = defaultPlayer.copy(id = "Catwoman")
             val availableOtherPlayers = listOf(selena, talia, jezebel)
 
             private fun createPairCandidateReportAction(
@@ -79,7 +80,7 @@ class CreatePairCandidateReportActionTest {
                         notEmptyListOf(
                             pinnedPair(
                                 bruce,
-                                Player(id = "Batgirl", avatarType = null),
+                                defaultPlayer.copy(id = "Batgirl"),
                             ),
                         ),
                     ),
@@ -87,7 +88,7 @@ class CreatePairCandidateReportActionTest {
                         notEmptyListOf(
                             pinnedPair(
                                 bruce,
-                                Player(id = "Robin", avatarType = null),
+                                defaultPlayer.copy(id = "Robin"),
                             ),
                         ),
                     ),

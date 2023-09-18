@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.pairassignmentdocument.spinsSinceLastPair
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.toPairCombinations
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
@@ -17,7 +17,7 @@ import kotlin.test.Test
 class SortPairStatistics {
     fun makePlayers(numberOfPlayers: Int) = (1..numberOfPlayers)
         .map { number -> makePlayer("$number") }
-    private fun makePlayer(id: String) = Player(id = id, avatarType = null)
+    private fun makePlayer(id: String) = defaultPlayer.copy(id = id)
 
     @Test
     fun withFourPlayersThePairReportsAreOrderedByLongestTimeSinceLastPairingAndPlayerIndex() = setup(object {

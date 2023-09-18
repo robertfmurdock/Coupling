@@ -1,23 +1,33 @@
 package com.zegreatrob.coupling.model.player
 
-import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.model.party.PartyElement
 
 data class Player(
-    val id: String = "${uuid4()}",
-    val badge: Int = Badge.Default.value,
-    val name: String = "",
-    val email: String = "",
-    val callSignAdjective: String = "",
-    val callSignNoun: String = "",
-    val imageURL: String? = null,
-    val avatarType: AvatarType? = null,
+    val id: String,
+    val badge: Int,
+    val name: String,
+    val email: String,
+    val callSignAdjective: String,
+    val callSignNoun: String,
+    val imageURL: String?,
+    val avatarType: AvatarType?,
+    val unvalidatedEmails: Set<String>,
 )
 
-val defaultPlayer = Player(id = "DEFAULT", avatarType = null)
+val defaultPlayer = Player(
+    id = "DEFAULT",
+    badge = Badge.Default.value,
+    name = "",
+    email = "",
+    callSignAdjective = "",
+    callSignNoun = "",
+    imageURL = null,
+    avatarType = null,
+    unvalidatedEmails = emptySet(),
+)
 
 val PartyElement<Player>.player get() = element
 

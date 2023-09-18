@@ -28,6 +28,7 @@ interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, PartyIdDynamoRecordJso
         "callSignNoun" to callSignNoun,
         "imageURL" to imageURL,
         "avatarType" to avatarType?.toDynamo(),
+        "unvalidatedEmails" to unvalidatedEmails.toTypedArray(),
     )
 
     fun Json.toPlayer() = getDynamoStringValue("id")?.let {
@@ -40,6 +41,7 @@ interface DynamoPlayerJsonMapping : DynamoDatatypeSyntax, PartyIdDynamoRecordJso
             callSignNoun = getDynamoStringValue("callSignNoun") ?: "",
             imageURL = getDynamoStringValue("imageURL"),
             avatarType = getDynamoStringValue("avatarType")?.toAvatarType(),
+            unvalidatedEmails = getDynamoStringListValue("unvalidatedEmails")?.toSet() ?: emptySet(),
         )
     }
 }

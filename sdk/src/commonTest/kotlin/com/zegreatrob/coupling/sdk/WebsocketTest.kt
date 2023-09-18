@@ -13,7 +13,7 @@ import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.model.PairAssignmentAdjustmentMessage
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -240,5 +240,5 @@ private fun String.toCouplingServerMessage(): CouplingSocketMessage =
 fun String.toMessage(): Message = fromJsonString<JsonMessage>().toModel()
 
 private fun expectedOnlinePlayerList(email: String) = listOf(
-    Player(id = "-1", name = email.substring(0, email.indexOf("@")), email = email, avatarType = null),
+    defaultPlayer.copy(id = "-1", name = email.substring(0, email.indexOf("@")), email = email),
 )

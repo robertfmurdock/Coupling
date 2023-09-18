@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
@@ -28,12 +29,12 @@ class PairAssignmentsTest {
 
     @Test
     fun willShowInRosterAllPlayersNotInCurrentPairs() = asyncSetup(object {
-        val fellow = Player(id = "3", name = "fellow", avatarType = null)
-        val guy = Player(id = "2", name = "Guy", avatarType = null)
+        val fellow = defaultPlayer.copy(id = "3", name = "fellow")
+        val guy = defaultPlayer.copy(id = "2", name = "Guy")
 
-        val rigby = Player(id = "1", name = "rigby", avatarType = null)
-        val nerd = Player(id = "4", name = "nerd", avatarType = null)
-        val pantsmaster = Player(id = "5", name = "pantsmaster", avatarType = null)
+        val rigby = defaultPlayer.copy(id = "1", name = "rigby")
+        val nerd = defaultPlayer.copy(id = "4", name = "nerd")
+        val pantsmaster = defaultPlayer.copy(id = "5", name = "pantsmaster")
 
         val players = listOf(rigby, guy, fellow, nerd, pantsmaster)
 
@@ -42,8 +43,8 @@ class PairAssignmentsTest {
             date = Clock.System.now(),
             pairs = notEmptyListOf(
                 pairOf(
-                    Player(id = "0", name = "Tom", avatarType = null),
-                    Player(
+                    defaultPlayer.copy(id = "0", name = "Tom"),
+                    defaultPlayer.copy(
                         id = "z",
                         name = "Jerry",
                         avatarType = null,
@@ -82,11 +83,11 @@ class PairAssignmentsTest {
     @Test
     fun whenThereIsNoHistoryWillShowAllPlayersInRoster() = asyncSetup(object {
         val players = listOf(
-            Player(id = "1", name = "rigby", avatarType = null),
-            Player(id = "2", name = "Guy", avatarType = null),
-            Player(id = "3", name = "fellow", avatarType = null),
-            Player(id = "4", name = "nerd", avatarType = null),
-            Player(id = "5", name = "pantsmaster", avatarType = null),
+            defaultPlayer.copy(id = "1", name = "rigby"),
+            defaultPlayer.copy(id = "2", name = "Guy"),
+            defaultPlayer.copy(id = "3", name = "fellow"),
+            defaultPlayer.copy(id = "4", name = "nerd"),
+            defaultPlayer.copy(id = "5", name = "pantsmaster"),
         )
     }) exercise {
         render(
