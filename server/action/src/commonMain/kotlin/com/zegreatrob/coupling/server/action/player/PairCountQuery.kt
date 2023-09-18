@@ -24,7 +24,12 @@ data class PairCountQuery(val partyId: PartyId, val pair: CouplingPair) {
 data class ContributorPlayerQuery(val partyId: PartyId, val email: String) {
     interface Dispatcher : PartyPlayersSyntax {
         suspend fun perform(query: ContributorPlayerQuery): PartyRecord<Player>? = query.partyId.loadPlayers()
-            .find { it.element.email.equals(query.email, ignoreCase = true) }
+            .find {
+                listOf(it.element.email)
+                    .plus(it.element.unvalidatedEmails)
+                    .map(String::lowercase)
+                    .contains(query.email)
+            }
     }
 }
 

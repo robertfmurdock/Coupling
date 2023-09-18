@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.roundToMillis
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -154,6 +155,33 @@ class SdkContributionTest {
             .assertIsEqualTo(
                 players.sortedBy { it.email },
             )
+    }
+
+    @Test
+    fun canQueryContributorsThatArePlayersViaUnverifiedEmail() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val unvalidatedEmail = uuidString()
+        val player = stubPlayer().copy(unvalidatedEmails = setOf(unvalidatedEmail))
+        val saveContributionCommands = listOf(
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(unvalidatedEmail)),
+        )
+    }) {
+        savePartyState(party, listOf(player), emptyList())
+        saveContributionCommands.forEach { sdk().fire(it) }
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) {
+                    contributors {
+                        email()
+                        details()
+                    }
+                }
+            },
+        )
+    } verify { result ->
+        result?.party?.contributors?.map { it.details?.data?.element }
+            .assertIsEqualTo(listOf(player))
     }
 
     private fun stubSaveContributionCommand(partyId: PartyId) = SaveContributionCommand(
