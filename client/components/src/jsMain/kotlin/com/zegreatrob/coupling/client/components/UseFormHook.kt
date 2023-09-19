@@ -14,7 +14,7 @@ fun useForm(initialValues: Json) = useStateWithSetterFunction(initialValues)
         Pair(values, eventHandler(setValues))
     }
 
-private fun eventHandler(setValues: ((Json) -> Json) -> Unit) = { event: ChangeEvent<*> ->
+fun eventHandler(setValues: ((Json) -> Json) -> Unit) = { event: ChangeEvent<*> ->
     event.persist()
     setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
 }

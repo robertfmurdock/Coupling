@@ -161,7 +161,7 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
     callSignNoun = player.callSignNoun,
     imageURL = player.imageURL,
     avatarType = player.avatarType,
-    unvalidatedEmails = player.unvalidatedEmails,
+    unvalidatedEmails = player.additionalEmails,
     pins = pins.map(Pin::toSerializable),
 )
 
@@ -223,7 +223,7 @@ private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
         callSignNoun = callSignNoun,
         imageURL = imageURL,
         avatarType = avatarType,
-        unvalidatedEmails = unvalidatedEmails,
+        additionalEmails = unvalidatedEmails,
     ),
     pins = pins.map(JsonPinData::toModel),
 )

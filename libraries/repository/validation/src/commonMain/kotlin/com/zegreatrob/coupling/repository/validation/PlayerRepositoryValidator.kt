@@ -45,7 +45,7 @@ interface PlayerRepositoryValidator<R : PlayerRepository> : RepositoryValidator<
                 imageURL = null,
                 avatarType = null,
                 badge = 0,
-                unvalidatedEmails = emptySet(),
+                additionalEmails = emptySet(),
             )
         }.bind(),
     ) {

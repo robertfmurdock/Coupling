@@ -14,7 +14,7 @@ data class Player(
     val callSignNoun: String,
     val imageURL: String?,
     val avatarType: AvatarType?,
-    val unvalidatedEmails: Set<String>,
+    val additionalEmails: Set<String>,
 )
 
 val defaultPlayer = Player(
@@ -26,7 +26,7 @@ val defaultPlayer = Player(
     callSignNoun = "",
     imageURL = null,
     avatarType = null,
-    unvalidatedEmails = emptySet(),
+    additionalEmails = emptySet(),
 )
 
 val PartyElement<Player>.player get() = element

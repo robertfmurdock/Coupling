@@ -5,9 +5,10 @@ import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
+import com.zegreatrob.coupling.client.components.eventHandler
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
-import com.zegreatrob.coupling.client.components.useForm
+import com.zegreatrob.coupling.client.components.useStateWithSetterFunction
 import com.zegreatrob.coupling.json.JsonPlayerData
 import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
@@ -39,7 +40,8 @@ external interface PlayerConfigProps<P> : Props
 @ReactFunc
 val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
     val (party, boost, player, players, reload, dispatchFunc, windowFuncs) = props
-    val (values, onChange) = useForm(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
+    val (values, setValues) = useStateWithSetterFunction(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
+    val onChange = eventHandler(setValues)
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
     usePrompt(
@@ -56,10 +58,27 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
         fire(DeletePlayerCommand(party.id, player.id))
         setRedirectUrl(party.id.currentPairsPage())
     }.requireConfirmation("Are you sure you want to delete this player?", windowFuncs ?: WindowFunctions)
+    val onPlayerChange = { changedPlayer: Player ->
+        setValues {
+            changedPlayer
+                .toSerializable()
+                .toJsonDynamic()
+                .unsafeCast<Json>()
+        }
+    }
 
     if (redirectUrl != null) {
         Navigate { to = redirectUrl }
     } else {
-        PlayerConfigContent(party, boost, updatedPlayer, players, onChange, onSubmit, onRemove)
+        PlayerConfigContent(
+            party = party,
+            boost = boost,
+            player = updatedPlayer,
+            players = players,
+            onChange = onChange,
+            onSubmit = onSubmit,
+            onRemove = onRemove,
+            onPlayerChange = onPlayerChange,
+        )
     }
 }
