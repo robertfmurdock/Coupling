@@ -15,11 +15,13 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
 import emotion.react.css
+import org.w3c.dom.HTMLInputElement
 import react.ChildrenBuilder
 import react.Props
 import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.a
+import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.datalist
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
@@ -40,6 +42,7 @@ import web.cssom.TextAlign
 import web.cssom.VerticalAlign
 import web.cssom.number
 import web.cssom.px
+import web.html.ButtonType
 import web.html.InputType
 
 val playerConfigContentClassName = ClassName("player-config-content")
@@ -52,10 +55,12 @@ external interface PlayerConfigContentProps : Props {
     var onChange: (ChangeEvent<*>) -> Unit
     var onSubmit: () -> Unit
     var onRemove: () -> Unit
+    var onPlayerChange: (Player) -> Unit
 }
 
 @ReactFunc
-val PlayerConfigContent by nfc<PlayerConfigContentProps> { (party, boost, player, players, onChange, onSubmit, onRemove) ->
+val PlayerConfigContent by nfc<PlayerConfigContentProps> { props ->
+    val (party, boost, player, players, onChange, onSubmit, onRemove, onPlayerChange) = props
     ConfigFrame {
         css(playerConfigContentClassName) {
             "input[type=text]" {
@@ -81,7 +86,7 @@ val PlayerConfigContent by nfc<PlayerConfigContentProps> { (party, boost, player
                         textDecoration = None.none
                         color = NamedColor.black
                     }
-                    playerConfigForm(player, party, onChange, onSubmit, onRemove)
+                    playerConfigForm(player, party, onChange, onSubmit, onRemove, onPlayerChange)
                 }
                 PlayerCard(player, size = 250)
             }
@@ -104,17 +109,46 @@ private fun ChildrenBuilder.playerConfigForm(
     onChange: (ChangeEvent<*>) -> Unit,
     onSubmit: () -> Unit,
     onRemoveFunc: (() -> Unit)?,
+    onPlayerChange: (Player) -> Unit,
 ) = ConfigForm(
     onSubmit = onSubmit,
     onRemove = onRemoveFunc,
 ) {
-    editorDiv(party, player, onChange)
+    editorDiv(party, player, onChange, onPlayerChange)
 }
 
-private fun ChildrenBuilder.editorDiv(party: PartyDetails, player: Player, onChange: (ChangeEvent<*>) -> Unit) = div {
+private fun ChildrenBuilder.editorDiv(
+    party: PartyDetails,
+    player: Player,
+    onChange: (ChangeEvent<*>) -> Unit,
+    onPlayerChange: (Player) -> Unit,
+) = div {
     Editor {
         li { nameInput(player, onChange) }
         li { emailInput(player, onChange) }
+
+        val additionalEmailsList = player.additionalEmails.toList()
+        additionalEmailsList.forEachIndexed { index, email ->
+            additionalEmailInput(index + 2, email) {
+                onPlayerChange(
+                    player.copy(
+                        additionalEmails = additionalEmailsList.mapIndexed { emailIndex, value ->
+                            if (emailIndex == index) {
+                                (it.target.unsafeCast<HTMLInputElement>()).value
+                            } else {
+                                value
+                            }
+                        }.toSet(),
+                    ),
+                )
+            }
+        }
+
+        button {
+            +"Add Email"
+            type = ButtonType.button
+            onClick = { onPlayerChange(player.copy(additionalEmails = player.additionalEmails + "")) }
+        }
         avatarTypeConfig(player, onChange)
         if (party.callSignsEnabled) {
             callSignConfig(player, onChange)
@@ -122,6 +156,24 @@ private fun ChildrenBuilder.editorDiv(party: PartyDetails, player: Player, onCha
         if (party.badgesEnabled) {
             badgeConfig(party, player, onChange)
         }
+    }
+}
+
+private fun ChildrenBuilder.additionalEmailInput(
+    index: Int,
+    email: String,
+    onChange: (ChangeEvent<*>) -> Unit,
+) {
+    li {
+        configInput(
+            labelText = "Email $index",
+            id = "player-email-$index",
+            name = "email-$index",
+            value = email,
+            type = InputType.text,
+            onChange = onChange,
+            placeholder = "email-$index",
+        )
     }
 }
 
@@ -139,7 +191,10 @@ private fun ChildrenBuilder.nameInput(player: Player, onChange: (ChangeEvent<*>)
     span { +"What's your moniker?" }
 }
 
-private fun ChildrenBuilder.emailInput(player: Player, onChange: (ChangeEvent<*>) -> Unit) {
+private fun ChildrenBuilder.emailInput(
+    player: Player,
+    onChange: (ChangeEvent<*>) -> Unit,
+) {
     configInput(
         labelText = "Email",
         id = "player-email",

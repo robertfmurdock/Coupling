@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
 import com.zegreatrob.minspy.spyFunction
@@ -37,6 +38,9 @@ import kotlin.js.json
 import kotlin.test.Test
 
 class PlayerConfigTest {
+
+    private fun addEmailButton() = screen.getByRole("button", RoleOptions(name = "Add Email"))
+    private fun email2Input() = screen.queryByLabelText("Email 2")
 
     @Test
     fun selectingAvatarTypeWillAffectSavedPlayer() = asyncSetup(object {
@@ -75,7 +79,7 @@ class PlayerConfigTest {
     fun deselectingAvatarTypeWillRemoveIt() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
         val player = defaultPlayer.copy(id = "blarg", avatarType = AvatarType.BoringBeam)
-        val altStubDispatcher = StubDispatcher()
+        val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
         render(
@@ -86,7 +90,7 @@ class PlayerConfigTest {
                         player = player,
                         players = emptyList(),
                         reload = {},
-                        dispatchFunc = altStubDispatcher.func(),
+                        dispatchFunc = stubDispatcher.func(),
                     )
                 }
             },
@@ -99,7 +103,7 @@ class PlayerConfigTest {
             partyId = party.id,
             player = player.copy(avatarType = null),
         )
-        altStubDispatcher.receivedActions
+        stubDispatcher.receivedActions
             .assertIsEqualTo(listOf(expectedCommand))
     }
 
@@ -153,6 +157,64 @@ class PlayerConfigTest {
             .querySelectorAll("select[name='badge'] [value='${Badge.Alternate.value}']")
             .length
             .assertIsEqualTo(1)
+    }
+
+    @Test
+    fun canAddAdditionalEmailFieldAndSaveIt() = asyncSetup(object {
+        val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
+        val player = defaultPlayer.copy(id = "blarg", avatarType = AvatarType.BoringBeam)
+        val stubDispatcher = StubDispatcher()
+        val actor = UserEvent.setup()
+        val secondEmail = uuidString()
+    }) {
+        render(
+            RouterProvider.create {
+                router = singleRouteRouter {
+                    PlayerConfig(
+                        party = party,
+                        player = player,
+                        players = emptyList(),
+                        reload = {},
+                        dispatchFunc = stubDispatcher.func(),
+                    )
+                }
+            },
+        )
+    } exercise {
+        actor.click(addEmailButton())
+        actor.type(email2Input(), secondEmail)
+        actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
+    } verify {
+        val expectedCommand = SavePlayerCommand(
+            partyId = party.id,
+            player = player.copy(additionalEmails = setOf(secondEmail)),
+        )
+        stubDispatcher.receivedActions
+            .assertIsEqualTo(listOf(expectedCommand))
+    }
+
+    @Test
+    fun noAdditionalEmailFieldsAreShownByDefault() = asyncSetup(object {
+        val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
+        val player = defaultPlayer.copy(id = "blarg", avatarType = AvatarType.BoringBeam)
+        val stubDispatcher = StubDispatcher()
+    }) exercise {
+        render(
+            RouterProvider.create {
+                router = singleRouteRouter {
+                    PlayerConfig(
+                        party = party,
+                        player = player,
+                        players = emptyList(),
+                        reload = {},
+                        dispatchFunc = stubDispatcher.func(),
+                    )
+                }
+            },
+        )
+    } verify {
+        email2Input()
+            .assertIsEqualTo(null)
     }
 
     @Test

@@ -128,6 +128,7 @@ private fun ChildrenBuilder.playerConfigFrame(state: AddPlayer) = PlayerConfigCo
     onChange = {},
     onSubmit = {},
     onRemove = {},
+    onPlayerChange = {},
 )
 
 private fun ChildrenBuilder.pinConfigFrame(state: AddPin) = PinConfigContent(

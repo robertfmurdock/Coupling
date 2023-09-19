@@ -27,5 +27,5 @@ fun PartyElement<Player>.input() = SavePlayerInput(
     callSignNoun = element.callSignNoun,
     imageURL = element.imageURL,
     avatarType = element.avatarType?.name,
-    unvalidatedEmails = element.unvalidatedEmails,
+    unvalidatedEmails = element.additionalEmails,
 )

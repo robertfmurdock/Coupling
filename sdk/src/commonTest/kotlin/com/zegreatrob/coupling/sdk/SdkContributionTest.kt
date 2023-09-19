@@ -161,7 +161,7 @@ class SdkContributionTest {
     fun canQueryContributorsThatArePlayersViaUnverifiedEmail() = asyncSetup(object {
         val party = stubPartyDetails()
         val unvalidatedEmail = uuidString()
-        val player = stubPlayer().copy(unvalidatedEmails = setOf(unvalidatedEmail))
+        val player = stubPlayer().copy(additionalEmails = setOf(unvalidatedEmail))
         val saveContributionCommands = listOf(
             stubSaveContributionCommand(party.id).copy(participantEmails = setOf(unvalidatedEmail)),
         )

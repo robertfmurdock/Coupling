@@ -26,7 +26,7 @@ data class ContributorPlayerQuery(val partyId: PartyId, val email: String) {
         suspend fun perform(query: ContributorPlayerQuery): PartyRecord<Player>? = query.partyId.loadPlayers()
             .find {
                 listOf(it.element.email)
-                    .plus(it.element.unvalidatedEmails)
+                    .plus(it.element.additionalEmails)
                     .map(String::lowercase)
                     .contains(query.email)
             }
