@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.2.1",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.418.0",
-    "@aws-sdk/client-dynamodb": "3.420.0",
-    "@aws-sdk/client-lambda": "~3.418.0",
-    "@aws-sdk/lib-dynamodb": "3.420.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.421.0",
+    "@aws-sdk/client-dynamodb": "3.421.0",
+    "@aws-sdk/client-lambda": "~3.421.0",
+    "@aws-sdk/lib-dynamodb": "3.421.0",
     "@babel/core": "^7.23.0",
     "@babel/preset-env": "^7.22.20",
     "@babel/preset-react": "^7.22.15",
@@ -66,7 +66,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-flip-toolkit": "^7.1.0",
-    "react-use-websocket": "^4.4.0",
+    "react-use-websocket": "^4.5.0",
     "reactjs-popup": "^2.0.6",
     "read-pkg-up": "^4.0.0",
     "resolve-pkg": "^2.0.0",
