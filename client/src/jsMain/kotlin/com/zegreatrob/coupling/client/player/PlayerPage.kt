@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.player
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.player.callsign.FindCallSignAction
 import com.zegreatrob.coupling.client.components.player.PlayerConfig
 import com.zegreatrob.coupling.client.components.player.create
@@ -47,6 +48,7 @@ private fun List<Player>.defaultWithCallSign() = object : FindCallSignAction.Dis
     .let(::defaultWith)
 
 private fun defaultWith(callSign: CallSign) = defaultPlayer.copy(
+    id = "${uuid4()}",
     callSignAdjective = callSign.adjective,
     callSignNoun = callSign.noun,
 )
