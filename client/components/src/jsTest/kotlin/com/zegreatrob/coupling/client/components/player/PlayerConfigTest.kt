@@ -39,7 +39,7 @@ import kotlin.test.Test
 
 class PlayerConfigTest {
 
-    private fun addEmailButton() = screen.getByRole("button", RoleOptions(name = "Add Email"))
+    private fun addEmailButton() = screen.getByRole("button", RoleOptions(name = "Add Additional Email"))
     private fun email2Input() = screen.queryByLabelText("Email 2")
 
     @Test
@@ -162,7 +162,7 @@ class PlayerConfigTest {
     @Test
     fun canAddAdditionalEmailFieldAndSaveIt() = asyncSetup(object {
         val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
-        val player = defaultPlayer.copy(id = "blarg", avatarType = AvatarType.BoringBeam)
+        val player = defaultPlayer.copy(id = "blarg", email = "blarg@heh.io", avatarType = AvatarType.BoringBeam)
         val stubDispatcher = StubDispatcher()
         val actor = UserEvent.setup()
         val secondEmail = uuidString()
@@ -191,6 +191,34 @@ class PlayerConfigTest {
         )
         stubDispatcher.receivedActions
             .assertIsEqualTo(listOf(expectedCommand))
+    }
+
+    @Test
+    fun canAddAdditionalEmailFieldAndSavingItBlankDoesNotSaveBlank() = asyncSetup(object {
+        val party = PartyDetails(id = PartyId("party"), badgesEnabled = true, name = "Party tribe")
+        val player = defaultPlayer.copy(id = "blarg", email = "blarg@heh.io", avatarType = AvatarType.BoringBeam)
+        val stubDispatcher = StubDispatcher()
+        val actor = UserEvent.setup()
+    }) {
+        render(
+            RouterProvider.create {
+                router = singleRouteRouter {
+                    PlayerConfig(
+                        party = party,
+                        player = player,
+                        players = emptyList(),
+                        reload = {},
+                        dispatchFunc = stubDispatcher.func(),
+                    )
+                }
+            },
+        )
+    } exercise {
+        actor.click(addEmailButton())
+        actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
+    } verify {
+        stubDispatcher.receivedActions
+            .assertIsEqualTo(listOf(SavePlayerCommand(partyId = party.id, player = player)))
     }
 
     @Test

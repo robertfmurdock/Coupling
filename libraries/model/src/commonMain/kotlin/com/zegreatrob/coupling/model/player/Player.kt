@@ -17,6 +17,8 @@ data class Player(
     val additionalEmails: Set<String>,
 )
 
+val Player.emails get() = listOf(email) + additionalEmails
+
 val defaultPlayer = Player(
     id = "DEFAULT",
     badge = Badge.Default.value,

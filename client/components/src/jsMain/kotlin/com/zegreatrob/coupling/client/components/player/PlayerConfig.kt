@@ -51,7 +51,14 @@ val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
         },
     )
     val onSubmit = dispatchFunc {
-        fire(SavePlayerCommand(party.id, updatedPlayer))
+        fire(
+            SavePlayerCommand(
+                partyId = party.id,
+                player = updatedPlayer.copy(
+                    additionalEmails = updatedPlayer.additionalEmails.filterNot(String::isBlank).toSet(),
+                ),
+            ),
+        )
         reload()
     }
     val onRemove = dispatchFunc {

@@ -3,14 +3,17 @@ package com.zegreatrob.coupling.client.components.player
 import com.zegreatrob.coupling.client.components.ConfigForm
 import com.zegreatrob.coupling.client.components.ConfigFrame
 import com.zegreatrob.coupling.client.components.ConfigHeader
+import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.Editor
 import com.zegreatrob.coupling.client.components.configInput
 import com.zegreatrob.coupling.client.components.gravatarLink
+import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Badge
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.emails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
@@ -21,7 +24,6 @@ import react.Props
 import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.a
-import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.datalist
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.label
@@ -42,7 +44,6 @@ import web.cssom.TextAlign
 import web.cssom.VerticalAlign
 import web.cssom.number
 import web.cssom.px
-import web.html.ButtonType
 import web.html.InputType
 
 val playerConfigContentClassName = ClassName("player-config-content")
@@ -129,25 +130,23 @@ private fun ChildrenBuilder.editorDiv(
 
         val additionalEmailsList = player.additionalEmails.toList()
         additionalEmailsList.forEachIndexed { index, email ->
-            additionalEmailInput(index + 2, email) {
-                onPlayerChange(
-                    player.copy(
-                        additionalEmails = additionalEmailsList.mapIndexed { emailIndex, value ->
-                            if (emailIndex == index) {
-                                (it.target.unsafeCast<HTMLInputElement>()).value
-                            } else {
-                                value
-                            }
-                        }.toSet(),
-                    ),
+            li {
+                additionalEmailInput(
+                    index = index + 2,
+                    onChange = onAdditionalEmailChange(onPlayerChange, player, additionalEmailsList, index),
+                    email = email,
                 )
             }
         }
-
-        button {
-            +"Add Email"
-            type = ButtonType.button
-            onClick = { onPlayerChange(player.copy(additionalEmails = player.additionalEmails + "")) }
+        if (!player.emails.contains("")) {
+            li {
+                CouplingButton(
+                    sizeRuleSet = small,
+                    onClick = { onPlayerChange(player.copy(additionalEmails = player.additionalEmails + "")) },
+                ) {
+                    +"Add Additional Email"
+                }
+            }
         }
         avatarTypeConfig(player, onChange)
         if (party.callSignsEnabled) {
@@ -159,22 +158,42 @@ private fun ChildrenBuilder.editorDiv(
     }
 }
 
+private fun onAdditionalEmailChange(
+    onPlayerChange: (Player) -> Unit,
+    player: Player,
+    additionalEmailsList: List<String>,
+    index: Int,
+): (ChangeEvent<*>) -> Unit = {
+    val changeValue = (it.target.unsafeCast<HTMLInputElement>()).value
+    onPlayerChange(
+        player.copy(
+            additionalEmails = additionalEmailsList.updateEmailAtIndex(index, changeValue),
+        ),
+    )
+}
+
+private fun List<String>.updateEmailAtIndex(index: Int, changeValue: String) = mapIndexed { emailIndex, value ->
+    if (emailIndex == index) {
+        changeValue
+    } else {
+        value
+    }
+}.toSet()
+
 private fun ChildrenBuilder.additionalEmailInput(
     index: Int,
-    email: String,
     onChange: (ChangeEvent<*>) -> Unit,
+    email: String,
 ) {
-    li {
-        configInput(
-            labelText = "Email $index",
-            id = "player-email-$index",
-            name = "email-$index",
-            value = email,
-            type = InputType.text,
-            onChange = onChange,
-            placeholder = "email-$index",
-        )
-    }
+    configInput(
+        labelText = "Email $index",
+        id = "player-email-$index",
+        name = "email-$index",
+        value = email,
+        type = InputType.text,
+        onChange = onChange,
+        placeholder = "email-$index",
+    )
 }
 
 private fun ChildrenBuilder.nameInput(player: Player, onChange: (ChangeEvent<*>) -> Unit) {
