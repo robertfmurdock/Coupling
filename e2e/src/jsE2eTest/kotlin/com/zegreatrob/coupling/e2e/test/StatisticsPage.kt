@@ -8,7 +8,7 @@ object StatisticsPage {
 
     suspend fun rotationNumber() = TestingLibraryBrowser.getByText("Spins Until Full Rotation:").nextElement()
 
-    suspend fun pairReports() = TestingLibraryBrowser.getAllByText("Stats").map { it.parentElement() }
+    suspend fun pairReports() = TestingLibraryBrowser.getAllByText("Stats")
 
     suspend fun goTo(partyId: PartyId) {
         WebdriverBrowser.setLocation("/${partyId.value}/statistics")

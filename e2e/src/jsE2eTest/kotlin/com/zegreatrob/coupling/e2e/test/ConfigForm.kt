@@ -5,6 +5,6 @@ import com.zegreatrob.wrapper.wdio.testing.library.RoleOptions
 import com.zegreatrob.wrapper.wdio.testing.library.TestingLibraryBrowser
 
 object ConfigForm : BrowserSyntax {
-    suspend fun getSaveButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Save"))
-    suspend fun getDeleteButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Retire"))
+    suspend fun saveButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Save"))
+    suspend fun deleteButton() = TestingLibraryBrowser.getByRole("button", RoleOptions("Retire"))
 }

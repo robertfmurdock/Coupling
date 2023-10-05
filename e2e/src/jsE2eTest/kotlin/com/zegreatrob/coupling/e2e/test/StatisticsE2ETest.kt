@@ -28,9 +28,15 @@ class StatisticsE2ETest {
                 .assertIsEqualTo(party.name)
             rotationNumber().text()
                 .assertIsEqualTo("5")
-            pairReports()
-                .count()
+
+            pairReportsCount()
                 .assertIsEqualTo(15)
         }
     }
+
+    private suspend fun StatisticsPage.pairReportsCount(): Int = runCatching { pairReports().count() }
+        .getOrElse {
+            runCatching { pairReports().count() }
+                .getOrElse { pairReports().count() }
+        }
 }

@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.fire
-import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
-import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -48,7 +48,7 @@ class PinConfigE2ETest {
             getNameTextField().setValue(newPinName)
         }
     } exercise {
-        getSaveButton().click()
+        saveButton().click()
     } verify {
         with(PinConfigPage) {
             waitForPinNameToAppear(newPinName, party.id)
@@ -95,7 +95,7 @@ class PinConfigE2ETest {
             sdk.fire(SavePinCommand(party.id, pin))
             PinConfigPage.goTo(party.id, pin.id)
         } exercise {
-            getDeleteButton().click()
+            deleteButton().click()
             WebdriverBrowser.acceptAlert()
 
             PinListPage.waitForLoad()

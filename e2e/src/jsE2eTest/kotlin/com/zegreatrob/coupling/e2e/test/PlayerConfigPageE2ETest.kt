@@ -5,15 +5,18 @@ import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.player.SavePlayerCommand
 import com.zegreatrob.coupling.action.player.fire
-import com.zegreatrob.coupling.e2e.test.ConfigForm.getDeleteButton
-import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
 import com.zegreatrob.coupling.e2e.test.PartyCard.element
 import com.zegreatrob.coupling.e2e.test.PlayerCard.playerElements
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.sdk.gql.graphQuery
+import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
@@ -34,6 +37,29 @@ class PlayerConfigPageE2ETest {
                 }
                 Triple(player, party, sdk.await())
             })
+    }
+
+    @Test
+    fun newPlayerWillAlwaysBeUnique() = e2eSetup(object {
+        val party = stubPartyDetails()
+        val page = PlayerConfigPage
+    }) {
+        sdk().fire(SavePartyCommand(party))
+    } exercise {
+        page.goToNew(party.id)
+        page.playerNameTextField().setValue("1")
+        saveButton().click()
+        page.waitForSaveToComplete("1")
+        page.playerNameTextField().setValue("2")
+        saveButton().click()
+        page.waitForSaveToComplete("2")
+        page.playerNameTextField().setValue("3")
+        saveButton().click()
+        page.waitForSaveToComplete("3")
+    } verify {
+        sdk().fire(graphQuery { party(party.id) { playerList() } })
+            ?.party?.playerList?.elements?.map { it.name }
+            .assertIsEqualTo(listOf("1", "2", "3"))
     }
 
     class WithOnePartyOnePlayer {
@@ -99,7 +125,7 @@ class PlayerConfigPageE2ETest {
             with(page) {
                 goTo(party.id, player.id)
                 playerNameTextField().setValue(newName)
-                getSaveButton().click()
+                saveButton().click()
                 waitForSaveToComplete(newName)
             }
         } exercise {
@@ -122,7 +148,7 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.goTo(party.id, player.id)
             PlayerConfigPage.playerNameTextField().clearSetValue(" ")
             PlayerConfigPage.playerNameTextField().clearSetValue("")
-            getSaveButton().click()
+            saveButton().click()
             PlayerConfigPage.waitForSaveToComplete("Unknown")
             PlayerConfigPage.waitForPage()
         } exercise {
@@ -145,7 +171,7 @@ class PlayerConfigPageE2ETest {
         ) {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
-            getDeleteButton().click()
+            deleteButton().click()
             WebdriverBrowser.acceptAlert()
         } verify {
             page.waitToArriveAt(("/${party.id.value}/pairAssignments/current/"))
@@ -256,7 +282,7 @@ class PlayerConfigPageE2ETest {
             PlayerConfigPage.goTo(party.id, player.id)
         } exercise {
             PlayerConfigPage.altBadgeOption().click()
-            getSaveButton().click()
+            saveButton().click()
             PlayerConfigPage.waitForSaveToComplete(player.name)
         } verify {
             PlayerConfigPage.goTo(party.id, player.id)
@@ -294,7 +320,7 @@ class PlayerConfigPageE2ETest {
         } exercise {
             PlayerConfigPage.adjectiveTextInput().clearSetValue("Superior")
             PlayerConfigPage.nounTextInput().clearSetValue("Spider-Man")
-            getSaveButton().click()
+            saveButton().click()
             PlayerConfigPage.waitForSaveToComplete(player.name)
         } verify {
             PlayerConfigPage.goTo(party.id, player.id)

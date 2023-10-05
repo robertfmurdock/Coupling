@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
-import com.zegreatrob.coupling.e2e.test.ConfigForm.getSaveButton
+import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
 import com.zegreatrob.coupling.model.party.PartyId
@@ -34,17 +34,16 @@ object PlayerConfigPage : BrowserSyntax, ByRole by TestingLibraryBrowser {
 
     suspend fun waitForSaveToComplete(expectedName: String?) {
         WebdriverBrowser.waitUntil(
-            { getSaveButton().isEnabled() },
+            { saveButton().isEnabled() },
             waitToBePresentDuration,
             "PlayerConfig.waitForSaveButtonEnable",
         )
 
         WebdriverBrowser.waitUntil({
-            val playerName = PlayerRoster.element().all(PlayerCard.PLAYER_LOCATOR)
-                .first()
-                .text()
-            (playerName == expectedName)
-        }, 100, "PlayerConfig.waitForSave.nameIncluded")
+            PlayerRoster.element().all(PlayerCard.PLAYER_LOCATOR)
+                .map { it.text() }
+                .contains(expectedName)
+        }, 100, "PlayerConfig.waitForSave.nameIncluded name=$expectedName")
     }
 }
 

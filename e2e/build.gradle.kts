@@ -41,6 +41,7 @@ dependencies {
     jsE2eTestImplementation(platform(project(":libraries:dependency-bom")))
     jsE2eTestImplementation(project(":sdk"))
     jsE2eTestImplementation(project(":libraries:test-logging"))
+    jsE2eTestImplementation(project(":libraries:stub-model"))
     jsE2eTestImplementation(kotlin("test-js"))
     jsE2eTestImplementation("com.zegreatrob.jsmints:wdio")
     jsE2eTestImplementation("com.zegreatrob.jsmints:wdio-testing-library")
