@@ -75,7 +75,7 @@
     "serverless-offline": "^13.2.0",
     "serverless-offline-ssm": "^6.2.0",
     "source-map-loader": "^4.0.1",
-    "stripe": "^13.8.0",
+    "stripe": "^13.9.0",
     "style-loader": "^3.3.3",
     "styled-components": "^6.0.8",
     "text-loader": "0.0.1",
