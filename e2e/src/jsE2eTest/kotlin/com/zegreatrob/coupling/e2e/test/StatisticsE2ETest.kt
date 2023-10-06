@@ -28,7 +28,6 @@ class StatisticsE2ETest {
                 .assertIsEqualTo(party.name)
             rotationNumber().text()
                 .assertIsEqualTo("5")
-
             pairReportsCount()
                 .assertIsEqualTo(15)
         }

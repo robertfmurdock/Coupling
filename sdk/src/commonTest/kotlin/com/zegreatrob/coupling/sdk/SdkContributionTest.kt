@@ -158,6 +158,29 @@ class SdkContributionTest {
     }
 
     @Test
+    fun canQueryContributorsWithMoreThanOneEmailCollapseToOnePlayer() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val additionalEmail1 = uuidString()
+        val additionalEmail2 = uuidString()
+        val player = stubPlayer().copy(additionalEmails = setOf(additionalEmail1, additionalEmail2))
+        val saveContributionCommands = listOf(
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(player.email)),
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(additionalEmail1)),
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(additionalEmail2)),
+        )
+    }) {
+        savePartyState(party, listOf(player), emptyList())
+        saveContributionCommands.forEach { sdk().fire(it) }
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { contributors { details() } } })
+    } verify { result ->
+        result?.party?.contributors?.map { it.details?.data?.element }
+            .assertIsEqualTo(
+                listOf(player),
+            )
+    }
+
+    @Test
     fun canQueryContributorsThatArePlayersViaUnverifiedEmail() = asyncSetup(object {
         val party = stubPartyDetails()
         val unvalidatedEmail = uuidString()

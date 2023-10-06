@@ -24,7 +24,6 @@ import com.zegreatrob.coupling.server.entity.party.saveSlackIntegrationResolver
 import com.zegreatrob.coupling.server.entity.pin.deletePinResolver
 import com.zegreatrob.coupling.server.entity.pin.pinListResolve
 import com.zegreatrob.coupling.server.entity.pin.savePinResolver
-import com.zegreatrob.coupling.server.entity.player.contributorPlayerResolve
 import com.zegreatrob.coupling.server.entity.player.deletePlayerResolver
 import com.zegreatrob.coupling.server.entity.player.pairAssignmentHeatResolve
 import com.zegreatrob.coupling.server.entity.player.pairAssignmentHistoryResolve
@@ -108,9 +107,6 @@ fun couplingResolvers() = json(
     "Configuration" to json(
         "addToSlackUrl" to addToSlackUrlResolve,
         "discordClientId" to fun() = Config.discordClientId,
-    ),
-    "Contributor" to json(
-        "details" to contributorPlayerResolve,
     ),
     "Pair" to json(
         "count" to pairCountResolve,
