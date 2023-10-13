@@ -18,6 +18,6 @@ class UserConfigE2ETest {
             emailInput.isDisplayed()
         })
         emailInput.attribute("value")
-            .assertIsEqualTo(primaryAuthorizedUsername)
+            .assertIsEqualTo(PRIMARY_AUTHORIZED_USERNAME)
     }
 }

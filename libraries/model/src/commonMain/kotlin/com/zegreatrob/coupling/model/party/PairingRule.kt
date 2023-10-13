@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.model.party
 
 enum class PairingRule {
-    LongestTime, PreferDifferentBadge;
+    LongestTime,
+    PreferDifferentBadge,
+    ;
 
     companion object {
         fun fromValue(value: Int?): PairingRule = when (value) {

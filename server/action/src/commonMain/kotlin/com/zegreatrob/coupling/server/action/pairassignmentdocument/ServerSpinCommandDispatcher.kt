@@ -38,12 +38,12 @@ interface ServerSpinCommandDispatcher<out D> :
     PartyIdHistoryTrait,
     PartyIdPinRecordsSyntax,
     CannonProvider<D> where
-      D : CreatePairCandidateReportListAction.Dispatcher<D>,
-      D : NextPlayerAction.Dispatcher<D>,
-      D : FindNewPairsAction.Dispatcher<D>,
-      D : ShufflePairsAction.Dispatcher<D>,
-      D : AssignPinsAction.Dispatcher,
-      D : CreatePairCandidateReportAction.Dispatcher {
+          D : CreatePairCandidateReportListAction.Dispatcher<D>,
+          D : NextPlayerAction.Dispatcher<D>,
+          D : FindNewPairsAction.Dispatcher<D>,
+          D : ShufflePairsAction.Dispatcher<D>,
+          D : AssignPinsAction.Dispatcher,
+          D : CreatePairCandidateReportAction.Dispatcher {
 
     val slackRepository: SlackSendSpin
     val slackAccessRepository: SlackAccessGet

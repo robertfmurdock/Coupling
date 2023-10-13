@@ -3,8 +3,8 @@ package com.zegreatrob.coupling.client.components.pairassignments
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrop
 import com.zegreatrob.coupling.client.components.external.reactfliptoolkit.Flipped
 import com.zegreatrob.coupling.client.components.pairassignments.spin.placeholderPlayer
+import com.zegreatrob.coupling.client.components.pin.PIN_DRAG_ITEM_TYPE
 import com.zegreatrob.coupling.client.components.pin.PinSection
-import com.zegreatrob.coupling.client.components.pin.pinDragItemType
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.client.components.player.create
 import com.zegreatrob.coupling.client.components.pngPath
@@ -137,7 +137,7 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
 }
 
 private fun usePinDrop(pinMoveCallback: PinMoveCallback?) = useDrop(
-    acceptItemType = pinDragItemType,
+    acceptItemType = PIN_DRAG_ITEM_TYPE,
     drop = { item -> pinMoveCallback?.invoke(item["id"].unsafeCast<String>()) },
     collect = { monitor -> monitor.isOver() },
 )

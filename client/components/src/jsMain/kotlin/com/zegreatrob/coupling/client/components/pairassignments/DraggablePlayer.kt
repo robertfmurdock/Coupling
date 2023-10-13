@@ -17,7 +17,7 @@ import web.cssom.ident
 import web.cssom.rotate
 import web.cssom.s
 
-const val playerDragItemType = "PLAYER"
+const val PLAYER_DRAG_ITEM_TYPE = "PLAYER"
 
 external interface DraggablePlayerProps : Props {
     var pinnedPlayer: PinnedPlayer
@@ -29,7 +29,7 @@ external interface DraggablePlayerProps : Props {
 @ReactFunc
 val DraggablePlayer by nfc<DraggablePlayerProps> { (pinnedPlayer, zoomOnHover, tilt, onPlayerDrop) ->
     DraggableThing(
-        itemType = playerDragItemType,
+        itemType = PLAYER_DRAG_ITEM_TYPE,
         itemId = pinnedPlayer.player.id,
         dropCallback = onPlayerDrop,
         handler = { isOver: Boolean ->

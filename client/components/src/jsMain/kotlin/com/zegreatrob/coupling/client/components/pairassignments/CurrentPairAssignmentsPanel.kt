@@ -153,7 +153,9 @@ private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = CouplingButton(
     sizeRuleSet = supersize,
     colorRuleSet = green,
     onClick = onSave,
-    css = fun PropertiesBuilder.() { margin = 4.px },
+    css = fun PropertiesBuilder.() {
+        margin = 4.px
+    },
 ) {
     +"Save!"
 }

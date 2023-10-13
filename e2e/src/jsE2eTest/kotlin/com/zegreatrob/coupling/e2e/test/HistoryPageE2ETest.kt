@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
-import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
+import com.zegreatrob.coupling.e2e.test.webdriverio.WAIT_TO_BE_PRESENT_DURATION
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -94,7 +94,7 @@ class HistoryPageE2ETest {
         } verify {
             WebdriverBrowser.waitUntil(
                 { HistoryPage.pairAssignments.count() == pairAssignments.size - 1 },
-                waitToBePresentDuration,
+                WAIT_TO_BE_PRESENT_DURATION,
                 "HistoryPageE2ETest.pairingCanBeDeleted",
             )
             HistoryPage.pairAssignments.count()

@@ -223,7 +223,9 @@ private fun ChildrenBuilder.spinButton(generateNewPairsFunc: (() -> Unit)?) = Co
     supersize,
     pink,
     onClick = generateNewPairsFunc,
-    attrs = fun ButtonHTMLAttributes<*>.() { disabled = (generateNewPairsFunc == null) },
+    attrs = fun ButtonHTMLAttributes<*>.() {
+        disabled = (generateNewPairsFunc == null)
+    },
     css = fun PropertiesBuilder.() {
         marginBottom = 10.px
         animationName = ident("pulsate")

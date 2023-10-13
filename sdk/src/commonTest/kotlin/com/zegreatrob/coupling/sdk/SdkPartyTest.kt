@@ -93,7 +93,7 @@ class SdkPartyTest {
             object {
                 suspend fun altSdk() = altAuthorizedSdkDeferred.await()
                 val party = PartyDetails(PartyId(uuid4().toString()), name = "party-from-endpoint-tests")
-                val playerMatchingSdkUser = stubPlayer().copy(email = primaryAuthorizedUsername)
+                val playerMatchingSdkUser = stubPlayer().copy(email = PRIMARY_AUTHORIZED_USER_NAME)
             }
         },
         sharedTeardown = {

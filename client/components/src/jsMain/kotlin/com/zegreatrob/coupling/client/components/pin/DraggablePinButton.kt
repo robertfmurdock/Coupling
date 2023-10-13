@@ -16,7 +16,7 @@ import web.cssom.ident
 import web.cssom.s
 import web.html.HTMLElement
 
-const val pinDragItemType = "PAIR_PIN"
+const val PIN_DRAG_ITEM_TYPE = "PAIR_PIN"
 
 external interface DraggablePinButtonProps : Props {
     var pin: Pin
@@ -27,7 +27,7 @@ external interface DraggablePinButtonProps : Props {
 val DraggablePinButton by nfc<DraggablePinButtonProps> { props ->
     val pin = props.pin
     val scale = props.scale
-    val (_, drag) = useDrag<Unit>(itemType = pinDragItemType, itemId = pin.id!!)
+    val (_, drag) = useDrag<Unit>(itemType = PIN_DRAG_ITEM_TYPE, itemId = pin.id!!)
     val draggableRef = useRef<HTMLElement>(null)
 
     drag(draggableRef)

@@ -18,7 +18,8 @@ external interface AnimationFrameProps : PropsWithChildren {
 }
 
 enum class AnimationState {
-    Start, Stop
+    Start,
+    Stop,
 }
 
 val animationFrame by nfc<AnimationFrameProps> { props ->

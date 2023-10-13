@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.e2e.test
 
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
-import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
+import com.zegreatrob.coupling.e2e.test.webdriverio.WAIT_TO_BE_PRESENT_DURATION
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import com.zegreatrob.wrapper.wdio.WebdriverElementArray
@@ -35,7 +35,7 @@ object PlayerConfigPage : BrowserSyntax, ByRole by TestingLibraryBrowser {
     suspend fun waitForSaveToComplete(expectedName: String?) {
         WebdriverBrowser.waitUntil(
             { saveButton().isEnabled() },
-            waitToBePresentDuration,
+            WAIT_TO_BE_PRESENT_DURATION,
             "PlayerConfig.waitForSaveButtonEnable",
         )
 

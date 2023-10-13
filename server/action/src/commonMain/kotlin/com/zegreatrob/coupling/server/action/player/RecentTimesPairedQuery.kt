@@ -14,7 +14,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 import kotlin.math.min
 
-const val rotationHeatWindow = 5
+const val ROTATION_HEAT_WINDOW = 5
 
 @ActionMint
 data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, val lastAssignments: PairAssignmentDocumentId?) {
@@ -44,7 +44,7 @@ data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, 
                 this
             }
 
-        private fun getLastRelevantRotation(rotationPeriod: Int) = rotationPeriod * rotationHeatWindow
+        private fun getLastRelevantRotation(rotationPeriod: Int) = rotationPeriod * ROTATION_HEAT_WINDOW
 
         private fun List<PairAssignmentDocument>.flattenedPairings() = map(PairAssignmentDocument::pairs)
             .map(NotEmptyList<PinnedCouplingPair>::toList)

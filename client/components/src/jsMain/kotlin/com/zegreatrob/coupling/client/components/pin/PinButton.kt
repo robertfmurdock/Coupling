@@ -33,7 +33,11 @@ import web.cssom.translatex
 import web.cssom.url
 
 enum class PinButtonScale(val faTag: String, val factor: Double) {
-    Normal("fa-3x", 3.0), Large("fa-10x", 10.0), Small("fa-1x", 1.0), ExtraSmall("fa-xs", 0.75);
+    Normal("fa-3x", 3.0),
+    Large("fa-10x", 10.0),
+    Small("fa-1x", 1.0),
+    ExtraSmall("fa-xs", 0.75),
+    ;
 
     fun diameterInPixels() = 14 * factor
 }
