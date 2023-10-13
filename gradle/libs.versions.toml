@@ -1,6 +1,6 @@
 [libraries]
 com-benasher44-uuid = "com.benasher44:uuid:0.8.1"
-com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.2"
+com-fasterxml-jackson-core-jackson-databind = "com.fasterxml.jackson.core:jackson-databind:2.15.3"
 com-github-ajalt-clikt-clikt = "com.github.ajalt.clikt:clikt:4.2.1"
 com-lemonappdev-konsist = "com.lemonappdev:konsist:0.13.0"
 com-zegreatrob-jsmints-jsmints-bom = "com.zegreatrob.jsmints:jsmints-bom:4.6.43"
