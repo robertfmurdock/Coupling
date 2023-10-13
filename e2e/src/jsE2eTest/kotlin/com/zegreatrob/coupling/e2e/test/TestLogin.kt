@@ -39,7 +39,7 @@ object TestLogin : BrowserSyntax {
             url = "https://zegreatrob.us.auth0.com/oauth/token",
             formParameters = Parameters.build {
                 append("grant_type", "password")
-                append("username", primaryAuthorizedUsername)
+                append("username", PRIMARY_AUTHORIZED_USERNAME)
                 append("password", primaryTestPassword)
                 append("audience", audience)
                 append("scope", scope)

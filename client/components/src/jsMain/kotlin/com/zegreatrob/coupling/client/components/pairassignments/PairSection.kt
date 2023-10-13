@@ -69,7 +69,9 @@ private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<HTMLElem
             sizeRuleSet = large,
             colorRuleSet = white,
             onClick = { ref.current?.copyToClipboardOnClick()?.invoke() },
-            attrs = fun ButtonHTMLAttributes<*>.() { tabIndex = -1 },
+            attrs = fun ButtonHTMLAttributes<*>.() {
+                tabIndex = -1
+            },
         ) {
             i { className = ClassName("fa fa-clipboard") }
         }

@@ -17,11 +17,11 @@ import kotlinx.serialization.json.jsonPrimitive
 
 external val process: dynamic
 
-const val primaryAuthorizedUsername = "couplingtestuser.e2e@gmail.com"
+const val PRIMARY_AUTHORIZED_USERNAME = "couplingtestuser.e2e@gmail.com"
 val primaryTestPassword = Process.getEnv("COUPLING_E2E_TEST_PASSWORD") ?: ""
 
 val primaryAuthorizedSdkDeferred by lazyDeferred {
-    authorizedKtorCouplingSdk(primaryAuthorizedUsername, primaryTestPassword)
+    authorizedKtorCouplingSdk(PRIMARY_AUTHORIZED_USERNAME, primaryTestPassword)
 }
 
 private suspend fun authorizedKtorCouplingSdk(username: String, password: String) =

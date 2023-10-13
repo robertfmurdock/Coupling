@@ -28,24 +28,24 @@ import kotlinx.coroutines.async
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-const val primaryAuthorizedUsername = "couplingtestuser@gmail.com"
+const val PRIMARY_AUTHORIZED_USER_NAME = "couplingtestuser@gmail.com"
 val primaryTestPassword = getEnv("COUPLING_PRIMARY_TEST_PASSWORD") ?: ""
 
 expect fun getEnv(name: String): String?
 
 val primaryAuthorizedSdkDeferred by lazy {
     GlobalScope.async {
-        sdk(primaryAuthorizedUsername, primaryTestPassword)
+        sdk(PRIMARY_AUTHORIZED_USER_NAME, primaryTestPassword)
             .apply { deleteAnyDisplayedParties() }
     }
 }
 
-const val altAuthorizedUsername = "couplingtestuser.alt@gmail.com"
+const val ALT_AUTHORIZED_USER_NAME = "couplingtestuser.alt@gmail.com"
 val altTestPassword = getEnv("COUPLING_ALT_TEST_PASSWORD") ?: ""
 
 val altAuthorizedSdkDeferred by lazy {
     GlobalScope.async {
-        sdk(altAuthorizedUsername, altTestPassword)
+        sdk(ALT_AUTHORIZED_USER_NAME, altTestPassword)
             .apply { deleteAnyDisplayedParties() }
     }
 }

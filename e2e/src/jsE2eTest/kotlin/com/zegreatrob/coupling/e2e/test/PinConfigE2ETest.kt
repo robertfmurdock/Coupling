@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.action.pin.fire
 import com.zegreatrob.coupling.e2e.test.ConfigForm.deleteButton
 import com.zegreatrob.coupling.e2e.test.ConfigForm.saveButton
 import com.zegreatrob.coupling.e2e.test.CouplingLogin.sdk
-import com.zegreatrob.coupling.e2e.test.webdriverio.waitToBePresentDuration
+import com.zegreatrob.coupling.e2e.test.webdriverio.WAIT_TO_BE_PRESENT_DURATION
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
@@ -62,7 +62,7 @@ class PinConfigE2ETest {
         id: PartyId,
     ) = WebdriverBrowser.waitUntil(
         { pinBagPinNames().contains(newPinName) },
-        waitToBePresentDuration,
+        WAIT_TO_BE_PRESENT_DURATION,
         "PinConfigPage.waitForPinNameToAppear in party ${id.value}",
     )
 

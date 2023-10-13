@@ -15,9 +15,9 @@ interface PairAssignmentDispatcher<D> :
     CreatePairCandidateReportListAction.Dispatcher<D>,
     CreatePairCandidateReportAction.Dispatcher,
     Wheel where D : CreatePairCandidateReportAction.Dispatcher,
-      D : CreatePairCandidateReportListAction.Dispatcher<D>,
-      D : NextPlayerAction.Dispatcher<D>,
-      D : AssignPinsAction.Dispatcher,
-      D : FindNewPairsAction.Dispatcher<D> {
+          D : CreatePairCandidateReportListAction.Dispatcher<D>,
+          D : NextPlayerAction.Dispatcher<D>,
+          D : AssignPinsAction.Dispatcher,
+          D : FindNewPairsAction.Dispatcher<D> {
     override val wheel: Wheel get() = this
 }
