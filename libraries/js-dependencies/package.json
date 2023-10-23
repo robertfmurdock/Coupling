@@ -70,7 +70,7 @@
     "reactjs-popup": "^2.0.6",
     "read-pkg-up": "^4.0.0",
     "resolve-pkg": "^2.0.0",
-    "serverless": "^3.35.2",
+    "serverless": "^3.36.0",
     "serverless-http": "^3.2.0",
     "serverless-offline": "^13.2.0",
     "serverless-offline-ssm": "^6.2.0",
