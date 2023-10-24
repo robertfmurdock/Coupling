@@ -28,7 +28,6 @@ import kotools.types.collection.toNotEmptyList
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
-import react.router.MemoryRouter
 import web.window.window
 import kotlin.test.Test
 
@@ -54,7 +53,7 @@ class PrepareSpinTest {
         val players = emptyList<Player>()
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
-        val wrapper = render(jso { wrapper = MemoryRouter }) {
+        val wrapper = render(jso { wrapper = TestRouter }) {
             PrepareSpin(party, players, null, pins, { {} })
         }
     }) exercise {
@@ -82,7 +81,7 @@ class PrepareSpinTest {
         val pins = listOf(stubPin(), stubPin())
         val firstPin = pins[0]
 
-        val render = render(jso { wrapper = MemoryRouter }) {
+        val render = render(jso { wrapper = TestRouter }) {
             PrepareSpin(party, players, null, pins, { {} })
         }
     }) {
@@ -115,7 +114,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val currentPairs = null
     }) exercise {
-        render(jso { wrapper = MemoryRouter }) {
+        render(jso { wrapper = TestRouter }) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     } verify { result ->
@@ -145,7 +144,7 @@ class PrepareSpinTest {
             ),
             null,
         )
-        val result = render(jso { wrapper = MemoryRouter }) {
+        val result = render(jso { wrapper = TestRouter }) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     }) exercise {
@@ -169,7 +168,7 @@ class PrepareSpinTest {
         val players = stubPlayers(3)
         val user = UserEvent.setup()
         val currentPairs = null
-        val context = render(jso { wrapper = MemoryRouter }) {
+        val context = render(jso { wrapper = TestRouter }) {
             PrepareSpin(party, players, currentPairs, emptyList(), { {} })
         }
     }) exercise {
@@ -193,7 +192,7 @@ class PrepareSpinTest {
             pairs = players.map { pairOf(it).withPins(emptySet()) },
             null,
         )
-        val context = render(jso { wrapper = MemoryRouter }) {
+        val context = render(jso { wrapper = TestRouter }) {
             PrepareSpin(party, players.toList(), currentPairs, emptyList(), { {} })
         }
     }) exercise {

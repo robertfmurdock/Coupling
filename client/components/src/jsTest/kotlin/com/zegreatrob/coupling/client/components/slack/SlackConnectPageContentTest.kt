@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.components.slack
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
 import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.stubmodel.stubParties
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.uuidString
@@ -18,7 +19,6 @@ import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import js.core.jso
 import react.ReactNode
 import react.create
-import react.router.MemoryRouter
 import react.router.RouterProvider
 import react.router.createMemoryRouter
 import kotlin.test.Test
@@ -38,7 +38,7 @@ class SlackConnectPageContentTest {
         val slackTeam = uuidString()
         val slackChannel = uuidString()
     }) {
-        render(jso { wrapper = MemoryRouter }) {
+        render(jso { wrapper = TestRouter }) {
             SlackConnectPageContent(
                 parties = parties,
                 slackTeam = slackTeam,

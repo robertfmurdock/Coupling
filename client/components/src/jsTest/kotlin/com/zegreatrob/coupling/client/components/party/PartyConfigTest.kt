@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.client.components.pairassignments.assertNotNull
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -23,9 +24,8 @@ import org.w3c.dom.HTMLOptionElement
 import react.Fragment
 import react.ReactNode
 import react.create
-import react.router.MemoryRouter
-import react.router.PathRoute
-import react.router.Routes
+import react.router.RouterProvider
+import react.router.createMemoryRouter
 import kotlin.test.Test
 
 class PartyConfigTest {
@@ -34,7 +34,7 @@ class PartyConfigTest {
     fun willDefaultPartyThatIsMissingData() = asyncSetup(object {
         val party = PartyDetails(PartyId("1"), name = "1")
     }) exercise {
-        render(jso { wrapper = MemoryRouter }) {
+        render(jso { wrapper = TestRouter }) {
             PartyConfig(party = party, boost = null, dispatchFunc = DispatchFunc { {} })
         }
     } verify {
@@ -66,23 +66,25 @@ class PartyConfigTest {
         val stubDispatcher = StubDispatcher.Channel()
     }) {
         render(
-            MemoryRouter.create {
-                Routes {
-                    PathRoute {
-                        path = "/parties/"
-                        element = ReactNode("Parties!")
-                    }
-                    PathRoute {
-                        path = "*"
-                        element = Fragment.create {
-                            PartyConfig(
-                                party = party,
-                                boost = null,
-                                dispatchFunc = stubDispatcher.func(),
-                            )
-                        }
-                    }
-                }
+            RouterProvider.create {
+                router = createMemoryRouter(
+                    routes = arrayOf(
+                        jso {
+                            path = "/parties/"
+                            element = ReactNode("Parties!")
+                        },
+                        jso {
+                            path = "*"
+                            element = Fragment.create {
+                                PartyConfig(
+                                    party = party,
+                                    boost = null,
+                                    dispatchFunc = stubDispatcher.func(),
+                                )
+                            }
+                        },
+                    ),
+                )
             },
         )
     } exercise {
@@ -100,7 +102,7 @@ class PartyConfigTest {
         val party = PartyDetails(PartyId(""))
         val stubDispatcher = StubDispatcher()
     }) {
-        render(jso { wrapper = MemoryRouter }) {
+        render(jso { wrapper = TestRouter }) {
             PartyConfig(party = party, boost = null, dispatchFunc = stubDispatcher.func())
         }
     } exercise {

@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.components.pairassignments
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.components.Controls
+import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.model.CouplingSocketMessage
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -20,7 +21,6 @@ import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
-import react.router.MemoryRouter
 import kotlin.test.Test
 
 class PairAssignmentsTest {
@@ -65,7 +65,7 @@ class PairAssignmentsTest {
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
             ),
-            jso { wrapper = MemoryRouter },
+            jso { wrapper = TestRouter },
         )
     } verify {
         screen.findByText("Unpaired players")
@@ -101,7 +101,7 @@ class PairAssignmentsTest {
                 message = CouplingSocketMessage("", emptySet(), null),
                 allowSave = false,
             ),
-            jso { wrapper = MemoryRouter },
+            jso { wrapper = TestRouter },
         )
     } verify {
         screen.findByText("Unpaired players")

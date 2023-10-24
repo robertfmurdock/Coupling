@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -18,7 +19,6 @@ import js.core.jso
 import kotlinx.datetime.Instant
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
-import react.router.MemoryRouter
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 
@@ -34,7 +34,7 @@ class PartyStatisticsTest {
         )
         val party = PartyDetails(PartyId("1"), name = "Mathematica")
     }) exercise {
-        render(jso { wrapper = MemoryRouter }) {
+        render(jso { wrapper = TestRouter }) {
             PartyStatistics(
                 party = party,
                 players = players,
@@ -109,7 +109,7 @@ class PartyStatisticsTest {
             PlayerPair(listOf(players[2], players[3]).toRecords(party.id), recentTimesPaired = 1),
         )
     }) exercise {
-        render(jso { wrapper = MemoryRouter }) {
+        render(jso { wrapper = TestRouter }) {
             PartyStatistics(party, players, pairs, 0, null)
         }
     } verify { wrapper ->
@@ -133,7 +133,7 @@ class PartyStatisticsTest {
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
     }) exercise {
-        render(jso { wrapper = MemoryRouter }) {
+        render(jso { wrapper = TestRouter }) {
             PartyStatistics(party, players, emptyList(), 3, null)
         }
     } verify {
@@ -153,7 +153,7 @@ class PartyStatisticsTest {
         )
         val party = PartyDetails(PartyId("2"), name = "Mathematica")
     }) exercise {
-        render(jso { wrapper = MemoryRouter }) {
+        render(jso { wrapper = TestRouter }) {
             PartyStatistics(party, players, emptyList(), 0, 2.days)
         }
     } verify {
