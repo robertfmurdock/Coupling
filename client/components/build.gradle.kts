@@ -44,6 +44,7 @@ dependencies {
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router")
     jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
     jsMainImplementation(npmConstrained("@stripe/react-stripe-js"))
     jsMainImplementation(npmConstrained("@stripe/stripe-js"))

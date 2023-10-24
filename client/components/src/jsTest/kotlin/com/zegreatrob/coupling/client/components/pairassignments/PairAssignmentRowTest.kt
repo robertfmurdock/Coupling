@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.pairassignmentdocument.DeletePairAssignmentsCommand
 import com.zegreatrob.coupling.client.components.Controls
 import com.zegreatrob.coupling.client.components.StubDispatcher
+import com.zegreatrob.coupling.client.components.TestRouter
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -22,7 +23,6 @@ import js.core.jso
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.Window
-import react.router.MemoryRouter
 import kotlin.js.json
 import kotlin.test.Test
 
@@ -48,7 +48,7 @@ class PairAssignmentRowTest {
                 controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
                 windowFunctions = this,
             ),
-            jso { wrapper = MemoryRouter },
+            jso { wrapper = TestRouter },
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
@@ -78,7 +78,7 @@ class PairAssignmentRowTest {
                 controls = Controls(stubDispatcher.func(), reloadSpy::spyFunction),
                 windowFunctions = this,
             ),
-            jso { wrapper = MemoryRouter },
+            jso { wrapper = TestRouter },
         )
     } exercise {
         actor.click(screen.getByText("DELETE"))
