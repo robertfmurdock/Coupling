@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.e2e.test
 
+import com.zegreatrob.coupling.e2e.external.jwtDecode
 import com.zegreatrob.coupling.e2e.test.webdriverio.BrowserSyntax
 import com.zegreatrob.wrapper.wdio.WebdriverBrowser
 import io.ktor.client.HttpClient
@@ -94,6 +95,3 @@ object TestLogin : BrowserSyntax {
             .await()
     }
 }
-
-@JsModule("jwt-decode")
-external fun jwtDecode(token: String): Json
