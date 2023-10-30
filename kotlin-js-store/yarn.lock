@@ -3934,14 +3934,14 @@
     p-queue "^6.6.1"
     p-retry "^4.0.0"
 
-"@slack/webhook@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@slack/webhook/-/webhook-7.0.0.tgz#b5947e3a0f30bb18f7931fa0233aeebc58378652"
-  integrity sha512-OKLAQ1KPl6R8nJEiLecwN9VbM7Bg9z92uy4gsdEQ844qim+CwgWF6gBl1KukanDzoJFRtlYcSAPD56A2DVguxA==
+"@slack/webhook@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@slack/webhook/-/webhook-7.0.1.tgz#91d939af249d50ea978a960a52b9f92bb7d2bdda"
+  integrity sha512-0Uj/GQ1H8nmeAVEx+7zcWb6/q/zsSOrlIaGi6zFnwgMSxjmV6xGsVwv8w6DaAdkUbtqa43v1cirWjySeZaCOIA==
   dependencies:
     "@slack/types" "^2.9.0"
     "@types/node" ">=18.0.0"
-    axios "^1.5.1"
+    axios "^1.6.0"
 
 "@smithy/abort-controller@^2.0.12":
   version "2.0.12"
@@ -6326,10 +6326,10 @@ axios@^1.4.0:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
-axios@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.5.1.tgz#11fbaa11fc35f431193a9564109c88c1f27b585f"
-  integrity sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==
+axios@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.0.tgz#f1e5292f26b2fd5c2e66876adc5b06cdbd7d2102"
+  integrity sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
