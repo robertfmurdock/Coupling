@@ -207,6 +207,33 @@ class SdkContributionTest {
             .assertIsEqualTo(listOf(player))
     }
 
+    @Test
+    fun canQueryContributorsThatArePlayersViaUnverifiedEmailWithDifferentCasing() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val unvalidatedEmail = uuidString()
+        val player = stubPlayer().copy(additionalEmails = setOf(unvalidatedEmail))
+        val saveContributionCommands = listOf(
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(unvalidatedEmail.uppercase())),
+        )
+    }) {
+        savePartyState(party, listOf(player), emptyList())
+        saveContributionCommands.forEach { sdk().fire(it) }
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) {
+                    contributors {
+                        email()
+                        details()
+                    }
+                }
+            },
+        )
+    } verify { result ->
+        result?.party?.contributors?.map { it.details?.data?.element }
+            .assertIsEqualTo(listOf(player))
+    }
+
     private fun stubSaveContributionCommand(partyId: PartyId) = SaveContributionCommand(
         partyId = partyId,
         contributionId = uuidString(),
