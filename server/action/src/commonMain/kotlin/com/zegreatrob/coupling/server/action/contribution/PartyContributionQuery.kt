@@ -58,14 +58,13 @@ data class PartyContributorQuery(val partyId: PartyId) {
                 .flatMap { it.participantEmails }
                 .toSet()
                 .sorted()
-                .map(String::lowercase)
 
         private fun playerForEmail(email: String, players: List<PartyRecord<Player>>) = players
             .find {
                 listOf(it.element.email)
                     .plus(it.element.additionalEmails)
                     .map(String::lowercase)
-                    .contains(email)
+                    .contains(email.lowercase())
             }
     }
 }
