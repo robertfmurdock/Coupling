@@ -1,16 +1,14 @@
 plugins {
-    id("com.zegreatrob.coupling.plugins.mp")
     id("com.zegreatrob.testmints.action-mint")
+    id("com.zegreatrob.coupling.plugins.mp")
     kotlin("plugin.serialization")
 }
 
 kotlin {
-    targets {
-        js {
-            nodejs { testTask(Action { useMocha { timeout = "10s" } }) }
-        }
-        jvm()
+    js {
+        nodejs { testTask(Action { useMocha { timeout = "10s" } }) }
     }
+    jvm()
     sourceSets.named("jsMain") {
         kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
     }

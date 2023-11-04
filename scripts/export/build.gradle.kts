@@ -5,14 +5,12 @@ plugins {
     kotlin("plugin.serialization")
 }
 kotlin {
-    targets {
-        jvm()
-        js {
-            nodejs {
-                binaries.executable()
-            }
-            useCommonJs()
+    jvm()
+    js {
+        nodejs {
+            binaries.executable()
         }
+        useCommonJs()
     }
 
     sourceSets {

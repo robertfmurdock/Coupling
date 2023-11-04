@@ -2,12 +2,10 @@ plugins {
     id("com.zegreatrob.coupling.plugins.mp")
 }
 kotlin {
-    targets {
-        jvm()
-        js {
-            nodejs()
-            useCommonJs()
-        }
+    jvm()
+    js {
+        nodejs()
+        useCommonJs()
     }
 }
 dependencies {

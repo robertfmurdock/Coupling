@@ -4,10 +4,8 @@ plugins {
 }
 
 kotlin {
-    targets {
-        js { nodejs() }
-        jvm()
-    }
+    js { nodejs() }
+    jvm()
 }
 
 dependencies {

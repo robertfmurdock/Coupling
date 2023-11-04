@@ -3,10 +3,8 @@ plugins {
     kotlin("plugin.serialization")
 }
 kotlin {
-    targets {
-        jvm()
-        js { nodejs() }
-    }
+    jvm()
+    js { nodejs() }
 }
 
 dependencies {

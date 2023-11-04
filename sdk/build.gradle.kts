@@ -3,16 +3,14 @@ plugins {
 }
 
 kotlin {
-    targets {
-        js {
-            nodejs { testTask(Action { useMocha { timeout = "10s" } }) }
+    js {
+        nodejs { testTask(Action { useMocha { timeout = "10s" } }) }
 
-            val main = compilations.findByName("main")!!
-            val test = compilations.findByName("test")!!
-            test.defaultSourceSet.dependsOn(main.defaultSourceSet)
-        }
-        jvm()
+        val main = compilations.findByName("main")!!
+        val test = compilations.findByName("test")!!
+        test.defaultSourceSet.dependsOn(main.defaultSourceSet)
     }
+    jvm()
 
     sourceSets {
         named("jsTest") {

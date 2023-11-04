@@ -3,12 +3,10 @@ plugins {
     id("com.zegreatrob.testmints.action-mint")
 }
 kotlin {
-    targets {
-        js {
-            moduleName = "Coupling-server-action"
-            nodejs()
-            useCommonJs()
-        }
+    js {
+        moduleName = "Coupling-server-action"
+        nodejs()
+        useCommonJs()
     }
     sourceSets.named("jsMain") {
         kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")

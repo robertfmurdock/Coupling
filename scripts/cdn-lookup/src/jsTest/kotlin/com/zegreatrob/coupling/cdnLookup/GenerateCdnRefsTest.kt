@@ -26,7 +26,7 @@ class GenerateCdnRefsTest {
         generateCdnRef(cdnLibs)
     } verify { result ->
         val version = getVersionForLibrary(lib)
-        val expected = "https://cdn.jsdelivr.net/npm/kotlin@$version/kotlin.min.js"
+        val expected = "https://cdn.jsdelivr.net/npm/kotlin@$version/index.min.js"
         result.assertIsEqualTo(listOf(Pair(lib, expected)))
     }
 

@@ -5,13 +5,11 @@ plugins {
 }
 
 kotlin {
-    targets {
-        jvm()
-        js {
-            nodejs()
-            useCommonJs()
-            binaries.executable()
-        }
+    jvm()
+    js {
+        nodejs()
+        useCommonJs()
+        binaries.executable()
     }
 }
 
