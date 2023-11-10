@@ -4,7 +4,7 @@ plugins {
 
 kotlin {
     js {
-        nodejs { testTask(Action { useMocha { timeout = "10s" } }) }
+        nodejs { testTask { useMocha { timeout = "10s" } } }
 
         val main = compilations.findByName("main")!!
         val test = compilations.findByName("test")!!
@@ -55,7 +55,8 @@ tasks {
         outputs.cacheIf { true }
     }
     "jvmTest" {
-        dependsOn(":composeUp", jsNodeTest)
+        mustRunAfter(jsNodeTest)
+        dependsOn(":composeUp")
         dependsOn(":importCert")
     }
 }
