@@ -145,8 +145,7 @@ tasks {
         inputs.file(settingsFile)
         val settings = ObjectMapper().readTree(settingsFile)
         val cdnLookupFile = cdnLookupConfiguration.resolve().first()
-
-        arguments = listOf(cdnLookupFile.absolutePath) + settings.fieldNames().asSequence().toList()
+        arguments = listOf("--no-warnings", cdnLookupFile.absolutePath) + settings.fieldNames().asSequence().toList()
         val cdnOutputFile = file(cdnBuildOutput)
         outputFile = cdnOutputFile
         outputs.cacheIf { true }
