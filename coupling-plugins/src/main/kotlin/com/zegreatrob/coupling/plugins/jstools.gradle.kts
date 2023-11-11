@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.plugins
 
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
+
 plugins {
     kotlin("multiplatform")
     id("com.zegreatrob.jsmints.plugins.jspackage")
@@ -44,4 +46,8 @@ dependencies {
     jsMainImplementation(enforcedPlatform(project(":libraries:dependency-bom")))
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
     jsMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+}
+
+tasks.withType(KotlinJsTest::class).configureEach {
+    outputs.cacheIf { true }
 }
