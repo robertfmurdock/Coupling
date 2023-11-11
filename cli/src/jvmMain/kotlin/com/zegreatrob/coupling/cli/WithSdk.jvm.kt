@@ -1,5 +1,5 @@
 package com.zegreatrob.coupling.cli
 
-import java.net.URL
+import java.net.URI
 
-actual fun getHost(url: String): String = URL(url).host
+actual fun getHost(url: String): String = URI(url).host
