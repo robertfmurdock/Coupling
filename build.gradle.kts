@@ -53,15 +53,6 @@ tasks {
         mustRunAfter("caddyComposeUp", "libraries:repository:dynamo:composeUp")
         dependsOn(":server:buildImage")
     }
-    register("importCert", Exec::class) {
-        dependsOn("caddyComposeUp")
-        val cert = "${System.getenv("HOME")}/caddy_data/caddy/pki/authorities/local/root.crt"
-        commandLine(
-            ("keytool -importcert -file $cert -alias $cert -cacerts -storepass changeit -noprompt")
-                .split(" ")
-        )
-        isIgnoreExitValue = true
-    }
     assemble {
         dependsOn(currentContributionData)
     }

@@ -49,14 +49,31 @@ dependencies {
     "jvmTestImplementation"("io.ktor:ktor-client-java")
 }
 
+val javaLauncher = javaToolchains.launcherFor {
+    languageVersion = JavaLanguageVersion.of(20)
+}
+
 tasks {
     val jsNodeTest by getting {
         dependsOn(":composeUp")
         outputs.cacheIf { true }
     }
+
+    val importCert by registering(Exec::class) {
+        dependsOn(":caddyComposeUp")
+        val cert = "${System.getenv("HOME")}/caddy_data/caddy/pki/authorities/local/root.crt"
+
+        val javaHome = javaLauncher.get().metadata.installationPath
+        commandLine(
+            ("keytool -importcert -file $cert -alias $cert -keystore $javaHome/lib/security/cacerts -storepass changeit -noprompt")
+                .split(" ")
+        )
+        isIgnoreExitValue = true
+    }
+
     "jvmTest" {
         mustRunAfter(jsNodeTest)
         dependsOn(":composeUp", jsNodeTest)
-        dependsOn(":importCert")
+        dependsOn(importCert)
     }
 }
