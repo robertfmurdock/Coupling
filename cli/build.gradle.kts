@@ -16,7 +16,10 @@ application {
 kotlin {
     jvm { withJava() }
     js {
-        nodejs { binaries.executable() }
+        nodejs {
+            useCommonJs()
+            binaries.executable()
+        }
         compilations {
             "main" {
                 packageJson {
