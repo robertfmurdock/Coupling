@@ -24,8 +24,11 @@ sealed class CouplingPair : Iterable<Player> {
     data class Double(val player1: Player, val player2: Player) : CouplingPair() {
         override fun toNotEmptyList() = notEmptyListOf(player1, player2)
     }
-    data class Mob(val player1: Player, val player2: Player, val player3: Player, val more: Set<Player>) : CouplingPair() {
-        override fun toNotEmptyList() = notEmptyListOf(player1, tail = listOf(player2, player3).plus(more).toTypedArray())
+
+    data class Mob(val player1: Player, val player2: Player, val player3: Player, val more: Set<Player>) :
+        CouplingPair() {
+        override fun toNotEmptyList() =
+            notEmptyListOf(player1, tail = listOf(player2, player3).plus(more).toTypedArray())
     }
 
     companion object {
@@ -33,10 +36,10 @@ sealed class CouplingPair : Iterable<Player> {
     }
 }
 
-fun List<Player>.toCouplingPair() = if (size == 1) {
-    CouplingPair.Single(first())
-} else {
-    CouplingPair.Double(this[0], this[1])
+fun List<Player>.toCouplingPair() = when (size) {
+    1 -> CouplingPair.Single(first())
+    2 -> CouplingPair.Double(this[0], this[1])
+    else -> CouplingPair.Mob(this[0], this[1], this[2], slice(3..<size).toSet())
 }
 
 fun Player.withPins(pins: List<Pin> = emptyList()) = PinnedPlayer(this, pins)

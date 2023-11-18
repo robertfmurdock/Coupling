@@ -10,6 +10,6 @@ kotlin {
 }
 
 dependencies {
-    commonMainApi(project(":libraries:model"))
+    commonMainImplementation(project(":libraries:model"))
     commonMainApi("com.benasher44:uuid")
 }

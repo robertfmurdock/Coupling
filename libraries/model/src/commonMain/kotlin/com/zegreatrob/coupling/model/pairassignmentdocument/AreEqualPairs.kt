@@ -10,7 +10,7 @@ private fun areEqualPairArrays(pair1Array: Array<Player>, pair2Array: Array<Play
         equalPlayerIds(pair1Array, pair2Array)
 
 private fun equalPlayerIds(pair1Array: Array<Player>, pair2Array: Array<Player>) =
-    pair1Array.map { it.id }.toSet() == pair2Array.map { it.id }.toSet()
+    pair1Array.map(Player::id).toSet() == pair2Array.map(Player::id).toSet()
 
 private fun fullyEqualPlayers(pair1Array: Array<Player>, pair2Array: Array<Player>) =
     pair1Array.toSet() == pair2Array.toSet()
