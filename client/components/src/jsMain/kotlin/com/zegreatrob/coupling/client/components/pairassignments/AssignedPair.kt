@@ -20,6 +20,7 @@ import emotion.react.css
 import react.ChildrenBuilder
 import react.Props
 import react.ReactNode
+import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useRef
@@ -61,58 +62,63 @@ external interface AssignedPairProps : Props {
 val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.callSign()
 
-    val (isOver, drop) = usePinDrop(pinMoveCallback)
+    val (pinIsOver, drop) = usePinDrop(pinMoveCallback)
     val pinDroppableRef = useRef<HTMLElement>(null)
     drop(pinDroppableRef)
 
     val playerCard = playerCardComponent(canDrag, swapCallback)
 
-    span {
-        asDynamic()["data-assigned-pair"] = pair.toPair().joinToString("-") { it.id }
-        css {
-            padding = 5.px
-            display = Display.inlineFlex
-            margin = Margin(0.px, 2.px, 0.px, 2.px)
-            position = Position.relative
-            perspective = 10.em
-            flexDirection = FlexDirection.column
-        }
-        ref = pinDroppableRef
-
-        div {
+    DroppableThing(itemType = PLAYER_DRAG_ITEM_TYPE, dropCallback = { println("dropped $it") }, handler = {
+        span.create {
+            asDynamic()["data-assigned-pair"] = pair.toPair().joinToString("-") { it.id }
             css {
-                position = Position.absolute
-                top = 0.px
-                left = 0.px
-                right = 0.px
-                bottom = 0.px
-                transform = rotatex(15.deg)
-                borderWidth = 3.px
-                borderRadius = 40.px
-                borderStyle = LineStyle.hidden
-                borderColor = NamedColor.dimgray
-                margin = 10.px
-                backgroundColor = if (isOver) {
-                    Color("#cff8ff")
-                } else {
-                    NamedColor.aliceblue
-                }
-                flexGrow = number(1.0)
+                padding = 5.px
+                display = Display.inlineFlex
+                margin = Margin(0.px, 2.px, 0.px, 2.px)
+                position = Position.relative
+                perspective = 10.em
+                flexDirection = FlexDirection.column
+//                if (playerIsOver) {
+//                    backgroundColor = Color("pink")
+//                }
             }
-        }
-        div {
-            if (party.callSignsEnabled) {
-                callSign(callSign)
-            }
-        }
-        div {
-            pair.pinnedPlayers.toList().mapIndexed { index, player ->
-                playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
-            }
-        }
+            ref = pinDroppableRef
 
-        PinSection(pinList = pair.pins.toList(), canDrag = canDrag)
-    }
+            div {
+                css {
+                    position = Position.absolute
+                    top = 0.px
+                    left = 0.px
+                    right = 0.px
+                    bottom = 0.px
+                    transform = rotatex(15.deg)
+                    borderWidth = 3.px
+                    borderRadius = 40.px
+                    borderStyle = LineStyle.hidden
+                    borderColor = NamedColor.dimgray
+                    margin = 10.px
+                    backgroundColor = if (pinIsOver) {
+                        Color("#cff8ff")
+                    } else {
+                        NamedColor.aliceblue
+                    }
+                    flexGrow = number(1.0)
+                }
+            }
+            div {
+                if (party.callSignsEnabled) {
+                    callSign(callSign)
+                }
+            }
+            div {
+                pair.pinnedPlayers.toList().mapIndexed { index, player ->
+                    playerCard(player, if (index % 2 == 0) tiltLeft else tiltRight)
+                }
+            }
+
+            PinSection(pinList = pair.pins.toList(), canDrag = canDrag)
+        }
+    })
 }
 
 private fun ChildrenBuilder.callSign(callSign: CallSign) {
@@ -138,7 +144,10 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
 
 private fun usePinDrop(pinMoveCallback: PinMoveCallback?) = useDrop(
     acceptItemType = PIN_DRAG_ITEM_TYPE,
-    drop = { item -> pinMoveCallback?.invoke(item["id"].unsafeCast<String>()) },
+    drop = { item ->
+        pinMoveCallback?.invoke(item["id"].unsafeCast<String>())
+        null
+    },
     collect = { monitor -> monitor.isOver() },
 )
 

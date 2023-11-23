@@ -28,7 +28,11 @@ val DndProvider: ElementType<DnDProvideProps> = FC { props ->
     }
 }
 
-fun <T> useDrag(itemType: String, itemId: Any): DragDropValueContent<T> {
+fun <T> useDrag(
+    itemType: String,
+    itemId: Any,
+    endCallback: (itemId: String, dropResult: Json?) -> Unit = { _, _ -> },
+): DragDropValueContent<T> {
     if (js("global.IS_JSDOM") == true) {
         return DragDropValueContent(null.unsafeCast<T>()) {}
     }
@@ -36,6 +40,11 @@ fun <T> useDrag(itemType: String, itemId: Any): DragDropValueContent<T> {
         json(
             "type" to itemType,
             "item" to json("id" to itemId),
+            "end" to (
+                { item: Json, monitor: DragSourceMonitor ->
+                    endCallback.invoke("${item["id"]}", monitor.getDropResult())
+                }
+                ),
         ),
     ).unsafeCast<Array<dynamic>>()
 
@@ -47,7 +56,7 @@ fun <T> useDrag(itemType: String, itemId: Any): DragDropValueContent<T> {
 
 fun <T> useDrop(
     acceptItemType: String,
-    drop: (Json) -> Unit,
+    drop: (Json) -> Json?,
     collect: (DragSourceMonitor) -> T,
 ): DragDropValueContent<T> {
     if (js("global.IS_JSDOM") == true) {
