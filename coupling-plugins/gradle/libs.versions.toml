@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.10"
+kotlin = "1.9.21"
 ktlint = "0.45.2"
 org-apache-logging-log4j = "2.22.0"
 org-jlleitschuh-gradle-ktlint = "11.0.0"
@@ -14,7 +14,7 @@ org-ajoberstar-grgit-gradle-plugin = "org.ajoberstar.grgit:org.ajoberstar.grgit.
 org-apache-logging-log4j-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "org-apache-logging-log4j" }
 org-apache-logging-log4j-log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "org-apache-logging-log4j" }
 org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
-org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.9.10"
+org-jetbrains-kotlin-plugin-serialization-gradle-plugin = "org.jetbrains.kotlin.plugin.serialization:org.jetbrains.kotlin.plugin.serialization.gradle.plugin:1.9.21"
 org-jlleitschuh-gradle-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "org-jlleitschuh-gradle-ktlint" }
 org-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:4.1.0"
 org-slf4j-slf4j-api = "org.slf4j:slf4j-api:2.0.9"
