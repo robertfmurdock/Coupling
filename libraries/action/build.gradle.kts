@@ -38,6 +38,8 @@ dependencies {
     "jvmMainImplementation"(kotlin("reflect"))
     "jvmMainImplementation"("com.fasterxml.jackson.core:jackson-databind")
 
+    "jsTestImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+
     "jvmTestImplementation"(kotlin("reflect"))
     "jvmTestImplementation"("org.slf4j:slf4j-simple")
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
