@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.client.components.Paths.currentPairsPage
 import com.zegreatrob.coupling.client.components.eventHandler
 import com.zegreatrob.coupling.client.components.external.w3c.WindowFunctions
 import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
-import com.zegreatrob.coupling.client.components.useStateWithSetterFunction
 import com.zegreatrob.coupling.json.JsonPlayerData
 import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
@@ -40,8 +39,8 @@ external interface PlayerConfigProps<P> : Props
 @ReactFunc
 val PlayerConfig by nfc<PlayerConfigProps<*>> { props ->
     val (party, boost, player, players, reload, dispatchFunc, windowFuncs) = props
-    val (values, setValues) = useStateWithSetterFunction(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
-    val onChange = eventHandler(setValues)
+    val (values, setValues) = useState(player.toSerializable().toJsonDynamic().unsafeCast<Json>())
+    val onChange = eventHandler(setValues::invoke)
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val updatedPlayer = values.fromJsonDynamic<JsonPlayerData>().toModel()
     usePrompt(

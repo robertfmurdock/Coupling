@@ -5,13 +5,14 @@ import react.dom.aria.ariaLabel
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
+import react.useState
 import web.html.InputType
 import kotlin.js.Json
 import kotlin.js.json
 
-fun useForm(initialValues: Json) = useStateWithSetterFunction(initialValues)
+fun useForm(initialValues: Json) = useState(initialValues)
     .let { (values, setValues) ->
-        Pair(values, eventHandler(setValues))
+        Pair(values, eventHandler(setValues::invoke))
     }
 
 fun eventHandler(setValues: ((Json) -> Json) -> Unit) = { event: ChangeEvent<*> ->
