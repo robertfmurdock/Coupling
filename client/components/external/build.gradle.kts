@@ -31,13 +31,6 @@ tasks {
 }
 
 dependencies {
-    jsMainImplementation(npmConstrained("@stripe/react-stripe-js"))
-    jsMainImplementation(npmConstrained("@stripe/stripe-js"))
     jsMainImplementation(npmConstrained("blueimp-md5"))
-    jsMainImplementation(npmConstrained("date-fns"))
-    jsMainImplementation(npmConstrained("fitty"))
-    jsMainImplementation(npmConstrained("html2canvas"))
-    jsMainImplementation(npmConstrained("react-dnd"))
-    jsMainImplementation(npmConstrained("react-dnd-html5-backend"))
-    jsMainImplementation(npmConstrained("react-use-websocket"))
+    jsMainImplementation(npmConstrained("react-flip-toolkit"))
 }
