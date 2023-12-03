@@ -1,11 +1,14 @@
 package com.zegreatrob.coupling.server.slack
 
 import js.core.jso
+import js.core.recordOf
+import js.core.tupleOf
 import js.promise.await
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import web.http.FormData
+import web.http.Headers
 import web.http.fetch
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -26,7 +29,7 @@ class FetchSlackClient(
         "https://slack.com/api/oauth.v2.access",
         jso {
             method = "post"
-            headers = json("Authorization" to "Basic ${btoa("$clientId:$clientSecret")}")
+            headers = Headers(recordOf("Authorization" to "Basic ${btoa("$clientId:$clientSecret")}"))
             body = FormData().apply {
                 append("code", code)
                 append("redirect_uri", slackRedirectUri)
@@ -63,9 +66,11 @@ class FetchSlackClient(
         .await()
         .let(jsonParser::decodeFromString)
 
-    private fun jsonHeaders(accessToken: String) = json(
-        "Authorization" to "Bearer $accessToken",
-        "Content-type" to "application/json",
+    private fun jsonHeaders(accessToken: String) = Headers(
+        arrayOf(
+            tupleOf("Authorization", "Bearer $accessToken"),
+            tupleOf("Content-type", "application/json"),
+        ),
     )
 
     override suspend fun updateMessage(
