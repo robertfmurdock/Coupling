@@ -7,6 +7,7 @@ import js.promise.await
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
+import web.http.BodyInit
 import web.http.FormData
 import web.http.Headers
 import web.http.fetch
@@ -30,10 +31,12 @@ class FetchSlackClient(
         jso {
             method = "post"
             headers = Headers(recordOf("Authorization" to "Basic ${btoa("$clientId:$clientSecret")}"))
-            body = FormData().apply {
-                append("code", code)
-                append("redirect_uri", slackRedirectUri)
-            }
+            body = BodyInit(
+                FormData().apply {
+                    append("code", code)
+                    append("redirect_uri", slackRedirectUri)
+                },
+            )
         },
     )
         .text()
@@ -53,11 +56,13 @@ class FetchSlackClient(
         jso {
             method = "post"
             headers = jsonHeaders(accessToken)
-            body = JSON.stringify(
-                json(
-                    "channel" to channel,
-                    "text" to text,
-                    "blocks" to blocks,
+            body = BodyInit(
+                JSON.stringify(
+                    json(
+                        "channel" to channel,
+                        "text" to text,
+                        "blocks" to blocks,
+                    ),
                 ),
             )
         },
@@ -84,12 +89,14 @@ class FetchSlackClient(
         jso {
             method = "post"
             headers = jsonHeaders(accessToken)
-            body = JSON.stringify(
-                json(
-                    "ts" to ts,
-                    "channel" to channel,
-                    "text" to text,
-                    "blocks" to blocks,
+            body = BodyInit(
+                JSON.stringify(
+                    json(
+                        "ts" to ts,
+                        "channel" to channel,
+                        "text" to text,
+                        "blocks" to blocks,
+                    ),
                 ),
             )
         },
@@ -108,11 +115,13 @@ class FetchSlackClient(
         jso {
             method = "post"
             headers = jsonHeaders(accessToken)
-            body = JSON.stringify(
-                json(
-                    "channel" to channel,
-                    "latest" to latest.toUnixString(),
-                    "oldest" to oldest.toUnixString(),
+            body = BodyInit(
+                JSON.stringify(
+                    json(
+                        "channel" to channel,
+                        "latest" to latest.toUnixString(),
+                        "oldest" to oldest.toUnixString(),
+                    ),
                 ),
             )
         },
@@ -126,10 +135,12 @@ class FetchSlackClient(
         jso {
             method = "post"
             headers = jsonHeaders(accessToken)
-            body = JSON.stringify(
-                json(
-                    "ts" to ts,
-                    "channel" to channel,
+            body = BodyInit(
+                JSON.stringify(
+                    json(
+                        "ts" to ts,
+                        "channel" to channel,
+                    ),
                 ),
             )
         },
