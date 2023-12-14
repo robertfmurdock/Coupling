@@ -74,3 +74,5 @@ fun PinnedCouplingPair.callSign(): CallSign {
     val noun = nounPlayer.callSignNoun
     return CallSign(adjective, noun)
 }
+
+val CouplingPair.pairId get() = joinToString("-", transform = Player::id)

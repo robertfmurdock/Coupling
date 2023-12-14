@@ -4,10 +4,12 @@ import com.zegreatrob.coupling.client.components.external.reactdnd.useDrag
 import com.zegreatrob.coupling.client.components.external.reactdnd.useDrop
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import csstype.PropertiesBuilder
 import emotion.react.css
 import react.Props
 import react.ReactNode
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.span
 import react.useRef
 import web.cssom.Display
 import web.html.HTMLElement
@@ -18,12 +20,14 @@ external interface DraggableThingProps : Props {
     var itemType: String
     var itemId: String
     var dropCallback: (String) -> Unit
-    var handler: (isOver: Boolean) -> ReactNode
     var endCallback: (itemId: String, dropResult: Json?) -> Unit
+    var css: (PropertiesBuilder) -> Unit
+    var handler: (isOver: Boolean) -> ReactNode
 }
 
 @ReactFunc
-val DraggableThing by nfc<DraggableThingProps> { (itemType, itemId, dropCallback, handler, endCallback) ->
+val DraggableThing by nfc<DraggableThingProps> { props ->
+    val (itemType, itemId, dropCallback, endCallback, _, handler) = props
     val draggableRef = useRef<HTMLElement>(null)
 
     val (_, drag) = useDrag<Unit>(itemType = itemType, itemId = itemId, endCallback = endCallback)
@@ -37,8 +41,8 @@ val DraggableThing by nfc<DraggableThingProps> { (itemType, itemId, dropCallback
     )
     drag(drop(draggableRef))
 
-    div {
-        css { display = Display.inlineBlock }
+    span {
+        css(props.css)
         ref = draggableRef
         +handler(isOver)
     }

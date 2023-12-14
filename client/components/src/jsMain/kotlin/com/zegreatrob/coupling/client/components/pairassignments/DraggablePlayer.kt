@@ -33,6 +33,7 @@ val DraggablePlayer by nfc<DraggablePlayerProps> { (pinnedPlayer, zoomOnHover, t
         itemId = pinnedPlayer.player.id,
         dropCallback = {},
         endCallback = { _, data -> onPlayerDrop(data?.get("dropTargetId")?.toString() ?: "") },
+        css = {},
         handler = { isOver: Boolean ->
             PlayerCard.create(
                 player = pinnedPlayer.player,

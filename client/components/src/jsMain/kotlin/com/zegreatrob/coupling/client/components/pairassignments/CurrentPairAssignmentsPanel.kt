@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
@@ -83,14 +84,22 @@ private fun ChildrenBuilder.pairAssignmentList(
             swapPlayersFunc = { player: PinnedPlayer, droppedPlayerId: String ->
                 setPairAssignments(pairAssignments.copyWithSwappedPlayers(droppedPlayerId, player, pair))
             },
-            pinDropFunc = { pinId: String -> setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, pair)) },
+            pinDropFunc = { pinId: String, targetId: String ->
+                setPairAssignments(pairAssignments.copyWithDroppedPin(pinId, targetId))
+            },
             key = "$index",
         )
     }
 }
 
-private fun PairAssignmentDocument.copyWithDroppedPin(pinId: String, pair: PinnedCouplingPair) =
-    copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this), pair))
+private fun PairAssignmentDocument.copyWithDroppedPin(pinId: String, pairId: String): PairAssignmentDocument {
+    val droppedPair = pairs.toList().find { it.toPair().pairId == pairId }
+    return if (droppedPair != null) {
+        copy(pairs = pairs.movePinTo(findDroppedPin(pinId, this), droppedPair))
+    } else {
+        this
+    }
+}
 
 private fun findDroppedPin(id: String, pairAssignments: PairAssignmentDocument) = pairAssignments
     .pairs

@@ -15,19 +15,21 @@ import web.cssom.TransitionTimingFunction
 import web.cssom.ident
 import web.cssom.s
 import web.html.HTMLElement
+import kotlin.js.Json
 
 const val PIN_DRAG_ITEM_TYPE = "PAIR_PIN"
 
 external interface DraggablePinButtonProps : Props {
     var pin: Pin
     var scale: PinButtonScale
+    var endCallback: (itemId: String, dropResult: Json?) -> Unit
 }
 
 @ReactFunc
 val DraggablePinButton by nfc<DraggablePinButtonProps> { props ->
     val pin = props.pin
     val scale = props.scale
-    val (_, drag) = useDrag<Unit>(itemType = PIN_DRAG_ITEM_TYPE, itemId = pin.id!!)
+    val (_, drag) = useDrag<Unit>(itemType = PIN_DRAG_ITEM_TYPE, itemId = pin.id!!, endCallback = props.endCallback)
     val draggableRef = useRef<HTMLElement>(null)
 
     drag(draggableRef)

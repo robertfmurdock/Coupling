@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
@@ -44,8 +45,10 @@ import web.cssom.px
 import web.cssom.rotatex
 import web.cssom.url
 import web.html.HTMLElement
+import kotlin.js.Json
+import kotlin.js.json
 
-typealias PinMoveCallback = (String) -> Unit
+typealias PinMoveCallback = (String, String) -> Unit
 
 val tiltLeft = (-8).deg
 val tiltRight = 8.deg
@@ -62,15 +65,22 @@ external interface AssignedPairProps : Props {
 val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback, pinMoveCallback) ->
     val callSign = pair.callSign()
 
-    val (pinIsOver, drop) = usePinDrop(pinMoveCallback)
+    val (pinIsOver, drop) = useDrop(
+        acceptItemType = PIN_DRAG_ITEM_TYPE,
+        drop = { json("dropTargetId" to pair.toPair().pairId) },
+        collect = { monitor -> monitor.isOver() },
+    )
     val pinDroppableRef = useRef<HTMLElement>(null)
     drop(pinDroppableRef)
+    val onPinDropEnd: ((String, Json?) -> Unit)? = { pinId: String, data: Json? ->
+        pinMoveCallback?.invoke(pinId, data?.get("dropTargetId").toString()) ?: Unit
+    }.takeIf { canDrag }
 
     val playerCard = playerCardComponent(canDrag, swapCallback)
 
-    DroppableThing(itemType = PLAYER_DRAG_ITEM_TYPE, dropCallback = { println("dropped $it") }, handler = {
+    DroppableThing(itemType = PLAYER_DRAG_ITEM_TYPE, dropCallback = { }, handler = {
         span.create {
-            asDynamic()["data-assigned-pair"] = pair.toPair().joinToString("-") { it.id }
+            asDynamic()["data-assigned-pair"] = pair.toPair().pairId
             css {
                 padding = 5.px
                 display = Display.inlineFlex
@@ -78,9 +88,6 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
                 position = Position.relative
                 perspective = 10.em
                 flexDirection = FlexDirection.column
-//                if (playerIsOver) {
-//                    backgroundColor = Color("pink")
-//                }
             }
             ref = pinDroppableRef
 
@@ -116,7 +123,7 @@ val AssignedPair by nfc<AssignedPairProps> { (party, pair, canDrag, swapCallback
                 }
             }
 
-            PinSection(pinList = pair.pins.toList(), canDrag = canDrag)
+            PinSection(pinList = pair.pins.toList(), endCallback = onPinDropEnd)
         }
     })
 }
@@ -141,15 +148,6 @@ private fun ChildrenBuilder.callSign(callSign: CallSign) {
         +"${callSign.adjective} ${callSign.noun}"
     }
 }
-
-private fun usePinDrop(pinMoveCallback: PinMoveCallback?) = useDrop(
-    acceptItemType = PIN_DRAG_ITEM_TYPE,
-    drop = { item ->
-        pinMoveCallback?.invoke(item["id"].unsafeCast<String>())
-        null
-    },
-    collect = { monitor -> monitor.isOver() },
-)
 
 private fun playerCardComponent(
     canDrag: Boolean,

@@ -11,19 +11,20 @@ import web.cssom.Position
 import web.cssom.pct
 import web.cssom.px
 import web.cssom.unaryMinus
+import kotlin.js.Json
 
 external interface PinSectionProps : Props {
     var pinList: List<Pin>
     var scale: PinButtonScale?
-    var canDrag: Boolean?
     var className: ClassName?
+    var endCallback: ((String, Json?) -> Unit)?
 }
 
 @ReactFunc
 val PinSection by nfc<PinSectionProps> { props ->
     val (pinList) = props
     val scale = props.scale ?: PinButtonScale.Small
-    val canDrag = props.canDrag ?: false
+    val endCallback = props.endCallback
     val className = props.className ?: ClassName("")
     div {
         css(className) {
@@ -33,8 +34,8 @@ val PinSection by nfc<PinSectionProps> { props ->
             left = 50.pct
         }
         pinList.map { pin ->
-            if (canDrag) {
-                DraggablePinButton(pin, scale)
+            if (endCallback != null) {
+                DraggablePinButton(pin, scale, endCallback)
             } else {
                 PinButton(pin, scale, showTooltip = true)
             }
