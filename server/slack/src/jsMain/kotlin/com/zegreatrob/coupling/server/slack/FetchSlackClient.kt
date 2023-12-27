@@ -7,8 +7,8 @@ import js.promise.await
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
+import web.form.FormData
 import web.http.BodyInit
-import web.http.FormData
 import web.http.Headers
 import web.http.fetch
 import kotlin.io.encoding.Base64
