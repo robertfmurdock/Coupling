@@ -4061,6 +4061,23 @@
     p-queue "^6.6.1"
     p-retry "^4.0.0"
 
+"@slack/web-api@^6.11.1":
+  version "6.11.1"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-6.11.1.tgz#a23552d9ee89fb5a727cce30ff58e4a3e3faf9ab"
+  integrity sha512-AU7Sty+NwkMU0qT/cKSIYV1NZ+bGDYqmJ3LAJD/3vtrxJvV9F9DdALgRSV2zRhrRjzjOgLhCRXVuOikQsKQhAg==
+  dependencies:
+    "@slack/logger" "^3.0.0"
+    "@slack/types" "^2.11.0"
+    "@types/is-stream" "^1.1.0"
+    "@types/node" ">=12.0.0"
+    axios "^1.6.3"
+    eventemitter3 "^3.1.0"
+    form-data "^2.5.0"
+    is-electron "2.2.2"
+    is-stream "^1.1.0"
+    p-queue "^6.6.1"
+    p-retry "^4.0.0"
+
 "@slack/web-api@^6.2.3", "@slack/web-api@^6.3.0":
   version "6.9.0"
   resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-6.9.0.tgz#d829dcfef490dbce8e338912706b6f39dcde3ad2"
@@ -4078,14 +4095,14 @@
     p-queue "^6.6.1"
     p-retry "^4.0.0"
 
-"@slack/webhook@^7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@slack/webhook/-/webhook-7.0.1.tgz#91d939af249d50ea978a960a52b9f92bb7d2bdda"
-  integrity sha512-0Uj/GQ1H8nmeAVEx+7zcWb6/q/zsSOrlIaGi6zFnwgMSxjmV6xGsVwv8w6DaAdkUbtqa43v1cirWjySeZaCOIA==
+"@slack/webhook@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@slack/webhook/-/webhook-7.0.2.tgz#e69d4c8116584fab90e40a1076233de95b737d07"
+  integrity sha512-dsrO/ow6a6+xkLm/lZKbUNTsFJlBc679tD+qwlVTztsQkDxPLH6odM7FKALz1IHa+KpLX8HKUIPV13a7y7z29w==
   dependencies:
     "@slack/types" "^2.9.0"
     "@types/node" ">=18.0.0"
-    axios "^1.6.0"
+    axios "^1.6.3"
 
 "@smithy/abort-controller@^2.0.15":
   version "2.0.15"
@@ -6274,6 +6291,15 @@ axios@^1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.2.tgz#de67d42c755b571d3e698df1b6504cde9b0ee9f2"
   integrity sha512-7i24Ri4pmDRfJTR7LDBhsOTtcm+9kjX5WiY1X3wIisx6G9So3pfMkEiU7emUBe46oceVImccTEM3k6C5dbVW8A==
+  dependencies:
+    follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
+axios@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.3.tgz#7f50f23b3aa246eff43c54834272346c396613f4"
+  integrity sha512-fWyNdeawGam70jXSVlKl+SUNVcL6j6W79CuSIPfi6HnDUmSCH6gyUys/HrqHeA/wU0Az41rRgean494d0Jb+ww==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
