@@ -30,7 +30,7 @@ import com.zegreatrob.coupling.client.user.UserPage
 import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.core.jso
+import js.objects.jso
 import react.Props
 import react.create
 import react.router.Navigate

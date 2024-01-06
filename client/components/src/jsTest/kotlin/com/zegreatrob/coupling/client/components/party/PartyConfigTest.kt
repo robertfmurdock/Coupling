@@ -18,7 +18,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
-import js.core.jso
+import js.objects.jso
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLOptionElement
 import react.Fragment

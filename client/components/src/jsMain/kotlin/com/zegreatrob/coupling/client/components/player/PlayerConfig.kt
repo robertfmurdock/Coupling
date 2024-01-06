@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.core.jso
+import js.objects.jso
 import react.Props
 import react.router.Navigate
 import react.router.dom.usePrompt

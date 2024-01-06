@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.incubating
 
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.core.jso
+import js.objects.jso
 import react.Props
 import react.dom.html.ReactHTML.a
 import react.dom.svg.ReactSVG.path

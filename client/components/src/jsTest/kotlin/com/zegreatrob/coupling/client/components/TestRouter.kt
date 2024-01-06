@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.minreact.nfc
-import js.core.jso
+import js.objects.jso
 import react.Fragment
 import react.PropsWithChildren
 import react.create

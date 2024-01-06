@@ -23,7 +23,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.fireEvent
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.core.jso
+import js.objects.jso
 import kotlinx.browser.window
 import org.w3c.dom.Window
 import react.ChildrenBuilder

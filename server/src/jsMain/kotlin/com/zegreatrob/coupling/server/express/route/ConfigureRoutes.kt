@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.raw
 import com.zegreatrob.coupling.server.external.graphql.http.createHandler
 import com.zegreatrob.coupling.server.graphql.unifiedSchema
-import js.core.jso
+import js.objects.jso
 import kotlinx.coroutines.CoroutineScope
 import kotlin.js.json
 

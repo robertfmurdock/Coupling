@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.graphql.stripe
 import com.zegreatrob.coupling.model.user.SubscriptionDetails
 import com.zegreatrob.coupling.server.action.subscription.SubscriptionRepository
 import com.zegreatrob.coupling.server.external.stripe.StripeCustomer
-import js.core.jso
+import js.objects.jso
 import kotlinx.coroutines.await
 import kotlinx.datetime.Instant
 

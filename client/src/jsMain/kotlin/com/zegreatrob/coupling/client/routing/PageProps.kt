@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.sdk.couplingSdk
 import com.zegreatrob.coupling.sdk.defaultClient
 import com.zegreatrob.testmints.action.DispatcherPipeCannon
-import js.core.ReadonlyRecord
+import js.objects.ReadonlyRecord
 import kotlinx.browser.window
 import org.w3c.dom.get
 import react.Props

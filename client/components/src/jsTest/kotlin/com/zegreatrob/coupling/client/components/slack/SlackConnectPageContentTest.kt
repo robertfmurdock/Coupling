@@ -16,7 +16,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-import js.core.jso
+import js.objects.jso
 import react.ReactNode
 import react.create
 import react.router.RouterProvider

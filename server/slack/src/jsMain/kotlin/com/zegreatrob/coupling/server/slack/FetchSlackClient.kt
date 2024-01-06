@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.slack
 
-import js.core.jso
-import js.core.recordOf
-import js.core.tupleOf
+import js.array.tupleOf
+import js.objects.jso
+import js.objects.recordOf
 import js.promise.await
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

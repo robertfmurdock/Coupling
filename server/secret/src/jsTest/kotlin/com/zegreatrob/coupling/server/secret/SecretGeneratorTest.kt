@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubSecret
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import js.core.jso
+import js.objects.jso
 import kotlinx.coroutines.await
 import kotlin.random.Random
 import kotlin.test.Test

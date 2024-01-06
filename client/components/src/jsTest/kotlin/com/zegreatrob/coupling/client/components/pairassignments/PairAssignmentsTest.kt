@@ -16,7 +16,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
-import js.core.jso
+import js.objects.jso
 import kotlinx.datetime.Clock
 import kotools.types.collection.notEmptyListOf
 import org.w3c.dom.HTMLElement

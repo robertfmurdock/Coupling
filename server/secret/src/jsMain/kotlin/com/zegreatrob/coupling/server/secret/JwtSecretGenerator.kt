@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.coupling.server.action.SecretGenerator
 import com.zegreatrob.coupling.server.secret.external.jose.SignJWT
-import js.core.jso
+import js.objects.jso
 import js.typedarrays.Uint8Array
 import kotlinx.coroutines.await
 

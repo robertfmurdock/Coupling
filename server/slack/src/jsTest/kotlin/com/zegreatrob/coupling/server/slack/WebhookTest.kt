@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.slack
 import com.zegreatrob.coupling.server.slack.external.webhook.IncomingWebhook
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
-import js.core.jso
+import js.objects.jso
 import kotlinx.coroutines.await
 import kotlin.test.Ignore
 import kotlin.test.Test

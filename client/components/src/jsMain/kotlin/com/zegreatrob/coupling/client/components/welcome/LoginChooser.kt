@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.white
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import js.core.jso
+import js.objects.jso
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.router.dom.useSearchParams

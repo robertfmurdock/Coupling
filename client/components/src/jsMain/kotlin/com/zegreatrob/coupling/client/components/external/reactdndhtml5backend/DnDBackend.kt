@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.external.reactdndhtml5backend
 
-import js.core.jso
+import js.objects.jso
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.await

@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import js.core.jso
+import js.objects.jso
 import kotlinx.browser.window
 import react.FC
 import react.Props

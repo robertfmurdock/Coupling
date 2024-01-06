@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.cli
 
-import js.core.jso
+import js.objects.jso
 import node.buffer.BufferEncoding
 import node.fs.MkdirSyncOptions
 import node.fs.existsSync

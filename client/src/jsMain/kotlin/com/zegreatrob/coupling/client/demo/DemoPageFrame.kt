@@ -17,7 +17,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.testmints.action.ActionCannon
 import emotion.react.css
-import js.core.jso
+import js.objects.jso
 import kotlinx.browser.document
 import popper.core.ReferenceElement
 import popper.core.modifier

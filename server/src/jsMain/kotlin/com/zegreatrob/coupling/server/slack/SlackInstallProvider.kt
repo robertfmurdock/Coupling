@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.server.slack
 
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.slack.external.oauth.InstallProvider
-import js.core.jso
+import js.objects.jso
 
 val slackInstallProvider by lazy {
     InstallProvider(
