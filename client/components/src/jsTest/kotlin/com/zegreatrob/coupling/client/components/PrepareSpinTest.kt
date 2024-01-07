@@ -28,21 +28,20 @@ import kotools.types.collection.toNotEmptyList
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.get
-import web.window.window
 import kotlin.test.Test
 
 class PrepareSpinTest {
 
     private val prepareSetup = asyncTestTemplate(
         sharedSetup = suspend {
-            val matchFunc = window.asDynamic()["matchMedia"]
-            window.asDynamic()["matchMedia"] = {}
+            val matchFunc = js.globals.globalThis.window["matchMedia"]
+            js.globals.globalThis.window["matchMedia"] = fun () {}
             object {
                 val matchFunc = matchFunc
             }
         },
         sharedTeardown = {
-            window.asDynamic()["matchMedia"] = it.matchFunc
+            js.globals.globalThis.window["matchMedia"] = it.matchFunc
         },
     )
 
