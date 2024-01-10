@@ -1,5 +1,6 @@
 {
   "reject": [
+    "jsdom",
     "mime",
     "read-pkg-up"
   ]
