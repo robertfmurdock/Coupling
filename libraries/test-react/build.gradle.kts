@@ -11,7 +11,7 @@ kotlin {
         nodejs()
         compilations.named("test") {
             packageJson {
-                customField("mocha", mapOf("require" to "global-jsdom/register"))
+                customField("mocha", mapOf("require" to "@happy-dom/global-registrator"))
             }
         }
     }
@@ -25,6 +25,6 @@ dependencies {
     jsMainApi("org.jetbrains.kotlin-wrappers:kotlin-react")
     jsMainApi("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
     jsMainApi("org.jetbrains.kotlin:kotlin-test")
-    jsMainImplementation(npmConstrained("jsdom"))
-    jsMainImplementation(npmConstrained("global-jsdom"))
+    jsMainImplementation(npmConstrained("happy-dom"))
+    jsMainImplementation(npmConstrained("@happy-dom/global-registrator"))
 }

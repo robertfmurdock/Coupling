@@ -9,7 +9,7 @@ kotlin {
         nodejs()
         compilations.named("test") {
             packageJson {
-                customField("mocha", mapOf("require" to "global-jsdom/register"))
+                customField("mocha", mapOf("require" to "@happy-dom/global-registrator"))
             }
         }
     }
@@ -61,6 +61,6 @@ dependencies {
     jsTestImplementation(project(":libraries:stub-model"))
     jsTestImplementation(project(":libraries:test-logging"))
     jsTestImplementation("com.zegreatrob.testmints:async")
-    jsTestImplementation(npmConstrained("jsdom"))
-    jsTestImplementation(npmConstrained("global-jsdom"))
+    jsTestImplementation(npmConstrained("happy-dom"))
+    jsTestImplementation(npmConstrained("@happy-dom/global-registrator"))
 }

@@ -9,7 +9,7 @@ kotlin {
         nodejs()
         compilations.named("test") {
             packageJson {
-                customField("mocha", mapOf("require" to "global-jsdom/register"))
+                customField("mocha", mapOf("require" to "@happy-dom/global-registrator"))
             }
         }
     }
