@@ -67,7 +67,6 @@ dependencies {
     jsMainImplementation(npmConstrained("method-override"))
     jsMainImplementation(npmConstrained("mime"))
     jsMainImplementation(npmConstrained("minimist"))
-    jsMainImplementation(npmConstrained("node-fetch"))
     jsMainImplementation(npmConstrained("on-finished"))
     jsMainImplementation(npmConstrained("parse5"))
     jsMainImplementation(npmConstrained("stripe"))
