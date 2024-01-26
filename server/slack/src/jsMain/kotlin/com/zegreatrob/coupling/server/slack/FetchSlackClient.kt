@@ -74,7 +74,7 @@ class FetchSlackClient(
     private fun jsonHeaders(accessToken: String) = Headers(
         arrayOf(
             tupleOf("Authorization", "Bearer $accessToken"),
-            tupleOf("Content-type", "application/json"),
+            tupleOf("Content-Type", "application/json"),
         ),
     )
 
