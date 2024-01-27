@@ -63,11 +63,9 @@ class PlayerConfigTest {
             },
         )
         val element = screen.getByRole("combobox", RoleOptions(name = "Avatar Type"))
-        act {
-            actor.selectOptions(element, "DicebearAdventurer")
-        }
+        actor.selectOptions(element, "DicebearAdventurer")
     } exercise {
-        act { actor.click(screen.getByRole("button", RoleOptions(name = "Save"))) }
+        actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(
             partyId = party.id,
@@ -98,10 +96,8 @@ class PlayerConfigTest {
             },
         )
     } exercise {
-        act {
-            actor.selectOptions(screen.getByRole("combobox", RoleOptions(name = "Avatar Type")), "")
-            actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
-        }
+        actor.selectOptions(screen.getByRole("combobox", RoleOptions(name = "Avatar Type")), "")
+        actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(
             partyId = party.id,
@@ -185,9 +181,9 @@ class PlayerConfigTest {
             },
         )
     } exercise {
-        act { actor.click(addEmailButton()) }
-        act { actor.type(email2Input(), secondEmail) }
-        act { actor.click(screen.getByRole("button", RoleOptions(name = "Save"))) }
+        actor.click(addEmailButton())
+        actor.type(email2Input(), secondEmail)
+        actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         val expectedCommand = SavePlayerCommand(
             partyId = party.id,
@@ -218,8 +214,8 @@ class PlayerConfigTest {
             },
         )
     } exercise {
-        act { actor.click(addEmailButton()) }
-        act { actor.click(screen.getByRole("button", RoleOptions(name = "Save"))) }
+        actor.click(addEmailButton())
+        actor.click(screen.getByRole("button", RoleOptions(name = "Save")))
     } verify {
         stubDispatcher.receivedActions
             .assertIsEqualTo(listOf(SavePlayerCommand(partyId = party.id, player = player)))
