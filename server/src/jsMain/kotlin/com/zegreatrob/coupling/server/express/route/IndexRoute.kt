@@ -5,18 +5,17 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.env
 import com.zegreatrob.coupling.server.external.express.Express
 import com.zegreatrob.coupling.server.external.express.Handler
-import com.zegreatrob.coupling.server.external.nodefetch.FetchResult
-import com.zegreatrob.coupling.server.external.nodefetch.fetch
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.RewritingStream
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.Tag
 import com.zegreatrob.coupling.server.external.stream.Readable
+import js.promise.await
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlin.js.Promise
+import kotlinx.coroutines.promise
+import web.http.fetch
 
 val indexHtmlPromise
-    get() = fetch("${Config.clientUrl}/html/index.html")
-        .then(FetchResult::text)
-        .unsafeCast<Promise<String>>()
+    get() = MainScope().promise { fetch("${Config.clientUrl}/html/index.html").text().await() }
 
 fun Express.indexRoute(): Handler = { _, response, _ ->
     indexHtmlPromise.then { indexHtml ->

@@ -10,18 +10,19 @@ kotlin {
     js {
         nodejs {
             binaries.executable()
-            testTask(Action { useMocha { timeout = "400s" } })
+            testTask { useMocha { timeout = "400s" } }
         }
     }
 }
 
 dependencies {
-    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-    jsMainImplementation("io.ktor:ktor-client-core")
     jsMainImplementation("io.ktor:ktor-client-content-negotiation")
-    jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
-    jsMainImplementation("io.ktor:ktor-client-logging")
+    jsMainImplementation("io.ktor:ktor-client-core")
     jsMainImplementation("io.ktor:ktor-client-encoding")
+    jsMainImplementation("io.ktor:ktor-client-logging")
+    jsMainImplementation("io.ktor:ktor-serialization-kotlinx-json")
+    jsMainImplementation("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    jsMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
     jsMainImplementation(npmConstrained("resolve-pkg"))
     jsMainImplementation(npmConstrained("read-pkg-up"))
 

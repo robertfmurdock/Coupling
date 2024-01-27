@@ -10,6 +10,7 @@ import kotlinx.serialization.json.JsonElement
 import web.form.FormData
 import web.http.BodyInit
 import web.http.Headers
+import web.http.Request
 import web.http.fetch
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -51,30 +52,34 @@ class FetchSlackClient(
         channel: String,
         accessToken: String,
         blocks: String?,
-    ): MessageResponse = fetch(
-        "https://slack.com/api/chat.postMessage",
-        jso {
-            method = "post"
-            headers = jsonHeaders(accessToken)
-            body = BodyInit(
-                JSON.stringify(
-                    json(
-                        "channel" to channel,
-                        "text" to text,
-                        "blocks" to blocks,
+    ): MessageResponse {
+        val request = Request(
+            "https://slack.com/api/chat.postMessage",
+            jso {
+                method = "post"
+                headers = jsonHeaders(accessToken)
+                body = BodyInit(
+                    JSON.stringify(
+                        json(
+                            "channel" to channel,
+                            "text" to text,
+                            "blocks" to blocks,
+                        ),
                     ),
-                ),
-            )
-        },
-    )
-        .text()
-        .await()
-        .let(jsonParser::decodeFromString)
+                )
+            },
+        )
+        console.log("FETCH SLACK", JSON.stringify(request))
+        return fetch(request)
+            .text()
+            .await()
+            .let(jsonParser::decodeFromString)
+    }
 
     private fun jsonHeaders(accessToken: String) = Headers(
         arrayOf(
             tupleOf("Authorization", "Bearer $accessToken"),
-            tupleOf("Content-type", "application/json"),
+            tupleOf("Content-Type", "application/json"),
         ),
     )
 

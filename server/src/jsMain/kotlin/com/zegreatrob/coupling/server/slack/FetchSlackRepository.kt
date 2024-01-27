@@ -10,6 +10,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.slack.SlackGrantAccess
 import com.zegreatrob.coupling.server.action.slack.SlackRepository
 import com.zegreatrob.coupling.server.express.Config
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -18,6 +19,8 @@ import kotlin.js.json
 
 @OptIn(ExperimentalEncodingApi::class)
 class FetchSlackRepository : SlackRepository {
+
+    private val logger by lazy { KotlinLogging.logger("FetchSlackLogger") }
 
     private val client = FetchSlackClient(Config.slackClientId, Config.slackClientSecret, slackRedirectUri())
 
@@ -74,8 +77,8 @@ class FetchSlackRepository : SlackRepository {
             }
     }
 
-    override suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument): String? {
-        return (
+    override suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument): String? =
+        (
             pairs.slackMessageId
                 ?.let { slackMessageId -> updateMessage(token, channel, slackMessageId, pairs) }
                 ?: client.postMessage(
@@ -84,7 +87,19 @@ class FetchSlackRepository : SlackRepository {
                     channel = channel,
                     accessToken = token,
                 )
-            ).ts
+            ).apply { logAnyErrors() }
+            .ts
+
+    private fun MessageResponse.logAnyErrors() {
+        if (ok != true) {
+            logger.error {
+                mapOf(
+                    "ok" to ok,
+                    "error" to error,
+                    "ts" to ts,
+                )
+            }
+        }
     }
 }
 
