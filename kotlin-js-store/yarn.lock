@@ -177,10 +177,10 @@
     tslib "^2.5.0"
     uuid "^8.3.2"
 
-"@aws-sdk/client-dynamodb@3.504.0":
-  version "3.504.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.504.0.tgz#1f63507918dfa0db8c76382d57c3a718da3fe46a"
-  integrity sha512-9cGv+Q5/yFu0WM6r900DiRaf9ywVe7uJPfZ80d6ss4adg3Y4rCpg3DbU/2a7XAv5r9Hi8KLGyDTAdBrTLE9Jow==
+"@aws-sdk/client-dynamodb@3.506.0":
+  version "3.506.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.506.0.tgz#f6ec6976518ee8a0a3c975116700aef7663bb1d7"
+  integrity sha512-UaTSXZ/s7QLY0W6Mp0ZuoiuKQD2tEg6riAgVk5LWurWc20yuBT78n+lq8moKai3YfUbHsxqe1sJuC5mWEd18Xw==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
@@ -903,12 +903,12 @@
     mnemonist "0.38.3"
     tslib "^2.5.0"
 
-"@aws-sdk/lib-dynamodb@3.504.0":
-  version "3.504.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.504.0.tgz#4489a98d839074562033acfee5be206cff7bf3c0"
-  integrity sha512-W4REvwiwD9o8+IhwGUo/KYgfKIS4FJ43lQUK3SWONAXPm4hzCQAQNZfnOIRgCyCn75mWj2GEcBQjz48mnnyOiw==
+"@aws-sdk/lib-dynamodb@3.506.0":
+  version "3.506.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.506.0.tgz#fb9b3e48b8f648021c40df875226c68c0b2c1aca"
+  integrity sha512-/m7gLN1ieM/SJCr7UOvrIVh7F4XD/FP+Zr2lCLXVUIYsnHa2Ze2fOhyXmlzzdv/McUNp6Oktj9bxPRp4k75q7Q==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.504.0"
+    "@aws-sdk/util-dynamodb" "3.506.0"
     "@smithy/smithy-client" "^2.3.1"
     "@smithy/types" "^2.9.1"
     tslib "^2.5.0"
@@ -1249,10 +1249,10 @@
     "@smithy/types" "^2.9.1"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.504.0":
-  version "3.504.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.504.0.tgz#1216eaa6a8af204c6c2c97ec3b9d98088bedf0d0"
-  integrity sha512-yBkRP0jSTrWoVXNb8pzn/wjY1Thurw1TQMkNkjM6ucWswCRM2MTfkrXz4U+cd/roH+ATnGy4QHOu++oNkmLmwQ==
+"@aws-sdk/util-dynamodb@3.506.0":
+  version "3.506.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.506.0.tgz#d5471c3133dce4843e264680e0d0768ea0c29889"
+  integrity sha512-P/B3qsXP6LPfpsnMuzWYI4ACm9VbQfFkBul7vmTW0k/t7XiiSndl5d7gYnO6u3N+HuOfmKaUHFxYCdoQE0PYaA==
   dependencies:
     tslib "^2.5.0"
 
@@ -11087,6 +11087,11 @@ jose@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.2.0.tgz#d0ffd7f7e31253f633eefb190a930cd14a916995"
   integrity sha512-oW3PCnvyrcm1HMvGTzqjxxfnEs9EoFOFWi2HsEGhlFVOXxTE3K9GKWVMFoFw06yPUqwpvEWic1BmtUZBI/tIjw==
+
+jose@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-5.2.1.tgz#ec3befe173896e592e2d9ef5f267d061ffb203c5"
+  integrity sha512-qiaQhtQRw6YrOaOj0v59h3R6hUY9NvxBmmnMfKemkqYmBB0tEc97NbLP7ix44VP5p9/0YHG8Vyhzuo5YBNwviA==
 
 js-string-escape@^1.0.1:
   version "1.0.1"
