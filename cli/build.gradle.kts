@@ -88,6 +88,10 @@ tasks {
         from("$rootDir/sdk/build/processedResources/js/main")
     }
 
+    distTar {
+        duplicatesStrategy = DuplicatesStrategy.WARN
+    }
+
     val jsCliTar by registering(Tar::class) {
         dependsOn(
             "jsPackageJson",
