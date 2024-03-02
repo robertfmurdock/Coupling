@@ -21,7 +21,7 @@ import com.zegreatrob.tools.digger.model.Contribution
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.datetime.toInstant
+import kotlinx.datetime.Instant
 
 data class ContributionContext(val partyId: PartyId, val env: String)
 
@@ -72,7 +72,7 @@ class SaveContribution(
                         contributionId = contributionId,
                         participantEmails = participantEmail.toSet(),
                         hash = hash,
-                        dateTime = dateTime.ifBlank { null }?.toInstant(),
+                        dateTime = dateTime.ifBlank { null }?.let(Instant.Companion::parse),
                         ease = ease.ifBlank { null }?.toInt(),
                         story = story.ifBlank { null },
                         link = link.ifBlank { null },

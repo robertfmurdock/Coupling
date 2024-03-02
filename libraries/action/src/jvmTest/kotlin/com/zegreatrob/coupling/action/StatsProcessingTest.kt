@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.action
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import java.io.File
 import kotlin.math.roundToInt
@@ -86,5 +86,5 @@ class StatsProcessingTest {
             date.year == year
         }
 
-    private fun JsonNode.dateRecord() = this["date"].textValue().toInstant().toLocalDateTime(TimeZone.UTC)
+    private fun JsonNode.dateRecord() = Instant.parse(this["date"].textValue()).toLocalDateTime(TimeZone.UTC)
 }
