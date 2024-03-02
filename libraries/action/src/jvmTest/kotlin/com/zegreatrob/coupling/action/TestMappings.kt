@@ -11,7 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import kotlinx.datetime.toInstant
+import kotlinx.datetime.Instant
 import kotools.types.collection.toNotEmptyList
 
 val mapper = ObjectMapper()
@@ -37,7 +37,7 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup {
         history = fileJson["history"].map {
             PairAssignmentDocument(
                 id = it["id"].textValue().let(::PairAssignmentDocumentId),
-                date = it["date"].textValue().toInstant(),
+                date = Instant.parse(it["date"].textValue()),
                 pairs = it["pairs"].map { pairNode -> pairNode.toPinnedCouplingPair() }.toNotEmptyList().getOrThrow(),
                 null,
             )
