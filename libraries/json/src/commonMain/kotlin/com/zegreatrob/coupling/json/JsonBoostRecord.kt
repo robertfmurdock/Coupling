@@ -1,4 +1,4 @@
-@file:UseSerializers(DateTimeSerializer::class, PartyIdSerializer::class)
+@file:UseSerializers(PartyIdSerializer::class)
 
 package com.zegreatrob.coupling.json
 
