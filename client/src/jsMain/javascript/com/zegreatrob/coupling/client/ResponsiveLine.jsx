@@ -43,6 +43,7 @@ export const MyResponsiveLine = (props) => {
                 legend: 'Recent Pair Count',
                 legendOffset: 12
             }}
+            colors={{ scheme: 'paired' }}
             curve="monotoneX"
             data={props.data}
             margin={{
