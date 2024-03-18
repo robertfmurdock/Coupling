@@ -40,7 +40,7 @@ export const MyResponsiveLine = (props) => {
                 tickRotation: 85,
             }}
             axisLeft={{
-                legend: 'Recent Pair Count',
+                legend: props.legend,
                 legendOffset: 12
             }}
             colors={{ scheme: 'paired' }}

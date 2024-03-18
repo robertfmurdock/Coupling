@@ -120,6 +120,7 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
                     }
                     props.chartComponent?.invoke {
                         data = props.pairs.nivoPairHeatLineData()
+                        legend = "Recent Pair Count"
                     }
                 }
             } else {
@@ -169,4 +170,5 @@ private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCoupl
 
 external interface GraphProps : Props {
     var data: Array<NivoLineData>
+    var legend: String
 }

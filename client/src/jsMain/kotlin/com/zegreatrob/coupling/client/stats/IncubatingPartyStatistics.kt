@@ -47,6 +47,7 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                             backgroundColor = Color("white")
                         }
                         MyResponsiveLine {
+                            legend = "Pair Commits Over Time"
                             data = emptyArray()
                         }
                     }
