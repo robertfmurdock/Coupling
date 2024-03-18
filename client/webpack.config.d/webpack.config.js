@@ -9,12 +9,18 @@ const additionalResourcesPath = path.resolve(__dirname, '../../../../client/buil
 
 const fs = require('fs')
 
+let cdnFile = fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json'), {encoding: "UTF-8"});
+if(config.devServer) {
+    cdnFile = cdnFile.replaceAll('production', 'development')
+}
+
 const cdnResources = JSON.parse(
-    fs.readFileSync(path.resolve(__dirname, '../../../../client/build/cdn.json'), {encoding: "UTF-8"})
+    cdnFile
         .split(/\r?\n/)
         .filter((line) => !line.includes("TRACE"))
         .join("\n")
 )
+
 const cdnSettings = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../../client/cdn.settings.json')))
 
 if (config.entry && config.entry.main) {
