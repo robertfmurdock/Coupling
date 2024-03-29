@@ -53,7 +53,7 @@ class SavePairAssignmentDocumentCommandTest {
                 pairs = notEmptyListOf(stubPinnedCouplingPair()),
             ),
         )
-        override val slackRepository = SlackSendSpin { _, _, _ -> null }
+        override val slackRepository = SlackSendSpin { _, _, _, _ -> null }
         override val slackAccessRepository = SlackAccessGet { null }
         override val discordRepository = DiscordSendSpin { _, _ -> null }
         override val discordAccessRepository = DiscordAccessGet { null }
