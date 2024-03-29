@@ -104,7 +104,7 @@ interface ServerSpinCommandDispatcher<out D> :
     ): PairAssignmentDocument {
         val (slackMessageId, discordMessageId) = coroutineScope {
             listOf(
-                async { partyIntegration?.sendMessage(this@copyWithIntegrationMessageIds) },
+                async { partyIntegration?.sendMessage(this@copyWithIntegrationMessageIds, partyId) },
                 async { sendDiscordMessage(partyId, this@copyWithIntegrationMessageIds) },
             ).awaitAll()
         }
@@ -123,11 +123,11 @@ interface ServerSpinCommandDispatcher<out D> :
 
     private fun filterSelectedPins(pins: List<Pin>, pinIds: List<String>) = pins.filter { pinIds.contains(it.id) }
 
-    private suspend fun PartyIntegration.sendMessage(pairs: PairAssignmentDocument): String? {
+    private suspend fun PartyIntegration.sendMessage(pairs: PairAssignmentDocument, partyId: PartyId): String? {
         val team = slackTeam ?: return null
         val channel = slackChannel ?: return null
         val accessRecord = slackAccessRepository.get(team) ?: return null
         val token = accessRecord.data.accessToken
-        return slackRepository.sendSpinMessage(channel, token, pairs)
+        return slackRepository.sendSpinMessage(channel, token, pairs, partyId)
     }
 }

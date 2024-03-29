@@ -51,7 +51,7 @@ interface ServerSavePairAssignmentDocumentCommandDispatcher<out D> :
         coroutineScope {
             launch {
                 if (pairs.slackMessageId != null) {
-                    slackRepository.sendSpinMessage(channel, token, pairs)
+                    slackRepository.sendSpinMessage(channel, token, pairs, partyId)
                 }
             }
 

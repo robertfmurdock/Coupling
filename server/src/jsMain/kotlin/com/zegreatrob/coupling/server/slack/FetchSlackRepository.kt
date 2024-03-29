@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.callSign
 import com.zegreatrob.coupling.model.pairassignmentdocument.players
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.server.action.slack.SlackGrantAccess
@@ -53,13 +54,14 @@ class FetchSlackRepository : SlackRepository {
         channel: String,
         messageTs: String?,
         pairs: PairAssignmentDocument,
+        partyId: PartyId,
     ): MessageResponse {
         val response = client.updateMessage(
             accessToken = token,
             channel = channel,
             ts = messageTs,
             text = "Update!",
-            blocks = pairs.toSlackBlocks(),
+            blocks = pairs.toSlackBlocks(partyId),
         )
         if (response.ok == false) {
             throw Exception("Update Message error: " + response.error)
@@ -77,18 +79,22 @@ class FetchSlackRepository : SlackRepository {
             }
     }
 
-    override suspend fun sendSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument): String? =
-        (
-            pairs.slackMessageId
-                ?.let { slackMessageId -> updateMessage(token, channel, slackMessageId, pairs) }
-                ?: client.postMessage(
-                    blocks = pairs.toSlackBlocks(),
-                    text = "Spin!",
-                    channel = channel,
-                    accessToken = token,
-                )
-            ).apply { logAnyErrors() }
-            .ts
+    override suspend fun sendSpinMessage(
+        channel: String,
+        token: String,
+        pairs: PairAssignmentDocument,
+        partyId: PartyId,
+    ): String? = (
+        pairs.slackMessageId
+            ?.let { slackMessageId -> updateMessage(token, channel, slackMessageId, pairs, partyId) }
+            ?: client.postMessage(
+                blocks = pairs.toSlackBlocks(partyId),
+                text = "Spin!",
+                channel = channel,
+                accessToken = token,
+            )
+        ).apply { logAnyErrors() }
+        .ts
 
     private fun MessageResponse.logAnyErrors() {
         if (ok != true) {
@@ -103,13 +109,27 @@ class FetchSlackRepository : SlackRepository {
     }
 }
 
-private fun PairAssignmentDocument.toSlackBlocks() = arrayOf(
+private fun PairAssignmentDocument.toSlackBlocks(partyId: PartyId) = arrayOf(
     json(
         "type" to "header",
         "text" to json(
             "type" to "plain_text",
             "text" to "Couples for ${dateText()}",
             "emoji" to true,
+        ),
+    ),
+    json(
+        "type" to "rich_text",
+        "elements" to arrayOf(
+            json(
+                "type" to "rich_text_section",
+                "elements" to arrayOf(
+                    json(
+                        "type" to "link",
+                        "url" to "${Config.publicUrl}/${partyId.value}",
+                    ),
+                ),
+            ),
         ),
     ),
     json(
