@@ -126,7 +126,7 @@ private fun PairAssignmentDocument.toSlackBlocks(partyId: PartyId) = arrayOf(
                 "elements" to arrayOf(
                     json(
                         "type" to "link",
-                        "url" to "${Config.publicUrl}/${partyId.value}",
+                        "url" to "${Config.publicUrl}/${partyId.value}/pairAssignments/current/",
                     ),
                 ),
             ),
