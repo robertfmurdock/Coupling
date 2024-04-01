@@ -26,10 +26,6 @@ jobs:
       S3_BUILD_CACHE_SECRET_KEY: ${{ secrets.S3_BUILD_CACHE_SECRET_KEY }}
     steps:
       - run: echo '127.0.0.1 static.localhost cli.localhost socket.localhost' | sudo tee -a /etc/hosts
-      - uses: browser-actions/setup-chrome@latest
-        with:
-          chrome-version: stable
-      - run: sudo rm /usr/bin/google-chrome && sudo ln -s $(which chrome) /usr/bin/google-chrome
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
