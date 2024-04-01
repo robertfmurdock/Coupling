@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.plugins
 
-import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 import java.util.UUID
 
 afterEvaluate {
@@ -8,7 +7,7 @@ afterEvaluate {
 
     System.setProperty("testRunIdentifier", testRunIdentifier)
 
-    tasks.withType(KotlinJsTest::class).configureEach {
+    tasks.withType(AbstractTestTask::class).configureEach {
         val jsonLoggingListener = JsonLoggingTestListener(path, testRunIdentifier)
         addTestListener(jsonLoggingListener)
         addTestOutputListener(jsonLoggingListener)

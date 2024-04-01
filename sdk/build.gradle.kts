@@ -73,7 +73,7 @@ tasks {
 
     "jvmTest" {
         mustRunAfter(jsNodeTest)
-        dependsOn(":composeUp", jsNodeTest)
+        dependsOn(":composeUp")
         dependsOn(importCert)
     }
 }
