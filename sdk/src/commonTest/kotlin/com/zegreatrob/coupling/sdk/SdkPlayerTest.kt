@@ -20,7 +20,10 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
+import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.waitForTest
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -143,13 +146,13 @@ class SdkPlayerTest {
 
     @Test
     fun saveMultipleInPartyThenGetListWillReturnSavedPlayers() = sdkSetup.with({
-        object {
+        object : ScopeMint() {
             val sdk = it.sdk
             val partyId = it.party.id
             val players = stubPlayers(3)
         }
     }) {
-        players.forEach { sdk.fire(SavePlayerCommand(partyId, it)) }
+        players.forEach { setupScope.launch { sdk.fire(SavePlayerCommand(partyId, it)) } }
     } exercise {
         sdk.fire(graphQuery { party(partyId) { playerList() } })
             ?.party
@@ -157,7 +160,8 @@ class SdkPlayerTest {
             .let { it ?: emptyList() }
     } verify { result ->
         result.map { it.data.player }
-            .assertIsEqualTo(this.players)
+            .toSet()
+            .assertIsEqualTo(players.toSet())
     }
 
     @Test
@@ -168,7 +172,9 @@ class SdkPlayerTest {
             val players = stubPlayers(4)
         }
     }) {
-        players.forEach { sdk.fire(SavePlayerCommand(partyId, it)) }
+        coroutineScope {
+            players.forEach { launch { sdk.fire(SavePlayerCommand(partyId, it)) } }
+        }
     } exercise {
         sdk.fire(graphQuery { party(partyId) { spinsUntilFullRotation() } })
             ?.party

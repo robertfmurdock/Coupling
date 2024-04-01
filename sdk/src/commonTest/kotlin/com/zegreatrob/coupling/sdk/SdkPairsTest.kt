@@ -25,7 +25,7 @@ class SdkPairsTest {
         val party = stubPartyDetails()
         val players = stubPlayers(4)
     }) {
-        savePartyState(party, players, emptyList())
+        savePartyStateWithFixedPlayerOrder(party, players, emptyList())
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { players() } } })
     } verify { result ->
@@ -54,7 +54,7 @@ class SdkPairsTest {
             stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins())),
         )
     }) {
-        savePartyState(party, players, pairAssignmentDocs)
+        savePartyStateWithFixedPlayerOrder(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { count() } } })
     } verify { result ->
@@ -75,7 +75,7 @@ class SdkPairsTest {
         val pair01_3 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
         val pairAssignmentDocs = listOf(pair01_1, pair12, pair01_2, pair02, pair01_3)
     }) {
-        savePartyState(party, players, pairAssignmentDocs)
+        savePartyStateWithFixedPlayerOrder(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory { details() } } } })
     } verify { result ->
@@ -107,7 +107,7 @@ class SdkPairsTest {
         val pair01_3 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
         val pairAssignmentDocs = listOf(pair01_1, pair12, pair01_2, pair02, pair01_3)
     }) {
-        savePartyState(party, players, pairAssignmentDocs)
+        savePartyStateWithFixedPlayerOrder(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(
             graphQuery {
@@ -135,7 +135,7 @@ class SdkPairsTest {
         val pair01_3 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
         val pairAssignmentDocs = listOf(pair01_1, pair12, pair01_2, pair02, pair01_3)
     }) {
-        savePartyState(party, players, pairAssignmentDocs)
+        savePartyStateWithFixedPlayerOrder(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(
             graphQuery {
@@ -162,7 +162,7 @@ class SdkPairsTest {
         val pair01_3 = stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins()))
         val pairAssignmentDocs = listOf(pair01_1, pair12, pair01_2, pair02, pair01_3)
     }) {
-        savePartyState(party, players, pairAssignmentDocs)
+        savePartyStateWithFixedPlayerOrder(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory { date() } } } })
     } verify { result ->
@@ -190,7 +190,7 @@ class SdkPairsTest {
             stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins())),
         )
     }) {
-        savePartyState(party, players, pairAssignmentDocs)
+        savePartyStateWithFixedPlayerOrder(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { recentTimesPaired() } } })
     } verify { result ->
@@ -211,7 +211,7 @@ class SdkPairsTest {
             stubPairAssignmentDoc().copy(pairs = notEmptyListOf(pairOf(players[0], players[1]).withPins())),
         )
     }) {
-        savePartyState(party, players, pairAssignmentDocs)
+        savePartyStateWithFixedPlayerOrder(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { pairAssignmentHistory { recentTimesPaired() } } } })
     } verify { result ->
@@ -256,7 +256,7 @@ class SdkPairsTest {
             ),
         )
     }) {
-        savePartyState(party, players, pairAssignmentDocs)
+        savePartyStateWithFixedPlayerOrder(party, players, pairAssignmentDocs)
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { spinsSinceLastPaired() } } })
     } verify { result ->

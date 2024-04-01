@@ -61,8 +61,10 @@ class SpinTest {
             )
         }
     }) {
-        sdk.fire(SavePartyCommand(party))
-        players.forEach { sdk.fire(SavePlayerCommand(party.id, it)) }
+        coroutineScope {
+            sdk.fire(SavePartyCommand(party))
+            players.forEach { launch { sdk.fire(SavePlayerCommand(party.id, it)) } }
+        }
     } exercise {
         sdk.fire(SpinCommand(party.id, players.map { it.id }, emptyList()))
     } verifyAnd { result ->
@@ -230,7 +232,7 @@ class SpinTest {
         ) = coroutineScope {
             with(sdk) {
                 fire(SavePartyCommand(party))
-                players.forEach { fire(SavePlayerCommand(party.id, it)) }
+                players.forEach { launch { fire(SavePlayerCommand(party.id, it)) } }
                 history.forEach { launch { sdk.fire(SavePairAssignmentsCommand(party.id, it)) } }
                 pins.forEach { launch { sdk.fire(SavePinCommand(party.id, it)) } }
             }

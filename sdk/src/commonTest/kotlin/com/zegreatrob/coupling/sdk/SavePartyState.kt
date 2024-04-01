@@ -19,13 +19,31 @@ suspend fun savePartyState(
 ) = coroutineScope {
     with(sdk()) {
         fire(SavePartyCommand(party))
-        launch {
-            players.forEach {
+        players.forEach {
+            launch {
                 fire(SavePlayerCommand(party.id, it))
             }
         }
+        pairAssignmentDocs.forEach {
+            launch {
+                fire(SavePairAssignmentsCommand(party.id, it))
+            }
+        }
+    }
+}
+
+suspend fun savePartyStateWithFixedPlayerOrder(
+    party: PartyDetails,
+    players: List<Player>,
+    pairAssignmentDocs: List<PairAssignmentDocument>,
+) = coroutineScope {
+    with(sdk()) {
+        fire(SavePartyCommand(party))
         launch {
-            pairAssignmentDocs.forEach {
+            players.forEach { fire(SavePlayerCommand(party.id, it)) }
+        }
+        pairAssignmentDocs.forEach {
+            launch {
                 fire(SavePairAssignmentsCommand(party.id, it))
             }
         }
