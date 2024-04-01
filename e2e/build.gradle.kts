@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 plugins {
     id("com.zegreatrob.coupling.plugins.jstools")
     id("com.zegreatrob.jsmints.plugins.wdiotest")
@@ -7,7 +5,7 @@ plugins {
 
 kotlin {
     js {
-        nodejs { testTask(Action { enabled = false }) }
+        nodejs { testTask { enabled = false } }
     }
 }
 
