@@ -1,6 +1,5 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.components.stats.create
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.model.elements
