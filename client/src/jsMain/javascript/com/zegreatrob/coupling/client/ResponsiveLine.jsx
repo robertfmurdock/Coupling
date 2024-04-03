@@ -43,7 +43,7 @@ export const MyResponsiveLine = (props) => {
                 legend: props.legend,
                 legendOffset: 12
             }}
-            colors={{ scheme: 'paired' }}
+            colors={{scheme: 'paired'}}
             curve="monotoneX"
             data={props.data}
             margin={{
@@ -63,11 +63,12 @@ export const MyResponsiveLine = (props) => {
             // }}
             useMesh
             xScale={{
-                format: '%Y-%m-%d %H:%M:%S.%L',
+                format: format,
                 type: 'time',
                 precision: precision,
                 useUTC: false
             }}
+            xFormat={"time:" + format}
             yScale={{
                 type: 'linear'
             }}

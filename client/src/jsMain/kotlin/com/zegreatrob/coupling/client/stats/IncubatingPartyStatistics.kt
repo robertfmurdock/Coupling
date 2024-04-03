@@ -11,6 +11,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
@@ -88,14 +89,11 @@ private fun stubPairingLineData(): Array<NivoLineData> {
             emptyList()
         }
     }
-
-    console.log(commitTimes)
-
     return arrayOf(
         NivoLineData(
             "1",
             commitTimes
-                .groupBy { it.date }
+                .groupBy(LocalDateTime::date)
                 .map {
                     NinoLinePoint(
                         x = it.key.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
