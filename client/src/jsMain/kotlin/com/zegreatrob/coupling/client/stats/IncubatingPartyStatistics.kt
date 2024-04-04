@@ -71,6 +71,24 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
 val random = Random(10)
 
 private fun stubPairingLineData(): Array<NivoLineData> {
+    val commitTimes = generateCommitTimes()
+    return arrayOf(
+        NivoLineData(
+            "1",
+            commitTimes
+                .groupBy(LocalDateTime::date)
+                .map {
+                    NinoLinePoint(
+                        x = it.key.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
+                        y = it.value.size,
+                    )
+                }
+                .toTypedArray(),
+        ),
+    )
+}
+
+private fun generateCommitTimes(): List<LocalDateTime> {
     val today = Clock.System.now()
     val numberOfDays = 30
     val monthAgo = today.minus(duration = numberOfDays.days)
@@ -89,20 +107,7 @@ private fun stubPairingLineData(): Array<NivoLineData> {
             emptyList()
         }
     }
-    return arrayOf(
-        NivoLineData(
-            "1",
-            commitTimes
-                .groupBy(LocalDateTime::date)
-                .map {
-                    NinoLinePoint(
-                        x = it.key.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
-                        y = it.value.size,
-                    )
-                }
-                .toTypedArray(),
-        ),
-    )
+    return commitTimes
 }
 
 private fun Int.isWeekday() = (1..5).contains(dayOfWeek())

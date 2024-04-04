@@ -57,10 +57,6 @@ export const MyResponsiveLine = (props) => {
             pointBorderWidth={1}
             pointBorderColor={{from: 'serieColor'}}
             pointLabelYOffset={-12}
-            // tooltip={function () {
-            //     console.log("tooltip args", arguments)
-            //     return 'lol'
-            // }}
             useMesh
             xScale={{
                 format: format,
