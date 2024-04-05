@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.client.stats
 
+import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.stats.NinoLinePoint
 import com.zegreatrob.coupling.client.components.stats.NivoLineData
+import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
@@ -71,11 +73,13 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
 val random = Random(10)
 
 private fun stubPairingLineData(): Array<NivoLineData> {
-    val commitTimes = generateCommitTimes()
+    val commitDateTimes = generateFakeContributions()
+        .mapNotNull { it.dateTime }
     return arrayOf(
         NivoLineData(
             "1",
-            commitTimes
+            commitDateTimes
+                .map { it.toLocalDateTime(TimeZone.currentSystemDefault()) }
                 .groupBy(LocalDateTime::date)
                 .map {
                     NinoLinePoint(
@@ -87,6 +91,22 @@ private fun stubPairingLineData(): Array<NivoLineData> {
         ),
     )
 }
+
+private fun generateFakeContributions() = generateCommitTimes().map(LocalDateTime::toFakeContribution)
+
+private fun LocalDateTime.toFakeContribution() = Contribution(
+    id = "${uuid4()}",
+    createdAt = Clock.System.now(),
+    dateTime = toInstant(TimeZone.currentSystemDefault()),
+    null,
+    null,
+    null,
+    null,
+    null,
+    emptySet(),
+    null,
+    null,
+)
 
 private fun generateCommitTimes(): List<LocalDateTime> {
     val today = Clock.System.now()
