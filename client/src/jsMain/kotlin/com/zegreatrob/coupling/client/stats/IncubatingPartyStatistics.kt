@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.client.components.stats.PairSelector
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
@@ -24,6 +25,8 @@ import kotlinx.datetime.toJSDate
 import kotlinx.datetime.toLocalDateTime
 import react.Props
 import react.dom.html.ReactHTML.div
+import react.useMemo
+import react.useState
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.WhiteSpace
@@ -40,6 +43,9 @@ external interface IncubatingPartyStatisticsProps : Props {
 @ReactFunc
 val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
     val (partyDetails) = props
+    val allPairs = props.pairs.mapNotNull { it.players?.elements?.toCouplingPair() }
+    val allPairContributions = useMemo { allPairs.map { it to generateFakeContributions() } }
+    val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     div {
         PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9")) {
             ConfigHeader {
@@ -63,14 +69,12 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                             backgroundColor = Color("white")
                         }
                         PairSelector(
-                            pairs = props.pairs.mapNotNull { it.players?.elements?.toCouplingPair() },
-                            onSelectionChange = {
-                                println("selected $it")
-                            },
+                            pairs = allPairs,
+                            onSelectionChange = setSelectedPairs::invoke,
                         )
                         MyResponsiveLine {
                             legend = "Pair Commits Over Time"
-                            data = stubPairingLineData()
+                            data = pairingLineData(allPairContributions.filter { selectedPairs.contains(it.first) })
                         }
                     }
                 }
@@ -81,23 +85,25 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
 
 val random = Random(10)
 
-private fun stubPairingLineData(): Array<NivoLineData> {
-    val commitDateTimes = generateFakeContributions()
+private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, List<Contribution>>>): Array<NivoLineData> {
+    return selectedPairs.map { pairContributionLine(it.first, it.second) }.toTypedArray()
+}
+
+private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>): NivoLineData {
+    val commitDateTimes = contributions
         .mapNotNull { it.dateTime }
-    return arrayOf(
-        NivoLineData(
-            "1",
-            commitDateTimes
-                .map { it.toLocalDateTime(TimeZone.currentSystemDefault()) }
-                .groupBy(LocalDateTime::date)
-                .map {
-                    NinoLinePoint(
-                        x = it.key.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
-                        y = it.value.size,
-                    )
-                }
-                .toTypedArray(),
-        ),
+    return NivoLineData(
+        couplingPair.joinToString("-") { it.name },
+        commitDateTimes
+            .map { it.toLocalDateTime(TimeZone.currentSystemDefault()) }
+            .groupBy(LocalDateTime::date)
+            .map {
+                NinoLinePoint(
+                    x = it.key.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
+                    y = it.value.size,
+                )
+            }
+            .toTypedArray(),
     )
 }
 
