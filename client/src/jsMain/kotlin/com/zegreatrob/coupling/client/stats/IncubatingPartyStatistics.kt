@@ -5,9 +5,11 @@ import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.stats.NinoLinePoint
 import com.zegreatrob.coupling.client.components.stats.NivoLineData
+import com.zegreatrob.coupling.client.components.stats.PairSelector
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
+import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
@@ -22,13 +24,10 @@ import kotlinx.datetime.toJSDate
 import kotlinx.datetime.toLocalDateTime
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.input
-import react.dom.html.ReactHTML.label
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.WhiteSpace
 import web.cssom.px
-import web.html.InputType
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 
@@ -63,16 +62,12 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                             height = 600.px
                             backgroundColor = Color("white")
                         }
-                        props.pairs.forEach {
-                            val pairName = it.players?.elements?.joinToString("-", transform = Player::name)
-                            label {
-                                +pairName
-                                input {
-                                    type = InputType.checkbox
-                                    value = pairName
-                                }
-                            }
-                        }
+                        PairSelector(
+                            pairs = props.pairs.mapNotNull { it.players?.elements?.toCouplingPair() },
+                            onSelectionChange = {
+                                println("selected $it")
+                            },
+                        )
                         MyResponsiveLine {
                             legend = "Pair Commits Over Time"
                             data = stubPairingLineData()
