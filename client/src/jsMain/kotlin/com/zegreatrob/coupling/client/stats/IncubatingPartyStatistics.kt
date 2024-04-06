@@ -63,15 +63,19 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                         marginLeft = 20.px
                     }
                     div {
-                        css {
-                            width = 600.px
-                            height = 600.px
-                            backgroundColor = Color("white")
-                        }
+                        css { display = Display.inlineBlock }
                         PairSelector(
                             pairs = allPairs,
                             onSelectionChange = setSelectedPairs::invoke,
                         )
+                    }
+                    div {
+                        css {
+                            display = Display.inlineBlock
+                            width = 600.px
+                            height = 600.px
+                            backgroundColor = Color("white")
+                        }
                         MyResponsiveLine {
                             legend = "Pair Commits Over Time"
                             data = pairingLineData(allPairContributions.filter { selectedPairs.contains(it.first) })

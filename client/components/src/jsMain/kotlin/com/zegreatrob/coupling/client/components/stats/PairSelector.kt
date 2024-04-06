@@ -1,14 +1,18 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Props
+import react.dom.aria.ariaLabel
+import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import react.useState
+import web.cssom.deg
 import web.html.InputType
 
 external interface PairSelectorProps : Props {
@@ -22,21 +26,27 @@ val PairSelector by nfc<PairSelectorProps> { props ->
     val onSelectionChange = props.onSelectionChange
 
     val (selectedPairs, setSelectedPairs) = useState<Set<CouplingPair>>(emptySet())
-
-    pairs.forEach { pair: CouplingPair ->
-        label {
-            +pair.asArray().joinToString("-", transform = Player::name)
-            input {
-                type = InputType.checkbox
-                value = pair.pairId
-                onChange = {
-                    val newSelections = if (selectedPairs.contains(pair)) {
-                        selectedPairs - setOf(pair)
-                    } else {
-                        selectedPairs + listOf(pair)
+    div {
+        pairs.forEach { pair: CouplingPair ->
+            div {
+                label {
+                    ariaLabel = pair.asArray().joinToString("-", transform = Player::name)
+                    pair.forEach {
+                        PlayerCard(it, size = 25, tilt = 0.deg)
                     }
-                    setSelectedPairs(newSelections)
-                    onSelectionChange(pairs.filter(newSelections::contains))
+                    input {
+                        type = InputType.checkbox
+                        value = pair.pairId
+                        onChange = {
+                            val newSelections = if (selectedPairs.contains(pair)) {
+                                selectedPairs - setOf(pair)
+                            } else {
+                                selectedPairs + listOf(pair)
+                            }
+                            setSelectedPairs(newSelections)
+                            onSelectionChange(pairs.filter(newSelections::contains))
+                        }
+                    }
                 }
             }
         }
