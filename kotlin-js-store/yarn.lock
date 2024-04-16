@@ -4328,14 +4328,15 @@
     p-retry "^4"
     retry "^0.13.1"
 
-"@slack/web-api@^7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.0.2.tgz#1291d3af201517d75f04df1170d6cb833c44a778"
-  integrity sha512-nY1KO+7i4iURihThS1kMOElzesx4jqRJtkxLS9FOT8Debh7vQAzzbzxpMB4QauSs15030eyJ16HCf1IfCT4BKQ==
+"@slack/web-api@^7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@slack/web-api/-/web-api-7.0.3.tgz#e33f3e0356ebc5bf63785659ecda4ec62fde27b2"
+  integrity sha512-X2fc8Yr0477TroIOE7Iw0JC3RmRVYW94GNJMxZ1hEewIcJoGq+6S2152IhnMsVguvlrplxNTOsmKB9aadmQfyg==
   dependencies:
     "@slack/logger" "^4.0.0"
     "@slack/types" "^2.9.0"
     "@types/node" ">=18.0.0"
+    "@types/retry" "0.12.0"
     axios "^1.6.5"
     eventemitter3 "^5.0.1"
     form-data "^4.0.0"
@@ -12705,10 +12706,10 @@ mimic-response@^4.0.0:
   resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-4.0.0.tgz#35468b19e7c75d10f5165ea25e75a5ceea7cf70f"
   integrity sha512-e5ISH9xMYU0DzrT+jl8q2ze9D6eWBto+I8CNpe+VI+K2J/F/k3PdkdTdz4wvGVH4NTpo+NRYTVIuMQEMMcsLqg==
 
-mini-css-extract-plugin@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-2.8.1.tgz#75245f3f30ce3a56dbdd478084df6fe475f02dc7"
-  integrity sha512-/1HDlyFRxWIZPI1ZpgqlZ8jMw/1Dp/dl3P0L1jtZ+zVcHqwPhGwaJwKL00WVgfnBy6PWCde9W65or7IIETImuA==
+mini-css-extract-plugin@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-2.9.0.tgz#c73a1327ccf466f69026ac22a8e8fd707b78a235"
+  integrity sha512-Zs1YsZVfemekSZG+44vBsYTLQORkPMwnlv+aehcxK/NLKC+EGhDB39/YePYYqx/sTk6NnYpuqikhSn7+JIevTA==
   dependencies:
     schema-utils "^4.0.0"
     tapable "^2.2.1"
@@ -15785,10 +15786,10 @@ strip-outer@^1.0.1:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-stripe@^15.1.0:
-  version "15.1.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-15.1.0.tgz#641ee4143538cac862ca7253acd101887a0dff1a"
-  integrity sha512-yMsP9VWsQKkmR14E7MhtFDYKCoYCnhG/tLtiMnNiSiVisDezU2OKJ2T9myufYKl922H85nvCgaczyBLovaJTVA==
+stripe@^15.2.0:
+  version "15.2.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-15.2.0.tgz#3e5d9a7ab0f3e53c1fb6aff8e9aec3963e6c6c77"
+  integrity sha512-SRHzYkRHYld49BeL1xECsjoeNZYpRYzm2iUenWqeRdwJwkRHOVGNccn0UnaLr3jA4B7QpUYHX7Ef7U5yIljsZw==
   dependencies:
     "@types/node" ">=8.1.0"
     qs "^6.11.0"
