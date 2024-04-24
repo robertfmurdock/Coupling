@@ -9,7 +9,7 @@
     "@babel/preset-env": "^7.24.4",
     "@babel/preset-react": "^7.24.1",
     "@graphql-tools/schema": "^10.0.3",
-    "@graphql-tools/stitch": "^9.1.0",
+    "@graphql-tools/stitch": "^9.1.2",
     "@log4js-node/log4js-api": "1.0.2",
     "@nivo/api": "^0.74.1",
     "@nivo/core": "^0.85.1",
