@@ -2377,10 +2377,10 @@
     tslib "^2.4.0"
     value-or-promise "^1.0.12"
 
-"@graphql-tools/stitch@^9.1.0":
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.1.0.tgz#fa65d8ae85b21b0c80992d484a0db0cc1bfa64c0"
-  integrity sha512-EEZn2BcvuOX+7DOSROv+3Td0SvuC/YnJ5+ua2xjhThOU7q8QFqL+JxgT4BOdI829ZR+rQqaX6do3VEY4UNo1Yg==
+"@graphql-tools/stitch@^9.1.2":
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.1.2.tgz#dd08e6ad52175844d9ff90e7990a3362b2b3c00f"
+  integrity sha512-X1NoeZ+K7PvOQeoCE6uyAGfBOIAsXXrXl7rUxtZY3uYTktp2HdJKZhnYYgn6dYEiMpgVDCepNpW2iTEACNwV/A==
   dependencies:
     "@graphql-tools/batch-delegate" "^9.0.1"
     "@graphql-tools/delegate" "^10.0.4"
@@ -4823,7 +4823,7 @@
     lz-string "^1.5.0"
     pretty-format "^27.0.2"
 
-"@testing-library/react@^15.0.3":
+"@testing-library/react@^15.0.4":
   version "15.0.4"
   resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-15.0.4.tgz#e5e83f79863c4897719ae3191af1e54617f60dea"
   integrity sha512-Fw/LM1emOHKfCxv5R0tz+25TOtiMt0o5Np1zJmb4LbSacOagXQX4ooAaHiJfGUMe+OjUk504BX11W+9Z8CvyZA==
