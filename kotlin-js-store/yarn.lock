@@ -2500,10 +2500,10 @@
     dataloader "^2.2.2"
     tslib "^2.5.0"
 
-"@graphql-tools/delegate@^10.0.5":
-  version "10.0.6"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-10.0.6.tgz#3c1f77a947d6eff5212e8fec8b845074c13305ec"
-  integrity sha512-UKr4qt4JAms+e6nKvI3oJSdYDef4iEqZIxH51/GM3noRpgj7UDRaze1uZ6/7bZCMoB4MyKH8hYk0bwABzedemA==
+"@graphql-tools/delegate@^10.0.7":
+  version "10.0.7"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/delegate/-/delegate-10.0.7.tgz#6348f4935b5c128d49342d1276e0c96231a88a15"
+  integrity sha512-/gEEC/SdSKj+T+44ExK79NU1QFTry/NtOsgkzpzTuuokl4fJRIomjkc8bK5K69icNknSbY7J549JVhtYIPgS2A==
   dependencies:
     "@graphql-tools/batch-execute" "^9.0.4"
     "@graphql-tools/executor" "^1.2.1"
@@ -2541,17 +2541,17 @@
     tslib "^2.4.0"
     value-or-promise "^1.0.12"
 
-"@graphql-tools/stitch@^9.2.0":
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.2.0.tgz#7989530c8542b54a401fef4d6569a9fc9391768f"
-  integrity sha512-GmbrsaZDQq6Lwp9fL+AENZuNf/x8+ntR/jUuca9OGdoxy1ly0GEFvy8ztVQp+XWVufsPB/BY446WNJu3z1xlJg==
+"@graphql-tools/stitch@^9.2.3":
+  version "9.2.3"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/stitch/-/stitch-9.2.3.tgz#dec60419514c97223afe605e9b4987bf4f3e4a03"
+  integrity sha512-r0RcRU+TIuR8ihx4m2tLvecj+JqEQ0bOSPDx7A/Hl3jvZ+L2sSu+ZXMHXAdriSyGgKKHK8SlgovKPyt5I6p1wA==
   dependencies:
     "@graphql-tools/batch-delegate" "^9.0.1"
-    "@graphql-tools/delegate" "^10.0.5"
+    "@graphql-tools/delegate" "^10.0.7"
     "@graphql-tools/executor" "^1.2.1"
     "@graphql-tools/merge" "^9.0.3"
     "@graphql-tools/schema" "^10.0.3"
-    "@graphql-tools/utils" "^10.0.13"
+    "@graphql-tools/utils" "^10.2.0"
     "@graphql-tools/wrap" "^10.0.2"
     tslib "^2.4.0"
     value-or-promise "^1.0.11"
@@ -2560,6 +2560,16 @@
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-10.1.0.tgz#d8c23a8b8636a5df59b14991bf25eae5ac15d314"
   integrity sha512-wLPqhgeZ9BZJPRoaQbsDN/CtJDPd/L4qmmtPkjI3NuYJ39x+Eqz1Sh34EAGMuDh+xlOHqBwHczkZUpoK9tvzjw==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.1.1"
+    cross-inspect "1.0.0"
+    dset "^3.1.2"
+    tslib "^2.4.0"
+
+"@graphql-tools/utils@^10.2.0":
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-10.2.0.tgz#c7233dc83ba6f88207a22e3f77add53c10e675df"
+  integrity sha512-HYV7dO6pNA2nGKawygaBpk8y+vXOUjjzzO43W/Kb7EPRmXUEQKjHxPYRvQbiF72u1N3XxwGK5jnnFk9WVhUwYw==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     cross-inspect "1.0.0"
@@ -4963,6 +4973,20 @@
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-10.0.0.tgz#ae1ab88aad35a728a38264041163174cafd7e8dd"
   integrity sha512-PmJPnogldqoVFf+EwbHvbBJ98MmqASV8kLrBYgsDNxQcFMeIS7JFL48sfyXvuMtgmWO/wMhh25odr+8VhDmn4g==
+  dependencies:
+    "@babel/code-frame" "^7.10.4"
+    "@babel/runtime" "^7.12.5"
+    "@types/aria-query" "^5.0.1"
+    aria-query "5.3.0"
+    chalk "^4.1.0"
+    dom-accessibility-api "^0.5.9"
+    lz-string "^1.5.0"
+    pretty-format "^27.0.2"
+
+"@testing-library/dom@^10.1.0":
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-10.1.0.tgz#2d073e49771ad614da999ca48f199919e5176fb6"
+  integrity sha512-wdsYKy5zupPyLCW2Je5DLHSxSfbIp6h80WoHOQc+RPtmPGA52O9x5MJEkv92Sjonpq+poOAtUKhh1kBGAXBrNA==
   dependencies:
     "@babel/code-frame" "^7.10.4"
     "@babel/runtime" "^7.12.5"
@@ -14426,10 +14450,10 @@ serverless-offline-ssm@^6.2.0:
   resolved "https://registry.yarnpkg.com/serverless-offline-ssm/-/serverless-offline-ssm-6.2.0.tgz#f2db290a72631629579ce5f940ed76f254f96653"
   integrity sha512-Af7JeLbU4OHAx7ZgAs2OLP2DGKyp/g45rX7SWQ8KiBzn47jme+MqN+GOV6qd5oZ8V9khd3p62+RueHR3ezEZZQ==
 
-serverless-offline@^13.4.0:
-  version "13.4.0"
-  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-13.4.0.tgz#e87b0bfa2a6c60b662b3d78ae8ac0858a3df6627"
-  integrity sha512-yZRHw5COBVAsfDmRO+CcCU5RS6VWE2M8MgYNa6yO9F/Ns/psjF77EMZIDLR1L0awS9ZLHhBd87kHcr4Y5xuXKQ==
+serverless-offline@^13.5.0:
+  version "13.5.0"
+  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-13.5.0.tgz#142bb88a84ec1b1fda45107adf3f0d6836539173"
+  integrity sha512-t+xyBTjYBtkyywrP3UnhNFFxQ03QflIn/20ImW3BnkSYr/5Sl6yX6coHoYx7X5QoVaOeHIAROs+WID0WR/IKyQ==
   dependencies:
     "@aws-sdk/client-lambda" "^3.509.0"
     "@hapi/boom" "^10.0.1"
