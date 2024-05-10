@@ -8,14 +8,13 @@ import com.zegreatrob.coupling.server.external.express.Handler
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.RewritingStream
 import com.zegreatrob.coupling.server.external.parse5htmlrewritingstream.Tag
 import com.zegreatrob.coupling.server.external.stream.Readable
-import js.promise.await
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.promise
 import web.http.fetch
 
 val indexHtmlPromise
-    get() = MainScope().promise { fetch("${Config.clientUrl}/html/index.html").text().await() }
+    get() = MainScope().promise { fetch("${Config.clientUrl}/html/index.html").textAsync().await() }
 
 fun Express.indexRoute(): Handler = { _, response, _ ->
     indexHtmlPromise.then { indexHtml ->

@@ -3,7 +3,6 @@ package com.zegreatrob.coupling.server.slack
 import js.array.tupleOf
 import js.objects.jso
 import js.objects.recordOf
-import js.promise.await
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -40,7 +39,7 @@ class FetchSlackClient(
             )
         },
     )
-        .text()
+        .textAsync()
         .await()
         .let(jsonParser::decodeFromString)
 
@@ -71,7 +70,7 @@ class FetchSlackClient(
         )
         console.log("FETCH SLACK", JSON.stringify(request))
         return fetch(request)
-            .text()
+            .textAsync()
             .await()
             .let(jsonParser::decodeFromString)
     }
@@ -106,7 +105,7 @@ class FetchSlackClient(
             )
         },
     )
-        .text()
+        .textAsync()
         .await()
         .let(jsonParser::decodeFromString)
 
@@ -131,7 +130,7 @@ class FetchSlackClient(
             )
         },
     )
-        .text()
+        .textAsync()
         .await()
         .let(jsonParser::decodeFromString)
 
@@ -150,7 +149,7 @@ class FetchSlackClient(
             )
         },
     )
-        .text()
+        .textAsync()
         .await()
         .let(jsonParser::decodeFromString)
 }
