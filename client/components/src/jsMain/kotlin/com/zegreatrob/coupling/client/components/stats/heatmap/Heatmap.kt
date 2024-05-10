@@ -4,9 +4,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
-import js.import.import
-import js.promise.await
-import js.promise.toPromise
+import js.import.importAsync
 import kotlinx.browser.document
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
@@ -22,9 +20,9 @@ import web.cssom.WhiteSpace
 import web.cssom.px
 import web.html.HTMLElement
 
-val d3Selection = import<D3Selection>("d3-selection").toPromise()
-val d3Interpolate = import<D3Interpolate>("d3-interpolate").toPromise()
-val d3Color = import<D3Color>("d3-color").toPromise()
+val d3Selection = importAsync<D3Selection>("d3-selection")
+val d3Interpolate = importAsync<D3Interpolate>("d3-interpolate")
+val d3Color = importAsync<D3Color>("d3-color")
 
 external interface D3Color {
     fun rgb(value: String): String
