@@ -15873,10 +15873,10 @@ strip-outer@^1.0.1:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-stripe@^15.6.0:
-  version "15.6.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-15.6.0.tgz#097eb87661d79c0784495af5bc4cdae32b5d557b"
-  integrity sha512-ARG46eQHMmHspnDpj3QTAH8GyEqtE0nesbzpTtQDT/C9nHvOFYri3mIzHEzArzDcKX7HSleTu2VpYoDZIIH7nA==
+stripe@^15.7.0:
+  version "15.7.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-15.7.0.tgz#41cca942d2eea5e8df6008430d9243ffaec4c1f1"
+  integrity sha512-hTJhh0Gc+l+hj2vuzaFCh0T46l7793W3wg4J9Oyy3Wu+Ofswd0OgTS4XNt7G9XHJAyHpTmNRNbWgGwn73P4j7g==
   dependencies:
     "@types/node" ">=8.1.0"
     qs "^6.11.0"
