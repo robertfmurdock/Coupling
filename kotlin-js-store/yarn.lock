@@ -4109,10 +4109,10 @@
     "@react-spring/shared" "~9.7.3"
     "@react-spring/types" "~9.7.3"
 
-"@remix-run/router@1.16.0", "@remix-run/router@^1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.16.0.tgz#0e10181e5fec1434eb071a9bc4bdaac843f16dcc"
-  integrity sha512-Quz1KOffeEf/zwkCBM3kBtH4ZoZ+pT3xIXBG4PPW/XFtDP7EGhtTiC2+gpL9GnR7+Qdet5Oa6cYSvwKYg6kN9Q==
+"@remix-run/router@1.16.1", "@remix-run/router@^1.16.1":
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.16.1.tgz#73db3c48b975eeb06d0006481bde4f5f2d17d1cd"
+  integrity sha512-es2g3dq6Nb07iFxGk5GuHN20RwBZOsuDQN7izWIisUcv9r+d2C5jQxqmgkdebXgReWfiyUabcki6Fg77mSNrig==
 
 "@repeaterjs/repeater@^3.0.4":
   version "3.0.4"
@@ -4221,7 +4221,7 @@
     uuid "^8.3.2"
     write-file-atomic "^4.0.2"
 
-"@serverless/utils@^6.14.0", "@serverless/utils@^6.15.0":
+"@serverless/utils@^6.14.0":
   version "6.15.0"
   resolved "https://registry.yarnpkg.com/@serverless/utils/-/utils-6.15.0.tgz#499255c517581b1edd8c2bfedbcf61cc7aaa7539"
   integrity sha512-7eDbqKv/OBd11jjdZjUwFGN8sHWkeUqLeHXHQxQ1azja2IM7WIH+z/aLgzR6LhB3/MINNwtjesDpjGqTMj2JKQ==
@@ -14475,20 +14475,20 @@ react-popper@^2.3.0:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
 
-react-router-dom@^6.23.0:
-  version "6.23.0"
-  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.23.0.tgz#8b80ad92ad28f4dc38972e92d84b4c208150545a"
-  integrity sha512-Q9YaSYvubwgbal2c9DJKfx6hTNoBp3iJDsl+Duva/DwxoJH+OTXkxGpql4iUK2sla/8z4RpjAm6EWx1qUDuopQ==
+react-router-dom@^6.23.1:
+  version "6.23.1"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.23.1.tgz#30cbf266669693e9492aa4fc0dde2541ab02322f"
+  integrity sha512-utP+K+aSTtEdbWpC+4gxhdlPFwuEfDKq8ZrPFU65bbRJY+l706qjR7yaidBpo3MSeA/fzwbXWbKBI6ftOnP3OQ==
   dependencies:
-    "@remix-run/router" "1.16.0"
-    react-router "6.23.0"
+    "@remix-run/router" "1.16.1"
+    react-router "6.23.1"
 
-react-router@6.23.0, react-router@^6.23.0:
-  version "6.23.0"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.23.0.tgz#2f2d7492c66a6bdf760be4c6bdf9e1d672fa154b"
-  integrity sha512-wPMZ8S2TuPadH0sF5irFGjkNLIcRvOSaEe7v+JER8508dyJumm6XZB1u5kztlX0RVq6AzRVndzqcUh6sFIauzA==
+react-router@6.23.1, react-router@^6.23.1:
+  version "6.23.1"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.23.1.tgz#d08cbdbd9d6aedc13eea6e94bc6d9b29cb1c4be9"
+  integrity sha512-fzcOaRF69uvqbbM7OhvQyBTFDVrrGlsFdS3AL+1KfIBtGETibHzi3FkoTRyiDJnWNc2VxrfvR+657ROHjaNjqQ==
   dependencies:
-    "@remix-run/router" "1.16.0"
+    "@remix-run/router" "1.16.1"
 
 react-use-websocket@^4.8.1:
   version "4.8.1"
@@ -15165,16 +15165,15 @@ serverless-offline-ssm@^6.2.0:
   resolved "https://registry.yarnpkg.com/serverless-offline-ssm/-/serverless-offline-ssm-6.2.0.tgz#f2db290a72631629579ce5f940ed76f254f96653"
   integrity sha512-Af7JeLbU4OHAx7ZgAs2OLP2DGKyp/g45rX7SWQ8KiBzn47jme+MqN+GOV6qd5oZ8V9khd3p62+RueHR3ezEZZQ==
 
-serverless-offline@^13.5.0:
-  version "13.5.0"
-  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-13.5.0.tgz#142bb88a84ec1b1fda45107adf3f0d6836539173"
-  integrity sha512-t+xyBTjYBtkyywrP3UnhNFFxQ03QflIn/20ImW3BnkSYr/5Sl6yX6coHoYx7X5QoVaOeHIAROs+WID0WR/IKyQ==
+serverless-offline@^13.5.1:
+  version "13.5.1"
+  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-13.5.1.tgz#3d480684120ffcf6fb55abd0a8eba147d3e642c2"
+  integrity sha512-Hc4QU2Gb2wyoATFlwRfCtpqSBn+lOyWmFS2amr95+2VOBOArtPuOcL65ezNeO5xH9Efuz7FRitN62KikTXU2tg==
   dependencies:
     "@aws-sdk/client-lambda" "^3.509.0"
     "@hapi/boom" "^10.0.1"
     "@hapi/h2o2" "^10.0.4"
     "@hapi/hapi" "^21.3.3"
-    "@serverless/utils" "^6.15.0"
     array-unflat-js "^0.1.3"
     boxen "^7.1.1"
     chalk "^5.3.0"
