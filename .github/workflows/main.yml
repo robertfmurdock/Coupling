@@ -65,6 +65,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+      - run: ./gradlew :server:serverlessBuild
       - uses: testspace-com/setup-testspace@v1
         with:
           domain: robertfmurdock
