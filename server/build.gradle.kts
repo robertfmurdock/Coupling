@@ -36,7 +36,7 @@ inline fun <reified T : Named> Project.namedAttribute(value: String) = objects.n
 
 dependencies {
     clientConfiguration(project(":client"))
-    jsMainImplementation(project("action"))
+    jsMainImplementation(project("actionz"))
     jsMainImplementation(project("discord"))
     jsMainImplementation(project("secret"))
     jsMainImplementation(project("slack"))
