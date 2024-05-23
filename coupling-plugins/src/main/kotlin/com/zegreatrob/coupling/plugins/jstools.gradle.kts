@@ -15,23 +15,23 @@ plugins {
 }
 
 kotlin {
-    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-    compilerOptions {
-//        allWarningsAsErrors = true
-    }
     js {
         useCommonJs()
         binaries.executable()
-//        sourceSets {
-//            all {
-//                languageSettings {
-//                    optIn("kotlin.js.ExperimentalJsExport")
-//                    optIn("kotlin.time.ExperimentalTime")
-//                    optIn("kotlinx.serialization.ExperimentalSerializationApi")
-//                    optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-//                }
-//            }
-//        }
+    }
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        allWarningsAsErrors = true
+    }
+    sourceSets {
+        all {
+            languageSettings {
+                optIn("kotlin.js.ExperimentalJsExport")
+                optIn("kotlin.time.ExperimentalTime")
+                optIn("kotlinx.serialization.ExperimentalSerializationApi")
+                optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            }
+        }
     }
 }
 
