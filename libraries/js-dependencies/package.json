@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "@auth0/auth0-react": "2.2.4",
-    "@aws-sdk/client-apigatewaymanagementapi": "~3.582.0",
-    "@aws-sdk/client-dynamodb": "3.582.0",
-    "@aws-sdk/client-lambda": "~3.582.0",
-    "@aws-sdk/lib-dynamodb": "3.582.0",
+    "@aws-sdk/client-apigatewaymanagementapi": "~3.583.0",
+    "@aws-sdk/client-dynamodb": "3.583.0",
+    "@aws-sdk/client-lambda": "~3.583.0",
+    "@aws-sdk/lib-dynamodb": "3.583.0",
     "@babel/core": "^7.24.5",
     "@babel/preset-env": "^7.24.5",
     "@babel/preset-react": "^7.24.1",
@@ -74,7 +74,7 @@
     "serverless-offline": "^13.6.0",
     "serverless-offline-ssm": "^6.2.0",
     "source-map-loader": "^5.0.0",
-    "stripe": "^15.7.0",
+    "stripe": "^15.8.0",
     "style-loader": "^4.0.0",
     "styled-components": "^6.1.11",
     "text-loader": "0.0.1",
