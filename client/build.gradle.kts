@@ -164,10 +164,6 @@ tasks {
     }
     compileProductionExecutableKotlinJs {}
 
-//    "jsBrowserProductionExecutableDistributeResources" {
-//        enabled = false
-//    }
-
     val browserProductionWebpack = named("jsBrowserProductionWebpack", KotlinWebpack::class) {
         dependsOn(lookupCdnUrls, jsProcessResources)
         inputs.file(cdnBuildOutput)

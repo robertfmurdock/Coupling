@@ -12,12 +12,8 @@ plugins {
 version = "0.0.0"
 
 kotlin {
-    target {
-        compilations.configureEach {
-            kotlinOptions {
-//                allWarningsAsErrors = true
-            }
-        }
+    compilerOptions {
+        allWarningsAsErrors = true
     }
     jvmToolchain(20)
     sourceSets {
