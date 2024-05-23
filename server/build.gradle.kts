@@ -215,6 +215,7 @@ tasks {
         val releaseVersion = rootProject.version
         environment("CLIENT_URL" to "https://assets.zegreatrob.com/coupling/$releaseVersion")
         environment("CLI_URL" to "https://assets.zegreatrob.com/coupling-cli/$releaseVersion")
+        environment("SERVERLESS_ACCESS_KEY", System.getenv("SERVERLESS_ACCESS_KEY"))
         enabled = "$releaseVersion".run { !(contains("SNAPSHOT") || isBlank()) }
         nodeCommand = "serverless"
         arguments = listOf(
