@@ -15,15 +15,16 @@ jobs:
     concurrency:
       group: ${{ github.ref }}
     env:
-      COUPLING_IN_MEMORY: "true"
       AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
       COUPLING_ALT_TEST_PASSWORD: ${{ secrets.COUPLING_ALT_TEST_PASSWORD }}
       COUPLING_E2E_TEST_PASSWORD: ${{ secrets.COUPLING_E2E_TEST_PASSWORD }}
+      COUPLING_IN_MEMORY: "true"
       COUPLING_PRIMARY_TEST_PASSWORD: ${{ secrets.COUPLING_PRIMARY_TEST_PASSWORD }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GRGIT_USER: ${{ secrets.GITHUB_TOKEN }}
       S3_BUILD_CACHE_ACCESS_KEY_ID: ${{ secrets.S3_BUILD_CACHE_ACCESS_KEY_ID }}
       S3_BUILD_CACHE_SECRET_KEY: ${{ secrets.S3_BUILD_CACHE_SECRET_KEY }}
+      SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
     steps:
       - run: echo '127.0.0.1 static.localhost cli.localhost socket.localhost' | sudo tee -a /etc/hosts
       - name: Set up JDK
