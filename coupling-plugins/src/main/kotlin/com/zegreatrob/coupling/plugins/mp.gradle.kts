@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.plugins
 
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -14,12 +15,9 @@ plugins {
 version = "0.0.0"
 
 kotlin {
-    targets.all {
-        compilations.all {
-            kotlinOptions {
-//                allWarningsAsErrors = true
-            }
-        }
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        allWarningsAsErrors = true
     }
     jvmToolchain(20)
     sourceSets {
