@@ -20,7 +20,7 @@ fun eventHandler(setValues: ((Json) -> Json) -> Unit) = { event: ChangeEvent<*> 
     setValues { previousValues -> previousValues.copyWithChangeFrom(event) }
 }
 
-private inline fun Json.copyWithChangeFrom(event: ChangeEvent<*>) = json()
+private fun Json.copyWithChangeFrom(event: ChangeEvent<*>) = json()
     .add(this)
     .add(event.toChangeJson())
 

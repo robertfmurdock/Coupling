@@ -99,8 +99,8 @@ tasks {
         )
         mustRunAfter(clean)
         inputs.dir(jsProcessResources.map { it.destinationDir.path })
-        inputs.file(compileProductionExecutableKotlinJs.map {
-            it.destinationDirectory.file(it.compilerOptions.moduleName.map { "$it.js" })
+        inputs.file(compileProductionExecutableKotlinJs.map { compileTask ->
+            compileTask.destinationDirectory.file(compileTask.compilerOptions.moduleName.map { "$it.js" })
         })
         inputs.file(file("webpack.config.js"))
         inputs.dir("public")
@@ -112,8 +112,8 @@ tasks {
         inputs.file(compilation.npmProject.packageJsonFile)
 
         setup(project)
-        nodeModulesDir = compilation?.npmProject?.nodeModulesDir
-        npmProjectDir = compilation?.npmProject?.dir
+        nodeModulesDir = compilation.npmProject.nodeModulesDir?.get()?.asFile
+        npmProjectDir = compilation.npmProject.dir.get().asFile
 
         nodeCommand = "webpack"
         arguments = listOf("--config", project.projectDir.resolve("webpack.config.js").absolutePath)
@@ -239,8 +239,8 @@ tasks {
 }
 
 artifacts {
-    add(appConfiguration.name, tasks.compileKotlinJs.map {
-        it.destinationDirectory.file(it.compilerOptions.moduleName.map { "$it.js" })
+    add(appConfiguration.name, tasks.compileKotlinJs.map { compileTask ->
+        compileTask.destinationDirectory.file(compileTask.compilerOptions.moduleName.map { "$it.js" })
     }) {
         builtBy(tasks.compileKotlinJs)
     }

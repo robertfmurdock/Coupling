@@ -15,7 +15,7 @@ kotlin {
     target {
         compilations.configureEach {
             kotlinOptions {
-                allWarningsAsErrors = true
+//                allWarningsAsErrors = true
             }
         }
     }

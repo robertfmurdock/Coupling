@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     js {
-        nodejs { testTask(Action { useMocha { timeout = "10s" } }) }
+        nodejs { testTask { useMocha { timeout = "10s" } } }
     }
     jvm()
     sourceSets.named("jsMain") {

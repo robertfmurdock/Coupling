@@ -11,14 +11,6 @@ kotlin {
         test.defaultSourceSet.dependsOn(main.defaultSourceSet)
     }
     jvm()
-
-    sourceSets {
-        named("jsTest") {
-            kotlin {
-                srcDir(projectDir.resolve("src/commonTest/kotlin"))
-            }
-        }
-    }
 }
 
 dependencies {
