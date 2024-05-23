@@ -25,7 +25,7 @@ external interface FrameRunnerProps<S> : Props {
 
 @ReactFunc
 val FrameRunner by nfc<FrameRunnerProps<Any>> { props ->
-    val (sequence, speed, children: (Nothing) -> ReactNode) = props
+    val (sequence, speed, children: (Any) -> ReactNode) = props
     var state by useState(sequence.first().data)
     val scheduleStateFunc: (Frame<Any>) -> Unit = scheduleStateFunc({ state = it }, speed)
 

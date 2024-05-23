@@ -73,7 +73,7 @@ data class FindNewPairsAction(val game: Game) {
     }
 }
 
-private fun <E> NotEmptyList<E>.plus(entry: E): NotEmptyList<E> {
+private inline fun <reified E> NotEmptyList<E>.plus(entry: E): NotEmptyList<E> {
     return notEmptyListOf(head, tail = tail?.let { it.toList() + entry }?.toTypedArray() ?: arrayOf(entry))
 }
 

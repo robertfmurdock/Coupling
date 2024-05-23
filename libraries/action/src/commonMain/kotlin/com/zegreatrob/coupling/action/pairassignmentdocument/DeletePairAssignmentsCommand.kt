@@ -10,8 +10,6 @@ data class DeletePairAssignmentsCommand(
     val partyId: PartyId,
     val pairAssignmentDocumentId: PairAssignmentDocumentId,
 ) {
-
-    @Suppress("FUN_INTERFACE_WITH_SUSPEND_FUNCTION")
     fun interface Dispatcher {
         suspend fun perform(command: DeletePairAssignmentsCommand): VoidResult
     }

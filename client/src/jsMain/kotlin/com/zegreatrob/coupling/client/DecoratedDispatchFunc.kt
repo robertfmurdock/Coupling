@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.react.dataloader.DataLoaderTools
 import com.zegreatrob.testmints.action.ActionCannon
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class DecoratedDispatchFunc<D>(
     val cannonFunc: () -> ActionCannon<D>,

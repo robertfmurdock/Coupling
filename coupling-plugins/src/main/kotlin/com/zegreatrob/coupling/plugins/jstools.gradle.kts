@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.plugins
 
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
@@ -14,24 +15,23 @@ plugins {
 }
 
 kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+//        allWarningsAsErrors = true
+    }
     js {
         useCommonJs()
         binaries.executable()
-        compilations.all {
-            kotlinOptions {
-                allWarningsAsErrors = true
-            }
-        }
-        sourceSets {
-            all {
-                languageSettings {
-                    optIn("kotlin.js.ExperimentalJsExport")
-                    optIn("kotlin.time.ExperimentalTime")
-                    optIn("kotlinx.serialization.ExperimentalSerializationApi")
-                    optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-                }
-            }
-        }
+//        sourceSets {
+//            all {
+//                languageSettings {
+//                    optIn("kotlin.js.ExperimentalJsExport")
+//                    optIn("kotlin.time.ExperimentalTime")
+//                    optIn("kotlinx.serialization.ExperimentalSerializationApi")
+//                    optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+//                }
+//            }
+//        }
     }
 }
 

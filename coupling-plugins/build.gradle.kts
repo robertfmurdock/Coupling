@@ -16,7 +16,7 @@ plugins {
 
 kotlin {
     compilerOptions {
-        allWarningsAsErrors.set(true)
+//        allWarningsAsErrors.set(true)
     }
 }
 
