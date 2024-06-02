@@ -4,9 +4,8 @@ pluginManagement {
         mavenCentral()
     }
 }
-
 plugins {
-    `gradle-enterprise`
+    id("com.gradle.develocity") version "3.17.4"
 }
 
 rootProject.name = "Coupling"
@@ -49,19 +48,20 @@ include("server:discord")
 include("server:secret")
 include("server:slack")
 
-gradleEnterprise {
+val isCiServer = System.getenv().containsKey("CI")
+
+develocity {
     buildScan {
-        termsOfServiceUrl = "https://gradle.com/terms-of-service"
-        termsOfServiceAgree = "yes"
+        publishing.onlyIf { isCiServer }
+        termsOfUseUrl = "https://gradle.com/help/legal-terms-of-use"
+        termsOfUseAgree = "yes"
+        tag("CI")
     }
 }
-
-val isCiServer = System.getenv().containsKey("CI")
 
 buildCache {
     local {
         isEnabled = true
-        removeUnusedEntriesAfterDays = 3
     }
 }
 
