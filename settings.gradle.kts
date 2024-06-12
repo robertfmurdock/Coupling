@@ -48,11 +48,9 @@ include("server:discord")
 include("server:secret")
 include("server:slack")
 
-val isCiServer = System.getenv().containsKey("CI")
-
 develocity {
     buildScan {
-        publishing.onlyIf { isCiServer }
+        publishing.onlyIf { System.getenv().containsKey("CI") }
         termsOfUseUrl = "https://gradle.com/help/legal-terms-of-use"
         termsOfUseAgree = "yes"
         tag("CI")
