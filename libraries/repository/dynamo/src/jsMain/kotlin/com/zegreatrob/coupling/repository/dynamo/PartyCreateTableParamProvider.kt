@@ -2,7 +2,9 @@ package com.zegreatrob.coupling.repository.dynamo
 
 import kotlin.js.json
 
-interface PartyCreateTableParamProvider : DynamoCreateTableSyntax, DynamoTableNameSyntax {
+interface PartyCreateTableParamProvider :
+    DynamoCreateTableSyntax,
+    DynamoTableNameSyntax {
     override val createTableParams
         get() = json(
             "TableName" to prefixedTableName,

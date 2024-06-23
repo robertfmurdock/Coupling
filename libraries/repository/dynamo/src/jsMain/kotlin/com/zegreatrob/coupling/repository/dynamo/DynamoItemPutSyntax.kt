@@ -5,7 +5,10 @@ import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoItemPutSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoLoggingSyntax {
+interface DynamoItemPutSyntax :
+    DynamoDBSyntax,
+    DynamoTableNameSyntax,
+    DynamoLoggingSyntax {
 
     suspend fun performPutItem(itemJson: Json) = logAsync("putItem") {
         try {

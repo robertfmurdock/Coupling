@@ -5,7 +5,10 @@ import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoItemDeleteSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoLoggingSyntax {
+interface DynamoItemDeleteSyntax :
+    DynamoDBSyntax,
+    DynamoTableNameSyntax,
+    DynamoLoggingSyntax {
 
     suspend fun performDeleteItem(keyJson: Json): Unit = logAsync("deleteItem") {
         try {

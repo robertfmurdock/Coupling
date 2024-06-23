@@ -16,8 +16,7 @@ import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 
-interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRepository> :
-    RepositoryValidator<R, PartyContext<R>> {
+interface PairAssignmentDocumentRepositoryValidator<R : PairAssignmentDocumentRepository> : RepositoryValidator<R, PartyContext<R>> {
 
     fun now() = Clock.System.now()
 

@@ -78,7 +78,9 @@ class PlayersQueryTest {
             }
     }
 
-    class PlayerRepositorySpy : PlayerListGet, Spy<PartyId, List<Record<PartyElement<Player>>>> by SpyData() {
+    class PlayerRepositorySpy :
+        PlayerListGet,
+        Spy<PartyId, List<Record<PartyElement<Player>>>> by SpyData() {
         override suspend fun getPlayers(partyId: PartyId) = spyFunction(partyId)
     }
 }

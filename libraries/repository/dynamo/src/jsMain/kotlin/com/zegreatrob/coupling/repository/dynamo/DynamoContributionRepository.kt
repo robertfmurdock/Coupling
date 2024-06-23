@@ -48,11 +48,9 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         "createdAt" to element.createdAt.isoWithMillis(),
     )
 
-    override suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>> {
-        return partyId.queryForItemList()
-            .mapNotNull { toRecord(it) }
-            .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
-    }
+    override suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>> = partyId.queryForItemList()
+        .mapNotNull { toRecord(it) }
+        .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
 
     private fun toRecord(json: Json): PartyRecord<Contribution>? = json.toContribution()
         ?.let { json.tribeId().with(it) }

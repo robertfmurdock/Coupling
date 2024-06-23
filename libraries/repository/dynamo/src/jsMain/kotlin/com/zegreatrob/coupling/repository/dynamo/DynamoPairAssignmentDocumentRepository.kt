@@ -15,7 +15,10 @@ import kotlin.js.Json
 class DynamoPairAssignmentDocumentRepository private constructor(
     override val userId: String,
     override val clock: Clock,
-) : PairAssignmentDocumentRepository, UserIdProvider, RecordSyntax, DynamoPairAssignmentDocumentJsonMapping {
+) : PairAssignmentDocumentRepository,
+    UserIdProvider,
+    RecordSyntax,
+    DynamoPairAssignmentDocumentJsonMapping {
 
     companion object :
         DynamoRepositoryCreatorSyntax<DynamoPairAssignmentDocumentRepository>(),

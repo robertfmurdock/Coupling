@@ -12,7 +12,9 @@ import com.zegreatrob.coupling.sdk.dsl.GqlReference.secretRecord
 import kotlinx.serialization.json.JsonElement
 import kotlin.time.Duration
 
-class PartyQueryBuilder : QueryBuilder<JsonParty>, BuilderWithInput() {
+class PartyQueryBuilder :
+    BuilderWithInput(),
+    QueryBuilder<JsonParty> {
 
     override var output: JsonParty = JsonParty("")
     override var queries = mutableListOf<String>()

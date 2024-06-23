@@ -15,7 +15,9 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 
-interface SdkDeletePairAssignmentsCommandDispatcher : DeletePairAssignmentsCommand.Dispatcher, GqlSyntax {
+interface SdkDeletePairAssignmentsCommandDispatcher :
+    DeletePairAssignmentsCommand.Dispatcher,
+    GqlSyntax {
     override suspend fun perform(command: DeletePairAssignmentsCommand) = with(command) {
         performQuery(options(partyId, pairAssignmentDocumentId))
             .at("/data/deletePairAssignments")

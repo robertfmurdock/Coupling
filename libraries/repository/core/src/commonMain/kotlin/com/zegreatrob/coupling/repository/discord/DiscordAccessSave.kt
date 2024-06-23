@@ -13,4 +13,6 @@ fun interface DiscordAccessGet {
     suspend fun get(partyId: PartyId): PartyRecord<DiscordTeamAccess>?
 }
 
-interface DiscordAccessRepository : DiscordAccessSave, DiscordAccessGet
+interface DiscordAccessRepository :
+    DiscordAccessSave,
+    DiscordAccessGet

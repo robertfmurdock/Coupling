@@ -6,7 +6,9 @@ import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
-interface SdkDeletePartyCommandDispatcher : DeletePartyCommand.Dispatcher, GqlSyntax {
+interface SdkDeletePartyCommandDispatcher :
+    DeletePartyCommand.Dispatcher,
+    GqlSyntax {
     override suspend fun perform(command: DeletePartyCommand) = with(command) {
         doQuery(
             Mutation.deleteParty,

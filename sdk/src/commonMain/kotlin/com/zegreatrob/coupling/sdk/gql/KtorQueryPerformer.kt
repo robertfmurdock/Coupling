@@ -18,7 +18,9 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonArray
 
-interface KtorQueryPerformer : QueryPerformer, KtorSyntax {
+interface KtorQueryPerformer :
+    QueryPerformer,
+    KtorSyntax {
 
     override suspend fun doQuery(body: JsonElement) = postStringToJsonObject(body)
 

@@ -8,8 +8,7 @@ import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
-class MemoryBoostRepositoryTest :
-    ExtendedBoostRepositoryValidator<MemoryBoostRepository, SharedContextData<MemoryBoostRepository>> {
+class MemoryBoostRepositoryTest : ExtendedBoostRepositoryValidator<MemoryBoostRepository, SharedContextData<MemoryBoostRepository>> {
 
     companion object {
         val recordBackend = SimpleRecordBackend<Boost>()

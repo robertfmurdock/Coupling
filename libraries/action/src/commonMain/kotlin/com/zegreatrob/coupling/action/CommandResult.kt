@@ -7,8 +7,7 @@ sealed interface CommandResult :
     data object Unauthorized : CommandResult
 }
 
-sealed interface SubscriptionCommandResult :
-    ApplyBoostCommand.Result {
+sealed interface SubscriptionCommandResult : ApplyBoostCommand.Result {
     data object SubscriptionNotActive : ApplyBoostCommand.Result
 }
 

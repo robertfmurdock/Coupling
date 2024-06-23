@@ -10,7 +10,9 @@ class MemoryBoostRepository(
     override val userId: String,
     override val clock: Clock,
     private val recordBackend: RecordBackend<Boost> = SimpleRecordBackend(),
-) : TypeRecordSyntax<Boost>, RecordBackend<Boost> by recordBackend, ExtendedBoostRepository {
+) : TypeRecordSyntax<Boost>,
+    RecordBackend<Boost> by recordBackend,
+    ExtendedBoostRepository {
 
     override suspend fun get(): Record<Boost>? = records.lastOrNull { it.data.userId == userId }
         ?.takeUnless { it.isDeleted }

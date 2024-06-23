@@ -26,7 +26,9 @@ class DeletePlayerCommandTest {
         playerRepository.spyReceivedValues.assertIsEqualTo(listOf(playerId))
     }
 
-    class PlayerRepositorySpy : PlayerDelete, Spy<String, Boolean> by SpyData() {
+    class PlayerRepositorySpy :
+        PlayerDelete,
+        Spy<String, Boolean> by SpyData() {
         override suspend fun deletePlayer(partyId: PartyId, playerId: String): Boolean = spyFunction(playerId)
     }
 }

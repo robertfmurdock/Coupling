@@ -7,7 +7,9 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.AuthorizedPartyIdsProvider
 import com.zegreatrob.coupling.model.user.UserIdProvider
 
-interface UserAuthenticatedPartyIdSyntax : UserIdProvider, AuthorizedPartyIdsProvider {
+interface UserAuthenticatedPartyIdSyntax :
+    UserIdProvider,
+    AuthorizedPartyIdsProvider {
 
     fun List<PartyElement<String>>.authenticatedFilter() = authenticatedPartyIds().authenticatedFilter()
 

@@ -9,7 +9,9 @@ import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
-interface SdkDeleteSecretCommandDispatcher : DeleteSecretCommand.Dispatcher, GqlSyntax {
+interface SdkDeleteSecretCommandDispatcher :
+    DeleteSecretCommand.Dispatcher,
+    GqlSyntax {
     override suspend fun perform(command: DeleteSecretCommand) =
         doQuery(Mutation.deleteSecret, command.toInput())
             .parseMutationResult()

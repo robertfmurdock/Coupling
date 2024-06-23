@@ -1,3 +1,6 @@
 package com.zegreatrob.coupling.repository.secret
 
-interface SecretRepository : SecretSave, SecretListGet, SecretDelete
+interface SecretRepository :
+    SecretSave,
+    SecretListGet,
+    SecretDelete

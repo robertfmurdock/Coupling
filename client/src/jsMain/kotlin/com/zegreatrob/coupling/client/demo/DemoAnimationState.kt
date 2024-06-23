@@ -236,8 +236,7 @@ We'll hit the spin button.
 
 private fun classSelector(className: ClassName) = ".$className"
 
-data class PrepareToSpin(val party: PartyDetails, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) :
-    DemoAnimationState() {
+data class PrepareToSpin(val party: PartyDetails, val players: List<Pair<Player, Boolean>>, val pins: List<Pin>) : DemoAnimationState() {
     override val descriptionSelector = ".$playerSelectorClass"
     override val placement: Placement = Placement.right
     override val description: String = """

@@ -14,7 +14,9 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 
-interface SdkPairAssignmentDocumentSave : PairAssignmentDocumentSave, GqlSyntax {
+interface SdkPairAssignmentDocumentSave :
+    PairAssignmentDocumentSave,
+    GqlSyntax {
     override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) {
         performQuery(
             buildJsonObject {
@@ -30,7 +32,9 @@ interface SdkPairAssignmentDocumentSave : PairAssignmentDocumentSave, GqlSyntax 
 private fun PartyElement<PairAssignmentDocument>.savePairAssignmentsInput() =
     toSavePairAssignmentsInput().toJsonElement()
 
-interface SdkSavePairAssignmentsCommandDispatcher : SavePairAssignmentsCommand.Dispatcher, GqlSyntax {
+interface SdkSavePairAssignmentsCommandDispatcher :
+    SavePairAssignmentsCommand.Dispatcher,
+    GqlSyntax {
 
     override suspend fun perform(command: SavePairAssignmentsCommand) = with(command) {
         performQuery(

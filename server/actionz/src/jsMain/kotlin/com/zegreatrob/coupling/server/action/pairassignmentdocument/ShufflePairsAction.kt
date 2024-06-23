@@ -21,7 +21,9 @@ data class ShufflePairsAction(
     val pins: List<Pin>,
     val history: List<PairAssignmentDocument>,
 ) {
-    interface Dispatcher<out D> : Clock, CannonProvider<D>
+    interface Dispatcher<out D> :
+        Clock,
+        CannonProvider<D>
         where D : CreatePairCandidateReportAction.Dispatcher,
               D : CreatePairCandidateReportListAction.Dispatcher<D>,
               D : NextPlayerAction.Dispatcher<D>,

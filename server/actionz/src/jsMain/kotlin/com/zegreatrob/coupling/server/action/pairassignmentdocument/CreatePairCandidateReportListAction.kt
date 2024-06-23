@@ -10,7 +10,9 @@ import kotools.types.collection.NotEmptyList
 @ActionMint
 data class CreatePairCandidateReportListAction(val game: GameSpin) {
 
-    interface Dispatcher<out D> : CannonProvider<D>, PlayerCandidatesFinder
+    interface Dispatcher<out D> :
+        CannonProvider<D>,
+        PlayerCandidatesFinder
         where D : CreatePairCandidateReportAction.Dispatcher {
 
         suspend fun perform(action: CreatePairCandidateReportListAction) = action.createReports()

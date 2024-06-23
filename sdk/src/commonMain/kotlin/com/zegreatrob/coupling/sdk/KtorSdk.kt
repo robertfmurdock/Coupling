@@ -40,8 +40,7 @@ class KtorCouplingSdkDispatcher(
     override val performer: QueryPerformer = StandardPartyGQLPerformer(getIdTokenFunc, httpClient)
 }
 
-class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String, httpClient: HttpClient) :
-    KtorQueryPerformer {
+class StandardPartyGQLPerformer(private val getIdTokenFunc: suspend () -> String, httpClient: HttpClient) : KtorQueryPerformer {
     override val client = httpClient
     override suspend fun getIdToken() = getIdTokenFunc.invoke()
 }

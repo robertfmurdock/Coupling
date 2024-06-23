@@ -5,7 +5,9 @@ import com.zegreatrob.testmints.action.ActionWrapper
 import kotlin.time.Duration
 import kotlin.time.measureTimedValue
 
-interface ActionLoggingSyntax : LoggingProvider, TraceIdProvider {
+interface ActionLoggingSyntax :
+    LoggingProvider,
+    TraceIdProvider {
 
     fun <I : Action, O> log(action: I, block: (I) -> O) = action.logBlock { block(action) }
 

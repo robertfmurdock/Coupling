@@ -6,7 +6,9 @@ import react.PropsWithClassName
 import web.cssom.Color
 import web.cssom.NamedColor
 
-external interface ConfigFrameProps : PropsWithClassName, PropsWithChildren {
+external interface ConfigFrameProps :
+    PropsWithClassName,
+    PropsWithChildren {
     var borderColor: Color?
     var backgroundColor: Color?
 }

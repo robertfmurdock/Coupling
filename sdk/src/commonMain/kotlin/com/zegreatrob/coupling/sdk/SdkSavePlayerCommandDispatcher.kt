@@ -10,7 +10,9 @@ import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
-interface SdkSavePlayerCommandDispatcher : SavePlayerCommand.Dispatcher, GqlSyntax {
+interface SdkSavePlayerCommandDispatcher :
+    SavePlayerCommand.Dispatcher,
+    GqlSyntax {
     override suspend fun perform(command: SavePlayerCommand) = with(command) {
         doQuery(Mutation.savePlayer, partyId.with(player).input())
         VoidResult.Accepted

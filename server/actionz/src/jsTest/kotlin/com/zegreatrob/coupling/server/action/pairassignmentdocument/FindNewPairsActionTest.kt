@@ -79,6 +79,8 @@ class FindNewPairsActionTest {
     }
 }
 
-class StubWheel : Wheel, Spy<List<Player>, Player> by SpyData() {
+class StubWheel :
+    Wheel,
+    Spy<List<Player>, Player> by SpyData() {
     override fun Array<Player>.spin(): Player = spyFunction(this.toList())
 }

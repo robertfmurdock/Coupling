@@ -3,7 +3,9 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlin.js.json
 
-interface PartyIdDynamoItemListGetSyntax : DynamoQueryItemListGetSyntax, DynamoLoggingSyntax {
+interface PartyIdDynamoItemListGetSyntax :
+    DynamoQueryItemListGetSyntax,
+    DynamoLoggingSyntax {
 
     suspend fun PartyId.queryForItemList() = logAsync("itemList") { queryForItemList(itemListQueryParams()) }
 

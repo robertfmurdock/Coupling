@@ -8,7 +8,9 @@ import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
-interface SdkGrantSlackAccess : GrantSlackAccessCommand.Dispatcher, GqlSyntax {
+interface SdkGrantSlackAccess :
+    GrantSlackAccessCommand.Dispatcher,
+    GqlSyntax {
     override suspend fun perform(command: GrantSlackAccessCommand): VoidResult = doQuery(
         mutation = Mutation.grantSlackAccess,
         input = command.grantSlackAccessInput(),

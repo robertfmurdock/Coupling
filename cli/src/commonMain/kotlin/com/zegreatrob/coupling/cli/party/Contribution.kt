@@ -36,7 +36,8 @@ class Contribution : CliktCommand() {
 class SaveContribution(
     private val scope: CoroutineScope = cliScope,
     private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
-) : CliktCommand(name = "save"), ContributionCliCommand {
+) : CliktCommand(name = "save"),
+    ContributionCliCommand {
     private val file by option().convert { readFileText(it) }
     private val contributionId by option().default("")
     private val participantEmail by option().multiple()
@@ -90,7 +91,9 @@ interface ContributionCliCommand {
 
 expect fun readLineFromStandardIn(): String
 
-class BatchContribution : CliktCommand(name = "batch"), ContributionCliCommand {
+class BatchContribution :
+    CliktCommand(name = "batch"),
+    ContributionCliCommand {
     private val inputJson by option().prompt()
     override val label by option().default("")
     override val link by option().default("")

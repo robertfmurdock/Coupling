@@ -10,7 +10,8 @@ import kotlin.js.Json
 import kotlin.js.json
 
 class DynamoLiveInfoRepository private constructor(override val userId: String, override val clock: Clock) :
-    LiveInfoRepository, DynamoPlayerJsonMapping {
+    LiveInfoRepository,
+    DynamoPlayerJsonMapping {
 
     override suspend fun connectionList(partyId: PartyId) = partyId.logAsync("connectionList") {
         queryAllRecords(queryParams(partyId))

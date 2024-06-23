@@ -5,7 +5,10 @@ import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoQuerySyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemSyntax {
+interface DynamoQuerySyntax :
+    DynamoDBSyntax,
+    DynamoTableNameSyntax,
+    DynamoItemSyntax {
     suspend fun performQuery(query: Json): Json = dynamoDBClient.query(query).await()
 
     suspend fun queryAllRecords(params: Json = json("TableName" to prefixedTableName)): Array<Json> =

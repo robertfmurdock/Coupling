@@ -7,7 +7,9 @@ import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
-interface SdkDeletePlayerCommandDispatcher : DeletePlayerCommand.Dispatcher, GqlSyntax {
+interface SdkDeletePlayerCommandDispatcher :
+    DeletePlayerCommand.Dispatcher,
+    GqlSyntax {
     override suspend fun perform(command: DeletePlayerCommand) = with(command) {
         doQuery(
             Mutation.deletePlayer,

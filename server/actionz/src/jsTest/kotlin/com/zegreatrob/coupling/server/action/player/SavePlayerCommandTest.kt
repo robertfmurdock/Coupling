@@ -39,7 +39,9 @@ class SavePlayerCommandTest {
             .assertIsEqualTo(listOf(currentPartyId.with(player)))
     }
 
-    class PlayerSaverSpy : PlayerSave, Spy<PartyElement<Player>, Unit> by SpyData() {
+    class PlayerSaverSpy :
+        PlayerSave,
+        Spy<PartyElement<Player>, Unit> by SpyData() {
         override suspend fun save(partyPlayer: PartyElement<Player>) = spyFunction(partyPlayer)
     }
 }

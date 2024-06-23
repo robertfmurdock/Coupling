@@ -10,7 +10,10 @@ object FindOrCreateUserAction : SimpleSuspendResultAction<FindOrCreateUserAction
     override val performFunc = link(FindOrCreateUserActionDispatcher::perform)
 }
 
-interface FindOrCreateUserActionDispatcher : UserIdProvider, UserSaveSyntax, UserGetSyntax {
+interface FindOrCreateUserActionDispatcher :
+    UserIdProvider,
+    UserSaveSyntax,
+    UserGetSyntax {
 
     suspend fun perform(action: FindOrCreateUserAction) = findOrCreateUser().successResult()
 

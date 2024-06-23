@@ -18,7 +18,9 @@ const val ROTATION_HEAT_WINDOW = 5
 
 @ActionMint
 data class RecentTimesPairedQuery(val partyId: PartyId, val pair: CouplingPair, val lastAssignments: PairAssignmentDocumentId?) {
-    interface Dispatcher : PartyIdHistoryTrait, PartyIdLoadPlayersTrait {
+    interface Dispatcher :
+        PartyIdHistoryTrait,
+        PartyIdLoadPlayersTrait {
         suspend fun perform(action: RecentTimesPairedQuery) = action.timesPaired()
 
         private suspend fun RecentTimesPairedQuery.timesPaired() = when (pair) {

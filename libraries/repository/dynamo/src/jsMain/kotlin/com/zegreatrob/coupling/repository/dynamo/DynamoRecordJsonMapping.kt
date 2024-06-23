@@ -7,7 +7,10 @@ import kotlinx.datetime.Instant
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoRecordJsonMapping : DynamoDatatypeSyntax, UserIdProvider, ClockProvider {
+interface DynamoRecordJsonMapping :
+    DynamoDatatypeSyntax,
+    UserIdProvider,
+    ClockProvider {
 
     fun <T> Record<T>.recordJson() = json(
         "timestamp" to timestamp.isoWithMillis(),

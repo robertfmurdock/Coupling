@@ -17,7 +17,9 @@ data class PairsQuery(val partyId: PartyId) {
     }
 }
 
-interface ServerPairsQueryDispatcher : PairsQuery.Dispatcher, PartyIdLoadPlayersTrait {
+interface ServerPairsQueryDispatcher :
+    PairsQuery.Dispatcher,
+    PartyIdLoadPlayersTrait {
     override suspend fun perform(query: PairsQuery): List<PartyElement<PlayerPair>> = query.partyId.with(
         query.partyId.loadPlayers()
             .pairCombinations(),

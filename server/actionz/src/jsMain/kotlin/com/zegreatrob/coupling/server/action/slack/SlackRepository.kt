@@ -4,7 +4,10 @@ import com.zegreatrob.coupling.model.SlackTeamAccess
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyId
 
-interface SlackRepository : SlackGrantAccess, SlackSendSpin, SlackDeleteSpin
+interface SlackRepository :
+    SlackGrantAccess,
+    SlackSendSpin,
+    SlackDeleteSpin
 
 fun interface SlackDeleteSpin {
     suspend fun deleteSpinMessage(channel: String, token: String, pairs: PairAssignmentDocument)

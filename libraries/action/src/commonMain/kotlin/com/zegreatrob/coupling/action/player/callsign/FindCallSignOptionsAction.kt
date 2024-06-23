@@ -3,8 +3,7 @@ package com.zegreatrob.coupling.action.player.callsign
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.testmints.action.SimpleExecutableAction
 
-data class FindCallSignOptionsAction(val players: List<Player>) :
-    SimpleExecutableAction<FindCallSignOptionsAction.Dispatcher, CallSignOptions> {
+data class FindCallSignOptionsAction(val players: List<Player>) : SimpleExecutableAction<FindCallSignOptionsAction.Dispatcher, CallSignOptions> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher {
