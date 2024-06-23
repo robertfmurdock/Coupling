@@ -8,7 +8,9 @@ interface CurrentUserProvider {
     val currentUser: UserDetails
 }
 
-interface CurrentUserIdProvider : CurrentUserProvider, UserIdProvider {
+interface CurrentUserIdProvider :
+    CurrentUserProvider,
+    UserIdProvider {
     override val userId get() = currentUser.email
 }
 

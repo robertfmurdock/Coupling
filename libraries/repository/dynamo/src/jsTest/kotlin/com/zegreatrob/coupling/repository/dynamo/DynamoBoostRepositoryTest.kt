@@ -7,8 +7,7 @@ import com.zegreatrob.coupling.repository.validation.SharedContextData
 import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
-class DynamoBoostRepositoryTest :
-    ExtendedBoostRepositoryValidator<DynamoBoostRepository, SharedContextData<DynamoBoostRepository>> {
+class DynamoBoostRepositoryTest : ExtendedBoostRepositoryValidator<DynamoBoostRepository, SharedContextData<DynamoBoostRepository>> {
 
     override val repositorySetup = asyncTestTemplate(sharedSetup = {
         val user = stubUserDetails()

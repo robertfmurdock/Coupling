@@ -5,7 +5,10 @@ import kotlinx.coroutines.await
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoScanSyntax : DynamoDBSyntax, DynamoTableNameSyntax, DynamoItemSyntax {
+interface DynamoScanSyntax :
+    DynamoDBSyntax,
+    DynamoTableNameSyntax,
+    DynamoItemSyntax {
 
     suspend fun performScan(scanParams: Json) = dynamoDBClient.scan(scanParams).await()
 

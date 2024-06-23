@@ -5,7 +5,9 @@ import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
-interface SdkGraphQueryDispatcher : GraphQuery.Dispatcher, GqlSyntax {
+interface SdkGraphQueryDispatcher :
+    GraphQuery.Dispatcher,
+    GqlSyntax {
 
     override suspend fun perform(query: GraphQuery) = query.postBody().perform()
 

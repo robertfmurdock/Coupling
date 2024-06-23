@@ -13,7 +13,9 @@ class MemoryPartyRepository(
     override val clock: Clock = Clock.System,
     private val recordBackend: RecordBackend<PartyDetails> = SimpleRecordBackend(),
     private val integrationRecordBackend: RecordBackend<PartyElement<PartyIntegration>> = SimpleRecordBackend(),
-) : PartyRepository, TypeRecordSyntax<PartyDetails>, RecordBackend<PartyDetails> by recordBackend {
+) : PartyRepository,
+    TypeRecordSyntax<PartyDetails>,
+    RecordBackend<PartyDetails> by recordBackend {
 
     private val integrationHelper = object :
         TypeRecordSyntax<PartyElement<PartyIntegration>>,

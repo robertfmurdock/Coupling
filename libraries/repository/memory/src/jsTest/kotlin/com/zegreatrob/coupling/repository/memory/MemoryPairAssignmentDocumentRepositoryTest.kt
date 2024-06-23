@@ -9,8 +9,7 @@ import com.zegreatrob.coupling.stubmodel.stubUserDetails
 import com.zegreatrob.testmints.async.asyncTestTemplate
 
 @Suppress("unused")
-class MemoryPairAssignmentDocumentRepositoryTest :
-    PairAssignmentDocumentRepositoryValidator<MemoryPairAssignmentDocumentRepository> {
+class MemoryPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator<MemoryPairAssignmentDocumentRepository> {
 
     override val repositorySetup =
         asyncTestTemplate<PartyContext<MemoryPairAssignmentDocumentRepository>>(sharedSetup = {

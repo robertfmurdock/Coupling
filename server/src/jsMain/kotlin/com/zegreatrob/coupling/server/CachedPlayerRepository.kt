@@ -11,8 +11,7 @@ import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class CachedPlayerRepository(private val repository: PlayerEmailRepository) :
-    PlayerEmailRepository by repository {
+class CachedPlayerRepository(private val repository: PlayerEmailRepository) : PlayerEmailRepository by repository {
 
     private val mutex = Mutex()
     private val cache = mutableMapOf<PartyId, List<PartyRecord<Player>>>()
@@ -22,8 +21,7 @@ class CachedPlayerRepository(private val repository: PlayerEmailRepository) :
     }
 }
 
-class CachedPairAssignmentDocumentRepository(private val repository: PairAssignmentDocumentRepository) :
-    PairAssignmentDocumentRepository by repository {
+class CachedPairAssignmentDocumentRepository(private val repository: PairAssignmentDocumentRepository) : PairAssignmentDocumentRepository by repository {
     private val mutex = Mutex()
     private val cache = mutableMapOf<PartyId, List<PartyRecord<PairAssignmentDocument>>>()
 
@@ -34,8 +32,7 @@ class CachedPairAssignmentDocumentRepository(private val repository: PairAssignm
     }
 }
 
-class CachedContributionRepository(private val repository: ContributionRepository) :
-    ContributionRepository by repository {
+class CachedContributionRepository(private val repository: ContributionRepository) : ContributionRepository by repository {
     private val mutex = Mutex()
     private val cache = mutableMapOf<PartyId, List<PartyRecord<Contribution>>>()
 

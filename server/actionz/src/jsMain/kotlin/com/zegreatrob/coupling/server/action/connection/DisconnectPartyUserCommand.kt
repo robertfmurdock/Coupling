@@ -5,7 +5,9 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class DisconnectPartyUserCommand(val connectionId: String) {
-    interface Dispatcher : CouplingConnectionGetSyntax, CouplingConnectionDeleteSyntax {
+    interface Dispatcher :
+        CouplingConnectionGetSyntax,
+        CouplingConnectionDeleteSyntax {
         suspend fun perform(command: DisconnectPartyUserCommand) = with(command) {
             liveInfoRepository.get(connectionId)
                 ?.deleteAndLoadRemainingConnections()

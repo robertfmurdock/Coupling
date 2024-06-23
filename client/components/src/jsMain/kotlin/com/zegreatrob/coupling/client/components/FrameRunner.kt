@@ -45,9 +45,7 @@ private fun Int.applySpeed(speed: Double): Int = round(this / speed).toInt()
 private fun ((Any) -> Unit).statePairToTimeoutArgsFunc(): (Frame<Any>) -> Pair<() -> Unit, Int> =
     toFrameFunc(pairTransformFirstFunc(curryOneArgToNoArgsFunc()))
 
-fun toFrameFunc(target: (Pair<Any, Int>) -> Pair<() -> Unit, Int>) = fun(it: Frame<Any>): Pair<() -> Unit, Int> {
-    return target(Pair(it.data, it.delay))
-}
+fun toFrameFunc(target: (Pair<Any, Int>) -> Pair<() -> Unit, Int>) = fun(it: Frame<Any>): Pair<() -> Unit, Int> = target(Pair(it.data, it.delay))
 
 private fun <I, O, V> pairTransformFirstFunc(transform: (I) -> O): (Pair<I, V>) -> Pair<O, V> = { pair ->
     pair.letFirst(transform)

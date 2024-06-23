@@ -156,8 +156,7 @@ class CommandDispatcher(
 class CurrentPartyDispatcher(
     override val currentPartyId: PartyId,
     private val commandDispatcher: CommandDispatcher,
-) :
-    ICommandDispatcher by commandDispatcher,
+) : ICommandDispatcher by commandDispatcher,
     CreatePairCandidateReportListAction.Dispatcher<CurrentPartyDispatcher>,
     ShufflePairsAction.Dispatcher<CurrentPartyDispatcher>,
     AssignPinsAction.Dispatcher,

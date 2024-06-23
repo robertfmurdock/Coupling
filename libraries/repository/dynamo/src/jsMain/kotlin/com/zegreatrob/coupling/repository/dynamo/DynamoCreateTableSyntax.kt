@@ -7,7 +7,10 @@ import kotlin.js.json
 
 val validatedTableList = mutableListOf<String>()
 
-interface DynamoCreateTableSyntax : DynamoTableNameSyntax, DynamoDBSyntax, DynamoLoggingSyntax {
+interface DynamoCreateTableSyntax :
+    DynamoTableNameSyntax,
+    DynamoDBSyntax,
+    DynamoLoggingSyntax {
     val createTableParams: Json
     suspend fun ensureTableExists() {
         if (!validatedTableList.contains(prefixedTableName)) {

@@ -11,7 +11,10 @@ import kotlinx.coroutines.coroutineScope
 @ActionMint
 object PartyListQuery {
 
-    interface Dispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax, PartyRecordSyntax {
+    interface Dispatcher :
+        UserAuthenticatedPartyIdSyntax,
+        UserPlayerIdsSyntax,
+        PartyRecordSyntax {
 
         suspend fun perform(query: PartyListQuery) = getPartiesAndUserPlayerIds()
             .onlyAuthenticatedParties()

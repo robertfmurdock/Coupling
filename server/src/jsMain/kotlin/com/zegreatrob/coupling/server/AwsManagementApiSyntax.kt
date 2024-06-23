@@ -13,7 +13,9 @@ interface AwsManagementApiSyntax {
     val managementApiClient: ApiGatewayManagementApiClient
 }
 
-interface AwsSocketCommunicator : SocketCommunicator, AwsManagementApiSyntax {
+interface AwsSocketCommunicator :
+    SocketCommunicator,
+    AwsManagementApiSyntax {
     override suspend fun sendMessageAndReturnIdWhenFail(connectionId: String, message: Message): String? =
         managementApiClient.send(
             PostToConnectionCommand(

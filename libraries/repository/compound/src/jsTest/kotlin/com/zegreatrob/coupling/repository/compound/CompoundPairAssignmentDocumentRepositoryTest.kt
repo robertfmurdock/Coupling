@@ -14,8 +14,7 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncTestTemplate
 import kotlin.test.Test
 
-class CompoundPairAssignmentDocumentRepositoryTest :
-    PairAssignmentDocumentRepositoryValidator<CompoundPairAssignmentDocumentRepository> {
+class CompoundPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator<CompoundPairAssignmentDocumentRepository> {
 
     private val compoundRepositorySetup = asyncTestTemplate(sharedSetup = {
         object {

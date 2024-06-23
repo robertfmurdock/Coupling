@@ -9,7 +9,9 @@ import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
-interface SdkSavePinCommandDispatcher : SavePinCommand.Dispatcher, GqlSyntax {
+interface SdkSavePinCommandDispatcher :
+    SavePinCommand.Dispatcher,
+    GqlSyntax {
     override suspend fun perform(command: SavePinCommand): VoidResult.Accepted {
         val (partyId, pin) = command
         doQuery(Mutation.savePin, partyId.with(pin).savePinInput())

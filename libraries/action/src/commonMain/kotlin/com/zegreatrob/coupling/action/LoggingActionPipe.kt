@@ -7,7 +7,9 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val theLogger by lazy { KotlinLogging.logger("ActionLogger") }
 
-class LoggingActionPipe(override val traceId: Uuid) : ActionPipe, ActionLoggingSyntax {
+class LoggingActionPipe(override val traceId: Uuid) :
+    ActionPipe,
+    ActionLoggingSyntax {
 
     override val logger = theLogger
 

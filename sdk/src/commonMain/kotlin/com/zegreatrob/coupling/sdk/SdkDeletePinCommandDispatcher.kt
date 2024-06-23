@@ -7,7 +7,9 @@ import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
-interface SdkDeletePinCommandDispatcher : DeletePinCommand.Dispatcher, GqlSyntax {
+interface SdkDeletePinCommandDispatcher :
+    DeletePinCommand.Dispatcher,
+    GqlSyntax {
     override suspend fun perform(command: DeletePinCommand) = with(command) {
         (doQuery(Mutation.deletePin, deletePinInput(command.partyId, pinId), "deletePin", ::passThrough) ?: false)
             .voidResult()

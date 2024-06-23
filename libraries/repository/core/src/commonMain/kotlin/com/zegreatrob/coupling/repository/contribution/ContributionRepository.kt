@@ -13,4 +13,6 @@ fun interface ContributionSave {
     suspend fun save(partyContribution: PartyElement<Contribution>)
 }
 
-interface ContributionRepository : ContributionGet, ContributionSave
+interface ContributionRepository :
+    ContributionGet,
+    ContributionSave

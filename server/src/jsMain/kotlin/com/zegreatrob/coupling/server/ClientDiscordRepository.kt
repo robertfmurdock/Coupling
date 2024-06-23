@@ -26,8 +26,7 @@ fun clientDiscordRepository() = ClientDiscordRepository(
 
 private val theLogger by lazy { KotlinLogging.logger("DiscordLogger") }
 
-class ClientDiscordRepository(private val discordClient: DiscordClient, private val clientUrl: String) :
-    DiscordRepository {
+class ClientDiscordRepository(private val discordClient: DiscordClient, private val clientUrl: String) : DiscordRepository {
 
     override suspend fun exchangeForWebhook(code: String) = when (val result = discordClient.getAccessToken(code)) {
         is SuccessfulAccessResponse -> DiscordRepository.ExchangeResult.Success(

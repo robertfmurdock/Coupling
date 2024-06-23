@@ -4,9 +4,15 @@ import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
 
-interface BoostRepository : BoostGet, BoostSave, BoostDelete, BoostGetByPartyId
+interface BoostRepository :
+    BoostGet,
+    BoostSave,
+    BoostDelete,
+    BoostGetByPartyId
 
-interface ExtendedBoostRepository : BoostRepository, BoostGetByPartyId
+interface ExtendedBoostRepository :
+    BoostRepository,
+    BoostGetByPartyId
 
 interface BoostGetByPartyId {
     suspend fun getByPartyId(partyId: PartyId): Record<Boost>?

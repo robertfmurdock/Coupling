@@ -14,8 +14,7 @@ import com.zegreatrob.coupling.server.action.party.UserPlayerIdsSyntax
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-data class UserIsAuthorizedWithDataAction(val partyId: PartyId) :
-    SimpleSuspendResultAction<UserIsAuthorizedWithDataAction.Dispatcher, Pair<PartyDetails, List<Player>>?> {
+data class UserIsAuthorizedWithDataAction(val partyId: PartyId) : SimpleSuspendResultAction<UserIsAuthorizedWithDataAction.Dispatcher, Pair<PartyDetails, List<Player>>?> {
     override val performFunc = link(Dispatcher::perform)
 
     interface Dispatcher :

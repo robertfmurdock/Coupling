@@ -33,9 +33,7 @@ data class GenerateCallSignAction(
 
         private val adjectiveRandom get() = Random(0)
 
-        private fun GenerateCallSignAction.pickNoun(): String {
-            return rollForUnusedTerm(shuffledNouns(), players.nouns(), email)
-        }
+        private fun GenerateCallSignAction.pickNoun(): String = rollForUnusedTerm(shuffledNouns(), players.nouns(), email)
 
         private fun GenerateCallSignAction.shuffledNouns() = nouns.shuffled(nounRandom)
         private val nounRandom get() = Random(1)

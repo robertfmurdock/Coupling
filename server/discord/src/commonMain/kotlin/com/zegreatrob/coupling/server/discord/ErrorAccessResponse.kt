@@ -9,4 +9,5 @@ data class ErrorAccessResponse(
     val message: String? = null,
     @SerialName("error_description")
     val errorDescription: String? = null,
-) : AccessResponse, MessageResponse
+) : AccessResponse,
+    MessageResponse

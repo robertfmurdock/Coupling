@@ -6,11 +6,12 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.action.party.UserAuthenticatedPartyIdSyntax
 import com.zegreatrob.coupling.server.action.party.UserPlayerIdsSyntax
 
-data class UserIsAuthorizedAction(val partyId: PartyId) :
-    SimpleSuspendResultAction<UserIsAuthorizedAction.Dispatcher, Boolean> {
+data class UserIsAuthorizedAction(val partyId: PartyId) : SimpleSuspendResultAction<UserIsAuthorizedAction.Dispatcher, Boolean> {
     override val performFunc = link(Dispatcher::perform)
 
-    interface Dispatcher : UserAuthenticatedPartyIdSyntax, UserPlayerIdsSyntax {
+    interface Dispatcher :
+        UserAuthenticatedPartyIdSyntax,
+        UserPlayerIdsSyntax {
 
         suspend fun perform(action: UserIsAuthorizedAction) = getUserPlayerIds()
             .authenticatedPartyIds()

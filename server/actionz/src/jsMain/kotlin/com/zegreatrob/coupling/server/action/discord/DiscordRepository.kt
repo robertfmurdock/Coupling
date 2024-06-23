@@ -4,7 +4,9 @@ import com.zegreatrob.coupling.model.DiscordTeamAccess
 import com.zegreatrob.coupling.model.DiscordWebhook
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 
-interface DiscordRepository : DiscordSendSpin, DiscordDeleteSpin {
+interface DiscordRepository :
+    DiscordSendSpin,
+    DiscordDeleteSpin {
     suspend fun exchangeForWebhook(code: String): ExchangeResult
 
     sealed interface ExchangeResult {

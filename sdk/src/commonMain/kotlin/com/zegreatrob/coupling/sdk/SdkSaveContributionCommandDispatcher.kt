@@ -7,7 +7,9 @@ import com.zegreatrob.coupling.sdk.gql.GqlSyntax
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
-interface SdkSaveContributionCommandDispatcher : SaveContributionCommand.Dispatcher, GqlSyntax {
+interface SdkSaveContributionCommandDispatcher :
+    SaveContributionCommand.Dispatcher,
+    GqlSyntax {
     override suspend fun perform(command: SaveContributionCommand): VoidResult {
         doQuery(Mutation.saveContribution, command.saveContributionInput())
         return VoidResult.Accepted

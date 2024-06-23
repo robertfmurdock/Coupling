@@ -33,8 +33,7 @@ val Int.years: Duration get() = (this * 365).toDuration(DurationUnit.DAYS)
 val Int.months: Duration get() = (this * 30).toDuration(DurationUnit.DAYS)
 
 @Suppress("unused")
-class DynamoPairAssignmentDocumentRepositoryTest :
-    PairAssignmentDocumentRepositoryValidator<DynamoPairAssignmentDocumentRepository> {
+class DynamoPairAssignmentDocumentRepositoryTest : PairAssignmentDocumentRepositoryValidator<DynamoPairAssignmentDocumentRepository> {
 
     override val repositorySetup =
         asyncTestTemplate<PartyContext<DynamoPairAssignmentDocumentRepository>>(sharedSetup = {

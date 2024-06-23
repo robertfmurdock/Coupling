@@ -66,7 +66,8 @@ data class JsonPlayerRecord(
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
     override val timestamp: Instant,
-) : JsonPartyRecordInfo, JsonPlayer
+) : JsonPartyRecordInfo,
+    JsonPlayer
 
 fun Player.toSerializable() = JsonPlayerData(
     id = id,

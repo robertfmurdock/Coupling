@@ -10,7 +10,9 @@ import com.zegreatrob.coupling.model.party.defaultParty
 import kotlin.js.Json
 import kotlin.js.json
 
-interface DynamoPartyJsonMapping : DynamoDatatypeSyntax, DynamoRecordJsonMapping {
+interface DynamoPartyJsonMapping :
+    DynamoDatatypeSyntax,
+    DynamoRecordJsonMapping {
 
     fun Record<PartyDetails>.asDynamoJson() = recordJson().add(data.asDynamoJson())
 

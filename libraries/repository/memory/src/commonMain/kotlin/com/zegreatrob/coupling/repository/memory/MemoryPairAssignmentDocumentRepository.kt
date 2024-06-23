@@ -13,8 +13,7 @@ class MemoryPairAssignmentDocumentRepository(
     override val userId: String,
     override val clock: Clock,
     private val recordBackend: RecordBackend<PartyElement<PairAssignmentDocument>> = SimpleRecordBackend(),
-) :
-    PairAssignmentDocumentRepository,
+) : PairAssignmentDocumentRepository,
     TypeRecordSyntax<PartyElement<PairAssignmentDocument>>,
     RecordBackend<PartyElement<PairAssignmentDocument>> by recordBackend {
 

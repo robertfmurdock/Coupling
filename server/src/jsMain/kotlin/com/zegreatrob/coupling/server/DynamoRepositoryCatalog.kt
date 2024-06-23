@@ -37,8 +37,7 @@ class DynamoRepositoryCatalog private constructor(
     override val slackAccessRepository: SlackAccessRepository,
     override val discordAccessRepository: DiscordAccessRepository,
     override val contributionRepository: ContributionRepository,
-) :
-    RepositoryCatalog,
+) : RepositoryCatalog,
     UserIdProvider,
     ClockProvider {
     companion object {

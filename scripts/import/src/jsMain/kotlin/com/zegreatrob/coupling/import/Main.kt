@@ -114,7 +114,8 @@ class DynamoRepositoryCatalog private constructor(
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
     val pinRepository: DynamoPinRepository,
     val userRepository: DynamoUserRepository,
-) : UserIdProvider, ClockProvider {
+) : UserIdProvider,
+    ClockProvider {
 
     companion object {
         suspend operator fun invoke(userEmail: String, clock: Clock): DynamoRepositoryCatalog {

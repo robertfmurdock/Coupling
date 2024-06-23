@@ -100,8 +100,7 @@ class DynamoRepositoryCatalog private constructor(
     val pairAssignmentDocumentRepository: DynamoPairAssignmentDocumentRepository,
     val pinRepository: DynamoPinRepository,
     val userRepository: DynamoUserRepository,
-) :
-    UserIdProvider,
+) : UserIdProvider,
     ClockProvider {
 
     companion object {

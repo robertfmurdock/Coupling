@@ -4,7 +4,9 @@ import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.user.UserIdProvider
 
-interface TypeRecordSyntax<T> : UserIdProvider, ClockProvider {
+interface TypeRecordSyntax<T> :
+    UserIdProvider,
+    ClockProvider {
 
     fun T.record() = Record(
         data = this,

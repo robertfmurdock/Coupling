@@ -5,8 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.repository.pin.PinRepository
 
-class CompoundPinRepository(val repository1: PinRepository, val repository2: PinRepository) :
-    PinRepository by repository1 {
+class CompoundPinRepository(val repository1: PinRepository, val repository2: PinRepository) : PinRepository by repository1 {
 
     override suspend fun save(partyPin: PartyElement<Pin>) = arrayOf(repository1, repository2).forEach {
         it.save(partyPin)

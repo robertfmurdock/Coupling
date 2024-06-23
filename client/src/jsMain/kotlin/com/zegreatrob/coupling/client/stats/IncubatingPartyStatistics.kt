@@ -89,9 +89,7 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
 
 val random = Random(10)
 
-private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, List<Contribution>>>): Array<NivoLineData> {
-    return selectedPairs.map { pairContributionLine(it.first, it.second) }.toTypedArray()
-}
+private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, List<Contribution>>>): Array<NivoLineData> = selectedPairs.map { pairContributionLine(it.first, it.second) }.toTypedArray()
 
 private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>): NivoLineData {
     val commitDateTimes = contributions

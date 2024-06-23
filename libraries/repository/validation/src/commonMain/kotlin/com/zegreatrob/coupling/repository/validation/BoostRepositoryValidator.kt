@@ -89,8 +89,7 @@ interface BoostRepositoryValidator<R, SC : SharedContext<R>> where R : BoostGet,
     }
 }
 
-interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : SharedContext<R>> :
-    BoostRepositoryValidator<R, SC> {
+interface ExtendedBoostRepositoryValidator<R : ExtendedBoostRepository, SC : SharedContext<R>> : BoostRepositoryValidator<R, SC> {
 
     @Test
     fun saveBoostRepeatedlyGetByPartyGetsLatest() = repositorySetup.with({ sharedContext ->

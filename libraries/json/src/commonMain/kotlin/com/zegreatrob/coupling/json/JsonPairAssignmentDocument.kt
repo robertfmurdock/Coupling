@@ -191,22 +191,20 @@ fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
     slackMessageId = slackMessageId,
 )
 
-fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocument> {
-    return PartyRecord(
-        partyId.with(
-            PairAssignmentDocument(
-                id = id.let(::PairAssignmentDocumentId),
-                date = date,
-                pairs = pairs.map(JsonPinnedCouplingPair::toModel),
-                discordMessageId = discordMessageId,
-                slackMessageId = slackMessageId,
-            ),
+fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocument> = PartyRecord(
+    partyId.with(
+        PairAssignmentDocument(
+            id = id.let(::PairAssignmentDocumentId),
+            date = date,
+            pairs = pairs.map(JsonPinnedCouplingPair::toModel),
+            discordMessageId = discordMessageId,
+            slackMessageId = slackMessageId,
         ),
-        modifyingUserId = modifyingUserEmail,
-        isDeleted = isDeleted,
-        timestamp = date,
-    )
-}
+    ),
+    modifyingUserId = modifyingUserEmail,
+    isDeleted = isDeleted,
+    timestamp = date,
+)
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
     pinnedPlayers = players.map(JsonPinnedPlayer::toModel),
