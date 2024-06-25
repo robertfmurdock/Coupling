@@ -16260,10 +16260,10 @@ strip-outer@^1.0.1:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-stripe@^15.12.0:
-  version "15.12.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-15.12.0.tgz#a30c242861f9c97dd31d3078fb0673d9bd10efe2"
-  integrity sha512-slTbYS1WhRJXVB8YXU8fgHizkUrM9KJyrw4Dd8pLEwzKHYyQTIE46EePC2MVbSDZdE24o1GdNtzmJV4PrPpmJA==
+stripe@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-16.0.0.tgz#fc65ffd24bcda99224d8cf18089810ea6b5dc71c"
+  integrity sha512-HNPTzXrSompUxeGqDpbNmPvH/UEzziIxGWvTDTZwIBLlL6CFqR+3YLpV+g4HXOsPKbQRguauptQwVWO7Y/yEGg==
   dependencies:
     "@types/node" ">=8.1.0"
     qs "^6.11.0"
