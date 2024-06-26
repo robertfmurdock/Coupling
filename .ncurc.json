@@ -1,6 +1,5 @@
 {
   "reject": [
-    "serverless",
     "mime",
     "read-pkg-up",
     "entities"
