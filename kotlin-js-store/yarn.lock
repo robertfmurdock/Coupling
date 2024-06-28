@@ -132,15 +132,15 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-apigatewaymanagementapi@~3.600.0":
-  version "3.600.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.600.0.tgz#549a32425bc8fc5e2c8f527673386ed4f66925a9"
-  integrity sha512-lKDrSGLNTpo0xvRXItcv+PJbmx5w+LOJX2aaFrJ8/vXtVhyOkpED+qRp+FOSv4JnwJIHFXF4RLSenol1WGhJpA==
+"@aws-sdk/client-apigatewaymanagementapi@~3.606.0":
+  version "3.606.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-apigatewaymanagementapi/-/client-apigatewaymanagementapi-3.606.0.tgz#4f0c33d14b27a79a4bd6687b73a565fe23174986"
+  integrity sha512-bLBjCuq/0BiJP425IJlAfZNFC+D7EWf+NoSXkbNhEfzQ3DPOWD4NlvSHzeBBHbyU/L2+8Yoy5KYRJyWkUo1R1g==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
-    "@aws-sdk/client-sso-oidc" "3.600.0"
-    "@aws-sdk/client-sts" "3.600.0"
+    "@aws-sdk/client-sso-oidc" "3.606.0"
+    "@aws-sdk/client-sts" "3.606.0"
     "@aws-sdk/core" "3.598.0"
     "@aws-sdk/credential-provider-node" "3.600.0"
     "@aws-sdk/middleware-host-header" "3.598.0"
@@ -228,15 +228,15 @@
     tslib "^2.6.2"
     uuid "^9.0.1"
 
-"@aws-sdk/client-dynamodb@3.602.0":
-  version "3.602.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.602.0.tgz#ae167279a3075640fdb8c9d506a9a5d010dbd50d"
-  integrity sha512-q7lH7YD9KvHLF3tyAG1UqaPv4a6KiHLunqKYh8vt3d1WJK7t4wzE97Vf19MfNpza1MuZ0OF/SK8Kl69vEMrtOA==
+"@aws-sdk/client-dynamodb@3.606.0":
+  version "3.606.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.606.0.tgz#d43a26a084a3906027ed21131aacc730075d847e"
+  integrity sha512-Htx6JxaJbhstUhyZiUtmleMqifwU9jHBdS28GAPCUmcOjoioRfrN7sgGg/G9Tl9kQeu4BuJRG9ss044uD0SU5A==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
-    "@aws-sdk/client-sso-oidc" "3.600.0"
-    "@aws-sdk/client-sts" "3.600.0"
+    "@aws-sdk/client-sso-oidc" "3.606.0"
+    "@aws-sdk/client-sts" "3.606.0"
     "@aws-sdk/core" "3.598.0"
     "@aws-sdk/credential-provider-node" "3.600.0"
     "@aws-sdk/middleware-endpoint-discovery" "3.598.0"
@@ -329,15 +329,15 @@
     "@smithy/util-waiter" "^2.2.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-lambda@~3.600.0":
-  version "3.600.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.600.0.tgz#96b4116f254292ceb0b4f834c3d4954b1a65c802"
-  integrity sha512-J7tDJ0TOILuvRp9+19cotI4BU2YFO9XKDX9rZY56pAu72F/gCIKvf6g9hI7h1HOCSw0Ug+FIFciOJhRQk+YKCQ==
+"@aws-sdk/client-lambda@~3.606.0":
+  version "3.606.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-lambda/-/client-lambda-3.606.0.tgz#46e116eb1f08d9a4153076e98985c48f2b824363"
+  integrity sha512-FGAv25D9FDL2D/CmbOuuaJkYf/jAsy9b7R+f0DUvdPTwrbgdd59eSA+iNrbUZuZj6wdeYvUFBfX1TWqK5ZsOfA==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
-    "@aws-sdk/client-sso-oidc" "3.600.0"
-    "@aws-sdk/client-sts" "3.600.0"
+    "@aws-sdk/client-sso-oidc" "3.606.0"
+    "@aws-sdk/client-sts" "3.606.0"
     "@aws-sdk/core" "3.598.0"
     "@aws-sdk/credential-provider-node" "3.600.0"
     "@aws-sdk/middleware-host-header" "3.598.0"
@@ -472,14 +472,13 @@
     "@smithy/util-utf8" "^3.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-sso-oidc@3.600.0":
-  version "3.600.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sso-oidc/-/client-sso-oidc-3.600.0.tgz#37966020af55a052822b9ef21adc38d2afcb0f34"
-  integrity sha512-7+I8RWURGfzvChyNQSyj5/tKrqRbzRl7H+BnTOf/4Vsw1nFOi5ROhlhD4X/Y0QCTacxnaoNcIrqnY7uGGvVRzw==
+"@aws-sdk/client-sso-oidc@3.606.0":
+  version "3.606.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sso-oidc/-/client-sso-oidc-3.606.0.tgz#19d4818b9d04e5d1b6a7fe50a86b0c98a2b30c42"
+  integrity sha512-gL1FHPS6hwgMNS/A+Qh5bUyHOeRVOqdb7c6+i+9gR3wtGvt2lvoSm8w5DhS08Xiiacz2AqYRDEapp0xuyCrbBQ==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
-    "@aws-sdk/client-sts" "3.600.0"
     "@aws-sdk/core" "3.598.0"
     "@aws-sdk/credential-provider-node" "3.600.0"
     "@aws-sdk/middleware-host-header" "3.598.0"
@@ -740,14 +739,14 @@
     "@smithy/util-utf8" "^3.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-sts@3.600.0":
-  version "3.600.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.600.0.tgz#8a437f8cf626cf652f99628105576213dbba48b2"
-  integrity sha512-KQG97B7LvTtTiGmjlrG1LRAY8wUvCQzrmZVV5bjrJ/1oXAU7DITYwVbSJeX9NWg6hDuSk0VE3MFwIXS2SvfLIA==
+"@aws-sdk/client-sts@3.606.0":
+  version "3.606.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-sts/-/client-sts-3.606.0.tgz#81d61a6240761230fbb0e36ac782485c535ac4a2"
+  integrity sha512-b11mAhjrkm3MMiAPoMGcmd6vsaz2120lg8rHG/NZCo9vB1K6Kc7WP+a1Q05TRMseer2egTtpWJfn44aVO97VqA==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
-    "@aws-sdk/client-sso-oidc" "3.600.0"
+    "@aws-sdk/client-sso-oidc" "3.606.0"
     "@aws-sdk/core" "3.598.0"
     "@aws-sdk/credential-provider-node" "3.600.0"
     "@aws-sdk/middleware-host-header" "3.598.0"
@@ -1115,12 +1114,12 @@
     mnemonist "0.38.3"
     tslib "^2.6.2"
 
-"@aws-sdk/lib-dynamodb@3.602.0":
-  version "3.602.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.602.0.tgz#8bb20a10d3dd5141e95c3751bc8124004b649526"
-  integrity sha512-6kKNyjP0WawAU1dDiA00eK2MfYH0eaviuc/ctQ7HkpWDAuCAfY7alKXAvks+6qCXf+T1SzucIUUj6zlG5i0a2w==
+"@aws-sdk/lib-dynamodb@3.606.0":
+  version "3.606.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.606.0.tgz#48e790e2a6e27bf7246083a1c5ffd5ff78cb035a"
+  integrity sha512-BdfyqaetIWUlg0NBfjHWGeiZnnrJArZyHsq07+3BE07OJ6a0pu6g3oqjd6ikzmGfmTxtxm7SldkFk7bOlFA5jA==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.602.0"
+    "@aws-sdk/util-dynamodb" "3.606.0"
     "@smithy/smithy-client" "^3.1.2"
     "@smithy/types" "^3.1.0"
     tslib "^2.6.2"
@@ -1359,10 +1358,10 @@
     "@smithy/types" "^2.3.1"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.602.0":
-  version "3.602.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.602.0.tgz#d0edb32763c1ae019a9e1957f573feeadf2a4122"
-  integrity sha512-0QsRLE4cK0h9jseCbaBZpcLzBcOgPMdsEy4wIYvcXivHIdgt/JQxs329NF7EfWQU8h3PU5hRy3tiTBLuB4TmgQ==
+"@aws-sdk/util-dynamodb@3.606.0":
+  version "3.606.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.606.0.tgz#a171a203c7dd42cc6a7ef7e1970c1a43b87a171a"
+  integrity sha512-2m6yPB634cgnjpSfkKWIqVSUC5SfgzBRotdwRqkCsfQDm66KX5pnhz8QMogB5D+O1q+Gd7ZypgAkQ7PgDWt5tA==
   dependencies:
     tslib "^2.6.2"
 
@@ -5544,10 +5543,10 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@stripe/react-stripe-js@^2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-2.7.1.tgz#2be66166318fcb898c67a19e5b342364a2714d57"
-  integrity sha512-/i13alp27HaSBbMM6kW0jhy8KqdtOL1T/EcRjFjfhvt+CBtMEg8TD7y28W3oZG0+OBDdCyGGnXgNgrKPYQH40g==
+"@stripe/react-stripe-js@^2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-2.7.2.tgz#c84e8217801e398f2c3347fb3b0d978dac856f87"
+  integrity sha512-OCvSr/wMt2GUVwEW2nvRYVvv5Pkey6YQBOevYSx7N0JyuRK8yK7KtedTty7enFNnEk1dFQNppcjofz6V1i5rXA==
   dependencies:
     prop-types "^15.7.2"
 
@@ -7672,10 +7671,10 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@126.0.3:
-  version "126.0.3"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-126.0.3.tgz#5c1c8f586b0832f00286391218a56460b2d605c5"
-  integrity sha512-4o+ZK8926/8lqIlnnvcljCHV88Z8IguEMB5PInOiS9/Lb6cyeZSj2Uvz+ky1Jgyw2Bn7qCLJFfbUslaWnvUUbg==
+chromedriver@126.0.4:
+  version "126.0.4"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-126.0.4.tgz#5c5e1f80c4269b55251c563cf47709154090135b"
+  integrity sha512-mIdJqdocfN/y9fl5BymIzM9WQLy64x078i5tS1jGFzbFAwXwXrj3zmA86Wf3R/hywPYpWqwXxFGBJHgqZTuGCA==
   dependencies:
     "@testim/chrome-version" "^1.1.4"
     axios "^1.6.7"
@@ -9410,10 +9409,15 @@ entities@^2.0.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.2.0.tgz#098dc90ebb83d8dffa089d55256b351d34c4da55"
   integrity sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==
 
-entities@^4.3.0, entities@^4.4.0, entities@^4.5.0:
+entities@^4.3.0, entities@^4.4.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/entities/-/entities-4.5.0.tgz#5d268ea5e7113ec74c4d033b79ea5a35a488fb48"
   integrity sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==
+
+entities@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-5.0.0.tgz#b2ab51fe40d995817979ec79dd621154c3c0f62b"
+  integrity sha512-BeJFvFRJddxobhvEdm5GqHzRV/X+ACeuw0/BuuxsCh1EUZcAIz8+kYmBp/LrQuloy6K1f3a0M7+IhmZ7QnkISA==
 
 env-paths@^2.2.0:
   version "2.2.1"
@@ -12118,10 +12122,10 @@ jose@^5.2.1:
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.2.4.tgz#c0d296caeeed0b8444a8b8c3b68403d61aa4ed72"
   integrity sha512-6ScbIk2WWCeXkmzF6bRPmEuaqy1m8SbsRFMa/FLrSCkGIhj8OLVG/IH+XHVmNMx/KUo8cVWEE6oKR4dJ+S0Rkg==
 
-jose@^5.4.1:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-5.4.1.tgz#b471ee3963920ba5452fd1b1398c8ba72a7b2fcf"
-  integrity sha512-U6QajmpV/nhL9SyfAewo000fkiRQ+Yd2H0lBxJJ9apjpOgkOcBQJWOrMo917lxLptdS/n/o/xPzMkXhF46K8hQ==
+jose@^5.6.2:
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-5.6.2.tgz#b03628593d3a3c6486b37f4788faa6cc235cec79"
+  integrity sha512-F1t1/WZJ4JdmCE/XoMYw1dPOW5g8JF0xGm6Ox2fwaCAPlCzt+4Bh0EWP59iQuZNHHauDkCdjx+kCZSh5z/PGow==
 
 js-string-escape@^1.0.1:
   version "1.0.1"
@@ -16260,10 +16264,10 @@ strip-outer@^1.0.1:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-stripe@^15.12.0:
-  version "15.12.0"
-  resolved "https://registry.yarnpkg.com/stripe/-/stripe-15.12.0.tgz#a30c242861f9c97dd31d3078fb0673d9bd10efe2"
-  integrity sha512-slTbYS1WhRJXVB8YXU8fgHizkUrM9KJyrw4Dd8pLEwzKHYyQTIE46EePC2MVbSDZdE24o1GdNtzmJV4PrPpmJA==
+stripe@^16.1.0:
+  version "16.1.0"
+  resolved "https://registry.yarnpkg.com/stripe/-/stripe-16.1.0.tgz#63a4ada9df88cc410aa9a4f41b3f5b772dfc2dfa"
+  integrity sha512-syeEEd112om/waJ5gOQ+SaYi+setuidQ4ZIPiQREF4yJeegXhn2HKy6C0JYm7uhVQKfMAvuZ22dIRsnoDv7AMw==
   dependencies:
     "@types/node" ">=8.1.0"
     qs "^6.11.0"
