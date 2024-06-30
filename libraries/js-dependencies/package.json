@@ -33,7 +33,7 @@
     "d3-selection": "^3.0.0",
     "date-fns": "^3.6.0",
     "drag-drop-webkit-mobile": "^1.4.1",
-    "entities": "^5.0.0",
+    "entities": "^4.5.0",
     "express": "^4.19.2",
     "express-jwt": "8.4.1",
     "express-statsd": "^0.3.0",
