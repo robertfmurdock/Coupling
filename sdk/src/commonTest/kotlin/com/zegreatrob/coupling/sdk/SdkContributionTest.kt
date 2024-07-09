@@ -85,12 +85,19 @@ class SdkContributionTest {
         )
     } verify { result ->
         result?.party?.pairs
-            ?.find { it.players?.elements?.map(Player::id)?.contains(players[1].id) == true }
+            ?.filter { it.players?.elements?.map(Player::id) != listOf(players[1].id) }
+            ?.forEach {
+                it.contributions?.elements?.withoutCreatedAt()
+                    .assertIsEqualTo(emptyList(), "Pairs should only contain contributions with exact matches")
+            }
+        result?.party?.pairs
+            ?.find { it.players?.elements?.map(Player::id) == listOf(players[1].id) }
             ?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
                 listOf(
                     contributionCommand.toExpectedContribution(),
                 ),
+                "Contribution should be included in solo correctly",
             )
     }
 

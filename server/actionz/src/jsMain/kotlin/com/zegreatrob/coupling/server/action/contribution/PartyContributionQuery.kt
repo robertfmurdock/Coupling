@@ -87,9 +87,9 @@ data class PairContributionQuery(val partyId: PartyId, val pair: CouplingPair) {
     interface Dispatcher {
         val contributionRepository: ContributionGet
         suspend fun perform(query: PairContributionQuery): List<PartyRecord<Contribution>> {
-            val targetEmails = query.pair.asArray().mapNotNull { it.email.ifEmpty { null } }
+            val targetEmails = query.pair.asArray().mapNotNull { it.email.ifEmpty { null } }.toSet()
             return contributionRepository.get(query.partyId)
-                .filter { it.data.element.participantEmails.any { email -> targetEmails.contains(email) } }
+                .filter { it.data.element.participantEmails == targetEmails }
         }
     }
 }
