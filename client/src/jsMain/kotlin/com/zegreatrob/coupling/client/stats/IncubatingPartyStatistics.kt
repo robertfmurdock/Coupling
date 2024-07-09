@@ -55,11 +55,10 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
             div {
                 css {
                     whiteSpace = WhiteSpace.nowrap
-                    display = Display.inlineFlex
                 }
                 div {
                     css {
-                        display = Display.inlineBlock
+                        display = Display.inlineFlex
                         marginLeft = 20.px
                     }
                     div {
