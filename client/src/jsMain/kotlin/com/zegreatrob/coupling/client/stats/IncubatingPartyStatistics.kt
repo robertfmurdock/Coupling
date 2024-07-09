@@ -75,9 +75,11 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                             height = 600.px
                             backgroundColor = Color("white")
                         }
-                        MyResponsiveLine {
-                            legend = "Pair Commits Over Time"
-                            data = pairingLineData(allPairContributions.filter { selectedPairs.contains(it.first) })
+                        if (selectedPairs.isNotEmpty()) {
+                            MyResponsiveLine {
+                                legend = "Pair Commits Over Time"
+                                data = pairingLineData(allPairContributions.filter { selectedPairs.contains(it.first) })
+                            }
                         }
                     }
                 }
@@ -88,23 +90,19 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
 
 val random = Random(10)
 
-private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, List<Contribution>>>): Array<NivoLineData> = selectedPairs.map { pairContributionLine(it.first, it.second) }.toTypedArray()
+private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, List<Contribution>>>): Array<NivoLineData> =
+    selectedPairs.map { pairContributionLine(it.first, it.second) }.toTypedArray()
 
 private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>): NivoLineData {
-    val commitDateTimes = contributions
-        .mapNotNull { it.dateTime }
+    val commitDateTimes = contributions.mapNotNull { it.dateTime }
     return NivoLineData(
         couplingPair.joinToString("-") { it.name },
-        commitDateTimes
-            .map { it.toLocalDateTime(TimeZone.currentSystemDefault()) }
-            .groupBy(LocalDateTime::date)
-            .map {
-                NinoLinePoint(
-                    x = it.key.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
-                    y = it.value.size,
-                )
-            }
-            .toTypedArray(),
+        commitDateTimes.map { it.toLocalDateTime(TimeZone.currentSystemDefault()) }.groupBy(LocalDateTime::date).map {
+            NinoLinePoint(
+                x = it.key.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
+                y = it.value.size,
+            )
+        }.toTypedArray(),
     )
 }
 
@@ -135,9 +133,7 @@ private fun generateCommitTimes(): List<LocalDateTime> {
             val numberOfCommits = random.nextInt(0, 6)
             (0..numberOfCommits).map {
                 val timeOfDay = random.nextInt(9, 17)
-                dayDate.toLocalDateTime(TimeZone.currentSystemDefault())
-                    .date
-                    .atTime(timeOfDay, 0, 0)
+                dayDate.toLocalDateTime(TimeZone.currentSystemDefault()).date.atTime(timeOfDay, 0, 0)
             }
         } else {
             emptyList()

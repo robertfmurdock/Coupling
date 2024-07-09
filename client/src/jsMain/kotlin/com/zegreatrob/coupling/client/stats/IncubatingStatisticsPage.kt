@@ -12,7 +12,10 @@ val IncubatingStatisticsPage = partyPageFunction { props, partyId ->
             party(partyId) {
                 details()
                 playerList()
-                pairs { players() }
+                pairs {
+                    players()
+                    contributions()
+                }
             }
         },
         toNode = { _, _, queryResult ->
