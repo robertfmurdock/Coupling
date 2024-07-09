@@ -24,13 +24,17 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJSDate
 import kotlinx.datetime.toLocalDateTime
 import react.Props
+import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.input
+import react.dom.html.ReactHTML.label
 import react.useMemo
 import react.useState
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.WhiteSpace
 import web.cssom.px
+import web.html.InputType
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 
@@ -44,7 +48,18 @@ external interface IncubatingPartyStatisticsProps : Props {
 val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
     val (partyDetails) = props
     val allPairs = props.pairs.mapNotNull { it.players?.elements?.toCouplingPair() }
-    val allPairContributions = useMemo { allPairs.map { it to generateFakeContributions() } }
+    val (shouldFake, setShouldFake) = useState(false)
+    val fakeContributions: List<Pair<CouplingPair, List<Contribution>>> =
+        useMemo { allPairs.map { it to generateFakeContributions() } }
+    val allPairContributions: List<Pair<CouplingPair, List<Contribution>>> =
+        if (shouldFake) {
+            fakeContributions
+        } else {
+            props.pairs.mapNotNull {
+                it.players?.elements?.toCouplingPair()?.let { pair -> pair to (it.contributions?.elements ?: emptyList()) }
+            }
+        }
+
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     div {
         PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9")) {
@@ -63,6 +78,15 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                     }
                     div {
                         css { display = Display.inlineBlock }
+                        label {
+                            ariaLabel = "Fake the data"
+                            +"Fake the data"
+                            input {
+                                type = InputType.checkbox
+                                value = shouldFake
+                                onChange = { setShouldFake(!shouldFake) }
+                            }
+                        }
                         PairSelector(
                             pairs = allPairs,
                             onSelectionChange = setSelectedPairs::invoke,
@@ -75,7 +99,7 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                             height = 600.px
                             backgroundColor = Color("white")
                         }
-                        if (selectedPairs.isNotEmpty()) {
+                        if (selectedPairs.isNotEmpty() && allPairContributions.flatMap { it.second }.isNotEmpty()) {
                             MyResponsiveLine {
                                 legend = "Pair Commits Over Time"
                                 data = pairingLineData(allPairContributions.filter { selectedPairs.contains(it.first) })
