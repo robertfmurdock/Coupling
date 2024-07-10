@@ -12,6 +12,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
+import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -65,6 +66,33 @@ class SdkPairsTest {
                     partyId = party.id,
                     contributionId = uuidString(),
                     participantEmails = mob.take(1).map { it.email }.toSet(),
+                ),
+            )
+        }
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { pairs { players() } } })
+    } verify { result ->
+        result?.party?.pairs?.map { it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element) }
+            ?.last()
+            .assertIsEqualTo(mob)
+    }
+
+    @Test
+    fun willIncludeMobsFromContributionHistoryViaAdditionalEmails() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val player1 = stubPlayer().copy(additionalEmails = setOf("excellent.continuousexcellence.io"))
+        val player2 = stubPlayer().copy(additionalEmails = setOf("awesome.continuousexcellence.io"))
+        val player3 = stubPlayer().copy(additionalEmails = setOf("cool.continuousexcellence.io"))
+        val players = listOf(player1, player2, player3, stubPlayer(), stubPlayer())
+        val mob = listOf(player1, player2, player3)
+    }) {
+        savePartyStateWithFixedPlayerOrder(party, players, emptyList())
+        with(sdk()) {
+            fire(
+                SaveContributionCommand(
+                    partyId = party.id,
+                    contributionId = uuidString(),
+                    participantEmails = mob.map { it.additionalEmails.first() }.toSet(),
                 ),
             )
         }

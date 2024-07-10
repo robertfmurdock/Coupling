@@ -60,12 +60,13 @@ class SdkContributionTest {
     fun canQueryContributionsByPair() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
+        val expectedPlayer = players[1]
         val contributionCommand = stubSaveContributionCommand(party.id)
-            .copy(participantEmails = setOf(players[1].email))
+            .copy(participantEmails = setOf(expectedPlayer.email))
         val saveContributionCommands = listOf(
-            stubSaveContributionCommand(party.id),
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf()),
             contributionCommand,
-            stubSaveContributionCommand(party.id),
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf()),
         )
     }) {
         savePartyState(party, players, emptyList())
@@ -85,13 +86,18 @@ class SdkContributionTest {
         )
     } verify { result ->
         result?.party?.pairs
-            ?.filter { it.players?.elements?.map(Player::id) != listOf(players[1].id) }
+            ?.filter { it.players?.elements?.map(Player::id) != listOf(expectedPlayer.id) }
             ?.forEach {
                 it.contributions?.elements?.withoutCreatedAt()
-                    .assertIsEqualTo(emptyList(), "Pairs should only contain contributions with exact matches")
+                    .assertIsEqualTo(
+                        emptyList(),
+                        "Pairs should only contain contributions with exact matches, but ${
+                            it.players?.elements?.map(Player::id)
+                        } had an inappropriate match",
+                    )
             }
         result?.party?.pairs
-            ?.find { it.players?.elements?.map(Player::id) == listOf(players[1].id) }
+            ?.find { it.players?.elements?.map(Player::id) == listOf(expectedPlayer.id) }
             ?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
                 listOf(
