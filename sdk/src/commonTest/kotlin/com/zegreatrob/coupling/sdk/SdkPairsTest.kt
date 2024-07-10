@@ -46,19 +46,28 @@ class SdkPairsTest {
     }
 
     @Test
-    fun willIncludeMobsFromContributionHistory() = asyncSetup(object {
+    fun willIncludeMobsFromContributionHistoryAndNotRepeatKnownPairs() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = stubPlayers(4)
         val mob = players.shuffled().take(3)
     }) {
         savePartyStateWithFixedPlayerOrder(party, players, emptyList())
-        sdk().fire(
-            SaveContributionCommand(
-                partyId = party.id,
-                contributionId = uuidString(),
-                participantEmails = mob.map { it.email }.toSet(),
-            ),
-        )
+        with(sdk()) {
+            fire(
+                SaveContributionCommand(
+                    partyId = party.id,
+                    contributionId = uuidString(),
+                    participantEmails = mob.map { it.email }.toSet(),
+                ),
+            )
+            fire(
+                SaveContributionCommand(
+                    partyId = party.id,
+                    contributionId = uuidString(),
+                    participantEmails = mob.take(1).map { it.email }.toSet(),
+                ),
+            )
+        }
     } exercise {
         sdk().fire(graphQuery { party(party.id) { pairs { players() } } })
     } verify { result ->

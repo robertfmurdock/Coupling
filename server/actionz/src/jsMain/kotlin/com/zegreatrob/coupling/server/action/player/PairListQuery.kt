@@ -1,10 +1,12 @@
 package com.zegreatrob.coupling.server.action.player
 
 import com.zegreatrob.coupling.model.PlayerPair
+import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.pairCombinations
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
@@ -23,13 +25,16 @@ data class PairListQuery(val partyId: PartyId) {
             val naturalPairCombinations = playerListData
                 .pairCombinations()
 
-            val allContributionPairs = contributions.mapNotNull { contribution ->
-                contribution.participantEmails
-                    .mapNotNull { email -> playerListData.find { it.data.player.email == email } }
-                    .toSet().ifEmpty { null }
-            }.toSet()
+            val allContributionPairs: Set<Set<Record<PartyElement<Player>>>> =
+                contributions.mapNotNull { contribution ->
+                    contribution.participantEmails
+                        .mapNotNull { email -> playerListData.find { it.data.player.email == email } }
+                        .toSet().ifEmpty { null }
+                }.toSet()
 
-            val extraPairs = allContributionPairs - naturalPairCombinations.mapNotNull { it.players }.toSet()
+            val naturalPlayerSets: Set<Set<Record<PartyElement<Player>>>> =
+                naturalPairCombinations.mapNotNull { it.players?.toSet() }.toSet()
+            val extraPairs = allContributionPairs - naturalPlayerSets
 
             return query.partyId.with(
                 naturalPairCombinations + extraPairs.map { PlayerPair(players = it.toList()) },
