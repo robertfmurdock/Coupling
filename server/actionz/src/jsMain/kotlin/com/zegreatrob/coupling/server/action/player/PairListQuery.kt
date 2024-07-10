@@ -32,7 +32,9 @@ data class PairListQuery(val partyId: PartyId) {
                 contributions.mapNotNull { contribution ->
                     contribution.participantEmails
                         .map { email ->
-                            playerListData.find { it.data.player.emails.contains(email) }
+                            playerListData.find {
+                                it.data.player.emails.map(String::lowercase).contains(email.lowercase())
+                            }
                                 ?: placeholderPlayer(query, email)
                         }
                         .toSet().ifEmpty { null }

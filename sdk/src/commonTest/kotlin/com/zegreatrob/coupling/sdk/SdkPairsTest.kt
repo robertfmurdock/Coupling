@@ -78,7 +78,7 @@ class SdkPairsTest {
     }
 
     @Test
-    fun willIncludeMobsFromContributionHistoryViaAdditionalEmails() = asyncSetup(object {
+    fun willIncludeMobsFromContributionHistoryViaAdditionalEmailsIgnoringCase() = asyncSetup(object {
         val party = stubPartyDetails()
         val player1 = stubPlayer().copy(additionalEmails = setOf("excellent.continuousexcellence.io"))
         val player2 = stubPlayer().copy(additionalEmails = setOf("awesome.continuousexcellence.io"))
@@ -92,7 +92,7 @@ class SdkPairsTest {
                 SaveContributionCommand(
                     partyId = party.id,
                     contributionId = uuidString(),
-                    participantEmails = mob.map { it.additionalEmails.first() }.toSet(),
+                    participantEmails = mob.map { it.additionalEmails.first().uppercase() }.toSet(),
                 ),
             )
         }
