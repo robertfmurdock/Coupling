@@ -26,6 +26,17 @@ private fun CouplingPair.targetPlayerEmailGroups(): Set<Set<String>> = asArray()
     .toSet()
 
 private fun pairMatches(pairEmails: Set<String>, targetPlayerEmailGroups: Set<Set<String>>): Boolean =
-    targetPlayerEmailGroups.all { group ->
-        group.any(pairEmails::contains)
-    }
+    allGroupsAreMatched(targetPlayerEmailGroups, pairEmails) &&
+        allEmailsAreMatches(pairEmails, targetPlayerEmailGroups)
+
+private fun allEmailsAreMatches(
+    pairEmails: Set<String>,
+    targetPlayerEmailGroups: Set<Set<String>>,
+) = pairEmails.all { email -> targetPlayerEmailGroups.any { group -> email in group } }
+
+private fun allGroupsAreMatched(
+    targetPlayerEmailGroups: Set<Set<String>>,
+    pairEmails: Set<String>,
+) = targetPlayerEmailGroups.all { group ->
+    group.any(pairEmails::contains)
+}

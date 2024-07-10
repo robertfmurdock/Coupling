@@ -30,4 +30,24 @@ class PairContributionQueryTest {
     } verify { result ->
         result.assertIsEqualTo(listOf(expectedContribution))
     }
+
+    @Test
+    fun willNotIncludeTwoPersonContributionsInSoloPair() = asyncSetup(object : PairContributionQuery.Dispatcher {
+        val targetEmail = "awesome@lol.com"
+        val notTargetEmail = "not.excellent@lol.com"
+        val pair = pairOf(
+            stubPlayer().copy(
+                email = "lol@lol.com",
+                additionalEmails = setOf(targetEmail),
+            ),
+        )
+        val partyId = stubPartyId()
+        val contribution =
+            partyRecord(partyId, stubContribution().copy(participantEmails = setOf(targetEmail, notTargetEmail)), "")
+        override val contributionRepository = ContributionGet { listOf(contribution) }
+    }) exercise {
+        perform(PairContributionQuery(partyId, pair))
+    } verify { result ->
+        result.assertIsEqualTo(emptyList())
+    }
 }
