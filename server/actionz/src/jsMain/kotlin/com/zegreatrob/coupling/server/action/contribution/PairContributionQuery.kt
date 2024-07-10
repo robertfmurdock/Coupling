@@ -8,7 +8,7 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
 data class PairContributionQuery(val partyId: PartyId, val pair: CouplingPair) {
-    interface Dispatcher : PartyIdContributionsSyntax {
+    interface Dispatcher : PartyIdContributionsTrait {
         suspend fun perform(query: PairContributionQuery) = query.partyId.contributions()
             .filter(byTargetPair(query.pair.targetPlayerEmailGroups()))
 

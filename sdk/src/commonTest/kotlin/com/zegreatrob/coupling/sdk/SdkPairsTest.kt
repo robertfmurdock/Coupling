@@ -1,5 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.party.SaveContributionCommand
+import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -11,6 +13,7 @@ import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayers
+import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
 import kotlinx.datetime.Clock
@@ -40,6 +43,28 @@ class SdkPairsTest {
                     listOf(players[2], players[3]),
                 ).plus(players.map { listOf(it) }),
             )
+    }
+
+    @Test
+    fun willIncludeMobsFromContributionHistory() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val players = stubPlayers(4)
+        val mob = players.shuffled().take(3)
+    }) {
+        savePartyStateWithFixedPlayerOrder(party, players, emptyList())
+        sdk().fire(
+            SaveContributionCommand(
+                partyId = party.id,
+                contributionId = uuidString(),
+                participantEmails = mob.map { it.email }.toSet(),
+            ),
+        )
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { pairs { players() } } })
+    } verify { result ->
+        result?.party?.pairs?.map { it.players?.map(PartyRecord<Player>::data)?.map(PartyElement<Player>::element) }
+            ?.last()
+            .assertIsEqualTo(mob)
     }
 
     @Test
