@@ -47,13 +47,13 @@ import com.zegreatrob.coupling.server.action.pin.PinsQuery
 import com.zegreatrob.coupling.server.action.pin.ServerDeletePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.pin.ServerSavePinCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
+import com.zegreatrob.coupling.server.action.player.PairListQuery
 import com.zegreatrob.coupling.server.action.player.PairQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.RecentTimesPairedQuery
 import com.zegreatrob.coupling.server.action.player.RetiredPlayersQuery
 import com.zegreatrob.coupling.server.action.player.ServerDeletePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerPairCountQueryDispatcher
-import com.zegreatrob.coupling.server.action.player.ServerPairsQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerSavePlayerCommandDispatcher
 import com.zegreatrob.coupling.server.action.player.ServerSpinsSinceLastPairedQueryDispatcher
 import com.zegreatrob.coupling.server.action.player.SpinsUntilFullRotationQuery
@@ -105,7 +105,7 @@ interface ICommandDispatcher :
     ServerGrantDiscordAccessCommandDispatcher,
     ServerGrantSlackAccessCommandDispatcher,
     ServerPairCountQueryDispatcher,
-    ServerPairsQueryDispatcher,
+    PairListQuery.Dispatcher,
     ServerSaveContributionCommandDispatcher,
     ServerSpinsSinceLastPairedQueryDispatcher,
     SpinsUntilFullRotationQuery.Dispatcher,

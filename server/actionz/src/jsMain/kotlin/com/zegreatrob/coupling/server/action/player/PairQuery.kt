@@ -11,22 +11,6 @@ import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
-data class PairsQuery(val partyId: PartyId) {
-    interface Dispatcher {
-        suspend fun perform(query: PairsQuery): List<PartyElement<PlayerPair>>
-    }
-}
-
-interface ServerPairsQueryDispatcher :
-    PairsQuery.Dispatcher,
-    PartyIdLoadPlayersTrait {
-    override suspend fun perform(query: PairsQuery): List<PartyElement<PlayerPair>> = query.partyId.with(
-        query.partyId.loadPlayers()
-            .pairCombinations(),
-    )
-}
-
-@ActionMint
 data class PairQuery(val partyId: PartyId, val playerIds: Set<String>) {
     interface Dispatcher : PartyIdLoadPlayersTrait {
         suspend fun perform(query: PairQuery): PartyElement<PlayerPair>? =

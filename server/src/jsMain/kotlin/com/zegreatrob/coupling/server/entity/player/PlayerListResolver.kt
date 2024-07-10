@@ -21,8 +21,8 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.server.action.player.PairAssignmentHistoryQuery
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
+import com.zegreatrob.coupling.server.action.player.PairListQuery
 import com.zegreatrob.coupling.server.action.player.PairQuery
-import com.zegreatrob.coupling.server.action.player.PairsQuery
 import com.zegreatrob.coupling.server.action.player.PlayersQuery
 import com.zegreatrob.coupling.server.action.player.RecentTimesPairedQuery
 import com.zegreatrob.coupling.server.action.player.SpinsSinceLastPairedQuery
@@ -49,7 +49,7 @@ val spinsUntilFullRotationResolve = dispatch(
 
 val pairsResolve = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { PairsQuery(it) } },
+    commandFunc = { data, _ -> data.id?.let(::PartyId)?.let { PairListQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it.map(PartyElement<PlayerPair>::toJson) },
 )
