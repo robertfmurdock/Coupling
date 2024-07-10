@@ -6,7 +6,9 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
+import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.pairCombinations
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
@@ -28,7 +30,9 @@ data class PairListQuery(val partyId: PartyId) {
             val allContributionPairs: Set<Set<Record<PartyElement<Player>>>> =
                 contributions.mapNotNull { contribution ->
                     contribution.participantEmails
-                        .mapNotNull { email -> playerListData.find { it.data.player.email == email } }
+                        .map { email ->
+                            playerListData.find { it.data.player.email == email } ?: placeholderPlayer(query, email)
+                        }
                         .toSet().ifEmpty { null }
                 }.toSet()
 
@@ -40,5 +44,14 @@ data class PairListQuery(val partyId: PartyId) {
                 naturalPairCombinations + extraPairs.map { PlayerPair(players = it.toList()) },
             )
         }
+
+        private fun placeholderPlayer(
+            query: PairListQuery,
+            email: String,
+        ) = partyRecord(
+            partyId = query.partyId,
+            defaultPlayer.copy(id = email, email = email),
+            "",
+        )
     }
 }
