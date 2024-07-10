@@ -56,7 +56,8 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
             fakeContributions
         } else {
             props.pairs.mapNotNull {
-                it.players?.elements?.toCouplingPair()?.let { pair -> pair to (it.contributions?.elements ?: emptyList()) }
+                it.players?.elements?.toCouplingPair()
+                    ?.let { pair -> pair to (it.contributions?.elements ?: emptyList()) }
             }
         }
 
@@ -88,7 +89,8 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                             }
                         }
                         PairSelector(
-                            pairs = allPairs,
+                            pairs = allPairContributions.toMap()
+                                .filterValues(List<Contribution>::isNotEmpty).keys.toList(),
                             onSelectionChange = setSelectedPairs::invoke,
                         )
                     }
