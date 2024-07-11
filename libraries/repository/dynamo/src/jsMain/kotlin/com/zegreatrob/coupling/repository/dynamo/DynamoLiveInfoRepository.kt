@@ -73,7 +73,7 @@ class DynamoLiveInfoRepository private constructor(override val userId: String, 
 
     companion object :
         DynamoDBSyntax by DynamoDbProvider,
-        com.zegreatrob.coupling.repository.dynamo.CreateTableParamProvider,
+        CreateTableParamProvider,
         DynamoItemPutSyntax,
         DynamoQuerySyntax,
         DynamoItemSyntax,

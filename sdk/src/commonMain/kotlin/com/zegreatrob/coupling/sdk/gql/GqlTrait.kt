@@ -7,7 +7,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject
 
-interface GqlSyntax {
+interface GqlTrait {
     val performer: QueryPerformer
     suspend fun String.performQuery(): JsonElement = performer.doQuery(this)
     suspend fun performQuery(body: JsonElement): JsonElement = performer.doQuery(body)

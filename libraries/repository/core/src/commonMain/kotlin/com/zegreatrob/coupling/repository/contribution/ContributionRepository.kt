@@ -9,10 +9,15 @@ fun interface ContributionGet {
     suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>>
 }
 
+fun interface ContributionDeleteAll {
+    suspend fun deleteAll(partyId: PartyId)
+}
+
 fun interface ContributionSave {
     suspend fun save(partyContribution: PartyElement<Contribution>)
 }
 
 interface ContributionRepository :
     ContributionGet,
-    ContributionSave
+    ContributionSave,
+    ContributionDeleteAll

@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
+import com.zegreatrob.coupling.server.entity.contribution.clearContributionsResolver
 import com.zegreatrob.coupling.server.entity.contribution.contributionResolver
 import com.zegreatrob.coupling.server.entity.contribution.contributorResolver
 import com.zegreatrob.coupling.server.entity.contribution.pairContributionResolver
@@ -80,6 +81,7 @@ fun couplingResolvers() = json(
         "grantDiscordAccess" to grantDiscordAccessResolver,
         "grantSlackAccess" to grantSlackAccessResolver,
         "saveContribution" to saveContributionResolver,
+        "clearContributions" to clearContributionsResolver,
         "savePairAssignments" to savePairsResolver,
         "saveParty" to savePartyResolver,
         "savePin" to savePinResolver,

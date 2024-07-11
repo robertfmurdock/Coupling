@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk
 
+import com.zegreatrob.coupling.action.party.ClearContributionsCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.model.Contribution
@@ -54,6 +55,32 @@ class SdkContributionTest {
         result?.party?.contributions?.elements?.map { it.createdAt }?.forEach { createdAt ->
             createdAt.assertIsCloseToNow()
         }
+    }
+
+    @Test
+    fun clearingContributionsWillRemoveThemFromParty() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val saveContributionCommands = generateSequence {
+            SaveContributionCommand(
+                partyId = party.id,
+                contributionId = uuidString(),
+                participantEmails = setOf(uuidString(), uuidString(), uuidString()),
+                hash = uuidString(),
+                dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
+                ease = Random.nextInt(),
+                story = uuidString(),
+                link = uuidString(),
+            )
+        }.take(4).toList()
+    }) {
+        savePartyState(party, emptyList(), emptyList())
+        saveContributionCommands.forEach { sdk().fire(it) }
+        sdk().fire(ClearContributionsCommand(partyId = party.id))
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { contributions() } })
+    } verify { result ->
+        result?.party?.contributions?.size
+            .assertIsEqualTo(0)
     }
 
     @Test

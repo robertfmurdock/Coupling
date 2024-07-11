@@ -9,11 +9,11 @@ plugins {
 kotlin {
     js {
         nodejs {
-            testTask(Action {
+            testTask {
                 useMocha {
                     timeout = "20s"
                 }
-            })
+            }
         }
     }
 }

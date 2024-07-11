@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.json.CreateSecretInput
 import com.zegreatrob.coupling.json.JsonCouplingMutationResult
 import com.zegreatrob.coupling.json.toDomain
-import com.zegreatrob.coupling.sdk.gql.GqlSyntax
+import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 import kotlinx.serialization.json.Json
@@ -14,7 +14,7 @@ import kotlinx.serialization.json.jsonObject
 
 interface SdkCreateSecretCommandDispatcher :
     CreateSecretCommand.Dispatcher,
-    GqlSyntax {
+    GqlTrait {
 
     override suspend fun perform(command: CreateSecretCommand) =
         doQuery(Mutation.createSecret, createSecretInput(command))

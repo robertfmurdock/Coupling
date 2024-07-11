@@ -352,6 +352,7 @@ type Mutation {
     createSecret(input: CreateSecretInput!) : SecretToken
     deleteSecret(input: DeleteSecretInput!) : Boolean
     saveContribution(input: SaveContributionInput!): Boolean
+    clearContributions(input: ClearContributionsInput!): Boolean
     grantSlackAccess(input: GrantSlackAccessInput!): Boolean
     grantDiscordAccess(input: GrantDiscordAccessInput!): Boolean
 }
@@ -368,6 +369,9 @@ input SaveContributionInput {
     semver: String
     firstCommit: String
     participantEmails: [String!]
+}
+input ClearContributionsInput {
+    partyId: ID!
 }
 
 input GrantSlackAccessInput {

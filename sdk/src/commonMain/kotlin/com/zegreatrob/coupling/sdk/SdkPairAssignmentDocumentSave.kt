@@ -8,7 +8,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocume
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentSave
-import com.zegreatrob.coupling.sdk.gql.GqlSyntax
+import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -16,7 +16,7 @@ import kotlinx.serialization.json.putJsonObject
 
 interface SdkPairAssignmentDocumentSave :
     PairAssignmentDocumentSave,
-    GqlSyntax {
+    GqlTrait {
     override suspend fun save(partyPairDocument: PartyElement<PairAssignmentDocument>) {
         performQuery(
             buildJsonObject {
@@ -34,7 +34,7 @@ private fun PartyElement<PairAssignmentDocument>.savePairAssignmentsInput() =
 
 interface SdkSavePairAssignmentsCommandDispatcher :
     SavePairAssignmentsCommand.Dispatcher,
-    GqlSyntax {
+    GqlTrait {
 
     override suspend fun perform(command: SavePairAssignmentsCommand) = with(command) {
         performQuery(

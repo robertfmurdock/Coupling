@@ -31,6 +31,7 @@ class KtorCouplingSdkDispatcher(
     SdkGrantSlackAccess,
     SdkGraphQueryDispatcher,
     SdkSaveContributionCommandDispatcher,
+    SdkClearContributionCommandDispatcher,
     SdkSavePairAssignmentsCommandDispatcher,
     SdkSavePartyCommandDispatcher,
     SdkSavePinCommandDispatcher,

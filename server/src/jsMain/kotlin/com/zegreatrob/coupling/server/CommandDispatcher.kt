@@ -106,6 +106,7 @@ interface ICommandDispatcher :
     ServerGrantSlackAccessCommandDispatcher,
     ServerPairCountQueryDispatcher,
     PairListQuery.Dispatcher,
+    ServerClearContributionsCommandDispatcher,
     ServerSaveContributionCommandDispatcher,
     ServerSpinsSinceLastPairedQueryDispatcher,
     SpinsUntilFullRotationQuery.Dispatcher,

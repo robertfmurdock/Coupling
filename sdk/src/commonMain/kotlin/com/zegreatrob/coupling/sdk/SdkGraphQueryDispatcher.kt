@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.sdk
 
-import com.zegreatrob.coupling.sdk.gql.GqlSyntax
+import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.GraphQuery
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
 interface SdkGraphQueryDispatcher :
     GraphQuery.Dispatcher,
-    GqlSyntax {
+    GqlTrait {
 
     override suspend fun perform(query: GraphQuery) = query.postBody().perform()
 

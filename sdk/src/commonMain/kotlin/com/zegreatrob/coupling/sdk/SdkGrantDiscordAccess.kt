@@ -4,13 +4,13 @@ import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.json.GrantDiscordAccessInput
-import com.zegreatrob.coupling.sdk.gql.GqlSyntax
+import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
 
 interface SdkGrantDiscordAccess :
     GrantDiscordAccessCommand.Dispatcher,
-    GqlSyntax {
+    GqlTrait {
     override suspend fun perform(command: GrantDiscordAccessCommand): VoidResult = doQuery(
         mutation = Mutation.grantDiscordAccess,
         input = command.grantDiscordAccessInput(),

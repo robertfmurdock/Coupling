@@ -73,6 +73,10 @@ class MemoryContributionRepository : ContributionRepository {
     override suspend fun save(partyContribution: PartyElement<Contribution>) {
         TODO("Not yet implemented")
     }
+
+    override suspend fun deleteAll(partyId: PartyId) {
+        TODO("Not yet implemented")
+    }
 }
 
 class MemoryRepositoryBackend {

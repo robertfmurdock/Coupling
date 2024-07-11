@@ -46,4 +46,26 @@ class DynamoContributionRepositoryTest {
                 },
         )
     }
+
+    @Test
+    fun clearingContributionsWillMakeThemNoLongerRetrievable() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoContributionRepository
+        val userEmail = uuidString()
+        val clock = MagicClock().apply { currentTime = Clock.System.now() }
+        val contributions = generateSequence { stubContribution() }
+            .take(40)
+            .toList()
+        val partyContributions = partyId.with(elementList = contributions)
+        val unrelatedContribution = stubContribution()
+    }) {
+        repository = DynamoContributionRepository.invoke(userEmail, clock)
+    } exercise {
+        partyContributions.forEach { repository.save(it) }
+        repository.save(stubPartyId().with(unrelatedContribution))
+        repository.deleteAll(partyId)
+        repository.get(partyId)
+    } verify { result: List<PartyRecord<Contribution>> ->
+        result.assertIsEqualTo(emptyList())
+    }
 }

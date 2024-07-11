@@ -1,0 +1,3 @@
+mutation clearContributions($input: ClearContributionsInput!) {
+    clearContributions(input: $input)
+}

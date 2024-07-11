@@ -7,7 +7,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
 
-suspend inline fun <reified T> GqlSyntax.doQuery(query: String, input: T): JsonElement = performQuery(
+suspend inline fun <reified T> GqlTrait.doQuery(query: String, input: T): JsonElement = performQuery(
     JsonObject(
         mapOf(
             "query" to JsonPrimitive(query),
@@ -16,7 +16,7 @@ suspend inline fun <reified T> GqlSyntax.doQuery(query: String, input: T): JsonE
     ),
 )
 
-suspend inline fun <reified I, reified O, M> GqlSyntax.doQuery(
+suspend inline fun <reified I, reified O, M> GqlTrait.doQuery(
     mutation: String,
     input: I,
     resultName: String,
