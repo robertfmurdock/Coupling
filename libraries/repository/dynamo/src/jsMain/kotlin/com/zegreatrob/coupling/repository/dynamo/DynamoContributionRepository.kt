@@ -7,8 +7,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.js.Json
@@ -27,18 +25,13 @@ class DynamoContributionRepository private constructor(override val userId: Stri
             .asDynamoJson(),
     )
 
-    override suspend fun deleteAll(partyId: PartyId) = coroutineScope {
-        partyId.queryForItemList()
-            .forEach { item ->
-                launch {
-                    performDeleteItem(
-                        json(
-                            "tribeId" to item["tribeId"],
-                            "timestamp+id" to item["timestamp+id"],
-                        ),
-                    )
-                }
-            }
+    override suspend fun deleteAll(partyId: PartyId) = partyId.queryForItemList().forEach { item ->
+        performDeleteItem(
+            json(
+                "tribeId" to item["tribeId"],
+                "timestamp+id" to item["timestamp+id"],
+            ),
+        )
     }
 
     private fun PartyRecord<Contribution>.asDynamoJson(): Json = recordJson()
