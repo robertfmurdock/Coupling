@@ -105,6 +105,7 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                             MyResponsiveLine {
                                 legend = "Pair Commits Over Time"
                                 data = pairingLineData(allPairContributions.filter { selectedPairs.contains(it.first) })
+                                tooltip = { point -> "${point.xFormatted} - ${point.yFormatted}\n${point.context}" }
                             }
                         }
                     }
@@ -119,8 +120,8 @@ val random = Random(10)
 private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, List<Contribution>>>): Array<NivoLineData> =
     selectedPairs.map { pairContributionLine(it.first, it.second) }.toTypedArray()
 
-private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>): NivoLineData {
-    return NivoLineData(
+private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>) =
+    NivoLineData(
         couplingPair.joinToString("-") { it.name },
         contributions.groupBy { contribution ->
             val dateTime = contribution.dateTime ?: return@groupBy null
@@ -130,11 +131,10 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
             NinoLinePoint(
                 x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
                 y = it.value.size,
-                context = it.value.first().label,
+                context = it.value.mapNotNull(Contribution::label).toSet().joinToString(", "),
             )
         }.toTypedArray(),
     )
-}
 
 private fun generateFakeContributions() = generateCommitTimes().map(LocalDateTime::toFakeContribution)
 

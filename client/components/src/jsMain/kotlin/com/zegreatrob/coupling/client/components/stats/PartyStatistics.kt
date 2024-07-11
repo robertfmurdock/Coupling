@@ -158,6 +158,14 @@ sealed external interface NinoLinePoint {
     var context: Any?
 }
 
+sealed external interface NinoLinePointDecorated {
+    var x: Any
+    var xFormatted: Any
+    var y: Any
+    var yFormatted: Any
+    var context: Any?
+}
+
 private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCouplingPair() to it.spinsSinceLastPaired }
     .mapNotNull { (pair, spins) ->
         (pair as? CouplingPair.Double)?.let {
@@ -172,4 +180,5 @@ private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCoupl
 external interface GraphProps : Props {
     var data: Array<NivoLineData>
     var legend: String
+    var tooltip: (NinoLinePointDecorated) -> String
 }
