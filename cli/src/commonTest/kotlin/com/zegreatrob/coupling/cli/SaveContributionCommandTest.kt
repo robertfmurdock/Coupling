@@ -43,9 +43,9 @@ class SaveContributionCommandTest {
         val labelOverride = uuidString()
         val linkOverride = uuidString()
     }) exercise {
-        command.test("--label $labelOverride --link $linkOverride", stdin = sourceContribution.toJsonString())
+        command.test("--label $labelOverride --link $linkOverride --input-json \'${sourceContribution.toJsonString()}\'")
     } verify { result ->
-        result.statusCode.assertIsEqualTo(0)
+        result.statusCode.assertIsEqualTo(0, result.stderr)
         receivedActions.firstOrNull()
             ?.let { it as? SaveContributionCommand }
             .assertIsEqualTo(

@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.cli.party
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.terminal
-import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
@@ -11,7 +9,6 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.cli.cliScope
-import com.zegreatrob.coupling.cli.readFileText
 import com.zegreatrob.coupling.cli.withSdk
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
@@ -38,7 +35,7 @@ class SaveContribution(
     private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
 ) : CliktCommand(name = "save"),
     ContributionCliCommand {
-    private val file by option().convert { readFileText(it) }
+    private val inputJson by option().prompt()
     private val contributionId by option().default("")
     private val participantEmail by option().multiple()
     private val hash by option().default("")
@@ -50,9 +47,7 @@ class SaveContribution(
     override fun run() {
         val contributionContext = currentContext.findObject<ContributionContext>()
         val partyId = contributionContext!!.partyId
-
-        val data = file ?: terminal.prompt("") ?: ""
-
+        val data = inputJson.trim()
         withSdk(
             scope = scope,
             env = contributionContext.env,
@@ -60,7 +55,7 @@ class SaveContribution(
             cannon = cannon,
         ) { sdk ->
             if (data.isNotBlank()) {
-                val contribution = ContributionParser.parseContribution(data.trim())
+                val contribution = ContributionParser.parseContribution(data)
                 if (contribution != null) {
                     sdk.fire(saveContributionCommand(partyId, contribution))
                 } else {
@@ -88,8 +83,6 @@ interface ContributionCliCommand {
     val label: String
     val link: String
 }
-
-expect fun readLineFromStandardIn(): String
 
 class BatchContribution :
     CliktCommand(name = "batch"),
