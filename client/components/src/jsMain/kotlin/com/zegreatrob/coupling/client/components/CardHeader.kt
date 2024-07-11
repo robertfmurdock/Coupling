@@ -5,7 +5,7 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.PropsWithClassName
 import react.dom.html.ReactHTML.div
-import react.useLayoutEffect
+import react.rawUseLayoutEffect
 import react.useRef
 import web.cssom.AlignItems
 import web.cssom.BackgroundRepeat
@@ -36,7 +36,10 @@ external interface CardHeaderProps : PropsWithClassName {
 val CardHeader by nfc<CardHeaderProps> { props ->
     val size = props.size
     val headerContainerRef = useRef<HTMLDivElement>(null)
-    useLayoutEffect { headerContainerRef.current?.fitContent(size) }
+    rawUseLayoutEffect({
+        headerContainerRef.current?.fitContent(size);
+        {}
+    }, emptyArray())
     div {
         css(props.className) {
             margin = Margin((size * 0.02).px, 0.px)

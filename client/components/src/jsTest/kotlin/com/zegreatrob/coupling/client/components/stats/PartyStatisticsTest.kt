@@ -114,7 +114,7 @@ class PartyStatisticsTest {
         }
     } verify { wrapper ->
         wrapper.baseElement.querySelector("[data-heatmap]")
-            .let { it as HTMLElement }
+            .let { it as org.w3c.dom.HTMLDivElement }
             .getAttribute("data-heatmap")
             .assertIsEqualTo(
                 heatmapData.joinToString(",") {

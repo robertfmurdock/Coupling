@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="20" />
+    <bytecodeTargetLevel target="20">
+      <module name="plugins.action-mint-plugin" target="11" />
+      <module name="plugins.action-mint-plugin.functionalTest" target="11" />
+      <module name="plugins.action-mint-plugin.main" target="11" />
+      <module name="plugins.action-mint-plugin.test" target="11" />
+      <module name="plugins.mint-logs-plugin" target="11" />
+      <module name="plugins.mint-logs-plugin.functionalTest" target="11" />
+      <module name="plugins.mint-logs-plugin.main" target="11" />
+      <module name="plugins.mint-logs-plugin.test" target="11" />
+      <module name="testmints.action" target="11" />
+      <module name="testmints.action-annotation" target="11" />
+      <module name="testmints.action-async" target="11" />
+      <module name="testmints.async" target="11" />
+      <module name="testmints.kotest-example" target="11" />
+      <module name="testmints.minassert" target="11" />
+      <module name="testmints.mindiff" target="11" />
+      <module name="testmints.minspy" target="11" />
+      <module name="testmints.mint-logs" target="11" />
+      <module name="testmints.report" target="11" />
+      <module name="testmints.standard" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
