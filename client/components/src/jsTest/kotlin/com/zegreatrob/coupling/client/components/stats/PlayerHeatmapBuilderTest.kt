@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
-import com.zegreatrob.testmints.async.ScopeMint
 import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import org.w3c.dom.asList
@@ -11,7 +10,7 @@ import kotlin.test.Test
 class PlayerHeatmapBuilderTest {
 
     @Test
-    fun hasRowOfPlayersToTheSide() = asyncSetup(object : ScopeMint() {
+    fun hasRowOfPlayersToTheSide() = asyncSetup(object {
         val players = listOf(
             defaultPlayer.copy(name = "harry"),
             defaultPlayer.copy(name = "larry"),
@@ -30,7 +29,7 @@ class PlayerHeatmapBuilderTest {
     }
 
     @Test
-    fun hasRowOfPlayersAboveHeatmap() = asyncSetup(object : ScopeMint() {
+    fun hasRowOfPlayersAboveHeatmap() = asyncSetup(object {
         val players = listOf(
             defaultPlayer.copy(name = "harry"),
             defaultPlayer.copy(name = "larry"),

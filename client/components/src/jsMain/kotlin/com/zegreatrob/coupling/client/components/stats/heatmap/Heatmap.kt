@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import org.w3c.dom.Element
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.useLayoutEffect
+import react.rawUseLayoutEffect
 import react.useRef
 import web.cssom.ClassName
 import web.cssom.Display
@@ -89,7 +89,12 @@ external interface HeatmapProps : Props {
 val Heatmap by nfc<HeatmapProps> { (data, className) ->
     val rowSize = data.size * 90
     val rootRef = useRef<HTMLElement>(null)
-    useLayoutEffect { MainScope().launch { rootRef.current?.renderD3Heatmap(data.flatten()) } }
+    rawUseLayoutEffect({
+        MainScope().launch {
+            rootRef.current?.renderD3Heatmap(data.flatten())
+        }
+        return@rawUseLayoutEffect {}
+    }, emptyArray())
 
     div {
         asDynamic()["data-heatmap"] = data.joinToString(",") { "[${it.joinToString(",")}]" }
