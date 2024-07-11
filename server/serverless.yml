@@ -21,7 +21,7 @@ custom:
     host: 0.0.0.0
 provider:
   name: aws
-  timeout: 90
+  timeout: 30
   stage: ${opt:stage, 'local'}
   runtime: nodejs20.x
   iam:
