@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.valueOrNull
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.model.user.CurrentUserProvider
 import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.coupling.server.action.user.UserIsAuthorizedWithDataAction
@@ -31,7 +32,7 @@ data class ConnectPartyUserCommand(val partyId: PartyId, val connectionId: Strin
             .valueOrNull()
 
         private fun userPlayer(players: List<Player>, email: String): Player {
-            val existingPlayer = players.find { it.email == email }
+            val existingPlayer = players.find { it.matches(email) }
 
             return if (existingPlayer != null) {
                 existingPlayer

@@ -9,7 +9,7 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.model.player.emails
+import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.model.player.pairCombinations
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
@@ -32,9 +32,7 @@ data class PairListQuery(val partyId: PartyId) {
                 contributions.mapNotNull { contribution ->
                     contribution.participantEmails
                         .map { email ->
-                            playerListData.find {
-                                it.data.player.emails.map(String::lowercase).contains(email.lowercase())
-                            }
+                            playerListData.find { it.data.player.matches(email) }
                                 ?: placeholderPlayer(query, email)
                         }
                         .toSet().ifEmpty { null }

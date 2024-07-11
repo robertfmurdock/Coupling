@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.testmints.action.annotation.ActionMint
 
 @ActionMint
@@ -12,7 +14,7 @@ data class PairContributionQuery(val partyId: PartyId, val pair: CouplingPair) {
         suspend fun perform(query: PairContributionQuery) = query.partyId.contributions()
             .filter(byTargetPair(query.pair.targetPlayerEmailGroups()))
 
-        private fun byTargetPair(targetPlayerEmailGroups: List<Set<String>>) = { record: PartyRecord<Contribution> ->
+        private fun byTargetPair(targetPlayerEmailGroups: Array<Player>) = { record: PartyRecord<Contribution> ->
             pairMatches(
                 record.data.element.participantEmails,
                 targetPlayerEmailGroups,
@@ -22,20 +24,19 @@ data class PairContributionQuery(val partyId: PartyId, val pair: CouplingPair) {
 }
 
 private fun CouplingPair.targetPlayerEmailGroups() = asArray()
-    .map { (listOf(it.email) + it.additionalEmails).filter(String::isNotEmpty).toSet() }
 
-private fun pairMatches(pairEmails: Set<String>, targetPlayerEmailGroups: List<Set<String>>): Boolean =
+private fun pairMatches(pairEmails: Set<String>, targetPlayerEmailGroups: Array<Player>): Boolean =
     allGroupsAreMatched(targetPlayerEmailGroups, pairEmails) &&
         allEmailsAreMatches(pairEmails, targetPlayerEmailGroups)
 
 private fun allEmailsAreMatches(
     pairEmails: Set<String>,
-    targetPlayerEmailGroups: List<Set<String>>,
-) = pairEmails.all { email -> targetPlayerEmailGroups.any { group -> email in group } }
+    targetPlayerEmailGroups: Array<Player>,
+) = pairEmails.all { email -> targetPlayerEmailGroups.any { player -> player.matches(email) } }
 
 private fun allGroupsAreMatched(
-    targetPlayerEmailGroups: List<Set<String>>,
+    targetPlayerEmailGroups: Array<Player>,
     pairEmails: Set<String>,
-) = targetPlayerEmailGroups.all { group ->
-    group.any(pairEmails::contains)
+) = targetPlayerEmailGroups.all { player ->
+    pairEmails.any { email -> player.matches(email) }
 }

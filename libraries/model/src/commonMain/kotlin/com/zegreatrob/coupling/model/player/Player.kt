@@ -17,6 +17,8 @@ data class Player(
     val additionalEmails: Set<String>,
 )
 
+fun Player.matches(email: String) = emails.map(String::lowercase).contains(email.lowercase())
+
 val Player.emails get() = listOf(email) + additionalEmails
 
 val defaultPlayer = Player(

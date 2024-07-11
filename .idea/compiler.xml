@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="20">
-      <module name="tools.digger-core" target="11" />
-      <module name="tools.digger-core.main" target="11" />
-      <module name="tools.digger-core.test" target="11" />
-      <module name="tools.digger-json" target="11" />
-      <module name="tools.digger-model" target="11" />
-      <module name="tools.digger-plugin" target="11" />
-      <module name="tools.digger-plugin.functionalTest" target="11" />
-      <module name="tools.digger-plugin.main" target="11" />
-      <module name="tools.digger-plugin.test" target="11" />
-      <module name="tools.tagger-plugin" target="11" />
-      <module name="tools.tagger-plugin.functionalTest" target="11" />
-      <module name="tools.tagger-plugin.main" target="11" />
-      <module name="tools.tagger-plugin.test" target="11" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="20" />
   </component>
 </project>

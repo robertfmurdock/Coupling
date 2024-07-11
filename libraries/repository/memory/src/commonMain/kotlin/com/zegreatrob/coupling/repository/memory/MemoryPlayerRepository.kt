@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.model.player.player
 import com.zegreatrob.coupling.repository.player.PlayerEmailRepository
 import kotlinx.datetime.Clock
@@ -48,6 +49,6 @@ class MemoryPlayerRepository(
         .groupBy { it.data.player.id }
         .map { it.value.last() }
         .filterNot(Record<*>::isDeleted)
-        .filter { it.data.element.email == email }
+        .filter { it.data.element.matches(email) }
         .map { it.data.partyId.with(it.data.player.id) }
 }

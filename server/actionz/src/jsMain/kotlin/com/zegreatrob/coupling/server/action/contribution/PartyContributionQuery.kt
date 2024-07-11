@@ -9,6 +9,7 @@ import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.repository.contribution.ContributionGet
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
@@ -58,11 +59,6 @@ data class PartyContributorQuery(val partyId: PartyId) {
                 .sorted()
 
         private fun playerForEmail(email: String, players: List<PartyRecord<Player>>) = players
-            .find {
-                listOf(it.element.email)
-                    .plus(it.element.additionalEmails)
-                    .map(String::lowercase)
-                    .contains(email.lowercase())
-            }
+            .find { it.element.matches(email) }
     }
 }
