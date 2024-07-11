@@ -124,9 +124,9 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
         couplingPair.joinToString("-") { it.name },
         contributions.groupBy { contribution ->
             val dateTime = contribution.dateTime ?: return@groupBy null
-            dateTime.toLocalDateTime(TimeZone.currentSystemDefault())
+            dateTime.toLocalDateTime(TimeZone.currentSystemDefault()).date
         }.mapNotNull {
-            val date = it.key?.date ?: return@mapNotNull null
+            val date = it.key ?: return@mapNotNull null
             NinoLinePoint(
                 x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
                 y = it.value.size,
