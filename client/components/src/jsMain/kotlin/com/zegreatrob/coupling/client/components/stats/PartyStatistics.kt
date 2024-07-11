@@ -155,6 +155,7 @@ sealed external interface NivoLineData {
 sealed external interface NinoLinePoint {
     var x: Any
     var y: Any
+    var context: Any?
 }
 
 private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCouplingPair() to it.spinsSinceLastPaired }

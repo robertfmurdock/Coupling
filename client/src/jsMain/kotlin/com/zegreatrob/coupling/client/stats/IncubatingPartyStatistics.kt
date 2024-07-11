@@ -120,13 +120,17 @@ private fun pairingLineData(selectedPairs: List<Pair<CouplingPair, List<Contribu
     selectedPairs.map { pairContributionLine(it.first, it.second) }.toTypedArray()
 
 private fun pairContributionLine(couplingPair: CouplingPair, contributions: List<Contribution>): NivoLineData {
-    val commitDateTimes = contributions.mapNotNull { it.dateTime }
     return NivoLineData(
         couplingPair.joinToString("-") { it.name },
-        commitDateTimes.map { it.toLocalDateTime(TimeZone.currentSystemDefault()) }.groupBy(LocalDateTime::date).map {
+        contributions.groupBy { contribution ->
+            val dateTime = contribution.dateTime ?: return@groupBy null
+            dateTime.toLocalDateTime(TimeZone.currentSystemDefault())
+        }.mapNotNull {
+            val date = it.key?.date ?: return@mapNotNull null
             NinoLinePoint(
-                x = it.key.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
+                x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
                 y = it.value.size,
+                context = it.value.first().label,
             )
         }.toTypedArray(),
     )
@@ -144,7 +148,7 @@ private fun LocalDateTime.toFakeContribution() = Contribution(
     null,
     null,
     emptySet(),
-    null,
+    "fake",
     null,
 )
 

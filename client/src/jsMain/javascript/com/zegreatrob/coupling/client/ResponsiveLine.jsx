@@ -68,6 +68,7 @@ export const MyResponsiveLine = (props) => {
             yScale={{
                 type: 'linear'
             }}
+            tooltip={(args) => `${args.point.data.xFormatted} - ${args.point.data.yFormatted} ${args.point.data.context}`}
             legends={[
                 {
                     anchor: 'bottom-right',
