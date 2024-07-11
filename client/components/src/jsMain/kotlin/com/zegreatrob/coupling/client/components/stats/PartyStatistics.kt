@@ -21,6 +21,7 @@ import emotion.react.css
 import kotlinx.datetime.toJSDate
 import react.FC
 import react.Props
+import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.useState
 import web.cssom.Color
@@ -180,5 +181,5 @@ private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCoupl
 external interface GraphProps : Props {
     var data: Array<NivoLineData>
     var legend: String
-    var tooltip: (NinoLinePointDecorated) -> String
+    var tooltip: (NinoLinePointDecorated) -> ReactNode
 }

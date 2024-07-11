@@ -24,6 +24,7 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJSDate
 import kotlinx.datetime.toLocalDateTime
 import react.Props
+import react.create
 import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
@@ -105,7 +106,17 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                             MyResponsiveLine {
                                 legend = "Pair Commits Over Time"
                                 data = pairingLineData(allPairContributions.filter { selectedPairs.contains(it.first) })
-                                tooltip = { point -> "${point.xFormatted} - ${point.yFormatted}\n${point.context}" }
+                                tooltip = { point ->
+                                    div.create {
+                                        css {
+                                            backgroundColor = Color("rgb(0 0 0 / 14%)")
+                                            padding = 10.px
+                                            borderRadius = 20.px
+                                        }
+                                        div { +"${point.xFormatted} - ${point.yFormatted}" }
+                                        div { +"${point.context}" }
+                                    }
+                                }
                             }
                         }
                     }
@@ -124,8 +135,9 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
     NivoLineData(
         couplingPair.joinToString("-") { it.name },
         contributions.groupBy { contribution ->
-            val dateTime = contribution.dateTime ?: return@groupBy null
-            dateTime.toLocalDateTime(TimeZone.currentSystemDefault()).date
+            contribution.dateTime
+                ?.toLocalDateTime(TimeZone.currentSystemDefault())
+                ?.date
         }.mapNotNull {
             val date = it.key ?: return@mapNotNull null
             NinoLinePoint(
