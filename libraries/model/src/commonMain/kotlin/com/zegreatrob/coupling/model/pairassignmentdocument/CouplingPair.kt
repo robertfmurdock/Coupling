@@ -25,7 +25,8 @@ sealed class CouplingPair : Iterable<Player> {
         override fun toNotEmptyList() = notEmptyListOf(player1, player2)
     }
 
-    data class Mob(val player1: Player, val player2: Player, val player3: Player, val more: Set<Player>) : CouplingPair() {
+    data class Mob(val player1: Player, val player2: Player, val player3: Player, val more: Set<Player>) :
+        CouplingPair() {
         override fun toNotEmptyList() =
             notEmptyListOf(player1, tail = listOf(player2, player3).plus(more).toTypedArray())
     }
@@ -75,3 +76,4 @@ fun PinnedCouplingPair.callSign(): CallSign {
 }
 
 val CouplingPair.pairId get() = joinToString("-", transform = Player::id)
+val CouplingPair.pairName get() = joinToString("-", transform = Player::name)

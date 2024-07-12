@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.components.stats
 import com.zegreatrob.coupling.client.components.player.PlayerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
-import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import react.Props
@@ -30,7 +30,7 @@ val PairSelector by nfc<PairSelectorProps> { props ->
         pairs.forEach { pair: CouplingPair ->
             div {
                 label {
-                    ariaLabel = pair.asArray().joinToString("-", transform = Player::name)
+                    ariaLabel = pair.pairName
                     pair.forEach {
                         PlayerCard(it, size = 25, tilt = 0.deg)
                     }

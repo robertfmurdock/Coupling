@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -32,7 +33,7 @@ class PairSelectorTest {
             )
         }
     } exercise {
-        val pairName = firstPair.pairName()
+        val pairName = firstPair.pairName
         actor.click(screen.findByRole("checkbox", RoleOptions(pairName)))
     } verify {
         selectedPairs.assertIsEqualTo(listOf(firstPair))
@@ -57,7 +58,7 @@ class PairSelectorTest {
             )
         }
     } exercise {
-        val pairName = firstPair.pairName()
+        val pairName = firstPair.pairName
         actor.click(screen.findByRole("checkbox", RoleOptions(pairName)))
         actor.click(screen.findByRole("checkbox", RoleOptions(pairName)))
     } verify {
@@ -84,11 +85,10 @@ class PairSelectorTest {
             )
         }
     } exercise {
-        actor.click(screen.findByRole("checkbox", RoleOptions(thirdPair.pairName())))
-        actor.click(screen.findByRole("checkbox", RoleOptions(firstPair.pairName())))
+        actor.click(screen.findByRole("checkbox", RoleOptions(thirdPair.pairName)))
+        actor.click(screen.findByRole("checkbox", RoleOptions(firstPair.pairName)))
     } verify {
         selectedPairs.assertIsEqualTo(listOf(firstPair, thirdPair))
     }
 
-    private fun CouplingPair.Double.pairName() = "${player1.name}-${player2.name}"
 }
