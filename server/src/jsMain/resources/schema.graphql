@@ -162,6 +162,14 @@ input PairInput {
     playerIdList: [ID]
 }
 
+input ContributionsInput {
+    window: ContributionWindow
+}
+
+enum ContributionWindow {
+    All, Year, Quarter, Month, Week
+}
+
 input PlayerInput {
     id: ID!
     name: String
@@ -311,7 +319,7 @@ type Pair {
     count: Int
     spinsSinceLastPaired: Int
     recentTimesPaired: Int
-    contributions: [Contribution!]
+    contributions(input: ContributionsInput): [Contribution!]
     pairAssignmentHistory: [PairAssignment]
 }
 
