@@ -1,3 +1,4 @@
+name: Autorebase
 on:
   push:
     branches-ignore:
