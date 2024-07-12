@@ -2,6 +2,7 @@ name: Autorebase
 on:
   push:
     branches-ignore:
+      - master
       - rebase-pull-request**
       - cherry-pick-rebase-pull-request**
   pull_request:
