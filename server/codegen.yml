@@ -1,0 +1,11 @@
+schema: src/jsMain/resources/schema.graphql
+generates:
+  ./build/generated/codegen/Types.kt:
+    plugins:
+      - kotlin
+    config:
+      withTypes: true
+      strictScalars: true
+      scalars:
+        ID: String
+      typesPrefix: Gql
