@@ -1,10 +1,7 @@
 package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.model.Contribution
-import com.zegreatrob.coupling.model.PlayerPair
-import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -25,27 +22,22 @@ import web.cssom.px
 import web.html.InputType
 
 external interface PairFrequencyControlsProps : Props {
-    var pairs: List<PlayerPair>
+    var pairsContributions: List<Pair<CouplingPair, List<Contribution>>>
     var view: (List<Pair<CouplingPair, List<Contribution>>>) -> ReactNode
 }
 
 @ReactFunc
-val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairs, view) ->
+val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view) ->
     val (shouldFake, setShouldFake) = useState(false)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
 
-    val fakeContributions = useMemo {
-        pairs.mapNotNull { it.players?.elements?.toCouplingPair() }.map { it to generateFakeContributions() }
-    }
+    val fakeContributions = useMemo { pairsContributions.map { it.first to generateFakeContributions() } }
 
-    val allPairContributions = if (shouldFake) {
+    val allPairContributions: List<Pair<CouplingPair, List<Contribution>>> = if (shouldFake) {
         fakeContributions
     } else {
-        pairs.mapNotNull {
-            it.players?.elements?.toCouplingPair()
-                ?.let { pair -> pair to (it.contributions?.elements ?: emptyList()) }
-        }
+        pairsContributions
     }
 
     val allLabels = allPairContributions.flatMap { it.second.map(Contribution::label) }.toSet()
@@ -103,9 +95,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairs, view) ->
                     height = 600.px
                     backgroundColor = Color("white")
                 }
-                if (selectedPairs.isNotEmpty() && filteredData.flatMap { it.second }.isNotEmpty()) {
-                    +view(filteredData)
-                }
+                +view(filteredData)
             }
         }
     }

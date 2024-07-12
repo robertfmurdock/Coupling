@@ -24,18 +24,20 @@ external interface PairFrequencyLineGraphProps : Props {
 
 @ReactFunc
 val PairFrequencyLineGraph by nfc<PairFrequencyLineGraphProps> { (data) ->
-    MyResponsiveLine {
-        legend = "Pair Commits Over Time"
-        this.data = pairingLineData(data)
-        tooltip = { point ->
-            div.create {
-                css {
-                    backgroundColor = Color("rgb(0 0 0 / 14%)")
-                    padding = 10.px
-                    borderRadius = 20.px
+    if (data.flatMap { it.second }.isNotEmpty()) {
+        MyResponsiveLine {
+            legend = "Pair Commits Over Time"
+            this.data = pairingLineData(data)
+            tooltip = { point ->
+                div.create {
+                    css {
+                        backgroundColor = Color("rgb(0 0 0 / 14%)")
+                        padding = 10.px
+                        borderRadius = 20.px
+                    }
+                    div { +"${point.xFormatted} - ${point.yFormatted}" }
+                    div { +"${point.context}" }
                 }
-                div { +"${point.xFormatted} - ${point.yFormatted}" }
-                div { +"${point.context}" }
             }
         }
     }

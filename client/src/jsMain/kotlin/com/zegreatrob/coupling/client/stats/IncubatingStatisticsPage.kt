@@ -20,7 +20,7 @@ val IncubatingStatisticsPage = partyPageFunction { props, partyId ->
         },
         toNode = { _, _, queryResult ->
             val party = queryResult.party ?: return@CouplingQuery null
-            IncubatingPartyStatistics.create(
+            IncubatingPartyStatisticsContent.create(
                 party = party.details?.data ?: return@CouplingQuery null,
                 players = party.playerList?.elements ?: return@CouplingQuery null,
                 pairs = party.pairs ?: return@CouplingQuery null,
