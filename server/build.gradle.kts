@@ -75,8 +75,6 @@ dependencies {
     jsTestImplementation("com.zegreatrob.testmints:async")
     jsTestImplementation("com.zegreatrob.testmints:minassert")
     jsTestImplementation("com.zegreatrob.testmints:standard")
-    jsTestImplementation(npmConstrained("@graphql-codegen/cli"))
-    jsTestImplementation(npmConstrained("@graphql-codegen/kotlin"))
     jsTestImplementation(npmConstrained("serverless"))
     jsTestImplementation(npmConstrained("serverless-offline"))
     jsTestImplementation(npmConstrained("serverless-offline-ssm"))
@@ -194,17 +192,6 @@ tasks {
             "docker build --tag ghcr.io/robertfmurdock/coupling-serverless:latest build/docker-data"
                 .split(" ")
         )
-    }
-    register<NodeExec>("gqlCodeGen") {
-        dependsOn(
-            "jsPackageJson",
-            ":kotlinNpmInstall",
-        )
-        setup(project)
-        nodeCommand = "graphql-codegen"
-        inputs.file("codegen.yml")
-        inputs.dir("src/jsMain/resources")
-        outputs.dir(file("build/generated/codegen"))
     }
     register<NodeExec>("serverlessStart") {
         dependsOn(assemble, clientConfiguration, jsTest, compileKotlinJs)

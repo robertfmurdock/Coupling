@@ -1,10 +1,30 @@
+import com.zegreatrob.coupling.plugins.NodeExec
+import com.zegreatrob.coupling.plugins.setup
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
+
 plugins {
-    id("com.zegreatrob.coupling.plugins.mp")
+    id("com.zegreatrob.coupling.plugins.jstools")
     kotlin("plugin.serialization")
 }
 kotlin {
     jvm()
     js { nodejs() }
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        allWarningsAsErrors = false
+    }
+    sourceSets {
+        jsMain {
+            kotlin.srcDir("build/generated/codegen")
+        }
+        jvmMain {
+            kotlin.srcDir("build/generated/codegen")
+        }
+    }
 }
 
 dependencies {
@@ -25,4 +45,33 @@ dependencies {
     "jvmMainImplementation"(kotlin("reflect"))
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-api")
     "jvmTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
+
+    "jsTestImplementation"(npmConstrained("@graphql-codegen/cli"))
+    "jsTestImplementation"(npmConstrained("@graphql-codegen/kotlin"))
+}
+
+tasks {
+    val gqlCodeGen by registering(NodeExec::class) {
+        dependsOn(
+            "jsPackageJson",
+            ":kotlinNpmInstall",
+        )
+        setup(project)
+        nodeCommand = "graphql-codegen"
+        inputs.file("codegen.yml")
+        inputs.dir("../../server/src/jsMain/resources")
+        outputs.dir(file("build/generated/codegen"))
+    }
+    withType(KotlinCompile::class) {
+        dependsOn(gqlCodeGen)
+    }
+    withType(Kotlin2JsCompile::class) {
+        dependsOn(gqlCodeGen)
+    }
+    withType<FormatTask> {
+        dependsOn(gqlCodeGen)
+    }
+    withType<LintTask> {
+        dependsOn(gqlCodeGen)
+    }
 }
