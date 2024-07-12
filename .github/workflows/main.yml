@@ -1,8 +1,9 @@
 name: Build
 on:
   push:
-    branches:
-      - '**'
+    branches-ignore:
+      - rebase-pull-request**
+      - cherry-pick-rebase-pull-request**
     tags-ignore:
       - '**'
 permissions:
