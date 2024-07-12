@@ -163,7 +163,7 @@ input PairInput {
 }
 
 input ContributionsInput {
-    window: ContributionWindow
+    window: ContributionWindow!
 }
 
 enum ContributionWindow {

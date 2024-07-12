@@ -108,6 +108,18 @@ data class JsonContributor(
     val details: JsonPlayerRecord? = null,
 )
 
+@Serializable
+data class ContributionsInput(val window: JsonContributionWindow)
+
+@Serializable
+enum class JsonContributionWindow {
+    All,
+    Year,
+    Quarter,
+    Month,
+    Week,
+}
+
 fun JsonPair.toModel() = PlayerPair(
     players = players?.map(JsonPlayerRecord::toModel),
     count = count,

@@ -34,17 +34,17 @@ class CouplingQueryBuilder : BuilderWithInput() {
         .output
         .addToQuery("user")
 
-    fun partyList(block: PartyQueryBuilder.() -> Unit) = PartyQueryBuilder()
-        .also(block)
-        .mergeToParent()
-        .output
-        .addToQuery("partyList")
-
-    fun party(id: PartyId, block: PartyQueryBuilder.() -> Unit) = mergeToParent(
+    fun partyList(block: PartyQueryBuilder.() -> Unit) = mergeToParent(
+        "partyList",
         PartyQueryBuilder()
             .also(block),
-        InputSettings(PartyInput(id.value), "partyInput", "PartyInput"),
-        "party",
+    )
+
+    fun party(id: PartyId, block: PartyQueryBuilder.() -> Unit) = mergeToParent(
+        queryKey = "party",
+        inputSettings = InputSettings(PartyInput(id.value), "partyInput", "PartyInput"),
+        child = PartyQueryBuilder()
+            .also(block),
     )
 
     fun globalStats(year: Int) {
@@ -75,28 +75,21 @@ abstract class BuilderWithInput {
     }
 
     inline fun <T, reified J, reified I> mergeToParent(
-        child: T,
-        inputSettings: InputSettings<I>,
         queryKey: String,
+        inputSettings: InputSettings<I>,
+        child: T,
     ): T where T : BuilderWithInput, T : QueryBuilder<J> {
         this.inputs.addAll(child.inputs)
         this.variables.putAll(child.variables)
-        queries.add("$queryKey${inputSettings.addInputString<I>()} ${queryContent<J, T>(child)}")
+        this.queries.add("$queryKey${inputSettings.addInputString<I>()} ${child.queryContent<J, T>()}")
         return child
     }
 
-    inline fun <reified J, T> queryContent(child: T): String where T : BuilderWithInput, T : QueryBuilder<J> =
-        child.output.nestedKeys<J>()
-            .toQueryLines()
-            .plus(child.queries)
-            .joinToString(", ")
-            .let { "{ $it }" }
-
-    inline fun <T, reified J> T.mergeToParent(): T where T : BuilderWithInput, T : QueryBuilder<J> {
-        this@BuilderWithInput.inputs.addAll(this@mergeToParent.inputs)
-        this@BuilderWithInput.variables.putAll(this@mergeToParent.variables)
-        output.addToQuery("party")
-        return this@mergeToParent
+    inline fun <T, reified J> mergeToParent(queryKey: String, child: T): T where T : BuilderWithInput, T : QueryBuilder<J> {
+        this.inputs.addAll(child.inputs)
+        this.variables.putAll(child.variables)
+        this.queries.add("$queryKey ${child.queryContent<J, T>()}")
+        return child
     }
 
     inline fun <reified T> T.addToQuery(queryKey: String, inputString: String = "") {
@@ -132,3 +125,10 @@ class ConfigQueryBuilder : QueryBuilder<JsonConfig> {
         output = output.copy(stripePurchaseCode = "")
     }
 }
+
+inline fun <reified J, T> T.queryContent(): String where T : BuilderWithInput, T : QueryBuilder<J> =
+    output.nestedKeys<J>()
+        .toQueryLines()
+        .plus(queries)
+        .joinToString(", ")
+        .let { "{ $it }" }

@@ -29,6 +29,7 @@ class PartyQueryBuilder :
     fun pairAssignmentDocumentList() = also {
         output = output.copy(pairAssignmentDocumentList = listOf(pairAssignmentRecord))
     }
+
     fun pair(vararg playerIds: String, block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()
         .also(block)
         .output
@@ -36,10 +37,12 @@ class PartyQueryBuilder :
             "pair",
             InputSettings(PairInput(playerIds.toSet()), "pairInput", "PairInput"),
         )
+
     fun pairs(block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()
         .also(block)
-        .output
-        .let { output = output.copy(pairs = listOf(it)) }
+        .also { mergeToParent("pairs", it) }
+        .also { println("@@@@@@@@@ ${this.queryContent()}") }
+
     fun pinList() = also { output = output.copy(pinList = listOf(pinRecord)) }
     fun playerList() = also { output = output.copy(playerList = listOf(playerRecord)) }
     fun retiredPlayers() = also { output = output.copy(retiredPlayers = listOf(playerRecord)) }

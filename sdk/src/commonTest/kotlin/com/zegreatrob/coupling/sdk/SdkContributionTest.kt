@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.party.ClearContributionsCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.elements
@@ -19,7 +20,9 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.random.Random
+import kotlin.test.Ignore
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
@@ -131,6 +134,49 @@ class SdkContributionTest {
                     contributionCommand.toExpectedContribution(),
                 ),
                 "Contribution should be included in solo correctly",
+            )
+    }
+
+    @Test
+    @Ignore
+    fun canQueryContributionsByPairInWindow() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val expectedPlayer = players[1]
+        val excludedContributionCommand = stubSaveContributionCommand(party.id)
+            .copy(
+                dateTime = Clock.System.now().minus(8.days),
+                participantEmails = setOf(expectedPlayer.email),
+            )
+        val saveContributionCommands = listOf(
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(expectedPlayer.email)),
+            excludedContributionCommand,
+            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(expectedPlayer.email)),
+        )
+    }) {
+        savePartyState(party, players, emptyList())
+        saveContributionCommands.forEach {
+            sdk().fire(it)
+        }
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) {
+                    pairs {
+                        players()
+                        contributions(JsonContributionWindow.Week)
+                    }
+                }
+            },
+        )
+    } verify { result ->
+        result?.party?.pairs
+            ?.find { it.players?.elements?.map(Player::id) == listOf(expectedPlayer.id) }
+            ?.contributions?.elements?.withoutCreatedAt()
+            .assertIsEqualTo(
+                (saveContributionCommands - excludedContributionCommand)
+                    .map(SaveContributionCommand::toExpectedContribution),
+                "Old contributions should be excluded",
             )
     }
 
