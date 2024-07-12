@@ -29,6 +29,8 @@ import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
+import react.dom.html.ReactHTML.option
+import react.dom.html.ReactHTML.select
 import react.useMemo
 import react.useState
 import web.cssom.Color
@@ -61,8 +63,14 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                     ?.let { pair -> pair to (it.contributions?.elements ?: emptyList()) }
             }
         }
-
+    val allLabels = allPairContributions.flatMap { it.second.map(Contribution::label) }.toSet()
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
+    val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
+    println("selected label filter '$selectedLabelFilter'")
+    val filteredData = allPairContributions.applyFilters(
+        selectedPairs,
+        selectedLabelFilter,
+    )
     div {
         PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9")) {
             ConfigHeader {
@@ -72,6 +80,23 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
             div {
                 css {
                     whiteSpace = WhiteSpace.nowrap
+                }
+                div {
+                    select {
+                        onChange = { event ->
+                            setSelectedLabelFilter(event.target.value.let { if (it == "NULL") null else it })
+                        }
+                        option {
+                            value = "NULL"
+                            +"No label filter"
+                        }
+                        allLabels.map { label ->
+                            option {
+                                value = label
+                                +label
+                            }
+                        }
+                    }
                 }
                 div {
                     css {
@@ -102,10 +127,10 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
                             height = 600.px
                             backgroundColor = Color("white")
                         }
-                        if (selectedPairs.isNotEmpty() && allPairContributions.flatMap { it.second }.isNotEmpty()) {
+                        if (selectedPairs.isNotEmpty() && filteredData.flatMap { it.second }.isNotEmpty()) {
                             MyResponsiveLine {
                                 legend = "Pair Commits Over Time"
-                                data = pairingLineData(allPairContributions.filter { selectedPairs.contains(it.first) })
+                                data = pairingLineData(filteredData)
                                 tooltip = { point ->
                                     div.create {
                                         css {
@@ -125,6 +150,26 @@ val IncubatingPartyStatistics by nfc<IncubatingPartyStatisticsProps> { props ->
         }
     }
 }
+
+private fun List<Pair<CouplingPair, List<Contribution>>>.applyFilters(
+    selectedPairs: List<CouplingPair>,
+    selectedLabelFilter: String?,
+): List<Pair<CouplingPair, List<Contribution>>> {
+    val transforms = if (selectedLabelFilter != null) {
+        listOf(selectedLabelTransform(selectedLabelFilter))
+    } else {
+        emptyList()
+    }
+
+    return transforms.fold(filter { selectedPairs.contains(it.first) }) { list, transform ->
+        list.map(transform)
+    }
+}
+
+private fun selectedLabelTransform(selectedLabelFilter: String) =
+    { (pair, contributions): Pair<CouplingPair, List<Contribution>> ->
+        pair to contributions.filter { it.label == selectedLabelFilter }
+    }
 
 val random = Random(10)
 
@@ -160,7 +205,7 @@ private fun LocalDateTime.toFakeContribution() = Contribution(
     null,
     null,
     emptySet(),
-    "fake",
+    if (Random.nextBoolean()) "fake" else "alternate",
     null,
 )
 
