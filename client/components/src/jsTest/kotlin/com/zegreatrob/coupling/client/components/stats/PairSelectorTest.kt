@@ -90,5 +90,4 @@ class PairSelectorTest {
     } verify {
         selectedPairs.assertIsEqualTo(listOf(firstPair, thirdPair))
     }
-
 }

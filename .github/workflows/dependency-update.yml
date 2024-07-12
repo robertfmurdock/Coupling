@@ -1,4 +1,4 @@
-name: Gradle Update
+name: Dependency Update
 on:
   schedule:
     - cron: "0 17 * * *"
@@ -38,13 +38,12 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           branch: "cpr-gradle-update/${{github.job}}/${{github.run_id}}"
-          commit-message: "[create-pull-request] ${{github.workflow}}"
+          commit-message: "[update-deps] ${{github.workflow}}"
           token: ${{ secrets.GITHUB_TOKEN }}
+          labels: autorebase:opt-in
           delete-branch: true
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ secrets.COUPLING_PAT }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: rebase
+        run: gh pr merge --rebase --auto "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.COUPLING_PAT }}
