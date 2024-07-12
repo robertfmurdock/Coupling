@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
+import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.player.Player

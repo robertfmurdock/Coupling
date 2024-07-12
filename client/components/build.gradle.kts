@@ -15,12 +15,6 @@ kotlin {
     }
 }
 
-kotlin {
-    sourceSets.jsMain {
-        kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
-    }
-}
-
 tasks {
     formatKotlinJsMain {
         dependsOn("kspKotlinJs")

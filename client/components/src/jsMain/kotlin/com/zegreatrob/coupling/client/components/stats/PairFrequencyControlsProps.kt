@@ -1,6 +1,5 @@
-package com.zegreatrob.coupling.client.stats
+package com.zegreatrob.coupling.client.components.stats
 
-import com.zegreatrob.coupling.client.components.stats.PairSelector
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements

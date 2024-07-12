@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.stats
+package com.zegreatrob.coupling.client.components.stats
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Contribution
@@ -12,9 +12,7 @@ import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 
 fun generateFakeContributions() = generateCommitTimes().map(LocalDateTime::toFakeContribution)
-
 private val random = Random(10)
-
 private fun LocalDateTime.toFakeContribution() = Contribution(
     id = "${uuid4()}",
     createdAt = Clock.System.now(),
@@ -50,5 +48,4 @@ private fun generateCommitTimes(): List<LocalDateTime> {
 }
 
 private fun Int.isWeekday() = (1..5).contains(dayOfWeek())
-
 private fun Int.dayOfWeek() = this % 7
