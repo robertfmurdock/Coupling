@@ -1,16 +1,16 @@
 import {ResponsiveLine} from '@nivo/line'
 
 export const MyResponsiveLine = (props) => {
+    const allPoints = props.data.flatMap(line => line.data)
+    const xValues = allPoints.map(point => point.x.getTime());
+    const xMin = props.xMin ?? new Date(Math.min(...xValues))
+    const xMax = props.xMax ?? new Date(Math.max(...xValues))
+
+    const xMinMillis =   Math.min(...xValues)
+    const xMaxMillis =   Math.max(...xValues)
+
     function calculatePrecision() {
-        const allPoints = props.data.flatMap(line => line.data)
-        const xValues = allPoints.map(point => {
-            return point.x.getTime()
-        });
-        const min = Math.min(...xValues)
-        const max = Math.max(...xValues)
-
-        const range = max - min
-
+        const range = xMaxMillis - xMinMillis
         const hasMinutes = (range / (1000 * 60)) > 1
         const hasHours = (range / (1000 * 60 * 60)) > 1
         const hasDays = (range / (1000 * 60 * 60 * 24)) > 1
@@ -62,13 +62,15 @@ export const MyResponsiveLine = (props) => {
                 format: format,
                 type: 'time',
                 precision: precision,
-                useUTC: false
+                useUTC: false,
+                min: xMin,
+                max: xMax,
             }}
             xFormat={"time:" + format}
             yScale={{
                 type: 'linear'
             }}
-            tooltip={ props.tooltip ? (args) => props.tooltip(args.point.data) : undefined}
+            tooltip={props.tooltip ? (args) => props.tooltip(args.point.data) : undefined}
             legends={[
                 {
                     anchor: 'bottom-right',

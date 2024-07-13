@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.client.stats
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
+import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
@@ -20,6 +21,7 @@ external interface IncubatingPartyStatisticsContentProps : Props {
     var party: PartyDetails
     var players: List<Player>
     var pairs: List<PlayerPair>
+    var window: JsonContributionWindow?
 }
 
 @ReactFunc
@@ -32,7 +34,8 @@ val IncubatingPartyStatisticsContent by nfc<IncubatingPartyStatisticsContentProp
             }
             PairFrequencyControls(
                 pairsContributions = props.pairs.toPairContributions(),
-                view = PairFrequencyLineGraph::create,
+                view = { data -> PairFrequencyLineGraph.create(data, props.window) },
+                window = props.window,
             )
         }
     }

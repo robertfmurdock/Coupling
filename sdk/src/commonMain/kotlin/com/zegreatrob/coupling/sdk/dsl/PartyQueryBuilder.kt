@@ -41,7 +41,6 @@ class PartyQueryBuilder :
     fun pairs(block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()
         .also(block)
         .also { mergeToParent("pairs", it) }
-        .also { println("@@@@@@@@@ ${this.queryContent()}") }
 
     fun pinList() = also { output = output.copy(pinList = listOf(pinRecord)) }
     fun playerList() = also { output = output.copy(playerList = listOf(playerRecord)) }

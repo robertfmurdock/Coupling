@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
@@ -24,10 +25,11 @@ import web.html.InputType
 external interface PairFrequencyControlsProps : Props {
     var pairsContributions: List<Pair<CouplingPair, List<Contribution>>>
     var view: (List<Pair<CouplingPair, List<Contribution>>>) -> ReactNode
+    var window: JsonContributionWindow?
 }
 
 @ReactFunc
-val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view) ->
+val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view, window) ->
     val (shouldFake, setShouldFake) = useState(false)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)

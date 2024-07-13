@@ -28,6 +28,7 @@ val IncubatingStatisticsPage = partyPageFunction { props, partyId ->
                 party = party.details?.data ?: return@CouplingQuery null,
                 players = party.playerList?.elements ?: return@CouplingQuery null,
                 pairs = party.pairs ?: return@CouplingQuery null,
+                window = window,
             )
         },
         key = partyId.value,

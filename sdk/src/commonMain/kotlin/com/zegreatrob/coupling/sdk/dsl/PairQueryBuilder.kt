@@ -31,7 +31,6 @@ class PairQueryBuilder :
                 ),
             )
         }
-        println("!!!!!!!! ${this.queryContent()}")
     }
 
     fun pairAssignmentHistory(block: PairAssignmentQueryBuilder.() -> Unit) = PairAssignmentQueryBuilder()

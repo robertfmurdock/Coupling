@@ -182,4 +182,6 @@ external interface GraphProps : Props {
     var data: Array<NivoLineData>
     var legend: String
     var tooltip: (NinoLinePointDecorated) -> ReactNode
+    var xMin: kotlin.js.Date
+    var xMax: kotlin.js.Date
 }
