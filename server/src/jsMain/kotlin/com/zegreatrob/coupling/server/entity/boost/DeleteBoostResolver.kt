@@ -11,7 +11,7 @@ import kotlin.js.Promise
 
 val deleteBoostResolver: (Json, Json, CouplingContext, Json) -> Promise<dynamic> = dispatch(
     dispatcherFunc = prereleaseCommand(),
-    commandFunc = { _: JsonNull, _: JsonNull -> DeleteBoostCommand() },
+    commandFunc = { _: JsonNull, _: JsonNull? -> DeleteBoostCommand() },
     fireFunc = ::perform,
     toSerializable = { true },
 )

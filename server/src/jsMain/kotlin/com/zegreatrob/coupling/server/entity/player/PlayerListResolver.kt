@@ -41,7 +41,7 @@ val spinsUntilFullRotationResolve = dispatch(
 )
 
 val pairAssignmentHistoryResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull -> context.commandDispatcher },
+    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull? -> context.commandDispatcher },
     commandFunc = { data, _ ->
         val model = data.toModel()
         val partyId = PartyId(data.partyId ?: return@dispatch null)
@@ -70,7 +70,7 @@ private fun pairAssignment(
 )
 
 val pairAssignmentHeatResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPairAssignment, _: JsonNull -> context.commandDispatcher },
+    dispatcherFunc = { context: CouplingContext, _: JsonPairAssignment, _: JsonNull? -> context.commandDispatcher },
     commandFunc = { data, _ ->
         val model = data.toModel()
         val partyId = model.details?.data?.partyId ?: return@dispatch null
@@ -86,7 +86,7 @@ val pairAssignmentHeatResolve = dispatch(
 )
 
 val spinsSinceLastPairedResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull -> context.commandDispatcher },
+    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull? -> context.commandDispatcher },
     commandFunc = { data, _ ->
         val model = data.toModel()
         val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
@@ -101,7 +101,7 @@ val spinsSinceLastPairedResolve = dispatch(
 )
 
 val pairHeatResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull -> context.commandDispatcher },
+    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull? -> context.commandDispatcher },
     commandFunc = { data, _ ->
         val model = data.toModel()
         val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null

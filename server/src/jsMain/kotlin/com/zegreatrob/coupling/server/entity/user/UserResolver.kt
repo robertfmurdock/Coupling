@@ -11,7 +11,7 @@ import kotlinx.serialization.json.JsonNull
 
 val userResolve = dispatch(
     dispatcherFunc = command(),
-    commandFunc = { _: JsonNull, _: JsonNull -> UserQuery },
+    commandFunc = { _: JsonNull, _: JsonNull? -> UserQuery },
     fireFunc = ::perform,
     toSerializable = ::toJson,
 )

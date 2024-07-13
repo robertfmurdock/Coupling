@@ -18,7 +18,7 @@ object DispatcherProviders {
         context.commandDispatcher
     }
 
-    val partyCommand: (CouplingContext, JsonParty, JsonNull) -> CommandDispatcher = { context, _, _ ->
+    val partyCommand: (CouplingContext, JsonParty, JsonNull?) -> CommandDispatcher = { context, _, _ ->
         context.commandDispatcher
     }
 

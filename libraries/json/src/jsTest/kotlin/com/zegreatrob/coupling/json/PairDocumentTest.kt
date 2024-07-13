@@ -4,6 +4,8 @@ import com.zegreatrob.coupling.stubmodel.stubPairAssignmentDoc
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.setup
 import kotlinx.datetime.Instant
+import kotlinx.serialization.json.decodeFromDynamic
+import kotlinx.serialization.json.encodeToDynamic
 import kotlin.test.Test
 
 class PairDocumentTest {
@@ -19,5 +21,17 @@ class PairDocumentTest {
             .toModel()
     } verify { result ->
         result.assertIsEqualTo(pairs)
+    }
+
+    @Test
+    fun sdfsdf() = setup(object {
+        val contributionsInput = ContributionsInput(window = JsonContributionWindow.Week)
+    }) exercise {
+        contributionsInput
+            .let { couplingJsonFormat.encodeToDynamic(it) }
+    } verify { result ->
+        println(JSON.stringify(result))
+        couplingJsonFormat.decodeFromDynamic<ContributionsInput>(result)
+            .assertIsEqualTo(contributionsInput)
     }
 }

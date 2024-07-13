@@ -12,7 +12,7 @@ import kotlinx.serialization.json.JsonNull
 
 val partyListResolve = dispatch(
     dispatcherFunc = command(),
-    commandFunc = { _: JsonNull, _: JsonNull -> PartyListQuery },
+    commandFunc = { _: JsonNull, _: JsonNull? -> PartyListQuery },
     fireFunc = ::perform,
     toSerializable = ::toJson,
 )

@@ -20,7 +20,6 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.random.Random
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
@@ -138,7 +137,6 @@ class SdkContributionTest {
     }
 
     @Test
-    @Ignore
     fun canQueryContributionsByPairInWindow() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
@@ -173,9 +171,11 @@ class SdkContributionTest {
         result?.party?.pairs
             ?.find { it.players?.elements?.map(Player::id) == listOf(expectedPlayer.id) }
             ?.contributions?.elements?.withoutCreatedAt()
+            ?.toSet()
             .assertIsEqualTo(
                 (saveContributionCommands - excludedContributionCommand)
-                    .map(SaveContributionCommand::toExpectedContribution),
+                    .map(SaveContributionCommand::toExpectedContribution)
+                    .toSet(),
                 "Old contributions should be excluded",
             )
     }

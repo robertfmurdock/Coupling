@@ -16,6 +16,7 @@ import com.zegreatrob.coupling.model.player.Player
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
 
@@ -111,13 +112,20 @@ data class JsonContributor(
 @Serializable
 data class ContributionsInput(val window: JsonContributionWindow)
 
-@Serializable
 enum class JsonContributionWindow {
     All,
     Year,
     Quarter,
     Month,
     Week,
+}
+
+fun JsonContributionWindow.toModel() = when (this) {
+    JsonContributionWindow.All -> null
+    JsonContributionWindow.Year -> 365.days
+    JsonContributionWindow.Quarter -> (365 / 4).days
+    JsonContributionWindow.Month -> 30.days
+    JsonContributionWindow.Week -> 1.days
 }
 
 fun JsonPair.toModel() = PlayerPair(

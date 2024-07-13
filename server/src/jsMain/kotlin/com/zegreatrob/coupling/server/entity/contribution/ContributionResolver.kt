@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.entity.contribution
 
+import com.zegreatrob.coupling.json.ContributionsInput
 import com.zegreatrob.coupling.json.JsonPair
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
@@ -21,27 +22,28 @@ import kotlinx.serialization.json.JsonNull
 
 val contributionResolver = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _: JsonNull -> data.id?.let(::PartyId)?.let { PartyContributionQuery(it) } },
+    commandFunc = { data, _: JsonNull? -> data.id?.let(::PartyId)?.let { PartyContributionQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it.map(PartyRecord<Contribution>::toJson) },
 )
 
 val contributorResolver = dispatch(
     dispatcherFunc = partyCommand,
-    commandFunc = { data, _: JsonNull -> data.id?.let(::PartyId)?.let { PartyContributorQuery(it) } },
+    commandFunc = { data, _: JsonNull? -> data.id?.let(::PartyId)?.let { PartyContributorQuery(it) } },
     fireFunc = ::perform,
     toSerializable = { it.map(PartyElement<Contributor>::toJson) },
 )
 
 val pairContributionResolver = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull -> context.commandDispatcher },
-    commandFunc = { data, _: JsonNull ->
+    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: ContributionsInput? -> context.commandDispatcher },
+    commandFunc = { data, contributions ->
         val model = data.toModel()
         val partyId = PartyId(data.partyId ?: return@dispatch null)
         val players = model.players?.elements ?: return@dispatch null
         PairContributionQuery(
             partyId = partyId,
             pair = players.toCouplingPair(),
+            window = contributions?.window?.toModel(),
         )
     },
     fireFunc = ::perform,

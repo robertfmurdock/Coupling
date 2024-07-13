@@ -11,7 +11,7 @@ import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
 
-typealias GraphQLDispatcherProvider<E, I, D> = suspend (CouplingContext, E, I) -> D?
+typealias GraphQLDispatcherProvider<E, I, D> = suspend (CouplingContext, E, I?) -> D?
 
 suspend inline fun <D : TraceIdProvider, reified E, reified I> cannon(
     context: CouplingContext,
@@ -24,21 +24,26 @@ suspend inline fun <D : TraceIdProvider, reified E, reified I> cannon(
     return ActionCannon(dispatcher, LoggingActionPipe(dispatcher.traceId))
 }
 
-inline fun <reified E, reified I, reified D : TraceIdProvider, reified C, reified R, reified J> dispatch(
+typealias CommandFunc<reified E, reified I, reified C> = (entity: E, input: I?) -> C?
+
+inline fun <reified E : Any, reified I : Any, reified D : TraceIdProvider, reified C, reified R, reified J> dispatch(
     crossinline dispatcherFunc: GraphQLDispatcherProvider<E, I, D>,
-    crossinline commandFunc: (_: E, input: I) -> C?,
+    crossinline commandFunc: CommandFunc<E, I, C>,
     crossinline fireFunc: suspend ActionCannon<D>.(C) -> R,
     crossinline toSerializable: (R) -> J,
 ) = { entityJson: Json?, args: Json, context: CouplingContext, queryInfo: Json ->
     context.scope.promise {
         try {
             val targetField = queryInfo["fieldName"].toString()
+            println("targetField $targetField")
             val alreadyLoadedField = entityJson?.get(targetField)
             if (alreadyLoadedField != null) {
                 return@promise alreadyLoadedField
             }
+            println("entityJson ${JSON.stringify(entityJson)} args ${JSON.stringify(args)}")
             val (entity, input) = parseGraphJsons<E, I>(entityJson, args)
-            val cannon = cannon(context, entity, input, dispatcherFunc)
+            println("entity $entity input $input")
+            val cannon = cannon<D, E, I?>(context, entity, input, dispatcherFunc)
                 ?: return@promise null
             val result = commandFunc(entity, input)?.let { cannon.fireFunc(it) }
             if (result == null) {
@@ -53,9 +58,10 @@ inline fun <reified E, reified I, reified D : TraceIdProvider, reified C, reifie
     }
 }
 
-inline fun <reified E, reified I> parseGraphJsons(entityJson: Json?, args: Json): Pair<E, I> {
+inline fun <reified E, reified I> parseGraphJsons(entityJson: Json?, args: Json): Pair<E, I?> {
     val entity = couplingJsonFormat.decodeFromDynamic<E>(entityJson)
-    val input = couplingJsonFormat.decodeFromDynamic<I>(args.at("/input"))
+    val inputArg: Json? = args.at("/input")
+    val input = inputArg?.let { couplingJsonFormat.decodeFromDynamic<I>(inputArg) }
     return Pair(entity, input)
 }
 

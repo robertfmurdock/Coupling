@@ -7,12 +7,21 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.testmints.action.annotation.ActionMint
+import kotlinx.datetime.Clock
+import kotlin.time.Duration
 
 @ActionMint
-data class PairContributionQuery(val partyId: PartyId, val pair: CouplingPair) {
+data class PairContributionQuery(val partyId: PartyId, val pair: CouplingPair, val window: Duration? = null) {
     interface Dispatcher : PartyIdContributionsTrait {
-        suspend fun perform(query: PairContributionQuery) = query.partyId.contributions()
+        suspend fun perform(query: PairContributionQuery): List<PartyRecord<Contribution>> = query.partyId.contributions()
             .filter(byTargetPair(query.pair.targetPlayerEmailGroups()))
+            .filter(byWindow(query))
+
+        private fun byWindow(query: PairContributionQuery): (PartyRecord<Contribution>) -> Boolean {
+            val window = query.window ?: return { true }
+            val windowStart = Clock.System.now() - window
+            return { it.data.element.dateTime?.let { dateTime -> windowStart < dateTime } ?: false }
+        }
 
         private fun byTargetPair(targetPlayerEmailGroups: Array<Player>) = { record: PartyRecord<Contribution> ->
             pairMatches(

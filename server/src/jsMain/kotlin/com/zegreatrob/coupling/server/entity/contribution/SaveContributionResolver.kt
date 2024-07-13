@@ -8,13 +8,14 @@ import com.zegreatrob.coupling.json.ClearContributionsInput
 import com.zegreatrob.coupling.json.SaveContributionInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.CommandDispatcher
+import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val saveContributionResolver = dispatch<JsonNull, SaveContributionInput, CommandDispatcher, SaveContributionCommand, VoidResult, Boolean>(
     dispatcherFunc = DispatcherProviders.command(),
-    commandFunc = { _: JsonNull, args: SaveContributionInput -> args.toCommand() },
+    commandFunc = requiredInput { _: JsonNull, args: SaveContributionInput -> args.toCommand() },
     fireFunc = ::perform,
     toSerializable = { true },
 )
@@ -35,7 +36,7 @@ private fun SaveContributionInput.toCommand() = SaveContributionCommand(
 
 val clearContributionsResolver = dispatch<JsonNull, ClearContributionsInput, CommandDispatcher, ClearContributionsCommand, VoidResult, Boolean>(
     dispatcherFunc = DispatcherProviders.command(),
-    commandFunc = { _: JsonNull, args: ClearContributionsInput -> args.toCommand() },
+    commandFunc = requiredInput { _: JsonNull, args: ClearContributionsInput -> args.toCommand() },
     fireFunc = ::perform,
     toSerializable = { true },
 )

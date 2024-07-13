@@ -14,14 +14,14 @@ import kotlinx.serialization.json.JsonNull
 
 val userBoostResolver = dispatch(
     dispatcherFunc = prereleaseCommand(),
-    commandFunc = { _: JsonNull, _: JsonNull -> UserBoostQuery() },
+    commandFunc = { _: JsonNull, _: JsonNull? -> UserBoostQuery() },
     fireFunc = ::perform,
     toSerializable = ::jsonBoostRecord,
 )
 
 val partyBoostResolver = dispatch(
     dispatcherFunc = prereleaseCommand(),
-    commandFunc = { partyJson: JsonParty, _: JsonNull -> partyJson.id?.let { PartyBoostQuery(PartyId(it)) } },
+    commandFunc = { partyJson: JsonParty, _: JsonNull? -> partyJson.id?.let { PartyBoostQuery(PartyId(it)) } },
     fireFunc = ::perform,
     toSerializable = ::jsonBoostRecord,
 )
