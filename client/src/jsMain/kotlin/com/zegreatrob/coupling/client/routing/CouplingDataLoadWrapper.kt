@@ -27,7 +27,7 @@ external interface CouplingQueryProps<R> : Props {
 val CouplingQuery by nfc<CouplingQueryProps<Any>> { props ->
     val (query, toNode, commander) = props
 
-    val getDataAsync: suspend (DataLoaderTools) -> ReactNode? = useCallback { tools ->
+    val getDataAsync: suspend (DataLoaderTools) -> ReactNode? = useCallback(query, toNode, commander) { tools ->
         commander.tracingCannon()
             .fire(query)
             ?.let { value ->

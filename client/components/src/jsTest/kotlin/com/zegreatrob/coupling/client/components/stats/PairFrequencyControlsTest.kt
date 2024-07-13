@@ -27,7 +27,7 @@ class PairFrequencyControlsTest {
         val viewSpy = SpyData<List<Pair<CouplingPair, List<Contribution>>>, ReactNode>()
             .apply { spyWillReturn(ReactNode("Mission Complete")) }
     }) exercise {
-        render(PairFrequencyControls.create(pairs, viewSpy::spyFunction))
+        render(PairFrequencyControls.create(pairs, viewSpy::spyFunction, null, {}))
     } verify {
         viewSpy.spyReceivedValues.last()
             .assertIsEqualTo(emptyList())
@@ -45,7 +45,7 @@ class PairFrequencyControlsTest {
             .apply { spyWillReturn(listOf("Pending", "Mission Complete").map(::ReactNode)) }
         val actor = UserEvent.setup()
     }) {
-        render(PairFrequencyControls.create(pairs, viewSpy::spyFunction))
+        render(PairFrequencyControls.create(pairs, viewSpy::spyFunction, null, {}))
     } exercise {
         actor.click(screen.findByRole("checkbox", RoleOptions(expectedPair.pairName)))
     } verify {

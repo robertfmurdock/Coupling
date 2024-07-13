@@ -9,6 +9,7 @@ import emotion.react.css
 import react.Props
 import react.ReactNode
 import react.dom.aria.ariaLabel
+import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
@@ -20,16 +21,20 @@ import web.cssom.Color
 import web.cssom.Display
 import web.cssom.WhiteSpace
 import web.cssom.px
+import web.html.HTMLSelectElement
 import web.html.InputType
 
 external interface PairFrequencyControlsProps : Props {
     var pairsContributions: List<Pair<CouplingPair, List<Contribution>>>
     var view: (List<Pair<CouplingPair, List<Contribution>>>) -> ReactNode
     var window: JsonContributionWindow?
+    var setWindow: (JsonContributionWindow?) -> Unit
 }
 
+private const val NULL_PLACEHOLDER = "NULL"
+
 @ReactFunc
-val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view, window) ->
+val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view, selectedWindow, setWindow) ->
     val (shouldFake, setShouldFake) = useState(false)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
@@ -53,11 +58,25 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
         }
         div {
             select {
+                defaultValue = selectedWindow?.name ?: NULL_PLACEHOLDER
                 onChange = { event ->
-                    setSelectedLabelFilter(event.target.value.let { if (it == "NULL") null else it })
+                    setWindow(event.handlePlaceholder()?.let(JsonContributionWindow::valueOf))
                 }
                 option {
-                    value = "NULL"
+                    value = NULL_PLACEHOLDER
+                    +"No time window"
+                }
+                JsonContributionWindow.entries.map { window ->
+                    option {
+                        value = window.name
+                        +window.name
+                    }
+                }
+            }
+            select {
+                onChange = { event -> setSelectedLabelFilter(event.handlePlaceholder()) }
+                option {
+                    value = NULL_PLACEHOLDER
                     +"No label filter"
                 }
                 allLabels.map { label ->
@@ -101,6 +120,10 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
             }
         }
     }
+}
+
+private fun ChangeEvent<HTMLSelectElement>.handlePlaceholder() = target.value.let {
+    if (it == NULL_PLACEHOLDER) null else it
 }
 
 private fun List<Pair<CouplingPair, List<Contribution>>>.applyFilters(

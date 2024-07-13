@@ -22,6 +22,7 @@ external interface IncubatingPartyStatisticsContentProps : Props {
     var players: List<Player>
     var pairs: List<PlayerPair>
     var window: JsonContributionWindow?
+    var setWindow: (JsonContributionWindow?) -> Unit
 }
 
 @ReactFunc
@@ -36,6 +37,7 @@ val IncubatingPartyStatisticsContent by nfc<IncubatingPartyStatisticsContentProp
                 pairsContributions = props.pairs.toPairContributions(),
                 view = { data -> PairFrequencyLineGraph.create(data, props.window) },
                 window = props.window,
+                setWindow = props.setWindow,
             )
         }
     }
