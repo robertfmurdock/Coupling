@@ -28,7 +28,7 @@ interface DynamoDatatypeSyntax {
         ?.let {
             LocalDateTime(
                 year = it.slice(0..3).toInt(),
-                month = it.slice(4..5).toInt().let { monthNumber -> Month.values()[monthNumber - 1] },
+                month = it.slice(4..5).toInt().let { monthNumber -> Month.entries[monthNumber - 1] },
                 dayOfMonth = it.slice(6..7).toInt(),
                 hour = it.slice(8..9).toInt(),
                 minute = it.slice(10..11).toInt(),

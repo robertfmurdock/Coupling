@@ -13,9 +13,10 @@ import kotlin.time.Duration
 @ActionMint
 data class PairContributionQuery(val partyId: PartyId, val pair: CouplingPair, val window: Duration? = null) {
     interface Dispatcher : PartyIdContributionsTrait {
-        suspend fun perform(query: PairContributionQuery): List<PartyRecord<Contribution>> = query.partyId.contributions()
-            .filter(byTargetPair(query.pair.targetPlayerEmailGroups()))
-            .filter(byWindow(query))
+        suspend fun perform(query: PairContributionQuery): List<PartyRecord<Contribution>> =
+            query.partyId.contributions(query.window)
+                .filter(byTargetPair(query.pair.targetPlayerEmailGroups()))
+                .filter(byWindow(query))
 
         private fun byWindow(query: PairContributionQuery): (PartyRecord<Contribution>) -> Boolean {
             val window = query.window ?: return { true }

@@ -35,14 +35,11 @@ inline fun <reified E : Any, reified I : Any, reified D : TraceIdProvider, reifi
     context.scope.promise {
         try {
             val targetField = queryInfo["fieldName"].toString()
-            println("targetField $targetField")
             val alreadyLoadedField = entityJson?.get(targetField)
             if (alreadyLoadedField != null) {
                 return@promise alreadyLoadedField
             }
-            println("entityJson ${JSON.stringify(entityJson)} args ${JSON.stringify(args)}")
             val (entity, input) = parseGraphJsons<E, I>(entityJson, args)
-            println("entity $entity input $input")
             val cannon = cannon<D, E, I?>(context, entity, input, dispatcherFunc)
                 ?: return@promise null
             val result = commandFunc(entity, input)?.let { cannon.fireFunc(it) }

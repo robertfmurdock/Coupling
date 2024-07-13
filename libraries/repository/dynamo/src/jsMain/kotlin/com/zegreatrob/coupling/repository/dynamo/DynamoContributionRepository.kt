@@ -11,6 +11,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.js.Json
 import kotlin.js.json
+import kotlin.time.Duration
 
 class DynamoContributionRepository private constructor(override val userId: String, override val clock: Clock) :
     ContributionRepository,
@@ -57,9 +58,29 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         "createdAt" to element.createdAt.isoWithMillis(),
     )
 
-    override suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>> = partyId.queryForItemList()
-        .mapNotNull { toRecord(it) }
-        .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
+    override suspend fun get(partyId: PartyId, window: Duration?): List<PartyRecord<Contribution>> =
+        partyId.logAsync("windowedContributions") { queryForItemList(contributionListQuery(partyId, window)) }
+            .mapNotNull { toRecord(it) }
+            .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
+
+    private fun contributionListQuery(partyId: PartyId, window: Duration?) = if (window != null) {
+        json(
+            "TableName" to prefixedTableName,
+            "ExpressionAttributeValues" to json(
+                ":tribeId" to partyId.value,
+                ":windowStart" to (now() - window).isoWithMillis(),
+            ),
+            "KeyConditionExpression" to "tribeId = :tribeId",
+            "ExpressionAttributeNames" to json("#dt" to "dateTime"),
+            "FilterExpression" to "#dt > :windowStart",
+        )
+    } else {
+        json(
+            "TableName" to prefixedTableName,
+            "ExpressionAttributeValues" to json(":tribeId" to partyId.value),
+            "KeyConditionExpression" to "tribeId = :tribeId",
+        )
+    }
 
     private fun toRecord(json: Json): PartyRecord<Contribution>? = json.toContribution()
         ?.let { json.tribeId().with(it) }

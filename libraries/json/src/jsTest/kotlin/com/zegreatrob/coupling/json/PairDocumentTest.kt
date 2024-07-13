@@ -30,7 +30,6 @@ class PairDocumentTest {
         contributionsInput
             .let { couplingJsonFormat.encodeToDynamic(it) }
     } verify { result ->
-        println(JSON.stringify(result))
         couplingJsonFormat.decodeFromDynamic<ContributionsInput>(result)
             .assertIsEqualTo(contributionsInput)
     }

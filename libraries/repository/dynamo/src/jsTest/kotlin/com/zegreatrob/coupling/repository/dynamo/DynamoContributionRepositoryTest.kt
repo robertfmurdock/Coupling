@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.repository.dynamo
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.repository.validation.MagicClock
 import com.zegreatrob.coupling.stubmodel.stubContribution
@@ -12,6 +13,8 @@ import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
 import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.minutes
 
 class DynamoContributionRepositoryTest {
 
@@ -31,7 +34,7 @@ class DynamoContributionRepositoryTest {
     } exercise {
         partyContributions.forEach { repository.save(it) }
         repository.save(stubPartyId().with(unrelatedContribution))
-        repository.get(partyId)
+        repository.get(partyId, null)
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
             partyContributions
@@ -44,6 +47,32 @@ class DynamoContributionRepositoryTest {
                         timestamp = clock.now(),
                     )
                 },
+        )
+    }
+
+    @Test
+    fun loadCanFilterByDurationWindow() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoContributionRepository
+        val userEmail = uuidString()
+        val clock = MagicClock().apply { currentTime = Clock.System.now() }
+        val expectedContributions = generateSequence {
+            stubContribution().copy(dateTime = clock.now())
+        }
+            .take(3)
+            .toList()
+        val window = 10.days
+        val outsideContribution = stubContribution().copy(dateTime = clock.now() - (window + 2.minutes))
+        val allContributions = (expectedContributions + outsideContribution).shuffled()
+        val partyContributions = partyId.with(elementList = allContributions)
+    }) {
+        repository = DynamoContributionRepository.invoke(userEmail, clock)
+    } exercise {
+        partyContributions.forEach { repository.save(it) }
+        repository.get(partyId, window)
+    } verify { result: List<PartyRecord<Contribution>> ->
+        result.elements.assertIsEqualTo(
+            expectedContributions.sortedByDescending { "${it.dateTime} ${it.id}" },
         )
     }
 
@@ -64,7 +93,7 @@ class DynamoContributionRepositoryTest {
         partyContributions.forEach { repository.save(it) }
         repository.save(stubPartyId().with(unrelatedContribution))
         repository.deleteAll(partyId)
-        repository.get(partyId)
+        repository.get(partyId, null)
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(emptyList())
     }

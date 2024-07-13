@@ -31,6 +31,7 @@ import com.zegreatrob.coupling.repository.secret.SecretRepository
 import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.datetime.Clock
+import kotlin.time.Duration
 
 class MemoryRepositoryCatalog private constructor(
     override val userId: String,
@@ -69,7 +70,7 @@ class MemoryRepositoryCatalog private constructor(
 }
 
 class MemoryContributionRepository : ContributionRepository {
-    override suspend fun get(partyId: PartyId): List<PartyRecord<Contribution>> = emptyList()
+    override suspend fun get(partyId: PartyId, window: Duration?): List<PartyRecord<Contribution>> = emptyList()
     override suspend fun save(partyContribution: PartyElement<Contribution>) {
         TODO("Not yet implemented")
     }

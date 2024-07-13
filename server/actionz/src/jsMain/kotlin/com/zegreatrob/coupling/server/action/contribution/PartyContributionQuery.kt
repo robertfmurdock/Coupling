@@ -19,7 +19,7 @@ data class PartyContributionQuery(val partyId: PartyId) {
     interface Dispatcher {
         val contributionRepository: ContributionGet
         suspend fun perform(query: PartyContributionQuery): List<PartyRecord<Contribution>> =
-            contributionRepository.get(query.partyId)
+            contributionRepository.get(query.partyId, window = null)
     }
 }
 
@@ -52,7 +52,7 @@ data class PartyContributorQuery(val partyId: PartyId) {
         }
 
         private suspend fun PartyId.contributorEmails() =
-            contributionRepository.get(this)
+            contributionRepository.get(this, null)
                 .elements
                 .flatMap { it.participantEmails }
                 .toSet()
