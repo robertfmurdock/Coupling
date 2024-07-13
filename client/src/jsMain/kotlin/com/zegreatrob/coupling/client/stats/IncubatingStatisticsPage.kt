@@ -2,10 +2,14 @@ package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
+import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 
 val IncubatingStatisticsPage = partyPageFunction { props, partyId ->
+    val window: JsonContributionWindow? = props.search["window"]?.let { window ->
+        JsonContributionWindow.entries.find { it.name == window }
+    }
     CouplingQuery(
         commander = props.commander,
         query = graphQuery {
@@ -14,7 +18,7 @@ val IncubatingStatisticsPage = partyPageFunction { props, partyId ->
                 playerList()
                 pairs {
                     players()
-                    contributions()
+                    contributions(window = window)
                 }
             }
         },
