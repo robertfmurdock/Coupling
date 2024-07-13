@@ -21,10 +21,10 @@ import com.zegreatrob.coupling.server.action.player.RecentTimesPairedQuery
 import com.zegreatrob.coupling.server.action.player.SpinsSinceLastPairedQuery
 import com.zegreatrob.coupling.server.action.player.SpinsUntilFullRotationQuery
 import com.zegreatrob.coupling.server.action.player.perform
+import com.zegreatrob.coupling.server.entity.boost.adapt
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.partyCommand
 import com.zegreatrob.coupling.server.graphql.dispatch
-import kotlinx.serialization.json.JsonNull
 
 val playerListResolve = dispatch(
     dispatcherFunc = partyCommand,
@@ -41,8 +41,8 @@ val spinsUntilFullRotationResolve = dispatch(
 )
 
 val pairAssignmentHistoryResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull? -> context.commandDispatcher },
-    commandFunc = { data, _ ->
+    dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
+    commandFunc = { data: JsonPair, _ ->
         val model = data.toModel()
         val partyId = PartyId(data.partyId ?: return@dispatch null)
         val players = model.players?.elements ?: return@dispatch null
@@ -70,8 +70,8 @@ private fun pairAssignment(
 )
 
 val pairAssignmentHeatResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPairAssignment, _: JsonNull? -> context.commandDispatcher },
-    commandFunc = { data, _ ->
+    dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
+    commandFunc = { data: JsonPairAssignment, _ ->
         val model = data.toModel()
         val partyId = model.details?.data?.partyId ?: return@dispatch null
         val pair = model.playerIds?.map { defaultPlayer.copy(id = it) }?.toCouplingPair() ?: return@dispatch null
@@ -86,8 +86,8 @@ val pairAssignmentHeatResolve = dispatch(
 )
 
 val spinsSinceLastPairedResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull? -> context.commandDispatcher },
-    commandFunc = { data, _ ->
+    dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
+    commandFunc = { data: JsonPair, _ ->
         val model = data.toModel()
         val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null
@@ -101,8 +101,8 @@ val spinsSinceLastPairedResolve = dispatch(
 )
 
 val pairHeatResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull? -> context.commandDispatcher },
-    commandFunc = { data, _ ->
+    dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
+    commandFunc = { data: JsonPair, _ ->
         val model = data.toModel()
         val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null

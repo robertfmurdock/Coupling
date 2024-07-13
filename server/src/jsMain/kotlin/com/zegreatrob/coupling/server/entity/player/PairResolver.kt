@@ -13,10 +13,10 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.action.player.PairCountQuery
 import com.zegreatrob.coupling.server.action.player.PairQuery
 import com.zegreatrob.coupling.server.action.player.perform
+import com.zegreatrob.coupling.server.entity.boost.adapt
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.dispatch
-import kotlinx.serialization.json.JsonNull
 
 val pairResolve = dispatch(
     dispatcherFunc = { context: CouplingContext, _: JsonParty, _: PairInput? -> context.commandDispatcher },
@@ -30,8 +30,8 @@ val pairResolve = dispatch(
     toSerializable = { it?.let(PartyElement<PlayerPair>::toJson) },
 )
 val pairCountResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: JsonNull? -> context.commandDispatcher },
-    commandFunc = { data, _ ->
+    dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
+    commandFunc = { data: JsonPair, _ ->
         val model = data.toModel()
         val partyId = PartyId(data.partyId ?: return@dispatch null)
         val players = model.players?.elements ?: return@dispatch null
