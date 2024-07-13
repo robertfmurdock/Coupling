@@ -7,12 +7,12 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.action.party.PartyQuery
 import com.zegreatrob.coupling.server.action.party.perform
+import com.zegreatrob.coupling.server.entity.boost.adapt
 import com.zegreatrob.coupling.server.graphql.dispatch
-import kotlinx.serialization.json.JsonElement
 
 val partyDetailsResolve = dispatch(
-    dispatcherFunc = { r, _, _ -> r.commandDispatcher },
-    commandFunc = { entity: JsonParty, _: JsonElement? -> entity.id?.let(::PartyId)?.let { PartyQuery(it) } },
+    dispatcherFunc = adapt { r -> r.commandDispatcher },
+    commandFunc = { entity: JsonParty, _ -> entity.id?.let(::PartyId)?.let { PartyQuery(it) } },
     fireFunc = ::perform,
     toSerializable = ::toJson,
 )

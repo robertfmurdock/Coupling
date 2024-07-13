@@ -19,8 +19,8 @@ import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.dispatch
 
 val pairResolve = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonParty, _: PairInput? -> context.commandDispatcher },
-    commandFunc = requiredInput { party, input ->
+    dispatcherFunc = { context: CouplingContext, _, _ -> context.commandDispatcher },
+    commandFunc = requiredInput { party: JsonParty, input: PairInput ->
         PairQuery(
             PartyId(party.id ?: return@requiredInput null),
             input.playerIdList,
