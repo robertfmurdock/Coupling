@@ -2,8 +2,11 @@ package com.zegreatrob.coupling.client.demo
 
 import com.zegreatrob.coupling.client.components.Frame
 import com.zegreatrob.coupling.client.components.FrameRunner
-import com.zegreatrob.coupling.client.routing.PageProps
-import com.zegreatrob.minreact.nfc
+import js.objects.jso
+import react.FC
+import react.dom.html.ReactHTML.button
+import react.router.dom.SetURLSearchParams
+import react.router.dom.useSearchParams
 import web.cssom.Angle
 import web.cssom.Left
 import web.cssom.Top
@@ -11,14 +14,30 @@ import web.cssom.deg
 import web.cssom.px
 
 val loadingSequence by lazy { LoadingAnimationState.generateSequence() }
-val LoadingPage by nfc<PageProps> { props ->
-    val frameIndex = props.search["frame"]
-    val currentFrame = frameIndex?.toIntOrNull()?.let { loadingSequence.toList()[it] }
+val LoadingPage = FC {
+    val (searchParams, setSearchParams) = useSearchParams()
+    val frameIndex = searchParams["frame"]?.toIntOrNull()
+    val currentFrame = frameIndex?.let { loadingSequence.toList()[it] }
     if (currentFrame != null) {
+        button {
+            onClick = { setFrame(setSearchParams, frameIndex - 1) }
+            +"<"
+        }
+        button {
+            onClick = { setFrame(setSearchParams, frameIndex + 1) }
+            +">"
+        }
         LoadingPageFrame(currentFrame.data)
     } else {
         FrameRunner(loadingSequence, 1.0, { state: LoadingAnimationState -> LoadingPageFrame.create(state) })
     }
+}
+
+private fun setFrame(setSearchParams: SetURLSearchParams, frame: Int) {
+    setSearchParams({ params ->
+        params["frame"] = "$frame"
+        params
+    }, jso())
 }
 
 data class LoadingAnimationStateData(
@@ -34,7 +53,7 @@ data class LoadingAnimationStateData(
 sealed class LoadingAnimationState(
     val data: LoadingAnimationStateData,
 ) {
-    object Initial : LoadingAnimationState(
+    data object Initial : LoadingAnimationState(
         LoadingAnimationStateData(
             player1Tilt = (-8).deg,
             player1Top = 0.px,
@@ -46,27 +65,87 @@ sealed class LoadingAnimationState(
         ),
     )
 
-    object Step1 : LoadingAnimationState(
+    data object Step1 : LoadingAnimationState(
         LoadingAnimationStateData(
-            player1Tilt = (8).deg,
-            player1Top = (-25).px,
-            player1Left = 25.px,
-            player2Tilt = (-8).deg,
-            player2Top = 25.px,
-            player2Left = (-25).px,
+            player1Tilt = (-4).deg,
+            player1Top = (-20).px,
+            player1Left = 20.px,
+            player2Tilt = 4.deg,
+            player2Top = 20.px,
+            player2Left = (-20).px,
             swapped = false,
         ),
     )
 
-    object Swapped : LoadingAnimationState(
+    data object Step2 : LoadingAnimationState(
+        LoadingAnimationStateData(
+            player1Tilt = 0.deg,
+            player1Top = (-35).px,
+            player1Left = 35.px,
+            player2Tilt = 0.deg,
+            player2Top = 35.px,
+            player2Left = (-35).px,
+            swapped = false,
+        ),
+    )
+
+    data object Step3 : LoadingAnimationState(
+        LoadingAnimationStateData(
+            player1Tilt = 4.deg,
+            player1Top = (-10).px,
+            player1Left = 60.px,
+            player2Tilt = (-4).deg,
+            player2Top = 10.px,
+            player2Left = (-60).px,
+            swapped = false,
+        ),
+    )
+
+    data object Swapped : LoadingAnimationState(
         LoadingAnimationStateData(
             player1Tilt = 8.deg,
             player1Top = 0.px,
             player1Left = 0.px,
             player2Tilt = (-8).deg,
             player2Top = 0.px,
-            swapped = true,
             player2Left = 0.px,
+            swapped = true,
+        ),
+    )
+
+    data object Step5 : LoadingAnimationState(
+        LoadingAnimationStateData(
+            player2Tilt = (-4).deg,
+            player2Top = (-20).px,
+            player2Left = 20.px,
+            player1Tilt = 4.deg,
+            player1Top = 20.px,
+            player1Left = (-20).px,
+            swapped = true,
+        ),
+    )
+
+    data object Step6 : LoadingAnimationState(
+        LoadingAnimationStateData(
+            player1Tilt = 0.deg,
+            player1Top = 35.px,
+            player1Left = (-35).px,
+            player2Tilt = 0.deg,
+            player2Top = (-35).px,
+            player2Left = 35.px,
+            swapped = true,
+        ),
+    )
+
+    data object Step7 : LoadingAnimationState(
+        LoadingAnimationStateData(
+            player1Tilt = (-4).deg,
+            player1Top = 10.px,
+            player1Left = (-60).px,
+            player2Tilt = 4.deg,
+            player2Top = (-10).px,
+            player2Left = 60.px,
+            swapped = true,
         ),
     )
 
@@ -79,9 +158,20 @@ sealed class LoadingAnimationState(
             }.asSequence()
 
         private val frames = listOf(
-            Pair(Step1, 1000),
-            Pair(Swapped, 300),
-            Pair(Initial, 1000),
+            Pair(Step1, 100),
+            Pair(Step2, 100),
+            Pair(Step3, 100),
+            Pair(Swapped, 100),
+            Pair(Swapped, 100),
+            Pair(Swapped, 100),
+            Pair(Swapped, 100),
+            Pair(Step5, 100),
+            Pair(Step6, 100),
+            Pair(Step7, 100),
+            Pair(Initial, 100),
+            Pair(Initial, 100),
+            Pair(Initial, 100),
+            Pair(Initial, 100),
         )
     }
 }

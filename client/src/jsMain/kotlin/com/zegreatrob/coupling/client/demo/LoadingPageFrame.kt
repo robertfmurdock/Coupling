@@ -50,8 +50,9 @@ val LoadingPageFrame by nfc<LoadingPageFrameProps> { (state) ->
                 player1 = defaultPlayer.copy(id = "rob", name = "rob", imageURL = rob),
                 player2 = defaultPlayer.copy(id = "autumn", name = "autumn", imageURL = autumn),
             )
+            val data = state.data
             Flipper {
-                flipKey = "${state.data}"
+                flipKey = "$data"
                 div {
                     div {
                         css {
@@ -59,21 +60,21 @@ val LoadingPageFrame by nfc<LoadingPageFrameProps> { (state) ->
                         }
                         listOf(
                             flippedPlayer(
-                                ClassName {},
+                                ClassName { },
                                 pair.player1,
-                                state.data.player1Top,
-                                state.data.player1Tilt,
-                                state.data.player1Left,
+                                data.player1Top,
+                                data.player1Tilt,
+                                data.player1Left,
                             ),
                             flippedPlayer(
-                                ClassName {},
+                                ClassName { },
                                 pair.player2,
-                                state.data.player2Top,
-                                state.data.player2Tilt,
-                                state.data.player2Left,
+                                data.player2Top,
+                                data.player2Tilt,
+                                data.player2Left,
                             ),
                         ).let {
-                            if (state.data.swapped) {
+                            if (data.swapped) {
                                 it.reversed()
                             } else {
                                 it
@@ -94,6 +95,7 @@ private fun flippedPlayer(
     left: Left,
 ) = Flipped.create {
     flipId = player.id
+    key = player.id
     div {
         css {
             position = Position.relative
