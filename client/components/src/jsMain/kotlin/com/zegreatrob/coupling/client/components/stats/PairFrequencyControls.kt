@@ -58,13 +58,9 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
         }
         div {
             select {
-                defaultValue = selectedWindow?.name ?: NULL_PLACEHOLDER
+                defaultValue = (selectedWindow ?: JsonContributionWindow.Quarter).name
                 onChange = { event ->
                     setWindow(event.handlePlaceholder()?.let(JsonContributionWindow::valueOf))
-                }
-                option {
-                    value = NULL_PLACEHOLDER
-                    +"No time window"
                 }
                 JsonContributionWindow.entries.map { window ->
                     option {
