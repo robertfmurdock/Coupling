@@ -49,7 +49,7 @@ external interface PartyStatisticsProps : Props {
 
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
     var medianSpinDuration: Duration?
-    var chartComponent: FC<GraphProps>?
+    var chartComponent: FC<CouplingResponsiveLineProps>?
 }
 
 @ReactFunc
@@ -73,7 +73,7 @@ external interface PartyStatisticsContentProps : Props {
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
     var medianSpinDuration: Duration?
     var pairs: List<PlayerPair>
-    var chartComponent: FC<GraphProps>?
+    var chartComponent: FC<CouplingResponsiveLineProps>?
 }
 
 @ReactFunc
@@ -178,7 +178,15 @@ private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCoupl
     }
     .sortedByDescending(::timeSincePairSort)
 
-external interface GraphProps : Props {
+external interface CouplingResponsiveLineProps : Props {
+    var data: Array<NivoLineData>
+    var legend: String
+    var tooltip: (NinoLinePointDecorated) -> ReactNode
+    var xMin: kotlin.js.Date
+    var xMax: kotlin.js.Date
+}
+
+external interface CouplingResponsiveBarProps : Props {
     var data: Array<NivoLineData>
     var legend: String
     var tooltip: (NinoLinePointDecorated) -> ReactNode

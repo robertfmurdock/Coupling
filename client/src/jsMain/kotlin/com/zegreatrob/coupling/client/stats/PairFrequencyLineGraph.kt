@@ -31,7 +31,7 @@ val PairFrequencyLineGraph by nfc<PairFrequencyLineGraphProps> { (data, window) 
     val duration = window?.toModel()
 
     if (data.flatMap { it.second }.isNotEmpty()) {
-        MyResponsiveLine {
+        CouplingResponsiveLine {
             legend = "Pair Commits Over Time"
             this.data = pairingLineData(data)
 

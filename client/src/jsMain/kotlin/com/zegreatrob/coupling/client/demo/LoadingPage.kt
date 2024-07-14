@@ -30,7 +30,7 @@ val LoadingPage = FC {
         }
         LoadingPageFrame(currentFrame.data)
     } else {
-        FrameRunner(loadingSequence, 1.0, { state: LoadingAnimationState -> LoadingPageFrame.create(state) })
+        FrameRunner(loadingSequence, 1.0, LoadingPageFrame::create)
     }
 }
 

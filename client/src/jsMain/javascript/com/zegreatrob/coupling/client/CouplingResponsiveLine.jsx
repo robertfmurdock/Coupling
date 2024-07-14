@@ -1,13 +1,13 @@
 import {ResponsiveLine} from '@nivo/line'
 
-export const MyResponsiveLine = (props) => {
+export const CouplingResponsiveLine = (props) => {
     const allPoints = props.data.flatMap(line => line.data)
     const xValues = allPoints.map(point => point.x.getTime());
     const xMin = props.xMin ?? new Date(Math.min(...xValues))
     const xMax = props.xMax ?? new Date(Math.max(...xValues))
 
-    const xMinMillis =   Math.min(...xValues)
-    const xMaxMillis =   Math.max(...xValues)
+    const xMinMillis = Math.min(...xValues)
+    const xMaxMillis = Math.max(...xValues)
 
     function calculatePrecision() {
         const range = xMaxMillis - xMinMillis
