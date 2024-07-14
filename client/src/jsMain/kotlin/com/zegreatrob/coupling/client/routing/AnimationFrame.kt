@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.routing
 
 import com.zegreatrob.coupling.client.components.animationsDisabledContext
+import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import com.zegreatrob.react.dataloader.DataLoadState
 import com.zegreatrob.react.dataloader.EmptyState
@@ -22,6 +23,7 @@ enum class AnimationState {
     Stop,
 }
 
+@ReactFunc
 val animationFrame by nfc<AnimationFrameProps> { props ->
     var animationState by useState(AnimationState.Start)
     val shouldStartAnimation = props.state !is EmptyState && animationState === AnimationState.Start

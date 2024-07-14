@@ -13,7 +13,8 @@ import web.cssom.Top
 import web.cssom.deg
 import web.cssom.px
 
-val loadingSequence by lazy { LoadingAnimationState.generateSequence() }
+private val loadingSequence by lazy { LoadingAnimationState.generateSequence() }
+
 val LoadingPage = FC {
     val (searchParams, setSearchParams) = useSearchParams()
     val frameIndex = searchParams["frame"]?.toIntOrNull()
