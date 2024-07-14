@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
+import com.zegreatrob.coupling.client.components.stats.Visualization
 import com.zegreatrob.coupling.client.components.stats.create
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
@@ -16,6 +17,7 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.jso
 import react.Props
+import react.ReactNode
 import react.router.dom.SetURLSearchParams
 import react.router.dom.useSearchParams
 
@@ -45,7 +47,12 @@ val IncubatingPartyStatisticsLoadingFrame by nfc<IncubatingPartyStatisticsLoadin
         toNode = { reload, _, queryResult ->
             PairFrequencyControls.create(
                 pairsContributions = queryResult.party?.pairs?.toPairContributions() ?: return@CouplingQuery null,
-                view = { data -> PairFrequencyLineGraph.create(data, window) },
+                view = { (visualization, data) ->
+                    when (visualization) {
+                        Visualization.LineOverTime -> PairFrequencyLineGraph.create(data, window)
+                        Visualization.Heatmap -> ReactNode("Work in progress")
+                    }
+                },
                 window = window,
                 setWindow = {
                     setWindow(it)

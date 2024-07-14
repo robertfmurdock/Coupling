@@ -26,16 +26,27 @@ import web.html.InputType
 
 external interface PairFrequencyControlsProps : Props {
     var pairsContributions: List<Pair<CouplingPair, List<Contribution>>>
-    var view: (List<Pair<CouplingPair, List<Contribution>>>) -> ReactNode
+    var view: (VisualizationContext) -> ReactNode
     var window: JsonContributionWindow?
     var setWindow: (JsonContributionWindow?) -> Unit
 }
 
 private const val NULL_PLACEHOLDER = "NULL"
 
+enum class Visualization {
+    LineOverTime,
+    Heatmap,
+}
+
+data class VisualizationContext(
+    val visualization: Visualization,
+    val data: List<Pair<CouplingPair, List<Contribution>>>,
+)
+
 @ReactFunc
 val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view, selectedWindow, setWindow) ->
     val (shouldFake, setShouldFake) = useState(false)
+    val (visualization, setVisualization) = useState(Visualization.LineOverTime)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
 
@@ -66,6 +77,17 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                     option {
                         value = window.name
                         +window.name
+                    }
+                }
+            }
+            select {
+                onChange = { event ->
+                    event.handlePlaceholder()?.let(Visualization::valueOf)?.let { setVisualization(it) }
+                }
+                Visualization.entries.map { visualization ->
+                    option {
+                        value = visualization.name
+                        +visualization.name
                     }
                 }
             }
@@ -112,7 +134,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                     height = 600.px
                     backgroundColor = Color("white")
                 }
-                +view(filteredData)
+                +view(VisualizationContext(visualization, filteredData))
             }
         }
     }

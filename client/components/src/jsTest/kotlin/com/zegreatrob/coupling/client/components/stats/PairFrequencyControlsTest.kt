@@ -1,7 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
-import com.zegreatrob.coupling.model.Contribution
-import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.client.components.stats.Visualization.LineOverTime
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
 import com.zegreatrob.coupling.stubmodel.stubContribution
@@ -24,13 +23,13 @@ class PairFrequencyControlsTest {
         var pairs = listOf(
             pairOf(stubPlayer()) to listOf(stubContribution()),
         )
-        val viewSpy = SpyData<List<Pair<CouplingPair, List<Contribution>>>, ReactNode>()
+        val viewSpy = SpyData<VisualizationContext, ReactNode>()
             .apply { spyWillReturn(ReactNode("Mission Complete")) }
     }) exercise {
         render(PairFrequencyControls.create(pairs, viewSpy::spyFunction, null, {}))
     } verify {
         viewSpy.spyReceivedValues.last()
-            .assertIsEqualTo(emptyList())
+            .assertIsEqualTo(VisualizationContext(LineOverTime, emptyList()))
     }
 
     @Test
@@ -41,7 +40,7 @@ class PairFrequencyControlsTest {
             expectedPair to expectedContributions,
             pairOf(stubPlayer()) to listOf(stubContribution()),
         )
-        val viewSpy = SpyData<List<Pair<CouplingPair, List<Contribution>>>, ReactNode>()
+        val viewSpy = SpyData<VisualizationContext, ReactNode>()
             .apply { spyWillReturn(listOf("Pending", "Mission Complete").map(::ReactNode)) }
         val actor = UserEvent.setup()
     }) {
@@ -50,6 +49,6 @@ class PairFrequencyControlsTest {
         actor.click(screen.findByRole("checkbox", RoleOptions(expectedPair.pairName)))
     } verify {
         viewSpy.spyReceivedValues.last()
-            .assertIsEqualTo(listOf(expectedPair to expectedContributions))
+            .assertIsEqualTo(VisualizationContext(LineOverTime, listOf(expectedPair to expectedContributions)))
     }
 }
