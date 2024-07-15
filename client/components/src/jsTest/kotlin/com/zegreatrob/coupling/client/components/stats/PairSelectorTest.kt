@@ -10,6 +10,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
+import org.w3c.dom.HTMLInputElement
 import kotlin.test.Test
 
 class PairSelectorTest {
@@ -60,8 +61,7 @@ class PairSelectorTest {
             )
         }
     } exercise {
-        val pairName = firstPair.pairName
-        actor.click(screen.findByRole("checkbox", RoleOptions(pairName)))
+        actor.click(screen.findByRole("checkbox", RoleOptions(firstPair.pairName)))
     } verify {
         selectedPairs.assertIsEqualTo(emptyList())
     }
@@ -90,5 +90,31 @@ class PairSelectorTest {
         actor.click(screen.findByRole("checkbox", RoleOptions(firstPair.pairName)))
     } verify {
         selectedPairs.assertIsEqualTo(listOf(firstPair, thirdPair))
+    }
+
+    @Test
+    fun showsInitialSelections() = asyncSetup(object {
+        val players = (1..4).map { stubPlayer() }
+        val pairs = listOf(
+            pairOf(players[0], players[1]),
+            pairOf(players[0], players[2]),
+            pairOf(players[0], players[3]),
+        )
+        val firstPair = pairs[0]
+        val thirdPair = pairs[2]
+        var selectedPairs: List<CouplingPair> = listOf(thirdPair)
+    }) exercise {
+        render {
+            PairSelector(
+                pairs = pairs,
+                selectedPairs = selectedPairs,
+                onSelectionChange = { newSelectedPairs -> selectedPairs = newSelectedPairs },
+            )
+        }
+    } verify {
+        (screen.findByRole("checkbox", RoleOptions(firstPair.pairName)) as HTMLInputElement).checked
+            .assertIsEqualTo(false)
+        (screen.findByRole("checkbox", RoleOptions(thirdPair.pairName)) as HTMLInputElement).checked
+            .assertIsEqualTo(true)
     }
 }

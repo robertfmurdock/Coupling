@@ -35,6 +35,7 @@ val PairSelector by nfc<PairSelectorProps> { props ->
                     }
                     input {
                         type = InputType.checkbox
+                        checked = props.selectedPairs.contains(pair)
                         value = pair.pairId
                         onChange = {
                             val newSelections = if (selectedPairs.contains(pair)) {
