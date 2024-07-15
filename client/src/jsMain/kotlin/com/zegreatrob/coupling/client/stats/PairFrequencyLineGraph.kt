@@ -97,7 +97,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
         colors = NivoHeatMapColors(
             type = "diverging",
             scheme = "red_yellow_blue",
-            divergeAt = 0.5,
+            divergeAt = 0.7,
             minValue = 0,
             maxValue = max,
         )

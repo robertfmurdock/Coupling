@@ -71,11 +71,10 @@ private fun JsonContributionWindow.weeks(map: Map<Set<Player>, List<Contribution
     ?: map.weeksSinceFirstContribution()
 
 private fun Map<Set<Player>, List<Contribution>>.weeksSinceFirstContribution(): Int =
-    (Clock.System.now() - firstContributionInstant()).inWholeWeeks()
+    (Clock.System.now() - values.flatten().firstContributionInstant()).inWholeWeeks()
 
-private fun Map<Set<Player>, List<Contribution>>.firstContributionInstant() =
-    values.flatten()
-        .mapNotNull { it.dateTime }
+fun List<Contribution>.firstContributionInstant() =
+    mapNotNull { it.dateTime }
         .minOrNull()
         ?: Clock.System.now()
 

@@ -27,8 +27,8 @@ import web.html.InputType
 external interface PairFrequencyControlsProps : Props {
     var pairsContributions: List<Pair<CouplingPair, List<Contribution>>>
     var view: (VisualizationContext) -> ReactNode
-    var window: JsonContributionWindow?
-    var setWindow: (JsonContributionWindow?) -> Unit
+    var window: JsonContributionWindow
+    var setWindow: (JsonContributionWindow) -> Unit
 }
 
 private const val NULL_PLACEHOLDER = "NULL"
@@ -50,7 +50,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
 
-    val fakeContributions = useMemo { pairsContributions.map { it.first to generateFakeContributions() } }
+    val fakeContributions = useMemo { generateFakeContributions(pairsContributions, selectedWindow) }
 
     val allPairContributions: List<Pair<CouplingPair, List<Contribution>>> = if (shouldFake) {
         fakeContributions
@@ -69,10 +69,8 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
         }
         div {
             select {
-                defaultValue = (selectedWindow ?: JsonContributionWindow.Quarter).name
-                onChange = { event ->
-                    setWindow(event.handlePlaceholder()?.let(JsonContributionWindow::valueOf))
-                }
+                defaultValue = selectedWindow.name
+                onChange = { event -> setWindow(event.target.value.let(JsonContributionWindow::valueOf)) }
                 JsonContributionWindow.entries.map { window ->
                     option {
                         value = window.name
