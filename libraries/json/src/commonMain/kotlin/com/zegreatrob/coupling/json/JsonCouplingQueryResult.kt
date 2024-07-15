@@ -125,7 +125,7 @@ fun JsonContributionWindow.toModel() = when (this) {
     JsonContributionWindow.Year -> 365.days
     JsonContributionWindow.Quarter -> (365 / 4).days
     JsonContributionWindow.Month -> 30.days
-    JsonContributionWindow.Week -> 1.days
+    JsonContributionWindow.Week -> 7.days
 }
 
 fun JsonPair.toModel() = PlayerPair(

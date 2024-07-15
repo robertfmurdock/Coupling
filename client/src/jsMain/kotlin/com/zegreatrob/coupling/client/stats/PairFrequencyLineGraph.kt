@@ -1,11 +1,14 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.components.stats.NinoLinePoint
+import com.zegreatrob.coupling.client.components.stats.NinoPoint
+import com.zegreatrob.coupling.client.components.stats.NivoHeatMapColors
+import com.zegreatrob.coupling.client.components.stats.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.stats.NivoLineData
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -67,10 +70,46 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
                 ?.date
         }.mapNotNull {
             val date = it.key ?: return@mapNotNull null
-            NinoLinePoint(
+            NinoPoint(
                 x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
                 y = it.value.size,
                 context = it.value.mapNotNull(Contribution::label).toSet().joinToString(", "),
             )
         }.toTypedArray(),
     )
+
+external interface PairFrequencyHeatMapProps : Props {
+    var data: Map<CouplingPair, List<Contribution>>
+    var players: List<Player>
+    var window: JsonContributionWindow?
+}
+
+@ReactFunc
+val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, players) ->
+    val contributionSet: Map<Set<Player>, List<Contribution>> = contributionData.mapKeys { it.key.asArray().toSet() }
+    val max = contributionData.values.maxOfOrNull { it.size } ?: 10
+
+    val data: Array<NivoHeatMapData> = players.map { player1 ->
+        NivoHeatMapData(
+            id = player1.name,
+            data = players.map { player2 ->
+                NinoPoint(
+                    x = player2.name,
+                    y = contributionSet[setOf(player1, player2)]?.size?.let { max - it },
+                )
+            }.toTypedArray(),
+        )
+    }.toTypedArray()
+
+    CouplingResponsiveHeatMap {
+        legend = "Pair Commits"
+        this.data = data
+        this.colors = NivoHeatMapColors(
+            type = "diverging",
+            scheme = "red_yellow_blue",
+            divergeAt = 0.5,
+            minValue = 0,
+            maxValue = max,
+        )
+    }
+}

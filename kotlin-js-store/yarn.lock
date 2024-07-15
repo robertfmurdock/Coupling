@@ -4300,6 +4300,22 @@
     "@react-spring/web" "9.3.1"
     d3-scale "^3.2.3"
 
+"@nivo/heatmap@^0.87.0":
+  version "0.87.0"
+  resolved "https://registry.yarnpkg.com/@nivo/heatmap/-/heatmap-0.87.0.tgz#8f8dc919466afd075ba008a1dc64280d2be80339"
+  integrity sha512-tWNfk6S2g72vutQTKG67MqfbCnE1w9mdrf9FoWvE4FFg9dzwNGDhMHTNXFz5+r4cANh6W9bLNMWrvPLJBAoXhQ==
+  dependencies:
+    "@nivo/annotations" "0.87.0"
+    "@nivo/axes" "0.87.0"
+    "@nivo/colors" "0.87.0"
+    "@nivo/core" "0.87.0"
+    "@nivo/legends" "0.87.0"
+    "@nivo/scales" "0.87.0"
+    "@nivo/tooltip" "0.87.0"
+    "@react-spring/web" "9.4.5 || ^9.7.2"
+    "@types/d3-scale" "^4.0.8"
+    d3-scale "^4.0.2"
+
 "@nivo/legends@0.74.1":
   version "0.74.1"
   resolved "https://registry.yarnpkg.com/@nivo/legends/-/legends-0.74.1.tgz#d39a644414416a63ec5116dd0cbafb122e788d77"

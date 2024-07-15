@@ -137,7 +137,7 @@ private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players?.size 
             id = it.players?.joinToString("-") { it.element.name } ?: "unknown",
             data = it.pairAssignmentHistory
                 ?.map { pairAssignment ->
-                    NinoLinePoint(
+                    NinoPoint(
                         x = pairAssignment.date?.toJSDate() ?: 0,
                         y = pairAssignment.recentTimesPaired ?: 0,
                     )
@@ -149,13 +149,13 @@ private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players?.size 
 
 sealed external interface NivoLineData {
     var id: String
-    var data: Array<NinoLinePoint>
+    var data: Array<NinoPoint>
     var color: String?
 }
 
-sealed external interface NinoLinePoint {
-    var x: Any
-    var y: Any
+sealed external interface NinoPoint {
+    var x: Any?
+    var y: Any?
     var context: Any?
 }
 
@@ -186,10 +186,21 @@ external interface CouplingResponsiveLineProps : Props {
     var xMax: kotlin.js.Date
 }
 
-external interface CouplingResponsiveBarProps : Props {
-    var data: Array<NivoLineData>
+external interface CouplingResponsiveHeatMapProps : Props {
+    var data: Array<NivoHeatMapData>
     var legend: String
-    var tooltip: (NinoLinePointDecorated) -> ReactNode
-    var xMin: kotlin.js.Date
-    var xMax: kotlin.js.Date
+    var colors: NivoHeatMapColors
+}
+
+sealed external interface NivoHeatMapData {
+    var id: String
+    var data: Array<NinoPoint>
+}
+
+sealed external interface NivoHeatMapColors {
+    var type: String
+    var scheme: String
+    var divergeAt: Number
+    var minValue: Number
+    var maxValue: Number
 }

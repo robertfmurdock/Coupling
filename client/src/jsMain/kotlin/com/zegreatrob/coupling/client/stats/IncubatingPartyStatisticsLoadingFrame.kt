@@ -12,23 +12,24 @@ import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.jso
 import react.Props
-import react.ReactNode
 import react.router.dom.SetURLSearchParams
 import react.router.dom.useSearchParams
 
 external interface IncubatingPartyStatisticsLoadingFrameProps : Props {
     var commander: Commander
     var party: PartyDetails
+    var players: List<Player>
 }
 
 @ReactFunc
 val IncubatingPartyStatisticsLoadingFrame by nfc<IncubatingPartyStatisticsLoadingFrameProps> { props ->
-    val (commander, party) = props
+    val (commander, party, players) = props
     val (searchParams, setSearchParams) = useSearchParams()
     val window: JsonContributionWindow? = searchParams["window"]?.let { window ->
         JsonContributionWindow.entries.find { it.name == window }
@@ -50,7 +51,7 @@ val IncubatingPartyStatisticsLoadingFrame by nfc<IncubatingPartyStatisticsLoadin
                 view = { (visualization, data) ->
                     when (visualization) {
                         Visualization.LineOverTime -> PairFrequencyLineGraph.create(data, window)
-                        Visualization.Heatmap -> ReactNode("Work in progress")
+                        Visualization.Heatmap -> PairFrequencyHeatMap.create(data.toMap(), players, window)
                     }
                 },
                 window = window,

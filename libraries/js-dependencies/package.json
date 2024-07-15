@@ -16,6 +16,7 @@
     "@nivo/api": "^0.74.1",
     "@nivo/core": "^0.87.0",
     "@nivo/line": "^0.87.0",
+    "@nivo/heatmap": "^0.87.0",
     "@slack/bolt": "^3.19.0",
     "@slack/oauth": "^3.0.0",
     "@slack/web-api": "^7.3.1",
