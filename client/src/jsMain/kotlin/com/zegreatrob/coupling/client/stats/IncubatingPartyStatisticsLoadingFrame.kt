@@ -29,9 +29,9 @@ external interface IncubatingPartyStatisticsLoadingFrameProps : Props {
 val IncubatingPartyStatisticsLoadingFrame by nfc<IncubatingPartyStatisticsLoadingFrameProps> { props ->
     val (commander, party) = props
     val (searchParams, setSearchParams) = useSearchParams()
-    val window: JsonContributionWindow? = searchParams["window"]?.let { window ->
+    val window: JsonContributionWindow = searchParams["window"]?.let { window ->
         JsonContributionWindow.entries.find { it.name == window }
-    }
+    } ?: JsonContributionWindow.Quarter
     val setWindow = setWindowSearchParamHandler(setSearchParams)
     CouplingQuery(
         commander = commander,
@@ -49,7 +49,7 @@ val IncubatingPartyStatisticsLoadingFrame by nfc<IncubatingPartyStatisticsLoadin
                 view = { (visualization, data) ->
                     when (visualization) {
                         Visualization.LineOverTime -> PairFrequencyLineGraph.create(data, window)
-                        Visualization.Heatmap -> PairFrequencyHeatMap.create(data)
+                        Visualization.Heatmap -> PairFrequencyHeatMap.create(data, window)
                     }
                 },
                 window = window,

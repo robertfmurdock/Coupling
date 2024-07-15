@@ -2,9 +2,13 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
+import com.zegreatrob.coupling.json.JsonContributionWindow
+import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.player.Player
+import kotlinx.datetime.Clock
+import kotlin.time.Duration
 
 fun adjustDatasetForHeatMap(
     contributionMap: Map<CouplingPair, List<Contribution>>,
@@ -32,10 +36,13 @@ fun adjustDatasetForHeatMap(
     }.toMap() + mobContributionSet
 }
 
-fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(): Pair<Int, Array<NivoHeatMapData>> {
+private const val WORKDAYS_PER_WEEK = 5
+private const val EXCELLENT_CONTRIBUTIONS_PER_DAY = 4
+
+fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(window: JsonContributionWindow): Pair<Int, Array<NivoHeatMapData>> {
     val players = keys.flatten().toSet()
 
-    val max = values.maxOfOrNull { it.size } ?: 10
+    val max = WORKDAYS_PER_WEEK * EXCELLENT_CONTRIBUTIONS_PER_DAY * window.weeks(this)
 
     val data: Array<NivoHeatMapData> = players.map { player1 ->
         NivoHeatMapData(
@@ -50,3 +57,18 @@ fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(): Pair<Int, Arra
     }.toTypedArray()
     return Pair(max, data)
 }
+
+private fun JsonContributionWindow.weeks(map: Map<Set<Player>, List<Contribution>>) = toModel()
+    ?.inWholeWeeks()
+    ?: map.weeksSinceFirstContribution()
+
+private fun Map<Set<Player>, List<Contribution>>.weeksSinceFirstContribution(): Int =
+    (Clock.System.now() - firstContributionInstant()).inWholeWeeks()
+
+private fun Map<Set<Player>, List<Contribution>>.firstContributionInstant() =
+    values.flatten()
+        .mapNotNull { it.dateTime }
+        .minOrNull()
+        ?: Clock.System.now()
+
+private fun Duration.inWholeWeeks(): Int = (inWholeDays.toInt() / 7)

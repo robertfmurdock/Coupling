@@ -30,12 +30,12 @@ import web.cssom.px
 
 external interface PairFrequencyLineGraphProps : Props {
     var data: List<Pair<CouplingPair, List<Contribution>>>
-    var window: JsonContributionWindow?
+    var window: JsonContributionWindow
 }
 
 @ReactFunc
 val PairFrequencyLineGraph by nfc<PairFrequencyLineGraphProps> { (data, window) ->
-    val duration = window?.toModel()
+    val duration = window.toModel()
 
     if (data.flatMap { it.second }.isNotEmpty()) {
         CouplingResponsiveLine {
@@ -84,12 +84,13 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
 
 external interface PairFrequencyHeatMapProps : Props {
     var data: List<Pair<CouplingPair, List<Contribution>>>
+    var window: JsonContributionWindow
 }
 
 @ReactFunc
-val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData) ->
+val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, window) ->
     val inclusiveContributions = adjustDatasetForHeatMap(contributionData.toMap())
-    val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings()
+    val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(window)
     CouplingResponsiveHeatMap {
         legend = "Pair Commits"
         this.data = data
