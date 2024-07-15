@@ -4,11 +4,11 @@ import com.zegreatrob.coupling.client.components.stats.NinoPoint
 import com.zegreatrob.coupling.client.components.stats.NivoHeatMapColors
 import com.zegreatrob.coupling.client.components.stats.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.stats.NivoLineData
+import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
@@ -84,21 +84,7 @@ external interface PairFrequencyHeatMapProps : Props {
 
 @ReactFunc
 val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData) ->
-    val contributionMap = contributionData.toMap()
-    val contributionSet: Map<Set<Player>, List<Contribution>> = contributionMap.mapKeys { it.key.asArray().toSet() }
-
-    val nonMobContributionSet = contributionSet.filterKeys { it.size <= 2 }
-    val mobContributionSet = contributionSet.filterKeys { it.size > 2 }
-
-    val inclusiveContributions = nonMobContributionSet.map { (players, contributions) ->
-        players to contributions + mobContributionSet.flatMap { (mob, mobContributions) ->
-            if (players.size == 2 && mob.containsAll(players)) {
-                mobContributions
-            } else {
-                emptySet()
-            }
-        }
-    }.toMap()
+    val inclusiveContributions = adjustDatasetForHeatMap(contributionData.toMap())
     val players = inclusiveContributions.keys.flatten()
 
     val max = inclusiveContributions.values.maxOfOrNull { it.size } ?: 10

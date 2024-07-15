@@ -11,6 +11,9 @@ fun pairOf(player1: Player) = CouplingPair.Single(player1)
 
 fun pairOf(player1: Player, player2: Player) = CouplingPair.Double(player1, player2)
 
+fun mobOf(player1: Player, player2: Player, player3: Player, vararg more: Player) =
+    CouplingPair.Mob(player1, player2, player3, more.toSet())
+
 sealed class CouplingPair : Iterable<Player> {
 
     abstract fun toNotEmptyList(): NotEmptyList<Player>
