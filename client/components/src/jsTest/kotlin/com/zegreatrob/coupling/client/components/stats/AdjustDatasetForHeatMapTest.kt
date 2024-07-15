@@ -27,8 +27,8 @@ class AdjustDatasetForHeatMapTest {
     }) exercise {
         adjustDatasetForHeatMap(data)
     } verify { result ->
-        result.keys.flatten()
-            .assertIsEqualTo(data.keys.flatten())
+        result.keys.flatten().toSet()
+            .assertIsEqualTo(data.keys.flatten().toSet())
     }
 
     @Test
@@ -36,6 +36,24 @@ class AdjustDatasetForHeatMapTest {
         val pair = pairOf(stubPlayer().copy(name = "pair1"), stubPlayer().copy(name = "pair2"))
         val data = mapOf(
             pair to listOf(stubContribution()),
+            mobOf(
+                stubPlayer().copy(name = "mob1"),
+                stubPlayer().copy(name = "mob2"),
+                stubPlayer().copy(name = "mob3"),
+                more = pair.asArray(),
+            ) to listOf(stubContribution(), stubContribution()),
+        )
+    }) exercise {
+        adjustDatasetForHeatMap(data)
+    } verify { result ->
+        result[pair.toSet()]?.toSet()
+            .assertIsEqualTo(result.values.flatten().toSet())
+    }
+
+    @Test
+    fun evenWhenPairHasNoContributionsWillFoldMobContributionsIncludingWholePairIntoPairContributions() = setup(object {
+        val pair = pairOf(stubPlayer().copy(name = "pair1"), stubPlayer().copy(name = "pair2"))
+        val data = mapOf<CouplingPair, _>(
             mobOf(
                 stubPlayer().copy(name = "mob1"),
                 stubPlayer().copy(name = "mob2"),

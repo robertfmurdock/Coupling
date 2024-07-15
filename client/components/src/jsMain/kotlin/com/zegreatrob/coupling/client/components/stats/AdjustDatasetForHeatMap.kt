@@ -12,7 +12,14 @@ fun adjustDatasetForHeatMap(
     val nonMobContributionSet = contributionSet.filterKeys { it.size <= 2 }
     val mobContributionSet = contributionSet.filterKeys { it.size > 2 }
 
-    return nonMobContributionSet.map { (players, contributions) ->
+    val players = contributionMap.keys.flatMap(CouplingPair::toSet)
+
+    val allPairs = players.flatMap { player1 -> players.map { player2 -> setOf(player1, player2) } }.toSet()
+
+    val missingPairs: Set<Set<Player>> = (allPairs - contributionMap.keys.map(CouplingPair::toSet).toSet()).toSet()
+    val empties = missingPairs.map { it to emptyList<Contribution>() }
+
+    return (nonMobContributionSet + empties).map { (players, contributions) ->
         players to contributions + mobContributionSet.flatMap { (mob, mobContributions) ->
             if (players.size == 2 && mob.containsAll(players)) {
                 mobContributions
