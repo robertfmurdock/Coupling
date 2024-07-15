@@ -23,11 +23,12 @@ import react.router.dom.useSearchParams
 external interface IncubatingPartyStatisticsLoadingFrameProps : Props {
     var commander: Commander
     var party: PartyDetails
+    var spinsUntilFullRotation: Int
 }
 
 @ReactFunc
 val IncubatingPartyStatisticsLoadingFrame by nfc<IncubatingPartyStatisticsLoadingFrameProps> { props ->
-    val (commander, party) = props
+    val (commander, party, spinsUntilFullRotation) = props
     val (searchParams, setSearchParams) = useSearchParams()
     val window: JsonContributionWindow = searchParams["window"]?.let { window ->
         JsonContributionWindow.entries.find { it.name == window }
@@ -49,7 +50,7 @@ val IncubatingPartyStatisticsLoadingFrame by nfc<IncubatingPartyStatisticsLoadin
                 view = { (visualization, data) ->
                     when (visualization) {
                         Visualization.LineOverTime -> PairFrequencyLineGraph.create(data, window)
-                        Visualization.Heatmap -> PairFrequencyHeatMap.create(data, window)
+                        Visualization.Heatmap -> PairFrequencyHeatMap.create(data, window, spinsUntilFullRotation)
                     }
                 },
                 window = window,

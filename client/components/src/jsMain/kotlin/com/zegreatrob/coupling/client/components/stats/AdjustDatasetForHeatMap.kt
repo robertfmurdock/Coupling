@@ -47,10 +47,13 @@ private fun Map<Set<Player>, List<Contribution>>.addToPairsTransform() =
 private const val WORKDAYS_PER_WEEK = 5
 private const val EXCELLENT_CONTRIBUTIONS_PER_DAY = 4
 
-fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(window: JsonContributionWindow): Pair<Int, Array<NivoHeatMapData>> {
+fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
+    window: JsonContributionWindow,
+    spinsUntilFullRotation: Int,
+): Pair<Int, Array<NivoHeatMapData>> {
     val players = keys.flatten().toSet()
 
-    val max = WORKDAYS_PER_WEEK * EXCELLENT_CONTRIBUTIONS_PER_DAY * window.weeks(this)
+    val max = (WORKDAYS_PER_WEEK * EXCELLENT_CONTRIBUTIONS_PER_DAY * window.weeks(this)) / (spinsUntilFullRotation)
 
     val data: Array<NivoHeatMapData> = players.map { player1 ->
         NivoHeatMapData(

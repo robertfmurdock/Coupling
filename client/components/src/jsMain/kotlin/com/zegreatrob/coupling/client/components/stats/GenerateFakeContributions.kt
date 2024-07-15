@@ -9,7 +9,6 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atTime
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
@@ -26,7 +25,7 @@ fun generateFakeContributions(
         .let { startDateTime ->
             val datesUntilNow = (1..(startDateTime.daysUntil(Clock.System.now(), TimeZone.currentSystemDefault())))
                 .map { dayCount -> (startDateTime + dayCount.days).toLocalDateTime(TimeZone.currentSystemDefault()) }
-            val pairs = pairsContributions.toMap().keys
+            val pairs = pairsContributions.toMap().keys.filter { it.count() == 2 }
 
             datesUntilNow.flatMap { date ->
                 if (setOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY).contains(date.dayOfWeek)) {
@@ -43,7 +42,9 @@ fun generateFakeContributions(
                 pairingSet.map { pair ->
                     pair to generateSequence { date.toFakeContribution() }.take(random.nextInt(0, 5)).toList()
                 }
-            }.toMap()
+            }
+                .groupBy { it.first }
+                .mapValues { group -> group.value.flatMap { it.second } }
         }.let { updated ->
             pairsContributions.map { (pair) ->
                 pair to (updated[pair] ?: emptyList())
@@ -59,12 +60,6 @@ private fun beginningOfWindow(selectedWindow: JsonContributionWindow) = selected
     Clock.System.now() - it
 }
 
-// pairsContributions.map { it.first to generateFakeContributions(selectedWindow) }
-
-private fun generateFakeContributions(selectedWindow: JsonContributionWindow) =
-    generateCommitTimes()
-        .map(LocalDateTime::toFakeContribution)
-
 private fun LocalDateTime.toFakeContribution() = Contribution(
     id = "${uuid4()}",
     createdAt = Clock.System.now(),
@@ -78,26 +73,3 @@ private fun LocalDateTime.toFakeContribution() = Contribution(
     label = if (Random.nextBoolean()) "fake" else "alternate",
     semver = null,
 )
-
-private fun generateCommitTimes(): List<LocalDateTime> {
-    val today = Clock.System.now()
-    val numberOfDays = 30
-    val monthAgo = today.minus(duration = numberOfDays.days)
-
-    val commitTimes = (1..numberOfDays).flatMap { day ->
-        if (day.isWeekday()) {
-            val dayDate = monthAgo.plus(day.days)
-            val numberOfCommits = random.nextInt(0, 6)
-            (0..numberOfCommits).map {
-                val timeOfDay = random.nextInt(9, 17)
-                dayDate.toLocalDateTime(TimeZone.currentSystemDefault()).date.atTime(timeOfDay, 0, 0)
-            }
-        } else {
-            emptyList()
-        }
-    }
-    return commitTimes
-}
-
-private fun Int.isWeekday() = (1..5).contains(dayOfWeek())
-private fun Int.dayOfWeek() = this % 7

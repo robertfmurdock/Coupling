@@ -85,19 +85,20 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
 external interface PairFrequencyHeatMapProps : Props {
     var data: List<Pair<CouplingPair, List<Contribution>>>
     var window: JsonContributionWindow
+    var spinsUntilFullRotation: Int
 }
 
 @ReactFunc
-val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, window) ->
+val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
     val inclusiveContributions = adjustDatasetForHeatMap(contributionData.toMap())
-    val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(window)
+    val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(window, spinsUntilFullRotation)
     CouplingResponsiveHeatMap {
         legend = "Pair Commits"
         this.data = data
         colors = NivoHeatMapColors(
             type = "diverging",
             scheme = "red_yellow_blue",
-            divergeAt = 0.7,
+            divergeAt = 0.6,
             minValue = 0,
             maxValue = max,
         )

@@ -10,12 +10,14 @@ val IncubatingStatisticsPage = partyPageFunction { props, partyId ->
         query = graphQuery {
             party(partyId) {
                 details()
+                spinsUntilFullRotation()
             }
         },
         toNode = { _, _, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
+            val spinsUntilFullRotation = queryResult.party?.spinsUntilFullRotation ?: return@CouplingQuery null
             IncubatingPartyStatisticsContent.create(party = party) {
-                IncubatingPartyStatisticsLoadingFrame(props.commander, party)
+                IncubatingPartyStatisticsLoadingFrame(props.commander, party, spinsUntilFullRotation)
             }
         },
         key = partyId.value,
