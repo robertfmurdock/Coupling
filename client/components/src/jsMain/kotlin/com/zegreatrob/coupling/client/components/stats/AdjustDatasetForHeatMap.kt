@@ -13,28 +13,36 @@ import kotlin.time.Duration
 fun adjustDatasetForHeatMap(
     contributionMap: Map<CouplingPair, List<Contribution>>,
 ): Map<Set<Player>, List<Contribution>> {
-    val contributionSet: Map<Set<Player>, List<Contribution>> = contributionMap.mapKeys { it.key.asArray().toSet() }
+    val contributionSet = contributionMap.mapKeys { it.key.toSet() }
+    return mergeMobContributionsToRelevantPairs(
+        nonMobContributionSet = contributionSet.filterKeys { it.size <= 2 },
+        mobContributionSet = contributionSet.filterKeys { it.size > 2 },
+        empties = contributionMap.missingPairings().map { it to emptyList() },
+    ).filterValues(List<Contribution>::isNotEmpty)
+}
 
-    val nonMobContributionSet = contributionSet.filterKeys { it.size <= 2 }
-    val mobContributionSet = contributionSet.filterKeys { it.size > 2 }
+private fun mergeMobContributionsToRelevantPairs(
+    nonMobContributionSet: Map<Set<Player>, List<Contribution>>,
+    empties: List<Pair<Set<Player>, List<Contribution>>>,
+    mobContributionSet: Map<Set<Player>, List<Contribution>>,
+) = (nonMobContributionSet + empties).mapValues(mobContributionSet.addToPairsTransform()).toMap() + mobContributionSet
 
-    val players = contributionMap.keys.flatMap(CouplingPair::toSet)
-
+private fun Map<CouplingPair, List<Contribution>>.missingPairings(): Set<Set<Player>> {
+    val players = keys.flatMap(CouplingPair::toSet)
     val allPairs = players.flatMap { player1 -> players.map { player2 -> setOf(player1, player2) } }.toSet()
+    return (allPairs - keys.map(CouplingPair::toSet).toSet()).toSet()
+}
 
-    val missingPairs: Set<Set<Player>> = (allPairs - contributionMap.keys.map(CouplingPair::toSet).toSet()).toSet()
-    val empties = missingPairs.map { it to emptyList<Contribution>() }
-
-    return (nonMobContributionSet + empties).map { (players, contributions) ->
-        players to contributions + mobContributionSet.flatMap { (mob, mobContributions) ->
+private fun Map<Set<Player>, List<Contribution>>.addToPairsTransform() =
+    { (players, contributions): Map.Entry<Set<Player>, List<Contribution>> ->
+        contributions + flatMap { (mob, mobContributions) ->
             if (players.size == 2 && mob.containsAll(players)) {
                 mobContributions
             } else {
                 emptySet()
             }
         }
-    }.toMap() + mobContributionSet
-}
+    }
 
 private const val WORKDAYS_PER_WEEK = 5
 private const val EXCELLENT_CONTRIBUTIONS_PER_DAY = 4

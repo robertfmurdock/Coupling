@@ -19,8 +19,29 @@ class AdjustDatasetForHeatMapTest {
     @Test
     fun willIncludeAllPlayersGiven() = setup(object {
         val data = mapOf<CouplingPair, List<Contribution>>(
+            pairOf(stubPlayer().copy(name = "solo")) to listOf(stubContribution()),
+            pairOf(stubPlayer().copy(name = "pair1"), stubPlayer().copy(name = "pair2")) to listOf(stubContribution()),
+            mobOf(
+                stubPlayer().copy(name = "mob1"),
+                stubPlayer().copy(name = "mob2"),
+                stubPlayer().copy(name = "mob3"),
+                stubPlayer().copy(name = "mob4"),
+            ) to listOf(stubContribution()),
+        )
+    }) exercise {
+        adjustDatasetForHeatMap(data)
+    } verify { result ->
+        result.keys.flatten().toSet()
+            .assertIsEqualTo(data.keys.flatten().toSet())
+    }
+
+    @Test
+    fun willExcludeNoContributionPairs() = setup(object {
+        val expectedRemainder =
+            pairOf(stubPlayer().copy(name = "pair1"), stubPlayer().copy(name = "pair2")) to listOf(stubContribution())
+        val data = mapOf(
             pairOf(stubPlayer().copy(name = "solo")) to emptyList(),
-            pairOf(stubPlayer().copy(name = "pair1"), stubPlayer().copy(name = "pair2")) to emptyList(),
+            expectedRemainder,
             mobOf(
                 stubPlayer().copy(name = "mob1"),
                 stubPlayer().copy(name = "mob2"),
@@ -30,9 +51,8 @@ class AdjustDatasetForHeatMapTest {
         )
     }) exercise {
         adjustDatasetForHeatMap(data)
-    } verify { result ->
-        result.keys.flatten().toSet()
-            .assertIsEqualTo(data.keys.flatten().toSet())
+    } verify { result: Map<Set<Player>, List<Contribution>> ->
+        result.assertIsEqualTo(mapOf(expectedRemainder).mapKeys { it.key.toSet() })
     }
 
     @Test
