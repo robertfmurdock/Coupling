@@ -32,6 +32,7 @@ import com.zegreatrob.coupling.client.welcome.WelcomePage
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import js.objects.jso
+import react.FC
 import react.Props
 import react.create
 import react.router.Navigate
@@ -69,14 +70,11 @@ val CouplingRouter by nfc<CouplingRouterProps> { (animationsDisabled, config) ->
     }
 }
 
-private fun routes(isSignedIn: Boolean, config: ClientConfig) = (
-    if (isSignedIn) {
-        config.authenticatedRoutes()
-    } else {
-        arrayOf(redirectUnauthenticated())
-    }
-    )
-    .plus(jso<RouteObject> { element = LostRoute.create() })
+private fun routes(isSignedIn: Boolean, config: ClientConfig) = if (isSignedIn) {
+    config.authenticatedRoutes()
+} else {
+    arrayOf(redirectUnauthenticated())
+}.plus(jso<RouteObject> { element = LostRoute.create() })
 
 private fun redirectUnauthenticated(): RouteObject = jso {
     path = "*"
@@ -99,7 +97,7 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
     couplingRoute("/new-party/", "New Party", PartyConfigPage),
     jso {
         path = "/:partyId"
-        element = redirectToCurrentPairs()
+        element = RedirectToCurrentPairs.create()
     },
     couplingRoute("/:partyId/prepare/", "Prepare to Spin", PrepareSpinPage),
     couplingRoute("/:partyId/edit/", "Party Config", PartyConfigPage),
@@ -125,7 +123,9 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
 
 fun navigateToPartyList() = Navigate.create { to = "/parties/" }
 
-private fun redirectToCurrentPairs() = Navigate.create {
-    val params = useParams()
-    to = "/${params["partyId"]}/pairAssignments/current/"
+val RedirectToCurrentPairs = FC {
+    Navigate {
+        val params = useParams()
+        to = "/${params["partyId"]}/pairAssignments/current/"
+    }
 }
