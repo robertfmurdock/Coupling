@@ -1,9 +1,12 @@
 package com.zegreatrob.coupling.client.stats
 
-import com.zegreatrob.coupling.client.components.stats.NinoPoint
-import com.zegreatrob.coupling.client.components.stats.NivoHeatMapColors
-import com.zegreatrob.coupling.client.components.stats.NivoHeatMapData
-import com.zegreatrob.coupling.client.components.stats.NivoLineData
+import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapAxis
+import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapColors
+import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
+import com.zegreatrob.coupling.client.components.external.nivo.NivoLineData
+import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
+import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveHeatMap
+import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.toModel
@@ -70,7 +73,7 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
                 ?.date
         }.mapNotNull {
             val date = it.key ?: return@mapNotNull null
-            NinoPoint(
+            NivoPoint(
                 x = date.atTime(0, 0).toInstant(TimeZone.currentSystemDefault()).toJSDate(),
                 y = it.value.size,
                 context = it.value.mapNotNull(Contribution::label).toSet().joinToString(", "),
@@ -93,7 +96,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData) 
         NivoHeatMapData(
             id = player1.name,
             data = players.map { player2 ->
-                NinoPoint(
+                NivoPoint(
                     x = player2.name,
                     y = inclusiveContributions[setOf(player1, player2)]?.size?.let { max - it },
                 )
@@ -103,7 +106,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData) 
     CouplingResponsiveHeatMap {
         legend = "Pair Commits"
         this.data = data
-        this.colors = NivoHeatMapColors(
+        colors = NivoHeatMapColors(
             type = "diverging",
             scheme = "red_yellow_blue",
             divergeAt = 0.5,
@@ -111,5 +114,31 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData) 
             maxValue = max,
         )
         valueFormat = { y -> "${max - y}" }
+        axisRight = NivoHeatMapAxis(
+            tickSize = 5,
+            tickPadding = 5,
+            tickRotation = 0,
+            legend = "Player",
+            legendPosition = "middle",
+            legendOffset = 70,
+            truncateTickAt = 0,
+        )
+        axisLeft = NivoHeatMapAxis(
+            tickSize = 5,
+            tickPadding = 5,
+            tickRotation = 0,
+            legend = "Player",
+            legendPosition = "middle",
+            legendOffset = -72,
+            truncateTickAt = 0,
+        )
+        axisTop = NivoHeatMapAxis(
+            tickSize = 5,
+            tickPadding = 5,
+            tickRotation = -90,
+            legend = "",
+            legendOffset = 46,
+            truncateTickAt = 0,
+        )
     }
 }

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.stats
 
+import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.stats.PartyStatistics
 import com.zegreatrob.coupling.client.components.stats.create
 import com.zegreatrob.coupling.client.partyPageFunction

@@ -6,6 +6,8 @@ import com.zegreatrob.coupling.action.timeSincePairSort
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.PageFrame
+import com.zegreatrob.coupling.client.components.external.nivo.NivoLineData
+import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.element
 import com.zegreatrob.coupling.model.elements
@@ -21,7 +23,6 @@ import emotion.react.css
 import kotlinx.datetime.toJSDate
 import react.FC
 import react.Props
-import react.ReactNode
 import react.dom.html.ReactHTML.div
 import react.useState
 import web.cssom.Color
@@ -137,7 +138,7 @@ private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players?.size 
             id = it.players?.joinToString("-") { it.element.name } ?: "unknown",
             data = it.pairAssignmentHistory
                 ?.map { pairAssignment ->
-                    NinoPoint(
+                    NivoPoint(
                         x = pairAssignment.date?.toJSDate() ?: 0,
                         y = pairAssignment.recentTimesPaired ?: 0,
                     )
@@ -146,26 +147,6 @@ private fun List<PlayerPair>.nivoPairHeatLineData() = filter { it.players?.size 
         )
     }.filter { it.data.isNotEmpty() }
     .toTypedArray()
-
-sealed external interface NivoLineData {
-    var id: String
-    var data: Array<NinoPoint>
-    var color: String?
-}
-
-sealed external interface NinoPoint {
-    var x: Any?
-    var y: Any?
-    var context: Any?
-}
-
-sealed external interface NinoLinePointDecorated {
-    var x: Any
-    var xFormatted: Any
-    var y: Any
-    var yFormatted: Any
-    var context: Any?
-}
 
 private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCouplingPair() to it.spinsSinceLastPaired }
     .mapNotNull { (pair, spins) ->
@@ -177,31 +158,3 @@ private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCoupl
         }
     }
     .sortedByDescending(::timeSincePairSort)
-
-sealed external interface NivoHeatMapData {
-    var id: String
-    var data: Array<NinoPoint>
-}
-
-sealed external interface NivoHeatMapColors {
-    var type: String
-    var scheme: String
-    var divergeAt: Number
-    var minValue: Number
-    var maxValue: Number
-}
-
-external interface CouplingResponsiveLineProps : Props {
-    var data: Array<NivoLineData>
-    var legend: String
-    var tooltip: (NinoLinePointDecorated) -> ReactNode
-    var xMin: kotlin.js.Date
-    var xMax: kotlin.js.Date
-}
-
-external interface CouplingResponsiveHeatMapProps : Props {
-    var data: Array<NivoHeatMapData>
-    var legend: String
-    var colors: NivoHeatMapColors
-    var valueFormat: (Int) -> String
-}

@@ -102,38 +102,15 @@ export const CouplingResponsiveLine = (props) => {
     )
 }
 
-export const CouplingResponsiveHeatMap = ({data, colors, valueFormat}) => {
+export const CouplingResponsiveHeatMap = ({data, colors, valueFormat, axisTop, axisRight, axisLeft}) => {
     return (
         <ResponsiveHeatMap
             data={data}
             margin={{top: 60, right: 90, bottom: 60, left: 90}}
             valueFormat={valueFormat}
-            axisTop={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: -90,
-                legend: '',
-                legendOffset: 46,
-                truncateTickAt: 0
-            }}
-            axisRight={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: 'country',
-                legendPosition: 'middle',
-                legendOffset: 70,
-                truncateTickAt: 0
-            }}
-            axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: 'country',
-                legendPosition: 'middle',
-                legendOffset: -72,
-                truncateTickAt: 0
-            }}
+            axisTop={axisTop}
+            axisRight={axisRight}
+            axisLeft={axisLeft}
             colors={colors}
             emptyColor="#555555"
             legends={[
