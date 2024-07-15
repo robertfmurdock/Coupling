@@ -37,21 +37,14 @@ val IncubatingPartyStatisticsLoadingFrame by nfc<IncubatingPartyStatisticsLoadin
     val setWindow = setWindowSearchParamHandler(setSearchParams)
     CouplingQuery(
         commander = commander,
-        query = graphQuery {
-            party(party.id) {
-                pairs {
-                    players()
-                    contributions(window = window)
-                }
-            }
-        },
+        query = graphQuery { party(party.id) { pairs { contributions(window = window) } } },
         toNode = { reload, _, queryResult ->
             PairFrequencyControls.create(
                 pairsContributions = queryResult.party?.pairs?.toPairContributions() ?: return@CouplingQuery null,
                 view = { (visualization, data) ->
                     when (visualization) {
                         Visualization.LineOverTime -> PairFrequencyLineGraph.create(data, window)
-                        Visualization.Heatmap -> PairFrequencyHeatMap.create(data.toMap(), players, window)
+                        Visualization.Heatmap -> PairFrequencyHeatMap.create(data)
                     }
                 },
                 window = window,

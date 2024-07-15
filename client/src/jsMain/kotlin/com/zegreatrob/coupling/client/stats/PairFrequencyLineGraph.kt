@@ -79,15 +79,15 @@ private fun pairContributionLine(couplingPair: CouplingPair, contributions: List
     )
 
 external interface PairFrequencyHeatMapProps : Props {
-    var data: Map<CouplingPair, List<Contribution>>
-    var players: List<Player>
-    var window: JsonContributionWindow?
+    var data: List<Pair<CouplingPair, List<Contribution>>>
 }
 
 @ReactFunc
-val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, players) ->
-    val contributionSet: Map<Set<Player>, List<Contribution>> = contributionData.mapKeys { it.key.asArray().toSet() }
-    val max = contributionData.values.maxOfOrNull { it.size } ?: 10
+val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData) ->
+    val contributionMap = contributionData.toMap()
+    val players = contributionMap.keys.flatten()
+    val contributionSet: Map<Set<Player>, List<Contribution>> = contributionMap.mapKeys { it.key.asArray().toSet() }
+    val max = contributionMap.values.maxOfOrNull { it.size } ?: 10
 
     val data: Array<NivoHeatMapData> = players.map { player1 ->
         NivoHeatMapData(
