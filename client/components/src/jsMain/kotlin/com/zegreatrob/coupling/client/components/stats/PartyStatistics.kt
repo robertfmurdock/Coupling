@@ -178,6 +178,19 @@ private fun List<PlayerPair>.pairReports() = map { it.players?.elements?.toCoupl
     }
     .sortedByDescending(::timeSincePairSort)
 
+sealed external interface NivoHeatMapData {
+    var id: String
+    var data: Array<NinoPoint>
+}
+
+sealed external interface NivoHeatMapColors {
+    var type: String
+    var scheme: String
+    var divergeAt: Number
+    var minValue: Number
+    var maxValue: Number
+}
+
 external interface CouplingResponsiveLineProps : Props {
     var data: Array<NivoLineData>
     var legend: String
@@ -190,17 +203,5 @@ external interface CouplingResponsiveHeatMapProps : Props {
     var data: Array<NivoHeatMapData>
     var legend: String
     var colors: NivoHeatMapColors
-}
-
-sealed external interface NivoHeatMapData {
-    var id: String
-    var data: Array<NinoPoint>
-}
-
-sealed external interface NivoHeatMapColors {
-    var type: String
-    var scheme: String
-    var divergeAt: Number
-    var minValue: Number
-    var maxValue: Number
+    var valueFormat: (Int) -> String
 }

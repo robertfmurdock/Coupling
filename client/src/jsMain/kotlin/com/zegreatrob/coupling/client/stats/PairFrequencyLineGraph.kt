@@ -100,8 +100,6 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
             }.toTypedArray(),
         )
     }.toTypedArray()
-    console.log("heatmap data", data)
-
     CouplingResponsiveHeatMap {
         legend = "Pair Commits"
         this.data = data
@@ -112,5 +110,6 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
             minValue = 0,
             maxValue = max,
         )
+        valueFormat = { y -> "${max - y}" }
     }
 }
