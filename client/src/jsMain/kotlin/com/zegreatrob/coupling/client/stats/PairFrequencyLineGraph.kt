@@ -85,9 +85,23 @@ external interface PairFrequencyHeatMapProps : Props {
 @ReactFunc
 val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData) ->
     val contributionMap = contributionData.toMap()
-    val players = contributionMap.keys.flatten()
     val contributionSet: Map<Set<Player>, List<Contribution>> = contributionMap.mapKeys { it.key.asArray().toSet() }
-    val max = contributionMap.values.maxOfOrNull { it.size } ?: 10
+
+    val nonMobContributionSet = contributionSet.filterKeys { it.size <= 2 }
+    val mobContributionSet = contributionSet.filterKeys { it.size > 2 }
+
+    val inclusiveContributions = nonMobContributionSet.map { (players, contributions) ->
+        players to contributions + mobContributionSet.flatMap { (mob, mobContributions) ->
+            if (players.size == 2 && mob.containsAll(players)) {
+                mobContributions
+            } else {
+                emptySet()
+            }
+        }
+    }.toMap()
+    val players = inclusiveContributions.keys.flatten()
+
+    val max = inclusiveContributions.values.maxOfOrNull { it.size } ?: 10
 
     val data: Array<NivoHeatMapData> = players.map { player1 ->
         NivoHeatMapData(
@@ -95,7 +109,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData) 
             data = players.map { player2 ->
                 NinoPoint(
                     x = player2.name,
-                    y = contributionSet[setOf(player1, player2)]?.size?.let { max - it },
+                    y = inclusiveContributions[setOf(player1, player2)]?.size?.let { max - it },
                 )
             }.toTypedArray(),
         )
