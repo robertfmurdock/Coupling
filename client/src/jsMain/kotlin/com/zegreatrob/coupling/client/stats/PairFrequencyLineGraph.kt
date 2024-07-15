@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
 import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveHeatMap
 import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
+import com.zegreatrob.coupling.client.components.stats.toNivoHeatmapSettings
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
@@ -88,21 +89,7 @@ external interface PairFrequencyHeatMapProps : Props {
 @ReactFunc
 val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData) ->
     val inclusiveContributions = adjustDatasetForHeatMap(contributionData.toMap())
-    val players = inclusiveContributions.keys.flatten()
-
-    val max = inclusiveContributions.values.maxOfOrNull { it.size } ?: 10
-
-    val data: Array<NivoHeatMapData> = players.map { player1 ->
-        NivoHeatMapData(
-            id = player1.name,
-            data = players.map { player2 ->
-                NivoPoint(
-                    x = player2.name,
-                    y = inclusiveContributions[setOf(player1, player2)]?.size?.let { max - it },
-                )
-            }.toTypedArray(),
-        )
-    }.toTypedArray()
+    val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings()
     CouplingResponsiveHeatMap {
         legend = "Pair Commits"
         this.data = data
