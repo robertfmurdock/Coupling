@@ -23,12 +23,13 @@ class PairSelectorTest {
             pairOf(players[0], players[3]),
         )
         val actor = UserEvent.setup()
-        var selectedPairs: List<CouplingPair>? = null
+        var selectedPairs: List<CouplingPair> = emptyList()
         val firstPair = pairs[0]
     }) {
         render {
             PairSelector(
                 pairs = pairs,
+                selectedPairs = selectedPairs,
                 onSelectionChange = { newSelectedPairs -> selectedPairs = newSelectedPairs },
             )
         }
@@ -40,7 +41,7 @@ class PairSelectorTest {
     }
 
     @Test
-    fun secondClickWillDeselect() = asyncSetup(object {
+    fun whenAlreadySelectedClickWillDeselect() = asyncSetup(object {
         val players = (1..4).map { stubPlayer() }
         val pairs = listOf(
             pairOf(players[0], players[1]),
@@ -48,18 +49,18 @@ class PairSelectorTest {
             pairOf(players[0], players[3]),
         )
         val actor = UserEvent.setup()
-        var selectedPairs: List<CouplingPair>? = null
         val firstPair = pairs[0]
+        var selectedPairs: List<CouplingPair> = listOf(firstPair)
     }) {
         render {
             PairSelector(
                 pairs = pairs,
+                selectedPairs = selectedPairs,
                 onSelectionChange = { newSelectedPairs -> selectedPairs = newSelectedPairs },
             )
         }
     } exercise {
         val pairName = firstPair.pairName
-        actor.click(screen.findByRole("checkbox", RoleOptions(pairName)))
         actor.click(screen.findByRole("checkbox", RoleOptions(pairName)))
     } verify {
         selectedPairs.assertIsEqualTo(emptyList())
@@ -74,18 +75,18 @@ class PairSelectorTest {
             pairOf(players[0], players[3]),
         )
         val actor = UserEvent.setup()
-        var selectedPairs: List<CouplingPair>? = null
         val firstPair = pairs[0]
         val thirdPair = pairs[2]
+        var selectedPairs: List<CouplingPair> = listOf(thirdPair)
     }) {
         render {
             PairSelector(
                 pairs = pairs,
+                selectedPairs = selectedPairs,
                 onSelectionChange = { newSelectedPairs -> selectedPairs = newSelectedPairs },
             )
         }
     } exercise {
-        actor.click(screen.findByRole("checkbox", RoleOptions(thirdPair.pairName)))
         actor.click(screen.findByRole("checkbox", RoleOptions(firstPair.pairName)))
     } verify {
         selectedPairs.assertIsEqualTo(listOf(firstPair, thirdPair))

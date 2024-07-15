@@ -124,6 +124,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                 PairSelector(
                     pairs = allPairContributions.toMap()
                         .filterValues(List<Contribution>::isNotEmpty).keys.toList(),
+                    selectedPairs = selectedPairs,
                     onSelectionChange = setSelectedPairs::invoke,
                 )
             }

@@ -11,21 +11,20 @@ import react.dom.aria.ariaLabel
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
-import react.useState
 import web.cssom.deg
 import web.html.InputType
 
 external interface PairSelectorProps : Props {
     var pairs: List<CouplingPair>
+    var selectedPairs: List<CouplingPair>
     var onSelectionChange: (List<CouplingPair>) -> Unit
 }
 
 @ReactFunc
 val PairSelector by nfc<PairSelectorProps> { props ->
     val pairs = props.pairs
+    val selectedPairs = props.selectedPairs
     val onSelectionChange = props.onSelectionChange
-
-    val (selectedPairs, setSelectedPairs) = useState<Set<CouplingPair>>(emptySet())
     div {
         pairs.forEach { pair: CouplingPair ->
             div {
@@ -43,7 +42,6 @@ val PairSelector by nfc<PairSelectorProps> { props ->
                             } else {
                                 selectedPairs + listOf(pair)
                             }
-                            setSelectedPairs(newSelections)
                             onSelectionChange(pairs.filter(newSelections::contains))
                         }
                     }
