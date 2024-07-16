@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.ref }}
+      cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
     env:
       AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
       COUPLING_ALT_TEST_PASSWORD: ${{ secrets.COUPLING_ALT_TEST_PASSWORD }}
