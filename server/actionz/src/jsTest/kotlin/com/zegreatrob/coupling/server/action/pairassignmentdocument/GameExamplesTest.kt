@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidate
 import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.FindNewPairsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
 import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.map
@@ -35,7 +36,7 @@ class GameExamplesTest {
 
     companion object :
         CreatePairCandidateReportListAction.Dispatcher<Companion>,
-        com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction.Dispatcher<Companion>,
+        ShufflePairsAction.Dispatcher<Companion>,
         FindNewPairsAction.Dispatcher<Companion>,
         NextPlayerAction.Dispatcher<Companion>,
         AssignPinsAction.Dispatcher,
@@ -79,7 +80,7 @@ class GameExamplesTest {
             )
         }) exercise {
             perform(
-                com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+                ShufflePairsAction(
                     party,
                     allPlayers,
                     emptyList(),
@@ -105,7 +106,7 @@ class GameExamplesTest {
             )
         }) exercise {
             perform(
-                com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+                ShufflePairsAction(
                     party,
                     notEmptyListOf(clark, bruce, diana),
                     emptyList(),
@@ -142,7 +143,7 @@ class GameExamplesTest {
             )
         }) exercise {
             perform(
-                com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+                ShufflePairsAction(
                     party,
                     allPlayers,
                     emptyList(),
@@ -197,7 +198,7 @@ class GameExamplesTest {
             )
         }) exercise {
             perform(
-                com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+                ShufflePairsAction(
                     party,
                     allPlayers,
                     emptyList(),
@@ -240,7 +241,7 @@ class GameExamplesTest {
         )
     }) exercise {
         perform(
-            com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+            ShufflePairsAction(
                 party,
                 allPlayers,
                 emptyList(),

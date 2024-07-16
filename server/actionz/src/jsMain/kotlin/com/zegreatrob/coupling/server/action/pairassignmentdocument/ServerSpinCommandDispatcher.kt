@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidate
 import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.FindNewPairsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -46,7 +47,7 @@ interface ServerSpinCommandDispatcher<out D> :
           D : CreatePairCandidateReportListAction.Dispatcher<D>,
           D : NextPlayerAction.Dispatcher<D>,
           D : FindNewPairsAction.Dispatcher<D>,
-          D : com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction.Dispatcher<D>,
+          D : ShufflePairsAction.Dispatcher<D>,
           D : AssignPinsAction.Dispatcher,
           D : CreatePairCandidateReportAction.Dispatcher {
 
@@ -90,7 +91,7 @@ interface ServerSpinCommandDispatcher<out D> :
             )
         }
         val selectedPlayers = playersMap.values.filterNotNull().toNotEmptyList().getOrThrow()
-        val action = com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+        val action = ShufflePairsAction(
             party = partyDetails,
             players = selectedPlayers,
             pins = filterSelectedPins(pins, pinIds),
