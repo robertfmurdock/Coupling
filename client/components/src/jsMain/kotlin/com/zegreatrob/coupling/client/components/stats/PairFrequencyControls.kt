@@ -9,7 +9,6 @@ import emotion.react.css
 import react.Props
 import react.ReactNode
 import react.dom.aria.ariaLabel
-import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
@@ -21,7 +20,6 @@ import web.cssom.Color
 import web.cssom.Display
 import web.cssom.WhiteSpace
 import web.cssom.px
-import web.html.HTMLSelectElement
 import web.html.InputType
 
 external interface PairFrequencyControlsProps : Props {
@@ -31,11 +29,14 @@ external interface PairFrequencyControlsProps : Props {
     var setWindow: (JsonContributionWindow) -> Unit
 }
 
-private const val NULL_PLACEHOLDER = "NULL"
-
 enum class Visualization {
     LineOverTime,
     Heatmap,
+}
+
+enum class FakeDataStyle {
+    RandomSolosAndPairs,
+    StrongPairingTeam,
 }
 
 data class VisualizationContext(
@@ -68,27 +69,20 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
             whiteSpace = WhiteSpace.nowrap
         }
         div {
-            select {
-                defaultValue = selectedWindow.name
-                onChange = { event -> setWindow(event.target.value.let(JsonContributionWindow::valueOf)) }
-                JsonContributionWindow.entries.map { window ->
-                    option {
-                        value = window.name
-                        +window.name
-                    }
-                }
-            }
-            select {
-                onChange = { event ->
-                    event.handlePlaceholder()?.let(Visualization::valueOf)?.let { setVisualization(it) }
-                }
-                Visualization.entries.map { visualization ->
-                    option {
-                        value = visualization.name
-                        +visualization.name
-                    }
-                }
-            }
+            EnumSelector(
+                entries = JsonContributionWindow.entries,
+                default = selectedWindow,
+                setEnum = setWindow,
+                valueOf = JsonContributionWindow::valueOf,
+                enumName = JsonContributionWindow::name,
+            )
+            EnumSelector(
+                default = Visualization.LineOverTime,
+                entries = Visualization.entries,
+                setEnum = setVisualization::invoke,
+                valueOf = Visualization::valueOf,
+                enumName = Visualization::name,
+            )
             select {
                 onChange = { event -> setSelectedLabelFilter(event.handlePlaceholder()) }
                 option {
@@ -102,6 +96,24 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                     }
                 }
             }
+            label {
+                ariaLabel = "Fake the data"
+                +"Fake the data"
+                input {
+                    type = InputType.checkbox
+                    value = shouldFake
+                    onChange = { setShouldFake(!shouldFake) }
+                }
+            }
+            if (shouldFake) {
+                EnumSelector(
+                    default = FakeDataStyle.RandomSolosAndPairs,
+                    entries = FakeDataStyle.entries,
+                    setEnum = {},
+                    valueOf = FakeDataStyle::valueOf,
+                    enumName = FakeDataStyle::name,
+                )
+            }
         }
         div {
             css {
@@ -110,15 +122,6 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
             }
             div {
                 css { display = Display.inlineBlock }
-                label {
-                    ariaLabel = "Fake the data"
-                    +"Fake the data"
-                    input {
-                        type = InputType.checkbox
-                        value = shouldFake
-                        onChange = { setShouldFake(!shouldFake) }
-                    }
-                }
                 PairSelector(
                     pairs = allPairContributions.toMap()
                         .filterValues(List<Contribution>::isNotEmpty).keys.toList(),
@@ -137,10 +140,6 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
             }
         }
     }
-}
-
-private fun ChangeEvent<HTMLSelectElement>.handlePlaceholder() = target.value.let {
-    if (it == NULL_PLACEHOLDER) null else it
 }
 
 private fun List<Pair<CouplingPair, List<Contribution>>>.applyFilters(
