@@ -18,12 +18,7 @@ kotlin {
         allWarningsAsErrors = false
     }
     sourceSets {
-        jsMain {
-            kotlin.srcDir("build/generated/codegen")
-        }
-        jvmMain {
-            kotlin.srcDir("build/generated/codegen")
-        }
+        commonMain { kotlin.srcDir("build/generated/codegen") }
     }
 }
 

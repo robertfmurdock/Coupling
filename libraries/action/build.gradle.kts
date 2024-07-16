@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
@@ -71,16 +73,16 @@ tasks {
     "lintKotlinJsTest" {
         dependsOn("kspCommonMainKotlinMetadata")
     }
-}
-tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
+    withType(KotlinCompilationTask::class).configureEach {
+        if (name != "kspCommonMainKotlinMetadata") {
+            dependsOn("kspCommonMainKotlinMetadata")
+        }
     }
 }
 
 afterEvaluate {
     dependencies {
-        configurations["kspCommonMainMetadata"](enforcedPlatform(project(":libraries:dependency-bom")))
-        configurations["kspCommonMainMetadata"]("com.zegreatrob.testmints:action-processor")
+        configurations.kspCommonMainMetadata(enforcedPlatform(project(":libraries:dependency-bom")))
+        configurations.kspCommonMainMetadata("com.zegreatrob.testmints:action-processor")
     }
 }
