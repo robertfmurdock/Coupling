@@ -35,7 +35,8 @@ enum class Visualization {
 }
 
 enum class FakeDataStyle {
-    RandomSolosAndPairs,
+    RandomPairs,
+    RandomPairsWithRandomSolos,
     StrongPairingTeam,
 }
 
@@ -46,14 +47,15 @@ data class VisualizationContext(
 
 @ReactFunc
 val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view, selectedWindow, setWindow) ->
-    val (shouldFake, setShouldFake) = useState(false)
+    val (fakeStyle, setFakeStyle) = useState<FakeDataStyle?>(null)
     val (visualization, setVisualization) = useState(Visualization.LineOverTime)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
 
-    val fakeContributions = useMemo { generateFakeContributions(pairsContributions, selectedWindow) }
-
-    val allPairContributions: List<Pair<CouplingPair, List<Contribution>>> = if (shouldFake) {
+    val fakeContributions = useMemo(fakeStyle) {
+        fakeStyle?.let { generateFakeContributions(pairsContributions, selectedWindow, fakeStyle) } ?: emptyList()
+    }
+    val allPairContributions: List<Pair<CouplingPair, List<Contribution>>> = if (fakeStyle != null) {
         fakeContributions
     } else {
         pairsContributions
@@ -101,15 +103,15 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                 +"Fake the data"
                 input {
                     type = InputType.checkbox
-                    value = shouldFake
-                    onChange = { setShouldFake(!shouldFake) }
+                    value = fakeStyle != null
+                    onChange = { setFakeStyle(FakeDataStyle.RandomPairs) }
                 }
             }
-            if (shouldFake) {
+            if (fakeStyle != null) {
                 EnumSelector(
-                    default = FakeDataStyle.RandomSolosAndPairs,
+                    default = FakeDataStyle.RandomPairs,
                     entries = FakeDataStyle.entries,
-                    setEnum = {},
+                    setEnum = setFakeStyle::invoke,
                     valueOf = FakeDataStyle::valueOf,
                     enumName = FakeDataStyle::name,
                 )
