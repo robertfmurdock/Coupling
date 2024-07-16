@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.client.stats
 
 import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapAxis
-import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapColors
 import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.external.nivo.NivoLineData
 import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
 import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveHeatMap
 import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
+import com.zegreatrob.coupling.client.components.stats.heatmap.interpolatorAsync
 import com.zegreatrob.coupling.client.components.stats.toNivoHeatmapSettings
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.toModel
@@ -25,6 +25,8 @@ import kotlinx.datetime.toLocalDateTime
 import react.Props
 import react.create
 import react.dom.html.ReactHTML.div
+import react.useEffect
+import react.useState
 import web.cssom.Color
 import web.cssom.px
 
@@ -90,19 +92,23 @@ external interface PairFrequencyHeatMapProps : Props {
 
 @ReactFunc
 val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, window, spinsUntilFullRotation) ->
+    val (interpolator, setInterpolator) = useState<((Number) -> String)?>(null)
+    useEffect {
+        val value = interpolatorAsync.await()
+        setInterpolator(transform = { value })
+    }
+    interpolator ?: return@nfc
+
     val inclusiveContributions = adjustDatasetForHeatMap(contributionData.toMap())
-    val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(window, spinsUntilFullRotation)
+    val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(
+        window,
+        spinsUntilFullRotation,
+    )
+
     CouplingResponsiveHeatMap {
         legend = "Pair Commits"
         this.data = data
-        colors = NivoHeatMapColors(
-            type = "diverging",
-            scheme = "red_yellow_blue",
-            divergeAt = 0.6,
-            minValue = 0,
-            maxValue = max,
-        )
-        valueFormat = { y -> "${max - y}" }
+        colors = { datum -> interpolator(datum.value.toDouble() / max) }
         axisRight = NivoHeatMapAxis(
             tickSize = 5,
             tickPadding = 5,

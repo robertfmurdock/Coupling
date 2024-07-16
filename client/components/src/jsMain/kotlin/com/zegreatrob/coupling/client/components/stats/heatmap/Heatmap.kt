@@ -29,7 +29,7 @@ external interface D3Color {
 }
 
 external interface D3Interpolate {
-    fun interpolateRgbBasis(colors: Array<String>): (Double) -> String
+    fun interpolateRgbBasis(colors: Array<String>): (Number) -> String
 }
 
 external interface D3Selection {
@@ -58,11 +58,12 @@ val colorSuggestions = d3Color.then {
     )
 }
 
-val interpolator = MainScope().async { d3Interpolate.await().interpolateRgbBasis(colorSuggestions.await()) }
+val interpolatorAsync = MainScope().async { makeInterpolator() }
+
+private suspend fun makeInterpolator() = d3Interpolate.await().interpolateRgbBasis(colorSuggestions.await())
 
 suspend fun renderD3Heatmap(element: HTMLElement, data: List<Double?>, cellClassName: ClassName) {
-    val colorInterpolator = interpolator.await()
-
+    val colorInterpolator = interpolatorAsync.await()
     d3Selection.await().select(element)
         .selectAll("div")
         .data(data.toTypedArray())

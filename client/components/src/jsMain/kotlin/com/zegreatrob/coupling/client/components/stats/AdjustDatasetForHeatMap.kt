@@ -61,7 +61,7 @@ fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
             data = players.map { player2 ->
                 NivoPoint(
                     x = player2.name,
-                    y = this[setOf(player1, player2)]?.size?.let { max - it },
+                    y = this[setOf(player1, player2)]?.size,
                 )
             }.toTypedArray(),
         )

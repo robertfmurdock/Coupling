@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.client.components.external.nivo.NinoLinePointDecorated
 import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapAxis
-import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapColors
 import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.external.nivo.NivoLineData
 import react.FC
@@ -23,11 +22,16 @@ val CouplingResponsiveLine = kotlinext.js.require<dynamic>("com/zegreatrob/coupl
 external interface CouplingResponsiveHeatMapProps : Props {
     var data: Array<NivoHeatMapData>
     var legend: String
-    var colors: NivoHeatMapColors
+    var colors: (NivoDatum) -> String
     var valueFormat: (Int) -> String
     var axisTop: NivoHeatMapAxis
     var axisLeft: NivoHeatMapAxis
     var axisRight: NivoHeatMapAxis
+}
+
+sealed external interface NivoDatum {
+    var id: String
+    var value: Number
 }
 
 val CouplingResponsiveHeatMap =
