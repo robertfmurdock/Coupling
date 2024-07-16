@@ -5,10 +5,11 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidate
 import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.FindNewPairsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
 
 interface PairAssignmentDispatcher<D> :
-    com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction.Dispatcher<D>,
+    ShufflePairsAction.Dispatcher<D>,
     FindNewPairsAction.Dispatcher<D>,
     NextPlayerAction.Dispatcher<D>,
     CreatePairCandidateReportListAction.Dispatcher<D>,

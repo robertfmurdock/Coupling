@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
-    id("com.zegreatrob.testmints.action-mint")
     id("com.zegreatrob.coupling.plugins.mp")
+    id("com.google.devtools.ksp")
     kotlin("plugin.serialization")
 }
 
@@ -13,16 +13,9 @@ kotlin {
     jvm()
     sourceSets {
         commonMain {
-            kotlin.srcDir("build/generated/ksp/commonMain/kotlin")
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
     }
-
-//    sourceSets.named("jsMain") {
-//        kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
-//    }
-//    sourceSets.named("jvmMain") {
-//        kotlin.srcDir("build/generated/ksp/jvm/jvmMain/kotlin")
-//    }
 }
 
 dependencies {
@@ -32,6 +25,7 @@ dependencies {
     commonMainApi("com.zegreatrob.testmints:action-async")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     commonMainImplementation("com.benasher44:uuid")
+    commonMainImplementation("com.zegreatrob.testmints:action-annotation")
 
     commonTestImplementation(project(":libraries:json"))
     commonTestImplementation(project(":libraries:stub-model"))
@@ -59,21 +53,34 @@ tasks {
         systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
         useJUnitPlatform()
     }
+    "formatKotlinCommonMain" {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
     "formatKotlinJsMain" {
-        dependsOn("kspKotlinJs")
+        dependsOn("kspCommonMainKotlinMetadata")
     }
     "formatKotlinJsTest" {
-        dependsOn("kspTestKotlinJs")
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+    "lintKotlinCommonMain" {
+        dependsOn("kspCommonMainKotlinMetadata")
     }
     "lintKotlinJsMain" {
-        dependsOn("kspKotlinJs")
+        dependsOn("kspCommonMainKotlinMetadata")
     }
     "lintKotlinJsTest" {
-        dependsOn("kspTestKotlinJs")
+        dependsOn("kspCommonMainKotlinMetadata")
     }
 }
 tasks.withType(KotlinCompilationTask::class.java).configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+afterEvaluate {
+    dependencies {
+        configurations["kspCommonMainMetadata"](enforcedPlatform(project(":libraries:dependency-bom")))
+        configurations["kspCommonMainMetadata"]("com.zegreatrob.testmints:action-processor")
     }
 }
