@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.server.action
 
+import com.zegreatrob.coupling.action.CannonProvider
 import com.zegreatrob.coupling.model.CouplingConnection
 import com.zegreatrob.coupling.model.Message
 import com.zegreatrob.coupling.server.action.connection.DisconnectPartyUserCommand

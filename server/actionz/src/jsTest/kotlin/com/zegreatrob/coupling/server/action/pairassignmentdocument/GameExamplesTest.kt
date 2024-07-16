@@ -2,6 +2,12 @@ package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.FindNewPairsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
 import com.zegreatrob.coupling.model.flatMap
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -30,7 +36,7 @@ class GameExamplesTest {
 
     companion object :
         CreatePairCandidateReportListAction.Dispatcher<Companion>,
-        ShufflePairsAction.Dispatcher<Companion>,
+        com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction.Dispatcher<Companion>,
         FindNewPairsAction.Dispatcher<Companion>,
         NextPlayerAction.Dispatcher<Companion>,
         AssignPinsAction.Dispatcher,
@@ -73,7 +79,14 @@ class GameExamplesTest {
                 PairingRule.LongestTime,
             )
         }) exercise {
-            perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
+            perform(
+                com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+                    party,
+                    allPlayers,
+                    emptyList(),
+                    history,
+                ),
+            )
         } verify { result ->
             result.pairs.map { pair ->
                 pair.players.size.toInt().assertIsEqualTo(2)
@@ -92,7 +105,14 @@ class GameExamplesTest {
                 PairingRule.LongestTime,
             )
         }) exercise {
-            perform(ShufflePairsAction(party, notEmptyListOf(clark, bruce, diana), emptyList(), history))
+            perform(
+                com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+                    party,
+                    notEmptyListOf(clark, bruce, diana),
+                    emptyList(),
+                    history,
+                ),
+            )
         } verify { result ->
             result.pairs.size.toInt().assertIsEqualTo(2)
         }
@@ -122,7 +142,14 @@ class GameExamplesTest {
                 ),
             )
         }) exercise {
-            perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
+            perform(
+                com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+                    party,
+                    allPlayers,
+                    emptyList(),
+                    history,
+                ),
+            )
         } verify { result ->
             result.pairs.toList().contains(pairOf(bruce, john).toPinnedPair())
         }
@@ -170,7 +197,14 @@ class GameExamplesTest {
                 ),
             )
         }) exercise {
-            perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
+            perform(
+                com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+                    party,
+                    allPlayers,
+                    emptyList(),
+                    history,
+                ),
+            )
         } verify { result ->
             result.pairs.toList().contains(pairOf(bruce, john).toPinnedPair())
         }
@@ -206,7 +240,14 @@ class GameExamplesTest {
             ),
         )
     }) exercise {
-        perform(ShufflePairsAction(party, allPlayers, emptyList(), history))
+        perform(
+            com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
+                party,
+                allPlayers,
+                emptyList(),
+                history,
+            ),
+        )
     } verify { result ->
         result.pairs.toList().contains(pairOf(kamala, logan).toPinnedPair())
     }

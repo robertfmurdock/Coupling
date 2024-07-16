@@ -1,11 +1,9 @@
-package com.zegreatrob.coupling.server.action.pairassignmentdocument
+package com.zegreatrob.coupling.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.CannonProvider
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
-import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
-import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
@@ -72,15 +70,3 @@ data class FindNewPairsAction(val game: Game) {
         private fun List<Player>.nextPlayer() = with(wheel) { toTypedArray().spin() }
     }
 }
-
-private inline fun <reified E> NotEmptyList<E>.plus(entry: E): NotEmptyList<E> = notEmptyListOf(head, tail = tail?.let { it.toList() + entry }?.toTypedArray() ?: arrayOf(entry))
-
-data class Game(val players: NotEmptyList<Player>, val history: List<PairAssignmentDocument>, val rule: PairingRule)
-
-data class GameSpin(
-    val remainingPlayers: NotEmptyList<Player>,
-    val history: List<PairAssignmentDocument>,
-    val rule: PairingRule,
-)
-
-private data class Round(val pairs: NotEmptyList<CouplingPair>, val gameSpin: GameSpin?)

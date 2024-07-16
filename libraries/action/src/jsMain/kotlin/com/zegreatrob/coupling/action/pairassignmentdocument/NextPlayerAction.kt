@@ -1,9 +1,10 @@
-package com.zegreatrob.coupling.server.action.pairassignmentdocument
+package com.zegreatrob.coupling.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.CannonProvider
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
-import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.testmints.action.annotation.ActionMint
+import kotools.types.collection.NotEmptyList
 
 @ActionMint
 data class NextPlayerAction(val gameSpin: GameSpin) {
@@ -25,9 +26,12 @@ data class NextPlayerAction(val gameSpin: GameSpin) {
             }
         }
 
-        private suspend fun NextPlayerAction.createPairCandidateReports() = cannon.fire(
-            CreatePairCandidateReportListAction(gameSpin),
-        )
+        private suspend fun NextPlayerAction.createPairCandidateReports(): NotEmptyList<PairCandidateReport> =
+            cannon.fire(
+                CreatePairCandidateReportListAction(
+                    gameSpin,
+                ),
+            )
 
         private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport) =
             when {

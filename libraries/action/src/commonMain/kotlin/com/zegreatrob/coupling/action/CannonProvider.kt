@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.action
+package com.zegreatrob.coupling.action
 
 import com.zegreatrob.testmints.action.ActionCannon
 

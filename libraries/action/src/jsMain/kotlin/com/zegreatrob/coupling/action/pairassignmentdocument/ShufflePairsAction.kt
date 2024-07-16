@@ -1,8 +1,7 @@
-package com.zegreatrob.coupling.server.action.pairassignmentdocument
+package com.zegreatrob.coupling.action.pairassignmentdocument
 
 import com.benasher44.uuid.uuid4
-import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
-import com.zegreatrob.coupling.action.pairassignmentdocument.fire
+import com.zegreatrob.coupling.action.CannonProvider
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -10,11 +9,9 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.server.action.CannonProvider
-import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 
-@ActionMint
+@com.zegreatrob.testmints.action.annotation.ActionMint
 data class ShufflePairsAction(
     val party: PartyDetails,
     val players: NotEmptyList<Player>,
@@ -32,8 +29,11 @@ data class ShufflePairsAction(
 
         suspend fun perform(action: ShufflePairsAction) = action.assignPinsToPairs().let(::pairAssignmentDocument)
 
-        private suspend fun ShufflePairsAction.assignPinsToPairs() = cannon.fire(assignPinsAction(findNewPairs()))
-        private suspend fun ShufflePairsAction.findNewPairs() = cannon.fire(findNewPairsAction())
+        private suspend fun ShufflePairsAction.assignPinsToPairs(): NotEmptyList<PinnedCouplingPair> =
+            cannon.fire(assignPinsAction(findNewPairs()))
+
+        private suspend fun ShufflePairsAction.findNewPairs(): NotEmptyList<CouplingPair> =
+            cannon.fire(findNewPairsAction())
 
         private fun ShufflePairsAction.assignPinsAction(pairs: NotEmptyList<CouplingPair>) =
             AssignPinsAction(pairs, pins, history)
