@@ -102,7 +102,7 @@ export const CouplingResponsiveLine = (props) => {
     )
 }
 
-export const CouplingResponsiveHeatMap = ({data, colors, valueFormat, axisTop, axisRight, axisLeft}) => {
+export const CouplingResponsiveHeatMap = ({data, colors, valueFormat, axisTop, axisRight, axisLeft, emptyColor}) => {
     return (
         <ResponsiveHeatMap
             data={data}
@@ -112,25 +112,7 @@ export const CouplingResponsiveHeatMap = ({data, colors, valueFormat, axisTop, a
             axisRight={axisRight}
             axisLeft={axisLeft}
             colors={colors}
-            emptyColor="#555555"
-            legends={[
-                {
-                    anchor: 'bottom',
-                    translateX: 0,
-                    translateY: 30,
-                    length: 400,
-                    thickness: 8,
-                    direction: 'row',
-                    tickPosition: 'after',
-                    tickSize: 3,
-                    tickSpacing: 4,
-                    tickOverlap: false,
-                    tickFormat: '>-.2s',
-                    title: 'Value →',
-                    titleAlign: 'start',
-                    titleOffset: 4
-                }
-            ]}
+            emptyColor={emptyColor}
         />
     );
 }

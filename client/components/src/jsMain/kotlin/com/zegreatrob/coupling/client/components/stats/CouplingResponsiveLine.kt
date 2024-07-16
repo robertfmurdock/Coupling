@@ -27,6 +27,7 @@ external interface CouplingResponsiveHeatMapProps : Props {
     var axisTop: NivoHeatMapAxis
     var axisLeft: NivoHeatMapAxis
     var axisRight: NivoHeatMapAxis
+    var emptyColor: String
 }
 
 sealed external interface NivoDatum {

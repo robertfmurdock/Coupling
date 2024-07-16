@@ -109,6 +109,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
         legend = "Pair Commits"
         this.data = data
         colors = { datum -> interpolator(datum.value.toDouble() / max) }
+        emptyColor = interpolator(0)
         axisRight = NivoHeatMapAxis(
             tickSize = 5,
             tickPadding = 5,
