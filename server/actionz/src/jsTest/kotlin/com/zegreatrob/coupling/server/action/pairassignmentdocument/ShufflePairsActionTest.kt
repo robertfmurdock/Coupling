@@ -1,6 +1,11 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.FindNewPairsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.Game
+import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
 import com.zegreatrob.coupling.action.pairassignmentdocument.call
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -32,7 +37,7 @@ class ShufflePairsActionTest {
     @Test
     fun willBuildAGameRunWithAllAvailablePlayersAndThenReturnTheResults() = asyncSetup(object :
         ScopeMint(),
-        ShufflePairsAction.Dispatcher<ShufflePairsActionInner> {
+        com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction.Dispatcher<ShufflePairsActionInner> {
         val receivedActions = mutableListOf<Any?>()
         override val cannon = StubCannon<ShufflePairsActionInner>(receivedActions)
 
@@ -55,7 +60,7 @@ class ShufflePairsActionTest {
         call(cannon::given, AssignPinsAction(expectedPairingAssignments, pins, history))
             .thenReturn(expectedPinnedPairs)
     } exercise {
-        perform(ShufflePairsAction(party, players, pins, history))
+        perform(com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(party, players, pins, history))
     } verify { result ->
         result.assertIsEqualTo(
             PairAssignmentDocument(

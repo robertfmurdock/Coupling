@@ -1,9 +1,9 @@
-package com.zegreatrob.coupling.server.action.pairassignmentdocument
+package com.zegreatrob.coupling.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.CannonProvider
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
-import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 

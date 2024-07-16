@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.server.action.pairassignmentdocument
+package com.zegreatrob.coupling.action.pairassignmentdocument
 
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResult
 import com.zegreatrob.coupling.model.player.Player

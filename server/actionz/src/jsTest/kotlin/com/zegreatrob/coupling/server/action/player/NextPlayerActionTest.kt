@@ -1,16 +1,16 @@
 package com.zegreatrob.coupling.server.action.player
 
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListActionWrapper
+import com.zegreatrob.coupling.action.pairassignmentdocument.GameSpin
+import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.PairCandidateReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.NeverPaired
 import com.zegreatrob.coupling.model.pairassignmentdocument.TimeResultValue
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportAction
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListAction
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.CreatePairCandidateReportListActionWrapper
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.GameSpin
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.NextPlayerAction
-import com.zegreatrob.coupling.server.action.pairassignmentdocument.PairCandidateReport
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.testaction.StubCannon
 import com.zegreatrob.minassert.assertIsEqualTo

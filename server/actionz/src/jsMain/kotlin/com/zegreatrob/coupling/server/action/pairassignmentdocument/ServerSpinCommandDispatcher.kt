@@ -1,7 +1,13 @@
 package com.zegreatrob.coupling.server.action.pairassignmentdocument
 
+import com.zegreatrob.coupling.action.CannonProvider
 import com.zegreatrob.coupling.action.SpinCommand
 import com.zegreatrob.coupling.action.pairassignmentdocument.AssignPinsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.FindNewPairsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.fire
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -20,7 +26,6 @@ import com.zegreatrob.coupling.repository.party.PartyIdLoadSyntax
 import com.zegreatrob.coupling.repository.party.PartyRepository
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.coupling.repository.slack.SlackAccessGet
-import com.zegreatrob.coupling.server.action.CannonProvider
 import com.zegreatrob.coupling.server.action.discord.DiscordSendSpin
 import com.zegreatrob.coupling.server.action.slack.SlackSendSpin
 import kotlinx.coroutines.async
@@ -41,7 +46,7 @@ interface ServerSpinCommandDispatcher<out D> :
           D : CreatePairCandidateReportListAction.Dispatcher<D>,
           D : NextPlayerAction.Dispatcher<D>,
           D : FindNewPairsAction.Dispatcher<D>,
-          D : ShufflePairsAction.Dispatcher<D>,
+          D : com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction.Dispatcher<D>,
           D : AssignPinsAction.Dispatcher,
           D : CreatePairCandidateReportAction.Dispatcher {
 
@@ -85,7 +90,7 @@ interface ServerSpinCommandDispatcher<out D> :
             )
         }
         val selectedPlayers = playersMap.values.filterNotNull().toNotEmptyList().getOrThrow()
-        val action = ShufflePairsAction(
+        val action = com.zegreatrob.coupling.action.pairassignmentdocument.ShufflePairsAction(
             party = partyDetails,
             players = selectedPlayers,
             pins = filterSelectedPins(pins, pinIds),
