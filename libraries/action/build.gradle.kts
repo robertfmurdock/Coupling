@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+
 plugins {
     id("com.zegreatrob.testmints.action-mint")
     id("com.zegreatrob.coupling.plugins.mp")
@@ -9,12 +11,18 @@ kotlin {
         nodejs { testTask { useMocha { timeout = "10s" } } }
     }
     jvm()
-    sourceSets.named("jsMain") {
-        kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
+    sourceSets {
+        commonMain {
+            kotlin.srcDir("build/generated/ksp/commonMain/kotlin")
+        }
     }
-    sourceSets.named("jvmMain") {
-        kotlin.srcDir("build/generated/ksp/jvm/jvmMain/kotlin")
-    }
+
+//    sourceSets.named("jsMain") {
+//        kotlin.srcDir("build/generated/ksp/js/jsMain/kotlin")
+//    }
+//    sourceSets.named("jvmMain") {
+//        kotlin.srcDir("build/generated/ksp/jvm/jvmMain/kotlin")
+//    }
 }
 
 dependencies {
@@ -62,5 +70,10 @@ tasks {
     }
     "lintKotlinJsTest" {
         dependsOn("kspTestKotlinJs")
+    }
+}
+tasks.withType(KotlinCompilationTask::class.java).configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
     }
 }
