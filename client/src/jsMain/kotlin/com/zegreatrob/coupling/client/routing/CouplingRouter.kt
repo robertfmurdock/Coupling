@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.client.AboutPage
 import com.zegreatrob.coupling.client.ClientConfig
 import com.zegreatrob.coupling.client.components.animationsDisabledContext
 import com.zegreatrob.coupling.client.components.external.auth0.react.useAuth0Data
+import com.zegreatrob.coupling.client.contribution.ContributionPage
 import com.zegreatrob.coupling.client.demo.DemoPage
 import com.zegreatrob.coupling.client.demo.LoadingPage
 import com.zegreatrob.coupling.client.discord.DiscordCallbackPage
@@ -24,7 +25,6 @@ import com.zegreatrob.coupling.client.player.retired.RetiredPlayerPage
 import com.zegreatrob.coupling.client.player.retired.RetiredPlayersPage
 import com.zegreatrob.coupling.client.slack.SlackCallbackPage
 import com.zegreatrob.coupling.client.slack.SlackConnectPage
-import com.zegreatrob.coupling.client.stats.IncubatingStatisticsPage
 import com.zegreatrob.coupling.client.stats.StatisticsPage
 import com.zegreatrob.coupling.client.user.Logout
 import com.zegreatrob.coupling.client.user.UserPage
@@ -114,7 +114,7 @@ private fun ClientConfig.authenticatedRoutes(): Array<RouteObject> = listOfNotNu
     couplingRoute("/:partyId/retired-player/:playerId/", "Retired Player Config", RetiredPlayerPage),
     couplingRoute("/:partyId/players/retired", "Retired Player List", RetiredPlayersPage),
     couplingRoute("/:partyId/statistics", "Statistics", StatisticsPage),
-    couplingRoute("/:partyId/statistics-incubating", "Statistics", IncubatingStatisticsPage),
+    couplingRoute("/:partyId/contributions", "Contributions", ContributionPage),
     couplingRoute("/incubating", "Incubating", IncubatingPage),
     couplingRoute("/integration/slack/connect", "Slack Connect", SlackConnectPage),
     couplingRoute("/integration/slack/callback", "Slack Callback", SlackCallbackPage),

@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
-import com.zegreatrob.coupling.client.components.stats.Visualization.LineOverTime
+import com.zegreatrob.coupling.client.components.stats.Visualization.Heatmap
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
@@ -30,7 +30,7 @@ class PairFrequencyControlsTest {
         render(PairFrequencyControls.create(pairs, viewSpy::spyFunction, JsonContributionWindow.All, {}))
     } verify {
         viewSpy.spyReceivedValues.last()
-            .assertIsEqualTo(VisualizationContext(LineOverTime, emptyList()))
+            .assertIsEqualTo(VisualizationContext(Heatmap, emptyList()))
     }
 
     @Test
@@ -50,6 +50,6 @@ class PairFrequencyControlsTest {
         actor.click(screen.findByRole("checkbox", RoleOptions(expectedPair.pairName)))
     } verify {
         viewSpy.spyReceivedValues.last()
-            .assertIsEqualTo(VisualizationContext(LineOverTime, listOf(expectedPair to expectedContributions)))
+            .assertIsEqualTo(VisualizationContext(Heatmap, listOf(expectedPair to expectedContributions)))
     }
 }

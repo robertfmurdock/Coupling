@@ -30,8 +30,8 @@ external interface PairFrequencyControlsProps : Props {
 }
 
 enum class Visualization {
-    LineOverTime,
     Heatmap,
+    LineOverTime,
 }
 
 enum class FakeDataStyle {
@@ -48,7 +48,7 @@ data class VisualizationContext(
 @ReactFunc
 val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributions, view, selectedWindow, setWindow) ->
     val (fakeStyle, setFakeStyle) = useState<FakeDataStyle?>(null)
-    val (visualization, setVisualization) = useState(Visualization.LineOverTime)
+    val (visualization, setVisualization) = useState(Visualization.Heatmap)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
     val (fakeContributions, setFakeContributions) = useState<List<Pair<CouplingPair, List<Contribution>>>>(emptyList())
@@ -81,8 +81,8 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                 enumName = JsonContributionWindow::name,
             )
             EnumSelector(
-                default = Visualization.LineOverTime,
                 entries = Visualization.entries,
+                default = Visualization.Heatmap,
                 setEnum = setVisualization::invoke,
                 valueOf = Visualization::valueOf,
                 enumName = Visualization::name,
@@ -100,23 +100,29 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                     }
                 }
             }
-            label {
-                ariaLabel = "Fake the data"
-                +"Fake the data"
-                input {
-                    type = InputType.checkbox
-                    value = fakeStyle != null
-                    onChange = { setFakeStyle(FakeDataStyle.RandomPairs) }
+        }
+        div {
+            div {
+                label {
+                    ariaLabel = "Fake the data"
+                    +"Fake the data"
+                    input {
+                        type = InputType.checkbox
+                        value = fakeStyle != null
+                        onChange = { setFakeStyle(if (it.target.checked) FakeDataStyle.RandomPairs else null) }
+                    }
                 }
             }
             if (fakeStyle != null) {
-                EnumSelector(
-                    default = FakeDataStyle.RandomPairs,
-                    entries = FakeDataStyle.entries,
-                    setEnum = setFakeStyle::invoke,
-                    valueOf = FakeDataStyle::valueOf,
-                    enumName = FakeDataStyle::name,
-                )
+                div {
+                    EnumSelector(
+                        default = FakeDataStyle.RandomPairs,
+                        entries = FakeDataStyle.entries,
+                        setEnum = setFakeStyle::invoke,
+                        valueOf = FakeDataStyle::valueOf,
+                        enumName = FakeDataStyle::name,
+                    )
+                }
             }
         }
         div {

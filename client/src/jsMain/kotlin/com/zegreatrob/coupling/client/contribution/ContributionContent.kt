@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.stats
+package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.PageFrame
@@ -9,14 +9,14 @@ import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
 
-external interface IncubatingPartyStatisticsContentProps : PropsWithChildren {
+external interface ContributionContentProps : PropsWithChildren {
     var party: PartyDetails
 }
 
 @ReactFunc
-val IncubatingPartyStatisticsContent by nfc<IncubatingPartyStatisticsContentProps> { props ->
+val ContributionContent by nfc<ContributionContentProps> { props ->
     div {
-        PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("rgb(253 237 189)")) {
+        PageFrame(borderColor = Color("rgb(255 143 117)"), backgroundColor = Color("rgb(253 237 189)")) {
             ConfigHeader {
                 party = props.party
                 +"Contributions"

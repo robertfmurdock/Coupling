@@ -1,10 +1,10 @@
-package com.zegreatrob.coupling.client.stats
+package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 
-val IncubatingStatisticsPage = partyPageFunction { props, partyId ->
+val ContributionPage = partyPageFunction { props, partyId ->
     CouplingQuery(
         commander = props.commander,
         query = graphQuery {
@@ -16,8 +16,8 @@ val IncubatingStatisticsPage = partyPageFunction { props, partyId ->
         toNode = { _, _, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
             val spinsUntilFullRotation = queryResult.party?.spinsUntilFullRotation ?: return@CouplingQuery null
-            IncubatingPartyStatisticsContent.create(party = party) {
-                IncubatingPartyStatisticsLoadingFrame(props.commander, party, spinsUntilFullRotation)
+            ContributionContent.create(party = party) {
+                ContributionVisualization(props.commander, party, spinsUntilFullRotation)
             }
         },
         key = partyId.value,

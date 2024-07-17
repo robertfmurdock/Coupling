@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.stats
+package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.stats.PairFrequencyControls
 import com.zegreatrob.coupling.client.components.stats.Visualization
@@ -20,14 +20,14 @@ import react.Props
 import react.router.dom.SetURLSearchParams
 import react.router.dom.useSearchParams
 
-external interface IncubatingPartyStatisticsLoadingFrameProps : Props {
+external interface ContributionVisualizationProps : Props {
     var commander: Commander
     var party: PartyDetails
     var spinsUntilFullRotation: Int
 }
 
 @ReactFunc
-val IncubatingPartyStatisticsLoadingFrame by nfc<IncubatingPartyStatisticsLoadingFrameProps> { props ->
+val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     val (commander, party, spinsUntilFullRotation) = props
     val (searchParams, setSearchParams) = useSearchParams()
     val window: JsonContributionWindow = searchParams["window"]?.let { window ->
