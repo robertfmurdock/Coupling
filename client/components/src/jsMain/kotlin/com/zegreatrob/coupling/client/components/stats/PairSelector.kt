@@ -1,18 +1,21 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.client.components.CouplingButton
 import com.zegreatrob.coupling.client.components.player.PlayerCard
+import com.zegreatrob.coupling.client.components.small
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import emotion.react.css
 import react.Props
 import react.dom.aria.ariaLabel
-import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import web.cssom.deg
+import web.cssom.px
 import web.html.InputType
 
 external interface PairSelectorProps : Props {
@@ -27,25 +30,41 @@ val PairSelector by nfc<PairSelectorProps> { props ->
     val selectedPairs = props.selectedPairs
     val onSelectionChange = props.onSelectionChange
     div {
-        div {
-            button {
-                onClick = { props.onSelectionChange(pairs) }
-                +"Select All"
-            }
-        }
-        div {
-            button {
-                onClick = { props.onSelectionChange(emptyList()) }
-                +"Select None"
+        css { margin = 2.px }
+        PairPanel {
+            div {
+                css {
+                    padding = 4.px
+                }
+                div {
+                    CouplingButton(
+                        sizeRuleSet = small,
+                        onClick = { props.onSelectionChange(pairs) },
+                    ) {
+                        +"Select All"
+                    }
+                }
+                div {
+                    CouplingButton(
+                        sizeRuleSet = small,
+                        onClick = { props.onSelectionChange(emptyList()) },
+                    ) {
+                        +"Select None"
+                    }
+                }
             }
         }
 
         pairs.forEach { pair: CouplingPair ->
-            div {
+            PairPanel {
                 label {
                     ariaLabel = pair.pairName
-                    pair.forEach {
-                        PlayerCard(it, size = 25, tilt = 0.deg)
+
+                    val incrementSize = 16.0 / (pair.count() - 1)
+
+                    pair.forEachIndexed { index, player ->
+                        val tilt = incrementSize * index - 8
+                        PlayerCard(player, size = 25, tilt = tilt.deg)
                     }
                     input {
                         type = InputType.checkbox

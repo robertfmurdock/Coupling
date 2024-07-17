@@ -10,7 +10,9 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.ChildrenBuilder
+import react.FC
 import react.Props
+import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.span
 import react.useMemo
@@ -51,15 +53,7 @@ external interface PairReportViewProps : Props {
 @ReactFunc
 val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
     val tweak = useMemo { Random.nextInt(8).toDouble() }
-    div {
-        css {
-            borderWidth = 2.px
-            borderStyle = LineStyle.solid
-            borderColor = Color("#8e8e8e")
-            borderRadius = 5.px
-            backgroundColor = Color("#ffffff")
-            margin = 2.px
-        }
+    PairPanel {
         asDynamic()["data-pair-report"] = pairReport.pair.joinToString("-") { it.name }
         reportPlayerCard(pairReport.pair.player1, (-tweak).deg)
         reportPlayerCard(pairReport.pair.player2, (tweak).deg)
@@ -78,6 +72,20 @@ val PairReportView by nfc<PairReportViewProps> { (pairReport) ->
                 +pairReport.timeSinceLastPair.presentationString()
             }
         }
+    }
+}
+
+val PairPanel = FC<PropsWithChildren> { props ->
+    div {
+        css {
+            borderWidth = 2.px
+            borderStyle = LineStyle.solid
+            borderColor = Color("#8e8e8e")
+            borderRadius = 5.px
+            backgroundColor = Color("#ffffff")
+            margin = 2.px
+        }
+        +props
     }
 }
 
