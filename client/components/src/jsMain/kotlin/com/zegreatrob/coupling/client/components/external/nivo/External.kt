@@ -20,6 +20,18 @@ sealed external interface NinoLinePointDecorated {
     var context: Any?
 }
 
+sealed external interface NivoChartMargin {
+    var top: Number
+    var right: Number
+    var bottom: Number
+    var left: Number
+}
+
+sealed external interface NivoDatum {
+    var id: String
+    var value: Number
+}
+
 sealed external interface NivoHeatMapData {
     var id: String
     var data: Array<NivoPoint>

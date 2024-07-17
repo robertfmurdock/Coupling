@@ -1,10 +1,11 @@
 package com.zegreatrob.coupling.client.stats
 
+import com.zegreatrob.coupling.client.components.external.nivo.NivoChartMargin
 import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapAxis
 import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.external.nivo.NivoLineData
 import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
-import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveHeatMap
+import com.zegreatrob.coupling.client.components.external.nivo.heatmap.ResponsiveHeatMap
 import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveLine
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
 import com.zegreatrob.coupling.client.components.stats.heatmap.interpolatorAsync
@@ -105,7 +106,7 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
         spinsUntilFullRotation,
     )
 
-    CouplingResponsiveHeatMap {
+    ResponsiveHeatMap {
         legend = "Pair Commits"
         this.data = data
         colors = { datum -> interpolator(datum.value.toDouble() / max) }
@@ -118,6 +119,12 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
             legendPosition = "middle",
             legendOffset = 70,
             truncateTickAt = 0,
+        )
+        margin = NivoChartMargin(
+            top = 60,
+            right = 90,
+            bottom = 60,
+            left = 90,
         )
         axisLeft = NivoHeatMapAxis(
             tickSize = 5,

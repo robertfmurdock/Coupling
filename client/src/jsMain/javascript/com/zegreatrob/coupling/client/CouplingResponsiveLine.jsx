@@ -1,5 +1,4 @@
 import {ResponsiveLine} from '@nivo/line'
-import {ResponsiveHeatMap} from '@nivo/heatmap'
 
 export const CouplingResponsiveLine = (props) => {
     const allPoints = props.data.flatMap(line => line.data)
@@ -100,19 +99,4 @@ export const CouplingResponsiveLine = (props) => {
             ]}
         />
     )
-}
-
-export const CouplingResponsiveHeatMap = ({data, colors, valueFormat, axisTop, axisRight, axisLeft, emptyColor}) => {
-    return (
-        <ResponsiveHeatMap
-            data={data}
-            margin={{top: 60, right: 90, bottom: 60, left: 90}}
-            valueFormat={valueFormat}
-            axisTop={axisTop}
-            axisRight={axisRight}
-            axisLeft={axisLeft}
-            colors={colors}
-            emptyColor={emptyColor}
-        />
-    );
 }
