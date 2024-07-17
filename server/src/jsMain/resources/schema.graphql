@@ -148,7 +148,7 @@ type Party {
     spinsUntilFullRotation: Int!
     medianSpinDuration: String
     boost: BoostDetails
-    contributions: [Contribution!]!
+    contributions(input: ContributionsInput): [Contribution!]
     contributors: [Contributor!]!
     pair(input: PairInput) : Pair
 }
@@ -163,7 +163,8 @@ input PairInput {
 }
 
 input ContributionsInput {
-    window: ContributionWindow!
+    limit: Int
+    window: ContributionWindow
 }
 
 enum ContributionWindow {
