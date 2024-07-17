@@ -7,12 +7,12 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import js.objects.jso
+import react.Fragment
 import react.Props
 import react.ReactNode
-import react.dom.aria.ariaLabel
+import react.create
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
-import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.option
 import react.useEffect
 import react.useState
@@ -95,7 +95,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         }
                         div {
                             EnumSelector(
-                                label = "Time Window",
+                                label = ReactNode("Time Window"),
                                 entries = JsonContributionWindow.entries,
                                 default = selectedWindow,
                                 setEnum = setWindow,
@@ -105,7 +105,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         }
                         div {
                             EnumSelector(
-                                label = "Visualization Style",
+                                label = ReactNode("Visualization Style"),
                                 entries = Visualization.entries,
                                 default = Visualization.Heatmap,
                                 setEnum = setVisualization::invoke,
@@ -113,8 +113,8 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                                 enumName = Visualization::name,
                             )
                         }
-                        CouplingSelector {
-                            label = "Label Filter"
+                        CouplingSelect {
+                            label = ReactNode("Label Filter")
                             selectProps = jso {
                                 disabled = allLabels.size <= 1
                                 onChange = { event -> setSelectedLabelFilter(event.handlePlaceholder()) }
@@ -132,20 +132,17 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         }
                         div {
                             div {
-                                label {
-                                    ariaLabel = "Fake the data"
-                                    +"Fake the data"
-                                    input {
-                                        type = InputType.checkbox
-                                        value = fakeStyle != null
-                                        onChange = {
-                                            setFakeStyle(if (it.target.checked) FakeDataStyle.RandomPairs else null)
-                                        }
-                                    }
-                                }
-                            }
-                            div {
                                 EnumSelector(
+                                    label = Fragment.create {
+                                        +"Fake the data"
+                                        input {
+                                            type = InputType.checkbox
+                                            value = fakeStyle != null
+                                            onChange = {
+                                                setFakeStyle(if (it.target.checked) FakeDataStyle.RandomPairs else null)
+                                            }
+                                        }
+                                    },
                                     default = FakeDataStyle.RandomPairs,
                                     entries = FakeDataStyle.entries,
                                     setEnum = setFakeStyle::invoke,
