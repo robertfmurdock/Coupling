@@ -95,22 +95,16 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         }
                         div {
                             EnumSelector(
-                                label = ReactNode("Time Window"),
-                                entries = JsonContributionWindow.entries,
                                 default = selectedWindow,
-                                setEnum = setWindow,
-                                valueOf = JsonContributionWindow::valueOf,
-                                enumName = JsonContributionWindow::name,
+                                onChange = setWindow,
+                                label = ReactNode("Time Window"),
                             )
                         }
                         div {
                             EnumSelector(
-                                label = ReactNode("Visualization Style"),
-                                entries = Visualization.entries,
                                 default = Visualization.Heatmap,
-                                setEnum = setVisualization::invoke,
-                                valueOf = Visualization::valueOf,
-                                enumName = Visualization::name,
+                                onChange = setVisualization::invoke,
+                                label = ReactNode("Visualization Style"),
                             )
                         }
                         CouplingSelect {
@@ -144,10 +138,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                                         }
                                     },
                                     default = FakeDataStyle.RandomPairs,
-                                    entries = FakeDataStyle.entries,
-                                    setEnum = setFakeStyle::invoke,
-                                    valueOf = FakeDataStyle::valueOf,
-                                    enumName = FakeDataStyle::name,
+                                    onChange = setFakeStyle::invoke,
                                     selectProps = jso {
                                         disabled = fakeStyle == null
                                     },
