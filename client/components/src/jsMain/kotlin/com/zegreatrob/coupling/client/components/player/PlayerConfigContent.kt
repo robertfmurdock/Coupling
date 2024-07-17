@@ -115,45 +115,37 @@ private fun ChildrenBuilder.playerConfigForm(
     onSubmit = onSubmit,
     onRemove = onRemoveFunc,
 ) {
-    editorDiv(party, player, onChange, onPlayerChange)
-}
-
-private fun ChildrenBuilder.editorDiv(
-    party: PartyDetails,
-    player: Player,
-    onChange: (ChangeEvent<*>) -> Unit,
-    onPlayerChange: (Player) -> Unit,
-) = div {
-    Editor {
-        li { nameInput(player, onChange) }
-        li { emailInput(player, onChange) }
-
-        val additionalEmailsList = player.additionalEmails.toList()
-        additionalEmailsList.forEachIndexed { index, email ->
-            li {
-                additionalEmailInput(
-                    index = index + 2,
-                    onChange = onAdditionalEmailChange(onPlayerChange, player, additionalEmailsList, index),
-                    email = email,
-                )
-            }
-        }
-        if (!player.emails.contains("")) {
-            li {
-                CouplingButton(
-                    sizeRuleSet = small,
-                    onClick = { onPlayerChange(player.copy(additionalEmails = player.additionalEmails + "")) },
-                ) {
-                    +"Add Additional Email"
+    div {
+        Editor {
+            li { nameInput(player, onChange) }
+            li { emailInput(player, onChange) }
+            val additionalEmailsList = player.additionalEmails.toList()
+            additionalEmailsList.forEachIndexed { index, email ->
+                li {
+                    additionalEmailInput(
+                        index = index + 2,
+                        onChange = onAdditionalEmailChange(onPlayerChange, player, additionalEmailsList, index),
+                        email = email,
+                    )
                 }
             }
-        }
-        avatarTypeConfig(player, onChange)
-        if (party.callSignsEnabled) {
-            callSignConfig(player, onChange)
-        }
-        if (party.badgesEnabled) {
-            badgeConfig(party, player, onChange)
+            if (!player.emails.contains("")) {
+                li {
+                    CouplingButton(
+                        sizeRuleSet = small,
+                        onClick = { onPlayerChange(player.copy(additionalEmails = player.additionalEmails + "")) },
+                    ) {
+                        +"Add Additional Email"
+                    }
+                }
+            }
+            avatarTypeConfig(player, onChange)
+            if (party.callSignsEnabled) {
+                callSignConfig(player, onChange)
+            }
+            if (party.badgesEnabled) {
+                badgeConfig(party, player, onChange)
+            }
         }
     }
 }

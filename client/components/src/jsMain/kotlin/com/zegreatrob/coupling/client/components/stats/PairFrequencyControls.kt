@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.objects.jso
 import react.Props
 import react.ReactNode
 import react.dom.aria.ariaLabel
@@ -13,7 +14,6 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.option
-import react.dom.html.ReactHTML.select
 import react.useEffect
 import react.useState
 import web.cssom.Color
@@ -73,59 +73,6 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
             whiteSpace = WhiteSpace.nowrap
         }
         div {
-            EnumSelector(
-                entries = JsonContributionWindow.entries,
-                default = selectedWindow,
-                setEnum = setWindow,
-                valueOf = JsonContributionWindow::valueOf,
-                enumName = JsonContributionWindow::name,
-            )
-            EnumSelector(
-                entries = Visualization.entries,
-                default = Visualization.Heatmap,
-                setEnum = setVisualization::invoke,
-                valueOf = Visualization::valueOf,
-                enumName = Visualization::name,
-            )
-            select {
-                onChange = { event -> setSelectedLabelFilter(event.handlePlaceholder()) }
-                option {
-                    value = NULL_PLACEHOLDER
-                    +"No label filter"
-                }
-                allLabels.map { label ->
-                    option {
-                        value = label
-                        +label
-                    }
-                }
-            }
-        }
-        div {
-            div {
-                label {
-                    ariaLabel = "Fake the data"
-                    +"Fake the data"
-                    input {
-                        type = InputType.checkbox
-                        value = fakeStyle != null
-                        onChange = { setFakeStyle(if (it.target.checked) FakeDataStyle.RandomPairs else null) }
-                    }
-                }
-            }
-            if (fakeStyle != null) {
-                div {
-                    EnumSelector(
-                        default = FakeDataStyle.RandomPairs,
-                        entries = FakeDataStyle.entries,
-                        setEnum = setFakeStyle::invoke,
-                        valueOf = FakeDataStyle::valueOf,
-                        enumName = FakeDataStyle::name,
-                    )
-                }
-            }
-        }
-        div {
             css {
                 display = Display.inlineFlex
                 marginLeft = 20.px
@@ -140,14 +87,88 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                 )
             }
             div {
-                css {
-                    display = Display.inlineBlock
-                    width = 600.px
-                    height = 600.px
-                    backgroundColor = Color("white")
-                    borderRadius = 150.px
+                div {
+                    div {
+                        css {
+                            margin = 6.px
+                            display = Display.inlineBlock
+                        }
+                        div {
+                            EnumSelector(
+                                label = "Time Window",
+                                entries = JsonContributionWindow.entries,
+                                default = selectedWindow,
+                                setEnum = setWindow,
+                                valueOf = JsonContributionWindow::valueOf,
+                                enumName = JsonContributionWindow::name,
+                            )
+                        }
+                        div {
+                            EnumSelector(
+                                label = "Visualization Style",
+                                entries = Visualization.entries,
+                                default = Visualization.Heatmap,
+                                setEnum = setVisualization::invoke,
+                                valueOf = Visualization::valueOf,
+                                enumName = Visualization::name,
+                            )
+                        }
+                        CouplingSelector {
+                            label = "Label Filter"
+                            selectProps = jso {
+                                disabled = allLabels.size <= 1
+                                onChange = { event -> setSelectedLabelFilter(event.handlePlaceholder()) }
+                            }
+                            option {
+                                value = NULL_PLACEHOLDER
+                                +"All Labels"
+                            }
+                            allLabels.map { label ->
+                                option {
+                                    value = label
+                                    +label
+                                }
+                            }
+                        }
+                        div {
+                            div {
+                                label {
+                                    ariaLabel = "Fake the data"
+                                    +"Fake the data"
+                                    input {
+                                        type = InputType.checkbox
+                                        value = fakeStyle != null
+                                        onChange = {
+                                            setFakeStyle(if (it.target.checked) FakeDataStyle.RandomPairs else null)
+                                        }
+                                    }
+                                }
+                            }
+                            div {
+                                EnumSelector(
+                                    default = FakeDataStyle.RandomPairs,
+                                    entries = FakeDataStyle.entries,
+                                    setEnum = setFakeStyle::invoke,
+                                    valueOf = FakeDataStyle::valueOf,
+                                    enumName = FakeDataStyle::name,
+                                    selectProps = jso {
+                                        disabled = fakeStyle == null
+                                    },
+                                )
+                            }
+                        }
+                    }
                 }
-                +view(VisualizationContext(visualization, filteredData))
+                div {
+                    css {
+                        display = Display.inlineBlock
+                        width = 600.px
+                        height = 600.px
+                        backgroundColor = Color("white")
+                        borderRadius = 150.px
+                    }
+                    +view(VisualizationContext(visualization, filteredData))
+                }
             }
         }
     }
