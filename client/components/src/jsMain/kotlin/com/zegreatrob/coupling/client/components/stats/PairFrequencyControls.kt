@@ -139,6 +139,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                     width = 600.px
                     height = 600.px
                     backgroundColor = Color("white")
+                    borderRadius = 150.px
                 }
                 +view(VisualizationContext(visualization, filteredData))
             }

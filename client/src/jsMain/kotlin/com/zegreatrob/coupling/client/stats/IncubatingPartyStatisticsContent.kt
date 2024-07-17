@@ -16,10 +16,10 @@ external interface IncubatingPartyStatisticsContentProps : PropsWithChildren {
 @ReactFunc
 val IncubatingPartyStatisticsContent by nfc<IncubatingPartyStatisticsContentProps> { props ->
     div {
-        PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("#dcd9d9")) {
+        PageFrame(borderColor = Color("#e8e8e8"), backgroundColor = Color("rgb(253 237 189)")) {
             ConfigHeader {
                 party = props.party
-                +"Statistics"
+                +"Contributions"
             }
             +props.children
         }
