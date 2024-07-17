@@ -18,6 +18,7 @@ import react.useEffect
 import react.useState
 import web.cssom.Color
 import web.cssom.Display
+import web.cssom.FontSize
 import web.cssom.WhiteSpace
 import web.cssom.px
 import web.html.InputType
@@ -92,6 +93,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         css {
                             margin = 6.px
                             display = Display.inlineBlock
+                            fontSize = FontSize.smaller
                         }
                         div {
                             EnumSelector(

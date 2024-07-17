@@ -14,8 +14,8 @@ import web.cssom.FontSize
 import web.cssom.None
 import web.cssom.Overflow
 import web.cssom.Padding
+import web.cssom.em
 import web.cssom.pct
-import web.cssom.px
 import web.cssom.string
 import web.html.HTMLSelectElement
 
@@ -28,15 +28,15 @@ val CouplingSelect = FC<CouplingSelectProps> { props ->
     div {
         css {
             display = Display.block
-            marginTop = 20.px
+            marginTop = 1.17.em
         }
         label {
             div {
                 css {
                     display = Display.block
                     float = Float.left
-                    marginTop = (-19).px
-                    padding = Padding(2.px, 5.px)
+                    marginTop = (-1.05).em
+                    padding = Padding(0.117.em, 0.29.em)
                     overflow = Overflow.hidden
                     fontFamily = string("Arial, Helvetica, sans-serif")
                 }
@@ -48,9 +48,9 @@ val CouplingSelect = FC<CouplingSelectProps> { props ->
                     outline = None.none
                     border = None.none
                     fontSize = FontSize.larger
-                    borderRadius = 7.px
+                    borderRadius = 0.41.em
                     width = 100.pct
-                    padding = 6.px
+                    padding = 0.35.em
                 }
                 +props.selectProps
                 +props.children
