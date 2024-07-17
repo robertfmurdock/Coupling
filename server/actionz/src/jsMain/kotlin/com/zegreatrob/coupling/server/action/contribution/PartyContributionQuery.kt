@@ -13,13 +13,14 @@ import com.zegreatrob.coupling.model.player.matches
 import com.zegreatrob.coupling.repository.contribution.ContributionGet
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
+import kotlin.time.Duration
 
 @ActionMint
-data class PartyContributionQuery(val partyId: PartyId) {
+data class PartyContributionQuery(val partyId: PartyId, val window: Duration?) {
     interface Dispatcher {
         val contributionRepository: ContributionGet
         suspend fun perform(query: PartyContributionQuery): List<PartyRecord<Contribution>> =
-            contributionRepository.get(query.partyId, window = null)
+            contributionRepository.get(query.partyId, window = query.window)
     }
 }
 

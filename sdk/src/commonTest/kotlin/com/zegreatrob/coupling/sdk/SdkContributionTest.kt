@@ -137,6 +137,46 @@ class SdkContributionTest {
     }
 
     @Test
+    fun canQueryContributionsInWindow() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val expectedPlayer = players[1]
+        val excludedContributionCommand = stubSaveContributionCommand(party.id)
+            .copy(
+                dateTime = Clock.System.now().minus(8.days),
+                participantEmails = setOf(expectedPlayer.email),
+            )
+        val saveContributionCommands = listOf(
+            stubSaveContributionCommand(party.id),
+            excludedContributionCommand,
+            stubSaveContributionCommand(party.id),
+        )
+    }) {
+        savePartyState(party, players, emptyList())
+        saveContributionCommands.forEach {
+            sdk().fire(it)
+        }
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) {
+                    contributions(JsonContributionWindow.Week)
+                }
+            },
+        )
+    } verify { result ->
+        result?.party
+            ?.contributions?.elements?.withoutCreatedAt()
+            ?.toSet()
+            .assertIsEqualTo(
+                (saveContributionCommands - excludedContributionCommand)
+                    .map(SaveContributionCommand::toExpectedContribution)
+                    .toSet(),
+                "Old contributions should be excluded",
+            )
+    }
+
+    @Test
     fun canQueryContributionsByPairInWindow() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = stubPlayers(3)

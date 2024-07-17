@@ -1,7 +1,10 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.ContributionsInput
+import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.PairInput
+import com.zegreatrob.coupling.sdk.dsl.GqlReference.boost
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.pairAssignmentRecord
@@ -21,8 +24,22 @@ class PartyQueryBuilder :
     override var inputs = mutableListOf<String>()
     override var variables = mutableMapOf<String, JsonElement>()
 
-    fun boost() = also { output = output.copy(boost = GqlReference.boost) }
-    fun contributions() = also { output = output.copy(contributions = listOf(contributionRecord)) }
+    fun boost() = also { output = output.copy(boost = boost) }
+    fun contributions(window: JsonContributionWindow? = null) = also {
+        if (window == null) {
+            output = output.copy(contributions = listOf(contributionRecord))
+        } else {
+            contributionRecord.addToQuery(
+                queryKey = "contributions",
+                inputSettings = InputSettings(
+                    ContributionsInput(window),
+                    "contributionsInput",
+                    "ContributionsInput",
+                ),
+            )
+        }
+    }
+
     fun currentPairAssignments() = also { output = output.copy(currentPairAssignmentDocument = pairAssignmentRecord) }
     fun details() = also { output = output.copy(details = partyRecord) }
     fun integration() = also { output = output.copy(integration = integrationRecord) }

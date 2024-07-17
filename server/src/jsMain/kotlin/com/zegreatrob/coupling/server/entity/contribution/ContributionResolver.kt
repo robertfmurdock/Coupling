@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server.entity.contribution
 
 import com.zegreatrob.coupling.json.ContributionsInput
 import com.zegreatrob.coupling.json.JsonPair
+import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
@@ -21,8 +22,12 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val contributionResolver = dispatch(
-    dispatcherFunc = partyCommand,
-    commandFunc = { data, _: JsonNull? -> data.id?.let(::PartyId)?.let { PartyContributionQuery(it) } },
+    dispatcherFunc = { context: CouplingContext, _: JsonParty, _: ContributionsInput? ->
+        context.commandDispatcher
+    },
+    commandFunc = { data, input: ContributionsInput? ->
+        data.id?.let(::PartyId)?.let { PartyContributionQuery(it, input?.window?.toModel()) }
+    },
     fireFunc = ::perform,
     toSerializable = { it.map(PartyRecord<Contribution>::toJson) },
 )
