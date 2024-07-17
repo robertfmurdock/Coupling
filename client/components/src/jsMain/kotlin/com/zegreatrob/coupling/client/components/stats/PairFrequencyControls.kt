@@ -14,7 +14,7 @@ import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.option
 import react.dom.html.ReactHTML.select
-import react.useMemo
+import react.useEffect
 import react.useState
 import web.cssom.Color
 import web.cssom.Display
@@ -51,9 +51,11 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
     val (visualization, setVisualization) = useState(Visualization.LineOverTime)
     val (selectedPairs, setSelectedPairs) = useState(emptyList<CouplingPair>())
     val (selectedLabelFilter, setSelectedLabelFilter) = useState<String?>(null)
-
-    val fakeContributions = useMemo(fakeStyle) {
-        fakeStyle?.let { generateFakeContributions(pairsContributions, selectedWindow, fakeStyle) } ?: emptyList()
+    val (fakeContributions, setFakeContributions) = useState<List<Pair<CouplingPair, List<Contribution>>>>(emptyList())
+    useEffect(fakeStyle) {
+        if (fakeStyle != null) {
+            setFakeContributions(generateFakeContributions(pairsContributions, selectedWindow, fakeStyle))
+        }
     }
     val allPairContributions: List<Pair<CouplingPair, List<Contribution>>> = if (fakeStyle != null) {
         fakeContributions

@@ -1,10 +1,23 @@
 package com.zegreatrob.coupling.client.components.stats
 
 import com.benasher44.uuid.uuid4
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.CreatePairCandidateReportListAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.FindNewPairsAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.Game
+import com.zegreatrob.coupling.action.pairassignmentdocument.NextPlayerAction
+import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
+import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
+import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.withPins
+import com.zegreatrob.coupling.model.party.PairingRule
+import com.zegreatrob.testmints.action.DispatcherPipeCannon
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDateTime
@@ -12,12 +25,13 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotools.types.collection.toNotEmptyList
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 
 private val random = Random(10)
 
-fun generateFakeContributions(
+suspend fun generateFakeContributions(
     pairsContributions: List<Pair<CouplingPair, List<Contribution>>>,
     selectedWindow: JsonContributionWindow,
     fakeStyle: FakeDataStyle,
@@ -68,42 +82,48 @@ private fun generatePairsRandomlyNoSolos(
 
 private val onlyPairs: (CouplingPair) -> Boolean = { it.count() == 2 }
 
-private fun generateStrongPairingTeam(
+private suspend fun generateStrongPairingTeam(
     pairsContributions: List<Pair<CouplingPair, List<Contribution>>>,
     datesUntilNow: List<LocalDateTime>,
 ): Map<CouplingPair, List<Contribution>> {
     val pairs = pairsContributions.toMap().keys
+    val players = pairs.flatten().toNotEmptyList().getOrNull() ?: return emptyMap()
 
-    val combinationIterator = generateSequence {
-        pairs.indices.shuffled().map { index ->
-            (pairs.drop(index) + pairs.take(index)).generatePairingSet()
-        }.fold<List<CouplingPair>, List<List<CouplingPair>>>(emptyList()) { acc, pairSet ->
-            if (hasSeenAllPairsBefore(acc, pairSet) || pairSet.moreThanOneSingle()) {
-                acc
-            } else {
-                acc + listOf(pairSet)
-            }
-        }
-    }.flatten().iterator()
+    val dispatcher = FakeContributionDispatcher()
 
-    return datesUntilNow.flatMap { date ->
+    val populatedHistory = datesUntilNow.fold(emptyList<PairAssignmentDocument>()) { history, date ->
         if (setOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY).contains(date.dayOfWeek)) {
-            return@flatMap emptyList()
+            return@fold history
         }
-        combinationIterator.next().map { pair ->
-            pair to generateSequence { date.toFakeContribution() }.take(random.nextInt(1, 5)).toList()
-        }
+        val pairAssignmentsNewestFirst = PairAssignmentDocument(
+            id = PairAssignmentDocumentId("${uuid4()}"),
+            date = date.toInstant(TimeZone.currentSystemDefault()),
+            pairs = dispatcher.perform(FindNewPairsAction(Game(players, history, PairingRule.LongestTime))).withPins(),
+        )
+        listOf(pairAssignmentsNewestFirst) + history
     }
+    return populatedHistory
+        .flatMap { pairAssignments ->
+            pairAssignments.pairs.map<PinnedCouplingPair, CouplingPair>(PinnedCouplingPair::toPair)
+                .map<CouplingPair, Pair<CouplingPair, List<Contribution>>> { pair ->
+                    pair to generateSequence {
+                        pairAssignments.date.toLocalDateTime(TimeZone.currentSystemDefault()).toFakeContribution()
+                    }.take(random.nextInt(1, 8)).toList()
+                }.toList()
+        }
         .groupBy { it.first }
         .mapValues { group -> group.value.flatMap { it.second } }
 }
 
-private fun List<CouplingPair>.moreThanOneSingle() = count { it.count() == 1 } > 1
-
-private fun hasSeenAllPairsBefore(
-    previousCombos: List<List<CouplingPair>>,
-    pairSet: List<CouplingPair>,
-): Boolean = pairSet.filter { it.count() == 2 }.all(previousCombos.flatten().toSet()::contains)
+class FakeContributionDispatcher :
+    FindNewPairsAction.Dispatcher<FakeContributionDispatcher>,
+    CreatePairCandidateReportAction.Dispatcher,
+    CreatePairCandidateReportListAction.Dispatcher<FakeContributionDispatcher>,
+    NextPlayerAction.Dispatcher<FakeContributionDispatcher>,
+    Wheel {
+    override val wheel = this
+    override val cannon = DispatcherPipeCannon(this)
+}
 
 private fun List<CouplingPair>.generatePairingSet(): List<CouplingPair> =
     fold(emptyList()) { pairingSet, couplingPair ->

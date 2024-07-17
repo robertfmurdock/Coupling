@@ -9,9 +9,10 @@ import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedCouplingPair
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
+import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotools.types.collection.NotEmptyList
 
-@com.zegreatrob.testmints.action.annotation.ActionMint
+@ActionMint
 data class ShufflePairsAction(
     val party: PartyDetails,
     val players: NotEmptyList<Player>,

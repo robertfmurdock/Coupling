@@ -27,11 +27,7 @@ data class NextPlayerAction(val gameSpin: GameSpin) {
         }
 
         private suspend fun NextPlayerAction.createPairCandidateReports(): NotEmptyList<PairCandidateReport> =
-            cannon.fire(
-                CreatePairCandidateReportListAction(
-                    gameSpin,
-                ),
-            )
+            cannon.fire(CreatePairCandidateReportListAction(gameSpin))
 
         private fun withFewestPartners(report: PairCandidateReport, reportWithLongestTime: PairCandidateReport) =
             when {
