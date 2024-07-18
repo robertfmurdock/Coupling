@@ -16,11 +16,11 @@ import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotlin.time.Duration
 
 @ActionMint
-data class PartyContributionQuery(val partyId: PartyId, val window: Duration?) {
+data class PartyContributionQuery(val partyId: PartyId, val window: Duration?, val limit: Int?) {
     interface Dispatcher {
         val contributionRepository: ContributionGet
         suspend fun perform(query: PartyContributionQuery): List<PartyRecord<Contribution>> =
-            contributionRepository.get(query.partyId, window = query.window)
+            contributionRepository.get(query.partyId, window = query.window, limit = query.limit)
     }
 }
 
@@ -53,7 +53,7 @@ data class PartyContributorQuery(val partyId: PartyId) {
         }
 
         private suspend fun PartyId.contributorEmails() =
-            contributionRepository.get(this, null)
+            contributionRepository.get(partyId = this, window = null, limit = null)
                 .elements
                 .flatMap { it.participantEmails }
                 .toSet()

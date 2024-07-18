@@ -37,15 +37,14 @@ class DynamoContributionRepository private constructor(override val userId: Stri
 
     private fun PartyRecord<Contribution>.asDynamoJson(): Json = recordJson()
         .add(data.toJson())
-        .add(
-            json(
-                "tribeId" to data.partyId.value,
-                "timestamp+id" to "${timestamp.isoWithMillis()}+${data.element.id}",
-            ),
-        )
+        .add(json("timestamp+id" to sortKeyWithDateTimeFirst()))
+
+    private fun PartyRecord<Contribution>.sortKeyWithDateTimeFirst() =
+        "${data.element.dateTime?.isoWithMillis()?.let { "dT$it" } ?: timestamp}+${data.element.id}"
 
     private fun PartyElement<Contribution>.toJson() = json(
         "id" to element.id,
+        "tribeId" to partyId.value,
         "dateTime" to element.dateTime?.isoWithMillis(),
         "ease" to element.ease,
         "hash" to element.hash,
@@ -58,18 +57,22 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         "createdAt" to element.createdAt.isoWithMillis(),
     )
 
-    override suspend fun get(partyId: PartyId, window: Duration?): List<PartyRecord<Contribution>> =
-        partyId.logAsync("windowedContributions") { queryForItemList(contributionListQuery(partyId, window)) }
+    override suspend fun get(partyId: PartyId, window: Duration?, limit: Int?): List<PartyRecord<Contribution>> =
+        partyId.logAsync("windowedContributions") {
+            queryForItemList(contributionListQuery(partyId, window, limit), limited = limit != null)
+        }
             .mapNotNull { toRecord(it) }
             .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
 
-    private fun contributionListQuery(partyId: PartyId, window: Duration?) = if (window != null) {
+    private fun contributionListQuery(partyId: PartyId, window: Duration?, limit: Int?) = if (window != null) {
         json(
             "TableName" to prefixedTableName,
             "ExpressionAttributeValues" to json(
                 ":tribeId" to partyId.value,
                 ":windowStart" to (now() - window).isoWithMillis(),
             ),
+            "Limit" to limit,
+            "ScanIndexForward" to false,
             "KeyConditionExpression" to "tribeId = :tribeId",
             "ExpressionAttributeNames" to json("#dt" to "dateTime"),
             "FilterExpression" to "#dt > :windowStart",
@@ -77,6 +80,8 @@ class DynamoContributionRepository private constructor(override val userId: Stri
     } else {
         json(
             "TableName" to prefixedTableName,
+            "Limit" to limit,
+            "ScanIndexForward" to false,
             "ExpressionAttributeValues" to json(":tribeId" to partyId.value),
             "KeyConditionExpression" to "tribeId = :tribeId",
         )

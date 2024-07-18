@@ -11,10 +11,15 @@ import kotlinx.datetime.Clock
 import kotlin.time.Duration
 
 @ActionMint
-data class PairContributionQuery(val partyId: PartyId, val pair: CouplingPair, val window: Duration? = null) {
+data class PairContributionQuery(
+    val partyId: PartyId,
+    val pair: CouplingPair,
+    val window: Duration? = null,
+    val limit: Int? = null,
+) {
     interface Dispatcher : PartyIdContributionsTrait {
         suspend fun perform(query: PairContributionQuery): List<PartyRecord<Contribution>> =
-            query.partyId.contributions(query.window)
+            query.partyId.contributions(query.window, query.limit)
                 .filter(byTargetPair(query.pair.targetPlayerEmailGroups()))
                 .filter(byWindow(query))
 

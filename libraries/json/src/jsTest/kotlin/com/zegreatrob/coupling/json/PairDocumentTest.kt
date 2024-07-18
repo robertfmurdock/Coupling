@@ -24,8 +24,8 @@ class PairDocumentTest {
     }
 
     @Test
-    fun sdfsdf() = setup(object {
-        val contributionsInput = ContributionsInput(window = JsonContributionWindow.Week)
+    fun roundTrip() = setup(object {
+        val contributionsInput = ContributionsInput(window = JsonContributionWindow.Week, limit = null)
     }) exercise {
         contributionsInput
             .let { couplingJsonFormat.encodeToDynamic(it) }

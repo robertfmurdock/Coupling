@@ -110,7 +110,7 @@ data class JsonContributor(
 )
 
 @Serializable
-data class ContributionsInput(val window: JsonContributionWindow)
+data class ContributionsInput(val window: JsonContributionWindow?, val limit: Int?)
 
 enum class JsonContributionWindow {
     All,

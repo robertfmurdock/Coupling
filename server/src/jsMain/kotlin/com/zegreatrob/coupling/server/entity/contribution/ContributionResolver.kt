@@ -26,7 +26,7 @@ val contributionResolver = dispatch(
         context.commandDispatcher
     },
     commandFunc = { data, input: ContributionsInput? ->
-        data.id?.let(::PartyId)?.let { PartyContributionQuery(it, input?.window?.toModel()) }
+        data.id?.let(::PartyId)?.let { PartyContributionQuery(it, input?.window?.toModel(), input?.limit) }
     },
     fireFunc = ::perform,
     toSerializable = { it.map(PartyRecord<Contribution>::toJson) },
@@ -41,14 +41,15 @@ val contributorResolver = dispatch(
 
 val pairContributionResolver = dispatch(
     dispatcherFunc = { context: CouplingContext, _: JsonPair, _: ContributionsInput? -> context.commandDispatcher },
-    commandFunc = { data, contributions ->
+    commandFunc = { data, input ->
         val model = data.toModel()
         val partyId = PartyId(data.partyId ?: return@dispatch null)
         val players = model.players?.elements ?: return@dispatch null
         PairContributionQuery(
             partyId = partyId,
             pair = players.toCouplingPair(),
-            window = contributions?.window?.toModel(),
+            window = input?.window?.toModel(),
+            limit = input?.limit,
         )
     },
     fireFunc = ::perform,

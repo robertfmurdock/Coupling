@@ -17,6 +17,8 @@ import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.ScopeMint
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.random.Random
@@ -173,6 +175,38 @@ class SdkContributionTest {
                     .map(SaveContributionCommand::toExpectedContribution)
                     .toSet(),
                 "Old contributions should be excluded",
+            )
+    }
+
+    @Test
+    fun canQueryContributionsWithLimit() = asyncSetup(object : ScopeMint() {
+        val party = stubPartyDetails()
+        val players = stubPlayers(3)
+        val now = Clock.System.now().roundToMillis()
+        val saveContributionCommands = (0..12).map { number ->
+            now.minus(number.days)
+        }.map { dateTime ->
+            stubSaveContributionCommand(party.id).copy(dateTime = dateTime)
+        }
+        val expectedLimit = 6
+    }) {
+        savePartyState(party, players, emptyList())
+        saveContributionCommands.forEach {
+            setupScope.launch { sdk().fire(it) }
+        }
+    } exercise {
+        sdk().fire(graphQuery { party(party.id) { contributions(limit = expectedLimit) } })
+    } verify { result ->
+        result?.party
+            ?.contributions
+            ?.elements
+            ?.withoutCreatedAt()
+            ?.toSet()
+            .assertIsEqualTo(
+                (saveContributionCommands.take(expectedLimit))
+                    .map(SaveContributionCommand::toExpectedContribution)
+                    .toSet(),
+                "Older contributions should be excluded",
             )
     }
 

@@ -6,5 +6,6 @@ import kotlin.time.Duration
 
 interface PartyIdContributionsTrait {
     val contributionRepository: ContributionGet
-    suspend fun PartyId.contributions(window: Duration? = null) = contributionRepository.get(this, window)
+    suspend fun PartyId.contributions(window: Duration? = null, limit: Int? = null) =
+        contributionRepository.get(this, window, limit)
 }

@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import kotlin.time.Duration
 
 fun interface ContributionGet {
-    suspend fun get(partyId: PartyId, window: Duration?): List<PartyRecord<Contribution>>
+    suspend fun get(partyId: PartyId, window: Duration?, limit: Int?): List<PartyRecord<Contribution>>
 }
 
 fun interface ContributionDeleteAll {

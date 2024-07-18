@@ -11,9 +11,16 @@ interface DynamoQuerySyntax :
     DynamoItemSyntax {
     suspend fun performQuery(query: Json): Json = dynamoDBClient.query(query).await()
 
-    suspend fun queryAllRecords(params: Json = json("TableName" to prefixedTableName)): Array<Json> =
-        performQuery(params)
-            .continueQuery(params)
+    suspend fun queryAllRecords(
+        params: Json = json("TableName" to prefixedTableName),
+        limited: Boolean = false,
+    ): Array<Json> = performQuery(params).let {
+        if (limited) {
+            it.itemsNode()
+        } else {
+            it.continueQuery(params)
+        }
+    }
 
     suspend fun Json.continueQuery(params: Json): Array<Json> = if (this["LastEvaluatedKey"] != null) {
         itemsNode() + performQuery(

@@ -70,7 +70,7 @@ class MemoryRepositoryCatalog private constructor(
 }
 
 class MemoryContributionRepository : ContributionRepository {
-    override suspend fun get(partyId: PartyId, window: Duration?): List<PartyRecord<Contribution>> = emptyList()
+    override suspend fun get(partyId: PartyId, window: Duration?, limit: Int?): List<PartyRecord<Contribution>> = emptyList()
     override suspend fun save(partyContribution: PartyElement<Contribution>) {
         TODO("Not yet implemented")
     }

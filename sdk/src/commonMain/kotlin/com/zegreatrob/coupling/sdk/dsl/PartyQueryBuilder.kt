@@ -25,19 +25,15 @@ class PartyQueryBuilder :
     override var variables = mutableMapOf<String, JsonElement>()
 
     fun boost() = also { output = output.copy(boost = boost) }
-    fun contributions(window: JsonContributionWindow? = null) = also {
-        if (window == null) {
-            output = output.copy(contributions = listOf(contributionRecord))
-        } else {
-            contributionRecord.addToQuery(
-                queryKey = "contributions",
-                inputSettings = InputSettings(
-                    ContributionsInput(window),
-                    "contributionsInput",
-                    "ContributionsInput",
-                ),
-            )
-        }
+    fun contributions(window: JsonContributionWindow? = null, limit: Int? = null) = also {
+        contributionRecord.addToQuery(
+            queryKey = "contributions",
+            inputSettings = InputSettings(
+                ContributionsInput(window, limit),
+                "contributionsInput",
+                "ContributionsInput",
+            ),
+        )
     }
 
     fun currentPairAssignments() = also { output = output.copy(currentPairAssignmentDocument = pairAssignmentRecord) }
