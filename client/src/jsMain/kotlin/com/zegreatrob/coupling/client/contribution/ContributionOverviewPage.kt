@@ -1,7 +1,9 @@
 package com.zegreatrob.coupling.client.contribution
 
+import com.zegreatrob.coupling.client.components.contribution.ContributionOverviewContent
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 
 val ContributionOverviewPage = partyPageFunction { props, partyId ->
@@ -15,12 +17,9 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
         },
         toNode = { _, _, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
-            val contributions = queryResult.party?.contributions ?: return@CouplingQuery null
+            val contributions = queryResult.party?.contributions?.elements ?: return@CouplingQuery null
             ContributionContentFrame.create(party = party) {
-                +"TBD"
-                contributions.forEach { contribution ->
-                    +"$contribution"
-                }
+                ContributionOverviewContent(party, contributions)
             }
         },
         key = partyId.value,

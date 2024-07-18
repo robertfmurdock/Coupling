@@ -16,10 +16,12 @@ import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.option
 import react.useEffect
 import react.useState
+import web.cssom.AlignItems
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.FontSize
 import web.cssom.WhiteSpace
+import web.cssom.fr
 import web.cssom.px
 import web.html.InputType
 
@@ -92,8 +94,10 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                     div {
                         css {
                             margin = 6.px
-                            display = Display.inlineBlock
+                            display = Display.grid
                             fontSize = FontSize.smaller
+                            gridTemplateColumns = web.cssom.repeat(2, 1.fr)
+                            alignItems = AlignItems.baseline
                         }
                         div {
                             EnumSelector(

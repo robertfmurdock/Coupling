@@ -136,8 +136,8 @@ private fun String.gravatarWrapper(email: String, size: Int) = gravatarUrl(
 private fun Player.hashedRandomAvatar() = emailWithFallback()
     .hashCode()
     .let(::Random)
-    .nextInt(AvatarType.values().size)
-    .let { AvatarType.values()[it] }
+    .nextInt(AvatarType.entries.size)
+    .let { AvatarType.entries[it] }
 
 private fun Player.getGravatarSafeAvatarImageUrl(size: Int, avatarType: AvatarType) = when (avatarType) {
     AvatarType.RobohashSet1 -> getRobohashImageUrl("set1", "&gravatar=yes")

@@ -28,7 +28,7 @@ val CouplingSelect = FC<CouplingSelectProps> { props ->
     div {
         css {
             display = Display.block
-            marginTop = 1.17.em
+            margin = 1.17.em
         }
         label {
             div {

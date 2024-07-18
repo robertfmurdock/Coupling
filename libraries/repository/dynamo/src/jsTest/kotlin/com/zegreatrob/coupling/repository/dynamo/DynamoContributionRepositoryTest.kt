@@ -51,12 +51,23 @@ class DynamoContributionRepositoryTest {
     }
 
     @Test
-    fun givenNullDateTimeCanStillSaveAndLoadContribution() = asyncSetup(object {
+    fun givenManyNullsCanStillSaveAndLoadContribution() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository
         val userEmail = uuidString()
         val clock = MagicClock().apply { currentTime = Clock.System.now() }
-        val contributions = listOf(stubContribution().copy(dateTime = null))
+        val contributions = listOf(
+            stubContribution().copy(
+                label = null,
+                hash = null,
+                ease = null,
+                firstCommit = null,
+                semver = null,
+                story = null,
+                link = null,
+                dateTime = null,
+            ),
+        )
         val partyContributions = partyId.with(elementList = contributions)
         val unrelatedContribution = stubContribution()
     }) {
