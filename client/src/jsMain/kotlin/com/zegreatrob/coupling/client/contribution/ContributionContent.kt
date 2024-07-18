@@ -1,6 +1,9 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.ConfigHeader
+import com.zegreatrob.coupling.client.components.ContributionOverviewButton
+import com.zegreatrob.coupling.client.components.ContributionVisualizationButton
+import com.zegreatrob.coupling.client.components.NavigationPanel
 import com.zegreatrob.coupling.client.components.PageFrame
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
@@ -15,11 +18,16 @@ external interface ContributionContentProps : PropsWithChildren {
 
 @ReactFunc
 val ContributionContent by nfc<ContributionContentProps> { props ->
+    val partyId = props.party.id
     div {
         PageFrame(borderColor = Color("rgb(255 143 117)"), backgroundColor = Color("rgb(253 237 189)")) {
             ConfigHeader {
                 party = props.party
                 +"Contributions"
+            }
+            NavigationPanel {
+                ContributionOverviewButton(partyId)
+                ContributionVisualizationButton(partyId)
             }
             +props.children
         }
