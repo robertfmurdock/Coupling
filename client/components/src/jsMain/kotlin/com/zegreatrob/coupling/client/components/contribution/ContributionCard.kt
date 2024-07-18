@@ -10,8 +10,12 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import react.ChildrenBuilder
 import react.Props
+import react.ReactNode
+import react.create
 import react.dom.html.ReactHTML.div
+import web.cssom.AlignItems
 import web.cssom.Display
+import web.cssom.FlexDirection
 import web.cssom.JustifySelf
 import web.cssom.em
 import web.cssom.fr
@@ -45,7 +49,20 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution) ->
             columnGap = 1.em
         }
         showProperty("ID", contribution.id)
-        showProperty("Participants", contribution.participantEmails.joinToString(", "))
+        showProperty(
+            "Participants",
+            div.create {
+                css {
+                    display = Display.inlineFlex
+                    maxWidth = 14.em
+                    flexDirection = FlexDirection.column
+                    alignItems = AlignItems.end
+                }
+                contribution.participantEmails.forEach { email ->
+                    div { +email }
+                }
+            },
+        )
         showOptionalProperty("Contribution Time", contribution.dateTime?.format())
         showOptionalProperty("Label", contribution.label)
         showOptionalProperty("Link", contribution.link)
@@ -72,6 +89,17 @@ private fun <T> ChildrenBuilder.showProperty(attributeName: String, value: T & A
     div {
         css { justifySelf = JustifySelf.right }
         +"$value"
+    }
+}
+
+private fun ChildrenBuilder.showProperty(attributeName: String, value: ReactNode) {
+    div {
+        css { justifySelf = JustifySelf.left }
+        +("$attributeName:")
+    }
+    div {
+        css { justifySelf = JustifySelf.right }
+        +value
     }
 }
 
