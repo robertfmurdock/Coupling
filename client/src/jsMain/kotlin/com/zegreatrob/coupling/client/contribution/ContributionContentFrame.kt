@@ -12,12 +12,12 @@ import react.PropsWithChildren
 import react.dom.html.ReactHTML.div
 import web.cssom.Color
 
-external interface ContributionContentProps : PropsWithChildren {
+external interface ContributionContentFrameProps : PropsWithChildren {
     var party: PartyDetails
 }
 
 @ReactFunc
-val ContributionContent by nfc<ContributionContentProps> { props ->
+val ContributionContentFrame by nfc<ContributionContentFrameProps> { props ->
     val partyId = props.party.id
     div {
         PageFrame(borderColor = Color("rgb(255 143 117)"), backgroundColor = Color("rgb(253 237 189)")) {

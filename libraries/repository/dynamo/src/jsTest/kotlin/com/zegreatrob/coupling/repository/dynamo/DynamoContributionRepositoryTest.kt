@@ -51,6 +51,35 @@ class DynamoContributionRepositoryTest {
     }
 
     @Test
+    fun givenNullDateTimeCanStillSaveAndLoadContribution() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoContributionRepository
+        val userEmail = uuidString()
+        val clock = MagicClock().apply { currentTime = Clock.System.now() }
+        val contributions = listOf(stubContribution().copy(dateTime = null))
+        val partyContributions = partyId.with(elementList = contributions)
+        val unrelatedContribution = stubContribution()
+    }) {
+        repository = DynamoContributionRepository.invoke(userEmail, clock)
+    } exercise {
+        partyContributions.forEach { repository.save(it) }
+        repository.save(stubPartyId().with(unrelatedContribution))
+        repository.get(partyId = partyId, window = null, limit = null)
+    } verify { result: List<PartyRecord<Contribution>> ->
+        result.assertIsEqualTo(
+            partyContributions
+                .map {
+                    Record(
+                        data = it,
+                        modifyingUserId = userEmail,
+                        isDeleted = false,
+                        timestamp = clock.now(),
+                    )
+                },
+        )
+    }
+
+    @Test
     fun loadCanFilterByDurationWindow() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository

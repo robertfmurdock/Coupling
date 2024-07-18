@@ -95,7 +95,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         return Contribution(
             id = getDynamoStringValue("id") ?: return null,
             createdAt = getDynamoDateTimeValue("createdAt") ?: Instant.DISTANT_PAST,
-            dateTime = getDynamoDateTimeValue("dateTime") ?: Instant.DISTANT_PAST,
+            dateTime = getDynamoDateTimeValue("dateTime"),
             hash = getDynamoStringValue("hash"),
             ease = getDynamoNumberValue("ease")?.toInt(),
             story = getDynamoStringValue("story"),
