@@ -91,7 +91,13 @@ private fun ChildrenBuilder.showProperty(attributeName: String, value: ReactNode
         +("$attributeName:")
     }
     div {
-        css { justifySelf = JustifySelf.right }
+        css {
+            justifySelf = JustifySelf.right
+            display = Display.inlineFlex
+            maxWidth = 14.em
+            flexDirection = FlexDirection.column
+            alignItems = AlignItems.end
+        }
         +value
     }
 }
