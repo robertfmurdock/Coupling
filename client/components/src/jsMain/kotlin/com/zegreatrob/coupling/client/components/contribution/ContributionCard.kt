@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.contribution
 
-import com.zegreatrob.coupling.client.components.player.PlayerCard
+import com.zegreatrob.coupling.client.components.TiltedPlayerList
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.player.Player
@@ -32,6 +32,7 @@ import web.cssom.None
 import web.cssom.Overflow
 import web.cssom.Position
 import web.cssom.TextAlign
+import web.cssom.TextWrap
 import web.cssom.VerticalAlign
 import web.cssom.deg
 import web.cssom.em
@@ -67,11 +68,12 @@ private val dateTimeFormat = LocalDateTime.Format {
 
 @ReactFunc
 val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors) ->
-    val shortId = contribution.id.substring(0, 7)
+    val shortId = contribution.id.asShortId()
 
     div {
         css {
             display = Display.flex
+            alignItems = AlignItems.center
         }
         div {
             css {
@@ -137,6 +139,7 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
                             display = Display.flex
                             alignItems = AlignItems.center
                             height = 1.4.em
+                            textWrap = TextWrap.nowrap
                         }
                         +"${contribution.label} $shortId ${contribution.dateTime?.format()}"
                     }
@@ -168,17 +171,22 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
                 showOptionalProperty("Link", contribution.link)
                 showOptionalProperty("Ease", contribution.ease)
                 showOptionalProperty("Semver", contribution.semver)
-                showOptionalProperty("Hash", contribution.hash)
-                showOptionalProperty("First Commit", contribution.firstCommit)
+                showOptionalProperty("Hash", contribution.hash?.asShortId())
+                showOptionalProperty("First Commit", contribution.firstCommit?.asShortId())
                 showOptionalProperty("Story", contribution.story)
                 showOptionalProperty("Save Timestamp", contribution.createdAt.format())
             }
         }
-        contribution.participantEmails.mapNotNull { email -> contributors.find { it.emails.contains(email) } }
-            .toSet()
-            .forEach(::PlayerCard)
+        TiltedPlayerList(
+            playerList = contribution.participantEmails.mapNotNull { email ->
+                contributors.find { it.emails.contains(email) }
+            }.toSet(),
+            size = 50,
+        )
     }
 }
+
+private fun String.asShortId() = substring(0, 7)
 
 private fun <T> ChildrenBuilder.showOptionalProperty(attributeName: String, value: T?) {
     value?.let {

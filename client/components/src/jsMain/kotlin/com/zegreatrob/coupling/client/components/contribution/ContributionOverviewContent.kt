@@ -8,7 +8,10 @@ import com.zegreatrob.minreact.nfc
 import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.h2
+import web.cssom.AlignItems
 import web.cssom.Display
+import web.cssom.FlexDirection
 
 external interface ContributionOverviewContentProps : Props {
     var party: PartyDetails
@@ -20,7 +23,14 @@ external interface ContributionOverviewContentProps : Props {
 val ContributionOverviewContent by nfc<ContributionOverviewContentProps> { (_, contributions, contributors) ->
     div {
         div {
-            css { display = Display.inlineBlock }
+            css {
+                display = Display.inlineFlex
+                flexDirection = FlexDirection.column
+                alignItems = AlignItems.center
+            }
+            h2 {
+                +"Most Recent ${contributions.size} Contributions:"
+            }
             contributions.forEach { contribution ->
                 ContributionCard(contribution = contribution, contributors = contributors, key = contribution.id)
             }
