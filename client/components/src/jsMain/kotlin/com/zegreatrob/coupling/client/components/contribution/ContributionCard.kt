@@ -169,11 +169,12 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
             showOptionalProperty("Story", contribution.story)
             showOptionalProperty("Save Timestamp", contribution.createdAt.format())
         }
-        contribution.participantEmails.mapNotNull { email -> contributors.find { it.emails.contains(email) } }
-            .forEach { contributorPlayer ->
-                PlayerCard(contributorPlayer)
-            }
     }
+    contribution.participantEmails.mapNotNull { email -> contributors.find { it.emails.contains(email) } }
+        .toSet()
+        .forEach { contributorPlayer ->
+            PlayerCard(contributorPlayer)
+        }
 }
 
 private fun <T> ChildrenBuilder.showOptionalProperty(attributeName: String, value: T?) {
