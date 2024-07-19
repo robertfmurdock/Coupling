@@ -111,8 +111,8 @@ fun stubPinnedPlayer() = PinnedPlayer(stubPlayer(), listOf(stubPin()))
 
 fun stubPinnedCouplingPair() = PinnedCouplingPair(notEmptyListOf(stubPinnedPlayer()))
 
-fun <E> record(partyId: PartyId, player: E) = Record(
-    PartyElement(partyId, player),
+fun <E> record(partyId: PartyId, element: E) = Record(
+    PartyElement(partyId, element),
     "test",
     false,
     Instant.DISTANT_PAST,

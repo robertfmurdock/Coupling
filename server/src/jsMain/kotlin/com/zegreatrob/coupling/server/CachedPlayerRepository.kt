@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionQueryParams
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyId
@@ -37,9 +38,9 @@ class CachedContributionRepository(private val repository: ContributionRepositor
     private val mutex = Mutex()
     private val cache = mutableMapOf<Pair<PartyId, Pair<Duration?, Int?>>, List<PartyRecord<Contribution>>>()
 
-    override suspend fun get(partyId: PartyId, window: Duration?, limit: Int?): List<PartyRecord<Contribution>> = mutex.withLock {
+    suspend fun get(partyId: PartyId, window: Duration?, limit: Int?): List<PartyRecord<Contribution>> = mutex.withLock {
         cache.getOrPut(partyId to (window to limit)) {
-            repository.get(partyId, window, limit)
+            repository.get(ContributionQueryParams(partyId, window, limit))
         }
     }
 }

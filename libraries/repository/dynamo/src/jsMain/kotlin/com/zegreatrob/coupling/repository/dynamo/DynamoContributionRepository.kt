@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionQueryParams
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
@@ -57,12 +58,14 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         "createdAt" to element.createdAt.isoWithMillis(),
     )
 
-    override suspend fun get(partyId: PartyId, window: Duration?, limit: Int?): List<PartyRecord<Contribution>> =
-        partyId.logAsync("windowedContributions") {
-            queryForItemList(contributionListQuery(partyId, window, limit), limited = limit != null)
-        }
-            .mapNotNull { toRecord(it) }
-            .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
+    override suspend fun get(params: ContributionQueryParams) = params.partyId.logAsync("windowedContributions") {
+        queryForItemList(
+            contributionListQuery(params.partyId, params.window, params.limit),
+            limited = params.limit != null,
+        )
+    }
+        .mapNotNull { toRecord(it) }
+        .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
 
     private fun contributionListQuery(partyId: PartyId, window: Duration?, limit: Int?) = if (window != null) {
         json(

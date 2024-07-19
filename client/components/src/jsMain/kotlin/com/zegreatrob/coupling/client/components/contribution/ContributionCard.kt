@@ -70,6 +70,9 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
     val shortId = contribution.id.substring(0, 7)
 
     div {
+        css {
+            display = Display.flex
+        }
         div {
             css {
                 display = Display.inlineBlock

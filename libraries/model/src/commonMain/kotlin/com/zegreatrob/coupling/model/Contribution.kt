@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.model
 
+import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.datetime.Instant
+import kotlin.time.Duration
 
 data class Contribution(
     val id: String,
@@ -15,3 +17,5 @@ data class Contribution(
     val label: String?,
     val semver: String?,
 )
+
+data class ContributionQueryParams(val partyId: PartyId, val window: Duration?, val limit: Int?)

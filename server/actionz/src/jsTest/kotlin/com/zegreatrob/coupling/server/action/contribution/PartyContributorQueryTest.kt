@@ -1,0 +1,53 @@
+package com.zegreatrob.coupling.server.action.contribution
+
+import com.zegreatrob.coupling.model.Contributor
+import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.party.PartyElement
+import com.zegreatrob.coupling.model.player.defaultPlayer
+import com.zegreatrob.coupling.repository.contribution.ContributionGet
+import com.zegreatrob.coupling.repository.player.PlayerListGet
+import com.zegreatrob.coupling.stubmodel.record
+import com.zegreatrob.coupling.stubmodel.stubContribution
+import com.zegreatrob.coupling.stubmodel.stubPartyId
+import com.zegreatrob.minassert.assertIsEqualTo
+import com.zegreatrob.testmints.async.asyncSetup
+import kotlinx.datetime.Instant
+import kotlin.test.Test
+
+class PartyContributorQueryTest {
+
+    @Test
+    fun whenContributorIsNotInPlayerSetWillMakeStubPlayerDetails() =
+        asyncSetup(object : PartyContributorQuery.Dispatcher {
+            val partyId = stubPartyId()
+            val email = "jimmy@james.jim"
+            val contributions = listOf(stubContribution().copy(participantEmails = setOf(email)))
+            override val contributionRepository: ContributionGet = ContributionGet {
+                contributions.map { record(partyId, it) }
+            }
+            override val playerRepository = PlayerListGet { emptyList() }
+        }) exercise {
+            perform(PartyContributorQuery(partyId))
+        } verify { result ->
+            result.map { it.element }.assertIsEqualTo(
+                listOf(
+                    Contributor(
+                        email = email,
+                        playerId = null,
+                        details = Record(
+                            data = PartyElement(
+                                partyId = partyId,
+                                element = defaultPlayer.copy(
+                                    name = email,
+                                    email = email,
+                                ),
+                            ),
+                            modifyingUserId = "none",
+                            isDeleted = false,
+                            timestamp = Instant.DISTANT_FUTURE,
+                        ),
+                    ),
+                ),
+            )
+        }
+}

@@ -268,14 +268,7 @@ class SdkContributionTest {
         saveContributionCommands.forEach { sdk().fire(it) }
     } exercise {
         sdk().fire(
-            graphQuery {
-                party(party.id) {
-                    contributors {
-                        email()
-                        details()
-                    }
-                }
-            },
+            graphQuery { party(party.id) { contributors { email() } } },
         )
     } verify { result ->
         result?.party?.contributors
@@ -283,7 +276,7 @@ class SdkContributionTest {
                 saveContributionCommands.flatMap { it.participantEmails }
                     .toSet()
                     .sorted()
-                    .map { Contributor(it) },
+                    .map { Contributor(email = it) },
             )
     }
 

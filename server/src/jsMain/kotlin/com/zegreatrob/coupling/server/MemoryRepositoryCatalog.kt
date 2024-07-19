@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.ClockProvider
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionQueryParams
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -31,7 +32,6 @@ import com.zegreatrob.coupling.repository.secret.SecretRepository
 import com.zegreatrob.coupling.repository.slack.SlackAccessRepository
 import com.zegreatrob.coupling.repository.user.UserRepository
 import kotlinx.datetime.Clock
-import kotlin.time.Duration
 
 class MemoryRepositoryCatalog private constructor(
     override val userId: String,
@@ -70,14 +70,9 @@ class MemoryRepositoryCatalog private constructor(
 }
 
 class MemoryContributionRepository : ContributionRepository {
-    override suspend fun get(partyId: PartyId, window: Duration?, limit: Int?): List<PartyRecord<Contribution>> = emptyList()
-    override suspend fun save(partyContribution: PartyElement<Contribution>) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteAll(partyId: PartyId) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun get(params: ContributionQueryParams): List<PartyRecord<Contribution>> = emptyList()
+    override suspend fun save(partyContribution: PartyElement<Contribution>) = throw NotImplementedError()
+    override suspend fun deleteAll(partyId: PartyId) = throw NotImplementedError()
 }
 
 class MemoryRepositoryBackend {

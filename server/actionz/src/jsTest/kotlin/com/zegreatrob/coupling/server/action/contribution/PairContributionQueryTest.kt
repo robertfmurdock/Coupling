@@ -27,7 +27,7 @@ class PairContributionQueryTest {
         val partyId = stubPartyId()
         val expectedContribution =
             partyRecord(partyId, stubContribution().copy(participantEmails = setOf(targetEmail)), "")
-        override val contributionRepository = ContributionGet { _, _, _ -> listOf(expectedContribution) }
+        override val contributionRepository = ContributionGet { listOf(expectedContribution) }
     }) exercise {
         perform(PairContributionQuery(partyId, pair, null))
     } verify { result ->
@@ -47,7 +47,7 @@ class PairContributionQueryTest {
         val partyId = stubPartyId()
         val contribution =
             partyRecord(partyId, stubContribution().copy(participantEmails = setOf(targetEmail, notTargetEmail)), "")
-        override val contributionRepository = ContributionGet { _, _, _ -> listOf(contribution) }
+        override val contributionRepository = ContributionGet { listOf(contribution) }
     }) exercise {
         perform(PairContributionQuery(partyId, pair))
     } verify { result ->
@@ -74,9 +74,7 @@ class PairContributionQueryTest {
                 dateTime = null,
             ),
         )
-        override val contributionRepository = ContributionGet { _, _, _ ->
-            contributions.map { partyRecord(partyId, it, "") }
-        }
+        override val contributionRepository = ContributionGet { contributions.map { partyRecord(partyId, it, "") } }
     }) exercise {
         perform(PairContributionQuery(partyId, pair, window = 3.hours))
     } verify { result ->

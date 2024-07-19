@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.repository.dynamo
 
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionQueryParams
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.elements
@@ -34,7 +35,7 @@ class DynamoContributionRepositoryTest {
     } exercise {
         partyContributions.forEach { repository.save(it) }
         repository.save(stubPartyId().with(unrelatedContribution))
-        repository.get(partyId = partyId, window = null, limit = null)
+        repository.get(ContributionQueryParams(partyId = partyId, window = null, limit = null))
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
             partyContributions
@@ -75,7 +76,7 @@ class DynamoContributionRepositoryTest {
     } exercise {
         partyContributions.forEach { repository.save(it) }
         repository.save(stubPartyId().with(unrelatedContribution))
-        repository.get(partyId = partyId, window = null, limit = null)
+        repository.get(ContributionQueryParams(partyId = partyId, window = null, limit = null))
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
             partyContributions
@@ -109,7 +110,7 @@ class DynamoContributionRepositoryTest {
         repository = DynamoContributionRepository.invoke(userEmail, clock)
     } exercise {
         partyContributions.forEach { repository.save(it) }
-        repository.get(partyId, window, null)
+        repository.get(ContributionQueryParams(partyId, window, null))
     } verify { result: List<PartyRecord<Contribution>> ->
         result.elements.assertIsEqualTo(
             expectedContributions.sortedByDescending { "${it.dateTime} ${it.id}" },
@@ -133,7 +134,7 @@ class DynamoContributionRepositoryTest {
         partyContributions.forEach { repository.save(it) }
         repository.save(stubPartyId().with(unrelatedContribution))
         repository.deleteAll(partyId)
-        repository.get(partyId, null, null)
+        repository.get(ContributionQueryParams(partyId, null, null))
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(emptyList())
     }

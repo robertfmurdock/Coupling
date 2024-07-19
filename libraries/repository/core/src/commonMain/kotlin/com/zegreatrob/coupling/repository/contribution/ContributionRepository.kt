@@ -1,13 +1,13 @@
 package com.zegreatrob.coupling.repository.contribution
 
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionQueryParams
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
-import kotlin.time.Duration
 
 fun interface ContributionGet {
-    suspend fun get(partyId: PartyId, window: Duration?, limit: Int?): List<PartyRecord<Contribution>>
+    suspend fun get(params: ContributionQueryParams): List<PartyRecord<Contribution>>
 }
 
 fun interface ContributionDeleteAll {
