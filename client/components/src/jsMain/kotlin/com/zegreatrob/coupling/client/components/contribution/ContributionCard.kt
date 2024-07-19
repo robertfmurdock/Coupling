@@ -70,111 +70,111 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
     val shortId = contribution.id.substring(0, 7)
 
     div {
-        css {
-            display = Display.inlineBlock
-            borderStyle = LineStyle.outset
-            borderColor = Color("rgb(252 224 140 / 50%)")
-            backgroundColor = Color("rgb(252 224 140)")
-            textAlign = TextAlign.center
-            textDecoration = None.none
-            boxShadow = BoxShadow(0.px, 0.1.em, 0.3.em, rgb(0, 0, 0, 0.6))
-            color = NamedColor.black
-            margin = Margin(0.px, 0.2.em, 0.4.em, 0.2.em)
-            borderWidth = (0.2).em
-            borderRadius = 1.em
-            padding = 1.em
-        }
+        div {
+            css {
+                display = Display.inlineBlock
+                borderStyle = LineStyle.outset
+                borderColor = Color("rgb(252 224 140 / 50%)")
+                backgroundColor = Color("rgb(252 224 140)")
+                textAlign = TextAlign.center
+                textDecoration = None.none
+                boxShadow = BoxShadow(0.px, 0.1.em, 0.3.em, rgb(0, 0, 0, 0.6))
+                color = NamedColor.black
+                margin = Margin(0.px, 0.2.em, 0.4.em, 0.2.em)
+                borderWidth = (0.2).em
+                borderRadius = 1.em
+                padding = 1.em
+            }
 
-        div {
-            css {
-                margin = Margin(0.2.em, 0.px)
-                height = 2.5.em
-                verticalAlign = VerticalAlign.top
-                overflow = Overflow.visible
-                display = Display.flex
-                alignItems = AlignItems.center
-                flexDirection = FlexDirection.column
-                position = Position.relative
-                transform = scale(1.04)
-                perspective = 30.em
-                top = (-0.6).em
-            }
             div {
                 css {
-                    position = Position.absolute
-                    overflow = Overflow.hidden
-                    borderRadius = 1.em
-                    top = 0.px
-                    left = 0.px
-                    right = 0.px
-                    bottom = 0.px
-                    transform = rotatex(20.deg)
-                    backgroundColor = rgb(255, 255, 255, 0.4)
-                    backgroundImage = url(pngPath("overlay"))
-                    backgroundRepeat = BackgroundRepeat.repeatX
-                    borderStyle = LineStyle.hidden
-                    borderColor = Color("#00000054")
-                    borderWidth = 1.px
-                    fontWeight = FontWeight.bold
-                }
-            }
-            div {
-                css {
-                    height = 1.3.em
-                    zIndex = integer(100)
-                    position = Position.absolute
-                    top = 50.pct
-                    left = 50.pct
-                    transform = translate((-50).pct, (-50).pct)
-                    fontSize = 1.4.em
+                    margin = Margin(0.2.em, 0.px)
+                    height = 2.5.em
+                    verticalAlign = VerticalAlign.top
+                    overflow = Overflow.visible
+                    display = Display.flex
+                    alignItems = AlignItems.center
+                    flexDirection = FlexDirection.column
+                    position = Position.relative
+                    transform = scale(1.04)
+                    perspective = 30.em
+                    top = (-0.6).em
                 }
                 div {
                     css {
-                        display = Display.flex
-                        alignItems = AlignItems.center
-                        height = 1.4.em
+                        position = Position.absolute
+                        overflow = Overflow.hidden
+                        borderRadius = 1.em
+                        top = 0.px
+                        left = 0.px
+                        right = 0.px
+                        bottom = 0.px
+                        transform = rotatex(20.deg)
+                        backgroundColor = rgb(255, 255, 255, 0.4)
+                        backgroundImage = url(pngPath("overlay"))
+                        backgroundRepeat = BackgroundRepeat.repeatX
+                        borderStyle = LineStyle.hidden
+                        borderColor = Color("#00000054")
+                        borderWidth = 1.px
+                        fontWeight = FontWeight.bold
                     }
-                    +"${contribution.label} $shortId ${contribution.dateTime?.format()}"
                 }
-            }
-        }
-        div {
-            css {
-                display = Display.grid
-                gridTemplateColumns = repeat(4, 1.fr)
-                rowGap = 0.2.em
-                columnGap = 1.em
-            }
-            showProperty("ID") { +shortId }
-            showProperty("Participants") {
                 div {
                     css {
-                        display = Display.inlineFlex
-                        maxWidth = 14.em
-                        flexDirection = FlexDirection.column
-                        alignItems = AlignItems.end
+                        height = 1.3.em
+                        zIndex = integer(100)
+                        position = Position.absolute
+                        top = 50.pct
+                        left = 50.pct
+                        transform = translate((-50).pct, (-50).pct)
+                        fontSize = 1.4.em
                     }
-                    contribution.participantEmails.forEach { email ->
-                        div { +email }
+                    div {
+                        css {
+                            display = Display.flex
+                            alignItems = AlignItems.center
+                            height = 1.4.em
+                        }
+                        +"${contribution.label} $shortId ${contribution.dateTime?.format()}"
                     }
                 }
             }
-            showOptionalProperty("Contribution Time", contribution.dateTime?.format())
-            showOptionalProperty("Label", contribution.label)
-            showOptionalProperty("Link", contribution.link)
-            showOptionalProperty("Ease", contribution.ease)
-            showOptionalProperty("Semver", contribution.semver)
-            showOptionalProperty("Hash", contribution.hash)
-            showOptionalProperty("First Commit", contribution.firstCommit)
-            showOptionalProperty("Story", contribution.story)
-            showOptionalProperty("Save Timestamp", contribution.createdAt.format())
+            div {
+                css {
+                    display = Display.grid
+                    gridTemplateColumns = repeat(4, 1.fr)
+                    rowGap = 0.2.em
+                    columnGap = 1.em
+                }
+                showProperty("ID") { +shortId }
+                showProperty("Participants") {
+                    div {
+                        css {
+                            display = Display.inlineFlex
+                            maxWidth = 14.em
+                            flexDirection = FlexDirection.column
+                            alignItems = AlignItems.end
+                        }
+                        contribution.participantEmails.forEach { email ->
+                            div { +email }
+                        }
+                    }
+                }
+                showOptionalProperty("Contribution Time", contribution.dateTime?.format())
+                showOptionalProperty("Label", contribution.label)
+                showOptionalProperty("Link", contribution.link)
+                showOptionalProperty("Ease", contribution.ease)
+                showOptionalProperty("Semver", contribution.semver)
+                showOptionalProperty("Hash", contribution.hash)
+                showOptionalProperty("First Commit", contribution.firstCommit)
+                showOptionalProperty("Story", contribution.story)
+                showOptionalProperty("Save Timestamp", contribution.createdAt.format())
+            }
         }
+        contribution.participantEmails.mapNotNull { email -> contributors.find { it.emails.contains(email) } }
+            .toSet()
+            .forEach(::PlayerCard)
     }
-    contribution.participantEmails.mapNotNull { email -> contributors.find { it.emails.contains(email) } }
-        .toSet()
-        .forEach { contributorPlayer ->
-            PlayerCard(contributorPlayer)
-        }
 }
 
 private fun <T> ChildrenBuilder.showOptionalProperty(attributeName: String, value: T?) {
