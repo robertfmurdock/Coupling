@@ -144,6 +144,15 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
                         +"${contribution.label} $shortId ${contribution.dateTime?.format()}"
                     }
                 }
+                contribution.link?.let { link ->
+                    div {
+                        css {
+                            position = Position.absolute
+                            right = 5.px
+                        }
+                        ContributionLinkButton(link = link)
+                    }
+                }
             }
             div {
                 css {
@@ -168,7 +177,7 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
                 }
                 showOptionalProperty("Contribution Time", contribution.dateTime?.format())
                 showOptionalProperty("Label", contribution.label)
-                showOptionalProperty("Link", contribution.link)
+                showOptionalProperty("Link", contribution.link?.substring(0, 32)?.plus("..."))
                 showOptionalProperty("Ease", contribution.ease)
                 showOptionalProperty("Semver", contribution.semver)
                 showOptionalProperty("Hash", contribution.hash?.asShortId())
@@ -201,7 +210,7 @@ private fun <T> ChildrenBuilder.showProperty(attributeName: String, value: T & A
 private fun ChildrenBuilder.showProperty(attributeName: String, value: ChildrenBuilder.() -> Unit) {
     div {
         css { justifySelf = JustifySelf.left }
-        +("$attributeName:")
+        +"$attributeName:"
     }
     div {
         css {
