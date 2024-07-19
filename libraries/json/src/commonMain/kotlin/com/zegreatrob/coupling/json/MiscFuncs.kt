@@ -6,6 +6,7 @@ import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 
 val couplingJsonFormat = kotlinx.serialization.json.Json {
+    explicitNulls = false
     isLenient = true
     ignoreUnknownKeys = true
     encodeDefaults = true
