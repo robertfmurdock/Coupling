@@ -82,14 +82,7 @@ private fun <T> ChildrenBuilder.showOptionalProperty(attributeName: String, valu
 }
 
 private fun <T> ChildrenBuilder.showProperty(attributeName: String, value: T & Any) {
-    div {
-        css { justifySelf = JustifySelf.left }
-        +("$attributeName:")
-    }
-    div {
-        css { justifySelf = JustifySelf.right }
-        +"$value"
-    }
+    showProperty(attributeName, ReactNode("$value"))
 }
 
 private fun ChildrenBuilder.showProperty(attributeName: String, value: ReactNode) {
