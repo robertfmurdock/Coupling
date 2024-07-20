@@ -33,6 +33,7 @@ class SaveContributionCommandTest {
             storyId = "${uuid4()}",
             semver = "${uuid4()}",
             label = "${uuid4()}",
+            firstCommitDateTime = Clock.System.now(),
         )
         val partyId = stubPartyId()
         val receivedActions = mutableListOf<Any?>()
