@@ -18,6 +18,7 @@ import com.zegreatrob.testmints.async.asyncSetup
 import com.zegreatrob.tools.digger.json.toJsonString
 import com.zegreatrob.tools.digger.model.Contribution
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
 
@@ -40,7 +41,7 @@ class SaveContributionCommandTest {
         val receivedActions = mutableListOf<Any?>()
         val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
             .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
-        val command = SaveContribution(exerciseScope, cannon)
+        val command = SaveContribution(exerciseScope, cannon, Clock.System)
             .context { obj = ContributionContext(partyId, "local") }
         val labelOverride = uuidString()
         val linkOverride = uuidString()
@@ -66,5 +67,74 @@ class SaveContributionCommandTest {
                     firstCommitDateTime = sourceContribution.firstCommitDateTime,
                 ),
             )
+    }
+
+    @Test
+    fun canUseCommitTimeRangeAsCycleTime() = asyncSetup(object : ScopeMint() {
+        val now = Clock.System.now()
+        val expectedCycleTime = 20.minutes
+        val dateTime = now.minus(5.minutes)
+        val firstCommitDateTime = now - expectedCycleTime
+        val sourceContribution = Contribution(
+            lastCommit = "${uuid4()}",
+            firstCommit = "${uuid4()}",
+            authors = listOf("${uuid4()}"),
+            dateTime = dateTime,
+            ease = 7,
+            storyId = "${uuid4()}",
+            semver = "${uuid4()}",
+            label = "${uuid4()}",
+            firstCommitDateTime = firstCommitDateTime,
+        )
+        val partyId = stubPartyId()
+        val receivedActions = mutableListOf<Any?>()
+        val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
+            .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
+        val command = SaveContribution(
+            exerciseScope,
+            cannon,
+            object : Clock {
+                override fun now(): Instant = now
+            },
+        )
+            .context { obj = ContributionContext(partyId, "local") }
+    }) exercise {
+        command.test("--cycle-time-from-first-commit --input-json \'${sourceContribution.toJsonString()}\'")
+    } verify { result ->
+        result.statusCode.assertIsEqualTo(0, result.stderr)
+        receivedActions.firstOrNull()
+            ?.let { it as? SaveContributionCommand }
+            ?.cycleTime
+            .assertIsEqualTo(expectedCycleTime)
+    }
+
+    @Test
+    fun usingCommitTimeRangeAsCycleTimeWillWarnWhenOneIsMissing() = asyncSetup(object : ScopeMint() {
+        val sourceContribution = Contribution(
+            lastCommit = "${uuid4()}",
+            firstCommit = "${uuid4()}",
+            authors = listOf("${uuid4()}"),
+            dateTime = Clock.System.now(),
+            ease = 7,
+            storyId = "${uuid4()}",
+            semver = "${uuid4()}",
+            label = "${uuid4()}",
+            firstCommitDateTime = null,
+        )
+        val partyId = stubPartyId()
+        val receivedActions = mutableListOf<Any?>()
+        val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
+            .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
+        val command = SaveContribution(exerciseScope, cannon, Clock.System)
+            .context { obj = ContributionContext(partyId, "local") }
+    }) exercise {
+        command.test("--cycle-time-from-first-commit --input-json \'${sourceContribution.toJsonString()}\'")
+    } verify { result ->
+        result.statusCode.assertIsEqualTo(0, result.stderr)
+        result.stdout.assertIsEqualTo("Warning: could not calculate cycle time from missing firstCommitDateTime\n")
+        receivedActions.firstOrNull()
+            ?.let { it as? SaveContributionCommand }
+            ?.cycleTime
+            .assertIsEqualTo(null)
     }
 }

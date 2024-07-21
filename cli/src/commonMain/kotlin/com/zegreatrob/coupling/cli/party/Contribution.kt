@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.cli.party
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
@@ -18,7 +19,9 @@ import com.zegreatrob.tools.digger.model.Contribution
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlin.time.Duration
 
 data class ContributionContext(val partyId: PartyId, val env: String)
 
@@ -33,6 +36,7 @@ class Contribution : CliktCommand() {
 class SaveContribution(
     private val scope: CoroutineScope = cliScope,
     private val cannon: ActionCannon<CouplingSdkDispatcher>? = null,
+    private val clock: Clock,
 ) : CliktCommand(name = "save"),
     ContributionCliCommand {
     private val inputJson by option().prompt()
@@ -42,65 +46,96 @@ class SaveContribution(
     private val dateTime by option().default("")
     private val ease by option().default("")
     private val story by option().default("")
+    private val cycleTimeFromFirstCommit by option().flag()
     override val link by option().default("")
     override val label by option().default("")
     override fun run() {
         val contributionContext = currentContext.findObject<ContributionContext>()
         val partyId = contributionContext!!.partyId
         val data = inputJson.trim()
-        withSdk(
-            scope = scope,
-            env = contributionContext.env,
-            echo = ::echo,
-            cannon = cannon,
-        ) { sdk ->
-            if (data.isNotBlank()) {
-                val contribution = ContributionParser.parseContribution(data)
-                if (contribution != null) {
-                    sdk.fire(saveContributionCommand(partyId, contribution))
-                } else {
-                    echo("Could not parse contribution", err = true)
-                }
-            } else {
-                sdk.fire(
-                    SaveContributionCommand(
-                        partyId = partyId,
-                        contributionId = contributionId,
-                        participantEmails = participantEmail.toSet(),
-                        hash = hash,
-                        dateTime = dateTime.ifBlank { null }?.let(Instant.Companion::parse),
-                        ease = ease.ifBlank { null }?.toInt(),
-                        story = story.ifBlank { null },
-                        link = link.ifBlank { null },
-                    ),
+        val action: SaveContributionCommand? = if (data.isNotBlank()) {
+            val contribution = ContributionParser.parseContribution(data)
+            if (contribution != null) {
+                saveContributionCommand(
+                    partyId = partyId,
+                    contribution = contribution,
+                    cycleTime = if (cycleTimeFromFirstCommit) {
+                        cycleTimeFromFirstCommit(contribution, clock.now())
+                    } else {
+                        null
+                    },
                 )
+            } else {
+                null
             }
+        } else {
+            SaveContributionCommand(
+                partyId = partyId,
+                contributionId = contributionId,
+                participantEmails = participantEmail.toSet(),
+                hash = hash,
+                dateTime = dateTime.ifBlank { null }?.let(Instant.Companion::parse),
+                ease = ease.ifBlank { null }?.toInt(),
+                story = story.ifBlank { null },
+                link = link.ifBlank { null },
+            )
+        }
+        if (action == null) {
+            echo("Could not parse contribution", err = true)
+        } else {
+            withSdk(
+                scope = scope,
+                env = contributionContext.env,
+                echo = ::echo,
+                cannon = cannon,
+            ) { sdk -> sdk.fire(action) }
         }
     }
 }
+
+private fun CliktCommand.cycleTimeFromFirstCommit(contribution: Contribution, now: Instant): Duration? {
+    val firstCommitDateTime = contribution.firstCommitDateTime
+    return if (firstCommitDateTime == null) {
+        echo("Warning: could not calculate cycle time from missing firstCommitDateTime")
+        null
+    } else {
+        now - firstCommitDateTime
+    }
+}
+
+private fun Contribution.cycleTimeFromCommits(now: Instant?): Duration? = firstCommitDateTime?.let { now?.minus(it) }
 
 interface ContributionCliCommand {
     val label: String
     val link: String
 }
 
-class BatchContribution :
-    CliktCommand(name = "batch"),
+class BatchContribution(
+    private val clock: Clock,
+) : CliktCommand(name = "batch"),
     ContributionCliCommand {
     private val inputJson by option().prompt()
     override val label by option().default("")
     override val link by option().default("")
+    private val cycleTimeFromFirstCommit by option().flag()
     override fun run() {
         val contributions = ContributionParser.parseContributions(inputJson.trim())
 
         val contributionContext = currentContext.findObject<ContributionContext>()
         val partyId = contributionContext!!.partyId
+        val saveCommands = contributions.map { contribution ->
+            saveContributionCommand(
+                partyId,
+                contribution,
+                cycleTime = if (cycleTimeFromFirstCommit) {
+                    cycleTimeFromFirstCommit(contribution, clock.now())
+                } else {
+                    null
+                },
+            )
+        }
         withSdk(cliScope, contributionContext.env, ::echo) { sdk ->
-            coroutineScope {
-                contributions.forEach { contribution ->
-                    launch { sdk.fire(saveContributionCommand(partyId, contribution)) }
-                }
-            }
+            coroutineScope { saveCommands.forEach { launch { sdk.fire(it) } } }
         }
     }
 }
@@ -108,6 +143,7 @@ class BatchContribution :
 private fun ContributionCliCommand.saveContributionCommand(
     partyId: PartyId,
     contribution: Contribution,
+    cycleTime: Duration?,
 ) = SaveContributionCommand(
     partyId = partyId,
     contributionId = contribution.firstCommit,
@@ -121,4 +157,5 @@ private fun ContributionCliCommand.saveContributionCommand(
     label = label.takeIf(String::isNotBlank) ?: contribution.label,
     firstCommit = contribution.firstCommit,
     firstCommitDateTime = contribution.firstCommitDateTime,
+    cycleTime = cycleTime,
 )
