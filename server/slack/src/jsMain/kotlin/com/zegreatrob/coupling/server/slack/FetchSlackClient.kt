@@ -10,6 +10,7 @@ import web.form.FormData
 import web.http.BodyInit
 import web.http.Headers
 import web.http.Request
+import web.http.RequestMethod
 import web.http.fetch
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -29,7 +30,7 @@ class FetchSlackClient(
     override suspend fun exchangeCodeForAccess(code: String): AccessResponse = fetch(
         "https://slack.com/api/oauth.v2.access",
         jso {
-            method = "post"
+            method = RequestMethod.POST
             headers = Headers(recordOf("Authorization" to "Basic ${btoa("$clientId:$clientSecret")}"))
             body = BodyInit(
                 FormData().apply {
@@ -55,7 +56,7 @@ class FetchSlackClient(
         val request = Request(
             "https://slack.com/api/chat.postMessage",
             jso {
-                method = "post"
+                method = RequestMethod.POST
                 headers = jsonHeaders(accessToken)
                 body = BodyInit(
                     JSON.stringify(
@@ -91,7 +92,7 @@ class FetchSlackClient(
     ): MessageResponse = fetch(
         "https://slack.com/api/chat.update",
         jso {
-            method = "post"
+            method = RequestMethod.POST
             headers = jsonHeaders(accessToken)
             body = BodyInit(
                 JSON.stringify(
@@ -117,7 +118,7 @@ class FetchSlackClient(
     ): HistoryResponse = fetch(
         "https://slack.com/api/conversations.history",
         jso {
-            method = "post"
+            method = RequestMethod.POST
             headers = jsonHeaders(accessToken)
             body = BodyInit(
                 JSON.stringify(
@@ -137,7 +138,7 @@ class FetchSlackClient(
     suspend fun deleteMessage(accessToken: String, channel: String, ts: String): MessageResponse = fetch(
         "https://slack.com/api/chat.delete",
         jso {
-            method = "post"
+            method = RequestMethod.POST
             headers = jsonHeaders(accessToken)
             body = BodyInit(
                 JSON.stringify(
