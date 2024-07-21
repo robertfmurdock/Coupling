@@ -106,6 +106,7 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
                 showOptionalProperty("First Commit Time", contribution.firstCommitDateTime?.format())
                 showOptionalProperty("Story", contribution.story)
                 showOptionalProperty("Save Timestamp", contribution.createdAt.format())
+                showOptionalProperty("Cycle Time", contribution.cycleTime)
             }
         }
     }
