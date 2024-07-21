@@ -126,6 +126,8 @@ type Contribution {
     label: String
     firstCommit: String
     firstCommitDateTime: String
+    integrationDateTime: String
+    cycleTime: String
     semver: String
     partyId: String
     participantEmails: [String!]!

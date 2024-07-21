@@ -19,6 +19,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
 import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
+import kotlin.time.Duration
 
 object GqlReference {
     val globalStats = JsonGlobalStats(
@@ -109,6 +110,8 @@ object GqlReference {
         semver = "",
         firstCommit = "",
         firstCommitDateTime = Instant.DISTANT_PAST,
+        integrationDateTime = Instant.DISTANT_PAST,
+        cycleTime = Duration.ZERO,
     )
     val partyRecord = JsonPartyDetailsRecord(
         id = "",

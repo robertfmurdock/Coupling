@@ -131,4 +131,6 @@ fun stubContribution() = Contribution(
     semver = uuidString(),
     firstCommit = uuidString(),
     firstCommitDateTime = Clock.System.now().minus(4.days),
+    integrationDateTime = Clock.System.now().minus(5.days),
+    cycleTime = (1..3).random().days,
 )

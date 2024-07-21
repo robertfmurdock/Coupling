@@ -57,6 +57,8 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         "participantEmails" to element.participantEmails.toTypedArray(),
         "story" to element.story,
         "createdAt" to element.createdAt.isoWithMillis(),
+        "integrationDateTime" to element.integrationDateTime?.isoWithMillis(),
+        "cycleTime" to element.cycleTime?.toString(),
     )
 
     override suspend fun get(params: ContributionQueryParams) = params.partyId.logAsync("windowedContributions") {
@@ -109,6 +111,8 @@ class DynamoContributionRepository private constructor(override val userId: Stri
             semver = getDynamoStringValue("semver"),
             firstCommit = getDynamoStringValue("firstCommit"),
             firstCommitDateTime = getDynamoDateTimeValue("firstCommitDateTime"),
+            integrationDateTime = getDynamoDateTimeValue("integrationDateTime"),
+            cycleTime = getDynamoStringValue("cycleTime")?.let(Duration.Companion::parse),
         )
     }
 

@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.model.party.with
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
+import kotlin.time.Duration
 
 @Serializable
 data class JsonContributionRecord(
@@ -26,6 +27,8 @@ data class JsonContributionRecord(
     val firstCommitDateTime: Instant?,
     val semver: String?,
     val participantEmails: Set<String>,
+    val integrationDateTime: Instant?,
+    val cycleTime: Duration?,
     override val partyId: PartyId?,
     override val modifyingUserEmail: String,
     override val isDeleted: Boolean,
@@ -45,6 +48,8 @@ fun PartyRecord<Contribution>.toJson() = JsonContributionRecord(
     firstCommit = data.element.firstCommit,
     firstCommitDateTime = data.element.firstCommitDateTime,
     participantEmails = data.element.participantEmails,
+    integrationDateTime = data.element.integrationDateTime,
+    cycleTime = data.element.cycleTime,
     partyId = data.partyId,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
@@ -79,6 +84,8 @@ fun JsonContributionRecord.toModel() = PartyRecord(
             semver = semver,
             firstCommit = firstCommit,
             firstCommitDateTime = firstCommitDateTime,
+            integrationDateTime = integrationDateTime,
+            cycleTime = cycleTime,
         ),
     ),
     modifyingUserId = modifyingUserEmail,

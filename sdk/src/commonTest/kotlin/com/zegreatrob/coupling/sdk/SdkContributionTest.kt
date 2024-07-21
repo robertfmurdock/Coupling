@@ -396,8 +396,8 @@ class SdkContributionTest {
         ease = Random.nextInt(),
         story = uuidString(),
         link = uuidString(),
-        label = uuidString(),
         semver = uuidString(),
+        label = uuidString(),
         firstCommit = uuidString(),
     )
 }
@@ -422,4 +422,6 @@ private fun SaveContributionCommand.toExpectedContribution() = Contribution(
     firstCommit = firstCommit,
     semver = semver,
     firstCommitDateTime = firstCommitDateTime,
+    integrationDateTime = integrationDateTime,
+    cycleTime = cycleTime,
 )

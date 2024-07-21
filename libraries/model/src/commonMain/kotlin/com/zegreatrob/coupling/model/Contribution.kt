@@ -17,6 +17,8 @@ data class Contribution(
     val participantEmails: Set<String>,
     val label: String?,
     val semver: String?,
+    val integrationDateTime: Instant?,
+    val cycleTime: Duration?,
 )
 
 data class ContributionQueryParams(val partyId: PartyId, val window: Duration?, val limit: Int?)

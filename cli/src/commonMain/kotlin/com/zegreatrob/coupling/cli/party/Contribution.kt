@@ -117,8 +117,8 @@ private fun ContributionCliCommand.saveContributionCommand(
     ease = contribution.ease,
     story = contribution.storyId?.ifBlank { null },
     link = link.takeIf(String::isNotBlank),
-    firstCommit = contribution.firstCommit,
-    firstCommitDateTime = contribution.firstCommitDateTime,
     semver = contribution.semver,
     label = label.takeIf(String::isNotBlank) ?: contribution.label,
+    firstCommit = contribution.firstCommit,
+    firstCommitDateTime = contribution.firstCommitDateTime,
 )

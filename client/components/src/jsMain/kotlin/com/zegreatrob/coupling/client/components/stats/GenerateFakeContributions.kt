@@ -157,4 +157,6 @@ private fun LocalDateTime.toFakeContribution() = Contribution(
     label = if (Random.nextBoolean()) "fake" else "alternate",
     semver = null,
     firstCommitDateTime = this.toInstant(TimeZone.currentSystemDefault()) - 10.minutes,
+    integrationDateTime = this.toInstant(TimeZone.currentSystemDefault()) - 20.minutes,
+    cycleTime = (1..4).random().days,
 )
