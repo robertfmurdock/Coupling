@@ -28,6 +28,7 @@ import kotlinx.datetime.toLocalDateTime
 import kotools.types.collection.toNotEmptyList
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.minutes
 
 private val random = Random(10)
 
@@ -155,4 +156,5 @@ private fun LocalDateTime.toFakeContribution() = Contribution(
     participantEmails = emptySet(),
     label = if (Random.nextBoolean()) "fake" else "alternate",
     semver = null,
+    firstCommitDateTime = this.toInstant(TimeZone.currentSystemDefault()) - 10.minutes,
 )

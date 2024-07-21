@@ -421,4 +421,5 @@ private fun SaveContributionCommand.toExpectedContribution() = Contribution(
     label = label,
     firstCommit = firstCommit,
     semver = semver,
+    firstCommitDateTime = firstCommitDateTime,
 )

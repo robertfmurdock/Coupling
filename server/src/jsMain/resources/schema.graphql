@@ -118,13 +118,14 @@ type BoostDetails {
 type Contribution {
     id: ID!
     createdAt: String!
-    dateTime: String!
+    dateTime: String
     hash: String
     ease: Int
     story: String
     link: String
     label: String
     firstCommit: String
+    firstCommitDateTime: String
     semver: String
     partyId: String
     participantEmails: [String!]!
@@ -377,6 +378,7 @@ input SaveContributionInput {
     label: String
     semver: String
     firstCommit: String
+    firstCommitDateTime: String
     participantEmails: [String!]
 }
 input ClearContributionsInput {

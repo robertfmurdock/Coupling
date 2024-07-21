@@ -108,6 +108,7 @@ object GqlReference {
         label = "",
         semver = "",
         firstCommit = "",
+        firstCommitDateTime = Instant.DISTANT_PAST,
     )
     val partyRecord = JsonPartyDetailsRecord(
         id = "",

@@ -10,6 +10,7 @@ data class Contribution(
     val dateTime: Instant?,
     val hash: String?,
     val firstCommit: String?,
+    val firstCommitDateTime: Instant?,
     val ease: Int?,
     val story: String?,
     val link: String?,

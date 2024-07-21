@@ -24,6 +24,7 @@ interface ServerSaveContributionCommandDispatcher : SaveContributionCommand.Disp
                     label = command.label,
                     semver = command.semver,
                     firstCommit = command.firstCommit,
+                    firstCommitDateTime = command.firstCommitDateTime,
                 ),
             ),
         )

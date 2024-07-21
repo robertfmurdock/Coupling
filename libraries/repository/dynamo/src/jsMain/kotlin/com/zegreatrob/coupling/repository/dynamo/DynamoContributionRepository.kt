@@ -53,6 +53,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         "label" to element.label,
         "semver" to element.semver,
         "firstCommit" to element.firstCommit,
+        "firstCommitDateTime" to element.firstCommitDateTime?.isoWithMillis(),
         "participantEmails" to element.participantEmails.toTypedArray(),
         "story" to element.story,
         "createdAt" to element.createdAt.isoWithMillis(),
@@ -107,6 +108,7 @@ class DynamoContributionRepository private constructor(override val userId: Stri
             label = getDynamoStringValue("label"),
             semver = getDynamoStringValue("semver"),
             firstCommit = getDynamoStringValue("firstCommit"),
+            firstCommitDateTime = getDynamoDateTimeValue("firstCommitDateTime"),
         )
     }
 
