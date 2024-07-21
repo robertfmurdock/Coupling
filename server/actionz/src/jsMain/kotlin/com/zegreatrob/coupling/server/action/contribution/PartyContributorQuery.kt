@@ -64,7 +64,14 @@ data class PartyContributorQuery(val partyId: PartyId) {
             partyId: PartyId,
             email: String,
         ) = Record(
-            data = PartyElement(partyId = partyId, element = defaultPlayer.copy(name = email, email = email)),
+            data = PartyElement(
+                partyId = partyId,
+                element = defaultPlayer.copy(
+                    id = partyId.value + email,
+                    name = email.substringBefore("@"),
+                    email = email,
+                ),
+            ),
             modifyingUserId = "none",
             isDeleted = false,
             timestamp = Instant.DISTANT_FUTURE,

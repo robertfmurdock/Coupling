@@ -38,7 +38,8 @@ class PartyContributorQueryTest {
                             data = PartyElement(
                                 partyId = partyId,
                                 element = defaultPlayer.copy(
-                                    name = email,
+                                    id = partyId.value + email,
+                                    name = email.substringBefore("@"),
                                     email = email,
                                 ),
                             ),
