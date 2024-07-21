@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.json
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import kotlin.time.Duration
 
 @Serializable
 data class SaveContributionInput(
@@ -16,4 +17,7 @@ data class SaveContributionInput(
     val semver: String?,
     val label: String?,
     val firstCommit: String?,
+    val firstCommitDateTime: Instant?,
+    val integrationDateTime: Instant?,
+    val cycleTime: Duration?,
 )

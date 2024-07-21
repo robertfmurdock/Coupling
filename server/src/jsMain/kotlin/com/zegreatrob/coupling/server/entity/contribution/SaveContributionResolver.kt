@@ -30,6 +30,9 @@ private fun SaveContributionInput.toCommand() = SaveContributionCommand(
     semver = semver,
     label = label,
     firstCommit = firstCommit,
+    firstCommitDateTime = firstCommitDateTime,
+    integrationDateTime = integrationDateTime,
+    cycleTime = cycleTime,
 )
 
 val clearContributionsResolver = dispatch(

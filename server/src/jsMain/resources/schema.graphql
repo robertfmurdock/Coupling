@@ -381,6 +381,8 @@ input SaveContributionInput {
     semver: String
     firstCommit: String
     firstCommitDateTime: String
+    integrationDateTime: String
+    cycleTime: String
     participantEmails: [String!]
 }
 input ClearContributionsInput {

@@ -28,4 +28,7 @@ private fun SaveContributionCommand.saveContributionInput() = SaveContributionIn
     semver = semver,
     label = label,
     firstCommit = firstCommit,
+    firstCommitDateTime = firstCommitDateTime,
+    integrationDateTime = integrationDateTime,
+    cycleTime = cycleTime,
 )

@@ -399,6 +399,9 @@ class SdkContributionTest {
         semver = uuidString(),
         label = uuidString(),
         firstCommit = uuidString(),
+        firstCommitDateTime = Clock.System.now().minus(Random.nextInt(34).minutes).roundToMillis(),
+        integrationDateTime = Clock.System.now().minus(Random.nextInt(23).minutes).roundToMillis(),
+        cycleTime = (2..140).random().minutes,
     )
 }
 
