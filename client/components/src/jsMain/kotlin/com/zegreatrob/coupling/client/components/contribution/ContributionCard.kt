@@ -144,6 +144,19 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
                         +"${contribution.label} $shortId ${contribution.dateTime?.format()}"
                     }
                 }
+                div {
+                    css {
+                        position = Position.absolute
+                        right = if (contribution.link != null) 2.5.em else 5.px
+                        top = (-0.5).em
+                    }
+                    TiltedPlayerList(
+                        playerList = contribution.participantEmails.mapNotNull { email ->
+                            contributors.find { it.emails.contains(email) }
+                        }.toSet(),
+                        size = 30,
+                    )
+                }
                 contribution.link?.let { link ->
                     div {
                         css {
@@ -182,16 +195,11 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
                 showOptionalProperty("Semver", contribution.semver)
                 showOptionalProperty("Hash", contribution.hash?.asShortId())
                 showOptionalProperty("First Commit", contribution.firstCommit?.asShortId())
+                showOptionalProperty("First Commit Time", contribution.firstCommitDateTime?.format())
                 showOptionalProperty("Story", contribution.story)
                 showOptionalProperty("Save Timestamp", contribution.createdAt.format())
             }
         }
-        TiltedPlayerList(
-            playerList = contribution.participantEmails.mapNotNull { email ->
-                contributors.find { it.emails.contains(email) }
-            }.toSet(),
-            size = 50,
-        )
     }
 }
 
