@@ -18,6 +18,7 @@ data class SaveContributionCommand(
     val semver: String? = null,
     val label: String? = null,
     val firstCommit: String? = null,
+    val firstCommitDateTime: Instant? = null,
 ) {
     fun interface Dispatcher {
         suspend fun perform(command: SaveContributionCommand): VoidResult

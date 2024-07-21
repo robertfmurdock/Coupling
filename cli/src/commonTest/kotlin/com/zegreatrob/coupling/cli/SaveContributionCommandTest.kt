@@ -19,6 +19,7 @@ import com.zegreatrob.tools.digger.json.toJsonString
 import com.zegreatrob.tools.digger.model.Contribution
 import kotlinx.datetime.Clock
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.minutes
 
 class SaveContributionCommandTest {
 
@@ -33,7 +34,7 @@ class SaveContributionCommandTest {
             storyId = "${uuid4()}",
             semver = "${uuid4()}",
             label = "${uuid4()}",
-            firstCommitDateTime = Clock.System.now(),
+            firstCommitDateTime = Clock.System.now() - 20.minutes,
         )
         val partyId = stubPartyId()
         val receivedActions = mutableListOf<Any?>()
@@ -62,6 +63,7 @@ class SaveContributionCommandTest {
                     semver = sourceContribution.semver,
                     label = labelOverride,
                     firstCommit = sourceContribution.firstCommit,
+                    firstCommitDateTime = sourceContribution.firstCommitDateTime,
                 ),
             )
     }
