@@ -81,7 +81,7 @@ jobs:
       - name: Build + Release Coupling
         run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --no-configuration-cache --scan --stacktrace
       - name: Update Contributions
-        uses: robertfmurdock/coupling-contribution-action@e94b463722b6fca6ab8b95b900f43dea7caaaf57
+        uses: robertfmurdock/coupling-contribution-action@8ae4b89fe3b3223ac7b13faf134e17b939ade02e
         with:
           save-contribution: ${{ github.ref == 'refs/heads/master' }}
           coupling-secret: ${{ secrets.COUPLING_API_PARTY_SECRET }}
