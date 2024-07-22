@@ -25,3 +25,17 @@ You can learn things like:
 - How you feel about statistics (you might like them!)
 
 ## Cool! I'm sold. How do I start?
+
+## First: Decide when to make a Contribution official 
+
+Every team and project is different, and your needs might be different than other teams. For software teams, here are some reasonable alternatives as to when you might call it a "contribution":
+
+- Immediately on commit and push to a remote "main" branch
+- Only after Github Actions successfully builds a "main" branch
+- Only when a PR is merged to a "main" branch
+
+Whatever you choose, you'll want to ensure that you have the ability to run a program on your choice of trigger.
+
+For many of us, that'll mean finding the right part of a "Github Action" / "Azure Dev Ops" / "Jenkins" / Build Server script.
+
+## Second: Collect Contribution Information
