@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.contribution
 
 import com.zegreatrob.coupling.client.components.contribution.ContributionOverviewContent
+import com.zegreatrob.coupling.client.components.contribution.ContributionStartContent
 import com.zegreatrob.coupling.client.partyPageFunction
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.model.Contributor
@@ -26,7 +27,11 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
                 ?.elements
                 ?: return@CouplingQuery null
             ContributionContentFrame.create(party = party) {
-                ContributionOverviewContent(party, contributions, contributors)
+                if (contributions.isEmpty()) {
+                    ContributionStartContent(party)
+                } else {
+                    ContributionOverviewContent(party, contributions, contributors)
+                }
             }
         },
         key = partyId.value,
