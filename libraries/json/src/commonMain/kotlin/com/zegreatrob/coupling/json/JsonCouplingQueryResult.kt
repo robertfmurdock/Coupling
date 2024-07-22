@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.json
 
+import com.zegreatrob.coupling.model.ContributionStatistics
 import com.zegreatrob.coupling.model.CouplingConfig
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.GlobalStats
@@ -58,6 +59,7 @@ private fun JsonParty.toModel(): Party? {
         spinsUntilFullRotation = spinsUntilFullRotation,
         contributions = contributions?.map(JsonContributionRecord::toModel),
         contributors = contributors?.map(JsonContributor::toModel),
+        contributionStatistics = contributionStatistics?.toModel(),
     )
 }
 
@@ -88,6 +90,22 @@ data class JsonParty(
     val spinsUntilFullRotation: Int? = null,
     val contributions: List<JsonContributionRecord>? = null,
     val contributors: List<JsonContributor>? = null,
+    val contributionStatistics: JsonContributionStatistics? = null,
+)
+
+@Serializable
+data class JsonContributionStatistics(
+    val partyId: String? = null,
+    val count: Int? = null,
+    val medianCycleTime: Duration? = null,
+    val withCycleTimeCount: Int? = null,
+)
+
+fun JsonContributionStatistics.toModel() = ContributionStatistics(
+    partyId = partyId?.let(::PartyId),
+    count = count,
+    medianCycleTime = medianCycleTime,
+    withCycleTimeCount = withCycleTimeCount,
 )
 
 @Serializable

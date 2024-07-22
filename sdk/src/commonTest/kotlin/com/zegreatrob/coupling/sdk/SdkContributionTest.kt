@@ -3,6 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.party.ClearContributionsCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.action.stats.halfwayValue
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionInput
@@ -55,6 +56,33 @@ class SdkContributionTest {
         result?.party?.contributions?.elements?.map { it.createdAt }?.forEach { createdAt ->
             createdAt.assertIsCloseToNow()
         }
+    }
+
+    @Test
+    fun queryBasicContributionStatistics() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val cycleTimeContributionsCount = 25
+        val contributionInputs = generateSequence { stubContributionInput() }.take(cycleTimeContributionsCount)
+            .toList() + stubContributionInput().copy(cycleTime = null)
+    }) {
+        savePartyState(party, emptyList(), emptyList())
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) {
+                    this.contributionStatistics {
+                        this.count()
+                        this.medianCycleTime()
+                        this.withCycleTimeCount()
+                    }
+                }
+            },
+        )?.party?.contributionStatistics
+    } verify { result ->
+        result?.count.assertIsEqualTo(contributionInputs.size)
+        result?.medianCycleTime.assertIsEqualTo(contributionInputs.mapNotNull { it.cycleTime }.sorted().halfwayValue())
+        result?.withCycleTimeCount.assertIsEqualTo(cycleTimeContributionsCount)
     }
 
     @Test

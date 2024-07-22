@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.ContributionsInput
+import com.zegreatrob.coupling.json.JsonContributionStatistics
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.PairInput
@@ -65,4 +66,29 @@ class PartyQueryBuilder :
         .also(block)
         .output
         .let { output = output.copy(contributors = listOf(it)) }
+
+    fun contributionStatistics(block: ContributionStatisticsBuilder.() -> Unit) = ContributionStatisticsBuilder()
+        .also(block)
+        .also { mergeToParent("contributionStatistics", it) }
+}
+
+class ContributionStatisticsBuilder :
+    BuilderWithInput(),
+    QueryBuilder<JsonContributionStatistics> {
+    override var output: JsonContributionStatistics = JsonContributionStatistics()
+    override var queries = mutableListOf<String>()
+    override var inputs = mutableListOf<String>()
+    override var variables = mutableMapOf<String, JsonElement>()
+
+    fun count() {
+        also { output = output.copy(count = 0) }
+    }
+
+    fun medianCycleTime() {
+        also { output = output.copy(medianCycleTime = Duration.INFINITE) }
+    }
+
+    fun withCycleTimeCount() {
+        also { output = output.copy(withCycleTimeCount = 0) }
+    }
 }

@@ -152,8 +152,15 @@ type Party {
     medianSpinDuration: String
     boost: BoostDetails
     contributions(input: ContributionsInput): [Contribution!]
+    contributionStatistics: ContributionStatistics!
     contributors: [Contributor!]!
     pair(input: PairInput) : Pair
+}
+
+type ContributionStatistics {
+    count: Int!
+    medianCycleTime: String
+    withCycleTimeCount: Int!
 }
 
 type Contributor {
