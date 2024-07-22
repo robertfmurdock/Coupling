@@ -4,7 +4,9 @@ Coupling has the ability to track how often your party members contribute to you
 
 ## What are Contributions?
 
-In Coupling, a contribution is any meaningful change that's been integrated into your project. Contributions can have properties like:
+In Coupling, a contribution is any meaningful change that's been integrated into your project.
+
+Contributions can have properties like:
 
 - All the people who participated in creating the contribution
 - When the contribution was integrated
