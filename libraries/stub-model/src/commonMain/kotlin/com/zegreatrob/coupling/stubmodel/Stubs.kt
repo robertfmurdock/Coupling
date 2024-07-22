@@ -120,8 +120,8 @@ fun <E> record(partyId: PartyId, element: E) = Record(
 
 fun stubContribution() = Contribution(
     id = uuidString(),
-    createdAt = Clock.System.now().minus(2.days),
-    dateTime = Clock.System.now().minus(3.days),
+    createdAt = Clock.System.now().minus((1..2).random().days),
+    dateTime = Clock.System.now().minus((1..8).random().days),
     hash = uuidString(),
     ease = 99,
     story = uuidString(),
@@ -130,7 +130,7 @@ fun stubContribution() = Contribution(
     label = uuidString(),
     semver = uuidString(),
     firstCommit = uuidString(),
-    firstCommitDateTime = Clock.System.now().minus(4.days),
-    integrationDateTime = Clock.System.now().minus(5.days),
+    firstCommitDateTime = Clock.System.now().minus((2..4).random().days),
+    integrationDateTime = Clock.System.now().minus((5..10).random().days),
     cycleTime = (1..3).random().days,
 )

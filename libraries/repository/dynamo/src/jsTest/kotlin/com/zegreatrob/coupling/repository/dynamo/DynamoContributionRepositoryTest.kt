@@ -52,6 +52,24 @@ class DynamoContributionRepositoryTest {
     }
 
     @Test
+    fun canSaveOverContributionWithSameIDWithDifferentValues() = asyncSetup(object {
+        val partyId = stubPartyId()
+        lateinit var repository: DynamoContributionRepository
+        val userEmail = uuidString()
+        val clock = MagicClock().apply { currentTime = Clock.System.now() }
+        val contribution1 = stubContribution()
+        val contributionUpdated = stubContribution().copy(id = contribution1.id)
+    }) {
+        repository = DynamoContributionRepository.invoke(userEmail, clock)
+        repository.save(partyId.with(contribution1))
+        repository.save(partyId.with(contributionUpdated))
+    } exercise {
+        repository.get(ContributionQueryParams(partyId = partyId, window = null, limit = null))
+    } verify { result: List<PartyRecord<Contribution>> ->
+        result.elements.assertIsEqualTo(listOf(contributionUpdated))
+    }
+
+    @Test
     fun givenManyNullsCanStillSaveAndLoadContribution() = asyncSetup(object {
         val partyId = stubPartyId()
         lateinit var repository: DynamoContributionRepository

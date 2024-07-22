@@ -21,20 +21,28 @@ class DynamoContributionRepository private constructor(override val userId: Stri
     UserIdProvider,
     PartyIdDynamoRecordJsonMapping {
 
-    override suspend fun save(partyContribution: PartyElement<Contribution>) = performPutItem(
-        partyContribution
-            .toRecord()
-            .asDynamoJson(),
-    )
-
-    override suspend fun deleteAll(partyId: PartyId) = partyId.queryForItemList().forEach { item ->
-        performDeleteItem(
-            json(
-                "tribeId" to item["tribeId"],
-                "timestamp+id" to item["timestamp+id"],
-            ),
+    override suspend fun save(partyContribution: PartyElement<Contribution>) {
+        ContributionQueryParams(partyContribution.partyId, window = null, limit = null)
+            .performDynamoQuery()
+            .filter { it["id"] == partyContribution.element.id }
+            .forEach { dynamoContribution -> dynamoContribution.performDeleteContribution() }
+        performPutItem(
+            partyContribution
+                .toRecord()
+                .asDynamoJson(),
         )
     }
+
+    override suspend fun deleteAll(partyId: PartyId) = partyId.queryForItemList().forEach { item ->
+        item.performDeleteContribution()
+    }
+
+    private suspend fun Json.performDeleteContribution() = performDeleteItem(
+        json(
+            "tribeId" to this["tribeId"],
+            "timestamp+id" to this["timestamp+id"],
+        ),
+    )
 
     private fun PartyRecord<Contribution>.asDynamoJson(): Json = recordJson()
         .add(data.toJson())
@@ -62,13 +70,15 @@ class DynamoContributionRepository private constructor(override val userId: Stri
     )
 
     override suspend fun get(params: ContributionQueryParams) = params.partyId.logAsync("windowedContributions") {
-        queryForItemList(
-            contributionListQuery(params.partyId, params.window, params.limit),
-            limited = params.limit != null,
-        )
+        params.performDynamoQuery()
     }
         .mapNotNull { toRecord(it) }
         .sortedByDescending { "${it.data.element.dateTime} ${it.data.element.id}" }
+
+    private suspend fun ContributionQueryParams.performDynamoQuery() = queryForItemList(
+        contributionListQuery(partyId, window, limit),
+        limited = limit != null,
+    )
 
     private fun contributionListQuery(partyId: PartyId, window: Duration?, limit: Int?) = if (window != null) {
         json(
