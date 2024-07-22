@@ -111,9 +111,8 @@ fun couplingResolvers() = json(
         "boost" to partyBoostResolver,
         "contributions" to contributionResolver,
         "contributors" to contributorResolver,
-        "contributionStatistics" to { entityJson: Json?, args: Json ->
-            val (entity) = parseGraphJsons<JsonParty, JsonNull>(entityJson, args)
-            couplingJsonFormat.encodeToDynamic(JsonContributionStatistics(partyId = entity.id))
+        "contributionStatistics" to resolver { entity: JsonParty, _: JsonNull? ->
+            JsonContributionStatistics(partyId = entity.id)
         },
     ),
     "ContributionStatistics" to json(
@@ -139,3 +138,9 @@ fun couplingResolvers() = json(
         "boost" to userBoostResolver,
     ),
 )
+
+private inline fun <reified E, reified A, reified R> resolver(crossinline block: (E, A?) -> R) =
+    { entityJson: Json?, args: Json ->
+        val (entity, second) = parseGraphJsons<E, A>(entityJson, args)
+        couplingJsonFormat.encodeToDynamic(block(entity, second))
+    }
