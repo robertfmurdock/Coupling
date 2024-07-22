@@ -15,7 +15,7 @@ fun interface ContributionDeleteAll {
 }
 
 fun interface ContributionSave {
-    suspend fun save(partyContribution: PartyElement<Contribution>)
+    suspend fun save(partyContributions: PartyElement<List<Contribution>>)
 }
 
 interface ContributionRepository :

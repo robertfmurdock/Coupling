@@ -21,23 +21,26 @@ class DynamoContributionRepository private constructor(override val userId: Stri
     UserIdProvider,
     PartyIdDynamoRecordJsonMapping {
 
-    override suspend fun save(partyContribution: PartyElement<Contribution>) {
-        delete(partyContribution.partyId, partyContribution.element.id)
-        performPutItem(
-            partyContribution
-                .toRecord()
-                .asDynamoJson(),
-        )
+    override suspend fun save(partyContributions: PartyElement<List<Contribution>>) {
+        delete(partyContributions.partyId, partyContributions.element.map { it.id })
+        partyContributions.element.map { partyContributions.partyId.with(it) }
+            .forEach { partyContribution ->
+                performPutItem(
+                    partyContribution
+                        .toRecord()
+                        .asDynamoJson(),
+                )
+            }
     }
 
-    private suspend fun delete(partyId: PartyId, contributionId: String) {
+    private suspend fun delete(partyId: PartyId, contributionIds: List<String>) {
         queryForItemList(
             json(
                 "TableName" to prefixedTableName,
                 "ScanIndexForward" to false,
-                "ExpressionAttributeValues" to json(":tribeId" to partyId.value, ":contributionId" to contributionId),
+                "ExpressionAttributeValues" to json(":tribeId" to partyId.value, ":contributionIds" to contributionIds.toTypedArray()),
                 "KeyConditionExpression" to "tribeId = :tribeId",
-                "FilterExpression" to "id = :contributionId",
+                "FilterExpression" to "contains(:contributionIds, id)",
             ),
             limited = false,
         )

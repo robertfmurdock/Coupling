@@ -71,7 +71,7 @@ class MemoryRepositoryCatalog private constructor(
 
 class MemoryContributionRepository : ContributionRepository {
     override suspend fun get(params: ContributionQueryParams): List<PartyRecord<Contribution>> = emptyList()
-    override suspend fun save(partyContribution: PartyElement<Contribution>) = throw NotImplementedError()
+    override suspend fun save(partyContributions: PartyElement<List<Contribution>>) = throw NotImplementedError()
     override suspend fun deleteAll(partyId: PartyId) = throw NotImplementedError()
 }
 

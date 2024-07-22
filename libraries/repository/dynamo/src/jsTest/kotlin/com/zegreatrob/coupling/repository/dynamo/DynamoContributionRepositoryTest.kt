@@ -28,17 +28,16 @@ class DynamoContributionRepositoryTest {
         val contributions = generateSequence { stubContribution() }
             .take(3)
             .toList()
-        val partyContributions = partyId.with(elementList = contributions)
         val unrelatedContribution = stubContribution()
     }) {
         repository = DynamoContributionRepository.invoke(userEmail, clock)
     } exercise {
-        partyContributions.forEach { repository.save(it) }
-        repository.save(stubPartyId().with(unrelatedContribution))
+        repository.save(partyId.with(element = contributions))
+        repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))
         repository.get(ContributionQueryParams(partyId = partyId, window = null, limit = null))
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
-            partyContributions
+            partyId.with(elementList = contributions)
                 .sortedByDescending { "${it.element.dateTime} ${it.element.id}" }
                 .map {
                     Record(
@@ -61,8 +60,8 @@ class DynamoContributionRepositoryTest {
         val contributionUpdated = stubContribution().copy(id = contribution1.id)
     }) {
         repository = DynamoContributionRepository.invoke(userEmail, clock)
-        repository.save(partyId.with(contribution1))
-        repository.save(partyId.with(contributionUpdated))
+        repository.save(partyId.with(element = listOf(contribution1)))
+        repository.save(partyId.with(element = listOf(contributionUpdated)))
     } exercise {
         repository.get(ContributionQueryParams(partyId = partyId, window = null, limit = null))
     } verify { result: List<PartyRecord<Contribution>> ->
@@ -92,8 +91,8 @@ class DynamoContributionRepositoryTest {
     }) {
         repository = DynamoContributionRepository.invoke(userEmail, clock)
     } exercise {
-        partyContributions.forEach { repository.save(it) }
-        repository.save(stubPartyId().with(unrelatedContribution))
+        repository.save(partyId.with(element = contributions))
+        repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))
         repository.get(ContributionQueryParams(partyId = partyId, window = null, limit = null))
     } verify { result: List<PartyRecord<Contribution>> ->
         result.assertIsEqualTo(
@@ -127,7 +126,7 @@ class DynamoContributionRepositoryTest {
     }) {
         repository = DynamoContributionRepository.invoke(userEmail, clock)
     } exercise {
-        partyContributions.forEach { repository.save(it) }
+        repository.save(partyId.with(element = allContributions))
         repository.get(ContributionQueryParams(partyId, window, null))
     } verify { result: List<PartyRecord<Contribution>> ->
         result.elements.assertIsEqualTo(
@@ -144,13 +143,12 @@ class DynamoContributionRepositoryTest {
         val contributions = generateSequence { stubContribution() }
             .take(40)
             .toList()
-        val partyContributions = partyId.with(elementList = contributions)
         val unrelatedContribution = stubContribution()
     }) {
         repository = DynamoContributionRepository.invoke(userEmail, clock)
     } exercise {
-        partyContributions.forEach { repository.save(it) }
-        repository.save(stubPartyId().with(unrelatedContribution))
+        repository.save(partyId.with(element = contributions))
+        repository.save(stubPartyId().with(element = listOf(unrelatedContribution)))
         repository.deleteAll(partyId)
         repository.get(ContributionQueryParams(partyId, null, null))
     } verify { result: List<PartyRecord<Contribution>> ->

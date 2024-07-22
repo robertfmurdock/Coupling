@@ -10,9 +10,10 @@ import kotlinx.datetime.Clock
 interface ServerSaveContributionCommandDispatcher : SaveContributionCommand.Dispatcher {
     val contributionRepository: ContributionSave
     override suspend fun perform(command: SaveContributionCommand): VoidResult {
-        command.contributionList.forEach { input ->
-            contributionRepository.save(
-                command.partyId.with(
+        contributionRepository.save(
+            command.partyId.with(
+                element =
+                command.contributionList.map { input ->
                     Contribution(
                         id = input.contributionId,
                         createdAt = Clock.System.now(),
@@ -28,10 +29,10 @@ interface ServerSaveContributionCommandDispatcher : SaveContributionCommand.Disp
                         firstCommitDateTime = input.firstCommitDateTime,
                         integrationDateTime = input.integrationDateTime,
                         cycleTime = input.cycleTime,
-                    ),
-                ),
-            )
-        }
+                    )
+                },
+            ),
+        )
         return VoidResult.Accepted
     }
 }
