@@ -371,6 +371,23 @@ type Mutation {
 
 input SaveContributionInput {
     partyId: ID!
+    contributionId: ID @deprecated
+    hash: String @deprecated
+    dateTime: String @deprecated
+    ease: Int @deprecated
+    story: String @deprecated
+    link: String @deprecated
+    label: String @deprecated
+    semver: String @deprecated
+    firstCommit: String @deprecated
+    firstCommitDateTime: String @deprecated
+    integrationDateTime: String @deprecated
+    cycleTime: String @deprecated
+    participantEmails: [String!] @deprecated
+    contributionList: [ContributionInput]
+}
+
+input ContributionInput {
     contributionId: ID!
     hash: String
     dateTime: String
@@ -385,6 +402,7 @@ input SaveContributionInput {
     cycleTime: String
     participantEmails: [String!]
 }
+
 input ClearContributionsInput {
     partyId: ID!
 }
