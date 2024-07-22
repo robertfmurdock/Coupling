@@ -83,9 +83,10 @@ jobs:
       - name: Update Contributions
         uses: robertfmurdock/coupling-contribution-action@8ae4b89fe3b3223ac7b13faf134e17b939ade02e
         with:
-          save-contribution: ${{ github.ref == 'refs/heads/master' }}
           coupling-secret: ${{ secrets.COUPLING_API_PARTY_SECRET }}
           party-id: 9df8b8ef-f10f-4b75-bde1-d691c148378c
+          save-contribution: ${{ github.ref == 'refs/heads/master' }}
+          cycle-time-from-first-commit: true
           contribution-file: build/digger/current.json
       - name: Collect Results
         if: ${{ always() }}
