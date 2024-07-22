@@ -104,8 +104,6 @@ private fun CliktCommand.cycleTimeFromFirstCommit(contribution: Contribution, no
     }
 }
 
-private fun Contribution.cycleTimeFromCommits(now: Instant?): Duration? = firstCommitDateTime?.let { now?.minus(it) }
-
 interface ContributionCliCommand {
     val label: String
     val link: String

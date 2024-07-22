@@ -1,13 +1,9 @@
 package com.zegreatrob.coupling.server
 
 import com.zegreatrob.coupling.model.ClockProvider
-import com.zegreatrob.coupling.model.Contribution
-import com.zegreatrob.coupling.model.ContributionQueryParams
-import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.user.UserDetails
@@ -15,6 +11,7 @@ import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.LiveInfoRepository
 import com.zegreatrob.coupling.repository.contribution.ContributionRepository
 import com.zegreatrob.coupling.repository.discord.DiscordAccessRepository
+import com.zegreatrob.coupling.repository.memory.MemoryContributionRepository
 import com.zegreatrob.coupling.repository.memory.MemoryLiveInfoRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPairAssignmentDocumentRepository
 import com.zegreatrob.coupling.repository.memory.MemoryPartyRepository
@@ -67,12 +64,6 @@ class MemoryRepositoryCatalog private constructor(
                 MemoryContributionRepository(),
             )
     }
-}
-
-class MemoryContributionRepository : ContributionRepository {
-    override suspend fun get(params: ContributionQueryParams): List<PartyRecord<Contribution>> = emptyList()
-    override suspend fun save(partyContributions: PartyElement<List<Contribution>>) = throw NotImplementedError()
-    override suspend fun deleteAll(partyId: PartyId) = throw NotImplementedError()
 }
 
 class MemoryRepositoryBackend {
