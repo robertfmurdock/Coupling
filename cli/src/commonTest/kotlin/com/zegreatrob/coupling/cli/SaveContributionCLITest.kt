@@ -22,10 +22,10 @@ import kotlinx.datetime.Instant
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.minutes
 
-class SaveContributionCommandTest {
+class SaveContributionCLITest {
 
     @Test
-    fun canOverrideFileFields() = asyncSetup(object : ScopeMint() {
+    fun canOverrideFields() = asyncSetup(object : ScopeMint() {
         val sourceContribution = Contribution(
             lastCommit = "${uuid4()}",
             firstCommit = "${uuid4()}",
@@ -45,12 +45,12 @@ class SaveContributionCommandTest {
             .context { obj = ContributionContext(partyId, "local") }
         val labelOverride = uuidString()
         val linkOverride = uuidString()
+        val expectedCycleTime = 127.minutes
     }) exercise {
-        command.test("--label $labelOverride --link $linkOverride --input-json \'${sourceContribution.toJsonString()}\'")
+        command.test("--label $labelOverride --link $linkOverride --cycle-time \"$expectedCycleTime\" --input-json \'${sourceContribution.toJsonString()}\'")
     } verify { result ->
         result.statusCode.assertIsEqualTo(0, result.stderr)
         receivedActions.firstOrNull()
-            ?.let { it as? SaveContributionCommand }
             .assertIsEqualTo(
                 SaveContributionCommand(
                     partyId = partyId,
@@ -65,6 +65,7 @@ class SaveContributionCommandTest {
                     label = labelOverride,
                     firstCommit = sourceContribution.firstCommit,
                     firstCommitDateTime = sourceContribution.firstCommitDateTime,
+                    cycleTime = expectedCycleTime,
                 ),
             )
     }

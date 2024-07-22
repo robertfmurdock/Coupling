@@ -47,6 +47,7 @@ class SaveContribution(
     private val ease by option().default("")
     private val story by option().default("")
     private val cycleTimeFromFirstCommit by option().flag()
+    private val cycleTime by option().default("")
     override val link by option().default("")
     override val label by option().default("")
     override fun run() {
@@ -62,7 +63,8 @@ class SaveContribution(
                     cycleTime = if (cycleTimeFromFirstCommit) {
                         cycleTimeFromFirstCommit(contribution, clock.now())
                     } else {
-                        null
+                        cycleTime.ifBlank { null }
+                            ?.let(Duration.Companion::parse)
                     },
                 )
             } else {
