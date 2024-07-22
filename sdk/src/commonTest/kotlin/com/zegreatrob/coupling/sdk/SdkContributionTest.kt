@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.elements
-import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.sdk.gql.graphQuery
@@ -19,7 +18,6 @@ import com.zegreatrob.coupling.stubmodel.stubPlayers
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.ScopeMint
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.random.Random
@@ -33,33 +31,26 @@ class SdkContributionTest {
     @Test
     fun canSaveAndQueryContributions() = asyncSetup(object {
         val party = stubPartyDetails()
-        val saveContributionCommands = generateSequence {
-            SaveContributionCommand(
-                partyId = party.id,
-                contributionList = listOf(
-                    ContributionInput(
-                        contributionId = uuidString(),
-                        participantEmails = setOf(uuidString(), uuidString(), uuidString()),
-                        hash = uuidString(),
-                        dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
-                        ease = Random.nextInt(),
-                        story = uuidString(),
-                        link = uuidString(),
-                    ),
-                ),
+        val contributionInputs = generateSequence {
+            ContributionInput(
+                contributionId = uuidString(),
+                participantEmails = setOf(uuidString(), uuidString(), uuidString()),
+                hash = uuidString(),
+                dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
+                ease = Random.nextInt(),
+                story = uuidString(),
+                link = uuidString(),
             )
         }.take(3).toList()
     }) {
         savePartyState(party, emptyList(), emptyList())
-        saveContributionCommands.forEach {
-            sdk().fire(it)
-        }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(graphQuery { party(party.id) { contributions() } })
     } verify { result ->
         result?.party?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
-                saveContributionCommands.flatMap { it.contributionList }.toExpectedContributions(),
+                contributionInputs.toExpectedContributions(),
             )
         result?.party?.contributions?.elements?.map { it.createdAt }?.forEach { createdAt ->
             createdAt.assertIsCloseToNow()
@@ -69,25 +60,20 @@ class SdkContributionTest {
     @Test
     fun clearingContributionsWillRemoveThemFromParty() = asyncSetup(object {
         val party = stubPartyDetails()
-        val saveContributionCommands = generateSequence {
-            SaveContributionCommand(
-                partyId = party.id,
-                contributionList = listOf(
-                    ContributionInput(
-                        contributionId = uuidString(),
-                        participantEmails = setOf(uuidString(), uuidString(), uuidString()),
-                        hash = uuidString(),
-                        dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
-                        ease = Random.nextInt(),
-                        story = uuidString(),
-                        link = uuidString(),
-                    ),
-                ),
+        val contributionInputs = generateSequence {
+            ContributionInput(
+                contributionId = uuidString(),
+                participantEmails = setOf(uuidString(), uuidString(), uuidString()),
+                hash = uuidString(),
+                dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
+                ease = Random.nextInt(),
+                story = uuidString(),
+                link = uuidString(),
             )
         }.take(4).toList()
     }) {
         savePartyState(party, emptyList(), emptyList())
-        saveContributionCommands.forEach { sdk().fire(it) }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
         sdk().fire(ClearContributionsCommand(partyId = party.id))
     } exercise {
         sdk().fire(graphQuery { party(party.id) { contributions() } })
@@ -103,16 +89,14 @@ class SdkContributionTest {
         val expectedPlayer = players[1]
         val contributionInput = stubContributionInput()
             .copy(participantEmails = setOf(expectedPlayer.email))
-        val saveContributionCommands = listOf(
+        val contributionInputs = listOf(
             stubContributionInput().copy(participantEmails = setOf()),
             contributionInput,
             stubContributionInput().copy(participantEmails = setOf()),
-        ).map { SaveContributionCommand(partyId = party.id, listOf(it)) }
+        )
     }) {
         savePartyState(party, players, emptyList())
-        saveContributionCommands.forEach {
-            sdk().fire(it)
-        }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
             graphQuery {
@@ -157,16 +141,14 @@ class SdkContributionTest {
                 dateTime = Clock.System.now().minus(8.days),
                 participantEmails = setOf(expectedPlayer.email),
             )
-        val saveContributionCommands = listOf(
+        val contributionInputs = listOf(
             stubContributionInput(),
             excludedContributionInput,
             stubContributionInput(),
-        ).map { SaveContributionCommand(party.id, listOf(it)) }
+        )
     }) {
         savePartyState(party, players, emptyList())
-        saveContributionCommands.forEach {
-            sdk().fire(it)
-        }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
             graphQuery {
@@ -180,7 +162,7 @@ class SdkContributionTest {
             ?.contributions?.elements?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
-                (saveContributionCommands.flatMap { it.contributionList } - excludedContributionInput)
+                (contributionInputs - excludedContributionInput)
                     .map(ContributionInput::toExpectedContribution)
                     .toSet(),
                 "Old contributions should be excluded",
@@ -192,17 +174,15 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val now = Clock.System.now().roundToMillis()
-        val saveContributionCommands = (0..12).map { number ->
+        val contributionInputs = (0..12).map { number ->
             now.minus(number.days)
         }.map { dateTime ->
             stubContributionInput().copy(dateTime = dateTime)
-        }.map { SaveContributionCommand(party.id, listOf(it)) }
+        }
         val expectedLimit = 6
     }) {
         savePartyState(party, players, emptyList())
-        saveContributionCommands.forEach {
-            setupScope.launch { sdk().fire(it) }
-        }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(graphQuery { party(party.id) { contributions(limit = expectedLimit) } })
     } verify { result ->
@@ -212,8 +192,7 @@ class SdkContributionTest {
             ?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
-                (saveContributionCommands.take(expectedLimit))
-                    .flatMap { it.contributionList }
+                contributionInputs.take(expectedLimit)
                     .map(ContributionInput::toExpectedContribution)
                     .toSet(),
                 "Older contributions should be excluded",
@@ -230,16 +209,14 @@ class SdkContributionTest {
                 dateTime = Clock.System.now().minus(8.days),
                 participantEmails = setOf(expectedPlayer.email),
             )
-        val saveContributionCommands = listOf(
+        val contributionInputs = listOf(
             stubContributionInput().copy(participantEmails = setOf(expectedPlayer.email)),
             excludedContributionCommand,
             stubContributionInput().copy(participantEmails = setOf(expectedPlayer.email)),
-        ).map { SaveContributionCommand(party.id, listOf(it)) }
+        )
     }) {
         savePartyState(party, players, emptyList())
-        saveContributionCommands.forEach {
-            sdk().fire(it)
-        }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
             graphQuery {
@@ -257,7 +234,7 @@ class SdkContributionTest {
             ?.contributions?.elements?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
-                (saveContributionCommands.flatMap { it.contributionList } - excludedContributionCommand)
+                (contributionInputs - excludedContributionCommand)
                     .map(ContributionInput::toExpectedContribution)
                     .toSet(),
                 "Old contributions should be excluded",
@@ -268,14 +245,14 @@ class SdkContributionTest {
     fun canQueryContributorsThatAreNotPlayers() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
-        val saveContributionCommands = listOf(
-            stubSaveContributionCommand(party.id),
-            stubSaveContributionCommand(party.id),
-            stubSaveContributionCommand(party.id),
+        val contributionInputs = listOf(
+            stubContributionInput(),
+            stubContributionInput(),
+            stubContributionInput(),
         )
     }) {
         savePartyState(party, players, emptyList())
-        saveContributionCommands.forEach { sdk().fire(it) }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
             graphQuery { party(party.id) { contributors { email() } } },
@@ -283,7 +260,7 @@ class SdkContributionTest {
     } verify { result ->
         result?.party?.contributors
             .assertIsEqualTo(
-                saveContributionCommands.asSequence().flatMap { it.contributionList }.flatMap { it.participantEmails }
+                contributionInputs.asSequence().flatMap { it.participantEmails }
                     .toSet()
                     .sorted()
                     .map { Contributor(email = it) }.toList(),
@@ -294,14 +271,14 @@ class SdkContributionTest {
     fun canQueryContributorsThatArePlayers() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
-        val saveContributionCommands = listOf(
+        val contributionInputs = listOf(
             stubContributionInput().copy(participantEmails = players.map { it.email }.toSet()),
             stubContributionInput().copy(participantEmails = setOf(players.random().email)),
             stubContributionInput().copy(participantEmails = setOf(players.random().email)),
-        ).map { SaveContributionCommand(party.id, listOf(it)) }
+        )
     }) {
         savePartyState(party, players, emptyList())
-        saveContributionCommands.forEach { sdk().fire(it) }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
             graphQuery {
@@ -326,14 +303,14 @@ class SdkContributionTest {
         val additionalEmail1 = uuidString()
         val additionalEmail2 = uuidString()
         val player = stubPlayer().copy(additionalEmails = setOf(additionalEmail1, additionalEmail2))
-        val saveContributionCommands = listOf(
+        val contributionInputs = listOf(
             stubContributionInput().copy(participantEmails = setOf(player.email)),
             stubContributionInput().copy(participantEmails = setOf(additionalEmail1)),
             stubContributionInput().copy(participantEmails = setOf(additionalEmail2)),
-        ).map { SaveContributionCommand(party.id, listOf(it)) }
+        )
     }) {
         savePartyState(party, listOf(player), emptyList())
-        saveContributionCommands.forEach { sdk().fire(it) }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(graphQuery { party(party.id) { contributors { details() } } })
     } verify { result ->
@@ -348,12 +325,12 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val unvalidatedEmail = uuidString()
         val player = stubPlayer().copy(additionalEmails = setOf(unvalidatedEmail))
-        val saveContributionCommands = listOf(
+        val contributionInputs = listOf(
             stubContributionInput().copy(participantEmails = setOf(unvalidatedEmail)),
-        ).map { SaveContributionCommand(party.id, listOf(it)) }
+        )
     }) {
         savePartyState(party, listOf(player), emptyList())
-        saveContributionCommands.forEach { sdk().fire(it) }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
             graphQuery {
@@ -375,12 +352,12 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val unvalidatedEmail = uuidString()
         val player = stubPlayer().copy(additionalEmails = setOf(unvalidatedEmail))
-        val saveContributionCommands = listOf(
+        val contributionInputs = listOf(
             stubContributionInput().copy(participantEmails = setOf(unvalidatedEmail.uppercase())),
-        ).map { SaveContributionCommand(party.id, listOf(it)) }
+        )
     }) {
         savePartyState(party, listOf(player), emptyList())
-        saveContributionCommands.forEach { sdk().fire(it) }
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
             graphQuery {
@@ -396,11 +373,6 @@ class SdkContributionTest {
         result?.party?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(listOf(player))
     }
-
-    private fun stubSaveContributionCommand(partyId: PartyId) = SaveContributionCommand(
-        partyId = partyId,
-        contributionList = listOf(stubContributionInput()),
-    )
 
     private fun stubContributionInput() = ContributionInput(
         contributionId = uuidString(),
