@@ -81,7 +81,7 @@ jobs:
       - name: Build + Release Coupling
         run: ./gradlew release check -Pversion=${{ env.TAGGER_VERSION }} --no-configuration-cache --scan --stacktrace
       - name: Update Contributions
-        uses: robertfmurdock/coupling-contribution-action@8ae4b89fe3b3223ac7b13faf134e17b939ade02e
+        uses: robertfmurdock/coupling-contribution-action@5a349c86f4d0dfd4336c0f0a6eb2a9dea5b4166f
         with:
           coupling-secret: ${{ secrets.COUPLING_API_PARTY_SECRET }}
           party-id: 9df8b8ef-f10f-4b75-bde1-d691c148378c
