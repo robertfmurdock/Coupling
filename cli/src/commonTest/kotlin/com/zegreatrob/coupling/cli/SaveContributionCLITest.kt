@@ -8,6 +8,7 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommandWrapper
 import com.zegreatrob.coupling.cli.party.ContributionContext
 import com.zegreatrob.coupling.cli.party.SaveContribution
+import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.uuidString
@@ -54,18 +55,22 @@ class SaveContributionCLITest {
             .assertIsEqualTo(
                 SaveContributionCommand(
                     partyId = partyId,
-                    contributionId = sourceContribution.firstCommit,
-                    participantEmails = sourceContribution.authors.toSet(),
-                    hash = sourceContribution.lastCommit,
-                    dateTime = sourceContribution.dateTime,
-                    ease = sourceContribution.ease,
-                    story = sourceContribution.storyId,
-                    link = linkOverride,
-                    semver = sourceContribution.semver,
-                    label = labelOverride,
-                    firstCommit = sourceContribution.firstCommit,
-                    firstCommitDateTime = sourceContribution.firstCommitDateTime,
-                    cycleTime = expectedCycleTime,
+                    contributionList = listOf(
+                        ContributionInput(
+                            contributionId = sourceContribution.firstCommit,
+                            participantEmails = sourceContribution.authors.toSet(),
+                            hash = sourceContribution.lastCommit,
+                            dateTime = sourceContribution.dateTime,
+                            ease = sourceContribution.ease,
+                            story = sourceContribution.storyId,
+                            link = linkOverride,
+                            semver = sourceContribution.semver,
+                            label = labelOverride,
+                            firstCommit = sourceContribution.firstCommit,
+                            firstCommitDateTime = sourceContribution.firstCommitDateTime,
+                            cycleTime = expectedCycleTime,
+                        ),
+                    ),
                 ),
             )
     }
@@ -105,6 +110,8 @@ class SaveContributionCLITest {
         result.statusCode.assertIsEqualTo(0, result.stderr)
         receivedActions.firstOrNull()
             ?.let { it as? SaveContributionCommand }
+            ?.contributionList
+            ?.firstOrNull()
             ?.cycleTime
             .assertIsEqualTo(expectedCycleTime)
     }
@@ -135,6 +142,8 @@ class SaveContributionCLITest {
         result.stdout.assertIsEqualTo("Warning: could not calculate cycle time from missing firstCommitDateTime\n")
         receivedActions.firstOrNull()
             ?.let { it as? SaveContributionCommand }
+            ?.contributionList
+            ?.firstOrNull()
             ?.cycleTime
             .assertIsEqualTo(null)
     }

@@ -4,7 +4,9 @@ import com.zegreatrob.coupling.action.party.ClearContributionsCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.perform
 import com.zegreatrob.coupling.json.ClearContributionsInput
+import com.zegreatrob.coupling.json.JsonContributionInput
 import com.zegreatrob.coupling.json.SaveContributionInput
+import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders
@@ -20,6 +22,10 @@ val saveContributionResolver = dispatch(
 
 private fun SaveContributionInput.toCommand() = SaveContributionCommand(
     partyId = PartyId(partyId),
+    contributionList = contributionList.map(JsonContributionInput::contributionInput),
+)
+
+private fun JsonContributionInput.contributionInput() = ContributionInput(
     contributionId = contributionId,
     participantEmails = participantEmails,
     hash = hash,
@@ -33,6 +39,7 @@ private fun SaveContributionInput.toCommand() = SaveContributionCommand(
     firstCommitDateTime = firstCommitDateTime,
     integrationDateTime = integrationDateTime,
     cycleTime = cycleTime,
+
 )
 
 val clearContributionsResolver = dispatch(

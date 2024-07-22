@@ -2,7 +2,9 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
+import com.zegreatrob.coupling.json.JsonContributionInput
 import com.zegreatrob.coupling.json.SaveContributionInput
+import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
@@ -18,6 +20,10 @@ interface SdkSaveContributionCommandDispatcher :
 
 private fun SaveContributionCommand.saveContributionInput() = SaveContributionInput(
     partyId = partyId.value,
+    contributionList = contributionList.map(ContributionInput::toJson),
+)
+
+private fun ContributionInput.toJson() = JsonContributionInput(
     contributionId = contributionId,
     hash = hash,
     dateTime = dateTime,

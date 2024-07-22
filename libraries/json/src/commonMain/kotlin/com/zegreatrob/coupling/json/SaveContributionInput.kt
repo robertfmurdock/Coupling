@@ -7,6 +7,11 @@ import kotlin.time.Duration
 @Serializable
 data class SaveContributionInput(
     val partyId: String,
+    val contributionList: List<JsonContributionInput>,
+)
+
+@Serializable
+data class JsonContributionInput(
     val contributionId: String,
     val hash: String?,
     val dateTime: Instant?,

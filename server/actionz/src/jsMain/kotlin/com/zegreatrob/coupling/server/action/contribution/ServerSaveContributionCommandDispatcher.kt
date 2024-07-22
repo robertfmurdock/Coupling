@@ -10,26 +10,28 @@ import kotlinx.datetime.Clock
 interface ServerSaveContributionCommandDispatcher : SaveContributionCommand.Dispatcher {
     val contributionRepository: ContributionSave
     override suspend fun perform(command: SaveContributionCommand): VoidResult {
-        contributionRepository.save(
-            command.partyId.with(
-                Contribution(
-                    id = command.contributionId,
-                    createdAt = Clock.System.now(),
-                    dateTime = command.dateTime,
-                    hash = command.hash,
-                    ease = command.ease,
-                    story = command.story,
-                    link = command.link,
-                    participantEmails = command.participantEmails,
-                    label = command.label,
-                    semver = command.semver,
-                    firstCommit = command.firstCommit,
-                    firstCommitDateTime = command.firstCommitDateTime,
-                    integrationDateTime = command.integrationDateTime,
-                    cycleTime = command.cycleTime,
+        command.contributionList.forEach { input ->
+            contributionRepository.save(
+                command.partyId.with(
+                    Contribution(
+                        id = input.contributionId,
+                        createdAt = Clock.System.now(),
+                        dateTime = input.dateTime,
+                        hash = input.hash,
+                        ease = input.ease,
+                        story = input.story,
+                        link = input.link,
+                        participantEmails = input.participantEmails,
+                        label = input.label,
+                        semver = input.semver,
+                        firstCommit = input.firstCommit,
+                        firstCommitDateTime = input.firstCommitDateTime,
+                        integrationDateTime = input.integrationDateTime,
+                        cycleTime = input.cycleTime,
+                    ),
                 ),
-            ),
-        )
+            )
+        }
         return VoidResult.Accepted
     }
 }

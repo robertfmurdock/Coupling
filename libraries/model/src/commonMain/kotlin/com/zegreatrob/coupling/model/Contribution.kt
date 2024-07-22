@@ -21,4 +21,20 @@ data class Contribution(
     val cycleTime: Duration?,
 )
 
+data class ContributionInput(
+    val contributionId: String,
+    val participantEmails: Set<String>,
+    val hash: String? = null,
+    val dateTime: Instant? = null,
+    val ease: Int? = null,
+    val story: String? = null,
+    val link: String? = null,
+    val semver: String? = null,
+    val label: String? = null,
+    val firstCommit: String? = null,
+    val firstCommitDateTime: Instant? = null,
+    val integrationDateTime: Instant? = null,
+    val cycleTime: Duration? = null,
+)
+
 data class ContributionQueryParams(val partyId: PartyId, val window: Duration?, val limit: Int?)

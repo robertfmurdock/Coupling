@@ -5,6 +5,7 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyId
@@ -35,13 +36,17 @@ class SdkContributionTest {
         val saveContributionCommands = generateSequence {
             SaveContributionCommand(
                 partyId = party.id,
-                contributionId = uuidString(),
-                participantEmails = setOf(uuidString(), uuidString(), uuidString()),
-                hash = uuidString(),
-                dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
-                ease = Random.nextInt(),
-                story = uuidString(),
-                link = uuidString(),
+                contributionList = listOf(
+                    ContributionInput(
+                        contributionId = uuidString(),
+                        participantEmails = setOf(uuidString(), uuidString(), uuidString()),
+                        hash = uuidString(),
+                        dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
+                        ease = Random.nextInt(),
+                        story = uuidString(),
+                        link = uuidString(),
+                    ),
+                ),
             )
         }.take(3).toList()
     }) {
@@ -54,7 +59,7 @@ class SdkContributionTest {
     } verify { result ->
         result?.party?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
-                saveContributionCommands.toExpectedContributions(),
+                saveContributionCommands.flatMap { it.contributionList }.toExpectedContributions(),
             )
         result?.party?.contributions?.elements?.map { it.createdAt }?.forEach { createdAt ->
             createdAt.assertIsCloseToNow()
@@ -67,13 +72,17 @@ class SdkContributionTest {
         val saveContributionCommands = generateSequence {
             SaveContributionCommand(
                 partyId = party.id,
-                contributionId = uuidString(),
-                participantEmails = setOf(uuidString(), uuidString(), uuidString()),
-                hash = uuidString(),
-                dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
-                ease = Random.nextInt(),
-                story = uuidString(),
-                link = uuidString(),
+                contributionList = listOf(
+                    ContributionInput(
+                        contributionId = uuidString(),
+                        participantEmails = setOf(uuidString(), uuidString(), uuidString()),
+                        hash = uuidString(),
+                        dateTime = Clock.System.now().minus(Random.nextInt(60 * 60).seconds).roundToMillis(),
+                        ease = Random.nextInt(),
+                        story = uuidString(),
+                        link = uuidString(),
+                    ),
+                ),
             )
         }.take(4).toList()
     }) {
@@ -92,13 +101,13 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val expectedPlayer = players[1]
-        val contributionCommand = stubSaveContributionCommand(party.id)
+        val contributionInput = stubContributionInput()
             .copy(participantEmails = setOf(expectedPlayer.email))
         val saveContributionCommands = listOf(
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf()),
-            contributionCommand,
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf()),
-        )
+            stubContributionInput().copy(participantEmails = setOf()),
+            contributionInput,
+            stubContributionInput().copy(participantEmails = setOf()),
+        ).map { SaveContributionCommand(partyId = party.id, listOf(it)) }
     }) {
         savePartyState(party, players, emptyList())
         saveContributionCommands.forEach {
@@ -132,7 +141,7 @@ class SdkContributionTest {
             ?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
                 listOf(
-                    contributionCommand.toExpectedContribution(),
+                    contributionInput.toExpectedContribution(),
                 ),
                 "Contribution should be included in solo correctly",
             )
@@ -143,16 +152,16 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val expectedPlayer = players[1]
-        val excludedContributionCommand = stubSaveContributionCommand(party.id)
+        val excludedContributionInput = stubContributionInput()
             .copy(
                 dateTime = Clock.System.now().minus(8.days),
                 participantEmails = setOf(expectedPlayer.email),
             )
         val saveContributionCommands = listOf(
-            stubSaveContributionCommand(party.id),
-            excludedContributionCommand,
-            stubSaveContributionCommand(party.id),
-        )
+            stubContributionInput(),
+            excludedContributionInput,
+            stubContributionInput(),
+        ).map { SaveContributionCommand(party.id, listOf(it)) }
     }) {
         savePartyState(party, players, emptyList())
         saveContributionCommands.forEach {
@@ -171,8 +180,8 @@ class SdkContributionTest {
             ?.contributions?.elements?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
-                (saveContributionCommands - excludedContributionCommand)
-                    .map(SaveContributionCommand::toExpectedContribution)
+                (saveContributionCommands.flatMap { it.contributionList } - excludedContributionInput)
+                    .map(ContributionInput::toExpectedContribution)
                     .toSet(),
                 "Old contributions should be excluded",
             )
@@ -186,8 +195,8 @@ class SdkContributionTest {
         val saveContributionCommands = (0..12).map { number ->
             now.minus(number.days)
         }.map { dateTime ->
-            stubSaveContributionCommand(party.id).copy(dateTime = dateTime)
-        }
+            stubContributionInput().copy(dateTime = dateTime)
+        }.map { SaveContributionCommand(party.id, listOf(it)) }
         val expectedLimit = 6
     }) {
         savePartyState(party, players, emptyList())
@@ -204,7 +213,8 @@ class SdkContributionTest {
             ?.toSet()
             .assertIsEqualTo(
                 (saveContributionCommands.take(expectedLimit))
-                    .map(SaveContributionCommand::toExpectedContribution)
+                    .flatMap { it.contributionList }
+                    .map(ContributionInput::toExpectedContribution)
                     .toSet(),
                 "Older contributions should be excluded",
             )
@@ -215,16 +225,16 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val expectedPlayer = players[1]
-        val excludedContributionCommand = stubSaveContributionCommand(party.id)
+        val excludedContributionCommand = stubContributionInput()
             .copy(
                 dateTime = Clock.System.now().minus(8.days),
                 participantEmails = setOf(expectedPlayer.email),
             )
         val saveContributionCommands = listOf(
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(expectedPlayer.email)),
+            stubContributionInput().copy(participantEmails = setOf(expectedPlayer.email)),
             excludedContributionCommand,
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(expectedPlayer.email)),
-        )
+            stubContributionInput().copy(participantEmails = setOf(expectedPlayer.email)),
+        ).map { SaveContributionCommand(party.id, listOf(it)) }
     }) {
         savePartyState(party, players, emptyList())
         saveContributionCommands.forEach {
@@ -247,8 +257,8 @@ class SdkContributionTest {
             ?.contributions?.elements?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
-                (saveContributionCommands - excludedContributionCommand)
-                    .map(SaveContributionCommand::toExpectedContribution)
+                (saveContributionCommands.flatMap { it.contributionList } - excludedContributionCommand)
+                    .map(ContributionInput::toExpectedContribution)
                     .toSet(),
                 "Old contributions should be excluded",
             )
@@ -273,10 +283,10 @@ class SdkContributionTest {
     } verify { result ->
         result?.party?.contributors
             .assertIsEqualTo(
-                saveContributionCommands.flatMap { it.participantEmails }
+                saveContributionCommands.asSequence().flatMap { it.contributionList }.flatMap { it.participantEmails }
                     .toSet()
                     .sorted()
-                    .map { Contributor(email = it) },
+                    .map { Contributor(email = it) }.toList(),
             )
     }
 
@@ -285,10 +295,10 @@ class SdkContributionTest {
         val party = stubPartyDetails()
         val players = stubPlayers(3)
         val saveContributionCommands = listOf(
-            stubSaveContributionCommand(party.id).copy(participantEmails = players.map { it.email }.toSet()),
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(players.random().email)),
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(players.random().email)),
-        )
+            stubContributionInput().copy(participantEmails = players.map { it.email }.toSet()),
+            stubContributionInput().copy(participantEmails = setOf(players.random().email)),
+            stubContributionInput().copy(participantEmails = setOf(players.random().email)),
+        ).map { SaveContributionCommand(party.id, listOf(it)) }
     }) {
         savePartyState(party, players, emptyList())
         saveContributionCommands.forEach { sdk().fire(it) }
@@ -317,10 +327,10 @@ class SdkContributionTest {
         val additionalEmail2 = uuidString()
         val player = stubPlayer().copy(additionalEmails = setOf(additionalEmail1, additionalEmail2))
         val saveContributionCommands = listOf(
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(player.email)),
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(additionalEmail1)),
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(additionalEmail2)),
-        )
+            stubContributionInput().copy(participantEmails = setOf(player.email)),
+            stubContributionInput().copy(participantEmails = setOf(additionalEmail1)),
+            stubContributionInput().copy(participantEmails = setOf(additionalEmail2)),
+        ).map { SaveContributionCommand(party.id, listOf(it)) }
     }) {
         savePartyState(party, listOf(player), emptyList())
         saveContributionCommands.forEach { sdk().fire(it) }
@@ -339,8 +349,8 @@ class SdkContributionTest {
         val unvalidatedEmail = uuidString()
         val player = stubPlayer().copy(additionalEmails = setOf(unvalidatedEmail))
         val saveContributionCommands = listOf(
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(unvalidatedEmail)),
-        )
+            stubContributionInput().copy(participantEmails = setOf(unvalidatedEmail)),
+        ).map { SaveContributionCommand(party.id, listOf(it)) }
     }) {
         savePartyState(party, listOf(player), emptyList())
         saveContributionCommands.forEach { sdk().fire(it) }
@@ -366,8 +376,8 @@ class SdkContributionTest {
         val unvalidatedEmail = uuidString()
         val player = stubPlayer().copy(additionalEmails = setOf(unvalidatedEmail))
         val saveContributionCommands = listOf(
-            stubSaveContributionCommand(party.id).copy(participantEmails = setOf(unvalidatedEmail.uppercase())),
-        )
+            stubContributionInput().copy(participantEmails = setOf(unvalidatedEmail.uppercase())),
+        ).map { SaveContributionCommand(party.id, listOf(it)) }
     }) {
         savePartyState(party, listOf(player), emptyList())
         saveContributionCommands.forEach { sdk().fire(it) }
@@ -389,6 +399,10 @@ class SdkContributionTest {
 
     private fun stubSaveContributionCommand(partyId: PartyId) = SaveContributionCommand(
         partyId = partyId,
+        contributionList = listOf(stubContributionInput()),
+    )
+
+    private fun stubContributionInput() = ContributionInput(
         contributionId = uuidString(),
         participantEmails = setOf(uuidString()),
         hash = uuidString(),
@@ -409,10 +423,10 @@ private fun List<Contribution>.withoutCreatedAt(): List<Contribution> = map {
     it.copy(createdAt = Instant.DISTANT_PAST)
 }
 
-private fun List<SaveContributionCommand>.toExpectedContributions() = map { it.toExpectedContribution() }
+private fun List<ContributionInput>.toExpectedContributions() = map { it.toExpectedContribution() }
     .sortedByDescending { it.dateTime }
 
-private fun SaveContributionCommand.toExpectedContribution() = Contribution(
+private fun ContributionInput.toExpectedContribution() = Contribution(
     id = contributionId,
     createdAt = Instant.DISTANT_PAST,
     dateTime = dateTime,

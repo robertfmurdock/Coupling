@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
+import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -57,15 +58,23 @@ class SdkPairsTest {
             fire(
                 SaveContributionCommand(
                     partyId = party.id,
-                    contributionId = uuidString(),
-                    participantEmails = mob.map { it.email }.toSet(),
+                    contributionList = listOf(
+                        ContributionInput(
+                            contributionId = uuidString(),
+                            participantEmails = mob.map { it.email }.toSet(),
+                        ),
+                    ),
                 ),
             )
             fire(
                 SaveContributionCommand(
                     partyId = party.id,
-                    contributionId = uuidString(),
-                    participantEmails = mob.take(1).map { it.email }.toSet(),
+                    contributionList = listOf(
+                        ContributionInput(
+                            contributionId = uuidString(),
+                            participantEmails = mob.take(1).map { it.email }.toSet(),
+                        ),
+                    ),
                 ),
             )
         }
@@ -91,8 +100,12 @@ class SdkPairsTest {
             fire(
                 SaveContributionCommand(
                     partyId = party.id,
-                    contributionId = uuidString(),
-                    participantEmails = mob.map { it.additionalEmails.first().uppercase() }.toSet(),
+                    contributionList = listOf(
+                        ContributionInput(
+                            contributionId = uuidString(),
+                            participantEmails = mob.map { it.additionalEmails.first().uppercase() }.toSet(),
+                        ),
+                    ),
                 ),
             )
         }

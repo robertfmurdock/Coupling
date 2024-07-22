@@ -11,6 +11,7 @@ import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.cli.cliScope
 import com.zegreatrob.coupling.cli.withSdk
+import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.sdk.CouplingSdkDispatcher
 import com.zegreatrob.testmints.action.ActionCannon
@@ -73,13 +74,17 @@ class SaveContribution(
         } else {
             SaveContributionCommand(
                 partyId = partyId,
-                contributionId = contributionId,
-                participantEmails = participantEmail.toSet(),
-                hash = hash,
-                dateTime = dateTime.ifBlank { null }?.let(Instant.Companion::parse),
-                ease = ease.ifBlank { null }?.toInt(),
-                story = story.ifBlank { null },
-                link = link.ifBlank { null },
+                contributionList = listOf(
+                    ContributionInput(
+                        contributionId = contributionId,
+                        participantEmails = participantEmail.toSet(),
+                        hash = hash,
+                        dateTime = dateTime.ifBlank { null }?.let(Instant.Companion::parse),
+                        ease = ease.ifBlank { null }?.toInt(),
+                        story = story.ifBlank { null },
+                        link = link.ifBlank { null },
+                    ),
+                ),
             )
         }
         if (action == null) {
@@ -148,16 +153,20 @@ private fun ContributionCliCommand.saveContributionCommand(
     cycleTime: Duration?,
 ) = SaveContributionCommand(
     partyId = partyId,
-    contributionId = contribution.firstCommit,
-    participantEmails = contribution.authors.toSet(),
-    hash = contribution.lastCommit,
-    dateTime = contribution.dateTime,
-    ease = contribution.ease,
-    story = contribution.storyId?.ifBlank { null },
-    link = link.takeIf(String::isNotBlank),
-    semver = contribution.semver,
-    label = label.takeIf(String::isNotBlank) ?: contribution.label,
-    firstCommit = contribution.firstCommit,
-    firstCommitDateTime = contribution.firstCommitDateTime,
-    cycleTime = cycleTime,
+    contributionList = listOf(
+        ContributionInput(
+            contributionId = contribution.firstCommit,
+            participantEmails = contribution.authors.toSet(),
+            hash = contribution.lastCommit,
+            dateTime = contribution.dateTime,
+            ease = contribution.ease,
+            story = contribution.storyId?.ifBlank { null },
+            link = link.takeIf(String::isNotBlank),
+            semver = contribution.semver,
+            label = label.takeIf(String::isNotBlank) ?: contribution.label,
+            firstCommit = contribution.firstCommit,
+            firstCommitDateTime = contribution.firstCommitDateTime,
+            cycleTime = cycleTime,
+        ),
+    ),
 )
