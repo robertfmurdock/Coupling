@@ -95,14 +95,12 @@ data class JsonParty(
 
 @Serializable
 data class JsonContributionStatistics(
-    val partyId: String? = null,
     val count: Int? = null,
     val medianCycleTime: Duration? = null,
     val withCycleTimeCount: Int? = null,
 )
 
 fun JsonContributionStatistics.toModel() = ContributionStatistics(
-    partyId = partyId?.let(::PartyId),
     count = count,
     medianCycleTime = medianCycleTime,
     withCycleTimeCount = withCycleTimeCount,

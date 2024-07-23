@@ -10,6 +10,7 @@ import kotlinx.coroutines.promise
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
+import kotlin.js.Promise
 
 typealias GraphQLDispatcherProvider<E, I, D> = suspend (CouplingContext, E, I?) -> D?
 
@@ -31,27 +32,14 @@ inline fun <reified E : Any, reified I : Any, reified D : TraceIdProvider, reifi
     crossinline commandFunc: CommandFunc<E, I, C>,
     crossinline fireFunc: suspend ActionCannon<D>.(C) -> R,
     crossinline toSerializable: (R) -> J,
-) = { entityJson: Json?, args: Json, context: CouplingContext, queryInfo: Json ->
-    context.scope.promise {
-        try {
-            val targetField = queryInfo["fieldName"].toString()
-            val alreadyLoadedField = entityJson?.get(targetField)
-            if (alreadyLoadedField != null) {
-                return@promise alreadyLoadedField
-            }
-            val (entity, input) = parseGraphJsons<E, I>(entityJson, args)
-            val cannon = cannon<D, E, I?>(context, entity, input, dispatcherFunc)
-                ?: return@promise null
-            val result = commandFunc(entity, input)?.let { cannon.fireFunc(it) }
-            if (result == null) {
-                result
-            } else {
-                encodeSuccessToJson(toSerializable, result)
-            }
-        } catch (error: Throwable) {
-            error.printStackTrace()
-            throw error
-        }
+) = resolver<E, I, J> { entity: E, input: I?, context: CouplingContext, _: Json ->
+    val cannon = cannon<D, E, I?>(context, entity, input, dispatcherFunc)
+        ?: return@resolver null
+    val result = commandFunc(entity, input)?.let { cannon.fireFunc(it) }
+    if (result == null) {
+        null
+    } else {
+        toSerializable(result)
     }
 }
 
@@ -62,7 +50,18 @@ inline fun <reified E, reified I> parseGraphJsons(entityJson: Json?, args: Json)
     return Pair(entity, input)
 }
 
-inline fun <reified J, reified R> encodeSuccessToJson(toSerializable: (R) -> J, it: R): dynamic {
-    val value = toSerializable(it)
-    return couplingJsonFormat.encodeToDynamic(value)
-}
+typealias GraphQLResolver = (Json?, Json, CouplingContext, Json) -> Promise<dynamic>
+
+inline fun <reified E, reified A, reified R> resolver(crossinline block: suspend (E, A?, CouplingContext, Json) -> R?): GraphQLResolver =
+    { entityJson: Json?, args: Json, context: CouplingContext, queryInfo: Json ->
+        val (entity, second) = parseGraphJsons<E, A>(entityJson, args)
+        context.scope.promise {
+            try {
+                block(entity, second, context, queryInfo)
+                    ?.let { couplingJsonFormat.encodeToDynamic(it) }
+            } catch (error: Throwable) {
+                error.printStackTrace()
+                throw error
+            }
+        }
+    }

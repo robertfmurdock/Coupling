@@ -30,7 +30,6 @@ data class Party(
 )
 
 data class ContributionStatistics(
-    val partyId: PartyId?,
     val count: Int?,
     val medianCycleTime: Duration?,
     val withCycleTimeCount: Int?,

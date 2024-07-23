@@ -332,6 +332,7 @@ type Pair {
     recentTimesPaired: Int
     contributions(input: ContributionsInput): [Contribution!]
     pairAssignmentHistory: [PairAssignment]
+    contributionStatistics: ContributionStatistics!
 }
 
 type PairAssignment {

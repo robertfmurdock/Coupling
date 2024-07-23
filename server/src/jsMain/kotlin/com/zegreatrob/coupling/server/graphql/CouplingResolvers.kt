@@ -1,16 +1,12 @@
 package com.zegreatrob.coupling.server.graphql
 
-import com.zegreatrob.coupling.json.JsonContributionStatistics
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.PartyInput
-import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.contribution.clearContributionsResolver
 import com.zegreatrob.coupling.server.entity.contribution.contributionResolver
-import com.zegreatrob.coupling.server.entity.contribution.contributionStatisticsCountResolver
-import com.zegreatrob.coupling.server.entity.contribution.contributionStatisticsMedianCycleTimeResolver
-import com.zegreatrob.coupling.server.entity.contribution.contributionStatisticsWithCycleTimeCountResolver
+import com.zegreatrob.coupling.server.entity.contribution.contributionStatisticsResolver
 import com.zegreatrob.coupling.server.entity.contribution.contributorResolver
 import com.zegreatrob.coupling.server.entity.contribution.pairContributionResolver
 import com.zegreatrob.coupling.server.entity.contribution.saveContributionResolver
@@ -51,7 +47,6 @@ import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
-import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlinx.serialization.json.encodeToDynamic
 import kotlin.js.Json
@@ -111,14 +106,7 @@ fun couplingResolvers() = json(
         "boost" to partyBoostResolver,
         "contributions" to contributionResolver,
         "contributors" to contributorResolver,
-        "contributionStatistics" to resolver { entity: JsonParty, _: JsonNull? ->
-            JsonContributionStatistics(partyId = entity.id)
-        },
-    ),
-    "ContributionStatistics" to json(
-        "count" to contributionStatisticsCountResolver,
-        "medianCycleTime" to contributionStatisticsMedianCycleTimeResolver,
-        "withCycleTimeCount" to contributionStatisticsWithCycleTimeCountResolver,
+        "contributionStatistics" to contributionStatisticsResolver,
     ),
     "Configuration" to json(
         "addToSlackUrl" to addToSlackUrlResolve,
@@ -138,9 +126,3 @@ fun couplingResolvers() = json(
         "boost" to userBoostResolver,
     ),
 )
-
-private inline fun <reified E, reified A, reified R> resolver(crossinline block: (E, A?) -> R) =
-    { entityJson: Json?, args: Json ->
-        val (entity, second) = parseGraphJsons<E, A>(entityJson, args)
-        couplingJsonFormat.encodeToDynamic(block(entity, second))
-    }
