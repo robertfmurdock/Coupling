@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.server.action.contribution
 
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.party.PartyId
@@ -18,10 +19,11 @@ data class PairContributionQuery(
     val limit: Int? = null,
 ) {
     interface Dispatcher : PartyIdContributionsTrait {
-        suspend fun perform(query: PairContributionQuery): List<PartyRecord<Contribution>> =
+        suspend fun perform(query: PairContributionQuery): ContributionReport =
             query.partyId.contributions(query.window, query.limit)
                 .filter(byTargetPair(query.pair.targetPlayerEmailGroups()))
                 .filter(byWindow(query))
+                .let { contributionReport(it, query.partyId) }
 
         private fun byWindow(query: PairContributionQuery): (PartyRecord<Contribution>) -> Boolean {
             val window = query.window ?: return { true }

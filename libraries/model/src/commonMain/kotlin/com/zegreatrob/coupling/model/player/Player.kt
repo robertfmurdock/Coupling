@@ -38,7 +38,7 @@ val PartyElement<Player>.player get() = element
 fun List<PartyRecord<Player>>.pairCombinations() = mapIndexed { index, player ->
     slice(index + 1..lastIndex).pairsWith(player)
 }.flatten()
-    .plus(map { PlayerPair(listOf(it), contributionStatistics = null) })
+    .plus(map { PlayerPair(listOf(it)) })
 
 fun List<Player>.toPairCombinations() = mapIndexed { index, player ->
     slice(index + 1..lastIndex).toPairsWith(player)
@@ -47,5 +47,5 @@ fun List<Player>.toPairCombinations() = mapIndexed { index, player ->
 private fun List<Player>.toPairsWith(player: Player) = map { otherPlayer -> pairOf(player, otherPlayer) }
 
 private fun List<PartyRecord<Player>>.pairsWith(player: PartyRecord<Player>) = map {
-    PlayerPair(listOf(player, it), contributionStatistics = null)
+    PlayerPair(listOf(player, it))
 }

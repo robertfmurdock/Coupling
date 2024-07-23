@@ -47,13 +47,13 @@ class SdkContributionTest {
         savePartyState(party, emptyList(), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributions() } })
+        sdk().fire(graphQuery { party(party.id) { contributions { contributions() } } })
     } verify { result ->
-        result?.party?.contributions?.elements?.withoutCreatedAt()
+        result?.party?.contributions?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
                 contributionInputs.toExpectedContributions(),
             )
-        result?.party?.contributions?.elements?.map { it.createdAt }?.forEach { createdAt ->
+        result?.party?.contributions?.contributions?.elements?.map { it.createdAt }?.forEach { createdAt ->
             createdAt.assertIsCloseToNow()
         }
     }
@@ -71,14 +71,14 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    this.contributionStatistics {
-                        this.count()
-                        this.medianCycleTime()
-                        this.withCycleTimeCount()
+                    contributions {
+                        count()
+                        medianCycleTime()
+                        withCycleTimeCount()
                     }
                 }
             },
-        )?.party?.contributionStatistics
+        )?.party?.contributions
     } verify { result ->
         result?.count.assertIsEqualTo(contributionInputs.size)
         result?.medianCycleTime.assertIsEqualTo(contributionInputs.mapNotNull { it.cycleTime }.sorted().halfwayValue())
@@ -104,9 +104,9 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
         sdk().fire(ClearContributionsCommand(partyId = party.id))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributions() } })
+        sdk().fire(graphQuery { party(party.id) { contributions { contributions() } } })
     } verify { result ->
-        result?.party?.contributions?.size
+        result?.party?.contributions?.contributions?.size
             .assertIsEqualTo(0)
     }
 
@@ -131,7 +131,7 @@ class SdkContributionTest {
                 party(party.id) {
                     pairs {
                         players()
-                        contributions()
+                        contributions { contributions() }
                     }
                 }
             },
@@ -140,7 +140,7 @@ class SdkContributionTest {
         result?.party?.pairs
             ?.filter { it.players?.elements?.map(Player::id) != listOf(expectedPlayer.id) }
             ?.forEach {
-                it.contributions?.elements?.withoutCreatedAt()
+                it.contributions?.contributions?.elements?.withoutCreatedAt()
                     .assertIsEqualTo(
                         emptyList(),
                         "Pairs should only contain contributions with exact matches, but ${
@@ -150,7 +150,7 @@ class SdkContributionTest {
             }
         result?.party?.pairs
             ?.find { it.players?.elements?.map(Player::id) == listOf(expectedPlayer.id) }
-            ?.contributions?.elements?.withoutCreatedAt()
+            ?.contributions?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
                 listOf(
                     contributionInput.toExpectedContribution(),
@@ -183,7 +183,7 @@ class SdkContributionTest {
                 party(party.id) {
                     pairs {
                         players()
-                        contributionStatistics {
+                        contributions {
                             count()
                             medianCycleTime()
                             withCycleTimeCount()
@@ -191,7 +191,9 @@ class SdkContributionTest {
                     }
                 }
             },
-        )?.party?.pairs?.first { it.players?.elements?.map(Player::email)?.toSet() == pairEmails }?.contributionStatistics
+        )?.party?.pairs?.first {
+            it.players?.elements?.map(Player::email)?.toSet() == pairEmails
+        }?.contributions
     } verify { result ->
         result?.medianCycleTime.assertIsEqualTo(contributionInputs.mapNotNull { it.cycleTime }.sorted().halfwayValue())
         result?.withCycleTimeCount.assertIsEqualTo(cycleTimeContributionsCount)
@@ -220,13 +222,13 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributions(JsonContributionWindow.Week)
+                    contributions(JsonContributionWindow.Week) { contributions() }
                 }
             },
         )
     } verify { result ->
         result?.party
-            ?.contributions?.elements?.withoutCreatedAt()
+            ?.contributions?.contributions?.elements?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
                 (contributionInputs - excludedContributionInput)
@@ -251,9 +253,10 @@ class SdkContributionTest {
         savePartyState(party, players, emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributions(limit = expectedLimit) } })
+        sdk().fire(graphQuery { party(party.id) { contributions(limit = expectedLimit) { contributions() } } })
     } verify { result ->
         result?.party
+            ?.contributions
             ?.contributions
             ?.elements
             ?.withoutCreatedAt()
@@ -290,7 +293,7 @@ class SdkContributionTest {
                 party(party.id) {
                     pairs {
                         players()
-                        contributions(JsonContributionWindow.Week)
+                        contributions(JsonContributionWindow.Week) { contributions() }
                     }
                 }
             },
@@ -298,7 +301,7 @@ class SdkContributionTest {
     } verify { result ->
         result?.party?.pairs
             ?.find { it.players?.elements?.map(Player::id) == listOf(expectedPlayer.id) }
-            ?.contributions?.elements?.withoutCreatedAt()
+            ?.contributions?.contributions?.elements?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
                 (contributionInputs - excludedContributionCommand)
@@ -322,10 +325,10 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
-            graphQuery { party(party.id) { contributors { email() } } },
+            graphQuery { party(party.id) { contributions { contributors { email() } } } },
         )
     } verify { result ->
-        result?.party?.contributors
+        result?.party?.contributions?.contributors
             .assertIsEqualTo(
                 contributionInputs.asSequence().flatMap { it.participantEmails }
                     .toSet()
@@ -350,15 +353,17 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributors {
-                        email()
-                        details()
+                    contributions {
+                        contributors {
+                            email()
+                            details()
+                        }
                     }
                 }
             },
         )
     } verify { result ->
-        result?.party?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributions?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(
                 players.sortedBy { it.email },
             )
@@ -379,9 +384,9 @@ class SdkContributionTest {
         savePartyState(party, listOf(player), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributors { details() } } })
+        sdk().fire(graphQuery { party(party.id) { contributions { contributors { details() } } } })
     } verify { result ->
-        result?.party?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributions?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(
                 listOf(player),
             )
@@ -402,15 +407,17 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributors {
-                        email()
-                        details()
+                    contributions {
+                        contributors {
+                            email()
+                            details()
+                        }
                     }
                 }
             },
         )
     } verify { result ->
-        result?.party?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributions?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(listOf(player))
     }
 
@@ -429,15 +436,17 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributors {
-                        email()
-                        details()
+                    contributions {
+                        contributors {
+                            email()
+                            details()
+                        }
                     }
                 }
             },
         )
     } verify { result ->
-        result?.party?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributions?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(listOf(player))
     }
 

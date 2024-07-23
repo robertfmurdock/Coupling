@@ -31,7 +31,7 @@ class PairContributionQueryTest {
     }) exercise {
         perform(PairContributionQuery(partyId, pair, null))
     } verify { result ->
-        result.assertIsEqualTo(listOf(expectedContribution))
+        result.contributions.assertIsEqualTo(listOf(expectedContribution))
     }
 
     @Test
@@ -51,7 +51,7 @@ class PairContributionQueryTest {
     }) exercise {
         perform(PairContributionQuery(partyId, pair))
     } verify { result ->
-        result.assertIsEqualTo(emptyList())
+        result.contributions.assertIsEqualTo(emptyList())
     }
 
     @Test
@@ -78,6 +78,6 @@ class PairContributionQueryTest {
     }) exercise {
         perform(PairContributionQuery(partyId, pair, window = 3.hours))
     } verify { result ->
-        result.elements.assertIsEqualTo(listOf(expectedContribution))
+        result.contributions?.elements.assertIsEqualTo(listOf(expectedContribution))
     }
 }

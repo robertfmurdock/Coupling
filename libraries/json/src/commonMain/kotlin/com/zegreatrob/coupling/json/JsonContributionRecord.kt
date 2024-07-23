@@ -5,7 +5,6 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.PartyRecord
-import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
 import kotlinx.datetime.Instant
@@ -56,11 +55,10 @@ fun PartyRecord<Contribution>.toJson() = JsonContributionRecord(
     timestamp = timestamp,
 )
 
-fun PartyElement<Contributor>.toJson() = JsonContributor(
-    partyId = partyId.value,
-    email = element.email,
-    playerId = element.playerId,
-    details = element.details?.toSerializable(),
+fun Contributor.toJson() = JsonContributor(
+    email = email,
+    playerId = playerId,
+    details = details?.toSerializable(),
 )
 
 fun JsonContributor.toModel() = Contributor(

@@ -44,10 +44,7 @@ data class PairListQuery(val partyId: PartyId) {
 
             return query.partyId.with(
                 naturalPairCombinations + extraPairs.map {
-                    PlayerPair(
-                        players = it.toList(),
-                        contributionStatistics = null,
-                    )
+                    PlayerPair(players = it.toList())
                 },
             )
         }

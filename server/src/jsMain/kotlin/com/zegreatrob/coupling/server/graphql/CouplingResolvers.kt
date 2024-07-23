@@ -6,9 +6,7 @@ import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.contribution.clearContributionsResolver
 import com.zegreatrob.coupling.server.entity.contribution.pairContributionResolver
-import com.zegreatrob.coupling.server.entity.contribution.pairContributionStatisticsResolver
 import com.zegreatrob.coupling.server.entity.contribution.partyContributionResolver
-import com.zegreatrob.coupling.server.entity.contribution.partyContributionStatisticsResolver
 import com.zegreatrob.coupling.server.entity.contribution.partyContributorResolver
 import com.zegreatrob.coupling.server.entity.contribution.saveContributionResolver
 import com.zegreatrob.coupling.server.entity.discord.grantDiscordAccessResolver
@@ -106,8 +104,9 @@ fun couplingResolvers() = json(
         "spinsUntilFullRotation" to spinsUntilFullRotationResolve,
         "boost" to partyBoostResolver,
         "contributions" to partyContributionResolver,
+    ),
+    "ContributionReport" to json(
         "contributors" to partyContributorResolver,
-        "contributionStatistics" to partyContributionStatisticsResolver,
     ),
     "Configuration" to json(
         "addToSlackUrl" to addToSlackUrlResolve,
@@ -119,7 +118,6 @@ fun couplingResolvers() = json(
         "recentTimesPaired" to pairHeatResolve,
         "pairAssignmentHistory" to pairAssignmentHistoryResolve,
         "contributions" to pairContributionResolver,
-        "contributionStatistics" to pairContributionStatisticsResolver,
     ),
     "PairAssignment" to json(
         "recentTimesPaired" to pairAssignmentHeatResolve,

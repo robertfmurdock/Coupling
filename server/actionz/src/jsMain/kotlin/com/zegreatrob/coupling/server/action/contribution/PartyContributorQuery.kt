@@ -1,29 +1,25 @@
 package com.zegreatrob.coupling.server.action.contribution
 
-import com.zegreatrob.coupling.model.ContributionQueryParams
+import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.element
-import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
 import com.zegreatrob.coupling.model.player.matches
-import com.zegreatrob.coupling.repository.contribution.ContributionGet
 import com.zegreatrob.coupling.repository.player.PartyIdLoadPlayersTrait
 import com.zegreatrob.testmints.action.annotation.ActionMint
 import kotlinx.datetime.Instant
 
 @ActionMint
-data class PartyContributorQuery(val partyId: PartyId) {
+data class PartyContributorQuery(val partyId: PartyId, val contributions: List<Contribution>) {
     interface Dispatcher : PartyIdLoadPlayersTrait {
-        val contributionRepository: ContributionGet
-        suspend fun perform(query: PartyContributorQuery): List<PartyElement<Contributor>> {
+        suspend fun perform(query: PartyContributorQuery): List<Contributor> {
             val players = query.partyId.loadPlayers()
-            return query.partyId.contributorEmails()
+            return query.contributions.contributorEmails()
                 .map { email ->
                     Contributor(
                         email = email,
@@ -42,15 +38,12 @@ data class PartyContributorQuery(val partyId: PartyId) {
                             ),
                         )
                     }
-                }.map { query.partyId.with(it) }
+                }
         }
 
-        private suspend fun PartyId.contributorEmails() =
-            contributionRepository.get(ContributionQueryParams(partyId = this, window = null, limit = null))
-                .elements
-                .flatMap { it.participantEmails }
-                .toSet()
-                .sorted()
+        private fun List<Contribution>.contributorEmails() = flatMap { it.participantEmails }
+            .toSet()
+            .sorted()
 
         private fun playerForEmail(
             email: String,

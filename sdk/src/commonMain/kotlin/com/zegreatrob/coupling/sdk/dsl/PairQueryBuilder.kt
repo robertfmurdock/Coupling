@@ -18,29 +18,26 @@ class PairQueryBuilder :
     fun count() = also { output = output.copy(count = 0) }
     fun recentTimesPaired() = also { output = output.copy(recentTimesPaired = 0) }
     fun spinsSinceLastPaired() = also { output = output.copy(spinsSinceLastPaired = 0) }
-    fun contributions(window: JsonContributionWindow? = null, limit: Int? = null) = also {
-        if (window == null) {
-            output = output.copy(contributions = listOf(GqlReference.contributionRecord))
-        } else {
-            GqlReference.contributionRecord.addToQuery(
-                queryKey = "contributions",
-                inputSettings = InputSettings(
-                    ContributionsInput(window, limit),
-                    "contributionsInput",
-                    "ContributionsInput",
-                ),
-            )
-        }
-    }
+    fun contributions(
+        window: JsonContributionWindow? = null,
+        limit: Int? = null,
+        block: ContributionReportBuilder.() -> Unit,
+    ) = ContributionReportBuilder()
+        .also(block)
+        .output
+        .addToQuery(
+            queryKey = "contributions",
+            inputSettings = InputSettings(
+                ContributionsInput(window, limit),
+                "contributionsInput",
+                "ContributionsInput",
+            ),
+        )
 
     fun pairAssignmentHistory(block: PairAssignmentQueryBuilder.() -> Unit) = PairAssignmentQueryBuilder()
         .also(block)
         .output
         .let { output = output.copy(pairAssignmentHistory = listOf(it)) }
-
-    fun contributionStatistics(block: ContributionStatisticsBuilder.() -> Unit) = ContributionStatisticsBuilder()
-        .also(block)
-        .also { mergeToParent("contributionStatistics", it) }
 }
 
 class ContributorQueryBuilder : QueryBuilder<JsonContributor> {

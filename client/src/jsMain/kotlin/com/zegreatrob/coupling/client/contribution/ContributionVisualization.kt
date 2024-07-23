@@ -40,7 +40,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
             party(party.id) {
                 pairs {
                     players()
-                    contributions(window = window)
+                    contributions(window = window) { contributions() }
                 }
             }
         },
@@ -78,5 +78,5 @@ private fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) =
 
 private fun List<PlayerPair>.toPairContributions(): List<Pair<CouplingPair, List<Contribution>>> = mapNotNull {
     it.players?.elements?.toCouplingPair()
-        ?.let { pair -> pair to (it.contributions?.elements ?: emptyList()) }
+        ?.let { pair -> pair to (it.contributions?.contributions?.elements ?: emptyList()) }
 }

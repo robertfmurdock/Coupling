@@ -4,8 +4,6 @@ import com.zegreatrob.coupling.json.ContributionsInput
 import com.zegreatrob.coupling.json.JsonPair
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
-import com.zegreatrob.coupling.model.Contribution
-import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.toCouplingPair
 import com.zegreatrob.coupling.model.party.PartyId
@@ -30,12 +28,5 @@ val pairContributionResolver = dispatch(
     dispatcherFunc = { context: CouplingContext, _: JsonPair, _: ContributionsInput? -> context.commandDispatcher },
     commandFunc = pairContributionQueryFunc,
     fireFunc = ::perform,
-    toSerializable = { it.map(PartyRecord<Contribution>::toJson) },
-)
-
-val pairContributionStatisticsResolver = dispatch(
-    dispatcherFunc = { context: CouplingContext, _, _ -> context.commandDispatcher },
-    commandFunc = pairContributionQueryFunc,
-    fireFunc = ::perform,
-    toSerializable = toSerializableContributionStatistics,
+    toSerializable = { it.toJson() },
 )

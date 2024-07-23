@@ -1,18 +1,27 @@
 package com.zegreatrob.coupling.server.entity.contribution
 
+import com.zegreatrob.coupling.json.JsonContributionReport
 import com.zegreatrob.coupling.json.toJson
+import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contributor
-import com.zegreatrob.coupling.model.party.PartyElement
-import com.zegreatrob.coupling.model.party.PartyId
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.server.action.contribution.PartyContributorQuery
 import com.zegreatrob.coupling.server.action.contribution.perform
-import com.zegreatrob.coupling.server.graphql.DispatcherProviders
+import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val partyContributorResolver = dispatch(
-    dispatcherFunc = DispatcherProviders.partyCommand,
-    commandFunc = { data, _: JsonNull? -> data.id?.let(::PartyId)?.let { PartyContributorQuery(it) } },
+    dispatcherFunc = { context: CouplingContext, _: JsonContributionReport, _: JsonNull? ->
+        context.commandDispatcher
+    },
+    commandFunc = { data, _: JsonNull? ->
+        val report = data.toModel()
+        PartyContributorQuery(
+            report.partyId ?: return@dispatch null,
+            report.contributions?.elements ?: return@dispatch null,
+        )
+    },
     fireFunc = ::perform,
-    toSerializable = { it.map(PartyElement<Contributor>::toJson) },
+    toSerializable = { it.map(Contributor::toJson) },
 )

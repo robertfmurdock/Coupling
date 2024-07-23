@@ -4,9 +4,7 @@ import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import com.zegreatrob.coupling.repository.contribution.ContributionGet
 import com.zegreatrob.coupling.repository.player.PlayerListGet
-import com.zegreatrob.coupling.stubmodel.record
 import com.zegreatrob.coupling.stubmodel.stubContribution
 import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.minassert.assertIsEqualTo
@@ -22,14 +20,11 @@ class PartyContributorQueryTest {
             val partyId = stubPartyId()
             val email = "jimmy@james.jim"
             val contributions = listOf(stubContribution().copy(participantEmails = setOf(email)))
-            override val contributionRepository: ContributionGet = ContributionGet {
-                contributions.map { record(partyId, it) }
-            }
             override val playerRepository = PlayerListGet { emptyList() }
         }) exercise {
-            perform(PartyContributorQuery(partyId))
+            perform(PartyContributorQuery(partyId, contributions))
         } verify { result ->
-            result.map { it.element }.assertIsEqualTo(
+            result.assertIsEqualTo(
                 listOf(
                     Contributor(
                         email = email,

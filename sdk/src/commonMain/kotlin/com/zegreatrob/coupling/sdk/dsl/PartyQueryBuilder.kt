@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.ContributionsInput
-import com.zegreatrob.coupling.json.JsonContributionStatistics
+import com.zegreatrob.coupling.json.JsonContributionReport
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.json.PairInput
@@ -26,8 +26,15 @@ class PartyQueryBuilder :
     override var variables = mutableMapOf<String, JsonElement>()
 
     fun boost() = also { output = output.copy(boost = boost) }
-    fun contributions(window: JsonContributionWindow? = null, limit: Int? = null) = also {
-        contributionRecord.addToQuery(
+
+    fun contributions(
+        window: JsonContributionWindow? = null,
+        limit: Int? = null,
+        block: ContributionReportBuilder.() -> Unit,
+    ) = ContributionReportBuilder()
+        .also(block)
+        .output
+        .addToQuery(
             queryKey = "contributions",
             inputSettings = InputSettings(
                 ContributionsInput(window, limit),
@@ -35,7 +42,6 @@ class PartyQueryBuilder :
                 "ContributionsInput",
             ),
         )
-    }
 
     fun currentPairAssignments() = also { output = output.copy(currentPairAssignmentDocument = pairAssignmentRecord) }
     fun details() = also { output = output.copy(details = partyRecord) }
@@ -62,20 +68,12 @@ class PartyQueryBuilder :
     fun secretList() = also { output = output.copy(secretList = listOf(secretRecord)) }
     fun medianSpinDuration() = also { output = output.copy(medianSpinDuration = Duration.INFINITE) }
     fun spinsUntilFullRotation() = also { output = output.copy(spinsUntilFullRotation = Int.MAX_VALUE) }
-    fun contributors(block: ContributorQueryBuilder.() -> Unit) = ContributorQueryBuilder()
-        .also(block)
-        .output
-        .let { output = output.copy(contributors = listOf(it)) }
-
-    fun contributionStatistics(block: ContributionStatisticsBuilder.() -> Unit) = ContributionStatisticsBuilder()
-        .also(block)
-        .also { mergeToParent("contributionStatistics", it) }
 }
 
-class ContributionStatisticsBuilder :
+class ContributionReportBuilder :
     BuilderWithInput(),
-    QueryBuilder<JsonContributionStatistics> {
-    override var output: JsonContributionStatistics = JsonContributionStatistics()
+    QueryBuilder<JsonContributionReport> {
+    override var output: JsonContributionReport = JsonContributionReport()
     override var queries = mutableListOf<String>()
     override var inputs = mutableListOf<String>()
     override var variables = mutableMapOf<String, JsonElement>()
@@ -90,5 +88,14 @@ class ContributionStatisticsBuilder :
 
     fun withCycleTimeCount() {
         also { output = output.copy(withCycleTimeCount = 0) }
+    }
+
+    fun contributors(block: ContributorQueryBuilder.() -> Unit) = ContributorQueryBuilder()
+        .also(block)
+        .output
+        .let { output = output.copy(contributors = listOf(it)) }
+
+    fun contributions() = also {
+        also { output = output.copy(contributions = listOf(contributionRecord)) }
     }
 }

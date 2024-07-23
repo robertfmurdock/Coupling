@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.ContributionStatistics
+import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.CouplingConfig
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.GlobalStats
@@ -55,11 +56,9 @@ private fun JsonParty.toModel(): Party? {
         boost = boost?.toModelRecord(),
         pairs = pairs?.map(JsonPair::toModel),
         pair = pair?.let(JsonPair::toModel),
+        contributions = contributions?.toModel(),
         medianSpinDuration = medianSpinDuration,
         spinsUntilFullRotation = spinsUntilFullRotation,
-        contributions = contributions?.map(JsonContributionRecord::toModel),
-        contributors = contributors?.map(JsonContributor::toModel),
-        contributionStatistics = contributionStatistics?.toModel(),
     )
 }
 
@@ -88,19 +87,32 @@ data class JsonParty(
     val pair: JsonPair? = null,
     val medianSpinDuration: Duration? = null,
     val spinsUntilFullRotation: Int? = null,
-    val contributions: List<JsonContributionRecord>? = null,
-    val contributors: List<JsonContributor>? = null,
-    val contributionStatistics: JsonContributionStatistics? = null,
+    val contributions: JsonContributionReport? = null,
 )
 
 @Serializable
-data class JsonContributionStatistics(
+data class JsonContributionReport(
+    val partyId: String? = null,
+    val contributions: List<JsonContributionRecord>? = null,
     val count: Int? = null,
     val medianCycleTime: Duration? = null,
     val withCycleTimeCount: Int? = null,
+    val contributors: List<JsonContributor>? = null,
 )
 
-fun JsonContributionStatistics.toModel() = ContributionStatistics(
+fun JsonContributionReport.toModel() = ContributionReport(
+    partyId = partyId?.let(::PartyId),
+    contributions = contributions?.map(JsonContributionRecord::toModel),
+    contributors = contributors?.map(JsonContributor::toModel),
+    count = count,
+    medianCycleTime = medianCycleTime,
+    withCycleTimeCount = withCycleTimeCount,
+)
+
+fun ContributionReport.toJson() = JsonContributionReport(
+    partyId = partyId?.value,
+    contributions = contributions?.map(PartyRecord<Contribution>::toJson),
+    contributors = contributors?.map { it.toJson() },
     count = count,
     medianCycleTime = medianCycleTime,
     withCycleTimeCount = withCycleTimeCount,
@@ -114,14 +126,12 @@ data class JsonPair(
     val spinsSinceLastPaired: Int? = null,
     val recentTimesPaired: Int? = null,
     val pairAssignmentHistory: List<JsonPairAssignment>? = null,
-    val contributions: List<JsonContributionRecord>? = null,
-    val contributionStatistics: JsonContributionStatistics? = null,
+    val contributions: JsonContributionReport? = null,
 )
 
 @Serializable
 data class JsonContributor(
     val email: String? = null,
-    val partyId: String? = null,
     val playerId: String? = null,
     val details: JsonPlayerRecord? = null,
 )
@@ -159,8 +169,7 @@ fun JsonPair.toModel() = PlayerPair(
             recentTimesPaired = json.recentTimesPaired,
         )
     },
-    contributions = contributions?.map(JsonContributionRecord::toModel),
-    contributionStatistics = contributionStatistics?.toModel(),
+    contributions = contributions?.toModel(),
 )
 
 fun PartyElement<PlayerPair>.toJson() = JsonPair(
