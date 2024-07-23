@@ -28,6 +28,7 @@ interface ServerCreateSecretCommandDispatcher : CreateSecretCommand.Dispatcher {
             id = "${uuid4()}",
             description = description,
             createdTimestamp = Clock.System.now(),
+            lastUsedTimestamp = null,
         ),
     )
 }

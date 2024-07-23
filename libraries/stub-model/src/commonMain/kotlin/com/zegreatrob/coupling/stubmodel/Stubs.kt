@@ -26,6 +26,7 @@ import kotools.types.collection.notEmptyListOf
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 fun stubParties(number: Int) = generateSequence(::stubPartyDetails).take(number).toList()
 
@@ -53,7 +54,12 @@ private fun stubPairingRule() = PairingRule.entries[partyCounter % PairingRule.e
 
 fun stubPartyId() = PartyId(uuidString())
 
-fun stubSecret() = Secret(id = uuidString(), description = uuidString(), createdTimestamp = Clock.System.now())
+fun stubSecret() = Secret(
+    id = uuidString(),
+    description = uuidString(),
+    createdTimestamp = Clock.System.now().minus((1..5).random().minutes),
+    lastUsedTimestamp = Clock.System.now().minus((10..30).random().seconds),
+)
 
 var playerCounter = 1
 fun stubPlayer() = Player(

@@ -100,7 +100,8 @@ type PartySecret {
     id: ID!
     partyId: String!
     description: String!
-    createdTimestamp: String
+    createdTimestamp: String!
+    lastUsedTimestamp: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
@@ -434,6 +435,7 @@ type SecretToken {
     secretId: ID!
     description: String!,
     createdTimestamp: String!
+    lastUsedTimestamp: String
     secretToken: String!
 }
 

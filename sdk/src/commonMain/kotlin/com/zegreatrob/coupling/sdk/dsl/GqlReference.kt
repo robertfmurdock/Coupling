@@ -90,6 +90,7 @@ object GqlReference {
         modifyingUserEmail = "",
         isDeleted = false,
         description = "",
+        lastUsedTimestamp = Instant.DISTANT_PAST,
         createdTimestamp = Instant.DISTANT_FUTURE,
         timestamp = Instant.DISTANT_PAST,
     )

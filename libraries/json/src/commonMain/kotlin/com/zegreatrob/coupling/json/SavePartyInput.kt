@@ -34,4 +34,5 @@ data class JsonSecretToken(
     val description: String,
     val createdTimestamp: Instant,
     val secretToken: String,
+    val lastUsedTimestamp: Instant?,
 )

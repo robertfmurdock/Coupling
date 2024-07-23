@@ -40,4 +40,11 @@ Whatever you choose, you'll want to ensure that you have the ability to run a pr
 
 For many of us, that'll mean finding the right part of a "Github Action" / "Azure Dev Ops" / "Jenkins" / Build Server script.
 
-## Second: Collect Contribution Information
+Yep, that means scripting.
+
+## Second: Setup Automatic Coupling Access
+
+In order to write a script that will update your party's contributions, you're going to need to generate a Coupling secret for your party.
+
+The Coupling secret system is a way of generating a one-time value that grants programmatic access to Coupling.
+
