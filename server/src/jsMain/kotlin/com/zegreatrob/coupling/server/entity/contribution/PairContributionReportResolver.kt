@@ -24,7 +24,7 @@ private val pairContributionQueryFunc = lambda@{ data: JsonPair, input: Contribu
     )
 }
 
-val pairContributionResolver = dispatch(
+val pairContributionReportResolver = dispatch(
     dispatcherFunc = { context: CouplingContext, _: JsonPair, _: ContributionsInput? -> context.commandDispatcher },
     commandFunc = pairContributionQueryFunc,
     fireFunc = ::perform,

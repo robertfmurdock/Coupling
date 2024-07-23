@@ -47,7 +47,7 @@ class SdkContributionTest {
         savePartyState(party, emptyList(), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributions { contributions() } } })
+        sdk().fire(graphQuery { party(party.id) { contributionBuilder { contributions() } } })
     } verify { result ->
         result?.party?.contributions?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
@@ -71,7 +71,7 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributions {
+                    contributionBuilder {
                         count()
                         medianCycleTime()
                         withCycleTimeCount()
@@ -104,7 +104,7 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
         sdk().fire(ClearContributionsCommand(partyId = party.id))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributions { contributions() } } })
+        sdk().fire(graphQuery { party(party.id) { contributionBuilder { contributions() } } })
     } verify { result ->
         result?.party?.contributions?.contributions?.size
             .assertIsEqualTo(0)
@@ -131,7 +131,7 @@ class SdkContributionTest {
                 party(party.id) {
                     pairs {
                         players()
-                        contributions { contributions() }
+                        contributionReport { contributions() }
                     }
                 }
             },
@@ -183,7 +183,7 @@ class SdkContributionTest {
                 party(party.id) {
                     pairs {
                         players()
-                        contributions {
+                        contributionReport {
                             count()
                             medianCycleTime()
                             withCycleTimeCount()
@@ -222,7 +222,7 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributions(JsonContributionWindow.Week) { contributions() }
+                    contributionBuilder(JsonContributionWindow.Week) { contributions() }
                 }
             },
         )
@@ -253,7 +253,7 @@ class SdkContributionTest {
         savePartyState(party, players, emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributions(limit = expectedLimit) { contributions() } } })
+        sdk().fire(graphQuery { party(party.id) { contributionBuilder(limit = expectedLimit) { contributions() } } })
     } verify { result ->
         result?.party
             ?.contributions
@@ -293,7 +293,7 @@ class SdkContributionTest {
                 party(party.id) {
                     pairs {
                         players()
-                        contributions(JsonContributionWindow.Week) { contributions() }
+                        contributionReport(JsonContributionWindow.Week) { contributions() }
                     }
                 }
             },
@@ -325,7 +325,7 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
-            graphQuery { party(party.id) { contributions { contributors { email() } } } },
+            graphQuery { party(party.id) { contributionBuilder { contributors { email() } } } },
         )
     } verify { result ->
         result?.party?.contributions?.contributors
@@ -353,7 +353,7 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributions {
+                    contributionBuilder {
                         contributors {
                             email()
                             details()
@@ -384,7 +384,7 @@ class SdkContributionTest {
         savePartyState(party, listOf(player), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributions { contributors { details() } } } })
+        sdk().fire(graphQuery { party(party.id) { contributionBuilder { contributors { details() } } } })
     } verify { result ->
         result?.party?.contributions?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(
@@ -407,7 +407,7 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributions {
+                    contributionBuilder {
                         contributors {
                             email()
                             details()
@@ -436,7 +436,7 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributions {
+                    contributionBuilder {
                         contributors {
                             email()
                             details()

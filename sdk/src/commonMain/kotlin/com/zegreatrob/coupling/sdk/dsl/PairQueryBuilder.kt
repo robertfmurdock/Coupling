@@ -18,7 +18,7 @@ class PairQueryBuilder :
     fun count() = also { output = output.copy(count = 0) }
     fun recentTimesPaired() = also { output = output.copy(recentTimesPaired = 0) }
     fun spinsSinceLastPaired() = also { output = output.copy(spinsSinceLastPaired = 0) }
-    fun contributions(
+    fun contributionReport(
         window: JsonContributionWindow? = null,
         limit: Int? = null,
         block: ContributionReportBuilder.() -> Unit,
@@ -26,7 +26,7 @@ class PairQueryBuilder :
         .also(block)
         .output
         .addToQuery(
-            queryKey = "contributions",
+            queryKey = "contributionReport",
             inputSettings = InputSettings(
                 ContributionsInput(window, limit),
                 "contributionsInput",

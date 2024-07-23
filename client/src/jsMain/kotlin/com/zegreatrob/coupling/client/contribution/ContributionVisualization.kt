@@ -40,7 +40,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
             party(party.id) {
                 pairs {
                     players()
-                    contributions(window = window) { contributions() }
+                    contributionReport(window = window) { contributions() }
                 }
             }
         },

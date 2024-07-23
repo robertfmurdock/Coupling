@@ -10,7 +10,7 @@ import com.zegreatrob.coupling.server.action.contribution.perform
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.dispatch
 
-val partyContributionResolver = dispatch(
+val partyContributionReportResolver = dispatch(
     dispatcherFunc = { context: CouplingContext, _: JsonParty, _: ContributionsInput? ->
         context.commandDispatcher
     },

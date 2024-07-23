@@ -14,7 +14,7 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
         query = graphQuery {
             party(partyId) {
                 details()
-                contributions(limit = 5) { contributors { details() } }
+                contributionBuilder(limit = 5) { contributors { details() } }
             }
         },
         toNode = { _, _, queryResult ->

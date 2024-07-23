@@ -151,7 +151,7 @@ type Party {
     spinsUntilFullRotation: Int!
     medianSpinDuration: String
     boost: BoostDetails
-    contributions(input: ContributionsInput): ContributionReport
+    contributionReport(input: ContributionsInput): ContributionReport
     pair(input: PairInput) : Pair
 }
 
@@ -322,7 +322,7 @@ type Pair {
     count: Int
     spinsSinceLastPaired: Int
     recentTimesPaired: Int
-    contributions(input: ContributionsInput): ContributionReport
+    contributionReport(input: ContributionsInput): ContributionReport
     pairAssignmentHistory: [PairAssignment]
 }
 

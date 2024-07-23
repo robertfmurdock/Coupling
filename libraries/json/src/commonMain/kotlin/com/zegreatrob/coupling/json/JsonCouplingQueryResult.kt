@@ -56,7 +56,7 @@ private fun JsonParty.toModel(): Party? {
         boost = boost?.toModelRecord(),
         pairs = pairs?.map(JsonPair::toModel),
         pair = pair?.let(JsonPair::toModel),
-        contributions = contributions?.toModel(),
+        contributions = contributionReport?.toModel(),
         medianSpinDuration = medianSpinDuration,
         spinsUntilFullRotation = spinsUntilFullRotation,
     )
@@ -87,7 +87,7 @@ data class JsonParty(
     val pair: JsonPair? = null,
     val medianSpinDuration: Duration? = null,
     val spinsUntilFullRotation: Int? = null,
-    val contributions: JsonContributionReport? = null,
+    val contributionReport: JsonContributionReport? = null,
 )
 
 @Serializable
@@ -126,7 +126,7 @@ data class JsonPair(
     val spinsSinceLastPaired: Int? = null,
     val recentTimesPaired: Int? = null,
     val pairAssignmentHistory: List<JsonPairAssignment>? = null,
-    val contributions: JsonContributionReport? = null,
+    val contributionReport: JsonContributionReport? = null,
 )
 
 @Serializable
@@ -169,7 +169,7 @@ fun JsonPair.toModel() = PlayerPair(
             recentTimesPaired = json.recentTimesPaired,
         )
     },
-    contributions = contributions?.toModel(),
+    contributions = contributionReport?.toModel(),
 )
 
 fun PartyElement<PlayerPair>.toJson() = JsonPair(
