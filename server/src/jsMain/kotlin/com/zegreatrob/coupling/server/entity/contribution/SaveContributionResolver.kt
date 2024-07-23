@@ -1,9 +1,7 @@
 package com.zegreatrob.coupling.server.entity.contribution
 
-import com.zegreatrob.coupling.action.party.ClearContributionsCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.perform
-import com.zegreatrob.coupling.json.ClearContributionsInput
 import com.zegreatrob.coupling.json.JsonContributionInput
 import com.zegreatrob.coupling.json.SaveContributionInput
 import com.zegreatrob.coupling.model.ContributionInput
@@ -39,16 +37,4 @@ private fun JsonContributionInput.contributionInput() = ContributionInput(
     firstCommitDateTime = firstCommitDateTime,
     integrationDateTime = integrationDateTime,
     cycleTime = cycleTime,
-
-)
-
-val clearContributionsResolver = dispatch(
-    dispatcherFunc = DispatcherProviders.command(),
-    commandFunc = requiredInput { _: JsonNull, args: ClearContributionsInput -> args.toCommand() },
-    fireFunc = ::perform,
-    toSerializable = { true },
-)
-
-private fun ClearContributionsInput.toCommand() = ClearContributionsCommand(
-    partyId = PartyId(partyId),
 )

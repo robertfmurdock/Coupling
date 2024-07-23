@@ -1,8 +1,6 @@
 package com.zegreatrob.coupling.server.entity.contribution
 
-import com.zegreatrob.coupling.action.stats.halfwayValue
 import com.zegreatrob.coupling.json.ContributionsInput
-import com.zegreatrob.coupling.json.JsonContributionStatistics
 import com.zegreatrob.coupling.json.JsonPair
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
@@ -39,12 +37,5 @@ val pairContributionStatisticsResolver = dispatch(
     dispatcherFunc = { context: CouplingContext, _, _ -> context.commandDispatcher },
     commandFunc = pairContributionQueryFunc,
     fireFunc = ::perform,
-    toSerializable = { contributions ->
-        val cycleTimeContributions = contributions.elements.mapNotNull(Contribution::cycleTime)
-        JsonContributionStatistics(
-            count = contributions.count(),
-            medianCycleTime = cycleTimeContributions.sorted().halfwayValue(),
-            withCycleTimeCount = cycleTimeContributions.size,
-        )
-    },
+    toSerializable = toSerializableContributionStatistics,
 )

@@ -5,11 +5,11 @@ import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.contribution.clearContributionsResolver
-import com.zegreatrob.coupling.server.entity.contribution.contributionResolver
-import com.zegreatrob.coupling.server.entity.contribution.contributorResolver
 import com.zegreatrob.coupling.server.entity.contribution.pairContributionResolver
 import com.zegreatrob.coupling.server.entity.contribution.pairContributionStatisticsResolver
+import com.zegreatrob.coupling.server.entity.contribution.partyContributionResolver
 import com.zegreatrob.coupling.server.entity.contribution.partyContributionStatisticsResolver
+import com.zegreatrob.coupling.server.entity.contribution.partyContributorResolver
 import com.zegreatrob.coupling.server.entity.contribution.saveContributionResolver
 import com.zegreatrob.coupling.server.entity.discord.grantDiscordAccessResolver
 import com.zegreatrob.coupling.server.entity.pairassignment.currentPairAssignmentResolve
@@ -105,8 +105,8 @@ fun couplingResolvers() = json(
         "medianSpinDuration" to medianSpinDurationResolve,
         "spinsUntilFullRotation" to spinsUntilFullRotationResolve,
         "boost" to partyBoostResolver,
-        "contributions" to contributionResolver,
-        "contributors" to contributorResolver,
+        "contributions" to partyContributionResolver,
+        "contributors" to partyContributorResolver,
         "contributionStatistics" to partyContributionStatisticsResolver,
     ),
     "Configuration" to json(
