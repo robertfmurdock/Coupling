@@ -1,6 +1,8 @@
 package com.zegreatrob.coupling.server.entity.contribution
 
+import com.zegreatrob.coupling.action.stats.halfwayValue
 import com.zegreatrob.coupling.json.ContributionsInput
+import com.zegreatrob.coupling.json.JsonContributionStatistics
 import com.zegreatrob.coupling.json.JsonPair
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
@@ -14,19 +16,35 @@ import com.zegreatrob.coupling.server.action.contribution.perform
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.dispatch
 
+private val pairContributionQueryFunc = lambda@{ data: JsonPair, input: ContributionsInput? ->
+    val model = data.toModel()
+    val partyId = data.partyId?.let { PartyId(it) } ?: return@lambda null
+    val players = model.players?.elements ?: return@lambda null
+    PairContributionQuery(
+        partyId = partyId,
+        pair = players.toCouplingPair(),
+        window = input?.window?.toModel(),
+        limit = input?.limit,
+    )
+}
+
 val pairContributionResolver = dispatch(
     dispatcherFunc = { context: CouplingContext, _: JsonPair, _: ContributionsInput? -> context.commandDispatcher },
-    commandFunc = { data, input ->
-        val model = data.toModel()
-        val partyId = PartyId(data.partyId ?: return@dispatch null)
-        val players = model.players?.elements ?: return@dispatch null
-        PairContributionQuery(
-            partyId = partyId,
-            pair = players.toCouplingPair(),
-            window = input?.window?.toModel(),
-            limit = input?.limit,
-        )
-    },
+    commandFunc = pairContributionQueryFunc,
     fireFunc = ::perform,
     toSerializable = { it.map(PartyRecord<Contribution>::toJson) },
+)
+
+val pairContributionStatisticsResolver = dispatch(
+    dispatcherFunc = { context: CouplingContext, _, _ -> context.commandDispatcher },
+    commandFunc = pairContributionQueryFunc,
+    fireFunc = ::perform,
+    toSerializable = { contributions ->
+        val cycleTimeContributions = contributions.elements.mapNotNull(Contribution::cycleTime)
+        JsonContributionStatistics(
+            count = contributions.count(),
+            medianCycleTime = cycleTimeContributions.sorted().halfwayValue(),
+            withCycleTimeCount = cycleTimeContributions.size,
+        )
+    },
 )

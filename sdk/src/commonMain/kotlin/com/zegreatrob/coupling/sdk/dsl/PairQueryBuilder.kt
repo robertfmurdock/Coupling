@@ -37,6 +37,10 @@ class PairQueryBuilder :
         .also(block)
         .output
         .let { output = output.copy(pairAssignmentHistory = listOf(it)) }
+
+    fun contributionStatistics(block: ContributionStatisticsBuilder.() -> Unit) = ContributionStatisticsBuilder()
+        .also(block)
+        .also { mergeToParent("contributionStatistics", it) }
 }
 
 class ContributorQueryBuilder : QueryBuilder<JsonContributor> {

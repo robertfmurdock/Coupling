@@ -39,12 +39,36 @@ class PartyStatisticsTest {
                 party = party,
                 players = players,
                 pairs = listOf(
-                    PlayerPair(pairList(players[0], players[2]), spinsSinceLastPaired = null),
-                    PlayerPair(pairList(players[0], players[3]), spinsSinceLastPaired = null),
-                    PlayerPair(pairList(players[0], players[1]), spinsSinceLastPaired = 0),
-                    PlayerPair(pairList(players[1], players[2]), spinsSinceLastPaired = null),
-                    PlayerPair(pairList(players[1], players[3]), spinsSinceLastPaired = null),
-                    PlayerPair(pairList(players[2], players[3]), spinsSinceLastPaired = 0),
+                    PlayerPair(
+                        pairList(players[0], players[2]),
+                        spinsSinceLastPaired = null,
+                        contributionStatistics = null,
+                    ),
+                    PlayerPair(
+                        pairList(players[0], players[3]),
+                        spinsSinceLastPaired = null,
+                        contributionStatistics = null,
+                    ),
+                    PlayerPair(
+                        pairList(players[0], players[1]),
+                        spinsSinceLastPaired = 0,
+                        contributionStatistics = null,
+                    ),
+                    PlayerPair(
+                        pairList(players[1], players[2]),
+                        spinsSinceLastPaired = null,
+                        contributionStatistics = null,
+                    ),
+                    PlayerPair(
+                        pairList(players[1], players[3]),
+                        spinsSinceLastPaired = null,
+                        contributionStatistics = null,
+                    ),
+                    PlayerPair(
+                        pairList(players[2], players[3]),
+                        spinsSinceLastPaired = 0,
+                        contributionStatistics = null,
+                    ),
                 ),
                 spinsUntilFullRotation = 0,
                 medianSpinDuration = null,
@@ -101,12 +125,36 @@ class PartyStatisticsTest {
             listOf(0.0, 0.0, 1.0, null),
         )
         val pairs = listOf(
-            PlayerPair(listOf(players[0], players[1]).toRecords(party.id), recentTimesPaired = 1),
-            PlayerPair(listOf(players[0], players[2]).toRecords(party.id), recentTimesPaired = 0),
-            PlayerPair(listOf(players[0], players[3]).toRecords(party.id), recentTimesPaired = 0),
-            PlayerPair(listOf(players[1], players[2]).toRecords(party.id), recentTimesPaired = 0),
-            PlayerPair(listOf(players[1], players[3]).toRecords(party.id), recentTimesPaired = 0),
-            PlayerPair(listOf(players[2], players[3]).toRecords(party.id), recentTimesPaired = 1),
+            PlayerPair(
+                listOf(players[0], players[1]).toRecords(party.id),
+                recentTimesPaired = 1,
+                contributionStatistics = null,
+            ),
+            PlayerPair(
+                listOf(players[0], players[2]).toRecords(party.id),
+                recentTimesPaired = 0,
+                contributionStatistics = null,
+            ),
+            PlayerPair(
+                listOf(players[0], players[3]).toRecords(party.id),
+                recentTimesPaired = 0,
+                contributionStatistics = null,
+            ),
+            PlayerPair(
+                listOf(players[1], players[2]).toRecords(party.id),
+                recentTimesPaired = 0,
+                contributionStatistics = null,
+            ),
+            PlayerPair(
+                listOf(players[1], players[3]).toRecords(party.id),
+                recentTimesPaired = 0,
+                contributionStatistics = null,
+            ),
+            PlayerPair(
+                listOf(players[2], players[3]).toRecords(party.id),
+                recentTimesPaired = 1,
+                contributionStatistics = null,
+            ),
         )
     }) exercise {
         render(jso { wrapper = TestRouter }) {

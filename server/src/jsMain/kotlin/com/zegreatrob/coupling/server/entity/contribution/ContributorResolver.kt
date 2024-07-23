@@ -22,7 +22,7 @@ val contributorResolver = dispatch(
     toSerializable = { it.map(PartyElement<Contributor>::toJson) },
 )
 
-val contributionStatisticsResolver = dispatch(
+val partyContributionStatisticsResolver = dispatch(
     dispatcherFunc = DispatcherProviders.partyCommand,
     commandFunc = { data, _: JsonNull? -> data.id?.let(::PartyId)?.let { PartyContributionQuery(it, null, null) } },
     fireFunc = ::perform,

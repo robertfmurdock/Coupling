@@ -160,6 +160,45 @@ class SdkContributionTest {
     }
 
     @Test
+    fun queryPairContributionStatistics() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val cycleTimeContributionsCount = 25
+        val email1 = uuidString()
+        val email2 = uuidString()
+        val pairEmails = setOf(email1, email2)
+        val contributionInputs = generateSequence {
+            stubContributionInput()
+                .copy(participantEmails = pairEmails)
+        }.take(cycleTimeContributionsCount)
+            .toList() + stubContributionInput().copy(
+            cycleTime = null,
+            participantEmails = pairEmails,
+        )
+    }) {
+        savePartyState(party, emptyList(), emptyList())
+        sdk().fire(SaveContributionCommand(party.id, contributionInputs + stubContributionInput()))
+    } exercise {
+        sdk().fire(
+            graphQuery {
+                party(party.id) {
+                    pairs {
+                        players()
+                        contributionStatistics {
+                            count()
+                            medianCycleTime()
+                            withCycleTimeCount()
+                        }
+                    }
+                }
+            },
+        )?.party?.pairs?.first { it.players?.elements?.map(Player::email)?.toSet() == pairEmails }?.contributionStatistics
+    } verify { result ->
+        result?.medianCycleTime.assertIsEqualTo(contributionInputs.mapNotNull { it.cycleTime }.sorted().halfwayValue())
+        result?.withCycleTimeCount.assertIsEqualTo(cycleTimeContributionsCount)
+        result?.count.assertIsEqualTo(contributionInputs.size)
+    }
+
+    @Test
     fun canQueryContributionsInWindow() = asyncSetup(object {
         val party = stubPartyDetails()
         val players = stubPlayers(3)

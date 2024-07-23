@@ -115,6 +115,7 @@ data class JsonPair(
     val recentTimesPaired: Int? = null,
     val pairAssignmentHistory: List<JsonPairAssignment>? = null,
     val contributions: List<JsonContributionRecord>? = null,
+    val contributionStatistics: JsonContributionStatistics? = null,
 )
 
 @Serializable
@@ -149,7 +150,6 @@ fun JsonPair.toModel() = PlayerPair(
     count = count,
     spinsSinceLastPaired = spinsSinceLastPaired,
     recentTimesPaired = recentTimesPaired,
-    contributions = contributions?.map(JsonContributionRecord::toModel),
     pairAssignmentHistory = pairAssignmentHistory?.map { json ->
         PairAssignment(
             documentId = json.documentId?.let(::PairAssignmentDocumentId),
@@ -159,6 +159,8 @@ fun JsonPair.toModel() = PlayerPair(
             recentTimesPaired = json.recentTimesPaired,
         )
     },
+    contributions = contributions?.map(JsonContributionRecord::toModel),
+    contributionStatistics = contributionStatistics?.toModel(),
 )
 
 fun PartyElement<PlayerPair>.toJson() = JsonPair(
