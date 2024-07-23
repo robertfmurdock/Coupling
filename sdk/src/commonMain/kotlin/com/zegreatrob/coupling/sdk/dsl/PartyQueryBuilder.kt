@@ -27,7 +27,7 @@ class PartyQueryBuilder :
 
     fun boost() = also { output = output.copy(boost = boost) }
 
-    fun contributionBuilder(
+    fun contributionReport(
         window: JsonContributionWindow? = null,
         limit: Int? = null,
         block: ContributionReportBuilder.() -> Unit,

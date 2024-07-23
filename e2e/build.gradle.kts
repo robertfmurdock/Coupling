@@ -60,6 +60,7 @@ wdioTest {
     baseUrl.set("https://localhost/")
     htmlReporter.set(true)
     chromeBinary.set(System.getenv("WDIO_CHROME_BINARY"))
+    useHeadless.set(false)
 }
 
 tasks {

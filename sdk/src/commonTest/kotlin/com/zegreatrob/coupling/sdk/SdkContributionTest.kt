@@ -13,6 +13,7 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.repository.validation.assertIsCloseToNow
 import com.zegreatrob.coupling.sdk.gql.graphQuery
 import com.zegreatrob.coupling.stubmodel.roundToMillis
+import com.zegreatrob.coupling.stubmodel.stubContributionInput
 import com.zegreatrob.coupling.stubmodel.stubPartyDetails
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.coupling.stubmodel.stubPlayers
@@ -24,7 +25,6 @@ import kotlinx.datetime.Instant
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 class SdkContributionTest {
@@ -47,13 +47,13 @@ class SdkContributionTest {
         savePartyState(party, emptyList(), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributionBuilder { contributions() } } })
+        sdk().fire(graphQuery { party(party.id) { contributionReport { contributions() } } })
     } verify { result ->
-        result?.party?.contributions?.contributions?.elements?.withoutCreatedAt()
+        result?.party?.contributionReport?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
                 contributionInputs.toExpectedContributions(),
             )
-        result?.party?.contributions?.contributions?.elements?.map { it.createdAt }?.forEach { createdAt ->
+        result?.party?.contributionReport?.contributions?.elements?.map { it.createdAt }?.forEach { createdAt ->
             createdAt.assertIsCloseToNow()
         }
     }
@@ -71,14 +71,14 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributionBuilder {
+                    contributionReport {
                         count()
                         medianCycleTime()
                         withCycleTimeCount()
                     }
                 }
             },
-        )?.party?.contributions
+        )?.party?.contributionReport
     } verify { result ->
         result?.count.assertIsEqualTo(contributionInputs.size)
         result?.medianCycleTime.assertIsEqualTo(contributionInputs.mapNotNull { it.cycleTime }.sorted().halfwayValue())
@@ -104,9 +104,9 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
         sdk().fire(ClearContributionsCommand(partyId = party.id))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributionBuilder { contributions() } } })
+        sdk().fire(graphQuery { party(party.id) { contributionReport { contributions() } } })
     } verify { result ->
-        result?.party?.contributions?.contributions?.size
+        result?.party?.contributionReport?.contributions?.size
             .assertIsEqualTo(0)
     }
 
@@ -222,13 +222,13 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributionBuilder(JsonContributionWindow.Week) { contributions() }
+                    contributionReport(JsonContributionWindow.Week) { contributions() }
                 }
             },
         )
     } verify { result ->
         result?.party
-            ?.contributions?.contributions?.elements?.withoutCreatedAt()
+            ?.contributionReport?.contributions?.elements?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
                 (contributionInputs - excludedContributionInput)
@@ -253,10 +253,10 @@ class SdkContributionTest {
         savePartyState(party, players, emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributionBuilder(limit = expectedLimit) { contributions() } } })
+        sdk().fire(graphQuery { party(party.id) { contributionReport(limit = expectedLimit) { contributions() } } })
     } verify { result ->
         result?.party
-            ?.contributions
+            ?.contributionReport
             ?.contributions
             ?.elements
             ?.withoutCreatedAt()
@@ -325,10 +325,10 @@ class SdkContributionTest {
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
         sdk().fire(
-            graphQuery { party(party.id) { contributionBuilder { contributors { email() } } } },
+            graphQuery { party(party.id) { contributionReport { contributors { email() } } } },
         )
     } verify { result ->
-        result?.party?.contributions?.contributors
+        result?.party?.contributionReport?.contributors
             .assertIsEqualTo(
                 contributionInputs.asSequence().flatMap { it.participantEmails }
                     .toSet()
@@ -353,7 +353,7 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributionBuilder {
+                    contributionReport {
                         contributors {
                             email()
                             details()
@@ -363,7 +363,7 @@ class SdkContributionTest {
             },
         )
     } verify { result ->
-        result?.party?.contributions?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributionReport?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(
                 players.sortedBy { it.email },
             )
@@ -384,9 +384,9 @@ class SdkContributionTest {
         savePartyState(party, listOf(player), emptyList())
         sdk().fire(SaveContributionCommand(party.id, contributionInputs))
     } exercise {
-        sdk().fire(graphQuery { party(party.id) { contributionBuilder { contributors { details() } } } })
+        sdk().fire(graphQuery { party(party.id) { contributionReport { contributors { details() } } } })
     } verify { result ->
-        result?.party?.contributions?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributionReport?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(
                 listOf(player),
             )
@@ -407,7 +407,7 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributionBuilder {
+                    contributionReport {
                         contributors {
                             email()
                             details()
@@ -417,7 +417,7 @@ class SdkContributionTest {
             },
         )
     } verify { result ->
-        result?.party?.contributions?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributionReport?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(listOf(player))
     }
 
@@ -436,7 +436,7 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributionBuilder {
+                    contributionReport {
                         contributors {
                             email()
                             details()
@@ -446,25 +446,9 @@ class SdkContributionTest {
             },
         )
     } verify { result ->
-        result?.party?.contributions?.contributors?.map { it.details?.data?.element }
+        result?.party?.contributionReport?.contributors?.map { it.details?.data?.element }
             .assertIsEqualTo(listOf(player))
     }
-
-    private fun stubContributionInput() = ContributionInput(
-        contributionId = uuidString(),
-        participantEmails = setOf(uuidString()),
-        hash = uuidString(),
-        dateTime = Clock.System.now().minus(Random.nextInt(60).minutes).roundToMillis(),
-        ease = Random.nextInt(),
-        story = uuidString(),
-        link = uuidString(),
-        semver = uuidString(),
-        label = uuidString(),
-        firstCommit = uuidString(),
-        firstCommitDateTime = Clock.System.now().minus(Random.nextInt(34).minutes).roundToMillis(),
-        integrationDateTime = Clock.System.now().minus(Random.nextInt(23).minutes).roundToMillis(),
-        cycleTime = (2..140).random().minutes,
-    )
 }
 
 private fun List<Contribution>.withoutCreatedAt(): List<Contribution> = map {

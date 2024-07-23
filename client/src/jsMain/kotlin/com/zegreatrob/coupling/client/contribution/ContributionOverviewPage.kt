@@ -14,14 +14,18 @@ val ContributionOverviewPage = partyPageFunction { props, partyId ->
         query = graphQuery {
             party(partyId) {
                 details()
-                contributionBuilder(limit = 5) { contributors { details() } }
+                contributionReport(limit = 5) {
+                    contributions()
+                    contributors { details() }
+                }
             }
         },
         toNode = { _, _, queryResult ->
             val party = queryResult.party?.details?.data ?: return@CouplingQuery null
-            val contributions = queryResult.party?.contributions?.contributions?.elements ?: return@CouplingQuery null
+            val contributions =
+                queryResult.party?.contributionReport?.contributions?.elements ?: return@CouplingQuery null
             val contributors = queryResult.party
-                ?.contributions
+                ?.contributionReport
                 ?.contributors
                 ?.mapNotNull(Contributor::details)
                 ?.elements

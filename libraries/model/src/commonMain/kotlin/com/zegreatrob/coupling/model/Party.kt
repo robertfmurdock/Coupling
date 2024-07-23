@@ -24,7 +24,7 @@ data class Party(
     val pair: PlayerPair? = null,
     val medianSpinDuration: Duration? = null,
     val spinsUntilFullRotation: Int? = null,
-    val contributions: ContributionReport? = null,
+    val contributionReport: ContributionReport? = null,
 )
 
 data class ContributionReport(

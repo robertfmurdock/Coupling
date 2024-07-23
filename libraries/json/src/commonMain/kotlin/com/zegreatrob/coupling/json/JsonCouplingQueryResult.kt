@@ -56,7 +56,7 @@ private fun JsonParty.toModel(): Party? {
         boost = boost?.toModelRecord(),
         pairs = pairs?.map(JsonPair::toModel),
         pair = pair?.let(JsonPair::toModel),
-        contributions = contributionReport?.toModel(),
+        contributionReport = contributionReport?.toModel(),
         medianSpinDuration = medianSpinDuration,
         spinsUntilFullRotation = spinsUntilFullRotation,
     )

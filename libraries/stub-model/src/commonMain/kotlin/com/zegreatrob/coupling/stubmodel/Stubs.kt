@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.stubmodel
 
 import com.benasher44.uuid.uuid4
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
@@ -22,6 +23,7 @@ import com.zegreatrob.coupling.model.user.UserDetails
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
+import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.minutes
 
@@ -133,4 +135,20 @@ fun stubContribution() = Contribution(
     firstCommitDateTime = Clock.System.now().minus((2..4).random().days),
     integrationDateTime = Clock.System.now().minus((5..10).random().days),
     cycleTime = (1..3).random().days,
+)
+
+fun stubContributionInput() = ContributionInput(
+    contributionId = uuidString(),
+    participantEmails = setOf(uuidString()),
+    hash = uuidString(),
+    dateTime = Clock.System.now().minus(Random.nextInt(60).minutes).roundToMillis(),
+    ease = Random.nextInt(),
+    story = uuidString(),
+    link = uuidString(),
+    semver = uuidString(),
+    label = uuidString(),
+    firstCommit = uuidString(),
+    firstCommitDateTime = Clock.System.now().minus(Random.nextInt(34).minutes).roundToMillis(),
+    integrationDateTime = Clock.System.now().minus(Random.nextInt(23).minutes).roundToMillis(),
+    cycleTime = (2..140).random().minutes,
 )
