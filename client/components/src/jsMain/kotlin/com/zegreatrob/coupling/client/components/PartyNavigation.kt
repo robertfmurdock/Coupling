@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components
 
 import com.zegreatrob.coupling.client.components.pairassignments.viewHistoryButton
 import com.zegreatrob.coupling.client.components.pin.pinListButton
-import com.zegreatrob.coupling.client.components.player.addPlayerButton
+import com.zegreatrob.coupling.client.components.player.AddPlayerButton
 import com.zegreatrob.coupling.client.components.player.viewRetireesButton
 import com.zegreatrob.coupling.client.components.stats.statisticsButton
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -18,7 +18,7 @@ external interface PartyNavigationProps : Props {
 val PartyNavigation by nfc<PartyNavigationProps> { (party) ->
     NavigationPanel {
         settingsButton(party)
-        addPlayerButton { this.partyId = party.id }
+        AddPlayerButton { this.partyId = party.id }
         viewHistoryButton(party)
         pinListButton(party)
         statisticsButton(party)

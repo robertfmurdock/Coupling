@@ -10,9 +10,11 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import csstype.PropertiesBuilder
 import react.Props
 import react.dom.html.ReactHTML.i
 import web.cssom.ClassName
+import web.cssom.px
 
 external interface DeleteSecretButtonProps : Props {
     @Suppress("INLINE_CLASS_IN_EXTERNAL_DECLARATION_WARNING")
@@ -27,6 +29,11 @@ val DeleteSecretButton by nfc<DeleteSecretButtonProps> { props ->
     CouplingButton(
         sizeRuleSet = large,
         colorRuleSet = red,
+        css = fun PropertiesBuilder.() {
+            "i" {
+                margin = 0.px
+            }
+        },
         onClick = props.dispatcher {
             fire(DeleteSecretCommand(props.partyId, props.secret.id))
             props.onSuccess()
