@@ -2,9 +2,11 @@ package com.zegreatrob.coupling.repository.dynamo.secret
 
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.party.PartyElement
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
+import com.zegreatrob.coupling.model.party.SecretUsed
 import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.user.UserIdProvider
 import com.zegreatrob.coupling.repository.dynamo.DynamoDBSyntax
@@ -41,6 +43,13 @@ class DynamoSecretRepository private constructor(override val userId: String, ov
     override suspend fun save(it: PartyElement<Secret>) = performPutItem(
         it.toRecord().asDynamoJson(),
     )
+
+    override suspend fun save(used: SecretUsed) = getSecrets(used.partyId).elements
+        .firstOrNull { it.id == used.secretId }
+        ?.copy(lastUsedTimestamp = used.lastUsedTimestamp)
+        ?.let { used.partyId.with(it) }
+        ?.let { save(it) }
+        .let { }
 
     override suspend fun getSecrets(partyId: PartyId): List<PartyRecord<Secret>> = partyId.queryForItemList()
         .map { it.toRecord() }

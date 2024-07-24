@@ -18,12 +18,15 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.uuidString
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minassert.assertIsNotEqualTo
+import com.zegreatrob.testmints.action.DispatcherPipeCannon
+import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.seconds
 
 class SdkSecretTest {
 
@@ -51,6 +54,31 @@ class SdkSecretTest {
             ?.details
             ?.data
             .assertIsEqualTo(party)
+    }
+
+    @Test
+    fun whenSecretIsUsedTheLastUsedTimestampIsUpdated() = asyncSetup(object {
+        val party = stubPartyDetails()
+        val secretDescription = uuidString()
+        lateinit var tokenSdk: DispatcherPipeCannon<CouplingSdkDispatcher>
+    }) {
+        sdk().fire(SavePartyCommand(party))
+        val (_, token) = sdk().fire(CreateSecretCommand(party.id, secretDescription))!!
+        tokenSdk = couplingSdk({ token }, buildClient())
+    } exercise {
+        tokenSdk.fire(graphQuery { party(party.id) { details() } })
+        sdk().fire(graphQuery { party(party.id) { secretList() } })
+            ?.party
+            ?.secretList
+            ?.elements
+    } verify { result ->
+        result?.first()?.lastUsedTimestamp
+            ?.let { Clock.System.now() - it }
+            ?.let { it < 0.1.seconds }
+            .assertIsEqualTo(
+                true,
+                "lastUsedTimestamp should have been now-ish, but was ${result?.first()?.lastUsedTimestamp}",
+            )
     }
 
     @Test
