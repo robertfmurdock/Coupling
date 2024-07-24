@@ -63,12 +63,14 @@ val PartySecretLayout by nfc<PartySecretsLayoutProps> { props ->
                         css { flexGrow = number(1.0) }
                         th { +"Index" }
                         th { +"Id" }
+                        th { +"Description" }
                         th { +"Last Used" }
                         th { +"Delete" }
                         props.secrets.forEachIndexed { index, secret ->
                             tr {
                                 td { +"$index" }
                                 td { +secret.id }
+                                td { +secret.description }
                                 td { +(secret.lastUsedTimestamp?.format() ?: "Never used.") }
                                 td {
                                     DeleteSecretButton(
