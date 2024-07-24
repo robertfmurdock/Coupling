@@ -9,6 +9,7 @@ import react.ReactNode
 import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.option
 import react.dom.html.SelectHTMLAttributes
+import web.cssom.BackgroundColor
 import web.html.HTMLSelectElement
 import kotlin.enums.enumEntries
 
@@ -18,6 +19,7 @@ external interface EnumSelectorProps<E> : Props {
     var onChange: (E) -> Unit
     var valueOf: (String) -> E
     var enumName: (E) -> String
+    var backgroundColor: BackgroundColor?
     var label: ReactNode?
     var selectProps: SelectHTMLAttributes<HTMLSelectElement>?
 }
@@ -26,6 +28,7 @@ external interface EnumSelectorProps<E> : Props {
 val EnumSelector by nfc<EnumSelectorProps<Any>> { props ->
     CouplingSelect {
         label = props.label
+        backgroundColor = props.backgroundColor
         selectProps = jso {
             +props.selectProps
             defaultValue = props.enumName(props.default)
@@ -53,6 +56,7 @@ inline fun <reified E : Enum<E>> ChildrenBuilder.EnumSelector(
     default: E,
     noinline onChange: (E) -> Unit,
     label: ReactNode,
+    backgroundColor: BackgroundColor? = null,
     selectProps: SelectHTMLAttributes<HTMLSelectElement>? = null,
 ) {
     this@EnumSelector.EnumSelector(
@@ -63,5 +67,6 @@ inline fun <reified E : Enum<E>> ChildrenBuilder.EnumSelector(
         valueOf = { enumValueOf<E>(it) },
         enumName = { it.name },
         selectProps = selectProps,
+        backgroundColor = backgroundColor,
     )
 }

@@ -11,11 +11,12 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
+import js.objects.jso
 import react.Props
 import react.ReactNode
 import react.dom.html.ButtonHTMLAttributes
+import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
-import react.dom.html.ReactHTML.input
 import react.useState
 import web.cssom.ClassName
 import web.html.InputType
@@ -33,7 +34,8 @@ val CreateSecretButton by nfc<CreateSecretButtonProps> { props ->
     var createdSecret by useState<Secret?>(null)
     CouplingInput {
         label = ReactNode("Description")
-        input {
+        backgroundColor = partySecretBackgroundColor
+        inputProps = jso {
             type = InputType.text
             onChange = { event -> description = event.target.value }
         }
@@ -52,22 +54,29 @@ val CreateSecretButton by nfc<CreateSecretButtonProps> { props ->
         },
     ) {
         i { className = ClassName("fa fa-plus") }
+        +"Create New Secret"
     }
 
-    CouplingInput {
-        label = ReactNode("Secret ID")
-        input {
-            type = InputType.text
-            disabled = true
-            value = createdSecret?.id ?: ""
+    div {
+        CouplingInput {
+            label = ReactNode("Secret ID")
+            backgroundColor = partySecretBackgroundColor
+            inputProps = jso {
+                type = InputType.text
+                disabled = true
+                value = createdSecret?.id ?: ""
+            }
         }
     }
-    CouplingInput {
-        label = ReactNode("Secret Value")
-        input {
-            type = InputType.text
-            disabled = true
-            value = secretValue
+    div {
+        CouplingInput {
+            label = ReactNode("Secret Value")
+            backgroundColor = partySecretBackgroundColor
+            inputProps = jso {
+                type = InputType.text
+                disabled = true
+                value = secretValue
+            }
         }
     }
 }

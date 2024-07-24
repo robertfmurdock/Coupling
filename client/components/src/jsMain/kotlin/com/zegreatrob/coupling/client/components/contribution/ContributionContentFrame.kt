@@ -1,4 +1,4 @@
-package com.zegreatrob.coupling.client.contribution
+package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.ContributionOverviewButton
@@ -16,11 +16,13 @@ external interface ContributionContentFrameProps : PropsWithChildren {
     var party: PartyDetails
 }
 
+val contributionContentBackgroundColor = Color("rgb(253 237 189)")
+
 @ReactFunc
 val ContributionContentFrame by nfc<ContributionContentFrameProps> { props ->
     val partyId = props.party.id
     div {
-        PageFrame(borderColor = Color("rgb(255 143 117)"), backgroundColor = Color("rgb(253 237 189)")) {
+        PageFrame(borderColor = Color("rgb(255 143 117)"), backgroundColor = contributionContentBackgroundColor) {
             ConfigHeader {
                 party = props.party
                 +"Contributions"

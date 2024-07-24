@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
+import com.zegreatrob.coupling.client.components.contribution.contributionContentBackgroundColor
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -104,6 +105,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                                 default = selectedWindow,
                                 onChange = setWindow,
                                 label = ReactNode("Time Window"),
+                                backgroundColor = contributionContentBackgroundColor,
                             )
                         }
                         div {
@@ -111,6 +113,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                                 default = Visualization.Heatmap,
                                 onChange = setVisualization::invoke,
                                 label = ReactNode("Visualization Style"),
+                                backgroundColor = contributionContentBackgroundColor,
                             )
                         }
                         CouplingSelect {

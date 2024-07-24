@@ -7,6 +7,7 @@ import emotion.react.css
 import react.PropsWithChildren
 import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.button
+import web.cssom.AlignItems
 import web.cssom.AnimationPlayState
 import web.cssom.BackgroundRepeat
 import web.cssom.Border
@@ -17,6 +18,7 @@ import web.cssom.Cursor
 import web.cssom.Display
 import web.cssom.FontWeight
 import web.cssom.LineStyle.Companion.solid
+import web.cssom.Margin
 import web.cssom.NamedColor
 import web.cssom.None
 import web.cssom.Padding
@@ -33,7 +35,8 @@ val buttonRuleset: PropertiesBuilder.() -> Unit = {
     backgroundImage = url(pngPath("overlay"))
     backgroundRepeat = BackgroundRepeat.repeatX
 
-    display = Display.inlineBlock
+    display = Display.inlineFlex
+    alignItems = AlignItems.center
     padding = Padding(5.px, 10.px, 6.px)
     color = NamedColor.white
     textDecoration = None.none
@@ -47,6 +50,10 @@ val buttonRuleset: PropertiesBuilder.() -> Unit = {
     asDynamic()["text-stroke-width"] = "initial"
     asDynamic()["text-stroke-color"] = "initial"
     margin = 2.px
+
+    "i" {
+        margin = Margin(0.px, 5.px, 0.px, 0.px)
+    }
 
     visited {
         borderBottom = Border(1.px, solid, rgb(0, 0, 0, 0.25))
