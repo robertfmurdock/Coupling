@@ -25,6 +25,29 @@ external interface CouplingSelectProps : PropsWithChildren {
 }
 
 val CouplingSelect = FC<CouplingSelectProps> { props ->
+    CouplingInput {
+        label = props.label
+        select {
+            css {
+                display = Display.block
+                outline = None.none
+                border = None.none
+                fontSize = FontSize.larger
+                borderRadius = 0.41.em
+                width = 100.pct
+                padding = 0.35.em
+            }
+            +props.selectProps
+            +props.children
+        }
+    }
+}
+
+external interface CouplingInputProps : PropsWithChildren {
+    var label: ReactNode?
+}
+
+val CouplingInput = FC<CouplingInputProps> { props ->
     div {
         css {
             display = Display.block
@@ -42,19 +65,7 @@ val CouplingSelect = FC<CouplingSelectProps> { props ->
                 }
                 +props.label
             }
-            select {
-                css {
-                    display = Display.block
-                    outline = None.none
-                    border = None.none
-                    fontSize = FontSize.larger
-                    borderRadius = 0.41.em
-                    width = 100.pct
-                    padding = 0.35.em
-                }
-                +props.selectProps
-                +props.children
-            }
+            +props.children
         }
     }
 }

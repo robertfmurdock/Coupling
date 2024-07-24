@@ -1,10 +1,12 @@
 package com.zegreatrob.coupling.client.party
 
+import com.zegreatrob.coupling.action.secret.CreateSecretCommand
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.client.components.ConfigFrame
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.format
+import com.zegreatrob.coupling.client.components.party.CreateSecretButton
 import com.zegreatrob.coupling.client.components.party.DeleteSecretButton
 import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.model.Boost
@@ -27,15 +29,16 @@ import web.cssom.Display
 import web.cssom.number
 
 @ReactFunc
-external interface PartySecretsLayoutProps : Props {
+external interface PartySecretsLayoutProps<D> : Props where D : DeleteSecretCommand.Dispatcher, D : CreateSecretCommand.Dispatcher {
     var partyDetails: PartyDetails
     var secrets: List<Secret>
     var boost: Boost?
-    var dispatcher: DispatchFunc<DeleteSecretCommand.Dispatcher>
+    var dispatcher: DispatchFunc<D>
     var reload: () -> Unit
 }
 
-val PartySecretLayout by nfc<PartySecretsLayoutProps> { props ->
+@ReactFunc
+val PartySecretLayout by nfc<PartySecretsLayoutProps<*>> { props ->
     val party = props.partyDetails
     val dispatcher = props.dispatcher
     ConfigFrame {
@@ -51,12 +54,14 @@ val PartySecretLayout by nfc<PartySecretsLayoutProps> { props ->
                     display = Display.inlineBlock
                     flexGrow = number(2.0)
                 }
-                h2 {
-                    +"These are secrets associated with this party."
-                }
+                h2 { +"These are secrets associated with this party." }
                 p { +"The 'id' here is not the secret itself, which is only revealed at the moment of its creation." }
                 p { +"If you know a secret is no longer in use, then you should remove it." }
                 p { +"This ensures no nefarious agents mess with your party." }
+
+                div {
+                    CreateSecretButton(party.id, dispatcher)
+                }
                 div {
                     css { display = Display.flex }
                     table {
