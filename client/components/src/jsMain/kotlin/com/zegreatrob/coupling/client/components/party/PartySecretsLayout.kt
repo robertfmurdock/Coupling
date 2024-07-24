@@ -15,11 +15,13 @@ import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
+import react.dom.html.ReactHTML.hr
 import react.dom.html.ReactHTML.p
-import react.dom.html.ReactHTML.span
 import react.dom.html.ReactHTML.table
+import react.dom.html.ReactHTML.tbody
 import react.dom.html.ReactHTML.td
 import react.dom.html.ReactHTML.th
+import react.dom.html.ReactHTML.thead
 import react.dom.html.ReactHTML.tr
 import web.cssom.Color
 import web.cssom.Display
@@ -47,49 +49,50 @@ val PartySecretLayout by nfc<PartySecretsLayoutProps<*>> { props ->
             +"Party Secrets"
         }
         div {
-            css { display = Display.flex }
-            span {
-                css {
-                    display = Display.inlineBlock
-                    flexGrow = number(2.0)
-                }
+            div {
                 h2 { +"These are secrets associated with this party." }
                 p { +"The 'id' here is not the secret itself, which is only revealed at the moment of its creation." }
                 p { +"If you know a secret is no longer in use, then you should remove it." }
                 p { +"This ensures no nefarious agents mess with your party." }
 
                 div {
-                    CreateSecretButton(party.id, dispatcher)
-                }
-                div {
                     css { display = Display.flex }
                     table {
                         css { flexGrow = number(1.0) }
-                        th { +"Index" }
-                        th { +"Id" }
-                        th { +"Description" }
-                        th { +"Last Used" }
-                        th { +"Delete" }
-                        props.secrets.forEachIndexed { index, secret ->
+                        thead {
                             tr {
-                                td { +"$index" }
-                                td { +secret.id }
-                                td { +secret.description }
-                                td { +(secret.lastUsedTimestamp?.format() ?: "Never used.") }
-                                td {
-                                    DeleteSecretButton(
-                                        partyId = party.id,
-                                        secret = secret,
-                                        dispatcher = dispatcher,
-                                        onSuccess = props.reload,
-                                    )
+                                th { +"Index" }
+                                th { +"Id" }
+                                th { +"Description" }
+                                th { +"Last Used" }
+                                th { +"Delete" }
+                            }
+                        }
+                        tbody {
+                            props.secrets.forEachIndexed { index, secret ->
+                                tr {
+                                    td { +"$index" }
+                                    td { +secret.id }
+                                    td { +secret.description }
+                                    td { +(secret.lastUsedTimestamp?.format() ?: "Never used.") }
+                                    td {
+                                        DeleteSecretButton(
+                                            partyId = party.id,
+                                            secret = secret,
+                                            dispatcher = dispatcher,
+                                            onSuccess = props.reload,
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-            PartyCard(party)
+
+            hr()
+
+            CreateSecretPanel(party.id, dispatcher)
         }
     }
 }

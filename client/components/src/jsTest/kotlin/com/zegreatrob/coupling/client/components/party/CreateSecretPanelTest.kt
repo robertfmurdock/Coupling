@@ -6,6 +6,7 @@ import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubSecret
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.testmints.async.asyncSetup
+import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.act
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.render
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
@@ -13,16 +14,17 @@ import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import org.w3c.dom.HTMLInputElement
 import kotlin.test.Test
 
-class CreateSecretButtonTest {
+class CreateSecretPanelTest {
     @Test
     fun givenNoDescriptionClickWillNotFireCreateCommand() = asyncSetup(object {
         val partyId = stubPartyId()
         val dispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
-        render { CreateSecretButton(partyId, dispatcher.func()) }
+        js.globals.globalThis.alert = {}
+        render { CreateSecretPanel(partyId, dispatcher.func()) }
     } exercise {
-        actor.click(screen.findByRole("button"))
+        actor.click(screen.findByRole("button", RoleOptions("Create New Secret")))
     } verify {
         dispatcher.receivedActions
             .assertIsEqualTo(emptyList())
@@ -35,10 +37,10 @@ class CreateSecretButtonTest {
         val description = "We represent the lolly-pop kids!"
         val actor = UserEvent.setup()
     }) {
-        render { CreateSecretButton(partyId, dispatcher.func()) }
+        render { CreateSecretPanel(partyId, dispatcher.func()) }
     } exercise {
         actor.type(screen.findByLabelText("Description"), description)
-        actor.click(screen.findByRole("button"))
+        actor.click(screen.findByRole("button", RoleOptions("Create New Secret")))
     } verify {
         dispatcher.receivedActions
             .assertIsEqualTo(listOf(CreateSecretCommand(partyId, description)))
@@ -53,10 +55,10 @@ class CreateSecretButtonTest {
         val expectedSecret = stubSecret()
         val expectedSecretValue = "Don't tell nobody!"
     }) {
-        render { CreateSecretButton(partyId, dispatcher.func()) }
+        render { CreateSecretPanel(partyId, dispatcher.func()) }
         actor.type(screen.findByLabelText("Description"), description)
     } exercise {
-        actor.click(screen.findByRole("button"))
+        actor.click(screen.findByRole("button", RoleOptions("Create New Secret")))
         act {
             dispatcher.onActionReturn(Pair(expectedSecret, expectedSecretValue))
         }

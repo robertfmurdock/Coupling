@@ -118,6 +118,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         }
                         CouplingSelect {
                             label = ReactNode("Label Filter")
+                            backgroundColor = contributionContentBackgroundColor
                             selectProps = jso {
                                 disabled = allLabels.size <= 1
                                 onChange = { event -> setSelectedLabelFilter(event.handlePlaceholder()) }
@@ -136,13 +137,20 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
                         div {
                             div {
                                 EnumSelector(
+                                    backgroundColor = contributionContentBackgroundColor,
                                     label = Fragment.create {
-                                        +"Fake the data"
-                                        input {
-                                            type = InputType.checkbox
-                                            value = fakeStyle != null
-                                            onChange = {
-                                                setFakeStyle(if (it.target.checked) FakeDataStyle.RandomPairs else null)
+                                        div {
+                                            css {
+                                                display = Display.inlineFlex
+                                                alignItems = AlignItems.center
+                                            }
+                                            +"Fake the data"
+                                            input {
+                                                type = InputType.checkbox
+                                                value = fakeStyle != null
+                                                onChange = {
+                                                    setFakeStyle(if (it.target.checked) FakeDataStyle.RandomPairs else null)
+                                                }
                                             }
                                         }
                                     },
