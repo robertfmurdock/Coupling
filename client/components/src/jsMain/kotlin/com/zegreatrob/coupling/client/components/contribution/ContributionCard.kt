@@ -1,14 +1,11 @@
 package com.zegreatrob.coupling.client.components.contribution
 
+import com.zegreatrob.coupling.client.components.format
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import react.ChildrenBuilder
 import react.Fragment
 import react.Props
@@ -34,20 +31,6 @@ import web.cssom.rgb
 external interface ContributionCardProps : Props {
     var contribution: Contribution
     var contributors: List<Player>
-}
-
-private val dateTimeFormat = LocalDateTime.Format {
-    hour()
-    chars(":")
-    minute()
-    chars(":")
-    second()
-    chars(", ")
-    year()
-    chars("-")
-    monthNumber()
-    chars("-")
-    dayOfMonth()
 }
 
 @ReactFunc
@@ -140,5 +123,3 @@ private fun ChildrenBuilder.showProperty(attributeName: String, value: ChildrenB
         +Fragment.create(value)
     }
 }
-
-fun Instant.format() = dateTimeFormat.format(toLocalDateTime(TimeZone.currentSystemDefault()))

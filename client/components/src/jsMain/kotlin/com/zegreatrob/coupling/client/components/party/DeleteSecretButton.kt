@@ -19,6 +19,7 @@ external interface DeleteSecretButtonProps : Props {
     var partyId: PartyId
     var secret: Secret
     var dispatcher: DispatchFunc<DeleteSecretCommand.Dispatcher>
+    var onSuccess: () -> Unit
 }
 
 @ReactFunc
@@ -26,7 +27,10 @@ val DeleteSecretButton by nfc<DeleteSecretButtonProps> { props ->
     CouplingButton(
         sizeRuleSet = large,
         colorRuleSet = red,
-        onClick = props.dispatcher { fire(DeleteSecretCommand(props.partyId, props.secret.id)) },
+        onClick = props.dispatcher {
+            fire(DeleteSecretCommand(props.partyId, props.secret.id))
+            props.onSuccess()
+        },
     ) {
         i { className = ClassName("fa fa-trash") }
     }

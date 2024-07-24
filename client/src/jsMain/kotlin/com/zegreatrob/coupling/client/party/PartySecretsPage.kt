@@ -20,12 +20,13 @@ val PartySecretsPage by nfc<PageProps> { props ->
                     boost()
                 }
             },
-            toNode = { _, dispatcher, result ->
+            toNode = { reload, dispatcher, result ->
                 PartySecretLayout.create(
                     partyDetails = result.party?.details?.data ?: return@CouplingQuery null,
                     secrets = result.party?.secretList?.elements ?: emptyList(),
                     boost = result.party?.boost?.data,
                     dispatcher = dispatcher,
+                    reload = reload,
                 )
             },
             key = props.partyId?.value,

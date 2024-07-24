@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.client.components.ConfigFrame
 import com.zegreatrob.coupling.client.components.ConfigHeader
 import com.zegreatrob.coupling.client.components.DispatchFunc
+import com.zegreatrob.coupling.client.components.format
 import com.zegreatrob.coupling.client.components.party.DeleteSecretButton
 import com.zegreatrob.coupling.client.components.party.PartyCard
 import com.zegreatrob.coupling.model.Boost
@@ -31,6 +32,7 @@ external interface PartySecretsLayoutProps : Props {
     var secrets: List<Secret>
     var boost: Boost?
     var dispatcher: DispatchFunc<DeleteSecretCommand.Dispatcher>
+    var reload: () -> Unit
 }
 
 val PartySecretLayout by nfc<PartySecretsLayoutProps> { props ->
@@ -61,12 +63,21 @@ val PartySecretLayout by nfc<PartySecretsLayoutProps> { props ->
                         css { flexGrow = number(1.0) }
                         th { +"Index" }
                         th { +"Id" }
+                        th { +"Last Used" }
                         th { +"Delete" }
                         props.secrets.forEachIndexed { index, secret ->
                             tr {
                                 td { +"$index" }
                                 td { +secret.id }
-                                td { DeleteSecretButton(party.id, secret, dispatcher) }
+                                td { +(secret.lastUsedTimestamp?.format() ?: "Never used.") }
+                                td {
+                                    DeleteSecretButton(
+                                        partyId = party.id,
+                                        secret = secret,
+                                        dispatcher = dispatcher,
+                                        onSuccess = props.reload,
+                                    )
+                                }
                             }
                         }
                     }

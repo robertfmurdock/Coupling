@@ -1,6 +1,7 @@
 package com.zegreatrob.coupling.client.components.contribution
 
 import com.zegreatrob.coupling.client.components.TiltedPlayerList
+import com.zegreatrob.coupling.client.components.format
 import com.zegreatrob.coupling.client.components.pngPath
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.player.Player

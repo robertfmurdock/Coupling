@@ -20,7 +20,7 @@ class DeleteSecretButtonTest {
         val dispatcher = StubDispatcher()
         val actor = UserEvent.setup()
     }) {
-        render { DeleteSecretButton(partyId, secret, dispatcher.func()) }
+        render { DeleteSecretButton(partyId, secret, dispatcher.func(), {}) }
     } exercise {
         actor.click(screen.findByRole("button"))
     } verify {
