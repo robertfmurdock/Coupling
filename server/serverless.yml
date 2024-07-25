@@ -23,7 +23,7 @@ provider:
   name: aws
   timeout: 30
   stage: ${opt:stage, 'local'}
-  runtime: nodejs20.x
+  runtime: nodejs18.x
   iam:
     role:
       managedPolicies:
