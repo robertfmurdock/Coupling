@@ -44,6 +44,10 @@ dependencies {
 
     "jsTestImplementation"(npmConstrained("@graphql-codegen/cli"))
     "jsTestImplementation"(npmConstrained("@graphql-codegen/kotlin"))
+    "jsTestImplementation"(npmConstrained("@graphql-codegen/java-common"))
+    "jsTestImplementation"(npmConstrained("@graphql-codegen/plugin-helpers"))
+    "jsTestImplementation"(npmConstrained("@graphql-codegen/visitor-plugin-common"))
+    "jsTestImplementation"(npmConstrained("tslib"))
 }
 
 tasks {

@@ -2,7 +2,7 @@ schema: ../../server/src/jsMain/resources/schema.graphql
 generates:
   ./build/generated/codegen/Types.kt:
     plugins:
-      - kotlin
+      - ./gql-kotlin-generator-fork
     config:
       package: com.zegreatrob.coupling.json
       withTypes: true
@@ -11,3 +11,4 @@ generates:
         ID: String
       typesPrefix: Gql
       omitJvmStatic: true
+      serializable: true
