@@ -16,7 +16,6 @@ import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import csstype.PropertiesBuilder
 import emotion.css.ClassName
 import emotion.react.css
 import react.ChildrenBuilder
@@ -226,7 +225,7 @@ private fun ChildrenBuilder.spinButton(generateNewPairsFunc: (() -> Unit)?) = Co
     attrs = fun ButtonHTMLAttributes<*>.() {
         disabled = (generateNewPairsFunc == null)
     },
-    css = fun PropertiesBuilder.() {
+    className = ClassName {
         marginBottom = 10.px
         animationName = ident("pulsate")
         animationDuration = 2.s

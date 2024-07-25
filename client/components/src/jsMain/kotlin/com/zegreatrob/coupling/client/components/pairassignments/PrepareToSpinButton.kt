@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import csstype.PropertiesBuilder
+import emotion.css.ClassName
 import react.Props
 import react.router.dom.Link
 import web.cssom.AnimationIterationCount
@@ -29,8 +29,7 @@ val PrepareToSpinButton by nfc<PrepareToSpinButtonProps> { (party) ->
         CouplingButton(
             sizeRuleSet = supersize,
             colorRuleSet = pink,
-            className = prepareToSpinButtonClassName,
-            css = fun PropertiesBuilder.() {
+            className = ClassName(prepareToSpinButtonClassName) {
                 animationName = ident("pulsate")
                 animationDuration = 2.s
                 animationIterationCount = AnimationIterationCount.infinite
