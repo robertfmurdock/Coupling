@@ -60,7 +60,6 @@ dependencies {
     jsMainImplementation(npmConstrained("cookie-parser"))
     jsMainImplementation(npmConstrained("express"))
     jsMainImplementation(npmConstrained("express-jwt"))
-    jsMainImplementation(npmConstrained("express-statsd"))
     jsMainImplementation(npmConstrained("fs-extra"))
     jsMainImplementation(npmConstrained("graphql"))
     jsMainImplementation(npmConstrained("jose"))
@@ -179,6 +178,9 @@ tasks {
         }
         from(project.projectDir) {
             include("Dockerfile", "serverless.yml", "deploy/**")
+        }
+        from(project("base").projectDir) {
+            include("package.json", "package-lock.json")
         }
 
         destinationDir = file("build/docker-data")

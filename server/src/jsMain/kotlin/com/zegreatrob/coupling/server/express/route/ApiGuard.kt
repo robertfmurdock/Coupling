@@ -7,8 +7,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 fun apiGuard(): Handler = { request, response, next ->
-    request.statsdkey = listOf("http", request.method.lowercase(), request.path).joinToString(".")
-
     if (request.isAuthenticated != true) {
         response.sendStatus(401)
     } else {

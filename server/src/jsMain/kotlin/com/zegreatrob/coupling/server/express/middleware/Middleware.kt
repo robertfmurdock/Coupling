@@ -9,7 +9,6 @@ import com.zegreatrob.coupling.server.external.methodoverride.methodOverride
 
 fun Express.middleware() {
     use(compression())
-    use(statsD())
     set("port", Config.port)
     use(tracer())
     use(scope())

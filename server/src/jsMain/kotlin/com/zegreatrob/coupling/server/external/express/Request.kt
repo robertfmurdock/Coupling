@@ -21,6 +21,5 @@ external interface Request {
     val user: UserDetails
     val traceId: Uuid
     val scope: CoroutineScope
-    var statsdkey: String?
     fun get(headerName: String): String?
 }

@@ -10962,14 +10962,6 @@ express-jwt@8.4.1:
     express-unless "^2.1.3"
     jsonwebtoken "^9.0.0"
 
-express-statsd@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/express-statsd/-/express-statsd-0.3.0.tgz#cb60b8e4f633adc7eaaefb5819698b469c00b1bd"
-  integrity sha512-8X6mOFq4Yd6A0Sf6xwMi3Zo9UdVTyQdcY5OMEOzLj5sFapXCcM0ZOZ+zVVThP3SmMReRK5N/QZ69gkmKnbhkVQ==
-  dependencies:
-    lynx "~0.0.11"
-    obj-extend "~0.1.0"
-
 express-unless@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/express-unless/-/express-unless-2.1.3.tgz#f951c6cca52a24da3de32d42cfd4db57bc0f9a2e"
@@ -14107,14 +14099,6 @@ luxon@^3.4.4:
   resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.4.4.tgz#cf20dc27dc532ba41a169c43fdcc0063601577af"
   integrity sha512-zobTr7akeGHnv7eBOXcRgMeCP6+uyYsczwmeRCauvpvaAltgNyTbLH/+VaEAPUeWBT+1GuNmz4wC/6jtQzbbVA==
 
-lynx@~0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/lynx/-/lynx-0.0.11.tgz#2cfa14e443fd2d92a59b779f41567ce1cc6965a3"
-  integrity sha512-N1MyzJg5HvRuGeLhPBKyvjR5s+ShehiGxjIhNQC37A8UJcum+748yNIXCsKtj9mlsE/r7xGD6FNktwJ6uPLdlA==
-  dependencies:
-    mersenne "~0.0.3"
-    statsd-parser "~0.0.4"
-
 lz-string@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.5.0.tgz#c1ab50f77887b712621201ba9fd4e3a6ed099941"
@@ -14222,11 +14206,6 @@ meros@^1.2.1:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/meros/-/meros-1.3.0.tgz#c617d2092739d55286bf618129280f362e6242f2"
   integrity sha512-2BNGOimxEz5hmjUG2FwoxCt5HN7BXdaWyFqEwxPTrJzVdABtrL4TiHTcsWSFAxPQ/tOnEaQEJh3qWq71QRMY+w==
-
-mersenne@~0.0.3:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/mersenne/-/mersenne-0.0.4.tgz#401fdec7ec21cdb9e03cd3d3021398da21b27085"
-  integrity sha512-XoSUL+nF8hMTKGQxUs8r3Btdsf1yuKKBdCCGbh3YXgCXuVKishpZv1CNc385w9s8t4Ynwc5h61BwW/FCVulkbg==
 
 method-override@^3.0.0:
   version "3.0.0"
@@ -14950,11 +14929,6 @@ nwsapi@^2.2.12:
   version "2.2.12"
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.12.tgz#fb6af5c0ec35b27b4581eb3bbad34ec9e5c696f8"
   integrity sha512-qXDmcVlZV4XRtKFzddidpfVP4oMSGhga+xdMc25mv8kaLUHtgzCDhUxkrN8exkGdTlLNaXj7CV3GtON7zuGZ+w==
-
-obj-extend@~0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/obj-extend/-/obj-extend-0.1.0.tgz#bb448a4775fb95eb34a781f908bbac2df23dbb5b"
-  integrity sha512-or9c7Ue2wWCun41DuLP3+LKEUjSZcDSxfCM4HZQSX9tcjLL/yuzTW7MmtVNs+MmN16uDRpDrFmFK/WVSm4vklg==
 
 object-assign@^4, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
@@ -17489,11 +17463,6 @@ stack-utils@^2.0.3:
   integrity sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==
   dependencies:
     escape-string-regexp "^2.0.0"
-
-statsd-parser@~0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/statsd-parser/-/statsd-parser-0.0.4.tgz#cbd243953cc42effd548b5d22388ed689ec639bd"
-  integrity sha512-7XO+ur89EalMXXFQaydsczB8sclr5nDsNIoUu0IzJx1pIbHUhO3LtpSzBwetIuU9DyTLMiVaJBMtWS/Nb2KR4g==
 
 statuses@2.0.1:
   version "2.0.1"
