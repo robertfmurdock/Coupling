@@ -222,8 +222,8 @@ input DeletePairAssignmentsInput {
 input SavePinInput {
     partyId: ID!
     pinId: ID
-    icon: String
-    name: String
+    icon: String!
+    name: String!
 }
 
 input SaveSlackIntegrationInput {

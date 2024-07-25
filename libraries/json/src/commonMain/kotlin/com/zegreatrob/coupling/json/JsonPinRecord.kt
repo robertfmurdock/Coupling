@@ -29,14 +29,6 @@ interface JsonPartyRecordInfo {
     val timestamp: Instant?
 }
 
-@Serializable
-data class SavePinInput(
-    override val partyId: PartyId,
-    val pinId: String?,
-    val name: String,
-    val icon: String,
-) : IPartyInput
-
 fun Pin.toSerializable() = GqlPin(
     id = id,
     name = name,

@@ -2,7 +2,8 @@ package com.zegreatrob.coupling.server.entity.pin
 
 import com.zegreatrob.coupling.action.pin.SavePinCommand
 import com.zegreatrob.coupling.action.pin.perform
-import com.zegreatrob.coupling.json.SavePinInput
+import com.zegreatrob.coupling.json.GqlSavePinInput
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.graphql.DispatcherProviders.authorizedPartyDispatcher
@@ -10,10 +11,10 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val savePinResolver = dispatch(
-    dispatcherFunc = requiredInput { request, _: JsonNull, args: SavePinInput ->
+    dispatcherFunc = requiredInput { request, _: JsonNull, args: GqlSavePinInput ->
         authorizedPartyDispatcher(
             context = request,
-            partyId = args.partyId.value,
+            partyId = args.partyId,
         )
     },
     commandFunc = requiredInput { _, input -> input.toCommand() },
@@ -21,9 +22,9 @@ val savePinResolver = dispatch(
     toSerializable = { true },
 )
 
-private fun SavePinInput.toCommand() = SavePinCommand(partyId, toPin())
+private fun GqlSavePinInput.toCommand() = SavePinCommand(PartyId(partyId), toPin())
 
-private fun SavePinInput.toPin() = Pin(
+private fun GqlSavePinInput.toPin() = Pin(
     id = pinId ?: "",
     name = name,
     icon = icon,
