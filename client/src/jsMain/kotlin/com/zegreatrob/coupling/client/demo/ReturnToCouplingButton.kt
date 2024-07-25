@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.pink
 import com.zegreatrob.coupling.client.components.supersize
 import com.zegreatrob.coupling.client.components.svgPath
 import com.zegreatrob.minreact.nfc
-import emotion.css.ClassName
+import csstype.PropertiesBuilder
 import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML
@@ -29,15 +29,11 @@ val returnToCouplingButton by nfc<Props> {
         to = "/parties"
         tabIndex = -1
         draggable = false
-        CouplingButton(
-            sizeRuleSet = supersize,
-            colorRuleSet = pink,
-            className = ClassName {
-                animationName = ident("pulsate")
-                animationDuration = 0.75.s
-                animationIterationCount = AnimationIterationCount.infinite
-            },
-        ) {
+        CouplingButton(sizeRuleSet = supersize, colorRuleSet = pink, css = fun PropertiesBuilder.() {
+            animationName = ident("pulsate")
+            animationDuration = 0.75.s
+            animationIterationCount = AnimationIterationCount.infinite
+        }) {
             couplingLogo()
         }
     }

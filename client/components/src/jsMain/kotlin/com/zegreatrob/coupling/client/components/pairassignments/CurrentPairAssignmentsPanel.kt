@@ -18,7 +18,7 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import emotion.css.ClassName
+import csstype.PropertiesBuilder
 import emotion.react.css
 import kotools.types.collection.NotEmptyList
 import react.ChildrenBuilder
@@ -162,7 +162,9 @@ private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = CouplingButton(
     sizeRuleSet = supersize,
     colorRuleSet = green,
     onClick = onSave,
-    className = ClassName { margin = 4.px },
+    css = fun PropertiesBuilder.() {
+        margin = 4.px
+    },
 ) {
     +"Save!"
 }

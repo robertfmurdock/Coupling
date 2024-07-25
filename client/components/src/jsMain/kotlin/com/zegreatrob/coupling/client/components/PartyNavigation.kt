@@ -17,7 +17,7 @@ external interface PartyNavigationProps : Props {
 @ReactFunc
 val PartyNavigation by nfc<PartyNavigationProps> { (party) ->
     NavigationPanel {
-        SettingsButton(party.id)
+        settingsButton(party)
         AddPlayerButton { this.partyId = party.id }
         viewHistoryButton(party)
         pinListButton(party)

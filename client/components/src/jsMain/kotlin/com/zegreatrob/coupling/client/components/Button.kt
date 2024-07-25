@@ -3,8 +3,7 @@ package com.zegreatrob.coupling.client.components
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import csstype.PropertiesBuilder
-import emotion.css.ClassName
-import emotion.css.cx
+import emotion.react.css
 import react.PropsWithChildren
 import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.button
@@ -166,6 +165,7 @@ external interface CouplingButtonProps : PropsWithChildren {
     var className: (ClassName)?
     var onClick: (() -> Unit)?
     var attrs: ((ButtonHTMLAttributes<*>) -> Unit)?
+    var css: ((PropertiesBuilder) -> Unit)?
 }
 
 @ReactFunc
@@ -175,21 +175,20 @@ val CouplingButton by nfc<CouplingButtonProps> { props ->
     val className = props.className ?: ClassName("")
     val onClick = props.onClick ?: {}
     val attrs = props.attrs ?: {}
+    val css = props.css ?: {}
 
     button {
         type = ButtonType.button
         this.onClick = { onClick() }
         attrs(this)
 
-        this.className = cx(
-            ClassName(ClassName("button")) {
-                "*" { verticalAlign = VerticalAlign.middle }
-                buttonRuleset()
-                sizeRuleSet(this)
-                colorRuleSet(this)
-            },
-            className,
-        )
+        css(className, ClassName("button")) {
+            "*" { verticalAlign = VerticalAlign.middle }
+            buttonRuleset()
+            sizeRuleSet(this)
+            colorRuleSet(this)
+            css(this)
+        }
 
         +props.children
     }
