@@ -91,7 +91,7 @@ data class SavePairAssignmentsInput(
 ) : IPartyInput
 
 @Serializable
-data class JsonPinnedCouplingPair(val players: NotEmptyList<JsonPinnedPlayer>, val pins: Set<JsonPinData> = emptySet())
+data class JsonPinnedCouplingPair(val players: NotEmptyList<JsonPinnedPlayer>, val pins: Set<GqlPin> = emptySet())
 
 @Serializable
 data class JsonPinnedPlayer(
@@ -103,7 +103,7 @@ data class JsonPinnedPlayer(
     val callSignNoun: String = defaultPlayer.callSignNoun,
     val imageURL: String? = defaultPlayer.imageURL,
     val avatarType: AvatarType? = defaultPlayer.avatarType,
-    val pins: List<JsonPinData> = emptyList(),
+    val pins: List<GqlPin> = emptyList(),
     val unvalidatedEmails: Set<String> = emptySet(),
 )
 
@@ -208,7 +208,7 @@ fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocume
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
     pinnedPlayers = players.map(JsonPinnedPlayer::toModel),
-    pins = pins.map(JsonPinData::toModel).toSet(),
+    pins = pins.map(GqlPin::toModel).toSet(),
 )
 
 private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
@@ -223,5 +223,5 @@ private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
         avatarType = avatarType,
         additionalEmails = unvalidatedEmails,
     ),
-    pins = pins.map(JsonPinData::toModel),
+    pins = pins.map(GqlPin::toModel),
 )

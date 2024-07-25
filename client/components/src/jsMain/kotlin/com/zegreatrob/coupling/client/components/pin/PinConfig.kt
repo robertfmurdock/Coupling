@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.components.DispatchFunc
 import com.zegreatrob.coupling.client.components.Paths.pinListPath
 import com.zegreatrob.coupling.client.components.external.w3c.requireConfirmation
 import com.zegreatrob.coupling.client.components.useForm
-import com.zegreatrob.coupling.json.JsonPinData
+import com.zegreatrob.coupling.json.GqlPin
 import com.zegreatrob.coupling.json.fromJsonDynamic
 import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.coupling.json.toModel
@@ -38,7 +38,7 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
     val (party, boost, pin, pinList, reload, dispatchFunc) = props
     val (values, onChange) = useForm(pin.toSerializable().toJsonDynamic().unsafeCast<Json>())
 
-    val updatedPin = values.fromJsonDynamic<JsonPinData>().toModel()
+    val updatedPin = values.fromJsonDynamic<GqlPin>().toModel()
     val (redirectUrl, setRedirectUrl) = useState<String?>(null)
     val onSubmit = dispatchFunc {
         fire(SavePinCommand(party.id, updatedPin))

@@ -1,5 +1,6 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.GqlPin
 import com.zegreatrob.coupling.json.JsonBoostRecord
 import com.zegreatrob.coupling.json.JsonContributionRecord
 import com.zegreatrob.coupling.json.JsonGlobalStats
@@ -7,7 +8,6 @@ import com.zegreatrob.coupling.json.JsonIntegrationRecord
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonPartyDetailsRecord
 import com.zegreatrob.coupling.json.JsonPartyStats
-import com.zegreatrob.coupling.json.JsonPinData
 import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
 import com.zegreatrob.coupling.json.JsonPinnedPlayer
@@ -61,7 +61,7 @@ object GqlReference {
         currentPeriodEnd = Instant.DISTANT_FUTURE,
     )
 
-    private val pinData = JsonPinData(
+    private val pinData = GqlPin(
         id = "",
         name = "",
         icon = "",
