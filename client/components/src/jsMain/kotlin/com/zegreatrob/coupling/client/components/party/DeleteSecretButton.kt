@@ -10,7 +10,6 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.Secret
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import csstype.PropertiesBuilder
 import react.Props
 import react.dom.html.ReactHTML.i
 import web.cssom.ClassName
@@ -29,7 +28,7 @@ val DeleteSecretButton by nfc<DeleteSecretButtonProps> { props ->
     CouplingButton(
         sizeRuleSet = large,
         colorRuleSet = red,
-        css = fun PropertiesBuilder.() {
+        className = emotion.css.ClassName {
             "i" {
                 margin = 0.px
             }
