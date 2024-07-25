@@ -25,7 +25,7 @@ interface DynamoPinJsonMapping : PartyIdDynamoRecordJsonMapping {
     )
 
     fun Json.toPin() = Pin(
-        id = getDynamoStringValue("id"),
+        id = getDynamoStringValue("id") ?: "",
         name = getDynamoStringValue("name") ?: "",
         icon = getDynamoStringValue("icon") ?: "",
     )

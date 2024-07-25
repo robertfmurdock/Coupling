@@ -25,7 +25,7 @@ class PinConfigEditorTest {
     @Test
     fun whenGivenPinHasNoIdWillNotShowDeleteButton() = setup(object {
         val party = PartyDetails(PartyId(""))
-        val pin = Pin(id = null)
+        val pin = Pin(id = "")
     }) exercise {
         render(
             RouterProvider.create {
@@ -72,7 +72,7 @@ class PinConfigEditorTest {
     @Test
     fun whenSaveIsPressedWillSavePinWithUpdatedContent() = asyncSetup(object {
         val party = PartyDetails(PartyId("dumb party"))
-        val pin = Pin(id = null, name = "")
+        val pin = Pin(id = "", name = "")
         val newName = "pin new name"
         val newIcon = "pin new icon"
 

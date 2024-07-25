@@ -35,8 +35,13 @@ interface JsonPin {
     val icon: String
 }
 
-@Serializable
-data class JsonPinData(override val id: String?, override val name: String, override val icon: String) : JsonPin
+fun JsonPinData(id: String, name: String, icon: String) = GqlPin(
+    id = id,
+    name = name,
+    icon = icon,
+)
+
+typealias JsonPinData = GqlPin
 
 @Serializable
 data class SavePinInput(
@@ -64,12 +69,12 @@ fun Record<PartyElement<Pin>>.toSerializable() = JsonPinRecord(
 
 fun JsonPinData.toModel(): Pin = Pin(
     id = id,
-    name = name,
-    icon = icon,
+    name = name ?: "",
+    icon = icon ?: "",
 )
 
 fun JsonPinRecord.toModel(): Record<PartyElement<Pin>> = Record(
-    data = partyId.with(Pin(id = id, name = name, icon = icon)),
+    data = partyId.with(Pin(id = id ?: "", name = name, icon = icon)),
     modifyingUserId = modifyingUserEmail,
     isDeleted = isDeleted,
     timestamp = timestamp,

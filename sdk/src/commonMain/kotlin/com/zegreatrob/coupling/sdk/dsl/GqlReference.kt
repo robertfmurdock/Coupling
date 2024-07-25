@@ -41,9 +41,25 @@ object GqlReference {
         totalAppliedPins = 0,
         totalUniquePins = 0,
     )
-    val user = JsonUserDetails("", "", emptySet())
-    val boost = JsonBoostRecord("", emptySet(), Instant.DISTANT_PAST, "", false, Instant.DISTANT_FUTURE)
-    val subscription = JsonSubscriptionDetails("", "", false, Instant.DISTANT_FUTURE)
+    val user = JsonUserDetails(
+        authorizedPartyIds = emptySet(),
+        email = "",
+        id = "",
+    )
+    val boost = JsonBoostRecord(
+        userId = "",
+        partyIds = emptySet(),
+        expirationDate = Instant.DISTANT_PAST,
+        modifyingUserEmail = "",
+        isDeleted = false,
+        timestamp = Instant.DISTANT_FUTURE,
+    )
+    val subscription = JsonSubscriptionDetails(
+        stripeCustomerId = "",
+        stripeSubscriptionId = "",
+        isActive = false,
+        currentPeriodEnd = Instant.DISTANT_FUTURE,
+    )
 
     private val pinData = JsonPinData(
         id = "",

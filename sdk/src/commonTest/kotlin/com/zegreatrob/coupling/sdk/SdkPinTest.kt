@@ -102,12 +102,12 @@ class SdkPinTest {
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = partySetup.with({
+    fun saveWorksWithEmptyValuesAndAssignsIds() = partySetup.with({
         object {
             val sdk = it.sdk
             val partyId = it.party.id
             val pin = Pin(
-                id = null,
+                id = "",
                 name = "",
                 icon = "",
             )
@@ -121,7 +121,7 @@ class SdkPinTest {
             .let { it ?: emptyList() }
             .map { it.data.pin }
             .also { it.assertHasIds() }
-            .map { it.copy(id = null) }
+            .map { it.copy(id = "") }
             .assertIsEqualTo(listOf(this.pin))
     }
 

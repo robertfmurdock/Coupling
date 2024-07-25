@@ -46,9 +46,9 @@ external interface PrepareSpinContentProps : Props {
     var party: PartyDetails
     var playerSelections: List<Pair<Player, Boolean>>
     var pins: List<Pin>
-    var pinSelections: List<String?>
+    var pinSelections: List<String>
     var setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit
-    var setPinSelections: (List<String?>) -> Unit
+    var setPinSelections: (List<String>) -> Unit
     var onSpin: (() -> Unit)?
 }
 
@@ -157,8 +157,8 @@ private fun ChildrenBuilder.batchSelectButton(
 }
 
 private fun ChildrenBuilder.pinSelector(
-    pinSelections: List<String?>,
-    setPinSelections: (List<String?>) -> Unit,
+    pinSelections: List<String>,
+    setPinSelections: (List<String>) -> Unit,
     pins: List<Pin>,
 ) = Flipper {
     flipKey = pinSelections.generateFlipKey()
@@ -211,7 +211,7 @@ private fun List<Pin>.removeByIds(pinSelections: List<String?>) = filterNot { pi
 private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {}) = Flipped {
     flipId = pin.id
     div {
-        key = pin.id ?: ""
+        key = pin.id
         css { display = Display.inlineBlock }
         PinButton(pin, PinButtonScale.Small, showTooltip = true, onClick = onClick)
     }

@@ -24,7 +24,7 @@ val savePinResolver = dispatch(
 private fun SavePinInput.toCommand() = SavePinCommand(partyId, toPin())
 
 private fun SavePinInput.toPin() = Pin(
-    id = pinId,
+    id = pinId ?: "",
     name = name,
     icon = icon,
 )

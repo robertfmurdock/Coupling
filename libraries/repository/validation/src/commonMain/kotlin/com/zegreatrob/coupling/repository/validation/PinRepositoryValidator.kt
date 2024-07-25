@@ -33,10 +33,10 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
     }
 
     @Test
-    fun saveWorksWithNullableValuesAndAssignsIds() = repositorySetup.with(
+    fun saveWorksWithEmptyIdAndAssignsId() = repositorySetup.with(
         object : PartyContextMint<R>() {
             val pin = Pin(
-                id = null,
+                id = "",
                 name = "",
                 icon = "",
             )
@@ -46,7 +46,7 @@ interface PinRepositoryValidator<R : PinRepository> : RepositoryValidator<R, Par
     } verifyWithWait {
         repository.getPins(partyId).map { it.data.pin }
             .also { it.assertHasIds() }
-            .map { it.copy(id = null) }
+            .map { it.copy(id = "") }
             .assertIsEqualTo(listOf(pin))
     }
 

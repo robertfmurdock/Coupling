@@ -44,9 +44,11 @@ val PinConfig by nfc<PinConfigProps<*>> { props ->
         fire(SavePinCommand(party.id, updatedPin))
         reload()
     }
-    val onRemove = pin.id?.let { pinId ->
+    val onRemove = if (pin.id.isBlank()) {
+        null
+    } else {
         dispatchFunc {
-            fire(DeletePinCommand(party.id, pinId))
+            fire(DeletePinCommand(party.id, pin.id))
             setRedirectUrl(party.id.pinListPath())
         }.requireConfirmation("Are you sure you want to delete this pin?")
     }
