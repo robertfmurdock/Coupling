@@ -13,7 +13,9 @@ fun ChildrenBuilder.pinListButton(party: PartyDetails) = Link {
     to = "/${party.id.value}/pins/"
     tabIndex = -1
     draggable = false
-    CouplingButton(large, white) {
+    CouplingButton {
+        sizeRuleSet = large
+        colorRuleSet = white
         i { this.className = ClassName("fa fa-peace") }
         +" Pin Bag!"
     }

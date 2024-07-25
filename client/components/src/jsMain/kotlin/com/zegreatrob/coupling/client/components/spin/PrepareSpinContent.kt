@@ -18,9 +18,9 @@ import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.css.ClassName
 import emotion.react.css
+import js.objects.jso
 import react.ChildrenBuilder
 import react.Props
-import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.br
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
@@ -151,9 +151,10 @@ private fun ChildrenBuilder.batchSelectButton(
     playerSelections: List<Pair<Player, Boolean>>,
     setPlayerSelections: (value: List<Pair<Player, Boolean>>) -> Unit,
     selectionValue: Boolean,
-) = CouplingButton(
-    onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) },
-) { +text }
+) = CouplingButton {
+    onClick = { playerSelections.map { it.copy(second = selectionValue) }.let(setPlayerSelections) }
+    +text
+}
 
 private fun ChildrenBuilder.pinSelector(
     pinSelections: List<String?>,
@@ -218,20 +219,19 @@ private fun ChildrenBuilder.flippedPinButton(pin: Pin, onClick: () -> Unit = {})
 
 private fun List<String?>.generateFlipKey() = joinToString(",") { it ?: "null" }
 
-private fun ChildrenBuilder.spinButton(generateNewPairsFunc: (() -> Unit)?) = CouplingButton(
-    supersize,
-    pink,
-    onClick = generateNewPairsFunc,
-    attrs = fun ButtonHTMLAttributes<*>.() {
+private fun ChildrenBuilder.spinButton(generateNewPairsFunc: (() -> Unit)?) = CouplingButton {
+    sizeRuleSet = supersize
+    colorRuleSet = pink
+    onClick = generateNewPairsFunc
+    buttonProps = jso {
         disabled = (generateNewPairsFunc == null)
-    },
+    }
     className = ClassName {
         marginBottom = 10.px
         animationName = ident("pulsate")
         animationDuration = 2.s
         animationIterationCount = AnimationIterationCount.infinite
-    },
-) {
+    }
     +"Spin!"
 }
 

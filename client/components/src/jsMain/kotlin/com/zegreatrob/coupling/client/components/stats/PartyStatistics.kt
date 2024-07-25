@@ -109,8 +109,14 @@ val PartyStatisticsContent by nfc<PartyStatisticsContentProps> { props ->
                 marginLeft = 20.px
             }
             div {
-                CouplingButton(onClick = { showPlot = false }) { +"Heatmap" }
-                CouplingButton(onClick = { showPlot = true }) { +"Recent Pairing" }
+                CouplingButton {
+                    onClick = { showPlot = false }
+                    +"Heatmap"
+                }
+                CouplingButton {
+                    onClick = { showPlot = true }
+                    +"Recent Pairing"
+                }
             }
 
             if (showPlot) {

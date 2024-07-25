@@ -11,7 +11,9 @@ val ContributionOverviewButton by nfc<PartyButtonProps> { (partyId) ->
     Link {
         to = "/${partyId.value}/contributions"
         draggable = false
-        CouplingButton(large, white, className) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = white
             i { this.className = ClassName("fa fa-mountain-sun") }
             +" "
             +"Overview"

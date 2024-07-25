@@ -13,7 +13,9 @@ fun ChildrenBuilder.viewHistoryButton(party: PartyDetails) = Link {
     to = "/${party.id.value}/history/"
     tabIndex = -1
     draggable = false
-    CouplingButton(large, lightGreen) {
+    CouplingButton {
+        sizeRuleSet = large
+        colorRuleSet = lightGreen
         i { this.className = ClassName("fa fa-history") }
         +" History!"
     }

@@ -49,6 +49,10 @@ val NewPartyButton by nfc<Props> {
         to = "/new-party/"
         draggable = false
         tabIndex = -1
-        CouplingButton(supersize, green) { +"Form a new party!" }
+        CouplingButton {
+            sizeRuleSet = supersize
+            colorRuleSet = green
+            +"Form a new party!"
+        }
     }
 }

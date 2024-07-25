@@ -14,7 +14,8 @@ val PartySelectButton by nfc<Props> {
         to = "/parties/"
         tabIndex = -1
         draggable = false
-        CouplingButton(large) {
+        CouplingButton {
+            sizeRuleSet = large
             i { className = ClassName("fa fa-arrow-circle-up") }
             span { +"Party select" }
         }

@@ -51,7 +51,9 @@ val PinList by nfc<PinListProps> { (party, pins) ->
                 to = "/${party.id.value}/pin/new"
                 tabIndex = -1
                 draggable = false
-                CouplingButton(large, orange) {
+                CouplingButton {
+                    sizeRuleSet = large
+                    colorRuleSet = orange
                     +"Add a new pin."
                 }
             }

@@ -13,12 +13,12 @@ import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
 import emotion.react.css
+import js.objects.jso
 import kotlinx.browser.window
 import org.w3c.dom.DataTransfer
 import react.ChildrenBuilder
 import react.MutableRefObject
 import react.Props
-import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.i
 import react.useRef
@@ -65,14 +65,13 @@ val PairSection by nfc<PairSectionProps> { (party, players, pairs, allowSave, se
 
 private fun ChildrenBuilder.copyToClipboardButton(ref: MutableRefObject<HTMLElement>) {
     if (js("!!global.ClipboardItem").unsafeCast<Boolean>()) {
-        CouplingButton(
-            sizeRuleSet = large,
-            colorRuleSet = white,
-            onClick = { ref.current?.copyToClipboardOnClick()?.invoke() },
-            attrs = fun ButtonHTMLAttributes<*>.() {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = white
+            onClick = { ref.current?.copyToClipboardOnClick()?.invoke() }
+            buttonProps = jso {
                 tabIndex = -1
-            },
-        ) {
+            }
             i { className = ClassName("fa fa-clipboard") }
         }
     }

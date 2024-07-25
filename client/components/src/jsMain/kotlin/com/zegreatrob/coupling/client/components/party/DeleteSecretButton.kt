@@ -25,19 +25,18 @@ external interface DeleteSecretButtonProps : Props {
 
 @ReactFunc
 val DeleteSecretButton by nfc<DeleteSecretButtonProps> { props ->
-    CouplingButton(
-        sizeRuleSet = large,
-        colorRuleSet = red,
+    CouplingButton {
+        sizeRuleSet = large
+        colorRuleSet = red
         className = emotion.css.ClassName {
             "i" {
                 margin = 0.px
             }
-        },
+        }
         onClick = props.dispatcher {
             fire(DeleteSecretCommand(props.partyId, props.secret.id))
             props.onSuccess()
-        },
-    ) {
+        }
         i { className = ClassName("fa fa-trash") }
     }
 }

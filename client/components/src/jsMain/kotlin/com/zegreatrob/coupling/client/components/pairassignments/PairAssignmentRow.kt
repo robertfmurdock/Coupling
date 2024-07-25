@@ -84,11 +84,10 @@ val PairAssignmentRow by nfc<PairAssignmentRowProps> { props ->
     }
 }
 
-private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = CouplingButton(
-    sizeRuleSet = small,
-    colorRuleSet = red,
-    onClick = onClickFunc,
-) {
+private fun ChildrenBuilder.deleteButton(onClickFunc: () -> Unit) = CouplingButton {
+    sizeRuleSet = small
+    colorRuleSet = red
+    onClick = onClickFunc
     +"DELETE"
 }
 

@@ -44,7 +44,10 @@ val SponsorCouplingButton by nfc<SponsorCouplingButtonProps> { props ->
             +"Click for ongoing sponsorship via subscription."
         }
     } else {
-        CouplingButton(large, blue, onClick = { showSubscriptionLink = true }) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = blue
+            onClick = { showSubscriptionLink = true }
             span { +"Sponsor Coupling!" }
         }
     }

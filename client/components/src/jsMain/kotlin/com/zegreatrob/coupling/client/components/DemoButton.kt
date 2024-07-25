@@ -12,7 +12,9 @@ val DemoButton by nfc<Props> {
         to = "/demo"
         tabIndex = -1
         draggable = false
-        CouplingButton(large, lightGreen) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = lightGreen
             i { className = ClassName("fa fa-play") }
             span { +" Demo" }
         }

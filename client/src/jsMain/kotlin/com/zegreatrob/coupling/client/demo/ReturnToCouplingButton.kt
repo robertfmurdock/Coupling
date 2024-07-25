@@ -29,15 +29,14 @@ val returnToCouplingButton by nfc<Props> {
         to = "/parties"
         tabIndex = -1
         draggable = false
-        CouplingButton(
-            sizeRuleSet = supersize,
-            colorRuleSet = pink,
+        CouplingButton {
+            sizeRuleSet = supersize
+            colorRuleSet = pink
             className = ClassName {
                 animationName = ident("pulsate")
                 animationDuration = 0.75.s
                 animationIterationCount = AnimationIterationCount.infinite
-            },
-        ) {
+            }
             couplingLogo()
         }
     }

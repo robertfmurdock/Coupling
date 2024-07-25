@@ -1,11 +1,13 @@
 package com.zegreatrob.coupling.client.components
 
-import com.zegreatrob.minreact.ReactFunc
-import com.zegreatrob.minreact.nfc
+import csstype.Properties
 import csstype.PropertiesBuilder
 import emotion.css.ClassName
 import emotion.css.cx
+import js.objects.jso
+import react.FC
 import react.PropsWithChildren
+import react.PropsWithClassName
 import react.dom.html.ButtonHTMLAttributes
 import react.dom.html.ReactHTML.button
 import web.cssom.AlignItems
@@ -13,7 +15,6 @@ import web.cssom.AnimationPlayState
 import web.cssom.BackgroundRepeat
 import web.cssom.Border
 import web.cssom.BoxShadow
-import web.cssom.ClassName
 import web.cssom.Color
 import web.cssom.Cursor
 import web.cssom.Display
@@ -31,6 +32,7 @@ import web.cssom.px
 import web.cssom.rgb
 import web.cssom.url
 import web.html.ButtonType
+import web.html.HTMLButtonElement
 
 val buttonRuleset: PropertiesBuilder.() -> Unit = {
     backgroundImage = url(pngPath("overlay"))
@@ -65,23 +67,23 @@ val buttonRuleset: PropertiesBuilder.() -> Unit = {
     }
 }
 
-val small: PropertiesBuilder.() -> Unit = {
+val small: Properties = jso {
     fontSize = 11.px
 }
-val medium: PropertiesBuilder.() -> Unit = {
+val medium: Properties = jso {
     fontSize = 13.px
     fontWeight = FontWeight.bold
     lineHeight = number(1.0)
 }
-val large: PropertiesBuilder.() -> Unit = {
+val large: Properties = jso {
     fontSize = 14.px
     padding = Padding(8.px, 14.px, 9.px)
 }
-val supersize: PropertiesBuilder.() -> Unit = {
+val supersize: Properties = jso {
     fontSize = 34.px
     padding = Padding(8.px, 14.px, 9.px)
 }
-val pink: PropertiesBuilder.() -> Unit = {
+val pink: Properties = jso<PropertiesBuilder>().apply {
     backgroundColor = Color("#e22092")
     hover {
         backgroundColor = Color("#c81e82")
@@ -90,7 +92,7 @@ val pink: PropertiesBuilder.() -> Unit = {
         backgroundColor = Color("#c81e82")
     }
 }
-val lightGreen: PropertiesBuilder.() -> Unit = {
+val lightGreen: Properties = jso<PropertiesBuilder>().apply {
     backgroundColor = Color("#7fd8be")
     color = Color("#3e474c")
     textShadow = None.none
@@ -98,31 +100,31 @@ val lightGreen: PropertiesBuilder.() -> Unit = {
         backgroundColor = Color("#68b39d")
     }
 }
-val green: PropertiesBuilder.() -> Unit = {
+val green: Properties = jso<PropertiesBuilder>().apply {
     backgroundColor = Color("#42805e")
     hover {
         backgroundColor = Color("#29533d")
     }
 }
-val red: PropertiesBuilder.() -> Unit = {
+val red: Properties = jso<PropertiesBuilder>().apply {
     backgroundColor = Color("#e62727")
     hover {
         backgroundColor = Color("#cf2525")
     }
 }
-val orange: PropertiesBuilder.() -> Unit = {
+val orange: Properties = jso<PropertiesBuilder>().apply {
     backgroundColor = Color("#ff5c00")
     hover {
         backgroundColor = Color("#d45500")
     }
 }
-val blue: PropertiesBuilder.() -> Unit = {
+val blue: Properties = jso<PropertiesBuilder>().apply {
     backgroundColor = Color("#345995")
     hover {
         backgroundColor = Color("#5188e1")
     }
 }
-val white: PropertiesBuilder.() -> Unit = {
+val white: Properties = jso<PropertiesBuilder>().apply {
     buttonColorsWithFocus(
         backgroundColor = Color("#f3ffff"),
         color = Color("#3e474c"),
@@ -132,7 +134,7 @@ val white: PropertiesBuilder.() -> Unit = {
         backgroundColor = Color("#cdd7d7")
     }
 }
-val yellow: PropertiesBuilder.() -> Unit = {
+val yellow: Properties = jso<PropertiesBuilder>().apply {
     buttonColorsWithFocus(
         backgroundColor = Color("#eac435"),
         color = Color("#3e474c"),
@@ -153,44 +155,41 @@ private fun PropertiesBuilder.buttonColorsWithFocus(backgroundColor: Color, colo
     }
 }
 
-val black: PropertiesBuilder.() -> Unit = {
+val black: Properties = jso<PropertiesBuilder>().apply {
     backgroundColor = Color("#222222")
     ":hover" {
         backgroundColor = Color("#333")
     }
 }
 
-external interface CouplingButtonProps : PropsWithChildren {
-    var sizeRuleSet: ((PropertiesBuilder) -> Unit)?
-    var colorRuleSet: ((PropertiesBuilder) -> Unit)?
-    var className: (ClassName)?
+external interface CouplingButtonProps :
+    PropsWithChildren,
+    PropsWithClassName {
+    var sizeRuleSet: Properties?
+    var colorRuleSet: Properties?
     var onClick: (() -> Unit)?
-    var attrs: ((ButtonHTMLAttributes<*>) -> Unit)?
+    var buttonProps: ButtonHTMLAttributes<HTMLButtonElement>?
 }
 
-@ReactFunc
-val CouplingButton by nfc<CouplingButtonProps> { props ->
+val CouplingButton = FC<CouplingButtonProps> { props ->
     val sizeRuleSet = props.sizeRuleSet ?: medium
     val colorRuleSet = props.colorRuleSet ?: black
-    val className = props.className ?: ClassName("")
     val onClick = props.onClick ?: {}
-    val attrs = props.attrs ?: {}
 
     button {
         type = ButtonType.button
+        +props.buttonProps
         this.onClick = { onClick() }
-        attrs(this)
-
-        this.className = cx(
-            ClassName(ClassName("button")) {
+        className = cx(
+            this.className,
+            ClassName {
                 "*" { verticalAlign = VerticalAlign.middle }
                 buttonRuleset()
-                sizeRuleSet(this)
-                colorRuleSet(this)
+                +sizeRuleSet
+                +colorRuleSet
             },
-            className,
+            props.className,
         )
-
         +props.children
     }
 }

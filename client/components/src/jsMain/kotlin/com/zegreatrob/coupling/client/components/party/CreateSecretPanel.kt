@@ -47,9 +47,9 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
             }
         }
 
-        CouplingButton(
-            sizeRuleSet = large,
-            colorRuleSet = lightGreen,
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = lightGreen
             onClick = props.dispatcher {
                 if (description.isBlank()) {
                     alert("Please enter a description for your secret.")
@@ -58,8 +58,7 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
                     createdSecret = result?.first
                     secretValue = result?.second ?: ""
                 }
-            },
-        ) {
+            }
             i { className = ClassName("fa fa-plus") }
             +"Create New Secret"
         }
@@ -87,15 +86,14 @@ val CreateSecretPanel by nfc<CreateSecretPanelProps> { props ->
                     value = secretValue
                 }
             }
-            CouplingButton(
+            CouplingButton {
                 onClick = props.dispatcher {
                     if (secretValue.isBlank()) {
                         alert("No secret to copy!")
                     } else {
                         navigator.clipboard.writeText(secretValue)
                     }
-                },
-            ) {
+                }
                 i { className = ClassName("fa fa-clipboard") }
                 +"Copy Secret Value"
             }

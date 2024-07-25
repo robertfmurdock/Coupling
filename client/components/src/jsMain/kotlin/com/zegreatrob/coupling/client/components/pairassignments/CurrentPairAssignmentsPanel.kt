@@ -18,7 +18,6 @@ import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
-import emotion.css.ClassName
 import emotion.react.css
 import kotools.types.collection.NotEmptyList
 import react.ChildrenBuilder
@@ -158,19 +157,17 @@ private fun NotEmptyList<PinnedCouplingPair>.findPairContainingPlayer(droppedPla
         pair.pinnedPlayers.toList().any { player -> player.player.id == droppedPlayerId }
     }
 
-private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = CouplingButton(
-    sizeRuleSet = supersize,
-    colorRuleSet = green,
-    onClick = onSave,
-    className = ClassName { margin = 4.px },
-) {
+private fun ChildrenBuilder.saveButton(onSave: () -> Unit) = CouplingButton {
+    sizeRuleSet = supersize
+    colorRuleSet = green
+    onClick = onSave
+    css { margin = 4.px }
     +"Save!"
 }
 
-private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) = CouplingButton(
-    sizeRuleSet = small,
-    colorRuleSet = red,
-    onClick = onCancel,
-) {
+private fun ChildrenBuilder.cancelButton(onCancel: () -> Unit) = CouplingButton {
+    sizeRuleSet = small
+    colorRuleSet = red
+    onClick = onCancel
     +"Cancel"
 }

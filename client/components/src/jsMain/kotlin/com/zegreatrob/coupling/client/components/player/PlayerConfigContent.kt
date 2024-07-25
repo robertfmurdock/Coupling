@@ -131,10 +131,9 @@ private fun ChildrenBuilder.playerConfigForm(
             }
             if (!player.emails.contains("")) {
                 li {
-                    CouplingButton(
-                        sizeRuleSet = small,
-                        onClick = { onPlayerChange(player.copy(additionalEmails = player.additionalEmails + "")) },
-                    ) {
+                    CouplingButton {
+                        sizeRuleSet = small
+                        onClick = { onPlayerChange(player.copy(additionalEmails = player.additionalEmails + "")) }
                         +"Add Additional Email"
                     }
                 }

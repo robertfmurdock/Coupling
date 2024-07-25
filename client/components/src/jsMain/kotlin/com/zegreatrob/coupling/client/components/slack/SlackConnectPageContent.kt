@@ -97,7 +97,9 @@ val ReturnToCouplingButton by nfc<LinkProps> { props ->
     Link {
         draggable = false
         +props
-        CouplingButton(large, orange) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = orange
             +"Return to Coupling"
         }
     }

@@ -36,18 +36,16 @@ val PairSelector by nfc<PairSelectorProps> { props ->
                     padding = 4.px
                 }
                 div {
-                    CouplingButton(
-                        sizeRuleSet = small,
-                        onClick = { props.onSelectionChange(pairs) },
-                    ) {
+                    CouplingButton {
+                        sizeRuleSet = small
+                        onClick = { props.onSelectionChange(pairs) }
                         +"Select All"
                     }
                 }
                 div {
-                    CouplingButton(
-                        sizeRuleSet = small,
-                        onClick = { props.onSelectionChange(emptyList()) },
-                    ) {
+                    CouplingButton {
+                        sizeRuleSet = small
+                        onClick = { props.onSelectionChange(emptyList()) }
                         +"Select None"
                     }
                 }

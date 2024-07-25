@@ -12,7 +12,9 @@ val LogoutButton by nfc<Props> {
         to = "/logout"
         tabIndex = -1
         draggable = false
-        CouplingButton(large, red) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = red
             i { className = ClassName("fa fa-sign-out-alt") }
             span { +"Sign Out" }
         }

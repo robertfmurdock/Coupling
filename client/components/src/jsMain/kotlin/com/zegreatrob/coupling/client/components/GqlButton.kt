@@ -10,7 +10,9 @@ val GqlButton by nfc<Props> {
         to = "/graphiql"
         tabIndex = -1
         draggable = false
-        CouplingButton(large, white) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = white
             img {
                 src = svgPath("graphql")
                 height = 18.0

@@ -13,7 +13,10 @@ fun ChildrenBuilder.statisticsButton(party: PartyDetails) = Link {
     to = "/${party.id.value}/statistics"
     tabIndex = -1
     draggable = false
-    CouplingButton(large, blue) {
+    CouplingButton {
+        sizeRuleSet = large
+        colorRuleSet = blue
+
         i { this.className = ClassName("fa fa-database") }
         +" Statistics!"
     }

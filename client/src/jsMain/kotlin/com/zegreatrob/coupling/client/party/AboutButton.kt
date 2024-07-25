@@ -9,7 +9,6 @@ import emotion.react.css
 import react.Props
 import react.dom.html.ReactHTML.span
 import react.router.dom.Link
-import web.cssom.ClassName
 import web.cssom.px
 
 val AboutButton by nfc<Props> {
@@ -17,7 +16,9 @@ val AboutButton by nfc<Props> {
         to = "/about"
         tabIndex = -1
         draggable = false
-        CouplingButton(large, orange, ClassName("")) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = orange
             span { +"About" }
             span {
                 css { margin = 2.px }

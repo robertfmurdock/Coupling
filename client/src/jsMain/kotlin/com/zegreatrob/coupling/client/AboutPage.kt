@@ -69,12 +69,10 @@ private val backButton by nfc<Props> {
         to = "/parties"
         tabIndex = -1
         draggable = false
-        CouplingButton(
-            sizeRuleSet = large,
-            colorRuleSet = blue,
-            className = ClassName(""),
-            onClick = {},
-        ) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = blue
+            onClick = {}
             i { className = ClassName("fa fa-step-backward") }
             span { +"Back to Coupling!" }
         }

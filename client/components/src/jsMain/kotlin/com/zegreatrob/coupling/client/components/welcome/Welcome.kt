@@ -219,10 +219,10 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
     if (showLoginChooser) {
         LoginChooser()
     } else {
-        CouplingButton(
-            supersize,
-            pink,
-            ClassName {
+        CouplingButton {
+            sizeRuleSet = supersize
+            colorRuleSet = pink
+            css {
                 marginTop = 20.px
                 animationName = ident("pulsate")
                 animationDuration = 0.5.s
@@ -231,8 +231,9 @@ private fun ChildrenBuilder.comeOnIn(showLoginChooser: Boolean, onEnterClick: ()
                 hover {
                     animationPlayState = AnimationPlayState.running
                 }
-            },
-            onEnterClick,
-        ) { +"Come on in!" }
+            }
+            onClick = onEnterClick
+            +"Come on in!"
+        }
     }
 }

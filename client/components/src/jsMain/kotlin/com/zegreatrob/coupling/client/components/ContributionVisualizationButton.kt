@@ -11,7 +11,9 @@ val ContributionVisualizationButton by nfc<PartyButtonProps> { (partyId) ->
     Link {
         to = "/${partyId.value}/contributions/visualization"
         draggable = false
-        CouplingButton(large, white, className) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = white
             i { this.className = ClassName("fa fa-magnifying-glass-chart") }
             +" "
             +"Visualization"

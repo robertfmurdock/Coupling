@@ -52,7 +52,7 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
                 }
             }
 
-            props.parties.map { party ->
+            props.parties.forEach { party ->
                 val partyName = party.name
                 option {
                     key = party.id.value
@@ -65,14 +65,13 @@ val BoostConfiguration by nfc<BoostConfigurationProps> { props ->
             }
         }
 
-        CouplingButton(
+        CouplingButton {
             onClick = props.dispatchFunc {
                 boostedParty?.id?.let {
                     fire(ApplyBoostCommand(it))
                     props.reload()
                 }
-            },
-        ) {
+            }
             +"Apply Boost"
         }
     }

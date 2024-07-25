@@ -26,9 +26,9 @@ val PrepareToSpinButton by nfc<PrepareToSpinButtonProps> { (party) ->
         to = "/${party.id.value}/prepare/"
         tabIndex = -1
         draggable = false
-        CouplingButton(
-            sizeRuleSet = supersize,
-            colorRuleSet = pink,
+        CouplingButton {
+            sizeRuleSet = supersize
+            colorRuleSet = pink
             className = ClassName(prepareToSpinButtonClassName) {
                 animationName = ident("pulsate")
                 animationDuration = 2.s
@@ -36,8 +36,7 @@ val PrepareToSpinButton by nfc<PrepareToSpinButtonProps> { (party) ->
                 hover {
                     animationDuration = 0.75.s
                 }
-            },
-        ) {
+            }
             +"Prepare to spin!"
         }
     }

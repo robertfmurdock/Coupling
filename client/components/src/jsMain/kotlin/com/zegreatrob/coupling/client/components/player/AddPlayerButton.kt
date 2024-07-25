@@ -12,7 +12,9 @@ val AddPlayerButton by nfc<PartyButtonProps> { props ->
         to = "/${props.partyId.value}/player/new/"
         tabIndex = -1
         draggable = false
-        CouplingButton(large, orange) {
+        CouplingButton {
+            sizeRuleSet = large
+            colorRuleSet = orange
             +"Add Player!"
         }
     }

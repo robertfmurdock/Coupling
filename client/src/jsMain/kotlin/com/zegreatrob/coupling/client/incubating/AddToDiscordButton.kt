@@ -32,7 +32,8 @@ val AddToDiscordButton by nfc<AddToDiscordButtonProps> { props ->
     val discordCallbackHref = useHref("/integration/discord/callback")
 
     if (!showTools) {
-        CouplingButton(onClick = { showTools = true }) {
+        CouplingButton {
+            onClick = { showTools = true }
             +"Add to Discord"
         }
     } else {
