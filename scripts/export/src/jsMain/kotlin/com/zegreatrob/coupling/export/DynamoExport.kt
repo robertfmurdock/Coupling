@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.export
 
 import com.zegreatrob.coupling.json.GqlPartyDetails
+import com.zegreatrob.coupling.json.GqlPinDetails
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.json.toJsonDynamic
@@ -75,7 +75,7 @@ data class PartyData(
     val partyRecords: List<GqlPartyDetails>,
     val playerRecords: List<JsonPlayerRecord>,
     val pairAssignmentRecords: List<JsonPairAssignmentDocumentRecord>,
-    val pinRecords: List<JsonPinRecord>,
+    val pinRecords: List<GqlPinDetails>,
 )
 
 private fun Json.print() = println(JSON.stringify(this))

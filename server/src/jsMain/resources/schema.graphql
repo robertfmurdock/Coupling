@@ -44,12 +44,12 @@ type Pin {
 
 type PinDetails {
     id: ID!
-    icon: String
-    name: String
-    partyId: String
-    modifyingUserEmail: String
-    timestamp: String
-    isDeleted: Boolean
+    partyId: ID!
+    icon: String!
+    name: String!
+    modifyingUserEmail: String!
+    timestamp: DateTimeISO!
+    isDeleted: Boolean!
 }
 
 type PlayerDetails {

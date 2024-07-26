@@ -5,8 +5,8 @@ import com.zegreatrob.coupling.import.external.readline.inputReader
 import com.zegreatrob.coupling.import.external.readline.onEnd
 import com.zegreatrob.coupling.import.external.readline.onNewLine
 import com.zegreatrob.coupling.json.GqlPartyDetails
+import com.zegreatrob.coupling.json.GqlPinDetails
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonUserRecord
 import com.zegreatrob.coupling.json.couplingJsonFormat
@@ -75,7 +75,7 @@ suspend fun loadPartyData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
         }
     }
     jsonLine.getArray("pinRecords").forEach { recordJson ->
-        val record = format.decodeFromDynamic<JsonPinRecord>(recordJson).toModel()
+        val record = format.decodeFromDynamic<GqlPinDetails>(recordJson).toModel()
         tryToImport({ "Failed to save pin ${record.data.partyId} in party $partyId" }) {
             catalog.pinRepository.saveRawRecord(record)
         }

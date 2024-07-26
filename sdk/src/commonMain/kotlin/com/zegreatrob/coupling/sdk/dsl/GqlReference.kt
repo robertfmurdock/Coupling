@@ -2,13 +2,13 @@ package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPin
+import com.zegreatrob.coupling.json.GqlPinDetails
 import com.zegreatrob.coupling.json.JsonBoostRecord
 import com.zegreatrob.coupling.json.JsonContributionRecord
 import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonIntegrationRecord
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonPartyStats
-import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
 import com.zegreatrob.coupling.json.JsonPinnedPlayer
 import com.zegreatrob.coupling.json.JsonPlayerRecord
@@ -146,11 +146,11 @@ object GqlReference {
         timestamp = Instant.DISTANT_PAST,
     )
 
-    val pinRecord = JsonPinRecord(
+    val pinRecord = GqlPinDetails(
         id = "",
         name = "",
         icon = "",
-        partyId = PartyId(""),
+        partyId = "",
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
