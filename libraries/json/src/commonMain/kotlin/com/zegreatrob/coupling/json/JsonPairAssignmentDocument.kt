@@ -72,15 +72,6 @@ data class JsonPairAssignmentDocumentRecord(
 ) : JsonPartyRecordInfo
 
 @Serializable
-data class JsonIntegrationRecord(
-    val slackTeam: String?,
-    val slackChannel: String?,
-    val modifyingUserEmail: String,
-    val isDeleted: Boolean,
-    val timestamp: Instant,
-)
-
-@Serializable
 data class SavePairAssignmentsInput(
     override val partyId: PartyId,
     val pairAssignmentsId: String,
@@ -93,19 +84,7 @@ data class SavePairAssignmentsInput(
 @Serializable
 data class JsonPinnedCouplingPair(val players: NotEmptyList<JsonPinnedPlayer>, val pins: Set<GqlPin> = emptySet())
 
-@Serializable
-data class JsonPinnedPlayer(
-    val id: String,
-    val name: String = defaultPlayer.name,
-    val email: String = defaultPlayer.email,
-    val badge: String = "${defaultPlayer.badge}",
-    val callSignAdjective: String = defaultPlayer.callSignAdjective,
-    val callSignNoun: String = defaultPlayer.callSignNoun,
-    val imageURL: String? = defaultPlayer.imageURL,
-    val avatarType: AvatarType? = defaultPlayer.avatarType,
-    val pins: List<GqlPin> = emptyList(),
-    val unvalidatedEmails: Set<String> = emptySet(),
-)
+typealias JsonPinnedPlayer = GqlPinnedPlayer
 
 @Serializable
 data class SpinInput(
@@ -160,10 +139,12 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
     callSignAdjective = player.callSignAdjective,
     callSignNoun = player.callSignNoun,
     imageURL = player.imageURL,
-    avatarType = player.avatarType,
-    unvalidatedEmails = player.additionalEmails,
+    avatarType = player.avatarType?.toSerializable(),
+    unvalidatedEmails = player.additionalEmails.toList(),
     pins = pins.map(Pin::toSerializable),
 )
+
+fun AvatarType.toSerializable() = name.let { GqlAvatarType.valueOfLabel(it) }
 
 fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
     SavePairAssignmentsInput(
@@ -214,14 +195,16 @@ fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
 private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
     player = Player(
         id = id,
-        badge = badge.toIntOrNull() ?: defaultPlayer.badge,
+        badge = badge?.toIntOrNull() ?: defaultPlayer.badge,
         name = name,
         email = email,
         callSignAdjective = callSignAdjective,
         callSignNoun = callSignNoun,
         imageURL = imageURL,
-        avatarType = avatarType,
-        additionalEmails = unvalidatedEmails,
+        avatarType = avatarType?.toModel(),
+        additionalEmails = unvalidatedEmails?.toSet() ?: emptySet(),
     ),
     pins = pins.map(GqlPin::toModel),
 )
+
+private fun GqlAvatarType.toModel() = name.let { AvatarType.valueOf(it) }

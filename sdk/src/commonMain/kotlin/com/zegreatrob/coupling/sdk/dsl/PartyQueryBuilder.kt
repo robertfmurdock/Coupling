@@ -1,10 +1,10 @@
 package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.ContributionsInput
+import com.zegreatrob.coupling.json.GqlPairInput
 import com.zegreatrob.coupling.json.JsonContributionReport
 import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.JsonParty
-import com.zegreatrob.coupling.json.PairInput
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.boost
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
@@ -55,7 +55,7 @@ class PartyQueryBuilder :
         .output
         .addToQuery(
             "pair",
-            InputSettings(PairInput(playerIds.toSet()), "pairInput", "PairInput"),
+            InputSettings(GqlPairInput(playerIds.toList()), "pairInput", "PairInput"),
         )
 
     fun pairs(block: PairQueryBuilder.() -> Unit) = PairQueryBuilder()

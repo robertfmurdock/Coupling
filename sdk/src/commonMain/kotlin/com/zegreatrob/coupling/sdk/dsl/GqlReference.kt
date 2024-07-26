@@ -1,14 +1,15 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.GqlAvatarType
 import com.zegreatrob.coupling.json.GqlBoostDetails
 import com.zegreatrob.coupling.json.GqlPartyDetails
+import com.zegreatrob.coupling.json.GqlPartyIntegration
 import com.zegreatrob.coupling.json.GqlPin
 import com.zegreatrob.coupling.json.GqlPinDetails
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
 import com.zegreatrob.coupling.json.JsonContributionRecord
 import com.zegreatrob.coupling.json.JsonGlobalStats
-import com.zegreatrob.coupling.json.JsonIntegrationRecord
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonPartyStats
 import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
@@ -16,7 +17,6 @@ import com.zegreatrob.coupling.json.JsonPinnedPlayer
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonSecretRecord
 import com.zegreatrob.coupling.model.party.PartyId
-import com.zegreatrob.coupling.model.player.AvatarType
 import kotlinx.datetime.Instant
 import kotools.types.collection.notEmptyListOf
 import kotlin.time.Duration
@@ -74,9 +74,9 @@ object GqlReference {
         callSignAdjective = "",
         callSignNoun = "",
         imageURL = "",
-        avatarType = AvatarType.BoringBeam,
+        avatarType = GqlAvatarType.BoringBeam,
         pins = listOf(pinData),
-        unvalidatedEmails = setOf(""),
+        unvalidatedEmails = listOf(""),
     )
     val pinnedCouplingPair = JsonPinnedCouplingPair(
         players = notEmptyListOf(pinnedPlayer),
@@ -93,7 +93,7 @@ object GqlReference {
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
     )
-    val integrationRecord = JsonIntegrationRecord(
+    val integrationRecord = GqlPartyIntegration(
         slackTeam = "",
         slackChannel = "",
         modifyingUserEmail = "",

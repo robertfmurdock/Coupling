@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.graphql
 
+import com.zegreatrob.coupling.json.GqlPartyInput
 import com.zegreatrob.coupling.json.JsonParty
-import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.contribution.clearContributionsResolver
@@ -68,7 +68,7 @@ fun couplingResolvers() = json(
         "partyList" to partyListResolve,
         "party" to { _: Json, args: Json, r: CouplingContext, _: Json ->
             MainScope().promise {
-                val jsonParty = kotlinx.serialization.json.Json.decodeFromDynamic<PartyInput>(args["input"])
+                val jsonParty = kotlinx.serialization.json.Json.decodeFromDynamic<GqlPartyInput>(args["input"])
                     .let { JsonParty(id = it.partyId) }
                 val partyId = jsonParty.id
                     ?: return@promise null

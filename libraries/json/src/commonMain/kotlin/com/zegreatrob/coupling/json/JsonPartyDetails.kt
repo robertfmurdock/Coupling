@@ -53,7 +53,7 @@ fun Record<PartyDetails>.toSerializable() = GqlPartyDetails(
     timestamp = timestamp,
 )
 
-fun Record<PartyIntegration>.toSerializable() = JsonIntegrationRecord(
+fun Record<PartyIntegration>.toSerializable() = GqlPartyIntegration(
     slackTeam = data.slackTeam,
     slackChannel = data.slackChannel,
     modifyingUserEmail = modifyingUserId,
@@ -61,7 +61,7 @@ fun Record<PartyIntegration>.toSerializable() = JsonIntegrationRecord(
     timestamp = timestamp,
 )
 
-fun JsonIntegrationRecord.toModelRecord(): Record<PartyIntegration> = Record(
+fun GqlPartyIntegration.toModelRecord(): Record<PartyIntegration> = Record(
     data = PartyIntegration(
         slackTeam = slackTeam,
         slackChannel = slackChannel,

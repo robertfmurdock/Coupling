@@ -32,16 +32,6 @@ data class JsonCouplingQueryResult(
     val pairs: List<JsonPair>? = null,
 )
 
-@Serializable
-data class PartyInput(
-    val partyId: String,
-)
-
-@Serializable
-data class PairInput(
-    val playerIdList: Set<String>,
-)
-
 private fun JsonParty.toModel(): Party? {
     return Party(
         id = id?.let(::PartyId) ?: return null,
@@ -75,7 +65,7 @@ fun JsonCouplingQueryResult.toDomain(raw: JsonElement) = CouplingQueryResult(
 data class JsonParty(
     val id: String? = null,
     val details: GqlPartyDetails? = null,
-    val integration: JsonIntegrationRecord? = null,
+    val integration: GqlPartyIntegration? = null,
     val pinList: List<GqlPinDetails>? = null,
     val playerList: List<JsonPlayerRecord>? = null,
     val secretList: List<JsonSecretRecord>? = null,

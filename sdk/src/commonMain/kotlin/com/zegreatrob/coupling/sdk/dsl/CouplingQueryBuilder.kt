@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.GqlPartyInput
 import com.zegreatrob.coupling.json.JsonConfig
 import com.zegreatrob.coupling.json.JsonGlobalStatsInput
-import com.zegreatrob.coupling.json.PartyInput
 import com.zegreatrob.coupling.json.nestedKeys
 import com.zegreatrob.coupling.json.toGqlQueryFields
 import com.zegreatrob.coupling.json.toQueryLines
@@ -42,7 +42,7 @@ class CouplingQueryBuilder : BuilderWithInput() {
 
     fun party(id: PartyId, block: PartyQueryBuilder.() -> Unit) = mergeToParent(
         queryKey = "party",
-        inputSettings = InputSettings(PartyInput(id.value), "partyInput", "PartyInput"),
+        inputSettings = InputSettings(GqlPartyInput(id.value), "partyInput", "PartyInput"),
         child = PartyQueryBuilder()
             .also(block),
     )

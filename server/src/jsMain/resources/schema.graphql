@@ -19,9 +19,9 @@ type PartyDetails {
 type PartyIntegration {
     slackTeam: String
     slackChannel: String
-    modifyingUserEmail: String
-    timestamp: DateTimeISO
-    isDeleted: Boolean
+    modifyingUserEmail: String!
+    timestamp: DateTimeISO!
+    isDeleted: Boolean!
 }
 
 type User {
@@ -54,31 +54,48 @@ type PinDetails {
 
 type PlayerDetails {
     id: ID!
-    name: String
-    email: String
+    name: String!
+    email: String!
     badge: String
-    callSignAdjective: String
-    callSignNoun: String
+    callSignAdjective: String!
+    callSignNoun: String!
     imageURL: String
-    avatarType: String
-    unvalidatedEmails: [String]
+    avatarType: AvatarType
+    unvalidatedEmails: [String]!
     partyId: String
     modifyingUserEmail: String
     timestamp: String
     isDeleted: Boolean
 }
 
+enum AvatarType {
+    Retro,
+    RobohashSet1,
+    RobohashSet2,
+    RobohashSet3,
+    RobohashSet4,
+    RobohashSet5,
+    BoringBeam,
+    BoringBauhaus,
+    Multiavatar,
+    DicebearPixelArt,
+    DicebearAdventurer,
+    DicebearCroodles,
+    DicebearThumbs,
+    DicebearLorelei,
+}
+
 type PinnedPlayer {
     id: ID!
-    name: String
-    email: String
+    name: String!
+    email: String!
     badge: String
-    avatarType: String
-    callSignAdjective: String
-    callSignNoun: String
+    avatarType: AvatarType
+    callSignAdjective: String!
+    callSignNoun: String!
     imageURL: String
     pins: [Pin]!
-    unvalidatedEmails: [String]!
+    unvalidatedEmails: [String]
 }
 
 type PinnedPair {
@@ -164,7 +181,7 @@ type Contributor {
 }
 
 input PairInput {
-    playerIdList: [ID]
+    playerIdList: [ID]!
 }
 
 input ContributionsInput {
