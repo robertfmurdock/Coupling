@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.client
 
 import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPinDetails
+import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.fromJsonString
 import com.zegreatrob.coupling.json.toJsonString
 import com.zegreatrob.coupling.json.toModel
@@ -31,7 +31,7 @@ fun String.toPartyRecords(): List<Record<PartyDetails>> =
     fromJsonString<List<GqlPartyDetails>>().mapNotNull { it.toModelRecord() }
 
 fun List<PartyRecord<Player>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
-fun String.toPlayerRecords(): List<PartyRecord<Player>> = fromJsonString<List<JsonPlayerRecord>>().map { it.toModel() }
+fun String.toPlayerRecords(): List<PartyRecord<Player>> = fromJsonString<List<GqlPlayerDetails>>().map { it.toModel() }
 
 fun List<PartyRecord<PairAssignmentDocument>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPairAssignmentRecords(): List<PartyRecord<PairAssignmentDocument>> =

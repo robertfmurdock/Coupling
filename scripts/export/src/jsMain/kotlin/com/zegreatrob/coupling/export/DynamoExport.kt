@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.export
 
 import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPinDetails
+import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.json.toJsonDynamic
 import com.zegreatrob.coupling.json.toSerializable
@@ -73,7 +73,7 @@ private suspend fun partyDataSerializable(
 data class PartyData(
     val partyId: String,
     val partyRecords: List<GqlPartyDetails>,
-    val playerRecords: List<JsonPlayerRecord>,
+    val playerRecords: List<GqlPlayerDetails>,
     val pairAssignmentRecords: List<JsonPairAssignmentDocumentRecord>,
     val pinRecords: List<GqlPinDetails>,
 )

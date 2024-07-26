@@ -8,7 +8,6 @@ import com.zegreatrob.coupling.model.party.with
 import com.zegreatrob.coupling.model.player.AvatarType
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.defaultPlayer
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -37,24 +36,6 @@ data class JsonPlayerData(
     override val unvalidatedEmails: Set<String> = defaultPlayer.additionalEmails,
 ) : JsonPlayer
 
-@Serializable
-data class JsonPlayerRecord(
-    override val id: String,
-    override val name: String = defaultPlayer.name,
-    override val email: String = defaultPlayer.email,
-    override val badge: String = "${defaultPlayer.badge}",
-    override val callSignAdjective: String = defaultPlayer.callSignAdjective,
-    override val callSignNoun: String = defaultPlayer.callSignNoun,
-    override val imageURL: String? = defaultPlayer.imageURL,
-    override val avatarType: String? = defaultPlayer.avatarType?.name,
-    override val unvalidatedEmails: Set<String> = defaultPlayer.additionalEmails,
-    override val partyId: PartyId,
-    override val modifyingUserEmail: String,
-    override val isDeleted: Boolean,
-    override val timestamp: Instant,
-) : JsonPartyRecordInfo,
-    JsonPlayer
-
 fun Player.toSerializable() = JsonPlayerData(
     id = id,
     name = name,
@@ -67,7 +48,7 @@ fun Player.toSerializable() = JsonPlayerData(
     unvalidatedEmails = additionalEmails,
 )
 
-fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
+fun PartyRecord<Player>.toSerializable() = GqlPlayerDetails(
     id = data.element.id,
     name = data.element.name,
     email = data.element.email,
@@ -75,9 +56,9 @@ fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
     callSignAdjective = data.element.callSignAdjective,
     callSignNoun = data.element.callSignNoun,
     imageURL = data.element.imageURL,
-    avatarType = data.element.avatarType?.name,
-    unvalidatedEmails = data.element.additionalEmails,
-    partyId = data.partyId,
+    avatarType = data.element.avatarType?.toSerializable(),
+    unvalidatedEmails = data.element.additionalEmails.toList(),
+    partyId = data.partyId.value,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -107,18 +88,18 @@ fun JsonPlayer.toModel(): Player = Player(
     additionalEmails = unvalidatedEmails,
 )
 
-fun JsonPlayerRecord.toModel(): PartyRecord<Player> = PartyRecord(
-    partyId.with(
+fun GqlPlayerDetails.toModel(): PartyRecord<Player> = PartyRecord(
+    PartyId(partyId).with(
         Player(
             id = id,
-            badge = badge.toIntOrNull() ?: defaultPlayer.badge,
+            badge = badge?.toIntOrNull() ?: defaultPlayer.badge,
             name = name,
             email = email,
             callSignAdjective = callSignAdjective,
             callSignNoun = callSignNoun,
             imageURL = imageURL,
-            avatarType = avatarType?.let(AvatarType::valueOf),
-            additionalEmails = unvalidatedEmails,
+            avatarType = avatarType?.toModel(),
+            additionalEmails = unvalidatedEmails.toSet(),
         ),
     ),
     modifyingUserId = modifyingUserEmail,

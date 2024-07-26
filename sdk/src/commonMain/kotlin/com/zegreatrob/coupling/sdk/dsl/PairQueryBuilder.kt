@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.GqlContributionsInput
-import com.zegreatrob.coupling.json.JsonContributor
+import com.zegreatrob.coupling.json.GqlContributor
 import com.zegreatrob.coupling.json.JsonPair
 import kotlinx.serialization.json.JsonElement
 
@@ -40,8 +40,8 @@ class PairQueryBuilder :
         .let { output = output.copy(pairAssignmentHistory = listOf(it)) }
 }
 
-class ContributorQueryBuilder : QueryBuilder<JsonContributor> {
-    override var output: JsonContributor = JsonContributor()
+class ContributorQueryBuilder : QueryBuilder<GqlContributor> {
+    override var output: GqlContributor = GqlContributor(details = null, email = null)
     fun email() = also { output = output.copy(email = "") }
     fun details() = also { output = output.copy(details = GqlReference.playerRecord) }
 }

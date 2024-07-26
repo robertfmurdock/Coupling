@@ -55,6 +55,7 @@ type PinDetails {
 
 type PlayerDetails {
     id: ID!
+    partyId: ID!
     name: String!
     email: String!
     badge: String
@@ -63,10 +64,9 @@ type PlayerDetails {
     imageURL: String
     avatarType: AvatarType
     unvalidatedEmails: [String]!
-    partyId: String
-    modifyingUserEmail: String
-    timestamp: String
-    isDeleted: Boolean
+    modifyingUserEmail: String!
+    timestamp: DateTimeISO!
+    isDeleted: Boolean!
 }
 
 enum AvatarType {
@@ -320,8 +320,8 @@ type PartyStats {
     appliedPinCount: Int!
     uniquePinCount: Int!
     spins: Int!
-    medianSpinDuration: String
-    medianSpinDurationMillis: String
+    medianSpinDuration: Duration
+    medianSpinDurationMillis: Float
 }
 
 type Configuration {
@@ -347,11 +347,12 @@ type Pair {
 }
 
 type ContributionReport {
+    partyId: String
     contributions: [Contribution!]
-    count: Int!
-    medianCycleTime: String
-    withCycleTimeCount: Int!
-    contributors: [Contributor!]!
+    count: Int
+    medianCycleTime: Duration
+    withCycleTimeCount: Int
+    contributors: [Contributor!]
 }
 
 type PairAssignment {

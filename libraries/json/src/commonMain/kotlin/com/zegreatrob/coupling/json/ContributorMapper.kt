@@ -5,14 +5,12 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Contributor
 import kotlinx.serialization.UseSerializers
 
-fun Contributor.toJson() = JsonContributor(
+fun Contributor.toJson() = GqlContributor(
     email = email,
-    playerId = playerId,
     details = details?.toSerializable(),
 )
 
-fun JsonContributor.toModel() = Contributor(
+fun GqlContributor.toModel() = Contributor(
     email = email,
-    playerId = playerId,
     details = details?.toModel(),
 )

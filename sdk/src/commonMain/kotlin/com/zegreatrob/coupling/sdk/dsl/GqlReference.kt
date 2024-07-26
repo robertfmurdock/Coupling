@@ -3,18 +3,18 @@ package com.zegreatrob.coupling.sdk.dsl
 import com.zegreatrob.coupling.json.GqlAvatarType
 import com.zegreatrob.coupling.json.GqlBoostDetails
 import com.zegreatrob.coupling.json.GqlContribution
+import com.zegreatrob.coupling.json.GqlGlobalStats
 import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPartyIntegration
+import com.zegreatrob.coupling.json.GqlPartyStats
 import com.zegreatrob.coupling.json.GqlPin
 import com.zegreatrob.coupling.json.GqlPinDetails
 import com.zegreatrob.coupling.json.GqlPinnedPair
 import com.zegreatrob.coupling.json.GqlPinnedPlayer
+import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
-import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPartyStats
-import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonSecretRecord
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.datetime.Instant
@@ -22,9 +22,9 @@ import kotools.types.collection.notEmptyListOf
 import kotlin.time.Duration
 
 object GqlReference {
-    val globalStats = JsonGlobalStats(
+    val globalStats = GqlGlobalStats(
         parties = listOf(
-            JsonPartyStats(
+            GqlPartyStats(
                 name = "",
                 id = "",
                 playerCount = 0,
@@ -156,7 +156,7 @@ object GqlReference {
         timestamp = Instant.DISTANT_PAST,
     )
 
-    val playerRecord = JsonPlayerRecord(
+    val playerRecord = GqlPlayerDetails(
         id = "",
         name = "",
         email = "",
@@ -164,10 +164,11 @@ object GqlReference {
         callSignAdjective = "",
         callSignNoun = "",
         imageURL = "",
-        avatarType = "",
-        partyId = PartyId(""),
+        avatarType = GqlAvatarType.BoringBeam,
+        partyId = "",
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
+        unvalidatedEmails = emptyList(),
     )
 }

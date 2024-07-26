@@ -37,8 +37,8 @@ fun contributionReport(
         partyId = partyId,
         contributions = contributions,
         count = contributions.size,
-        withCycleTimeCount = cycleTimeContributions.size,
         medianCycleTime = cycleTimeContributions.sorted().halfwayValue(),
+        withCycleTimeCount = cycleTimeContributions.size,
         contributors = null,
     )
 }

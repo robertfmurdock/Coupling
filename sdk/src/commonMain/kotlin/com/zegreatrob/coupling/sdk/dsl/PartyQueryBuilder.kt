@@ -73,7 +73,14 @@ class PartyQueryBuilder :
 class ContributionReportBuilder :
     BuilderWithInput(),
     QueryBuilder<JsonContributionReport> {
-    override var output: JsonContributionReport = JsonContributionReport()
+    override var output: JsonContributionReport = JsonContributionReport(
+        partyId = null,
+        contributions = null,
+        contributors = null,
+        withCycleTimeCount = null,
+        count = null,
+        medianCycleTime = null,
+    )
     override var queries = mutableListOf<String>()
     override var inputs = mutableListOf<String>()
     override var variables = mutableMapOf<String, JsonElement>()

@@ -211,4 +211,4 @@ private fun GqlPinnedPlayerInput.toModel() = PinnedPlayer(
     pins = pins.map(GqlPinInput::toModel),
 )
 
-private fun GqlAvatarType.toModel() = name.let { AvatarType.valueOf(it) }
+fun GqlAvatarType.toModel() = name.let { AvatarType.valueOf(it) }
