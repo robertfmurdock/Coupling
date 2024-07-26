@@ -11,29 +11,14 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
-@Serializable
-data class JsonUserDetails(
-    val id: String,
-    val email: String,
-    val authorizedPartyIds: Set<PartyId>,
-)
-
-@Serializable
-data class JsonSubscriptionDetails(
-    val stripeCustomerId: String?,
-    val stripeSubscriptionId: String?,
-    val isActive: Boolean,
-    val currentPeriodEnd: Instant?,
-)
-
-fun SubscriptionDetails.toJson() = JsonSubscriptionDetails(
+fun SubscriptionDetails.toJson() = GqlSubscriptionDetails(
     stripeCustomerId = stripeCustomerId,
     stripeSubscriptionId = stripeSubscriptionId,
     isActive = isActive,
     currentPeriodEnd = currentPeriodEnd,
 )
 
-fun JsonSubscriptionDetails.toModel() = SubscriptionDetails(
+fun GqlSubscriptionDetails.toModel() = SubscriptionDetails(
     stripeCustomerId = stripeCustomerId,
     stripeSubscriptionId = stripeSubscriptionId,
     isActive = isActive,
@@ -50,24 +35,24 @@ data class JsonUserRecord(
     val timestamp: Instant,
 )
 
-fun User.toSerializable() = JsonUser(
+fun User.toSerializable() = GqlUser(
     id = id,
     details = details?.toSerializable(),
     boost = boost?.toSerializable(),
     subscription = subscription?.toJson(),
 )
 
-fun JsonUser.toModel() = User(
+fun GqlUser.toModel() = User(
     id = id,
     details = details?.toModel(),
     boost = boost?.toModelRecord(),
     subscription = subscription?.toModel(),
 )
 
-fun UserDetails.toSerializable() = JsonUserDetails(
+fun UserDetails.toSerializable() = GqlUserDetails(
     id = id,
     email = email,
-    authorizedPartyIds = authorizedPartyIds,
+    authorizedPartyIds = authorizedPartyIds.map { it.value },
 )
 
 fun Record<UserDetails>.toSerializable() = JsonUserRecord(
@@ -79,10 +64,10 @@ fun Record<UserDetails>.toSerializable() = JsonUserRecord(
     timestamp = timestamp,
 )
 
-fun JsonUserDetails.toModel() = UserDetails(
+fun GqlUserDetails.toModel() = UserDetails(
     id = id,
     email = email,
-    authorizedPartyIds = authorizedPartyIds,
+    authorizedPartyIds = authorizedPartyIds.map(::PartyId).toSet(),
     stripeCustomerId = null,
 )
 

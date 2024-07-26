@@ -25,7 +25,7 @@ import kotlin.time.DurationUnit
 @Serializable
 data class JsonCouplingQueryResult(
     val partyList: List<JsonParty>? = null,
-    val user: JsonUser? = null,
+    val user: GqlUser? = null,
     val party: JsonParty? = null,
     val globalStats: JsonGlobalStats? = null,
     val config: JsonConfig? = null,
@@ -82,7 +82,7 @@ data class JsonParty(
     val retiredPlayers: List<JsonPlayerRecord>? = null,
     val pairAssignmentDocumentList: List<JsonPairAssignmentDocumentRecord>? = null,
     val currentPairAssignmentDocument: JsonPairAssignmentDocumentRecord? = null,
-    val boost: JsonBoostRecord? = null,
+    val boost: GqlBoostDetails? = null,
     val pairs: List<JsonPair>? = null,
     val pair: JsonPair? = null,
     val medianSpinDuration: Duration? = null,

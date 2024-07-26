@@ -1,5 +1,6 @@
+scalar DateTimeISO
+
 type User {
-    id: ID!
     subscription: SubscriptionDetails
 }
 
@@ -11,7 +12,7 @@ type SubscriptionDetails {
     stripeCustomerId: String
     stripeSubscriptionId: String
     isActive: Boolean!
-    currentPeriodEnd: String
+    currentPeriodEnd: DateTimeISO
 }
 
 input SaveBoostInput {
@@ -22,8 +23,6 @@ type Mutation {
     saveBoost(input: SaveBoostInput!): Boolean
     deleteBoost: Boolean
 }
-
-type Query { _: String }
 
 type Configuration {
     stripeAdminCode: String

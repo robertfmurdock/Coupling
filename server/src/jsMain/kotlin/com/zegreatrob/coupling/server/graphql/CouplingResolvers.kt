@@ -44,6 +44,8 @@ import com.zegreatrob.coupling.server.entity.slackaccess.grantSlackAccessResolve
 import com.zegreatrob.coupling.server.entity.user.userResolve
 import com.zegreatrob.coupling.server.express.Config
 import com.zegreatrob.coupling.server.express.route.CouplingContext
+import com.zegreatrob.coupling.server.external.graphql.GraphQLScalarType
+import js.objects.jso
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.promise
 import kotlinx.serialization.json.decodeFromDynamic
@@ -52,6 +54,15 @@ import kotlin.js.Json
 import kotlin.js.json
 
 fun couplingResolvers() = json(
+    "DateTimeISO" to GraphQLScalarType<String>(
+        jso {
+            this.name = "DateTimeISO"
+            this.description = ""
+            this.serialize = { "$it" }
+            this.parseValue = { "$it" }
+            this.parseLiteral = { it.value.unsafeCast<String>() }
+        },
+    ),
     "Query" to json(
         "user" to userResolve,
         "partyList" to partyListResolve,

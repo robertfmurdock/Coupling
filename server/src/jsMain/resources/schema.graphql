@@ -112,10 +112,10 @@ type PartySecret {
 type BoostDetails {
     userId: ID!
     partyIds: [ID]!
-    expirationDate: String
-    modifyingUserEmail: String
-    timestamp: String
-    isDeleted: Boolean
+    expirationDate: DateTimeISO!
+    modifyingUserEmail: String!
+    timestamp: DateTimeISO!
+    isDeleted: Boolean!
 }
 
 type Contribution {

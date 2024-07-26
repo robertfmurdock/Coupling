@@ -5,24 +5,12 @@ package com.zegreatrob.coupling.json
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
-import kotlinx.datetime.Instant
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
-@Serializable
-data class JsonBoostRecord(
-    val userId: String,
-    val partyIds: Set<PartyId>,
-    val expirationDate: Instant,
-    val modifyingUserEmail: String,
-    val isDeleted: Boolean,
-    val timestamp: Instant,
-)
-
-fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(
+fun GqlBoostDetails.toModelRecord(): Record<Boost> = Record(
     data = Boost(
         userId = userId,
-        partyIds = partyIds,
+        partyIds = partyIds.map(::PartyId).toSet(),
         expirationDate = expirationDate,
     ),
     modifyingUserId = modifyingUserEmail,
@@ -30,9 +18,9 @@ fun JsonBoostRecord.toModelRecord(): Record<Boost> = Record(
     timestamp = timestamp,
 )
 
-fun Record<Boost>.toSerializable() = JsonBoostRecord(
+fun Record<Boost>.toSerializable() = GqlBoostDetails(
     userId = data.userId,
-    partyIds = data.partyIds,
+    partyIds = data.partyIds.map(PartyId::value),
     expirationDate = data.expirationDate,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,

@@ -1,9 +1,11 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.GqlBoostDetails
 import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPin
 import com.zegreatrob.coupling.json.GqlPinDetails
-import com.zegreatrob.coupling.json.JsonBoostRecord
+import com.zegreatrob.coupling.json.GqlSubscriptionDetails
+import com.zegreatrob.coupling.json.GqlUserDetails
 import com.zegreatrob.coupling.json.JsonContributionRecord
 import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonIntegrationRecord
@@ -13,8 +15,6 @@ import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
 import com.zegreatrob.coupling.json.JsonPinnedPlayer
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonSecretRecord
-import com.zegreatrob.coupling.json.JsonSubscriptionDetails
-import com.zegreatrob.coupling.json.JsonUserDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.AvatarType
 import kotlinx.datetime.Instant
@@ -41,20 +41,20 @@ object GqlReference {
         totalAppliedPins = 0,
         totalUniquePins = 0,
     )
-    val user = JsonUserDetails(
-        authorizedPartyIds = emptySet(),
+    val user = GqlUserDetails(
+        authorizedPartyIds = emptyList(),
         email = "",
         id = "",
     )
-    val boost = JsonBoostRecord(
+    val boost = GqlBoostDetails(
         userId = "",
-        partyIds = emptySet(),
+        partyIds = emptyList(),
         expirationDate = Instant.DISTANT_PAST,
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = Instant.DISTANT_FUTURE,
     )
-    val subscription = JsonSubscriptionDetails(
+    val subscription = GqlSubscriptionDetails(
         stripeCustomerId = "",
         stripeSubscriptionId = "",
         isActive = false,

@@ -1,4 +1,6 @@
-schema: ../../server/src/jsMain/resources/schema.graphql
+schema:
+  - ../../server/src/jsMain/resources/schema.graphql
+  - ../../server/src/jsMain/resources/prerelease-schema.graphql
 generates:
   ./build/generated/codegen/Types.kt:
     plugins:
