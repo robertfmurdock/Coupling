@@ -26,7 +26,7 @@ import kotools.types.collection.toNotEmptyList
 data class JsonPairAssignmentDocument(
     val id: String,
     val date: Instant,
-    val pairs: NotEmptyList<JsonPinnedCouplingPair>,
+    val pairs: NotEmptyList<GqlPinnedPair>,
     val discordMessageId: String? = null,
     val slackMessageId: String? = null,
 )
@@ -36,7 +36,7 @@ data class JsonPairAssignment(
     val playerIds: List<String>? = null,
     val documentId: String? = null,
     val date: Instant? = null,
-    val allPairs: NotEmptyList<JsonPinnedCouplingPair>? = null,
+    val allPairs: NotEmptyList<GqlPinnedPair>? = null,
     val details: JsonPairAssignmentDocumentRecord? = null,
     val recentTimesPaired: Int? = null,
 )
@@ -54,7 +54,7 @@ fun JsonPairAssignment.toModel() = PairAssignment(
     playerIds = playerIds,
     documentId = documentId?.let(::PairAssignmentDocumentId),
     date = date,
-    allPairs = allPairs?.map(JsonPinnedCouplingPair::toModel),
+    allPairs = allPairs?.map(GqlPinnedPair::toModel),
     details = details?.toModel(),
     recentTimesPaired = recentTimesPaired,
 )
@@ -63,7 +63,7 @@ fun JsonPairAssignment.toModel() = PairAssignment(
 data class JsonPairAssignmentDocumentRecord(
     val id: String,
     val date: Instant,
-    val pairs: NotEmptyList<JsonPinnedCouplingPair>,
+    val pairs: NotEmptyList<GqlPinnedPair>,
     val discordMessageId: String?,
     val slackMessageId: String?,
     override val partyId: PartyId,
@@ -71,42 +71,6 @@ data class JsonPairAssignmentDocumentRecord(
     override val isDeleted: Boolean,
     override val timestamp: Instant,
 ) : JsonPartyRecordInfo
-
-// @Serializable
-// data class SavePairAssignmentsInput(
-//    override val partyId: PartyId,
-//    val pairAssignmentsId: String,
-//    val date: Instant,
-//    val pairs: NotEmptyList<JsonPinnedCouplingPair>,
-//    val discordMessageId: String?,
-//    val slackMessageId: String?,
-// ) : IPartyInput
-
-typealias SavePairAssignmentsInput = GqlSavePairAssignmentsInput
-
-typealias JsonPinnedCouplingPair = GqlPinnedPair
-
-typealias JsonPinnedPlayer = GqlPinnedPlayer
-
-@Serializable
-data class SpinInput(
-    override val partyId: PartyId,
-    val playerIds: NotEmptyList<String>,
-    val pinIds: List<String>,
-) : IPartyInput
-
-@Serializable
-data class GrantSlackAccessInput(
-    val code: String,
-    val state: String,
-)
-
-@Serializable
-data class GrantDiscordAccessInput(
-    val code: String,
-    val partyId: String,
-    val guildId: String,
-)
 
 fun PairAssignmentDocument.toSerializable() = JsonPairAssignmentDocument(
     id = id.value,
@@ -128,7 +92,7 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDoc
     timestamp = timestamp,
 )
 
-fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
+fun PinnedCouplingPair.toSerializable() = GqlPinnedPair(
     players = pinnedPlayers.map(PinnedPlayer::toSerializable).toList(),
     pins = pins.map(Pin::toSerializable),
 )
@@ -138,7 +102,7 @@ fun PinnedCouplingPair.toSerializableInput() = GqlPinnedPairInput(
     pins = pins.map(Pin::toSerializableInput),
 )
 
-private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
+private fun PinnedPlayer.toSerializable() = GqlPinnedPlayer(
     id = player.id,
     name = player.name,
     email = player.email,
@@ -167,7 +131,7 @@ private fun PinnedPlayer.toSerializableInput() = GqlPinnedPlayerInput(
 fun AvatarType.toSerializable() = name.let { GqlAvatarType.valueOfLabel(it) }
 
 fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
-    SavePairAssignmentsInput(
+    GqlSavePairAssignmentsInput(
         partyId = partyId.value,
         pairAssignmentsId = element.id.value,
         date = element.date,
@@ -179,12 +143,12 @@ fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
 fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
     id = id.let(::PairAssignmentDocumentId),
     date = date,
-    pairs = pairs.map(JsonPinnedCouplingPair::toModel),
+    pairs = pairs.map(GqlPinnedPair::toModel),
     discordMessageId = discordMessageId,
     slackMessageId = slackMessageId,
 )
 
-fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
+fun GqlSavePairAssignmentsInput.toModel() = PairAssignmentDocument(
     id = pairAssignmentsId.let(::PairAssignmentDocumentId),
     date = date,
     pairs = pairs.map(GqlPinnedPairInput::toModel).toNotEmptyList().getOrThrow(),
@@ -197,7 +161,7 @@ fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocume
         PairAssignmentDocument(
             id = id.let(::PairAssignmentDocumentId),
             date = date,
-            pairs = pairs.map(JsonPinnedCouplingPair::toModel),
+            pairs = pairs.map(GqlPinnedPair::toModel),
             discordMessageId = discordMessageId,
             slackMessageId = slackMessageId,
         ),
@@ -207,8 +171,8 @@ fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocume
     timestamp = date,
 )
 
-fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
-    pinnedPlayers = players.map(JsonPinnedPlayer::toModel).toNotEmptyList().getOrThrow(),
+fun GqlPinnedPair.toModel() = PinnedCouplingPair(
+    pinnedPlayers = players.map(GqlPinnedPlayer::toModel).toNotEmptyList().getOrThrow(),
     pins = pins.map(GqlPin::toModel).toSet(),
 )
 
@@ -217,7 +181,7 @@ fun GqlPinnedPairInput.toModel() = PinnedCouplingPair(
     pins = pins.map(GqlPinInput::toModel).toSet(),
 )
 
-private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
+private fun GqlPinnedPlayer.toModel() = PinnedPlayer(
     player = Player(
         id = id,
         badge = badge?.toIntOrNull() ?: defaultPlayer.badge,

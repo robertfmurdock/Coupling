@@ -2,7 +2,6 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionReport
-import com.zegreatrob.coupling.model.CouplingConfig
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.GlobalStats
 import com.zegreatrob.coupling.model.Party
@@ -28,7 +27,7 @@ data class JsonCouplingQueryResult(
     val user: GqlUser? = null,
     val party: JsonParty? = null,
     val globalStats: JsonGlobalStats? = null,
-    val config: JsonConfig? = null,
+    val config: GqlConfiguration? = null,
     val pairs: List<JsonPair>? = null,
 )
 
@@ -83,7 +82,7 @@ data class JsonParty(
 @Serializable
 data class JsonContributionReport(
     val partyId: String? = null,
-    val contributions: List<JsonContributionRecord>? = null,
+    val contributions: List<GqlContribution>? = null,
     val count: Int? = null,
     val medianCycleTime: Duration? = null,
     val withCycleTimeCount: Int? = null,
@@ -92,7 +91,7 @@ data class JsonContributionReport(
 
 fun JsonContributionReport.toModel() = ContributionReport(
     partyId = partyId?.let(::PartyId),
-    contributions = contributions?.map(JsonContributionRecord::toModel),
+    contributions = contributions?.map(GqlContribution::toModel),
     contributors = contributors?.map(JsonContributor::toModel),
     count = count,
     medianCycleTime = medianCycleTime,
@@ -144,7 +143,7 @@ fun JsonPair.toModel() = PlayerPair(
             documentId = json.documentId?.let(::PairAssignmentDocumentId),
             details = json.details?.toModel(),
             date = json.date,
-            allPairs = json.allPairs?.map(JsonPinnedCouplingPair::toModel),
+            allPairs = json.allPairs?.map(GqlPinnedPair::toModel),
             recentTimesPaired = json.recentTimesPaired,
         )
     },
@@ -155,21 +154,6 @@ fun PartyElement<PlayerPair>.toJson() = JsonPair(
     players = element.players?.map(PartyRecord<Player>::toSerializable),
     spinsSinceLastPaired = element.spinsSinceLastPaired,
     partyId = partyId.value,
-)
-
-@Serializable
-data class JsonConfig(
-    val discordClientId: String? = null,
-    val addToSlackUrl: String? = null,
-    val stripeAdminCode: String? = null,
-    val stripePurchaseCode: String? = null,
-)
-
-private fun JsonConfig.toModel() = CouplingConfig(
-    discordClientId = discordClientId,
-    addToSlackUrl = addToSlackUrl,
-    stripeAdminCode = stripeAdminCode,
-    stripePurchaseCode = stripePurchaseCode,
 )
 
 @Serializable

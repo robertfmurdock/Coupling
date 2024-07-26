@@ -2,18 +2,18 @@ package com.zegreatrob.coupling.sdk.dsl
 
 import com.zegreatrob.coupling.json.GqlAvatarType
 import com.zegreatrob.coupling.json.GqlBoostDetails
+import com.zegreatrob.coupling.json.GqlContribution
 import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPartyIntegration
 import com.zegreatrob.coupling.json.GqlPin
 import com.zegreatrob.coupling.json.GqlPinDetails
+import com.zegreatrob.coupling.json.GqlPinnedPair
+import com.zegreatrob.coupling.json.GqlPinnedPlayer
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
-import com.zegreatrob.coupling.json.JsonContributionRecord
 import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonPartyStats
-import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
-import com.zegreatrob.coupling.json.JsonPinnedPlayer
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonSecretRecord
 import com.zegreatrob.coupling.model.party.PartyId
@@ -66,7 +66,7 @@ object GqlReference {
         name = "",
         icon = "",
     )
-    private val pinnedPlayer = JsonPinnedPlayer(
+    private val pinnedPlayer = GqlPinnedPlayer(
         id = "",
         name = "",
         email = "",
@@ -78,7 +78,7 @@ object GqlReference {
         pins = listOf(pinData),
         unvalidatedEmails = listOf(""),
     )
-    val pinnedCouplingPair = JsonPinnedCouplingPair(
+    val pinnedCouplingPair = GqlPinnedPair(
         players = listOf(pinnedPlayer),
         pins = listOf(pinData),
     )
@@ -110,7 +110,7 @@ object GqlReference {
         createdTimestamp = Instant.DISTANT_FUTURE,
         timestamp = Instant.DISTANT_PAST,
     )
-    val contributionRecord = JsonContributionRecord(
+    val contributionRecord = GqlContribution(
         id = "",
         createdAt = Instant.DISTANT_FUTURE,
         dateTime = Instant.DISTANT_PAST,
@@ -118,8 +118,8 @@ object GqlReference {
         ease = 99,
         story = "",
         link = "",
-        participantEmails = setOf(""),
-        partyId = PartyId(""),
+        participantEmails = listOf(""),
+        partyId = "",
         modifyingUserEmail = "",
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,

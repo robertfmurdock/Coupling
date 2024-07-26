@@ -1,40 +1,11 @@
-@file:UseSerializers(PartyIdSerializer::class)
-
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Contribution
-import com.zegreatrob.coupling.model.Contributor
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.with
-import kotlinx.datetime.Instant
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
-import kotlin.time.Duration
 
-@Serializable
-data class JsonContributionRecord(
-    val id: String,
-    val createdAt: Instant,
-    val dateTime: Instant?,
-    val hash: String?,
-    val ease: Int?,
-    val story: String?,
-    val link: String?,
-    val label: String?,
-    val firstCommit: String?,
-    val firstCommitDateTime: Instant?,
-    val semver: String?,
-    val participantEmails: Set<String>,
-    val integrationDateTime: Instant?,
-    val cycleTime: Duration?,
-    override val partyId: PartyId?,
-    override val modifyingUserEmail: String,
-    override val isDeleted: Boolean,
-    override val timestamp: Instant,
-) : JsonPartyRecordInfo
-
-fun PartyRecord<Contribution>.toJson() = JsonContributionRecord(
+fun PartyRecord<Contribution>.toJson() = GqlContribution(
     id = data.element.id,
     createdAt = data.element.createdAt,
     dateTime = data.element.dateTime,
@@ -46,28 +17,16 @@ fun PartyRecord<Contribution>.toJson() = JsonContributionRecord(
     label = data.element.label,
     firstCommit = data.element.firstCommit,
     firstCommitDateTime = data.element.firstCommitDateTime,
-    participantEmails = data.element.participantEmails,
+    participantEmails = data.element.participantEmails.toList(),
     integrationDateTime = data.element.integrationDateTime,
     cycleTime = data.element.cycleTime,
-    partyId = data.partyId,
+    partyId = data.partyId.value,
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
 )
 
-fun Contributor.toJson() = JsonContributor(
-    email = email,
-    playerId = playerId,
-    details = details?.toSerializable(),
-)
-
-fun JsonContributor.toModel() = Contributor(
-    email = email,
-    playerId = playerId,
-    details = details?.toModel(),
-)
-
-fun JsonContributionRecord.toModel() = PartyRecord(
+fun GqlContribution.toModel() = PartyRecord(
     data = PartyId(id).with(
         Contribution(
             id = id,
@@ -77,7 +36,7 @@ fun JsonContributionRecord.toModel() = PartyRecord(
             ease = ease,
             story = story,
             link = link,
-            participantEmails = participantEmails,
+            participantEmails = participantEmails.toSet(),
             label = label,
             semver = semver,
             firstCommit = firstCommit,

@@ -138,24 +138,23 @@ type BoostDetails {
 
 type Contribution {
     id: ID!
-    createdAt: String!
-    dateTime: String
+    createdAt: DateTimeISO!
+    dateTime: DateTimeISO
     hash: String
     ease: Int
     story: String
     link: String
     label: String
     firstCommit: String
-    firstCommitDateTime: String
-    integrationDateTime: String
-    cycleTime: String
+    firstCommitDateTime: DateTimeISO
+    integrationDateTime: DateTimeISO
+    cycleTime: Duration
     semver: String
     partyId: String
     participantEmails: [String!]!
-    expirationDate: String
-    modifyingUserEmail: String
-    timestamp: String
-    isDeleted: Boolean
+    modifyingUserEmail: String!
+    timestamp: DateTimeISO!
+    isDeleted: Boolean!
 }
 
 type Party {

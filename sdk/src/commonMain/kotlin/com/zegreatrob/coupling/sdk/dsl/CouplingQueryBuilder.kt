@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.GqlConfiguration
 import com.zegreatrob.coupling.json.GqlGlobalStatsInput
 import com.zegreatrob.coupling.json.GqlPartyInput
-import com.zegreatrob.coupling.json.JsonConfig
 import com.zegreatrob.coupling.json.nestedKeys
 import com.zegreatrob.coupling.json.toGqlQueryFields
 import com.zegreatrob.coupling.json.toQueryLines
@@ -106,8 +106,13 @@ abstract class BuilderWithInput {
     )
 }
 
-class ConfigQueryBuilder : QueryBuilder<JsonConfig> {
-    override var output: JsonConfig = JsonConfig()
+class ConfigQueryBuilder : QueryBuilder<GqlConfiguration> {
+    override var output: GqlConfiguration = GqlConfiguration(
+        addToSlackUrl = null,
+        stripePurchaseCode = null,
+        discordClientId = null,
+        stripeAdminCode = null,
+    )
 
     fun addToSlackUrl() {
         output = output.copy(addToSlackUrl = "")

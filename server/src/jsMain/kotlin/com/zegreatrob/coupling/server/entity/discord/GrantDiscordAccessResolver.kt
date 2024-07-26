@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.entity.discord
 import com.zegreatrob.coupling.action.GrantDiscordAccessCommand
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.perform
-import com.zegreatrob.coupling.json.GrantDiscordAccessInput
+import com.zegreatrob.coupling.json.GqlGrantDiscordAccessInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
 import com.zegreatrob.coupling.server.entity.toJson
@@ -14,9 +14,10 @@ import kotlinx.serialization.json.JsonNull
 
 val grantDiscordAccessResolver: Resolver = dispatch(
     DispatcherProviders.command(),
-    commandFunc = requiredInput { _: JsonNull, input: GrantDiscordAccessInput -> input.command() },
+    commandFunc = requiredInput { _: JsonNull, input: GqlGrantDiscordAccessInput -> input.command() },
     fireFunc = ::perform,
     toSerializable = VoidResult::toJson,
 )
 
-private fun GrantDiscordAccessInput.command() = GrantDiscordAccessCommand(code, guildId, PartyId(partyId))
+private fun GqlGrantDiscordAccessInput.command() =
+    GrantDiscordAccessCommand(code, guildId, PartyId(partyId))

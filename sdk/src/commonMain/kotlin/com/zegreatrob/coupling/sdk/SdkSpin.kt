@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.SpinCommand
-import com.zegreatrob.coupling.json.SpinInput
+import com.zegreatrob.coupling.json.GqlSpinInput
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
@@ -21,8 +21,8 @@ interface SdkSpin :
         ) ?: CommandResult.Unauthorized
 }
 
-fun SpinCommand.spinInput() = SpinInput(
-    partyId = partyId,
-    playerIds = playerIds,
+fun SpinCommand.spinInput() = GqlSpinInput(
+    partyId = partyId.value,
+    playerIds = playerIds.toList(),
     pinIds = pinIds,
 )
