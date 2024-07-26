@@ -1,11 +1,8 @@
-@file:UseSerializers(PartyIdSerializer::class)
-
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyId
-import kotlinx.serialization.UseSerializers
 
 fun GqlBoostDetails.toModelRecord(): Record<Boost> = Record(
     data = Boost(

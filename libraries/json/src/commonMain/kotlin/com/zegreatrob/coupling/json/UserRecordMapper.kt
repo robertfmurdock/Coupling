@@ -1,5 +1,3 @@
-@file:UseSerializers(PartyIdSerializer::class)
-
 package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.Record
@@ -7,13 +5,12 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.user.UserDetails
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class JsonUserRecord(
     val id: String,
     val email: String,
-    val authorizedPartyIds: Set<PartyId>,
+    val authorizedPartyIds: Set<String>,
     val modifyingUserEmail: String,
     val isDeleted: Boolean,
     val timestamp: Instant,
@@ -22,7 +19,7 @@ data class JsonUserRecord(
 fun Record<UserDetails>.toSerializable() = JsonUserRecord(
     id = data.id,
     email = data.email,
-    authorizedPartyIds = data.authorizedPartyIds,
+    authorizedPartyIds = data.authorizedPartyIds.map(PartyId::value).toSet(),
     modifyingUserEmail = modifyingUserId,
     isDeleted = isDeleted,
     timestamp = timestamp,
@@ -32,7 +29,7 @@ fun JsonUserRecord.toModel() = Record(
     data = UserDetails(
         id = id,
         email = email,
-        authorizedPartyIds = authorizedPartyIds,
+        authorizedPartyIds = authorizedPartyIds.map(::PartyId).toSet(),
         stripeCustomerId = null,
     ),
     modifyingUserId = modifyingUserEmail,
