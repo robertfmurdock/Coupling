@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.client.components.stats
 
-import com.zegreatrob.coupling.json.JsonContributionWindow
+import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.mobOf
@@ -113,7 +113,7 @@ class AdjustDatasetForHeatMapTest {
 
     @Test
     fun givenOneWeekHottestValueWillBeBasedOnIdealIntegrationTimeForOnePairContinuously() = setup(object {
-        val window = JsonContributionWindow.Week
+        val window = GqlContributionWindow.Week
         val workdaysPerWeek = 5
         val excellentIntegrationsPerDay = 4
 
@@ -126,7 +126,7 @@ class AdjustDatasetForHeatMapTest {
 
     @Test
     fun givenOneMonthHottestValueWillBeBasedOnIdealIntegrationTimeForOnePairContinuously() = setup(object {
-        val window = JsonContributionWindow.Month
+        val window = GqlContributionWindow.Month
         val workdaysPerWeek = 5
         val excellentIntegrationsPerDay = 4
         val weeksInMonth = 4
@@ -140,7 +140,7 @@ class AdjustDatasetForHeatMapTest {
 
     @Test
     fun givenOneQuarterHottestValueWillBeBasedOnIdealIntegrationTimeForOnePairContinuously() = setup(object {
-        val window = JsonContributionWindow.Quarter
+        val window = GqlContributionWindow.Quarter
         val workdaysPerWeek = 5
         val excellentIntegrationsPerDay = 4
         val weeksInQuarter = 13
@@ -154,7 +154,7 @@ class AdjustDatasetForHeatMapTest {
 
     @Test
     fun givenOneYearHottestValueWillBeBasedOnIdealIntegrationTimeForOnePairContinuously() = setup(object {
-        val window = JsonContributionWindow.Year
+        val window = GqlContributionWindow.Year
         val workdaysPerWeek = 5
         val excellentIntegrationsPerDay = 4
         val weeksInYear = 52
@@ -168,7 +168,7 @@ class AdjustDatasetForHeatMapTest {
 
     @Test
     fun givenAllTimeHottestValueWillBeBasedOnIdealIntegrationTimeForOnePairContinuously() = setup(object {
-        val window = JsonContributionWindow.All
+        val window = GqlContributionWindow.All
         val workdaysPerWeek = 5
         val excellentIntegrationsPerDay = 4
         val weeksInThreeYears = 52 * 3
@@ -184,7 +184,7 @@ class AdjustDatasetForHeatMapTest {
 
     @Test
     fun givenMultipleSpinsUntilFullRotationWillReduceHottestValueAccordingly() = setup(object {
-        val window = JsonContributionWindow.All
+        val window = GqlContributionWindow.All
         val workdaysPerWeek = 5
         val excellentIntegrationsPerDay = 4
         val weeksInThreeYears = 52 * 3

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk.dsl
 
-import com.zegreatrob.coupling.json.ContributionsInput
-import com.zegreatrob.coupling.json.JsonContributionWindow
+import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.json.GqlContributionsInput
 import com.zegreatrob.coupling.json.JsonContributor
 import com.zegreatrob.coupling.json.JsonPair
 import kotlinx.serialization.json.JsonElement
@@ -19,7 +19,7 @@ class PairQueryBuilder :
     fun recentTimesPaired() = also { output = output.copy(recentTimesPaired = 0) }
     fun spinsSinceLastPaired() = also { output = output.copy(spinsSinceLastPaired = 0) }
     fun contributionReport(
-        window: JsonContributionWindow? = null,
+        window: GqlContributionWindow? = null,
         limit: Int? = null,
         block: ContributionReportBuilder.() -> Unit,
     ) = ContributionReportBuilder()
@@ -28,7 +28,7 @@ class PairQueryBuilder :
         .addToQuery(
             queryKey = "contributionReport",
             inputSettings = InputSettings(
-                ContributionsInput(window, limit),
+                GqlContributionsInput(limit = limit, window = window),
                 "contributionsInput",
                 "ContributionsInput",
             ),

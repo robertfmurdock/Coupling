@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.secret.CreateSecretCommand
-import com.zegreatrob.coupling.json.CreateSecretInput
+import com.zegreatrob.coupling.json.GqlCreateSecretInput
 import com.zegreatrob.coupling.json.JsonCouplingMutationResult
 import com.zegreatrob.coupling.json.toDomain
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
@@ -22,7 +22,7 @@ interface SdkCreateSecretCommandDispatcher :
             .toDomain()
             .createSecret
 
-    private fun createSecretInput(command: CreateSecretCommand) = CreateSecretInput(
+    private fun createSecretInput(command: CreateSecretCommand) = GqlCreateSecretInput(
         partyId = command.partyId.value,
         description = command.description,
     )

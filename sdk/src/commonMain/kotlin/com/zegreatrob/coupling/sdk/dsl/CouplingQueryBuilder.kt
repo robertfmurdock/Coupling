@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.GqlGlobalStatsInput
 import com.zegreatrob.coupling.json.GqlPartyInput
 import com.zegreatrob.coupling.json.JsonConfig
-import com.zegreatrob.coupling.json.JsonGlobalStatsInput
 import com.zegreatrob.coupling.json.nestedKeys
 import com.zegreatrob.coupling.json.toGqlQueryFields
 import com.zegreatrob.coupling.json.toQueryLines
@@ -51,7 +51,7 @@ class CouplingQueryBuilder : BuilderWithInput() {
         GqlReference.globalStats.addToQuery(
             queryKey = "globalStats",
             inputSettings = InputSettings(
-                input = JsonGlobalStatsInput(year = year),
+                input = GqlGlobalStatsInput(year = year),
                 inputName = "input",
                 inputType = "GlobalStatsInput",
             ),

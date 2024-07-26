@@ -330,7 +330,7 @@ type Configuration {
 }
 
 input GlobalStatsInput {
-    year: Int
+    year: Int!
 }
 
 input PartyInput {

@@ -5,7 +5,7 @@ import com.zegreatrob.coupling.client.components.stats.Visualization
 import com.zegreatrob.coupling.client.components.stats.create
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
-import com.zegreatrob.coupling.json.JsonContributionWindow
+import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
@@ -30,9 +30,9 @@ external interface ContributionVisualizationProps : Props {
 val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
     val (commander, party, spinsUntilFullRotation) = props
     val (searchParams, setSearchParams) = useSearchParams()
-    val window: JsonContributionWindow = searchParams["window"]?.let { window ->
-        JsonContributionWindow.entries.find { it.name == window }
-    } ?: JsonContributionWindow.Quarter
+    val window: GqlContributionWindow = searchParams["window"]?.let { window ->
+        GqlContributionWindow.entries.find { it.name == window }
+    } ?: GqlContributionWindow.Quarter
     val setWindow = setWindowSearchParamHandler(setSearchParams)
     CouplingQuery(
         commander = commander,
@@ -64,7 +64,7 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
 }
 
 private fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) =
-    { updatedWindow: JsonContributionWindow? ->
+    { updatedWindow: GqlContributionWindow? ->
         setSearchParams({ previous ->
             previous.also {
                 if (updatedWindow != null) {

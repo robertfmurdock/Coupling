@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.client.contribution
 import com.zegreatrob.coupling.client.components.external.nivo.NivoLineData
 import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
 import com.zegreatrob.coupling.client.components.stats.CouplingResponsiveLine
-import com.zegreatrob.coupling.json.JsonContributionWindow
+import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -24,7 +24,7 @@ import web.cssom.px
 
 external interface PairFrequencyLineGraphProps : Props {
     var data: List<Pair<CouplingPair, List<Contribution>>>
-    var window: JsonContributionWindow
+    var window: GqlContributionWindow
 }
 
 @ReactFunc

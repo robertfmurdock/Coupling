@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.external.nivo.NivoPoint
-import com.zegreatrob.coupling.json.JsonContributionWindow
+import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -48,7 +48,7 @@ private const val WORKDAYS_PER_WEEK = 5
 private const val EXCELLENT_CONTRIBUTIONS_PER_DAY = 4
 
 fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
-    window: JsonContributionWindow,
+    window: GqlContributionWindow,
     spinsUntilFullRotation: Int,
 ): Pair<Int, Array<NivoHeatMapData>> {
     val players = keys.flatten().toSet()
@@ -69,9 +69,10 @@ fun Map<Set<Player>, List<Contribution>>.toNivoHeatmapSettings(
     return Pair(max, data)
 }
 
-private fun JsonContributionWindow.weeks(map: Map<Set<Player>, List<Contribution>>) = toModel()
-    ?.inWholeWeeks()
-    ?: map.weeksSinceFirstContribution()
+private fun GqlContributionWindow.weeks(map: Map<Set<Player>, List<Contribution>>) =
+    toModel()
+        ?.inWholeWeeks()
+        ?: map.weeksSinceFirstContribution()
 
 private fun Map<Set<Player>, List<Contribution>>.weeksSinceFirstContribution(): Int =
     (Clock.System.now() - values.flatten().firstContributionInstant()).inWholeWeeks()

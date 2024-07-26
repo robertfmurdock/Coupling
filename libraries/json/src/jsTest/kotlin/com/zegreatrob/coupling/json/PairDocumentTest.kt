@@ -25,12 +25,13 @@ class PairDocumentTest {
 
     @Test
     fun roundTrip() = setup(object {
-        val contributionsInput = ContributionsInput(window = JsonContributionWindow.Week, limit = null)
+        val contributionsInput =
+            GqlContributionsInput(window = GqlContributionWindow.Week, limit = null)
     }) exercise {
         contributionsInput
             .let { couplingJsonFormat.encodeToDynamic(it) }
     } verify { result ->
-        couplingJsonFormat.decodeFromDynamic<ContributionsInput>(result)
+        couplingJsonFormat.decodeFromDynamic<GqlContributionsInput>(result)
             .assertIsEqualTo(contributionsInput)
     }
 }

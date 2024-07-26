@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.CommandResult
 import com.zegreatrob.coupling.action.secret.DeleteSecretCommand
 import com.zegreatrob.coupling.action.voidResult
-import com.zegreatrob.coupling.json.DeleteSecretInput
+import com.zegreatrob.coupling.json.GqlDeleteSecretInput
 import com.zegreatrob.coupling.json.toDomain
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
@@ -20,5 +20,6 @@ interface SdkDeleteSecretCommandDispatcher :
             ?.voidResult()
             ?: CommandResult.Unauthorized
 
-    private fun DeleteSecretCommand.toInput() = DeleteSecretInput(partyId.value, secretId)
+    private fun DeleteSecretCommand.toInput() =
+        GqlDeleteSecretInput(partyId.value, secretId)
 }

@@ -7,7 +7,7 @@ import com.zegreatrob.coupling.client.components.external.nivo.heatmap.Responsiv
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
 import com.zegreatrob.coupling.client.components.stats.heatmap.interpolatorAsync
 import com.zegreatrob.coupling.client.components.stats.toNivoHeatmapSettings
-import com.zegreatrob.coupling.json.JsonContributionWindow
+import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
@@ -18,7 +18,7 @@ import react.useState
 
 external interface PairFrequencyHeatMapProps : Props {
     var data: List<Pair<CouplingPair, List<Contribution>>>
-    var window: JsonContributionWindow
+    var window: GqlContributionWindow
     var spinsUntilFullRotation: Int
 }
 

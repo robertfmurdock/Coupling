@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.ClearContributionsCommand
-import com.zegreatrob.coupling.json.ClearContributionsInput
+import com.zegreatrob.coupling.json.GqlClearContributionsInput
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
@@ -16,4 +16,4 @@ interface SdkClearContributionCommandDispatcher :
     }
 }
 
-private fun ClearContributionsCommand.clearContributionInput() = ClearContributionsInput(partyId = partyId.value)
+private fun ClearContributionsCommand.clearContributionInput() = GqlClearContributionsInput(partyId = partyId.value)

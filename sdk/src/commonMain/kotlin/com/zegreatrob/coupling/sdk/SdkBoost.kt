@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.sdk
 import com.zegreatrob.coupling.action.ApplyBoostCommand
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.boost.DeleteBoostCommand
-import com.zegreatrob.coupling.json.ApplyBoostInput
+import com.zegreatrob.coupling.json.GqlSaveBoostInput
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
 import com.zegreatrob.coupling.sdk.gql.doQuery
@@ -22,7 +22,7 @@ interface SdkBoost :
 
     override suspend fun perform(command: DeleteBoostCommand) = deleteIt().let { VoidResult.Accepted }
 
-    private fun ApplyBoostCommand.saveBoostInput() = ApplyBoostInput(partyId)
+    private fun ApplyBoostCommand.saveBoostInput() = GqlSaveBoostInput(partyId.value)
 
     private suspend fun deleteIt() {
         performQuery(buildJsonObject { put("query", Mutation.deleteBoost) })

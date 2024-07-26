@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.sdk.dsl
 
-import com.zegreatrob.coupling.json.ContributionsInput
+import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.json.GqlContributionsInput
 import com.zegreatrob.coupling.json.GqlPairInput
 import com.zegreatrob.coupling.json.JsonContributionReport
-import com.zegreatrob.coupling.json.JsonContributionWindow
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.boost
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
@@ -28,7 +28,7 @@ class PartyQueryBuilder :
     fun boost() = also { output = output.copy(boost = boost) }
 
     fun contributionReport(
-        window: JsonContributionWindow? = null,
+        window: GqlContributionWindow? = null,
         limit: Int? = null,
         block: ContributionReportBuilder.() -> Unit,
     ) = ContributionReportBuilder()
@@ -37,7 +37,7 @@ class PartyQueryBuilder :
         .addToQuery(
             queryKey = "contributionReport",
             inputSettings = InputSettings(
-                ContributionsInput(window, limit),
+                GqlContributionsInput(window = window, limit = limit),
                 "contributionsInput",
                 "ContributionsInput",
             ),

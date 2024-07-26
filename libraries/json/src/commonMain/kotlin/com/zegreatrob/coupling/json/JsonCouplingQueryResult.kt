@@ -126,23 +126,12 @@ data class JsonContributor(
     val details: JsonPlayerRecord? = null,
 )
 
-@Serializable
-data class ContributionsInput(val window: JsonContributionWindow?, val limit: Int?)
-
-enum class JsonContributionWindow {
-    All,
-    Year,
-    Quarter,
-    Month,
-    Week,
-}
-
-fun JsonContributionWindow.toModel() = when (this) {
-    JsonContributionWindow.All -> null
-    JsonContributionWindow.Year -> 365.days
-    JsonContributionWindow.Quarter -> (365 / 4).days
-    JsonContributionWindow.Month -> 30.days
-    JsonContributionWindow.Week -> 7.days
+fun GqlContributionWindow.toModel() = when (this) {
+    GqlContributionWindow.All -> null
+    GqlContributionWindow.Year -> 365.days
+    GqlContributionWindow.Quarter -> (365 / 4).days
+    GqlContributionWindow.Month -> 30.days
+    GqlContributionWindow.Week -> 7.days
 }
 
 fun JsonPair.toModel() = PlayerPair(
@@ -209,11 +198,6 @@ fun GlobalStats.toJson() = JsonGlobalStats(
     totalAppliedPins = totalAppliedPins,
     totalUniquePins = totalUniquePins,
     totalParties = totalParties,
-)
-
-@Serializable
-data class JsonGlobalStatsInput(
-    val year: Int,
 )
 
 @Serializable

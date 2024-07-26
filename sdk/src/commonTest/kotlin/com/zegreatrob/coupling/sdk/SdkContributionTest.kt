@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.action.party.ClearContributionsCommand
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.fire
 import com.zegreatrob.coupling.action.stats.halfwayValue
-import com.zegreatrob.coupling.json.JsonContributionWindow
+import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.Contributor
@@ -222,7 +222,7 @@ class SdkContributionTest {
         sdk().fire(
             graphQuery {
                 party(party.id) {
-                    contributionReport(JsonContributionWindow.Week) { contributions() }
+                    contributionReport(GqlContributionWindow.Week) { contributions() }
                 }
             },
         )
@@ -293,7 +293,7 @@ class SdkContributionTest {
                 party(party.id) {
                     pairs {
                         players()
-                        contributionReport(JsonContributionWindow.Week) { contributions() }
+                        contributionReport(GqlContributionWindow.Week) { contributions() }
                     }
                 }
             },
