@@ -2,8 +2,8 @@ package com.zegreatrob.coupling.server.entity.contribution
 
 import com.zegreatrob.coupling.action.party.SaveContributionCommand
 import com.zegreatrob.coupling.action.party.perform
-import com.zegreatrob.coupling.json.JsonContributionInput
-import com.zegreatrob.coupling.json.SaveContributionInput
+import com.zegreatrob.coupling.json.GqlContributionInput
+import com.zegreatrob.coupling.json.GqlSaveContributionInput
 import com.zegreatrob.coupling.model.ContributionInput
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.server.entity.boost.requiredInput
@@ -13,19 +13,19 @@ import kotlinx.serialization.json.JsonNull
 
 val saveContributionResolver = dispatch(
     dispatcherFunc = DispatcherProviders.command(),
-    commandFunc = requiredInput { _: JsonNull, args: SaveContributionInput -> args.toCommand() },
+    commandFunc = requiredInput { _: JsonNull, args: GqlSaveContributionInput -> args.toCommand() },
     fireFunc = ::perform,
     toSerializable = { true },
 )
 
-private fun SaveContributionInput.toCommand() = SaveContributionCommand(
+private fun GqlSaveContributionInput.toCommand() = SaveContributionCommand(
     partyId = PartyId(partyId),
-    contributionList = contributionList.map(JsonContributionInput::contributionInput),
+    contributionList = contributionList.map(GqlContributionInput::contributionInput),
 )
 
-private fun JsonContributionInput.contributionInput() = ContributionInput(
+private fun GqlContributionInput.contributionInput() = ContributionInput(
     contributionId = contributionId,
-    participantEmails = participantEmails,
+    participantEmails = participantEmails.toSet(),
     hash = hash,
     dateTime = dateTime,
     ease = ease,

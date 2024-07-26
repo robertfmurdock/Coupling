@@ -2,10 +2,11 @@ package com.zegreatrob.coupling.json
 
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
+import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.defaultParty
 
-fun SavePartyInput.toModel() = PartyDetails(
-    id = partyId,
+fun GqlSavePartyInput.toModel() = PartyDetails(
+    id = PartyId(partyId),
     pairingRule = PairingRule.fromValue(pairingRule),
     badgesEnabled = badgesEnabled ?: defaultParty.badgesEnabled,
     defaultBadgeName = defaultBadgeName ?: defaultParty.defaultBadgeName,

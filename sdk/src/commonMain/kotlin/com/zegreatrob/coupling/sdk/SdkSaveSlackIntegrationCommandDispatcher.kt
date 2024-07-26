@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.party.SaveSlackIntegrationCommand
-import com.zegreatrob.coupling.json.SaveSlackIntegrationInput
+import com.zegreatrob.coupling.json.GqlSaveSlackIntegrationInput
 import com.zegreatrob.coupling.json.toDomain
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
 import com.zegreatrob.coupling.sdk.gql.Mutation
@@ -18,9 +18,10 @@ interface SdkSaveSlackIntegrationCommandDispatcher :
             .saveSlackIntegration
             .toVoidResult()
 
-    private fun SaveSlackIntegrationCommand.saveSlackIntegrationInput() = SaveSlackIntegrationInput(
-        team = team,
-        channel = channel,
-        partyId = partyId.value,
-    )
+    private fun SaveSlackIntegrationCommand.saveSlackIntegrationInput() =
+        GqlSaveSlackIntegrationInput(
+            team = team,
+            channel = channel,
+            partyId = partyId.value,
+        )
 }

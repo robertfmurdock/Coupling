@@ -38,20 +38,6 @@ data class JsonPlayerData(
 ) : JsonPlayer
 
 @Serializable
-data class SavePlayerInput(
-    val playerId: String,
-    override val partyId: PartyId,
-    val name: String = defaultPlayer.name,
-    val email: String = defaultPlayer.email,
-    val badge: String = "${defaultPlayer.badge}",
-    val callSignAdjective: String = defaultPlayer.callSignAdjective,
-    val callSignNoun: String = defaultPlayer.callSignNoun,
-    val imageURL: String? = defaultPlayer.imageURL,
-    val avatarType: String? = defaultPlayer.avatarType?.name,
-    val unvalidatedEmails: Set<String> = defaultPlayer.additionalEmails,
-) : IPartyInput
-
-@Serializable
 data class JsonPlayerRecord(
     override val id: String,
     override val name: String = defaultPlayer.name,
@@ -97,16 +83,16 @@ fun PartyRecord<Player>.toSerializable() = JsonPlayerRecord(
     timestamp = timestamp,
 )
 
-fun SavePlayerInput.toModel(): Player = Player(
+fun GqlSavePlayerInput.toModel(): Player = Player(
     id = playerId,
-    badge = badge.toIntOrNull() ?: defaultPlayer.badge,
+    badge = badge?.toIntOrNull() ?: defaultPlayer.badge,
     name = name,
     email = email,
     callSignAdjective = callSignAdjective,
     callSignNoun = callSignNoun,
     imageURL = imageURL,
     avatarType = avatarType?.let(AvatarType::valueOf),
-    additionalEmails = unvalidatedEmails,
+    additionalEmails = unvalidatedEmails.toSet(),
 )
 
 fun JsonPlayer.toModel(): Player = Player(

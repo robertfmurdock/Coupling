@@ -12,6 +12,7 @@ generates:
       scalars:
         ID: String
         DateTimeISO: kotlinx.datetime.Instant
+        Duration: kotlin.time.Duration
         Float: Double
       typesPrefix: Gql
       omitJvmStatic: true

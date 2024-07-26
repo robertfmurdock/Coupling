@@ -54,15 +54,8 @@ import kotlin.js.Json
 import kotlin.js.json
 
 fun couplingResolvers() = json(
-    "DateTimeISO" to GraphQLScalarType<String>(
-        jso {
-            this.name = "DateTimeISO"
-            this.description = ""
-            this.serialize = { "$it" }
-            this.parseValue = { "$it" }
-            this.parseLiteral = { it.value.unsafeCast<String>() }
-        },
-    ),
+    "DateTimeISO" to makeStringScalarType("DateTimeISO"),
+    "Duration" to makeStringScalarType("Duration"),
     "Query" to json(
         "user" to userResolve,
         "partyList" to partyListResolve,
@@ -136,4 +129,14 @@ fun couplingResolvers() = json(
     "User" to json(
         "boost" to userBoostResolver,
     ),
+)
+
+private fun makeStringScalarType(name: String) = GraphQLScalarType<String>(
+    jso {
+        this.name = name
+        this.description = ""
+        this.serialize = { "$it" }
+        this.parseValue = { "$it" }
+        this.parseLiteral = { it.value.unsafeCast<String>() }
+    },
 )

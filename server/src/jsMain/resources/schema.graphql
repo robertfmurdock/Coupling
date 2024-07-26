@@ -1,4 +1,5 @@
 scalar DateTimeISO
+scalar Duration
 
 type PartyDetails {
     id: ID!
@@ -246,9 +247,9 @@ input SavePinInput {
 }
 
 input SaveSlackIntegrationInput {
-    partyId: ID
-    team: String
-    channel: String
+    partyId: ID!
+    team: String!
+    channel: String!
 }
 
 input SavePartyInput {
@@ -267,14 +268,14 @@ input SavePartyInput {
 input SavePlayerInput {
     partyId: ID!
     playerId: ID!
-    name: String
-    email: String
+    name: String!
+    email: String!
     badge: String
-    callSignAdjective: String
-    callSignNoun: String
+    callSignAdjective: String!
+    callSignNoun: String!
     imageURL: String
     avatarType: String
-    unvalidatedEmails: [String]
+    unvalidatedEmails: [String]!
 }
 
 input SavePairAssignmentsInput {
@@ -411,23 +412,23 @@ input SaveContributionInput {
     integrationDateTime: String @deprecated
     cycleTime: String @deprecated
     participantEmails: [String!] @deprecated
-    contributionList: [ContributionInput]
+    contributionList: [ContributionInput]!
 }
 
 input ContributionInput {
     contributionId: ID!
     hash: String
-    dateTime: String
+    dateTime: DateTimeISO
     ease: Int
     story: String
     link: String
     label: String
     semver: String
     firstCommit: String
-    firstCommitDateTime: String
-    integrationDateTime: String
-    cycleTime: String
-    participantEmails: [String!]
+    firstCommitDateTime: DateTimeISO
+    integrationDateTime: DateTimeISO
+    cycleTime: Duration
+    participantEmails: [String!]!
 }
 
 input ClearContributionsInput {
@@ -453,8 +454,8 @@ input CreateSecretInput {
 type SecretToken {
     secretId: ID!
     description: String!,
-    createdTimestamp: String!
-    lastUsedTimestamp: String
+    createdTimestamp: DateTimeISO!
+    lastUsedTimestamp: DateTimeISO
     secretToken: String!
 }
 

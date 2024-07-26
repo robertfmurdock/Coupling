@@ -2,7 +2,7 @@ package com.zegreatrob.coupling.sdk
 
 import com.zegreatrob.coupling.action.VoidResult
 import com.zegreatrob.coupling.action.party.SavePartyCommand
-import com.zegreatrob.coupling.json.SavePartyInput
+import com.zegreatrob.coupling.json.GqlSavePartyInput
 import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.sdk.gql.GqlTrait
@@ -18,8 +18,8 @@ interface SdkSavePartyCommandDispatcher :
     }
 }
 
-private fun PartyDetails.savePartyInput() = SavePartyInput(
-    partyId = id,
+private fun PartyDetails.savePartyInput() = GqlSavePartyInput(
+    partyId = id.value,
     name = name,
     email = email,
     pairingRule = PairingRule.toValue(pairingRule),
