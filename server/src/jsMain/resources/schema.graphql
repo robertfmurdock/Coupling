@@ -6,12 +6,12 @@ type PartyDetails {
     name: String
     email: String
     pairingRule: Int
-    badgesEnabled: Boolean!
+    badgesEnabled: Boolean
     defaultBadgeName: String!
     alternateBadgeName: String!
-    callSignsEnabled: Boolean!
-    animationsEnabled: Boolean!
-    animationSpeed: Float!
+    callSignsEnabled: Boolean
+    animationsEnabled: Boolean
+    animationSpeed: Float
     modifyingUserEmail: String
     timestamp: DateTimeISO
     isDeleted: Boolean
@@ -120,11 +120,11 @@ type PartySecret {
     id: ID!
     partyId: String!
     description: String!
-    createdTimestamp: String!
-    lastUsedTimestamp: String
-    modifyingUserEmail: String
-    timestamp: String
-    isDeleted: Boolean
+    createdTimestamp: DateTimeISO!
+    lastUsedTimestamp: DateTimeISO
+    modifyingUserEmail: String!
+    timestamp: DateTimeISO!
+    isDeleted: Boolean!
 }
 
 type BoostDetails {
@@ -168,8 +168,8 @@ type Party {
     pairAssignmentDocumentList: [PairAssignmentDocumentDetails]
     secretList: [PartySecret]
     currentPairAssignmentDocument: PairAssignmentDocumentDetails
-    spinsUntilFullRotation: Int!
-    medianSpinDuration: String
+    spinsUntilFullRotation: Int
+    medianSpinDuration: Duration
     boost: BoostDetails
     contributionReport(input: ContributionsInput): ContributionReport
     pair(input: PairInput) : Pair
@@ -338,6 +338,7 @@ input PartyInput {
 }
 
 type Pair {
+    partyId: ID
     players: [PlayerDetails]
     count: Int
     spinsSinceLastPaired: Int
@@ -371,7 +372,7 @@ type Query {
     partyList: [Party]
     party(input: PartyInput!): Party
     user: User
-    globalStats(input: GlobalStatsInput!) : GlobalStats!
+    globalStats(input: GlobalStatsInput!) : GlobalStats
     config: Configuration
 }
 

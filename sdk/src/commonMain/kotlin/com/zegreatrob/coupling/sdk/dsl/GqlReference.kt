@@ -7,6 +7,7 @@ import com.zegreatrob.coupling.json.GqlGlobalStats
 import com.zegreatrob.coupling.json.GqlPairAssignmentDocumentDetails
 import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPartyIntegration
+import com.zegreatrob.coupling.json.GqlPartySecret
 import com.zegreatrob.coupling.json.GqlPartyStats
 import com.zegreatrob.coupling.json.GqlPin
 import com.zegreatrob.coupling.json.GqlPinDetails
@@ -15,8 +16,6 @@ import com.zegreatrob.coupling.json.GqlPinnedPlayer
 import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
-import com.zegreatrob.coupling.json.JsonSecretRecord
-import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.datetime.Instant
 import kotlin.time.Duration
 
@@ -99,9 +98,9 @@ object GqlReference {
         isDeleted = false,
         timestamp = Instant.DISTANT_PAST,
     )
-    val secretRecord = JsonSecretRecord(
+    val secretRecord = GqlPartySecret(
         id = "",
-        partyId = PartyId(""),
+        partyId = "",
         modifyingUserEmail = "",
         isDeleted = false,
         description = "",

@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.graphql
 
+import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.GqlPartyInput
-import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.server.entity.boost.partyBoostResolver
 import com.zegreatrob.coupling.server.entity.boost.userBoostResolver
 import com.zegreatrob.coupling.server.entity.contribution.clearContributionsResolver
@@ -62,10 +62,26 @@ fun couplingResolvers() = json(
         "party" to { _: Json, args: Json, r: CouplingContext, _: Json ->
             MainScope().promise {
                 val jsonParty = kotlinx.serialization.json.Json.decodeFromDynamic<GqlPartyInput>(args["input"])
-                    .let { JsonParty(id = it.partyId) }
-                val partyId = jsonParty.id
-                    ?: return@promise null
-                if (DispatcherProviders.authorizedPartyDispatcher(r, partyId) != null) {
+                    .let {
+                        GqlParty(
+                            id = it.partyId,
+                            boost = null,
+                            contributionReport = null,
+                            currentPairAssignmentDocument = null,
+                            details = null,
+                            integration = null,
+                            medianSpinDuration = null,
+                            pair = null,
+                            pairAssignmentDocumentList = null,
+                            pairs = null,
+                            pinList = null,
+                            playerList = null,
+                            retiredPlayers = null,
+                            secretList = null,
+                            spinsUntilFullRotation = null,
+                        )
+                    }
+                if (DispatcherProviders.authorizedPartyDispatcher(r, jsonParty.id) != null) {
                     jsonParty.let { kotlinx.serialization.json.Json.encodeToDynamic(it) }
                 } else {
                     null

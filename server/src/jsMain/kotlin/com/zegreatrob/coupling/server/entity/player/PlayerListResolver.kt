@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.player
 
+import com.zegreatrob.coupling.json.GqlPair
 import com.zegreatrob.coupling.json.GqlPairAssignment
-import com.zegreatrob.coupling.json.JsonPair
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.PartyRecord
@@ -42,7 +42,7 @@ val spinsUntilFullRotationResolve = dispatch(
 
 val pairAssignmentHistoryResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
-    commandFunc = { data: JsonPair, _ ->
+    commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
         val partyId = PartyId(data.partyId ?: return@dispatch null)
         val players = model.players?.elements ?: return@dispatch null
@@ -87,7 +87,7 @@ val pairAssignmentHeatResolve = dispatch(
 
 val spinsSinceLastPairedResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
-    commandFunc = { data: JsonPair, _ ->
+    commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
         val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null
@@ -102,7 +102,7 @@ val spinsSinceLastPairedResolve = dispatch(
 
 val pairHeatResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
-    commandFunc = { data: JsonPair, _ ->
+    commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
         val partyId = data.partyId?.let(::PartyId) ?: return@dispatch null
         val players = model.players?.elements ?: return@dispatch null

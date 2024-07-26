@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.action
 
+import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocument
-import com.zegreatrob.coupling.json.JsonPartyDetails
 import com.zegreatrob.coupling.json.JsonPlayer
 import com.zegreatrob.coupling.json.JsonPlayerData
 import com.zegreatrob.coupling.json.couplingJsonFormat
@@ -18,7 +18,7 @@ actual fun loadJsonPartySetup(fileResource: String): PartySetup = loadResource<A
 
 @Serializable
 data class JsonPartySetup(
-    val party: JsonPartyDetails,
+    val party: GqlPartyDetails,
     val players: List<JsonPlayerData>,
     val history: List<JsonPairAssignmentDocument>,
 )

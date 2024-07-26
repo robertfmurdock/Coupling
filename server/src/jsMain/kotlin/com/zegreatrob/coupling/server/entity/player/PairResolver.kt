@@ -1,8 +1,8 @@
 package com.zegreatrob.coupling.server.entity.player
 
+import com.zegreatrob.coupling.json.GqlPair
 import com.zegreatrob.coupling.json.GqlPairInput
-import com.zegreatrob.coupling.json.JsonPair
-import com.zegreatrob.coupling.json.JsonParty
+import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.PlayerPair
@@ -20,7 +20,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val pairResolve = dispatch(
     dispatcherFunc = { context: CouplingContext, _, _ -> context.commandDispatcher },
-    commandFunc = requiredInput { party: JsonParty, input: GqlPairInput ->
+    commandFunc = requiredInput { party: GqlParty, input: GqlPairInput ->
         PairQuery(
             PartyId(party.id ?: return@requiredInput null),
             input.playerIdList.toSet(),
@@ -31,7 +31,7 @@ val pairResolve = dispatch(
 )
 val pairCountResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
-    commandFunc = { data: JsonPair, _ ->
+    commandFunc = { data: GqlPair, _ ->
         val model = data.toModel()
         val partyId = PartyId(data.partyId ?: return@dispatch null)
         val players = model.players?.elements ?: return@dispatch null

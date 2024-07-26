@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.sdk.gql
 
-import com.zegreatrob.coupling.json.JsonCouplingQueryResult
+import com.zegreatrob.coupling.json.GqlQuery
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.json.toDomain
 import kotlinx.serialization.json.JsonElement
@@ -15,12 +15,12 @@ interface GqlTrait {
     suspend fun JsonElement.perform() = performQuery(this)
         .let { response ->
             response.jsonObject["data"]
-                ?.let<JsonElement, JsonCouplingQueryResult>(couplingJsonFormat::decodeFromJsonElement)
+                ?.let<JsonElement, GqlQuery>(couplingJsonFormat::decodeFromJsonElement)
                 ?.toDomain(response)
         }
 
     suspend fun String.perform() = performQuery().let { jsonResult ->
-        jsonResult.jsonObject["data"]?.let<JsonElement, JsonCouplingQueryResult>(couplingJsonFormat::decodeFromJsonElement)
+        jsonResult.jsonObject["data"]?.let<JsonElement, GqlQuery>(couplingJsonFormat::decodeFromJsonElement)
             ?.toDomain(jsonResult)
     }
 }

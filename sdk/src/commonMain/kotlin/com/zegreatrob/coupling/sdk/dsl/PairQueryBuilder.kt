@@ -3,13 +3,21 @@ package com.zegreatrob.coupling.sdk.dsl
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.GqlContributionsInput
 import com.zegreatrob.coupling.json.GqlContributor
-import com.zegreatrob.coupling.json.JsonPair
+import com.zegreatrob.coupling.json.GqlPair
 import kotlinx.serialization.json.JsonElement
 
 class PairQueryBuilder :
     BuilderWithInput(),
-    QueryBuilder<JsonPair> {
-    override var output: JsonPair = JsonPair(null)
+    QueryBuilder<GqlPair> {
+    override var output: GqlPair = GqlPair(
+        contributionReport = null,
+        count = null,
+        pairAssignmentHistory = null,
+        partyId = null,
+        players = null,
+        recentTimesPaired = null,
+        spinsSinceLastPaired = null,
+    )
     override var queries = mutableListOf<String>()
     override var inputs = mutableListOf<String>()
     override var variables = mutableMapOf<String, JsonElement>()

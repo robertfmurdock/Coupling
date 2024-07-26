@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.party
 
-import com.zegreatrob.coupling.json.JsonParty
+import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 
 val partyDetailsResolve = dispatch(
     dispatcherFunc = adapt { r -> r.commandDispatcher },
-    commandFunc = { entity: JsonParty, _ -> entity.id?.let(::PartyId)?.let { PartyQuery(it) } },
+    commandFunc = { entity: GqlParty, _ -> entity.id?.let(::PartyId)?.let { PartyQuery(it) } },
     fireFunc = ::perform,
     toSerializable = ::toJson,
 )

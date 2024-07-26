@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.pin
 
-import com.zegreatrob.coupling.json.JsonParty
+import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.Record
@@ -15,7 +15,7 @@ import kotlinx.serialization.json.JsonElement
 
 val pinListResolve = dispatch(
     dispatcherFunc = command(),
-    commandFunc = { entity: JsonParty, _: JsonElement? -> entity.id?.let(::PartyId)?.let { PinsQuery(it) } },
+    commandFunc = { entity: GqlParty, _: JsonElement? -> entity.id?.let(::PartyId)?.let { PinsQuery(it) } },
     fireFunc = ::perform,
     toSerializable = ::toSerializable,
 )

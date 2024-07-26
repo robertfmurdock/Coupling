@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.contribution
 
 import com.zegreatrob.coupling.json.GqlContributionsInput
-import com.zegreatrob.coupling.json.JsonPair
+import com.zegreatrob.coupling.json.GqlPair
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.elements
@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.server.action.contribution.perform
 import com.zegreatrob.coupling.server.express.route.CouplingContext
 import com.zegreatrob.coupling.server.graphql.dispatch
 
-private val pairContributionQueryFunc = lambda@{ data: JsonPair, input: GqlContributionsInput? ->
+private val pairContributionQueryFunc = lambda@{ data: GqlPair, input: GqlContributionsInput? ->
     val model = data.toModel()
     val partyId = data.partyId?.let { PartyId(it) } ?: return@lambda null
     val players = model.players?.elements ?: return@lambda null
@@ -25,7 +25,7 @@ private val pairContributionQueryFunc = lambda@{ data: JsonPair, input: GqlContr
 }
 
 val pairContributionReportResolver = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonPair, _: GqlContributionsInput? -> context.commandDispatcher },
+    dispatcherFunc = { context: CouplingContext, _: GqlPair, _: GqlContributionsInput? -> context.commandDispatcher },
     commandFunc = pairContributionQueryFunc,
     fireFunc = ::perform,
     toSerializable = { it.toJson() },

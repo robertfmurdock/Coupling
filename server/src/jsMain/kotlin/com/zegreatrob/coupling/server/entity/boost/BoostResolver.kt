@@ -3,7 +3,7 @@ package com.zegreatrob.coupling.server.entity.boost
 import com.zegreatrob.coupling.action.boost.PartyBoostQuery
 import com.zegreatrob.coupling.action.boost.UserBoostQuery
 import com.zegreatrob.coupling.action.boost.perform
-import com.zegreatrob.coupling.json.JsonParty
+import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Boost
 import com.zegreatrob.coupling.model.Record
@@ -21,7 +21,7 @@ val userBoostResolver = dispatch(
 
 val partyBoostResolver = dispatch(
     dispatcherFunc = prereleaseCommand(),
-    commandFunc = { partyJson: JsonParty, _: JsonNull? -> partyJson.id?.let { PartyBoostQuery(PartyId(it)) } },
+    commandFunc = { partyJson: GqlParty, _: JsonNull? -> partyJson.id?.let { PartyBoostQuery(PartyId(it)) } },
     fireFunc = ::perform,
     toSerializable = ::jsonBoostRecord,
 )

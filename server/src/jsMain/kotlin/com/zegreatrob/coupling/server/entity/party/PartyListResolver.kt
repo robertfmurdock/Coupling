@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.party
 
-import com.zegreatrob.coupling.json.JsonParty
+import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.Record
 import com.zegreatrob.coupling.model.party.PartyDetails
@@ -17,5 +17,24 @@ val partyListResolve = dispatch(
     toSerializable = ::toJson,
 )
 
-private fun toJson(records: List<Record<PartyDetails>>?) = records?.map(Record<PartyDetails>::toSerializable)
-    ?.map { JsonParty(id = it.id, details = it) }
+private fun toJson(records: List<Record<PartyDetails>>?) = records
+    ?.map(Record<PartyDetails>::toSerializable)
+    ?.map {
+        GqlParty(
+            id = it.id,
+            details = it,
+            boost = null,
+            contributionReport = null,
+            currentPairAssignmentDocument = null,
+            integration = null,
+            medianSpinDuration = null,
+            pair = null,
+            pairAssignmentDocumentList = null,
+            pairs = null,
+            pinList = null,
+            playerList = null,
+            retiredPlayers = null,
+            secretList = null,
+            spinsUntilFullRotation = null,
+        )
+    }

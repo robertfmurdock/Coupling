@@ -4,7 +4,7 @@ import com.zegreatrob.coupling.json.GqlContributionReport
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.GqlContributionsInput
 import com.zegreatrob.coupling.json.GqlPairInput
-import com.zegreatrob.coupling.json.JsonParty
+import com.zegreatrob.coupling.json.GqlParty
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.boost
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.integrationRecord
@@ -18,9 +18,25 @@ import kotlin.time.Duration
 
 class PartyQueryBuilder :
     BuilderWithInput(),
-    QueryBuilder<JsonParty> {
+    QueryBuilder<GqlParty> {
+    override var output: GqlParty = GqlParty(
+        id = "",
+        boost = null,
+        contributionReport = null,
+        currentPairAssignmentDocument = null,
+        details = null,
+        integration = null,
+        medianSpinDuration = null,
+        pair = null,
+        pairAssignmentDocumentList = null,
+        pairs = null,
+        pinList = null,
+        playerList = null,
+        retiredPlayers = null,
+        secretList = null,
+        spinsUntilFullRotation = null,
+    )
 
-    override var output: JsonParty = JsonParty("")
     override var queries = mutableListOf<String>()
     override var inputs = mutableListOf<String>()
     override var variables = mutableMapOf<String, JsonElement>()
