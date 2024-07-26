@@ -100,8 +100,8 @@ type PinnedPlayer {
 }
 
 type PinnedPair {
-    players: [PinnedPlayer]
-    pins: [Pin]
+    players: [PinnedPlayer]!
+    pins: [Pin]!
 }
 
 type PairAssignmentDocumentDetails {
@@ -279,9 +279,9 @@ input SavePlayerInput {
 }
 
 input SavePairAssignmentsInput {
-    partyId: ID
+    partyId: ID!
     pairAssignmentsId: ID!
-    date: String!
+    date: DateTimeISO!
     pairs: [PinnedPairInput]!
     discordMessageId: String
     slackMessageId: String
@@ -294,13 +294,13 @@ input PinnedPairInput {
 
 input PinnedPlayerInput {
     id: ID!
-    name: String
-    email: String
+    name: String!
+    email: String!
     badge: String
-    callSignAdjective: String
-    callSignNoun: String
+    callSignAdjective: String!
+    callSignNoun: String!
     imageURL: String
-    avatarType: String
+    avatarType: AvatarType
     unvalidatedEmails: [String]!
     pins: [PinInput]!
 }

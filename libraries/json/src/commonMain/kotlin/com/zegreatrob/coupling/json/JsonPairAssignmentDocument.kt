@@ -20,6 +20,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import kotools.types.collection.NotEmptyList
+import kotools.types.collection.toNotEmptyList
 
 @Serializable
 data class JsonPairAssignmentDocument(
@@ -71,18 +72,19 @@ data class JsonPairAssignmentDocumentRecord(
     override val timestamp: Instant,
 ) : JsonPartyRecordInfo
 
-@Serializable
-data class SavePairAssignmentsInput(
-    override val partyId: PartyId,
-    val pairAssignmentsId: String,
-    val date: Instant,
-    val pairs: NotEmptyList<JsonPinnedCouplingPair>,
-    val discordMessageId: String?,
-    val slackMessageId: String?,
-) : IPartyInput
+// @Serializable
+// data class SavePairAssignmentsInput(
+//    override val partyId: PartyId,
+//    val pairAssignmentsId: String,
+//    val date: Instant,
+//    val pairs: NotEmptyList<JsonPinnedCouplingPair>,
+//    val discordMessageId: String?,
+//    val slackMessageId: String?,
+// ) : IPartyInput
 
-@Serializable
-data class JsonPinnedCouplingPair(val players: NotEmptyList<JsonPinnedPlayer>, val pins: Set<GqlPin> = emptySet())
+typealias SavePairAssignmentsInput = GqlSavePairAssignmentsInput
+
+typealias JsonPinnedCouplingPair = GqlPinnedPair
 
 typealias JsonPinnedPlayer = GqlPinnedPlayer
 
@@ -127,8 +129,13 @@ fun PartyRecord<PairAssignmentDocument>.toSerializable() = JsonPairAssignmentDoc
 )
 
 fun PinnedCouplingPair.toSerializable() = JsonPinnedCouplingPair(
-    players = pinnedPlayers.map(PinnedPlayer::toSerializable),
-    pins = pins.map(Pin::toSerializable).toSet(),
+    players = pinnedPlayers.map(PinnedPlayer::toSerializable).toList(),
+    pins = pins.map(Pin::toSerializable),
+)
+
+fun PinnedCouplingPair.toSerializableInput() = GqlPinnedPairInput(
+    players = pinnedPlayers.map(PinnedPlayer::toSerializableInput).toList(),
+    pins = pins.map(Pin::toSerializableInput),
 )
 
 private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
@@ -144,14 +151,27 @@ private fun PinnedPlayer.toSerializable() = JsonPinnedPlayer(
     pins = pins.map(Pin::toSerializable),
 )
 
+private fun PinnedPlayer.toSerializableInput() = GqlPinnedPlayerInput(
+    id = player.id,
+    name = player.name,
+    email = player.email,
+    badge = "${player.badge}",
+    callSignAdjective = player.callSignAdjective,
+    callSignNoun = player.callSignNoun,
+    imageURL = player.imageURL,
+    avatarType = player.avatarType?.toSerializable(),
+    unvalidatedEmails = player.additionalEmails.toList(),
+    pins = pins.map(Pin::toSerializableInput),
+)
+
 fun AvatarType.toSerializable() = name.let { GqlAvatarType.valueOfLabel(it) }
 
 fun PartyElement<PairAssignmentDocument>.toSavePairAssignmentsInput() =
     SavePairAssignmentsInput(
-        partyId = partyId,
+        partyId = partyId.value,
         pairAssignmentsId = element.id.value,
         date = element.date,
-        pairs = element.pairs.map(PinnedCouplingPair::toSerializable),
+        pairs = element.pairs.map(PinnedCouplingPair::toSerializableInput).toList(),
         discordMessageId = element.discordMessageId,
         slackMessageId = element.slackMessageId,
     )
@@ -167,7 +187,7 @@ fun JsonPairAssignmentDocument.toModel() = PairAssignmentDocument(
 fun SavePairAssignmentsInput.toModel() = PairAssignmentDocument(
     id = pairAssignmentsId.let(::PairAssignmentDocumentId),
     date = date,
-    pairs = pairs.map(JsonPinnedCouplingPair::toModel),
+    pairs = pairs.map(GqlPinnedPairInput::toModel).toNotEmptyList().getOrThrow(),
     discordMessageId = discordMessageId,
     slackMessageId = slackMessageId,
 )
@@ -188,8 +208,13 @@ fun JsonPairAssignmentDocumentRecord.toModel(): PartyRecord<PairAssignmentDocume
 )
 
 fun JsonPinnedCouplingPair.toModel() = PinnedCouplingPair(
-    pinnedPlayers = players.map(JsonPinnedPlayer::toModel),
+    pinnedPlayers = players.map(JsonPinnedPlayer::toModel).toNotEmptyList().getOrThrow(),
     pins = pins.map(GqlPin::toModel).toSet(),
+)
+
+fun GqlPinnedPairInput.toModel() = PinnedCouplingPair(
+    pinnedPlayers = players.map(GqlPinnedPlayerInput::toModel).toNotEmptyList().getOrThrow(),
+    pins = pins.map(GqlPinInput::toModel).toSet(),
 )
 
 private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
@@ -205,6 +230,21 @@ private fun JsonPinnedPlayer.toModel() = PinnedPlayer(
         additionalEmails = unvalidatedEmails?.toSet() ?: emptySet(),
     ),
     pins = pins.map(GqlPin::toModel),
+)
+
+private fun GqlPinnedPlayerInput.toModel() = PinnedPlayer(
+    player = Player(
+        id = id,
+        badge = badge?.toIntOrNull() ?: defaultPlayer.badge,
+        name = name,
+        email = email,
+        callSignAdjective = callSignAdjective,
+        callSignNoun = callSignNoun,
+        imageURL = imageURL,
+        avatarType = avatarType?.toModel(),
+        additionalEmails = unvalidatedEmails.toSet(),
+    ),
+    pins = pins.map(GqlPinInput::toModel),
 )
 
 private fun GqlAvatarType.toModel() = name.let { AvatarType.valueOf(it) }

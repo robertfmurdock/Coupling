@@ -23,6 +23,12 @@ fun Pin.toSerializable() = GqlPin(
     icon = icon,
 )
 
+fun Pin.toSerializableInput() = GqlPinInput(
+    id = id,
+    name = name,
+    icon = icon,
+)
+
 fun Record<PartyElement<Pin>>.toSerializable() = GqlPinDetails(
     id = data.element.id,
     name = data.element.name,
@@ -34,6 +40,12 @@ fun Record<PartyElement<Pin>>.toSerializable() = GqlPinDetails(
 )
 
 fun GqlPin.toModel(): Pin = Pin(
+    id = id,
+    name = name ?: "",
+    icon = icon ?: "",
+)
+
+fun GqlPinInput.toModel(): Pin = Pin(
     id = id,
     name = name ?: "",
     icon = icon ?: "",

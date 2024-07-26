@@ -79,8 +79,8 @@ object GqlReference {
         unvalidatedEmails = listOf(""),
     )
     val pinnedCouplingPair = JsonPinnedCouplingPair(
-        players = notEmptyListOf(pinnedPlayer),
-        pins = setOf(pinData),
+        players = listOf(pinnedPlayer),
+        pins = listOf(pinData),
     )
     val pairAssignmentRecord = JsonPairAssignmentDocumentRecord(
         id = "",
