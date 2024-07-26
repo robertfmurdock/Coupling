@@ -4,8 +4,8 @@ import com.zegreatrob.coupling.import.external.readline.ReadLine
 import com.zegreatrob.coupling.import.external.readline.inputReader
 import com.zegreatrob.coupling.import.external.readline.onEnd
 import com.zegreatrob.coupling.import.external.readline.onNewLine
+import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPartyDetailsRecord
 import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.JsonUserRecord
@@ -62,7 +62,7 @@ suspend fun loadPartyData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
     val partyId = jsonLine["partyId"].unsafeCast<String>().let(::PartyId)
     jsonLine.getArray("partyRecords").forEach { recordJson ->
         tryToImport({ "Failed to save party $partyId" }) {
-            val record = format.decodeFromDynamic<JsonPartyDetailsRecord>(recordJson).toModelRecord()
+            val record = format.decodeFromDynamic<GqlPartyDetails>(recordJson).toModelRecord()
             if (record != null) {
                 catalog.partyRepository.saveRawRecord(record)
             }

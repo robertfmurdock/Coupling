@@ -9,6 +9,9 @@ generates:
       strictScalars: true
       scalars:
         ID: String
+        DateTimeISO: kotlinx.datetime.Instant
+        Float: Double
       typesPrefix: Gql
       omitJvmStatic: true
       serializable: true
+      listType: List

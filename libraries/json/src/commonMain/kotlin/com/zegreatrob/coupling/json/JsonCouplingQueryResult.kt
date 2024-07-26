@@ -74,7 +74,7 @@ fun JsonCouplingQueryResult.toDomain(raw: JsonElement) = CouplingQueryResult(
 @Serializable
 data class JsonParty(
     val id: String? = null,
-    val details: JsonPartyDetailsRecord? = null,
+    val details: GqlPartyDetails? = null,
     val integration: JsonIntegrationRecord? = null,
     val pinList: List<JsonPinRecord>? = null,
     val playerList: List<JsonPlayerRecord>? = null,

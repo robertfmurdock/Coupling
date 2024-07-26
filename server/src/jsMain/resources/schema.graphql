@@ -1,16 +1,18 @@
+scalar DateTimeISO
+
 type PartyDetails {
     id: ID!
     name: String
     email: String
     pairingRule: Int
-    badgesEnabled: Boolean
-    defaultBadgeName: String
-    alternateBadgeName: String
-    callSignsEnabled: Boolean
-    animationsEnabled: Boolean
-    animationSpeed: Float
+    badgesEnabled: Boolean!
+    defaultBadgeName: String!
+    alternateBadgeName: String!
+    callSignsEnabled: Boolean!
+    animationsEnabled: Boolean!
+    animationSpeed: Float!
     modifyingUserEmail: String
-    timestamp: String
+    timestamp: DateTimeISO
     isDeleted: Boolean
 }
 
@@ -18,7 +20,7 @@ type PartyIntegration {
     slackTeam: String
     slackChannel: String
     modifyingUserEmail: String
-    timestamp: String
+    timestamp: DateTimeISO
     isDeleted: Boolean
 }
 

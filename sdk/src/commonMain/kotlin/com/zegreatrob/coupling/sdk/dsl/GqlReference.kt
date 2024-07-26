@@ -1,12 +1,12 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPin
 import com.zegreatrob.coupling.json.JsonBoostRecord
 import com.zegreatrob.coupling.json.JsonContributionRecord
 import com.zegreatrob.coupling.json.JsonGlobalStats
 import com.zegreatrob.coupling.json.JsonIntegrationRecord
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPartyDetailsRecord
 import com.zegreatrob.coupling.json.JsonPartyStats
 import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPinnedCouplingPair
@@ -130,7 +130,7 @@ object GqlReference {
         integrationDateTime = Instant.DISTANT_PAST,
         cycleTime = Duration.ZERO,
     )
-    val partyRecord = JsonPartyDetailsRecord(
+    val partyRecord = GqlPartyDetails(
         id = "",
         pairingRule = 0,
         badgesEnabled = false,

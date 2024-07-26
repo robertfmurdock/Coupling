@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client
 
+import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
-import com.zegreatrob.coupling.json.JsonPartyDetailsRecord
 import com.zegreatrob.coupling.json.JsonPinRecord
 import com.zegreatrob.coupling.json.JsonPlayerRecord
 import com.zegreatrob.coupling.json.fromJsonString
@@ -28,7 +28,7 @@ class LocalStorageRepositoryBackend {
 
 fun List<Record<PartyDetails>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPartyRecords(): List<Record<PartyDetails>> =
-    fromJsonString<List<JsonPartyDetailsRecord>>().mapNotNull { it.toModelRecord() }
+    fromJsonString<List<GqlPartyDetails>>().mapNotNull { it.toModelRecord() }
 
 fun List<PartyRecord<Player>>.toSerializableString() = map { it.toSerializable() }.toJsonString()
 fun String.toPlayerRecords(): List<PartyRecord<Player>> = fromJsonString<List<JsonPlayerRecord>>().map { it.toModel() }

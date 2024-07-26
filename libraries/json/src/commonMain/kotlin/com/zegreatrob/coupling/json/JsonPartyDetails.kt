@@ -7,7 +7,6 @@ import com.zegreatrob.coupling.model.party.PairingRule
 import com.zegreatrob.coupling.model.party.PartyDetails
 import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.party.PartyIntegration
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
@@ -25,23 +24,6 @@ data class JsonPartyDetails(
     val animationSpeed: Double = 1.0,
 )
 
-@Serializable
-data class JsonPartyDetailsRecord(
-    val id: String? = null,
-    val pairingRule: Int = PairingRule.toValue(PairingRule.LongestTime),
-    val badgesEnabled: Boolean = false,
-    val defaultBadgeName: String = "Default",
-    val alternateBadgeName: String = "Alternate",
-    val email: String? = null,
-    val name: String? = null,
-    val callSignsEnabled: Boolean = false,
-    val animationsEnabled: Boolean = true,
-    val animationSpeed: Double = 1.0,
-    val modifyingUserEmail: String? = null,
-    val isDeleted: Boolean? = null,
-    val timestamp: Instant? = null,
-)
-
 fun PartyDetails.toSerializable() = JsonPartyDetails(
     id = id.value,
     pairingRule = PairingRule.toValue(pairingRule),
@@ -55,7 +37,7 @@ fun PartyDetails.toSerializable() = JsonPartyDetails(
     animationSpeed = animationSpeed,
 )
 
-fun Record<PartyDetails>.toSerializable() = JsonPartyDetailsRecord(
+fun Record<PartyDetails>.toSerializable() = GqlPartyDetails(
     id = data.id.value,
     pairingRule = PairingRule.toValue(data.pairingRule),
     badgesEnabled = data.badgesEnabled,
@@ -102,10 +84,10 @@ fun JsonPartyDetails.toModel(): PartyDetails = PartyDetails(
     animationSpeed = animationSpeed,
 )
 
-fun JsonPartyDetailsRecord.toModelRecord(): Record<PartyDetails>? {
+fun GqlPartyDetails.toModelRecord(): Record<PartyDetails>? {
     return Record(
         data = PartyDetails(
-            id = PartyId(id ?: return null),
+            id = PartyId(id),
             pairingRule = PairingRule.fromValue(pairingRule),
             badgesEnabled = badgesEnabled,
             defaultBadgeName = defaultBadgeName,
