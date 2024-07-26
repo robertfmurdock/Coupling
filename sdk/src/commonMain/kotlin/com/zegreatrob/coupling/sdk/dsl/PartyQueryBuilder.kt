@@ -1,9 +1,9 @@
 package com.zegreatrob.coupling.sdk.dsl
 
+import com.zegreatrob.coupling.json.GqlContributionReport
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.GqlContributionsInput
 import com.zegreatrob.coupling.json.GqlPairInput
-import com.zegreatrob.coupling.json.JsonContributionReport
 import com.zegreatrob.coupling.json.JsonParty
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.boost
 import com.zegreatrob.coupling.sdk.dsl.GqlReference.contributionRecord
@@ -72,15 +72,16 @@ class PartyQueryBuilder :
 
 class ContributionReportBuilder :
     BuilderWithInput(),
-    QueryBuilder<JsonContributionReport> {
-    override var output: JsonContributionReport = JsonContributionReport(
-        partyId = null,
-        contributions = null,
-        contributors = null,
-        withCycleTimeCount = null,
-        count = null,
-        medianCycleTime = null,
-    )
+    QueryBuilder<GqlContributionReport> {
+    override var output: GqlContributionReport =
+        GqlContributionReport(
+            partyId = null,
+            contributions = null,
+            contributors = null,
+            withCycleTimeCount = null,
+            count = null,
+            medianCycleTime = null,
+        )
     override var queries = mutableListOf<String>()
     override var inputs = mutableListOf<String>()
     override var variables = mutableMapOf<String, JsonElement>()

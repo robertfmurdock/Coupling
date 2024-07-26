@@ -1,12 +1,9 @@
 package com.zegreatrob.coupling.json
 
-import com.zegreatrob.coupling.model.Contribution
-import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.CouplingQueryResult
 import com.zegreatrob.coupling.model.Party
 import com.zegreatrob.coupling.model.PartyRecord
 import com.zegreatrob.coupling.model.PlayerPair
-import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignment
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocumentId
 import com.zegreatrob.coupling.model.party.PartyElement
@@ -14,6 +11,7 @@ import com.zegreatrob.coupling.model.party.PartyId
 import com.zegreatrob.coupling.model.player.Player
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
+import kotools.types.collection.toNotEmptyList
 import kotlin.time.Duration
 
 @Serializable
@@ -35,7 +33,7 @@ private fun JsonParty.toModel(): Party? {
         playerList = playerList?.map(GqlPlayerDetails::toModel),
         retiredPlayers = retiredPlayers?.map(GqlPlayerDetails::toModel),
         secretList = secretList?.map(JsonSecretRecord::toModel),
-        pairAssignmentDocumentList = pairAssignmentDocumentList?.map(JsonPairAssignmentDocumentRecord::toModel),
+        pairAssignmentDocumentList = pairAssignmentDocumentList?.map(GqlPairAssignmentDocumentDetails::toModel),
         currentPairAssignmentDocument = currentPairAssignmentDocument?.toModel(),
         boost = boost?.toModelRecord(),
         pairs = pairs?.map(JsonPair::toModel),
@@ -64,34 +62,14 @@ data class JsonParty(
     val playerList: List<GqlPlayerDetails>? = null,
     val secretList: List<JsonSecretRecord>? = null,
     val retiredPlayers: List<GqlPlayerDetails>? = null,
-    val pairAssignmentDocumentList: List<JsonPairAssignmentDocumentRecord>? = null,
-    val currentPairAssignmentDocument: JsonPairAssignmentDocumentRecord? = null,
+    val pairAssignmentDocumentList: List<GqlPairAssignmentDocumentDetails>? = null,
+    val currentPairAssignmentDocument: GqlPairAssignmentDocumentDetails? = null,
     val boost: GqlBoostDetails? = null,
     val pairs: List<JsonPair>? = null,
     val pair: JsonPair? = null,
     val medianSpinDuration: Duration? = null,
     val spinsUntilFullRotation: Int? = null,
-    val contributionReport: JsonContributionReport? = null,
-)
-
-typealias JsonContributionReport = GqlContributionReport
-
-fun JsonContributionReport.toModel() = ContributionReport(
-    contributions = contributions?.map(GqlContribution::toModel),
-    count = count,
-    medianCycleTime = medianCycleTime,
-    withCycleTimeCount = withCycleTimeCount,
-    contributors = contributors?.map(GqlContributor::toModel),
-    partyId = partyId?.let(::PartyId),
-)
-
-fun ContributionReport.toJson() = JsonContributionReport(
-    contributions = contributions?.map(PartyRecord<Contribution>::toJson),
-    contributors = contributors?.map { it.toJson() } ?: emptyList(),
-    count = count,
-    medianCycleTime = medianCycleTime,
-    withCycleTimeCount = withCycleTimeCount,
-    partyId = partyId?.value,
+    val contributionReport: GqlContributionReport? = null,
 )
 
 @Serializable
@@ -101,8 +79,8 @@ data class JsonPair(
     val partyId: String? = null,
     val spinsSinceLastPaired: Int? = null,
     val recentTimesPaired: Int? = null,
-    val pairAssignmentHistory: List<JsonPairAssignment>? = null,
-    val contributionReport: JsonContributionReport? = null,
+    val pairAssignmentHistory: List<GqlPairAssignment>? = null,
+    val contributionReport: GqlContributionReport? = null,
 )
 
 fun JsonPair.toModel() = PlayerPair(
@@ -115,7 +93,7 @@ fun JsonPair.toModel() = PlayerPair(
             documentId = json.documentId?.let(::PairAssignmentDocumentId),
             details = json.details?.toModel(),
             date = json.date,
-            allPairs = json.allPairs?.map(GqlPinnedPair::toModel),
+            allPairs = json.allPairs?.map(GqlPinnedPair::toModel)?.toNotEmptyList()?.getOrNull(),
             recentTimesPaired = json.recentTimesPaired,
         )
     },

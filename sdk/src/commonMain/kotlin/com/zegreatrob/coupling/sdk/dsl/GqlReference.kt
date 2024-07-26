@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.json.GqlAvatarType
 import com.zegreatrob.coupling.json.GqlBoostDetails
 import com.zegreatrob.coupling.json.GqlContribution
 import com.zegreatrob.coupling.json.GqlGlobalStats
+import com.zegreatrob.coupling.json.GqlPairAssignmentDocumentDetails
 import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPartyIntegration
 import com.zegreatrob.coupling.json.GqlPartyStats
@@ -14,11 +15,9 @@ import com.zegreatrob.coupling.json.GqlPinnedPlayer
 import com.zegreatrob.coupling.json.GqlPlayerDetails
 import com.zegreatrob.coupling.json.GqlSubscriptionDetails
 import com.zegreatrob.coupling.json.GqlUserDetails
-import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonSecretRecord
 import com.zegreatrob.coupling.model.party.PartyId
 import kotlinx.datetime.Instant
-import kotools.types.collection.notEmptyListOf
 import kotlin.time.Duration
 
 object GqlReference {
@@ -82,11 +81,11 @@ object GqlReference {
         players = listOf(pinnedPlayer),
         pins = listOf(pinData),
     )
-    val pairAssignmentRecord = JsonPairAssignmentDocumentRecord(
+    val pairAssignmentRecord = GqlPairAssignmentDocumentDetails(
         id = "",
         date = Instant.DISTANT_PAST,
-        pairs = notEmptyListOf(pinnedCouplingPair),
-        partyId = PartyId(""),
+        pairs = listOf(pinnedCouplingPair),
+        partyId = "",
         discordMessageId = "",
         slackMessageId = "",
         modifyingUserEmail = "",

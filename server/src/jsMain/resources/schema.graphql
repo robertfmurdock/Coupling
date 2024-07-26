@@ -106,14 +106,14 @@ type PinnedPair {
 
 type PairAssignmentDocumentDetails {
     id: ID!
-    partyId: String
-    date: String!
+    partyId: ID!
+    date: DateTimeISO!
     pairs: [PinnedPair]!
     discordMessageId: String
     slackMessageId: String
-    modifyingUserEmail: String
-    timestamp: String
-    isDeleted: Boolean
+    modifyingUserEmail: String!
+    timestamp: DateTimeISO!
+    isDeleted: Boolean!
 }
 
 type PartySecret {
@@ -356,11 +356,11 @@ type ContributionReport {
 }
 
 type PairAssignment {
-    playerIds: [ID!]!
-    documentId: ID!
-    details: PairAssignmentDocumentDetails!
-    date: String!
-    allPairs: [PinnedPair]!
+    playerIds: [ID!]
+    documentId: ID
+    details: PairAssignmentDocumentDetails
+    date: DateTimeISO
+    allPairs: [PinnedPair]
     recentTimesPaired: Int
 }
 

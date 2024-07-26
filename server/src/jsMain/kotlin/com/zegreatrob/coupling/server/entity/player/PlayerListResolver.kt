@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.server.entity.player
 
+import com.zegreatrob.coupling.json.GqlPairAssignment
 import com.zegreatrob.coupling.json.JsonPair
-import com.zegreatrob.coupling.json.JsonPairAssignment
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.json.toSerializable
 import com.zegreatrob.coupling.model.PartyRecord
@@ -71,7 +71,7 @@ private fun pairAssignment(
 
 val pairAssignmentHeatResolve = dispatch(
     dispatcherFunc = adapt { context: CouplingContext -> context.commandDispatcher },
-    commandFunc = { data: JsonPairAssignment, _ ->
+    commandFunc = { data: GqlPairAssignment, _ ->
         val model = data.toModel()
         val partyId = model.details?.data?.partyId ?: return@dispatch null
         val pair = model.playerIds?.map { defaultPlayer.copy(id = it) }?.toCouplingPair() ?: return@dispatch null

@@ -4,10 +4,10 @@ import com.zegreatrob.coupling.import.external.readline.ReadLine
 import com.zegreatrob.coupling.import.external.readline.inputReader
 import com.zegreatrob.coupling.import.external.readline.onEnd
 import com.zegreatrob.coupling.import.external.readline.onNewLine
+import com.zegreatrob.coupling.json.GqlPairAssignmentDocumentDetails
 import com.zegreatrob.coupling.json.GqlPartyDetails
 import com.zegreatrob.coupling.json.GqlPinDetails
 import com.zegreatrob.coupling.json.GqlPlayerDetails
-import com.zegreatrob.coupling.json.JsonPairAssignmentDocumentRecord
 import com.zegreatrob.coupling.json.JsonUserRecord
 import com.zegreatrob.coupling.json.couplingJsonFormat
 import com.zegreatrob.coupling.json.toModel
@@ -81,7 +81,7 @@ suspend fun loadPartyData(jsonLine: Json, catalog: DynamoRepositoryCatalog) {
         }
     }
     jsonLine.getArray("pairAssignmentRecords").forEach { recordJson ->
-        val record = format.decodeFromDynamic<JsonPairAssignmentDocumentRecord>(recordJson).toModel()
+        val record = format.decodeFromDynamic<GqlPairAssignmentDocumentDetails>(recordJson).toModel()
         tryToImport({ "Failed to save player ${record.data.partyId} in party $partyId" }) {
             catalog.pairAssignmentDocumentRepository.saveRawRecord(record)
         }

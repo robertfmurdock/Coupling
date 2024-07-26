@@ -1,6 +1,6 @@
 package com.zegreatrob.coupling.server.entity.contribution
 
-import com.zegreatrob.coupling.json.JsonContributionReport
+import com.zegreatrob.coupling.json.GqlContributionReport
 import com.zegreatrob.coupling.json.toJson
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contributor
@@ -12,7 +12,7 @@ import com.zegreatrob.coupling.server.graphql.dispatch
 import kotlinx.serialization.json.JsonNull
 
 val partyContributorResolver = dispatch(
-    dispatcherFunc = { context: CouplingContext, _: JsonContributionReport, _: JsonNull? ->
+    dispatcherFunc = { context: CouplingContext, _: GqlContributionReport, _: JsonNull? ->
         context.commandDispatcher
     },
     commandFunc = { data, _: JsonNull? ->
