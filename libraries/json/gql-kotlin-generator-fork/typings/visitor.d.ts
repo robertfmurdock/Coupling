@@ -1,13 +1,7 @@
 import { EnumTypeDefinitionNode, EnumValueDefinitionNode, FieldDefinitionNode, GraphQLSchema, InputObjectTypeDefinitionNode, InputValueDefinitionNode, ObjectTypeDefinitionNode, TypeNode, ValueNode } from 'graphql';
-import { BaseVisitor, EnumValuesMap, ParsedConfig } from '@graphql-codegen/visitor-plugin-common';
+import { BaseVisitor, EnumValuesMap, NormalizedScalarsMap, ParsedConfig } from '@graphql-codegen/visitor-plugin-common';
 import { KotlinResolversPluginRawConfig } from './config.js';
-export declare const KOTLIN_SCALARS: {
-    ID: string;
-    String: string;
-    Boolean: string;
-    Int: string;
-    Float: string;
-};
+export declare const KOTLIN_SCALARS: NormalizedScalarsMap;
 export interface KotlinResolverParsedConfig extends ParsedConfig {
     package: string;
     listType: string;

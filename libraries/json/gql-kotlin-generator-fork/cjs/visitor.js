@@ -5,11 +5,11 @@ const graphql_1 = require("graphql");
 const java_common_1 = require("@graphql-codegen/java-common");
 const visitor_plugin_common_1 = require("@graphql-codegen/visitor-plugin-common");
 exports.KOTLIN_SCALARS = {
-    ID: 'Any',
-    String: 'String',
-    Boolean: 'Boolean',
-    Int: 'Int',
-    Float: 'Float',
+    ID: { input: 'Any', output: 'Any' },
+    String: { input: 'String', output: 'String' },
+    Boolean: { input: 'Boolean', output: 'Boolean' },
+    Int: { input: 'Int', output: 'Int' },
+    Float: { input: 'Float', output: 'Float' },
 };
 class KotlinResolversVisitor extends visitor_plugin_common_1.BaseVisitor {
     constructor(rawConfig, _schema, defaultPackageName) {
@@ -71,8 +71,8 @@ ${enumValues}
         if ((0, graphql_1.isScalarType)(schemaType)) {
             if (this.config.scalars[schemaType.name]) {
                 result = {
-                    baseType: this.scalars[schemaType.name],
-                    typeName: this.scalars[schemaType.name],
+                    baseType: this.scalars[schemaType.name].input,
+                    typeName: this.scalars[schemaType.name].input,
                     isScalar: true,
                     isArray,
                     nullable,
@@ -143,12 +143,12 @@ ${enumValues}
         const typeAnnotations = this.buildTypeAnnotations();
         // language=kotlin
         return `${typeAnnotations}data class ${name}(
-${classMembers}
-) {
-  ${suppress}constructor(args: Map<String, Any>) : this(
-${ctorSet}
-  )
-}`;
+            ${classMembers}
+        ) {
+            ${suppress}constructor(args: Map<String, Any>) : this(
+            ${ctorSet}
+            )
+        }`;
     }
     buildTypeAnnotations() {
         return this.config.serializable ? (0, visitor_plugin_common_1.indent)('@kotlinx.serialization.Serializable ', 0) : '';
@@ -171,8 +171,8 @@ ${ctorSet}
         const typeAnnotations = this.buildTypeAnnotations();
         // language=kotlin
         return `${typeAnnotations}data class ${name}(
-${classMembers}
-)`;
+            ${classMembers}
+        )`;
     }
     initialValue(typeName, defaultValue) {
         if (defaultValue) {

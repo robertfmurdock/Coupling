@@ -2,11 +2,11 @@ import { isEnumType, isInputObjectType, isObjectType, isScalarType, Kind, } from
 import { wrapTypeWithModifiers } from '@graphql-codegen/java-common';
 import { BaseVisitor, buildScalarsFromConfig, getBaseTypeNode, indent, indentMultiline, transformComment, } from '@graphql-codegen/visitor-plugin-common';
 export const KOTLIN_SCALARS = {
-    ID: 'Any',
-    String: 'String',
-    Boolean: 'Boolean',
-    Int: 'Int',
-    Float: 'Float',
+    ID: { input: 'Any', output: 'Any' },
+    String: { input: 'String', output: 'String' },
+    Boolean: { input: 'Boolean', output: 'Boolean' },
+    Int: { input: 'Int', output: 'Int' },
+    Float: { input: 'Float', output: 'Float' },
 };
 export class KotlinResolversVisitor extends BaseVisitor {
     constructor(rawConfig, _schema, defaultPackageName) {
@@ -68,8 +68,8 @@ ${enumValues}
         if (isScalarType(schemaType)) {
             if (this.config.scalars[schemaType.name]) {
                 result = {
-                    baseType: this.scalars[schemaType.name],
-                    typeName: this.scalars[schemaType.name],
+                    baseType: this.scalars[schemaType.name].input,
+                    typeName: this.scalars[schemaType.name].input,
                     isScalar: true,
                     isArray,
                     nullable,
@@ -140,12 +140,12 @@ ${enumValues}
         const typeAnnotations = this.buildTypeAnnotations();
         // language=kotlin
         return `${typeAnnotations}data class ${name}(
-${classMembers}
-) {
-  ${suppress}constructor(args: Map<String, Any>) : this(
-${ctorSet}
-  )
-}`;
+            ${classMembers}
+        ) {
+            ${suppress}constructor(args: Map<String, Any>) : this(
+            ${ctorSet}
+            )
+        }`;
     }
     buildTypeAnnotations() {
         return this.config.serializable ? indent('@kotlinx.serialization.Serializable ', 0) : '';
@@ -168,8 +168,8 @@ ${ctorSet}
         const typeAnnotations = this.buildTypeAnnotations();
         // language=kotlin
         return `${typeAnnotations}data class ${name}(
-${classMembers}
-)`;
+            ${classMembers}
+        )`;
     }
     initialValue(typeName, defaultValue) {
         if (defaultValue) {
