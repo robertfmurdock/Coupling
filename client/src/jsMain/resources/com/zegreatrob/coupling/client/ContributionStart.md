@@ -71,21 +71,30 @@ To use your Coupling Secret with the API, include it as a Bearer token in the Au
 
 Here's an example of how one might query the Coupling GQL API with node.js fetch:
 
-`javascript
+```javascript
 
 fetch("https://coupling.zegreatrob.com/api/graphql", {
-"headers": {
-"accept": "application/json",
-"accept-language": "en-US,en;q=0.9",
-"authorization": YOUR_SECRET_GOES_HERE,
-"content-type": "application/json",
-"Referer": "https://coupling.zegreatrob.com/graphiql",
-},
-"body": "{\n  \"query\": \"query example($partyInput:PartyInput!) {\\n party(input:$partyInput) {\\n contributionReport {\\n count\\n }\\n }\\n}\",\n  \"variables\": {\n    \"partyInput\": {\n      \"partyId\": \"YOUR_PARTY_ID_GOES_HERE\"\n    }\n  },\n  \"operationName\": \"example\"\n}",
-"method": "POST"
+  "headers": {
+    "accept": "application/json",
+    "accept-language": "en-US,en;q=0.9",
+    "authorization": `Bearer ${YOUR_SECRET_GOES_HERE}`,
+    "content-type": "application/json",
+    "Referer": "https://coupling.zegreatrob.com/graphiql",
+  },
+  "body": JSON.stringify(
+          {
+            "query": "query example($partyInput:PartyInput!) {\n party(input:$partyInput) {\n contributionReport {\n count\n }\n }\n}",
+            "variables": {
+              "partyInput": {
+                "partyId": YOUR_PARTY_ID_GOES_HERE
+              }
+            }
+          }
+  ),
+  "method": "POST"
 });
 
-`
+```
 
 With this API, you can design whatever query you like and include it in the body, so it gives you every feature of Coupling that a regular user can do.
 

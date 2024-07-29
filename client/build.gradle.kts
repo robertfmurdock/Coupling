@@ -16,7 +16,7 @@ plugins {
 kotlin {
     js {
         browser {
-            webpackTask(Action {
+            webpackTask {
                 dependsOn("additionalResources")
                 inputs.files("${project.projectDir}/src/main/resources")
                 val profile: String? by project
@@ -25,7 +25,7 @@ kotlin {
                     val statsFilePath = project.layout.buildDirectory.file("/reports/stats.json").get().asFile.path
                     this.args.add("--json=$statsFilePath")
                 }
-            })
+            }
         }
     }
     sourceSets {
@@ -167,6 +167,7 @@ tasks {
     val browserProductionWebpack = named("jsBrowserProductionWebpack", KotlinWebpack::class) {
         dependsOn(lookupCdnUrls, jsProcessResources)
         inputs.file(cdnBuildOutput)
+        inputs.dir(jsProcessResources.map { it.destinationDir })
         inputs.file(File(project.projectDir, "cdn.settings.json"))
         outputs.dir(outputDirectory.dir("html"))
         outputs.file(outputDirectory.file("client-vendor.js"))
