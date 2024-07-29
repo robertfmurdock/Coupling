@@ -54,9 +54,80 @@ secret for your party.
 The Coupling secret system is a way of generating a one-time value that grants programmatic access to a single party in
 Coupling.
 
-Using this token, you can use the Coupling GraphQL API, or the Coupling CLI.
+Using this token, you can use the Coupling CLI, or the Coupling GraphQL API.
 
-Let's chat about the Coupling GraphQL API first!
+You can also use the [Coupling Contribution Action](https://github.com/robertfmurdock/coupling-contribution-action), which is a Github Action that will use a Coupling Secret to upload contributions.  
+
+### [Coupling Contribution Action](https://github.com/robertfmurdock/coupling-contribution-action)
+
+If you use Github Actions, using the Coupling Contribution Action is as simple as:
+
+```yml
+      steps:
+      - name: Update Contributions
+        uses: robertfmurdock/coupling-contribution-action@v2
+        with:
+          coupling-secret: YOUR_COUPLING_SECRET
+          party-id: YOUR_PARTY_ID
+          save-contribution: ${{ github.ref == 'refs/heads/master' }}
+          cycle-time-from-first-commit: true
+          contribution-file: build/digger/current.json
+
+```
+
+Please consult the [Github Action](https://github.com/robertfmurdock/coupling-contribution-action) for more information.
+
+The contribution file is in a JSON formatted to a spec defined in the "digger" project. 
+
+[Digger Contribution Specification](https://github.com/robertfmurdock/ze-great-tools/blob/main/tools/digger-json/src/commonMain/kotlin/com/zegreatrob/tools/digger/json/ContributionDataJson.kt)
+
+Any "Instant" in the specification is an ISO 8601 date-time. Any Duration is an ISO 8601 duration.
+
+If you'd like to use the Digger Gradle Plugin to generate the JSON, see [Digger Plugin](https://github.com/robertfmurdock/ze-great-tools/tree/main/tools/digger-plugin).
+
+
+### Coupling CLI
+
+Coupling provides a CLI that provides a subset of the actions provided by the GraphQL API.
+
+#### Install
+
+The latest version of this CLI is always available from the Coupling website in two variants:
+
+##### [JVM](https://coupling.zegreatrob.com/latest-cli?type=jvm)
+
+Click the link to download, unzip it, and add the bin directory to your path!
+
+##### [JS](https://coupling.zegreatrob.com/latest-cli?type=js)
+
+Click the link to download, unzip it, and in the directory run:
+
+```bash
+        npm install
+        npm link
+```
+
+#### Usage
+
+For the latest available features, use the --help command with the cli:
+
+```bash
+coupling --help
+```
+
+To upload a contribution to Coupling via the CLI, use the save contribution command:
+
+```bash
+coupling party contribution --party-id YOUR_PARTY_ID save --input-json CONTRIBUTION_FIELDS_AS_JSON
+```
+
+The contribution command accepts a JSON formatted to a contribution spec defined in the "digger" project. Additional fields are available as CLI arguments.
+
+[Digger Contribution Specification](https://github.com/robertfmurdock/ze-great-tools/blob/main/tools/digger-json/src/commonMain/kotlin/com/zegreatrob/tools/digger/json/ContributionDataJson.kt)
+
+Any "Instant" in the specification is an ISO 8601 date-time. Any Duration is an ISO 8601 duration.
+
+If you'd like to use the Digger Gradle Plugin to generate the JSON, see [Digger Plugin](https://github.com/robertfmurdock/ze-great-tools/tree/main/tools/digger-plugin).
 
 ### Coupling GraphQL API
 
@@ -105,47 +176,3 @@ With this API, you can design whatever query you like and include it in the body
 For saving contributions, the relevant query is `Mutation.saveContribution`, which lets you save as many contributions as you like in one call.
 
 Please consult the Coupling GQL schema listed at the [playground](/graphiql) for exactly what can be saved in each contribution.
-
-### Coupling CLI
-
-Coupling provides a CLI that provides a subset of the actions provided by the GraphQL API.
-
-#### Install
-
-The latest version of this CLI is always available from the Coupling website in two variants:
-
-##### [JVM](https://coupling.zegreatrob.com/latest-cli?type=jvm)
-
-Click the link to download, unzip it, and add the bin directory to your path!
-
-##### [JS](https://coupling.zegreatrob.com/latest-cli?type=js)
-
-Click the link to download, unzip it, and in the directory run:
-
-```bash
-        npm install
-        npm link
-```
-
-#### Usage
-
-For the latest available features, use the --help command with the cli: 
-
-```bash
-coupling --help
-```
-
-To upload a contribution to Coupling via the CLI, use the save contribution command:
-
-```bash
-coupling party contribution --party-id YOUR_PARTY_ID save --input-json CONTRIBUTION_FIELDS_AS_JSON
-```
-
-The contribution command accepts a JSON formatted to a contribution spec defined in the "digger" project. Additional fields are available as CLI arguments.
-
-[Digger Contribution Specification](https://github.com/robertfmurdock/ze-great-tools/blob/main/tools/digger-json/src/commonMain/kotlin/com/zegreatrob/tools/digger/json/ContributionDataJson.kt)
-
-Any "Instant" in the specification is an ISO 8601 date-time. Any Duration is an ISO 8601 duration.
-
-If you'd like to use the Digger Gradle Plugin to generate the JSON, see [Digger Plugin](https://github.com/robertfmurdock/ze-great-tools/tree/main/tools/digger-plugin).
-
