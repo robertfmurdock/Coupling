@@ -72,7 +72,7 @@ To use your Coupling Secret with the API, include it as a Bearer token in the Au
 Here's an example of how one might query the Coupling GQL API with node.js fetch:
 
 ```javascript
-fetch("https://coupling.zegreatrob.com/api/graphql", {
+const response = await fetch("https://coupling.zegreatrob.com/api/graphql", {
   "method": "POST",
   "headers": {
     "accept": "application/json",
@@ -95,6 +95,9 @@ fetch("https://coupling.zegreatrob.com/api/graphql", {
     }
   }),
 });
+const responseJson = await response.json()
+expect({"data":{"party":{"contributionReport":{"count":4770}}}}).toEql(responseJson)
+
 ```
 
 With this API, you can design whatever query you like and include it in the body, so it gives you every feature of Coupling that a regular user can do.
