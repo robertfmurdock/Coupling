@@ -136,7 +136,7 @@ with your current login).
 
 I won't explain the fullness of how one might interact with a [GQL API](https://graphql.org/) here, but here's the simple version:
 
-- You make a POST request including a query, and the response includes the requested data
+    You make a POST request including a query, and the response includes the requested data.
 
 To use your Coupling Secret with the API, include it as a Bearer token in the Authorization header.
 
