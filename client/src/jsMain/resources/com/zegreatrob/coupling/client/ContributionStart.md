@@ -63,7 +63,7 @@ Let's chat about the Coupling GraphQL API first!
 You can acquaint yourself with the Coupling GraphQL API in the playground [here](/graphiql) (which will authenticate
 with your current login).
 
-I won't explain the fullness of how one might interact with a GQL API here, but here's the simple version:
+I won't explain the fullness of how one might interact with a [GQL API](https://graphql.org/) here, but here's the simple version:
 
 - You make a POST request including a query, and the response includes the requested data
 
@@ -72,8 +72,8 @@ To use your Coupling Secret with the API, include it as a Bearer token in the Au
 Here's an example of how one might query the Coupling GQL API with node.js fetch:
 
 ```javascript
-
 fetch("https://coupling.zegreatrob.com/api/graphql", {
+  "method": "POST",
   "headers": {
     "accept": "application/json",
     "accept-language": "en-US,en;q=0.9",
@@ -81,21 +81,26 @@ fetch("https://coupling.zegreatrob.com/api/graphql", {
     "content-type": "application/json",
     "Referer": "https://coupling.zegreatrob.com/graphiql",
   },
-  "body": JSON.stringify(
-          {
-            "query": "query example($partyInput:PartyInput!) {\n party(input:$partyInput) {\n contributionReport {\n count\n }\n }\n}",
-            "variables": {
-              "partyInput": {
-                "partyId": YOUR_PARTY_ID_GOES_HERE
-              }
+  "body": JSON.stringify({
+    "query": gql`
+        query example($partyInput:PartyInput!) {
+            party(input:$partyInput) {
+                contributionReport { count }
             }
-          }
-  ),
-  "method": "POST"
+        }`,
+    "variables": {
+      "partyInput": {
+        "partyId": YOUR_PARTY_ID_GOES_HERE
+      }
+    }
+  }),
 });
-
 ```
 
 With this API, you can design whatever query you like and include it in the body, so it gives you every feature of Coupling that a regular user can do.
 
 For saving contributions, the relevant query is `Mutation.saveContribution`, which lets you save as many contributions as you like in one call.
+
+Please consult the Coupling GQL schema listed at the [playground](/graphiql) for exactly what can be saved in each contribution.
+
+### Coupling CLI
