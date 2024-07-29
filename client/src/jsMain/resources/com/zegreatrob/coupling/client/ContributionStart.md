@@ -141,4 +141,11 @@ To upload a contribution to Coupling via the CLI, use the save contribution comm
 coupling party contribution --party-id YOUR_PARTY_ID save --input-json CONTRIBUTION_FIELDS_AS_JSON
 ```
 
-The contribution command accepts a JSON formatted to a contribution spec defined in the "digger" project.
+The contribution command accepts a JSON formatted to a contribution spec defined in the "digger" project. Additional fields are available as CLI arguments.
+
+[Digger Contribution Specification](https://github.com/robertfmurdock/ze-great-tools/blob/main/tools/digger-json/src/commonMain/kotlin/com/zegreatrob/tools/digger/json/ContributionDataJson.kt)
+
+Any "Instant" in the specification is an ISO 8601 date-time. Any Duration is an ISO 8601 duration.
+
+If you'd like to use the Digger Gradle Plugin to generate the JSON, see [Digger Plugin](https://github.com/robertfmurdock/ze-great-tools/tree/main/tools/digger-plugin).
+
