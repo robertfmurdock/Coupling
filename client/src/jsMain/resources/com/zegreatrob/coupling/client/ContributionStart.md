@@ -107,3 +107,38 @@ For saving contributions, the relevant query is `Mutation.saveContribution`, whi
 Please consult the Coupling GQL schema listed at the [playground](/graphiql) for exactly what can be saved in each contribution.
 
 ### Coupling CLI
+
+Coupling provides a CLI that provides a subset of the actions provided by the GraphQL API.
+
+#### Install
+
+The latest version of this CLI is always available from the Coupling website in two variants:
+
+##### [JVM](https://coupling.zegreatrob.com/latest-cli?type=jvm)
+
+Click the link to download, unzip it, and add the bin directory to your path!
+
+##### [JS](https://coupling.zegreatrob.com/latest-cli?type=js)
+
+Click the link to download, unzip it, and in the directory run:
+
+```bash
+        npm install
+        npm link
+```
+
+#### Usage
+
+For the latest available features, use the --help command with the cli: 
+
+```bash
+coupling --help
+```
+
+To upload a contribution to Coupling via the CLI, use the save contribution command:
+
+```bash
+coupling party contribution --party-id YOUR_PARTY_ID save --input-json CONTRIBUTION_FIELDS_AS_JSON
+```
+
+The contribution command accepts a JSON formatted to a contribution spec defined in the "digger" project.
