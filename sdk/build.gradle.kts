@@ -1,5 +1,5 @@
 plugins {
-    id("com.zegreatrob.coupling.plugins.mp")
+    id("com.zegreatrob.coupling.plugins.jstools")
 }
 
 kotlin {
@@ -37,6 +37,7 @@ dependencies {
     "commonTestImplementation"("org.jetbrains.kotlin:kotlin-test")
 
     "jsMainImplementation"("org.jetbrains.kotlin-wrappers:kotlin-extensions")
+    "jsMainImplementation"(npmConstrained("ws"))
     "jsTestImplementation"(project(":server:slack"))
     "jvmTestImplementation"("io.ktor:ktor-client-java")
 }

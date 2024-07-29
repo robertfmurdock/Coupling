@@ -5,14 +5,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "npm"
-    directory: "client/package.json"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "npm"
-    directory: "sdk/package.json"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "npm"
-    directory: "e2e/package.json"
+    directory: "libraries/js-dependencies/package.json"
     schedule:
       interval: "daily"

@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.targets.js.npm.npmProject
 
 plugins {
     application
-    id("com.zegreatrob.coupling.plugins.mp")
+    id("com.zegreatrob.coupling.plugins.jstools")
     kotlin("plugin.serialization")
 }
 

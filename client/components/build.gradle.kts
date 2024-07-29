@@ -50,6 +50,7 @@ dependencies {
     jsMainImplementation(npmConstrained("react-dnd"))
     jsMainImplementation(npmConstrained("react-dnd-html5-backend"))
     jsMainImplementation(npmConstrained("react-use-websocket"))
+    jsMainImplementation(npmConstrained("ws"))
 
     jsTestImplementation(project(":libraries:test-react"))
     jsTestImplementation(project(":libraries:test-action"))
