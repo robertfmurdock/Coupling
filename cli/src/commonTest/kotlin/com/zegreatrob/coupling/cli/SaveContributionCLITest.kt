@@ -72,8 +72,9 @@ class SaveContributionCLITest {
                             firstCommit = sourceContribution.firstCommit,
                             firstCommitDateTime = sourceContribution.firstCommitDateTime,
                             cycleTime = expectedCycleTime,
-                            commitCount = null,
-                            name = null,
+                            commitCount = sourceContribution.commitCount,
+                            integrationDateTime = sourceContribution.tagDateTime,
+                            name = sourceContribution.tagName,
                         ),
                     ),
                 ),
@@ -81,7 +82,7 @@ class SaveContributionCLITest {
     }
 
     @Test
-    fun canUseCommitTimeRangeAsCycleTime() = asyncSetup(object : ScopeMint() {
+    fun whenNoTagDateTimeCanUseCommitTimeRangeAsCycleTimeUntilNow() = asyncSetup(object : ScopeMint() {
         val now = Clock.System.now()
         val expectedCycleTime = 20.minutes
         val dateTime = now.minus(5.minutes)
@@ -97,7 +98,7 @@ class SaveContributionCLITest {
             label = "${uuid4()}",
             firstCommitDateTime = firstCommitDateTime,
             tagName = "${uuid4()}",
-            tagDateTime = dateTime.minus(2.minutes),
+            tagDateTime = null,
             commitCount = 3214,
         )
         val partyId = stubPartyId()
@@ -111,6 +112,44 @@ class SaveContributionCLITest {
                 override fun now(): Instant = now
             },
         )
+            .context { obj = ContributionContext(partyId, "local") }
+    }) exercise {
+        command.test("--cycle-time-from-first-commit --input-json \'${sourceContribution.toJsonString()}\'")
+    } verify { result ->
+        result.statusCode.assertIsEqualTo(0, result.stderr)
+        receivedActions.firstOrNull()
+            ?.let { it as? SaveContributionCommand }
+            ?.contributionList
+            ?.firstOrNull()
+            ?.cycleTime
+            .assertIsEqualTo(expectedCycleTime)
+    }
+
+    @Test
+    fun whenTagDateTimeCanUseCommitTimeRangeAsCycleTimeUntilTagDateTime() = asyncSetup(object : ScopeMint() {
+        val expectedCycleTime = 20.minutes
+        val dateTime = Clock.System.now().minus(5.minutes)
+        val tagDateTime = dateTime.minus(2.minutes)
+        val firstCommitDateTime = tagDateTime - expectedCycleTime
+        val sourceContribution = Contribution(
+            lastCommit = "${uuid4()}",
+            firstCommit = "${uuid4()}",
+            authors = listOf("${uuid4()}"),
+            dateTime = dateTime,
+            ease = 7,
+            storyId = "${uuid4()}",
+            semver = "${uuid4()}",
+            label = "${uuid4()}",
+            firstCommitDateTime = firstCommitDateTime,
+            tagName = "${uuid4()}",
+            tagDateTime = tagDateTime,
+            commitCount = 3214,
+        )
+        val partyId = stubPartyId()
+        val receivedActions = mutableListOf<Any?>()
+        val cannon = StubCannon<CouplingSdkDispatcher>(receivedActions)
+            .also { it.givenAny(SaveContributionCommandWrapper::class, VoidResult.Accepted) }
+        val command = SaveContribution(exerciseScope, cannon, Clock.System)
             .context { obj = ContributionContext(partyId, "local") }
     }) exercise {
         command.test("--cycle-time-from-first-commit --input-json \'${sourceContribution.toJsonString()}\'")
