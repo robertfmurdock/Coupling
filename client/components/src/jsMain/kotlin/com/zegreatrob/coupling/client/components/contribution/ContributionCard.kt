@@ -79,15 +79,18 @@ val ContributionCard by nfc<ContributionCardProps> { (contribution, contributors
                         }
                     }
                 }
-                showOptionalProperty("Contribution Time", contribution.dateTime?.format())
+                showOptionalProperty("Name", contribution.name)
                 showOptionalProperty("Label", contribution.label)
                 showOptionalProperty("Link", contribution.link?.substring(0, 32)?.plus("..."))
                 showOptionalProperty("Ease", contribution.ease)
                 showOptionalProperty("Semver", contribution.semver)
+                showOptionalProperty("Story", contribution.story)
+                showOptionalProperty("Commit Count", contribution.commitCount)
                 showOptionalProperty("Hash", contribution.hash?.asShortId())
                 showOptionalProperty("First Commit", contribution.firstCommit?.asShortId())
                 showOptionalProperty("First Commit Time", contribution.firstCommitDateTime?.format())
-                showOptionalProperty("Story", contribution.story)
+                showOptionalProperty("Integration Time", contribution.integrationDateTime?.format())
+                showOptionalProperty("Contribution Time", contribution.dateTime?.format())
                 showOptionalProperty("Save Timestamp", contribution.createdAt.format())
                 showOptionalProperty("Cycle Time", contribution.cycleTime)
             }
