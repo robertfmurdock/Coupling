@@ -37,6 +37,9 @@ class SaveContributionCLITest {
             semver = "${uuid4()}",
             label = "${uuid4()}",
             firstCommitDateTime = Clock.System.now() - 20.minutes,
+            tagDateTime = Clock.System.now() - 15.minutes,
+            tagName = "${uuid4()}",
+            commitCount = 134,
         )
         val partyId = stubPartyId()
         val receivedActions = mutableListOf<Any?>()
@@ -91,6 +94,9 @@ class SaveContributionCLITest {
             semver = "${uuid4()}",
             label = "${uuid4()}",
             firstCommitDateTime = firstCommitDateTime,
+            tagName = "${uuid4()}",
+            tagDateTime = dateTime.minus(2.minutes),
+            commitCount = 3214,
         )
         val partyId = stubPartyId()
         val receivedActions = mutableListOf<Any?>()
@@ -128,6 +134,9 @@ class SaveContributionCLITest {
             semver = "${uuid4()}",
             label = "${uuid4()}",
             firstCommitDateTime = null,
+            tagDateTime = Clock.System.now().plus(43.minutes),
+            tagName = "Bill",
+            commitCount = 654,
         )
         val partyId = stubPartyId()
         val receivedActions = mutableListOf<Any?>()
