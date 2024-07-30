@@ -141,6 +141,8 @@ fun stubContribution() = Contribution(
     firstCommitDateTime = Clock.System.now().minus((2..4).random().days),
     integrationDateTime = Clock.System.now().minus((5..10).random().days),
     cycleTime = (1..3).random().days,
+    commitCount = (1..8).random(),
+    name = uuidString(),
 )
 
 fun stubContributionInput() = ContributionInput(
@@ -157,4 +159,6 @@ fun stubContributionInput() = ContributionInput(
     firstCommitDateTime = Clock.System.now().minus(Random.nextInt(34).minutes).roundToMillis(),
     integrationDateTime = Clock.System.now().minus(Random.nextInt(23).minutes).roundToMillis(),
     cycleTime = (2..140).random().minutes,
+    commitCount = (1..8).random(),
+    name = uuidString(),
 )

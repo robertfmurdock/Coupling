@@ -77,6 +77,8 @@ class SaveContribution(
                         ease = ease.ifBlank { null }?.toInt(),
                         story = story.ifBlank { null },
                         link = link.ifBlank { null },
+                        commitCount = null,
+                        name = null,
                     )
                 },
             ),
@@ -158,4 +160,6 @@ private fun Contribution.contributionInput(
     firstCommit = firstCommit,
     firstCommitDateTime = firstCommitDateTime,
     cycleTime = cycleTime,
+    commitCount = null,
+    name = null,
 )

@@ -127,6 +127,8 @@ object GqlReference {
         firstCommitDateTime = Instant.DISTANT_PAST,
         integrationDateTime = Instant.DISTANT_PAST,
         cycleTime = Duration.ZERO,
+        name = "",
+        commitCount = 1,
     )
     val partyRecord = GqlPartyDetails(
         id = "",

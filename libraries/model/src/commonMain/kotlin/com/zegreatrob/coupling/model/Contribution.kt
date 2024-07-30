@@ -19,6 +19,8 @@ data class Contribution(
     val semver: String?,
     val integrationDateTime: Instant?,
     val cycleTime: Duration?,
+    val commitCount: Int?,
+    val name: String?,
 )
 
 data class ContributionInput(
@@ -35,6 +37,8 @@ data class ContributionInput(
     val firstCommitDateTime: Instant? = null,
     val integrationDateTime: Instant? = null,
     val cycleTime: Duration? = null,
+    val commitCount: Int? = null,
+    val name: String? = null,
 )
 
 data class ContributionQueryParams(val partyId: PartyId, val window: Duration?, val limit: Int?)

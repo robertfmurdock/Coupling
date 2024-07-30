@@ -72,6 +72,8 @@ class SaveContributionCLITest {
                             firstCommit = sourceContribution.firstCommit,
                             firstCommitDateTime = sourceContribution.firstCommitDateTime,
                             cycleTime = expectedCycleTime,
+                            commitCount = null,
+                            name = null,
                         ),
                     ),
                 ),

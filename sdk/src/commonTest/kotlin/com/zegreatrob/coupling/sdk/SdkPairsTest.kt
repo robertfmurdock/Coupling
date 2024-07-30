@@ -62,6 +62,8 @@ class SdkPairsTest {
                         ContributionInput(
                             contributionId = uuidString(),
                             participantEmails = mob.map { it.email }.toSet(),
+                            commitCount = null,
+                            name = null,
                         ),
                     ),
                 ),
@@ -73,6 +75,8 @@ class SdkPairsTest {
                         ContributionInput(
                             contributionId = uuidString(),
                             participantEmails = mob.take(1).map { it.email }.toSet(),
+                            commitCount = null,
+                            name = null,
                         ),
                     ),
                 ),
@@ -104,6 +108,8 @@ class SdkPairsTest {
                         ContributionInput(
                             contributionId = uuidString(),
                             participantEmails = mob.map { it.additionalEmails.first().uppercase() }.toSet(),
+                            commitCount = null,
+                            name = null,
                         ),
                     ),
                 ),

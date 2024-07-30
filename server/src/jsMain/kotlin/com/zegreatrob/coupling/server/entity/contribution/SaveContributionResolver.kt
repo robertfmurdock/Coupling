@@ -37,4 +37,6 @@ private fun GqlContributionInput.contributionInput() = ContributionInput(
     firstCommitDateTime = firstCommitDateTime,
     integrationDateTime = integrationDateTime,
     cycleTime = cycleTime,
+    commitCount = commitCount,
+    name = name,
 )

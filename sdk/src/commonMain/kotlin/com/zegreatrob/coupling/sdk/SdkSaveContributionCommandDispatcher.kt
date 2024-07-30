@@ -24,17 +24,19 @@ private fun SaveContributionCommand.saveContributionInput() = GqlSaveContributio
 )
 
 private fun ContributionInput.toJson() = GqlContributionInput(
+    commitCount = commitCount,
     contributionId = contributionId,
-    hash = hash,
+    cycleTime = cycleTime,
     dateTime = dateTime,
     ease = ease,
-    story = story,
-    link = link,
-    participantEmails = participantEmails.toList(),
-    semver = semver,
-    label = label,
     firstCommit = firstCommit,
     firstCommitDateTime = firstCommitDateTime,
+    hash = hash,
     integrationDateTime = integrationDateTime,
-    cycleTime = cycleTime,
+    label = label,
+    link = link,
+    name = name,
+    participantEmails = participantEmails.toList(),
+    semver = semver,
+    story = story,
 )

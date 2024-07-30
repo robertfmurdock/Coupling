@@ -29,6 +29,8 @@ interface ServerSaveContributionCommandDispatcher : SaveContributionCommand.Disp
                         firstCommitDateTime = input.firstCommitDateTime,
                         integrationDateTime = input.integrationDateTime,
                         cycleTime = input.cycleTime,
+                        name = input.name,
+                        commitCount = input.commitCount,
                     )
                 },
             ),

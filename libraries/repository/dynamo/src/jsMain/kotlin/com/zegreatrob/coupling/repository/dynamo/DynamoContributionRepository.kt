@@ -38,7 +38,10 @@ class DynamoContributionRepository private constructor(override val userId: Stri
             json(
                 "TableName" to prefixedTableName,
                 "ScanIndexForward" to false,
-                "ExpressionAttributeValues" to json(":tribeId" to partyId.value, ":contributionIds" to contributionIds.toTypedArray()),
+                "ExpressionAttributeValues" to json(
+                    ":tribeId" to partyId.value,
+                    ":contributionIds" to contributionIds.toTypedArray(),
+                ),
                 "KeyConditionExpression" to "tribeId = :tribeId",
                 "FilterExpression" to "contains(:contributionIds, id)",
             ),
@@ -81,6 +84,8 @@ class DynamoContributionRepository private constructor(override val userId: Stri
         "createdAt" to element.createdAt.isoWithMillis(),
         "integrationDateTime" to element.integrationDateTime?.isoWithMillis(),
         "cycleTime" to element.cycleTime?.toString(),
+        "commitCount" to element.commitCount,
+        "name" to element.name,
     )
 
     override suspend fun get(params: ContributionQueryParams) = params.partyId.logAsync("windowedContributions") {
@@ -137,6 +142,8 @@ class DynamoContributionRepository private constructor(override val userId: Stri
             firstCommitDateTime = getDynamoDateTimeValue("firstCommitDateTime"),
             integrationDateTime = getDynamoDateTimeValue("integrationDateTime"),
             cycleTime = getDynamoStringValue("cycleTime")?.let(Duration.Companion::parse),
+            commitCount = getDynamoNumberValue("commitCount")?.toInt(),
+            name = getDynamoStringValue("name"),
         )
     }
 

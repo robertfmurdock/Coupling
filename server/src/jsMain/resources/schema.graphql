@@ -137,21 +137,23 @@ type BoostDetails {
 }
 
 type Contribution {
-    id: ID!
+    commitCount: Int
     createdAt: DateTimeISO!
+    cycleTime: Duration
     dateTime: DateTimeISO
-    hash: String
     ease: Int
-    story: String
-    link: String
-    label: String
     firstCommit: String
     firstCommitDateTime: DateTimeISO
+    hash: String
+    id: ID!
     integrationDateTime: DateTimeISO
-    cycleTime: Duration
-    semver: String
-    partyId: String
+    label: String
+    link: String
+    name: String
     participantEmails: [String!]!
+    partyId: String
+    semver: String
+    story: String
     modifyingUserEmail: String!
     timestamp: DateTimeISO!
     isDeleted: Boolean!
@@ -430,6 +432,8 @@ input ContributionInput {
     integrationDateTime: DateTimeISO
     cycleTime: Duration
     participantEmails: [String!]!
+    name: String
+    commitCount: Int
 }
 
 input ClearContributionsInput {

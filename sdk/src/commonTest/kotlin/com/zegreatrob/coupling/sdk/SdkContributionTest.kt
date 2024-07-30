@@ -41,6 +41,8 @@ class SdkContributionTest {
                 ease = Random.nextInt(),
                 story = uuidString(),
                 link = uuidString(),
+                commitCount = null,
+                name = null,
             )
         }.take(3).toList()
     }) {
@@ -97,6 +99,8 @@ class SdkContributionTest {
                 ease = Random.nextInt(),
                 story = uuidString(),
                 link = uuidString(),
+                commitCount = null,
+                name = null,
             )
         }.take(4).toList()
     }) {
@@ -473,4 +477,6 @@ private fun ContributionInput.toExpectedContribution() = Contribution(
     firstCommitDateTime = firstCommitDateTime,
     integrationDateTime = integrationDateTime,
     cycleTime = cycleTime,
+    name = name,
+    commitCount = commitCount,
 )

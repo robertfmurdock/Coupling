@@ -159,4 +159,6 @@ private fun LocalDateTime.toFakeContribution() = Contribution(
     firstCommitDateTime = this.toInstant(TimeZone.currentSystemDefault()) - 10.minutes,
     integrationDateTime = this.toInstant(TimeZone.currentSystemDefault()) - 20.minutes,
     cycleTime = (1..4).random().days,
+    name = null,
+    commitCount = null,
 )
