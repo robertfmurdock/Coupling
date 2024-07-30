@@ -49,11 +49,11 @@ tasks {
         mustRunAfter("caddyComposeUp", "libraries:repository:dynamo:composeUp")
         dependsOn(":server:buildImage")
     }
-    assemble {
-        dependsOn(currentContributionData)
-    }
     "versionCatalogUpdate" {
         dependsOn("libraries:js-dependencies:ncuUpgrade")
         dependsOn(provider { gradle.includedBuilds.map { it.task(":versionCatalogUpdate") } })
+    }
+    release {
+        finalizedBy(currentContributionData)
     }
 }
