@@ -144,7 +144,7 @@ class SdkContributionTest {
         result?.party?.pairs
             ?.filter { it.players?.elements?.map(Player::id) != listOf(expectedPlayer.id) }
             ?.forEach {
-                it.contributions?.contributions?.elements?.withoutCreatedAt()
+                it.contributionReport?.contributions?.elements?.withoutCreatedAt()
                     .assertIsEqualTo(
                         emptyList(),
                         "Pairs should only contain contributions with exact matches, but ${
@@ -154,7 +154,7 @@ class SdkContributionTest {
             }
         result?.party?.pairs
             ?.find { it.players?.elements?.map(Player::id) == listOf(expectedPlayer.id) }
-            ?.contributions?.contributions?.elements?.withoutCreatedAt()
+            ?.contributionReport?.contributions?.elements?.withoutCreatedAt()
             .assertIsEqualTo(
                 listOf(
                     contributionInput.toExpectedContribution(),
@@ -197,7 +197,7 @@ class SdkContributionTest {
             },
         )?.party?.pairs?.first {
             it.players?.elements?.map(Player::email)?.toSet() == pairEmails
-        }?.contributions
+        }?.contributionReport
     } verify { result ->
         result?.medianCycleTime.assertIsEqualTo(contributionInputs.mapNotNull { it.cycleTime }.sorted().halfwayValue())
         result?.withCycleTimeCount.assertIsEqualTo(cycleTimeContributionsCount)
@@ -305,7 +305,7 @@ class SdkContributionTest {
     } verify { result ->
         result?.party?.pairs
             ?.find { it.players?.elements?.map(Player::id) == listOf(expectedPlayer.id) }
-            ?.contributions?.contributions?.elements?.withoutCreatedAt()
+            ?.contributionReport?.contributions?.elements?.withoutCreatedAt()
             ?.toSet()
             .assertIsEqualTo(
                 (contributionInputs - excludedContributionCommand)

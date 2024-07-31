@@ -2,9 +2,13 @@ package com.zegreatrob.coupling.client.components.stats
 
 import com.zegreatrob.coupling.client.components.stats.Visualization.Heatmap
 import com.zegreatrob.coupling.json.GqlContributionWindow
+import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairOf
+import com.zegreatrob.coupling.model.partyRecord
 import com.zegreatrob.coupling.stubmodel.stubContribution
+import com.zegreatrob.coupling.stubmodel.stubPartyId
 import com.zegreatrob.coupling.stubmodel.stubPlayer
 import com.zegreatrob.minassert.assertIsEqualTo
 import com.zegreatrob.minspy.SpyData
@@ -22,7 +26,7 @@ class PairFrequencyControlsTest {
     @Test
     fun givenNoSelectionsWillPassThroughEmptyContent() = asyncSetup(object {
         var pairs = listOf(
-            pairOf(stubPlayer()) to listOf(stubContribution()),
+            pairOf(stubPlayer()) to stubContributionReport(listOf(stubContribution())),
         )
         val viewSpy = SpyData<VisualizationContext, ReactNode>()
             .apply { spyWillReturn(ReactNode("Mission Complete")) }
@@ -38,8 +42,8 @@ class PairFrequencyControlsTest {
         val expectedPair = pairOf(stubPlayer())
         val expectedContributions = listOf(stubContribution())
         var pairs = listOf(
-            expectedPair to expectedContributions,
-            pairOf(stubPlayer()) to listOf(stubContribution()),
+            expectedPair to stubContributionReport(expectedContributions),
+            pairOf(stubPlayer()) to stubContributionReport(listOf(stubContribution())),
         )
         val viewSpy = SpyData<VisualizationContext, ReactNode>()
             .apply { spyWillReturn(listOf("Pending", "Mission Complete").map(::ReactNode)) }
@@ -53,3 +57,14 @@ class PairFrequencyControlsTest {
             .assertIsEqualTo(VisualizationContext(Heatmap, listOf(expectedPair to expectedContributions)))
     }
 }
+
+fun stubContributionReport(contributions: List<Contribution>) =
+    ContributionReport(
+        contributions = contributions.map {
+            partyRecord(
+                partyId = stubPartyId(),
+                data = it,
+                modifyingUserEmail = "",
+            )
+        },
+    )

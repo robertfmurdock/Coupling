@@ -10,6 +10,8 @@ import com.zegreatrob.coupling.action.pairassignmentdocument.Wheel
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.json.toModel
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionReport
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
@@ -33,7 +35,7 @@ import kotlin.time.Duration.Companion.minutes
 private val random = Random(10)
 
 suspend fun generateFakeContributions(
-    pairsContributions: List<Pair<CouplingPair, List<Contribution>>>,
+    pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
     selectedWindow: GqlContributionWindow,
     fakeStyle: FakeDataStyle,
 ): List<Pair<CouplingPair, List<Contribution>>> =
@@ -59,7 +61,7 @@ suspend fun generateFakeContributions(
         }
 
 private fun generatePairsRandomlyNoSolos(
-    pairsContributions: List<Pair<CouplingPair, List<Contribution>>>,
+    pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
     datesUntilNow: List<LocalDateTime>,
     noSolos: Boolean,
 ): Map<CouplingPair, List<Contribution>> {
@@ -84,7 +86,7 @@ private fun generatePairsRandomlyNoSolos(
 private val onlyPairs: (CouplingPair) -> Boolean = { it.count() == 2 }
 
 private suspend fun generateStrongPairingTeam(
-    pairsContributions: List<Pair<CouplingPair, List<Contribution>>>,
+    pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
     datesUntilNow: List<LocalDateTime>,
 ): Map<CouplingPair, List<Contribution>> {
     val pairs = pairsContributions.toMap().keys
@@ -137,8 +139,12 @@ private fun List<CouplingPair>.generatePairingSet(): List<CouplingPair> =
 
 private fun contributionStartDateTime(
     selectedWindow: GqlContributionWindow,
-    pairsContributions: List<Pair<CouplingPair, List<Contribution>>>,
-) = beginningOfWindow(selectedWindow) ?: pairsContributions.toMap().values.flatten().firstContributionInstant()
+    pairsContributions: List<Pair<CouplingPair, ContributionReport>>,
+) = beginningOfWindow(selectedWindow) ?: pairsContributions.toMap()
+    .values
+    .mapNotNull { it.contributions?.elements }
+    .flatten()
+    .firstContributionInstant()
 
 private fun beginningOfWindow(selectedWindow: GqlContributionWindow) = selectedWindow.toModel()?.let {
     Clock.System.now() - it

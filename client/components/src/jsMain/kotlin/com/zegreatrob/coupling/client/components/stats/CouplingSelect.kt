@@ -24,7 +24,6 @@ import web.cssom.Overflow
 import web.cssom.Padding
 import web.cssom.Width
 import web.cssom.em
-import web.cssom.px
 import web.cssom.string
 import web.html.HTMLInputElement
 import web.html.HTMLSelectElement
@@ -65,9 +64,9 @@ val CouplingLabelWrapper = FC<CouplingLabelWrapperProps> { props ->
             display = Display.block
             margin = 1.17.em
             padding = 0.5.em
-            border = Border(1.px, LineStyle.solid, Color("rgb(100 50 50 / 10%)"))
-            marginBottom = 30.px
-            borderRadius = 3.px
+            border = Border(0.1.em, LineStyle.solid, Color("rgb(100 50 50 / 10%)"))
+            marginBottom = 0.2.em
+            borderRadius = 0.3.em
         }
         label {
             div {

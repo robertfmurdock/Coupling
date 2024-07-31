@@ -22,7 +22,7 @@ fun GqlPair.toModel() = PlayerPair(
             recentTimesPaired = json.recentTimesPaired,
         )
     },
-    contributions = contributionReport?.toModel(),
+    contributionReport = contributionReport?.toModel(),
 )
 
 fun PartyElement<PlayerPair>.toJson() = GqlPair(

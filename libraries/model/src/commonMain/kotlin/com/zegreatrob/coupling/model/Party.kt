@@ -30,9 +30,9 @@ data class Party(
 data class ContributionReport(
     val partyId: PartyId? = null,
     val contributions: List<PartyRecord<Contribution>>? = null,
-    val count: Int?,
-    val medianCycleTime: Duration?,
-    val withCycleTimeCount: Int?,
+    val count: Int? = null,
+    val medianCycleTime: Duration? = null,
+    val withCycleTimeCount: Int? = null,
     val contributors: List<Contributor>? = null,
 )
 

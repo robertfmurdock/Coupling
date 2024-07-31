@@ -3,6 +3,8 @@ package com.zegreatrob.coupling.client.components.stats
 import com.zegreatrob.coupling.client.components.contribution.contributionContentBackgroundColor
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionReport
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -27,7 +29,7 @@ import web.cssom.px
 import web.html.InputType
 
 external interface PairFrequencyControlsProps : Props {
-    var pairsContributions: List<Pair<CouplingPair, List<Contribution>>>
+    var pairsContributions: List<Pair<CouplingPair, ContributionReport>>
     var view: (VisualizationContext) -> ReactNode
     var window: GqlContributionWindow
     var setWindow: (GqlContributionWindow) -> Unit
@@ -64,7 +66,7 @@ val PairFrequencyControls by nfc<PairFrequencyControlsProps> { (pairsContributio
     val allPairContributions: List<Pair<CouplingPair, List<Contribution>>> = if (fakeStyle != null) {
         fakeContributions
     } else {
-        pairsContributions
+        pairsContributions.mapNotNull { it.first to (it.second.contributions?.elements ?: return@mapNotNull null) }
     }
 
     val allLabels = allPairContributions.flatMap { it.second.map(Contribution::label) }.toSet()

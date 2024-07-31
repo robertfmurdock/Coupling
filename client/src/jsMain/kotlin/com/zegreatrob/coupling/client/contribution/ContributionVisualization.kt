@@ -6,7 +6,7 @@ import com.zegreatrob.coupling.client.components.stats.create
 import com.zegreatrob.coupling.client.routing.Commander
 import com.zegreatrob.coupling.client.routing.CouplingQuery
 import com.zegreatrob.coupling.json.GqlContributionWindow
-import com.zegreatrob.coupling.model.Contribution
+import com.zegreatrob.coupling.model.ContributionReport
 import com.zegreatrob.coupling.model.PlayerPair
 import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
@@ -40,7 +40,11 @@ val ContributionVisualization by nfc<ContributionVisualizationProps> { props ->
             party(party.id) {
                 pairs {
                     players()
-                    contributionReport(window = window) { contributions() }
+                    contributionReport(window = window) {
+                        contributions()
+                        medianCycleTime()
+                        withCycleTimeCount()
+                    }
                 }
             }
         },
@@ -76,7 +80,8 @@ private fun setWindowSearchParamHandler(setSearchParams: SetURLSearchParams) =
         }, jso { })
     }
 
-private fun List<PlayerPair>.toPairContributions(): List<Pair<CouplingPair, List<Contribution>>> = mapNotNull {
+private fun List<PlayerPair>.toPairContributions(): List<Pair<CouplingPair, ContributionReport>> = mapNotNull {
+    val contributionReport = it.contributionReport ?: return@mapNotNull null
     it.players?.elements?.toCouplingPair()
-        ?.let { pair -> pair to (it.contributions?.contributions?.elements ?: emptyList()) }
+        ?.let { pair -> pair to contributionReport }
 }
