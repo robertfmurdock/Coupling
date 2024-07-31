@@ -1,5 +1,8 @@
 package com.zegreatrob.coupling.client.components.external.nivo
 
+import react.ElementType
+import react.Props
+
 sealed external interface NivoLineData {
     var id: String
     var data: Array<NivoPoint>
@@ -53,5 +56,23 @@ sealed external interface NivoAxis {
     var legendPosition: String?
     var legendOffset: Number?
     var truncateTickAt: Number?
+    var renderTick: ElementType<AxisTickProps>?
     var format: ((Number) -> String)?
+}
+
+external interface AxisTickProps : Props {
+    var tickIndex: Number
+    var value: Number
+    var format: ((Number) -> String)?
+    var x: Number
+    var y: Number
+    var lineX: Number
+    var lineY: Number
+    var textX: Number
+    var textY: Number
+    var textBaseline: String
+    var textAnchor: String
+    var opacity: Number?
+    var rotate: Number?
+    var truncateTickAt: Number?
 }

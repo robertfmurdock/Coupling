@@ -22,6 +22,7 @@ external interface ResponsiveBarProps : Props {
     var axisTop: NivoAxis?
     var axisLeft: NivoAxis?
     var axisRight: NivoAxis?
+    var axisBottom: NivoAxis?
     var layout: String?
     var labelPosition: String?
     var labelOffset: Number?
