@@ -18,6 +18,7 @@
     "tslib": "~2.6.3",
     "@log4js-node/log4js-api": "1.0.2",
     "@nivo/api": "^0.74.1",
+    "@nivo/bar": "^0.87.0",
     "@nivo/core": "^0.87.0",
     "@nivo/line": "^0.87.0",
     "@nivo/heatmap": "^0.87.0",

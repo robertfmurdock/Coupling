@@ -4,6 +4,7 @@ import com.zegreatrob.coupling.model.map
 import com.zegreatrob.coupling.model.pin.Pin
 import com.zegreatrob.coupling.model.player.Player
 import com.zegreatrob.coupling.model.player.callsign.CallSign
+import com.zegreatrob.coupling.model.player.displayName
 import kotools.types.collection.NotEmptyList
 import kotools.types.collection.notEmptyListOf
 
@@ -78,4 +79,4 @@ fun PinnedCouplingPair.callSign(): CallSign {
 }
 
 val CouplingPair.pairId get() = joinToString("-", transform = Player::id)
-val CouplingPair.pairName get() = joinToString("-", transform = Player::name)
+val CouplingPair.pairName get() = joinToString("-", transform = Player::displayName)

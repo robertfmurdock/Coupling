@@ -45,12 +45,13 @@ sealed external interface NivoHeatMapColors {
     var maxValue: Number
 }
 
-sealed external interface NivoHeatMapAxis {
-    var tickSize: Number
-    var tickPadding: Number
-    var tickRotation: Number
+sealed external interface NivoAxis {
+    var tickSize: Number?
+    var tickPadding: Number?
+    var tickRotation: Number?
     var legend: String?
     var legendPosition: String?
-    var legendOffset: Number
-    var truncateTickAt: Number
+    var legendOffset: Number?
+    var truncateTickAt: Number?
+    var format: ((Number) -> String)?
 }

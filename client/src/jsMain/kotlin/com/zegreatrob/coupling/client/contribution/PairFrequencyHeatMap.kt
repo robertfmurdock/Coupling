@@ -1,7 +1,7 @@
 package com.zegreatrob.coupling.client.contribution
 
+import com.zegreatrob.coupling.client.components.external.nivo.NivoAxis
 import com.zegreatrob.coupling.client.components.external.nivo.NivoChartMargin
-import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapAxis
 import com.zegreatrob.coupling.client.components.external.nivo.NivoHeatMapData
 import com.zegreatrob.coupling.client.components.external.nivo.heatmap.ResponsiveHeatMap
 import com.zegreatrob.coupling.client.components.stats.adjustDatasetForHeatMap
@@ -32,7 +32,9 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
     }
     interpolator ?: return@nfc
 
-    val inclusiveContributions = adjustDatasetForHeatMap(contributionData.toMap().mapValues { (_, report) -> report.contributions?.elements ?: emptyList() })
+    val inclusiveContributions = adjustDatasetForHeatMap(
+        contributionData.toMap().mapValues { (_, report) -> report.contributions?.elements ?: emptyList() },
+    )
     val (max, data: Array<NivoHeatMapData>) = inclusiveContributions.toNivoHeatmapSettings(
         window,
         spinsUntilFullRotation,
@@ -49,21 +51,21 @@ val PairFrequencyHeatMap by nfc<PairFrequencyHeatMapProps> { (contributionData, 
             bottom = 60,
             left = 90,
         )
-        axisLeft = NivoHeatMapAxis(
+        axisLeft = NivoAxis(
             tickSize = 5,
             tickPadding = 5,
             tickRotation = 0,
             legendOffset = -52,
             truncateTickAt = 0,
         )
-        axisTop = NivoHeatMapAxis(
+        axisTop = NivoAxis(
             tickSize = 5,
             tickPadding = 5,
             tickRotation = -90,
             legendOffset = -30,
             truncateTickAt = 0,
         )
-        axisRight = NivoHeatMapAxis(
+        axisRight = NivoAxis(
             tickSize = 5,
             tickPadding = 5,
             tickRotation = 0,
