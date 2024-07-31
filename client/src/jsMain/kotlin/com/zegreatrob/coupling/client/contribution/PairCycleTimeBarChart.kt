@@ -141,6 +141,7 @@ val PairCycleTimeBoxPlot by nfc<PairCycleTimeBoxPlotProps> { props ->
         groupBy = "pair"
         valueFormat = formatMillisAsDuration
         colors = jso { scheme = "pastel1" }
+        colorBy = "group"
         margin = NivoChartMargin(
             top = 65,
             right = 90,

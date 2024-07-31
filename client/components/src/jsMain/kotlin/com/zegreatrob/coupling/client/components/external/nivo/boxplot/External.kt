@@ -28,6 +28,7 @@ external interface ResponsiveBoxPlotProps : Props {
     var axisRight: NivoAxis?
     var axisBottom: NivoAxis?
     var colors: NivoOrdinalScaleColorConfig?
+    var colorBy: String?
     var valueFormat: (Number) -> String
     var tooltipLabel: ((ComputedDatum) -> String)?
 }
