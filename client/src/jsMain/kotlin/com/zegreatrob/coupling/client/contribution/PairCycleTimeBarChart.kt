@@ -130,11 +130,11 @@ external interface PairCycleTimeBoxPlotProps : Props {
 val PairCycleTimeBoxPlot by nfc<PairCycleTimeBoxPlotProps> { props ->
     ResponsiveBoxPlot {
         data = props.data.flatMap { (pair, report) ->
-            report.contributions?.elements?.map { contribution ->
+            report.contributions?.elements?.mapNotNull { contribution ->
                 jso<dynamic> {
                     this.pairId = pair.pairId
                     this.pair = pair
-                    this.value = contribution.cycleTime?.inWholeMilliseconds
+                    this.value = contribution.cycleTime?.inWholeMilliseconds ?: return@mapNotNull null
                 }
             } ?: emptyList()
         }.toTypedArray()
