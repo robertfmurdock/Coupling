@@ -30,6 +30,7 @@ external interface ResponsiveBarProps : Props {
     var labelOffset: Number?
     var groupMode: String?
     var colors: NivoOrdinalScaleColorConfig?
+    var colorBy: String?
     var tooltipLabel: ((ComputedDatum) -> String)?
 }
 

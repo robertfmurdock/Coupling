@@ -65,6 +65,7 @@ val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
         this.labelOffset = -10
         this.groupMode = "grouped"
         colors = jso { scheme = "pastel1" }
+        colorBy = "indexValue"
         tooltipLabel = { data ->
             "${data.indexValue.unsafeCast<CouplingPair>().pairName} - ${data.formattedValue}"
         }
@@ -76,7 +77,6 @@ fun Set<CouplingPair>.largestMobSize() = maxOfOrNull { it.count() } ?: 2
 private const val ESTIMATED_PLAYER_WIDTH = 40.0
 
 val PairTickMark = FC<AxisTickProps> { props ->
-    console.log("tick props", props)
     val pair = props.value.unsafeCast<CouplingPair>()
     val elementWidth = pair.count() * ESTIMATED_PLAYER_WIDTH
     val elementHeight = 45.0
