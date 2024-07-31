@@ -106,7 +106,10 @@ private fun CliktCommand.cycleTimeFromFirstCommit(contribution: Contribution, in
     }
 }
 
+expect fun loadFile(path: String): String?
+
 interface ContributionCliCommand {
+
     val label: String
     val link: String
 }
@@ -115,11 +118,12 @@ class BatchContribution(
     private val clock: Clock,
 ) : CliktCommand(name = "batch"),
     ContributionCliCommand {
-    private val inputJson by option().prompt()
+    private val file by option().default("")
     override val label by option().default("")
     override val link by option().default("")
     private val cycleTimeFromFirstCommit by option().flag()
     override fun run() {
+        val inputJson = loadFile(file) ?: error("Could not load file")
         val contributions = ContributionParser.parseContributions(inputJson.trim())
         val contributionContext = currentContext.findObject<ContributionContext>()
         val partyId = contributionContext!!.partyId
