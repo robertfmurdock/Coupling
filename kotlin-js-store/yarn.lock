@@ -4425,6 +4425,25 @@
     d3-shape "^3.2.0"
     lodash "^4.17.21"
 
+"@nivo/boxplot@^0.87.0":
+  version "0.87.0"
+  resolved "https://registry.yarnpkg.com/@nivo/boxplot/-/boxplot-0.87.0.tgz#1aa82d0d78ee7b1d6e9adf6a7d62499036c06711"
+  integrity sha512-JypbCxokhPqn+IG4nu+RgTwLQQizP2CONyFnk1RefT8j49ilCfqyN/qTT9kfWkbkCF/LHznEmIU2nXnm8B/qmA==
+  dependencies:
+    "@nivo/annotations" "0.87.0"
+    "@nivo/axes" "0.87.0"
+    "@nivo/colors" "0.87.0"
+    "@nivo/core" "0.87.0"
+    "@nivo/legends" "0.87.0"
+    "@nivo/scales" "0.87.0"
+    "@nivo/tooltip" "0.87.0"
+    "@react-spring/web" "9.4.5 || ^9.7.2"
+    "@types/d3-scale" "^4.0.8"
+    "@types/d3-shape" "^3.1.6"
+    d3-scale "^4.0.2"
+    d3-shape "^3.2.0"
+    lodash "^4.17.21"
+
 "@nivo/bullet@0.74.1":
   version "0.74.1"
   resolved "https://registry.yarnpkg.com/@nivo/bullet/-/bullet-0.74.1.tgz#0d2f90233c94e5d6e1035f54b48cc064e65d0e86"

@@ -5,9 +5,12 @@ import com.zegreatrob.coupling.client.components.external.nivo.AxisTickProps
 import com.zegreatrob.coupling.client.components.external.nivo.NivoAxis
 import com.zegreatrob.coupling.client.components.external.nivo.NivoChartMargin
 import com.zegreatrob.coupling.client.components.external.nivo.bar.ResponsiveBar
+import com.zegreatrob.coupling.client.components.external.nivo.boxplot.ResponsiveBoxPlot
 import com.zegreatrob.coupling.json.GqlContributionWindow
 import com.zegreatrob.coupling.model.ContributionReport
+import com.zegreatrob.coupling.model.elements
 import com.zegreatrob.coupling.model.pairassignmentdocument.CouplingPair
+import com.zegreatrob.coupling.model.pairassignmentdocument.pairId
 import com.zegreatrob.coupling.model.pairassignmentdocument.pairName
 import com.zegreatrob.minreact.ReactFunc
 import com.zegreatrob.minreact.nfc
@@ -23,8 +26,6 @@ import react.dom.svg.ReactSVG.rect
 import web.cssom.Color
 import web.cssom.Display
 import web.cssom.px
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 
 external interface PairCycleTimeBarChartProps : Props {
     var data: List<Pair<CouplingPair, ContributionReport>>
@@ -42,10 +43,7 @@ val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
             value = cycleTime.inWholeMilliseconds
         }
     }.toTypedArray()
-    val formatMillisAsDuration: (Number) -> String = { value ->
-        (Duration.ZERO + value.toLong().milliseconds).toString()
-    }
-    val largestMobSize = pairToCycleTime.toMap().keys.maxOfOrNull { it.count() } ?: 2
+    val largestMobSize = pairToCycleTime.toMap().keys.largestMobSize()
 
     ResponsiveBar {
         this.data = data
@@ -73,9 +71,12 @@ val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
     }
 }
 
+fun Set<CouplingPair>.largestMobSize() = maxOfOrNull { it.count() } ?: 2
+
 private const val ESTIMATED_PLAYER_WIDTH = 40.0
 
 val PairTickMark = FC<AxisTickProps> { props ->
+    console.log("tick props", props)
     val pair = props.value.unsafeCast<CouplingPair>()
     val elementWidth = pair.count() * ESTIMATED_PLAYER_WIDTH
     val elementHeight = 45.0
@@ -117,5 +118,39 @@ val PairTickMark = FC<AxisTickProps> { props ->
                 }
             }
         }
+    }
+}
+
+external interface PairCycleTimeBoxPlotProps : Props {
+    var data: List<Pair<CouplingPair, ContributionReport>>
+    var window: GqlContributionWindow
+}
+
+@ReactFunc
+val PairCycleTimeBoxPlot by nfc<PairCycleTimeBoxPlotProps> { props ->
+    ResponsiveBoxPlot {
+        data = props.data.flatMap { (pair, report) ->
+            report.contributions?.elements?.map { contribution ->
+                jso<dynamic> {
+                    this.pairId = pair.pairId
+                    this.pair = pair
+                    this.value = contribution.cycleTime?.inWholeMilliseconds
+                }
+            } ?: emptyList()
+        }.toTypedArray()
+        groupBy = "pair"
+        valueFormat = formatMillisAsDuration
+        colors = jso { scheme = "pastel1" }
+        margin = NivoChartMargin(
+            top = 65,
+            right = 90,
+            bottom = 10 + ESTIMATED_PLAYER_WIDTH * props.data.toMap().keys.largestMobSize(),
+            left = 90,
+        )
+        this.axisLeft = NivoAxis(
+            format = formatMillisAsDuration,
+        )
+        this.axisBottom = NivoAxis(renderTick = PairTickMark)
+        tooltipLabel = { data -> data.group.unsafeCast<CouplingPair>().pairName }
     }
 }
