@@ -4,9 +4,9 @@ import com.zegreatrob.coupling.json.GqlUser
 
 class UserQueryBuilder : QueryBuilder<GqlUser> {
     override var output: GqlUser = GqlUser(
+        id = "",
         boost = null,
         details = null,
-        "",
         subscription = null,
     )
 

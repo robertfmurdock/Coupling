@@ -21,13 +21,12 @@ external interface PairCycleTimeBarChartProps : Props {
 
 @ReactFunc
 val PairCycleTimeBarChart by nfc<PairCycleTimeBarChartProps> { props ->
-
     val pairToCycleTime =
         props.data.mapNotNull { (pair, report) -> pair to (report.medianCycleTime ?: return@mapNotNull null) }
 
     val data = pairToCycleTime.map { (pair, cycleTime) ->
         jso<dynamic> {
-            this.pair = pair.pairName
+            this.pair = pair.pairName.replace("-", "\n")
             value = cycleTime.inWholeMilliseconds
         }
     }.toTypedArray()
