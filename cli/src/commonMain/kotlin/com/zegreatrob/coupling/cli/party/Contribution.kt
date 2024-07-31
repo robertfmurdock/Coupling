@@ -62,7 +62,7 @@ class SaveContribution(
                         link = link.takeIf(String::isNotBlank),
                         label = label.takeIf(String::isNotBlank),
                         cycleTime = if (cycleTimeFromFirstCommit) {
-                            cycleTimeFromFirstCommit(contribution, contribution.tagDateTime ?: clock.now())
+                            cycleTimeFromFirstCommit(contribution, clock.now())
                         } else {
                             cycleTime.ifBlank { null }
                                 ?.let(Duration.Companion::parse)
@@ -96,13 +96,13 @@ class SaveContribution(
     }
 }
 
-private fun CliktCommand.cycleTimeFromFirstCommit(contribution: Contribution, integrationTime: Instant): Duration? {
+private fun CliktCommand.cycleTimeFromFirstCommit(contribution: Contribution, now: Instant): Duration? {
     val firstCommitDateTime = contribution.firstCommitDateTime
     return if (firstCommitDateTime == null) {
         echo("Warning: could not calculate cycle time from missing firstCommitDateTime")
         null
     } else {
-        integrationTime - firstCommitDateTime
+        (contribution.tagDateTime ?: now) - firstCommitDateTime
     }
 }
 
