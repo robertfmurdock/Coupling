@@ -27,6 +27,13 @@ external interface ResponsiveBarProps : Props {
     var labelPosition: String?
     var labelOffset: Number?
     var groupMode: String?
+    var tooltipLabel: ((ComputedDatum) -> String)?
+}
+
+external interface ComputedDatum {
+    var id: String
+    var indexValue: Any
+    var formattedValue: Any
 }
 
 external val ResponsiveBar: ComponentType<ResponsiveBarProps>
